@@ -417,6 +417,57 @@ button[disabled]{
 }
 .hide{display:none !important}
 .app-view-hidden{display:none !important}
+.section-off{display:none !important}
+.tournament-context{
+ display:grid;
+ gap:8px;
+}
+.tournament-context-top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:8px;
+ flex-wrap:wrap;
+}
+.tournament-context-title{
+ font-weight:800;
+ font-size:1rem;
+}
+.tournament-context-role{
+ font-size:12px;
+ padding:4px 10px;
+ border-radius:999px;
+ border:1px solid #cbd5e1;
+ color:#334155;
+ background:#f8fafc;
+}
+.tournament-context-role.owner{
+ border-color:#0f766e;
+ color:#0f766e;
+ background:#ecfdf5;
+}
+.tournament-section-tabs{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:6px;
+}
+.tournament-section-tabs button{
+ min-height:44px;
+ font-size:13px;
+ border-radius:10px;
+ border:1px solid #cbd5e1;
+ background:#e2e8f0;
+ color:#334155;
+}
+.tournament-section-tabs button.active{
+ background:#0f766e;
+ border-color:#0f766e;
+ color:#fff;
+}
+.tournament-section-hint{
+ font-size:12px;
+ color:#475569;
+}
 #listaParticipantes,#listaEntradas{margin-top:10px;line-height:1.45;overflow-wrap:break-word}
 .participant-list{
  display:flex;
@@ -761,6 +812,9 @@ button[disabled]{
   gap:6px;
   width:100%;
  }
+ .tournament-section-tabs{
+  grid-template-columns:1fr 1fr;
+ }
  .app-nav{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
@@ -1056,6 +1110,22 @@ button[disabled]{
 <div id="listaTorneiosPublicos" class="tournament-list"></div>
 </div>
 <div id="listaTorneiosParticipando" class="tournament-list"></div>
+</div>
+</div>
+
+<div class="card app-tournament-view" id="tournamentContextCard">
+<div class="tournament-context">
+<div class="tournament-context-top">
+<div id="tournamentContextTitle" class="tournament-context-title">Painel do Torneio</div>
+<div id="tournamentContextRole" class="tournament-context-role">Participante</div>
+</div>
+<div class="tournament-section-tabs" id="tournamentSectionTabs">
+<button id="sectionBtnInscricoes" onclick="setTournamentSection('inscricoes')">Inscrições</button>
+<button id="sectionBtnJogos" onclick="setTournamentSection('jogos')">Partidas</button>
+<button id="sectionBtnClassificacao" onclick="setTournamentSection('classificacao')">Classificação</button>
+<button id="sectionBtnOrganizacao" onclick="setTournamentSection('organizacao')">Organização</button>
+</div>
+<div id="tournamentSectionHint" class="tournament-section-hint"></div>
 </div>
 </div>
 
@@ -1473,6 +1543,7 @@ let activeTournamentRole = ""
 let activeTournamentOwnerId = ""
 let dashboardTab = "created"
 let appView = "account"
+let tournamentSection = "inscricoes"
 let tournamentRegistrations = []
 let pendingInviteTournamentId = ""
 let inviteJoinHandled = false
@@ -1744,6 +1815,111 @@ function applyDashboardTabUI(){
  if(actionsParticipating) actionsParticipating.classList.remove("hide")
 }
 
+function normalizeTournamentSection(section){
+ let s = String(section || "").trim().toLowerCase()
+ if(s !== "inscricoes" && s !== "jogos" && s !== "classificacao" && s !== "organizacao"){
+  return "inscricoes"
+ }
+ return s
+}
+
+function getTournamentSectionAvailability(){
+ let owner = canEditCurrentTournament()
+ let generated = !!state.gerado
+ return {
+  inscricoes:true,
+  jogos:generated,
+  classificacao:generated,
+  organizacao:owner
+ }
+}
+
+function getDefaultTournamentSection(){
+ let available = getTournamentSectionAvailability()
+ if(available.organizacao) return "organizacao"
+ if(available.inscricoes) return "inscricoes"
+ return "inscricoes"
+}
+
+function setTournamentSection(section, options){
+ let opts = options || {}
+ let next = normalizeTournamentSection(section)
+ let available = getTournamentSectionAvailability()
+ if(!available[next]){
+  next = getDefaultTournamentSection()
+ }
+ tournamentSection = next
+ if(!opts.silent){
+  renderTournamentContext()
+  applyTournamentSectionFilter()
+ }
+}
+
+function renderTournamentContext(){
+ let titleEl = document.getElementById("tournamentContextTitle")
+ let roleEl = document.getElementById("tournamentContextRole")
+ let hintEl = document.getElementById("tournamentSectionHint")
+ if(titleEl){
+  let nm = getActiveTournamentName() || normalizeTournamentName(state.nomeTorneio || "")
+  titleEl.textContent = nm ? `Painel do Torneio: ${nm}` : "Painel do Torneio"
+ }
+ let owner = canEditCurrentTournament()
+ if(roleEl){
+  roleEl.textContent = owner ? "Organizador" : "Participante"
+  roleEl.classList.toggle("owner", owner)
+ }
+ let available = getTournamentSectionAvailability()
+ ;["inscricoes","jogos","classificacao","organizacao"].forEach(function(sec){
+  let id = sec === "inscricoes" ? "sectionBtnInscricoes" : sec === "jogos" ? "sectionBtnJogos" : sec === "classificacao" ? "sectionBtnClassificacao" : "sectionBtnOrganizacao"
+  let btn = document.getElementById(id)
+  if(!btn) return
+  btn.classList.toggle("active", tournamentSection === sec)
+  btn.disabled = !available[sec]
+  btn.classList.toggle("hide", sec === "organizacao" && !owner)
+ })
+ if(hintEl){
+  let hint = ""
+  if(tournamentSection === "inscricoes"){
+   hint = owner ? "Cadastre atletas, revise inscrições e confirme participantes." : "Escolha categoria/classe e acompanhe status da sua inscrição."
+  }else if(tournamentSection === "jogos"){
+   hint = generated ? "Acompanhe partidas, chaves e andamento da fase atual." : "As partidas aparecerão quando o organizador gerar o torneio."
+  }else if(tournamentSection === "classificacao"){
+   hint = generated ? "Veja pontuação dos grupos e evolução para as fases finais." : "A classificação será exibida após geração dos grupos."
+  }else{
+   hint = "Configure regras, categorias, agenda e geração do campeonato."
+  }
+  hintEl.textContent = hint
+ }
+}
+
+function applyTournamentSectionFilter(){
+ let map = {
+  inscricoes:["registrationsCard","participantInfoCard"],
+  jogos:["activeClassCard","cardPartidas","finalCard"],
+  classificacao:["cardClassificacao"],
+  organizacao:["wizardCard","wizardStepActions","configCard","categoriasCard","cardAgenda","cadastroCard","operacoesCard","classGroupsListWrap","btnRestartWizard","registrationsCard"]
+ }
+ let all = Array.from(new Set(Object.values(map).flat()))
+ all.forEach(function(id){
+  let node = document.getElementById(id)
+  if(node) node.classList.remove("section-off")
+ })
+ if(appView !== "tournament"){
+  return
+ }
+ let avail = getTournamentSectionAvailability()
+ if(!avail[tournamentSection]){
+  tournamentSection = getDefaultTournamentSection()
+ }
+ renderTournamentContext()
+ let visibleSet = new Set(map[tournamentSection] || [])
+ all.forEach(function(id){
+  if(visibleSet.has(id)) return
+  let node = document.getElementById(id)
+  if(node) node.classList.add("section-off")
+ })
+}
+
 function getActiveTournamentName(){
  if(!activeTournamentId) return ""
  let all = [...createdTournaments, ...participatingTournaments]
@@ -1927,6 +2103,7 @@ async function openTournamentById(tournamentId,roleHint){
  activeTournamentId = res.data.id
  activeTournamentOwnerId = String(res.data.owner_id || "")
  activeTournamentRole = (res.data.owner_id === authUser.id) ? "owner" : (roleHint || "participant")
+ setTournamentSection((activeTournamentRole === "owner") ? "organizacao" : "inscricoes", {silent:true})
   setDashboardTab(activeTournamentRole === "owner" ? "created" : "participating")
   applyingCloudState = true
   applyLoadedState(res.data.data || createInitialState())
@@ -6660,6 +6837,7 @@ function render(){
  configToUI()
  agendaConfigToUI()
  updatePageTitle()
+ renderTournamentContext()
  renderWizardCard()
  renderCategoriasUI()
  renderClassesResumo()
@@ -6676,6 +6854,7 @@ function render(){
  renderFinais()
  renderAgenda()
  applyAppView()
+ applyTournamentSectionFilter()
 }
 
 function bindEnterShortcut(inputId,handler){
