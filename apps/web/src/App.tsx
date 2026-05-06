@@ -1,7 +1,6 @@
 ﻿import { useCallback, useEffect, useState } from "react";
 import { HashRouter, Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
-import type { TournamentSummary } from "@tenis/shared";
 import { supabase, supabaseConfigured } from "./lib/supabase";
 import "./App.css";
 
@@ -18,6 +17,13 @@ type TournamentRow = {
 type MembershipRow = {
   tournament_id: string;
   role: string;
+};
+
+type TournamentSummary = {
+  id: string;
+  name: string;
+  ownerId: string;
+  updatedAt?: string;
 };
 
 type DashboardData = {
