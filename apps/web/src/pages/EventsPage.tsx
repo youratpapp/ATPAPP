@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
@@ -125,6 +126,7 @@ function EventCard({ t, isOwner, onOpen, onCopyLink }: {
 }
 
 export function EventsPage({ user, profile }: Props) {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>("all");
   const [organizing, setOrganizing] = useState<TournamentSummary[]>([]);
   const [participating, setParticipating] = useState<TournamentSummary[]>([]);
@@ -173,7 +175,7 @@ export function EventsPage({ user, profile }: Props) {
       setNewCity("");
       setNewState("");
       setNewVisibility("private");
-      window.location.assign(`#${buildTournamentUrl(id)}`);
+      navigate(buildTournamentUrl(id));
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao criar." });
     } finally {
@@ -189,7 +191,7 @@ export function EventsPage({ user, profile }: Props) {
       await joinTournament(user, id);
       setShowJoin(false);
       setJoinUuid("");
-      window.location.assign(`#${buildTournamentUrl(id)}`);
+      navigate(buildTournamentUrl(id));
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao participar." });
     } finally {
@@ -262,7 +264,7 @@ export function EventsPage({ user, profile }: Props) {
           key={t.id}
           t={t}
           isOwner={t.ownerId === user.id}
-          onOpen={() => window.location.assign(`#${buildTournamentUrl(t.id)}`)}
+          onOpen={() => navigate(buildTournamentUrl(t.id))}
           onCopyLink={() => copyInvite(t.id)}
         />
       ))}

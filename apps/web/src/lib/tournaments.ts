@@ -385,13 +385,3 @@ export function buildTournamentUrl(tournamentId: string): string {
   return `/eventos/${encodeURIComponent(tournamentId)}`;
 }
 
-export function buildLegacyUrl(tournamentId?: string): string {
-  // Deprecated: kept only for compatibility with old shared links.
-  const base = import.meta.env.BASE_URL || "/";
-  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
-  const legacyPath = `${normalizedBase}legacy/index.html`;
-  const id = String(tournamentId ?? "").trim();
-  if (!id) return legacyPath;
-  return `${legacyPath}?join=${encodeURIComponent(id)}`;
-}
-

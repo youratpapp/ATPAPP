@@ -1,40 +1,40 @@
-# Tournament Migration Parity (HTML -> React/TypeScript)
+ï»¿# Tournament Migration Parity (HTML -> React/TypeScript)
 
 ## Goal
-Portar a lógica completa do `backup/index.html` para a stack atual (`React + TypeScript + Supabase`) sem simplificações funcionais.
+Portar a logica completa do `backup/index.html` para a stack atual (`React + TypeScript + Supabase`) sem simplificacoes funcionais.
 
 ## Source of Truth
 - Arquivo legado: `backup/index.html` (4.326 linhas)
-- Núcleo identificado:
-  - Estado/configuração: `createInitialState`, `normalize*`, `sync*`
+- Nucleo identificado:
+  - Estado/configuracao: `createInitialState`, `normalize*`, `sync*`
   - Cadastro: categorias, classes, participantes, entradas
-  - Geração: grupos, round-robin, mata-mata, avanços
-  - Agenda: slots, quadras, restrições semi/final, alocação
-  - Partidas: placares, fechamento, recomputação
-  - Classificação: `calcTabelaGrupo`, tabelas por grupo
-  - Operações: reset parcial/total, exportações, backup/restore
-  - Wizard: etapas, validações e guia de setup
-  - Cloud: sync Supabase para torneios e inscrições
+  - Geracao: grupos, round-robin, mata-mata, avancos
+  - Agenda: slots, quadras, restricoes semi/final, alocacao
+  - Partidas: placares, fechamento, recomputacao
+  - Classificacao: `calcTabelaGrupo`, tabelas por grupo
+  - Operacoes: reset parcial/total, exportacoes, backup/restore
+  - Wizard: etapas, validacoes e guia de setup
+  - Cloud: sync Supabase para torneios e inscricoes
 
 ## Migration Strategy
 1. **Core Engine (TS puro, sem UI)**
-   - Portar funções de geração/classificação/mata-mata/agenda mantendo regras 1:1.
+   - Portar funcoes de geracao/classificacao/mata-mata/agenda mantendo regras 1:1.
    - Arquivo: `src/tournament-engine/core.ts`.
 2. **State Adapter (TS)**
-   - Converter shape legado de `data` para tipos estáveis da engine.
+   - Converter shape legado de `data` para tipos estaveis da engine.
    - Arquivo: `src/tournament-engine/state-adapter.ts`.
 3. **Supabase Adapter**
    - Unificar leitura/escrita de `tournaments`, `tournament_members`, `tournament_registrations`.
    - Arquivo: `src/tournament-engine/repository.ts`.
-4. **UI por domínio (React)**
-   - Organização (wizard + config + categorias)
-   - Inscrições
+4. **UI por dominio (React)**
+   - Organizacao (wizard + config + categorias)
+   - Inscricoes
    - Agenda
    - Partidas
-   - Classificação
-   - Operações e exportações
+   - Classificacao
+   - Operacoes e exportacoes
 5. **Parity Checklist**
-   - Validar cada função/macrofluxo contra comportamento do HTML antigo.
+   - Validar cada funcao/macrofluxo contra comportamento do HTML antigo.
 
 ## Work In Progress (this commit)
 - Core algorithms migrados para TS:
@@ -44,11 +44,37 @@ Portar a lógica completa do `backup/index.html` para a stack atual (`React + Typ
   - `recomputeKnockout`
   - `calcTabelaGrupo`
   - `gerarClasseData`
-  - utilitários de normalização e configuração
+  - utilitarios de normalizacao e configuracao
+- Tournament page React/TS com edicao de placar em grupos e mata-mata:
+  - recomputacao imediata de classificacao e avanco de chave
+  - persistencia em `tournaments.data`
+- Agenda migrada para TS (`src/tournament-engine/agenda.ts`):
+  - configuracao de dias/quadras/duracao
+  - restricoes de semifinal/final por dia e por quadra
+  - geracao e alocacao de partidas em slots
+  - validacao e resumo do wizard
+- Organizacao no React:
+  - wizard funcional de setup (etapas e validacoes)
+  - editor completo de categorias/classes/participantes (CRUD)
+  - configuracao de classe (formato, tipo, grupos, classificados, modo de duplas)
+  - geracao de classe no fluxo React/TS
+  - geracao em lote de campeonatos com validacao de agenda
+  - operacoes de reset (apenas sorteio/partidas e reset total com confirmacao)
+  - painel completo de agenda
+  - resumo e preview de agenda por slot
+- Exportacoes/operacoes migradas:
+  - exportacao de lista de quadras (HTML para impressao)
+  - exportacao visual da chave em PNG (classe ativa)
+  - exportacao visual da chave mata-mata em PNG
+  - backup/restore em JSON
+  - envio de resumo estruturado para WhatsApp
+  - salvamento unificado de toda configuracao (categorias + agenda)
+- Navegacao de eventos corrigida para fluxo SPA (`navigate`) sem reload de hash.
+- Botao de fallback "Modo completo" removido da pagina principal de torneio.
 
 ## Non-Regression Rules
-- Não remover etapas do wizard.
-- Não remover modos de configuração (`grupos`, `mata_mata`, `sorteioDuplas`, etc).
-- Não remover regras de agenda e restrição de quadras por fase.
-- Não remover operações de reset/export sem equivalentes.
-- Não trocar regras de classificação/critério de desempate.
+- Nao remover etapas do wizard.
+- Nao remover modos de configuracao (`grupos`, `mata_mata`, `sorteioDuplas`, etc).
+- Nao remover regras de agenda e restricao de quadras por fase.
+- Nao remover operacoes de reset/export sem equivalentes.
+- Nao trocar regras de classificacao/criterio de desempate.
