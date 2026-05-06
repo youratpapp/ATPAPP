@@ -115,6 +115,34 @@ input[type="file"]{background:#fff;padding:8px}
  color:#fff;
  border-color:#0f766e;
 }
+.mobile-bottom-nav{
+ position:fixed;
+ left:0;
+ right:0;
+ bottom:0;
+ z-index:1000;
+ display:none;
+ grid-template-columns:repeat(5,minmax(0,1fr));
+ gap:4px;
+ padding:8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+ background:rgba(255,255,255,0.98);
+ border-top:1px solid #d9e2ec;
+ box-shadow:0 -8px 20px rgba(15,23,42,0.08);
+}
+.mobile-bottom-nav button{
+ min-height:40px;
+ border-radius:10px;
+ font-size:12px;
+ font-weight:700;
+ border:1px solid #cbd5e1;
+ background:#e2e8f0;
+ color:#334155;
+}
+.mobile-bottom-nav button.active{
+ background:#0f766e;
+ border-color:#0f766e;
+ color:#fff;
+}
 .auth-card-head{
  display:flex;
  align-items:center;
@@ -816,9 +844,7 @@ button[disabled]{
   grid-template-columns:1fr 1fr;
  }
  .app-nav{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:6px;
+  display:none;
  }
  .app-nav button{
   width:100%;
@@ -826,6 +852,9 @@ button[disabled]{
  .auth-card-head{
   flex-direction:column;
   align-items:flex-start;
+ }
+ .mobile-bottom-nav{
+  display:grid;
  }
  .auth-card-inline-actions{
   width:100%;
@@ -995,8 +1024,12 @@ button[disabled]{
 <h2 id="pageTitle">Gerenciador de Campeonato</h2>
 
 <div class="app-nav">
-<button id="navDashboard" onclick="setAppView('dashboard')">Meus Torneios</button>
-<button id="navTournament" onclick="setAppView('tournament')">Painel do Torneio</button>
+<button id="navHome" onclick="setAppView('home')">Início</button>
+<button id="navEvents" onclick="setAppView('events')">Eventos</button>
+<button id="navTournament" onclick="setAppView('tournament')">Torneio</button>
+<button id="navPlaces" onclick="setAppView('places')">Locais</button>
+<button id="navGames" onclick="setAppView('games')">Meus Jogos</button>
+<button id="navProfile" onclick="setAppView('profile')">Perfil</button>
 <button id="navAccount" onclick="setAppView('account')">Conta</button>
 </div>
 
@@ -1004,7 +1037,7 @@ button[disabled]{
 <div class="auth-card-head">
 <h3>Conta e Sincronização (Supabase)</h3>
 <div class="auth-card-inline-actions">
-<button onclick="setAppView('dashboard')">Ir para Meus Torneios</button>
+<button onclick="setAppView('home')">Ir para Início</button>
 <button onclick="setAppView('tournament')">Ir para Painel do Torneio</button>
 </div>
 </div>
@@ -1031,10 +1064,27 @@ button[disabled]{
 </div>
 </div>
 
+<div class="card hide" id="homeCard">
+<h3>Início</h3>
+<div id="homeWelcome" class="dashboard-sub">Bem-vindo.</div>
+<div class="dashboard-toolbar" style="margin-top:8px;">
+<button class="primary" onclick="setAppView('events')">Meus Eventos</button>
+<button onclick="setAppView('places')">Explorar Locais</button>
+<button onclick="setAppView('games')">Meus Jogos</button>
+<button onclick="setAppView('profile')">Meu Perfil</button>
+</div>
+<div class="dashboard-panel" style="margin-top:10px;">
+<div class="dashboard-panel-head">
+<div class="dashboard-panel-title">Próximos Eventos</div>
+</div>
+<div id="homeUpcomingList" class="tournament-list"></div>
+</div>
+</div>
+
 <div class="card hide" id="dashboardCard">
 <div class="dashboard-head">
 <div>
-<h3 class="dashboard-title">Central de Torneios</h3>
+<h3 class="dashboard-title">Eventos</h3>
 <div class="dashboard-sub">Área do jogador e do organizador em blocos separados para facilitar navegação.</div>
 </div>
 </div>
@@ -1111,6 +1161,34 @@ button[disabled]{
 </div>
 <div id="listaTorneiosParticipando" class="tournament-list"></div>
 </div>
+</div>
+
+<div class="card hide" id="placesCard">
+<h3>Locais</h3>
+<div class="dashboard-sub">Locais com torneios públicos por cidade/estado.</div>
+<div class="dashboard-toolbar" style="margin-top:8px;">
+<div class="dashboard-field">
+<label for="filtroCidadePublica2">Cidade</label>
+<input id="filtroCidadePublica2" placeholder="Ex.: Campo Grande">
+</div>
+<div class="dashboard-field">
+<label for="filtroEstadoPublica2">Estado (UF)</label>
+<input id="filtroEstadoPublica2" placeholder="Ex.: MS" maxlength="2">
+</div>
+<button class="primary" onclick="syncPublicFiltersAndSearch()">Buscar Locais</button>
+</div>
+<div id="placesList" class="tournament-list"></div>
+</div>
+
+<div class="card hide" id="gamesCard">
+<h3>Meus Jogos</h3>
+<div class="dashboard-sub">Acompanhe seus torneios e inscrições em andamento.</div>
+<div id="myGamesList" class="tournament-list"></div>
+</div>
+
+<div class="card hide" id="profileCard">
+<h3>Perfil</h3>
+<div id="profileInfo" class="tournament-list"></div>
 </div>
 
 <div class="card app-tournament-view" id="tournamentContextCard">
@@ -1460,6 +1538,14 @@ button[disabled]{
 <div id="finais"></div>
 </div>
 
+<div class="mobile-bottom-nav" id="mobileBottomNav">
+<button id="mNavHome" onclick="setAppView('home')">Início</button>
+<button id="mNavEvents" onclick="setAppView('events')">Eventos</button>
+<button id="mNavPlaces" onclick="setAppView('places')">Locais</button>
+<button id="mNavGames" onclick="setAppView('games')">Jogos</button>
+<button id="mNavProfile" onclick="setAppView('profile')">Perfil</button>
+</div>
+
 <button class="whats-fab" onclick="enviarTudo()" title="Enviar no WhatsApp" aria-label="Enviar no WhatsApp">&#x1F4AC;</button>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1474,6 +1560,7 @@ function createInitialState(){
    state:"",
    visibility:"private"
   },
+  tournamentStatus:"draft",
  agendaConfig:{
    duracaoMin:45,
    quadras:[],
@@ -1745,25 +1832,62 @@ function setDashboardStatus(msg,isWarn){
 function applyAppView(){
  let logged = canUseCloudPersistence()
  let authCard = document.getElementById("authCard")
- let authBody = document.getElementById("authPanelBody")
+ let homeCard = document.getElementById("homeCard")
  let dashboardCard = document.getElementById("dashboardCard")
- let navDashboard = document.getElementById("navDashboard")
+ let placesCard = document.getElementById("placesCard")
+ let gamesCard = document.getElementById("gamesCard")
+ let profileCard = document.getElementById("profileCard")
+ let navHome = document.getElementById("navHome")
+ let navEvents = document.getElementById("navEvents")
  let navTournament = document.getElementById("navTournament")
+ let navPlaces = document.getElementById("navPlaces")
+ let navGames = document.getElementById("navGames")
+ let navProfile = document.getElementById("navProfile")
  let navAccount = document.getElementById("navAccount")
- let showDashboard = logged && appView === "dashboard"
+ let mNavHome = document.getElementById("mNavHome")
+ let mNavEvents = document.getElementById("mNavEvents")
+ let mNavPlaces = document.getElementById("mNavPlaces")
+ let mNavGames = document.getElementById("mNavGames")
+ let mNavProfile = document.getElementById("mNavProfile")
+ let showHome = logged && appView === "home"
+ let showEvents = logged && appView === "events"
  let showAccount = (!logged) || appView === "account"
- let showTournament = appView === "tournament"
+ let showTournament = logged && appView === "tournament"
+ let showPlaces = logged && appView === "places"
+ let showGames = logged && appView === "games"
+ let showProfile = logged && appView === "profile"
 
- if(navDashboard) navDashboard.classList.toggle("active", showDashboard)
+ if(navHome) navHome.classList.toggle("active", showHome)
+ if(navEvents) navEvents.classList.toggle("active", showEvents)
  if(navTournament) navTournament.classList.toggle("active", showTournament)
+ if(navPlaces) navPlaces.classList.toggle("active", showPlaces)
+ if(navGames) navGames.classList.toggle("active", showGames)
+ if(navProfile) navProfile.classList.toggle("active", showProfile)
  if(navAccount) navAccount.classList.toggle("active", showAccount)
+ if(mNavHome) mNavHome.classList.toggle("active", showHome)
+ if(mNavEvents) mNavEvents.classList.toggle("active", showEvents)
+ if(mNavPlaces) mNavPlaces.classList.toggle("active", showPlaces)
+ if(mNavGames) mNavGames.classList.toggle("active", showGames)
+ if(mNavProfile) mNavProfile.classList.toggle("active", showProfile)
 
- if(navDashboard) navDashboard.disabled = !logged
+ if(navHome) navHome.disabled = !logged
+ if(navEvents) navEvents.disabled = !logged
  if(navTournament) navTournament.disabled = false
+ if(navPlaces) navPlaces.disabled = !logged
+ if(navGames) navGames.disabled = !logged
+ if(navProfile) navProfile.disabled = !logged
+ if(mNavHome) mNavHome.disabled = !logged
+ if(mNavEvents) mNavEvents.disabled = !logged
+ if(mNavPlaces) mNavPlaces.disabled = !logged
+ if(mNavGames) mNavGames.disabled = !logged
+ if(mNavProfile) mNavProfile.disabled = !logged
 
  if(authCard) authCard.classList.toggle("hide", !showAccount)
- if(authBody) authBody.classList.toggle("hide", false)
- if(dashboardCard) dashboardCard.classList.toggle("hide", !showDashboard)
+ if(homeCard) homeCard.classList.toggle("hide", !showHome)
+ if(dashboardCard) dashboardCard.classList.toggle("hide", !showEvents)
+ if(placesCard) placesCard.classList.toggle("hide", !showPlaces)
+ if(gamesCard) gamesCard.classList.toggle("hide", !showGames)
+ if(profileCard) profileCard.classList.toggle("hide", !showProfile)
 
  let tournamentNodes = document.querySelectorAll(".app-tournament-view")
  tournamentNodes.forEach(function(node){
@@ -1781,15 +1905,16 @@ function applyAppView(){
 
 function setAppView(view){
  let next = String(view || "").toLowerCase()
- if(next !== "dashboard" && next !== "tournament" && next !== "account"){
-  next = "dashboard"
+ if(next === "dashboard") next = "events"
+ if(next !== "home" && next !== "events" && next !== "tournament" && next !== "places" && next !== "games" && next !== "profile" && next !== "account"){
+  next = "events"
  }
- if(next === "dashboard" && !canUseCloudPersistence()){
+ if(next !== "account" && !canUseCloudPersistence()){
   next = "account"
  }
  if(next === "tournament" && canUseCloudPersistence() && !activeTournamentId){
-  next = "dashboard"
-  setDashboardStatus("Selecione ou crie um torneio no dashboard para abrir o workspace.", true)
+  next = "events"
+  setDashboardStatus("Abra um evento para entrar no painel do torneio.", true)
  }
  appView = next
  applyAppView()
@@ -1928,6 +2053,14 @@ function getActiveTournamentName(){
 }
 
 function extractTournamentMetaFromRow(row){
+ let metaFromCols = normalizeTournamentMeta({
+  city:row && row.city,
+  state:row && row.state,
+  visibility:row && row.visibility
+ })
+ if(metaFromCols.city || metaFromCols.state || metaFromCols.visibility !== "private"){
+  return metaFromCols
+ }
  let data = row && row.data && typeof row.data === "object" ? row.data : {}
  let discovery = data.discovery && typeof data.discovery === "object" ? data.discovery : {}
  return normalizeTournamentMeta(discovery)
@@ -1935,6 +2068,37 @@ function extractTournamentMetaFromRow(row){
 
 function formatTournamentVisibilityLabel(v){
  return normalizeTournamentVisibility(v) === "public" ? "Público" : "Somente link"
+}
+
+function normalizeTournamentStatus(v){
+ let m = String(v || "").trim().toLowerCase()
+ if(m !== "draft" && m !== "registration_open" && m !== "registration_closed" && m !== "live" && m !== "finished"){
+  return "draft"
+ }
+ return m
+}
+
+function extractTournamentStatusFromRow(row){
+ let direct = normalizeTournamentStatus(row && row.status)
+ if(direct !== "draft" || (row && row.status)){
+  return direct
+ }
+ let data = row && row.data && typeof row.data === "object" ? row.data : {}
+ return normalizeTournamentStatus(data.tournamentStatus)
+}
+
+function formatTournamentStatusLabel(v){
+ let s = normalizeTournamentStatus(v)
+ if(s === "registration_open") return "Inscrições abertas"
+ if(s === "registration_closed") return "Inscrições encerradas"
+ if(s === "live") return "Em andamento"
+ if(s === "finished") return "Finalizado"
+ return "Rascunho"
+}
+
+function inferTournamentStatusForSave(){
+ if(state && state.gerado) return "live"
+ return "registration_open"
 }
 
 function renderTournamentList(containerId,list,isOwner){
@@ -1948,6 +2112,7 @@ function renderTournamentList(containerId,list,isOwner){
   let activeTag = t.id === activeTournamentId ? " (ativo)" : ""
   let rowIsOwner = isOwner || isTournamentOwnedByAuth(t)
   let meta = extractTournamentMetaFromRow(t)
+  let statusTxt = formatTournamentStatusLabel(extractTournamentStatusFromRow(t))
   let locationParts = [meta.city, meta.state].filter(Boolean)
   let locationText = locationParts.length ? locationParts.join(" / ") : "-"
   let visibilityText = formatTournamentVisibilityLabel(meta.visibility)
@@ -1962,7 +2127,7 @@ function renderTournamentList(containerId,list,isOwner){
   return `
   <div class="tournament-item">
   <div class="tournament-item-title">${escXml(t.name || "Sem nome")}${escXml(activeTag)}</div>
-  <div class="tournament-item-meta">${escXml(roleText)} | Atualizado: ${escXml(formatDateTimeBR(t.updated_at))}</div>
+  <div class="tournament-item-meta">${escXml(roleText)} | ${escXml(statusTxt)} | Atualizado: ${escXml(formatDateTimeBR(t.updated_at))}</div>
   <div class="tournament-item-meta">Cidade/UF: ${escXml(locationText)} | Visibilidade: ${escXml(visibilityText)}</div>
   <div class="tournament-item-meta">Código: ${escXml(t.id)}</div>
   ${linkLine}
@@ -1999,6 +2164,157 @@ function renderDashboard(){
  updateInviteLinkUI()
 }
 
+function getAuthDisplayName(){
+ if(!authUser) return "Jogador"
+ let md = authUser.user_metadata || {}
+ let full = String(md.full_name || md.name || "").trim()
+ if(full) return full
+ let email = String(authUser.email || "").trim()
+ if(!email) return "Jogador"
+ return email.split("@")[0]
+}
+
+function renderHomeView(){
+ let welcome = document.getElementById("homeWelcome")
+ let list = document.getElementById("homeUpcomingList")
+ if(welcome){
+  welcome.textContent = canUseCloudPersistence()
+   ? `Bem-vindo, ${getAuthDisplayName()}. Use o menu para acompanhar eventos e jogos.`
+   : "Faça login para acompanhar seus eventos."
+ }
+ if(!list) return
+ let merged = [...(participatingTournaments || []), ...(createdTournaments || [])]
+ let uniq = []
+ let seen = new Set()
+ merged.forEach(function(t){
+  if(!t || !t.id || seen.has(t.id)) return
+  seen.add(t.id)
+  uniq.push(t)
+ })
+ if(!uniq.length){
+  list.innerHTML = `<div class="tournament-empty">Nenhum evento encontrado. Vá em Eventos para participar ou criar.</div>`
+  return
+ }
+ list.innerHTML = uniq.slice(0,4).map(function(t){
+  let meta = extractTournamentMetaFromRow(t)
+  let localTxt = [meta.city, meta.state].filter(Boolean).join(" / ") || "-"
+  return `<div class="tournament-item">
+   <div class="tournament-item-title">${escXml(t.name || "Sem nome")}</div>
+   <div class="tournament-item-meta">Cidade/UF: ${escXml(localTxt)} | Atualizado: ${escXml(formatDateTimeBR(t.updated_at))}</div>
+   <div class="tournament-item-actions">
+    <button class="primary" onclick="abrirTorneioDashboard('${t.id}','${isTournamentOwnedByAuth(t) ? "owner" : (t.role || "participant")}')">Abrir</button>
+    <button onclick="setAppView('events')">Ver em Eventos</button>
+   </div>
+  </div>`
+ }).join("")
+}
+
+function renderPlacesView(){
+ let box = document.getElementById("placesList")
+ if(!box) return
+ if(!canUseCloudPersistence()){
+  box.innerHTML = `<div class="tournament-empty">Faça login para explorar locais.</div>`
+  return
+ }
+ let rows = Array.isArray(publicSearchTournaments) ? publicSearchTournaments : []
+ if(!rows.length){
+  box.innerHTML = `<div class="tournament-empty">Nenhum local listado. Use "Buscar Locais".</div>`
+  return
+ }
+ let grouped = {}
+ rows.forEach(function(t){
+  let meta = extractTournamentMetaFromRow(t)
+  let city = String(meta.city || "").trim()
+  let st = String(meta.state || "").trim()
+  let key = `${city}__${st}`
+  if(!city && !st) return
+  if(!grouped[key]){
+    grouped[key] = {city:city || "-", state:st || "-", tournaments:[]}
+  }
+  grouped[key].tournaments.push(t)
+ })
+ let items = Object.values(grouped).sort(function(a,b){
+  return `${a.city}-${a.state}`.localeCompare(`${b.city}-${b.state}`)
+ })
+ if(!items.length){
+  box.innerHTML = `<div class="tournament-empty">Nenhum local com cidade/estado informado.</div>`
+  return
+ }
+ box.innerHTML = items.map(function(loc){
+  return `<div class="tournament-item">
+    <div class="tournament-item-title">${escXml(loc.city)} - ${escXml(loc.state)}</div>
+    <div class="tournament-item-meta">${loc.tournaments.length} torneio(s) público(s) neste local</div>
+    <div class="tournament-item-actions">
+      <button onclick="setAppView('events')">Ver Eventos</button>
+    </div>
+  </div>`
+ }).join("")
+}
+
+function renderGamesView(){
+ let box = document.getElementById("myGamesList")
+ if(!box) return
+ if(!canUseCloudPersistence()){
+  box.innerHTML = `<div class="tournament-empty">Faça login para acompanhar seus jogos.</div>`
+  return
+ }
+ let merged = [...(participatingTournaments || []), ...(createdTournaments || [])]
+ let uniq = []
+ let seen = new Set()
+ merged.forEach(function(t){
+  if(!t || !t.id || seen.has(t.id)) return
+  seen.add(t.id)
+  uniq.push(t)
+ })
+ if(!uniq.length){
+  box.innerHTML = `<div class="tournament-empty">Você ainda não está em torneios com jogos.</div>`
+  return
+ }
+ box.innerHTML = uniq.map(function(t){
+  let roleText = isTournamentOwnedByAuth(t) ? "Organizador" : "Participando"
+  return `<div class="tournament-item">
+   <div class="tournament-item-title">${escXml(t.name || "Sem nome")}</div>
+   <div class="tournament-item-meta">${escXml(roleText)} | Atualizado: ${escXml(formatDateTimeBR(t.updated_at))}</div>
+   <div class="tournament-item-actions">
+    <button class="primary" onclick="abrirTorneioDashboard('${t.id}','${isTournamentOwnedByAuth(t) ? "owner" : (t.role || "participant")}')">Ver Partidas</button>
+   </div>
+  </div>`
+ }).join("")
+}
+
+function renderProfileView(){
+ let box = document.getElementById("profileInfo")
+ if(!box) return
+ if(!canUseCloudPersistence()){
+  box.innerHTML = `<div class="tournament-empty">Faça login para ver perfil.</div>`
+  return
+ }
+ let ownerCount = (createdTournaments || []).filter(isTournamentOwnedByAuth).length
+ let partCount = (participatingTournaments || []).filter(function(t){ return !isTournamentOwnedByAuth(t) }).length
+ let email = String((authUser && authUser.email) || "-")
+ let name = getAuthDisplayName()
+ box.innerHTML = `
+ <div class="tournament-item">
+  <div class="tournament-item-title">${escXml(name)}</div>
+  <div class="tournament-item-meta">E-mail: ${escXml(email)}</div>
+  <div class="tournament-item-meta">Organizando: ${ownerCount} | Participando: ${partCount}</div>
+  <div class="tournament-item-actions">
+   <button onclick="setAppView('events')">Ver Eventos</button>
+   <button onclick="setAppView('account')">Conta</button>
+  </div>
+ </div>`
+}
+
+function syncPublicFiltersAndSearch(){
+ let c1 = document.getElementById("filtroCidadePublica")
+ let s1 = document.getElementById("filtroEstadoPublica")
+ let c2 = document.getElementById("filtroCidadePublica2")
+ let s2 = document.getElementById("filtroEstadoPublica2")
+ if(c1 && c2) c1.value = c2.value
+ if(s1 && s2) s1.value = s2.value
+ pesquisarTorneiosPublicos()
+}
+
 async function refreshTournamentDashboard(_autoOpen){
  if(!canUseCloudPersistence()){
   createdTournaments = []
@@ -2016,9 +2332,33 @@ async function refreshTournamentDashboard(_autoOpen){
   createdTournaments = []
   participatingTournaments = []
   publicSearchTournaments = []
+  let rpcEvents = await supabaseClient.rpc("app_my_events")
+  if(!rpcEvents.error && Array.isArray(rpcEvents.data)){
+   let rows = rpcEvents.data
+   createdTournaments = rows
+    .filter(function(x){ return String(x.role || "").toLowerCase() === "owner" || isTournamentOwnedByAuth(x) })
+    .map(function(x){ return Object.assign({role:"owner"}, x) })
+   participatingTournaments = rows
+    .filter(function(x){ return String(x.role || "").toLowerCase() !== "owner" && !isTournamentOwnedByAuth(x) })
+    .map(function(x){ return Object.assign({role:x.role || "participant"}, x) })
+   let resolvedRoleRpc = resolveActiveTournamentRole()
+   if(resolvedRoleRpc){
+    activeTournamentRole = resolvedRoleRpc
+    activeTournamentOwnerId = (resolvedRoleRpc === "owner" && authUser) ? authUser.id : ""
+   }else{
+    activeTournamentId = ""
+    activeTournamentRole = ""
+    activeTournamentOwnerId = ""
+    tournamentRegistrations = []
+    appView = "home"
+    applyLoadedState(createInitialState())
+   }
+   render()
+   return
+  }
   let createdRes = await supabaseClient
    .from(SUPABASE_TOURNAMENTS_TABLE)
-   .select("id,name,owner_id,data,created_at,updated_at")
+   .select("id,name,owner_id,city,state,visibility,status,data,created_at,updated_at")
    .eq("owner_id", authUser.id)
    .order("updated_at", {ascending:false})
   if(createdRes.error){
@@ -2047,7 +2387,7 @@ async function refreshTournamentDashboard(_autoOpen){
    if(ids.length){
     let ptRes = await supabaseClient
      .from(SUPABASE_TOURNAMENTS_TABLE)
-     .select("id,name,owner_id,data,created_at,updated_at")
+     .select("id,name,owner_id,city,state,visibility,status,data,created_at,updated_at")
      .in("id", ids)
     if(ptRes.error){
      setDashboardStatus(`Erro ao carregar detalhes dos torneios participando: ${ptRes.error.message || "erro desconhecido"}`, true)
@@ -2074,7 +2414,7 @@ async function refreshTournamentDashboard(_autoOpen){
   activeTournamentRole = ""
   activeTournamentOwnerId = ""
   tournamentRegistrations = []
-  appView = "dashboard"
+  appView = "home"
   applyLoadedState(createInitialState())
  }
   render()
@@ -2089,7 +2429,7 @@ async function openTournamentById(tournamentId,roleHint){
  try{
   let res = await supabaseClient
    .from(SUPABASE_TOURNAMENTS_TABLE)
-   .select("id,name,owner_id,data,updated_at")
+   .select("id,name,owner_id,city,state,visibility,status,data,updated_at")
    .eq("id", tournamentId)
    .maybeSingle()
   if(res.error){
@@ -2108,6 +2448,13 @@ async function openTournamentById(tournamentId,roleHint){
   applyingCloudState = true
   applyLoadedState(res.data.data || createInitialState())
   applyingCloudState = false
+  state.tournamentMeta = extractTournamentMetaFromRow(res.data)
+  state.discovery = {
+   city:state.tournamentMeta.city,
+   state:state.tournamentMeta.state,
+   visibility:state.tournamentMeta.visibility
+  }
+  state.tournamentStatus = extractTournamentStatusFromRow(res.data)
   if(canEditCurrentTournament()){
    wizard.enabled = !(state.gerado || state.assistenteFinalizado)
    wizard.step = 1
@@ -2185,6 +2532,10 @@ async function criarNovoTorneio(){
   let payload = {
    owner_id:authUser.id,
    name:nome,
+   city:tournamentMeta.city || null,
+   state:tournamentMeta.state || null,
+   visibility:tournamentMeta.visibility,
+   status:"draft",
    data:data,
    updated_at:new Date().toISOString()
   }
@@ -2232,7 +2583,7 @@ async function pesquisarTorneioPorUUID(){
  try{
   let res = await supabaseClient
    .from(SUPABASE_TOURNAMENTS_TABLE)
-   .select("id,name,owner_id,data,updated_at")
+   .select("id,name,owner_id,city,state,visibility,status,data,updated_at")
    .eq("id", code)
    .maybeSingle()
   if(res.error){
@@ -2266,6 +2617,7 @@ function renderPublicTournamentSearchList(){
  }
  box.innerHTML = publicSearchTournaments.map(function(t){
   let meta = extractTournamentMetaFromRow(t)
+  let statusTxt = formatTournamentStatusLabel(extractTournamentStatusFromRow(t))
   let locationParts = [meta.city, meta.state].filter(Boolean)
   let locationText = locationParts.length ? locationParts.join(" / ") : "-"
   let alreadyIn = !!createdTournaments.find(x=>x.id===t.id) || !!participatingTournaments.find(x=>x.id===t.id)
@@ -2275,7 +2627,7 @@ function renderPublicTournamentSearchList(){
   return `
   <div class="tournament-item">
    <div class="tournament-item-title">${escXml(t.name || "Sem nome")}</div>
-   <div class="tournament-item-meta">${escXml(roleText)} | Atualizado: ${escXml(formatDateTimeBR(t.updated_at))}</div>
+   <div class="tournament-item-meta">${escXml(roleText)} | ${escXml(statusTxt)} | Atualizado: ${escXml(formatDateTimeBR(t.updated_at))}</div>
    <div class="tournament-item-meta">Cidade/UF: ${escXml(locationText)} | Visibilidade: Público</div>
    <div class="tournament-item-meta">Código: ${escXml(t.id)}</div>
    <div class="tournament-item-actions">
@@ -2303,11 +2655,31 @@ async function pesquisarTorneiosPublicos(){
  let cityFilter = normalizeTextToken(cityInput ? cityInput.value : "").toLowerCase()
  let stateFilter = normalizeTextToken(stateInput ? stateInput.value : "").toUpperCase().replace(/[^A-Z]/g,"").slice(0,2)
  try{
-  let res = await supabaseClient
+  let rpcRes = await supabaseClient.rpc("app_search_public_tournaments", {
+   p_city: cityFilter || null,
+   p_state: stateFilter || null,
+   p_limit: 200,
+   p_offset: 0
+  })
+  if(!rpcRes.error && Array.isArray(rpcRes.data)){
+   publicSearchTournaments = rpcRes.data
+   renderPublicTournamentSearchList()
+   setDashboardStatus(`${publicSearchTournaments.length} torneio(s) público(s) encontrado(s).`, false)
+   return
+  }
+  let query = supabaseClient
    .from(SUPABASE_TOURNAMENTS_TABLE)
-   .select("id,name,owner_id,data,updated_at")
+   .select("id,name,owner_id,city,state,visibility,status,data,updated_at")
+   .eq("visibility", "public")
    .order("updated_at", {ascending:false})
    .limit(200)
+  if(cityFilter){
+   query = query.ilike("city", `%${cityFilter}%`)
+  }
+  if(stateFilter){
+   query = query.eq("state", stateFilter)
+  }
+  let res = await query
   if(res.error){
    setDashboardStatus(`Falha ao buscar torneios públicos: ${res.error.message || "erro desconhecido"}`, true)
    publicSearchTournaments = []
@@ -2317,10 +2689,7 @@ async function pesquisarTorneiosPublicos(){
   let all = Array.isArray(res.data) ? res.data : []
   publicSearchTournaments = all.filter(function(t){
    let meta = extractTournamentMetaFromRow(t)
-   if(normalizeTournamentVisibility(meta.visibility) !== "public") return false
-   if(cityFilter && String(meta.city || "").toLowerCase().indexOf(cityFilter) === -1) return false
-   if(stateFilter && String(meta.state || "").toUpperCase() !== stateFilter) return false
-   return true
+   return normalizeTournamentVisibility(meta.visibility) === "public"
   })
   renderPublicTournamentSearchList()
   setDashboardStatus(`${publicSearchTournaments.length} torneio(s) público(s) encontrado(s).`, false)
@@ -2804,7 +3173,7 @@ async function initializeAuthSession(){
  if(authUser){
   activeTournamentRole = ""
   activeTournamentOwnerId = ""
-  appView = "dashboard"
+  appView = "home"
   await refreshTournamentDashboard(false)
   await handleInviteJoinIfPresent()
  }else{
@@ -2825,7 +3194,7 @@ async function initializeAuthSession(){
   if(authUser){
    activeTournamentRole = ""
    activeTournamentOwnerId = ""
-   appView = "dashboard"
+   appView = "home"
    await refreshTournamentDashboard(false)
    await handleInviteJoinIfPresent()
   }else{
@@ -2870,9 +3239,20 @@ async function flushCloudSave(){
  try{
   syncToActiveClass()
   let payload = JSON.parse(JSON.stringify(state))
+  payload.tournamentMeta = normalizeTournamentMeta(payload.tournamentMeta)
+  payload.discovery = {
+   city:payload.tournamentMeta.city,
+   state:payload.tournamentMeta.state,
+   visibility:payload.tournamentMeta.visibility
+  }
+  payload.tournamentStatus = inferTournamentStatusForSave()
   let tournamentName = normalizeTournamentName(state.nomeTorneio || "Novo Torneio")
   let updatePayload = {
    name:tournamentName,
+   city:payload.tournamentMeta.city || null,
+   state:payload.tournamentMeta.state || null,
+   visibility:payload.tournamentMeta.visibility,
+   status:payload.tournamentStatus,
    data:payload,
    updated_at:new Date().toISOString()
   }
@@ -2885,7 +3265,15 @@ async function flushCloudSave(){
    updateCloudSaveStatus(`Falha ao salvar no banco: ${res.error.message || "erro desconhecido"}`, true)
    return
   }
-  createdTournaments = createdTournaments.map(t=>t.id===activeTournamentId ? Object.assign({}, t, {name:tournamentName, updated_at:updatePayload.updated_at}) : t)
+  createdTournaments = createdTournaments.map(t=>t.id===activeTournamentId ? Object.assign({}, t, {
+   name:tournamentName,
+   city:updatePayload.city,
+   state:updatePayload.state,
+   visibility:updatePayload.visibility,
+   status:updatePayload.status,
+   data:payload,
+   updated_at:updatePayload.updated_at
+  }) : t)
   lastCloudSavedAt = new Date().toLocaleString("pt-BR")
   updateAuthStatusUI()
   renderDashboard()
@@ -3280,6 +3668,7 @@ function applyLoadedState(parsed){
  state.linkGrupo = normalizeGroupLink(state.linkGrupo)
  state.registrationMode = normalizeRegistrationMode(state.registrationMode)
  state.tournamentMeta = normalizeTournamentMeta(state.tournamentMeta)
+ state.tournamentStatus = normalizeTournamentStatus(state.tournamentStatus)
  state.assistenteFinalizado = !!state.assistenteFinalizado
  state.agendaConfig = normalizeAgendaConfig(state.agendaConfig)
  state.agenda = normalizeAgenda(state.agenda)
@@ -3676,7 +4065,16 @@ function updatePageTitle(){
  let nome = (state.nomeTorneio || "").trim()
  let t = document.getElementById("pageTitle")
  if(!t) return
- let area = appView === "dashboard" ? "Central do Jogador" : (appView === "tournament" ? "Painel do Torneio" : "Conta")
+ let areaMap = {
+  home:"Início",
+  events:"Eventos",
+  tournament:"Painel do Torneio",
+  places:"Locais",
+  games:"Meus Jogos",
+  profile:"Perfil",
+  account:"Conta"
+ }
+ let area = areaMap[appView] || "Eventos"
  let core = nome ? `${base} - ${nome}` : base
  t.textContent = `${core} | ${area}`
 }
@@ -6834,6 +7232,10 @@ function applyParticipantModeHardLock(){
 
 function render(){
  renderDashboard()
+ renderHomeView()
+ renderPlacesView()
+ renderGamesView()
+ renderProfileView()
  configToUI()
  agendaConfigToUI()
  updatePageTitle()
