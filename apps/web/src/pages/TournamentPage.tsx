@@ -263,13 +263,27 @@ async function downloadSvgAsPng(svg: string, width: number, height: number, file
   }
 }
 
-function buildClassVisualSvg(categoryName: string, className: string, data: ClassData): {
+function buildClassVisualSvg(
+  categoryName: string,
+  className: string,
+  data: ClassData,
+  classAssignments: AgendaAssignment[]
+): {
   svg: string;
   width: number;
   height: number;
 } {
+  function scheduleInfo(roundName: string, matchIndex: number, stageHints: string[]): string {
+    const label = `${roundName} #${matchIndex + 1}`;
+    const found = classAssignments.find(
+      (a) => a.matchLabel === label && (stageHints.length === 0 || stageHints.includes(a.stage))
+    );
+    if (!found) return "";
+    return `${found.data} ${found.hora} | ${found.quadra}`;
+  }
+
   const pad = 24;
-  const width = 1400;
+  const width = 1600;
   let y = 30;
   const out: string[] = [];
   out.push(
@@ -319,6 +333,38 @@ function buildClassVisualSvg(categoryName: string, className: string, data: Clas
       }
       y += 10;
     });
+
+    y += 8;
+    out.push(
+      `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="18" fill="#0f172a" font-weight="700">Jogos dos Grupos (com horario/quadra)</text>`
+    );
+    y += 20;
+    (data.grupos || []).forEach((g) => {
+      out.push(
+        `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="14" fill="#111827" font-weight="700">${escXml(
+          g.name
+        )}</text>`
+      );
+      y += 16;
+      (g.matches || []).forEach((m, mi) => {
+        const when = scheduleInfo(g.name, mi, ["Grupos"]);
+        const score = m.done ? `${m.s1} x ${m.s2}` : "- x -";
+        const line = `${m.a} x ${m.b} | ${score}${when ? ` | ${when}` : ""}`;
+        out.push(
+          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
+            line
+          )}</text>`
+        );
+        y += 14;
+      });
+      if (!(g.matches || []).length) {
+        out.push(
+          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Sem partidas</text>`
+        );
+        y += 14;
+      }
+      y += 8;
+    });
   }
 
   const rounds = data.knockout?.rounds || [];
@@ -328,39 +374,77 @@ function buildClassVisualSvg(categoryName: string, className: string, data: Clas
       `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="18" fill="#0f172a" font-weight="700">Chave Mata-mata</text>`
     );
     y += 12;
-    const colWidth = 250;
-    const boxH = 56;
+    const colWidth = 320;
+    const boxW = 280;
+    const boxH = 74;
     const startX = pad;
+    const startY = y + 16;
+    const baseStep = 92;
+    const centers: Array<Array<{ x: number; y: number }>> = [];
+
     rounds.forEach((round, ri) => {
       const x = startX + ri * colWidth;
+      const step = baseStep * Math.pow(2, ri);
+      if (!centers[ri]) centers[ri] = [];
       out.push(
-        `<text x="${x}" y="${y + 14}" font-family="Arial, sans-serif" font-size="14" fill="#111827" font-weight="700">${escXml(
+        `<text x="${x}" y="${startY - 8}" font-family="Arial, sans-serif" font-size="14" fill="#111827" font-weight="700">${escXml(
           round.name
         )}</text>`
       );
       round.matches.forEach((m, mi) => {
-        const boxY = y + 22 + mi * (boxH + 18);
-        out.push(`<rect x="${x}" y="${boxY}" width="220" height="${boxH}" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>`);
+        const boxY = startY + mi * step + step / 2 - boxH / 2;
+        centers[ri]?.push({ x: x + boxW, y: boxY + boxH / 2 });
+        out.push(`<rect x="${x}" y="${boxY}" width="${boxW}" height="${boxH}" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>`);
         out.push(
-          `<text x="${x + 10}" y="${boxY + 20}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(
+          `<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(
             m.a || "A definir"
           )}</text>`
         );
         out.push(
-          `<text x="${x + 10}" y="${boxY + 40}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(
+          `<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(
             m.b || "A definir"
           )}</text>`
         );
         const score = m.done ? `${m.s1} x ${m.s2}` : "- x -";
+        const stageHints = ri === rounds.length - 1 || ri === rounds.length - 2 ? ["Finais", "Mata-mata"] : ["Finais", "Mata-mata"];
+        const when = scheduleInfo(round.name, mi, stageHints);
         out.push(
-          `<text x="${x + 170}" y="${boxY + 31}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
+          `<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
             score
+          )}</text>`
+        );
+        out.push(
+          `<text x="${x + 10}" y="${boxY + 54}" font-family="Arial, sans-serif" font-size="11" fill="#64748b">${escXml(
+            when || "Horario/quadra: a definir"
           )}</text>`
         );
       });
     });
-    const maxMatches = Math.max(...rounds.map((r) => r.matches.length), 0);
-    y += 22 + maxMatches * (boxH + 18) + 16;
+
+    for (let ri = 0; ri < rounds.length - 1; ri += 1) {
+      const x1 = startX + ri * colWidth + boxW;
+      const x2 = startX + (ri + 1) * colWidth;
+      const midX = x1 + 18;
+      const leftCenters = centers[ri] || [];
+      const rightCenters = centers[ri + 1] || [];
+      rightCenters.forEach((target, mi) => {
+        const a = leftCenters[mi * 2];
+        const b = leftCenters[mi * 2 + 1];
+        if (!a || !b) return;
+        out.push(`<line x1="${x1}" y1="${a.y}" x2="${midX}" y2="${a.y}" stroke="#94a3b8" stroke-width="1.4"/>`);
+        out.push(`<line x1="${x1}" y1="${b.y}" x2="${midX}" y2="${b.y}" stroke="#94a3b8" stroke-width="1.4"/>`);
+        out.push(`<line x1="${midX}" y1="${a.y}" x2="${midX}" y2="${b.y}" stroke="#94a3b8" stroke-width="1.4"/>`);
+        out.push(`<line x1="${midX}" y1="${target.y}" x2="${x2}" y2="${target.y}" stroke="#94a3b8" stroke-width="1.4"/>`);
+      });
+    }
+
+    const maxBottom = rounds.reduce((acc, round, ri) => {
+      const step = baseStep * Math.pow(2, ri);
+      const lastIndex = Math.max(0, round.matches.length - 1);
+      const boxY = startY + lastIndex * step + step / 2 - boxH / 2;
+      return Math.max(acc, boxY + boxH);
+    }, startY);
+    y = maxBottom + 20;
   }
 
   y += 12;
@@ -1416,7 +1500,15 @@ export function TournamentPage({ user, profile }: Props) {
       return;
     }
     try {
-      const visual = buildClassVisualSvg(activeClass.categoryName, activeClass.className, activeClass.data);
+      const classAssignments = (agenda.assignments || []).filter(
+        (a) => a.categoria === activeClass.categoryName && a.classe === activeClass.className
+      );
+      const visual = buildClassVisualSvg(
+        activeClass.categoryName,
+        activeClass.className,
+        activeClass.data,
+        classAssignments
+      );
       const safeName = `${activeClass.categoryName}-${activeClass.className}`
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -1434,11 +1526,19 @@ export function TournamentPage({ user, profile }: Props) {
       return;
     }
     try {
-      const visual = buildClassVisualSvg(activeClass.categoryName, activeClass.className, {
-        ...activeClass.data,
-        grupos: [],
-        tabelaPorGrupo: {},
-      });
+      const classAssignments = (agenda.assignments || []).filter(
+        (a) => a.categoria === activeClass.categoryName && a.classe === activeClass.className
+      );
+      const visual = buildClassVisualSvg(
+        activeClass.categoryName,
+        activeClass.className,
+        {
+          ...activeClass.data,
+          grupos: [],
+          tabelaPorGrupo: {},
+        },
+        classAssignments
+      );
       const safeName = `${activeClass.categoryName}-${activeClass.className}`
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -1727,6 +1827,65 @@ export function TournamentPage({ user, profile }: Props) {
           {tab === "jogos" ? (
             <section className="card">
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
+
+              {tournament?.role === "owner" ? (
+                <div
+                  style={{
+                    border: "1px solid var(--color-border)",
+                    borderRadius: 10,
+                    padding: 10,
+                    marginBottom: 12,
+                  }}
+                >
+                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>Operacoes e exportacoes</h3>
+                  <div className="cluster" style={{ marginBottom: 8 }}>
+                    <button className="primary" onClick={() => void generateAllClasses()} disabled={saving}>
+                      Gerar campeonatos
+                    </button>
+                    <button onClick={saveAllChanges} disabled={saving}>
+                      Salvar tudo
+                    </button>
+                    <button onClick={resetOnlyDraw} disabled={saving}>
+                      Resetar sorteio/partidas
+                    </button>
+                    <button className="danger" onClick={resetAllTournament} disabled={saving}>
+                      Reset total
+                    </button>
+                  </div>
+                  <div className="cluster">
+                    <button onClick={exportAgendaByCourt} disabled={saving}>
+                      Exportar lista de quadras
+                    </button>
+                    <button onClick={() => void exportActiveClassPng()} disabled={saving}>
+                      Exportar chave PNG
+                    </button>
+                    <button onClick={() => void exportActiveKnockoutPng()} disabled={saving}>
+                      Exportar mata-mata PNG
+                    </button>
+                    <button onClick={exportBackupJson} disabled={saving}>
+                      Backup
+                    </button>
+                    <button onClick={sendWhatsAppSummary} disabled={saving}>
+                      Enviar no WhatsApp
+                    </button>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <span className="subtle">Restore:</span>
+                      <input
+                        type="file"
+                        accept=".json,application/json"
+                        onChange={(e) => {
+                          const f = e.currentTarget.files?.[0] ?? null;
+                          void restoreBackupJson(f);
+                          e.currentTarget.value = "";
+                        }}
+                      />
+                    </label>
+                  </div>
+                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
+                    Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
+                  </p>
+                </div>
+              ) : null}
 
               {activeClass?.data.grupos.map((g, gi) => (
                 <div key={`${activeClass.key}:g:${g.name}`} style={{ marginBottom: 14 }}>
@@ -2150,63 +2309,6 @@ export function TournamentPage({ user, profile }: Props) {
                   ) : null}
                 </div>
               ) : null}
-
-              <div
-                style={{
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginBottom: 12,
-                }}
-              >
-                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Operacoes e exportacoes</h3>
-                <div className="cluster" style={{ marginBottom: 8 }}>
-                  <button className="primary" onClick={() => void generateAllClasses()} disabled={saving}>
-                    Gerar campeonatos
-                  </button>
-                  <button onClick={saveAllChanges} disabled={saving}>
-                    Salvar tudo
-                  </button>
-                  <button onClick={resetOnlyDraw} disabled={saving}>
-                    Resetar sorteio/partidas
-                  </button>
-                  <button className="danger" onClick={resetAllTournament} disabled={saving}>
-                    Reset total
-                  </button>
-                </div>
-                <div className="cluster">
-                  <button onClick={exportAgendaByCourt} disabled={saving}>
-                    Exportar lista de quadras
-                  </button>
-                  <button onClick={() => void exportActiveClassPng()} disabled={saving}>
-                    Exportar chave PNG
-                  </button>
-                  <button onClick={() => void exportActiveKnockoutPng()} disabled={saving}>
-                    Exportar mata-mata PNG
-                  </button>
-                  <button onClick={exportBackupJson} disabled={saving}>
-                    Backup
-                  </button>
-                  <button onClick={sendWhatsAppSummary} disabled={saving}>
-                    Enviar no WhatsApp
-                  </button>
-                  <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                    <span className="subtle">Restore:</span>
-                    <input
-                      type="file"
-                      accept=".json,application/json"
-                      onChange={(e) => {
-                        const f = e.currentTarget.files?.[0] ?? null;
-                        void restoreBackupJson(f);
-                        e.currentTarget.value = "";
-                      }}
-                    />
-                  </label>
-                </div>
-                <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
-                  Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
-                </p>
-              </div>
 
               <div
                 style={{
