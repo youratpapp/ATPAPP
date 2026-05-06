@@ -37,6 +37,11 @@ function txt(v: unknown): string {
   return typeof v === "string" ? v : "";
 }
 
+function txtOpt(v: unknown): string | undefined {
+  const t = txt(v).trim();
+  return t ? t : undefined;
+}
+
 function bool(v: unknown): boolean {
   return Boolean(v);
 }
@@ -109,7 +114,14 @@ export function normalizeClassData(raw: unknown): ClassData {
   const participantes = asArray(data.participantes)
     .map((p) => asRecord(p))
     .filter((p): p is AnyRecord => !!p)
-    .map((p) => ({ nome: txt(p.nome) }))
+    .map((p) => ({
+      nome: txt(p.nome),
+      grupo: txtOpt(p.grupo) ?? null,
+      telefone: txtOpt(p.telefone),
+      telefone2: txtOpt(p.telefone2),
+      convitePendente: bool(p.convitePendente),
+      conviteEnviado: bool(p.conviteEnviado),
+    }))
     .filter((p) => p.nome);
 
   const entradasRaw = asArray(data.entradas).map((x) => txt(x)).filter(Boolean);

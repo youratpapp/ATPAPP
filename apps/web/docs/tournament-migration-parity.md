@@ -56,6 +56,8 @@ Portar a logica completa do `backup/index.html` para a stack atual (`React + Typ
 - Organizacao no React:
   - wizard funcional de setup (etapas e validacoes)
   - editor completo de categorias/classes/participantes (CRUD)
+  - cadastro de atletas um a um com telefone/grupo por classe
+  - importacao por lista (linhas com `;`, incluindo criacao automatica de categoria/classe)
   - configuracao de classe (formato, tipo, grupos, classificados, modo de duplas)
   - geracao de classe no fluxo React/TS
   - geracao em lote de campeonatos com validacao de agenda
@@ -69,6 +71,10 @@ Portar a logica completa do `backup/index.html` para a stack atual (`React + Typ
   - backup/restore em JSON
   - envio de resumo estruturado para WhatsApp
   - salvamento unificado de toda configuracao (categorias + agenda)
+- Autoinscricao por link migrada:
+  - geracao/copia de link por classe para o proprio atleta se inscrever
+  - nova rota `/inscricao/:tournamentId` para solicitar inscricao
+  - painel no organizador para aprovar/rejeitar solicitacoes pendentes
 - Navegacao de eventos corrigida para fluxo SPA (`navigate`) sem reload de hash.
 - Botao de fallback "Modo completo" removido da pagina principal de torneio.
 

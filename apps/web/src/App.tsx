@@ -12,6 +12,7 @@ import { PlacesPage } from "./pages/PlacesPage";
 import { RankingPage } from "./pages/RankingPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { TournamentPage } from "./pages/TournamentPage";
+import { TournamentRegistrationPage } from "./pages/TournamentRegistrationPage";
 import "./App.css";
 
 const BOOT_TIMEOUT_MS = 8000;
@@ -158,6 +159,7 @@ function AppInner() {
         element={<ProfilePage user={authUser} profile={profile} onProfileChange={onProfileChange} />}
       />
       <Route path="/eventos/:tournamentId" element={<TournamentPage user={authUser} profile={profile} />} />
+      <Route path="/inscricao/:tournamentId" element={<TournamentRegistrationPage user={authUser} profile={profile} />} />
       <Route path="/join/:tournamentId" element={<JoinFromLinkPage user={authUser} />} />
       <Route path="/t/:tournamentId" element={<LegacyRedirectPage />} />
       <Route path="/dashboard" element={<Navigate to="/eventos" replace />} />

@@ -3,8 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
-import { loadTournamentDetails, updateTournamentDetails } from "../lib/tournaments";
-import type { Profile, TournamentDetails } from "../lib/types";
+import {
+  loadTournamentDetails,
+  loadTournamentRegistrations,
+  updateTournamentDetails,
+  updateTournamentRegistrationStatus,
+} from "../lib/tournaments";
+import type { Profile, TournamentDetails, TournamentRegistration } from "../lib/types";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
 import {
   buildWizardSetupSummary,
@@ -78,6 +83,18 @@ function asText(value: unknown): string {
 function uid(prefix: string): string {
   const rnd = Math.random().toString(36).slice(2, 10);
   return `${prefix}-${Date.now().toString(36)}-${rnd}`;
+}
+
+function normalizePhone(value: string): string {
+  return String(value || "").replace(/[^\d+]/g, "").trim();
+}
+
+function isFixedDoublesConfig(config: ClassData["config"]): boolean {
+  return config.tipo === "duplas" && config.modoDuplas === "manual";
+}
+
+function needsGroupABConfig(config: ClassData["config"]): boolean {
+  return config.tipo === "duplas" && config.modoDuplas === "sorteio" && config.sorteioDuplas === "grupos_ab";
 }
 
 function parseDraftCategories(dataRaw: Record<string, unknown>): DraftCategory[] {
@@ -334,6 +351,12 @@ export function TournamentPage({ user, profile }: Props) {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newClassName, setNewClassName] = useState("");
   const [newParticipantName, setNewParticipantName] = useState("");
+  const [newParticipantPhone, setNewParticipantPhone] = useState("");
+  const [newParticipantPhone2, setNewParticipantPhone2] = useState("");
+  const [newParticipantGroup, setNewParticipantGroup] = useState<"A" | "B">("A");
+  const [bulkImportText, setBulkImportText] = useState("");
+  const [groupLink, setGroupLink] = useState("");
+  const [registrations, setRegistrations] = useState<TournamentRegistration[]>([]);
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -403,10 +426,14 @@ export function TournamentPage({ user, profile }: Props) {
         setActiveDraftCategoryId((prev) => prev || draft[0]?.id || "");
         setActiveDraftClassId((prev) => prev || draft[0]?.classes[0]?.id || "");
         setDraftDirty(false);
+        setGroupLink(asText(raw.linkGrupo));
         setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
         setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
         setAgendaDirty(false);
         setWizardStep(1);
+        const regs = await loadTournamentRegistrations(user, details.id, details.role);
+        if (!alive) return;
+        setRegistrations(regs);
         setFeedback(null);
       } catch (err) {
         if (!alive) return;
@@ -459,8 +486,11 @@ export function TournamentPage({ user, profile }: Props) {
         return draft[0]?.classes[0]?.id || "";
       });
       setDraftDirty(false);
+      setGroupLink(asText(raw.linkGrupo));
       setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
       setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
+      const regs = await loadTournamentRegistrations(user, updated.id, updated.role);
+      setRegistrations(regs);
       setFeedback({ kind: "success", text: successText });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar alteracoes." });
@@ -737,8 +767,28 @@ export function TournamentPage({ user, profile }: Props) {
   };
 
   const addParticipant = () => {
-    const player = newParticipantName.trim();
-    if (!player || !activeDraftCategory || !activeDraftClass) return;
+    if (!activeDraftCategory || !activeDraftClass) return;
+    const cfg = activeDraftClass.data.config;
+    let player = newParticipantName.trim().replace(/\s+/g, " ");
+    const phone = normalizePhone(newParticipantPhone);
+    const phone2 = normalizePhone(newParticipantPhone2);
+    const group = needsGroupABConfig(cfg) ? newParticipantGroup : null;
+
+    if (isFixedDoublesConfig(cfg)) {
+      const parts = player.split("/").map((p) => p.trim()).filter(Boolean);
+      if (parts.length !== 2) {
+        setFeedback({ kind: "error", text: "Na dupla fixa, informe: Nome A / Nome B." });
+        return;
+      }
+      player = `${parts[0]} / ${parts[1]}`;
+      if (!phone || !phone2) {
+        setFeedback({ kind: "error", text: "Na dupla fixa, informe os dois telefones." });
+        return;
+      }
+    } else if (!player) {
+      return;
+    }
+
     const names = activeDraftClass.data.participantes.map((p) => p.nome.toLowerCase());
     if (names.includes(player.toLowerCase())) {
       setFeedback({ kind: "error", text: "Participante ja cadastrado nesta classe." });
@@ -751,7 +801,17 @@ export function TournamentPage({ user, profile }: Props) {
           ...cat,
           classes: cat.classes.map((cls) => {
             if (cls.id !== activeDraftClass.id) return cls;
-            const participantes = [...cls.data.participantes, { nome: player }];
+            const participantes = [
+              ...cls.data.participantes,
+              {
+                nome: player,
+                grupo: group,
+                telefone: phone || undefined,
+                telefone2: phone2 || undefined,
+                convitePendente: false,
+                conviteEnviado: false,
+              },
+            ];
             return {
               ...cls,
               data: normalizeClassData({
@@ -769,6 +829,8 @@ export function TournamentPage({ user, profile }: Props) {
       })
     );
     setNewParticipantName("");
+    setNewParticipantPhone("");
+    setNewParticipantPhone2("");
     setFeedback(null);
   };
 
@@ -798,6 +860,218 @@ export function TournamentPage({ user, profile }: Props) {
         };
       })
     );
+  };
+
+  const buildDefaultClassData = (): ClassData =>
+    gerarClasseData({
+      config: {
+        tipo: "duplas",
+        formato: "grupos",
+        modoDuplas: "sorteio",
+        sorteioDuplas: "grupos_ab",
+        numGrupos: 2,
+        classificadosPorGrupo: 2,
+      },
+      participantes: [],
+      entradas: [],
+    });
+
+  const importParticipantsByList = () => {
+    const text = bulkImportText.trim();
+    if (!text) return;
+    const lines = text.split(/\r?\n/);
+
+    let added = 0;
+    let duplicated = 0;
+    let ignored = 0;
+    let createdCategories = 0;
+    let createdClasses = 0;
+
+    const nextDraft = structuredClone(draftCategories);
+
+    function ensureTarget(catName: string, clsName: string): DraftClass | null {
+      const cName = catName.trim();
+      const kName = clsName.trim();
+      if (!cName || !kName) return null;
+      let cat = nextDraft.find((c) => c.nome.toLowerCase() === cName.toLowerCase());
+      if (!cat) {
+        cat = { id: uid("cat"), nome: cName, classes: [] };
+        nextDraft.push(cat);
+        createdCategories += 1;
+      }
+      let cls = cat.classes.find((c) => c.nome.toLowerCase() === kName.toLowerCase());
+      if (!cls) {
+        cls = { id: uid("cls"), nome: kName, data: normalizeClassData(buildDefaultClassData()) };
+        cat.classes.push(cls);
+        createdClasses += 1;
+      }
+      return cls;
+    }
+
+    lines.forEach((line) => {
+      const raw = line.trim();
+      if (!raw) return;
+
+      if (!raw.includes(";")) {
+        if (!activeDraftClass || !activeDraftCategory) {
+          ignored += 1;
+          return;
+        }
+        const cfg = activeDraftClass.data.config;
+        const player = raw.replace(/\s+/g, " ");
+        if (!player) {
+          ignored += 1;
+          return;
+        }
+        const exists = activeDraftClass.data.participantes.some((p) => p.nome.toLowerCase() === player.toLowerCase());
+        if (exists) {
+          duplicated += 1;
+          return;
+        }
+        const target = nextDraft
+          .find((c) => c.id === activeDraftCategory.id)
+          ?.classes.find((c) => c.id === activeDraftClass.id);
+        if (!target) {
+          ignored += 1;
+          return;
+        }
+        target.data.participantes.push({
+          nome: player,
+          grupo: needsGroupABConfig(cfg) ? newParticipantGroup : null,
+          telefone: undefined,
+          telefone2: undefined,
+          convitePendente: false,
+          conviteEnviado: false,
+        });
+        target.data = normalizeClassData({
+          ...target.data,
+          participantes: target.data.participantes,
+          entradas: target.data.participantes.map((p) => p.nome),
+          grupos: [],
+          knockout: null,
+          tabelaPorGrupo: {},
+          gerado: false,
+        });
+        added += 1;
+        return;
+      }
+
+      const p = raw.split(";").map((x) => x.trim());
+
+      // Nome;Telefone;Categoria;Classe;A/B(optional)
+      if (p.length >= 4 && p.length < 6) {
+        const nome = p[0]?.replace(/\s+/g, " ") || "";
+        const telefone = normalizePhone(p[1] || "");
+        const catNome = p[2] || "";
+        const clsNome = p[3] || "";
+        const grupo = p[4] ? String(p[4]).toUpperCase() : "";
+        if (!nome || !catNome || !clsNome) {
+          ignored += 1;
+          return;
+        }
+        const target = ensureTarget(catNome, clsNome);
+        if (!target) {
+          ignored += 1;
+          return;
+        }
+        const cfg = target.data.config;
+        if (needsGroupABConfig(cfg) && grupo !== "A" && grupo !== "B") {
+          ignored += 1;
+          return;
+        }
+        if (target.data.participantes.some((x) => x.nome.toLowerCase() === nome.toLowerCase())) {
+          duplicated += 1;
+          return;
+        }
+        target.data.participantes.push({
+          nome,
+          grupo: needsGroupABConfig(cfg) ? (grupo as "A" | "B") : null,
+          telefone: telefone || undefined,
+          telefone2: undefined,
+          convitePendente: false,
+          conviteEnviado: false,
+        });
+        target.data = normalizeClassData({
+          ...target.data,
+          participantes: target.data.participantes,
+          entradas: target.data.participantes.map((x) => x.nome),
+          grupos: [],
+          knockout: null,
+          tabelaPorGrupo: {},
+          gerado: false,
+        });
+        added += 1;
+        return;
+      }
+
+      // NomeA;NomeB;TelefoneA;TelefoneB;Categoria;Classe
+      if (p.length >= 6) {
+        const nomeA = p[0]?.replace(/\s+/g, " ") || "";
+        const nomeB = p[1]?.replace(/\s+/g, " ") || "";
+        const nome = `${nomeA} / ${nomeB}`.trim();
+        const telA = normalizePhone(p[2] || "");
+        const telB = normalizePhone(p[3] || "");
+        const catNome = p[4] || "";
+        const clsNome = p[5] || "";
+        if (!nomeA || !nomeB || !catNome || !clsNome) {
+          ignored += 1;
+          return;
+        }
+        const target = ensureTarget(catNome, clsNome);
+        if (!target) {
+          ignored += 1;
+          return;
+        }
+        const cfg = target.data.config;
+        if (!isFixedDoublesConfig(cfg)) {
+          ignored += 1;
+          return;
+        }
+        if (!telA || !telB) {
+          ignored += 1;
+          return;
+        }
+        if (target.data.participantes.some((x) => x.nome.toLowerCase() === nome.toLowerCase())) {
+          duplicated += 1;
+          return;
+        }
+        target.data.participantes.push({
+          nome,
+          grupo: null,
+          telefone: telA,
+          telefone2: telB,
+          convitePendente: false,
+          conviteEnviado: false,
+        });
+        target.data = normalizeClassData({
+          ...target.data,
+          participantes: target.data.participantes,
+          entradas: target.data.participantes.map((x) => x.nome),
+          grupos: [],
+          knockout: null,
+          tabelaPorGrupo: {},
+          gerado: false,
+        });
+        added += 1;
+        return;
+      }
+
+      ignored += 1;
+    });
+
+    setDraftCategories(nextDraft);
+    setDraftDirty(true);
+    setAgenda(normalizeAgenda(null));
+    setAgendaDirty(true);
+    setBulkImportText("");
+    setFeedback({
+      kind: "info",
+      text: `Importacao: adicionados ${added}, duplicados ${duplicated}, ignorados ${ignored}${
+        createdCategories || createdClasses
+          ? ` | categorias criadas ${createdCategories}, classes criadas ${createdClasses}`
+          : ""
+      }.`,
+    });
   };
 
   const generateActiveClass = () => {
@@ -835,6 +1109,7 @@ export function TournamentPage({ user, profile }: Props) {
       (tournament.data ?? {}) as Record<string, unknown>,
       draftCategories
     );
+    nextData.linkGrupo = groupLink.trim();
     nextData.agenda = normalizeAgenda(null) as unknown as Record<string, unknown>;
     await persistTournamentData(nextData, "Configuracao de categorias/classes salva.");
     setAgendaDirty(false);
@@ -970,6 +1245,7 @@ export function TournamentPage({ user, profile }: Props) {
     if (!tournament) return;
     const baseData = (tournament.data ?? {}) as Record<string, unknown>;
     const withCategories = buildTournamentDataWithDraftCategories(baseData, draftCategories);
+    withCategories.linkGrupo = groupLink.trim();
     withCategories.agendaConfig = agendaConfig as unknown as Record<string, unknown>;
     withCategories.agenda = agenda as unknown as Record<string, unknown>;
     await persistTournamentData(withCategories, "Alteracoes salvas com sucesso.");
@@ -1154,6 +1430,47 @@ export function TournamentPage({ user, profile }: Props) {
     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank", "noopener,noreferrer");
     setFeedback({ kind: "success", text: "Resumo aberto no WhatsApp." });
+  };
+
+  const buildSelfRegistrationLink = () => {
+    if (!tournament || !activeDraftCategory || !activeDraftClass) return "";
+    const u = new URL(window.location.href);
+    const hashBase = `#/inscricao/${encodeURIComponent(tournament.id)}`;
+    const q = new URLSearchParams();
+    q.set("categoryId", activeDraftCategory.id);
+    q.set("classId", activeDraftClass.id);
+    q.set("categoryName", activeDraftCategory.nome);
+    q.set("className", activeDraftClass.nome);
+    return `${u.origin}${u.pathname}${hashBase}?${q.toString()}`;
+  };
+
+  const copySelfRegistrationLink = async () => {
+    const link = buildSelfRegistrationLink();
+    if (!link) {
+      setFeedback({ kind: "error", text: "Selecione categoria e classe para gerar link de inscricao." });
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(link);
+      setFeedback({ kind: "success", text: "Link de autoinscricao copiado." });
+    } catch {
+      setFeedback({ kind: "info", text: link });
+    }
+  };
+
+  const updateRegistration = async (registrationId: string, status: "approved" | "rejected") => {
+    if (!tournament) return;
+    try {
+      await updateTournamentRegistrationStatus(tournament.id, registrationId, status);
+      const regs = await loadTournamentRegistrations(user, tournament.id, tournament.role);
+      setRegistrations(regs);
+      setFeedback({
+        kind: "success",
+        text: status === "approved" ? "Inscricao aprovada." : "Inscricao rejeitada.",
+      });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao atualizar inscricao." });
+    }
   };
 
   const restoreBackupJson = async (file: File | null) => {
@@ -1586,14 +1903,66 @@ export function TournamentPage({ user, profile }: Props) {
                     <option value="todos">Todos</option>
                   </select>
 
-                  <div className="cluster" style={{ marginTop: 10 }}>
+                  <label>Adicionar participante</label>
+                  <input
+                    value={newParticipantName}
+                    onChange={(e) => setNewParticipantName(e.target.value)}
+                    placeholder={
+                      isFixedDoublesConfig(activeDraftClass.data.config)
+                        ? "Nome A / Nome B"
+                        : "Nome do jogador"
+                    }
+                  />
+                  <div className="cluster" style={{ marginTop: 8 }}>
                     <input
-                      value={newParticipantName}
-                      onChange={(e) => setNewParticipantName(e.target.value)}
-                      placeholder="Adicionar participante"
+                      value={newParticipantPhone}
+                      onChange={(e) => setNewParticipantPhone(e.target.value)}
+                      placeholder={
+                        isFixedDoublesConfig(activeDraftClass.data.config)
+                          ? "Telefone jogador A"
+                          : "Telefone (opcional)"
+                      }
                     />
+                    {isFixedDoublesConfig(activeDraftClass.data.config) ? (
+                      <input
+                        value={newParticipantPhone2}
+                        onChange={(e) => setNewParticipantPhone2(e.target.value)}
+                        placeholder="Telefone jogador B"
+                      />
+                    ) : null}
+                    {needsGroupABConfig(activeDraftClass.data.config) ? (
+                      <select
+                        value={newParticipantGroup}
+                        onChange={(e) => setNewParticipantGroup((e.target.value === "B" ? "B" : "A") as "A" | "B")}
+                      >
+                        <option value="A">Grupo A</option>
+                        <option value="B">Grupo B</option>
+                      </select>
+                    ) : null}
                     <button onClick={addParticipant} disabled={saving}>
                       Adicionar
+                    </button>
+                  </div>
+
+                  <label style={{ marginTop: 12 }}>Importar lista</label>
+                  <textarea
+                    value={bulkImportText}
+                    onChange={(e) => setBulkImportText(e.target.value)}
+                    placeholder={
+                      isFixedDoublesConfig(activeDraftClass.data.config)
+                        ? "NomeA;NomeB;TelefoneA;TelefoneB;Categoria;Classe"
+                        : needsGroupABConfig(activeDraftClass.data.config)
+                        ? "Nome;Telefone;Categoria;Classe;A"
+                        : "Nome;Telefone;Categoria;Classe"
+                    }
+                    rows={4}
+                  />
+                  <div className="cluster" style={{ marginTop: 8 }}>
+                    <button onClick={importParticipantsByList} disabled={saving || !bulkImportText.trim()}>
+                      Importar lista
+                    </button>
+                    <button onClick={copySelfRegistrationLink} disabled={saving}>
+                      Copiar link de autoinscricao
                     </button>
                   </div>
                   {activeDraftClass.data.participantes.length === 0 ? (
@@ -1610,7 +1979,12 @@ export function TournamentPage({ user, profile }: Props) {
                         gap: 8,
                       }}
                     >
-                      <span>{p.nome}</span>
+                      <span>
+                        {p.nome}
+                        {p.grupo ? ` (${p.grupo})` : ""}
+                        {p.telefone ? ` | ${p.telefone}` : ""}
+                        {p.telefone2 ? ` / ${p.telefone2}` : ""}
+                      </span>
                       <button className="danger" onClick={() => removeParticipant(p.nome)} disabled={saving}>
                         Remover
                       </button>
@@ -1688,6 +2062,50 @@ export function TournamentPage({ user, profile }: Props) {
                 <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
                   Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
                 </p>
+              </div>
+
+              <div
+                style={{
+                  border: "1px solid var(--color-border)",
+                  borderRadius: 10,
+                  padding: 10,
+                  marginBottom: 12,
+                }}
+              >
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
+                {registrations.length === 0 ? <p className="subtle">Nenhuma solicitacao recebida.</p> : null}
+                {registrations.map((r) => (
+                  <div
+                    key={r.id}
+                    style={{
+                      borderTop: "1px solid var(--color-border)",
+                      padding: "8px 0",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: 8,
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      <div>
+                        {r.playerName || "Sem nome"} - {r.categoryName} / {r.className}
+                      </div>
+                      <div className="subtle">
+                        {r.phone || "Sem telefone"} | {new Date(r.createdAt || "").toLocaleString("pt-BR")} | {r.status}
+                      </div>
+                    </div>
+                    {tournament?.role === "owner" && r.status === "pending" ? (
+                      <div className="cluster">
+                        <button onClick={() => void updateRegistration(r.id, "approved")} disabled={saving}>
+                          Aprovar
+                        </button>
+                        <button className="danger" onClick={() => void updateRegistration(r.id, "rejected")} disabled={saving}>
+                          Rejeitar
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>
 
               <h3 style={{ marginTop: 0 }}>Wizard de setup</h3>

@@ -60,9 +60,18 @@ export type RankingRowStats = {
 
 export type RankingRow = [string, RankingRowStats];
 
+export type ClassParticipant = {
+  nome: string;
+  grupo?: string | null;
+  telefone?: string;
+  telefone2?: string;
+  convitePendente?: boolean;
+  conviteEnviado?: boolean;
+};
+
 export type ClassData = {
   config: TournamentConfig;
-  participantes: Array<{ nome: string }>;
+  participantes: ClassParticipant[];
   entradas: string[];
   grupos: Group[];
   knockout: Knockout | null;
