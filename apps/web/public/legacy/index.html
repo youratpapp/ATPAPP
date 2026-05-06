@@ -1462,6 +1462,11 @@ function canUseCloudPersistence(){
  return !!supabaseClient && !!authUser
 }
 
+function isTournamentOwnedByAuth(tournamentRow){
+ if(!tournamentRow || !authUser || !authUser.id) return false
+ return String(tournamentRow.owner_id || "") === String(authUser.id || "")
+}
+
 function canEditCurrentTournament(){
  if(!canUseCloudPersistence()) return true
  if(!activeTournamentId) return true
@@ -1480,9 +1485,10 @@ function isParticipantRegistrationOnlyMode(){
 
 function resolveActiveTournamentRole(){
  if(!activeTournamentId) return ""
- let own = createdTournaments.find(t=>t.id === activeTournamentId)
+ let own = createdTournaments.find(t=>t.id === activeTournamentId && isTournamentOwnedByAuth(t))
  if(own) return "owner"
  let member = participatingTournaments.find(t=>t.id === activeTournamentId)
+ if(member && isTournamentOwnedByAuth(member)) return "owner"
  if(member) return member.role || "participant"
  return ""
 }
@@ -1724,9 +1730,10 @@ function renderTournamentList(containerId,list,isOwner){
  }
  box.innerHTML = list.map(t=>{
   let activeTag = t.id === activeTournamentId ? " (ativo)" : ""
- let roleText = isOwner ? "Criador" : (t.role === "editor" ? "Editor" : "Participante")
-  let linkLine = isOwner ? `<div class="tournament-item-meta">Link: ${escXml(buildTournamentInviteLink(t.id) || "-")}</div>` : ""
-  let actions = isOwner
+  let rowIsOwner = isOwner || isTournamentOwnedByAuth(t)
+  let roleText = rowIsOwner ? "Criador" : (t.role === "editor" ? "Editor" : "Participante")
+  let linkLine = rowIsOwner ? `<div class="tournament-item-meta">Link: ${escXml(buildTournamentInviteLink(t.id) || "-")}</div>` : ""
+  let actions = rowIsOwner
    ? `<button class="primary" onclick="abrirTorneioDashboard('${t.id}','owner')">Abrir Torneio</button>
       <button onclick="copiarLinkInscricaoDeTorneio('${t.id}')">Copiar Link</button>
       <button class="danger" onclick="excluirTorneio('${t.id}')">Excluir</button>`
@@ -1797,7 +1804,8 @@ async function refreshTournamentDashboard(_autoOpen){
    renderDashboard()
    return
   }
-  createdTournaments = Array.isArray(createdRes.data) ? createdRes.data.map(x=>Object.assign({role:"owner"},x)) : []
+  let createdRows = Array.isArray(createdRes.data) ? createdRes.data.map(x=>Object.assign({role:"owner"},x)) : []
+  createdTournaments = createdRows.filter(isTournamentOwnedByAuth)
 
   let membersRes = await supabaseClient
    .from(SUPABASE_MEMBERS_TABLE)
@@ -1821,7 +1829,9 @@ async function refreshTournamentDashboard(_autoOpen){
     }else{
      let mapRole = {}
      members.forEach(m=>{ mapRole[m.tournament_id] = m.role || "participant" })
-     participatingTournaments = (ptRes.data || []).map(t=>Object.assign({role:mapRole[t.id] || "participant"}, t))
+     participatingTournaments = (ptRes.data || [])
+      .map(t=>Object.assign({role:mapRole[t.id] || "participant"}, t))
+      .filter(t=>!isTournamentOwnedByAuth(t))
       .sort((a,b)=>String(b.updated_at || "").localeCompare(String(a.updated_at || "")))
     }
    }else{
@@ -2060,12 +2070,23 @@ async function excluirTorneio(tournamentId){
  if(!canUseCloudPersistence()){
   return alert("Faça login para excluir torneio.")
  }
- let own = createdTournaments.find(t=>t.id === tournamentId)
- if(!own){
-  return alert("Você só pode excluir torneios que criou.")
- }
- if(!confirm(`Excluir o torneio "${own.name || "Sem nome"}"?`)) return
  try{
+  let check = await supabaseClient
+   .from(SUPABASE_TOURNAMENTS_TABLE)
+   .select("id,name,owner_id")
+   .eq("id", tournamentId)
+   .maybeSingle()
+  if(check.error){
+   return alert(check.error.message || "Falha ao validar permissões do torneio.")
+  }
+  if(!check.data){
+   return alert("Torneio não encontrado.")
+  }
+  if(!isTournamentOwnedByAuth(check.data)){
+   return alert("Você só pode excluir torneios que criou.")
+  }
+  if(!confirm(`Excluir o torneio "${check.data.name || "Sem nome"}"?`)) return
+
   let del = await supabaseClient
    .from(SUPABASE_TOURNAMENTS_TABLE)
    .delete()
