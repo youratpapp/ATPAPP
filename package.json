@@ -10,10 +10,6 @@
     "dev:web": "npm run dev -w @tenis/web",
     "build:web": "npm run build -w @tenis/web",
     "preview:web": "npm run preview -w @tenis/web",
-    "dev:mobile": "npm run start -w @tenis/mobile",
-    "android": "npm run android -w @tenis/mobile",
-    "ios": "npm run ios -w @tenis/mobile",
-    "web:mobile": "npm run web -w @tenis/mobile",
     "typecheck": "npm run typecheck -w @tenis/shared && npm run build -w @tenis/web",
     "bootstrap": "npm install"
   }
