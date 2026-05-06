@@ -3,25 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerenciador de Campeonato</title>
+<title>ATP — Painel do Torneio</title>
 <style>
 :root{
- --bg:#eef3f7;
+ --bg:#f5f7fb;
  --card:#ffffff;
- --text:#0f172a;
- --muted:#64748b;
- --line:#d9e2ec;
- --primary:#0f766e;
+ --text:#0f1e3d;
+ --muted:#475569;
+ --line:#e2e8f0;
+ --primary:#65a30d;
+ --primary-strong:#4d7c0f;
+ --primary-soft:#ecfccb;
+ --secondary:#0f1e3d;
  --whats:#25D366;
  --danger:#dc2626;
- --warning:#b45309;
+ --warning:#d97706;
  --soft:#f8fafc;
- --focus:rgba(15,118,110,0.18);
+ --focus:rgba(132,204,22,0.22);
 }
 *{box-sizing:border-box}
 body{
  font-family:"Segoe UI",Arial,sans-serif;
- background:linear-gradient(180deg,#f3f7fb 0%,var(--bg) 100%);
+ background:linear-gradient(180deg,#eef2f7 0%,var(--bg) 100%);
  color:var(--text);
  margin:0;
  padding:12px;
@@ -59,7 +62,7 @@ input,select,textarea{
 }
 input:focus,select:focus,textarea:focus{
  outline:none;
- border-color:#0f766e;
+ border-color:#65a30d;
  box-shadow:0 0 0 3px var(--focus);
 }
 textarea{min-height:112px;resize:vertical}
@@ -111,9 +114,9 @@ input[type="file"]{background:#fff;padding:8px}
  border:1px solid #cbd5e1;
 }
 .app-nav button.active{
- background:#0f766e;
+ background:#65a30d;
  color:#fff;
- border-color:#0f766e;
+ border-color:#65a30d;
 }
 .mobile-bottom-nav{
  position:fixed;
@@ -139,8 +142,8 @@ input[type="file"]{background:#fff;padding:8px}
  color:#334155;
 }
 .mobile-bottom-nav button.active{
- background:#0f766e;
- border-color:#0f766e;
+ background:#65a30d;
+ border-color:#65a30d;
  color:#fff;
 }
 .auth-card-head{
@@ -233,8 +236,8 @@ input[type="file"]{background:#fff;padding:8px}
  width:auto;
 }
 .dashboard-tab.active{
- background:#0f766e;
- border-color:#0f766e;
+ background:#65a30d;
+ border-color:#65a30d;
  color:#fff;
 }
 .dashboard-panel{
@@ -470,8 +473,8 @@ button[disabled]{
  background:#f8fafc;
 }
 .tournament-context-role.owner{
- border-color:#0f766e;
- color:#0f766e;
+ border-color:#65a30d;
+ color:#65a30d;
  background:#ecfdf5;
 }
 .tournament-section-tabs{
@@ -488,8 +491,8 @@ button[disabled]{
  color:#334155;
 }
 .tournament-section-tabs button.active{
- background:#0f766e;
- border-color:#0f766e;
+ background:#65a30d;
+ border-color:#65a30d;
  color:#fff;
 }
 .tournament-section-hint{
@@ -545,7 +548,7 @@ button[disabled]{
  padding:6px 10px;
  border-radius:8px;
  font-size:12px;
- background:#0f766e;
+ background:#65a30d;
  color:#fff;
  width:auto;
 }
@@ -630,7 +633,7 @@ button[disabled]{
  overflow-wrap:anywhere;
 }
 .class-item.active{
- border-color:#0f766e;
+ border-color:#65a30d;
  box-shadow:0 0 0 2px rgba(15,118,110,0.14) inset;
  background:#ecfdf5;
 }
@@ -645,7 +648,7 @@ button[disabled]{
  margin-left:6px;
  padding:2px 7px;
  border-radius:999px;
- background:#0f766e;
+ background:#65a30d;
  color:#fff;
  font-size:11px;
  font-weight:700;
@@ -767,7 +770,7 @@ button[disabled]{
 }
 .bracket-match .line.win{
  font-weight:700;
- color:#0f766e;
+ color:#65a30d;
 }
 .bracket-match .score{
  min-width:18px;
@@ -1021,7 +1024,7 @@ button[disabled]{
 </style>
 </head>
 <body>
-<h2 id="pageTitle">Gerenciador de Campeonato</h2>
+<h2 id="pageTitle">ATP — Painel do Torneio</h2>
 
 <div class="app-nav">
 <button id="navHome" onclick="setAppView('home')">Início</button>
@@ -4061,7 +4064,7 @@ function minToTime(v){
 }
 
 function updatePageTitle(){
- let base = "Gerenciador de Campeonato"
+ let base = "ATP — Painel do Torneio"
  let nome = (state.nomeTorneio || "").trim()
  let t = document.getElementById("pageTitle")
  if(!t) return

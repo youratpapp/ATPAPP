@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" role="img" aria-label="ATP">
+  <defs>
+    <linearGradient id="ballGrad2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#bef264"/>
+      <stop offset="100%" stop-color="#65a30d"/>
+    </linearGradient>
+  </defs>
+  <g font-family="'Segoe UI', Arial, Helvetica, sans-serif" font-weight="900">
+    <text x="6" y="60" font-size="68" fill="#0f1e3d">A</text>
+    <text x="62" y="60" font-size="68" fill="#84cc16">T</text>
+    <text x="112" y="60" font-size="68" fill="#0f1e3d">P</text>
+  </g>
+  <g transform="translate(150,28)">
+    <circle r="13" fill="url(#ballGrad2)" stroke="#3f6212" stroke-width="1"/>
+    <path d="M -11 -3 Q 0 2 11 -3" stroke="#fff" stroke-width="1" fill="none"/>
+    <path d="M -11 5 Q 0 10 11 5" stroke="#fff" stroke-width="1" fill="none"/>
+  </g>
+  <g transform="translate(12,64)">
+    <path d="M 0 0 L 38 0 L 32 10 L 6 10 Z" fill="#0f1e3d"/>
+    <line x1="6" y1="5" x2="32" y2="5" stroke="#84cc16" stroke-width="1.2"/>
+  </g>
+</svg>
