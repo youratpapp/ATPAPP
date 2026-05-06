@@ -572,6 +572,52 @@ button:disabled {
 }
 
 /* ----- Event card (Copa Pro style) ----- */
+.events-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.events-kpi-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.events-kpi-label {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.events-kpi-value {
+  margin: 2px 0 0;
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.events-filter-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.events-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.events-filter-grid label {
+  display: block;
+  margin-bottom: 6px;
+}
+
 .event-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -625,6 +671,37 @@ button:disabled {
   margin: 0;
   flex: 1;
   min-width: 0;
+}
+
+.event-card .ec-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--space-2);
+}
+
+.event-card .ec-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-subtle);
+  background: #f8fafc;
+}
+
+.event-card .ec-chip.owner {
+  border-color: #a7f3d0;
+  color: #047857;
+  background: #ecfdf5;
+}
+
+.event-card .ec-chip.member {
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+  background: #eff6ff;
 }
 
 .event-card .ec-divider {
@@ -682,6 +759,16 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .events-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .events-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ----- Old list-item (fallback) ----- */

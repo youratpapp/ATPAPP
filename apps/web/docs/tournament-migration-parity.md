@@ -78,6 +78,10 @@ Portar a logica completa do `backup/index.html` para a stack atual (`React + Typ
   - filtros por status e aprovacao/rejeicao em lote das solicitacoes
 - Navegacao de eventos corrigida para fluxo SPA (`navigate`) sem reload de hash.
 - Botao de fallback "Modo completo" removido da pagina principal de torneio.
+- Evolucao da tela de eventos (`/eventos`) iniciada:
+  - cards mais ricos com papel (organizador/participante), visibilidade e status textual
+  - KPIs de torneios (total, organizando, participando, inscricoes abertas, em andamento, concluidos)
+  - filtros de busca, status, visibilidade e ordenacao
 
 ## Non-Regression Rules
 - Nao remover etapas do wizard.

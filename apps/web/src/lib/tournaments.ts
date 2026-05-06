@@ -257,6 +257,21 @@ export async function loadTournamentDetails(user: User, tournamentId: string): P
   return detailRowToDetails(row, role);
 }
 
+export async function loadTournamentByRegistrationLink(tournamentId: string): Promise<TournamentDetails> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+
+  const { data, error } = await supabase.rpc("app_get_tournament_for_registration", {
+    p_tournament_id: tournamentId,
+  });
+  if (error) throw new Error(error.message);
+
+  const rowRaw = Array.isArray(data) ? data[0] : data;
+  if (!rowRaw) throw new Error("Torneio nao encontrado.");
+
+  const row = rowRaw as TournamentDetailRow;
+  return detailRowToDetails(row, "viewer");
+}
+
 export async function updateTournamentDetails(
   user: User,
   tournamentId: string,

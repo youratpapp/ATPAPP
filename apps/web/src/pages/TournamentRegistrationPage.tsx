@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
-import { joinTournament, loadTournamentDetails, requestTournamentRegistration } from "../lib/tournaments";
+import {
+  joinTournament,
+  loadTournamentByRegistrationLink,
+  loadTournamentDetails,
+  requestTournamentRegistration,
+} from "../lib/tournaments";
 import type { Profile, TournamentDetails } from "../lib/types";
 
 type Props = {
@@ -73,7 +78,12 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
     async function run() {
       setLoading(true);
       try {
-        const details = await loadTournamentDetails(user, tournamentId);
+        let details: TournamentDetails;
+        try {
+          details = await loadTournamentDetails(user, tournamentId);
+        } catch {
+          details = await loadTournamentByRegistrationLink(tournamentId);
+        }
         if (!alive) return;
         setTournament(details);
         const opts = extractClassOptions(details.data);
@@ -176,4 +186,3 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
     </AppShell>
   );
 }
-

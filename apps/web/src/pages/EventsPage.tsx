@@ -1,15 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import type { Profile, TournamentSummary } from "../lib/types";
-import {
-  buildTournamentUrl,
-  createTournament,
-  joinTournament,
-  loadDashboardData,
-} from "../lib/tournaments";
+import { buildTournamentUrl, createTournament, joinTournament, loadDashboardData } from "../lib/tournaments";
 
 type Props = {
   user: User;
@@ -17,6 +12,9 @@ type Props = {
 };
 
 type TabKey = "all" | "participating" | "organizing";
+type StatusFilter = "all" | "draft" | "registration_open" | "registration_closed" | "live" | "finished";
+type VisibilityFilter = "all" | "public" | "private";
+type SortKey = "updated_desc" | "updated_asc" | "starts_asc" | "starts_desc" | "name_asc";
 
 function formatDateRange(starts: string, ends?: string): string {
   if (!starts) return "Data a definir";
@@ -24,10 +22,40 @@ function formatDateRange(starts: string, ends?: string): string {
   if (Number.isNaN(s.getTime())) return starts;
   const opts: Intl.DateTimeFormatOptions = { day: "2-digit", month: "short" };
   const startStr = s.toLocaleDateString("pt-BR", opts);
-  if (!ends) return `${startStr} · ${s.getFullYear()}`;
+  if (!ends) return `${startStr} Â· ${s.getFullYear()}`;
   const e = new Date(ends);
   if (Number.isNaN(e.getTime())) return startStr;
   return `${startStr} - ${e.toLocaleDateString("pt-BR", opts)} ${e.getFullYear()}`;
+}
+
+function formatUpdatedAt(value: string): string {
+  if (!value) return "Atualizacao recente";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "Atualizacao recente";
+  return `Atualizado em ${d.toLocaleDateString("pt-BR")} ${d.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}`;
+}
+
+function formatStatusLabel(status: string): string {
+  if (status === "registration_open") return "Inscricoes abertas";
+  if (status === "registration_closed") return "Inscricoes encerradas";
+  if (status === "live") return "Em andamento";
+  if (status === "finished") return "Concluido";
+  return "Rascunho";
+}
+
+function formatVisibilityLabel(visibility: string): string {
+  return visibility === "public" ? "Publico" : "Privado";
+}
+
+function normalizeSearch(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 function CalendarIcon() {
@@ -67,7 +95,12 @@ function SearchIcon() {
   );
 }
 
-function EventCard({ t, isOwner, onOpen, onCopyLink }: {
+function EventCard({
+  t,
+  isOwner,
+  onOpen,
+  onCopyLink,
+}: {
   t: TournamentSummary;
   isOwner: boolean;
   onOpen: () => void;
@@ -81,7 +114,7 @@ function EventCard({ t, isOwner, onOpen, onCopyLink }: {
         <img className="ec-poster" src={t.posterUrl} alt="" />
       ) : (
         <div className="ec-poster-placeholder">
-          <span>🎾</span>
+          <span>ðŸŽ¾</span>
         </div>
       )}
       <div className="ec-body">
@@ -90,7 +123,13 @@ function EventCard({ t, isOwner, onOpen, onCopyLink }: {
           <StatusBadge status={t.status} />
         </div>
 
-        {t.startsAt && (
+        <div className="ec-chip-row">
+          <span className={`ec-chip ${isOwner ? "owner" : "member"}`}>{isOwner ? "Organizador" : "Participante"}</span>
+          <span className="ec-chip">{formatVisibilityLabel(t.visibility)}</span>
+          <span className="ec-chip">{formatStatusLabel(t.status)}</span>
+        </div>
+
+        {t.startsAt ? (
           <div className="ec-info-row">
             <span className="ec-info-left">
               <CalendarIcon />
@@ -98,28 +137,44 @@ function EventCard({ t, isOwner, onOpen, onCopyLink }: {
             </span>
             <span className="ec-chevron"><ChevronRight /></span>
           </div>
-        )}
+        ) : null}
 
-        {location && (
+        {location ? (
           <div className="ec-info-row">
             <span className="ec-info-left">
               <LocationPinIcon />
               {location}
             </span>
           </div>
-        )}
+        ) : null}
 
-        {isOwner && onCopyLink && (
+        {t.registrationCloseAt ? (
+          <div className="ec-info-row">
+            <span className="ec-info-left">
+              <CalendarIcon />
+              Inscricoes ate {new Date(t.registrationCloseAt).toLocaleDateString("pt-BR")}
+            </span>
+          </div>
+        ) : null}
+
+        <div className="ec-info-row">
+          <span className="ec-info-left">{formatUpdatedAt(t.updatedAt)}</span>
+        </div>
+
+        {isOwner && onCopyLink ? (
           <div className="ec-footer">
-            <span className="ec-footer-left">Você organiza</span>
+            <span className="ec-footer-left">Voce organiza</span>
             <button
               style={{ minHeight: "auto", padding: "4px 10px", fontSize: "var(--font-size-xs)" }}
-              onClick={(e) => { e.stopPropagation(); onCopyLink(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onCopyLink();
+              }}
             >
               Copiar link
             </button>
           </div>
-        )}
+        ) : null}
       </div>
     </article>
   );
@@ -142,6 +197,11 @@ export function EventsPage({ user, profile }: Props) {
 
   const [showJoin, setShowJoin] = useState(false);
   const [joinUuid, setJoinUuid] = useState("");
+
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [visibilityFilter, setVisibilityFilter] = useState<VisibilityFilter>("all");
+  const [sortBy, setSortBy] = useState<SortKey>("updated_desc");
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -199,12 +259,49 @@ export function EventsPage({ user, profile }: Props) {
     }
   };
 
-  const list =
-    tab === "organizing"
-      ? organizing
-      : tab === "participating"
-      ? participating
-      : [...organizing, ...participating].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  const mergedAll = useMemo(() => [...organizing, ...participating], [organizing, participating]);
+
+  const listByTab = useMemo(() => {
+    if (tab === "organizing") return organizing;
+    if (tab === "participating") return participating;
+    return mergedAll;
+  }, [mergedAll, organizing, participating, tab]);
+
+  const list = useMemo(() => {
+    const term = normalizeSearch(search);
+    let out = listByTab.filter((t) => {
+      if (statusFilter !== "all" && t.status !== statusFilter) return false;
+      if (visibilityFilter !== "all" && t.visibility !== visibilityFilter) return false;
+      if (!term) return true;
+      const hay = normalizeSearch([t.name, t.city, t.state].filter(Boolean).join(" "));
+      return hay.includes(term);
+    });
+
+    out = [...out].sort((a, b) => {
+      if (sortBy === "name_asc") return a.name.localeCompare(b.name, "pt-BR");
+      if (sortBy === "updated_asc") return a.updatedAt.localeCompare(b.updatedAt);
+      if (sortBy === "starts_asc") return (a.startsAt || "").localeCompare(b.startsAt || "");
+      if (sortBy === "starts_desc") return (b.startsAt || "").localeCompare(a.startsAt || "");
+      return b.updatedAt.localeCompare(a.updatedAt);
+    });
+
+    return out;
+  }, [listByTab, search, sortBy, statusFilter, visibilityFilter]);
+
+  const kpis = useMemo(() => {
+    const total = mergedAll.length;
+    const open = mergedAll.filter((t) => t.status === "registration_open").length;
+    const live = mergedAll.filter((t) => t.status === "live").length;
+    const finished = mergedAll.filter((t) => t.status === "finished").length;
+    return {
+      total,
+      organizing: organizing.length,
+      participating: participating.length,
+      open,
+      live,
+      finished,
+    };
+  }, [mergedAll, organizing.length, participating.length]);
 
   const copyInvite = (id: string) => {
     const link = `${window.location.origin}${window.location.pathname}#/join/${id}`;
@@ -216,11 +313,10 @@ export function EventsPage({ user, profile }: Props) {
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
-      {/* Page header */}
       <div className="page-header">
         <h1>Eventos</h1>
         <div className="ph-actions">
-          <button className="ph-icon-btn" onClick={() => setShowJoin(true)} aria-label="Buscar" title="Entrar por código">
+          <button className="ph-icon-btn" onClick={() => setShowJoin(true)} aria-label="Buscar" title="Entrar por codigo">
             <SearchIcon />
           </button>
           <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Criar evento">
@@ -228,6 +324,33 @@ export function EventsPage({ user, profile }: Props) {
           </button>
         </div>
       </div>
+
+      <section className="events-kpi-grid">
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Meus torneios</p>
+          <p className="events-kpi-value">{kpis.total}</p>
+        </article>
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Organizando</p>
+          <p className="events-kpi-value">{kpis.organizing}</p>
+        </article>
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Participando</p>
+          <p className="events-kpi-value">{kpis.participating}</p>
+        </article>
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Inscricoes abertas</p>
+          <p className="events-kpi-value">{kpis.open}</p>
+        </article>
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Em andamento</p>
+          <p className="events-kpi-value">{kpis.live}</p>
+        </article>
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Concluidos</p>
+          <p className="events-kpi-value">{kpis.finished}</p>
+        </article>
+      </section>
 
       <div className="tabs">
         <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
@@ -241,6 +364,48 @@ export function EventsPage({ user, profile }: Props) {
         </button>
       </div>
 
+      <section className="events-filter-card">
+        <div className="events-filter-grid">
+          <div>
+            <label>Busca</label>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Nome do torneio, cidade ou estado"
+            />
+          </div>
+          <div>
+            <label>Status</label>
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}>
+              <option value="all">Todos</option>
+              <option value="draft">Rascunho</option>
+              <option value="registration_open">Inscricoes abertas</option>
+              <option value="registration_closed">Inscricoes encerradas</option>
+              <option value="live">Em andamento</option>
+              <option value="finished">Concluido</option>
+            </select>
+          </div>
+          <div>
+            <label>Visibilidade</label>
+            <select value={visibilityFilter} onChange={(e) => setVisibilityFilter(e.target.value as VisibilityFilter)}>
+              <option value="all">Todas</option>
+              <option value="public">Publico</option>
+              <option value="private">Privado</option>
+            </select>
+          </div>
+          <div>
+            <label>Ordenacao</label>
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortKey)}>
+              <option value="updated_desc">Mais recentes</option>
+              <option value="updated_asc">Mais antigos</option>
+              <option value="starts_asc">Data de inicio (crescente)</option>
+              <option value="starts_desc">Data de inicio (decrescente)</option>
+              <option value="name_asc">Nome (A-Z)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
       {feedback ? (
         <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
           {feedback.text}
@@ -251,10 +416,10 @@ export function EventsPage({ user, profile }: Props) {
 
       {!loading && list.length === 0 ? (
         <div className="empty-state">
-          <span className="empty-emoji" aria-hidden>📅</span>
+          <span className="empty-emoji" aria-hidden>ðŸ“…</span>
           <p>Nenhum evento encontrado.</p>
           <button className="empty-action" onClick={() => setShowCreate(true)}>
-            Adicionar Evento
+            Adicionar evento
           </button>
         </div>
       ) : null}
@@ -282,7 +447,7 @@ export function EventsPage({ user, profile }: Props) {
             <label>Visibilidade</label>
             <select value={newVisibility} onChange={(e) => setNewVisibility(e.target.value as "private" | "public")}>
               <option value="private">Somente por link</option>
-              <option value="public">Público</option>
+              <option value="public">Publico</option>
             </select>
             <div className="row" style={{ marginTop: 16 }}>
               <button onClick={() => setShowCreate(false)} disabled={busy}>Cancelar</button>
