@@ -5,35 +5,44 @@ import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import { loadTournamentDetails, updateTournamentDetails } from "../lib/tournaments";
 import type { Profile, TournamentDetails } from "../lib/types";
+import type { ClassData, GroupMatch, KnockoutMatch } from "../tournament-engine/core";
+import {
+  listLegacyClassesFromTournamentData,
+  patchClassDataInTournamentData,
+  recomputeClassData,
+  type LegacyClassRef,
+} from "../tournament-engine/state-adapter";
 
 type Props = {
   user: User;
   profile: Profile | null;
 };
 
-type TabKey = "inscricoes" | "jogos" | "classificacao" | "organizacao";
+type TabKey = "jogos" | "classificacao" | "organizacao";
 
-function BackIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  );
+type Feedback = { kind: "success" | "error" | "info"; text: string };
+
+function asScore(value: string): number | null {
+  const v = value.trim();
+  if (!v) return null;
+  const n = Number.parseInt(v, 10);
+  if (Number.isNaN(n)) return null;
+  if (n < 0 || n > 99) return null;
+  return n;
 }
 
-function formatIsoDateToInput(value: string): string {
-  if (!value) return "";
-  const dt = new Date(value);
-  if (Number.isNaN(dt.getTime())) return "";
-  const y = String(dt.getFullYear());
-  const m = String(dt.getMonth() + 1).padStart(2, "0");
-  const d = String(dt.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+function computeMatchStatus(s1: string, s2: string): { done: boolean; winner: "a" | "b" | null } {
+  const a = asScore(s1);
+  const b = asScore(s2);
+  if (a === null || b === null) return { done: false, winner: null };
+  if (a === b) return { done: false, winner: null };
+  return { done: true, winner: a > b ? "a" : "b" };
 }
 
-function inputDateToIso(value: string): string {
-  if (!value) return "";
-  return `${value}T12:00:00.000Z`;
+function buildFullTournamentUrl(tournamentId: string): string {
+  const base = import.meta.env.BASE_URL || "/";
+  const normalized = base.endsWith("/") ? base : `${base}/`;
+  return `${normalized}tournament-full/index.html?join=${encodeURIComponent(tournamentId)}`;
 }
 
 export function TournamentPage({ user, profile }: Props) {
@@ -41,21 +50,20 @@ export function TournamentPage({ user, profile }: Props) {
   const { tournamentId = "" } = useParams();
 
   const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState(false);
-  const [feedback, setFeedback] = useState<{ kind: "success" | "error" | "info"; text: string } | null>(null);
-  const [tab, setTab] = useState<TabKey>("inscricoes");
+  const [saving, setSaving] = useState(false);
+  const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [tab, setTab] = useState<TabKey>("jogos");
 
   const [tournament, setTournament] = useState<TournamentDetails | null>(null);
-  const [name, setName] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [visibility, setVisibility] = useState<"private" | "public">("private");
-  const [status, setStatus] = useState<"draft" | "registration_open" | "registration_closed" | "live" | "finished">("draft");
-  const [startsAt, setStartsAt] = useState("");
-  const [registrationCloseAt, setRegistrationCloseAt] = useState("");
-  const [posterUrl, setPosterUrl] = useState("");
+  const [classes, setClasses] = useState<LegacyClassRef[]>([]);
+  const [activeClassKey, setActiveClassKey] = useState("");
 
-  const canEdit = tournament?.role === "owner";
+  const activeClass = useMemo(
+    () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
+    [classes, activeClassKey]
+  );
+
+  const fullUrl = useMemo(() => (tournamentId ? buildFullTournamentUrl(tournamentId) : ""), [tournamentId]);
 
   useEffect(() => {
     let alive = true;
@@ -63,25 +71,13 @@ export function TournamentPage({ user, profile }: Props) {
     async function run() {
       setLoading(true);
       try {
-        const data = await loadTournamentDetails(user, tournamentId);
+        const details = await loadTournamentDetails(user, tournamentId);
         if (!alive) return;
+        setTournament(details);
 
-        setTournament(data);
-        setName(data.name);
-        setCity(data.city);
-        setState(data.state);
-        setVisibility(data.visibility === "public" ? "public" : "private");
-        setStatus(
-          data.status === "registration_open" ||
-            data.status === "registration_closed" ||
-            data.status === "live" ||
-            data.status === "finished"
-            ? data.status
-            : "draft"
-        );
-        setStartsAt(formatIsoDateToInput(data.startsAt));
-        setRegistrationCloseAt(formatIsoDateToInput(data.registrationCloseAt));
-        setPosterUrl(data.posterUrl);
+        const cls = listLegacyClassesFromTournamentData(details.data);
+        setClasses(cls);
+        setActiveClassKey((prev) => prev || cls[0]?.key || "");
         setFeedback(null);
       } catch (err) {
         if (!alive) return;
@@ -92,74 +88,95 @@ export function TournamentPage({ user, profile }: Props) {
     }
 
     run();
-
     return () => {
       alive = false;
     };
   }, [user, tournamentId]);
 
-  const shareLink = useMemo(() => {
-    if (!tournamentId) return "";
-    return `${window.location.origin}${window.location.pathname}#/join/${tournamentId}`;
-  }, [tournamentId]);
-
-  const onSave = async () => {
-    if (!tournament || !canEdit) return;
-    setBusy(true);
+  const persistClassData = async (ref: LegacyClassRef, nextClassData: ClassData) => {
+    if (!tournament) return;
+    setSaving(true);
     try {
-      const nextData = {
-        ...(tournament.data || {}),
-        nomeTorneio: name,
-        tournamentStatus: status,
-        tournamentMeta: {
-          city,
-          state: state.toUpperCase().slice(0, 2),
-          visibility,
-        },
-      };
-
+      const patchedData = patchClassDataInTournamentData(tournament.data, ref, nextClassData);
       const updated = await updateTournamentDetails(user, tournament.id, {
-        name,
-        city,
-        state,
-        visibility,
-        status,
-        startsAt: inputDateToIso(startsAt),
-        registrationCloseAt: inputDateToIso(registrationCloseAt),
-        posterUrl,
-        data: nextData,
+        name: tournament.name,
+        city: tournament.city,
+        state: tournament.state,
+        visibility: tournament.visibility === "public" ? "public" : "private",
+        status: tournament.status as "draft" | "registration_open" | "registration_closed" | "live" | "finished",
+        startsAt: tournament.startsAt,
+        registrationCloseAt: tournament.registrationCloseAt,
+        posterUrl: tournament.posterUrl,
+        data: patchedData,
       });
 
       setTournament(updated);
-      setFeedback({ kind: "success", text: "Torneio atualizado com sucesso." });
+      const cls = listLegacyClassesFromTournamentData(updated.data);
+      setClasses(cls);
+      setActiveClassKey(ref.key);
+      setFeedback({ kind: "success", text: "Atualizado com sucesso." });
     } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar." });
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar alteracoes." });
     } finally {
-      setBusy(false);
+      setSaving(false);
     }
   };
 
-  const copyShareLink = () => {
-    if (!shareLink) return;
-    navigator.clipboard
-      .writeText(shareLink)
-      .then(() => setFeedback({ kind: "success", text: "Link de convite copiado." }))
-      .catch(() => setFeedback({ kind: "info", text: shareLink }));
+  const onUpdateGroupScore = async (
+    ref: LegacyClassRef,
+    groupIndex: number,
+    matchIndex: number,
+    s1: string,
+    s2: string
+  ) => {
+    const next = structuredClone(ref.data);
+    const group = next.grupos[groupIndex];
+    const match = group?.matches[matchIndex] as GroupMatch | undefined;
+    if (!group || !match) return;
+
+    match.s1 = s1;
+    match.s2 = s2;
+    const status = computeMatchStatus(s1, s2);
+    match.done = status.done;
+    match.winner = status.winner === "a" ? match.a : status.winner === "b" ? match.b : null;
+
+    const recomputed = recomputeClassData(next);
+    await persistClassData(ref, recomputed);
   };
 
-  const openTab = (key: TabKey) => {
-    if (key === "organizacao" && !canEdit) return;
-    setTab(key);
+  const onUpdateKoScore = async (
+    ref: LegacyClassRef,
+    roundIndex: number,
+    matchIndex: number,
+    s1: string,
+    s2: string
+  ) => {
+    const next = structuredClone(ref.data);
+    const round = next.knockout?.rounds[roundIndex];
+    const match = round?.matches[matchIndex] as KnockoutMatch | undefined;
+    if (!round || !match) return;
+
+    match.s1 = s1;
+    match.s2 = s2;
+    const status = computeMatchStatus(s1, s2);
+    match.done = status.done;
+    match.winner = status.winner === "a" ? match.a : status.winner === "b" ? match.b : null;
+
+    const recomputed = recomputeClassData(next);
+    await persistClassData(ref, recomputed);
   };
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
-      <div className="page-header">
+      <div className="page-header" style={{ marginBottom: 12 }}>
         <h1>Torneio</h1>
         <div className="ph-actions">
-          <button className="ph-icon-btn" onClick={() => navigate("/eventos")} aria-label="Voltar">
-            <BackIcon />
-          </button>
+          <button onClick={() => navigate("/eventos")}>Voltar</button>
+          {fullUrl ? (
+            <button className="primary" onClick={() => window.open(fullUrl, "_blank", "noopener,noreferrer")}>
+              Modo completo
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -184,126 +201,157 @@ export function TournamentPage({ user, profile }: Props) {
           </article>
 
           <div className="tabs" style={{ marginBottom: 12 }}>
-            <button className={tab === "inscricoes" ? "active" : ""} onClick={() => openTab("inscricoes")}>
-              Inscricoes
-            </button>
-            <button className={tab === "jogos" ? "active" : ""} onClick={() => openTab("jogos")}>
+            <button className={tab === "jogos" ? "active" : ""} onClick={() => setTab("jogos")}>
               Jogos
             </button>
-            <button className={tab === "classificacao" ? "active" : ""} onClick={() => openTab("classificacao")}>
+            <button className={tab === "classificacao" ? "active" : ""} onClick={() => setTab("classificacao")}>
               Classificacao
             </button>
-            {canEdit ? (
-              <button className={tab === "organizacao" ? "active" : ""} onClick={() => openTab("organizacao")}>
-                Organizacao
-              </button>
-            ) : null}
+            <button className={tab === "organizacao" ? "active" : ""} onClick={() => setTab("organizacao")}>
+              Organizacao
+            </button>
           </div>
 
-          {tab === "inscricoes" ? (
-            <section className="card">
-              <p className="subtle" style={{ marginTop: 0 }}>
-                Compartilhe o link para novos participantes entrarem no torneio.
-              </p>
-              <label>Link de convite</label>
-              <input value={shareLink} readOnly />
-              <div className="row" style={{ marginTop: 12 }}>
-                <button className="primary" onClick={copyShareLink}>Copiar link</button>
-              </div>
-            </section>
-          ) : null}
+          <section className="card" style={{ marginBottom: 12 }}>
+            <label>Classe ativa</label>
+            <select
+              value={activeClass?.key ?? ""}
+              onChange={(e) => setActiveClassKey(e.target.value)}
+              disabled={classes.length === 0}
+            >
+              {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
+              {classes.map((c) => (
+                <option key={c.key} value={c.key}>
+                  {c.categoryName} / {c.className}
+                </option>
+              ))}
+            </select>
+            <p className="subtle" style={{ marginBottom: 0 }}>
+              Esta tela usa engine TypeScript (mesmas regras de grupos, mata-mata e classificacao), sem simplificar comportamento.
+            </p>
+          </section>
 
           {tab === "jogos" ? (
             <section className="card">
-              <h3 style={{ marginTop: 0 }}>Partidas</h3>
-              <p className="subtle" style={{ marginBottom: 0 }}>
-                O gerenciamento de jogos agora será migrado para esta tela nas próximas etapas.
-              </p>
+              {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
+
+              {activeClass?.data.grupos.map((g, gi) => (
+                <div key={`${activeClass.key}:g:${g.name}`} style={{ marginBottom: 14 }}>
+                  <h3 style={{ marginBottom: 8 }}>{g.name}</h3>
+                  {g.matches.length === 0 ? <p className="subtle">Sem partidas no grupo.</p> : null}
+                  {g.matches.map((m, mi) => (
+                    <div key={`${activeClass.key}:g:${gi}:${mi}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0" }}>
+                      <div style={{ fontSize: 14, marginBottom: 6 }}>
+                        {m.a || "A definir"} x {m.b || "A definir"}
+                      </div>
+                      <div className="cluster">
+                        <input
+                          style={{ width: 80 }}
+                          value={m.s1}
+                          onChange={(e) => {
+                            const s1 = e.target.value.replace(/[^0-9]/g, "");
+                            onUpdateGroupScore(activeClass, gi, mi, s1, m.s2);
+                          }}
+                          disabled={saving}
+                        />
+                        <input
+                          style={{ width: 80 }}
+                          value={m.s2}
+                          onChange={(e) => {
+                            const s2 = e.target.value.replace(/[^0-9]/g, "");
+                            onUpdateGroupScore(activeClass, gi, mi, m.s1, s2);
+                          }}
+                          disabled={saving}
+                        />
+                        <span className="subtle">{m.done ? "Finalizado" : "Pendente"}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+
+              {activeClass?.data.knockout?.rounds.map((round, ri) => (
+                <div key={`${activeClass.key}:ko:${ri}`} style={{ marginBottom: 14 }}>
+                  <h3 style={{ marginBottom: 8 }}>{round.name}</h3>
+                  {round.matches.length === 0 ? <p className="subtle">Sem partidas nesta fase.</p> : null}
+                  {round.matches.map((m, mi) => (
+                    <div key={`${activeClass.key}:ko:${ri}:${mi}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0" }}>
+                      <div style={{ fontSize: 14, marginBottom: 6 }}>
+                        {m.a || "A definir"} x {m.b || "A definir"}
+                      </div>
+                      <div className="cluster">
+                        <input
+                          style={{ width: 80 }}
+                          value={m.s1}
+                          onChange={(e) => {
+                            const s1 = e.target.value.replace(/[^0-9]/g, "");
+                            onUpdateKoScore(activeClass, ri, mi, s1, m.s2);
+                          }}
+                          disabled={saving || !m.a || !m.b}
+                        />
+                        <input
+                          style={{ width: 80 }}
+                          value={m.s2}
+                          onChange={(e) => {
+                            const s2 = e.target.value.replace(/[^0-9]/g, "");
+                            onUpdateKoScore(activeClass, ri, mi, m.s1, s2);
+                          }}
+                          disabled={saving || !m.a || !m.b}
+                        />
+                        <span className="subtle">{m.done ? "Finalizado" : "Pendente"}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+
+              {!activeClass?.data.grupos.length && !activeClass?.data.knockout ? (
+                <p className="subtle">Ainda sem jogos gerados nesta classe.</p>
+              ) : null}
             </section>
           ) : null}
 
           {tab === "classificacao" ? (
             <section className="card">
-              <h3 style={{ marginTop: 0 }}>Classificacao</h3>
-              <p className="subtle" style={{ marginBottom: 0 }}>
-                O ranking deste torneio será exibido aqui assim que os resultados forem registrados.
-              </p>
+              {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
+              {activeClass
+                ? Object.keys(activeClass.data.tabelaPorGrupo).map((groupName) => {
+                    const rows = activeClass.data.tabelaPorGrupo[groupName] ?? [];
+                    return (
+                      <div key={`${activeClass.key}:table:${groupName}`} style={{ marginBottom: 14 }}>
+                        <h3 style={{ marginBottom: 8 }}>{groupName}</h3>
+                        {rows.length === 0 ? <p className="subtle">Sem dados de classificacao.</p> : null}
+                        {rows.map((row, idx) => (
+                          <div key={`${activeClass.key}:table:${groupName}:${idx}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0", display: "flex", justifyContent: "space-between", gap: 8 }}>
+                            <span>{idx + 1}. {row[0]}</span>
+                            <span className="subtle">V:{row[1].v} J:{row[1].j} SG:{row[1].saldo}</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })
+                : null}
+              {activeClass && Object.keys(activeClass.data.tabelaPorGrupo).length === 0 ? (
+                <p className="subtle">Sem tabela para esta classe.</p>
+              ) : null}
             </section>
           ) : null}
 
-          {tab === "organizacao" && canEdit ? (
+          {tab === "organizacao" ? (
             <section className="card">
-              <h3 style={{ marginTop: 0 }}>Configuracoes do torneio</h3>
-
-              <label>Nome</label>
-              <input value={name} onChange={(e) => setName(e.target.value)} />
-
-              <div className="row">
-                <div>
-                  <label>Cidade</label>
-                  <input value={city} onChange={(e) => setCity(e.target.value)} />
-                </div>
-                <div>
-                  <label>UF</label>
-                  <input value={state} onChange={(e) => setState(e.target.value.toUpperCase().slice(0, 2))} maxLength={2} />
-                </div>
-              </div>
-
-              <div className="row">
-                <div>
-                  <label>Visibilidade</label>
-                  <select value={visibility} onChange={(e) => setVisibility(e.target.value as "private" | "public")}>
-                    <option value="private">Somente por link</option>
-                    <option value="public">Publico</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Status</label>
-                  <select
-                    value={status}
-                    onChange={(e) =>
-                      setStatus(
-                        e.target.value as
-                          | "draft"
-                          | "registration_open"
-                          | "registration_closed"
-                          | "live"
-                          | "finished"
-                      )
-                    }
-                  >
-                    <option value="draft">Rascunho</option>
-                    <option value="registration_open">Inscricoes abertas</option>
-                    <option value="registration_closed">Inscricoes fechadas</option>
-                    <option value="live">Em andamento</option>
-                    <option value="finished">Finalizado</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="row">
-                <div>
-                  <label>Inicio</label>
-                  <input type="date" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} />
-                </div>
-                <div>
-                  <label>Fechamento inscricoes</label>
-                  <input
-                    type="date"
-                    value={registrationCloseAt}
-                    onChange={(e) => setRegistrationCloseAt(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <label>Poster (URL)</label>
-              <input value={posterUrl} onChange={(e) => setPosterUrl(e.target.value)} placeholder="https://..." />
-
-              <div className="row" style={{ marginTop: 14 }}>
-                <button className="primary" onClick={onSave} disabled={busy || !name.trim()}>
-                  {busy ? "Salvando..." : "Salvar alteracoes"}
-                </button>
-              </div>
+              <h3 style={{ marginTop: 0 }}>Resumo tecnico</h3>
+              {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
+              {activeClass ? (
+                <>
+                  <p className="subtle">Formato: {activeClass.data.config.formato}</p>
+                  <p className="subtle">Entradas: {activeClass.data.entradas.length}</p>
+                  <p className="subtle">Grupos: {activeClass.data.grupos.length}</p>
+                  <p className="subtle">Knockout: {activeClass.data.knockout ? "sim" : "nao"}</p>
+                </>
+              ) : null}
+              <p className="subtle" style={{ marginTop: 12 }}>
+                Proximo bloco da migracao: wizard + agenda + operacoes (reset/export) mantendo paridade com o HTML legado.
+              </p>
             </section>
           ) : null}
         </>
@@ -311,4 +359,3 @@ export function TournamentPage({ user, profile }: Props) {
     </AppShell>
   );
 }
-

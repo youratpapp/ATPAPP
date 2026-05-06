@@ -42,3 +42,17 @@ export type TournamentDetails = TournamentSummary & {
   data: Record<string, unknown>;
   role: "owner" | "participant" | "viewer";
 };
+
+export type TournamentRegistration = {
+  id: string;
+  tournamentId: string;
+  userId: string;
+  categoryId: string;
+  classId: string;
+  categoryName: string;
+  className: string;
+  playerName: string;
+  phone: string;
+  status: "pending" | "approved" | "rejected";
+  createdAt: string;
+};

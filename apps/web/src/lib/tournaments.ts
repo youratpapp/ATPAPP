@@ -1,9 +1,10 @@
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
-import type { TournamentDetails, TournamentSummary } from "./types";
+import type { TournamentDetails, TournamentRegistration, TournamentSummary } from "./types";
 
 const TABLE_TOURNAMENTS = "tournaments";
 const TABLE_MEMBERS = "tournament_members";
+const TABLE_REGISTRATIONS = "tournament_registrations";
 
 export const TOURNAMENT_COLUMNS =
   "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at";
@@ -28,6 +29,20 @@ export type TournamentRow = {
 type TournamentDetailRow = TournamentRow & {
   created_at: string | null;
   data: Record<string, unknown> | null;
+};
+
+type TournamentRegistrationRow = {
+  id: string;
+  tournament_id: string;
+  user_id: string;
+  category_id: string | null;
+  class_id: string | null;
+  category_name: string | null;
+  class_name: string | null;
+  player_name: string | null;
+  phone: string | null;
+  status: string | null;
+  created_at: string | null;
 };
 
 function normalizeState(value: string | undefined): string | null {
@@ -74,6 +89,25 @@ function detailRowToDetails(row: TournamentDetailRow, role: TournamentDetails["r
     createdAt: row.created_at ?? "",
     data: row.data ?? {},
     role,
+  };
+}
+
+function registrationRowToModel(row: TournamentRegistrationRow): TournamentRegistration {
+  return {
+    id: row.id,
+    tournamentId: row.tournament_id,
+    userId: row.user_id,
+    categoryId: row.category_id ?? "",
+    classId: row.class_id ?? "",
+    categoryName: row.category_name ?? "",
+    className: row.class_name ?? "",
+    playerName: row.player_name ?? "",
+    phone: row.phone ?? "",
+    status:
+      row.status === "approved" || row.status === "rejected" || row.status === "pending"
+        ? row.status
+        : "pending",
+    createdAt: row.created_at ?? "",
   };
 }
 
@@ -262,6 +296,89 @@ export async function updateTournamentDetails(
   if (error) throw new Error(error.message);
 
   return loadTournamentDetails(user, tournamentId);
+}
+
+export async function loadTournamentRegistrations(
+  user: User,
+  tournamentId: string,
+  role: TournamentDetails["role"]
+): Promise<TournamentRegistration[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  let query = supabase
+    .from(TABLE_REGISTRATIONS)
+    .select(
+      "id,tournament_id,user_id,category_id,class_id,category_name,class_name,player_name,phone,status,created_at"
+    )
+    .eq("tournament_id", tournamentId)
+    .order("created_at", { ascending: false });
+
+  if (role !== "owner") {
+    query = query.eq("user_id", user.id);
+  }
+
+  const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentRegistrationRow[]).map(registrationRowToModel);
+}
+
+export async function requestTournamentRegistration(
+  user: User,
+  tournamentId: string,
+  input: {
+    categoryId: string;
+    classId: string;
+    categoryName: string;
+    className: string;
+    playerName: string;
+    phone?: string;
+  }
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+
+  const classId = String(input.classId || "").trim();
+  const playerName = String(input.playerName || "").trim();
+  if (!classId) throw new Error("Selecione uma classe.");
+  if (!playerName) throw new Error("Informe seu nome.");
+
+  const check = await supabase
+    .from(TABLE_REGISTRATIONS)
+    .select("id,status")
+    .eq("tournament_id", tournamentId)
+    .eq("user_id", user.id)
+    .eq("class_id", classId)
+    .in("status", ["pending", "approved"])
+    .limit(1);
+  if (check.error) throw new Error(check.error.message);
+  if ((check.data ?? []).length > 0) {
+    throw new Error("Voce ja possui solicitacao pendente/aprovada nesta classe.");
+  }
+
+  const { error } = await supabase.from(TABLE_REGISTRATIONS).insert({
+    tournament_id: tournamentId,
+    user_id: user.id,
+    category_id: String(input.categoryId || "").trim() || null,
+    class_id: classId,
+    category_name: String(input.categoryName || "").trim() || "Categoria",
+    class_name: String(input.className || "").trim() || "Classe",
+    player_name: playerName,
+    phone: String(input.phone || "").trim() || null,
+    status: "pending",
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function updateTournamentRegistrationStatus(
+  tournamentId: string,
+  registrationId: string,
+  status: "approved" | "rejected"
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase
+    .from(TABLE_REGISTRATIONS)
+    .update({ status })
+    .eq("id", registrationId)
+    .eq("tournament_id", tournamentId);
+  if (error) throw new Error(error.message);
 }
 
 export function buildTournamentUrl(tournamentId: string): string {
