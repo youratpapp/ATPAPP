@@ -97,6 +97,54 @@ function needsGroupABConfig(config: ClassData["config"]): boolean {
   return config.tipo === "duplas" && config.modoDuplas === "sorteio" && config.sorteioDuplas === "grupos_ab";
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = out[i] as T;
+    out[i] = out[j] as T;
+    out[j] = tmp;
+  }
+  return out;
+}
+
+function buildEntriesFromParticipants(config: ClassData["config"], participants: ClassData["participantes"]): string[] {
+  const names = participants.map((p) => String(p.nome || "").trim()).filter(Boolean);
+  if (config.tipo === "simples") return names;
+  if (config.modoDuplas === "manual") return names;
+
+  if (config.sorteioDuplas === "grupos_ab") {
+    let groupA = participants
+      .filter((p) => String(p.grupo || "").toUpperCase() === "A")
+      .map((p) => String(p.nome || "").trim())
+      .filter(Boolean);
+    let groupB = participants
+      .filter((p) => String(p.grupo || "").toUpperCase() === "B")
+      .map((p) => String(p.nome || "").trim())
+      .filter(Boolean);
+    if (!groupA.length || !groupB.length || groupA.length !== groupB.length) {
+      throw new Error("No sorteio A/B, os grupos A e B precisam ter a mesma quantidade de jogadores.");
+    }
+    groupA = shuffle(groupA);
+    groupB = shuffle(groupB);
+    const entries: string[] = [];
+    for (let i = 0; i < groupA.length; i += 1) {
+      entries.push(`${groupA[i]} / ${groupB[i]}`);
+    }
+    return entries;
+  }
+
+  if (names.length % 2 !== 0) {
+    throw new Error("No sorteio entre todos, a quantidade de jogadores deve ser par.");
+  }
+  const shuffled = shuffle(names);
+  const entries: string[] = [];
+  for (let i = 0; i < shuffled.length; i += 2) {
+    entries.push(`${shuffled[i]} / ${shuffled[i + 1]}`);
+  }
+  return entries;
+}
+
 function parseDraftCategories(dataRaw: Record<string, unknown>): DraftCategory[] {
   const data = asRecord(dataRaw) ?? {};
   const categories = asArray(data.categorias);
@@ -1098,8 +1146,18 @@ export function TournamentPage({ user, profile }: Props) {
   const generateActiveClass = () => {
     if (!activeDraftCategory || !activeDraftClass) return;
     const participantes = activeDraftClass.data.participantes;
-    if (participantes.length < 2) {
-      setFeedback({ kind: "error", text: "Esta classe precisa de pelo menos 2 participantes para gerar." });
+    let entries: string[] = [];
+    try {
+      entries = buildEntriesFromParticipants(activeDraftClass.data.config, participantes);
+    } catch (err) {
+      setFeedback({
+        kind: "error",
+        text: err instanceof Error ? err.message : "Falha ao montar entradas para sorteio.",
+      });
+      return;
+    }
+    if (entries.length < 2) {
+      setFeedback({ kind: "error", text: "Esta classe precisa de entradas suficientes para gerar (minimo 2)." });
       return;
     }
     mutateDraftCategories((prev) =>
@@ -1114,7 +1172,7 @@ export function TournamentPage({ user, profile }: Props) {
               data: gerarClasseData({
                 config: cls.data.config,
                 participantes: cls.data.participantes,
-                entradas: cls.data.participantes.map((p) => p.nome),
+                entradas: entries,
               }),
             };
           }),
@@ -1152,16 +1210,16 @@ export function TournamentPage({ user, profile }: Props) {
       ...cat,
       classes: cat.classes.map((cls) => {
         total += 1;
-        const count = cls.data.participantes.length;
-        if (count < 2) {
-          ignored += 1;
-          return { ...cls, data: resetClassDrawData(cls.data) };
-        }
         try {
+          const entries = buildEntriesFromParticipants(cls.data.config, cls.data.participantes);
+          if (entries.length < 2) {
+            ignored += 1;
+            return { ...cls, data: resetClassDrawData(cls.data) };
+          }
           const data = gerarClasseData({
             config: cls.data.config,
             participantes: cls.data.participantes,
-            entradas: cls.data.participantes.map((p) => p.nome),
+            entradas: entries,
           });
           generated += 1;
           return { ...cls, data: data };
