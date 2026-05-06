@@ -208,22 +208,18 @@ export async function createTournament(
 
 export async function joinTournament(user: User, tournamentId: string): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
-  const exists = await supabase
-    .from(TABLE_TOURNAMENTS)
-    .select("id,owner_id")
-    .eq("id", tournamentId)
-    .maybeSingle();
-  if (exists.error) throw new Error(exists.error.message);
-  if (!exists.data) throw new Error("Torneio nao encontrado.");
-  if (exists.data.owner_id === user.id) return;
-
   const { error } = await supabase
     .from(TABLE_MEMBERS)
     .upsert(
       { tournament_id: tournamentId, user_id: user.id, role: "participant" },
       { onConflict: "tournament_id,user_id" }
     );
-  if (error) throw new Error(error.message);
+  if (!error) return;
+
+  if (error.message?.toLowerCase().includes("foreign key")) {
+    throw new Error("Torneio nao encontrado.");
+  }
+  throw new Error(error.message);
 }
 
 export async function loadTournamentDetails(user: User, tournamentId: string): Promise<TournamentDetails> {
@@ -388,6 +384,13 @@ export async function updateTournamentRegistrationStatus(
   status: "approved" | "rejected"
 ): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  const rpc = await supabase.rpc("app_set_tournament_registration_status", {
+    p_tournament_id: tournamentId,
+    p_registration_id: registrationId,
+    p_status: status,
+  });
+  if (!rpc.error) return;
+
   const { error } = await supabase
     .from(TABLE_REGISTRATIONS)
     .update({ status })
