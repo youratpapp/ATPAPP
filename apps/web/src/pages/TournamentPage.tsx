@@ -97,6 +97,136 @@ function needsGroupABConfig(config: ClassData["config"]): boolean {
   return config.tipo === "duplas" && config.modoDuplas === "sorteio" && config.sorteioDuplas === "grupos_ab";
 }
 
+type ApprovedRegistrationMergeStats = {
+  added: number;
+  duplicated: number;
+  missingClass: number;
+  incompatible: number;
+  invalid: number;
+};
+
+function findClassIndexForRegistration(
+  categories: DraftCategory[],
+  registration: TournamentRegistration
+): { catIndex: number; clsIndex: number } | null {
+  const classId = String(registration.classId || "").trim().toLowerCase();
+  const categoryId = String(registration.categoryId || "").trim().toLowerCase();
+  const className = String(registration.className || "").trim().toLowerCase();
+  const categoryName = String(registration.categoryName || "").trim().toLowerCase();
+
+  if (classId) {
+    for (let ci = 0; ci < categories.length; ci += 1) {
+      const cat = categories[ci];
+      if (categoryId && cat.id.toLowerCase() !== categoryId) continue;
+      for (let ki = 0; ki < cat.classes.length; ki += 1) {
+        const cls = cat.classes[ki];
+        if (cls.id.toLowerCase() === classId) return { catIndex: ci, clsIndex: ki };
+      }
+    }
+  }
+
+  if (className) {
+    for (let ci = 0; ci < categories.length; ci += 1) {
+      const cat = categories[ci];
+      if (categoryName && cat.nome.trim().toLowerCase() !== categoryName) continue;
+      for (let ki = 0; ki < cat.classes.length; ki += 1) {
+        const cls = cat.classes[ki];
+        if (cls.nome.trim().toLowerCase() === className) return { catIndex: ci, clsIndex: ki };
+      }
+    }
+  }
+
+  return null;
+}
+
+function pickGroupForRegistration(participants: ClassData["participantes"]): "A" | "B" {
+  const countA = participants.filter((p) => String(p.grupo || "").toUpperCase() === "A").length;
+  const countB = participants.filter((p) => String(p.grupo || "").toUpperCase() === "B").length;
+  return countA <= countB ? "A" : "B";
+}
+
+function mergeApprovedRegistrationsIntoDraft(
+  draft: DraftCategory[],
+  registrations: TournamentRegistration[]
+): { draft: DraftCategory[]; stats: ApprovedRegistrationMergeStats } {
+  const next = structuredClone(draft);
+  const stats: ApprovedRegistrationMergeStats = {
+    added: 0,
+    duplicated: 0,
+    missingClass: 0,
+    incompatible: 0,
+    invalid: 0,
+  };
+
+  registrations
+    .filter((r) => r.status === "approved")
+    .forEach((reg) => {
+      const playerName = String(reg.playerName || "").trim().replace(/\s+/g, " ");
+      if (!playerName) {
+        stats.invalid += 1;
+        return;
+      }
+
+      const idx = findClassIndexForRegistration(next, reg);
+      if (!idx) {
+        stats.missingClass += 1;
+        return;
+      }
+
+      const cls = next[idx.catIndex]?.classes[idx.clsIndex];
+      if (!cls) {
+        stats.missingClass += 1;
+        return;
+      }
+
+      const config = cls.data.config;
+      if (isFixedDoublesConfig(config)) {
+        // Link registration currently collects one player only.
+        stats.incompatible += 1;
+        return;
+      }
+
+      const alreadyExists = cls.data.participantes.some(
+        (p) => String(p.nome || "").trim().toLowerCase() === playerName.toLowerCase()
+      );
+      if (alreadyExists) {
+        stats.duplicated += 1;
+        return;
+      }
+
+      cls.data.participantes.push({
+        nome: playerName,
+        grupo: needsGroupABConfig(config) ? pickGroupForRegistration(cls.data.participantes) : null,
+        telefone: normalizePhone(reg.phone) || undefined,
+        telefone2: undefined,
+        convitePendente: false,
+        conviteEnviado: false,
+      });
+
+      stats.added += 1;
+    });
+
+  if (stats.added > 0) {
+    for (let ci = 0; ci < next.length; ci += 1) {
+      const cat = next[ci];
+      cat.classes = cat.classes.map((cls) => ({
+        ...cls,
+        data: normalizeClassData({
+          ...cls.data,
+          participantes: cls.data.participantes,
+          entradas: cls.data.participantes.map((p) => p.nome),
+          grupos: [],
+          knockout: null,
+          tabelaPorGrupo: {},
+          gerado: false,
+        }),
+      }));
+    }
+  }
+
+  return { draft: next, stats };
+}
+
 function shuffle<T>(arr: T[]): T[] {
   const out = [...arr];
   for (let i = out.length - 1; i > 0; i -= 1) {
@@ -1277,12 +1407,20 @@ export function TournamentPage({ user, profile }: Props) {
       return;
     }
 
+    const merged = mergeApprovedRegistrationsIntoDraft(draftCategories, registrations);
+    const draftSource = merged.draft;
+
+    if (merged.stats.added > 0) {
+      setDraftCategories(draftSource);
+      setDraftDirty(true);
+    }
+
     const errors: string[] = [];
     let total = 0;
     let generated = 0;
     let ignored = 0;
 
-    const nextDraft = draftCategories.map((cat) => ({
+    const nextDraft = draftSource.map((cat) => ({
       ...cat,
       classes: cat.classes.map((cls) => {
         total += 1;
@@ -1369,7 +1507,10 @@ export function TournamentPage({ user, profile }: Props) {
     withCategories.agenda = generatedAgenda as unknown as Record<string, unknown>;
     await persistTournamentData(
       withCategories,
-      `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}.`
+      `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}.` +
+        (merged.stats.added > 0
+          ? ` | inscricoes por link integradas: ${merged.stats.added} (duplicadas ${merged.stats.duplicated}, sem classe ${merged.stats.missingClass}, incompativeis ${merged.stats.incompatible}, invalidas ${merged.stats.invalid})`
+          : "")
     );
     setDraftDirty(false);
     setAgendaDirty(false);
