@@ -75,6 +75,7 @@ Portar a logica completa do `backup/index.html` para a stack atual (`React + Typ
   - geracao/copia de link por classe para o proprio atleta se inscrever
   - nova rota `/inscricao/:tournamentId` para solicitar inscricao
   - painel no organizador para aprovar/rejeitar solicitacoes pendentes
+  - filtros por status e aprovacao/rejeicao em lote das solicitacoes
 - Navegacao de eventos corrigida para fluxo SPA (`navigate`) sem reload de hash.
 - Botao de fallback "Modo completo" removido da pagina principal de torneio.
 

@@ -351,12 +351,17 @@ export function TournamentPage({ user, profile }: Props) {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newClassName, setNewClassName] = useState("");
   const [newParticipantName, setNewParticipantName] = useState("");
+  const [newParticipantNameA, setNewParticipantNameA] = useState("");
+  const [newParticipantNameB, setNewParticipantNameB] = useState("");
   const [newParticipantPhone, setNewParticipantPhone] = useState("");
   const [newParticipantPhone2, setNewParticipantPhone2] = useState("");
   const [newParticipantGroup, setNewParticipantGroup] = useState<"A" | "B">("A");
   const [bulkImportText, setBulkImportText] = useState("");
   const [groupLink, setGroupLink] = useState("");
   const [registrations, setRegistrations] = useState<TournamentRegistration[]>([]);
+  const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
+  const [selectedRegistrationIds, setSelectedRegistrationIds] = useState<string[]>([]);
+  const [registrationBusy, setRegistrationBusy] = useState(false);
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -406,6 +411,14 @@ export function TournamentPage({ user, profile }: Props) {
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([, rows]) => rows.sort((x, y) => x.quadra.localeCompare(y.quadra)));
   }, [agenda]);
+  const filteredRegistrations = useMemo(() => {
+    if (registrationFilter === "all") return registrations;
+    return registrations.filter((r) => r.status === registrationFilter);
+  }, [registrationFilter, registrations]);
+  const pendingVisibleIds = useMemo(
+    () => filteredRegistrations.filter((r) => r.status === "pending").map((r) => r.id),
+    [filteredRegistrations]
+  );
 
   useEffect(() => {
     let alive = true;
@@ -448,6 +461,10 @@ export function TournamentPage({ user, profile }: Props) {
       alive = false;
     };
   }, [user, tournamentId]);
+
+  useEffect(() => {
+    setSelectedRegistrationIds((prev) => prev.filter((id) => registrations.some((r) => r.id === id)));
+  }, [registrations]);
 
   const persistTournamentData = async (
     nextData: Record<string, unknown>,
@@ -769,18 +786,20 @@ export function TournamentPage({ user, profile }: Props) {
   const addParticipant = () => {
     if (!activeDraftCategory || !activeDraftClass) return;
     const cfg = activeDraftClass.data.config;
+    const isFixed = isFixedDoublesConfig(cfg);
     let player = newParticipantName.trim().replace(/\s+/g, " ");
     const phone = normalizePhone(newParticipantPhone);
     const phone2 = normalizePhone(newParticipantPhone2);
     const group = needsGroupABConfig(cfg) ? newParticipantGroup : null;
 
-    if (isFixedDoublesConfig(cfg)) {
-      const parts = player.split("/").map((p) => p.trim()).filter(Boolean);
-      if (parts.length !== 2) {
-        setFeedback({ kind: "error", text: "Na dupla fixa, informe: Nome A / Nome B." });
+    if (isFixed) {
+      const nameA = newParticipantNameA.trim().replace(/\s+/g, " ");
+      const nameB = newParticipantNameB.trim().replace(/\s+/g, " ");
+      if (!nameA || !nameB) {
+        setFeedback({ kind: "error", text: "Na dupla fixa, informe nome do jogador A e B." });
         return;
       }
-      player = `${parts[0]} / ${parts[1]}`;
+      player = `${nameA} / ${nameB}`;
       if (!phone || !phone2) {
         setFeedback({ kind: "error", text: "Na dupla fixa, informe os dois telefones." });
         return;
@@ -829,6 +848,8 @@ export function TournamentPage({ user, profile }: Props) {
       })
     );
     setNewParticipantName("");
+    setNewParticipantNameA("");
+    setNewParticipantNameB("");
     setNewParticipantPhone("");
     setNewParticipantPhone2("");
     setFeedback(null);
@@ -1461,15 +1482,64 @@ export function TournamentPage({ user, profile }: Props) {
   const updateRegistration = async (registrationId: string, status: "approved" | "rejected") => {
     if (!tournament) return;
     try {
+      setRegistrationBusy(true);
       await updateTournamentRegistrationStatus(tournament.id, registrationId, status);
       const regs = await loadTournamentRegistrations(user, tournament.id, tournament.role);
       setRegistrations(regs);
+      setSelectedRegistrationIds((prev) => prev.filter((id) => id !== registrationId));
       setFeedback({
         kind: "success",
         text: status === "approved" ? "Inscricao aprovada." : "Inscricao rejeitada.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao atualizar inscricao." });
+    } finally {
+      setRegistrationBusy(false);
+    }
+  };
+
+  const toggleRegistrationSelection = (registrationId: string, checked: boolean) => {
+    setSelectedRegistrationIds((prev) => {
+      if (checked) {
+        if (prev.includes(registrationId)) return prev;
+        return [...prev, registrationId];
+      }
+      return prev.filter((id) => id !== registrationId);
+    });
+  };
+
+  const toggleSelectAllVisiblePending = (checked: boolean) => {
+    if (checked) {
+      setSelectedRegistrationIds((prev) => Array.from(new Set([...prev, ...pendingVisibleIds])));
+      return;
+    }
+    setSelectedRegistrationIds((prev) => prev.filter((id) => !pendingVisibleIds.includes(id)));
+  };
+
+  const updateSelectedRegistrations = async (status: "approved" | "rejected") => {
+    if (!tournament) return;
+    const ids = selectedRegistrationIds.filter((id) => pendingVisibleIds.includes(id));
+    if (!ids.length) {
+      setFeedback({ kind: "info", text: "Selecione solicitacoes pendentes para atualizar em lote." });
+      return;
+    }
+    try {
+      setRegistrationBusy(true);
+      await Promise.all(ids.map((id) => updateTournamentRegistrationStatus(tournament.id, id, status)));
+      const regs = await loadTournamentRegistrations(user, tournament.id, tournament.role);
+      setRegistrations(regs);
+      setSelectedRegistrationIds([]);
+      setFeedback({
+        kind: "success",
+        text:
+          status === "approved"
+            ? `${ids.length} inscricao(oes) aprovada(s).`
+            : `${ids.length} inscricao(oes) rejeitada(s).`,
+      });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha na atualizacao em lote." });
+    } finally {
+      setRegistrationBusy(false);
     }
   };
 
@@ -1846,73 +1916,94 @@ export function TournamentPage({ user, profile }: Props) {
                     <option value="simples">Simples</option>
                   </select>
 
-                  <div className="cluster">
-                    <div style={{ flex: 1 }}>
-                      <label>Numero de grupos</label>
-                      <input
-                        type="number"
-                        min={2}
-                        max={16}
-                        value={activeDraftClass.data.config.numGrupos}
+                  {activeDraftClass.data.config.formato === "grupos" ? (
+                    <div className="cluster">
+                      <div style={{ flex: 1 }}>
+                        <label>Numero de grupos</label>
+                        <input
+                          type="number"
+                          min={2}
+                          max={16}
+                          value={activeDraftClass.data.config.numGrupos}
+                          onChange={(e) =>
+                            updateActiveClassConfig({
+                              numGrupos: Number.parseInt(e.target.value || "2", 10) || 2,
+                            })
+                          }
+                        />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <label>Classificados por grupo</label>
+                        <input
+                          type="number"
+                          min={1}
+                          max={16}
+                          value={activeDraftClass.data.config.classificadosPorGrupo}
+                          onChange={(e) =>
+                            updateActiveClassConfig({
+                              classificadosPorGrupo: Number.parseInt(e.target.value || "2", 10) || 2,
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {activeDraftClass.data.config.tipo === "duplas" ? (
+                    <>
+                      <label>Modo de duplas</label>
+                      <select
+                        value={activeDraftClass.data.config.modoDuplas}
                         onChange={(e) =>
                           updateActiveClassConfig({
-                            numGrupos: Number.parseInt(e.target.value || "2", 10) || 2,
+                            modoDuplas: e.target.value === "manual" ? "manual" : "sorteio",
                           })
                         }
-                      />
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <label>Classificados por grupo</label>
-                      <input
-                        type="number"
-                        min={1}
-                        max={16}
-                        value={activeDraftClass.data.config.classificadosPorGrupo}
-                        onChange={(e) =>
-                          updateActiveClassConfig({
-                            classificadosPorGrupo: Number.parseInt(e.target.value || "2", 10) || 2,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
+                      >
+                        <option value="sorteio">Sorteio de duplas</option>
+                        <option value="manual">Dupla fixa</option>
+                      </select>
 
-                  <label>Modo de duplas</label>
-                  <select
-                    value={activeDraftClass.data.config.modoDuplas}
-                    onChange={(e) =>
-                      updateActiveClassConfig({
-                        modoDuplas: e.target.value === "manual" ? "manual" : "sorteio",
-                      })
-                    }
-                  >
-                    <option value="sorteio">Sorteio</option>
-                    <option value="manual">Manual</option>
-                  </select>
-
-                  <label>Sorteio de duplas</label>
-                  <select
-                    value={activeDraftClass.data.config.sorteioDuplas}
-                    onChange={(e) =>
-                      updateActiveClassConfig({
-                        sorteioDuplas: e.target.value === "todos" ? "todos" : "grupos_ab",
-                      })
-                    }
-                  >
-                    <option value="grupos_ab">Grupos A/B</option>
-                    <option value="todos">Todos</option>
-                  </select>
+                      {activeDraftClass.data.config.modoDuplas === "sorteio" ? (
+                        <>
+                          <label>Sorteio de duplas</label>
+                          <select
+                            value={activeDraftClass.data.config.sorteioDuplas}
+                            onChange={(e) =>
+                              updateActiveClassConfig({
+                                sorteioDuplas: e.target.value === "todos" ? "todos" : "grupos_ab",
+                              })
+                            }
+                          >
+                            <option value="grupos_ab">Grupos A/B</option>
+                            <option value="todos">Todos</option>
+                          </select>
+                        </>
+                      ) : null}
+                    </>
+                  ) : null}
 
                   <label>Adicionar participante</label>
-                  <input
-                    value={newParticipantName}
-                    onChange={(e) => setNewParticipantName(e.target.value)}
-                    placeholder={
-                      isFixedDoublesConfig(activeDraftClass.data.config)
-                        ? "Nome A / Nome B"
-                        : "Nome do jogador"
-                    }
-                  />
+                  {isFixedDoublesConfig(activeDraftClass.data.config) ? (
+                    <div className="cluster" style={{ marginBottom: 8 }}>
+                      <input
+                        value={newParticipantNameA}
+                        onChange={(e) => setNewParticipantNameA(e.target.value)}
+                        placeholder="Nome jogador A"
+                      />
+                      <input
+                        value={newParticipantNameB}
+                        onChange={(e) => setNewParticipantNameB(e.target.value)}
+                        placeholder="Nome jogador B"
+                      />
+                    </div>
+                  ) : (
+                    <input
+                      value={newParticipantName}
+                      onChange={(e) => setNewParticipantName(e.target.value)}
+                      placeholder="Nome do jogador"
+                    />
+                  )}
                   <div className="cluster" style={{ marginTop: 8 }}>
                     <input
                       value={newParticipantPhone}
@@ -2073,8 +2164,64 @@ export function TournamentPage({ user, profile }: Props) {
                 }}
               >
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
-                {registrations.length === 0 ? <p className="subtle">Nenhuma solicitacao recebida.</p> : null}
-                {registrations.map((r) => (
+                <div className="cluster" style={{ marginBottom: 8 }}>
+                  <button
+                    className={registrationFilter === "all" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("all")}
+                    disabled={registrationBusy}
+                  >
+                    Todas ({registrations.length})
+                  </button>
+                  <button
+                    className={registrationFilter === "pending" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("pending")}
+                    disabled={registrationBusy}
+                  >
+                    Pendentes ({registrations.filter((r) => r.status === "pending").length})
+                  </button>
+                  <button
+                    className={registrationFilter === "approved" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("approved")}
+                    disabled={registrationBusy}
+                  >
+                    Aprovadas ({registrations.filter((r) => r.status === "approved").length})
+                  </button>
+                  <button
+                    className={registrationFilter === "rejected" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("rejected")}
+                    disabled={registrationBusy}
+                  >
+                    Rejeitadas ({registrations.filter((r) => r.status === "rejected").length})
+                  </button>
+                </div>
+                {tournament?.role === "owner" && pendingVisibleIds.length > 0 ? (
+                  <div className="cluster" style={{ marginBottom: 8 }}>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                      <input
+                        type="checkbox"
+                        checked={pendingVisibleIds.every((id) => selectedRegistrationIds.includes(id))}
+                        onChange={(e) => toggleSelectAllVisiblePending(e.target.checked)}
+                        disabled={registrationBusy}
+                      />
+                      Selecionar pendentes visiveis
+                    </label>
+                    <button
+                      onClick={() => void updateSelectedRegistrations("approved")}
+                      disabled={registrationBusy || selectedRegistrationIds.length === 0}
+                    >
+                      Aprovar selecionadas
+                    </button>
+                    <button
+                      className="danger"
+                      onClick={() => void updateSelectedRegistrations("rejected")}
+                      disabled={registrationBusy || selectedRegistrationIds.length === 0}
+                    >
+                      Rejeitar selecionadas
+                    </button>
+                  </div>
+                ) : null}
+                {filteredRegistrations.length === 0 ? <p className="subtle">Nenhuma solicitacao neste filtro.</p> : null}
+                {filteredRegistrations.map((r) => (
                   <div
                     key={r.id}
                     style={{
@@ -2096,10 +2243,19 @@ export function TournamentPage({ user, profile }: Props) {
                     </div>
                     {tournament?.role === "owner" && r.status === "pending" ? (
                       <div className="cluster">
-                        <button onClick={() => void updateRegistration(r.id, "approved")} disabled={saving}>
+                        <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          <input
+                            type="checkbox"
+                            checked={selectedRegistrationIds.includes(r.id)}
+                            onChange={(e) => toggleRegistrationSelection(r.id, e.target.checked)}
+                            disabled={registrationBusy}
+                          />
+                          Sel
+                        </label>
+                        <button onClick={() => void updateRegistration(r.id, "approved")} disabled={saving || registrationBusy}>
                           Aprovar
                         </button>
-                        <button className="danger" onClick={() => void updateRegistration(r.id, "rejected")} disabled={saving}>
+                        <button className="danger" onClick={() => void updateRegistration(r.id, "rejected")} disabled={saving || registrationBusy}>
                           Rejeitar
                         </button>
                       </div>
