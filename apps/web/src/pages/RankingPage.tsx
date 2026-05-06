@@ -9,15 +9,21 @@ type Props = {
 
 export function RankingPage({ user, profile }: Props) {
   return (
-    <AppShell user={user} profile={profile}>
-      <div className="card">
-        <h1 style={{ marginTop: 0 }}>Ranking</h1>
-        <p>🎉 <strong>Novidade chegando!</strong></p>
-        <p className="subtle">
-          O ranking ATP estará disponível em breve. Acompanhe sua posição e a dos outros atletas
-          nos torneios e veja quem está dominando as quadras 🏆
+    <AppShell user={user} profile={profile} showHeader={false}>
+      <div className="page-header">
+        <h1>Ranking</h1>
+      </div>
+
+      <div className="ranking-coming-soon">
+        <span className="rcs-emoji" role="img" aria-label="festa">🎉</span>
+        <h2>Novidade chegando!</h2>
+        <p>
+          A funcionalidade de Ranking do Copa Pro estará disponível em breve.
         </p>
-        <p className="subtle">Fique ligado 👀</p>
+        <p>
+          Acompanhe sua posição e a dos demais atletas nos torneios e veja quem está dominando as quadras! 🏆
+        </p>
+        <p style={{ marginTop: 24 }}>Fique ligado! 👀</p>
       </div>
     </AppShell>
   );
