@@ -122,20 +122,35 @@ export function shuffle<T>(arr: T[]): T[] {
 }
 
 export function buildRoundRobin(entries: string[]): GroupMatch[] {
-  const matches: GroupMatch[] = [];
-  for (let i = 0; i < entries.length; i += 1) {
-    for (let j = i + 1; j < entries.length; j += 1) {
-      matches.push({
-        a: entries[i] as string,
-        b: entries[j] as string,
-        s1: "",
-        s2: "",
-        done: false,
-        winner: null,
-      });
+  let list = [...entries];
+  const rounds: GroupMatch[] = [];
+  if (list.length % 2 !== 0) list.push("BYE");
+  const n = list.length;
+  if (n < 2) return rounds;
+
+  for (let r = 0; r < n - 1; r += 1) {
+    for (let i = 0; i < n / 2; i += 1) {
+      const a = list[i] as string;
+      const b = list[n - 1 - i] as string;
+      if (a !== "BYE" && b !== "BYE") {
+        rounds.push({
+          a,
+          b,
+          s1: "",
+          s2: "",
+          done: false,
+          winner: null,
+        });
+      }
     }
+
+    const fixed = list[0] as string;
+    const rest = list.slice(1);
+    const tail = rest.pop();
+    if (tail !== undefined) rest.unshift(tail);
+    list = [fixed, ...rest];
   }
-  return matches;
+  return rounds;
 }
 
 export function splitIntoGroups(entries: string[], numGrupos: number): Group[] {
@@ -145,7 +160,8 @@ export function splitIntoGroups(entries: string[], numGrupos: number): Group[] {
     groups.push({ name: `Grupo ${i + 1}`, entries: [], matches: [] });
   }
 
-  entries.forEach((entry, idx) => {
+  const mixed = shuffle(entries.filter(Boolean));
+  mixed.forEach((entry, idx) => {
     const gi = idx % n;
     (groups[gi] as Group).entries.push(entry);
   });
@@ -173,113 +189,69 @@ export function nomeRodada(matches: number): string {
 }
 
 function winnerFromMatch(m: KnockoutMatch): string | null {
+  if (!m) return null;
+  if (m.a === "BYE" && m.b && m.b !== "BYE") return m.b;
+  if (m.b === "BYE" && m.a && m.a !== "BYE") return m.a;
   if (!m.done) return null;
   const a = Number.parseInt(m.s1, 10);
   const b = Number.parseInt(m.s2, 10);
-  if (Number.isNaN(a) || Number.isNaN(b) || a === b) return null;
+  if (Number.isNaN(a) || Number.isNaN(b)) return null;
+  if (a === b) return null;
   return a > b ? m.a : m.b;
 }
 
 export function buildKnockout(entries: string[]): Knockout {
   const clean = entries.filter(Boolean);
-  const total = clean.length;
-  const bracketSize = nextPowerOf2(Math.max(2, total));
-  const byes = Math.max(0, bracketSize - total);
-
-  const firstRound: KnockoutMatch[] = [];
-  const temPreliminar = total > bracketSize / 2;
-
-  if (temPreliminar) {
-    const prelimParticipants = (bracketSize - total) * 2;
-    const sorted = [...clean];
-    const prelim = sorted.slice(0, prelimParticipants);
-    const direct = sorted.slice(prelimParticipants);
-
-    for (let i = 0; i < prelim.length; i += 2) {
-      firstRound.push({
-        a: prelim[i] ?? null,
-        b: prelim[i + 1] ?? null,
-        s1: "",
-        s2: "",
-        done: false,
-        winner: null,
-      });
-    }
-
-    const next: KnockoutMatch[] = [];
-    for (let i = 0; i < bracketSize / 2; i += 1) {
-      next.push({ a: null, b: null, s1: "", s2: "", done: false, winner: null });
-    }
-
-    let di = 0;
-    for (let i = 0; i < next.length; i += 1) {
-      const pick = direct[di];
-      if (pick) {
-        next[i] = { ...next[i], a: pick, b: null, winner: pick, done: true, s1: "1", s2: "0" };
-        di += 1;
-      }
-    }
-
-    const rounds: KnockoutRound[] = [{ name: "Rodada Preliminar", matches: firstRound }, { name: nomeRodada(next.length), matches: next }];
-
-    let size = next.length;
-    while (size > 1) {
-      size = Math.floor(size / 2);
-      rounds.push({
-        name: nomeRodada(size),
-        matches: Array.from({ length: size }).map(() => ({ a: null, b: null, s1: "", s2: "", done: false, winner: null })),
-      });
-    }
-
-    const out: Knockout = {
-      rounds,
+  if (clean.length < 2) {
+    return {
+      rounds: [],
       meta: {
-        totalEntradas: total,
-        bracketSize,
-        temPreliminar: true,
-        jogosReaisPrimeiraRodada: firstRound.length,
-        byesPrimeiraRodada: byes,
+        totalEntradas: clean.length,
+        bracketSize: 0,
+        temPreliminar: false,
+        jogosReaisPrimeiraRodada: 0,
+        byesPrimeiraRodada: 0,
       },
     };
-
-    recomputeKnockout(out);
-    return out;
   }
 
-  const shuffled = [...clean];
-  while (shuffled.length < bracketSize) shuffled.push("");
-  for (let i = 0; i < shuffled.length; i += 2) {
-    const a = shuffled[i] || null;
-    const b = shuffled[i + 1] || null;
-    const byeWin = !!a && !b;
-    firstRound.push({
-      a,
-      b,
-      s1: byeWin ? "1" : "",
-      s2: byeWin ? "0" : "",
-      done: byeWin,
-      winner: byeWin ? a : null,
-    });
+  const shuffled = shuffle([...clean]);
+  const bracketSize = nextPowerOf2(shuffled.length);
+  const padded = [...shuffled];
+  while (padded.length < bracketSize) padded.push("BYE");
+
+  const rounds: KnockoutRound[] = [];
+  const first: KnockoutMatch[] = [];
+  for (let i = 0; i < padded.length / 2; i += 1) {
+    const a = padded[i] as string;
+    const b = padded[padded.length - 1 - i] as string;
+    first.push({ a, b, s1: "", s2: "", done: false, winner: null });
   }
 
-  const rounds: KnockoutRound[] = [{ name: nomeRodada(firstRound.length), matches: firstRound }];
-  let size = firstRound.length;
-  while (size > 1) {
-    size = Math.floor(size / 2);
-    rounds.push({
-      name: nomeRodada(size),
-      matches: Array.from({ length: size }).map(() => ({ a: null, b: null, s1: "", s2: "", done: false, winner: null })),
-    });
+  const temPreliminar = clean.length !== bracketSize;
+  rounds.push({ name: temPreliminar ? "Rodada Preliminar" : nomeRodada(first.length), matches: first });
+
+  let q = first.length;
+  while (q > 1) {
+    q = q / 2;
+    const matches: KnockoutMatch[] = [];
+    for (let i = 0; i < q; i += 1) {
+      matches.push({ a: null, b: null, s1: "", s2: "", done: false, winner: null });
+    }
+    rounds.push({ name: nomeRodada(q), matches });
   }
+
+  const byesPrimeira = first.filter((m) => m.a === "BYE" || m.b === "BYE").length;
+  const jogosReaisPrimeira = first.filter((m) => m.a !== "BYE" && m.b !== "BYE").length;
 
   const out: Knockout = {
     rounds,
     meta: {
-      totalEntradas: total,
+      totalEntradas: clean.length,
       bracketSize,
-      temPreliminar: false,
-      jogosReaisPrimeiraRodada: firstRound.filter((m) => !!m.a && !!m.b).length,
-      byesPrimeiraRodada: byes,
+      temPreliminar,
+      byesPrimeiraRodada: byesPrimeira,
+      jogosReaisPrimeiraRodada: jogosReaisPrimeira,
     },
   };
 
@@ -295,11 +267,9 @@ export function recomputeKnockout(knockout: Knockout): void {
     const round = rounds[r] as KnockoutRound;
     for (let i = 0; i < round.matches.length; i += 1) {
       const m = round.matches[i] as KnockoutMatch;
-      if (m.a && !m.b) {
+      if (!m) continue;
+      if (m.a === "BYE" || m.b === "BYE") {
         m.done = true;
-        m.winner = m.a;
-        if (!m.s1) m.s1 = "1";
-        if (!m.s2) m.s2 = "0";
       } else if (!m.a || !m.b) {
         m.done = false;
         m.winner = null;

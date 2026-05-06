@@ -520,6 +520,35 @@ export function generateScheduleAssignments(
     return String(a.quadra).localeCompare(String(b.quadra));
   });
 
+  // Safety net: enforce day/court locks for semifinals/finals exactly as configured.
+  if (cfg.travarSemifinalDia) {
+    const invalidSemiDay = assignments.find((a) => a.isSemifinal && !a.isFinal && a.data !== cfg.diaSemifinal);
+    if (invalidSemiDay) {
+      throw new Error("Erro de agenda: semifinal fora do dia configurado.");
+    }
+  }
+  if (cfg.travarFinalDia) {
+    const invalidFinalDay = assignments.find((a) => a.isFinal && a.data !== cfg.diaFinal);
+    if (invalidFinalDay) {
+      throw new Error("Erro de agenda: final fora do dia configurado.");
+    }
+  }
+
+  const allowedSemiCourts = new Set((cfg.quadrasSemifinal || []).map((q) => String(q).toLowerCase()));
+  const allowedFinalCourts = new Set((cfg.quadrasFinal || []).map((q) => String(q).toLowerCase()));
+  const invalidSemiCourt = assignments.find(
+    (a) => a.isSemifinal && !a.isFinal && allowedSemiCourts.size > 0 && !allowedSemiCourts.has(String(a.quadra).toLowerCase())
+  );
+  if (invalidSemiCourt) {
+    throw new Error("Erro de agenda: semifinal fora das quadras permitidas.");
+  }
+  const invalidFinalCourt = assignments.find(
+    (a) => a.isFinal && allowedFinalCourts.size > 0 && !allowedFinalCourts.has(String(a.quadra).toLowerCase())
+  );
+  if (invalidFinalCourt) {
+    throw new Error("Erro de agenda: final fora das quadras permitidas.");
+  }
+
   const total = regulares.length + semifinais.length + finais.length;
   return {
     assignments,

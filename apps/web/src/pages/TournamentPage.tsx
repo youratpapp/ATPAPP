@@ -651,27 +651,6 @@ export function TournamentPage({ user, profile }: Props) {
     });
   };
 
-  const generateAgenda = () => {
-    try {
-      const result = generateScheduleAssignments(scheduleInputs, agendaConfig);
-      setAgenda(result);
-      setAgendaDirty(true);
-      if (result.unassigned > 0) {
-        setFeedback({
-          kind: "error",
-          text: `Agenda incompleta: ${result.assignments.length}/${result.total} partidas alocadas.`,
-        });
-      } else {
-        setFeedback({
-          kind: "success",
-          text: `Agenda criada: ${result.assignments.length}/${result.total} partidas alocadas.`,
-        });
-      }
-    } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao gerar agenda." });
-    }
-  };
-
   const saveOrganization = async () => {
     if (!tournament) return;
     const nextData = structuredClone((tournament.data ?? {}) as Record<string, unknown>);
@@ -1194,7 +1173,7 @@ export function TournamentPage({ user, profile }: Props) {
     setAgendaDirty(false);
   };
 
-  const generateAllClasses = () => {
+  const generateAllClasses = async () => {
     if (!draftCategories.length) {
       setFeedback({ kind: "error", text: "Nao ha categorias/classes criadas." });
       return;
@@ -1277,10 +1256,26 @@ export function TournamentPage({ user, profile }: Props) {
     setDraftDirty(true);
     setAgenda(generatedAgenda);
     setAgendaDirty(true);
-    setFeedback({
-      kind: "success",
-      text: `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}. Salve para persistir.`,
-    });
+
+    if (!tournament) {
+      setFeedback({
+        kind: "success",
+        text: `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}.`,
+      });
+      return;
+    }
+
+    const baseData = (tournament.data ?? {}) as Record<string, unknown>;
+    const withCategories = buildTournamentDataWithDraftCategories(baseData, nextDraft);
+    withCategories.linkGrupo = groupLink.trim();
+    withCategories.agendaConfig = agendaConfig as unknown as Record<string, unknown>;
+    withCategories.agenda = generatedAgenda as unknown as Record<string, unknown>;
+    await persistTournamentData(
+      withCategories,
+      `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}.`
+    );
+    setDraftDirty(false);
+    setAgendaDirty(false);
   };
 
   const resetOnlyDraw = () => {
@@ -2166,7 +2161,7 @@ export function TournamentPage({ user, profile }: Props) {
               >
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Operacoes e exportacoes</h3>
                 <div className="cluster" style={{ marginBottom: 8 }}>
-                  <button className="primary" onClick={generateAllClasses} disabled={saving}>
+                  <button className="primary" onClick={() => void generateAllClasses()} disabled={saving}>
                     Gerar campeonatos
                   </button>
                   <button onClick={saveAllChanges} disabled={saving}>
@@ -2526,9 +2521,6 @@ export function TournamentPage({ user, profile }: Props) {
               </div>
 
               <div className="cluster" style={{ marginTop: 14 }}>
-                <button className="primary" onClick={generateAgenda} disabled={saving}>
-                  Gerar agenda
-                </button>
                 <button onClick={saveOrganization} disabled={saving}>
                   Salvar organizacao
                 </button>
@@ -2541,7 +2533,7 @@ export function TournamentPage({ user, profile }: Props) {
                 </p>
               ) : (
                 <p className="subtle" style={{ marginTop: 12 }}>
-                  Defina dias, horarios e quadras para gerar a agenda.
+                  Defina dias, horarios e quadras. A agenda sera gerada automaticamente em "Gerar campeonatos".
                 </p>
               )}
 
