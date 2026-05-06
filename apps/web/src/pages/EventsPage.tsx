@@ -17,11 +17,111 @@ type Props = {
 
 type TabKey = "all" | "participating" | "organizing";
 
-function formatDate(v: string): string {
-  if (!v) return "";
-  const d = new Date(v);
-  if (Number.isNaN(d.getTime())) return v;
-  return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+function formatDateRange(starts: string, ends?: string): string {
+  if (!starts) return "Data a definir";
+  const s = new Date(starts);
+  if (Number.isNaN(s.getTime())) return starts;
+  const opts: Intl.DateTimeFormatOptions = { day: "2-digit", month: "short" };
+  const startStr = s.toLocaleDateString("pt-BR", opts);
+  if (!ends) return `${startStr} · ${s.getFullYear()}`;
+  const e = new Date(ends);
+  if (Number.isNaN(e.getTime())) return startStr;
+  return `${startStr} - ${e.toLocaleDateString("pt-BR", opts)} ${e.getFullYear()}`;
+}
+
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
+function LocationPinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+      <circle cx="12" cy="9" r="2.5" />
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="9 18 15 12 9 6" />
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+function EventCard({ t, isOwner, onOpen, onCopyLink }: {
+  t: TournamentSummary;
+  isOwner: boolean;
+  onOpen: () => void;
+  onCopyLink?: () => void;
+}) {
+  const location = [t.city, t.state].filter(Boolean).join(" - ");
+
+  return (
+    <article className="event-card" onClick={onOpen}>
+      {t.posterUrl ? (
+        <img className="ec-poster" src={t.posterUrl} alt="" />
+      ) : (
+        <div className="ec-poster-placeholder">
+          <span>🎾</span>
+        </div>
+      )}
+      <div className="ec-body">
+        <div className="ec-name-row">
+          <p className="ec-name">{t.name}</p>
+          <StatusBadge status={t.status} />
+        </div>
+
+        {t.startsAt && (
+          <div className="ec-info-row">
+            <span className="ec-info-left">
+              <CalendarIcon />
+              {formatDateRange(t.startsAt)}
+            </span>
+            <span className="ec-chevron"><ChevronRight /></span>
+          </div>
+        )}
+
+        {location && (
+          <div className="ec-info-row">
+            <span className="ec-info-left">
+              <LocationPinIcon />
+              {location}
+            </span>
+          </div>
+        )}
+
+        {isOwner && onCopyLink && (
+          <div className="ec-footer">
+            <span className="ec-footer-left">Você organiza</span>
+            <button
+              style={{ minHeight: "auto", padding: "4px 10px", fontSize: "var(--font-size-xs)" }}
+              onClick={(e) => { e.stopPropagation(); onCopyLink(); }}
+            >
+              Copiar link
+            </button>
+          </div>
+        )}
+      </div>
+    </article>
+  );
 }
 
 export function EventsPage({ user, profile }: Props) {
@@ -113,12 +213,17 @@ export function EventsPage({ user, profile }: Props) {
   };
 
   return (
-    <AppShell user={user} profile={profile}>
-      <div className="section-title">
-        <h2>Eventos</h2>
-        <div className="cluster">
-          <button onClick={() => setShowJoin(true)}>Entrar por UUID</button>
-          <button className="primary" onClick={() => setShowCreate(true)}>+ Criar</button>
+    <AppShell user={user} profile={profile} showHeader={false}>
+      {/* Page header */}
+      <div className="page-header">
+        <h1>Eventos</h1>
+        <div className="ph-actions">
+          <button className="ph-icon-btn" onClick={() => setShowJoin(true)} aria-label="Buscar" title="Entrar por código">
+            <SearchIcon />
+          </button>
+          <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Criar evento">
+            +
+          </button>
         </div>
       </div>
 
@@ -127,14 +232,18 @@ export function EventsPage({ user, profile }: Props) {
           Todos
         </button>
         <button className={tab === "participating" ? "active" : ""} onClick={() => setTab("participating")}>
-          Participando ({participating.length})
+          Participando {participating.length > 0 ? `(${participating.length})` : ""}
         </button>
         <button className={tab === "organizing" ? "active" : ""} onClick={() => setTab("organizing")}>
-          Organizando ({organizing.length})
+          Organizando {organizing.length > 0 ? `(${organizing.length})` : ""}
         </button>
       </div>
 
-      {feedback ? <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>{feedback.text}</p> : null}
+      {feedback ? (
+        <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
+          {feedback.text}
+        </p>
+      ) : null}
 
       {loading ? <p className="subtle">Carregando...</p> : null}
 
@@ -148,30 +257,15 @@ export function EventsPage({ user, profile }: Props) {
         </div>
       ) : null}
 
-      {list.map((t) => {
-        const isOwner = t.ownerId === user.id;
-        return (
-          <article key={t.id} className="list-item">
-            <div className="li-thumb">
-              {t.posterUrl ? <img src={t.posterUrl} alt="" /> : <span aria-hidden>🎾</span>}
-            </div>
-            <div className="li-body">
-              <p className="li-title">{t.name}</p>
-              <p className="li-meta">
-                {t.startsAt ? <span>📅 {formatDate(t.startsAt)}</span> : null}
-                {t.city || t.state ? <span>📍 {[t.city, t.state].filter(Boolean).join(" - ")}</span> : null}
-                <StatusBadge status={t.status} />
-              </p>
-            </div>
-            <div className="li-actions">
-              <button className="primary" onClick={() => window.location.assign(buildLegacyUrl(t.id))}>
-                Abrir
-              </button>
-              {isOwner ? <button onClick={() => copyInvite(t.id)}>Link</button> : null}
-            </div>
-          </article>
-        );
-      })}
+      {list.map((t) => (
+        <EventCard
+          key={t.id}
+          t={t}
+          isOwner={t.ownerId === user.id}
+          onOpen={() => window.location.assign(buildLegacyUrl(t.id))}
+          onCopyLink={() => copyInvite(t.id)}
+        />
+      ))}
 
       {showCreate ? (
         <div className="modal-backdrop" onClick={() => setShowCreate(false)}>

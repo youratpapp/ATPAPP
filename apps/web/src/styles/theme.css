@@ -1,6 +1,6 @@
 /* =====================================================================
    ATP — design tokens
-   Paleta navy + verde-limão + neutros.
+   Paleta verde-floresta (Copa Pro) + neutros.
    ===================================================================== */
 :root {
   /* Marca */
@@ -10,12 +10,13 @@
   --color-navy-600: #2d3a5c;
   --color-navy-500: #475569;
 
-  --color-lime-700: #4d7c0f;
-  --color-lime-600: #65a30d;
-  --color-lime-500: #84cc16;
-  --color-lime-400: #a3e635;
-  --color-lime-300: #bef264;
-  --color-lime-100: #ecfccb;
+  --color-green-800: #0f4a28;
+  --color-green-700: #155e32;
+  --color-green-600: #1e7c46;
+  --color-green-500: #25a05a;
+  --color-green-400: #4aba7c;
+  --color-green-200: #a8dfbf;
+  --color-green-100: #e6f4ed;
 
   --color-bg: #f5f7fb;
   --color-surface: #ffffff;
@@ -27,13 +28,13 @@
   --color-text-muted: #475569;
   --color-text-subtle: #64748b;
 
-  --color-success: #16a34a;
+  --color-success: #1e7c46;
   --color-warning: #d97706;
   --color-danger: #dc2626;
   --color-info: #2563eb;
 
-  --color-status-open-bg: #ecfccb;
-  --color-status-open-fg: #3f6212;
+  --color-status-open-bg: #e6f4ed;
+  --color-status-open-fg: #155e32;
   --color-status-live-bg: #dbeafe;
   --color-status-live-fg: #1d4ed8;
   --color-status-closed-bg: #f1f5f9;
@@ -41,11 +42,11 @@
   --color-status-finished-bg: #e2e8f0;
   --color-status-finished-fg: #334155;
 
-  /* Brand role tokens (apontam para a paleta) */
-  --color-primary: var(--color-lime-600);
+  /* Brand role tokens */
+  --color-primary: var(--color-green-600);
   --color-primary-fg: #ffffff;
-  --color-primary-soft: var(--color-lime-100);
-  --color-primary-strong: var(--color-lime-700);
+  --color-primary-soft: var(--color-green-100);
+  --color-primary-strong: var(--color-green-700);
 
   --color-secondary: var(--color-navy-800);
   --color-secondary-fg: #ffffff;
@@ -83,6 +84,6 @@
   --shadow-lg: 0 16px 32px rgba(15, 30, 61, 0.12);
 
   /* Layout */
-  --bottom-nav-height: 64px;
+  --bottom-nav-height: 68px;
   --content-max-width: 980px;
 }

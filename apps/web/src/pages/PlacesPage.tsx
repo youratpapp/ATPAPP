@@ -19,6 +19,24 @@ type Props = {
 
 type TabKey = "all" | "following" | "mine";
 
+function LocationPinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+      <circle cx="12" cy="9" r="2.5" />
+    </svg>
+  );
+}
+
+function ThumbUpIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" />
+      <path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" />
+    </svg>
+  );
+}
+
 export function PlacesPage({ user, profile }: Props) {
   const [tab, setTab] = useState<TabKey>("all");
   const [places, setPlaces] = useState<Place[]>([]);
@@ -109,10 +127,15 @@ export function PlacesPage({ user, profile }: Props) {
   };
 
   return (
-    <AppShell user={user} profile={profile}>
-      <div className="section-title">
-        <h2>Locais</h2>
-        <button className="primary" onClick={() => setShowCreate(true)}>+ Adicionar</button>
+    <AppShell user={user} profile={profile} showHeader={false}>
+      {/* Page header */}
+      <div className="page-header">
+        <h1>Locais</h1>
+        <div className="ph-actions">
+          <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Adicionar local">
+            +
+          </button>
+        </div>
       </div>
 
       <div className="tabs">
@@ -164,9 +187,15 @@ export function PlacesPage({ user, profile }: Props) {
             <div>
               <p className="pc-name">{p.name}</p>
               <div className="pc-meta">
-                {p.city || p.state ? <span>📍 {[p.city, p.state].filter(Boolean).join(" - ")}</span> : null}
-                <span className="pc-followers">
-                  👍 {p.followerCount} {p.followerCount === 1 ? "seguidor" : "seguidores"}
+                {(p.city || p.state) && (
+                  <span className="pc-meta-row">
+                    <LocationPinIcon />
+                    {[p.city, p.state].filter(Boolean).join(" - ")}
+                  </span>
+                )}
+                <span className="pc-meta-row">
+                  <ThumbUpIcon />
+                  {p.followerCount} {p.followerCount === 1 ? "seguidor" : "seguidores"}
                 </span>
               </div>
             </div>
@@ -180,7 +209,7 @@ export function PlacesPage({ user, profile }: Props) {
                   disabled={busy}
                   onClick={() => onToggleFollow(p)}
                 >
-                  {p.isFollowing ? "Seguindo" : "Seguir"}
+                  {p.isFollowing ? "✓ Seguindo" : "Seguir"}
                 </button>
               ) : (
                 <button disabled>Meu local</button>
