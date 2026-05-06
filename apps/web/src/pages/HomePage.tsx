@@ -4,7 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import type { Profile, TournamentSummary } from "../lib/types";
-import { buildLegacyUrl, loadUpcomingPublic } from "../lib/tournaments";
+import { buildTournamentUrl, loadUpcomingPublic } from "../lib/tournaments";
 
 type Props = {
   user: User;
@@ -183,7 +183,7 @@ export function HomePage({ user, profile }: Props) {
         <EventCard
           key={t.id}
           t={t}
-          onOpen={() => window.location.assign(buildLegacyUrl(t.id))}
+          onOpen={() => navigate(buildTournamentUrl(t.id))}
         />
       ))}
     </AppShell>

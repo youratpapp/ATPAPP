@@ -36,3 +36,9 @@ export type TournamentSummary = {
   registrationCloseAt: string;
   updatedAt: string;
 };
+
+export type TournamentDetails = TournamentSummary & {
+  createdAt: string;
+  data: Record<string, unknown>;
+  role: "owner" | "participant" | "viewer";
+};

@@ -4,7 +4,7 @@ import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import type { Profile, TournamentSummary } from "../lib/types";
 import {
-  buildLegacyUrl,
+  buildTournamentUrl,
   createTournament,
   joinTournament,
   loadDashboardData,
@@ -173,7 +173,7 @@ export function EventsPage({ user, profile }: Props) {
       setNewCity("");
       setNewState("");
       setNewVisibility("private");
-      window.location.assign(buildLegacyUrl(id));
+      window.location.assign(`#${buildTournamentUrl(id)}`);
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao criar." });
     } finally {
@@ -189,7 +189,7 @@ export function EventsPage({ user, profile }: Props) {
       await joinTournament(user, id);
       setShowJoin(false);
       setJoinUuid("");
-      window.location.assign(buildLegacyUrl(id));
+      window.location.assign(`#${buildTournamentUrl(id)}`);
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao participar." });
     } finally {
@@ -205,7 +205,7 @@ export function EventsPage({ user, profile }: Props) {
       : [...organizing, ...participating].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 
   const copyInvite = (id: string) => {
-    const link = `${window.location.origin}${buildLegacyUrl(id)}`;
+    const link = `${window.location.origin}${window.location.pathname}#/join/${id}`;
     navigator.clipboard
       .writeText(link)
       .then(() => setFeedback({ kind: "success", text: "Link copiado." }))
@@ -262,7 +262,7 @@ export function EventsPage({ user, profile }: Props) {
           key={t.id}
           t={t}
           isOwner={t.ownerId === user.id}
-          onOpen={() => window.location.assign(buildLegacyUrl(t.id))}
+          onOpen={() => window.location.assign(`#${buildTournamentUrl(t.id)}`)}
           onCopyLink={() => copyInvite(t.id)}
         />
       ))}
