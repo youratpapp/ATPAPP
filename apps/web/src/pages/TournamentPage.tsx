@@ -1257,12 +1257,25 @@ export function TournamentPage({ user, profile }: Props) {
     setAgendaDirty(false);
   };
 
+  const requireDoubleConfirmation = (firstMessage: string, secondMessage: string) => {
+    if (!window.confirm(firstMessage)) return false;
+    return window.confirm(secondMessage);
+  };
+
   const generateAllClasses = async () => {
     if (!draftCategories.length) {
       setFeedback({ kind: "error", text: "Nao ha categorias/classes criadas." });
       return;
     }
-    if (!window.confirm("Deseja gerar os campeonatos agora? Isso substitui chaves e partidas atuais.")) return;
+    if (
+      !requireDoubleConfirmation(
+        "Deseja gerar os campeonatos agora? Isso substitui chaves e partidas atuais.",
+        "Confirmacao final: gerar campeonatos e substituir chaves/partidas existentes?"
+      )
+    ) {
+      setFeedback({ kind: "info", text: "Geracao de campeonatos cancelada." });
+      return;
+    }
 
     const errors: string[] = [];
     let total = 0;
@@ -1364,10 +1377,12 @@ export function TournamentPage({ user, profile }: Props) {
 
   const resetOnlyDraw = () => {
     if (
-      !window.confirm(
-        "Resetar apenas sorteio/partidas? Isso vai limpar jogos, chaves e agenda, mantendo categorias e participantes."
+      !requireDoubleConfirmation(
+        "Resetar apenas sorteio/partidas? Isso vai limpar jogos, chaves e agenda, mantendo categorias e participantes.",
+        "Confirmacao final: resetar sorteio/partidas agora?"
       )
     ) {
+      setFeedback({ kind: "info", text: "Resetar sorteio/partidas cancelado." });
       return;
     }
     const nextDraft = draftCategories.map((cat) => ({
@@ -1382,9 +1397,12 @@ export function TournamentPage({ user, profile }: Props) {
   };
 
   const resetAllTournament = () => {
-    if (!window.confirm("Tem certeza que deseja resetar TODO o torneio?")) return;
-    const confirmation = window.prompt('Digite RESETAR para confirmar:');
-    if (confirmation !== "RESETAR") {
+    if (
+      !requireDoubleConfirmation(
+        "Tem certeza que deseja resetar TODO o torneio?",
+        "Confirmacao final: reset total (categorias, classes, jogos e agenda)?"
+      )
+    ) {
       setFeedback({ kind: "info", text: "Reset total cancelado." });
       return;
     }
