@@ -20,6 +20,7 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState(profile?.displayName ?? "");
   const [phone, setPhone] = useState(profile?.phone ?? "");
+  const [birthDate, setBirthDate] = useState(profile?.birthDate ?? "");
   const [city, setCity] = useState(profile?.city ?? "");
   const [stateUf, setStateUf] = useState(normalizeStateUf(profile?.state ?? ""));
   const [cityOptions, setCityOptions] = useState<string[]>([]);
@@ -75,11 +76,12 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
 
     const cleanedName = displayName.trim();
     const cleanedPhone = phone.trim();
+    const cleanedBirthDate = birthDate.trim();
     const cleanedCity = city.trim();
     const cleanedState = normalizedUf;
 
-    if (!cleanedName || !cleanedPhone || !cleanedCity || !cleanedState) {
-      setMsg({ kind: "error", text: "Preencha Nome, Telefone, Cidade e Estado (UF)." });
+    if (!cleanedName || !cleanedPhone || !cleanedBirthDate || !cleanedCity || !cleanedState) {
+      setMsg({ kind: "error", text: "Preencha Nome, Telefone, Data de nascimento, Cidade e Estado (UF)." });
       return;
     }
 
@@ -88,6 +90,7 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
       const next = await upsertProfile(user, {
         displayName: cleanedName,
         phone: cleanedPhone,
+        birthDate: cleanedBirthDate,
         city: cleanedCity,
         state: cleanedState,
       });
@@ -111,7 +114,7 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
     <main className="auth-page">
       <section className="auth-card">
         <h1>Complete seu cadastro</h1>
-        <p className="auth-sub">Precisamos de Nome, E-mail, Telefone, Cidade e Estado para liberar o acesso.</p>
+        <p className="auth-sub">Precisamos de Nome, E-mail, Telefone, Data de nascimento, Cidade e Estado para liberar o acesso.</p>
 
         <label htmlFor="complete-name">Nome</label>
         <input
@@ -141,6 +144,14 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
           placeholder="(67) 99999-9999"
           autoComplete="tel"
           inputMode="tel"
+        />
+
+        <label htmlFor="complete-birth-date">Data de nascimento</label>
+        <input
+          id="complete-birth-date"
+          type="date"
+          value={birthDate}
+          onChange={(e) => setBirthDate(e.target.value)}
         />
 
         <div className="row">

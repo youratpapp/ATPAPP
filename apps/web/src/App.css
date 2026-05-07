@@ -919,7 +919,7 @@ button:disabled {
   }
 }
 
-/* ----- Event card (Copa Pro style) ----- */
+/* ----- Event card (ATP APP style) ----- */
 .events-kpi-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -18,7 +18,7 @@ export function RankingPage({ user, profile }: Props) {
         <span className="rcs-emoji" role="img" aria-label="festa">🎉</span>
         <h2>Novidade chegando!</h2>
         <p>
-          A funcionalidade de Ranking do Copa Pro estará disponível em breve.
+          A funcionalidade de Ranking do ATP APP estará disponível em breve.
         </p>
         <p>
           Acompanhe sua posição e a dos demais atletas nos torneios e veja quem está dominando as quadras! 🏆

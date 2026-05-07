@@ -359,7 +359,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
             <div className="pr-content">
               <p className="pr-label">Entrar em Contato</p>
               <p className="pr-value" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-subtle)" }}>
-                Envie uma mensagem para o suporte do Copa Pro.
+                Envie uma mensagem para o suporte do ATP APP.
               </p>
             </div>
             <span className="pr-chevron"><ChevronRight /></span>
@@ -374,7 +374,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
               <div className="pr-content">
                 <p className="pr-label">Siga nosso Instagram</p>
                 <p className="pr-value" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-subtle)" }}>
-                  Fique por dentro das novidades do Copa Pro.
+                  Fique por dentro das novidades do ATP APP.
                 </p>
               </div>
               <span className="pr-chevron"><ChevronRight /></span>
@@ -388,7 +388,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
               <div className="pr-content">
                 <p className="pr-label">Siga nosso Instagram</p>
                 <p className="pr-value" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-subtle)" }}>
-                  Fique por dentro das novidades do Copa Pro.
+                  Fique por dentro das novidades do ATP APP.
                 </p>
               </div>
               <span className="pr-chevron"><ChevronRight /></span>

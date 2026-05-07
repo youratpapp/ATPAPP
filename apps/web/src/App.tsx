@@ -30,7 +30,8 @@ function hasRequiredLoginData(user: User | null, profile: Profile | null): boole
     isFilled(profile.displayName) &&
     isFilled(profile.phone) &&
     isFilled(profile.city) &&
-    isFilled(profile.state)
+    isFilled(profile.state) &&
+    isFilled(profile.birthDate)
   );
 }
 
@@ -204,12 +205,83 @@ function AppInner() {
   );
 }
 
+function readOAuthCode(): string | null {
+  const fromSearch = new URLSearchParams(window.location.search).get("code");
+  if (fromSearch) return fromSearch;
+
+  const hash = window.location.hash || "";
+  const queryStart = hash.indexOf("?");
+  if (queryStart >= 0) {
+    const hashQuery = new URLSearchParams(hash.slice(queryStart + 1));
+    const fromHash = hashQuery.get("code");
+    if (fromHash) return fromHash;
+  }
+  return null;
+}
+
+function readOAuthError(): string | null {
+  const search = new URLSearchParams(window.location.search);
+  const searchErr = search.get("error_description") || search.get("error");
+  if (searchErr) return searchErr;
+
+  const hash = window.location.hash || "";
+  const queryStart = hash.indexOf("?");
+  if (queryStart >= 0) {
+    const hashQuery = new URLSearchParams(hash.slice(queryStart + 1));
+    const hashErr = hashQuery.get("error_description") || hashQuery.get("error");
+    if (hashErr) return hashErr;
+  }
+  return null;
+}
+
 function AuthCallbackPage() {
+  const navigate = useNavigate();
+  const [message, setMessage] = useState("Aguarde enquanto finalizamos a autenticacao com o Google.");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function finishOAuth() {
+      if (!supabase) return;
+
+      const existing = await supabase.auth.getSession();
+      if (existing.data.session) {
+        navigate("/inicio", { replace: true });
+        return;
+      }
+
+      const authError = readOAuthError();
+      if (authError) {
+        if (!cancelled) setMessage(`Falha no retorno do Google: ${authError}`);
+        return;
+      }
+
+      const code = readOAuthCode();
+      if (!code) {
+        if (!cancelled) setMessage("Nao recebemos o codigo de autenticacao. Volte e tente entrar de novo.");
+        return;
+      }
+
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      if (error) {
+        if (!cancelled) setMessage(`Falha ao concluir login: ${error.message}`);
+        return;
+      }
+
+      if (!cancelled) navigate("/inicio", { replace: true });
+    }
+
+    void finishOAuth();
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate]);
+
   return (
     <main className="auth-page">
       <section className="auth-card">
         <h1>Concluindo login...</h1>
-        <p className="auth-sub">Aguarde enquanto finalizamos a autenticacao com o Google.</p>
+        <p className="auth-sub">{message}</p>
       </section>
     </main>
   );
