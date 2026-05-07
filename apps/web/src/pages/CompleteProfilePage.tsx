@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 import { upsertProfile } from "../lib/profiles";
 import { supabase } from "../lib/supabase";
 import type { Profile } from "../lib/types";
+import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
 
 type Props = {
   user: User;
@@ -20,11 +21,50 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
   const [displayName, setDisplayName] = useState(profile?.displayName ?? "");
   const [phone, setPhone] = useState(profile?.phone ?? "");
   const [city, setCity] = useState(profile?.city ?? "");
-  const [stateUf, setStateUf] = useState(profile?.state ?? "");
+  const [stateUf, setStateUf] = useState(normalizeStateUf(profile?.state ?? ""));
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
+  const [cityLoading, setCityLoading] = useState(false);
+  const [cityLoadError, setCityLoadError] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ kind: "error" | "success"; text: string } | null>(null);
 
   const missingEmail = useMemo(() => isBlank(user.email), [user.email]);
+  const normalizedUf = useMemo(() => normalizeStateUf(stateUf), [stateUf]);
+  const cityValueInOptions = useMemo(
+    () => cityOptions.some((item) => item.toLowerCase() === city.trim().toLowerCase()),
+    [city, cityOptions]
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!normalizedUf) {
+      setCityOptions([]);
+      setCityLoadError("");
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    setCityLoading(true);
+    setCityLoadError("");
+    listMunicipalitiesByUf(normalizedUf)
+      .then((rows) => {
+        if (cancelled) return;
+        setCityOptions(rows);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setCityOptions([]);
+        setCityLoadError("Nao foi possivel carregar os municipios desta UF.");
+      })
+      .finally(() => {
+        if (!cancelled) setCityLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [normalizedUf]);
 
   const onSave = async () => {
     setMsg(null);
@@ -36,7 +76,7 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
     const cleanedName = displayName.trim();
     const cleanedPhone = phone.trim();
     const cleanedCity = city.trim();
-    const cleanedState = stateUf.trim().toUpperCase().slice(0, 2);
+    const cleanedState = normalizedUf;
 
     if (!cleanedName || !cleanedPhone || !cleanedCity || !cleanedState) {
       setMsg({ kind: "error", text: "Preencha Nome, Telefone, Cidade e Estado (UF)." });
@@ -106,28 +146,50 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
         <div className="row">
           <div>
             <label htmlFor="complete-city">Cidade</label>
-            <input
+            <select
               id="complete-city"
-              type="text"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              placeholder="Ex.: Dourados"
               autoComplete="address-level2"
-            />
+              disabled={!normalizedUf || cityLoading}
+            >
+              <option value="">
+                {!normalizedUf
+                  ? "Selecione o estado primeiro"
+                  : cityLoading
+                  ? "Carregando municipios..."
+                  : "Selecione o municipio"}
+              </option>
+              {cityValueInOptions ? null : city.trim() ? <option value={city}>{city}</option> : null}
+              {cityOptions.map((cityName) => (
+                <option key={`complete-city:${cityName}`} value={cityName}>
+                  {cityName}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label htmlFor="complete-state">Estado (UF)</label>
-            <input
+            <select
               id="complete-state"
-              type="text"
               value={stateUf}
-              onChange={(e) => setStateUf(e.target.value.toUpperCase())}
-              placeholder="MS"
+              onChange={(e) => {
+                const nextUf = normalizeStateUf(e.target.value);
+                setStateUf(nextUf);
+                setCity("");
+              }}
               autoComplete="address-level1"
-              maxLength={2}
-            />
+            >
+              <option value="">Selecione</option>
+              {BRAZILIAN_STATES.map((state) => (
+                <option key={`complete-state:${state.uf}`} value={state.uf}>
+                  {state.uf} - {state.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
+        {cityLoadError ? <p className="feedback error">{cityLoadError}</p> : null}
 
         <div className="row" style={{ marginTop: 16 }}>
           <button onClick={onSignOut} disabled={busy}>Sair</button>

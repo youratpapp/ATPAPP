@@ -11,6 +11,7 @@ import {
   uploadPlaceLogo,
 } from "../lib/places";
 import type { Place, Profile } from "../lib/types";
+import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
 
 type Props = {
   user: User;
@@ -48,8 +49,42 @@ export function PlacesPage({ user, profile }: Props) {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [stateUf, setStateUf] = useState("");
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
+  const [cityLoading, setCityLoading] = useState(false);
+  const [cityLoadError, setCityLoadError] = useState("");
   const [description, setDescription] = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const normalizedUf = normalizeStateUf(stateUf);
+  const cityValueInOptions = cityOptions.some((item) => item.toLowerCase() === city.trim().toLowerCase());
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!normalizedUf) {
+      setCityOptions([]);
+      setCityLoadError("");
+      return () => {
+        cancelled = true;
+      };
+    }
+    setCityLoading(true);
+    setCityLoadError("");
+    listMunicipalitiesByUf(normalizedUf)
+      .then((rows) => {
+        if (cancelled) return;
+        setCityOptions(rows);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setCityOptions([]);
+        setCityLoadError("Nao foi possivel carregar os municipios desta UF.");
+      })
+      .finally(() => {
+        if (!cancelled) setCityLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [normalizedUf]);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -107,7 +142,7 @@ export function PlacesPage({ user, profile }: Props) {
       await createPlace(user, {
         name,
         city,
-        state: stateUf,
+        state: normalizedUf,
         description,
         logoUrl,
       });
@@ -115,6 +150,7 @@ export function PlacesPage({ user, profile }: Props) {
       setName("");
       setCity("");
       setStateUf("");
+      setCityOptions([]);
       setDescription("");
       setLogoFile(null);
       setFeedback({ kind: "success", text: "Local criado." });
@@ -228,13 +264,42 @@ export function PlacesPage({ user, profile }: Props) {
             <div className="row">
               <div>
                 <label>Cidade</label>
-                <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Cidade" />
+                <select value={city} onChange={(e) => setCity(e.target.value)} disabled={!normalizedUf || cityLoading}>
+                  <option value="">
+                    {!normalizedUf
+                      ? "Selecione o estado primeiro"
+                      : cityLoading
+                      ? "Carregando municipios..."
+                      : "Selecione o municipio"}
+                  </option>
+                  {cityValueInOptions ? null : city.trim() ? <option value={city}>{city}</option> : null}
+                  {cityOptions.map((cityName) => (
+                    <option key={`place-city:${cityName}`} value={cityName}>
+                      {cityName}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div>
                 <label>UF</label>
-                <input value={stateUf} onChange={(e) => setStateUf(e.target.value)} maxLength={2} placeholder="MS" />
+                <select
+                  value={stateUf}
+                  onChange={(e) => {
+                    const nextUf = normalizeStateUf(e.target.value);
+                    setStateUf(nextUf);
+                    setCity("");
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  {BRAZILIAN_STATES.map((state) => (
+                    <option key={`place-state:${state.uf}`} value={state.uf}>
+                      {state.uf} - {state.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
+            {cityLoadError ? <p className="feedback error">{cityLoadError}</p> : null}
             <label>Descrição</label>
             <textarea
               value={description}

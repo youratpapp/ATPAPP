@@ -5,6 +5,7 @@ import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import type { Profile, TournamentSummary } from "../lib/types";
 import { buildTournamentUrl, createTournament, joinTournament, loadDashboardData } from "../lib/tournaments";
+import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
 
 type Props = {
   user: User;
@@ -193,6 +194,9 @@ export function EventsPage({ user, profile }: Props) {
   const [newName, setNewName] = useState("");
   const [newCity, setNewCity] = useState("");
   const [newState, setNewState] = useState("");
+  const [newCityOptions, setNewCityOptions] = useState<string[]>([]);
+  const [newCityLoading, setNewCityLoading] = useState(false);
+  const [newCityLoadError, setNewCityLoadError] = useState("");
   const [newVisibility, setNewVisibility] = useState<"private" | "public">("private");
 
   const [showJoin, setShowJoin] = useState(false);
@@ -202,6 +206,40 @@ export function EventsPage({ user, profile }: Props) {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [visibilityFilter, setVisibilityFilter] = useState<VisibilityFilter>("all");
   const [sortBy, setSortBy] = useState<SortKey>("updated_desc");
+  const normalizedNewUf = useMemo(() => normalizeStateUf(newState), [newState]);
+  const newCityValueInOptions = useMemo(
+    () => newCityOptions.some((item) => item.toLowerCase() === newCity.trim().toLowerCase()),
+    [newCity, newCityOptions]
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!normalizedNewUf) {
+      setNewCityOptions([]);
+      setNewCityLoadError("");
+      return () => {
+        cancelled = true;
+      };
+    }
+    setNewCityLoading(true);
+    setNewCityLoadError("");
+    listMunicipalitiesByUf(normalizedNewUf)
+      .then((rows) => {
+        if (cancelled) return;
+        setNewCityOptions(rows);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setNewCityOptions([]);
+        setNewCityLoadError("Nao foi possivel carregar os municipios desta UF.");
+      })
+      .finally(() => {
+        if (!cancelled) setNewCityLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [normalizedNewUf]);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -227,13 +265,14 @@ export function EventsPage({ user, profile }: Props) {
       const { id } = await createTournament(user, {
         name: newName,
         city: newCity,
-        state: newState,
+        state: normalizedNewUf,
         visibility: newVisibility,
       });
       setShowCreate(false);
       setNewName("");
       setNewCity("");
       setNewState("");
+      setNewCityOptions([]);
       setNewVisibility("private");
       navigate(buildTournamentUrl(id));
     } catch (err) {
@@ -441,9 +480,38 @@ export function EventsPage({ user, profile }: Props) {
             <label>Nome</label>
             <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Ex.: Aberto de Primavera" />
             <label>Cidade</label>
-            <input value={newCity} onChange={(e) => setNewCity(e.target.value)} placeholder="Ex.: Dourados" />
+            <select value={newCity} onChange={(e) => setNewCity(e.target.value)} disabled={!normalizedNewUf || newCityLoading}>
+              <option value="">
+                {!normalizedNewUf
+                  ? "Selecione o estado primeiro"
+                  : newCityLoading
+                  ? "Carregando municipios..."
+                  : "Selecione o municipio"}
+              </option>
+              {newCityValueInOptions ? null : newCity.trim() ? <option value={newCity}>{newCity}</option> : null}
+              {newCityOptions.map((cityName) => (
+                <option key={`event-city:${cityName}`} value={cityName}>
+                  {cityName}
+                </option>
+              ))}
+            </select>
             <label>UF</label>
-            <input value={newState} onChange={(e) => setNewState(e.target.value)} placeholder="MS" maxLength={2} />
+            <select
+              value={newState}
+              onChange={(e) => {
+                const nextUf = normalizeStateUf(e.target.value);
+                setNewState(nextUf);
+                setNewCity("");
+              }}
+            >
+              <option value="">Selecione</option>
+              {BRAZILIAN_STATES.map((state) => (
+                <option key={`event-state:${state.uf}`} value={state.uf}>
+                  {state.uf} - {state.name}
+                </option>
+              ))}
+            </select>
+            {newCityLoadError ? <p className="feedback error">{newCityLoadError}</p> : null}
             <label>Visibilidade</label>
             <select value={newVisibility} onChange={(e) => setNewVisibility(e.target.value as "private" | "public")}>
               <option value="private">Somente por link</option>

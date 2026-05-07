@@ -29,6 +29,7 @@ import {
   recomputeClassData,
   type LegacyClassRef,
 } from "../tournament-engine/state-adapter";
+import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
 
 type Props = {
   user: User;
@@ -910,6 +911,9 @@ export function TournamentPage({ user, profile }: Props) {
   const [basicName, setBasicName] = useState("");
   const [basicCity, setBasicCity] = useState("");
   const [basicState, setBasicState] = useState("");
+  const [basicCityOptions, setBasicCityOptions] = useState<string[]>([]);
+  const [basicCityLoading, setBasicCityLoading] = useState(false);
+  const [basicCityLoadError, setBasicCityLoadError] = useState("");
   const [basicVisibility, setBasicVisibility] = useState<"public" | "private">("private");
   const [basicStatus, setBasicStatus] = useState<"draft" | "registration_open" | "registration_closed" | "live" | "finished">("draft");
   const [basicStartsAt, setBasicStartsAt] = useState("");
@@ -963,6 +967,11 @@ export function TournamentPage({ user, profile }: Props) {
     () => new Set(configTargetClasses.map((c) => scopeClassKey(c.categoryId, c.classId))),
     [configTargetClasses]
   );
+  const normalizedBasicUf = useMemo(() => normalizeStateUf(basicState), [basicState]);
+  const basicCityValueInOptions = useMemo(
+    () => basicCityOptions.some((item) => item.toLowerCase() === basicCity.trim().toLowerCase()),
+    [basicCity, basicCityOptions]
+  );
 
   const agendaGroupedBySlot = useMemo(() => {
     const map = new Map<string, AgendaAssignment[]>();
@@ -1010,6 +1019,35 @@ export function TournamentPage({ user, profile }: Props) {
       ),
     [draftCategories]
   );
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!normalizedBasicUf) {
+      setBasicCityOptions([]);
+      setBasicCityLoadError("");
+      return () => {
+        cancelled = true;
+      };
+    }
+    setBasicCityLoading(true);
+    setBasicCityLoadError("");
+    listMunicipalitiesByUf(normalizedBasicUf)
+      .then((rows) => {
+        if (cancelled) return;
+        setBasicCityOptions(rows);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setBasicCityOptions([]);
+        setBasicCityLoadError("Nao foi possivel carregar os municipios desta UF.");
+      })
+      .finally(() => {
+        if (!cancelled) setBasicCityLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [normalizedBasicUf]);
 
   useEffect(() => {
     let alive = true;
@@ -1100,7 +1138,7 @@ export function TournamentPage({ user, profile }: Props) {
     if (!tournament) return;
     setBasicName(tournament.name || "");
     setBasicCity(tournament.city || "");
-    setBasicState(tournament.state || "");
+    setBasicState(normalizeStateUf(tournament.state || ""));
     setBasicVisibility(tournament.visibility === "public" ? "public" : "private");
     setBasicStatus(
       tournament.status === "registration_open" ||
@@ -1359,7 +1397,7 @@ export function TournamentPage({ user, profile }: Props) {
       const updated = await updateTournamentDetails(user, tournament.id, {
         name: basicName,
         city: basicCity,
-        state: basicState,
+        state: normalizedBasicUf,
         visibility: basicVisibility,
         status: basicStatus,
         startsAt: basicStartsAt,
@@ -2732,13 +2770,42 @@ export function TournamentPage({ user, profile }: Props) {
                   </div>
                   <div style={{ flex: 1 }}>
                     <label>Cidade</label>
-                    <input value={basicCity} onChange={(e) => setBasicCity(e.target.value)} />
+                    <select value={basicCity} onChange={(e) => setBasicCity(e.target.value)} disabled={!normalizedBasicUf || basicCityLoading}>
+                      <option value="">
+                        {!normalizedBasicUf
+                          ? "Selecione o estado primeiro"
+                          : basicCityLoading
+                          ? "Carregando municipios..."
+                          : "Selecione o municipio"}
+                      </option>
+                      {basicCityValueInOptions ? null : basicCity.trim() ? <option value={basicCity}>{basicCity}</option> : null}
+                      {basicCityOptions.map((cityName) => (
+                        <option key={`tournament-city:${cityName}`} value={cityName}>
+                          {cityName}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div style={{ width: 120 }}>
                     <label>Estado (UF)</label>
-                    <input value={basicState} onChange={(e) => setBasicState(e.target.value.toUpperCase())} maxLength={2} />
+                    <select
+                      value={basicState}
+                      onChange={(e) => {
+                        const nextUf = normalizeStateUf(e.target.value);
+                        setBasicState(nextUf);
+                        setBasicCity("");
+                      }}
+                    >
+                      <option value="">Selecione</option>
+                      {BRAZILIAN_STATES.map((state) => (
+                        <option key={`tournament-state:${state.uf}`} value={state.uf}>
+                          {state.uf} - {state.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
+                {basicCityLoadError ? <p className="feedback error">{basicCityLoadError}</p> : null}
                 <div className="cluster" style={{ marginTop: 8 }}>
                   <div style={{ width: 220 }}>
                     <label>Visibilidade</label>

@@ -277,12 +277,51 @@
 }
 
 .auth-divider {
-  margin-top: var(--space-3);
-  text-align: center;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--color-border);
+}
+
+.auth-divider span {
+  white-space: nowrap;
+}
+
+.auth-google-btn {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--color-border-strong);
+  background: #fff;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+}
+
+.auth-google-btn:hover:not(:disabled) {
+  background: #f9fafb;
+}
+
+.auth-actions {
+  margin-top: var(--space-3);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
 }
 
 .auth-readonly {
