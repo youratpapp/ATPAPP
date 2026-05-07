@@ -276,6 +276,20 @@
   text-align: center;
 }
 
+.auth-divider {
+  margin-top: var(--space-3);
+  text-align: center;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.auth-readonly {
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+}
+
 /* ----- Generic primitives ----- */
 .card {
   background: var(--color-surface);

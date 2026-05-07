@@ -32,16 +32,31 @@ export function AuthPage() {
     setMsg(
       error
         ? { kind: "error", text: error.message || "Falha ao criar conta." }
-        : { kind: "success", text: "Conta criada. Faça login." }
+        : { kind: "success", text: "Conta criada. Verifique seu e-mail e depois entre." }
     );
+  };
+
+  const loginWithGoogle = async () => {
+    if (!supabase) return;
+    setBusy(true);
+    setMsg(null);
+    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo },
+    });
+    setBusy(false);
+    if (error) {
+      setMsg({ kind: "error", text: error.message || "Falha no login com Google." });
+    }
   };
 
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <img src={logo} alt="ATP — Amateur Tennis Platform" className="auth-logo" />
+        <img src={logo} alt="ATP - Amateur Tennis Platform" className="auth-logo" />
         <h1>Entrar na ATP</h1>
-        <p className="auth-sub">Torneios, ligas e ranking pra tenistas amadores.</p>
+        <p className="auth-sub">Torneios, ligas e ranking para tenistas amadores.</p>
 
         <label htmlFor="email">E-mail</label>
         <input
@@ -58,7 +73,7 @@ export function AuthPage() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="mínimo 6 caracteres"
+          placeholder="minimo 6 caracteres"
           autoComplete="current-password"
         />
         <div className="row">
@@ -69,6 +84,10 @@ export function AuthPage() {
             Criar conta
           </button>
         </div>
+        <div className="auth-divider">ou</div>
+        <button className="secondary" disabled={busy} onClick={loginWithGoogle} style={{ width: "100%", marginTop: 8 }}>
+          Entrar com Google
+        </button>
         {msg ? <p className={`feedback ${msg.kind === "success" ? "success" : msg.kind === "error" ? "error" : ""}`}>{msg.text}</p> : null}
       </section>
     </main>
