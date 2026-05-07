@@ -932,6 +932,17 @@ function buildClassVisualSvg(
   const tableKeys = Object.keys(data.tabelaPorGrupo || {});
   if (tableKeys.length) {
     const sectionTop = y;
+    const classificationBlockHeights = tableKeys.map((group) => {
+      const rows = data.tabelaPorGrupo[group] || [];
+      const rowHLocal = 26;
+      return 34 + rowHLocal + Math.max(1, rows.length) * rowHLocal + 10;
+    });
+    const sectionH = Math.max(
+      90,
+      48 + classificationBlockHeights.reduce((acc, h) => acc + h + 10, 0) + 6
+    );
+    card(pad, sectionTop, leftW, sectionH, 'Classificacao dos Grupos');
+
     let localY = y + 48;
 
     tableKeys.forEach((group) => {
@@ -970,13 +981,23 @@ function buildClassVisualSvg(
       localY += blockH + 10;
     });
 
-    const sectionH = Math.max(90, localY - sectionTop + 6);
-    card(pad, sectionTop, leftW, sectionH, 'Classificacao dos Grupos');
     y = sectionTop + sectionH + 14;
   }
 
   if ((data.grupos || []).length) {
     const sectionTop = y;
+    const matchGroups = data.grupos || [];
+    const matchBlockHeights = matchGroups.map((g) => {
+      const matches = g.matches || [];
+      const rowHLocal = 26;
+      return 34 + rowHLocal + Math.max(1, matches.length) * rowHLocal + 10;
+    });
+    const sectionH = Math.max(
+      90,
+      48 + matchBlockHeights.reduce((acc, h) => acc + h + 10, 0) + 6
+    );
+    card(pad, sectionTop, leftW, sectionH, 'Jogos dos Grupos (com horario/quadra)');
+
     let localY = y + 48;
 
     (data.grupos || []).forEach((g) => {
@@ -991,11 +1012,15 @@ function buildClassVisualSvg(
       const tx = x + 8;
       const tw = w - 16;
       const hy = localY + 30;
+      const colConfrontoX = tx + 10;
+      const colPlacarX = tx + tw - 240;
+      const colHorarioX = tx + tw - 170;
+      const colQuadraX = tx + tw - 20;
       out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="#dbe3ee"/>`);
-      out.push(`<text x="${tx + 10}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">CONFRONTO</text>`);
-      out.push(`<text x="${tx + tw - 240}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">PLACAR</text>`);
-      out.push(`<text x="${tx + tw - 170}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">HORARIO</text>`);
-      out.push(`<text x="${tx + tw - 20}" y="${hy + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">QUADRA</text>`);
+      out.push(`<text x="${colConfrontoX}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">CONFRONTO</text>`);
+      out.push(`<text x="${colPlacarX}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">PLACAR</text>`);
+      out.push(`<text x="${colHorarioX}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">HORARIO</text>`);
+      out.push(`<text x="${colQuadraX}" y="${hy + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">QUADRA</text>`);
 
       matches.forEach((m, mi) => {
         const ry = hy + rowH + mi * rowH;
@@ -1007,26 +1032,24 @@ function buildClassVisualSvg(
         const bName = String(m.b || 'A definir');
         const aFill = winner && winner === aName.trim().toLowerCase() ? '#15803d' : '#334155';
         const bFill = winner && winner === bName.trim().toLowerCase() ? '#15803d' : '#334155';
-        out.push(`<text x="${tx + 10}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12"><tspan fill="${aFill}">${escXml(aName)}</tspan><tspan fill="#475569"> x </tspan><tspan fill="${bFill}">${escXml(bName)}</tspan></text>`);
-        out.push(`<text x="${tx + tw - 240}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="${m.done ? '700' : '400'}">${escXml(score)}</text>`);
+        out.push(`<text x="${colConfrontoX}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12"><tspan fill="${aFill}">${escXml(aName)}</tspan><tspan fill="#475569"> x </tspan><tspan fill="${bFill}">${escXml(bName)}</tspan></text>`);
+        out.push(`<text x="${colPlacarX}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="${m.done ? '700' : '400'}">${escXml(score)}</text>`);
         if (when) {
           const parts = when.split(' | ');
-          out.push(`<text x="${tx + tw - 170}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(parts[0] || '')}</text>`);
-          out.push(`<text x="${tx + tw - 20}" y="${ry + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(parts[1] || '-')}</text>`);
+          out.push(`<text x="${colHorarioX}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(parts[0] || '')}</text>`);
+          out.push(`<text x="${colQuadraX}" y="${ry + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(parts[1] || '-')}</text>`);
         } else {
-          out.push(`<text x="${tx + tw - 170}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">A definir</text>`);
-          out.push(`<text x="${tx + tw - 20}" y="${ry + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#64748b">-</text>`);
+          out.push(`<text x="${colHorarioX}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">A definir</text>`);
+          out.push(`<text x="${colQuadraX}" y="${ry + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#64748b">-</text>`);
         }
       });
       if (!matches.length) {
-        out.push(`<text x="${tx + 10}" y="${hy + rowH + 17}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Sem jogos neste grupo.</text>`);
+        out.push(`<text x="${colConfrontoX}" y="${hy + rowH + 17}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Sem jogos neste grupo.</text>`);
       }
 
       localY += blockH + 10;
     });
 
-    const sectionH = Math.max(90, localY - sectionTop + 6);
-    card(pad, sectionTop, leftW, sectionH, 'Jogos dos Grupos (com horario/quadra)');
     y = sectionTop + sectionH + 14;
   }
 
