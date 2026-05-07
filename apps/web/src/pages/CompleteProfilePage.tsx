@@ -145,6 +145,26 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
 
         <div className="row">
           <div>
+            <label htmlFor="complete-state">Estado (UF)</label>
+            <select
+              id="complete-state"
+              value={stateUf}
+              onChange={(e) => {
+                const nextUf = normalizeStateUf(e.target.value);
+                setStateUf(nextUf);
+                setCity("");
+              }}
+              autoComplete="address-level1"
+            >
+              <option value="">Selecione</option>
+              {BRAZILIAN_STATES.map((state) => (
+                <option key={`complete-state:${state.uf}`} value={state.uf}>
+                  {state.uf} - {state.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label htmlFor="complete-city">Cidade</label>
             <select
               id="complete-city"
@@ -164,26 +184,6 @@ export function CompleteProfilePage({ user, profile, onProfileChange }: Props) {
               {cityOptions.map((cityName) => (
                 <option key={`complete-city:${cityName}`} value={cityName}>
                   {cityName}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="complete-state">Estado (UF)</label>
-            <select
-              id="complete-state"
-              value={stateUf}
-              onChange={(e) => {
-                const nextUf = normalizeStateUf(e.target.value);
-                setStateUf(nextUf);
-                setCity("");
-              }}
-              autoComplete="address-level1"
-            >
-              <option value="">Selecione</option>
-              {BRAZILIAN_STATES.map((state) => (
-                <option key={`complete-state:${state.uf}`} value={state.uf}>
-                  {state.uf} - {state.name}
                 </option>
               ))}
             </select>

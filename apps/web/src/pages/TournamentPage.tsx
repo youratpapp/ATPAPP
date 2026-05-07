@@ -2768,24 +2768,6 @@ export function TournamentPage({ user, profile }: Props) {
                     <label>Nome do torneio</label>
                     <input value={basicName} onChange={(e) => setBasicName(e.target.value)} />
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <label>Cidade</label>
-                    <select value={basicCity} onChange={(e) => setBasicCity(e.target.value)} disabled={!normalizedBasicUf || basicCityLoading}>
-                      <option value="">
-                        {!normalizedBasicUf
-                          ? "Selecione o estado primeiro"
-                          : basicCityLoading
-                          ? "Carregando municipios..."
-                          : "Selecione o municipio"}
-                      </option>
-                      {basicCityValueInOptions ? null : basicCity.trim() ? <option value={basicCity}>{basicCity}</option> : null}
-                      {basicCityOptions.map((cityName) => (
-                        <option key={`tournament-city:${cityName}`} value={cityName}>
-                          {cityName}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
                   <div style={{ width: 120 }}>
                     <label>Estado (UF)</label>
                     <select
@@ -2800,6 +2782,24 @@ export function TournamentPage({ user, profile }: Props) {
                       {BRAZILIAN_STATES.map((state) => (
                         <option key={`tournament-state:${state.uf}`} value={state.uf}>
                           {state.uf} - {state.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Cidade</label>
+                    <select value={basicCity} onChange={(e) => setBasicCity(e.target.value)} disabled={!normalizedBasicUf || basicCityLoading}>
+                      <option value="">
+                        {!normalizedBasicUf
+                          ? "Selecione o estado primeiro"
+                          : basicCityLoading
+                          ? "Carregando municipios..."
+                          : "Selecione o municipio"}
+                      </option>
+                      {basicCityValueInOptions ? null : basicCity.trim() ? <option value={basicCity}>{basicCity}</option> : null}
+                      {basicCityOptions.map((cityName) => (
+                        <option key={`tournament-city:${cityName}`} value={cityName}>
+                          {cityName}
                         </option>
                       ))}
                     </select>

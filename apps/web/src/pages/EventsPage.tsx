@@ -203,10 +203,15 @@ export function EventsPage({ user, profile }: Props) {
   const [joinUuid, setJoinUuid] = useState("");
 
   const [search, setSearch] = useState("");
+  const [searchState, setSearchState] = useState("");
+  const [searchCity, setSearchCity] = useState("");
+  const [searchCityOptions, setSearchCityOptions] = useState<string[]>([]);
+  const [searchCityLoading, setSearchCityLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [visibilityFilter, setVisibilityFilter] = useState<VisibilityFilter>("all");
   const [sortBy, setSortBy] = useState<SortKey>("updated_desc");
   const normalizedNewUf = useMemo(() => normalizeStateUf(newState), [newState]);
+  const normalizedSearchUf = useMemo(() => normalizeStateUf(searchState), [searchState]);
   const newCityValueInOptions = useMemo(
     () => newCityOptions.some((item) => item.toLowerCase() === newCity.trim().toLowerCase()),
     [newCity, newCityOptions]
@@ -240,6 +245,33 @@ export function EventsPage({ user, profile }: Props) {
       cancelled = true;
     };
   }, [normalizedNewUf]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!normalizedSearchUf) {
+      setSearchCityOptions([]);
+      setSearchCity("");
+      return () => {
+        cancelled = true;
+      };
+    }
+    setSearchCityLoading(true);
+    listMunicipalitiesByUf(normalizedSearchUf)
+      .then((rows) => {
+        if (cancelled) return;
+        setSearchCityOptions(rows);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setSearchCityOptions([]);
+      })
+      .finally(() => {
+        if (!cancelled) setSearchCityLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [normalizedSearchUf]);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -308,9 +340,12 @@ export function EventsPage({ user, profile }: Props) {
 
   const list = useMemo(() => {
     const term = normalizeSearch(search);
+    const cityTerm = normalizeSearch(searchCity);
     let out = listByTab.filter((t) => {
       if (statusFilter !== "all" && t.status !== statusFilter) return false;
       if (visibilityFilter !== "all" && t.visibility !== visibilityFilter) return false;
+      if (normalizedSearchUf && normalizeStateUf(t.state) !== normalizedSearchUf) return false;
+      if (cityTerm && normalizeSearch(t.city || "") !== cityTerm) return false;
       if (!term) return true;
       const hay = normalizeSearch([t.name, t.city, t.state].filter(Boolean).join(" "));
       return hay.includes(term);
@@ -325,7 +360,7 @@ export function EventsPage({ user, profile }: Props) {
     });
 
     return out;
-  }, [listByTab, search, sortBy, statusFilter, visibilityFilter]);
+  }, [listByTab, normalizedSearchUf, search, searchCity, sortBy, statusFilter, visibilityFilter]);
 
   const kpis = useMemo(() => {
     const total = mergedAll.length;
@@ -414,6 +449,44 @@ export function EventsPage({ user, profile }: Props) {
             />
           </div>
           <div>
+            <label>Estado (UF)</label>
+            <select
+              value={searchState}
+              onChange={(e) => {
+                const nextUf = normalizeStateUf(e.target.value);
+                setSearchState(nextUf);
+              }}
+            >
+              <option value="">Todos</option>
+              {BRAZILIAN_STATES.map((state) => (
+                <option key={`event-filter-state:${state.uf}`} value={state.uf}>
+                  {state.uf} - {state.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>Municipio</label>
+            <select
+              value={searchCity}
+              onChange={(e) => setSearchCity(e.target.value)}
+              disabled={!normalizedSearchUf || searchCityLoading}
+            >
+              <option value="">
+                {!normalizedSearchUf
+                  ? "Todos"
+                  : searchCityLoading
+                  ? "Carregando municipios..."
+                  : "Todos"}
+              </option>
+              {searchCityOptions.map((cityName) => (
+                <option key={`event-filter-city:${cityName}`} value={cityName}>
+                  {cityName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label>Status</label>
             <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}>
               <option value="all">Todos</option>
@@ -479,6 +552,22 @@ export function EventsPage({ user, profile }: Props) {
             <h2>Novo torneio</h2>
             <label>Nome</label>
             <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Ex.: Aberto de Primavera" />
+            <label>Estado (UF)</label>
+            <select
+              value={newState}
+              onChange={(e) => {
+                const nextUf = normalizeStateUf(e.target.value);
+                setNewState(nextUf);
+                setNewCity("");
+              }}
+            >
+              <option value="">Selecione</option>
+              {BRAZILIAN_STATES.map((state) => (
+                <option key={`event-state:${state.uf}`} value={state.uf}>
+                  {state.uf} - {state.name}
+                </option>
+              ))}
+            </select>
             <label>Cidade</label>
             <select value={newCity} onChange={(e) => setNewCity(e.target.value)} disabled={!normalizedNewUf || newCityLoading}>
               <option value="">
@@ -492,22 +581,6 @@ export function EventsPage({ user, profile }: Props) {
               {newCityOptions.map((cityName) => (
                 <option key={`event-city:${cityName}`} value={cityName}>
                   {cityName}
-                </option>
-              ))}
-            </select>
-            <label>UF</label>
-            <select
-              value={newState}
-              onChange={(e) => {
-                const nextUf = normalizeStateUf(e.target.value);
-                setNewState(nextUf);
-                setNewCity("");
-              }}
-            >
-              <option value="">Selecione</option>
-              {BRAZILIAN_STATES.map((state) => (
-                <option key={`event-state:${state.uf}`} value={state.uf}>
-                  {state.uf} - {state.name}
                 </option>
               ))}
             </select>

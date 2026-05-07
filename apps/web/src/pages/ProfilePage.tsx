@@ -271,24 +271,6 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Como aparece nos torneios" />
           <div className="row">
             <div>
-              <label>Cidade</label>
-              <select value={city} onChange={(e) => setCity(e.target.value)} disabled={!normalizedUf || cityLoading}>
-                <option value="">
-                  {!normalizedUf
-                    ? "Selecione o estado primeiro"
-                    : cityLoading
-                    ? "Carregando municipios..."
-                    : "Selecione o municipio"}
-                </option>
-                {cityValueInOptions ? null : city.trim() ? <option value={city}>{city}</option> : null}
-                {cityOptions.map((cityName) => (
-                  <option key={`profile-city:${cityName}`} value={cityName}>
-                    {cityName}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
               <label>UF</label>
               <select
                 value={stateUf}
@@ -302,6 +284,24 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                 {BRAZILIAN_STATES.map((state) => (
                   <option key={`profile-state:${state.uf}`} value={state.uf}>
                     {state.uf} - {state.name}
+                  </option>
+                  ))}
+                </select>
+              </div>
+            <div>
+              <label>Cidade</label>
+              <select value={city} onChange={(e) => setCity(e.target.value)} disabled={!normalizedUf || cityLoading}>
+                <option value="">
+                  {!normalizedUf
+                    ? "Selecione o estado primeiro"
+                    : cityLoading
+                    ? "Carregando municipios..."
+                    : "Selecione o municipio"}
+                </option>
+                {cityValueInOptions ? null : city.trim() ? <option value={city}>{city}</option> : null}
+                {cityOptions.map((cityName) => (
+                  <option key={`profile-city:${cityName}`} value={cityName}>
+                    {cityName}
                   </option>
                 ))}
               </select>
