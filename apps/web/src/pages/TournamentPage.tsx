@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
@@ -59,6 +59,7 @@ type ConfigScopeClass = {
 
 const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
+const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores"];
 
 function scopeClassKey(categoryId: string, classId: string): string {
   return `${categoryId}::${classId}`;
@@ -889,11 +890,15 @@ function buildClassVisualSvg(
 export function TournamentPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const { tournamentId = "" } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const [tab, setTab] = useState<TabKey>("jogos");
+  const [tab, setTab] = useState<TabKey>(() => {
+    const urlTab = (new URLSearchParams(window.location.search).get("tab") || "").trim() as TabKey;
+    return VALID_TABS.includes(urlTab) ? urlTab : "jogos";
+  });
 
   const [tournament, setTournament] = useState<TournamentDetails | null>(null);
   const [classes, setClasses] = useState<LegacyClassRef[]>([]);
@@ -1028,9 +1033,13 @@ export function TournamentPage({ user, profile }: Props) {
     () => filteredRegistrations.filter((r) => r.status === "pending").map((r) => r.id),
     [filteredRegistrations]
   );
+  const draftCategoriesWithApproved = useMemo(
+    () => mergeApprovedRegistrationsIntoDraft(draftCategories, registrations).draft,
+    [draftCategories, registrations]
+  );
   const playerClassesSummary = useMemo(
     () =>
-      draftCategories.flatMap((cat) =>
+      draftCategoriesWithApproved.flatMap((cat) =>
         cat.classes.map((cls) => ({
           categoryId: cat.id,
           categoryName: cat.nome,
@@ -1039,7 +1048,7 @@ export function TournamentPage({ user, profile }: Props) {
           participantes: cls.data.participantes,
         }))
       ),
-    [draftCategories]
+    [draftCategoriesWithApproved]
   );
   const organizationProgress = useMemo(() => {
     const totalClasses = draftCategories.reduce((acc, cat) => acc + (cat.classes?.length || 0), 0);
@@ -1255,6 +1264,23 @@ export function TournamentPage({ user, profile }: Props) {
   useEffect(() => {
     setDuracaoMinInput(String(agendaConfig.duracaoMin ?? 45));
   }, [agendaConfig.duracaoMin]);
+
+  useEffect(() => {
+    const tabFromUrl = (searchParams.get("tab") || "").trim() as TabKey;
+    if (VALID_TABS.includes(tabFromUrl) && tabFromUrl !== tab) {
+      setTab(tabFromUrl);
+    }
+  }, [searchParams, tab]);
+
+  useEffect(() => {
+    const current = (searchParams.get("tab") || "").trim();
+    const target = tab === "jogos" ? "" : tab;
+    if ((current || "") === target) return;
+    const next = new URLSearchParams(searchParams);
+    if (!target) next.delete("tab");
+    else next.set("tab", target);
+    setSearchParams(next, { replace: true });
+  }, [tab, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (tab === "organizacao" && !isOwner) {
