@@ -673,6 +673,19 @@ export function TournamentPage({ user, profile }: Props) {
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([, rows]) => rows.sort((x, y) => x.quadra.localeCompare(y.quadra)));
   }, [agenda]);
+  const isOwner = tournament?.role === "owner";
+  const hasGroupClasses = useMemo(
+    () =>
+      classes.some((c) => {
+        const hasConfigGroup = c.data.config.formato === "grupos";
+        const hasRenderedGroups = (c.data.grupos ?? []).length > 0;
+        const hasTable = Object.keys(c.data.tabelaPorGrupo || {}).length > 0;
+        return hasConfigGroup || hasRenderedGroups || hasTable;
+      }),
+    [classes]
+  );
+  const canSeeClassificationTab = isOwner || hasGroupClasses;
+  const canEditScores = isOwner;
   const filteredRegistrations = useMemo(() => {
     if (registrationFilter === "all") return registrations;
     return registrations.filter((r) => r.status === registrationFilter);
@@ -727,6 +740,16 @@ export function TournamentPage({ user, profile }: Props) {
   useEffect(() => {
     setSelectedRegistrationIds((prev) => prev.filter((id) => registrations.some((r) => r.id === id)));
   }, [registrations]);
+
+  useEffect(() => {
+    if (tab === "organizacao" && !isOwner) {
+      setTab("jogos");
+      return;
+    }
+    if (tab === "classificacao" && !canSeeClassificationTab) {
+      setTab("jogos");
+    }
+  }, [tab, isOwner, canSeeClassificationTab]);
 
   const persistTournamentData = async (
     nextData: Record<string, unknown>,
@@ -1886,6 +1909,7 @@ export function TournamentPage({ user, profile }: Props) {
     s1: string,
     s2: string
   ) => {
+    if (!canEditScores) return;
     const next = structuredClone(ref.data);
     const group = next.grupos[groupIndex];
     const match = group?.matches[matchIndex] as GroupMatch | undefined;
@@ -1908,6 +1932,7 @@ export function TournamentPage({ user, profile }: Props) {
     s1: string,
     s2: string
   ) => {
+    if (!canEditScores) return;
     const next = structuredClone(ref.data);
     const round = next.knockout?.rounds[roundIndex];
     const match = round?.matches[matchIndex] as KnockoutMatch | undefined;
@@ -1956,12 +1981,16 @@ export function TournamentPage({ user, profile }: Props) {
             <button className={tab === "jogos" ? "active" : ""} onClick={() => setTab("jogos")}>
               Jogos
             </button>
-            <button className={tab === "classificacao" ? "active" : ""} onClick={() => setTab("classificacao")}>
-              Classificacao
-            </button>
-            <button className={tab === "organizacao" ? "active" : ""} onClick={() => setTab("organizacao")}>
-              Organizacao
-            </button>
+            {canSeeClassificationTab ? (
+              <button className={tab === "classificacao" ? "active" : ""} onClick={() => setTab("classificacao")}>
+                Classificacao
+              </button>
+            ) : null}
+            {isOwner ? (
+              <button className={tab === "organizacao" ? "active" : ""} onClick={() => setTab("organizacao")}>
+                Organizacao
+              </button>
+            ) : null}
           </div>
 
           <section className="card" style={{ marginBottom: 12 }}>
@@ -1987,7 +2016,7 @@ export function TournamentPage({ user, profile }: Props) {
             <section className="card">
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
 
-              {tournament?.role === "owner" ? (
+              {isOwner ? (
                 <div
                   style={{
                     border: "1px solid var(--color-border)",
@@ -2044,7 +2073,26 @@ export function TournamentPage({ user, profile }: Props) {
                     Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
                   </p>
                 </div>
-              ) : null}
+              ) : (
+                <div
+                  style={{
+                    border: "1px solid var(--color-border)",
+                    borderRadius: 10,
+                    padding: 10,
+                    marginBottom: 12,
+                  }}
+                >
+                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>Exportacoes</h3>
+                  <div className="cluster">
+                    <button onClick={() => void exportActiveClassPng()} disabled={saving}>
+                      Exportar chave PNG
+                    </button>
+                    <button onClick={() => void exportActiveKnockoutPng()} disabled={saving}>
+                      Exportar mata-mata PNG
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {activeClass?.data.grupos.map((g, gi) => (
                 <div key={`${activeClass.key}:g:${g.name}`} style={{ marginBottom: 14 }}>
@@ -2063,7 +2111,7 @@ export function TournamentPage({ user, profile }: Props) {
                             const s1 = e.target.value.replace(/[^0-9]/g, "");
                             onUpdateGroupScore(activeClass, gi, mi, s1, m.s2);
                           }}
-                          disabled={saving}
+                          disabled={saving || !canEditScores}
                         />
                         <input
                           style={{ width: 80 }}
@@ -2072,7 +2120,7 @@ export function TournamentPage({ user, profile }: Props) {
                             const s2 = e.target.value.replace(/[^0-9]/g, "");
                             onUpdateGroupScore(activeClass, gi, mi, m.s1, s2);
                           }}
-                          disabled={saving}
+                          disabled={saving || !canEditScores}
                         />
                         <span className="subtle">{m.done ? "Finalizado" : "Pendente"}</span>
                       </div>
@@ -2098,7 +2146,7 @@ export function TournamentPage({ user, profile }: Props) {
                             const s1 = e.target.value.replace(/[^0-9]/g, "");
                             onUpdateKoScore(activeClass, ri, mi, s1, m.s2);
                           }}
-                          disabled={saving || !m.a || !m.b}
+                          disabled={saving || !m.a || !m.b || !canEditScores}
                         />
                         <input
                           style={{ width: 80 }}
@@ -2107,7 +2155,7 @@ export function TournamentPage({ user, profile }: Props) {
                             const s2 = e.target.value.replace(/[^0-9]/g, "");
                             onUpdateKoScore(activeClass, ri, mi, m.s1, s2);
                           }}
-                          disabled={saving || !m.a || !m.b}
+                          disabled={saving || !m.a || !m.b || !canEditScores}
                         />
                         <span className="subtle">{m.done ? "Finalizado" : "Pendente"}</span>
                       </div>
@@ -2122,7 +2170,7 @@ export function TournamentPage({ user, profile }: Props) {
             </section>
           ) : null}
 
-          {tab === "classificacao" ? (
+          {tab === "classificacao" && canSeeClassificationTab ? (
             <section className="card">
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
               {activeClass
@@ -2148,7 +2196,7 @@ export function TournamentPage({ user, profile }: Props) {
             </section>
           ) : null}
 
-          {tab === "organizacao" ? (
+          {tab === "organizacao" && isOwner ? (
             <section className="card">
               <h3 style={{ marginTop: 0 }}>Categorias, classes e inscritos</h3>
               <div className="cluster" style={{ marginBottom: 10 }}>
