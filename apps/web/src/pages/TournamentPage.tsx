@@ -198,6 +198,10 @@ function validateSetGames(
   const a = asScore(aRaw);
   const b = asScore(bRaw);
   if (a === null || b === null) return { done: false, winner: null };
+  if (a === targetGames && b === targetGames) {
+    const tb = validateSuperTb(tbAraw, tbBraw, targetGames === 4 ? 5 : 7);
+    return tb.done ? { done: true, winner: tb.winner } : { done: false, winner: null };
+  }
   if (a === b) return { done: false, winner: null };
 
   const high = Math.max(a, b);
@@ -2544,41 +2548,6 @@ export function TournamentPage({ user, profile }: Props) {
     }
   };
 
-  const exportActiveKnockoutPng = async () => {
-    if (!activeClass || !activeClass.data.knockout?.rounds.length) {
-      setFeedback({ kind: "error", text: "A classe ativa ainda nao possui chave mata-mata para exportar." });
-      return;
-    }
-    try {
-      const classAssignments = (agenda.assignments || []).filter(
-        (a) => a.categoria === activeClass.categoryName && a.classe === activeClass.className
-      );
-      const visual = buildClassVisualSvg(
-        activeClass.categoryName,
-        activeClass.className,
-        {
-          ...activeClass.data,
-          grupos: [],
-          tabelaPorGrupo: {},
-        },
-        classAssignments
-      );
-      const safeName = `${activeClass.categoryName}-${activeClass.className}`
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-      await downloadSvgAsPng(
-        visual.svg,
-        visual.width,
-        visual.height,
-        `${safeName || "classe"}-mata-mata.png`
-      );
-      setFeedback({ kind: "success", text: "Chave mata-mata exportada em PNG." });
-    } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao exportar PNG da chave." });
-    }
-  };
-
   const sendWhatsAppSummary = () => {
     if (!tournament) return;
     const lines: string[] = [];
@@ -3085,10 +3054,7 @@ export function TournamentPage({ user, profile }: Props) {
                       Exportar lista de quadras
                     </button>
                     <button onClick={() => void exportActiveClassPng()} disabled={saving}>
-                      Exportar chave PNG
-                    </button>
-                    <button onClick={() => void exportActiveKnockoutPng()} disabled={saving}>
-                      Exportar mata-mata PNG
+                      Exportar Chave Campeonato
                     </button>
                     <button onClick={exportBackupJson} disabled={saving}>
                       Backup
@@ -3118,10 +3084,7 @@ export function TournamentPage({ user, profile }: Props) {
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>Exportacoes</h3>
                   <div className="cluster">
                     <button onClick={() => void exportActiveClassPng()} disabled={saving}>
-                      Exportar chave PNG
-                    </button>
-                    <button onClick={() => void exportActiveKnockoutPng()} disabled={saving}>
-                      Exportar mata-mata PNG
+                      Exportar Chave Campeonato
                     </button>
                   </div>
                   <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
