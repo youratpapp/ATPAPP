@@ -48,6 +48,20 @@ type DraftCategory = {
   nome: string;
   classes: DraftClass[];
 };
+type ConfigScopeClass = {
+  categoryId: string;
+  categoryName: string;
+  classId: string;
+  className: string;
+  data: ClassData;
+};
+
+const ALL_CATEGORIES_SCOPE = "__all_categories__";
+const ALL_CLASSES_SCOPE = "__all_classes__";
+
+function scopeClassKey(categoryId: string, classId: string): string {
+  return `${categoryId}::${classId}`;
+}
 
 function asScore(value: string): number | null {
   const v = value.trim();
@@ -891,6 +905,8 @@ export function TournamentPage({ user, profile }: Props) {
   const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
   const [selectedRegistrationIds, setSelectedRegistrationIds] = useState<string[]>([]);
   const [registrationBusy, setRegistrationBusy] = useState(false);
+  const [configScopeCategoryId, setConfigScopeCategoryId] = useState("");
+  const [configScopeClassKey, setConfigScopeClassKey] = useState("");
   const [basicName, setBasicName] = useState("");
   const [basicCity, setBasicCity] = useState("");
   const [basicState, setBasicState] = useState("");
@@ -911,6 +927,41 @@ export function TournamentPage({ user, profile }: Props) {
   const activeDraftClass = useMemo(
     () => activeDraftCategory?.classes.find((c) => c.id === activeDraftClassId) ?? activeDraftCategory?.classes[0] ?? null,
     [activeDraftCategory, activeDraftClassId]
+  );
+  const configScopeClasses = useMemo<ConfigScopeClass[]>(() => {
+    if (configScopeCategoryId === ALL_CATEGORIES_SCOPE) {
+      return draftCategories.flatMap((cat) =>
+        cat.classes.map((cls) => ({
+          categoryId: cat.id,
+          categoryName: cat.nome,
+          classId: cls.id,
+          className: cls.nome,
+          data: cls.data,
+        }))
+      );
+    }
+    const cat = draftCategories.find((c) => c.id === configScopeCategoryId) ?? draftCategories[0] ?? null;
+    if (!cat) return [];
+    return cat.classes.map((cls) => ({
+      categoryId: cat.id,
+      categoryName: cat.nome,
+      classId: cls.id,
+      className: cls.nome,
+      data: cls.data,
+    }));
+  }, [draftCategories, configScopeCategoryId]);
+  const configTargetClasses = useMemo<ConfigScopeClass[]>(() => {
+    if (configScopeClassKey === ALL_CLASSES_SCOPE) return configScopeClasses;
+    return configScopeClasses.filter((c) => scopeClassKey(c.categoryId, c.classId) === configScopeClassKey);
+  }, [configScopeClasses, configScopeClassKey]);
+  const configEditorClass = useMemo<ConfigScopeClass | null>(() => {
+    if (configTargetClasses.length) return configTargetClasses[0] ?? null;
+    if (configScopeClasses.length) return configScopeClasses[0] ?? null;
+    return null;
+  }, [configTargetClasses, configScopeClasses]);
+  const configTargetKeys = useMemo(
+    () => new Set(configTargetClasses.map((c) => scopeClassKey(c.categoryId, c.classId))),
+    [configTargetClasses]
   );
 
   const agendaGroupedBySlot = useMemo(() => {
@@ -978,6 +1029,10 @@ export function TournamentPage({ user, profile }: Props) {
         setDraftCategories(draft);
         setActiveDraftCategoryId((prev) => prev || draft[0]?.id || "");
         setActiveDraftClassId((prev) => prev || draft[0]?.classes[0]?.id || "");
+        setConfigScopeCategoryId((prev) => prev || draft[0]?.id || "");
+        setConfigScopeClassKey((prev) =>
+          prev || (draft[0]?.classes[0] ? scopeClassKey(draft[0].id, draft[0].classes[0].id) : "")
+        );
         setDraftDirty(false);
         setGroupLink(asText(raw.linkGrupo));
         setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
@@ -1006,6 +1061,42 @@ export function TournamentPage({ user, profile }: Props) {
   }, [registrations]);
 
   useEffect(() => {
+    if (!draftCategories.length) {
+      setConfigScopeCategoryId("");
+      setConfigScopeClassKey("");
+      return;
+    }
+
+    if (configScopeCategoryId === ALL_CATEGORIES_SCOPE) {
+      const anyClass = draftCategories.some((c) => c.classes.length > 0);
+      if (!anyClass) {
+        setConfigScopeClassKey("");
+      } else if (configScopeClassKey !== ALL_CLASSES_SCOPE) {
+        const existsSelected = draftCategories.some((cat) =>
+          cat.classes.some((cls) => scopeClassKey(cat.id, cls.id) === configScopeClassKey)
+        );
+        if (!existsSelected) setConfigScopeClassKey(ALL_CLASSES_SCOPE);
+      }
+      return;
+    }
+
+    const currentCategory = draftCategories.find((c) => c.id === configScopeCategoryId) ?? draftCategories[0];
+    if (!currentCategory) return;
+    if (currentCategory.id !== configScopeCategoryId) {
+      setConfigScopeCategoryId(currentCategory.id);
+    }
+    if (!currentCategory.classes.length) {
+      setConfigScopeClassKey("");
+      return;
+    }
+    if (configScopeClassKey === ALL_CLASSES_SCOPE) return;
+    const exists = currentCategory.classes.some((cls) => scopeClassKey(currentCategory.id, cls.id) === configScopeClassKey);
+    if (!exists) {
+      setConfigScopeClassKey(scopeClassKey(currentCategory.id, currentCategory.classes[0].id));
+    }
+  }, [draftCategories, configScopeCategoryId, configScopeClassKey]);
+
+  useEffect(() => {
     if (!tournament) return;
     setBasicName(tournament.name || "");
     setBasicCity(tournament.city || "");
@@ -1025,15 +1116,16 @@ export function TournamentPage({ user, profile }: Props) {
   }, [tournament?.id, tournament?.name, tournament?.city, tournament?.state, tournament?.visibility, tournament?.status, tournament?.startsAt, tournament?.registrationCloseAt, tournament?.posterUrl]);
 
   useEffect(() => {
-    if (!activeDraftClass) return;
-    setNumGruposInput(String(activeDraftClass.data.config.numGrupos ?? 2));
-    setClassificadosInput(String(activeDraftClass.data.config.classificadosPorGrupo ?? 2));
-    setNumSetsInput(setScoreUiValue(activeDraftClass.data.config.numeroSets));
+    if (!configEditorClass) return;
+    setNumGruposInput(String(configEditorClass.data.config.numGrupos ?? 2));
+    setClassificadosInput(String(configEditorClass.data.config.classificadosPorGrupo ?? 2));
+    setNumSetsInput(setScoreUiValue(configEditorClass.data.config.numeroSets));
   }, [
-    activeDraftClass?.id,
-    activeDraftClass?.data.config.numGrupos,
-    activeDraftClass?.data.config.classificadosPorGrupo,
-    activeDraftClass?.data.config.numeroSets,
+    configEditorClass?.categoryId,
+    configEditorClass?.classId,
+    configEditorClass?.data.config.numGrupos,
+    configEditorClass?.data.config.classificadosPorGrupo,
+    configEditorClass?.data.config.numeroSets,
   ]);
 
   useEffect(() => {
@@ -1117,49 +1209,49 @@ export function TournamentPage({ user, profile }: Props) {
   };
 
   const commitNumGrupos = () => {
-    if (!activeDraftClass) return;
-    const model = activeDraftClass.data.config.modeloCompeticao;
+    if (!configEditorClass) return;
+    const model = configEditorClass.data.config.modeloCompeticao;
     if (model === "round_robin" || model === "liga_ranking") {
       setNumGruposInput("1");
-      if (activeDraftClass.data.config.numGrupos !== 1) updateActiveClassConfig({ numGrupos: 1 });
+      if (configEditorClass.data.config.numGrupos !== 1) updateActiveClassConfig({ numGrupos: 1 });
       return;
     }
     const parsed = Number.parseInt(numGruposInput.trim(), 10);
     const min = 1;
-    const next = Number.isNaN(parsed) ? activeDraftClass.data.config.numGrupos : Math.max(min, Math.min(16, parsed));
+    const next = Number.isNaN(parsed) ? configEditorClass.data.config.numGrupos : Math.max(min, Math.min(16, parsed));
     setNumGruposInput(String(next));
-    if (next !== activeDraftClass.data.config.numGrupos) {
+    if (next !== configEditorClass.data.config.numGrupos) {
       updateActiveClassConfig({ numGrupos: next });
     }
   };
 
   const commitClassificadosPorGrupo = () => {
-    if (!activeDraftClass) return;
-    const model = activeDraftClass.data.config.modeloCompeticao;
+    if (!configEditorClass) return;
+    const model = configEditorClass.data.config.modeloCompeticao;
     if (model === "round_robin" || model === "liga_ranking") {
       setClassificadosInput("0");
-      if (activeDraftClass.data.config.classificadosPorGrupo !== 0) updateActiveClassConfig({ classificadosPorGrupo: 0 });
+      if (configEditorClass.data.config.classificadosPorGrupo !== 0) updateActiveClassConfig({ classificadosPorGrupo: 0 });
       return;
     }
     const parsed = Number.parseInt(classificadosInput.trim(), 10);
-    const min = activeDraftClass.data.config.formato === "grupos" ? 0 : 1;
+    const min = configEditorClass.data.config.formato === "grupos" ? 0 : 1;
     const next = Number.isNaN(parsed)
-      ? activeDraftClass.data.config.classificadosPorGrupo
+      ? configEditorClass.data.config.classificadosPorGrupo
       : Math.max(min, Math.min(16, parsed));
     setClassificadosInput(String(next));
-    if (next !== activeDraftClass.data.config.classificadosPorGrupo) {
+    if (next !== configEditorClass.data.config.classificadosPorGrupo) {
       updateActiveClassConfig({ classificadosPorGrupo: next });
     }
   };
 
   const commitNumeroSets = () => {
-    if (!activeDraftClass) return;
+    if (!configEditorClass) return;
     const normalized = normalizeSetCountByScoreType(
-      activeDraftClass.data.config.tipoPontuacao,
-      normalizeNumberInputToOdd(numSetsInput, activeDraftClass.data.config.numeroSets || 3)
+      configEditorClass.data.config.tipoPontuacao,
+      normalizeNumberInputToOdd(numSetsInput, configEditorClass.data.config.numeroSets || 3)
     );
     setNumSetsInput(String(normalized));
-    if (normalized !== activeDraftClass.data.config.numeroSets) {
+    if (normalized !== configEditorClass.data.config.numeroSets) {
       updateActiveClassConfig({ numeroSets: normalized });
     }
   };
@@ -1401,28 +1493,30 @@ export function TournamentPage({ user, profile }: Props) {
     patch: Partial<ClassData["config"]>,
     options?: { resetGenerated?: boolean }
   ) => {
-    if (!activeDraftCategory || !activeDraftClass) return;
+    if (!configTargetKeys.size) return;
     const resetGenerated = options?.resetGenerated ?? true;
     mutateDraftCategories((prev) =>
       prev.map((cat) => {
-        if (cat.id !== activeDraftCategory.id) return cat;
+        const nextClasses = cat.classes.map((cls) => {
+          if (!configTargetKeys.has(scopeClassKey(cat.id, cls.id))) return cls;
+          const next = structuredClone(cls.data);
+          next.config = {
+            ...next.config,
+            ...coerceScoreTypePatchByModel(next.config, patch),
+          };
+          if (resetGenerated) {
+            next.grupos = [];
+            next.knockout = null;
+            next.tabelaPorGrupo = {};
+            next.gerado = false;
+          }
+          return { ...cls, data: normalizeClassData(next) };
+        });
+        const changed = nextClasses.some((cls, idx) => cls !== cat.classes[idx]);
+        if (!changed) return cat;
         return {
           ...cat,
-          classes: cat.classes.map((cls) => {
-            if (cls.id !== activeDraftClass.id) return cls;
-            const next = structuredClone(cls.data);
-            next.config = {
-              ...next.config,
-              ...coerceScoreTypePatchByModel(next.config, patch),
-            };
-            if (resetGenerated) {
-              next.grupos = [];
-              next.knockout = null;
-              next.tabelaPorGrupo = {};
-              next.gerado = false;
-            }
-            return { ...cls, data: normalizeClassData(next) };
-          }),
+          classes: nextClasses,
         };
       })
     );
@@ -2391,24 +2485,26 @@ export function TournamentPage({ user, profile }: Props) {
             ) : null}
           </div>
 
-          <section className="card" style={{ marginBottom: 12 }}>
-            <label>Classe ativa</label>
-            <select
-              value={activeClass?.key ?? ""}
-              onChange={(e) => setActiveClassKey(e.target.value)}
-              disabled={classes.length === 0}
-            >
-              {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
-              {classes.map((c) => (
-                <option key={c.key} value={c.key}>
-                  {c.categoryName} / {c.className}
-                </option>
-              ))}
-            </select>
-            <p className="subtle" style={{ marginBottom: 0 }}>
-              Esta tela usa engine TypeScript (mesmas regras de grupos, mata-mata e classificacao), sem simplificar comportamento.
-            </p>
-          </section>
+          {tab === "jogos" || tab === "classificacao" ? (
+            <section className="card" style={{ marginBottom: 12 }}>
+              <label>Classe ativa</label>
+              <select
+                value={activeClass?.key ?? ""}
+                onChange={(e) => setActiveClassKey(e.target.value)}
+                disabled={classes.length === 0}
+              >
+                {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
+                {classes.map((c) => (
+                  <option key={c.key} value={c.key}>
+                    {c.categoryName} / {c.className}
+                  </option>
+                ))}
+              </select>
+              <p className="subtle" style={{ marginBottom: 0 }}>
+                Esta tela usa engine TypeScript (mesmas regras de grupos, mata-mata e classificacao), sem simplificar comportamento.
+              </p>
+            </section>
+          ) : null}
 
           {tab === "jogos" ? (
             <section className="card">
@@ -2787,7 +2883,12 @@ export function TournamentPage({ user, profile }: Props) {
                       <div key={`cls:${cat.id}:${cls.id}`} style={{ borderTop: "1px solid var(--color-border)", paddingTop: 8, marginTop: 8 }}>
                         <div className="cluster">
                           <input value={cls.nome} onChange={(e) => renameClass(cat.id, cls.id, e.target.value)} disabled={saving} />
-                          <button onClick={() => { setActiveDraftCategoryId(cat.id); setActiveDraftClassId(cls.id); }} disabled={saving}>
+                          <button onClick={() => {
+                            setActiveDraftCategoryId(cat.id);
+                            setActiveDraftClassId(cls.id);
+                            setConfigScopeCategoryId(cat.id);
+                            setConfigScopeClassKey(scopeClassKey(cat.id, cls.id));
+                          }} disabled={saving}>
                             Selecionar para configurar
                           </button>
                           <button className="danger" onClick={() => removeClass(cat.id, cls.id)} disabled={saving}>Remover</button>
@@ -2809,14 +2910,23 @@ export function TournamentPage({ user, profile }: Props) {
                   <div style={{ flex: 1 }}>
                     <label>Categoria</label>
                     <select
-                      value={activeDraftCategory?.id || ""}
+                      value={configScopeCategoryId || (draftCategories[0]?.id || "")}
                       onChange={(e) => {
                         const nextCatId = e.target.value;
+                        setConfigScopeCategoryId(nextCatId);
+                        if (nextCatId === ALL_CATEGORIES_SCOPE) {
+                          setConfigScopeClassKey(ALL_CLASSES_SCOPE);
+                          return;
+                        }
                         const nextCat = draftCategories.find((c) => c.id === nextCatId);
-                        setActiveDraftCategoryId(nextCatId);
-                        setActiveDraftClassId(nextCat?.classes[0]?.id || "");
+                        if (!nextCat || !nextCat.classes.length) {
+                          setConfigScopeClassKey("");
+                          return;
+                        }
+                        setConfigScopeClassKey(ALL_CLASSES_SCOPE);
                       }}
                     >
+                      <option value={ALL_CATEGORIES_SCOPE}>Todas categorias</option>
                       {draftCategories.map((cat) => (
                         <option key={`cfg-cat:${cat.id}`} value={cat.id}>{cat.nome}</option>
                       ))}
@@ -2825,27 +2935,40 @@ export function TournamentPage({ user, profile }: Props) {
                   <div style={{ flex: 1 }}>
                     <label>Classe</label>
                     <select
-                      value={activeDraftClass?.id || ""}
-                      onChange={(e) => setActiveDraftClassId(e.target.value)}
+                      value={configScopeClassKey || ""}
+                      onChange={(e) => setConfigScopeClassKey(e.target.value)}
                     >
-                      {(activeDraftCategory?.classes || []).map((cls) => (
-                        <option key={`cfg-cls:${cls.id}`} value={cls.id}>{cls.nome}</option>
+                      <option value={ALL_CLASSES_SCOPE}>Todas classes</option>
+                      {configScopeClasses.map((cls) => (
+                        <option key={`cfg-cls:${cls.categoryId}:${cls.classId}`} value={scopeClassKey(cls.categoryId, cls.classId)}>
+                          {configScopeCategoryId === ALL_CATEGORIES_SCOPE
+                            ? `${cls.categoryName} / ${cls.className}`
+                            : cls.className}
+                        </option>
                       ))}
                     </select>
                   </div>
                 </div>
               </div>
 
-              {activeDraftCategory && activeDraftClass ? (
+              {configEditorClass ? (
                 <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
-                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>Configuracao da classe: {activeDraftCategory.nome} / {activeDraftClass.nome}</h3>
+                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>Configuracao de classes</h3>
+                  <p className="subtle" style={{ marginTop: 0 }}>
+                    Aplicando em:{" "}
+                    {configScopeCategoryId === ALL_CATEGORIES_SCOPE && configScopeClassKey === ALL_CLASSES_SCOPE
+                      ? "todas categorias e classes (torneio inteiro)"
+                      : configScopeClassKey === ALL_CLASSES_SCOPE
+                      ? `${configScopeClasses[0]?.categoryName || "categoria"} (todas as classes)`
+                      : `${configEditorClass.categoryName} / ${configEditorClass.className}`}
+                  </p>
                   <label>Modelo de competicao / pontuacao</label>
                   <select
-                    value={activeDraftClass.data.config.modeloCompeticao}
+                    value={configEditorClass.data.config.modeloCompeticao}
                     onChange={(e) =>
                       updateActiveClassConfig(
                         applyCompetitionModelToConfig(
-                          activeDraftClass.data.config,
+                          configEditorClass.data.config,
                           (e.target.value as ClassData["config"]["modeloCompeticao"]) || "grupos_mata_mata"
                         )
                       )
@@ -2860,11 +2983,11 @@ export function TournamentPage({ user, profile }: Props) {
                   </select>
                   <label>Tipo de partida / sets</label>
                   <select
-                    value={activeDraftClass.data.config.tipoPontuacao}
-                    disabled={activeDraftClass.data.config.modeloCompeticao === "super_tiebreak"}
+                    value={configEditorClass.data.config.tipoPontuacao}
+                    disabled={configEditorClass.data.config.modeloCompeticao === "super_tiebreak"}
                     onChange={(e) => {
                       const nextType = (e.target.value || "melhor_de_3") as ClassData["config"]["tipoPontuacao"];
-                      const normalizedSets = normalizeSetCountByScoreType(nextType, activeDraftClass.data.config.numeroSets || 3);
+                      const normalizedSets = normalizeSetCountByScoreType(nextType, configEditorClass.data.config.numeroSets || 3);
                       setNumSetsInput(String(normalizedSets));
                       updateActiveClassConfig({ tipoPontuacao: nextType, numeroSets: normalizedSets });
                     }}
@@ -2877,41 +3000,78 @@ export function TournamentPage({ user, profile }: Props) {
                     <option value="super_tb_unico">6. Super Tie-Break unico</option>
                   </select>
                   <label>Numero de sets (melhor de N)</label>
-                  <input type="text" inputMode="numeric" pattern="[0-9]*" value={numSetsInput} onChange={(e) => setNumSetsInput(coerceScoreStringForSetInput(e.target.value))} onBlur={commitNumeroSets} disabled={activeDraftClass.data.config.tipoPontuacao !== "fast4"} />
-                  <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>{scoringTypeLabel(activeDraftClass.data.config.tipoPontuacao)}. {scoringRulesHint(activeDraftClass.data.config)}</p>
+                  <input type="text" inputMode="numeric" pattern="[0-9]*" value={numSetsInput} onChange={(e) => setNumSetsInput(coerceScoreStringForSetInput(e.target.value))} onBlur={commitNumeroSets} disabled={configEditorClass.data.config.tipoPontuacao !== "fast4"} />
+                  <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>{scoringTypeLabel(configEditorClass.data.config.tipoPontuacao)}. {scoringRulesHint(configEditorClass.data.config)}</p>
+                  {configEditorClass.data.config.modeloCompeticao === "dupla_eliminacao" ? (
+                    <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
+                      Dupla eliminacao: modo inicial com chave unica + persistencia compativel. Evoluiremos para chave de repescagem visual dedicada.
+                    </p>
+                  ) : null}
+                  {configEditorClass.data.config.modeloCompeticao === "super_tiebreak" ? (
+                    <>
+                      <label>Base do Super Tie-Break</label>
+                      <select
+                        value={configEditorClass.data.config.superTiebreakBase}
+                        onChange={(e) => {
+                          const base =
+                            e.target.value === "mata_mata"
+                              ? "mata_mata"
+                              : e.target.value === "round_robin"
+                              ? "round_robin"
+                              : "grupos";
+                          updateActiveClassConfig(
+                            applyCompetitionModelToConfig(
+                              {
+                                ...configEditorClass.data.config,
+                                superTiebreakBase: base,
+                              },
+                              "super_tiebreak"
+                            )
+                          );
+                        }}
+                      >
+                        <option value="mata_mata">Mata-mata</option>
+                        <option value="grupos">Grupos</option>
+                        <option value="round_robin">Round Robin</option>
+                      </select>
+                      <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
+                        Regra de lancamento: vence quem faz 10+ pontos com diferenca minima de 2.
+                      </p>
+                    </>
+                  ) : null}
                   <label>Formato</label>
-                  <select value={activeDraftClass.data.config.formato} disabled={activeDraftClass.data.config.modeloCompeticao !== "super_tiebreak"} onChange={(e) => updateActiveClassConfig({ formato: e.target.value === "mata_mata" ? "mata_mata" : "grupos" })}>
+                  <select value={configEditorClass.data.config.formato} disabled={configEditorClass.data.config.modeloCompeticao !== "super_tiebreak"} onChange={(e) => updateActiveClassConfig({ formato: e.target.value === "mata_mata" ? "mata_mata" : "grupos" })}>
                     <option value="grupos">Grupos</option>
                     <option value="mata_mata">Mata-mata</option>
                   </select>
                   <label>Tipo</label>
-                  <select value={activeDraftClass.data.config.tipo} onChange={(e) => updateActiveClassConfig({ tipo: e.target.value === "simples" ? "simples" : "duplas" })}>
+                  <select value={configEditorClass.data.config.tipo} onChange={(e) => updateActiveClassConfig({ tipo: e.target.value === "simples" ? "simples" : "duplas" })}>
                     <option value="duplas">Duplas</option>
                     <option value="simples">Simples</option>
                   </select>
-                  {activeDraftClass.data.config.formato === "grupos" ? (
+                  {configEditorClass.data.config.formato === "grupos" ? (
                     <div className="cluster">
                       <div style={{ flex: 1 }}>
                         <label>Numero de grupos</label>
-                        <input type="text" inputMode="numeric" pattern="[0-9]*" value={numGruposInput} onChange={(e) => setNumGruposInput(e.target.value.replace(/[^\d]/g, ""))} onBlur={commitNumGrupos} disabled={activeDraftClass.data.config.modeloCompeticao === "round_robin" || activeDraftClass.data.config.modeloCompeticao === "liga_ranking"} />
+                        <input type="text" inputMode="numeric" pattern="[0-9]*" value={numGruposInput} onChange={(e) => setNumGruposInput(e.target.value.replace(/[^\d]/g, ""))} onBlur={commitNumGrupos} disabled={configEditorClass.data.config.modeloCompeticao === "round_robin" || configEditorClass.data.config.modeloCompeticao === "liga_ranking"} />
                       </div>
                       <div style={{ flex: 1 }}>
                         <label>Classificados por grupo</label>
-                        <input type="text" inputMode="numeric" pattern="[0-9]*" value={classificadosInput} onChange={(e) => setClassificadosInput(e.target.value.replace(/[^\d]/g, ""))} onBlur={commitClassificadosPorGrupo} disabled={activeDraftClass.data.config.modeloCompeticao === "round_robin" || activeDraftClass.data.config.modeloCompeticao === "liga_ranking"} />
+                        <input type="text" inputMode="numeric" pattern="[0-9]*" value={classificadosInput} onChange={(e) => setClassificadosInput(e.target.value.replace(/[^\d]/g, ""))} onBlur={commitClassificadosPorGrupo} disabled={configEditorClass.data.config.modeloCompeticao === "round_robin" || configEditorClass.data.config.modeloCompeticao === "liga_ranking"} />
                       </div>
                     </div>
                   ) : null}
-                  {activeDraftClass.data.config.tipo === "duplas" ? (
+                  {configEditorClass.data.config.tipo === "duplas" ? (
                     <>
                       <label>Modo de duplas</label>
-                      <select value={activeDraftClass.data.config.modoDuplas} onChange={(e) => updateActiveClassConfig({ modoDuplas: e.target.value === "manual" ? "manual" : "sorteio" })}>
+                      <select value={configEditorClass.data.config.modoDuplas} onChange={(e) => updateActiveClassConfig({ modoDuplas: e.target.value === "manual" ? "manual" : "sorteio" })}>
                         <option value="sorteio">Sorteio de duplas</option>
                         <option value="manual">Dupla fixa</option>
                       </select>
-                      {activeDraftClass.data.config.modoDuplas === "sorteio" ? (
+                      {configEditorClass.data.config.modoDuplas === "sorteio" ? (
                         <>
                           <label>Sorteio de duplas</label>
-                          <select value={activeDraftClass.data.config.sorteioDuplas} onChange={(e) => updateActiveClassConfig({ sorteioDuplas: e.target.value === "todos" ? "todos" : "grupos_ab" })}>
+                          <select value={configEditorClass.data.config.sorteioDuplas} onChange={(e) => updateActiveClassConfig({ sorteioDuplas: e.target.value === "todos" ? "todos" : "grupos_ab" })}>
                             <option value="grupos_ab">Grupos A/B</option>
                             <option value="todos">Todos</option>
                           </select>
@@ -2926,7 +3086,7 @@ export function TournamentPage({ user, profile }: Props) {
                   {draftDirty ? <p className="subtle" style={{ marginTop: 8 }}>Alteracoes em categorias/classes pendentes de salvamento.</p> : null}
                 </div>
               ) : (
-                <p className="subtle">Selecione uma classe para configurar os detalhes.</p>
+                <p className="subtle">Crie categorias e classes para habilitar a configuracao.</p>
               )}
 
               {agenda.total > 0 ? (
