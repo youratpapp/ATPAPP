@@ -1019,6 +1019,70 @@ export function TournamentPage({ user, profile }: Props) {
       ),
     [draftCategories]
   );
+  const organizationProgress = useMemo(() => {
+    const totalClasses = draftCategories.reduce((acc, cat) => acc + (cat.classes?.length || 0), 0);
+    const totalPlayers = playerClassesSummary.reduce((acc, cls) => acc + (cls.participantes?.length || 0), 0);
+    const approvedRegistrations = registrations.filter((r) => r.status === "approved").length;
+    const pendingRegistrations = registrations.filter((r) => r.status === "pending").length;
+    const basicsReady = Boolean(basicName.trim() && normalizedBasicUf && basicCity.trim());
+    const classesReady = totalClasses > 0;
+    const playersReady = totalPlayers >= 2;
+    const agendaReady = agendaConfig.dias.length > 0 && agendaConfig.quadras.length > 0;
+    const readyCount = [basicsReady, classesReady, playersReady, agendaReady].filter(Boolean).length;
+    const percent = Math.round((readyCount / 4) * 100);
+    const canGenerate = basicsReady && classesReady && playersReady && agendaReady;
+    return {
+      totalClasses,
+      totalPlayers,
+      approvedRegistrations,
+      pendingRegistrations,
+      basicsReady,
+      classesReady,
+      playersReady,
+      agendaReady,
+      readyCount,
+      percent,
+      canGenerate,
+    };
+  }, [
+    agendaConfig.dias.length,
+    agendaConfig.quadras.length,
+    basicCity,
+    basicName,
+    draftCategories,
+    normalizedBasicUf,
+    playerClassesSummary,
+    registrations,
+  ]);
+  const activeClassMatchStats = useMemo(() => {
+    if (!activeClass) {
+      return {
+        groups: 0,
+        knockoutRounds: 0,
+        totalMatches: 0,
+        doneMatches: 0,
+        pendingMatches: 0,
+      };
+    }
+    const groupMatches = (activeClass.data.grupos || []).flatMap((g) => g.matches || []);
+    const koMatches = (activeClass.data.knockout?.rounds || []).flatMap((r) => r.matches || []);
+    const all = [...groupMatches, ...koMatches];
+    const done = all.filter((m) => Boolean(m.done)).length;
+    return {
+      groups: (activeClass.data.grupos || []).length,
+      knockoutRounds: (activeClass.data.knockout?.rounds || []).length,
+      totalMatches: all.length,
+      doneMatches: done,
+      pendingMatches: Math.max(0, all.length - done),
+    };
+  }, [activeClass]);
+  const playersOverview = useMemo(() => {
+    const totalPlayers = playerClassesSummary.reduce((acc, cls) => acc + (cls.participantes?.length || 0), 0);
+    const totalClasses = playerClassesSummary.length;
+    const pending = registrations.filter((r) => r.status === "pending").length;
+    const approved = registrations.filter((r) => r.status === "approved").length;
+    return { totalPlayers, totalClasses, pending, approved };
+  }, [playerClassesSummary, registrations]);
 
   useEffect(() => {
     let cancelled = false;
@@ -2547,16 +2611,33 @@ export function TournamentPage({ user, profile }: Props) {
           {tab === "jogos" ? (
             <section className="card">
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
+              {activeClass ? (
+                <div className="tournament-panel-kpis">
+                  <div className="tournament-panel-kpi">
+                    <strong>{activeClassMatchStats.totalMatches}</strong>
+                    <span>Partidas da classe</span>
+                  </div>
+                  <div className="tournament-panel-kpi">
+                    <strong>{activeClassMatchStats.doneMatches}</strong>
+                    <span>Finalizadas</span>
+                  </div>
+                  <div className="tournament-panel-kpi">
+                    <strong>{activeClassMatchStats.pendingMatches}</strong>
+                    <span>Pendentes</span>
+                  </div>
+                  <div className="tournament-panel-kpi">
+                    <strong>{activeClassMatchStats.groups}</strong>
+                    <span>Grupos</span>
+                  </div>
+                  <div className="tournament-panel-kpi">
+                    <strong>{activeClassMatchStats.knockoutRounds}</strong>
+                    <span>Fases mata-mata</span>
+                  </div>
+                </div>
+              ) : null}
 
               {isOwner ? (
-                <div
-                  style={{
-                    border: "1px solid var(--color-border)",
-                    borderRadius: 10,
-                    padding: 10,
-                    marginBottom: 12,
-                  }}
-                >
+                <div className="tournament-admin-ops">
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>Operacoes e exportacoes</h3>
                   <div className="cluster" style={{ marginBottom: 8 }}>
                     <button className="primary" onClick={() => void generateAllClasses()} disabled={saving}>
@@ -2609,14 +2690,7 @@ export function TournamentPage({ user, profile }: Props) {
                   </p>
                 </div>
               ) : (
-                <div
-                  style={{
-                    border: "1px solid var(--color-border)",
-                    borderRadius: 10,
-                    padding: 10,
-                    marginBottom: 12,
-                  }}
-                >
+                <div className="tournament-admin-ops">
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>Exportacoes</h3>
                   <div className="cluster">
                     <button onClick={() => void exportActiveClassPng()} disabled={saving}>
@@ -2626,6 +2700,9 @@ export function TournamentPage({ user, profile }: Props) {
                       Exportar mata-mata PNG
                     </button>
                   </div>
+                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
+                    Visualizacao em modo jogador: sem alteracao de placares.
+                  </p>
                 </div>
               )}
 
@@ -2634,20 +2711,26 @@ export function TournamentPage({ user, profile }: Props) {
                   <h3 style={{ marginBottom: 8 }}>{g.name}</h3>
                   {g.matches.length === 0 ? <p className="subtle">Sem partidas no grupo.</p> : null}
                   {g.matches.map((m, mi) => (
-                    <div key={`${activeClass.key}:g:${gi}:${mi}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0" }}>
-                      <div style={{ fontSize: 14, marginBottom: 6 }}>
-                        <span style={m.done && m.winner === m.a ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                    <div key={`${activeClass.key}:g:${gi}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
+                      <div className="match-card-head">
+                        <span className="match-card-index">Partida {mi + 1}</span>
+                        <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
+                          {m.done ? "Finalizado" : "Pendente"}
+                        </span>
+                      </div>
+                      <div className="match-player-row">
+                        <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
                           {m.a || "A definir"}
-                        </span>{" "}
-                        x{" "}
-                        <span style={m.done && m.winner === m.b ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                        </span>
+                        <span className="match-player-vs">x</span>
+                        <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
                           {m.b || "A definir"}
                         </span>
                       </div>
-                      <div className="cluster">
+                      <div className="match-input-row">
                         <span className="subtle">{matchScoreInputLabel(activeClass.data.config)} A/B</span>
                         <input
-                          style={{ width: 80 }}
+                          className="match-score-input"
                           inputMode="numeric"
                           pattern="[0-9]*"
                           placeholder={`${matchScoreInputLabel(activeClass.data.config)} A`}
@@ -2659,7 +2742,7 @@ export function TournamentPage({ user, profile }: Props) {
                           disabled={saving || !canEditScores}
                         />
                         <input
-                          style={{ width: 80 }}
+                          className="match-score-input"
                           inputMode="numeric"
                           pattern="[0-9]*"
                           placeholder={`${matchScoreInputLabel(activeClass.data.config)} B`}
@@ -2670,7 +2753,6 @@ export function TournamentPage({ user, profile }: Props) {
                           }}
                           disabled={saving || !canEditScores}
                         />
-                        <span className="subtle">{m.done ? "Finalizado" : "Pendente"}</span>
                       </div>
                     </div>
                   ))}
@@ -2682,20 +2764,26 @@ export function TournamentPage({ user, profile }: Props) {
                   <h3 style={{ marginBottom: 8 }}>{round.name}</h3>
                   {round.matches.length === 0 ? <p className="subtle">Sem partidas nesta fase.</p> : null}
                   {round.matches.map((m, mi) => (
-                    <div key={`${activeClass.key}:ko:${ri}:${mi}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0" }}>
-                      <div style={{ fontSize: 14, marginBottom: 6 }}>
-                        <span style={m.done && m.winner === m.a ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                    <div key={`${activeClass.key}:ko:${ri}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
+                      <div className="match-card-head">
+                        <span className="match-card-index">Jogo {mi + 1}</span>
+                        <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
+                          {m.done ? "Finalizado" : "Pendente"}
+                        </span>
+                      </div>
+                      <div className="match-player-row">
+                        <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
                           {m.a || "A definir"}
-                        </span>{" "}
-                        x{" "}
-                        <span style={m.done && m.winner === m.b ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                        </span>
+                        <span className="match-player-vs">x</span>
+                        <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
                           {m.b || "A definir"}
                         </span>
                       </div>
-                      <div className="cluster">
+                      <div className="match-input-row">
                         <span className="subtle">{matchScoreInputLabel(activeClass.data.config)} A/B</span>
                         <input
-                          style={{ width: 80 }}
+                          className="match-score-input"
                           inputMode="numeric"
                           pattern="[0-9]*"
                           placeholder={`${matchScoreInputLabel(activeClass.data.config)} A`}
@@ -2707,7 +2795,7 @@ export function TournamentPage({ user, profile }: Props) {
                           disabled={saving || !m.a || !m.b || !canEditScores}
                         />
                         <input
-                          style={{ width: 80 }}
+                          className="match-score-input"
                           inputMode="numeric"
                           pattern="[0-9]*"
                           placeholder={`${matchScoreInputLabel(activeClass.data.config)} B`}
@@ -2718,7 +2806,6 @@ export function TournamentPage({ user, profile }: Props) {
                           }}
                           disabled={saving || !m.a || !m.b || !canEditScores}
                         />
-                        <span className="subtle">{m.done ? "Finalizado" : "Pendente"}</span>
                       </div>
                     </div>
                   ))}
@@ -2760,8 +2847,56 @@ export function TournamentPage({ user, profile }: Props) {
           {tab === "organizacao" && isOwner ? (
             <section className="card">
               <h3 style={{ marginTop: 0 }}>Organizacao do torneio</h3>
+              <div className="setup-overview">
+                <div className="setup-overview-head">
+                  <div>
+                    <p className="setup-overview-title">Pronto para gerar campeonatos</p>
+                    <p className="setup-overview-subtitle">
+                      {organizationProgress.readyCount}/4 etapas concluidas
+                    </p>
+                  </div>
+                  <span className={`setup-progress-chip ${organizationProgress.canGenerate ? "ready" : "pending"}`}>
+                    {organizationProgress.percent}%
+                  </span>
+                </div>
+                <div className="setup-progress-bar">
+                  <span style={{ width: `${organizationProgress.percent}%` }} />
+                </div>
+                <div className="setup-kpis">
+                  <div className="setup-kpi"><strong>{organizationProgress.totalClasses}</strong><span>Classes</span></div>
+                  <div className="setup-kpi"><strong>{organizationProgress.totalPlayers}</strong><span>Jogadores</span></div>
+                  <div className="setup-kpi"><strong>{organizationProgress.approvedRegistrations}</strong><span>Aprovados por link</span></div>
+                  <div className="setup-kpi"><strong>{organizationProgress.pendingRegistrations}</strong><span>Pendentes</span></div>
+                </div>
+                <div className="setup-stage-list">
+                  <button className={`setup-stage ${organizationProgress.basicsReady ? "ok" : "todo"}`} onClick={() => document.getElementById("setup-basics")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                    <span>1. Dados iniciais</span>
+                    <strong>{organizationProgress.basicsReady ? "Pronto" : "Pendente"}</strong>
+                  </button>
+                  <button className={`setup-stage ${organizationProgress.classesReady ? "ok" : "todo"}`} onClick={() => document.getElementById("setup-classes")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                    <span>2. Categorias e classes</span>
+                    <strong>{organizationProgress.classesReady ? "Pronto" : "Pendente"}</strong>
+                  </button>
+                  <button className={`setup-stage ${organizationProgress.playersReady ? "ok" : "todo"}`} onClick={() => document.getElementById("setup-players-hint")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                    <span>3. Jogadores</span>
+                    <strong>{organizationProgress.playersReady ? "Pronto" : "Pendente"}</strong>
+                  </button>
+                  <button className={`setup-stage ${organizationProgress.agendaReady ? "ok" : "todo"}`} onClick={() => document.getElementById("setup-agenda")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                    <span>4. Agenda e quadras</span>
+                    <strong>{organizationProgress.agendaReady ? "Pronto" : "Pendente"}</strong>
+                  </button>
+                </div>
+                {!organizationProgress.canGenerate ? (
+                  <p className="subtle" style={{ margin: "10px 0 0 0" }}>
+                    Dica: finalize as etapas pendentes para evitar falhas ou sorteio incompleto na geracao.
+                  </p>
+                ) : null}
+              </div>
+              <p id="setup-players-hint" className="subtle" style={{ marginTop: 12, marginBottom: 0 }}>
+                Jogadores e aprovacoes de inscricao ficam na aba <strong>Jogadores</strong>.
+              </p>
 
-              <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+              <div id="setup-basics" style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Dados iniciais do torneio</h3>
                 <div className="cluster">
                   <div style={{ flex: 1 }}>
@@ -2844,7 +2979,7 @@ export function TournamentPage({ user, profile }: Props) {
                 </div>
               </div>
 
-              <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+              <div id="setup-agenda" style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Agenda do torneio (unica)</h3>
                 <label>Duracao da partida (min)</label>
                 <input
@@ -2933,7 +3068,7 @@ export function TournamentPage({ user, profile }: Props) {
                 </div>
               </div>
 
-              <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+              <div id="setup-classes" style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Estrutura de categorias e classes</h3>
                 <div className="cluster" style={{ marginBottom: 10 }}>
                   <input value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} placeholder="Nova categoria (ex.: Masculino)" />
@@ -3193,15 +3328,26 @@ export function TournamentPage({ user, profile }: Props) {
           {tab === "jogadores" && isOwner ? (
             <section className="card">
               <h3 style={{ marginTop: 0, marginBottom: 8 }}>Organizacao dos jogadores</h3>
+              <div className="tournament-panel-kpis">
+                <div className="tournament-panel-kpi">
+                  <strong>{playersOverview.totalPlayers}</strong>
+                  <span>Jogadores cadastrados</span>
+                </div>
+                <div className="tournament-panel-kpi">
+                  <strong>{playersOverview.totalClasses}</strong>
+                  <span>Classes</span>
+                </div>
+                <div className="tournament-panel-kpi">
+                  <strong>{playersOverview.approved}</strong>
+                  <span>Inscricoes aprovadas</span>
+                </div>
+                <div className="tournament-panel-kpi">
+                  <strong>{playersOverview.pending}</strong>
+                  <span>Pendentes por link</span>
+                </div>
+              </div>
 
-              <div
-                style={{
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginBottom: 12,
-                }}
-              >
+              <div className="tournament-admin-ops">
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Cadastro de jogadores por classe</h3>
                 {activeDraftCategory && activeDraftClass ? (
                   <>
@@ -3317,14 +3463,7 @@ export function TournamentPage({ user, profile }: Props) {
                 )}
               </div>
 
-              <div
-                style={{
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginBottom: 12,
-                }}
-              >
+              <div className="tournament-admin-ops">
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
                 <div className="cluster" style={{ marginBottom: 8 }}>
                   <button
@@ -3386,14 +3525,7 @@ export function TournamentPage({ user, profile }: Props) {
                 {filteredRegistrations.map((r) => (
                   <div
                     key={r.id}
-                    style={{
-                      borderTop: "1px solid var(--color-border)",
-                      padding: "8px 0",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: 8,
-                      alignItems: "center",
-                    }}
+                    className="registration-row"
                   >
                     <div>
                       <div>
@@ -3426,14 +3558,7 @@ export function TournamentPage({ user, profile }: Props) {
                 ))}
               </div>
 
-              <div
-                style={{
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginBottom: 0,
-                }}
-              >
+              <div className="tournament-admin-ops" style={{ marginBottom: 0 }}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Lista completa de jogadores por classe</h3>
                 {playerClassesSummary.length === 0 ? <p className="subtle">Nenhuma classe cadastrada.</p> : null}
                 {playerClassesSummary.map((item) => (
