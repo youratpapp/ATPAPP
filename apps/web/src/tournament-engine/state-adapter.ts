@@ -53,6 +53,7 @@ function normalizeGroupMatch(v: unknown): GroupMatch {
     b: txt(m.b),
     s1: txt(m.s1),
     s2: txt(m.s2),
+    scoreLabel: txt(m.scoreLabel),
     done: bool(m.done),
     winner: txt(m.winner) || null,
   };
@@ -74,6 +75,7 @@ function normalizeKoMatch(v: unknown): KnockoutMatch {
     b: txt(m.b) || null,
     s1: txt(m.s1),
     s2: txt(m.s2),
+    scoreLabel: txt(m.scoreLabel),
     done: bool(m.done),
     winner: txt(m.winner) || null,
   };

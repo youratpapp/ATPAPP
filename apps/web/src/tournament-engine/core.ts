@@ -11,6 +11,14 @@ export type TournamentConfig = {
   superTiebreakBase: "mata_mata" | "grupos" | "round_robin";
   modoDuplas: "sorteio" | "manual";
   sorteioDuplas: "grupos_ab" | "todos";
+  tipoPontuacao:
+    | "melhor_de_3"
+    | "melhor_de_3_super_tb"
+    | "set_unico"
+    | "pro_set"
+    | "fast4"
+    | "super_tb_unico";
+  numeroSets: number;
   numGrupos: number;
   classificadosPorGrupo: number;
 };
@@ -20,6 +28,7 @@ export type GroupMatch = {
   b: string;
   s1: string;
   s2: string;
+  scoreLabel?: string;
   done: boolean;
   winner: string | null;
 };
@@ -35,6 +44,7 @@ export type KnockoutMatch = {
   b: string | null;
   s1: string;
   s2: string;
+  scoreLabel?: string;
   done: boolean;
   winner: string | null;
 };
@@ -94,6 +104,8 @@ export const DEFAULT_CONFIG: TournamentConfig = {
   superTiebreakBase: "grupos",
   modoDuplas: "sorteio",
   sorteioDuplas: "grupos_ab",
+  tipoPontuacao: "melhor_de_3",
+  numeroSets: 3,
   numGrupos: 2,
   classificadosPorGrupo: 2,
 };
@@ -121,6 +133,20 @@ export function normalizeConfig(cfgRaw: Partial<TournamentConfig> | null | undef
     cfg.superTiebreakBase === "mata_mata" || cfg.superTiebreakBase === "round_robin" ? cfg.superTiebreakBase : "grupos";
   const modoDuplas = cfg.modoDuplas === "manual" ? "manual" : "sorteio";
   const sorteioDuplas = cfg.sorteioDuplas === "todos" ? "todos" : "grupos_ab";
+  const tipoPontuacao =
+    cfg.tipoPontuacao === "melhor_de_3" ||
+    cfg.tipoPontuacao === "melhor_de_3_super_tb" ||
+    cfg.tipoPontuacao === "set_unico" ||
+    cfg.tipoPontuacao === "pro_set" ||
+    cfg.tipoPontuacao === "fast4" ||
+    cfg.tipoPontuacao === "super_tb_unico"
+      ? cfg.tipoPontuacao
+      : "melhor_de_3";
+  const numeroSetsFallback =
+    tipoPontuacao === "set_unico" || tipoPontuacao === "pro_set" || tipoPontuacao === "super_tb_unico"
+      ? 1
+      : 3;
+  const numeroSets = clampInt(cfg.numeroSets, 1, 5, numeroSetsFallback);
   return {
     tipo,
     formato,
@@ -128,9 +154,38 @@ export function normalizeConfig(cfgRaw: Partial<TournamentConfig> | null | undef
     superTiebreakBase,
     modoDuplas,
     sorteioDuplas,
+    tipoPontuacao,
+    numeroSets,
     numGrupos: clampInt(cfg.numGrupos, 1, 16, 2),
     classificadosPorGrupo: clampInt(cfg.classificadosPorGrupo, 0, 16, 2),
   };
+}
+
+function isSuperTieBreakPointsMode(config?: TournamentConfig): boolean {
+  return config?.tipoPontuacao === "super_tb_unico" || config?.modeloCompeticao === "super_tiebreak";
+}
+
+function normalizeNumeroSetsByType(config: TournamentConfig): number {
+  if (
+    config.tipoPontuacao === "set_unico" ||
+    config.tipoPontuacao === "pro_set" ||
+    config.tipoPontuacao === "super_tb_unico"
+  ) {
+    return 1;
+  }
+  if (config.tipoPontuacao === "melhor_de_3" || config.tipoPontuacao === "melhor_de_3_super_tb") {
+    return 3;
+  }
+  const bounded = Math.max(1, Math.min(5, Number(config.numeroSets) || 3));
+  return bounded % 2 === 0 ? bounded + 1 : bounded;
+}
+
+function targetWinsByConfig(config?: TournamentConfig): number {
+  if (!config) return 1;
+  if (isSuperTieBreakPointsMode(config)) return 1;
+  if (config.tipoPontuacao === "melhor_de_3" || config.tipoPontuacao === "melhor_de_3_super_tb") return 2;
+  const bestOf = normalizeNumeroSetsByType(config);
+  return Math.max(1, Math.floor(bestOf / 2) + 1);
 }
 
 export function shuffle<T>(arr: T[]): T[] {
@@ -161,6 +216,7 @@ export function buildRoundRobin(entries: string[]): GroupMatch[] {
           b,
           s1: "",
           s2: "",
+          scoreLabel: "",
           done: false,
           winner: null,
         });
@@ -220,12 +276,18 @@ function winnerFromMatch(m: KnockoutMatch, config?: TournamentConfig): string | 
   const b = Number.parseInt(m.s2, 10);
   if (Number.isNaN(a) || Number.isNaN(b)) return null;
   if (a === b) return null;
-  if (config?.modeloCompeticao === "super_tiebreak") {
+  if (isSuperTieBreakPointsMode(config)) {
     const max = Math.max(a, b);
     const diff = Math.abs(a - b);
     if (max < 10 || diff < 2) return null;
+    return a > b ? m.a : m.b;
   }
-  return a > b ? m.a : m.b;
+  const targetWins = targetWinsByConfig(config);
+  const bestOf = config ? normalizeNumeroSetsByType(config) : 1;
+  if (a > bestOf || b > bestOf) return null;
+  if (a >= targetWins && b < targetWins) return m.a;
+  if (b >= targetWins && a < targetWins) return m.b;
+  return null;
 }
 
 export function buildKnockout(entries: string[]): Knockout {
@@ -253,7 +315,7 @@ export function buildKnockout(entries: string[]): Knockout {
   for (let i = 0; i < padded.length / 2; i += 1) {
     const a = padded[i] as string;
     const b = padded[padded.length - 1 - i] as string;
-    first.push({ a, b, s1: "", s2: "", done: false, winner: null });
+    first.push({ a, b, s1: "", s2: "", scoreLabel: "", done: false, winner: null });
   }
 
   const temPreliminar = clean.length !== bracketSize;
@@ -264,7 +326,7 @@ export function buildKnockout(entries: string[]): Knockout {
     q = q / 2;
     const matches: KnockoutMatch[] = [];
     for (let i = 0; i < q; i += 1) {
-      matches.push({ a: null, b: null, s1: "", s2: "", done: false, winner: null });
+      matches.push({ a: null, b: null, s1: "", s2: "", scoreLabel: "", done: false, winner: null });
     }
     rounds.push({ name: nomeRodada(q), matches });
   }
@@ -326,6 +388,7 @@ export function recomputeKnockout(knockout: Knockout, config?: TournamentConfig)
       if (changed) {
         slot.s1 = "";
         slot.s2 = "";
+        slot.scoreLabel = "";
         slot.done = false;
         slot.winner = null;
       }

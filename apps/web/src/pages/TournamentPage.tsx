@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import {
+  deleteTournament,
   loadTournamentDetails,
   loadTournamentRegistrations,
   updateTournamentDetails,
@@ -59,6 +60,29 @@ function asScore(value: string): number | null {
   return n;
 }
 
+function isSuperTieBreakPointsMode(config?: ClassData["config"]): boolean {
+  return config?.tipoPontuacao === "super_tb_unico" || config?.modeloCompeticao === "super_tiebreak";
+}
+
+function normalizeNumeroSetsByType(config: ClassData["config"], raw: number): number {
+  if (config.tipoPontuacao === "set_unico" || config.tipoPontuacao === "pro_set" || config.tipoPontuacao === "super_tb_unico") {
+    return 1;
+  }
+  if (config.tipoPontuacao === "melhor_de_3" || config.tipoPontuacao === "melhor_de_3_super_tb") {
+    return 3;
+  }
+  const bounded = Math.max(1, Math.min(5, raw || 3));
+  return bounded % 2 === 0 ? bounded + 1 : bounded;
+}
+
+function targetWinsByConfig(config?: ClassData["config"]): number {
+  if (!config) return 1;
+  if (isSuperTieBreakPointsMode(config)) return 1;
+  if (config.tipoPontuacao === "melhor_de_3" || config.tipoPontuacao === "melhor_de_3_super_tb") return 2;
+  const bestOf = normalizeNumeroSetsByType(config, config.numeroSets);
+  return Math.max(1, Math.floor(bestOf / 2) + 1);
+}
+
 function computeMatchStatus(
   s1: string,
   s2: string,
@@ -68,12 +92,111 @@ function computeMatchStatus(
   const b = asScore(s2);
   if (a === null || b === null) return { done: false, winner: null };
   if (a === b) return { done: false, winner: null };
-  if (config?.modeloCompeticao === "super_tiebreak") {
+  if (isSuperTieBreakPointsMode(config)) {
     const max = Math.max(a, b);
     const diff = Math.abs(a - b);
     if (max < 10 || diff < 2) return { done: false, winner: null };
+    return { done: true, winner: a > b ? "a" : "b" };
   }
-  return { done: true, winner: a > b ? "a" : "b" };
+  const targetWins = targetWinsByConfig(config);
+  const bestOf = config ? normalizeNumeroSetsByType(config, config.numeroSets) : 1;
+  if (a > bestOf || b > bestOf) return { done: false, winner: null };
+  if (a < targetWins && b < targetWins) return { done: false, winner: null };
+  if (a >= targetWins && b < targetWins) return { done: true, winner: "a" };
+  if (b >= targetWins && a < targetWins) return { done: true, winner: "b" };
+  if (a + b > bestOf) return { done: false, winner: null };
+  if (a !== targetWins && b !== targetWins) return { done: false, winner: null };
+  if (a === targetWins) return { done: true, winner: "a" };
+  if (b === targetWins) return { done: true, winner: "b" };
+  return { done: false, winner: null };
+}
+
+function scoringTypeLabel(tipo: ClassData["config"]["tipoPontuacao"]): string {
+  if (tipo === "melhor_de_3") return "1. Melhor de 3 sets tradicional";
+  if (tipo === "melhor_de_3_super_tb") return "2. Melhor de 3 com Super Tie-Break";
+  if (tipo === "set_unico") return "3. Set unico";
+  if (tipo === "pro_set") return "4. Pro Set";
+  if (tipo === "fast4") return "5. Fast4";
+  return "6. Super Tie-Break unico";
+}
+
+function matchScoreInputLabel(config?: ClassData["config"]): string {
+  if (isSuperTieBreakPointsMode(config)) return "Pontos";
+  return "Sets";
+}
+
+function formatMatchScoreValues(
+  s1: string | undefined,
+  s2: string | undefined,
+  done?: boolean,
+  config?: ClassData["config"]
+): string {
+  const a = String(s1 || "").trim();
+  const b = String(s2 || "").trim();
+  const sep = isSuperTieBreakPointsMode(config) ? "-" : " x ";
+  if (done) return `${a || "0"}${sep}${b || "0"}`;
+  if (!a && !b) return isSuperTieBreakPointsMode(config) ? "- - -" : "- x -";
+  return `${a || "_"}${sep}${b || "_"}`;
+}
+
+function scoringRulesHint(config: ClassData["config"]): string {
+  if (config.tipoPontuacao === "melhor_de_3") return "Lance sets vencidos. Vence ao atingir 2 sets.";
+  if (config.tipoPontuacao === "melhor_de_3_super_tb") {
+    return "Lance sets vencidos (0 a 2). Se precisar detalhar games/tie-break, use o historico textual da partida.";
+  }
+  if (config.tipoPontuacao === "set_unico") return "Lance sets vencidos (0 ou 1).";
+  if (config.tipoPontuacao === "pro_set") return "Lance sets vencidos (0 ou 1).";
+  if (config.tipoPontuacao === "fast4") return "Lance sets vencidos conforme melhor de N sets do Fast4.";
+  return "Lance pontos do Super Tie-Break (minimo 10 e diferenca minima de 2).";
+}
+
+function normalizeScoreTypeByModel(
+  model: ClassData["config"]["modeloCompeticao"],
+  current: ClassData["config"]["tipoPontuacao"]
+): ClassData["config"]["tipoPontuacao"] {
+  if (model === "super_tiebreak") return "super_tb_unico";
+  if (current === "super_tb_unico") return "melhor_de_3";
+  return current;
+}
+
+function normalizeSetCountByScoreType(
+  tipoPontuacao: ClassData["config"]["tipoPontuacao"],
+  raw: number
+): number {
+  const cfg = { tipoPontuacao } as ClassData["config"];
+  return normalizeNumeroSetsByType(cfg, raw);
+}
+
+function normalizeNumberInputToOdd(value: string, fallback: number): number {
+  const parsed = Number.parseInt(value.trim(), 10);
+  if (Number.isNaN(parsed)) return fallback;
+  const bounded = Math.max(1, Math.min(5, parsed));
+  return bounded % 2 === 0 ? bounded + 1 : bounded;
+}
+
+function coerceScoreStringForSetInput(value: string): string {
+  return value.replace(/[^\d]/g, "");
+}
+
+function setScoreUiValue(value: number | undefined | null): string {
+  if (value === undefined || value === null || Number.isNaN(Number(value))) return "";
+  return String(value);
+}
+
+function coerceScoreTypePatchByModel(
+  current: ClassData["config"],
+  patch: Partial<ClassData["config"]>
+): Partial<ClassData["config"]> {
+  const nextType = (patch.tipoPontuacao ?? current.tipoPontuacao) as ClassData["config"]["tipoPontuacao"];
+  const model = (patch.modeloCompeticao ?? current.modeloCompeticao) as ClassData["config"]["modeloCompeticao"];
+  const coercedType = normalizeScoreTypeByModel(model, nextType);
+  const rawSets = Number(patch.numeroSets ?? current.numeroSets ?? 3);
+  const numeroSets = normalizeSetCountByScoreType(coercedType, rawSets);
+  return {
+    ...patch,
+    tipoPontuacao: coercedType,
+    numeroSets,
+  };
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -143,6 +266,8 @@ function applyCompetitionModelToConfig(
   }
   return {
     modeloCompeticao: "super_tiebreak",
+    tipoPontuacao: "super_tb_unico",
+    numeroSets: 1,
     formato:
       current.superTiebreakBase === "mata_mata"
         ? "mata_mata"
@@ -330,14 +455,6 @@ function buildEntriesFromParticipants(config: ClassData["config"], participants:
   return entries;
 }
 
-function formatMatchScoreValues(s1: string | undefined, s2: string | undefined, done?: boolean): string {
-  const a = String(s1 || "").trim();
-  const b = String(s2 || "").trim();
-  if (done) return `${a || "0"} x ${b || "0"}`;
-  if (!a && !b) return "- x -";
-  return `${a || "_"} x ${b || "_"}`;
-}
-
 function competitionModelLabel(config: ClassData["config"]): string {
   const model = config.modeloCompeticao;
   if (model === "mata_mata_simples") return "Mata-mata simples";
@@ -362,14 +479,14 @@ function buildMatchScoreLookup(classes: LegacyClassRef[]): Map<string, string> {
     (cls.data.grupos || []).forEach((g) => {
       (g.matches || []).forEach((m, mi) => {
         const label = `${g.name} #${mi + 1}`;
-        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done));
+        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done, cls.data.config));
       });
     });
 
     (cls.data.knockout?.rounds || []).forEach((round) => {
       (round.matches || []).forEach((m, mi) => {
         const label = `${round.name} #${mi + 1}`;
-        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done));
+        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done, cls.data.config));
       });
     });
   });
@@ -615,7 +732,7 @@ function buildClassVisualSvg(
       y += 16;
       (g.matches || []).forEach((m, mi) => {
         const when = scheduleInfo(g.name, mi, ["Grupos"]);
-        const score = formatMatchScoreValues(m.s1, m.s2, m.done);
+        const score = formatMatchScoreValues(m.s1, m.s2, m.done, data.config);
         const winner = String(m.winner || "").trim().toLowerCase();
         const aName = String(m.a || "A definir");
         const bName = String(m.b || "A definir");
@@ -689,7 +806,7 @@ function buildClassVisualSvg(
         const when = scheduleInfo(round.name, mi, stageHints);
         out.push(
           `<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
-            formatMatchScoreValues(m.s1, m.s2, m.done)
+            formatMatchScoreValues(m.s1, m.s2, m.done, data.config)
           )}</text>`
         );
         out.push(
@@ -771,6 +888,7 @@ export function TournamentPage({ user, profile }: Props) {
   const [groupLink, setGroupLink] = useState("");
   const [numGruposInput, setNumGruposInput] = useState("2");
   const [classificadosInput, setClassificadosInput] = useState("2");
+  const [numSetsInput, setNumSetsInput] = useState("3");
   const [duracaoMinInput, setDuracaoMinInput] = useState("45");
   const [registrations, setRegistrations] = useState<TournamentRegistration[]>([]);
   const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
@@ -897,7 +1015,13 @@ export function TournamentPage({ user, profile }: Props) {
     if (!activeDraftClass) return;
     setNumGruposInput(String(activeDraftClass.data.config.numGrupos ?? 2));
     setClassificadosInput(String(activeDraftClass.data.config.classificadosPorGrupo ?? 2));
-  }, [activeDraftClass?.id, activeDraftClass?.data.config.numGrupos, activeDraftClass?.data.config.classificadosPorGrupo]);
+    setNumSetsInput(setScoreUiValue(activeDraftClass.data.config.numeroSets));
+  }, [
+    activeDraftClass?.id,
+    activeDraftClass?.data.config.numGrupos,
+    activeDraftClass?.data.config.classificadosPorGrupo,
+    activeDraftClass?.data.config.numeroSets,
+  ]);
 
   useEffect(() => {
     setDuracaoMinInput(String(agendaConfig.duracaoMin ?? 45));
@@ -1008,6 +1132,18 @@ export function TournamentPage({ user, profile }: Props) {
     setClassificadosInput(String(next));
     if (next !== activeDraftClass.data.config.classificadosPorGrupo) {
       updateActiveClassConfig({ classificadosPorGrupo: next });
+    }
+  };
+
+  const commitNumeroSets = () => {
+    if (!activeDraftClass) return;
+    const normalized = normalizeSetCountByScoreType(
+      activeDraftClass.data.config.tipoPontuacao,
+      normalizeNumberInputToOdd(numSetsInput, activeDraftClass.data.config.numeroSets || 3)
+    );
+    setNumSetsInput(String(normalized));
+    if (normalized !== activeDraftClass.data.config.numeroSets) {
+      updateActiveClassConfig({ numeroSets: normalized });
     }
   };
 
@@ -1181,6 +1317,8 @@ export function TournamentPage({ user, profile }: Props) {
         superTiebreakBase: "grupos",
         modoDuplas: "sorteio",
         sorteioDuplas: "grupos_ab",
+        tipoPontuacao: "melhor_de_3",
+        numeroSets: 3,
         numGrupos: 2,
         classificadosPorGrupo: 2,
       },
@@ -1245,7 +1383,10 @@ export function TournamentPage({ user, profile }: Props) {
           classes: cat.classes.map((cls) => {
             if (cls.id !== activeDraftClass.id) return cls;
             const next = structuredClone(cls.data);
-            next.config = { ...next.config, ...patch };
+            next.config = {
+              ...next.config,
+              ...coerceScoreTypePatchByModel(next.config, patch),
+            };
             if (resetGenerated) {
               next.grupos = [];
               next.knockout = null;
@@ -1368,6 +1509,8 @@ export function TournamentPage({ user, profile }: Props) {
         superTiebreakBase: "grupos",
         modoDuplas: "sorteio",
         sorteioDuplas: "grupos_ab",
+        tipoPontuacao: "melhor_de_3",
+        numeroSets: 3,
         numGrupos: 2,
         classificadosPorGrupo: 2,
       },
@@ -1805,6 +1948,33 @@ export function TournamentPage({ user, profile }: Props) {
     await persistTournamentData(withCategories, "Alteracoes salvas com sucesso.");
     setDraftDirty(false);
     setAgendaDirty(false);
+  };
+
+  const deleteCurrentTournament = async () => {
+    if (!tournament || !isOwner) return;
+    if (
+      !requireDoubleConfirmation(
+        "Tem certeza que deseja excluir este torneio?",
+        "Confirmacao final: excluir torneio de forma permanente?"
+      )
+    ) {
+      setFeedback({ kind: "info", text: "Exclusao do torneio cancelada." });
+      return;
+    }
+    const confirmation = window.prompt('Para confirmar, digite EXCLUIR');
+    if ((confirmation || "").trim().toUpperCase() !== "EXCLUIR") {
+      setFeedback({ kind: "info", text: "Exclusao cancelada. Palavra de confirmacao incorreta." });
+      return;
+    }
+    setSaving(true);
+    try {
+      await deleteTournament(user, tournament.id);
+      navigate("/eventos", { replace: true });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao excluir torneio." });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const exportAgendaByCourt = () => {
@@ -2275,6 +2445,9 @@ export function TournamentPage({ user, profile }: Props) {
                     <button className="danger" onClick={resetAllTournament} disabled={saving}>
                       Reset total
                     </button>
+                    <button className="danger" onClick={() => void deleteCurrentTournament()} disabled={saving}>
+                      Excluir torneio
+                    </button>
                   </div>
                   <div className="cluster">
                     <button onClick={exportAgendaByCourt} disabled={saving}>
@@ -2346,13 +2519,15 @@ export function TournamentPage({ user, profile }: Props) {
                         </span>
                       </div>
                       <div className="cluster">
+                        <span className="subtle">{matchScoreInputLabel(activeClass.data.config)} A/B</span>
                         <input
                           style={{ width: 80 }}
                           inputMode="numeric"
                           pattern="[0-9]*"
+                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} A`}
                           value={m.s1}
                           onChange={(e) => {
-                            const s1 = e.target.value.replace(/[^0-9]/g, "");
+                            const s1 = coerceScoreStringForSetInput(e.target.value);
                             onUpdateGroupScore(activeClass, gi, mi, s1, m.s2);
                           }}
                           disabled={saving || !canEditScores}
@@ -2361,9 +2536,10 @@ export function TournamentPage({ user, profile }: Props) {
                           style={{ width: 80 }}
                           inputMode="numeric"
                           pattern="[0-9]*"
+                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} B`}
                           value={m.s2}
                           onChange={(e) => {
-                            const s2 = e.target.value.replace(/[^0-9]/g, "");
+                            const s2 = coerceScoreStringForSetInput(e.target.value);
                             onUpdateGroupScore(activeClass, gi, mi, m.s1, s2);
                           }}
                           disabled={saving || !canEditScores}
@@ -2391,13 +2567,15 @@ export function TournamentPage({ user, profile }: Props) {
                         </span>
                       </div>
                       <div className="cluster">
+                        <span className="subtle">{matchScoreInputLabel(activeClass.data.config)} A/B</span>
                         <input
                           style={{ width: 80 }}
                           inputMode="numeric"
                           pattern="[0-9]*"
+                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} A`}
                           value={m.s1}
                           onChange={(e) => {
-                            const s1 = e.target.value.replace(/[^0-9]/g, "");
+                            const s1 = coerceScoreStringForSetInput(e.target.value);
                             onUpdateKoScore(activeClass, ri, mi, s1, m.s2);
                           }}
                           disabled={saving || !m.a || !m.b || !canEditScores}
@@ -2406,9 +2584,10 @@ export function TournamentPage({ user, profile }: Props) {
                           style={{ width: 80 }}
                           inputMode="numeric"
                           pattern="[0-9]*"
+                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} B`}
                           value={m.s2}
                           onChange={(e) => {
-                            const s2 = e.target.value.replace(/[^0-9]/g, "");
+                            const s2 = coerceScoreStringForSetInput(e.target.value);
                             onUpdateKoScore(activeClass, ri, mi, m.s1, s2);
                           }}
                           disabled={saving || !m.a || !m.b || !canEditScores}
@@ -2584,6 +2763,45 @@ export function TournamentPage({ user, profile }: Props) {
                     <option value="dupla_eliminacao">5. Dupla eliminacao</option>
                     <option value="super_tiebreak">6. Super Tie-Break</option>
                   </select>
+                  <label>Tipo de partida / sets</label>
+                  <select
+                    value={activeDraftClass.data.config.tipoPontuacao}
+                    disabled={activeDraftClass.data.config.modeloCompeticao === "super_tiebreak"}
+                    onChange={(e) => {
+                      const nextType = (e.target.value ||
+                        "melhor_de_3") as ClassData["config"]["tipoPontuacao"];
+                      const normalizedSets = normalizeSetCountByScoreType(
+                        nextType,
+                        activeDraftClass.data.config.numeroSets || 3
+                      );
+                      setNumSetsInput(String(normalizedSets));
+                      updateActiveClassConfig({
+                        tipoPontuacao: nextType,
+                        numeroSets: normalizedSets,
+                      });
+                    }}
+                  >
+                    <option value="melhor_de_3">1. Melhor de 3 sets tradicional</option>
+                    <option value="melhor_de_3_super_tb">2. Melhor de 3 com Super Tie-Break</option>
+                    <option value="set_unico">3. Set unico</option>
+                    <option value="pro_set">4. Pro Set</option>
+                    <option value="fast4">5. Fast4</option>
+                    <option value="super_tb_unico">6. Super Tie-Break unico</option>
+                  </select>
+                  <label>Numero de sets (melhor de N)</label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={numSetsInput}
+                    onChange={(e) => setNumSetsInput(coerceScoreStringForSetInput(e.target.value))}
+                    onBlur={commitNumeroSets}
+                    disabled={activeDraftClass.data.config.tipoPontuacao !== "fast4"}
+                  />
+                  <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
+                    {scoringTypeLabel(activeDraftClass.data.config.tipoPontuacao)}.{" "}
+                    {scoringRulesHint(activeDraftClass.data.config)}
+                  </p>
                   {activeDraftClass.data.config.modeloCompeticao === "dupla_eliminacao" ? (
                     <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
                       Dupla eliminacao: modo inicial com chave unica + persistencia compativel. Evoluiremos para chave de repescagem visual dedicada.

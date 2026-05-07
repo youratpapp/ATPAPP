@@ -399,6 +399,21 @@ export async function updateTournamentRegistrationStatus(
   if (error) throw new Error(error.message);
 }
 
+export async function deleteTournament(user: User, tournamentId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_TOURNAMENTS)
+    .delete()
+    .eq("id", tournamentId)
+    .eq("owner_id", user.id)
+    .select("id")
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data?.id) {
+    throw new Error("Somente o admin do torneio pode excluir.");
+  }
+}
+
 export function buildTournamentUrl(tournamentId: string): string {
   return `/eventos/${encodeURIComponent(tournamentId)}`;
 }
