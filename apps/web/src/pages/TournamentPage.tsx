@@ -310,6 +310,35 @@ function buildMatchScoreLookup(classes: LegacyClassRef[]): Map<string, string> {
   return map;
 }
 
+function buildMatchWinnerLookup(classes: LegacyClassRef[]): Map<string, string> {
+  const map = new Map<string, string>();
+  const keyOf = (categoryName: string, className: string, matchLabel: string) =>
+    `${categoryName}||${className}||${matchLabel}`.toLowerCase();
+
+  classes.forEach((cls) => {
+    const cat = cls.categoryName;
+    const kls = cls.className;
+
+    (cls.data.grupos || []).forEach((g) => {
+      (g.matches || []).forEach((m, mi) => {
+        const label = `${g.name} #${mi + 1}`;
+        const winner = String(m.winner || "").trim();
+        if (winner) map.set(keyOf(cat, kls, label), winner);
+      });
+    });
+
+    (cls.data.knockout?.rounds || []).forEach((round) => {
+      (round.matches || []).forEach((m, mi) => {
+        const label = `${round.name} #${mi + 1}`;
+        const winner = String(m.winner || "").trim();
+        if (winner) map.set(keyOf(cat, kls, label), winner);
+      });
+    });
+  });
+
+  return map;
+}
+
 function parseDraftCategories(dataRaw: Record<string, unknown>): DraftCategory[] {
   const data = asRecord(dataRaw) ?? {};
   const categories = asArray(data.categorias);
@@ -514,11 +543,19 @@ function buildClassVisualSvg(
       (g.matches || []).forEach((m, mi) => {
         const when = scheduleInfo(g.name, mi, ["Grupos"]);
         const score = formatMatchScoreValues(m.s1, m.s2, m.done);
-        const line = `${m.a} x ${m.b} | ${score}${when ? ` | ${when}` : ""}`;
+        const winner = String(m.winner || "").trim().toLowerCase();
+        const aName = String(m.a || "A definir");
+        const bName = String(m.b || "A definir");
+        const aFill = winner && winner === aName.trim().toLowerCase() ? "#15803d" : "#334155";
+        const bFill = winner && winner === bName.trim().toLowerCase() ? "#15803d" : "#334155";
+        const suffix = ` | ${score}${when ? ` | ${when}` : ""}`;
         out.push(
-          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
-            line
-          )}</text>`
+          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="12">` +
+            `<tspan fill="${aFill}">${escXml(aName)}</tspan>` +
+            `<tspan fill="#334155"> x </tspan>` +
+            `<tspan fill="${bFill}">${escXml(bName)}</tspan>` +
+            `<tspan fill="#334155">${escXml(suffix)}</tspan>` +
+          `</text>`
         );
         y += 14;
       });
@@ -559,15 +596,20 @@ function buildClassVisualSvg(
       round.matches.forEach((m, mi) => {
         const boxY = startY + mi * step + step / 2 - boxH / 2;
         centers[ri]?.push({ x: x + boxW, y: boxY + boxH / 2 });
+        const winner = String(m.winner || "").trim().toLowerCase();
+        const aName = String(m.a || "A definir");
+        const bName = String(m.b || "A definir");
+        const aFill = winner && winner === aName.trim().toLowerCase() ? "#15803d" : "#0f172a";
+        const bFill = winner && winner === bName.trim().toLowerCase() ? "#15803d" : "#0f172a";
         out.push(`<rect x="${x}" y="${boxY}" width="${boxW}" height="${boxH}" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>`);
         out.push(
-          `<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(
-            m.a || "A definir"
+          `<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="${aFill}">${escXml(
+            aName
           )}</text>`
         );
         out.push(
-          `<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(
-            m.b || "A definir"
+          `<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="${bFill}">${escXml(
+            bName
           )}</text>`
         );
         const stageHints = ri === rounds.length - 1 || ri === rounds.length - 2 ? ["Finais", "Mata-mata"] : ["Finais", "Mata-mata"];
@@ -654,6 +696,9 @@ export function TournamentPage({ user, profile }: Props) {
   const [newParticipantGroup, setNewParticipantGroup] = useState<"A" | "B">("A");
   const [bulkImportText, setBulkImportText] = useState("");
   const [groupLink, setGroupLink] = useState("");
+  const [numGruposInput, setNumGruposInput] = useState("2");
+  const [classificadosInput, setClassificadosInput] = useState("2");
+  const [duracaoMinInput, setDuracaoMinInput] = useState("45");
   const [registrations, setRegistrations] = useState<TournamentRegistration[]>([]);
   const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
   const [selectedRegistrationIds, setSelectedRegistrationIds] = useState<string[]>([]);
@@ -776,6 +821,16 @@ export function TournamentPage({ user, profile }: Props) {
   }, [registrations]);
 
   useEffect(() => {
+    if (!activeDraftClass) return;
+    setNumGruposInput(String(activeDraftClass.data.config.numGrupos ?? 2));
+    setClassificadosInput(String(activeDraftClass.data.config.classificadosPorGrupo ?? 2));
+  }, [activeDraftClass?.id, activeDraftClass?.data.config.numGrupos, activeDraftClass?.data.config.classificadosPorGrupo]);
+
+  useEffect(() => {
+    setDuracaoMinInput(String(agendaConfig.duracaoMin ?? 45));
+  }, [agendaConfig.duracaoMin]);
+
+  useEffect(() => {
     if (tab === "organizacao" && !isOwner) {
       setTab("jogos");
       return;
@@ -845,6 +900,40 @@ export function TournamentPage({ user, profile }: Props) {
     setAgendaConfig(normalizeAgendaConfig(next));
     setAgenda(normalizeAgenda(null));
     setAgendaDirty(true);
+  };
+
+  const commitNumGrupos = () => {
+    if (!activeDraftClass) return;
+    const parsed = Number.parseInt(numGruposInput.trim(), 10);
+    const next = Number.isNaN(parsed) ? activeDraftClass.data.config.numGrupos : Math.max(2, Math.min(16, parsed));
+    setNumGruposInput(String(next));
+    if (next !== activeDraftClass.data.config.numGrupos) {
+      updateActiveClassConfig({ numGrupos: next });
+    }
+  };
+
+  const commitClassificadosPorGrupo = () => {
+    if (!activeDraftClass) return;
+    const parsed = Number.parseInt(classificadosInput.trim(), 10);
+    const next = Number.isNaN(parsed)
+      ? activeDraftClass.data.config.classificadosPorGrupo
+      : Math.max(1, Math.min(16, parsed));
+    setClassificadosInput(String(next));
+    if (next !== activeDraftClass.data.config.classificadosPorGrupo) {
+      updateActiveClassConfig({ classificadosPorGrupo: next });
+    }
+  };
+
+  const commitDuracaoMin = () => {
+    const parsed = Number.parseInt(duracaoMinInput.trim(), 10);
+    const next = Number.isNaN(parsed) ? agendaConfig.duracaoMin : Math.max(10, Math.min(240, parsed));
+    setDuracaoMinInput(String(next));
+    if (next !== agendaConfig.duracaoMin) {
+      setAgendaConfigWithReset({
+        ...agendaConfig,
+        duracaoMin: next,
+      });
+    }
   };
 
   const addAgendaDay = () => {
@@ -1645,6 +1734,7 @@ export function TournamentPage({ user, profile }: Props) {
       else byCourt.set(m.quadra, [m]);
     });
     const scoreLookup = buildMatchScoreLookup(classes);
+    const winnerLookup = buildMatchWinnerLookup(classes);
     const scoreKey = (categoria: string, classe: string, matchLabel: string) =>
       `${categoria}||${classe}||${matchLabel}`.toLowerCase();
 
@@ -1669,9 +1759,18 @@ export function TournamentPage({ user, profile }: Props) {
       );
       rows.forEach((r, idx) => {
         const phase = `${r.round}${r.isFinal ? " (FINAL)" : r.isSemifinal ? " (SEMIFINAL)" : ""}`;
-        const score = scoreLookup.get(scoreKey(r.categoria, r.classe, r.matchLabel)) || "- x -";
+        const key = scoreKey(r.categoria, r.classe, r.matchLabel);
+        const score = scoreLookup.get(key) || "- x -";
+        const winner = String(winnerLookup.get(key) || "").trim().toLowerCase();
+        const p1 = String(r.p1 || "").trim();
+        const p2 = String(r.p2 || "").trim();
+        const p1IsWinner = !!winner && winner === p1.toLowerCase();
+        const p2IsWinner = !!winner && winner === p2.toLowerCase();
+        const gameHtml = `${
+          p1IsWinner ? `<span style="color:#15803d;font-weight:700">${p1}</span>` : p1
+        } x ${p2IsWinner ? `<span style="color:#15803d;font-weight:700">${p2}</span>` : p2}`;
         out.push(
-          `<tr><td>${idx + 1}</td><td>${r.data}</td><td>${r.hora}-${r.horaFim}</td><td>${r.categoria}</td><td>${r.classe}</td><td>${phase}</td><td>${r.p1} x ${r.p2}</td><td>${score}</td></tr>`
+          `<tr><td>${idx + 1}</td><td>${r.data}</td><td>${r.hora}-${r.horaFim}</td><td>${r.categoria}</td><td>${r.classe}</td><td>${phase}</td><td>${gameHtml}</td><td>${score}</td></tr>`
         );
       });
       out.push("</tbody></table></section>");
@@ -2139,11 +2238,19 @@ export function TournamentPage({ user, profile }: Props) {
                   {g.matches.map((m, mi) => (
                     <div key={`${activeClass.key}:g:${gi}:${mi}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0" }}>
                       <div style={{ fontSize: 14, marginBottom: 6 }}>
-                        {m.a || "A definir"} x {m.b || "A definir"}
+                        <span style={m.done && m.winner === m.a ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                          {m.a || "A definir"}
+                        </span>{" "}
+                        x{" "}
+                        <span style={m.done && m.winner === m.b ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                          {m.b || "A definir"}
+                        </span>
                       </div>
                       <div className="cluster">
                         <input
                           style={{ width: 80 }}
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           value={m.s1}
                           onChange={(e) => {
                             const s1 = e.target.value.replace(/[^0-9]/g, "");
@@ -2153,6 +2260,8 @@ export function TournamentPage({ user, profile }: Props) {
                         />
                         <input
                           style={{ width: 80 }}
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           value={m.s2}
                           onChange={(e) => {
                             const s2 = e.target.value.replace(/[^0-9]/g, "");
@@ -2174,11 +2283,19 @@ export function TournamentPage({ user, profile }: Props) {
                   {round.matches.map((m, mi) => (
                     <div key={`${activeClass.key}:ko:${ri}:${mi}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0" }}>
                       <div style={{ fontSize: 14, marginBottom: 6 }}>
-                        {m.a || "A definir"} x {m.b || "A definir"}
+                        <span style={m.done && m.winner === m.a ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                          {m.a || "A definir"}
+                        </span>{" "}
+                        x{" "}
+                        <span style={m.done && m.winner === m.b ? { color: "#15803d", fontWeight: 700 } : undefined}>
+                          {m.b || "A definir"}
+                        </span>
                       </div>
                       <div className="cluster">
                         <input
                           style={{ width: 80 }}
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           value={m.s1}
                           onChange={(e) => {
                             const s1 = e.target.value.replace(/[^0-9]/g, "");
@@ -2188,6 +2305,8 @@ export function TournamentPage({ user, profile }: Props) {
                         />
                         <input
                           style={{ width: 80 }}
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           value={m.s2}
                           onChange={(e) => {
                             const s2 = e.target.value.replace(/[^0-9]/g, "");
@@ -2378,29 +2497,23 @@ export function TournamentPage({ user, profile }: Props) {
                       <div style={{ flex: 1 }}>
                         <label>Numero de grupos</label>
                         <input
-                          type="number"
-                          min={2}
-                          max={16}
-                          value={activeDraftClass.data.config.numGrupos}
-                          onChange={(e) =>
-                            updateActiveClassConfig({
-                              numGrupos: Number.parseInt(e.target.value || "2", 10) || 2,
-                            })
-                          }
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={numGruposInput}
+                          onChange={(e) => setNumGruposInput(e.target.value.replace(/[^\d]/g, ""))}
+                          onBlur={commitNumGrupos}
                         />
                       </div>
                       <div style={{ flex: 1 }}>
                         <label>Classificados por grupo</label>
                         <input
-                          type="number"
-                          min={1}
-                          max={16}
-                          value={activeDraftClass.data.config.classificadosPorGrupo}
-                          onChange={(e) =>
-                            updateActiveClassConfig({
-                              classificadosPorGrupo: Number.parseInt(e.target.value || "2", 10) || 2,
-                            })
-                          }
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={classificadosInput}
+                          onChange={(e) => setClassificadosInput(e.target.value.replace(/[^\d]/g, ""))}
+                          onBlur={commitClassificadosPorGrupo}
                         />
                       </div>
                     </div>
@@ -2684,16 +2797,12 @@ export function TournamentPage({ user, profile }: Props) {
               <h3>Agenda</h3>
               <label>Duracao da partida (min)</label>
               <input
-                type="number"
-                min={10}
-                max={240}
-                value={agendaConfig.duracaoMin}
-                onChange={(e) =>
-                  setAgendaConfigWithReset({
-                    ...agendaConfig,
-                    duracaoMin: Number.parseInt(e.target.value || "45", 10) || 45,
-                  })
-                }
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={duracaoMinInput}
+                onChange={(e) => setDuracaoMinInput(e.target.value.replace(/[^\d]/g, ""))}
+                onBlur={commitDuracaoMin}
                 disabled={saving}
               />
 
