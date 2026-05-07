@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
@@ -37,6 +37,20 @@ type Props = {
 };
 
 type TabKey = "jogos" | "classificacao" | "organizacao" | "jogadores";
+type SetWinner = "a" | "b" | null;
+type MatchScoreSet = {
+  a: string;
+  b: string;
+  tbA: string;
+  tbB: string;
+};
+type MatchScoreDetail = {
+  v: 1;
+  tipo: ClassData["config"]["tipoPontuacao"];
+  sets: MatchScoreSet[];
+  superTbA: string;
+  superTbB: string;
+};
 
 type Feedback = { kind: "success" | "error" | "info"; text: string };
 type DraftClass = {
@@ -60,6 +74,7 @@ type ConfigScopeClass = {
 const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
 const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores"];
+const SCORE_DETAIL_PREFIX = "__atp_score_v1__:";
 
 function scopeClassKey(categoryId: string, classId: string): string {
   return `${categoryId}::${classId}`;
@@ -72,6 +87,14 @@ function asScore(value: string): number | null {
   if (Number.isNaN(n)) return null;
   if (n < 0 || n > 99) return null;
   return n;
+}
+
+function emptyScoreSet(): MatchScoreSet {
+  return { a: "", b: "", tbA: "", tbB: "" };
+}
+
+function numericInput(value: string): string {
+  return value.replace(/[^\d]/g, "");
 }
 
 function toDateTimeLocalValue(value: string | null | undefined): string {
@@ -100,6 +123,197 @@ function isSuperTieBreakPointsMode(config?: ClassData["config"]): boolean {
   return config?.tipoPontuacao === "super_tb_unico" || config?.modeloCompeticao === "super_tiebreak";
 }
 
+function setSlotsForType(config: ClassData["config"]): number {
+  if (isSuperTieBreakPointsMode(config)) return 0;
+  if (config.tipoPontuacao === "melhor_de_3") return 3;
+  if (config.tipoPontuacao === "melhor_de_3_super_tb") return 2;
+  if (config.tipoPontuacao === "set_unico" || config.tipoPontuacao === "pro_set") return 1;
+  return normalizeNumeroSetsByType(config, config.numeroSets);
+}
+
+function normalizeMatchScoreDetail(detail: Partial<MatchScoreDetail> | null | undefined, config: ClassData["config"]): MatchScoreDetail {
+  const slots = setSlotsForType(config);
+  const sets = Array.from({ length: slots }, (_, idx) => {
+    const s = detail?.sets?.[idx];
+    return {
+      a: numericInput(String(s?.a || "")),
+      b: numericInput(String(s?.b || "")),
+      tbA: numericInput(String(s?.tbA || "")),
+      tbB: numericInput(String(s?.tbB || "")),
+    };
+  });
+  return {
+    v: 1,
+    tipo: config.tipoPontuacao,
+    sets,
+    superTbA: numericInput(String(detail?.superTbA || "")),
+    superTbB: numericInput(String(detail?.superTbB || "")),
+  };
+}
+
+function decodeMatchScoreDetail(
+  scoreLabel: string | undefined,
+  config: ClassData["config"],
+  s1: string | undefined,
+  s2: string | undefined
+): MatchScoreDetail {
+  const label = String(scoreLabel || "").trim();
+  if (label.startsWith(SCORE_DETAIL_PREFIX)) {
+    const raw = label.slice(SCORE_DETAIL_PREFIX.length);
+    try {
+      const parsed = JSON.parse(raw) as Partial<MatchScoreDetail>;
+      return normalizeMatchScoreDetail(parsed, config);
+    } catch {
+      // fallback below
+    }
+  }
+  if (isSuperTieBreakPointsMode(config)) {
+    return normalizeMatchScoreDetail({ superTbA: String(s1 || ""), superTbB: String(s2 || "") }, config);
+  }
+  return normalizeMatchScoreDetail(null, config);
+}
+
+function encodeMatchScoreDetail(detail: MatchScoreDetail): string {
+  return `${SCORE_DETAIL_PREFIX}${JSON.stringify(detail)}`;
+}
+
+function validateSuperTb(aRaw: string, bRaw: string, minimum = 10): { done: boolean; winner: SetWinner } {
+  const a = asScore(aRaw);
+  const b = asScore(bRaw);
+  if (a === null || b === null) return { done: false, winner: null };
+  if (a === b) return { done: false, winner: null };
+  const max = Math.max(a, b);
+  const diff = Math.abs(a - b);
+  if (max < minimum || diff < 2) return { done: false, winner: null };
+  return { done: true, winner: a > b ? "a" : "b" };
+}
+
+function validateSetGames(
+  aRaw: string,
+  bRaw: string,
+  targetGames: number,
+  tbAraw: string,
+  tbBraw: string
+): { done: boolean; winner: SetWinner } {
+  const a = asScore(aRaw);
+  const b = asScore(bRaw);
+  if (a === null || b === null) return { done: false, winner: null };
+  if (a === b) return { done: false, winner: null };
+
+  const high = Math.max(a, b);
+  const low = Math.min(a, b);
+  const winner: SetWinner = a > b ? "a" : "b";
+  if (high === targetGames && low <= targetGames - 2) return { done: true, winner };
+  if (high === targetGames + 1 && (low === targetGames - 1 || low === targetGames)) {
+    if (low === targetGames) {
+      const tb = validateSuperTb(tbAraw, tbBraw, targetGames === 4 ? 5 : 7);
+      return tb.done ? { done: true, winner } : { done: false, winner: null };
+    }
+    return { done: true, winner };
+  }
+  return { done: false, winner: null };
+}
+
+function visibleSetCount(detail: MatchScoreDetail, config: ClassData["config"]): number {
+  if (config.tipoPontuacao !== "melhor_de_3") {
+    return detail.sets.length;
+  }
+  const s1 = detail.sets[0] ?? emptyScoreSet();
+  const s2 = detail.sets[1] ?? emptyScoreSet();
+  const v1 = validateSetGames(s1.a, s1.b, 6, s1.tbA, s1.tbB);
+  const v2 = validateSetGames(s2.a, s2.b, 6, s2.tbA, s2.tbB);
+  if (!v1.done || !v2.done) return 2;
+  if (v1.winner && v2.winner && v1.winner !== v2.winner) return Math.min(3, detail.sets.length);
+  return 2;
+}
+
+function shouldShowSuperTbInput(detail: MatchScoreDetail, config: ClassData["config"]): boolean {
+  if (config.tipoPontuacao !== "melhor_de_3_super_tb") return false;
+  const s1 = detail.sets[0] ?? emptyScoreSet();
+  const s2 = detail.sets[1] ?? emptyScoreSet();
+  const v1 = validateSetGames(s1.a, s1.b, 6, s1.tbA, s1.tbB);
+  const v2 = validateSetGames(s2.a, s2.b, 6, s2.tbA, s2.tbB);
+  return Boolean(v1.done && v2.done && v1.winner && v2.winner && v1.winner !== v2.winner);
+}
+
+function evaluateMatchScoreDetail(
+  detail: MatchScoreDetail,
+  config: ClassData["config"]
+): { done: boolean; winner: SetWinner; summaryA: string; summaryB: string } {
+  if (isSuperTieBreakPointsMode(config)) {
+    const tb = validateSuperTb(detail.superTbA, detail.superTbB, 10);
+    return {
+      done: tb.done,
+      winner: tb.winner,
+      summaryA: detail.superTbA || "",
+      summaryB: detail.superTbB || "",
+    };
+  }
+
+  if (config.tipoPontuacao === "melhor_de_3_super_tb") {
+    const s1 = detail.sets[0] ?? emptyScoreSet();
+    const s2 = detail.sets[1] ?? emptyScoreSet();
+    const r1 = validateSetGames(s1.a, s1.b, 6, s1.tbA, s1.tbB);
+    const r2 = validateSetGames(s2.a, s2.b, 6, s2.tbA, s2.tbB);
+    let winsA = 0;
+    let winsB = 0;
+
+    if (!r1.done) return { done: false, winner: null, summaryA: "0", summaryB: "0" };
+    if (!r2.done) {
+      if (r1.winner === "a") winsA = 1;
+      if (r1.winner === "b") winsB = 1;
+      return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
+    }
+
+    if (r1.winner === "a") winsA += 1;
+    if (r1.winner === "b") winsB += 1;
+    if (r2.winner === "a") winsA += 1;
+    if (r2.winner === "b") winsB += 1;
+
+    if (winsA === 2 || winsB === 2) {
+      return {
+        done: true,
+        winner: winsA === 2 ? "a" : "b",
+        summaryA: String(winsA),
+        summaryB: String(winsB),
+      };
+    }
+
+    const tb = validateSuperTb(detail.superTbA, detail.superTbB, 10);
+    if (!tb.done) return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
+    if (tb.winner === "a") winsA += 1;
+    if (tb.winner === "b") winsB += 1;
+    return {
+      done: true,
+      winner: tb.winner,
+      summaryA: String(winsA),
+      summaryB: String(winsB),
+    };
+  }
+
+  let winsA = 0;
+  let winsB = 0;
+  const targetWins = targetWinsByConfig(config);
+  const setCount = visibleSetCount(detail, config);
+  for (let i = 0; i < setCount; i += 1) {
+    const set = detail.sets[i] ?? emptyScoreSet();
+    const targetGames = config.tipoPontuacao === "fast4" ? 4 : config.tipoPontuacao === "pro_set" ? 8 : 6;
+    const res = validateSetGames(set.a, set.b, targetGames, set.tbA, set.tbB);
+    if (!res.done) return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
+    if (res.winner === "a") winsA += 1;
+    if (res.winner === "b") winsB += 1;
+    if (winsA >= targetWins || winsB >= targetWins) break;
+  }
+
+  if (winsA >= targetWins && winsB < targetWins) {
+    return { done: true, winner: "a", summaryA: String(winsA), summaryB: String(winsB) };
+  }
+  if (winsB >= targetWins && winsA < targetWins) {
+    return { done: true, winner: "b", summaryA: String(winsA), summaryB: String(winsB) };
+  }
+  return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
+}
+
 function normalizeNumeroSetsByType(config: ClassData["config"], raw: number): number {
   if (config.tipoPontuacao === "set_unico" || config.tipoPontuacao === "pro_set" || config.tipoPontuacao === "super_tb_unico") {
     return 1;
@@ -119,34 +333,6 @@ function targetWinsByConfig(config?: ClassData["config"]): number {
   return Math.max(1, Math.floor(bestOf / 2) + 1);
 }
 
-function computeMatchStatus(
-  s1: string,
-  s2: string,
-  config?: ClassData["config"]
-): { done: boolean; winner: "a" | "b" | null } {
-  const a = asScore(s1);
-  const b = asScore(s2);
-  if (a === null || b === null) return { done: false, winner: null };
-  if (a === b) return { done: false, winner: null };
-  if (isSuperTieBreakPointsMode(config)) {
-    const max = Math.max(a, b);
-    const diff = Math.abs(a - b);
-    if (max < 10 || diff < 2) return { done: false, winner: null };
-    return { done: true, winner: a > b ? "a" : "b" };
-  }
-  const targetWins = targetWinsByConfig(config);
-  const bestOf = config ? normalizeNumeroSetsByType(config, config.numeroSets) : 1;
-  if (a > bestOf || b > bestOf) return { done: false, winner: null };
-  if (a < targetWins && b < targetWins) return { done: false, winner: null };
-  if (a >= targetWins && b < targetWins) return { done: true, winner: "a" };
-  if (b >= targetWins && a < targetWins) return { done: true, winner: "b" };
-  if (a + b > bestOf) return { done: false, winner: null };
-  if (a !== targetWins && b !== targetWins) return { done: false, winner: null };
-  if (a === targetWins) return { done: true, winner: "a" };
-  if (b === targetWins) return { done: true, winner: "b" };
-  return { done: false, winner: null };
-}
-
 function scoringTypeLabel(tipo: ClassData["config"]["tipoPontuacao"]): string {
   if (tipo === "melhor_de_3") return "1. Melhor de 3 sets tradicional";
   if (tipo === "melhor_de_3_super_tb") return "2. Melhor de 3 com Super Tie-Break";
@@ -156,17 +342,31 @@ function scoringTypeLabel(tipo: ClassData["config"]["tipoPontuacao"]): string {
   return "6. Super Tie-Break unico";
 }
 
-function matchScoreInputLabel(config?: ClassData["config"]): string {
-  if (isSuperTieBreakPointsMode(config)) return "Pontos";
-  return "Sets";
-}
-
 function formatMatchScoreValues(
   s1: string | undefined,
   s2: string | undefined,
+  scoreLabel: string | undefined,
   done?: boolean,
   config?: ClassData["config"]
 ): string {
+  if (config && scoreLabel?.startsWith(SCORE_DETAIL_PREFIX)) {
+    const detail = decodeMatchScoreDetail(scoreLabel, config, s1, s2);
+    const parts: string[] = [];
+    const count = isSuperTieBreakPointsMode(config) ? 0 : visibleSetCount(detail, config);
+    for (let i = 0; i < count; i += 1) {
+      const set = detail.sets[i] ?? emptyScoreSet();
+      const a = set.a || "_";
+      const b = set.b || "_";
+      const tbSuffix = set.tbA && set.tbB ? ` (${set.tbA}-${set.tbB})` : "";
+      parts.push(`${a}/${b}${tbSuffix}`);
+    }
+    if (shouldShowSuperTbInput(detail, config)) {
+      parts.push(`STB ${detail.superTbA || "_"}-${detail.superTbB || "_"}`);
+    } else if (isSuperTieBreakPointsMode(config)) {
+      parts.push(`STB ${detail.superTbA || "_"}-${detail.superTbB || "_"}`);
+    }
+    return parts.join(" | ");
+  }
   const a = String(s1 || "").trim();
   const b = String(s2 || "").trim();
   const sep = isSuperTieBreakPointsMode(config) ? "-" : " x ";
@@ -176,14 +376,16 @@ function formatMatchScoreValues(
 }
 
 function scoringRulesHint(config: ClassData["config"]): string {
-  if (config.tipoPontuacao === "melhor_de_3") return "Lance sets vencidos. Vence ao atingir 2 sets.";
-  if (config.tipoPontuacao === "melhor_de_3_super_tb") {
-    return "Lance sets vencidos (0 a 2). Se precisar detalhar games/tie-break, use o historico textual da partida.";
+  if (config.tipoPontuacao === "melhor_de_3") {
+    return "Informe games de cada set (6 games, tie-break em 6x6). O 3o set so aparece se ficar 1x1.";
   }
-  if (config.tipoPontuacao === "set_unico") return "Lance sets vencidos (0 ou 1).";
-  if (config.tipoPontuacao === "pro_set") return "Lance sets vencidos (0 ou 1).";
-  if (config.tipoPontuacao === "fast4") return "Lance sets vencidos conforme melhor de N sets do Fast4.";
-  return "Lance pontos do Super Tie-Break (minimo 10 e diferenca minima de 2).";
+  if (config.tipoPontuacao === "melhor_de_3_super_tb") {
+    return "Informe games dos 2 primeiros sets; se ficar 1x1, habilita Super Tie-Break decisivo (ate 10, diferenca minima 2).";
+  }
+  if (config.tipoPontuacao === "set_unico") return "Informe os games de um unico set (6 games, tie-break em 6x6).";
+  if (config.tipoPontuacao === "pro_set") return "Informe os games do Pro Set (ate 8, tie-break em 8x8).";
+  if (config.tipoPontuacao === "fast4") return "Informe games por set Fast4 (ate 4, tie-break em 4x4), no melhor de N sets.";
+  return "Informe apenas pontos do Super Tie-Break (minimo 10 e diferenca minima de 2).";
 }
 
 function normalizeScoreTypeByModel(
@@ -515,14 +717,14 @@ function buildMatchScoreLookup(classes: LegacyClassRef[]): Map<string, string> {
     (cls.data.grupos || []).forEach((g) => {
       (g.matches || []).forEach((m, mi) => {
         const label = `${g.name} #${mi + 1}`;
-        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done, cls.data.config));
+        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, cls.data.config));
       });
     });
 
     (cls.data.knockout?.rounds || []).forEach((round) => {
       (round.matches || []).forEach((m, mi) => {
         const label = `${round.name} #${mi + 1}`;
-        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done, cls.data.config));
+        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, cls.data.config));
       });
     });
   });
@@ -768,7 +970,7 @@ function buildClassVisualSvg(
       y += 16;
       (g.matches || []).forEach((m, mi) => {
         const when = scheduleInfo(g.name, mi, ["Grupos"]);
-        const score = formatMatchScoreValues(m.s1, m.s2, m.done, data.config);
+        const score = formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config);
         const winner = String(m.winner || "").trim().toLowerCase();
         const aName = String(m.a || "A definir");
         const bName = String(m.b || "A definir");
@@ -842,7 +1044,7 @@ function buildClassVisualSvg(
         const when = scheduleInfo(round.name, mi, stageHints);
         out.push(
           `<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
-            formatMatchScoreValues(m.s1, m.s2, m.done, data.config)
+            formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config)
           )}</text>`
         );
         out.push(
@@ -2542,12 +2744,26 @@ export function TournamentPage({ user, profile }: Props) {
     }
   };
 
-  const onUpdateGroupScore = async (
+  const applyScoreDetailToMatch = (
+    config: ClassData["config"],
+    match: GroupMatch | KnockoutMatch,
+    updater: (detail: MatchScoreDetail) => MatchScoreDetail
+  ) => {
+    const detail = decodeMatchScoreDetail(match.scoreLabel, config, match.s1, match.s2);
+    const nextDetail = normalizeMatchScoreDetail(updater(detail), config);
+    const evaluated = evaluateMatchScoreDetail(nextDetail, config);
+    match.s1 = evaluated.summaryA;
+    match.s2 = evaluated.summaryB;
+    match.done = evaluated.done;
+    match.winner = evaluated.winner === "a" ? match.a : evaluated.winner === "b" ? match.b : null;
+    match.scoreLabel = encodeMatchScoreDetail(nextDetail);
+  };
+
+  const onUpdateGroupScoreDetail = async (
     ref: LegacyClassRef,
     groupIndex: number,
     matchIndex: number,
-    s1: string,
-    s2: string
+    updater: (detail: MatchScoreDetail) => MatchScoreDetail
   ) => {
     if (!canEditScores) return;
     const next = structuredClone(ref.data);
@@ -2555,22 +2771,17 @@ export function TournamentPage({ user, profile }: Props) {
     const match = group?.matches[matchIndex] as GroupMatch | undefined;
     if (!group || !match) return;
 
-    match.s1 = s1;
-    match.s2 = s2;
-    const status = computeMatchStatus(s1, s2, next.config);
-    match.done = status.done;
-    match.winner = status.winner === "a" ? match.a : status.winner === "b" ? match.b : null;
+    applyScoreDetailToMatch(next.config, match, updater);
 
     const recomputed = recomputeClassData(next);
     await persistClassData(ref, recomputed);
   };
 
-  const onUpdateKoScore = async (
+  const onUpdateKoScoreDetail = async (
     ref: LegacyClassRef,
     roundIndex: number,
     matchIndex: number,
-    s1: string,
-    s2: string
+    updater: (detail: MatchScoreDetail) => MatchScoreDetail
   ) => {
     if (!canEditScores) return;
     const next = structuredClone(ref.data);
@@ -2578,14 +2789,176 @@ export function TournamentPage({ user, profile }: Props) {
     const match = round?.matches[matchIndex] as KnockoutMatch | undefined;
     if (!round || !match) return;
 
-    match.s1 = s1;
-    match.s2 = s2;
-    const status = computeMatchStatus(s1, s2, next.config);
-    match.done = status.done;
-    match.winner = status.winner === "a" ? match.a : status.winner === "b" ? match.b : null;
+    applyScoreDetailToMatch(next.config, match, updater);
 
     const recomputed = recomputeClassData(next);
     await persistClassData(ref, recomputed);
+  };
+
+  const renderScoreFields = (
+    config: ClassData["config"],
+    match: GroupMatch | KnockoutMatch,
+    disabled: boolean,
+    onPatch: (updater: (detail: MatchScoreDetail) => MatchScoreDetail) => void
+  ) => {
+    const detail = decodeMatchScoreDetail(match.scoreLabel, config, match.s1, match.s2);
+    const visibleSets = visibleSetCount(detail, config);
+    const setRows: ReactNode[] = [];
+    const pushSetField = (setIndex: number) => {
+      const set = detail.sets[setIndex] ?? emptyScoreSet();
+      const targetGames = config.tipoPontuacao === "fast4" ? 4 : config.tipoPontuacao === "pro_set" ? 8 : 6;
+      const aGames = asScore(set.a);
+      const bGames = asScore(set.b);
+      const showTb = aGames === targetGames && bGames === targetGames;
+      setRows.push(
+        <div key={`set:${setIndex}`} className="match-input-row" style={{ flexWrap: "wrap" }}>
+          <span className="subtle">Set {setIndex + 1}</span>
+          <input
+            className="match-score-input"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            placeholder="Games A"
+            value={set.a}
+            onChange={(e) => {
+              const value = coerceScoreStringForSetInput(e.target.value);
+              onPatch((d) => {
+                const sets = d.sets.slice();
+                const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), a: value };
+                sets[setIndex] = nextSet;
+                return { ...d, sets };
+              });
+            }}
+            disabled={saving || disabled}
+          />
+          <input
+            className="match-score-input"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            placeholder="Games B"
+            value={set.b}
+            onChange={(e) => {
+              const value = coerceScoreStringForSetInput(e.target.value);
+              onPatch((d) => {
+                const sets = d.sets.slice();
+                const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), b: value };
+                sets[setIndex] = nextSet;
+                return { ...d, sets };
+              });
+            }}
+            disabled={saving || disabled}
+          />
+          {showTb ? (
+            <>
+              <span className="subtle">Tie-break</span>
+              <input
+                className="match-score-input"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="TB A"
+                value={set.tbA}
+                onChange={(e) => {
+                  const value = coerceScoreStringForSetInput(e.target.value);
+                  onPatch((d) => {
+                    const sets = d.sets.slice();
+                    const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), tbA: value };
+                    sets[setIndex] = nextSet;
+                    return { ...d, sets };
+                  });
+                }}
+                disabled={saving || disabled}
+              />
+              <input
+                className="match-score-input"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="TB B"
+                value={set.tbB}
+                onChange={(e) => {
+                  const value = coerceScoreStringForSetInput(e.target.value);
+                  onPatch((d) => {
+                    const sets = d.sets.slice();
+                    const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), tbB: value };
+                    sets[setIndex] = nextSet;
+                    return { ...d, sets };
+                  });
+                }}
+                disabled={saving || disabled}
+              />
+            </>
+          ) : null}
+        </div>
+      );
+    };
+
+    if (isSuperTieBreakPointsMode(config)) {
+      return (
+        <div className="match-input-row" style={{ flexWrap: "wrap" }}>
+          <span className="subtle">Super Tie-Break</span>
+          <input
+            className="match-score-input"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            placeholder="Pontos A"
+            value={detail.superTbA}
+            onChange={(e) => {
+              const value = coerceScoreStringForSetInput(e.target.value);
+              onPatch((d) => ({ ...d, superTbA: value }));
+            }}
+            disabled={saving || disabled}
+          />
+          <input
+            className="match-score-input"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            placeholder="Pontos B"
+            value={detail.superTbB}
+            onChange={(e) => {
+              const value = coerceScoreStringForSetInput(e.target.value);
+              onPatch((d) => ({ ...d, superTbB: value }));
+            }}
+            disabled={saving || disabled}
+          />
+        </div>
+      );
+    }
+
+    for (let si = 0; si < visibleSets; si += 1) {
+      pushSetField(si);
+    }
+
+    if (shouldShowSuperTbInput(detail, config)) {
+      setRows.push(
+        <div key="set:stb" className="match-input-row" style={{ flexWrap: "wrap" }}>
+          <span className="subtle">Super Tie-Break decisivo</span>
+          <input
+            className="match-score-input"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            placeholder="STB A"
+            value={detail.superTbA}
+            onChange={(e) => {
+              const value = coerceScoreStringForSetInput(e.target.value);
+              onPatch((d) => ({ ...d, superTbA: value }));
+            }}
+            disabled={saving || disabled}
+          />
+          <input
+            className="match-score-input"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            placeholder="STB B"
+            value={detail.superTbB}
+            onChange={(e) => {
+              const value = coerceScoreStringForSetInput(e.target.value);
+              onPatch((d) => ({ ...d, superTbB: value }));
+            }}
+            disabled={saving || disabled}
+          />
+        </div>
+      );
+    }
+
+    return <>{setRows}</>;
   };
 
   return (
@@ -2778,33 +3151,9 @@ export function TournamentPage({ user, profile }: Props) {
                           {m.b || "A definir"}
                         </span>
                       </div>
-                      <div className="match-input-row">
-                        <span className="subtle">{matchScoreInputLabel(activeClass.data.config)} A/B</span>
-                        <input
-                          className="match-score-input"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} A`}
-                          value={m.s1}
-                          onChange={(e) => {
-                            const s1 = coerceScoreStringForSetInput(e.target.value);
-                            onUpdateGroupScore(activeClass, gi, mi, s1, m.s2);
-                          }}
-                          disabled={saving || !canEditScores}
-                        />
-                        <input
-                          className="match-score-input"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} B`}
-                          value={m.s2}
-                          onChange={(e) => {
-                            const s2 = coerceScoreStringForSetInput(e.target.value);
-                            onUpdateGroupScore(activeClass, gi, mi, m.s1, s2);
-                          }}
-                          disabled={saving || !canEditScores}
-                        />
-                      </div>
+                      {renderScoreFields(activeClass.data.config, m, !canEditScores, (updater) => {
+                        void onUpdateGroupScoreDetail(activeClass, gi, mi, updater);
+                      })}
                     </div>
                   ))}
                 </div>
@@ -2831,33 +3180,9 @@ export function TournamentPage({ user, profile }: Props) {
                           {m.b || "A definir"}
                         </span>
                       </div>
-                      <div className="match-input-row">
-                        <span className="subtle">{matchScoreInputLabel(activeClass.data.config)} A/B</span>
-                        <input
-                          className="match-score-input"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} A`}
-                          value={m.s1}
-                          onChange={(e) => {
-                            const s1 = coerceScoreStringForSetInput(e.target.value);
-                            onUpdateKoScore(activeClass, ri, mi, s1, m.s2);
-                          }}
-                          disabled={saving || !m.a || !m.b || !canEditScores}
-                        />
-                        <input
-                          className="match-score-input"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          placeholder={`${matchScoreInputLabel(activeClass.data.config)} B`}
-                          value={m.s2}
-                          onChange={(e) => {
-                            const s2 = coerceScoreStringForSetInput(e.target.value);
-                            onUpdateKoScore(activeClass, ri, mi, m.s1, s2);
-                          }}
-                          disabled={saving || !m.a || !m.b || !canEditScores}
-                        />
-                      </div>
+                      {renderScoreFields(activeClass.data.config, m, !m.a || !m.b || !canEditScores, (updater) => {
+                        void onUpdateKoScoreDetail(activeClass, ri, mi, updater);
+                      })}
                     </div>
                   ))}
                 </div>
