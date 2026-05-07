@@ -164,6 +164,7 @@ function AppInner() {
     return (
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
         <Route path="*" element={<Navigate to="/auth" replace />} />
       </Routes>
     );
@@ -183,6 +184,7 @@ function AppInner() {
 
   return (
     <Routes>
+      <Route path="/auth/callback" element={<Navigate to="/inicio" replace />} />
       <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
       <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
       <Route path="/eventos" element={<EventsPage user={authUser} profile={profile} />} />
@@ -199,6 +201,17 @@ function AppInner() {
       <Route path="/dashboard" element={<Navigate to="/eventos" replace />} />
       <Route path="*" element={<Navigate to="/inicio" replace />} />
     </Routes>
+  );
+}
+
+function AuthCallbackPage() {
+  return (
+    <main className="auth-page">
+      <section className="auth-card">
+        <h1>Concluindo login...</h1>
+        <p className="auth-sub">Aguarde enquanto finalizamos a autenticacao com o Google.</p>
+      </section>
+    </main>
   );
 }
 

@@ -51,7 +51,7 @@ export function AuthPage() {
     if (!supabase) return;
     setBusy(true);
     setMsg(null);
-    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const redirectTo = `${window.location.origin}${window.location.pathname}#/auth/callback`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo },
