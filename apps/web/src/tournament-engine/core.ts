@@ -1,6 +1,14 @@
 export type TournamentConfig = {
   tipo: "duplas" | "simples";
   formato: "grupos" | "mata_mata";
+  modeloCompeticao:
+    | "mata_mata_simples"
+    | "grupos_mata_mata"
+    | "round_robin"
+    | "liga_ranking"
+    | "dupla_eliminacao"
+    | "super_tiebreak";
+  superTiebreakBase: "mata_mata" | "grupos" | "round_robin";
   modoDuplas: "sorteio" | "manual";
   sorteioDuplas: "grupos_ab" | "todos";
   numGrupos: number;
@@ -82,6 +90,8 @@ export type ClassData = {
 export const DEFAULT_CONFIG: TournamentConfig = {
   tipo: "duplas",
   formato: "grupos",
+  modeloCompeticao: "grupos_mata_mata",
+  superTiebreakBase: "grupos",
   modoDuplas: "sorteio",
   sorteioDuplas: "grupos_ab",
   numGrupos: 2,
@@ -98,15 +108,28 @@ export function normalizeConfig(cfgRaw: Partial<TournamentConfig> | null | undef
   const cfg = cfgRaw ?? {};
   const tipo = cfg.tipo === "simples" ? "simples" : "duplas";
   const formato = cfg.formato === "mata_mata" ? "mata_mata" : "grupos";
+  const modeloCompeticao =
+    cfg.modeloCompeticao === "mata_mata_simples" ||
+    cfg.modeloCompeticao === "grupos_mata_mata" ||
+    cfg.modeloCompeticao === "round_robin" ||
+    cfg.modeloCompeticao === "liga_ranking" ||
+    cfg.modeloCompeticao === "dupla_eliminacao" ||
+    cfg.modeloCompeticao === "super_tiebreak"
+      ? cfg.modeloCompeticao
+      : "grupos_mata_mata";
+  const superTiebreakBase =
+    cfg.superTiebreakBase === "mata_mata" || cfg.superTiebreakBase === "round_robin" ? cfg.superTiebreakBase : "grupos";
   const modoDuplas = cfg.modoDuplas === "manual" ? "manual" : "sorteio";
   const sorteioDuplas = cfg.sorteioDuplas === "todos" ? "todos" : "grupos_ab";
   return {
     tipo,
     formato,
+    modeloCompeticao,
+    superTiebreakBase,
     modoDuplas,
     sorteioDuplas,
-    numGrupos: clampInt(cfg.numGrupos, 2, 16, 2),
-    classificadosPorGrupo: clampInt(cfg.classificadosPorGrupo, 1, 16, 2),
+    numGrupos: clampInt(cfg.numGrupos, 1, 16, 2),
+    classificadosPorGrupo: clampInt(cfg.classificadosPorGrupo, 0, 16, 2),
   };
 }
 
@@ -154,7 +177,7 @@ export function buildRoundRobin(entries: string[]): GroupMatch[] {
 }
 
 export function splitIntoGroups(entries: string[], numGrupos: number): Group[] {
-  const n = Math.max(2, Number(numGrupos) || 2);
+  const n = Math.max(1, Number(numGrupos) || 1);
   const groups: Group[] = [];
   for (let i = 0; i < n; i += 1) {
     groups.push({ name: `Grupo ${i + 1}`, entries: [], matches: [] });
@@ -188,7 +211,7 @@ export function nomeRodada(matches: number): string {
   return `Fase de ${matches * 2}`;
 }
 
-function winnerFromMatch(m: KnockoutMatch): string | null {
+function winnerFromMatch(m: KnockoutMatch, config?: TournamentConfig): string | null {
   if (!m) return null;
   if (m.a === "BYE" && m.b && m.b !== "BYE") return m.b;
   if (m.b === "BYE" && m.a && m.a !== "BYE") return m.a;
@@ -197,6 +220,11 @@ function winnerFromMatch(m: KnockoutMatch): string | null {
   const b = Number.parseInt(m.s2, 10);
   if (Number.isNaN(a) || Number.isNaN(b)) return null;
   if (a === b) return null;
+  if (config?.modeloCompeticao === "super_tiebreak") {
+    const max = Math.max(a, b);
+    const diff = Math.abs(a - b);
+    if (max < 10 || diff < 2) return null;
+  }
   return a > b ? m.a : m.b;
 }
 
@@ -259,7 +287,7 @@ export function buildKnockout(entries: string[]): Knockout {
   return out;
 }
 
-export function recomputeKnockout(knockout: Knockout): void {
+export function recomputeKnockout(knockout: Knockout, config?: TournamentConfig): void {
   const rounds = knockout.rounds || [];
   if (!rounds.length) return;
 
@@ -274,7 +302,7 @@ export function recomputeKnockout(knockout: Knockout): void {
         m.done = false;
         m.winner = null;
       } else {
-        const w = winnerFromMatch(m);
+        const w = winnerFromMatch(m, config);
         m.winner = w;
         m.done = !!w;
       }
@@ -375,7 +403,7 @@ export function gerarClasseData(input: Partial<ClassData>): ClassData {
   });
 
   if (data.knockout) {
-    recomputeKnockout(data.knockout);
+    recomputeKnockout(data.knockout, config);
   }
 
   data.gerado = true;

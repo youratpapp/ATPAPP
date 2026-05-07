@@ -82,6 +82,13 @@ Portar a logica completa do `backup/index.html` para a stack atual (`React + Typ
   - cards mais ricos com papel (organizador/participante), visibilidade e status textual
   - KPIs de torneios (total, organizando, participando, inscricoes abertas, em andamento, concluidos)
   - filtros de busca, status, visibilidade e ordenacao
+- Configuracao de classe evoluida com modelos de competicao/pontuacao:
+  - Mata-mata simples
+  - Grupos + mata-mata
+  - Round Robin
+  - Liga/Ranking continuo
+  - Dupla eliminacao (modo inicial compativel com chave unica)
+  - Super Tie-Break (regra de fechamento 10+ com diferenca >= 2)
 
 ## Non-Regression Rules
 - Nao remover etapas do wizard.

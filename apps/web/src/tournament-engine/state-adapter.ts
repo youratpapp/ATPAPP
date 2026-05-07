@@ -189,7 +189,7 @@ export function recomputeClassData(input: ClassData): ClassData {
   }
 
   if (out.knockout) {
-    recomputeKnockout(out.knockout);
+    recomputeKnockout(out.knockout, out.config);
   }
 
   out.gerado = out.grupos.some((g) => g.matches.length > 0) || !!out.knockout;

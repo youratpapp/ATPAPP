@@ -59,11 +59,20 @@ function asScore(value: string): number | null {
   return n;
 }
 
-function computeMatchStatus(s1: string, s2: string): { done: boolean; winner: "a" | "b" | null } {
+function computeMatchStatus(
+  s1: string,
+  s2: string,
+  config?: ClassData["config"]
+): { done: boolean; winner: "a" | "b" | null } {
   const a = asScore(s1);
   const b = asScore(s2);
   if (a === null || b === null) return { done: false, winner: null };
   if (a === b) return { done: false, winner: null };
+  if (config?.modeloCompeticao === "super_tiebreak") {
+    const max = Math.max(a, b);
+    const diff = Math.abs(a - b);
+    if (max < 10 || diff < 2) return { done: false, winner: null };
+  }
   return { done: true, winner: a > b ? "a" : "b" };
 }
 
@@ -95,6 +104,52 @@ function isFixedDoublesConfig(config: ClassData["config"]): boolean {
 
 function needsGroupABConfig(config: ClassData["config"]): boolean {
   return config.tipo === "duplas" && config.modoDuplas === "sorteio" && config.sorteioDuplas === "grupos_ab";
+}
+
+function applyCompetitionModelToConfig(
+  current: ClassData["config"],
+  model: ClassData["config"]["modeloCompeticao"]
+): Partial<ClassData["config"]> {
+  if (model === "mata_mata_simples") {
+    return { modeloCompeticao: model, formato: "mata_mata" };
+  }
+  if (model === "grupos_mata_mata") {
+    return {
+      modeloCompeticao: model,
+      formato: "grupos",
+      numGrupos: Math.max(2, current.numGrupos || 2),
+      classificadosPorGrupo: Math.max(1, current.classificadosPorGrupo || 2),
+    };
+  }
+  if (model === "round_robin") {
+    return {
+      modeloCompeticao: model,
+      formato: "grupos",
+      numGrupos: 1,
+      classificadosPorGrupo: 0,
+    };
+  }
+  if (model === "liga_ranking") {
+    return {
+      modeloCompeticao: model,
+      formato: "grupos",
+      numGrupos: 1,
+      classificadosPorGrupo: 0,
+    };
+  }
+  if (model === "dupla_eliminacao") {
+    // Fallback operacional ate termos chave de repescagem dedicada.
+    return { modeloCompeticao: model, formato: "mata_mata" };
+  }
+  return {
+    modeloCompeticao: "super_tiebreak",
+    formato:
+      current.superTiebreakBase === "mata_mata"
+        ? "mata_mata"
+        : "grupos",
+    numGrupos: current.superTiebreakBase === "grupos" ? Math.max(1, current.numGrupos || 2) : 1,
+    classificadosPorGrupo: current.superTiebreakBase === "grupos" ? Math.max(0, current.classificadosPorGrupo || 2) : 0,
+  };
 }
 
 type ApprovedRegistrationMergeStats = {
@@ -281,6 +336,18 @@ function formatMatchScoreValues(s1: string | undefined, s2: string | undefined, 
   if (done) return `${a || "0"} x ${b || "0"}`;
   if (!a && !b) return "- x -";
   return `${a || "_"} x ${b || "_"}`;
+}
+
+function competitionModelLabel(config: ClassData["config"]): string {
+  const model = config.modeloCompeticao;
+  if (model === "mata_mata_simples") return "Mata-mata simples";
+  if (model === "grupos_mata_mata") return "Fase de grupos + mata-mata";
+  if (model === "round_robin") return "Round Robin (todos contra todos)";
+  if (model === "liga_ranking") return "Liga / Ranking continuo";
+  if (model === "dupla_eliminacao") return "Dupla eliminacao";
+  if (config.superTiebreakBase === "mata_mata") return "Super Tie-Break (base mata-mata)";
+  if (config.superTiebreakBase === "round_robin") return "Super Tie-Break (base round robin)";
+  return "Super Tie-Break (base grupos)";
 }
 
 function buildMatchScoreLookup(classes: LegacyClassRef[]): Map<string, string> {
@@ -493,6 +560,12 @@ function buildClassVisualSvg(
   out.push(
     `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="14" fill="#475569">Exportado em ${escXml(
       new Date().toLocaleString("pt-BR")
+    )}</text>`
+  );
+  y += 20;
+  out.push(
+    `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="13" fill="#475569">Modelo: ${escXml(
+      competitionModelLabel(data.config)
     )}</text>`
   );
   y += 24;
@@ -904,8 +977,15 @@ export function TournamentPage({ user, profile }: Props) {
 
   const commitNumGrupos = () => {
     if (!activeDraftClass) return;
+    const model = activeDraftClass.data.config.modeloCompeticao;
+    if (model === "round_robin" || model === "liga_ranking") {
+      setNumGruposInput("1");
+      if (activeDraftClass.data.config.numGrupos !== 1) updateActiveClassConfig({ numGrupos: 1 });
+      return;
+    }
     const parsed = Number.parseInt(numGruposInput.trim(), 10);
-    const next = Number.isNaN(parsed) ? activeDraftClass.data.config.numGrupos : Math.max(2, Math.min(16, parsed));
+    const min = 1;
+    const next = Number.isNaN(parsed) ? activeDraftClass.data.config.numGrupos : Math.max(min, Math.min(16, parsed));
     setNumGruposInput(String(next));
     if (next !== activeDraftClass.data.config.numGrupos) {
       updateActiveClassConfig({ numGrupos: next });
@@ -914,10 +994,17 @@ export function TournamentPage({ user, profile }: Props) {
 
   const commitClassificadosPorGrupo = () => {
     if (!activeDraftClass) return;
+    const model = activeDraftClass.data.config.modeloCompeticao;
+    if (model === "round_robin" || model === "liga_ranking") {
+      setClassificadosInput("0");
+      if (activeDraftClass.data.config.classificadosPorGrupo !== 0) updateActiveClassConfig({ classificadosPorGrupo: 0 });
+      return;
+    }
     const parsed = Number.parseInt(classificadosInput.trim(), 10);
+    const min = activeDraftClass.data.config.formato === "grupos" ? 0 : 1;
     const next = Number.isNaN(parsed)
       ? activeDraftClass.data.config.classificadosPorGrupo
-      : Math.max(1, Math.min(16, parsed));
+      : Math.max(min, Math.min(16, parsed));
     setClassificadosInput(String(next));
     if (next !== activeDraftClass.data.config.classificadosPorGrupo) {
       updateActiveClassConfig({ classificadosPorGrupo: next });
@@ -1090,6 +1177,8 @@ export function TournamentPage({ user, profile }: Props) {
       config: {
         tipo: "duplas",
         formato: "grupos",
+        modeloCompeticao: "grupos_mata_mata",
+        superTiebreakBase: "grupos",
         modoDuplas: "sorteio",
         sorteioDuplas: "grupos_ab",
         numGrupos: 2,
@@ -1275,6 +1364,8 @@ export function TournamentPage({ user, profile }: Props) {
       config: {
         tipo: "duplas",
         formato: "grupos",
+        modeloCompeticao: "grupos_mata_mata",
+        superTiebreakBase: "grupos",
         modoDuplas: "sorteio",
         sorteioDuplas: "grupos_ab",
         numGrupos: 2,
@@ -1735,6 +1826,13 @@ export function TournamentPage({ user, profile }: Props) {
     });
     const scoreLookup = buildMatchScoreLookup(classes);
     const winnerLookup = buildMatchWinnerLookup(classes);
+    const modelLookup = new Map<string, string>();
+    classes.forEach((cls) => {
+      modelLookup.set(
+        `${cls.categoryName}||${cls.className}`.toLowerCase(),
+        competitionModelLabel(cls.data.config)
+      );
+    });
     const scoreKey = (categoria: string, classe: string, matchLabel: string) =>
       `${categoria}||${classe}||${matchLabel}`.toLowerCase();
 
@@ -1743,7 +1841,7 @@ export function TournamentPage({ user, profile }: Props) {
     out.push("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
     out.push(`<title>${tournament?.name || "Torneio"} - Lista por Quadra</title>`);
     out.push(
-      "<style>body{font-family:Arial,sans-serif;color:#111;margin:20px}h1{font-size:22px}.meta{font-size:12px;color:#444}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border:1px solid #bbb;padding:6px}th{background:#f2f2f2}.quadra{margin:20px 0;page-break-after:always}.quadra:last-child{page-break-after:auto}@page{size:A4 portrait;margin:10mm}</style>"
+      "<style>body{font-family:Arial,sans-serif;color:#111;margin:20px}h1{font-size:22px}.meta{font-size:12px;color:#444}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border:1px solid #bbb;padding:6px}th{background:#f2f2f2}.quadra{margin:20px 0;page-break-after:always}.quadra:last-child{page-break-after:auto}.winner{color:#15803d;font-weight:700}@page{size:A4 portrait;margin:10mm}</style>"
     );
     out.push("</head><body>");
     out.push(`<h1>${tournament?.name || "Torneio"} - Lista de Jogos por Quadra</h1>`);
@@ -1755,22 +1853,23 @@ export function TournamentPage({ user, profile }: Props) {
     Array.from(byCourt.entries()).forEach(([court, rows]) => {
       out.push(`<section class="quadra"><h2>${court}</h2>`);
       out.push(
-        "<table><thead><tr><th>#</th><th>Data</th><th>Horario</th><th>Categoria</th><th>Classe</th><th>Fase</th><th>Jogo</th><th>Placar</th></tr></thead><tbody>"
+        "<table><thead><tr><th>#</th><th>Data</th><th>Horario</th><th>Categoria</th><th>Classe</th><th>Modelo</th><th>Fase</th><th>Jogo</th><th>Placar</th></tr></thead><tbody>"
       );
       rows.forEach((r, idx) => {
         const phase = `${r.round}${r.isFinal ? " (FINAL)" : r.isSemifinal ? " (SEMIFINAL)" : ""}`;
         const key = scoreKey(r.categoria, r.classe, r.matchLabel);
         const score = scoreLookup.get(key) || "- x -";
+        const model = modelLookup.get(`${r.categoria}||${r.classe}`.toLowerCase()) || "-";
         const winner = String(winnerLookup.get(key) || "").trim().toLowerCase();
         const p1 = String(r.p1 || "").trim();
         const p2 = String(r.p2 || "").trim();
         const p1IsWinner = !!winner && winner === p1.toLowerCase();
         const p2IsWinner = !!winner && winner === p2.toLowerCase();
         const gameHtml = `${
-          p1IsWinner ? `<span style="color:#15803d;font-weight:700">${p1}</span>` : p1
-        } x ${p2IsWinner ? `<span style="color:#15803d;font-weight:700">${p2}</span>` : p2}`;
+          p1IsWinner ? `<span class="winner">${p1}</span>` : p1
+        } x ${p2IsWinner ? `<span class="winner">${p2}</span>` : p2}`;
         out.push(
-          `<tr><td>${idx + 1}</td><td>${r.data}</td><td>${r.hora}-${r.horaFim}</td><td>${r.categoria}</td><td>${r.classe}</td><td>${phase}</td><td>${gameHtml}</td><td>${score}</td></tr>`
+          `<tr><td>${idx + 1}</td><td>${r.data}</td><td>${r.hora}-${r.horaFim}</td><td>${r.categoria}</td><td>${r.classe}</td><td>${model}</td><td>${phase}</td><td>${gameHtml}</td><td>${score}</td></tr>`
         );
       });
       out.push("</tbody></table></section>");
@@ -2054,7 +2153,7 @@ export function TournamentPage({ user, profile }: Props) {
 
     match.s1 = s1;
     match.s2 = s2;
-    const status = computeMatchStatus(s1, s2);
+    const status = computeMatchStatus(s1, s2, next.config);
     match.done = status.done;
     match.winner = status.winner === "a" ? match.a : status.winner === "b" ? match.b : null;
 
@@ -2077,7 +2176,7 @@ export function TournamentPage({ user, profile }: Props) {
 
     match.s1 = s1;
     match.s2 = s2;
-    const status = computeMatchStatus(s1, s2);
+    const status = computeMatchStatus(s1, s2, next.config);
     match.done = status.done;
     match.winner = status.winner === "a" ? match.a : status.winner === "b" ? match.b : null;
 
@@ -2466,9 +2565,67 @@ export function TournamentPage({ user, profile }: Props) {
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>
                     Configuracao da classe: {activeDraftCategory.nome} / {activeDraftClass.nome}
                   </h3>
+                  <label>Modelo de competicao / pontuacao</label>
+                  <select
+                    value={activeDraftClass.data.config.modeloCompeticao}
+                    onChange={(e) =>
+                      updateActiveClassConfig(
+                        applyCompetitionModelToConfig(
+                          activeDraftClass.data.config,
+                          (e.target.value as ClassData["config"]["modeloCompeticao"]) || "grupos_mata_mata"
+                        )
+                      )
+                    }
+                  >
+                    <option value="mata_mata_simples">1. Mata-mata simples</option>
+                    <option value="grupos_mata_mata">2. Grupos + mata-mata</option>
+                    <option value="round_robin">3. Round Robin (todos contra todos)</option>
+                    <option value="liga_ranking">4. Liga / Ranking continuo</option>
+                    <option value="dupla_eliminacao">5. Dupla eliminacao</option>
+                    <option value="super_tiebreak">6. Super Tie-Break</option>
+                  </select>
+                  {activeDraftClass.data.config.modeloCompeticao === "dupla_eliminacao" ? (
+                    <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
+                      Dupla eliminacao: modo inicial com chave unica + persistencia compativel. Evoluiremos para chave de repescagem visual dedicada.
+                    </p>
+                  ) : null}
+                  {activeDraftClass.data.config.modeloCompeticao === "super_tiebreak" ? (
+                    <>
+                      <label>Base do Super Tie-Break</label>
+                      <select
+                        value={activeDraftClass.data.config.superTiebreakBase}
+                        onChange={(e) => {
+                          const base =
+                            e.target.value === "mata_mata"
+                              ? "mata_mata"
+                              : e.target.value === "round_robin"
+                              ? "round_robin"
+                              : "grupos";
+                          updateActiveClassConfig(
+                            applyCompetitionModelToConfig(
+                              {
+                                ...activeDraftClass.data.config,
+                                superTiebreakBase: base,
+                              },
+                              "super_tiebreak"
+                            )
+                          );
+                        }}
+                      >
+                        <option value="mata_mata">Mata-mata</option>
+                        <option value="grupos">Grupos</option>
+                        <option value="round_robin">Round Robin</option>
+                      </select>
+                      <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
+                        Regra de lancamento: vence quem faz 10+ pontos com diferenca minima de 2.
+                      </p>
+                    </>
+                  ) : null}
+
                   <label>Formato</label>
                   <select
                     value={activeDraftClass.data.config.formato}
+                    disabled={activeDraftClass.data.config.modeloCompeticao !== "super_tiebreak"}
                     onChange={(e) =>
                       updateActiveClassConfig({
                         formato: e.target.value === "mata_mata" ? "mata_mata" : "grupos",
@@ -2503,6 +2660,10 @@ export function TournamentPage({ user, profile }: Props) {
                           value={numGruposInput}
                           onChange={(e) => setNumGruposInput(e.target.value.replace(/[^\d]/g, ""))}
                           onBlur={commitNumGrupos}
+                          disabled={
+                            activeDraftClass.data.config.modeloCompeticao === "round_robin" ||
+                            activeDraftClass.data.config.modeloCompeticao === "liga_ranking"
+                          }
                         />
                       </div>
                       <div style={{ flex: 1 }}>
@@ -2514,6 +2675,10 @@ export function TournamentPage({ user, profile }: Props) {
                           value={classificadosInput}
                           onChange={(e) => setClassificadosInput(e.target.value.replace(/[^\d]/g, ""))}
                           onBlur={commitClassificadosPorGrupo}
+                          disabled={
+                            activeDraftClass.data.config.modeloCompeticao === "round_robin" ||
+                            activeDraftClass.data.config.modeloCompeticao === "liga_ranking"
+                          }
                         />
                       </div>
                     </div>
