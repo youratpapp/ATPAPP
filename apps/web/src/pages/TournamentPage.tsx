@@ -275,6 +275,41 @@ function buildEntriesFromParticipants(config: ClassData["config"], participants:
   return entries;
 }
 
+function formatMatchScoreValues(s1: string | undefined, s2: string | undefined, done?: boolean): string {
+  const a = String(s1 || "").trim();
+  const b = String(s2 || "").trim();
+  if (done) return `${a || "0"} x ${b || "0"}`;
+  if (!a && !b) return "- x -";
+  return `${a || "_"} x ${b || "_"}`;
+}
+
+function buildMatchScoreLookup(classes: LegacyClassRef[]): Map<string, string> {
+  const map = new Map<string, string>();
+  const keyOf = (categoryName: string, className: string, matchLabel: string) =>
+    `${categoryName}||${className}||${matchLabel}`.toLowerCase();
+
+  classes.forEach((cls) => {
+    const cat = cls.categoryName;
+    const kls = cls.className;
+
+    (cls.data.grupos || []).forEach((g) => {
+      (g.matches || []).forEach((m, mi) => {
+        const label = `${g.name} #${mi + 1}`;
+        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done));
+      });
+    });
+
+    (cls.data.knockout?.rounds || []).forEach((round) => {
+      (round.matches || []).forEach((m, mi) => {
+        const label = `${round.name} #${mi + 1}`;
+        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.done));
+      });
+    });
+  });
+
+  return map;
+}
+
 function parseDraftCategories(dataRaw: Record<string, unknown>): DraftCategory[] {
   const data = asRecord(dataRaw) ?? {};
   const categories = asArray(data.categorias);
@@ -478,7 +513,7 @@ function buildClassVisualSvg(
       y += 16;
       (g.matches || []).forEach((m, mi) => {
         const when = scheduleInfo(g.name, mi, ["Grupos"]);
-        const score = m.done ? `${m.s1} x ${m.s2}` : "- x -";
+        const score = formatMatchScoreValues(m.s1, m.s2, m.done);
         const line = `${m.a} x ${m.b} | ${score}${when ? ` | ${when}` : ""}`;
         out.push(
           `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
@@ -535,12 +570,11 @@ function buildClassVisualSvg(
             m.b || "A definir"
           )}</text>`
         );
-        const score = m.done ? `${m.s1} x ${m.s2}` : "- x -";
         const stageHints = ri === rounds.length - 1 || ri === rounds.length - 2 ? ["Finais", "Mata-mata"] : ["Finais", "Mata-mata"];
         const when = scheduleInfo(round.name, mi, stageHints);
         out.push(
           `<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
-            score
+            formatMatchScoreValues(m.s1, m.s2, m.done)
           )}</text>`
         );
         out.push(
@@ -1610,6 +1644,9 @@ export function TournamentPage({ user, profile }: Props) {
       if (list) list.push(m);
       else byCourt.set(m.quadra, [m]);
     });
+    const scoreLookup = buildMatchScoreLookup(classes);
+    const scoreKey = (categoria: string, classe: string, matchLabel: string) =>
+      `${categoria}||${classe}||${matchLabel}`.toLowerCase();
 
     const out: string[] = [];
     out.push("<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\">");
@@ -1632,8 +1669,9 @@ export function TournamentPage({ user, profile }: Props) {
       );
       rows.forEach((r, idx) => {
         const phase = `${r.round}${r.isFinal ? " (FINAL)" : r.isSemifinal ? " (SEMIFINAL)" : ""}`;
+        const score = scoreLookup.get(scoreKey(r.categoria, r.classe, r.matchLabel)) || "- x -";
         out.push(
-          `<tr><td>${idx + 1}</td><td>${r.data}</td><td>${r.hora}-${r.horaFim}</td><td>${r.categoria}</td><td>${r.classe}</td><td>${phase}</td><td>${r.p1} x ${r.p2}</td><td>____ x ____</td></tr>`
+          `<tr><td>${idx + 1}</td><td>${r.data}</td><td>${r.hora}-${r.horaFim}</td><td>${r.categoria}</td><td>${r.classe}</td><td>${phase}</td><td>${r.p1} x ${r.p2}</td><td>${score}</td></tr>`
         );
       });
       out.push("</tbody></table></section>");
