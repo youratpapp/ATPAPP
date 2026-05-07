@@ -883,6 +883,8 @@ async function downloadSvgAsPng(svg: string, width: number, height: number, file
   }
 }
 
+
+
 function buildClassVisualSvg(
   categoryName: string,
   className: string,
@@ -893,178 +895,153 @@ function buildClassVisualSvg(
   width: number;
   height: number;
 } {
-  function scheduleInfo(roundName: string, matchIndex: number, stageHints: string[]): AgendaAssignment | null {
+  function scheduleInfo(roundName: string, matchIndex: number, stageHints: string[]): string {
     const label = `${roundName} #${matchIndex + 1}`;
     const found = classAssignments.find(
       (a) => a.matchLabel === label && (stageHints.length === 0 || stageHints.includes(a.stage))
     );
-    return found ?? null;
+    if (!found) return '';
+    return `${found.data} ${found.hora} | ${found.quadra}`;
   }
 
-  const width = 1820;
+  const width = 1760;
   const pad = 24;
-  const rightColW = 430;
-  const colGap = 18;
-  const leftX = pad;
-  const leftW = width - (pad * 2) - rightColW - colGap;
-  const rightX = leftX + leftW + colGap;
-  const rightW = rightColW;
-  const rowH = 28;
-  const subtle = '#475569';
-  const textDark = '#0f172a';
-  const border = '#cbd5e1';
-  const panel = '#f8fafc';
-  const headerBg = '#e2e8f0';
-  const ok = '#15803d';
-
-  const truncate = (value: string, max = 40): string => {
-    const v = String(value || '').trim();
-    if (v.length <= max) return v;
-    return `${v.slice(0, Math.max(1, max - 1))}...`;
-  };
-
+  const leftW = 1220;
+  const rightX = pad + leftW + 20;
+  const rightW = width - rightX - pad;
+  let y = 30;
   const out: string[] = [];
-  let yLeft = 132;
-  let yRight = 132;
 
-  const drawSectionCard = (x: number, y: number, w: number, h: number, title: string, subtitle = '') => {
-    out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${panel}" stroke="${border}"/>`);
-    out.push(`<rect x="${x}" y="${y}" width="${w}" height="40" rx="12" fill="${headerBg}" stroke="${border}"/>`);
-    out.push(`<rect x="${x}" y="${y + 28}" width="${w}" height="12" fill="${headerBg}"/>`);
-    out.push(`<text x="${x + 14}" y="${y + 24}" font-family="Arial, sans-serif" font-size="16" fill="${textDark}" font-weight="700">${escXml(title)}</text>`);
-    if (subtitle) {
-      out.push(`<text x="${x + 14}" y="${y + 58}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}">${escXml(subtitle)}</text>`);
-    }
+  out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="240" viewBox="0 0 ${width} 240">`);
+  out.push(`<rect x="0" y="0" width="${width}" height="240" fill="#ffffff"/>`);
+
+  out.push(`<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="56" fill="#0f172a" font-weight="700">${escXml(`${categoryName} / ${className}`)}</text>`);
+  y += 34;
+  out.push(`<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="14" fill="#475569">Exportado em ${escXml(new Date().toLocaleString('pt-BR'))}</text>`);
+  y += 20;
+  out.push(`<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="13" fill="#475569">Modelo: ${escXml(competitionModelLabel(data.config))}</text>`);
+  y += 28;
+
+  const card = (x: number, yTop: number, w: number, h: number, title: string) => {
+    out.push(`<rect x="${x}" y="${yTop}" width="${w}" height="${h}" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>`);
+    out.push(`<rect x="${x}" y="${yTop}" width="${w}" height="36" rx="10" fill="#e2e8f0" stroke="#cbd5e1"/>`);
+    out.push(`<rect x="${x}" y="${yTop + 26}" width="${w}" height="10" fill="#e2e8f0"/>`);
+    out.push(`<text x="${x + 12}" y="${yTop + 23}" font-family="Arial, sans-serif" font-size="16" fill="#0f172a" font-weight="700">${escXml(title)}</text>`);
   };
-
-  out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="260" viewBox="0 0 ${width} 260">`);
-  out.push(`<rect x="0" y="0" width="${width}" height="260" fill="#ffffff"/>`);
-  out.push(`<rect x="0" y="0" width="${width}" height="98" fill="#f1f5f9"/>`);
-  out.push(`<rect x="${leftX}" y="16" width="${width - (pad * 2)}" height="66" rx="12" fill="#ffffff" stroke="${border}"/>`);
-  out.push(`<text x="${leftX + 16}" y="44" font-family="Arial, sans-serif" font-size="40" fill="${textDark}" font-weight="700">${escXml(`${categoryName} / ${className}`)}</text>`);
-  out.push(`<text x="${leftX + 16}" y="66" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Exportado em ${escXml(new Date().toLocaleString('pt-BR'))}</text>`);
-  out.push(`<text x="${leftX + 390}" y="66" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Modelo: ${escXml(competitionModelLabel(data.config))}</text>`);
-  out.push(`<text x="${leftX + 16}" y="88" font-family="Arial, sans-serif" font-size="12" fill="${subtle}">Documento para mesa de organizacao: classificacao, jogos e contatos.</text>`);
 
   const tableKeys = Object.keys(data.tabelaPorGrupo || {});
   if (tableKeys.length) {
-    const sectionTop = yLeft;
-    let localY = sectionTop + 58;
+    const sectionTop = y;
+    let localY = y + 48;
 
     tableKeys.forEach((group) => {
       const rows = data.tabelaPorGrupo[group] || [];
+      const rowH = 26;
       const blockH = 34 + rowH + Math.max(1, rows.length) * rowH + 10;
-      out.push(`<rect x="${leftX + 12}" y="${localY}" width="${leftW - 24}" height="${blockH}" rx="10" fill="#ffffff" stroke="${border}"/>`);
-      out.push(`<text x="${leftX + 24}" y="${localY + 22}" font-family="Arial, sans-serif" font-size="15" fill="${textDark}" font-weight="700">${escXml(group)}</text>`);
+      const x = pad + 10;
+      const w = leftW - 20;
+      out.push(`<rect x="${x}" y="${localY}" width="${w}" height="${blockH}" rx="8" fill="#ffffff" stroke="#dbe3ee"/>`);
+      out.push(`<text x="${x + 12}" y="${localY + 22}" font-family="Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="700">${escXml(group)}</text>`);
 
-      const tx = leftX + 20;
-      const tw = leftW - 40;
+      const tx = x + 8;
+      const tw = w - 16;
       const hy = localY + 30;
-      out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="${border}"/>`);
-
-      const posX = tx + 14;
-      const nameX = tx + 70;
-      const vX = tx + tw - 170;
-      const jX = tx + tw - 118;
-      const sgX = tx + tw - 62;
-      out.push(`<text x="${posX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">POS</text>`);
-      out.push(`<text x="${nameX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">JOGADOR</text>`);
-      out.push(`<text x="${vX}" y="${hy + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">V</text>`);
-      out.push(`<text x="${jX}" y="${hy + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">J</text>`);
-      out.push(`<text x="${sgX}" y="${hy + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">SG</text>`);
+      out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="#dbe3ee"/>`);
+      out.push(`<text x="${tx + 12}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">POS</text>`);
+      out.push(`<text x="${tx + 64}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">JOGADOR</text>`);
+      out.push(`<text x="${tx + tw - 165}" y="${hy + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">V</text>`);
+      out.push(`<text x="${tx + tw - 115}" y="${hy + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">J</text>`);
+      out.push(`<text x="${tx + tw - 65}" y="${hy + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">SG</text>`);
 
       rows.forEach((row, idx) => {
         const ry = hy + rowH + idx * rowH;
         out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${idx % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
-        const name = truncate(String(row[0] || ''), 52);
-        const stats = row[1];
-        const isLeader = idx === 0;
-        out.push(`<text x="${posX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${isLeader ? ok : textDark}" font-weight="${isLeader ? '700' : '400'}">${idx + 1}</text>`);
-        out.push(`<text x="${nameX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${isLeader ? ok : textDark}" font-weight="${isLeader ? '700' : '400'}">${escXml(name)}</text>`);
-        out.push(`<text x="${vX}" y="${ry + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="${textDark}">${stats.v}</text>`);
-        out.push(`<text x="${jX}" y="${ry + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="${textDark}">${stats.j}</text>`);
-        out.push(`<text x="${sgX}" y="${ry + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="${textDark}">${stats.saldo}</text>`);
+        const leader = idx === 0;
+        out.push(`<text x="${tx + 12}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="${leader ? '#15803d' : '#0f172a'}" font-weight="${leader ? '700' : '400'}">${idx + 1}</text>`);
+        out.push(`<text x="${tx + 64}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="${leader ? '#15803d' : '#0f172a'}" font-weight="${leader ? '700' : '400'}">${escXml(String(row[0] || ''))}</text>`);
+        out.push(`<text x="${tx + tw - 165}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${row[1].v}</text>`);
+        out.push(`<text x="${tx + tw - 115}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${row[1].j}</text>`);
+        out.push(`<text x="${tx + tw - 65}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${row[1].saldo}</text>`);
       });
       if (!rows.length) {
-        const ry = hy + rowH;
-        out.push(`<text x="${nameX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Sem dados de classificacao</text>`);
+        out.push(`<text x="${tx + 64}" y="${hy + rowH + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569">Sem dados de classificacao.</text>`);
       }
 
       localY += blockH + 10;
     });
 
-    const sectionH = Math.max(100, localY - sectionTop + 8);
-    drawSectionCard(leftX, sectionTop, leftW, sectionH, 'Classificacao dos grupos', 'Tabela oficial com vitorias, jogos e saldo.');
-    yLeft = sectionTop + sectionH + 14;
+    const sectionH = Math.max(90, localY - sectionTop + 6);
+    card(pad, sectionTop, leftW, sectionH, 'Classificacao dos Grupos');
+    y = sectionTop + sectionH + 14;
   }
 
   if ((data.grupos || []).length) {
-    const sectionTop = yLeft;
-    let localY = sectionTop + 58;
+    const sectionTop = y;
+    let localY = y + 48;
 
     (data.grupos || []).forEach((g) => {
       const matches = g.matches || [];
+      const rowH = 26;
       const blockH = 34 + rowH + Math.max(1, matches.length) * rowH + 10;
-      out.push(`<rect x="${leftX + 12}" y="${localY}" width="${leftW - 24}" height="${blockH}" rx="10" fill="#ffffff" stroke="${border}"/>`);
-      out.push(`<text x="${leftX + 24}" y="${localY + 22}" font-family="Arial, sans-serif" font-size="15" fill="${textDark}" font-weight="700">${escXml(g.name)}</text>`);
+      const x = pad + 10;
+      const w = leftW - 20;
+      out.push(`<rect x="${x}" y="${localY}" width="${w}" height="${blockH}" rx="8" fill="#ffffff" stroke="#dbe3ee"/>`);
+      out.push(`<text x="${x + 12}" y="${localY + 22}" font-family="Arial, sans-serif" font-size="15" fill="#0f172a" font-weight="700">${escXml(g.name)}</text>`);
 
-      const tx = leftX + 20;
-      const tw = leftW - 40;
+      const tx = x + 8;
+      const tw = w - 16;
       const hy = localY + 30;
-      out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="${border}"/>`);
-
-      const duelX = tx + 12;
-      const scoreX = tx + tw - 250;
-      const whenX = tx + tw - 170;
-      const courtX = tx + tw - 56;
-      out.push(`<text x="${duelX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">PARTIDA</text>`);
-      out.push(`<text x="${scoreX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">PLACAR</text>`);
-      out.push(`<text x="${whenX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">HORARIO</text>`);
-      out.push(`<text x="${courtX}" y="${hy + 19}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">QUADRA</text>`);
+      out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="#dbe3ee"/>`);
+      out.push(`<text x="${tx + 10}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">CONFRONTO</text>`);
+      out.push(`<text x="${tx + tw - 240}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">PLACAR</text>`);
+      out.push(`<text x="${tx + tw - 170}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">HORARIO</text>`);
+      out.push(`<text x="${tx + tw - 20}" y="${hy + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">QUADRA</text>`);
 
       matches.forEach((m, mi) => {
         const ry = hy + rowH + mi * rowH;
-        const slot = scheduleInfo(g.name, mi, ['Grupos']);
+        out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${mi % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
+        const when = scheduleInfo(g.name, mi, ['Grupos']);
         const score = formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config);
         const winner = String(m.winner || '').trim().toLowerCase();
         const aName = String(m.a || 'A definir');
         const bName = String(m.b || 'A definir');
-        const aWin = winner && winner === aName.trim().toLowerCase();
-        const bWin = winner && winner === bName.trim().toLowerCase();
-
-        out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${mi % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
-        out.push(`<text x="${duelX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="12"><tspan fill="${aWin ? ok : textDark}" font-weight="${aWin ? '700' : '400'}">${escXml(truncate(aName, 20))}</tspan><tspan fill="${subtle}"> x </tspan><tspan fill="${bWin ? ok : textDark}" font-weight="${bWin ? '700' : '400'}">${escXml(truncate(bName, 20))}</tspan></text>`);
-        out.push(`<text x="${scoreX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="12" fill="${textDark}" font-weight="${m.done ? '700' : '400'}">${escXml(score)}</text>`);
-        out.push(`<text x="${whenX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(slot ? `${slot.data} ${slot.hora}` : 'A definir')}</text>`);
-        out.push(`<text x="${courtX}" y="${ry + 19}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(slot?.quadra || '-')}</text>`);
+        const aFill = winner && winner === aName.trim().toLowerCase() ? '#15803d' : '#334155';
+        const bFill = winner && winner === bName.trim().toLowerCase() ? '#15803d' : '#334155';
+        out.push(`<text x="${tx + 10}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12"><tspan fill="${aFill}">${escXml(aName)}</tspan><tspan fill="#475569"> x </tspan><tspan fill="${bFill}">${escXml(bName)}</tspan></text>`);
+        out.push(`<text x="${tx + tw - 240}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a" font-weight="${m.done ? '700' : '400'}">${escXml(score)}</text>`);
+        if (when) {
+          const parts = when.split(' | ');
+          out.push(`<text x="${tx + tw - 170}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(parts[0] || '')}</text>`);
+          out.push(`<text x="${tx + tw - 20}" y="${ry + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(parts[1] || '-')}</text>`);
+        } else {
+          out.push(`<text x="${tx + tw - 170}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">A definir</text>`);
+          out.push(`<text x="${tx + tw - 20}" y="${ry + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#64748b">-</text>`);
+        }
       });
-
       if (!matches.length) {
-        const ry = hy + rowH;
-        out.push(`<text x="${duelX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Sem partidas no grupo</text>`);
+        out.push(`<text x="${tx + 10}" y="${hy + rowH + 17}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Sem jogos neste grupo.</text>`);
       }
 
       localY += blockH + 10;
     });
 
-    const sectionH = Math.max(100, localY - sectionTop + 8);
-    drawSectionCard(leftX, sectionTop, leftW, sectionH, 'Lista de jogos dos grupos', 'Com placar, horario e quadra.');
-    yLeft = sectionTop + sectionH + 14;
+    const sectionH = Math.max(90, localY - sectionTop + 6);
+    card(pad, sectionTop, leftW, sectionH, 'Jogos dos Grupos (com horario/quadra)');
+    y = sectionTop + sectionH + 14;
   }
 
   const rounds = data.knockout?.rounds || [];
   if (rounds.length) {
-    const sectionTop = yLeft;
-    const startY = sectionTop + 64;
-    const colWidth = 290;
-    const boxW = 252;
+    y += 8;
+    out.push(`<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="18" fill="#0f172a" font-weight="700">Chave Mata-mata</text>`);
+    y += 12;
+    const colWidth = 280;
+    const boxW = 244;
     const boxH = 74;
-    const startX = leftX + 14;
+    const startX = pad;
+    const startY = y + 16;
     const baseStep = 92;
     const centers: Array<Array<{ x: number; y: number }>> = [];
-    let knockoutBottom = startY;
-
-    drawSectionCard(leftX, sectionTop, leftW, 120, 'Chave mata-mata', 'Partidas eliminatorias com conexoes de avancos.');
 
     rounds.forEach((round, ri) => {
       const x = startX + ri * colWidth;
@@ -1077,16 +1054,14 @@ function buildClassVisualSvg(
         const winner = String(m.winner || '').trim().toLowerCase();
         const aName = String(m.a || 'A definir');
         const bName = String(m.b || 'A definir');
-        const aFill = winner && winner === aName.trim().toLowerCase() ? ok : textDark;
-        const bFill = winner && winner === bName.trim().toLowerCase() ? ok : textDark;
-        out.push(`<rect x="${x}" y="${boxY}" width="${boxW}" height="${boxH}" rx="8" fill="#ffffff" stroke="${border}"/>`);
-        out.push(`<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="${aFill}">${escXml(truncate(aName, 24))}</text>`);
-        out.push(`<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="${bFill}">${escXml(truncate(bName, 24))}</text>`);
-        const stageHints = ['Finais', 'Mata-mata'];
-        const when = scheduleInfo(round.name, mi, stageHints);
+        const aFill = winner && winner === aName.trim().toLowerCase() ? '#15803d' : '#0f172a';
+        const bFill = winner && winner === bName.trim().toLowerCase() ? '#15803d' : '#0f172a';
+        out.push(`<rect x="${x}" y="${boxY}" width="${boxW}" height="${boxH}" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>`);
+        out.push(`<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="${aFill}">${escXml(aName)}</text>`);
+        out.push(`<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="${bFill}">${escXml(bName)}</text>`);
+        const when = scheduleInfo(round.name, mi, ['Finais', 'Mata-mata']);
         out.push(`<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config))}</text>`);
-        out.push(`<text x="${x + 10}" y="${boxY + 54}" font-family="Arial, sans-serif" font-size="11" fill="#64748b">${escXml(when ? `${when.data} ${when.hora} | ${when.quadra}` : 'Horario/quadra: a definir')}</text>`);
-        knockoutBottom = Math.max(knockoutBottom, boxY + boxH);
+        out.push(`<text x="${x + 10}" y="${boxY + 54}" font-family="Arial, sans-serif" font-size="11" fill="#64748b">${escXml(when || 'Horario/quadra: a definir')}</text>`);
       });
     });
 
@@ -1107,60 +1082,58 @@ function buildClassVisualSvg(
       });
     }
 
-    const sectionH = Math.max(130, knockoutBottom - sectionTop + 18);
-    out.push(`<rect x="${leftX}" y="${sectionTop}" width="${leftW}" height="${sectionH}" rx="12" fill="none" stroke="${border}"/>`);
-    yLeft = sectionTop + sectionH + 14;
+    const maxBottom = rounds.reduce((acc, round, ri) => {
+      const step = baseStep * Math.pow(2, ri);
+      const lastIndex = Math.max(0, round.matches.length - 1);
+      const boxY = startY + lastIndex * step + step / 2 - boxH / 2;
+      return Math.max(acc, boxY + boxH);
+    }, startY);
+    y = maxBottom + 20;
   }
 
-  const participants = (data.participantes || []).map((p) => ({
-    nome: String(p.nome || '').trim(),
-    telefone: String(p.telefone || '').trim(),
-    telefone2: String(p.telefone2 || '').trim(),
-  }));
+  const contactsTop = 132;
+  const contacts = (data.participantes || [])
+    .map((p) => ({
+      nome: String(p.nome || '').trim(),
+      tel1: String(p.telefone || '').trim(),
+      tel2: String(p.telefone2 || '').trim(),
+    }))
+    .filter((p) => p.nome)
+    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
-  const uniqueContacts = new Map<string, { nome: string; fones: string[] }>();
-  participants.forEach((p) => {
-    if (!p.nome) return;
-    const key = p.nome.toLowerCase();
-    const row = uniqueContacts.get(key) || { nome: p.nome, fones: [] };
-    if (p.telefone) row.fones.push(p.telefone);
-    if (p.telefone2) row.fones.push(p.telefone2);
-    row.fones = Array.from(new Set(row.fones.filter(Boolean)));
-    uniqueContacts.set(key, row);
+  const uniq = new Map<string, { nome: string; fones: string[] }>();
+  contacts.forEach((c) => {
+    const key = c.nome.toLowerCase();
+    const cur = uniq.get(key) || { nome: c.nome, fones: [] };
+    if (c.tel1) cur.fones.push(c.tel1);
+    if (c.tel2) cur.fones.push(c.tel2);
+    cur.fones = Array.from(new Set(cur.fones));
+    uniq.set(key, cur);
   });
 
-  const contactRows = Array.from(uniqueContacts.values()).sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
-  const contactsSectionTop = yRight;
-  const contactsContentStart = contactsSectionTop + 54;
-  let cy = contactsContentStart;
-  const contactRowH = 30;
-  const visibleRows = Math.max(1, contactRows.length);
-  const contactsHeight = 58 + rowH + visibleRows * contactRowH + 12;
+  const rows = Array.from(uniq.values());
+  const rowH = 26;
+  const cardH = 46 + rowH + Math.max(1, rows.length) * rowH + 10;
+  card(rightX, contactsTop, rightW, cardH, 'Jogadores e contatos');
+  const tx = rightX + 8;
+  const tw = rightW - 16;
+  const hy = contactsTop + 36;
+  out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="#dbe3ee"/>`);
+  out.push(`<text x="${tx + 10}" y="${hy + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">JOGADOR</text>`);
+  out.push(`<text x="${tx + tw - 10}" y="${hy + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#475569" font-weight="700">CONTATO</text>`);
 
-  drawSectionCard(rightX, contactsSectionTop, rightW, contactsHeight, 'Jogadores e contatos', 'Uso rapido da mesa de organizacao.');
-  const listX = rightX + 12;
-  const listW = rightW - 24;
-  out.push(`<rect x="${listX}" y="${contactsContentStart}" width="${listW}" height="${rowH}" rx="6" fill="#eef2f7" stroke="${border}"/>`);
-  out.push(`<text x="${listX + 10}" y="${contactsContentStart + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">JOGADOR</text>`);
-  out.push(`<text x="${listX + listW - 10}" y="${contactsContentStart + 19}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">CONTATO</text>`);
-  cy += rowH;
-
-  if (!contactRows.length) {
-    out.push(`<text x="${listX + 10}" y="${cy + 19}" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Sem contatos cadastrados.</text>`);
+  if (!rows.length) {
+    out.push(`<text x="${tx + 10}" y="${hy + rowH + 17}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Sem contatos cadastrados.</text>`);
   } else {
-    contactRows.forEach((row, idx) => {
-      out.push(`<rect x="${listX}" y="${cy}" width="${listW}" height="${contactRowH}" fill="${idx % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
-      const name = truncate(row.nome, 24);
-      const fones = row.fones.length ? row.fones.join(' | ') : '-';
-      out.push(`<text x="${listX + 10}" y="${cy + 20}" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(name)}</text>`);
-      out.push(`<text x="${listX + listW - 10}" y="${cy + 20}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(truncate(fones, 34))}</text>`);
-      cy += contactRowH;
+    rows.forEach((r, idx) => {
+      const ry = hy + rowH + idx * rowH;
+      out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${idx % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
+      out.push(`<text x="${tx + 10}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(r.nome)}</text>`);
+      out.push(`<text x="${tx + tw - 10}" y="${ry + 17}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${escXml(r.fones.length ? r.fones.join(' | ') : '-')}</text>`);
     });
   }
 
-  yRight = contactsSectionTop + contactsHeight + 14;
-
-  const finalHeight = Math.max(260, yLeft, yRight) + 20;
+  const finalHeight = Math.max(220, y + 20, contactsTop + cardH + 20);
   out[0] = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${finalHeight}" viewBox="0 0 ${width} ${finalHeight}">`;
   out[1] = `<rect x="0" y="0" width="${width}" height="${finalHeight}" fill="#ffffff"/>`;
   out.push('</svg>');
@@ -4014,4 +3987,7 @@ export function TournamentPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+
+
+
 
