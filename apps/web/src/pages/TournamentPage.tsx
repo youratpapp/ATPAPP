@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
@@ -890,15 +890,11 @@ function buildClassVisualSvg(
 export function TournamentPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const { tournamentId = "" } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const [tab, setTab] = useState<TabKey>(() => {
-    const urlTab = (new URLSearchParams(window.location.search).get("tab") || "").trim() as TabKey;
-    return VALID_TABS.includes(urlTab) ? urlTab : "jogos";
-  });
+  const [tab, setTab] = useState<TabKey>("jogos");
 
   const [tournament, setTournament] = useState<TournamentDetails | null>(null);
   const [classes, setClasses] = useState<LegacyClassRef[]>([]);
@@ -1266,21 +1262,21 @@ export function TournamentPage({ user, profile }: Props) {
   }, [agendaConfig.duracaoMin]);
 
   useEffect(() => {
-    const tabFromUrl = (searchParams.get("tab") || "").trim() as TabKey;
-    if (VALID_TABS.includes(tabFromUrl) && tabFromUrl !== tab) {
-      setTab(tabFromUrl);
+    if (!tournamentId) return;
+    const key = `atp:tournament-tab:${tournamentId}`;
+    const saved = (window.sessionStorage.getItem(key) || "").trim() as TabKey;
+    if (VALID_TABS.includes(saved)) {
+      setTab(saved);
+    } else {
+      setTab("jogos");
     }
-  }, [searchParams, tab]);
+  }, [tournamentId]);
 
   useEffect(() => {
-    const current = (searchParams.get("tab") || "").trim();
-    const target = tab === "jogos" ? "" : tab;
-    if ((current || "") === target) return;
-    const next = new URLSearchParams(searchParams);
-    if (!target) next.delete("tab");
-    else next.set("tab", target);
-    setSearchParams(next, { replace: true });
-  }, [tab, searchParams, setSearchParams]);
+    if (!tournamentId) return;
+    const key = `atp:tournament-tab:${tournamentId}`;
+    window.sessionStorage.setItem(key, tab);
+  }, [tournamentId, tab]);
 
   useEffect(() => {
     if (tab === "organizacao" && !isOwner) {
