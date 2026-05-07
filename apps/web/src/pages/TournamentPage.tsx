@@ -1248,6 +1248,36 @@ export function TournamentPage({ user, profile }: Props) {
     }
   }, [tab, isOwner, canSeeClassificationTab]);
 
+  const applyUpdatedTournamentState = async (
+    updated: TournamentDetails,
+    successText: string,
+    nextActiveKey = activeClassKey
+  ) => {
+    setTournament(updated);
+    const cls = listLegacyClassesFromTournamentData(updated.data);
+    setClasses(cls);
+    setActiveClassKey(nextActiveKey || cls[0]?.key || "");
+    const raw = (updated.data ?? {}) as Record<string, unknown>;
+    const draft = parseDraftCategories(raw);
+    setDraftCategories(draft);
+    setActiveDraftCategoryId((prev) => {
+      if (draft.some((c) => c.id === prev)) return prev;
+      return draft[0]?.id || "";
+    });
+    setActiveDraftClassId((prev) => {
+      const all = draft.flatMap((c) => c.classes);
+      if (all.some((c) => c.id === prev)) return prev;
+      return draft[0]?.classes[0]?.id || "";
+    });
+    setDraftDirty(false);
+    setGroupLink(asText(raw.linkGrupo));
+    setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
+    setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
+    const regs = await loadTournamentRegistrations(user, updated.id, updated.role);
+    setRegistrations(regs);
+    setFeedback({ kind: "success", text: successText });
+  };
+
   const persistTournamentData = async (
     nextData: Record<string, unknown>,
     successText: string,
@@ -1268,29 +1298,7 @@ export function TournamentPage({ user, profile }: Props) {
         data: nextData,
       });
 
-      setTournament(updated);
-      const cls = listLegacyClassesFromTournamentData(updated.data);
-      setClasses(cls);
-      setActiveClassKey(nextActiveKey || cls[0]?.key || "");
-      const raw = (updated.data ?? {}) as Record<string, unknown>;
-      const draft = parseDraftCategories(raw);
-      setDraftCategories(draft);
-      setActiveDraftCategoryId((prev) => {
-        if (draft.some((c) => c.id === prev)) return prev;
-        return draft[0]?.id || "";
-      });
-      setActiveDraftClassId((prev) => {
-        const all = draft.flatMap((c) => c.classes);
-        if (all.some((c) => c.id === prev)) return prev;
-        return draft[0]?.classes[0]?.id || "";
-      });
-      setDraftDirty(false);
-      setGroupLink(asText(raw.linkGrupo));
-      setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
-      setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
-      const regs = await loadTournamentRegistrations(user, updated.id, updated.role);
-      setRegistrations(regs);
-      setFeedback({ kind: "success", text: successText });
+      await applyUpdatedTournamentState(updated, successText, nextActiveKey);
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar alteracoes." });
     } finally {
@@ -1445,19 +1453,16 @@ export function TournamentPage({ user, profile }: Props) {
     });
   };
 
-  const saveOrganization = async () => {
-    if (!tournament) return;
-    const nextData = structuredClone((tournament.data ?? {}) as Record<string, unknown>);
-    nextData.agendaConfig = agendaConfig as unknown as Record<string, unknown>;
-    nextData.agenda = agenda as unknown as Record<string, unknown>;
-    await persistTournamentData(nextData, "Organizacao salva.", activeClass?.key ?? activeClassKey);
-    setAgendaDirty(false);
-  };
-
-  const saveTournamentBasics = async () => {
+  const saveConfigurationFinal = async () => {
     if (!tournament) return;
     setSaving(true);
     try {
+      const baseData = (tournament.data ?? {}) as Record<string, unknown>;
+      const withCategories = buildTournamentDataWithDraftCategories(baseData, draftCategories);
+      withCategories.linkGrupo = groupLink.trim();
+      withCategories.agendaConfig = agendaConfig as unknown as Record<string, unknown>;
+      withCategories.agenda = agenda as unknown as Record<string, unknown>;
+
       const updated = await updateTournamentDetails(user, tournament.id, {
         name: basicName,
         city: basicCity,
@@ -1467,23 +1472,17 @@ export function TournamentPage({ user, profile }: Props) {
         startsAt: basicStartsAt,
         registrationCloseAt: basicRegistrationCloseAt,
         posterUrl: basicPosterUrl,
-        data: (tournament.data ?? {}) as Record<string, unknown>,
+        data: withCategories,
       });
-      setTournament(updated);
-      setFeedback({ kind: "success", text: "Dados iniciais do torneio atualizados." });
+
+      await applyUpdatedTournamentState(updated, "Configuracao do torneio salva com sucesso.");
+      setDraftDirty(false);
+      setAgendaDirty(false);
     } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar dados do torneio." });
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar configuracao." });
     } finally {
       setSaving(false);
     }
-  };
-
-  const saveConfigurationFinal = async () => {
-    if (!tournament) return;
-    await saveTournamentBasics();
-    await saveCategoriesAndClasses();
-    await saveOrganization();
-    setFeedback({ kind: "success", text: "Configuracao do torneio salva com sucesso." });
   };
 
   const mutateDraftCategories = (fn: (prev: DraftCategory[]) => DraftCategory[]) => {
