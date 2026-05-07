@@ -891,6 +891,14 @@ export function TournamentPage({ user, profile }: Props) {
   const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
   const [selectedRegistrationIds, setSelectedRegistrationIds] = useState<string[]>([]);
   const [registrationBusy, setRegistrationBusy] = useState(false);
+  const [basicName, setBasicName] = useState("");
+  const [basicCity, setBasicCity] = useState("");
+  const [basicState, setBasicState] = useState("");
+  const [basicVisibility, setBasicVisibility] = useState<"public" | "private">("private");
+  const [basicStatus, setBasicStatus] = useState<"draft" | "registration_open" | "registration_closed" | "live" | "finished">("draft");
+  const [basicStartsAt, setBasicStartsAt] = useState("");
+  const [basicRegistrationCloseAt, setBasicRegistrationCloseAt] = useState("");
+  const [basicPosterUrl, setBasicPosterUrl] = useState("");
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -996,6 +1004,25 @@ export function TournamentPage({ user, profile }: Props) {
   useEffect(() => {
     setSelectedRegistrationIds((prev) => prev.filter((id) => registrations.some((r) => r.id === id)));
   }, [registrations]);
+
+  useEffect(() => {
+    if (!tournament) return;
+    setBasicName(tournament.name || "");
+    setBasicCity(tournament.city || "");
+    setBasicState(tournament.state || "");
+    setBasicVisibility(tournament.visibility === "public" ? "public" : "private");
+    setBasicStatus(
+      tournament.status === "registration_open" ||
+      tournament.status === "registration_closed" ||
+      tournament.status === "live" ||
+      tournament.status === "finished"
+        ? tournament.status
+        : "draft"
+    );
+    setBasicStartsAt(tournament.startsAt || "");
+    setBasicRegistrationCloseAt(tournament.registrationCloseAt || "");
+    setBasicPosterUrl(tournament.posterUrl || "");
+  }, [tournament?.id, tournament?.name, tournament?.city, tournament?.state, tournament?.visibility, tournament?.status, tournament?.startsAt, tournament?.registrationCloseAt, tournament?.posterUrl]);
 
   useEffect(() => {
     if (!activeDraftClass) return;
@@ -1231,6 +1258,30 @@ export function TournamentPage({ user, profile }: Props) {
     nextData.agenda = agenda as unknown as Record<string, unknown>;
     await persistTournamentData(nextData, "Organizacao salva.", activeClass?.key ?? activeClassKey);
     setAgendaDirty(false);
+  };
+
+  const saveTournamentBasics = async () => {
+    if (!tournament) return;
+    setSaving(true);
+    try {
+      const updated = await updateTournamentDetails(user, tournament.id, {
+        name: basicName,
+        city: basicCity,
+        state: basicState,
+        visibility: basicVisibility,
+        status: basicStatus,
+        startsAt: basicStartsAt,
+        registrationCloseAt: basicRegistrationCloseAt,
+        posterUrl: basicPosterUrl,
+        data: (tournament.data ?? {}) as Record<string, unknown>,
+      });
+      setTournament(updated);
+      setFeedback({ kind: "success", text: "Dados iniciais do torneio atualizados." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar dados do torneio." });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const mutateDraftCategories = (fn: (prev: DraftCategory[]) => DraftCategory[]) => {
@@ -1690,45 +1741,6 @@ export function TournamentPage({ user, profile }: Props) {
           : ""
       }.`,
     });
-  };
-
-  const generateActiveClass = () => {
-    if (!activeDraftCategory || !activeDraftClass) return;
-    const participantes = activeDraftClass.data.participantes;
-    let entries: string[] = [];
-    try {
-      entries = buildEntriesFromParticipants(activeDraftClass.data.config, participantes);
-    } catch (err) {
-      setFeedback({
-        kind: "error",
-        text: err instanceof Error ? err.message : "Falha ao montar entradas para sorteio.",
-      });
-      return;
-    }
-    if (entries.length < 2) {
-      setFeedback({ kind: "error", text: "Esta classe precisa de entradas suficientes para gerar (minimo 2)." });
-      return;
-    }
-    mutateDraftCategories((prev) =>
-      prev.map((cat) => {
-        if (cat.id !== activeDraftCategory.id) return cat;
-        return {
-          ...cat,
-          classes: cat.classes.map((cls) => {
-            if (cls.id !== activeDraftClass.id) return cls;
-            return {
-              ...cls,
-              data: gerarClasseData({
-                config: cls.data.config,
-                participantes: cls.data.participantes,
-                entradas: entries,
-              }),
-            };
-          }),
-        };
-      })
-    );
-    setFeedback({ kind: "success", text: "Classe gerada no novo fluxo. Clique em salvar para persistir." });
   };
 
   const saveCategoriesAndClasses = async () => {
@@ -2613,117 +2625,220 @@ export function TournamentPage({ user, profile }: Props) {
 
           {tab === "organizacao" && isOwner ? (
             <section className="card">
-              <h3 style={{ marginTop: 0 }}>Estrutura e configuracao do torneio</h3>
-              <div className="cluster" style={{ marginBottom: 10 }}>
-                <input
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Nova categoria (ex.: Masculino)"
-                />
-                <button onClick={addCategory} disabled={saving}>
-                  Adicionar categoria
-                </button>
+              <h3 style={{ marginTop: 0 }}>Organizacao do torneio</h3>
+
+              <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Dados iniciais do torneio</h3>
+                <div className="cluster">
+                  <div style={{ flex: 1 }}>
+                    <label>Nome do torneio</label>
+                    <input value={basicName} onChange={(e) => setBasicName(e.target.value)} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Cidade</label>
+                    <input value={basicCity} onChange={(e) => setBasicCity(e.target.value)} />
+                  </div>
+                  <div style={{ width: 120 }}>
+                    <label>Estado (UF)</label>
+                    <input value={basicState} onChange={(e) => setBasicState(e.target.value.toUpperCase())} maxLength={2} />
+                  </div>
+                </div>
+                <div className="cluster" style={{ marginTop: 8 }}>
+                  <div style={{ width: 220 }}>
+                    <label>Visibilidade</label>
+                    <select value={basicVisibility} onChange={(e) => setBasicVisibility(e.target.value === "public" ? "public" : "private")}>
+                      <option value="private">Privado</option>
+                      <option value="public">Publico</option>
+                    </select>
+                  </div>
+                  <div style={{ width: 260 }}>
+                    <label>Status</label>
+                    <select value={basicStatus} onChange={(e) => setBasicStatus((e.target.value as typeof basicStatus) || "draft")}>
+                      <option value="draft">Rascunho</option>
+                      <option value="registration_open">Inscricoes abertas</option>
+                      <option value="registration_closed">Inscricoes encerradas</option>
+                      <option value="live">Ao vivo</option>
+                      <option value="finished">Finalizado</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="cluster" style={{ marginTop: 8 }}>
+                  <div style={{ flex: 1 }}>
+                    <label>Data de inicio</label>
+                    <input type="datetime-local" value={basicStartsAt} onChange={(e) => setBasicStartsAt(e.target.value)} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Fechamento de inscricao</label>
+                    <input type="datetime-local" value={basicRegistrationCloseAt} onChange={(e) => setBasicRegistrationCloseAt(e.target.value)} />
+                  </div>
+                </div>
+                <label style={{ marginTop: 8 }}>Poster (URL)</label>
+                <input value={basicPosterUrl} onChange={(e) => setBasicPosterUrl(e.target.value)} />
+                <div className="cluster" style={{ marginTop: 10 }}>
+                  <button onClick={() => void saveTournamentBasics()} disabled={saving}>
+                    Salvar dados do torneio
+                  </button>
+                </div>
               </div>
 
-              {draftCategories.length === 0 ? <p className="subtle">Nenhuma categoria cadastrada.</p> : null}
-              {draftCategories.map((cat) => {
-                const isActive = cat.id === activeDraftCategory?.id;
-                return (
-                  <div
-                    key={`cat:${cat.id}`}
-                    style={{
-                      border: "1px solid var(--color-border)",
-                      borderRadius: 10,
-                      padding: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
-                      <input
-                        value={cat.nome}
-                        onChange={(e) => renameCategory(cat.id, e.target.value)}
-                        disabled={saving}
-                      />
-                      <button onClick={() => setActiveDraftCategoryId(cat.id)} disabled={saving}>
-                        {isActive ? "Categoria ativa" : "Ativar"}
-                      </button>
-                      <button className="danger" onClick={() => removeCategory(cat.id)} disabled={saving}>
-                        Remover categoria
-                      </button>
-                    </div>
-
-                    {isActive ? (
-                      <>
-                        <div className="cluster" style={{ marginBottom: 8 }}>
-                          <input
-                            value={newClassName}
-                            onChange={(e) => setNewClassName(e.target.value)}
-                            placeholder="Nova classe (ex.: A)"
-                          />
-                          <button onClick={addClass} disabled={saving}>
-                            Adicionar classe
-                          </button>
-                        </div>
-
-                        {cat.classes.length === 0 ? <p className="subtle">Nenhuma classe nesta categoria.</p> : null}
-                        {cat.classes.map((cls) => {
-                          const clsActive = cls.id === activeDraftClass?.id;
-                          return (
-                            <div
-                              key={`cls:${cat.id}:${cls.id}`}
-                              style={{
-                                borderTop: "1px solid var(--color-border)",
-                                paddingTop: 8,
-                                marginTop: 8,
-                              }}
-                            >
-                              <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
-                                <input
-                                  value={cls.nome}
-                                  onChange={(e) => renameClass(cat.id, cls.id, e.target.value)}
-                                  disabled={saving}
-                                />
-                                <button
-                                  onClick={() => {
-                                    setActiveDraftCategoryId(cat.id);
-                                    setActiveDraftClassId(cls.id);
-                                  }}
-                                  disabled={saving}
-                                >
-                                  {clsActive ? "Classe ativa" : "Editar classe"}
-                                </button>
-                                <button
-                                  className="danger"
-                                  onClick={() => removeClass(cat.id, cls.id)}
-                                  disabled={saving}
-                                >
-                                  Remover
-                                </button>
-                              </div>
-                              <p className="subtle" style={{ margin: 0 }}>
-                                Participantes: {cls.data.participantes.length} | Gerado: {cls.data.gerado ? "sim" : "nao"}
-                              </p>
-                            </div>
-                          );
-                        })}
-                      </>
-                    ) : null}
+              <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Agenda do torneio (unica)</h3>
+                <label>Duracao da partida (min)</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={duracaoMinInput}
+                  onChange={(e) => setDuracaoMinInput(e.target.value.replace(/[^\d]/g, ""))}
+                  onBlur={commitDuracaoMin}
+                  disabled={saving}
+                />
+                <div style={{ marginTop: 10 }}>
+                  <label>Adicionar dia</label>
+                  <div className="cluster">
+                    <input type="date" value={newAgendaDate} onChange={(e) => setNewAgendaDate(e.target.value)} />
+                    <input type="time" value={newAgendaStart} onChange={(e) => setNewAgendaStart(e.target.value)} />
+                    <input type="time" value={newAgendaEnd} onChange={(e) => setNewAgendaEnd(e.target.value)} />
+                    <button onClick={addAgendaDay} disabled={saving}>Adicionar dia</button>
                   </div>
-                );
-              })}
+                </div>
+                {agendaConfig.dias.map((d, idx) => (
+                  <div key={`dia:${d.data}:${idx}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0", display: "flex", justifyContent: "space-between" }}>
+                    <span>{d.data} | {d.inicio} - {d.fim}</span>
+                    <button className="danger" onClick={() => removeAgendaDay(idx)} disabled={saving}>Remover</button>
+                  </div>
+                ))}
+                <div style={{ marginTop: 10 }}>
+                  <label>Quadras</label>
+                  <div className="cluster">
+                    <input value={newCourtName} onChange={(e) => setNewCourtName(e.target.value)} placeholder="Ex.: Quadra 1" />
+                    <button onClick={addCourt} disabled={saving}>Adicionar quadra</button>
+                  </div>
+                </div>
+                {agendaConfig.quadras.map((q, idx) => (
+                  <div key={`q:${q}:${idx}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0", display: "flex", justifyContent: "space-between" }}>
+                    <span>{q}</span>
+                    <button className="danger" onClick={() => removeCourt(idx)} disabled={saving}>Remover</button>
+                  </div>
+                ))}
+                <div style={{ marginTop: 10 }}>
+                  <label>Restringir semifinais por dia</label>
+                  <select value={agendaConfig.travarSemifinalDia ? "sim" : "nao"} onChange={(e) => setAgendaConfigWithReset({ ...agendaConfig, travarSemifinalDia: e.target.value === "sim" })}>
+                    <option value="nao">Nao</option>
+                    <option value="sim">Sim</option>
+                  </select>
+                  {agendaConfig.travarSemifinalDia ? (
+                    <>
+                      <label>Dia das semifinais</label>
+                      <input type="date" value={agendaConfig.diaSemifinal} onChange={(e) => setAgendaConfigWithReset({ ...agendaConfig, diaSemifinal: e.target.value })} />
+                    </>
+                  ) : null}
+                </div>
+                <div style={{ marginTop: 10 }}>
+                  <label>Restringir finais por dia</label>
+                  <select value={agendaConfig.travarFinalDia ? "sim" : "nao"} onChange={(e) => setAgendaConfigWithReset({ ...agendaConfig, travarFinalDia: e.target.value === "sim" })}>
+                    <option value="nao">Nao</option>
+                    <option value="sim">Sim</option>
+                  </select>
+                  {agendaConfig.travarFinalDia ? (
+                    <>
+                      <label>Dia das finais</label>
+                      <input type="date" value={agendaConfig.diaFinal} onChange={(e) => setAgendaConfigWithReset({ ...agendaConfig, diaFinal: e.target.value })} />
+                    </>
+                  ) : null}
+                </div>
+                <div className="cluster" style={{ marginTop: 10 }}>
+                  <button onClick={() => selectAllStageCourts("semi")} disabled={saving || !agendaConfig.quadras.length}>Todas as quadras na semi</button>
+                  <button onClick={() => selectAllStageCourts("final")} disabled={saving || !agendaConfig.quadras.length}>Todas as quadras na final</button>
+                </div>
+                {agendaConfig.quadras.map((q) => {
+                  const checkedSemi = agendaConfig.quadrasSemifinal.some((x) => x.toLowerCase() === q.toLowerCase());
+                  const checkedFinal = agendaConfig.quadrasFinal.some((x) => x.toLowerCase() === q.toLowerCase());
+                  return (
+                    <div key={`stage-court:${q}`} className="cluster" style={{ marginTop: 4 }}>
+                      <label style={{ margin: 0 }}>
+                        <input type="checkbox" checked={checkedSemi} onChange={(e) => toggleStageCourt("semi", q, e.target.checked)} /> Semi - {q}
+                      </label>
+                      <label style={{ margin: 0 }}>
+                        <input type="checkbox" checked={checkedFinal} onChange={(e) => toggleStageCourt("final", q, e.target.checked)} /> Final - {q}
+                      </label>
+                    </div>
+                  );
+                })}
+                <div className="cluster" style={{ marginTop: 14 }}>
+                  <button onClick={saveOrganization} disabled={saving}>Salvar organizacao</button>
+                </div>
+              </div>
+
+              <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Estrutura de categorias e classes</h3>
+                <div className="cluster" style={{ marginBottom: 10 }}>
+                  <input value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} placeholder="Nova categoria (ex.: Masculino)" />
+                  <button onClick={addCategory} disabled={saving}>Adicionar categoria</button>
+                </div>
+                {draftCategories.length === 0 ? <p className="subtle">Nenhuma categoria cadastrada.</p> : null}
+                {draftCategories.map((cat) => (
+                  <div key={`cat:${cat.id}`} style={{ borderTop: "1px solid var(--color-border)", paddingTop: 8, marginTop: 8 }}>
+                    <div className="cluster" style={{ marginBottom: 8 }}>
+                      <input value={cat.nome} onChange={(e) => renameCategory(cat.id, e.target.value)} disabled={saving} />
+                      <button className="danger" onClick={() => removeCategory(cat.id)} disabled={saving}>Remover categoria</button>
+                    </div>
+                    {(cat.classes || []).map((cls) => (
+                      <div key={`cls:${cat.id}:${cls.id}`} style={{ borderTop: "1px solid var(--color-border)", paddingTop: 8, marginTop: 8 }}>
+                        <div className="cluster">
+                          <input value={cls.nome} onChange={(e) => renameClass(cat.id, cls.id, e.target.value)} disabled={saving} />
+                          <button onClick={() => { setActiveDraftCategoryId(cat.id); setActiveDraftClassId(cls.id); }} disabled={saving}>
+                            Selecionar para configurar
+                          </button>
+                          <button className="danger" onClick={() => removeClass(cat.id, cls.id)} disabled={saving}>Remover</button>
+                        </div>
+                        <p className="subtle" style={{ margin: 0 }}>Participantes: {cls.data.participantes.length} | Gerado: {cls.data.gerado ? "sim" : "nao"}</p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+                <div className="cluster" style={{ marginTop: 10 }}>
+                  <input value={newClassName} onChange={(e) => setNewClassName(e.target.value)} placeholder="Nova classe (ex.: A)" />
+                  <button onClick={addClass} disabled={saving || !activeDraftCategory}>Adicionar classe na categoria selecionada</button>
+                </div>
+              </div>
+
+              <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Seletor de classe para configuracao</h3>
+                <div className="cluster">
+                  <div style={{ flex: 1 }}>
+                    <label>Categoria</label>
+                    <select
+                      value={activeDraftCategory?.id || ""}
+                      onChange={(e) => {
+                        const nextCatId = e.target.value;
+                        const nextCat = draftCategories.find((c) => c.id === nextCatId);
+                        setActiveDraftCategoryId(nextCatId);
+                        setActiveDraftClassId(nextCat?.classes[0]?.id || "");
+                      }}
+                    >
+                      {draftCategories.map((cat) => (
+                        <option key={`cfg-cat:${cat.id}`} value={cat.id}>{cat.nome}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Classe</label>
+                    <select
+                      value={activeDraftClass?.id || ""}
+                      onChange={(e) => setActiveDraftClassId(e.target.value)}
+                    >
+                      {(activeDraftCategory?.classes || []).map((cls) => (
+                        <option key={`cfg-cls:${cls.id}`} value={cls.id}>{cls.nome}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
 
               {activeDraftCategory && activeDraftClass ? (
-                <div
-                  style={{
-                    border: "1px solid var(--color-border)",
-                    borderRadius: 10,
-                    padding: 10,
-                    marginBottom: 12,
-                  }}
-                >
-                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>
-                    Configuracao da classe: {activeDraftCategory.nome} / {activeDraftClass.nome}
-                  </h3>
+                <div style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
+                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>Configuracao da classe: {activeDraftCategory.nome} / {activeDraftClass.nome}</h3>
                   <label>Modelo de competicao / pontuacao</label>
                   <select
                     value={activeDraftClass.data.config.modeloCompeticao}
@@ -2748,17 +2863,10 @@ export function TournamentPage({ user, profile }: Props) {
                     value={activeDraftClass.data.config.tipoPontuacao}
                     disabled={activeDraftClass.data.config.modeloCompeticao === "super_tiebreak"}
                     onChange={(e) => {
-                      const nextType = (e.target.value ||
-                        "melhor_de_3") as ClassData["config"]["tipoPontuacao"];
-                      const normalizedSets = normalizeSetCountByScoreType(
-                        nextType,
-                        activeDraftClass.data.config.numeroSets || 3
-                      );
+                      const nextType = (e.target.value || "melhor_de_3") as ClassData["config"]["tipoPontuacao"];
+                      const normalizedSets = normalizeSetCountByScoreType(nextType, activeDraftClass.data.config.numeroSets || 3);
                       setNumSetsInput(String(normalizedSets));
-                      updateActiveClassConfig({
-                        tipoPontuacao: nextType,
-                        numeroSets: normalizedSets,
-                      });
+                      updateActiveClassConfig({ tipoPontuacao: nextType, numeroSets: normalizedSets });
                     }}
                   >
                     <option value="melhor_de_3">1. Melhor de 3 sets tradicional</option>
@@ -2769,145 +2877,41 @@ export function TournamentPage({ user, profile }: Props) {
                     <option value="super_tb_unico">6. Super Tie-Break unico</option>
                   </select>
                   <label>Numero de sets (melhor de N)</label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    value={numSetsInput}
-                    onChange={(e) => setNumSetsInput(coerceScoreStringForSetInput(e.target.value))}
-                    onBlur={commitNumeroSets}
-                    disabled={activeDraftClass.data.config.tipoPontuacao !== "fast4"}
-                  />
-                  <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
-                    {scoringTypeLabel(activeDraftClass.data.config.tipoPontuacao)}.{" "}
-                    {scoringRulesHint(activeDraftClass.data.config)}
-                  </p>
-                  {activeDraftClass.data.config.modeloCompeticao === "dupla_eliminacao" ? (
-                    <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
-                      Dupla eliminacao: modo inicial com chave unica + persistencia compativel. Evoluiremos para chave de repescagem visual dedicada.
-                    </p>
-                  ) : null}
-                  {activeDraftClass.data.config.modeloCompeticao === "super_tiebreak" ? (
-                    <>
-                      <label>Base do Super Tie-Break</label>
-                      <select
-                        value={activeDraftClass.data.config.superTiebreakBase}
-                        onChange={(e) => {
-                          const base =
-                            e.target.value === "mata_mata"
-                              ? "mata_mata"
-                              : e.target.value === "round_robin"
-                              ? "round_robin"
-                              : "grupos";
-                          updateActiveClassConfig(
-                            applyCompetitionModelToConfig(
-                              {
-                                ...activeDraftClass.data.config,
-                                superTiebreakBase: base,
-                              },
-                              "super_tiebreak"
-                            )
-                          );
-                        }}
-                      >
-                        <option value="mata_mata">Mata-mata</option>
-                        <option value="grupos">Grupos</option>
-                        <option value="round_robin">Round Robin</option>
-                      </select>
-                      <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>
-                        Regra de lancamento: vence quem faz 10+ pontos com diferenca minima de 2.
-                      </p>
-                    </>
-                  ) : null}
-
+                  <input type="text" inputMode="numeric" pattern="[0-9]*" value={numSetsInput} onChange={(e) => setNumSetsInput(coerceScoreStringForSetInput(e.target.value))} onBlur={commitNumeroSets} disabled={activeDraftClass.data.config.tipoPontuacao !== "fast4"} />
+                  <p className="subtle" style={{ marginTop: 6, marginBottom: 0 }}>{scoringTypeLabel(activeDraftClass.data.config.tipoPontuacao)}. {scoringRulesHint(activeDraftClass.data.config)}</p>
                   <label>Formato</label>
-                  <select
-                    value={activeDraftClass.data.config.formato}
-                    disabled={activeDraftClass.data.config.modeloCompeticao !== "super_tiebreak"}
-                    onChange={(e) =>
-                      updateActiveClassConfig({
-                        formato: e.target.value === "mata_mata" ? "mata_mata" : "grupos",
-                      })
-                    }
-                  >
+                  <select value={activeDraftClass.data.config.formato} disabled={activeDraftClass.data.config.modeloCompeticao !== "super_tiebreak"} onChange={(e) => updateActiveClassConfig({ formato: e.target.value === "mata_mata" ? "mata_mata" : "grupos" })}>
                     <option value="grupos">Grupos</option>
                     <option value="mata_mata">Mata-mata</option>
                   </select>
-
                   <label>Tipo</label>
-                  <select
-                    value={activeDraftClass.data.config.tipo}
-                    onChange={(e) =>
-                      updateActiveClassConfig({
-                        tipo: e.target.value === "simples" ? "simples" : "duplas",
-                      })
-                    }
-                  >
+                  <select value={activeDraftClass.data.config.tipo} onChange={(e) => updateActiveClassConfig({ tipo: e.target.value === "simples" ? "simples" : "duplas" })}>
                     <option value="duplas">Duplas</option>
                     <option value="simples">Simples</option>
                   </select>
-
                   {activeDraftClass.data.config.formato === "grupos" ? (
                     <div className="cluster">
                       <div style={{ flex: 1 }}>
                         <label>Numero de grupos</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          value={numGruposInput}
-                          onChange={(e) => setNumGruposInput(e.target.value.replace(/[^\d]/g, ""))}
-                          onBlur={commitNumGrupos}
-                          disabled={
-                            activeDraftClass.data.config.modeloCompeticao === "round_robin" ||
-                            activeDraftClass.data.config.modeloCompeticao === "liga_ranking"
-                          }
-                        />
+                        <input type="text" inputMode="numeric" pattern="[0-9]*" value={numGruposInput} onChange={(e) => setNumGruposInput(e.target.value.replace(/[^\d]/g, ""))} onBlur={commitNumGrupos} disabled={activeDraftClass.data.config.modeloCompeticao === "round_robin" || activeDraftClass.data.config.modeloCompeticao === "liga_ranking"} />
                       </div>
                       <div style={{ flex: 1 }}>
                         <label>Classificados por grupo</label>
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          value={classificadosInput}
-                          onChange={(e) => setClassificadosInput(e.target.value.replace(/[^\d]/g, ""))}
-                          onBlur={commitClassificadosPorGrupo}
-                          disabled={
-                            activeDraftClass.data.config.modeloCompeticao === "round_robin" ||
-                            activeDraftClass.data.config.modeloCompeticao === "liga_ranking"
-                          }
-                        />
+                        <input type="text" inputMode="numeric" pattern="[0-9]*" value={classificadosInput} onChange={(e) => setClassificadosInput(e.target.value.replace(/[^\d]/g, ""))} onBlur={commitClassificadosPorGrupo} disabled={activeDraftClass.data.config.modeloCompeticao === "round_robin" || activeDraftClass.data.config.modeloCompeticao === "liga_ranking"} />
                       </div>
                     </div>
                   ) : null}
-
                   {activeDraftClass.data.config.tipo === "duplas" ? (
                     <>
                       <label>Modo de duplas</label>
-                      <select
-                        value={activeDraftClass.data.config.modoDuplas}
-                        onChange={(e) =>
-                          updateActiveClassConfig({
-                            modoDuplas: e.target.value === "manual" ? "manual" : "sorteio",
-                          })
-                        }
-                      >
+                      <select value={activeDraftClass.data.config.modoDuplas} onChange={(e) => updateActiveClassConfig({ modoDuplas: e.target.value === "manual" ? "manual" : "sorteio" })}>
                         <option value="sorteio">Sorteio de duplas</option>
                         <option value="manual">Dupla fixa</option>
                       </select>
-
                       {activeDraftClass.data.config.modoDuplas === "sorteio" ? (
                         <>
                           <label>Sorteio de duplas</label>
-                          <select
-                            value={activeDraftClass.data.config.sorteioDuplas}
-                            onChange={(e) =>
-                              updateActiveClassConfig({
-                                sorteioDuplas: e.target.value === "todos" ? "todos" : "grupos_ab",
-                              })
-                            }
-                          >
+                          <select value={activeDraftClass.data.config.sorteioDuplas} onChange={(e) => updateActiveClassConfig({ sorteioDuplas: e.target.value === "todos" ? "todos" : "grupos_ab" })}>
                             <option value="grupos_ab">Grupos A/B</option>
                             <option value="todos">Todos</option>
                           </select>
@@ -2915,213 +2919,15 @@ export function TournamentPage({ user, profile }: Props) {
                       ) : null}
                     </>
                   ) : null}
-
                   <div className="cluster" style={{ marginTop: 12 }}>
-                    <button className="primary" onClick={generateActiveClass} disabled={saving}>
-                      Gerar classe
-                    </button>
-                    <button onClick={saveCategoriesAndClasses} disabled={saving}>
-                      Salvar categorias/classes
-                    </button>
+                    <button onClick={saveCategoriesAndClasses} disabled={saving}>Salvar categorias/classes</button>
                   </div>
-                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
-                    O cadastro e aprovacao de jogadores agora ficam na aba "Jogadores".
-                  </p>
-                  {draftDirty ? (
-                    <p className="subtle" style={{ marginTop: 8 }}>
-                      Alteracoes em categorias/classes pendentes de salvamento.
-                    </p>
-                  ) : null}
+                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>O cadastro e aprovacao de jogadores ficam na aba "Jogadores".</p>
+                  {draftDirty ? <p className="subtle" style={{ marginTop: 8 }}>Alteracoes em categorias/classes pendentes de salvamento.</p> : null}
                 </div>
-              ) : null}
-
-              <h3>Agenda</h3>
-              <label>Duracao da partida (min)</label>
-              <input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={duracaoMinInput}
-                onChange={(e) => setDuracaoMinInput(e.target.value.replace(/[^\d]/g, ""))}
-                onBlur={commitDuracaoMin}
-                disabled={saving}
-              />
-
-              <div style={{ marginTop: 10 }}>
-                <label>Adicionar dia</label>
-                <div className="cluster">
-                  <input type="date" value={newAgendaDate} onChange={(e) => setNewAgendaDate(e.target.value)} />
-                  <input type="time" value={newAgendaStart} onChange={(e) => setNewAgendaStart(e.target.value)} />
-                  <input type="time" value={newAgendaEnd} onChange={(e) => setNewAgendaEnd(e.target.value)} />
-                  <button onClick={addAgendaDay} disabled={saving}>
-                    Adicionar dia
-                  </button>
-                </div>
-                {agendaConfig.dias.length === 0 ? <p className="subtle">Nenhum dia cadastrado.</p> : null}
-                {agendaConfig.dias.map((d, idx) => (
-                  <div
-                    key={`dia:${d.data}:${d.inicio}:${d.fim}:${idx}`}
-                    style={{
-                      borderTop: "1px solid var(--color-border)",
-                      padding: "8px 0",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: 8,
-                    }}
-                  >
-                    <span>
-                      {d.data} | {d.inicio} - {d.fim}
-                    </span>
-                    <button className="danger" onClick={() => removeAgendaDay(idx)} disabled={saving}>
-                      Remover
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ marginTop: 10 }}>
-                <label>Quadras</label>
-                <div className="cluster">
-                  <input
-                    value={newCourtName}
-                    onChange={(e) => setNewCourtName(e.target.value)}
-                    placeholder="Ex.: Quadra 1"
-                  />
-                  <button onClick={addCourt} disabled={saving}>
-                    Adicionar quadra
-                  </button>
-                </div>
-                {agendaConfig.quadras.length === 0 ? <p className="subtle">Nenhuma quadra cadastrada.</p> : null}
-                {agendaConfig.quadras.map((q, idx) => (
-                  <div
-                    key={`q:${q}:${idx}`}
-                    style={{
-                      borderTop: "1px solid var(--color-border)",
-                      padding: "8px 0",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: 8,
-                    }}
-                  >
-                    <span>{q}</span>
-                    <button className="danger" onClick={() => removeCourt(idx)} disabled={saving}>
-                      Remover
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ marginTop: 10 }}>
-                <label>Restringir semifinais por dia</label>
-                <select
-                  value={agendaConfig.travarSemifinalDia ? "sim" : "nao"}
-                  onChange={(e) =>
-                    setAgendaConfigWithReset({
-                      ...agendaConfig,
-                      travarSemifinalDia: e.target.value === "sim",
-                    })
-                  }
-                >
-                  <option value="nao">Nao</option>
-                  <option value="sim">Sim</option>
-                </select>
-                {agendaConfig.travarSemifinalDia ? (
-                  <>
-                    <label>Dia das semifinais</label>
-                    <input
-                      type="date"
-                      value={agendaConfig.diaSemifinal}
-                      onChange={(e) =>
-                        setAgendaConfigWithReset({
-                          ...agendaConfig,
-                          diaSemifinal: e.target.value,
-                        })
-                      }
-                    />
-                  </>
-                ) : null}
-              </div>
-
-              <div style={{ marginTop: 10 }}>
-                <label>Restringir finais por dia</label>
-                <select
-                  value={agendaConfig.travarFinalDia ? "sim" : "nao"}
-                  onChange={(e) =>
-                    setAgendaConfigWithReset({
-                      ...agendaConfig,
-                      travarFinalDia: e.target.value === "sim",
-                    })
-                  }
-                >
-                  <option value="nao">Nao</option>
-                  <option value="sim">Sim</option>
-                </select>
-                {agendaConfig.travarFinalDia ? (
-                  <>
-                    <label>Dia das finais</label>
-                    <input
-                      type="date"
-                      value={agendaConfig.diaFinal}
-                      onChange={(e) =>
-                        setAgendaConfigWithReset({
-                          ...agendaConfig,
-                          diaFinal: e.target.value,
-                        })
-                      }
-                    />
-                  </>
-                ) : null}
-              </div>
-
-              <div style={{ marginTop: 10 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center" }}>
-                  <label style={{ margin: 0 }}>Quadras permitidas para semifinal</label>
-                  <button onClick={() => selectAllStageCourts("semi")} disabled={saving || !agendaConfig.quadras.length}>
-                    Todas
-                  </button>
-                </div>
-                {agendaConfig.quadras.map((q) => {
-                  const checked = agendaConfig.quadrasSemifinal.some((x) => x.toLowerCase() === q.toLowerCase());
-                  return (
-                    <label key={`semi:${q}`} style={{ display: "block", marginTop: 4 }}>
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={(e) => toggleStageCourt("semi", q, e.target.checked)}
-                      />{" "}
-                      {q}
-                    </label>
-                  );
-                })}
-              </div>
-
-              <div style={{ marginTop: 10 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", gap: 8, alignItems: "center" }}>
-                  <label style={{ margin: 0 }}>Quadras permitidas para final</label>
-                  <button onClick={() => selectAllStageCourts("final")} disabled={saving || !agendaConfig.quadras.length}>
-                    Todas
-                  </button>
-                </div>
-                {agendaConfig.quadras.map((q) => {
-                  const checked = agendaConfig.quadrasFinal.some((x) => x.toLowerCase() === q.toLowerCase());
-                  return (
-                    <label key={`final:${q}`} style={{ display: "block", marginTop: 4 }}>
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={(e) => toggleStageCourt("final", q, e.target.checked)}
-                      />{" "}
-                      {q}
-                    </label>
-                  );
-                })}
-              </div>
-
-              <div className="cluster" style={{ marginTop: 14 }}>
-                <button onClick={saveOrganization} disabled={saving}>
-                  Salvar organizacao
-                </button>
-              </div>
+              ) : (
+                <p className="subtle">Selecione uma classe para configurar os detalhes.</p>
+              )}
 
               {agenda.total > 0 ? (
                 <p className="subtle" style={{ marginTop: 12 }}>
@@ -3146,20 +2952,14 @@ export function TournamentPage({ user, profile }: Props) {
                         {r.isSemifinal ? " (Semi)" : ""}
                         {r.isFinal ? " (Final)" : ""}
                         <br />
-                        <span className="subtle">
-                          {r.p1} x {r.p2}
-                        </span>
+                        <span className="subtle">{r.p1} x {r.p2}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
 
-              {agendaDirty ? (
-                <p className="subtle" style={{ marginTop: 10 }}>
-                  Alteracoes de organizacao pendentes. Clique em "Salvar organizacao" para persistir no Supabase.
-                </p>
-              ) : null}
+              {agendaDirty ? <p className="subtle" style={{ marginTop: 10 }}>Alteracoes de organizacao pendentes. Clique em "Salvar organizacao" para persistir no Supabase.</p> : null}
             </section>
           ) : null}
 
