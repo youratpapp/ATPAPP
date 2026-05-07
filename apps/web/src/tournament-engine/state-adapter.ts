@@ -111,6 +111,115 @@ function uniqueStrings(values: string[]): string[] {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
+type QualifiedEntry = {
+  name: string;
+  groupName: string;
+  rank: number;
+  v: number;
+  saldo: number;
+  pp: number;
+};
+
+function nextPowerOf2(n: number): number {
+  let p = 1;
+  while (p < n) p *= 2;
+  return p;
+}
+
+function compareQualifiedDesc(a: QualifiedEntry, b: QualifiedEntry): number {
+  if (b.v !== a.v) return b.v - a.v;
+  if (b.saldo !== a.saldo) return b.saldo - a.saldo;
+  if (b.pp !== a.pp) return b.pp - a.pp;
+  return a.name.localeCompare(b.name, "pt-BR");
+}
+
+function compareQualifiedAsc(a: QualifiedEntry, b: QualifiedEntry): number {
+  if (a.rank !== b.rank) return b.rank - a.rank;
+  if (a.v !== b.v) return a.v - b.v;
+  if (a.saldo !== b.saldo) return a.saldo - b.saldo;
+  if (a.pp !== b.pp) return a.pp - b.pp;
+  return a.name.localeCompare(b.name, "pt-BR");
+}
+
+function buildSeededEntriesFromGroups(
+  groups: Group[],
+  tables: Record<string, ReturnType<typeof calcTabelaGrupo>>,
+  classificadosPorGrupo: number
+): string[] {
+  const k = Math.max(0, classificadosPorGrupo || 0);
+  if (k <= 0) return [];
+
+  const qualified: QualifiedEntry[] = [];
+  groups.forEach((g) => {
+    const table = tables[g.name] ?? [];
+    for (let i = 0; i < Math.min(k, table.length); i += 1) {
+      const row = table[i];
+      if (!row?.[0]) continue;
+      const stats = row[1];
+      qualified.push({
+        name: String(row[0]),
+        groupName: g.name,
+        rank: i + 1,
+        v: Number(stats?.v || 0),
+        saldo: Number(stats?.saldo || 0),
+        pp: Number(stats?.pp || 0),
+      });
+    }
+  });
+
+  if (qualified.length < 2) return qualified.map((q) => q.name);
+
+  const winners = qualified.filter((q) => q.rank === 1).sort(compareQualifiedDesc);
+  const others = qualified.filter((q) => q.rank > 1).sort(compareQualifiedAsc);
+  const bracketSize = nextPowerOf2(qualified.length);
+  const byes = Math.max(0, bracketSize - qualified.length);
+  const pairSlots = bracketSize / 2;
+  const pairs: Array<[string, string]> = [];
+
+  // Top seeds receive BYE when bracket is not full.
+  let winnersPool = [...winners];
+  for (let i = 0; i < byes && winnersPool.length; i += 1) {
+    const seed = winnersPool.shift();
+    if (seed) pairs.push([seed.name, "BYE"]);
+  }
+
+  // Remaining first-place players face the weakest possible lower-ranked players.
+  winnersPool.forEach((seed) => {
+    if (!others.length) return;
+    let idx = others.findIndex((q) => q.groupName !== seed.groupName);
+    if (idx < 0) idx = 0;
+    const opponent = others.splice(idx, 1)[0];
+    if (opponent) pairs.push([seed.name, opponent.name]);
+  });
+
+  // Remaining entrants are paired strongest vs weakest.
+  const remaining = [...others].sort((a, b) => {
+    if (a.rank !== b.rank) return a.rank - b.rank;
+    return compareQualifiedDesc(a, b);
+  });
+  while (remaining.length >= 2) {
+    const strong = remaining.shift();
+    const weak = remaining.pop();
+    if (strong && weak) pairs.push([strong.name, weak.name]);
+  }
+  if (remaining.length === 1) {
+    pairs.push([remaining[0].name, "BYE"]);
+  }
+
+  while (pairs.length < pairSlots) {
+    pairs.push(["BYE", "BYE"]);
+  }
+
+  const seededEntries = Array.from({ length: bracketSize }, () => "BYE");
+  for (let i = 0; i < pairSlots; i += 1) {
+    const pair = pairs[i];
+    seededEntries[i] = pair?.[0] || "BYE";
+    seededEntries[bracketSize - 1 - i] = pair?.[1] || "BYE";
+  }
+
+  return seededEntries;
+}
+
 export function normalizeClassData(raw: unknown): ClassData {
   const data = asRecord(raw) ?? {};
   const participantes = asArray(data.participantes)
@@ -170,16 +279,14 @@ export function recomputeClassData(input: ClassData): ClassData {
 
     const allDone = out.grupos.length > 0 && out.grupos.every((g) => g.matches.every((m) => m.done));
     if (allDone && !out.knockout) {
-      const classificados: string[] = [];
-      out.grupos.forEach((g) => {
-        const table = out.tabelaPorGrupo[g.name] ?? [];
-        for (let i = 0; i < Math.min(out.config.classificadosPorGrupo, table.length); i += 1) {
-          classificados.push(table[i]?.[0] ?? "");
-        }
-      });
-      const clean = classificados.filter(Boolean);
+      const seededEntries = buildSeededEntriesFromGroups(
+        out.grupos,
+        out.tabelaPorGrupo,
+        out.config.classificadosPorGrupo
+      );
+      const clean = seededEntries.filter(Boolean);
       if (clean.length >= 2) {
-        out.knockout = buildKnockout(clean);
+        out.knockout = buildKnockout(clean, { preserveOrder: true });
       }
     }
   }

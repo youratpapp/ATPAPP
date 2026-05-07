@@ -67,6 +67,10 @@ export type Knockout = {
   meta: KnockoutMeta;
 };
 
+export type BuildKnockoutOptions = {
+  preserveOrder?: boolean;
+};
+
 export type RankingRowStats = {
   v: number;
   d: number;
@@ -290,7 +294,7 @@ function winnerFromMatch(m: KnockoutMatch, config?: TournamentConfig): string | 
   return null;
 }
 
-export function buildKnockout(entries: string[]): Knockout {
+export function buildKnockout(entries: string[], options?: BuildKnockoutOptions): Knockout {
   const clean = entries.filter(Boolean);
   if (clean.length < 2) {
     return {
@@ -305,7 +309,7 @@ export function buildKnockout(entries: string[]): Knockout {
     };
   }
 
-  const shuffled = shuffle([...clean]);
+  const shuffled = options?.preserveOrder ? [...clean] : shuffle([...clean]);
   const bracketSize = nextPowerOf2(shuffled.length);
   const padded = [...shuffled];
   while (padded.length < bracketSize) padded.push("BYE");
