@@ -13,9 +13,7 @@ import {
 import type { Profile, TournamentDetails, TournamentRegistration } from "../lib/types";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
 import {
-  buildWizardSetupSummary,
   generateScheduleAssignments,
-  getWizardValidationError,
   normalizeAgenda,
   normalizeAgendaConfig,
   parseTimeToMin,
@@ -37,7 +35,7 @@ type Props = {
   profile: Profile | null;
 };
 
-type TabKey = "jogos" | "classificacao" | "organizacao";
+type TabKey = "jogos" | "classificacao" | "organizacao" | "jogadores";
 
 type Feedback = { kind: "success" | "error" | "info"; text: string };
 type DraftClass = {
@@ -866,7 +864,6 @@ export function TournamentPage({ user, profile }: Props) {
   const [agendaConfig, setAgendaConfig] = useState<AgendaConfig>(normalizeAgendaConfig(null));
   const [agenda, setAgenda] = useState<Agenda>(normalizeAgenda(null));
   const [agendaDirty, setAgendaDirty] = useState(false);
-  const [wizardStep, setWizardStep] = useState(1);
 
   const [newAgendaDate, setNewAgendaDate] = useState("");
   const [newAgendaStart, setNewAgendaStart] = useState("08:00");
@@ -908,29 +905,6 @@ export function TournamentPage({ user, profile }: Props) {
     [activeDraftCategory, activeDraftClassId]
   );
 
-  const scheduleInputs = useMemo<ScheduleClassInput[]>(
-    () =>
-      classes.map((c) => ({
-        classKey: c.key,
-        categoryName: c.categoryName,
-        className: c.className,
-        data: c.data,
-      })),
-    [classes]
-  );
-  const wizardSummary = useMemo(
-    () =>
-      buildWizardSetupSummary({
-        tournamentName: tournament?.name ?? "",
-        classes: scheduleInputs,
-        agendaConfig,
-      }),
-    [agendaConfig, scheduleInputs, tournament?.name]
-  );
-  const wizardCurrentError = useMemo(
-    () => getWizardValidationError(wizardStep, wizardSummary),
-    [wizardStep, wizardSummary]
-  );
   const agendaGroupedBySlot = useMemo(() => {
     const map = new Map<string, AgendaAssignment[]>();
     (agenda.assignments || []).forEach((a) => {
@@ -964,6 +938,19 @@ export function TournamentPage({ user, profile }: Props) {
     () => filteredRegistrations.filter((r) => r.status === "pending").map((r) => r.id),
     [filteredRegistrations]
   );
+  const playerClassesSummary = useMemo(
+    () =>
+      draftCategories.flatMap((cat) =>
+        cat.classes.map((cls) => ({
+          categoryId: cat.id,
+          categoryName: cat.nome,
+          classId: cls.id,
+          className: cls.nome,
+          participantes: cls.data.participantes,
+        }))
+      ),
+    [draftCategories]
+  );
 
   useEffect(() => {
     let alive = true;
@@ -988,7 +975,6 @@ export function TournamentPage({ user, profile }: Props) {
         setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
         setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
         setAgendaDirty(false);
-        setWizardStep(1);
         const regs = await loadTournamentRegistrations(user, details.id, details.role);
         if (!alive) return;
         setRegistrations(regs);
@@ -1029,6 +1015,10 @@ export function TournamentPage({ user, profile }: Props) {
 
   useEffect(() => {
     if (tab === "organizacao" && !isOwner) {
+      setTab("jogos");
+      return;
+    }
+    if (tab === "jogadores" && !isOwner) {
       setTab("jogos");
       return;
     }
@@ -1241,19 +1231,6 @@ export function TournamentPage({ user, profile }: Props) {
     nextData.agenda = agenda as unknown as Record<string, unknown>;
     await persistTournamentData(nextData, "Organizacao salva.", activeClass?.key ?? activeClassKey);
     setAgendaDirty(false);
-  };
-
-  const nextWizard = () => {
-    const err = getWizardValidationError(wizardStep, wizardSummary);
-    if (err) {
-      setFeedback({ kind: "error", text: err });
-      return;
-    }
-    setWizardStep((prev) => Math.min(5, prev + 1));
-  };
-
-  const prevWizard = () => {
-    setWizardStep((prev) => Math.max(1, prev - 1));
   };
 
   const mutateDraftCategories = (fn: (prev: DraftCategory[]) => DraftCategory[]) => {
@@ -1472,15 +1449,14 @@ export function TournamentPage({ user, profile }: Props) {
     setFeedback(null);
   };
 
-  const removeParticipant = (player: string) => {
-    if (!activeDraftCategory || !activeDraftClass) return;
+  const removeParticipantByClass = (categoryId: string, classId: string, player: string) => {
     mutateDraftCategories((prev) =>
       prev.map((cat) => {
-        if (cat.id !== activeDraftCategory.id) return cat;
+        if (cat.id !== categoryId) return cat;
         return {
           ...cat,
           classes: cat.classes.map((cls) => {
-            if (cls.id !== activeDraftClass.id) return cls;
+            if (cls.id !== classId) return cls;
             const participantes = cls.data.participantes.filter((p) => p.nome !== player);
             return {
               ...cls,
@@ -1934,7 +1910,6 @@ export function TournamentPage({ user, profile }: Props) {
     setAgendaConfig(normalizeAgendaConfig({ duracaoMin: 45, quadras: [], dias: [] }));
     setAgenda(normalizeAgenda(null));
     setAgendaDirty(true);
-    setWizardStep(1);
     setFeedback({ kind: "success", text: "Reset total preparado. Clique em salvar para persistir." });
   };
 
@@ -2397,6 +2372,11 @@ export function TournamentPage({ user, profile }: Props) {
                 Organizacao
               </button>
             ) : null}
+            {isOwner ? (
+              <button className={tab === "jogadores" ? "active" : ""} onClick={() => setTab("jogadores")}>
+                Jogadores
+              </button>
+            ) : null}
           </div>
 
           <section className="card" style={{ marginBottom: 12 }}>
@@ -2633,7 +2613,7 @@ export function TournamentPage({ user, profile }: Props) {
 
           {tab === "organizacao" && isOwner ? (
             <section className="card">
-              <h3 style={{ marginTop: 0 }}>Categorias, classes e inscritos</h3>
+              <h3 style={{ marginTop: 0 }}>Estrutura e configuracao do torneio</h3>
               <div className="cluster" style={{ marginBottom: 10 }}>
                 <input
                   value={newCategoryName}
@@ -2936,105 +2916,6 @@ export function TournamentPage({ user, profile }: Props) {
                     </>
                   ) : null}
 
-                  <label>Adicionar participante</label>
-                  {isFixedDoublesConfig(activeDraftClass.data.config) ? (
-                    <div className="cluster" style={{ marginBottom: 8 }}>
-                      <input
-                        value={newParticipantNameA}
-                        onChange={(e) => setNewParticipantNameA(e.target.value)}
-                        placeholder="Nome jogador A"
-                      />
-                      <input
-                        value={newParticipantNameB}
-                        onChange={(e) => setNewParticipantNameB(e.target.value)}
-                        placeholder="Nome jogador B"
-                      />
-                    </div>
-                  ) : (
-                    <input
-                      value={newParticipantName}
-                      onChange={(e) => setNewParticipantName(e.target.value)}
-                      placeholder="Nome do jogador"
-                    />
-                  )}
-                  <div className="cluster" style={{ marginTop: 8 }}>
-                    <input
-                      value={newParticipantPhone}
-                      onChange={(e) => setNewParticipantPhone(e.target.value)}
-                      placeholder={
-                        isFixedDoublesConfig(activeDraftClass.data.config)
-                          ? "Telefone jogador A"
-                          : "Telefone (opcional)"
-                      }
-                    />
-                    {isFixedDoublesConfig(activeDraftClass.data.config) ? (
-                      <input
-                        value={newParticipantPhone2}
-                        onChange={(e) => setNewParticipantPhone2(e.target.value)}
-                        placeholder="Telefone jogador B"
-                      />
-                    ) : null}
-                    {needsGroupABConfig(activeDraftClass.data.config) ? (
-                      <select
-                        value={newParticipantGroup}
-                        onChange={(e) => setNewParticipantGroup((e.target.value === "B" ? "B" : "A") as "A" | "B")}
-                      >
-                        <option value="A">Grupo A</option>
-                        <option value="B">Grupo B</option>
-                      </select>
-                    ) : null}
-                    <button onClick={addParticipant} disabled={saving}>
-                      Adicionar
-                    </button>
-                  </div>
-
-                  <label style={{ marginTop: 12 }}>Importar lista</label>
-                  <textarea
-                    value={bulkImportText}
-                    onChange={(e) => setBulkImportText(e.target.value)}
-                    placeholder={
-                      isFixedDoublesConfig(activeDraftClass.data.config)
-                        ? "NomeA;NomeB;TelefoneA;TelefoneB;Categoria;Classe"
-                        : needsGroupABConfig(activeDraftClass.data.config)
-                        ? "Nome;Telefone;Categoria;Classe;A"
-                        : "Nome;Telefone;Categoria;Classe"
-                    }
-                    rows={4}
-                  />
-                  <div className="cluster" style={{ marginTop: 8 }}>
-                    <button onClick={importParticipantsByList} disabled={saving || !bulkImportText.trim()}>
-                      Importar lista
-                    </button>
-                    <button onClick={copySelfRegistrationLink} disabled={saving}>
-                      Copiar link de autoinscricao
-                    </button>
-                  </div>
-                  {activeDraftClass.data.participantes.length === 0 ? (
-                    <p className="subtle">Nenhum participante nesta classe.</p>
-                  ) : null}
-                  {activeDraftClass.data.participantes.map((p, idx) => (
-                    <div
-                      key={`p:${activeDraftClass.id}:${idx}:${p.nome}`}
-                      style={{
-                        borderTop: "1px solid var(--color-border)",
-                        padding: "8px 0",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        gap: 8,
-                      }}
-                    >
-                      <span>
-                        {p.nome}
-                        {p.grupo ? ` (${p.grupo})` : ""}
-                        {p.telefone ? ` | ${p.telefone}` : ""}
-                        {p.telefone2 ? ` / ${p.telefone2}` : ""}
-                      </span>
-                      <button className="danger" onClick={() => removeParticipant(p.nome)} disabled={saving}>
-                        Remover
-                      </button>
-                    </div>
-                  ))}
-
                   <div className="cluster" style={{ marginTop: 12 }}>
                     <button className="primary" onClick={generateActiveClass} disabled={saving}>
                       Gerar classe
@@ -3043,6 +2924,9 @@ export function TournamentPage({ user, profile }: Props) {
                       Salvar categorias/classes
                     </button>
                   </div>
+                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
+                    O cadastro e aprovacao de jogadores agora ficam na aba "Jogadores".
+                  </p>
                   {draftDirty ? (
                     <p className="subtle" style={{ marginTop: 8 }}>
                       Alteracoes em categorias/classes pendentes de salvamento.
@@ -3050,132 +2934,6 @@ export function TournamentPage({ user, profile }: Props) {
                   ) : null}
                 </div>
               ) : null}
-
-              <div
-                style={{
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 10,
-                  padding: 10,
-                  marginBottom: 12,
-                }}
-              >
-                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
-                <div className="cluster" style={{ marginBottom: 8 }}>
-                  <button
-                    className={registrationFilter === "all" ? "primary" : ""}
-                    onClick={() => setRegistrationFilter("all")}
-                    disabled={registrationBusy}
-                  >
-                    Todas ({registrations.length})
-                  </button>
-                  <button
-                    className={registrationFilter === "pending" ? "primary" : ""}
-                    onClick={() => setRegistrationFilter("pending")}
-                    disabled={registrationBusy}
-                  >
-                    Pendentes ({registrations.filter((r) => r.status === "pending").length})
-                  </button>
-                  <button
-                    className={registrationFilter === "approved" ? "primary" : ""}
-                    onClick={() => setRegistrationFilter("approved")}
-                    disabled={registrationBusy}
-                  >
-                    Aprovadas ({registrations.filter((r) => r.status === "approved").length})
-                  </button>
-                  <button
-                    className={registrationFilter === "rejected" ? "primary" : ""}
-                    onClick={() => setRegistrationFilter("rejected")}
-                    disabled={registrationBusy}
-                  >
-                    Rejeitadas ({registrations.filter((r) => r.status === "rejected").length})
-                  </button>
-                </div>
-                {tournament?.role === "owner" && pendingVisibleIds.length > 0 ? (
-                  <div className="cluster" style={{ marginBottom: 8 }}>
-                    <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                      <input
-                        type="checkbox"
-                        checked={pendingVisibleIds.every((id) => selectedRegistrationIds.includes(id))}
-                        onChange={(e) => toggleSelectAllVisiblePending(e.target.checked)}
-                        disabled={registrationBusy}
-                      />
-                      Selecionar pendentes visiveis
-                    </label>
-                    <button
-                      onClick={() => void updateSelectedRegistrations("approved")}
-                      disabled={registrationBusy || selectedRegistrationIds.length === 0}
-                    >
-                      Aprovar selecionadas
-                    </button>
-                    <button
-                      className="danger"
-                      onClick={() => void updateSelectedRegistrations("rejected")}
-                      disabled={registrationBusy || selectedRegistrationIds.length === 0}
-                    >
-                      Rejeitar selecionadas
-                    </button>
-                  </div>
-                ) : null}
-                {filteredRegistrations.length === 0 ? <p className="subtle">Nenhuma solicitacao neste filtro.</p> : null}
-                {filteredRegistrations.map((r) => (
-                  <div
-                    key={r.id}
-                    style={{
-                      borderTop: "1px solid var(--color-border)",
-                      padding: "8px 0",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: 8,
-                      alignItems: "center",
-                    }}
-                  >
-                    <div>
-                      <div>
-                        {r.playerName || "Sem nome"} - {r.categoryName} / {r.className}
-                      </div>
-                      <div className="subtle">
-                        {r.phone || "Sem telefone"} | {new Date(r.createdAt || "").toLocaleString("pt-BR")} | {r.status}
-                      </div>
-                    </div>
-                    {tournament?.role === "owner" && r.status === "pending" ? (
-                      <div className="cluster">
-                        <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedRegistrationIds.includes(r.id)}
-                            onChange={(e) => toggleRegistrationSelection(r.id, e.target.checked)}
-                            disabled={registrationBusy}
-                          />
-                          Sel
-                        </label>
-                        <button onClick={() => void updateRegistration(r.id, "approved")} disabled={saving || registrationBusy}>
-                          Aprovar
-                        </button>
-                        <button className="danger" onClick={() => void updateRegistration(r.id, "rejected")} disabled={saving || registrationBusy}>
-                          Rejeitar
-                        </button>
-                      </div>
-                    ) : null}
-                  </div>
-                ))}
-              </div>
-
-              <h3 style={{ marginTop: 0 }}>Wizard de setup</h3>
-              <p className="subtle">Passo {wizardStep} de 5</p>
-              <p className="subtle" style={{ marginBottom: 4 }}>
-                Resumo: {wizardSummary.totalClasses} classe(s), {wizardSummary.totalParticipantes} participante(s),{" "}
-                {wizardSummary.classesComMinimo} classe(s) pronta(s).
-              </p>
-              {wizardCurrentError ? <p className="feedback error">{wizardCurrentError}</p> : null}
-              <div className="cluster" style={{ marginBottom: 12 }}>
-                <button onClick={prevWizard} disabled={wizardStep <= 1}>
-                  Anterior
-                </button>
-                <button className="primary" onClick={nextWizard} disabled={wizardStep >= 5}>
-                  Proxima etapa
-                </button>
-                <button onClick={() => setWizardStep(1)}>Reiniciar wizard</button>
-              </div>
 
               <h3>Agenda</h3>
               <label>Duracao da partida (min)</label>
@@ -3402,6 +3160,294 @@ export function TournamentPage({ user, profile }: Props) {
                   Alteracoes de organizacao pendentes. Clique em "Salvar organizacao" para persistir no Supabase.
                 </p>
               ) : null}
+            </section>
+          ) : null}
+
+          {tab === "jogadores" && isOwner ? (
+            <section className="card">
+              <h3 style={{ marginTop: 0, marginBottom: 8 }}>Organizacao dos jogadores</h3>
+
+              <div
+                style={{
+                  border: "1px solid var(--color-border)",
+                  borderRadius: 10,
+                  padding: 10,
+                  marginBottom: 12,
+                }}
+              >
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Cadastro de jogadores por classe</h3>
+                {activeDraftCategory && activeDraftClass ? (
+                  <>
+                    <div className="cluster" style={{ marginBottom: 8 }}>
+                      <label style={{ margin: 0 }}>Categoria</label>
+                      <select
+                        value={activeDraftCategory.id}
+                        onChange={(e) => {
+                          const nextCatId = e.target.value;
+                          const nextCat = draftCategories.find((c) => c.id === nextCatId);
+                          setActiveDraftCategoryId(nextCatId);
+                          setActiveDraftClassId(nextCat?.classes[0]?.id || "");
+                        }}
+                      >
+                        {draftCategories.map((cat) => (
+                          <option key={`pick-cat:${cat.id}`} value={cat.id}>
+                            {cat.nome}
+                          </option>
+                        ))}
+                      </select>
+                      <label style={{ margin: 0 }}>Classe</label>
+                      <select
+                        value={activeDraftClass.id}
+                        onChange={(e) => setActiveDraftClassId(e.target.value)}
+                      >
+                        {(activeDraftCategory.classes || []).map((cls) => (
+                          <option key={`pick-cls:${cls.id}`} value={cls.id}>
+                            {cls.nome}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <label>Adicionar participante</label>
+                    {isFixedDoublesConfig(activeDraftClass.data.config) ? (
+                      <div className="cluster" style={{ marginBottom: 8 }}>
+                        <input
+                          value={newParticipantNameA}
+                          onChange={(e) => setNewParticipantNameA(e.target.value)}
+                          placeholder="Nome jogador A"
+                        />
+                        <input
+                          value={newParticipantNameB}
+                          onChange={(e) => setNewParticipantNameB(e.target.value)}
+                          placeholder="Nome jogador B"
+                        />
+                      </div>
+                    ) : (
+                      <input
+                        value={newParticipantName}
+                        onChange={(e) => setNewParticipantName(e.target.value)}
+                        placeholder="Nome do jogador"
+                      />
+                    )}
+                    <div className="cluster" style={{ marginTop: 8 }}>
+                      <input
+                        value={newParticipantPhone}
+                        onChange={(e) => setNewParticipantPhone(e.target.value)}
+                        placeholder={
+                          isFixedDoublesConfig(activeDraftClass.data.config)
+                            ? "Telefone jogador A"
+                            : "Telefone (opcional)"
+                        }
+                      />
+                      {isFixedDoublesConfig(activeDraftClass.data.config) ? (
+                        <input
+                          value={newParticipantPhone2}
+                          onChange={(e) => setNewParticipantPhone2(e.target.value)}
+                          placeholder="Telefone jogador B"
+                        />
+                      ) : null}
+                      {needsGroupABConfig(activeDraftClass.data.config) ? (
+                        <select
+                          value={newParticipantGroup}
+                          onChange={(e) => setNewParticipantGroup((e.target.value === "B" ? "B" : "A") as "A" | "B")}
+                        >
+                          <option value="A">Grupo A</option>
+                          <option value="B">Grupo B</option>
+                        </select>
+                      ) : null}
+                      <button onClick={addParticipant} disabled={saving}>
+                        Adicionar
+                      </button>
+                    </div>
+
+                    <label style={{ marginTop: 12 }}>Importar lista</label>
+                    <textarea
+                      value={bulkImportText}
+                      onChange={(e) => setBulkImportText(e.target.value)}
+                      placeholder={
+                        isFixedDoublesConfig(activeDraftClass.data.config)
+                          ? "NomeA;NomeB;TelefoneA;TelefoneB;Categoria;Classe"
+                          : needsGroupABConfig(activeDraftClass.data.config)
+                          ? "Nome;Telefone;Categoria;Classe;A"
+                          : "Nome;Telefone;Categoria;Classe"
+                      }
+                      rows={4}
+                    />
+                    <div className="cluster" style={{ marginTop: 8 }}>
+                      <button onClick={importParticipantsByList} disabled={saving || !bulkImportText.trim()}>
+                        Importar lista
+                      </button>
+                      <button onClick={copySelfRegistrationLink} disabled={saving}>
+                        Copiar link de autoinscricao
+                      </button>
+                      <button onClick={saveCategoriesAndClasses} disabled={saving}>
+                        Salvar jogadores/categorias
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <p className="subtle">Crie ao menos uma categoria e classe na aba Organizacao para cadastrar jogadores.</p>
+                )}
+              </div>
+
+              <div
+                style={{
+                  border: "1px solid var(--color-border)",
+                  borderRadius: 10,
+                  padding: 10,
+                  marginBottom: 12,
+                }}
+              >
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
+                <div className="cluster" style={{ marginBottom: 8 }}>
+                  <button
+                    className={registrationFilter === "all" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("all")}
+                    disabled={registrationBusy}
+                  >
+                    Todas ({registrations.length})
+                  </button>
+                  <button
+                    className={registrationFilter === "pending" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("pending")}
+                    disabled={registrationBusy}
+                  >
+                    Pendentes ({registrations.filter((r) => r.status === "pending").length})
+                  </button>
+                  <button
+                    className={registrationFilter === "approved" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("approved")}
+                    disabled={registrationBusy}
+                  >
+                    Aprovadas ({registrations.filter((r) => r.status === "approved").length})
+                  </button>
+                  <button
+                    className={registrationFilter === "rejected" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("rejected")}
+                    disabled={registrationBusy}
+                  >
+                    Rejeitadas ({registrations.filter((r) => r.status === "rejected").length})
+                  </button>
+                </div>
+                {pendingVisibleIds.length > 0 ? (
+                  <div className="cluster" style={{ marginBottom: 8 }}>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                      <input
+                        type="checkbox"
+                        checked={pendingVisibleIds.every((id) => selectedRegistrationIds.includes(id))}
+                        onChange={(e) => toggleSelectAllVisiblePending(e.target.checked)}
+                        disabled={registrationBusy}
+                      />
+                      Selecionar pendentes visiveis
+                    </label>
+                    <button
+                      onClick={() => void updateSelectedRegistrations("approved")}
+                      disabled={registrationBusy || selectedRegistrationIds.length === 0}
+                    >
+                      Aprovar selecionadas
+                    </button>
+                    <button
+                      className="danger"
+                      onClick={() => void updateSelectedRegistrations("rejected")}
+                      disabled={registrationBusy || selectedRegistrationIds.length === 0}
+                    >
+                      Rejeitar selecionadas
+                    </button>
+                  </div>
+                ) : null}
+                {filteredRegistrations.length === 0 ? <p className="subtle">Nenhuma solicitacao neste filtro.</p> : null}
+                {filteredRegistrations.map((r) => (
+                  <div
+                    key={r.id}
+                    style={{
+                      borderTop: "1px solid var(--color-border)",
+                      padding: "8px 0",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: 8,
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      <div>
+                        {r.playerName || "Sem nome"} - {r.categoryName} / {r.className}
+                      </div>
+                      <div className="subtle">
+                        {r.phone || "Sem telefone"} | {new Date(r.createdAt || "").toLocaleString("pt-BR")} | {r.status}
+                      </div>
+                    </div>
+                    {r.status === "pending" ? (
+                      <div className="cluster">
+                        <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          <input
+                            type="checkbox"
+                            checked={selectedRegistrationIds.includes(r.id)}
+                            onChange={(e) => toggleRegistrationSelection(r.id, e.target.checked)}
+                            disabled={registrationBusy}
+                          />
+                          Sel
+                        </label>
+                        <button onClick={() => void updateRegistration(r.id, "approved")} disabled={saving || registrationBusy}>
+                          Aprovar
+                        </button>
+                        <button className="danger" onClick={() => void updateRegistration(r.id, "rejected")} disabled={saving || registrationBusy}>
+                          Rejeitar
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+
+              <div
+                style={{
+                  border: "1px solid var(--color-border)",
+                  borderRadius: 10,
+                  padding: 10,
+                  marginBottom: 0,
+                }}
+              >
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Lista completa de jogadores por classe</h3>
+                {playerClassesSummary.length === 0 ? <p className="subtle">Nenhuma classe cadastrada.</p> : null}
+                {playerClassesSummary.map((item) => (
+                  <div key={`players:${item.categoryId}:${item.classId}`} style={{ marginBottom: 10 }}>
+                    <h4 style={{ margin: "6px 0" }}>
+                      {item.categoryName} / {item.className} ({item.participantes.length})
+                    </h4>
+                    {item.participantes.length === 0 ? (
+                      <p className="subtle" style={{ margin: "4px 0 8px 0" }}>
+                        Nenhum jogador cadastrado.
+                      </p>
+                    ) : null}
+                    {item.participantes.map((p, idx) => (
+                      <div
+                        key={`p:${item.categoryId}:${item.classId}:${idx}:${p.nome}`}
+                        style={{
+                          borderTop: "1px solid var(--color-border)",
+                          padding: "8px 0",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: 8,
+                        }}
+                      >
+                        <span>
+                          {p.nome}
+                          {p.grupo ? ` (${p.grupo})` : ""}
+                          {p.telefone ? ` | ${p.telefone}` : ""}
+                          {p.telefone2 ? ` / ${p.telefone2}` : ""}
+                        </span>
+                        <button
+                          className="danger"
+                          onClick={() => removeParticipantByClass(item.categoryId, item.classId, p.nome)}
+                          disabled={saving}
+                        >
+                          Remover
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </section>
           ) : null}
         </>
