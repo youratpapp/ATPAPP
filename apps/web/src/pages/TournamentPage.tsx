@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
@@ -893,169 +893,200 @@ function buildClassVisualSvg(
   width: number;
   height: number;
 } {
-  function scheduleInfo(roundName: string, matchIndex: number, stageHints: string[]): string {
+  function scheduleInfo(roundName: string, matchIndex: number, stageHints: string[]): AgendaAssignment | null {
     const label = `${roundName} #${matchIndex + 1}`;
     const found = classAssignments.find(
       (a) => a.matchLabel === label && (stageHints.length === 0 || stageHints.includes(a.stage))
     );
-    if (!found) return "";
-    return `${found.data} ${found.hora} | ${found.quadra}`;
+    return found ?? null;
   }
 
+  const width = 1820;
   const pad = 24;
-  const width = 1600;
-  let y = 30;
+  const rightColW = 430;
+  const colGap = 18;
+  const leftX = pad;
+  const leftW = width - (pad * 2) - rightColW - colGap;
+  const rightX = leftX + leftW + colGap;
+  const rightW = rightColW;
+  const rowH = 28;
+  const subtle = '#475569';
+  const textDark = '#0f172a';
+  const border = '#cbd5e1';
+  const panel = '#f8fafc';
+  const headerBg = '#e2e8f0';
+  const ok = '#15803d';
+
+  const truncate = (value: string, max = 40): string => {
+    const v = String(value || '').trim();
+    if (v.length <= max) return v;
+    return `${v.slice(0, Math.max(1, max - 1))}...`;
+  };
+
   const out: string[] = [];
-  out.push(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="200" viewBox="0 0 ${width} 200">`
-  );
-  out.push(`<rect x="0" y="0" width="${width}" height="200" fill="#ffffff"/>`);
-  out.push(
-    `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="28" fill="#0f172a" font-weight="700">${escXml(
-      `${categoryName} / ${className}`
-    )}</text>`
-  );
-  y += 26;
-  out.push(
-    `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="14" fill="#475569">Exportado em ${escXml(
-      new Date().toLocaleString("pt-BR")
-    )}</text>`
-  );
-  y += 20;
-  out.push(
-    `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="13" fill="#475569">Modelo: ${escXml(
-      competitionModelLabel(data.config)
-    )}</text>`
-  );
-  y += 24;
+  let yLeft = 132;
+  let yRight = 132;
+
+  const drawSectionCard = (x: number, y: number, w: number, h: number, title: string, subtitle = '') => {
+    out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${panel}" stroke="${border}"/>`);
+    out.push(`<rect x="${x}" y="${y}" width="${w}" height="40" rx="12" fill="${headerBg}" stroke="${border}"/>`);
+    out.push(`<rect x="${x}" y="${y + 28}" width="${w}" height="12" fill="${headerBg}"/>`);
+    out.push(`<text x="${x + 14}" y="${y + 24}" font-family="Arial, sans-serif" font-size="16" fill="${textDark}" font-weight="700">${escXml(title)}</text>`);
+    if (subtitle) {
+      out.push(`<text x="${x + 14}" y="${y + 58}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}">${escXml(subtitle)}</text>`);
+    }
+  };
+
+  out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="260" viewBox="0 0 ${width} 260">`);
+  out.push(`<rect x="0" y="0" width="${width}" height="260" fill="#ffffff"/>`);
+  out.push(`<rect x="0" y="0" width="${width}" height="98" fill="#f1f5f9"/>`);
+  out.push(`<rect x="${leftX}" y="16" width="${width - (pad * 2)}" height="66" rx="12" fill="#ffffff" stroke="${border}"/>`);
+  out.push(`<text x="${leftX + 16}" y="44" font-family="Arial, sans-serif" font-size="40" fill="${textDark}" font-weight="700">${escXml(`${categoryName} / ${className}`)}</text>`);
+  out.push(`<text x="${leftX + 16}" y="66" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Exportado em ${escXml(new Date().toLocaleString('pt-BR'))}</text>`);
+  out.push(`<text x="${leftX + 390}" y="66" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Modelo: ${escXml(competitionModelLabel(data.config))}</text>`);
+  out.push(`<text x="${leftX + 16}" y="88" font-family="Arial, sans-serif" font-size="12" fill="${subtle}">Documento para mesa de organizacao: classificacao, jogos e contatos.</text>`);
 
   const tableKeys = Object.keys(data.tabelaPorGrupo || {});
   if (tableKeys.length) {
-    out.push(
-      `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="18" fill="#0f172a" font-weight="700">Classificacao dos Grupos</text>`
-    );
-    y += 20;
+    const sectionTop = yLeft;
+    let localY = sectionTop + 58;
+
     tableKeys.forEach((group) => {
       const rows = data.tabelaPorGrupo[group] || [];
-      out.push(
-        `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="15" fill="#111827" font-weight="700">${escXml(
-          group
-        )}</text>`
-      );
-      y += 18;
+      const blockH = 34 + rowH + Math.max(1, rows.length) * rowH + 10;
+      out.push(`<rect x="${leftX + 12}" y="${localY}" width="${leftW - 24}" height="${blockH}" rx="10" fill="#ffffff" stroke="${border}"/>`);
+      out.push(`<text x="${leftX + 24}" y="${localY + 22}" font-family="Arial, sans-serif" font-size="15" fill="${textDark}" font-weight="700">${escXml(group)}</text>`);
+
+      const tx = leftX + 20;
+      const tw = leftW - 40;
+      const hy = localY + 30;
+      out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="${border}"/>`);
+
+      const posX = tx + 14;
+      const nameX = tx + 70;
+      const vX = tx + tw - 170;
+      const jX = tx + tw - 118;
+      const sgX = tx + tw - 62;
+      out.push(`<text x="${posX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">POS</text>`);
+      out.push(`<text x="${nameX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">JOGADOR</text>`);
+      out.push(`<text x="${vX}" y="${hy + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">V</text>`);
+      out.push(`<text x="${jX}" y="${hy + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">J</text>`);
+      out.push(`<text x="${sgX}" y="${hy + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">SG</text>`);
+
       rows.forEach((row, idx) => {
-        out.push(
-          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="13" fill="#334155">${idx + 1}. ${escXml(
-            row[0]
-          )} | V:${row[1].v} J:${row[1].j} SG:${row[1].saldo}</text>`
-        );
-        y += 16;
+        const ry = hy + rowH + idx * rowH;
+        out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${idx % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
+        const name = truncate(String(row[0] || ''), 52);
+        const stats = row[1];
+        const isLeader = idx === 0;
+        out.push(`<text x="${posX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${isLeader ? ok : textDark}" font-weight="${isLeader ? '700' : '400'}">${idx + 1}</text>`);
+        out.push(`<text x="${nameX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${isLeader ? ok : textDark}" font-weight="${isLeader ? '700' : '400'}">${escXml(name)}</text>`);
+        out.push(`<text x="${vX}" y="${ry + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="${textDark}">${stats.v}</text>`);
+        out.push(`<text x="${jX}" y="${ry + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="${textDark}">${stats.j}</text>`);
+        out.push(`<text x="${sgX}" y="${ry + 19}" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="${textDark}">${stats.saldo}</text>`);
       });
       if (!rows.length) {
-        out.push(
-          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="13" fill="#64748b">Sem dados</text>`
-        );
-        y += 16;
+        const ry = hy + rowH;
+        out.push(`<text x="${nameX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Sem dados de classificacao</text>`);
       }
-      y += 10;
+
+      localY += blockH + 10;
     });
 
-    y += 8;
-    out.push(
-      `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="18" fill="#0f172a" font-weight="700">Jogos dos Grupos (com horario/quadra)</text>`
-    );
-    y += 20;
+    const sectionH = Math.max(100, localY - sectionTop + 8);
+    drawSectionCard(leftX, sectionTop, leftW, sectionH, 'Classificacao dos grupos', 'Tabela oficial com vitorias, jogos e saldo.');
+    yLeft = sectionTop + sectionH + 14;
+  }
+
+  if ((data.grupos || []).length) {
+    const sectionTop = yLeft;
+    let localY = sectionTop + 58;
+
     (data.grupos || []).forEach((g) => {
-      out.push(
-        `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="14" fill="#111827" font-weight="700">${escXml(
-          g.name
-        )}</text>`
-      );
-      y += 16;
-      (g.matches || []).forEach((m, mi) => {
-        const when = scheduleInfo(g.name, mi, ["Grupos"]);
+      const matches = g.matches || [];
+      const blockH = 34 + rowH + Math.max(1, matches.length) * rowH + 10;
+      out.push(`<rect x="${leftX + 12}" y="${localY}" width="${leftW - 24}" height="${blockH}" rx="10" fill="#ffffff" stroke="${border}"/>`);
+      out.push(`<text x="${leftX + 24}" y="${localY + 22}" font-family="Arial, sans-serif" font-size="15" fill="${textDark}" font-weight="700">${escXml(g.name)}</text>`);
+
+      const tx = leftX + 20;
+      const tw = leftW - 40;
+      const hy = localY + 30;
+      out.push(`<rect x="${tx}" y="${hy}" width="${tw}" height="${rowH}" rx="6" fill="#eef2f7" stroke="${border}"/>`);
+
+      const duelX = tx + 12;
+      const scoreX = tx + tw - 250;
+      const whenX = tx + tw - 170;
+      const courtX = tx + tw - 56;
+      out.push(`<text x="${duelX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">PARTIDA</text>`);
+      out.push(`<text x="${scoreX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">PLACAR</text>`);
+      out.push(`<text x="${whenX}" y="${hy + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">HORARIO</text>`);
+      out.push(`<text x="${courtX}" y="${hy + 19}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">QUADRA</text>`);
+
+      matches.forEach((m, mi) => {
+        const ry = hy + rowH + mi * rowH;
+        const slot = scheduleInfo(g.name, mi, ['Grupos']);
         const score = formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config);
-        const winner = String(m.winner || "").trim().toLowerCase();
-        const aName = String(m.a || "A definir");
-        const bName = String(m.b || "A definir");
-        const aFill = winner && winner === aName.trim().toLowerCase() ? "#15803d" : "#334155";
-        const bFill = winner && winner === bName.trim().toLowerCase() ? "#15803d" : "#334155";
-        const suffix = ` | ${score}${when ? ` | ${when}` : ""}`;
-        out.push(
-          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="12">` +
-            `<tspan fill="${aFill}">${escXml(aName)}</tspan>` +
-            `<tspan fill="#334155"> x </tspan>` +
-            `<tspan fill="${bFill}">${escXml(bName)}</tspan>` +
-            `<tspan fill="#334155">${escXml(suffix)}</tspan>` +
-          `</text>`
-        );
-        y += 14;
+        const winner = String(m.winner || '').trim().toLowerCase();
+        const aName = String(m.a || 'A definir');
+        const bName = String(m.b || 'A definir');
+        const aWin = winner && winner === aName.trim().toLowerCase();
+        const bWin = winner && winner === bName.trim().toLowerCase();
+
+        out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${mi % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
+        out.push(`<text x="${duelX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="12"><tspan fill="${aWin ? ok : textDark}" font-weight="${aWin ? '700' : '400'}">${escXml(truncate(aName, 20))}</tspan><tspan fill="${subtle}"> x </tspan><tspan fill="${bWin ? ok : textDark}" font-weight="${bWin ? '700' : '400'}">${escXml(truncate(bName, 20))}</tspan></text>`);
+        out.push(`<text x="${scoreX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="12" fill="${textDark}" font-weight="${m.done ? '700' : '400'}">${escXml(score)}</text>`);
+        out.push(`<text x="${whenX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(slot ? `${slot.data} ${slot.hora}` : 'A definir')}</text>`);
+        out.push(`<text x="${courtX}" y="${ry + 19}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(slot?.quadra || '-')}</text>`);
       });
-      if (!(g.matches || []).length) {
-        out.push(
-          `<text x="${pad + 8}" y="${y}" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Sem partidas</text>`
-        );
-        y += 14;
+
+      if (!matches.length) {
+        const ry = hy + rowH;
+        out.push(`<text x="${duelX}" y="${ry + 19}" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Sem partidas no grupo</text>`);
       }
-      y += 8;
+
+      localY += blockH + 10;
     });
+
+    const sectionH = Math.max(100, localY - sectionTop + 8);
+    drawSectionCard(leftX, sectionTop, leftW, sectionH, 'Lista de jogos dos grupos', 'Com placar, horario e quadra.');
+    yLeft = sectionTop + sectionH + 14;
   }
 
   const rounds = data.knockout?.rounds || [];
   if (rounds.length) {
-    y += 8;
-    out.push(
-      `<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="18" fill="#0f172a" font-weight="700">Chave Mata-mata</text>`
-    );
-    y += 12;
-    const colWidth = 320;
-    const boxW = 280;
+    const sectionTop = yLeft;
+    const startY = sectionTop + 64;
+    const colWidth = 290;
+    const boxW = 252;
     const boxH = 74;
-    const startX = pad;
-    const startY = y + 16;
+    const startX = leftX + 14;
     const baseStep = 92;
     const centers: Array<Array<{ x: number; y: number }>> = [];
+    let knockoutBottom = startY;
+
+    drawSectionCard(leftX, sectionTop, leftW, 120, 'Chave mata-mata', 'Partidas eliminatorias com conexoes de avancos.');
 
     rounds.forEach((round, ri) => {
       const x = startX + ri * colWidth;
       const step = baseStep * Math.pow(2, ri);
       if (!centers[ri]) centers[ri] = [];
-      out.push(
-        `<text x="${x}" y="${startY - 8}" font-family="Arial, sans-serif" font-size="14" fill="#111827" font-weight="700">${escXml(
-          round.name
-        )}</text>`
-      );
+      out.push(`<text x="${x}" y="${startY - 8}" font-family="Arial, sans-serif" font-size="14" fill="#111827" font-weight="700">${escXml(round.name)}</text>`);
       round.matches.forEach((m, mi) => {
         const boxY = startY + mi * step + step / 2 - boxH / 2;
         centers[ri]?.push({ x: x + boxW, y: boxY + boxH / 2 });
-        const winner = String(m.winner || "").trim().toLowerCase();
-        const aName = String(m.a || "A definir");
-        const bName = String(m.b || "A definir");
-        const aFill = winner && winner === aName.trim().toLowerCase() ? "#15803d" : "#0f172a";
-        const bFill = winner && winner === bName.trim().toLowerCase() ? "#15803d" : "#0f172a";
-        out.push(`<rect x="${x}" y="${boxY}" width="${boxW}" height="${boxH}" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>`);
-        out.push(
-          `<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="${aFill}">${escXml(
-            aName
-          )}</text>`
-        );
-        out.push(
-          `<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="${bFill}">${escXml(
-            bName
-          )}</text>`
-        );
-        const stageHints = ri === rounds.length - 1 || ri === rounds.length - 2 ? ["Finais", "Mata-mata"] : ["Finais", "Mata-mata"];
+        const winner = String(m.winner || '').trim().toLowerCase();
+        const aName = String(m.a || 'A definir');
+        const bName = String(m.b || 'A definir');
+        const aFill = winner && winner === aName.trim().toLowerCase() ? ok : textDark;
+        const bFill = winner && winner === bName.trim().toLowerCase() ? ok : textDark;
+        out.push(`<rect x="${x}" y="${boxY}" width="${boxW}" height="${boxH}" rx="8" fill="#ffffff" stroke="${border}"/>`);
+        out.push(`<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="${aFill}">${escXml(truncate(aName, 24))}</text>`);
+        out.push(`<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="${bFill}">${escXml(truncate(bName, 24))}</text>`);
+        const stageHints = ['Finais', 'Mata-mata'];
         const when = scheduleInfo(round.name, mi, stageHints);
-        out.push(
-          `<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(
-            formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config)
-          )}</text>`
-        );
-        out.push(
-          `<text x="${x + 10}" y="${boxY + 54}" font-family="Arial, sans-serif" font-size="11" fill="#64748b">${escXml(
-            when || "Horario/quadra: a definir"
-          )}</text>`
-        );
+        out.push(`<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config))}</text>`);
+        out.push(`<text x="${x + 10}" y="${boxY + 54}" font-family="Arial, sans-serif" font-size="11" fill="#64748b">${escXml(when ? `${when.data} ${when.hora} | ${when.quadra}` : 'Horario/quadra: a definir')}</text>`);
+        knockoutBottom = Math.max(knockoutBottom, boxY + boxH);
       });
     });
 
@@ -1076,21 +1107,64 @@ function buildClassVisualSvg(
       });
     }
 
-    const maxBottom = rounds.reduce((acc, round, ri) => {
-      const step = baseStep * Math.pow(2, ri);
-      const lastIndex = Math.max(0, round.matches.length - 1);
-      const boxY = startY + lastIndex * step + step / 2 - boxH / 2;
-      return Math.max(acc, boxY + boxH);
-    }, startY);
-    y = maxBottom + 20;
+    const sectionH = Math.max(130, knockoutBottom - sectionTop + 18);
+    out.push(`<rect x="${leftX}" y="${sectionTop}" width="${leftW}" height="${sectionH}" rx="12" fill="none" stroke="${border}"/>`);
+    yLeft = sectionTop + sectionH + 14;
   }
 
-  y += 12;
-  const finalHeight = Math.max(220, y + 20);
+  const participants = (data.participantes || []).map((p) => ({
+    nome: String(p.nome || '').trim(),
+    telefone: String(p.telefone || '').trim(),
+    telefone2: String(p.telefone2 || '').trim(),
+  }));
+
+  const uniqueContacts = new Map<string, { nome: string; fones: string[] }>();
+  participants.forEach((p) => {
+    if (!p.nome) return;
+    const key = p.nome.toLowerCase();
+    const row = uniqueContacts.get(key) || { nome: p.nome, fones: [] };
+    if (p.telefone) row.fones.push(p.telefone);
+    if (p.telefone2) row.fones.push(p.telefone2);
+    row.fones = Array.from(new Set(row.fones.filter(Boolean)));
+    uniqueContacts.set(key, row);
+  });
+
+  const contactRows = Array.from(uniqueContacts.values()).sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+  const contactsSectionTop = yRight;
+  const contactsContentStart = contactsSectionTop + 54;
+  let cy = contactsContentStart;
+  const contactRowH = 30;
+  const visibleRows = Math.max(1, contactRows.length);
+  const contactsHeight = 58 + rowH + visibleRows * contactRowH + 12;
+
+  drawSectionCard(rightX, contactsSectionTop, rightW, contactsHeight, 'Jogadores e contatos', 'Uso rapido da mesa de organizacao.');
+  const listX = rightX + 12;
+  const listW = rightW - 24;
+  out.push(`<rect x="${listX}" y="${contactsContentStart}" width="${listW}" height="${rowH}" rx="6" fill="#eef2f7" stroke="${border}"/>`);
+  out.push(`<text x="${listX + 10}" y="${contactsContentStart + 19}" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">JOGADOR</text>`);
+  out.push(`<text x="${listX + listW - 10}" y="${contactsContentStart + 19}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${subtle}" font-weight="700">CONTATO</text>`);
+  cy += rowH;
+
+  if (!contactRows.length) {
+    out.push(`<text x="${listX + 10}" y="${cy + 19}" font-family="Arial, sans-serif" font-size="13" fill="${subtle}">Sem contatos cadastrados.</text>`);
+  } else {
+    contactRows.forEach((row, idx) => {
+      out.push(`<rect x="${listX}" y="${cy}" width="${listW}" height="${contactRowH}" fill="${idx % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
+      const name = truncate(row.nome, 24);
+      const fones = row.fones.length ? row.fones.join(' | ') : '-';
+      out.push(`<text x="${listX + 10}" y="${cy + 20}" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(name)}</text>`);
+      out.push(`<text x="${listX + listW - 10}" y="${cy + 20}" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="${textDark}">${escXml(truncate(fones, 34))}</text>`);
+      cy += contactRowH;
+    });
+  }
+
+  yRight = contactsSectionTop + contactsHeight + 14;
+
+  const finalHeight = Math.max(260, yLeft, yRight) + 20;
   out[0] = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${finalHeight}" viewBox="0 0 ${width} ${finalHeight}">`;
   out[1] = `<rect x="0" y="0" width="${width}" height="${finalHeight}" fill="#ffffff"/>`;
-  out.push("</svg>");
-  return { svg: out.join(""), width, height: finalHeight };
+  out.push('</svg>');
+  return { svg: out.join(''), width, height: finalHeight };
 }
 
 export function TournamentPage({ user, profile }: Props) {
@@ -3940,3 +4014,4 @@ export function TournamentPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+
