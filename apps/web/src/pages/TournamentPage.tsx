@@ -1478,6 +1478,14 @@ export function TournamentPage({ user, profile }: Props) {
     }
   };
 
+  const saveConfigurationFinal = async () => {
+    if (!tournament) return;
+    await saveTournamentBasics();
+    await saveCategoriesAndClasses();
+    await saveOrganization();
+    setFeedback({ kind: "success", text: "Configuracao do torneio salva com sucesso." });
+  };
+
   const mutateDraftCategories = (fn: (prev: DraftCategory[]) => DraftCategory[]) => {
     setDraftCategories((prev) => {
       const next = fn(prev);
@@ -2877,7 +2885,7 @@ export function TournamentPage({ user, profile }: Props) {
                     <span>2. Categorias e classes</span>
                     <strong>{organizationProgress.classesReady ? "Pronto" : "Pendente"}</strong>
                   </button>
-                  <button className={`setup-stage ${organizationProgress.playersReady ? "ok" : "todo"}`} onClick={() => document.getElementById("setup-players-hint")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                  <button className={`setup-stage ${organizationProgress.playersReady ? "ok" : "todo"}`} onClick={() => setTab("jogadores")}>
                     <span>3. Jogadores</span>
                     <strong>{organizationProgress.playersReady ? "Pronto" : "Pendente"}</strong>
                   </button>
@@ -2972,11 +2980,6 @@ export function TournamentPage({ user, profile }: Props) {
                 </div>
                 <label style={{ marginTop: 8 }}>Poster (URL)</label>
                 <input value={basicPosterUrl} onChange={(e) => setBasicPosterUrl(e.target.value)} />
-                <div className="cluster" style={{ marginTop: 10 }}>
-                  <button onClick={() => void saveTournamentBasics()} disabled={saving}>
-                    Salvar dados do torneio
-                  </button>
-                </div>
               </div>
 
               <div id="setup-agenda" style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
@@ -3063,9 +3066,6 @@ export function TournamentPage({ user, profile }: Props) {
                     </div>
                   );
                 })}
-                <div className="cluster" style={{ marginTop: 14 }}>
-                  <button onClick={saveOrganization} disabled={saving}>Salvar organizacao</button>
-                </div>
               </div>
 
               <div id="setup-classes" style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
@@ -3281,9 +3281,6 @@ export function TournamentPage({ user, profile }: Props) {
                       ) : null}
                     </>
                   ) : null}
-                  <div className="cluster" style={{ marginTop: 12 }}>
-                    <button onClick={saveCategoriesAndClasses} disabled={saving}>Salvar categorias/classes</button>
-                  </div>
                   <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>O cadastro e aprovacao de jogadores ficam na aba "Jogadores".</p>
                   {draftDirty ? <p className="subtle" style={{ marginTop: 8 }}>Alteracoes em categorias/classes pendentes de salvamento.</p> : null}
                 </div>
@@ -3321,7 +3318,12 @@ export function TournamentPage({ user, profile }: Props) {
                 </div>
               ))}
 
-              {agendaDirty ? <p className="subtle" style={{ marginTop: 10 }}>Alteracoes de organizacao pendentes. Clique em "Salvar organizacao" para persistir no Supabase.</p> : null}
+              <div className="cluster" style={{ marginTop: 12 }}>
+                <button onClick={saveConfigurationFinal} disabled={saving}>
+                  Salvar configuracao do torneio
+                </button>
+              </div>
+              {(agendaDirty || draftDirty) ? <p className="subtle" style={{ marginTop: 10 }}>Alteracoes pendentes. Clique em "Salvar configuracao do torneio" para persistir no Supabase.</p> : null}
             </section>
           ) : null}
 

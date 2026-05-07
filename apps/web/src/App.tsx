@@ -150,7 +150,7 @@ function AppInner() {
     );
   }
 
-  if (authUser && profileLoading) {
+  if (authUser && profileLoading && !profile) {
     return (
       <main className="auth-page">
         <section className="auth-card">
