@@ -96,6 +96,30 @@ function scopeClassKey(categoryId: string, classId: string): string {
   return `${categoryId}::${classId}`;
 }
 
+function SaveDiskIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M5 3h11l3 3v15H5z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8 3h8v5H8zM8 14h8v5H8z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M10 16h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function asScore(value: string): number | null {
   const v = value.trim();
   if (!v) return null;
@@ -1315,6 +1339,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const requestedTab: TabKey = forcedTab && VALID_TABS.includes(forcedTab) ? forcedTab : "jogos";
   const tab = tournament ? coerceAllowedTab(requestedTab, isOwner, canSeeClassificationTab) : requestedTab;
   const canEditScores = isOwner;
+  const showFloatingSave = isOwner && (tab === "organizacao" || tab === "jogadores");
   const filteredRegistrations = useMemo(() => {
     if (registrationFilter === "all") return registrations;
     return registrations.filter((r) => r.status === registrationFilter);
@@ -3784,12 +3809,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               ))}
 
-              <div className="cluster" style={{ marginTop: 12 }}>
-                <button onClick={saveConfigurationFinal} disabled={saving}>
-                  Salvar configuracao do torneio
-                </button>
-              </div>
-              {(agendaDirty || draftDirty) ? <p className="subtle" style={{ marginTop: 10 }}>Alteracoes pendentes. Clique em "Salvar configuracao do torneio" para persistir no Supabase.</p> : null}
+              {(agendaDirty || draftDirty) ? <p className="subtle" style={{ marginTop: 10 }}>Alteracoes pendentes. Use o botao flutuante de salvar para persistir no Supabase.</p> : null}
             </section>
           ) : null}
 
@@ -3920,9 +3940,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       </button>
                       <button onClick={copySelfRegistrationLink} disabled={saving}>
                         Copiar link de autoinscricao
-                      </button>
-                      <button onClick={saveCategoriesAndClasses} disabled={saving}>
-                        Salvar jogadores/categorias
                       </button>
                     </div>
                   </>
@@ -4091,6 +4108,17 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </section>
           ) : null}
         </>
+      ) : null}
+      {showFloatingSave ? (
+        <button
+          className="fab-save"
+          onClick={tab === "organizacao" ? saveConfigurationFinal : saveCategoriesAndClasses}
+          disabled={saving}
+          title={tab === "organizacao" ? "Salvar configuracao do torneio" : "Salvar jogadores e categorias"}
+          aria-label={tab === "organizacao" ? "Salvar configuracao do torneio" : "Salvar jogadores e categorias"}
+        >
+          <SaveDiskIcon />
+        </button>
       ) : null}
     </AppShell>
   );

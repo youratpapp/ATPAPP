@@ -1464,6 +1464,36 @@ button:disabled {
   background: var(--color-primary-strong);
 }
 
+.fab-save {
+  position: fixed;
+  right: var(--space-4);
+  bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px) + var(--space-4));
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  border: none;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-lg);
+  z-index: 95;
+}
+
+.fab-save svg {
+  width: 24px;
+  height: 24px;
+}
+
+.fab-save:hover:not(:disabled) {
+  background: var(--color-primary-strong);
+}
+
+.fab-save:disabled {
+  opacity: 0.6;
+}
+
 /* ----- Modal ----- */
 .modal-backdrop {
   position: fixed;
