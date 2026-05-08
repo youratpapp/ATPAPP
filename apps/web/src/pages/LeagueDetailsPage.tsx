@@ -209,7 +209,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       setSettingsDraft({
         matchFormat: details.matchFormat,
         roundInterval: details.roundInterval,
-        roundIntervalDays: details.roundIntervalDays,
+        roundIntervalDays: details.resultDeadlineDays,
         resultDeadlineDays: details.resultDeadlineDays,
         toleranceDays: details.toleranceDays,
         promotedCount: details.promotedCount,
@@ -370,6 +370,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       await updateLeagueSettings({
         leagueId: league.id,
         ...settingsDraft,
+        roundIntervalDays: settingsDraft.resultDeadlineDays,
       });
       setFeedback({ kind: "success", text: "Configuracoes da liga salvas." });
       await loadAll();
@@ -680,12 +681,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       <input
                         type="number"
                         min={1}
-                        value={settingsDraft.roundIntervalDays}
-                        onChange={(e) =>
-                          setSettingsDraft((prev) =>
-                            prev ? { ...prev, roundIntervalDays: Math.max(1, Number(e.target.value || 1)) } : prev
-                          )
-                        }
+                        value={settingsDraft.resultDeadlineDays}
+                        disabled
                       />
                     </label>
                     <label>
@@ -696,7 +693,13 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         value={settingsDraft.resultDeadlineDays}
                         onChange={(e) =>
                           setSettingsDraft((prev) =>
-                            prev ? { ...prev, resultDeadlineDays: Math.max(1, Number(e.target.value || 1)) } : prev
+                            prev
+                              ? {
+                                  ...prev,
+                                  resultDeadlineDays: Math.max(1, Number(e.target.value || 1)),
+                                  roundIntervalDays: Math.max(1, Number(e.target.value || 1)),
+                                }
+                              : prev
                           )
                         }
                       />
