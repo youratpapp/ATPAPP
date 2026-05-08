@@ -55,6 +55,7 @@ function AppInner() {
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
+  const [profileResolved, setProfileResolved] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -97,6 +98,7 @@ function AppInner() {
     let cancelled = false;
 
     async function loadProfileForUser(user: User) {
+      setProfileResolved(false);
       setProfileLoading(true);
       try {
         const p = await withTimeout(fetchProfile(user), BOOT_TIMEOUT_MS, "fetchProfile");
@@ -105,13 +107,17 @@ function AppInner() {
       } catch {
         if (!cancelled) setProfile(null);
       } finally {
-        if (!cancelled) setProfileLoading(false);
+        if (!cancelled) {
+          setProfileLoading(false);
+          setProfileResolved(true);
+        }
       }
     }
 
     if (!authUser) {
       setProfile(null);
       setProfileLoading(false);
+      setProfileResolved(true);
       return () => {
         cancelled = true;
       };
@@ -152,6 +158,16 @@ function AppInner() {
   }
 
   if (authUser && profileLoading && !profile) {
+    return (
+      <main className="auth-page">
+        <section className="auth-card">
+          <h1>Carregando...</h1>
+        </section>
+      </main>
+    );
+  }
+
+  if (authUser && !profileResolved) {
     return (
       <main className="auth-page">
         <section className="auth-card">
