@@ -69,6 +69,7 @@ export type Knockout = {
 
 export type BuildKnockoutOptions = {
   preserveOrder?: boolean;
+  seeded?: boolean;
 };
 
 export type RankingRowStats = {
@@ -298,6 +299,22 @@ export function nextPowerOf2(n: number): number {
   return p;
 }
 
+function buildSeedOrder(size: number): number[] {
+  // Standard single-elimination seed placement so top seeds only meet later.
+  // Example for 16: 1,16,8,9,4,13,5,12,2,15,7,10,3,14,6,11
+  if (size <= 1) return [1];
+  let order = [1, 2];
+  while (order.length < size) {
+    const nextSize = order.length * 2;
+    const next: number[] = [];
+    order.forEach((seed) => {
+      next.push(seed, nextSize + 1 - seed);
+    });
+    order = next;
+  }
+  return order.slice(0, size);
+}
+
 export function nomeRodada(matches: number): string {
   if (matches === 1) return "Final";
   if (matches === 2) return "Semifinal";
@@ -350,12 +367,30 @@ export function buildKnockout(entries: string[], options?: BuildKnockoutOptions)
   const padded = [...shuffled];
   while (padded.length < bracketSize) padded.push("BYE");
 
+  const arranged: string[] = Array.from({ length: bracketSize }, () => "BYE");
+  if (options?.seeded) {
+    const seedOrder = buildSeedOrder(bracketSize);
+    for (let i = 0; i < bracketSize; i += 1) {
+      const bracketPosition = i;
+      const sourceIndex = (seedOrder[bracketPosition] || 1) - 1;
+      arranged[bracketPosition] = padded[sourceIndex] || "BYE";
+    }
+  }
+
   const rounds: KnockoutRound[] = [];
   const first: KnockoutMatch[] = [];
-  for (let i = 0; i < padded.length / 2; i += 1) {
-    const a = padded[i] as string;
-    const b = padded[padded.length - 1 - i] as string;
-    first.push({ a, b, s1: "", s2: "", scoreLabel: "", done: false, winner: null });
+  if (options?.seeded) {
+    for (let i = 0; i < arranged.length; i += 2) {
+      const a = arranged[i] as string;
+      const b = arranged[i + 1] as string;
+      first.push({ a, b, s1: "", s2: "", scoreLabel: "", done: false, winner: null });
+    }
+  } else {
+    for (let i = 0; i < padded.length / 2; i += 1) {
+      const a = padded[i] as string;
+      const b = padded[padded.length - 1 - i] as string;
+      first.push({ a, b, s1: "", s2: "", scoreLabel: "", done: false, winner: null });
+    }
   }
 
   const temPreliminar = clean.length !== bracketSize;
@@ -520,7 +555,7 @@ export function gerarClasseData(input: Partial<ClassData>): ClassData {
       snake: hasSeeds,
     });
   } else {
-    data.knockout = buildKnockout(entradas, { preserveOrder: hasSeeds });
+    data.knockout = buildKnockout(entradas, { preserveOrder: hasSeeds, seeded: hasSeeds });
   }
 
   data.tabelaPorGrupo = {};

@@ -349,7 +349,7 @@ export function recomputeClassData(input: ClassData): ClassData {
             return String(a).localeCompare(String(b), "pt-BR");
           })
         : out.entradas;
-      out.knockout = buildKnockout(orderedEntries, { preserveOrder: hasSeeds });
+      out.knockout = buildKnockout(orderedEntries, { preserveOrder: hasSeeds, seeded: hasSeeds });
     }
   }
 
