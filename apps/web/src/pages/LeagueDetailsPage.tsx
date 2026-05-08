@@ -169,13 +169,25 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     return map;
   }, [classes]);
 
+  const selectedClassLabel = useMemo(() => {
+    if (!selectedClassId) return "Todas";
+    const cls = classById[selectedClassId];
+    return cls ? classLabel(cls) : "Classe selecionada";
+  }, [classById, selectedClassId]);
+
+  const filteredRegistrations = useMemo(() => {
+    const byClass = selectedClassId.trim();
+    if (!byClass) return registrations;
+    return registrations.filter((r) => r.classId === byClass);
+  }, [registrations, selectedClassId]);
+
   const registrationStats = useMemo(
     () => ({
-      pending: registrations.filter((r) => r.status === "pending").length,
-      approved: registrations.filter((r) => r.status === "approved").length,
-      rejected: registrations.filter((r) => r.status === "rejected").length,
+      pending: filteredRegistrations.filter((r) => r.status === "pending").length,
+      approved: filteredRegistrations.filter((r) => r.status === "approved").length,
+      rejected: filteredRegistrations.filter((r) => r.status === "rejected").length,
     }),
-    [registrations]
+    [filteredRegistrations]
   );
 
   async function loadRoundsAndMatches(seasonId: string) {
@@ -258,6 +270,12 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     void loadRoundsAndMatches(selectedSeasonId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSeasonId, selectedClassId]);
+
+  useEffect(() => {
+    if (!selectedClassId) return;
+    if (classes.some((c) => c.id === selectedClassId)) return;
+    setSelectedClassId("");
+  }, [classes, selectedClassId]);
 
   async function openMatchRoom(match: LeagueMatchSummary) {
     const nextId = expandedMatchId === match.id ? "" : match.id;
@@ -615,6 +633,33 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </article>
           </div>
 
+          <section className="section-card">
+            <h3 style={{ marginTop: 0, marginBottom: 10 }}>Filtro de visualizacao</h3>
+            <div className="events-filter-grid">
+              <label>
+                Temporada
+                <select value={selectedSeasonId} onChange={(e) => setSelectedSeasonId(e.target.value)}>
+                  {league.seasons.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name} (#{s.seasonNumber})
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Classe
+                <select value={selectedClassId} onChange={(e) => setSelectedClassId(e.target.value)}>
+                  <option value="">Todas</option>
+                  {classes.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {classLabel(c)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </section>
+
           {activeTab === "visao" ? (
             <>
               <section className="section-card">
@@ -813,30 +858,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               </section>
 
               <section className="section-card">
-                <h3 style={{ marginTop: 0, marginBottom: 10 }}>Temporada e classe</h3>
-                <div className="events-filter-grid">
-                  <label>
-                    Temporada
-                    <select value={selectedSeasonId} onChange={(e) => setSelectedSeasonId(e.target.value)}>
-                      {league.seasons.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.name} (#{s.seasonNumber})
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Classe
-                    <select value={selectedClassId} onChange={(e) => setSelectedClassId(e.target.value)}>
-                      <option value="">Todas</option>
-                      {classes.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {classLabel(c)}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
+                <h3 style={{ marginTop: 0, marginBottom: 10 }}>Gestao de classes e rodadas</h3>
                 {isOwner ? (
                   <div className="events-filter-grid">
                     <label>
@@ -894,14 +916,15 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <h3 style={{ marginTop: 0, marginBottom: 10 }}>Solicitacoes de inscricao</h3>
               {isOwner ? (
                 <p className="subtle" style={{ marginTop: 0 }}>
-                  Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas: {registrationStats.rejected}
+                  Classe: {selectedClassLabel} | Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas:{" "}
+                  {registrationStats.rejected}
                 </p>
               ) : (
                 <p className="subtle">Somente o admin aprova solicitacoes.</p>
               )}
-              {isOwner && !registrations.length ? <p className="subtle">Sem solicitacoes.</p> : null}
+              {isOwner && !filteredRegistrations.length ? <p className="subtle">Sem solicitacoes para o filtro atual.</p> : null}
               {isOwner
-                ? registrations.map((r) => {
+                ? filteredRegistrations.map((r) => {
                     const cls = r.classId ? classById[r.classId] : null;
                     return (
                       <div key={r.id} className="list-item">
