@@ -406,7 +406,7 @@ export async function createLeagueJoinLink(input: {
   });
   if (error || !data) throw new Error(error?.message || "Falha ao criar link.");
   const token = String(data);
-  const url = `${window.location.origin}${window.location.pathname}#/ligas/inscricao/${encodeURIComponent(token)}`;
+  const url = `${window.location.origin}${window.location.pathname}#/eventos/ligas/inscricao/${encodeURIComponent(token)}`;
   return { token, url };
 }
 

@@ -8,6 +8,7 @@ import type { Profile } from "./lib/types";
 import { AuthPage } from "./pages/AuthPage";
 import { HomePage } from "./pages/HomePage";
 import { EventsPage } from "./pages/EventsPage";
+import { EventsHubPage } from "./pages/EventsHubPage";
 import { PlacesPage } from "./pages/PlacesPage";
 import { RankingPage } from "./pages/RankingPage";
 import { ProfilePage } from "./pages/ProfilePage";
@@ -238,10 +239,14 @@ function AppInner() {
       <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
       <Route path="/" element={<Navigate to="/inicio" replace />} />
       <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
-      <Route path="/eventos" element={<EventsPage user={authUser} profile={profile} />} />
-      <Route path="/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />
-      <Route path="/ligas/:leagueId" element={<LeagueDetailsPage user={authUser} profile={profile} />} />
-      <Route path="/ligas/inscricao/:token" element={<LeagueJoinPage user={authUser} profile={profile} />} />
+      <Route path="/eventos" element={<EventsHubPage user={authUser} profile={profile} />} />
+      <Route path="/eventos/torneios" element={<EventsPage user={authUser} profile={profile} />} />
+      <Route path="/eventos/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />
+      <Route path="/eventos/ligas/:leagueId" element={<LeagueDetailsPage user={authUser} profile={profile} />} />
+      <Route path="/eventos/ligas/inscricao/:token" element={<LeagueJoinPage user={authUser} profile={profile} />} />
+      <Route path="/ligas" element={<Navigate to="/eventos/ligas" replace />} />
+      <Route path="/ligas/:leagueId" element={<LegacyLeagueDetailsRedirect />} />
+      <Route path="/ligas/inscricao/:token" element={<LegacyLeagueJoinRedirect />} />
       <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
       <Route path="/ranking" element={<RankingPage user={authUser} profile={profile} />} />
       <Route
@@ -275,6 +280,20 @@ function TournamentRootRedirect() {
   const safeId = String(tournamentId || "").trim();
   if (!safeId) return <Navigate to="/eventos" replace />;
   return <Navigate to={`/eventos/${encodeURIComponent(safeId)}/jogos`} replace />;
+}
+
+function LegacyLeagueDetailsRedirect() {
+  const { leagueId } = useParams();
+  const safeId = String(leagueId || "").trim();
+  if (!safeId) return <Navigate to="/eventos/ligas" replace />;
+  return <Navigate to={`/eventos/ligas/${encodeURIComponent(safeId)}`} replace />;
+}
+
+function LegacyLeagueJoinRedirect() {
+  const { token } = useParams();
+  const safeToken = String(token || "").trim();
+  if (!safeToken) return <Navigate to="/eventos/ligas" replace />;
+  return <Navigate to={`/eventos/ligas/inscricao/${encodeURIComponent(safeToken)}`} replace />;
 }
 
 function readNextFromUrl(): string {

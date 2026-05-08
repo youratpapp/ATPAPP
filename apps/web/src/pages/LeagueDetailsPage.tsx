@@ -131,6 +131,25 @@ function defaultMatchForm(): MatchForm {
   };
 }
 
+async function copyTextWithFallback(text: string): Promise<boolean> {
+  const value = String(text || "").trim();
+  if (!value) return false;
+  try {
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+      return true;
+    }
+  } catch {
+    // Fallback below.
+  }
+  try {
+    window.prompt("Copie o link abaixo:", value);
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 export function LeagueDetailsPage({ user, profile }: Props) {
   const { leagueId } = useParams();
   const navigate = useNavigate();
@@ -161,6 +180,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [announcementPin, setAnnouncementPin] = useState(true);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newClassName, setNewClassName] = useState("");
+  const [generatedJoinLink, setGeneratedJoinLink] = useState("");
 
   const isOwner = Boolean(league && league.ownerId === user.id);
   const classById = useMemo(() => {
@@ -332,8 +352,14 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         seasonId: selectedSeasonId || null,
         classId: selectedClassId || null,
       });
-      await navigator.clipboard.writeText(url);
-      setFeedback({ kind: "success", text: "Link de inscricao copiado." });
+      setGeneratedJoinLink(url);
+      const copied = await copyTextWithFallback(url);
+      setFeedback({
+        kind: "success",
+        text: copied
+          ? "Link de inscricao copiado."
+          : "Link de inscricao gerado. Se nao copiou automatico, copie manualmente no campo abaixo.",
+      });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao gerar link." });
     } finally {
@@ -588,7 +614,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile}>
       <div className="section-title">
         <h2>{league?.name || "Liga"}</h2>
-        <button className="ghost" onClick={() => navigate("/ligas")}>
+        <button className="ghost" onClick={() => navigate("/eventos/ligas")}>
           Voltar
         </button>
       </div>
@@ -881,9 +907,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     <button onClick={onGenerateRound} disabled={busy || !selectedSeasonId}>
                       {busy ? "Processando..." : "Gerar proxima rodada"}
                     </button>
-                    <button className="ghost" onClick={onCreateJoinLink} disabled={busy}>
-                      Copiar link de inscricao
-                    </button>
                   </div>
                 ) : null}
               </section>
@@ -912,47 +935,86 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           ) : null}
 
           {activeTab === "jogadores" ? (
-            <section className="section-card">
-              <h3 style={{ marginTop: 0, marginBottom: 10 }}>Solicitacoes de inscricao</h3>
+            <>
               {isOwner ? (
-                <p className="subtle" style={{ marginTop: 0 }}>
-                  Classe: {selectedClassLabel} | Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas:{" "}
-                  {registrationStats.rejected}
-                </p>
-              ) : (
-                <p className="subtle">Somente o admin aprova solicitacoes.</p>
-              )}
-              {isOwner && !filteredRegistrations.length ? <p className="subtle">Sem solicitacoes para o filtro atual.</p> : null}
-              {isOwner
-                ? filteredRegistrations.map((r) => {
-                    const cls = r.classId ? classById[r.classId] : null;
-                    return (
-                      <div key={r.id} className="list-item">
-                        <div className="li-body">
-                          <p className="li-title">
-                            {r.playerName} {r.phone ? `| ${r.phone}` : ""}
-                          </p>
-                          <p className="li-meta">
-                            <span>Status: {r.status}</span>
-                            <span>Origem: {r.source === "link" ? "Link" : r.source === "public" ? "Publica" : "Admin"}</span>
-                            <span>Classe: {cls ? classLabel(cls) : "-"}</span>
-                          </p>
-                        </div>
-                        {r.status === "pending" ? (
-                          <div className="li-actions">
-                            <button onClick={() => onApproveRegistration(r.id, "approved")} disabled={busy}>
-                              Aprovar
-                            </button>
-                            <button className="danger" onClick={() => onApproveRegistration(r.id, "rejected")} disabled={busy}>
-                              Rejeitar
-                            </button>
-                          </div>
-                        ) : null}
+                <section className="section-card">
+                  <h3 style={{ marginTop: 0, marginBottom: 10 }}>Link de convite</h3>
+                  <p className="subtle" style={{ marginTop: 0 }}>
+                    Gere o link considerando os filtros atuais de temporada/classe.
+                  </p>
+                  <div className="modal-actions">
+                    <button className="ghost" onClick={onCreateJoinLink} disabled={busy}>
+                      {busy ? "Gerando..." : "Gerar e copiar link de inscricao"}
+                    </button>
+                  </div>
+                  {generatedJoinLink ? (
+                    <div className="events-filter-grid">
+                      <label>
+                        Link gerado
+                        <input value={generatedJoinLink} readOnly />
+                      </label>
+                      <div style={{ display: "flex", alignItems: "flex-end" }}>
+                        <button
+                          className="ghost"
+                          onClick={async () => {
+                            const copied = await copyTextWithFallback(generatedJoinLink);
+                            setFeedback({
+                              kind: "success",
+                              text: copied ? "Link copiado." : "Tentativa de copia manual aberta.",
+                            });
+                          }}
+                          disabled={!generatedJoinLink}
+                        >
+                          Copiar novamente
+                        </button>
                       </div>
-                    );
-                  })
-                : null}
-            </section>
+                    </div>
+                  ) : null}
+                </section>
+              ) : null}
+
+              <section className="section-card">
+                <h3 style={{ marginTop: 0, marginBottom: 10 }}>Solicitacoes de inscricao</h3>
+                {isOwner ? (
+                  <p className="subtle" style={{ marginTop: 0 }}>
+                    Classe: {selectedClassLabel} | Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas:{" "}
+                    {registrationStats.rejected}
+                  </p>
+                ) : (
+                  <p className="subtle">Somente o admin aprova solicitacoes.</p>
+                )}
+                {isOwner && !filteredRegistrations.length ? <p className="subtle">Sem solicitacoes para o filtro atual.</p> : null}
+                {isOwner
+                  ? filteredRegistrations.map((r) => {
+                      const cls = r.classId ? classById[r.classId] : null;
+                      return (
+                        <div key={r.id} className="list-item">
+                          <div className="li-body">
+                            <p className="li-title">
+                              {r.playerName} {r.phone ? `| ${r.phone}` : ""}
+                            </p>
+                            <p className="li-meta">
+                              <span>Status: {r.status}</span>
+                              <span>Origem: {r.source === "link" ? "Link" : r.source === "public" ? "Publica" : "Admin"}</span>
+                              <span>Classe: {cls ? classLabel(cls) : "-"}</span>
+                            </p>
+                          </div>
+                          {r.status === "pending" ? (
+                            <div className="li-actions">
+                              <button onClick={() => onApproveRegistration(r.id, "approved")} disabled={busy}>
+                                Aprovar
+                              </button>
+                              <button className="danger" onClick={() => onApproveRegistration(r.id, "rejected")} disabled={busy}>
+                                Rejeitar
+                              </button>
+                            </div>
+                          ) : null}
+                        </div>
+                      );
+                    })
+                  : null}
+              </section>
+            </>
           ) : null}
 
           {activeTab === "partidas" ? (

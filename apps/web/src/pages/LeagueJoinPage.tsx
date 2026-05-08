@@ -58,7 +58,7 @@ export function LeagueJoinPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile}>
       <div className="section-title">
         <h2>Inscrição na liga</h2>
-        <button className="ghost" onClick={() => navigate("/ligas")}>
+        <button className="ghost" onClick={() => navigate("/eventos/ligas")}>
           Voltar
         </button>
       </div>
@@ -93,4 +93,3 @@ export function LeagueJoinPage({ user, profile }: Props) {
     </AppShell>
   );
 }
-

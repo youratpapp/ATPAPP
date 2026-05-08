@@ -158,7 +158,7 @@ export function HomePage({ user, profile }: Props) {
           <span className="qa-icon"><LocationIcon /></span>
           <span>Locais</span>
         </button>
-        <button className="quick-action" onClick={() => navigate("/ligas")}>
+        <button className="quick-action" onClick={() => navigate("/eventos/ligas")}>
           <span className="qa-icon"><BookmarkIcon /></span>
           <span>Ligas</span>
         </button>
@@ -174,7 +174,7 @@ export function HomePage({ user, profile }: Props) {
 
       <div className="section-title">
         <h2>Próximos eventos</h2>
-        <button className="link" onClick={() => navigate("/eventos")}>Ver todos</button>
+        <button className="link" onClick={() => navigate("/eventos/torneios")}>Ver todos</button>
       </div>
 
       {loading ? <p className="subtle">Carregando...</p> : null}

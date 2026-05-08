@@ -79,7 +79,7 @@ export function LeaguesPage({ user, profile }: Props) {
       setClassScope("");
       setLeagueType("simples");
       setVisibility("private");
-      navigate(`/ligas/${encodeURIComponent(id)}`);
+      navigate(`/eventos/ligas/${encodeURIComponent(id)}`);
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao criar liga." });
     } finally {
@@ -122,7 +122,7 @@ export function LeaguesPage({ user, profile }: Props) {
       ) : null}
 
       {items.map((item) => (
-        <article key={item.id} className="event-card" onClick={() => navigate(`/ligas/${encodeURIComponent(item.id)}`)}>
+        <article key={item.id} className="event-card" onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(item.id)}`)}>
           <div className="ec-body">
             <div className="ec-name-row">
               <p className="ec-name">{item.name}</p>
@@ -191,4 +191,3 @@ export function LeaguesPage({ user, profile }: Props) {
     </AppShell>
   );
 }
-
