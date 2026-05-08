@@ -621,6 +621,7 @@ function mergeApprovedRegistrationsIntoDraft(
         grupo: needsGroupABConfig(config) ? pickGroupForRegistration(cls.data.participantes) : null,
         telefone: normalizePhone(reg.phone) || undefined,
         telefone2: undefined,
+        cabecaDeChave: null,
         convitePendente: false,
         conviteEnviado: false,
       });
@@ -947,6 +948,7 @@ function buildClassVisualSvg(
 
     tableKeys.forEach((group) => {
       const rows = data.tabelaPorGrupo[group] || [];
+      const qualifiedCount = Math.max(0, Number(data.config.classificadosPorGrupo || 0));
       const rowH = 26;
       const blockH = 34 + rowH + Math.max(1, rows.length) * rowH + 10;
       const x = pad + 10;
@@ -966,13 +968,13 @@ function buildClassVisualSvg(
 
       rows.forEach((row, idx) => {
         const ry = hy + rowH + idx * rowH;
-        out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${idx % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
-        const leader = idx === 0;
-        out.push(`<text x="${tx + 12}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="${leader ? '#15803d' : '#0f172a'}" font-weight="${leader ? '700' : '400'}">${idx + 1}</text>`);
-        out.push(`<text x="${tx + 64}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="${leader ? '#15803d' : '#0f172a'}" font-weight="${leader ? '700' : '400'}">${escXml(String(row[0] || ''))}</text>`);
-        out.push(`<text x="${tx + tw - 165}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${row[1].v}</text>`);
-        out.push(`<text x="${tx + tw - 115}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${row[1].j}</text>`);
-        out.push(`<text x="${tx + tw - 65}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">${row[1].saldo}</text>`);
+        const qualified = qualifiedCount > 0 && idx < qualifiedCount;
+        out.push(`<rect x="${tx}" y="${ry}" width="${tw}" height="${rowH}" fill="${qualified ? '#ecfdf5' : idx % 2 === 0 ? '#ffffff' : '#f8fafc'}"/>`);
+        out.push(`<text x="${tx + 12}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="${qualified ? '#15803d' : '#0f172a'}" font-weight="${qualified ? '700' : '400'}">${idx + 1}</text>`);
+        out.push(`<text x="${tx + 64}" y="${ry + 17}" font-family="Arial, sans-serif" font-size="12" fill="${qualified ? '#15803d' : '#0f172a'}" font-weight="${qualified ? '700' : '400'}">${escXml(String(row[0] || ''))}</text>`);
+        out.push(`<text x="${tx + tw - 165}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${qualified ? '#15803d' : '#0f172a'}" font-weight="${qualified ? '700' : '400'}">${row[1].v}</text>`);
+        out.push(`<text x="${tx + tw - 115}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${qualified ? '#15803d' : '#0f172a'}" font-weight="${qualified ? '700' : '400'}">${row[1].j}</text>`);
+        out.push(`<text x="${tx + tw - 65}" y="${ry + 17}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="${qualified ? '#15803d' : '#0f172a'}" font-weight="${qualified ? '700' : '400'}">${row[1].saldo}</text>`);
       });
       if (!rows.length) {
         out.push(`<text x="${tx + 64}" y="${hy + rowH + 17}" font-family="Arial, sans-serif" font-size="12" fill="#475569">Sem dados de classificacao.</text>`);
@@ -1995,6 +1997,7 @@ export function TournamentPage({ user, profile }: Props) {
                 grupo: group,
                 telefone: phone || undefined,
                 telefone2: phone2 || undefined,
+                cabecaDeChave: null,
                 convitePendente: false,
                 conviteEnviado: false,
               },
@@ -2036,6 +2039,43 @@ export function TournamentPage({ user, profile }: Props) {
               ...cls,
               data: normalizeClassData({
                 config: cls.data.config,
+                participantes,
+                entradas: participantes.map((p) => p.nome),
+                grupos: [],
+                knockout: null,
+                tabelaPorGrupo: {},
+                gerado: false,
+              }),
+            };
+          }),
+        };
+      })
+    );
+  };
+
+  const updateParticipantSeedByClass = (
+    categoryId: string,
+    classId: string,
+    player: string,
+    nextSeedInput: string
+  ) => {
+    const digits = nextSeedInput.replace(/[^\d]/g, "");
+    const parsed = Number.parseInt(digits || "0", 10);
+    const nextSeed = Number.isNaN(parsed) || parsed <= 0 ? null : parsed;
+    mutateDraftCategories((prev) =>
+      prev.map((cat) => {
+        if (cat.id !== categoryId) return cat;
+        return {
+          ...cat,
+          classes: cat.classes.map((cls) => {
+            if (cls.id !== classId) return cls;
+            const participantes = cls.data.participantes.map((p) =>
+              p.nome === player ? { ...p, cabecaDeChave: nextSeed } : p
+            );
+            return {
+              ...cls,
+              data: normalizeClassData({
+                ...cls.data,
                 participantes,
                 entradas: participantes.map((p) => p.nome),
                 grupos: [],
@@ -2132,6 +2172,7 @@ export function TournamentPage({ user, profile }: Props) {
           grupo: needsGroupABConfig(cfg) ? newParticipantGroup : null,
           telefone: undefined,
           telefone2: undefined,
+          cabecaDeChave: null,
           convitePendente: false,
           conviteEnviado: false,
         });
@@ -2180,6 +2221,7 @@ export function TournamentPage({ user, profile }: Props) {
           grupo: needsGroupABConfig(cfg) ? (grupo as "A" | "B") : null,
           telefone: telefone || undefined,
           telefone2: undefined,
+          cabecaDeChave: null,
           convitePendente: false,
           conviteEnviado: false,
         });
@@ -2232,6 +2274,7 @@ export function TournamentPage({ user, profile }: Props) {
           grupo: null,
           telefone: telA,
           telefone2: telB,
+          cabecaDeChave: null,
           convitePendente: false,
           conviteEnviado: false,
         });
@@ -2674,11 +2717,17 @@ export function TournamentPage({ user, profile }: Props) {
     const u = new URL(window.location.href);
     const hashBase = `#/inscricao/${encodeURIComponent(tournament.id)}`;
     const q = new URLSearchParams();
+    q.set("atp_reg", "1");
+    q.set("tournamentId", tournament.id);
     q.set("categoryId", activeDraftCategory.id);
     q.set("classId", activeDraftClass.id);
     q.set("categoryName", activeDraftCategory.nome);
     q.set("className", activeDraftClass.nome);
-    return `${u.origin}${u.pathname}${hashBase}?${q.toString()}`;
+    const queryForFallback = q.toString();
+    const hashQuery = new URLSearchParams(q);
+    hashQuery.delete("atp_reg");
+    hashQuery.delete("tournamentId");
+    return `${u.origin}${u.pathname}?${queryForFallback}${hashBase}?${hashQuery.toString()}`;
   };
 
   const copySelfRegistrationLink = async () => {
@@ -3233,16 +3282,30 @@ export function TournamentPage({ user, profile }: Props) {
               {activeClass
                 ? Object.keys(activeClass.data.tabelaPorGrupo).map((groupName) => {
                     const rows = activeClass.data.tabelaPorGrupo[groupName] ?? [];
+                    const qualifiedCount = Math.max(0, Number(activeClass.data.config.classificadosPorGrupo || 0));
                     return (
                       <div key={`${activeClass.key}:table:${groupName}`} style={{ marginBottom: 14 }}>
                         <h3 style={{ marginBottom: 8 }}>{groupName}</h3>
                         {rows.length === 0 ? <p className="subtle">Sem dados de classificacao.</p> : null}
-                        {rows.map((row, idx) => (
-                          <div key={`${activeClass.key}:table:${groupName}:${idx}`} style={{ borderTop: "1px solid var(--color-border)", padding: "8px 0", display: "flex", justifyContent: "space-between", gap: 8 }}>
+                        {rows.map((row, idx) => {
+                          const qualified = qualifiedCount > 0 && idx < qualifiedCount;
+                          return (
+                          <div
+                            key={`${activeClass.key}:table:${groupName}:${idx}`}
+                            style={{
+                              borderTop: "1px solid var(--color-border)",
+                              padding: "8px 0",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              gap: 8,
+                              color: qualified ? "#15803d" : "inherit",
+                              fontWeight: qualified ? 700 : 400,
+                            }}
+                          >
                             <span>{idx + 1}. {row[0]}</span>
-                            <span className="subtle">V:{row[1].v} J:{row[1].j} SG:{row[1].saldo}</span>
+                            <span className={qualified ? "" : "subtle"}>V:{row[1].v} J:{row[1].j} SG:{row[1].saldo}</span>
                           </div>
-                        ))}
+                        )})}
                       </div>
                     );
                   })
@@ -3682,7 +3745,9 @@ export function TournamentPage({ user, profile }: Props) {
                       ) : null}
                     </>
                   ) : null}
-                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>O cadastro e aprovacao de jogadores ficam na aba "Jogadores".</p>
+                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
+                    O cadastro, aprovacao e cabecas de chave dos jogadores ficam na aba "Jogadores".
+                  </p>
                   {draftDirty ? <p className="subtle" style={{ marginTop: 8 }}>Alteracoes em categorias/classes pendentes de salvamento.</p> : null}
                 </div>
               ) : (
@@ -3963,6 +4028,9 @@ export function TournamentPage({ user, profile }: Props) {
 
               <div className="tournament-admin-ops" style={{ marginBottom: 0 }}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Lista completa de jogadores por classe</h3>
+                <p className="subtle" style={{ marginTop: 0 }}>
+                  Cabeca de chave: informe 1, 2, 3... (vazio = sem cabeca). Isso influencia a distribuicao inicial e os cruzamentos.
+                </p>
                 {playerClassesSummary.length === 0 ? <p className="subtle">Nenhuma classe cadastrada.</p> : null}
                 {playerClassesSummary.map((item) => (
                   <div key={`players:${item.categoryId}:${item.classId}`} style={{ marginBottom: 10 }}>
@@ -3991,13 +4059,30 @@ export function TournamentPage({ user, profile }: Props) {
                           {p.telefone ? ` | ${p.telefone}` : ""}
                           {p.telefone2 ? ` / ${p.telefone2}` : ""}
                         </span>
-                        <button
-                          className="danger"
-                          onClick={() => removeParticipantByClass(item.categoryId, item.classId, p.nome)}
-                          disabled={saving}
-                        >
-                          Remover
-                        </button>
+                        <div className="cluster" style={{ alignItems: "center", gap: 8 }}>
+                          <label style={{ margin: 0, display: "inline-flex", alignItems: "center", gap: 6 }}>
+                            Cabeca
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              pattern="[0-9]*"
+                              value={p.cabecaDeChave ? String(p.cabecaDeChave) : ""}
+                              onChange={(e) =>
+                                updateParticipantSeedByClass(item.categoryId, item.classId, p.nome, e.target.value)
+                              }
+                              placeholder="-"
+                              style={{ width: 66 }}
+                              disabled={saving}
+                            />
+                          </label>
+                          <button
+                            className="danger"
+                            onClick={() => removeParticipantByClass(item.categoryId, item.classId, p.nome)}
+                            disabled={saving}
+                          >
+                            Remover
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>

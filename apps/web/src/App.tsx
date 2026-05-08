@@ -335,7 +335,48 @@ function LegacyRedirectPage() {
   );
 }
 
+function tryRedirectRegistrationFallback(): boolean {
+  const hash = window.location.hash || "";
+  if (hash.trim()) return false;
+
+  const search = new URLSearchParams(window.location.search || "");
+  if (search.get("atp_reg") !== "1") return false;
+
+  // Do not interfere with OAuth callback/search params.
+  if (search.get("code") || search.get("error") || search.get("error_description")) return false;
+
+  const tournamentId = (search.get("tournamentId") || "").trim();
+  if (!tournamentId) return false;
+
+  const hashQuery = new URLSearchParams();
+  const categoryId = (search.get("categoryId") || "").trim();
+  const classId = (search.get("classId") || "").trim();
+  const categoryName = (search.get("categoryName") || "").trim();
+  const className = (search.get("className") || "").trim();
+  if (categoryId) hashQuery.set("categoryId", categoryId);
+  if (classId) hashQuery.set("classId", classId);
+  if (categoryName) hashQuery.set("categoryName", categoryName);
+  if (className) hashQuery.set("className", className);
+
+  const targetHash = `#/inscricao/${encodeURIComponent(tournamentId)}${
+    hashQuery.toString() ? `?${hashQuery.toString()}` : ""
+  }`;
+  const target = `${window.location.origin}${window.location.pathname}${targetHash}`;
+  window.location.replace(target);
+  return true;
+}
+
 export default function App() {
+  if (tryRedirectRegistrationFallback()) {
+    return (
+      <main className="auth-page">
+        <section className="auth-card">
+          <h1>Abrindo inscricao...</h1>
+          <p className="auth-sub">Redirecionando para o link do torneio.</p>
+        </section>
+      </main>
+    );
+  }
   return (
     <HashRouter>
       <AppInner />

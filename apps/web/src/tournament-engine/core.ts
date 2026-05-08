@@ -87,6 +87,7 @@ export type ClassParticipant = {
   grupo?: string | null;
   telefone?: string;
   telefone2?: string;
+  cabecaDeChave?: number | null;
   convitePendente?: boolean;
   conviteEnviado?: boolean;
 };
@@ -236,18 +237,53 @@ export function buildRoundRobin(entries: string[]): GroupMatch[] {
   return rounds;
 }
 
-export function splitIntoGroups(entries: string[], numGrupos: number): Group[] {
+type SplitGroupOptions = {
+  preserveOrder?: boolean;
+  snake?: boolean;
+};
+
+function distributeSnake(entries: string[], numGrupos: number): string[][] {
+  const buckets: string[][] = Array.from({ length: numGrupos }, () => []);
+  if (numGrupos <= 1) {
+    buckets[0] = [...entries];
+    return buckets;
+  }
+  let idx = 0;
+  let dir = 1;
+  entries.forEach((entry) => {
+    buckets[idx].push(entry);
+    idx += dir;
+    if (idx >= numGrupos) {
+      idx = numGrupos - 1;
+      dir = -1;
+    } else if (idx < 0) {
+      idx = 0;
+      dir = 1;
+    }
+  });
+  return buckets;
+}
+
+export function splitIntoGroups(entries: string[], numGrupos: number, options?: SplitGroupOptions): Group[] {
   const n = Math.max(1, Number(numGrupos) || 1);
   const groups: Group[] = [];
   for (let i = 0; i < n; i += 1) {
     groups.push({ name: `Grupo ${i + 1}`, entries: [], matches: [] });
   }
 
-  const mixed = shuffle(entries.filter(Boolean));
-  mixed.forEach((entry, idx) => {
-    const gi = idx % n;
-    (groups[gi] as Group).entries.push(entry);
-  });
+  const cleanEntries = entries.filter(Boolean);
+  const mixed = options?.preserveOrder ? [...cleanEntries] : shuffle(cleanEntries);
+  if (options?.snake) {
+    const buckets = distributeSnake(mixed, n);
+    buckets.forEach((arr, gi) => {
+      (groups[gi] as Group).entries.push(...arr);
+    });
+  } else {
+    mixed.forEach((entry, idx) => {
+      const gi = idx % n;
+      (groups[gi] as Group).entries.push(entry);
+    });
+  }
 
   groups.forEach((g) => {
     g.matches = buildRoundRobin(g.entries);
@@ -444,7 +480,27 @@ export function gerarClasseData(input: Partial<ClassData>): ClassData {
   const config = normalizeConfig(input.config);
   const participantes = Array.isArray(input.participantes) ? input.participantes : [];
 
-  const entradas = (Array.isArray(input.entradas) ? input.entradas : participantes.map((p) => p.nome || "")).filter(Boolean);
+  let entradas = (Array.isArray(input.entradas) ? input.entradas : participantes.map((p) => p.nome || "")).filter(Boolean);
+  const seedMap = new Map<string, number>();
+  participantes.forEach((p) => {
+    const n = Number(p.cabecaDeChave || 0);
+    if (n > 0) seedMap.set(String(p.nome || ""), n);
+  });
+  const hasSeeds = seedMap.size > 0;
+  if (hasSeeds) {
+    const seeded = entradas
+      .filter((name) => seedMap.has(String(name)))
+      .sort((a, b) => {
+        const sa = seedMap.get(String(a)) || Number.MAX_SAFE_INTEGER;
+        const sb = seedMap.get(String(b)) || Number.MAX_SAFE_INTEGER;
+        if (sa !== sb) return sa - sb;
+        return String(a).localeCompare(String(b), "pt-BR");
+      });
+    const nonSeeded = entradas
+      .filter((name) => !seedMap.has(String(name)))
+      .sort((a, b) => String(a).localeCompare(String(b), "pt-BR"));
+    entradas = [...seeded, ...nonSeeded];
+  }
 
   const data: ClassData = {
     config,
@@ -459,9 +515,12 @@ export function gerarClasseData(input: Partial<ClassData>): ClassData {
   if (entradas.length < 2) return data;
 
   if (config.formato === "grupos") {
-    data.grupos = splitIntoGroups(entradas, config.numGrupos);
+    data.grupos = splitIntoGroups(entradas, config.numGrupos, {
+      preserveOrder: hasSeeds,
+      snake: hasSeeds,
+    });
   } else {
-    data.knockout = buildKnockout(entradas);
+    data.knockout = buildKnockout(entradas, { preserveOrder: hasSeeds });
   }
 
   data.tabelaPorGrupo = {};

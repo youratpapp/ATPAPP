@@ -46,6 +46,12 @@ function bool(v: unknown): boolean {
   return Boolean(v);
 }
 
+function toSeed(v: unknown): number | null {
+  const n = Number.parseInt(String(v ?? "").trim(), 10);
+  if (Number.isNaN(n) || n <= 0) return null;
+  return n;
+}
+
 function normalizeGroupMatch(v: unknown): GroupMatch {
   const m = asRecord(v) ?? {};
   return {
@@ -114,6 +120,7 @@ function uniqueStrings(values: string[]): string[] {
 type QualifiedEntry = {
   name: string;
   groupName: string;
+  groupIndex: number;
   rank: number;
   v: number;
   saldo: number;
@@ -126,19 +133,17 @@ function nextPowerOf2(n: number): number {
   return p;
 }
 
-function compareQualifiedDesc(a: QualifiedEntry, b: QualifiedEntry): number {
+function compareQualifiedGlobal(a: QualifiedEntry, b: QualifiedEntry): number {
+  if (a.rank !== b.rank) return a.rank - b.rank;
   if (b.v !== a.v) return b.v - a.v;
   if (b.saldo !== a.saldo) return b.saldo - a.saldo;
   if (b.pp !== a.pp) return b.pp - a.pp;
+  if (a.groupIndex !== b.groupIndex) return a.groupIndex - b.groupIndex;
   return a.name.localeCompare(b.name, "pt-BR");
 }
 
-function compareQualifiedAsc(a: QualifiedEntry, b: QualifiedEntry): number {
-  if (a.rank !== b.rank) return b.rank - a.rank;
-  if (a.v !== b.v) return a.v - b.v;
-  if (a.saldo !== b.saldo) return a.saldo - b.saldo;
-  if (a.pp !== b.pp) return a.pp - b.pp;
-  return a.name.localeCompare(b.name, "pt-BR");
+function groupHasAnyResult(group: Group): boolean {
+  return (group.matches || []).some((m) => m.done);
 }
 
 function buildSeededEntriesFromGroups(
@@ -149,62 +154,80 @@ function buildSeededEntriesFromGroups(
   const k = Math.max(0, classificadosPorGrupo || 0);
   if (k <= 0) return [];
 
+  const qualifiedByGroup = new Map<number, QualifiedEntry[]>();
   const qualified: QualifiedEntry[] = [];
-  groups.forEach((g) => {
+  groups.forEach((g, gi) => {
     const table = tables[g.name] ?? [];
-    for (let i = 0; i < Math.min(k, table.length); i += 1) {
-      const row = table[i];
-      if (!row?.[0]) continue;
+    const withResults = groupHasAnyResult(g);
+    const tableMap = new Map<string, { v: number; saldo: number; pp: number }>();
+    table.forEach((row) => {
+      if (!row?.[0]) return;
+      const name = String(row[0]);
       const stats = row[1];
-      qualified.push({
-        name: String(row[0]),
-        groupName: g.name,
-        rank: i + 1,
+      tableMap.set(name, {
         v: Number(stats?.v || 0),
         saldo: Number(stats?.saldo || 0),
         pp: Number(stats?.pp || 0),
       });
-    }
+    });
+
+    const source: string[] = withResults
+      ? table.slice(0, k).map((row) => String(row?.[0] || "")).filter(Boolean)
+      : (g.entries || []).slice(0, k).map((name) => String(name || "")).filter(Boolean);
+
+    const list: QualifiedEntry[] = source.map((name, idx) => {
+      const stats = tableMap.get(name) || { v: 0, saldo: 0, pp: 0 };
+      return {
+        name,
+        groupName: g.name,
+        groupIndex: gi,
+        rank: idx + 1,
+        v: stats.v,
+        saldo: stats.saldo,
+        pp: stats.pp,
+      };
+    });
+    qualifiedByGroup.set(gi, list);
+    qualified.push(...list);
   });
 
   if (qualified.length < 2) return qualified.map((q) => q.name);
 
-  const winners = qualified.filter((q) => q.rank === 1).sort(compareQualifiedDesc);
-  const others = qualified.filter((q) => q.rank > 1).sort(compareQualifiedAsc);
-  const bracketSize = nextPowerOf2(qualified.length);
-  const byes = Math.max(0, bracketSize - qualified.length);
-  const pairSlots = bracketSize / 2;
   const pairs: Array<[string, string]> = [];
+  const leftovers: QualifiedEntry[] = [];
 
-  // Top seeds receive BYE when bracket is not full.
-  let winnersPool = [...winners];
-  for (let i = 0; i < byes && winnersPool.length; i += 1) {
-    const seed = winnersPool.shift();
-    if (seed) pairs.push([seed.name, "BYE"]);
+  for (let gi = 0; gi < groups.length; gi += 2) {
+    const left = qualifiedByGroup.get(gi) ?? [];
+    const right = qualifiedByGroup.get(gi + 1) ?? [];
+    if (!right.length) {
+      leftovers.push(...left);
+      continue;
+    }
+    for (let pos = 0; pos < k; pos += 1) {
+      const a = left[pos]?.name || "BYE";
+      const b = right[k - 1 - pos]?.name || "BYE";
+      if (a === "BYE" && b === "BYE") continue;
+      pairs.push([a, b]);
+    }
   }
 
-  // Remaining first-place players face the weakest possible lower-ranked players.
-  winnersPool.forEach((seed) => {
-    if (!others.length) return;
-    let idx = others.findIndex((q) => q.groupName !== seed.groupName);
-    if (idx < 0) idx = 0;
-    const opponent = others.splice(idx, 1)[0];
-    if (opponent) pairs.push([seed.name, opponent.name]);
-  });
+  if (leftovers.length) {
+    const ordered = [...leftovers].sort(compareQualifiedGlobal);
+    while (ordered.length >= 2) {
+      const strong = ordered.shift();
+      const weak = ordered.pop();
+      if (strong && weak) {
+        pairs.push([strong.name, weak.name]);
+      }
+    }
+    if (ordered.length === 1) {
+      pairs.push([ordered[0].name, "BYE"]);
+    }
+  }
 
-  // Remaining entrants are paired strongest vs weakest.
-  const remaining = [...others].sort((a, b) => {
-    if (a.rank !== b.rank) return a.rank - b.rank;
-    return compareQualifiedDesc(a, b);
-  });
-  while (remaining.length >= 2) {
-    const strong = remaining.shift();
-    const weak = remaining.pop();
-    if (strong && weak) pairs.push([strong.name, weak.name]);
-  }
-  if (remaining.length === 1) {
-    pairs.push([remaining[0].name, "BYE"]);
-  }
+  const rawEntrants = qualified.map((q) => q.name).filter(Boolean);
+  const bracketSize = nextPowerOf2(rawEntrants.length);
+  const pairSlots = bracketSize / 2;
 
   while (pairs.length < pairSlots) {
     pairs.push(["BYE", "BYE"]);
@@ -216,8 +239,19 @@ function buildSeededEntriesFromGroups(
     seededEntries[i] = pair?.[0] || "BYE";
     seededEntries[bracketSize - 1 - i] = pair?.[1] || "BYE";
   }
-
   return seededEntries;
+}
+
+function hasKnockoutStarted(knockout: Knockout | null): boolean {
+  const first = knockout?.rounds?.[0];
+  if (!first) return false;
+  return (first.matches || []).some((m) => {
+    const a = String(m.a || "");
+    const b = String(m.b || "");
+    const realMatch = a && b && a !== "BYE" && b !== "BYE";
+    if (!realMatch) return false;
+    return Boolean((m.s1 || "").trim() || (m.s2 || "").trim() || (m.scoreLabel || "").trim() || m.winner || m.done);
+  });
 }
 
 export function normalizeClassData(raw: unknown): ClassData {
@@ -230,6 +264,7 @@ export function normalizeClassData(raw: unknown): ClassData {
       grupo: txtOpt(p.grupo) ?? null,
       telefone: txtOpt(p.telefone),
       telefone2: txtOpt(p.telefone2),
+      cabecaDeChave: toSeed((p as AnyRecord).cabecaDeChave),
       convitePendente: bool(p.convitePendente),
       conviteEnviado: bool(p.conviteEnviado),
     }))
@@ -277,23 +312,44 @@ export function recomputeClassData(input: ClassData): ClassData {
       out.tabelaPorGrupo[g.name] = calcTabelaGrupo(g);
     });
 
-    const allDone = out.grupos.length > 0 && out.grupos.every((g) => g.matches.every((m) => m.done));
-    if (allDone && !out.knockout) {
+    const isGroupKnockoutModel = out.config.modeloCompeticao === "grupos_mata_mata";
+    if (isGroupKnockoutModel) {
       const seededEntries = buildSeededEntriesFromGroups(
         out.grupos,
         out.tabelaPorGrupo,
         out.config.classificadosPorGrupo
       );
-      const clean = seededEntries.filter(Boolean);
-      if (clean.length >= 2) {
-        out.knockout = buildKnockout(clean, { preserveOrder: true });
+      const realEntries = seededEntries.filter((name) => String(name || "").trim() && String(name || "").trim() !== "BYE");
+      if (realEntries.length >= 2) {
+        if (!out.knockout || !hasKnockoutStarted(out.knockout)) {
+          out.knockout = buildKnockout(seededEntries, { preserveOrder: true });
+        }
+      } else if (!hasKnockoutStarted(out.knockout)) {
+        out.knockout = null;
       }
+    } else {
+      // Modelos sem mata-mata continuam somente em fase de grupos.
+      out.knockout = null;
     }
   }
 
   if (out.config.formato === "mata_mata" && !out.knockout) {
     if (out.entradas.length >= 2) {
-      out.knockout = buildKnockout(out.entradas);
+      const seedMap = new Map<string, number>();
+      out.participantes.forEach((p) => {
+        const n = Number(p.cabecaDeChave || 0);
+        if (n > 0) seedMap.set(String(p.nome || ""), n);
+      });
+      const hasSeeds = seedMap.size > 0;
+      const orderedEntries = hasSeeds
+        ? [...out.entradas].sort((a, b) => {
+            const sa = seedMap.get(String(a)) || Number.MAX_SAFE_INTEGER;
+            const sb = seedMap.get(String(b)) || Number.MAX_SAFE_INTEGER;
+            if (sa !== sb) return sa - sb;
+            return String(a).localeCompare(String(b), "pt-BR");
+          })
+        : out.entradas;
+      out.knockout = buildKnockout(orderedEntries, { preserveOrder: hasSeeds });
     }
   }
 
