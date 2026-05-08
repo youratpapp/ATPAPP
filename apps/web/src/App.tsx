@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { HashRouter, Navigate, Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigured } from "./lib/supabase";
 import { fetchProfile } from "./lib/profiles";
@@ -166,7 +166,7 @@ function AppInner() {
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
-        <Route path="*" element={<Navigate to="/auth" replace />} />
+        <Route path="*" element={<AuthRequiredRedirect />} />
       </Routes>
     );
   }
@@ -185,7 +185,8 @@ function AppInner() {
 
   return (
     <Routes>
-      <Route path="/auth/callback" element={<Navigate to="/inicio" replace />} />
+      <Route path="/auth" element={<AuthAlreadySignedInRedirect />} />
+      <Route path="/auth/callback" element={<AuthAlreadySignedInRedirect />} />
       <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
       <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
       <Route path="/eventos" element={<EventsPage user={authUser} profile={profile} />} />
@@ -203,6 +204,41 @@ function AppInner() {
       <Route path="*" element={<Navigate to="/inicio" replace />} />
     </Routes>
   );
+}
+
+function sanitizeNextPath(value: string | null | undefined): string {
+  const raw = String(value || "").trim();
+  if (!raw.startsWith("/")) return "/inicio";
+  if (raw === "/auth" || raw.startsWith("/auth?") || raw.startsWith("/auth/callback")) return "/inicio";
+  return raw;
+}
+
+function readNextFromUrl(): string {
+  const search = new URLSearchParams(window.location.search || "");
+  const fromSearch = search.get("next");
+  if (fromSearch) return sanitizeNextPath(fromSearch);
+
+  const hash = window.location.hash || "";
+  const qi = hash.indexOf("?");
+  if (qi >= 0) {
+    const hashSearch = new URLSearchParams(hash.slice(qi + 1));
+    const fromHash = hashSearch.get("next");
+    if (fromHash) return sanitizeNextPath(fromHash);
+  }
+  return "/inicio";
+}
+
+function AuthRequiredRedirect() {
+  const location = useLocation();
+  const next = sanitizeNextPath(`${location.pathname || "/inicio"}${location.search || ""}`);
+  const query = new URLSearchParams();
+  query.set("next", next);
+  return <Navigate to={`/auth?${query.toString()}`} replace />;
+}
+
+function AuthAlreadySignedInRedirect() {
+  const next = readNextFromUrl();
+  return <Navigate to={next} replace />;
 }
 
 function readOAuthCode(): string | null {
@@ -243,10 +279,11 @@ function AuthCallbackPage() {
 
     async function finishOAuth() {
       if (!supabase) return;
+      const nextPath = readNextFromUrl();
 
       const existing = await supabase.auth.getSession();
       if (existing.data.session) {
-        navigate("/inicio", { replace: true });
+        navigate(nextPath, { replace: true });
         return;
       }
 
@@ -268,7 +305,7 @@ function AuthCallbackPage() {
         return;
       }
 
-      if (!cancelled) navigate("/inicio", { replace: true });
+      if (!cancelled) navigate(nextPath, { replace: true });
     }
 
     void finishOAuth();

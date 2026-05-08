@@ -1,5 +1,5 @@
 ﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
@@ -75,6 +75,12 @@ const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
 const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores"];
 const SCORE_DETAIL_PREFIX = "__atp_score_v1__:";
+const TAB_QUERY_KEY = "tab";
+
+function readTabFromSearch(search: string): TabKey | null {
+  const raw = (new URLSearchParams(search || "").get(TAB_QUERY_KEY) || "").trim() as TabKey;
+  return VALID_TABS.includes(raw) ? raw : null;
+}
 
 function scopeClassKey(categoryId: string, classId: string): string {
   return `${categoryId}::${classId}`;
@@ -1167,6 +1173,7 @@ function buildClassVisualSvg(
 
 export function TournamentPage({ user, profile }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { tournamentId = "" } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -1540,21 +1547,10 @@ export function TournamentPage({ user, profile }: Props) {
   }, [agendaConfig.duracaoMin]);
 
   useEffect(() => {
-    if (!tournamentId) return;
-    const key = `atp:tournament-tab:${tournamentId}`;
-    const saved = (window.sessionStorage.getItem(key) || "").trim() as TabKey;
-    if (VALID_TABS.includes(saved)) {
-      setTab(saved);
-    } else {
-      setTab("jogos");
-    }
-  }, [tournamentId]);
-
-  useEffect(() => {
-    if (!tournamentId) return;
-    const key = `atp:tournament-tab:${tournamentId}`;
-    window.sessionStorage.setItem(key, tab);
-  }, [tournamentId, tab]);
+    const fromUrl = readTabFromSearch(location.search);
+    if (!fromUrl) return;
+    if (fromUrl !== tab) setTab(fromUrl);
+  }, [location.search, tab]);
 
   useEffect(() => {
     if (tab === "organizacao" && !isOwner) {
@@ -1569,6 +1565,21 @@ export function TournamentPage({ user, profile }: Props) {
       setTab("jogos");
     }
   }, [tab, isOwner, canSeeClassificationTab]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search || "");
+    const current = (params.get(TAB_QUERY_KEY) || "").trim();
+    if (current === tab) return;
+    params.set(TAB_QUERY_KEY, tab);
+    const nextSearch = params.toString();
+    navigate(
+      {
+        pathname: location.pathname,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: true }
+    );
+  }, [tab, location.pathname, location.search, navigate]);
 
   const applyUpdatedTournamentState = async (
     updated: TournamentDetails,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import logo from "../assets/logo-atp.svg";
 
@@ -16,10 +16,18 @@ function GoogleIcon() {
 
 export function AuthPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ kind: "info" | "error" | "success"; text: string } | null>(null);
+  const nextPath = (() => {
+    const q = new URLSearchParams(location.search || "");
+    const raw = String(q.get("next") || "").trim();
+    if (!raw.startsWith("/")) return "/inicio";
+    if (raw === "/auth" || raw.startsWith("/auth?") || raw.startsWith("/auth/callback")) return "/inicio";
+    return raw;
+  })();
 
   const login = async () => {
     if (!supabase) return;
@@ -31,7 +39,7 @@ export function AuthPage() {
       setMsg({ kind: "error", text: error.message || "Falha no login." });
       return;
     }
-    navigate("/inicio", { replace: true });
+    navigate(nextPath, { replace: true });
   };
 
   const signUp = async () => {
@@ -56,7 +64,7 @@ export function AuthPage() {
     } catch {
       // ignore local cleanup errors and continue with OAuth
     }
-    const redirectTo = `${window.location.origin}${window.location.pathname}#/auth/callback`;
+    const redirectTo = `${window.location.origin}${window.location.pathname}#/auth/callback?next=${encodeURIComponent(nextPath)}`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
