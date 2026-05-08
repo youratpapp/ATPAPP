@@ -158,6 +158,10 @@ export function HomePage({ user, profile }: Props) {
           <span className="qa-icon"><LocationIcon /></span>
           <span>Locais</span>
         </button>
+        <button className="quick-action" onClick={() => navigate("/ligas")}>
+          <span className="qa-icon"><BookmarkIcon /></span>
+          <span>Ligas</span>
+        </button>
         <button className="quick-action disabled" onClick={() => alert("Reservas em breve.")}>
           <span className="qa-icon"><BookmarkIcon /></span>
           <span>Minhas Reservas</span>

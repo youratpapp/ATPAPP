@@ -4,13 +4,18 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import {
+  deleteTournamentChatMessage,
   deleteTournament,
+  loadTournamentChatMessages,
   loadTournamentDetails,
   loadTournamentRegistrations,
+  postTournamentAnnouncement,
+  sendTournamentChatMessage,
+  setTournamentPinnedMessage,
   updateTournamentDetails,
   updateTournamentRegistrationStatus,
 } from "../lib/tournaments";
-import type { Profile, TournamentDetails, TournamentRegistration } from "../lib/types";
+import type { Profile, TournamentChatMessage, TournamentDetails, TournamentRegistration } from "../lib/types";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
 import {
   generateScheduleAssignments,
@@ -37,7 +42,7 @@ type Props = {
   forcedTab?: TabKey;
 };
 
-type TabKey = "jogos" | "classificacao" | "organizacao" | "jogadores";
+type TabKey = "jogos" | "classificacao" | "organizacao" | "jogadores" | "chat";
 type SetWinner = "a" | "b" | null;
 type MatchScoreSet = {
   a: string;
@@ -74,22 +79,24 @@ type ConfigScopeClass = {
 
 const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
-const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores"];
+const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores", "chat"];
 const SCORE_DETAIL_PREFIX = "__atp_score_v1__:";
 
-function isTabAllowed(tab: TabKey, isOwner: boolean, canSeeClassificationTab: boolean): boolean {
+function isTabAllowed(tab: TabKey, isOwner: boolean, canSeeClassificationTab: boolean, canUseChatTab: boolean): boolean {
   if ((tab === "organizacao" || tab === "jogadores") && !isOwner) return false;
   if (tab === "classificacao" && !canSeeClassificationTab) return false;
+  if (tab === "chat" && !canUseChatTab) return false;
   return true;
 }
 
 function coerceAllowedTab(
   requested: TabKey | null,
   isOwner: boolean,
-  canSeeClassificationTab: boolean
+  canSeeClassificationTab: boolean,
+  canUseChatTab: boolean
 ): TabKey {
   const base = requested && VALID_TABS.includes(requested) ? requested : "jogos";
-  return isTabAllowed(base, isOwner, canSeeClassificationTab) ? base : "jogos";
+  return isTabAllowed(base, isOwner, canSeeClassificationTab, canUseChatTab) ? base : "jogos";
 }
 
 function scopeClassKey(categoryId: string, classId: string): string {
@@ -1258,6 +1265,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [basicStartsAt, setBasicStartsAt] = useState("");
   const [basicRegistrationCloseAt, setBasicRegistrationCloseAt] = useState("");
   const [basicPosterUrl, setBasicPosterUrl] = useState("");
+  const [chatMessages, setChatMessages] = useState<TournamentChatMessage[]>([]);
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatBusy, setChatBusy] = useState(false);
+  const [chatText, setChatText] = useState("");
+  const [announcementText, setAnnouncementText] = useState("");
+  const [pinAnnouncement, setPinAnnouncement] = useState(false);
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -1336,8 +1349,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     [classes]
   );
   const canSeeClassificationTab = isOwner || hasGroupClasses;
+  const canUseChatTab = isOwner || tournament?.role === "participant";
   const requestedTab: TabKey = forcedTab && VALID_TABS.includes(forcedTab) ? forcedTab : "jogos";
-  const tab = tournament ? coerceAllowedTab(requestedTab, isOwner, canSeeClassificationTab) : requestedTab;
+  const tab = tournament ? coerceAllowedTab(requestedTab, isOwner, canSeeClassificationTab, canUseChatTab) : requestedTab;
   const canEditScores = isOwner;
   const showFloatingSave = isOwner && (tab === "organizacao" || tab === "jogadores");
   const filteredRegistrations = useMemo(() => {
@@ -1432,11 +1446,90 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   const goToTab = (next: TabKey) => {
     if (!tournamentId) return;
-    const allowed = coerceAllowedTab(next, isOwner, canSeeClassificationTab);
+    const allowed = coerceAllowedTab(next, isOwner, canSeeClassificationTab, canUseChatTab);
     navigate(
       `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
       { replace: false }
     );
+  };
+
+  const pinnedChatMessage = useMemo(
+    () => chatMessages.find((m) => m.isPinned) ?? null,
+    [chatMessages]
+  );
+
+  const refreshChat = async (showSpinner = false) => {
+    if (!tournament) return;
+    if (!canUseChatTab) return;
+    if (showSpinner) setChatLoading(true);
+    try {
+      const rows = await loadTournamentChatMessages(tournament.id);
+      setChatMessages(rows);
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao carregar chat." });
+    } finally {
+      if (showSpinner) setChatLoading(false);
+    }
+  };
+
+  const sendChatMessageNow = async () => {
+    if (!tournament) return;
+    const text = chatText.trim();
+    if (!text) return;
+    setChatBusy(true);
+    try {
+      await sendTournamentChatMessage(tournament.id, text);
+      setChatText("");
+      await refreshChat(false);
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao enviar mensagem." });
+    } finally {
+      setChatBusy(false);
+    }
+  };
+
+  const postAnnouncementNow = async () => {
+    if (!tournament) return;
+    const text = announcementText.trim();
+    if (!text) return;
+    setChatBusy(true);
+    try {
+      await postTournamentAnnouncement(tournament.id, text, pinAnnouncement);
+      setAnnouncementText("");
+      setPinAnnouncement(false);
+      await refreshChat(false);
+      setFeedback({ kind: "success", text: "Aviso publicado no chat." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao publicar aviso." });
+    } finally {
+      setChatBusy(false);
+    }
+  };
+
+  const pinMessageNow = async (messageId: string | null) => {
+    if (!tournament) return;
+    setChatBusy(true);
+    try {
+      await setTournamentPinnedMessage(tournament.id, messageId);
+      await refreshChat(false);
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao fixar mensagem." });
+    } finally {
+      setChatBusy(false);
+    }
+  };
+
+  const deleteChatMessageNow = async (messageId: string) => {
+    if (!tournament) return;
+    setChatBusy(true);
+    try {
+      await deleteTournamentChatMessage(tournament.id, messageId);
+      await refreshChat(false);
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao excluir mensagem." });
+    } finally {
+      setChatBusy(false);
+    }
   };
 
   useEffect(() => {
@@ -1594,6 +1687,36 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     if (tab === forcedTab) return;
     navigate(`/eventos/${encodeURIComponent(tournamentId)}/${tab}`, { replace: true });
   }, [tournamentId, tournament, forcedTab, tab, navigate]);
+
+  useEffect(() => {
+    if (!tournament) return;
+    if (tab !== "chat") return;
+    if (!canUseChatTab) return;
+    let stop = false;
+    setChatLoading(true);
+    loadTournamentChatMessages(tournament.id)
+      .then((rows) => {
+        if (stop) return;
+        setChatMessages(rows);
+      })
+      .catch((err) => {
+        if (stop) return;
+        setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao carregar chat." });
+      })
+      .finally(() => {
+        if (!stop) setChatLoading(false);
+      });
+
+    const timer = window.setInterval(() => {
+      if (stop) return;
+      void refreshChat(false);
+    }, 12000);
+
+    return () => {
+      stop = true;
+      window.clearInterval(timer);
+    };
+  }, [tournament?.id, tab, canUseChatTab]);
 
   const applyUpdatedTournamentState = async (
     updated: TournamentDetails,
@@ -3122,6 +3245,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 Jogadores
               </button>
             ) : null}
+            {canUseChatTab ? (
+              <button className={tab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
+                Chat
+              </button>
+            ) : null}
           </div>
 
           {tab === "jogos" || tab === "classificacao" ? (
@@ -4104,6 +4232,151 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     ))}
                   </div>
                 ))}
+              </div>
+            </section>
+          ) : null}
+
+          {tab === "chat" && canUseChatTab ? (
+            <section className="card">
+              <div className="section-title" style={{ marginBottom: 8 }}>
+                <h3 style={{ marginTop: 0 }}>Chat do torneio</h3>
+                <div className="cluster">
+                  <button onClick={() => void refreshChat(true)} disabled={chatBusy || chatLoading}>
+                    Atualizar
+                  </button>
+                  {isOwner && pinnedChatMessage ? (
+                    <button className="ghost" onClick={() => void pinMessageNow(null)} disabled={chatBusy}>
+                      Desfixar topo
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+
+              {pinnedChatMessage ? (
+                <article
+                  style={{
+                    border: "1px solid #93c5fd",
+                    borderRadius: 10,
+                    background: "#eff6ff",
+                    padding: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  <p style={{ margin: 0, fontWeight: 700, color: "#1e3a8a" }}>Mensagem fixada</p>
+                  <p style={{ margin: "6px 0 4px 0" }}>{pinnedChatMessage.body}</p>
+                  <p className="subtle" style={{ margin: 0 }}>
+                    {pinnedChatMessage.messageType === "announcement" ? "Aviso" : "Mensagem"} de {pinnedChatMessage.senderName} em{" "}
+                    {new Date(pinnedChatMessage.createdAt).toLocaleString("pt-BR")}
+                  </p>
+                </article>
+              ) : null}
+
+              {isOwner ? (
+                <div className="tournament-admin-ops" style={{ marginBottom: 10 }}>
+                  <h4 style={{ marginTop: 0, marginBottom: 8 }}>Aviso do admin</h4>
+                  <textarea
+                    value={announcementText}
+                    onChange={(e) => setAnnouncementText(e.target.value)}
+                    placeholder="Escreva um aviso para todos os participantes"
+                    rows={3}
+                  />
+                  <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    <input
+                      type="checkbox"
+                      checked={pinAnnouncement}
+                      onChange={(e) => setPinAnnouncement(e.target.checked)}
+                    />
+                    Fixar este aviso no topo
+                  </label>
+                  <div className="cluster" style={{ marginTop: 8 }}>
+                    <button
+                      className="primary"
+                      onClick={() => void postAnnouncementNow()}
+                      disabled={chatBusy || !announcementText.trim()}
+                    >
+                      Publicar aviso
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+
+              <div
+                style={{
+                  border: "1px solid var(--color-border)",
+                  borderRadius: 10,
+                  padding: 10,
+                  maxHeight: 380,
+                  overflow: "auto",
+                  background: "var(--color-surface-muted)",
+                }}
+              >
+                {chatLoading ? <p className="subtle">Carregando chat...</p> : null}
+                {!chatLoading && chatMessages.length === 0 ? <p className="subtle">Ainda sem mensagens no chat.</p> : null}
+                {chatMessages.map((m) => {
+                  const mine = m.senderUserId === user.id;
+                  return (
+                    <div
+                      key={m.id}
+                      style={{
+                        background: mine ? "var(--color-primary-soft)" : "#ffffff",
+                        border: "1px solid var(--color-border)",
+                        borderRadius: 10,
+                        padding: 8,
+                        marginBottom: 8,
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
+                        <strong style={{ fontSize: 12 }}>
+                          {m.messageType === "announcement" ? "AVISO · " : ""}
+                          {m.senderName}
+                        </strong>
+                        <span className="subtle" style={{ fontSize: 11 }}>
+                          {new Date(m.createdAt).toLocaleString("pt-BR")}
+                        </span>
+                      </div>
+                      <p style={{ margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
+                      {isOwner ? (
+                        <div className="cluster" style={{ marginTop: 6 }}>
+                          <button
+                            className="ghost"
+                            onClick={() => void pinMessageNow(m.id)}
+                            disabled={chatBusy}
+                            style={{ minHeight: 30, padding: "4px 10px" }}
+                          >
+                            {m.isPinned ? "Fixada" : "Fixar"}
+                          </button>
+                          <button
+                            className="danger"
+                            onClick={() => void deleteChatMessageNow(m.id)}
+                            disabled={chatBusy}
+                            style={{ minHeight: 30, padding: "4px 10px" }}
+                          >
+                            Excluir
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="cluster" style={{ marginTop: 10, alignItems: "flex-end" }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ marginTop: 0 }}>Nova mensagem</label>
+                  <textarea
+                    value={chatText}
+                    onChange={(e) => setChatText(e.target.value)}
+                    placeholder="Escreva no chat do torneio"
+                    rows={2}
+                  />
+                </div>
+                <button
+                  className="primary"
+                  onClick={() => void sendChatMessageNow()}
+                  disabled={chatBusy || !chatText.trim()}
+                >
+                  Enviar
+                </button>
               </div>
             </section>
           ) : null}

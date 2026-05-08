@@ -1,10 +1,11 @@
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
-import type { TournamentDetails, TournamentRegistration, TournamentSummary } from "./types";
+import type { TournamentChatMessage, TournamentDetails, TournamentRegistration, TournamentSummary } from "./types";
 
 const TABLE_TOURNAMENTS = "tournaments";
 const TABLE_MEMBERS = "tournament_members";
 const TABLE_REGISTRATIONS = "tournament_registrations";
+const TABLE_CHAT = "tournament_chat_messages";
 
 export const TOURNAMENT_COLUMNS =
   "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at";
@@ -42,6 +43,17 @@ type TournamentRegistrationRow = {
   player_name: string | null;
   phone: string | null;
   status: string | null;
+  created_at: string | null;
+};
+
+type TournamentChatRow = {
+  id: string;
+  tournament_id: string;
+  sender_user_id: string;
+  message_type: "chat" | "announcement" | string;
+  body: string | null;
+  is_pinned: boolean | null;
+  pinned_at: string | null;
   created_at: string | null;
 };
 
@@ -107,6 +119,20 @@ function registrationRowToModel(row: TournamentRegistrationRow): TournamentRegis
       row.status === "approved" || row.status === "rejected" || row.status === "pending"
         ? row.status
         : "pending",
+    createdAt: row.created_at ?? "",
+  };
+}
+
+function chatRowToModel(row: TournamentChatRow, senderName: string): TournamentChatMessage {
+  return {
+    id: row.id,
+    tournamentId: row.tournament_id,
+    senderUserId: row.sender_user_id,
+    senderName,
+    messageType: row.message_type === "announcement" ? "announcement" : "chat",
+    body: row.body ?? "",
+    isPinned: Boolean(row.is_pinned),
+    pinnedAt: row.pinned_at ?? "",
     createdAt: row.created_at ?? "",
   };
 }
@@ -412,6 +438,84 @@ export async function deleteTournament(user: User, tournamentId: string): Promis
   if (!data?.id) {
     throw new Error("Somente o admin do torneio pode excluir.");
   }
+}
+
+export async function loadTournamentChatMessages(tournamentId: string): Promise<TournamentChatMessage[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_CHAT)
+    .select("id,tournament_id,sender_user_id,message_type,body,is_pinned,pinned_at,created_at")
+    .eq("tournament_id", tournamentId)
+    .order("created_at", { ascending: true })
+    .limit(400);
+  if (error) throw new Error(error.message);
+
+  const rows = (data ?? []) as TournamentChatRow[];
+  const userIds = Array.from(new Set(rows.map((r) => r.sender_user_id).filter(Boolean)));
+  const nameMap = new Map<string, string>();
+  if (userIds.length) {
+    const pRes = await supabase
+      .from("profiles")
+      .select("user_id,display_name")
+      .in("user_id", userIds);
+    if (!pRes.error) {
+      const arr = (pRes.data ?? []) as Array<{ user_id: string; display_name: string | null }>;
+      arr.forEach((p) => {
+        nameMap.set(p.user_id, (p.display_name || "").trim() || "Jogador");
+      });
+    }
+  }
+  return rows.map((r) => chatRowToModel(r, nameMap.get(r.sender_user_id) || "Jogador"));
+}
+
+export async function sendTournamentChatMessage(tournamentId: string, body: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const text = body.trim();
+  if (!text) return;
+  const auth = await supabase.auth.getUser();
+  if (auth.error || !auth.data.user) throw new Error(auth.error?.message || "Usuario nao autenticado.");
+
+  const { error } = await supabase.from(TABLE_CHAT).insert({
+    tournament_id: tournamentId,
+    sender_user_id: auth.data.user.id,
+    message_type: "chat",
+    body: text,
+    is_pinned: false,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function postTournamentAnnouncement(
+  tournamentId: string,
+  body: string,
+  pin = false
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_post_tournament_announcement", {
+    p_tournament_id: tournamentId,
+    p_body: body,
+    p_pin: pin,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function setTournamentPinnedMessage(tournamentId: string, messageId: string | null): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_set_tournament_chat_pinned", {
+    p_tournament_id: tournamentId,
+    p_message_id: messageId,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function deleteTournamentChatMessage(tournamentId: string, messageId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase
+    .from(TABLE_CHAT)
+    .delete()
+    .eq("id", messageId)
+    .eq("tournament_id", tournamentId);
+  if (error) throw new Error(error.message);
 }
 
 export function buildTournamentUrl(tournamentId: string): string {

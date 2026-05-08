@@ -14,6 +14,9 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { TournamentPage } from "./pages/TournamentPage";
 import { TournamentRegistrationPage } from "./pages/TournamentRegistrationPage";
 import { CompleteProfilePage } from "./pages/CompleteProfilePage";
+import { LeaguesPage } from "./pages/LeaguesPage";
+import { LeagueDetailsPage } from "./pages/LeagueDetailsPage";
+import { LeagueJoinPage } from "./pages/LeagueJoinPage";
 import "./App.css";
 
 const BOOT_TIMEOUT_MS = 8000;
@@ -236,6 +239,9 @@ function AppInner() {
       <Route path="/" element={<Navigate to="/inicio" replace />} />
       <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
       <Route path="/eventos" element={<EventsPage user={authUser} profile={profile} />} />
+      <Route path="/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />
+      <Route path="/ligas/:leagueId" element={<LeagueDetailsPage user={authUser} profile={profile} />} />
+      <Route path="/ligas/inscricao/:token" element={<LeagueJoinPage user={authUser} profile={profile} />} />
       <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
       <Route path="/ranking" element={<RankingPage user={authUser} profile={profile} />} />
       <Route
@@ -247,6 +253,7 @@ function AppInner() {
       <Route path="/eventos/:tournamentId/classificacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="classificacao" />} />
       <Route path="/eventos/:tournamentId/organizacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="organizacao" />} />
       <Route path="/eventos/:tournamentId/jogadores" element={<TournamentPage user={authUser} profile={profile} forcedTab="jogadores" />} />
+      <Route path="/eventos/:tournamentId/chat" element={<TournamentPage user={authUser} profile={profile} forcedTab="chat" />} />
       <Route path="/inscricao/:tournamentId" element={<TournamentRegistrationPage user={authUser} profile={profile} />} />
       <Route path="/join/:tournamentId" element={<JoinFromLinkPage user={authUser} />} />
       <Route path="/t/:tournamentId" element={<LegacyRedirectPage />} />

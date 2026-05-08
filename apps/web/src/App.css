@@ -1185,6 +1185,173 @@ button:disabled {
   font-size: var(--font-size-xs);
 }
 
+.section-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.league-round-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 10px 0 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-muted);
+  font-size: var(--font-size-sm);
+}
+
+.league-match-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.league-match-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.league-match-title {
+  margin: 0;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.league-match-sub {
+  margin: 4px 0 0;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.league-room-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.league-room-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  padding: 10px;
+}
+
+.league-room-panel h4 {
+  margin: 0 0 8px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.league-room-result {
+  grid-column: 1 / -1;
+}
+
+.league-participant-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+}
+
+.league-participant-row:first-of-type {
+  border-top: none;
+}
+
+.league-availability-inputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.league-availability-list {
+  margin-top: 8px;
+}
+
+.league-availability-list p {
+  margin: 3px 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.league-chat-box {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-muted);
+  padding: 8px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.league-chat-me,
+.league-chat-other {
+  margin-bottom: 6px;
+}
+
+.league-chat-me p,
+.league-chat-other p {
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.league-chat-me p {
+  background: var(--color-primary-soft);
+}
+
+.league-chat-other p {
+  background: #fff;
+}
+
+.league-chat-me span,
+.league-chat-other span {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  color: var(--color-text-subtle);
+}
+
+.league-chat-send {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.league-submission-list {
+  margin-top: 8px;
+}
+
+.league-submission-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  padding-top: 6px;
+  margin-top: 6px;
+  font-size: var(--font-size-xs);
+}
+
+.league-submission-row span:last-child {
+  display: inline-flex;
+  gap: 6px;
+}
+
 .empty-state {
   padding: var(--space-8) var(--space-4);
   text-align: center;
@@ -1213,6 +1380,12 @@ button:disabled {
   border: none;
   cursor: pointer;
   font-size: var(--font-size-md);
+}
+
+@media (max-width: 720px) {
+  .league-room-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ----- Profile screen ----- */
