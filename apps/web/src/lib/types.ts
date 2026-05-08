@@ -114,6 +114,7 @@ export type LeagueDetails = {
   woRule: string;
   publicJoinEnabled: boolean;
   joinRequiresApproval: boolean;
+  autoRoundGenerationEnabled: boolean;
   status: "draft" | "active" | "paused" | "finished";
   visibility: "private" | "public";
   updatedAt: string;
@@ -214,4 +215,16 @@ export type LeagueJoinContext = {
   classId: string | null;
   categoryName: string | null;
   className: string | null;
+};
+
+export type LeagueChatMessage = {
+  id: string;
+  leagueId: string;
+  senderUserId: string;
+  senderName: string;
+  messageType: "chat" | "announcement";
+  body: string;
+  isPinned: boolean;
+  pinnedAt: string;
+  createdAt: string;
 };

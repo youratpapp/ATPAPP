@@ -1,6 +1,7 @@
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
 import type {
+  LeagueChatMessage,
   LeagueClassSummary,
   LeagueDetails,
   LeagueJoinContext,
@@ -16,6 +17,7 @@ import type {
 
 const TABLE_LEAGUES = "leagues";
 const TABLE_LEAGUE_SEASONS = "league_seasons";
+const TABLE_LEAGUE_CHAT = "league_chat_messages";
 
 type LeagueRpcRow = {
   league_id: string;
@@ -52,6 +54,7 @@ type LeagueRow = {
   wo_rule: string | null;
   public_join_enabled: boolean | null;
   join_requires_approval: boolean | null;
+  auto_round_generation_enabled: boolean | null;
   status: string | null;
   visibility: string | null;
   updated_at: string | null;
@@ -140,6 +143,17 @@ type MessageRow = {
   match_id: string;
   sender_user_id: string | null;
   body: string;
+  created_at: string | null;
+};
+
+type LeagueChatRow = {
+  id: string;
+  league_id: string;
+  sender_user_id: string;
+  message_type: "chat" | "announcement" | string;
+  body: string | null;
+  is_pinned: boolean | null;
+  pinned_at: string | null;
   created_at: string | null;
 };
 
@@ -278,7 +292,7 @@ export async function loadLeagueDetails(leagueId: string): Promise<LeagueDetails
   const { data, error } = await supabase
     .from(TABLE_LEAGUES)
     .select(
-      "id,owner_id,name,league_type,category,class_scope,match_format,rounds_total,round_interval,round_interval_days,result_deadline_days,tolerance_days,promoted_count,relegated_count,max_recesses,wildcard_enabled,no_ad_enabled,tie_break_rule,wo_rule,public_join_enabled,join_requires_approval,status,visibility,updated_at"
+      "id,owner_id,name,league_type,category,class_scope,match_format,rounds_total,round_interval,round_interval_days,result_deadline_days,tolerance_days,promoted_count,relegated_count,max_recesses,wildcard_enabled,no_ad_enabled,tie_break_rule,wo_rule,public_join_enabled,join_requires_approval,auto_round_generation_enabled,status,visibility,updated_at"
     )
     .eq("id", leagueId)
     .maybeSingle();
@@ -315,6 +329,7 @@ export async function loadLeagueDetails(leagueId: string): Promise<LeagueDetails
     woRule: row.wo_rule ?? "victory_min_score",
     publicJoinEnabled: row.public_join_enabled !== false,
     joinRequiresApproval: row.join_requires_approval !== false,
+    autoRoundGenerationEnabled: row.auto_round_generation_enabled !== false,
     status: normalizeLeagueStatus(row.status),
     visibility: normalizeLeagueVisibility(row.visibility),
     updatedAt: row.updated_at ?? "",
@@ -337,6 +352,41 @@ export async function loadLeagueClasses(seasonId: string): Promise<LeagueClassSu
     className: row.class_name,
     levelOrder: Number(row.level_order || 1),
   }));
+}
+
+export async function createLeagueClass(input: {
+  seasonId: string;
+  categoryName: string;
+  className: string;
+}): Promise<{ id: string }> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const categoryName = String(input.categoryName || "").trim();
+  const className = String(input.className || "").trim();
+  if (!categoryName) throw new Error("Informe a categoria.");
+  if (!className) throw new Error("Informe a classe.");
+
+  const maxRes = await supabase
+    .from("league_classes")
+    .select("level_order")
+    .eq("season_id", input.seasonId)
+    .order("level_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (maxRes.error) throw new Error(maxRes.error.message);
+  const nextOrder = Number(maxRes.data?.level_order || 0) + 1;
+
+  const { data, error } = await supabase
+    .from("league_classes")
+    .insert({
+      season_id: input.seasonId,
+      category_name: categoryName,
+      class_name: className,
+      level_order: nextOrder,
+    })
+    .select("id")
+    .single();
+  if (error || !data?.id) throw new Error(error?.message || "Falha ao criar classe.");
+  return { id: String(data.id) };
 }
 
 export async function createLeagueJoinLink(input: {
@@ -636,5 +686,151 @@ export async function sendMatchMessage(matchId: string, body: string): Promise<v
     sender_user_id: authData.user.id,
     body: text,
   });
+  if (error) throw new Error(error.message);
+}
+
+export async function updateLeagueSettings(input: {
+  leagueId: string;
+  matchFormat: string;
+  roundInterval: string;
+  roundIntervalDays: number;
+  resultDeadlineDays: number;
+  toleranceDays: number;
+  promotedCount: number;
+  relegatedCount: number;
+  maxRecesses: number;
+  wildcardEnabled: boolean;
+  noAdEnabled: boolean;
+  tieBreakRule: string;
+  woRule: string;
+  publicJoinEnabled: boolean;
+  joinRequiresApproval: boolean;
+  autoRoundGenerationEnabled: boolean;
+}): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_update_league_settings", {
+    p_league_id: input.leagueId,
+    p_match_format: input.matchFormat,
+    p_round_interval: input.roundInterval,
+    p_round_interval_days: Math.max(1, Math.floor(input.roundIntervalDays || 14)),
+    p_result_deadline_days: Math.max(1, Math.floor(input.resultDeadlineDays || 14)),
+    p_tolerance_days: Math.max(0, Math.floor(input.toleranceDays || 0)),
+    p_promoted_count: Math.max(0, Math.floor(input.promotedCount || 0)),
+    p_relegated_count: Math.max(0, Math.floor(input.relegatedCount || 0)),
+    p_max_recesses: Math.max(0, Math.floor(input.maxRecesses || 0)),
+    p_wildcard_enabled: Boolean(input.wildcardEnabled),
+    p_no_ad_enabled: Boolean(input.noAdEnabled),
+    p_tie_break_rule: input.tieBreakRule,
+    p_wo_rule: input.woRule,
+    p_public_join_enabled: Boolean(input.publicJoinEnabled),
+    p_join_requires_approval: Boolean(input.joinRequiresApproval),
+    p_auto_round_generation_enabled: Boolean(input.autoRoundGenerationEnabled),
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function applyLeagueSeasonMovements(input: {
+  leagueId: string;
+  seasonId: string;
+  note?: string;
+}): Promise<Array<{ leaguePlayerId: string; fromClassId: string; toClassId: string; movement: string }>> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_apply_league_season_movements", {
+    p_league_id: input.leagueId,
+    p_season_id: input.seasonId,
+    p_note: input.note || null,
+  });
+  if (error) throw new Error(error.message);
+  const rows = (data ?? []) as Array<{
+    league_player_id: string;
+    from_class_id: string;
+    to_class_id: string;
+    movement: string;
+  }>;
+  return rows.map((row) => ({
+    leaguePlayerId: row.league_player_id,
+    fromClassId: row.from_class_id,
+    toClassId: row.to_class_id,
+    movement: row.movement,
+  }));
+}
+
+function leagueChatRowToModel(row: LeagueChatRow, senderName: string): LeagueChatMessage {
+  return {
+    id: row.id,
+    leagueId: row.league_id,
+    senderUserId: row.sender_user_id,
+    senderName,
+    messageType: row.message_type === "announcement" ? "announcement" : "chat",
+    body: row.body ?? "",
+    isPinned: Boolean(row.is_pinned),
+    pinnedAt: row.pinned_at ?? "",
+    createdAt: row.created_at ?? "",
+  };
+}
+
+export async function loadLeagueChatMessages(leagueId: string): Promise<LeagueChatMessage[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_LEAGUE_CHAT)
+    .select("id,league_id,sender_user_id,message_type,body,is_pinned,pinned_at,created_at")
+    .eq("league_id", leagueId)
+    .order("created_at", { ascending: true })
+    .limit(400);
+  if (error) throw new Error(error.message);
+
+  const rows = (data ?? []) as LeagueChatRow[];
+  const userIds = Array.from(new Set(rows.map((r) => r.sender_user_id).filter(Boolean)));
+  const nameMap = new Map<string, string>();
+  if (userIds.length) {
+    const pRes = await supabase.from("profiles").select("user_id,display_name").in("user_id", userIds);
+    if (!pRes.error) {
+      const arr = (pRes.data ?? []) as Array<{ user_id: string; display_name: string | null }>;
+      arr.forEach((p) => {
+        nameMap.set(p.user_id, (p.display_name || "").trim() || "Jogador");
+      });
+    }
+  }
+  return rows.map((row) => leagueChatRowToModel(row, nameMap.get(row.sender_user_id) || "Jogador"));
+}
+
+export async function sendLeagueChatMessage(leagueId: string, body: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const text = body.trim();
+  if (!text) return;
+  const auth = await supabase.auth.getUser();
+  if (auth.error || !auth.data.user) throw new Error(auth.error?.message || "Usuario nao autenticado.");
+  const { error } = await supabase.from(TABLE_LEAGUE_CHAT).insert({
+    league_id: leagueId,
+    sender_user_id: auth.data.user.id,
+    message_type: "chat",
+    body: text,
+    is_pinned: false,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function postLeagueAnnouncement(leagueId: string, body: string, pin = false): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_post_league_announcement", {
+    p_league_id: leagueId,
+    p_body: body,
+    p_pin: pin,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function setLeaguePinnedMessage(leagueId: string, messageId: string | null): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_set_league_chat_pinned", {
+    p_league_id: leagueId,
+    p_message_id: messageId,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function deleteLeagueChatMessage(leagueId: string, messageId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_LEAGUE_CHAT).delete().eq("id", messageId).eq("league_id", leagueId);
   if (error) throw new Error(error.message);
 }

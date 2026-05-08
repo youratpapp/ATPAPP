@@ -3,9 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import {
+  applyLeagueSeasonMovements,
+  createLeagueClass,
+  deleteLeagueChatMessage,
   confirmLeagueMatchResult,
   createLeagueJoinLink,
   generateNextLeagueRound,
+  loadLeagueChatMessages,
   loadLeagueClasses,
   loadLeagueDetails,
   loadLeagueRegistrations,
@@ -14,13 +18,18 @@ import {
   loadMatchSubmissions,
   loadRoundMatches,
   loadSeasonRounds,
+  postLeagueAnnouncement,
   requestPublicLeagueJoin,
   saveMyMatchAvailability,
+  sendLeagueChatMessage,
   sendMatchMessage,
+  setLeaguePinnedMessage,
   setLeagueRegistrationStatus,
   submitLeagueMatchResult,
+  updateLeagueSettings,
 } from "../lib/leagues";
 import type {
+  LeagueChatMessage,
   LeagueClassSummary,
   LeagueDetails,
   LeagueMatchAvailability,
@@ -37,7 +46,7 @@ type Props = {
   profile: Profile | null;
 };
 
-type PageTab = "visao" | "jogadores" | "partidas";
+type PageTab = "visao" | "jogadores" | "partidas" | "chat";
 
 type MatchForm = {
   sets1: string;
@@ -52,6 +61,24 @@ type MatchForm = {
 type RoundWithMatches = {
   round: LeagueRoundSummary;
   matches: LeagueMatchSummary[];
+};
+
+type LeagueSettingsDraft = {
+  matchFormat: string;
+  roundInterval: string;
+  roundIntervalDays: number;
+  resultDeadlineDays: number;
+  toleranceDays: number;
+  promotedCount: number;
+  relegatedCount: number;
+  maxRecesses: number;
+  wildcardEnabled: boolean;
+  noAdEnabled: boolean;
+  tieBreakRule: string;
+  woRule: string;
+  publicJoinEnabled: boolean;
+  joinRequiresApproval: boolean;
+  autoRoundGenerationEnabled: boolean;
 };
 
 function typeLabel(v: LeagueDetails["leagueType"]): string {
@@ -128,6 +155,13 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [messagesByMatch, setMessagesByMatch] = useState<Record<string, LeagueMatchMessage[]>>({});
   const [messageDraftByMatch, setMessageDraftByMatch] = useState<Record<string, string>>({});
   const [myAvailabilityByMatch, setMyAvailabilityByMatch] = useState<Record<string, string[]>>({});
+  const [settingsDraft, setSettingsDraft] = useState<LeagueSettingsDraft | null>(null);
+  const [leagueChat, setLeagueChat] = useState<LeagueChatMessage[]>([]);
+  const [leagueChatDraft, setLeagueChatDraft] = useState("");
+  const [announcementDraft, setAnnouncementDraft] = useState("");
+  const [announcementPin, setAnnouncementPin] = useState(true);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newClassName, setNewClassName] = useState("");
 
   const isOwner = Boolean(league && league.ownerId === user.id);
   const classById = useMemo(() => {
@@ -172,6 +206,23 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     try {
       const details = await loadLeagueDetails(id);
       setLeague(details);
+      setSettingsDraft({
+        matchFormat: details.matchFormat,
+        roundInterval: details.roundInterval,
+        roundIntervalDays: details.roundIntervalDays,
+        resultDeadlineDays: details.resultDeadlineDays,
+        toleranceDays: details.toleranceDays,
+        promotedCount: details.promotedCount,
+        relegatedCount: details.relegatedCount,
+        maxRecesses: details.maxRecesses,
+        wildcardEnabled: details.wildcardEnabled,
+        noAdEnabled: details.noAdEnabled,
+        tieBreakRule: details.tieBreakRule,
+        woRule: details.woRule,
+        publicJoinEnabled: details.publicJoinEnabled,
+        joinRequiresApproval: details.joinRequiresApproval,
+        autoRoundGenerationEnabled: details.autoRoundGenerationEnabled,
+      });
       const initialSeasonId = selectedSeasonId || details.seasons.find((s) => s.status === "active")?.id || details.seasons[0]?.id || "";
       setSelectedSeasonId(initialSeasonId);
 
@@ -189,6 +240,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       } else {
         setRegistrations([]);
       }
+      setLeagueChat(await loadLeagueChatMessages(id).catch(() => []));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Falha ao carregar liga.");
     } finally {
@@ -305,6 +357,138 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       await loadAll();
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao atualizar inscricao." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onSaveLeagueSettings() {
+    if (!league || !settingsDraft) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updateLeagueSettings({
+        leagueId: league.id,
+        ...settingsDraft,
+      });
+      setFeedback({ kind: "success", text: "Configuracoes da liga salvas." });
+      await loadAll();
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar configuracoes." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onApplySeasonMovements() {
+    if (!league || !selectedSeasonId) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const moved = await applyLeagueSeasonMovements({
+        leagueId: league.id,
+        seasonId: selectedSeasonId,
+        note: "Fechamento de temporada com promocao/rebaixamento automatico",
+      });
+      setFeedback({
+        kind: "success",
+        text: `Temporada finalizada. Movimentacoes realizadas: ${moved.length}.`,
+      });
+      await loadAll();
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aplicar promocao/rebaixamento." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onCreateClass() {
+    if (!selectedSeasonId) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await createLeagueClass({
+        seasonId: selectedSeasonId,
+        categoryName: newCategoryName,
+        className: newClassName,
+      });
+      setNewCategoryName("");
+      setNewClassName("");
+      setFeedback({ kind: "success", text: "Classe criada na temporada." });
+      setClasses(await loadLeagueClasses(selectedSeasonId));
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao criar classe." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function refreshLeagueChat() {
+    if (!league) return;
+    const rows = await loadLeagueChatMessages(league.id);
+    setLeagueChat(rows);
+  }
+
+  async function onSendLeagueChat() {
+    if (!league) return;
+    const text = leagueChatDraft.trim();
+    if (!text) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await sendLeagueChatMessage(league.id, text);
+      setLeagueChatDraft("");
+      await refreshLeagueChat();
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao enviar mensagem." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onPostLeagueAnnouncement() {
+    if (!league || !isOwner) return;
+    const text = announcementDraft.trim();
+    if (!text) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await postLeagueAnnouncement(league.id, text, announcementPin);
+      setAnnouncementDraft("");
+      await refreshLeagueChat();
+      setFeedback({ kind: "success", text: "Comunicado publicado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao publicar comunicado." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onPinLeagueMessage(messageId: string | null) {
+    if (!league || !isOwner) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await setLeaguePinnedMessage(league.id, messageId);
+      await refreshLeagueChat();
+      setFeedback({ kind: "success", text: messageId ? "Mensagem fixada." : "Mensagem fixada removida." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao atualizar fixacao." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onDeleteLeagueMessage(messageId: string) {
+    if (!league) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await deleteLeagueChatMessage(league.id, messageId);
+      await refreshLeagueChat();
+      setFeedback({ kind: "success", text: "Mensagem removida." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao remover mensagem." });
     } finally {
       setBusy(false);
     }
@@ -428,6 +612,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             <button className={activeTab === "partidas" ? "active" : ""} onClick={() => setActiveTab("partidas")}>
               Partidas
             </button>
+            <button className={activeTab === "chat" ? "active" : ""} onClick={() => setActiveTab("chat")}>
+              Chat
+            </button>
           </div>
 
           <div className="events-kpi-grid">
@@ -453,34 +640,204 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             <>
               <section className="section-card">
                 <h3 style={{ marginTop: 0, marginBottom: 10 }}>Config da liga</h3>
-                <div className="events-filter-grid">
-                  <div>
-                    <label>Categoria</label>
-                    <p className="subtle">{league.category || "-"}</p>
+                <p className="subtle" style={{ marginTop: 0 }}>
+                  Categoria base: {league.category || "-"} | Escopo inicial: {league.classScope || "-"} | Rodadas previstas: {league.roundsTotal}
+                </p>
+                {settingsDraft ? (
+                  <div className="events-filter-grid">
+                    <label>
+                      Formato da partida
+                      <select
+                        value={settingsDraft.matchFormat}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) => (prev ? { ...prev, matchFormat: e.target.value } : prev))
+                        }
+                      >
+                        <option value="melhor_de_3">Melhor de 3</option>
+                        <option value="melhor_de_3_super_tb">Melhor de 3 c/ Super TB</option>
+                        <option value="set_unico">Set unico</option>
+                        <option value="pro_set">Pro Set</option>
+                        <option value="fast4">Fast4</option>
+                        <option value="super_tb_unico">Super TB unico</option>
+                      </select>
+                    </label>
+                    <label>
+                      Intervalo
+                      <select
+                        value={settingsDraft.roundInterval}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) => (prev ? { ...prev, roundInterval: e.target.value } : prev))
+                        }
+                      >
+                        <option value="semanal">Semanal</option>
+                        <option value="quinzenal">Quinzenal</option>
+                        <option value="mensal">Mensal</option>
+                        <option value="personalizado">Personalizado</option>
+                      </select>
+                    </label>
+                    <label>
+                      Intervalo em dias
+                      <input
+                        type="number"
+                        min={1}
+                        value={settingsDraft.roundIntervalDays}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, roundIntervalDays: Math.max(1, Number(e.target.value || 1)) } : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Prazo resultado (dias)
+                      <input
+                        type="number"
+                        min={1}
+                        value={settingsDraft.resultDeadlineDays}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, resultDeadlineDays: Math.max(1, Number(e.target.value || 1)) } : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Tolerancia (dias)
+                      <input
+                        type="number"
+                        min={0}
+                        value={settingsDraft.toleranceDays}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, toleranceDays: Math.max(0, Number(e.target.value || 0)) } : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Sobem por temporada
+                      <input
+                        type="number"
+                        min={0}
+                        value={settingsDraft.promotedCount}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, promotedCount: Math.max(0, Number(e.target.value || 0)) } : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Descem por temporada
+                      <input
+                        type="number"
+                        min={0}
+                        value={settingsDraft.relegatedCount}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, relegatedCount: Math.max(0, Number(e.target.value || 0)) } : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Max recessos
+                      <input
+                        type="number"
+                        min={0}
+                        value={settingsDraft.maxRecesses}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, maxRecesses: Math.max(0, Number(e.target.value || 0)) } : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Regra tie-break
+                      <select
+                        value={settingsDraft.tieBreakRule}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) => (prev ? { ...prev, tieBreakRule: e.target.value } : prev))
+                        }
+                      >
+                        <option value="tradicional">Tradicional</option>
+                        <option value="super_tb_10">Super TB 10</option>
+                      </select>
+                    </label>
+                    <label>
+                      Regra de WO
+                      <select
+                        value={settingsDraft.woRule}
+                        onChange={(e) => setSettingsDraft((prev) => (prev ? { ...prev, woRule: e.target.value } : prev))}
+                      >
+                        <option value="victory_min_score">Vitoria por placar minimo</option>
+                        <option value="admin_review">Triagem administrativa</option>
+                      </select>
+                    </label>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <input
+                        type="checkbox"
+                        checked={settingsDraft.wildcardEnabled}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) => (prev ? { ...prev, wildcardEnabled: e.target.checked } : prev))
+                        }
+                      />
+                      Permitir coringa
+                    </label>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <input
+                        type="checkbox"
+                        checked={settingsDraft.noAdEnabled}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) => (prev ? { ...prev, noAdEnabled: e.target.checked } : prev))
+                        }
+                      />
+                      No-Ad
+                    </label>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <input
+                        type="checkbox"
+                        checked={settingsDraft.publicJoinEnabled}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) => (prev ? { ...prev, publicJoinEnabled: e.target.checked } : prev))
+                        }
+                      />
+                      Liga aceita inscricao publica
+                    </label>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <input
+                        type="checkbox"
+                        checked={settingsDraft.joinRequiresApproval}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, joinRequiresApproval: e.target.checked } : prev
+                          )
+                        }
+                      />
+                      Inscricao exige aprovacao
+                    </label>
+                    <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <input
+                        type="checkbox"
+                        checked={settingsDraft.autoRoundGenerationEnabled}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, autoRoundGenerationEnabled: e.target.checked } : prev
+                          )
+                        }
+                      />
+                      Geracao automatica de rodadas
+                    </label>
                   </div>
-                  <div>
-                    <label>Classe</label>
-                    <p className="subtle">{league.classScope || "-"}</p>
+                ) : null}
+                {isOwner ? (
+                  <div className="modal-actions">
+                    <button onClick={onSaveLeagueSettings} disabled={busy || !settingsDraft}>
+                      {busy ? "Salvando..." : "Salvar configuracoes"}
+                    </button>
                   </div>
-                  <div>
-                    <label>Formato</label>
-                    <p className="subtle">{league.matchFormat}</p>
-                  </div>
-                  <div>
-                    <label>Rodadas</label>
-                    <p className="subtle">{league.roundsTotal}</p>
-                  </div>
-                  <div>
-                    <label>Intervalo</label>
-                    <p className="subtle">{league.roundIntervalDays} dias</p>
-                  </div>
-                  <div>
-                    <label>Prazo de resultado</label>
-                    <p className="subtle">
-                      {league.resultDeadlineDays} dias + {league.toleranceDays} dias
-                    </p>
-                  </div>
-                </div>
+                ) : null}
               </section>
 
               <section className="section-card">
@@ -509,12 +866,32 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   </label>
                 </div>
                 {isOwner ? (
+                  <div className="events-filter-grid">
+                    <label>
+                      Nova categoria
+                      <input value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} placeholder="Ex.: Masculino" />
+                    </label>
+                    <label>
+                      Nova classe
+                      <input value={newClassName} onChange={(e) => setNewClassName(e.target.value)} placeholder="Ex.: Classe B" />
+                    </label>
+                    <div style={{ display: "flex", alignItems: "flex-end" }}>
+                      <button onClick={onCreateClass} disabled={busy || !selectedSeasonId || !newCategoryName.trim() || !newClassName.trim()}>
+                        Criar classe
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+                {isOwner ? (
                   <div className="modal-actions">
                     <button onClick={onGenerateRound} disabled={busy || !selectedSeasonId}>
                       {busy ? "Processando..." : "Gerar proxima rodada"}
                     </button>
                     <button className="ghost" onClick={onCreateJoinLink} disabled={busy}>
                       Copiar link de inscricao
+                    </button>
+                    <button className="ghost" onClick={onApplySeasonMovements} disabled={busy || !selectedSeasonId}>
+                      Fechar temporada e aplicar sobe/desce
                     </button>
                   </div>
                 ) : null}
@@ -766,6 +1143,64 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   })}
                 </div>
               ))}
+            </section>
+          ) : null}
+
+          {activeTab === "chat" ? (
+            <section className="section-card">
+              <h3 style={{ marginTop: 0, marginBottom: 10 }}>Chat geral da liga</h3>
+              {isOwner ? (
+                <div className="league-room-panel" style={{ marginBottom: 10 }}>
+                  <h4>Comunicado do admin</h4>
+                  <div className="league-chat-send">
+                    <input
+                      value={announcementDraft}
+                      onChange={(e) => setAnnouncementDraft(e.target.value)}
+                      placeholder="Digite um comunicado para toda a liga"
+                    />
+                    <button onClick={() => void onPostLeagueAnnouncement()} disabled={busy || !announcementDraft.trim()}>
+                      Publicar
+                    </button>
+                  </div>
+                  <label style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+                    <input type="checkbox" checked={announcementPin} onChange={(e) => setAnnouncementPin(e.target.checked)} />
+                    Fixar como mensagem principal
+                  </label>
+                </div>
+              ) : null}
+
+              <div className="league-chat-box" style={{ maxHeight: 360 }}>
+                {leagueChat.map((msg) => (
+                  <div key={msg.id} className={msg.senderUserId === user.id ? "league-chat-me" : "league-chat-other"}>
+                    {msg.isPinned ? <p style={{ border: "1px solid var(--color-success-border)" }}>[FIXADO] {msg.body}</p> : <p>{msg.body}</p>}
+                    <span>
+                      {msg.senderName} | {formatDateTime(msg.createdAt)}{msg.messageType === "announcement" ? " | comunicado" : ""}
+                    </span>
+                    {isOwner ? (
+                      <div style={{ display: "inline-flex", gap: 6, marginTop: 4 }}>
+                        <button className="ghost" onClick={() => void onPinLeagueMessage(msg.isPinned ? null : msg.id)} disabled={busy}>
+                          {msg.isPinned ? "Desfixar" : "Fixar"}
+                        </button>
+                        <button className="danger" onClick={() => void onDeleteLeagueMessage(msg.id)} disabled={busy}>
+                          Remover
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+                {!leagueChat.length ? <p className="subtle">Nenhuma mensagem no chat.</p> : null}
+              </div>
+
+              <div className="league-chat-send" style={{ marginTop: 10 }}>
+                <input
+                  value={leagueChatDraft}
+                  onChange={(e) => setLeagueChatDraft(e.target.value)}
+                  placeholder="Escreva para os participantes"
+                />
+                <button onClick={() => void onSendLeagueChat()} disabled={busy || !leagueChatDraft.trim()}>
+                  Enviar
+                </button>
+              </div>
             </section>
           ) : null}
         </>
