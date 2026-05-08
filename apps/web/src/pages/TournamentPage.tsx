@@ -1589,7 +1589,6 @@ export function TournamentPage({ user, profile }: Props) {
 
     if (tab !== allowed) {
       setTab(allowed);
-      return;
     }
 
     const params = new URLSearchParams(location.search || "");
@@ -1597,14 +1596,26 @@ export function TournamentPage({ user, profile }: Props) {
     params.delete(TAB_QUERY_KEY);
     const nextSearch = params.toString();
     const targetSearch = nextSearch ? `?${nextSearch}` : "";
-    const targetPath = tournamentId
-      ? `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`
-      : location.pathname;
+    const shouldCanonicalizePath =
+      Boolean(tournamentId) &&
+      (requestedFromRoute !== allowed || requestedFromSearch !== null);
 
-    if (location.pathname !== targetPath || hadQueryTab || targetSearch !== location.search) {
+    if (shouldCanonicalizePath) {
+      const targetPath = `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`;
       navigate(
         {
           pathname: targetPath,
+          search: targetSearch,
+        },
+        { replace: true }
+      );
+      return;
+    }
+
+    if (hadQueryTab && targetSearch !== location.search) {
+      navigate(
+        {
+          pathname: location.pathname,
           search: targetSearch,
         },
         { replace: true }

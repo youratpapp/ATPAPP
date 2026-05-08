@@ -17,6 +17,7 @@ import { CompleteProfilePage } from "./pages/CompleteProfilePage";
 import "./App.css";
 
 const BOOT_TIMEOUT_MS = 8000;
+const LAST_HASH_ROUTE_KEY = "atp:last-hash-route";
 
 function isFilled(value: string | null | undefined): boolean {
   return Boolean(value && value.trim());
@@ -51,6 +52,7 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: str
 }
 
 function AppInner() {
+  const location = useLocation();
   const [bootLoading, setBootLoading] = useState(true);
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -65,34 +67,48 @@ function AppInner() {
       return;
     }
 
-    async function start(currentClient: NonNullable<typeof supabase>) {
-      try {
-        const sess = await withTimeout(
-          currentClient.auth.getSession(),
-          BOOT_TIMEOUT_MS,
-          "auth.getSession"
-        );
-        if (!mounted) return;
-        setAuthUser(sess.data.session?.user ?? null);
-      } catch {
-        if (mounted) setAuthUser(null);
-      } finally {
-        if (mounted) setBootLoading(false);
-      }
-    }
-    start(client);
+    let receivedAuthEvent = false;
 
     const { data } = client.auth.onAuthStateChange((_event, session) => {
       // Important: do not call async Supabase methods in this callback to avoid deadlocks.
+      receivedAuthEvent = true;
       setAuthUser(session?.user ?? null);
       setBootLoading(false);
     });
+
+    void client.auth
+      .getSession()
+      .then((sess) => {
+        if (!mounted) return;
+        if (!receivedAuthEvent) {
+          setAuthUser(sess.data.session?.user ?? null);
+        }
+        setBootLoading(false);
+      })
+      .catch(() => {
+        if (!mounted) return;
+        if (!receivedAuthEvent) {
+          setAuthUser(null);
+        }
+        setBootLoading(false);
+      });
 
     return () => {
       mounted = false;
       data.subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const path = `${location.pathname || ""}${location.search || ""}`.trim();
+    if (!path || !path.startsWith("/")) return;
+    if (path === "/auth" || path.startsWith("/auth?") || path.startsWith("/auth/callback")) return;
+    try {
+      window.sessionStorage.setItem(LAST_HASH_ROUTE_KEY, path);
+    } catch {
+      // ignore storage errors
+    }
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     let cancelled = false;
@@ -441,8 +457,31 @@ function tryRedirectRegistrationFallback(): boolean {
   return true;
 }
 
+function tryRestoreLastHashRoute(): boolean {
+  const hash = window.location.hash || "";
+  if (hash.startsWith("#/") && hash.length > 2) return false;
+
+  const search = new URLSearchParams(window.location.search || "");
+  // Do not interfere with OAuth callbacks.
+  if (search.get("code") || search.get("error") || search.get("error_description")) return false;
+  // Registration fallback has priority.
+  if (search.get("atp_reg") === "1") return false;
+
+  let last = "";
+  try {
+    last = String(window.sessionStorage.getItem(LAST_HASH_ROUTE_KEY) || "").trim();
+  } catch {
+    last = "";
+  }
+  if (!last.startsWith("/")) return false;
+
+  const target = `${window.location.origin}${window.location.pathname}#${last}`;
+  window.location.replace(target);
+  return true;
+}
+
 export default function App() {
-  if (tryRedirectRegistrationFallback()) {
+  if (tryRedirectRegistrationFallback() || tryRestoreLastHashRoute()) {
     return (
       <main className="auth-page">
         <section className="auth-card">
