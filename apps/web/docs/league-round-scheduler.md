@@ -17,6 +17,7 @@ This keeps running even if you migrate away from GitHub hosting.
 - SQL migrations:
   - `web/supabase/migrations/0009_league_chat_scheduler_and_season_flow.sql`
   - `web/supabase/migrations/0010_league_scheduler_edge_function_cron.sql`
+  - `web/supabase/migrations/0011_league_scheduler_auto_finalize_seasons.sql`
 - Optional fallback workflow:
   - `.github/workflows/league-round-scheduler.yml`
 
@@ -78,7 +79,8 @@ It will:
 1. Find active leagues/seasons/classes with `auto_round_generation_enabled = true`
 2. Check whether class is due by `round_interval_days`
 3. Generate next round + matches through `app_generate_next_league_round`
-4. Save execution log in `public.league_scheduler_runs`
+4. When all classes reach `rounds_total` and last tolerance window is over, auto-finish season + apply promotion/relegation
+5. Save execution log in `public.league_scheduler_runs`
 
 ## Validate execution
 

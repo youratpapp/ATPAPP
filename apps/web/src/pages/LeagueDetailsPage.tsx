@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import {
-  applyLeagueSeasonMovements,
   createLeagueClass,
   deleteLeagueChatMessage,
   confirmLeagueMatchResult,
@@ -377,28 +376,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       await loadAll();
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar configuracoes." });
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function onApplySeasonMovements() {
-    if (!league || !selectedSeasonId) return;
-    setBusy(true);
-    setFeedback(null);
-    try {
-      const moved = await applyLeagueSeasonMovements({
-        leagueId: league.id,
-        seasonId: selectedSeasonId,
-        note: "Fechamento de temporada com promocao/rebaixamento automatico",
-      });
-      setFeedback({
-        kind: "success",
-        text: `Temporada finalizada. Movimentacoes realizadas: ${moved.length}.`,
-      });
-      await loadAll();
-    } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aplicar promocao/rebaixamento." });
     } finally {
       setBusy(false);
     }
@@ -884,9 +861,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     </button>
                     <button className="ghost" onClick={onCreateJoinLink} disabled={busy}>
                       Copiar link de inscricao
-                    </button>
-                    <button className="ghost" onClick={onApplySeasonMovements} disabled={busy || !selectedSeasonId}>
-                      Fechar temporada e aplicar sobe/desce
                     </button>
                   </div>
                 ) : null}
