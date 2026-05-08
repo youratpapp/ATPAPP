@@ -188,6 +188,7 @@ function AppInner() {
       <Route path="/auth" element={<AuthAlreadySignedInRedirect />} />
       <Route path="/auth/callback" element={<AuthAlreadySignedInRedirect />} />
       <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
+      <Route path="/" element={<Navigate to="/inicio" replace />} />
       <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
       <Route path="/eventos" element={<EventsPage user={authUser} profile={profile} />} />
       <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
@@ -201,7 +202,7 @@ function AppInner() {
       <Route path="/join/:tournamentId" element={<JoinFromLinkPage user={authUser} />} />
       <Route path="/t/:tournamentId" element={<LegacyRedirectPage />} />
       <Route path="/dashboard" element={<Navigate to="/eventos" replace />} />
-      <Route path="*" element={<Navigate to="/inicio" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
@@ -367,6 +368,26 @@ function LegacyRedirectPage() {
       <section className="auth-card">
         <h1>Abrindo torneio...</h1>
         <p className="auth-sub">Redirecionando para o novo fluxo.</p>
+      </section>
+    </main>
+  );
+}
+
+function NotFoundPage() {
+  const navigate = useNavigate();
+  return (
+    <main className="auth-page">
+      <section className="auth-card">
+        <h1>Página não encontrada</h1>
+        <p className="auth-sub">Não encontramos essa rota. Você pode voltar para os eventos.</p>
+        <div className="auth-actions">
+          <button className="primary" onClick={() => navigate("/eventos", { replace: true })}>
+            Ir para eventos
+          </button>
+          <button className="secondary" onClick={() => navigate("/inicio", { replace: true })}>
+            Ir para início
+          </button>
+        </div>
       </section>
     </main>
   );
