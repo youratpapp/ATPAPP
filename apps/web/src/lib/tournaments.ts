@@ -415,6 +415,6 @@ export async function deleteTournament(user: User, tournamentId: string): Promis
 }
 
 export function buildTournamentUrl(tournamentId: string): string {
-  return `/eventos/${encodeURIComponent(tournamentId)}`;
+  return `/eventos/${encodeURIComponent(tournamentId)}/jogos`;
 }
 

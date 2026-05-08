@@ -1,5 +1,5 @@
 ﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
@@ -34,6 +34,7 @@ import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../l
 type Props = {
   user: User;
   profile: Profile | null;
+  forcedTab?: TabKey;
 };
 
 type TabKey = "jogos" | "classificacao" | "organizacao" | "jogadores";
@@ -75,12 +76,6 @@ const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
 const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores"];
 const SCORE_DETAIL_PREFIX = "__atp_score_v1__:";
-const TAB_QUERY_KEY = "tab";
-
-function readTabFromSearch(search: string): TabKey | null {
-  const raw = (new URLSearchParams(search || "").get(TAB_QUERY_KEY) || "").trim() as TabKey;
-  return VALID_TABS.includes(raw) ? raw : null;
-}
 
 function isTabAllowed(tab: TabKey, isOwner: boolean, canSeeClassificationTab: boolean): boolean {
   if ((tab === "organizacao" || tab === "jogadores") && !isOwner) return false;
@@ -95,11 +90,6 @@ function coerceAllowedTab(
 ): TabKey {
   const base = requested && VALID_TABS.includes(requested) ? requested : "jogos";
   return isTabAllowed(base, isOwner, canSeeClassificationTab) ? base : "jogos";
-}
-
-function readTabFromRoute(value: string | undefined): TabKey | null {
-  const raw = String(value || "").trim() as TabKey;
-  return VALID_TABS.includes(raw) ? raw : null;
 }
 
 function scopeClassKey(categoryId: string, classId: string): string {
@@ -1191,16 +1181,13 @@ function buildClassVisualSvg(
   return { svg: out.join(''), width, height: finalHeight };
 }
 
-export function TournamentPage({ user, profile }: Props) {
+export function TournamentPage({ user, profile, forcedTab }: Props) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { tournamentId = "", tab: routeTab = "" } = useParams();
+  const { tournamentId = "" } = useParams();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
-  const [tab, setTab] = useState<TabKey>("jogos");
-
   const [tournament, setTournament] = useState<TournamentDetails | null>(null);
   const [classes, setClasses] = useState<LegacyClassRef[]>([]);
   const [activeClassKey, setActiveClassKey] = useState("");
@@ -1325,6 +1312,8 @@ export function TournamentPage({ user, profile }: Props) {
     [classes]
   );
   const canSeeClassificationTab = isOwner || hasGroupClasses;
+  const requestedTab: TabKey = forcedTab && VALID_TABS.includes(forcedTab) ? forcedTab : "jogos";
+  const tab = tournament ? coerceAllowedTab(requestedTab, isOwner, canSeeClassificationTab) : requestedTab;
   const canEditScores = isOwner;
   const filteredRegistrations = useMemo(() => {
     if (registrationFilter === "all") return registrations;
@@ -1419,14 +1408,8 @@ export function TournamentPage({ user, profile }: Props) {
   const goToTab = (next: TabKey) => {
     if (!tournamentId) return;
     const allowed = coerceAllowedTab(next, isOwner, canSeeClassificationTab);
-    const params = new URLSearchParams(location.search || "");
-    params.delete(TAB_QUERY_KEY);
-    const nextSearch = params.toString();
     navigate(
-      {
-        pathname: `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
-        search: nextSearch ? `?${nextSearch}` : "",
-      },
+      `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
       { replace: false }
     );
   };
@@ -1582,46 +1565,10 @@ export function TournamentPage({ user, profile }: Props) {
   }, [agendaConfig.duracaoMin]);
 
   useEffect(() => {
-    const requestedFromRoute = readTabFromRoute(routeTab);
-    const requestedFromSearch = readTabFromSearch(location.search);
-    const requested = requestedFromRoute ?? requestedFromSearch;
-    const allowed = coerceAllowedTab(requested, isOwner, canSeeClassificationTab);
-
-    if (tab !== allowed) {
-      setTab(allowed);
-    }
-
-    const params = new URLSearchParams(location.search || "");
-    const hadQueryTab = params.has(TAB_QUERY_KEY);
-    params.delete(TAB_QUERY_KEY);
-    const nextSearch = params.toString();
-    const targetSearch = nextSearch ? `?${nextSearch}` : "";
-    const shouldCanonicalizePath =
-      Boolean(tournamentId) &&
-      (requestedFromRoute !== allowed || requestedFromSearch !== null);
-
-    if (shouldCanonicalizePath) {
-      const targetPath = `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`;
-      navigate(
-        {
-          pathname: targetPath,
-          search: targetSearch,
-        },
-        { replace: true }
-      );
-      return;
-    }
-
-    if (hadQueryTab && targetSearch !== location.search) {
-      navigate(
-        {
-          pathname: location.pathname,
-          search: targetSearch,
-        },
-        { replace: true }
-      );
-    }
-  }, [location.pathname, location.search, routeTab, tab, isOwner, canSeeClassificationTab, navigate, tournamentId]);
+    if (!tournamentId || !tournament || !forcedTab) return;
+    if (tab === forcedTab) return;
+    navigate(`/eventos/${encodeURIComponent(tournamentId)}/${tab}`, { replace: true });
+  }, [tournamentId, tournament, forcedTab, tab, navigate]);
 
   const applyUpdatedTournamentState = async (
     updated: TournamentDetails,

@@ -229,8 +229,11 @@ function AppInner() {
         path="/perfil"
         element={<ProfilePage user={authUser} profile={profile} onProfileChange={onProfileChange} />}
       />
-      <Route path="/eventos/:tournamentId" element={<TournamentPage user={authUser} profile={profile} />} />
-      <Route path="/eventos/:tournamentId/:tab" element={<TournamentPage user={authUser} profile={profile} />} />
+      <Route path="/eventos/:tournamentId" element={<TournamentRootRedirect />} />
+      <Route path="/eventos/:tournamentId/jogos" element={<TournamentPage user={authUser} profile={profile} forcedTab="jogos" />} />
+      <Route path="/eventos/:tournamentId/classificacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="classificacao" />} />
+      <Route path="/eventos/:tournamentId/organizacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="organizacao" />} />
+      <Route path="/eventos/:tournamentId/jogadores" element={<TournamentPage user={authUser} profile={profile} forcedTab="jogadores" />} />
       <Route path="/inscricao/:tournamentId" element={<TournamentRegistrationPage user={authUser} profile={profile} />} />
       <Route path="/join/:tournamentId" element={<JoinFromLinkPage user={authUser} />} />
       <Route path="/t/:tournamentId" element={<LegacyRedirectPage />} />
@@ -245,6 +248,13 @@ function sanitizeNextPath(value: string | null | undefined): string {
   if (!raw.startsWith("/")) return "/inicio";
   if (raw === "/auth" || raw.startsWith("/auth?") || raw.startsWith("/auth/callback")) return "/inicio";
   return raw;
+}
+
+function TournamentRootRedirect() {
+  const { tournamentId } = useParams();
+  const safeId = String(tournamentId || "").trim();
+  if (!safeId) return <Navigate to="/eventos" replace />;
+  return <Navigate to={`/eventos/${encodeURIComponent(safeId)}/jogos`} replace />;
 }
 
 function readNextFromUrl(): string {
