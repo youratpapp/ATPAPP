@@ -82,6 +82,26 @@ function readTabFromSearch(search: string): TabKey | null {
   return VALID_TABS.includes(raw) ? raw : null;
 }
 
+function isTabAllowed(tab: TabKey, isOwner: boolean, canSeeClassificationTab: boolean): boolean {
+  if ((tab === "organizacao" || tab === "jogadores") && !isOwner) return false;
+  if (tab === "classificacao" && !canSeeClassificationTab) return false;
+  return true;
+}
+
+function coerceAllowedTab(
+  requested: TabKey | null,
+  isOwner: boolean,
+  canSeeClassificationTab: boolean
+): TabKey {
+  const base = requested && VALID_TABS.includes(requested) ? requested : "jogos";
+  return isTabAllowed(base, isOwner, canSeeClassificationTab) ? base : "jogos";
+}
+
+function readTabFromRoute(value: string | undefined): TabKey | null {
+  const raw = String(value || "").trim() as TabKey;
+  return VALID_TABS.includes(raw) ? raw : null;
+}
+
 function scopeClassKey(categoryId: string, classId: string): string {
   return `${categoryId}::${classId}`;
 }
@@ -1174,7 +1194,7 @@ function buildClassVisualSvg(
 export function TournamentPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { tournamentId = "" } = useParams();
+  const { tournamentId = "", tab: routeTab = "" } = useParams();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -1396,6 +1416,21 @@ export function TournamentPage({ user, profile }: Props) {
     return { totalPlayers, totalClasses, pending, approved };
   }, [playerClassesSummary, registrations]);
 
+  const goToTab = (next: TabKey) => {
+    if (!tournamentId) return;
+    const allowed = coerceAllowedTab(next, isOwner, canSeeClassificationTab);
+    const params = new URLSearchParams(location.search || "");
+    params.delete(TAB_QUERY_KEY);
+    const nextSearch = params.toString();
+    navigate(
+      {
+        pathname: `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
+        search: nextSearch ? `?${nextSearch}` : "",
+      },
+      { replace: false }
+    );
+  };
+
   useEffect(() => {
     let cancelled = false;
     if (!normalizedBasicUf) {
@@ -1547,39 +1582,35 @@ export function TournamentPage({ user, profile }: Props) {
   }, [agendaConfig.duracaoMin]);
 
   useEffect(() => {
-    const fromUrl = readTabFromSearch(location.search);
-    if (!fromUrl) return;
-    if (fromUrl !== tab) setTab(fromUrl);
-  }, [location.search, tab]);
+    const requestedFromRoute = readTabFromRoute(routeTab);
+    const requestedFromSearch = readTabFromSearch(location.search);
+    const requested = requestedFromRoute ?? requestedFromSearch;
+    const allowed = coerceAllowedTab(requested, isOwner, canSeeClassificationTab);
 
-  useEffect(() => {
-    if (tab === "organizacao" && !isOwner) {
-      setTab("jogos");
+    if (tab !== allowed) {
+      setTab(allowed);
       return;
     }
-    if (tab === "jogadores" && !isOwner) {
-      setTab("jogos");
-      return;
-    }
-    if (tab === "classificacao" && !canSeeClassificationTab) {
-      setTab("jogos");
-    }
-  }, [tab, isOwner, canSeeClassificationTab]);
 
-  useEffect(() => {
     const params = new URLSearchParams(location.search || "");
-    const current = (params.get(TAB_QUERY_KEY) || "").trim();
-    if (current === tab) return;
-    params.set(TAB_QUERY_KEY, tab);
+    const hadQueryTab = params.has(TAB_QUERY_KEY);
+    params.delete(TAB_QUERY_KEY);
     const nextSearch = params.toString();
-    navigate(
-      {
-        pathname: location.pathname,
-        search: nextSearch ? `?${nextSearch}` : "",
-      },
-      { replace: true }
-    );
-  }, [tab, location.pathname, location.search, navigate]);
+    const targetSearch = nextSearch ? `?${nextSearch}` : "";
+    const targetPath = tournamentId
+      ? `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`
+      : location.pathname;
+
+    if (location.pathname !== targetPath || hadQueryTab || targetSearch !== location.search) {
+      navigate(
+        {
+          pathname: targetPath,
+          search: targetSearch,
+        },
+        { replace: true }
+      );
+    }
+  }, [location.pathname, location.search, routeTab, tab, isOwner, canSeeClassificationTab, navigate, tournamentId]);
 
   const applyUpdatedTournamentState = async (
     updated: TournamentDetails,
@@ -3090,21 +3121,21 @@ export function TournamentPage({ user, profile }: Props) {
           </article>
 
           <div className="tabs" style={{ marginBottom: 12 }}>
-            <button className={tab === "jogos" ? "active" : ""} onClick={() => setTab("jogos")}>
+            <button className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
               Jogos
             </button>
             {canSeeClassificationTab ? (
-              <button className={tab === "classificacao" ? "active" : ""} onClick={() => setTab("classificacao")}>
+              <button className={tab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
                 Classificacao
               </button>
             ) : null}
             {isOwner ? (
-              <button className={tab === "organizacao" ? "active" : ""} onClick={() => setTab("organizacao")}>
+              <button className={tab === "organizacao" ? "active" : ""} onClick={() => goToTab("organizacao")}>
                 Organizacao
               </button>
             ) : null}
             {isOwner ? (
-              <button className={tab === "jogadores" ? "active" : ""} onClick={() => setTab("jogadores")}>
+              <button className={tab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
                 Jogadores
               </button>
             ) : null}
@@ -3360,7 +3391,7 @@ export function TournamentPage({ user, profile }: Props) {
                     <span>2. Categorias e classes</span>
                     <strong>{organizationProgress.classesReady ? "Pronto" : "Pendente"}</strong>
                   </button>
-                  <button className={`setup-stage ${organizationProgress.playersReady ? "ok" : "todo"}`} onClick={() => setTab("jogadores")}>
+                  <button className={`setup-stage ${organizationProgress.playersReady ? "ok" : "todo"}`} onClick={() => goToTab("jogadores")}>
                     <span>3. Jogadores</span>
                     <strong>{organizationProgress.playersReady ? "Pronto" : "Pendente"}</strong>
                   </button>

@@ -198,6 +198,7 @@ function AppInner() {
         element={<ProfilePage user={authUser} profile={profile} onProfileChange={onProfileChange} />}
       />
       <Route path="/eventos/:tournamentId" element={<TournamentPage user={authUser} profile={profile} />} />
+      <Route path="/eventos/:tournamentId/:tab" element={<TournamentPage user={authUser} profile={profile} />} />
       <Route path="/inscricao/:tournamentId" element={<TournamentRegistrationPage user={authUser} profile={profile} />} />
       <Route path="/join/:tournamentId" element={<JoinFromLinkPage user={authUser} />} />
       <Route path="/t/:tournamentId" element={<LegacyRedirectPage />} />
