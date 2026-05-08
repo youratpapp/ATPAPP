@@ -209,7 +209,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       setSettingsDraft({
         matchFormat: details.matchFormat,
         roundInterval: details.roundInterval,
-        roundIntervalDays: details.resultDeadlineDays,
+        roundIntervalDays: details.roundIntervalDays,
         resultDeadlineDays: details.resultDeadlineDays,
         toleranceDays: details.toleranceDays,
         promotedCount: details.promotedCount,
@@ -370,7 +370,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       await updateLeagueSettings({
         leagueId: league.id,
         ...settingsDraft,
-        roundIntervalDays: settingsDraft.resultDeadlineDays,
+        roundIntervalDays: settingsDraft.roundIntervalDays,
+        resultDeadlineDays: settingsDraft.roundIntervalDays,
       });
       setFeedback({ kind: "success", text: "Configuracoes da liga salvas." });
       await loadAll();
@@ -681,23 +682,14 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       <input
                         type="number"
                         min={1}
-                        value={settingsDraft.resultDeadlineDays}
-                        disabled
-                      />
-                    </label>
-                    <label>
-                      Prazo resultado (dias)
-                      <input
-                        type="number"
-                        min={1}
-                        value={settingsDraft.resultDeadlineDays}
+                        value={settingsDraft.roundIntervalDays}
                         onChange={(e) =>
                           setSettingsDraft((prev) =>
                             prev
                               ? {
                                   ...prev,
-                                  resultDeadlineDays: Math.max(1, Number(e.target.value || 1)),
                                   roundIntervalDays: Math.max(1, Number(e.target.value || 1)),
+                                  resultDeadlineDays: Math.max(1, Number(e.target.value || 1)),
                                 }
                               : prev
                           )

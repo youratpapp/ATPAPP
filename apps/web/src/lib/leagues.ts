@@ -708,13 +708,13 @@ export async function updateLeagueSettings(input: {
   autoRoundGenerationEnabled: boolean;
 }): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
-  const syncedDeadlineDays = Math.max(1, Math.floor(input.resultDeadlineDays || 14));
+  const syncedDays = Math.max(1, Math.floor(input.roundIntervalDays || 14));
   const { error } = await supabase.rpc("app_update_league_settings", {
     p_league_id: input.leagueId,
     p_match_format: input.matchFormat,
     p_round_interval: input.roundInterval,
-    p_round_interval_days: syncedDeadlineDays,
-    p_result_deadline_days: syncedDeadlineDays,
+    p_round_interval_days: syncedDays,
+    p_result_deadline_days: syncedDays,
     p_tolerance_days: Math.max(0, Math.floor(input.toleranceDays || 0)),
     p_promoted_count: Math.max(0, Math.floor(input.promotedCount || 0)),
     p_relegated_count: Math.max(0, Math.floor(input.relegatedCount || 0)),
