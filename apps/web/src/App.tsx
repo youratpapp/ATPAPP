@@ -27,6 +27,7 @@ function hasRequiredLoginData(user: User | null, profile: Profile | null): boole
   if (!user) return false;
   if (!isFilled(user.email)) return false;
   if (!profile) return false;
+  if (profile.userId !== user.id) return false;
   return (
     isFilled(profile.displayName) &&
     isFilled(profile.phone) &&
@@ -68,11 +69,23 @@ function AppInner() {
     }
 
     let receivedAuthEvent = false;
+    const applyAuthUser = (nextUser: User | null) => {
+      setAuthUser(nextUser);
+      if (!nextUser) {
+        setProfile(null);
+        setProfileLoading(false);
+        setProfileResolved(true);
+        return;
+      }
+      setProfile((prev) => (prev?.userId === nextUser.id ? prev : null));
+      setProfileLoading(true);
+      setProfileResolved(false);
+    };
 
     const { data } = client.auth.onAuthStateChange((_event, session) => {
       // Important: do not call async Supabase methods in this callback to avoid deadlocks.
       receivedAuthEvent = true;
-      setAuthUser(session?.user ?? null);
+      applyAuthUser(session?.user ?? null);
       setBootLoading(false);
     });
 
@@ -81,14 +94,14 @@ function AppInner() {
       .then((sess) => {
         if (!mounted) return;
         if (!receivedAuthEvent) {
-          setAuthUser(sess.data.session?.user ?? null);
+          applyAuthUser(sess.data.session?.user ?? null);
         }
         setBootLoading(false);
       })
       .catch(() => {
         if (!mounted) return;
         if (!receivedAuthEvent) {
-          setAuthUser(null);
+          applyAuthUser(null);
         }
         setBootLoading(false);
       });
