@@ -10,6 +10,7 @@ type Props = {
   children: ReactNode;
   showHeader?: boolean;
   onBellClick?: () => void;
+  bellCount?: number;
 };
 
 function initialsFromName(name: string, fallback: string): string {
@@ -20,7 +21,16 @@ function initialsFromName(name: string, fallback: string): string {
   return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
 }
 
-export function AppShell({ user, profile, children, showHeader = true, onBellClick }: Props) {
+function BellIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden>
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+      <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+    </svg>
+  );
+}
+
+export function AppShell({ user, profile, children, showHeader = true, onBellClick, bellCount = 0 }: Props) {
   const displayName = profile?.displayName || user.email?.split("@")[0] || "Atleta";
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
@@ -42,8 +52,9 @@ export function AppShell({ user, profile, children, showHeader = true, onBellCli
             <div className="app-header-actions">
               <img src={logoMark} alt="ATP" className="app-header-mark" />
               {onBellClick ? (
-                <button className="icon-btn" onClick={onBellClick} aria-label="Notificações">
-                  <span aria-hidden>🔔</span>
+                <button className="icon-btn app-bell-btn" onClick={onBellClick} aria-label="Notificacoes">
+                  <BellIcon />
+                  {bellCount > 0 ? <span className="app-bell-badge">{Math.min(9, bellCount)}</span> : null}
                 </button>
               ) : null}
             </div>

@@ -81,6 +81,17 @@ type HomeNotice = {
   tone: "urgent" | "neutral";
 };
 
+type HomePriorityItem = {
+  id: string;
+  targetPath: string;
+  sourceName: string;
+  title: string;
+  detail: string;
+  label: string;
+  tone: "urgent" | "neutral";
+  order: number;
+};
+
 function formatDateRange(starts: string): string {
   if (!starts) return "Data a definir";
   const d = new Date(starts);
@@ -589,61 +600,80 @@ function LeagueCard({ league, onOpen }: { league: LeagueSummary; onOpen: () => v
   );
 }
 
-function LeagueActionCard({ action, onOpen }: { action: HomeLeagueAction; onOpen: () => void }) {
-  const dueDate = action.scheduledAt || action.roundEndsAt;
-  const tone = action.kind === "confirm_result" || action.kind === "send_result" ? "urgent" : "neutral";
+function PriorityCard({ item, onOpen }: { item: HomePriorityItem; onOpen: () => void }) {
   return (
-    <article className={`home-action-card ${tone}`} onClick={onOpen}>
+    <article className={`home-action-card ${item.tone}`} onClick={onOpen}>
       <div>
-        <p className="home-action-label">
-          {action.leagueName} - Rodada {action.roundNumber}
-        </p>
-        <p className="home-action-title">{action.title}</p>
-        <p className="home-action-meta">{formatShortDateTime(dueDate)}</p>
+        <p className="home-action-label">{item.sourceName}</p>
+        <p className="home-action-title">{item.title}</p>
+        <p className="home-action-body">{item.detail}</p>
       </div>
-      <span>{matchStatusLabel(action.status)}</span>
+      <span>{item.label}</span>
     </article>
   );
 }
 
-function OrganizerActionCard({ action, onOpen }: { action: HomeOrganizerAction; onOpen: () => void }) {
-  return (
-    <article className={`home-action-card ${action.tone}`} onClick={onOpen}>
-      <div>
-        <p className="home-action-label">{action.sourceName}</p>
-        <p className="home-action-title">{action.title}</p>
-        <p className="home-action-meta">{action.detail}</p>
-      </div>
-      <span>{action.label}</span>
-    </article>
-  );
-}
+function buildPriorityItems(
+  leagueActions: HomeLeagueAction[],
+  tournamentActions: HomeTournamentAction[],
+  organizerActions: HomeOrganizerAction[],
+  notices: HomeNotice[]
+): HomePriorityItem[] {
+  const leagueItems = leagueActions.map((action): HomePriorityItem => {
+    const dueDate = action.scheduledAt || action.roundEndsAt;
+    const urgent = action.kind === "confirm_result" || action.kind === "send_result";
+    return {
+      id: `league-action:${action.id}`,
+      targetPath: `/eventos/ligas/${encodeURIComponent(action.leagueId)}`,
+      sourceName: `${action.leagueName} - Rodada ${action.roundNumber}`,
+      title: action.title,
+      detail: formatShortDateTime(dueDate),
+      label: matchStatusLabel(action.status),
+      tone: urgent ? "urgent" : "neutral",
+      order: urgent ? 10 : 40,
+    };
+  });
 
-function TournamentActionCard({ action, onOpen }: { action: HomeTournamentAction; onOpen: () => void }) {
-  return (
-    <article className={`home-action-card ${action.tone}`} onClick={onOpen}>
-      <div>
-        <p className="home-action-label">{action.tournamentName}</p>
-        <p className="home-action-title">{action.title}</p>
-        <p className="home-action-meta">{action.detail}</p>
-      </div>
-      <span>{action.label}</span>
-    </article>
-  );
-}
+  const tournamentItems = tournamentActions.map((action): HomePriorityItem => ({
+    id: `tournament-action:${action.id}`,
+    targetPath: buildTournamentUrl(action.tournamentId),
+    sourceName: action.tournamentName,
+    title: action.title,
+    detail: action.detail,
+    label: action.label,
+    tone: action.tone,
+    order: action.tone === "urgent" ? 15 : 45,
+  }));
 
-function NoticeCard({ notice, onOpen }: { notice: HomeNotice; onOpen: () => void }) {
-  return (
-    <article className={`home-action-card ${notice.tone}`} onClick={onOpen}>
-      <div>
-        <p className="home-action-label">{notice.sourceName}</p>
-        <p className="home-action-title">{notice.title}</p>
-        <p className="home-action-body">{notice.body}</p>
-        <p className="home-action-meta">{notice.meta}</p>
-      </div>
-      <span>{notice.tone === "urgent" ? "Fixado" : "Chat"}</span>
-    </article>
-  );
+  const organizerItems = organizerActions.map((action): HomePriorityItem => ({
+    id: `organizer-action:${action.id}`,
+    targetPath: action.targetPath,
+    sourceName: action.sourceName,
+    title: action.title,
+    detail: action.detail,
+    label: action.label,
+    tone: action.tone,
+    order: action.tone === "urgent" ? 5 : 35,
+  }));
+
+  const noticeItems = notices.map((notice): HomePriorityItem => ({
+    id: `notice:${notice.id}`,
+    targetPath: notice.targetPath,
+    sourceName: notice.sourceName,
+    title: notice.title,
+    detail: `${notice.body} - ${notice.meta}`,
+    label: notice.tone === "urgent" ? "Aviso" : "Chat",
+    tone: notice.tone,
+    order: notice.tone === "urgent" ? 20 : 55,
+  }));
+
+  return [...organizerItems, ...leagueItems, ...tournamentItems, ...noticeItems]
+    .sort((a, b) => {
+      const byOrder = a.order - b.order;
+      if (byOrder !== 0) return byOrder;
+      return a.sourceName.localeCompare(b.sourceName);
+    })
+    .slice(0, 8);
 }
 
 export function HomePage({ user, profile }: Props) {
@@ -657,6 +687,7 @@ export function HomePage({ user, profile }: Props) {
   const [tournamentActions, setTournamentActions] = useState<HomeTournamentAction[]>([]);
   const [organizerActions, setOrganizerActions] = useState<HomeOrganizerAction[]>([]);
   const [notices, setNotices] = useState<HomeNotice[]>([]);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -698,19 +729,51 @@ export function HomePage({ user, profile }: Props) {
 
   const activePlayingCount = playingTournaments.length + playingLeagues.length;
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
+  const priorityItems = buildPriorityItems(leagueActions, tournamentActions, organizerActions, notices);
   const urgentActionCount =
     leagueActions.filter((a) => a.kind === "confirm_result" || a.kind === "send_result").length +
     tournamentActions.filter((a) => a.tone === "urgent").length +
     organizerActions.filter((a) => a.tone === "urgent").length;
+  const showPlayerEmptyRecommendation = activePlayingCount === 0 && upcoming.length > 0;
 
   return (
-    <AppShell user={user} profile={profile} onBellClick={() => alert("Notificacoes em breve.")}>
+    <AppShell
+      user={user}
+      profile={profile}
+      bellCount={priorityItems.length}
+      onBellClick={() => setNotificationsOpen((open) => !open)}
+    >
       <div className="section-title">
         <h2>Meu dia</h2>
       </div>
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {error ? <p className="feedback error">{error}</p> : null}
+
+      {notificationsOpen ? (
+        <section className="home-notification-panel">
+          <div className="section-title">
+            <h2>Notificacoes</h2>
+            <button className="link" onClick={() => setNotificationsOpen(false)}>
+              Fechar
+            </button>
+          </div>
+          {priorityItems.length > 0 ? (
+            priorityItems.slice(0, 5).map((item) => (
+              <PriorityCard
+                key={`bell:${item.id}`}
+                item={item}
+                onOpen={() => {
+                  setNotificationsOpen(false);
+                  navigate(item.targetPath);
+                }}
+              />
+            ))
+          ) : (
+            <p className="subtle">Nada urgente agora.</p>
+          )}
+        </section>
+      ) : null}
 
       {!loading && !error ? (
         <>
@@ -720,58 +783,13 @@ export function HomePage({ user, profile }: Props) {
             <SummaryCard label="Pendencias" value={urgentActionCount} detail="resultados/confirmacoes" />
           </section>
 
-          {leagueActions.length > 0 ? (
+          {priorityItems.length > 0 ? (
             <section className="home-section">
               <div className="section-title">
-                <h2>Partidas e pendencias</h2>
+                <h2>Prioridades de hoje</h2>
               </div>
-              {leagueActions.map((action) => (
-                <LeagueActionCard
-                  key={action.id}
-                  action={action}
-                  onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(action.leagueId)}`)}
-                />
-              ))}
-            </section>
-          ) : null}
-
-          {tournamentActions.length > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Torneios pendentes</h2>
-              </div>
-              {tournamentActions.map((action) => (
-                <TournamentActionCard
-                  key={action.id}
-                  action={action}
-                  onOpen={() => navigate(buildTournamentUrl(action.tournamentId))}
-                />
-              ))}
-            </section>
-          ) : null}
-
-          {organizerActions.length > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Pendencias de organizacao</h2>
-              </div>
-              {organizerActions.map((action) => (
-                <OrganizerActionCard
-                  key={action.id}
-                  action={action}
-                  onOpen={() => navigate(action.targetPath)}
-                />
-              ))}
-            </section>
-          ) : null}
-
-          {notices.length > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Avisos recentes</h2>
-              </div>
-              {notices.map((notice) => (
-                <NoticeCard key={notice.id} notice={notice} onOpen={() => navigate(notice.targetPath)} />
+              {priorityItems.map((item) => (
+                <PriorityCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
               ))}
             </section>
           ) : null}
@@ -795,7 +813,11 @@ export function HomePage({ user, profile }: Props) {
           ) : (
             <section className="home-empty-panel">
               <strong>Nenhuma competicao ativa como jogador</strong>
-              <span>Quando voce entrar em torneios ou ligas, eles aparecem aqui.</span>
+              <span>
+                {showPlayerEmptyRecommendation
+                  ? "Eventos publicos em breve aparecem abaixo para voce avaliar."
+                  : "Quando voce entrar em torneios ou ligas, eles aparecem aqui."}
+              </span>
             </section>
           )}
 
