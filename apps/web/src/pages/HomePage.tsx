@@ -18,42 +18,6 @@ function formatDateRange(starts: string): string {
   return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-function TrophyIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 21h8M12 17v4" />
-      <path d="M17 4H7v5a5 5 0 0010 0V4z" />
-      <path d="M7 4H3v3a4 4 0 004 4M17 4h4v3a4 4 0 01-4 4" />
-    </svg>
-  );
-}
-
-function LocationIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-      <circle cx="12" cy="9" r="2.5" />
-    </svg>
-  );
-}
-
-function BookmarkIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
-    </svg>
-  );
-}
-
-function TennisIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M2.1 12.5C5 12 7 9 7 6M21.9 11.5C19 12 17 15 17 18" />
-    </svg>
-  );
-}
-
 function CalendarIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -90,7 +54,7 @@ function EventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () => void }) 
         <img className="ec-poster" src={t.posterUrl} alt="" />
       ) : (
         <div className="ec-poster-placeholder">
-          <span>🎾</span>
+          <span>ATP</span>
         </div>
       )}
       <div className="ec-body">
@@ -98,23 +62,25 @@ function EventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () => void }) 
           <p className="ec-name">{t.name}</p>
           <StatusBadge status={t.status} />
         </div>
-        {t.startsAt && (
+        {t.startsAt ? (
           <div className="ec-info-row">
             <span className="ec-info-left">
               <CalendarIcon />
               {formatDateRange(t.startsAt)}
             </span>
-            <span className="ec-chevron"><ChevronRight /></span>
+            <span className="ec-chevron">
+              <ChevronRight />
+            </span>
           </div>
-        )}
-        {location && (
+        ) : null}
+        {location ? (
           <div className="ec-info-row">
             <span className="ec-info-left">
               <LocationPinIcon />
               {location}
             </span>
           </div>
-        )}
+        ) : null}
       </div>
     </article>
   );
@@ -148,47 +114,22 @@ export function HomePage({ user, profile }: Props) {
   }, []);
 
   return (
-    <AppShell user={user} profile={profile} onBellClick={() => alert("Notificações em breve.")}>
-      <div className="quick-grid">
-        <button className="quick-action" onClick={() => navigate("/eventos")}>
-          <span className="qa-icon"><TrophyIcon /></span>
-          <span>Jogar</span>
-        </button>
-        <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=participating")}>
-          <span className="qa-icon"><TennisIcon /></span>
-          <span>Meus torneios</span>
-        </button>
-        <button className="quick-action" onClick={() => navigate("/eventos/ligas?view=participating")}>
-          <span className="qa-icon"><BookmarkIcon /></span>
-          <span>Minhas ligas</span>
-        </button>
-        <button className="quick-action" onClick={() => navigate("/locais")}>
-          <span className="qa-icon"><LocationIcon /></span>
-          <span>Locais</span>
-        </button>
-        <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-          <span className="qa-icon"><TrophyIcon /></span>
-          <span>Organizar</span>
-        </button>
-      </div>
-
+    <AppShell user={user} profile={profile} onBellClick={() => alert("Notificacoes em breve.")}>
       <div className="section-title">
-        <h2>Próximos eventos</h2>
-        <button className="link" onClick={() => navigate("/eventos/torneios")}>Ver todos</button>
+        <h2>Proximos eventos</h2>
+        <button className="link" onClick={() => navigate("/eventos/torneios")}>
+          Ver todos
+        </button>
       </div>
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {error ? <p className="feedback error">{error}</p> : null}
       {!loading && !error && upcoming.length === 0 ? (
-        <p className="subtle">Nenhum evento público em breve.</p>
+        <p className="subtle">Nenhum evento publico em breve.</p>
       ) : null}
 
       {upcoming.map((t) => (
-        <EventCard
-          key={t.id}
-          t={t}
-          onOpen={() => navigate(buildTournamentUrl(t.id))}
-        />
+        <EventCard key={t.id} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
       ))}
     </AppShell>
   );
