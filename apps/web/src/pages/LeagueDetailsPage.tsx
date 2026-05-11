@@ -224,6 +224,42 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     [filteredRegistrations]
   );
 
+  const leagueOverview = useMemo(() => {
+    const matches = roundsData.flatMap((row) => row.matches);
+    const finished = matches.filter((m) => m.status === "encerrada" || m.status === "wo").length;
+    const pending = Math.max(0, matches.length - finished);
+    const attention = matches.filter((m) => m.status === "em_disputa" || m.status === "em_analise_adm").length;
+    const scheduling = matches.filter((m) => m.status === "aguardando_organizacao").length;
+    let nextAction = "Acompanhar partidas e mensagens da liga.";
+    let nextTab: PageTab = "partidas";
+    if (isOwner && registrationStats.pending > 0) {
+      nextAction = "Aprovar ou rejeitar inscricoes pendentes.";
+      nextTab = "jogadores";
+    } else if (isOwner && scheduling > 0) {
+      nextAction = "Organizar partidas ainda sem agenda.";
+      nextTab = "partidas";
+    } else if (attention > 0) {
+      nextAction = isOwner ? "Resolver partidas em disputa ou analise." : "Acompanhar partidas em analise.";
+      nextTab = "partidas";
+    } else if (pending > 0) {
+      nextAction = "Acompanhar resultados pendentes da rodada.";
+      nextTab = "partidas";
+    } else if (isOwner && league?.status === "draft") {
+      nextAction = "Conferir configuracao e gerar a primeira rodada.";
+      nextTab = "visao";
+    }
+    return {
+      rounds: roundsData.length,
+      matches: matches.length,
+      finished,
+      pending,
+      attention,
+      scheduling,
+      nextAction,
+      nextTab,
+    };
+  }, [isOwner, league?.status, registrationStats.pending, roundsData]);
+
   async function loadRoundsAndMatches(seasonId: string) {
     const rounds = await loadSeasonRounds(seasonId, 8);
     const byClass = selectedClassId.trim();
@@ -700,6 +736,31 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <p className="events-kpi-value">{league.seasons.length}</p>
             </article>
           </div>
+
+          <section className="league-overview-card">
+            <div className="tournament-overview-grid">
+              <div className="tournament-overview-kpi">
+                <strong>{leagueOverview.rounds}</strong>
+                <span>Rodadas carregadas</span>
+              </div>
+              <div className="tournament-overview-kpi">
+                <strong>{leagueOverview.finished}/{leagueOverview.matches}</strong>
+                <span>Partidas encerradas</span>
+              </div>
+              <div className="tournament-overview-kpi">
+                <strong>{leagueOverview.pending}</strong>
+                <span>Partidas pendentes</span>
+              </div>
+              <div className="tournament-overview-kpi">
+                <strong>{isOwner ? registrationStats.pending : leagueOverview.attention}</strong>
+                <span>{isOwner ? "Inscricoes pendentes" : "Em analise"}</span>
+              </div>
+            </div>
+            <button className="tournament-next-action" onClick={() => goToTab(leagueOverview.nextTab)}>
+              <span>Proxima acao</span>
+              <strong>{leagueOverview.nextAction}</strong>
+            </button>
+          </section>
 
           <section className="section-card">
             <h3 style={{ marginTop: 0, marginBottom: 10 }}>Filtro de visualizacao</h3>

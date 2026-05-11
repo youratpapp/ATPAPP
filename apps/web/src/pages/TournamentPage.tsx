@@ -1467,6 +1467,50 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       pendingMatches: Math.max(0, all.length - done),
     };
   }, [activeClass]);
+  const tournamentOverview = useMemo(() => {
+    let totalMatches = 0;
+    let doneMatches = 0;
+    let generatedClasses = 0;
+    for (const cls of classes) {
+      if (cls.data.gerado) generatedClasses += 1;
+      const groupMatches = (cls.data.grupos || []).flatMap((g) => g.matches || []);
+      const koMatches = (cls.data.knockout?.rounds || []).flatMap((r) => r.matches || []);
+      const all = [...groupMatches, ...koMatches].filter((match) => {
+        const a = String(match.a || "").trim();
+        const b = String(match.b || "").trim();
+        return Boolean(a && b && a !== "BYE" && b !== "BYE");
+      });
+      totalMatches += all.length;
+      doneMatches += all.filter((match) => Boolean(match.done)).length;
+    }
+    const pendingMatches = Math.max(0, totalMatches - doneMatches);
+    const pendingRegistrations = registrations.filter((r) => r.status === "pending").length;
+    let nextAction = "Acompanhar jogos e avisos do torneio.";
+    let nextTab: TabKey = "jogos";
+    if (isOwner && pendingRegistrations > 0) {
+      nextAction = "Aprovar ou rejeitar inscricoes pendentes.";
+      nextTab = "jogadores";
+    } else if (isOwner && generatedClasses === 0 && draftCategories.length > 0) {
+      nextAction = "Gerar os jogos das classes configuradas.";
+      nextTab = "jogos";
+    } else if (pendingMatches > 0) {
+      nextAction = isOwner ? "Lancar ou revisar resultados pendentes." : "Acompanhar resultados pendentes.";
+      nextTab = "jogos";
+    } else if (totalMatches > 0) {
+      nextAction = "Conferir classificacao e encerramento do torneio.";
+      nextTab = canSeeClassificationTab ? "classificacao" : "jogos";
+    }
+    return {
+      totalClasses: classes.length,
+      generatedClasses,
+      totalMatches,
+      doneMatches,
+      pendingMatches,
+      pendingRegistrations,
+      nextAction,
+      nextTab,
+    };
+  }, [canSeeClassificationTab, classes, draftCategories.length, isOwner, registrations]);
   const playersOverview = useMemo(() => {
     const totalPlayers = playerClassesSummary.reduce((acc, cls) => acc + (cls.participantes?.length || 0), 0);
     const totalClasses = playerClassesSummary.length;
@@ -3266,6 +3310,30 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             <p className="subtle" style={{ margin: 0 }}>
               {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}
             </p>
+            <div className="tournament-overview-grid">
+              <div className="tournament-overview-kpi">
+                <strong>{tournamentOverview.generatedClasses}/{tournamentOverview.totalClasses}</strong>
+                <span>Classes geradas</span>
+              </div>
+              <div className="tournament-overview-kpi">
+                <strong>{tournamentOverview.doneMatches}/{tournamentOverview.totalMatches}</strong>
+                <span>Jogos finalizados</span>
+              </div>
+              <div className="tournament-overview-kpi">
+                <strong>{tournamentOverview.pendingMatches}</strong>
+                <span>Jogos pendentes</span>
+              </div>
+              {isOwner ? (
+                <div className="tournament-overview-kpi">
+                  <strong>{tournamentOverview.pendingRegistrations}</strong>
+                  <span>Inscricoes pendentes</span>
+                </div>
+              ) : null}
+            </div>
+            <button className="tournament-next-action" onClick={() => goToTab(tournamentOverview.nextTab)}>
+              <span>Proxima acao</span>
+              <strong>{tournamentOverview.nextAction}</strong>
+            </button>
           </article>
 
           <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
