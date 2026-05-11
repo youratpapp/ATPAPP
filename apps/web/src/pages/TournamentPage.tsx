@@ -129,6 +129,25 @@ function coerceAllowedTab(
   return isTabAllowed(base, isOwner, canSeeClassificationTab, canUseChatTab) ? base : "jogos";
 }
 
+async function copyTextWithFallback(text: string): Promise<boolean> {
+  const value = text.trim();
+  if (!value) return false;
+  try {
+    if (navigator?.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+      return true;
+    }
+  } catch {
+    // Fallback below.
+  }
+  try {
+    window.prompt("Copie o link abaixo:", value);
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 function scopeClassKey(categoryId: string, classId: string): string {
   return `${categoryId}::${classId}`;
 }
@@ -2940,6 +2959,50 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setFeedback({ kind: "success", text: "Resumo aberto no WhatsApp." });
   };
 
+  const buildTournamentShareLink = (shareTab: TabKey = "jogos") => {
+    if (!tournament) return "";
+    const u = new URL(window.location.href);
+    return `${u.origin}${u.pathname}#/eventos/${encodeURIComponent(tournament.id)}/${shareTab}`;
+  };
+
+  const buildTournamentRegistrationLink = () => {
+    if (!tournament) return "";
+    const u = new URL(window.location.href);
+    return `${u.origin}${u.pathname}#/inscricao/${encodeURIComponent(tournament.id)}`;
+  };
+
+  const copyTournamentShareLink = async () => {
+    const copied = await copyTextWithFallback(buildTournamentShareLink(tab));
+    setFeedback({
+      kind: copied ? "success" : "info",
+      text: copied ? "Link do torneio copiado." : "Link do torneio aberto para copia manual.",
+    });
+  };
+
+  const copyTournamentRegistrationLink = async () => {
+    const copied = await copyTextWithFallback(buildTournamentRegistrationLink());
+    setFeedback({
+      kind: copied ? "success" : "info",
+      text: copied ? "Link de inscricao copiado." : "Link de inscricao aberto para copia manual.",
+    });
+  };
+
+  const shareTournamentInviteWhatsApp = () => {
+    if (!tournament) return;
+    const lines = [
+      `*${tournament.name}*`,
+      [tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir",
+      "",
+      "Acompanhe o torneio:",
+      buildTournamentShareLink("jogos"),
+    ];
+    if (isOwner) {
+      lines.push("", "Inscricoes:", buildTournamentRegistrationLink());
+    }
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    setFeedback({ kind: "success", text: "Convite aberto no WhatsApp." });
+  };
+
   const buildSelfRegistrationLink = () => {
     if (!tournament || !activeDraftCategory || !activeDraftClass) return "";
     const u = new URL(window.location.href);
@@ -2964,12 +3027,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       setFeedback({ kind: "error", text: "Selecione categoria e classe para gerar link de inscricao." });
       return;
     }
-    try {
-      await navigator.clipboard.writeText(link);
-      setFeedback({ kind: "success", text: "Link de autoinscricao copiado." });
-    } catch {
-      setFeedback({ kind: "info", text: link });
-    }
+    const copied = await copyTextWithFallback(link);
+    setFeedback({
+      kind: copied ? "success" : "info",
+      text: copied ? "Link de autoinscricao copiado." : "Link de autoinscricao aberto para copia manual.",
+    });
   };
 
   const updateRegistration = async (registrationId: string, status: "approved" | "rejected") => {
@@ -3334,6 +3396,19 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               <span>Proxima acao</span>
               <strong>{tournamentOverview.nextAction}</strong>
             </button>
+            <div className="tournament-share-actions">
+              <button onClick={() => void copyTournamentShareLink()} disabled={saving}>
+                Copiar link
+              </button>
+              {isOwner ? (
+                <button onClick={() => void copyTournamentRegistrationLink()} disabled={saving}>
+                  Link de inscricao
+                </button>
+              ) : null}
+              <button onClick={shareTournamentInviteWhatsApp} disabled={saving}>
+                WhatsApp
+              </button>
+            </div>
           </article>
 
           <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
