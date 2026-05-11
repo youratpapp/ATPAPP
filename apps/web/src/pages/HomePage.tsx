@@ -5,20 +5,34 @@ import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import type {
   LeagueMatchSummary,
+  LeagueChatMessage,
   LeagueRegistration,
   LeagueRoundSummary,
   LeagueSummary,
   Profile,
+  TournamentChatMessage,
+  TournamentDetails,
+  TournamentRegistration,
   TournamentSummary,
 } from "../lib/types";
 import {
+  loadLeagueChatMessages,
   loadLeagueDetails,
   loadLeagueRegistrations,
   loadMyLeagues,
   loadRoundMatches,
   loadSeasonRounds,
 } from "../lib/leagues";
-import { buildTournamentUrl, loadDashboardData, loadUpcomingPublic } from "../lib/tournaments";
+import {
+  buildTournamentUrl,
+  loadDashboardData,
+  loadTournamentChatMessages,
+  loadTournamentDetails,
+  loadTournamentRegistrations,
+  loadUpcomingPublic,
+} from "../lib/tournaments";
+import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
+import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
 
 type Props = {
   user: User;
@@ -39,11 +53,31 @@ type HomeLeagueAction = {
 
 type HomeOrganizerAction = {
   id: string;
-  leagueId: string;
-  leagueName: string;
+  targetPath: string;
+  sourceName: string;
   title: string;
   detail: string;
   label: string;
+  tone: "urgent" | "neutral";
+};
+
+type HomeTournamentAction = {
+  id: string;
+  tournamentId: string;
+  tournamentName: string;
+  title: string;
+  detail: string;
+  label: string;
+  tone: "urgent" | "neutral";
+};
+
+type HomeNotice = {
+  id: string;
+  targetPath: string;
+  sourceName: string;
+  title: string;
+  body: string;
+  meta: string;
   tone: "urgent" | "neutral";
 };
 
@@ -100,10 +134,101 @@ function formatShortDateTime(value: string): string {
   });
 }
 
+function dedupeById<T extends { id: string }>(items: T[]): T[] {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
+}
+
+function noticeDateLabel(value: string): string {
+  if (!value) return "Agora";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "Agora";
+  return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }) + " " + d.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 function matchTitle(match: LeagueMatchSummary): string {
   const side1 = match.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ") || "A definir";
   const side2 = match.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ") || "A definir";
   return `${side1} x ${side2}`;
+}
+
+function normalizeName(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function isRealTournamentMatch(match: GroupMatch | KnockoutMatch): boolean {
+  const a = String(match.a || "").trim();
+  const b = String(match.b || "").trim();
+  return Boolean(a && b && a !== "BYE" && b !== "BYE");
+}
+
+function tournamentMatchTitle(match: GroupMatch | KnockoutMatch): string {
+  return `${String(match.a || "A definir")} x ${String(match.b || "A definir")}`;
+}
+
+function tournamentMatchHasPlayer(match: GroupMatch | KnockoutMatch, playerNames: Set<string>): boolean {
+  const a = normalizeName(String(match.a || ""));
+  const b = normalizeName(String(match.b || ""));
+  return Boolean((a && playerNames.has(a)) || (b && playerNames.has(b)));
+}
+
+function collectPendingTournamentMatches(
+  details: TournamentDetails,
+  playerNames?: Set<string>
+): HomeTournamentAction[] {
+  const classes = listLegacyClassesFromTournamentData(details.data).filter((cls) => cls.data.gerado);
+  const out: HomeTournamentAction[] = [];
+
+  for (const cls of classes) {
+    for (const group of cls.data.grupos) {
+      for (let idx = 0; idx < group.matches.length; idx += 1) {
+        const match = group.matches[idx];
+        if (!isRealTournamentMatch(match) || match.done) continue;
+        if (playerNames && !tournamentMatchHasPlayer(match, playerNames)) continue;
+        out.push({
+          id: `${details.id}:g:${cls.key}:${group.name}:${idx}`,
+          tournamentId: details.id,
+          tournamentName: details.name,
+          title: tournamentMatchTitle(match),
+          detail: `${cls.categoryName} / ${cls.className} - ${group.name}`,
+          label: "Resultado pendente",
+          tone: "neutral",
+        });
+      }
+    }
+
+    const rounds = cls.data.knockout?.rounds || [];
+    for (let roundIdx = 0; roundIdx < rounds.length; roundIdx += 1) {
+      const round = rounds[roundIdx];
+      for (let matchIdx = 0; matchIdx < round.matches.length; matchIdx += 1) {
+        const match = round.matches[matchIdx];
+        if (!isRealTournamentMatch(match) || match.done) continue;
+        if (playerNames && !tournamentMatchHasPlayer(match, playerNames)) continue;
+        out.push({
+          id: `${details.id}:k:${cls.key}:${roundIdx}:${matchIdx}`,
+          tournamentId: details.id,
+          tournamentName: details.name,
+          title: tournamentMatchTitle(match),
+          detail: `${cls.categoryName} / ${cls.className} - ${round.name}`,
+          label: "Resultado pendente",
+          tone: "neutral",
+        });
+      }
+    }
+  }
+
+  return out;
 }
 
 async function loadLeagueActions(userId: string, leagues: LeagueSummary[]): Promise<HomeLeagueAction[]> {
@@ -158,8 +283,8 @@ async function loadOrganizerActions(leagues: LeagueSummary[]): Promise<HomeOrgan
         if (pending > 0) {
           actions.push({
             id: `${league.id}:registrations`,
-            leagueId: league.id,
-            leagueName: league.name,
+            targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+            sourceName: league.name,
             title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
             detail: "Aprovar ou rejeitar jogadores",
             label: "Inscricoes",
@@ -179,8 +304,8 @@ async function loadOrganizerActions(leagues: LeagueSummary[]): Promise<HomeOrgan
               .slice(0, 2)
               .map((match) => ({
                 id: `${league.id}:${match.id}`,
-                leagueId: league.id,
-                leagueName: league.name,
+                targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+                sourceName: league.name,
                 title: matchTitle(match),
                 detail: `Rodada ${round.roundNumber} - ${formatShortDateTime(match.scheduledAt || round.endsAt)}`,
                 label: matchStatusLabel(match.status),
@@ -200,6 +325,156 @@ async function loadOrganizerActions(leagues: LeagueSummary[]): Promise<HomeOrgan
     .flat()
     .sort((a, b) => Number(b.tone === "urgent") - Number(a.tone === "urgent"))
     .slice(0, 6);
+}
+
+async function loadTournamentPlayerActions(
+  user: User,
+  tournaments: TournamentSummary[]
+): Promise<HomeTournamentAction[]> {
+  const active = tournaments.filter(isActiveTournament).slice(0, 4);
+  const groups = await Promise.all(
+    active.map(async (tournament) => {
+      try {
+        const details = await loadTournamentDetails(user, tournament.id);
+        const registrations = await loadTournamentRegistrations(user, tournament.id, details.role);
+        const playerNames = new Set(
+          registrations
+            .filter((registration) => registration.status === "approved")
+            .map((registration) => normalizeName(registration.playerName))
+            .filter(Boolean)
+        );
+        if (!playerNames.size) return [];
+        return collectPendingTournamentMatches(details, playerNames).slice(0, 2);
+      } catch {
+        return [];
+      }
+    })
+  );
+  return groups.flat().slice(0, 5);
+}
+
+async function loadTournamentOrganizerActions(
+  user: User,
+  tournaments: TournamentSummary[]
+): Promise<HomeOrganizerAction[]> {
+  const active = tournaments.filter((t) => t.status !== "finished").slice(0, 4);
+  const groups = await Promise.all(
+    active.map(async (tournament) => {
+      const actions: HomeOrganizerAction[] = [];
+      try {
+        const details = await loadTournamentDetails(user, tournament.id);
+        const registrations = await loadTournamentRegistrations(user, tournament.id, "owner");
+        const pending = registrations.filter((registration: TournamentRegistration) => registration.status === "pending").length;
+        if (pending > 0) {
+          actions.push({
+            id: `${tournament.id}:registrations`,
+            targetPath: buildTournamentUrl(tournament.id).replace("/jogos", "/jogadores"),
+            sourceName: tournament.name,
+            title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
+            detail: "Aprovar ou rejeitar jogadores",
+            label: "Inscricoes",
+            tone: "urgent",
+          });
+        }
+
+        const pendingMatches = collectPendingTournamentMatches(details).slice(0, 2);
+        actions.push(
+          ...pendingMatches.map((match) => ({
+            id: match.id,
+            targetPath: buildTournamentUrl(tournament.id),
+            sourceName: tournament.name,
+            title: match.title,
+            detail: match.detail,
+            label: match.label,
+            tone: "neutral" as const,
+          }))
+        );
+      } catch {
+        // Keep the dashboard resilient if one tournament fails to load.
+      }
+      return actions;
+    })
+  );
+
+  return groups
+    .flat()
+    .sort((a, b) => Number(b.tone === "urgent") - Number(a.tone === "urgent"))
+    .slice(0, 6);
+}
+
+function chatNoticeSort<T extends { isPinned: boolean; messageType: string; pinnedAt: string; createdAt: string }>(
+  a: T,
+  b: T
+): number {
+  const priority = (item: T) => Number(item.isPinned) * 2 + Number(item.messageType === "announcement");
+  const byPriority = priority(b) - priority(a);
+  if (byPriority !== 0) return byPriority;
+  return (b.pinnedAt || b.createdAt || "").localeCompare(a.pinnedAt || a.createdAt || "");
+}
+
+function tournamentMessageToNotice(tournament: TournamentSummary, message: TournamentChatMessage): HomeNotice {
+  const urgent = message.isPinned || message.messageType === "announcement";
+  return {
+    id: `tournament:${tournament.id}:${message.id}`,
+    targetPath: buildTournamentUrl(tournament.id).replace("/jogos", "/chat"),
+    sourceName: tournament.name,
+    title: urgent ? "Aviso do torneio" : "Mensagem recente",
+    body: message.body,
+    meta: `${message.senderName} - ${noticeDateLabel(message.createdAt)}`,
+    tone: urgent ? "urgent" : "neutral",
+  };
+}
+
+function leagueMessageToNotice(league: LeagueSummary, message: LeagueChatMessage): HomeNotice {
+  const urgent = message.isPinned || message.messageType === "announcement";
+  return {
+    id: `league:${league.id}:${message.id}`,
+    targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}?tab=chat`,
+    sourceName: league.name,
+    title: urgent ? "Aviso da liga" : "Mensagem recente",
+    body: message.body,
+    meta: `${message.senderName} - ${noticeDateLabel(message.createdAt)}`,
+    tone: urgent ? "urgent" : "neutral",
+  };
+}
+
+async function loadHomeNotices(tournaments: TournamentSummary[], leagues: LeagueSummary[]): Promise<HomeNotice[]> {
+  const tournamentSources = dedupeById(tournaments.filter((t) => t.status !== "finished")).slice(0, 6);
+  const leagueSources = dedupeById(leagues.filter((l) => l.status !== "finished")).slice(0, 6);
+
+  const tournamentGroups = await Promise.all(
+    tournamentSources.map(async (tournament) => {
+      try {
+        const messages = await loadTournamentChatMessages(tournament.id);
+        return messages
+          .filter((message) => message.isPinned || message.messageType === "announcement")
+          .sort(chatNoticeSort)
+          .slice(0, 2)
+          .map((message) => tournamentMessageToNotice(tournament, message));
+      } catch {
+        return [];
+      }
+    })
+  );
+
+  const leagueGroups = await Promise.all(
+    leagueSources.map(async (league) => {
+      try {
+        const messages = await loadLeagueChatMessages(league.id);
+        return messages
+          .filter((message) => message.isPinned || message.messageType === "announcement")
+          .sort(chatNoticeSort)
+          .slice(0, 2)
+          .map((message) => leagueMessageToNotice(league, message));
+      } catch {
+        return [];
+      }
+    })
+  );
+
+  return [...tournamentGroups.flat(), ...leagueGroups.flat()]
+    .sort((a, b) => Number(b.tone === "urgent") - Number(a.tone === "urgent"))
+    .slice(0, 5);
 }
 
 function toHomeLeagueAction(
@@ -321,7 +596,7 @@ function LeagueActionCard({ action, onOpen }: { action: HomeLeagueAction; onOpen
     <article className={`home-action-card ${tone}`} onClick={onOpen}>
       <div>
         <p className="home-action-label">
-          {action.leagueName} · Rodada {action.roundNumber}
+          {action.leagueName} - Rodada {action.roundNumber}
         </p>
         <p className="home-action-title">{action.title}</p>
         <p className="home-action-meta">{formatShortDateTime(dueDate)}</p>
@@ -335,11 +610,38 @@ function OrganizerActionCard({ action, onOpen }: { action: HomeOrganizerAction; 
   return (
     <article className={`home-action-card ${action.tone}`} onClick={onOpen}>
       <div>
-        <p className="home-action-label">{action.leagueName}</p>
+        <p className="home-action-label">{action.sourceName}</p>
         <p className="home-action-title">{action.title}</p>
         <p className="home-action-meta">{action.detail}</p>
       </div>
       <span>{action.label}</span>
+    </article>
+  );
+}
+
+function TournamentActionCard({ action, onOpen }: { action: HomeTournamentAction; onOpen: () => void }) {
+  return (
+    <article className={`home-action-card ${action.tone}`} onClick={onOpen}>
+      <div>
+        <p className="home-action-label">{action.tournamentName}</p>
+        <p className="home-action-title">{action.title}</p>
+        <p className="home-action-meta">{action.detail}</p>
+      </div>
+      <span>{action.label}</span>
+    </article>
+  );
+}
+
+function NoticeCard({ notice, onOpen }: { notice: HomeNotice; onOpen: () => void }) {
+  return (
+    <article className={`home-action-card ${notice.tone}`} onClick={onOpen}>
+      <div>
+        <p className="home-action-label">{notice.sourceName}</p>
+        <p className="home-action-title">{notice.title}</p>
+        <p className="home-action-body">{notice.body}</p>
+        <p className="home-action-meta">{notice.meta}</p>
+      </div>
+      <span>{notice.tone === "urgent" ? "Fixado" : "Chat"}</span>
     </article>
   );
 }
@@ -352,7 +654,9 @@ export function HomePage({ user, profile }: Props) {
   const [playingLeagues, setPlayingLeagues] = useState<LeagueSummary[]>([]);
   const [organizingLeagues, setOrganizingLeagues] = useState<LeagueSummary[]>([]);
   const [leagueActions, setLeagueActions] = useState<HomeLeagueAction[]>([]);
+  const [tournamentActions, setTournamentActions] = useState<HomeTournamentAction[]>([]);
   const [organizerActions, setOrganizerActions] = useState<HomeOrganizerAction[]>([]);
+  const [notices, setNotices] = useState<HomeNotice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -361,9 +665,12 @@ export function HomePage({ user, profile }: Props) {
     setLoading(true);
     Promise.all([loadUpcomingPublic(4), loadDashboardData(user), loadMyLeagues()])
       .then(async ([publicRows, dashboard, leagues]) => {
-        const [actions, orgActions] = await Promise.all([
+        const [actions, tournamentPlayerActions, leagueOrgActions, tournamentOrgActions, homeNotices] = await Promise.all([
           loadLeagueActions(user.id, leagues),
+          loadTournamentPlayerActions(user, dashboard.participating),
           loadOrganizerActions(leagues),
+          loadTournamentOrganizerActions(user, dashboard.organizing),
+          loadHomeNotices([...dashboard.participating, ...dashboard.organizing], leagues),
         ]);
         if (!alive) return;
         setUpcoming(publicRows);
@@ -372,7 +679,9 @@ export function HomePage({ user, profile }: Props) {
         setPlayingLeagues(leagues.filter((l) => l.role !== "owner" && isActiveLeague(l)).slice(0, 3));
         setOrganizingLeagues(leagues.filter((l) => l.role === "owner" && l.status !== "finished").slice(0, 3));
         setLeagueActions(actions);
-        setOrganizerActions(orgActions);
+        setTournamentActions(tournamentPlayerActions);
+        setOrganizerActions([...leagueOrgActions, ...tournamentOrgActions].slice(0, 8));
+        setNotices(homeNotices);
         setError("");
       })
       .catch((err: unknown) => {
@@ -391,6 +700,7 @@ export function HomePage({ user, profile }: Props) {
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
   const urgentActionCount =
     leagueActions.filter((a) => a.kind === "confirm_result" || a.kind === "send_result").length +
+    tournamentActions.filter((a) => a.tone === "urgent").length +
     organizerActions.filter((a) => a.tone === "urgent").length;
 
   return (
@@ -425,6 +735,21 @@ export function HomePage({ user, profile }: Props) {
             </section>
           ) : null}
 
+          {tournamentActions.length > 0 ? (
+            <section className="home-section">
+              <div className="section-title">
+                <h2>Torneios pendentes</h2>
+              </div>
+              {tournamentActions.map((action) => (
+                <TournamentActionCard
+                  key={action.id}
+                  action={action}
+                  onOpen={() => navigate(buildTournamentUrl(action.tournamentId))}
+                />
+              ))}
+            </section>
+          ) : null}
+
           {organizerActions.length > 0 ? (
             <section className="home-section">
               <div className="section-title">
@@ -434,8 +759,19 @@ export function HomePage({ user, profile }: Props) {
                 <OrganizerActionCard
                   key={action.id}
                   action={action}
-                  onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(action.leagueId)}`)}
+                  onOpen={() => navigate(action.targetPath)}
                 />
+              ))}
+            </section>
+          ) : null}
+
+          {notices.length > 0 ? (
+            <section className="home-section">
+              <div className="section-title">
+                <h2>Avisos recentes</h2>
+              </div>
+              {notices.map((notice) => (
+                <NoticeCard key={notice.id} notice={notice} onOpen={() => navigate(notice.targetPath)} />
               ))}
             </section>
           ) : null}

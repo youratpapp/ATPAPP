@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import {
@@ -46,6 +46,17 @@ type Props = {
 };
 
 type PageTab = "visao" | "jogadores" | "partidas" | "chat";
+
+const PAGE_TABS: PageTab[] = ["visao", "jogadores", "partidas", "chat"];
+
+function parsePageTab(value: string | null): PageTab {
+  return value && PAGE_TABS.includes(value as PageTab) ? (value as PageTab) : "visao";
+}
+
+function normalizePageTab(tab: PageTab, isOwner: boolean): PageTab {
+  if (isOwner) return tab;
+  return tab === "visao" || tab === "jogadores" ? "partidas" : tab;
+}
 
 type MatchForm = {
   sets1: string;
@@ -153,7 +164,9 @@ async function copyTextWithFallback(text: string): Promise<boolean> {
 export function LeagueDetailsPage({ user, profile }: Props) {
   const { leagueId } = useParams();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<PageTab>("visao");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedTab = parsePageTab(searchParams.get("tab"));
+  const [activeTab, setActiveTab] = useState<PageTab>(requestedTab);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -289,6 +302,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   }, [leagueId]);
 
   useEffect(() => {
+    setActiveTab(normalizePageTab(requestedTab, isOwner));
+  }, [requestedTab, isOwner]);
+
+  useEffect(() => {
     if (!selectedSeasonId) return;
     loadLeagueClasses(selectedSeasonId).then(setClasses).catch(() => setClasses([]));
     void loadRoundsAndMatches(selectedSeasonId);
@@ -324,6 +341,20 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       while (slots.length < 3) slots.push("");
       setMyAvailabilityByMatch((prev) => ({ ...prev, [match.id]: slots }));
     }
+  }
+
+  function goToTab(tab: PageTab) {
+    const next = normalizePageTab(tab, isOwner);
+    setActiveTab(next);
+    setSearchParams((current) => {
+      const params = new URLSearchParams(current);
+      if (next === "visao") {
+        params.delete("tab");
+      } else {
+        params.set("tab", next);
+      }
+      return params;
+    });
   }
 
   async function onGenerateRound() {
@@ -630,18 +661,18 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       {!loading && !error && league ? (
         <>
           <div className="tabs" style={{ marginBottom: 12 }}>
-            <button className={activeTab === "visao" ? "active" : ""} onClick={() => setActiveTab("visao")}>
+            <button className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
               {isOwner ? "Organizacao" : "Resumo"}
             </button>
             {isOwner ? (
-              <button className={activeTab === "jogadores" ? "active" : ""} onClick={() => setActiveTab("jogadores")}>
+              <button className={activeTab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
                 Jogadores
               </button>
             ) : null}
-            <button className={activeTab === "partidas" ? "active" : ""} onClick={() => setActiveTab("partidas")}>
+            <button className={activeTab === "partidas" ? "active" : ""} onClick={() => goToTab("partidas")}>
               Partidas
             </button>
-            <button className={activeTab === "chat" ? "active" : ""} onClick={() => setActiveTab("chat")}>
+            <button className={activeTab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
               Chat
             </button>
           </div>
