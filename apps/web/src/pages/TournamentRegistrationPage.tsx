@@ -77,6 +77,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
   const [selectedClassId, setSelectedClassId] = useState("");
   const [playerName, setPlayerName] = useState("");
   const [phone, setPhone] = useState("");
+  const [submittedClass, setSubmittedClass] = useState<ClassOption | null>(null);
 
   const selected = useMemo(
     () => options.find((o) => o.classId === selectedClassId) ?? options[0] ?? null,
@@ -105,6 +106,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
         setSelectedClassId(queryClass?.classId || opts[0]?.classId || "");
         setPlayerName(profile?.displayName || user.email?.split("@")[0] || "");
         setPhone(profile?.phone || "");
+        setSubmittedClass(null);
         setFeedback(null);
       } catch (err) {
         if (!alive) return;
@@ -136,12 +138,31 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
       } catch {
         // Non-blocking for registration.
       }
+      setSubmittedClass(selected);
       setFeedback({ kind: "success", text: "Solicitacao enviada com sucesso." });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao enviar solicitacao." });
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const registrationLink = () => {
+    if (!tournament) return "";
+    const u = new URL(window.location.href);
+    const query = selected ? `?classId=${encodeURIComponent(selected.classId)}` : "";
+    return `${u.origin}${u.pathname}#/inscricao/${encodeURIComponent(tournament.id)}${query}`;
+  };
+
+  const shareRegistrationWhatsApp = () => {
+    if (!tournament) return;
+    const lines = [
+      `Inscricao para ${tournament.name}`,
+      selected ? `${selected.categoryName} / ${selected.className}` : "Classe a escolher",
+      "",
+      registrationLink(),
+    ];
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -189,7 +210,13 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
           </div>
 
           <label>Classe</label>
-          <select value={selected?.classId ?? ""} onChange={(e) => setSelectedClassId(e.target.value)}>
+          <select
+            value={selected?.classId ?? ""}
+            onChange={(e) => {
+              setSelectedClassId(e.target.value);
+              setSubmittedClass(null);
+            }}
+          >
             {options.length === 0 ? <option value="">Sem classes disponiveis</option> : null}
             {options.map((o) => (
               <option key={`${o.categoryId}:${o.classId}`} value={o.classId}>
@@ -204,16 +231,32 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
           <label>Telefone</label>
           <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(67) 99999-9999" />
 
-          <div className="cluster" style={{ marginTop: 12 }}>
-            <button
-              className="primary"
-              onClick={submit}
-              disabled={submitting || !selected || !playerName.trim() || options.length === 0}
-            >
-              {submitting ? "Enviando..." : "Solicitar inscricao"}
-            </button>
-            <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
-          </div>
+          {submittedClass ? (
+            <div className="invite-confirmation">
+              <strong>Solicitacao recebida</strong>
+              <span>
+                Voce pediu inscricao em {submittedClass.categoryName} / {submittedClass.className}. O organizador deve aprovar antes de voce aparecer na chave.
+              </span>
+              <div className="cluster">
+                <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
+                <button onClick={shareRegistrationWhatsApp}>Compartilhar convite</button>
+              </div>
+            </div>
+          ) : (
+            <div className="cluster" style={{ marginTop: 12 }}>
+              <button
+                className="primary"
+                onClick={submit}
+                disabled={submitting || !selected || !playerName.trim() || options.length === 0}
+              >
+                {submitting ? "Enviando..." : "Solicitar inscricao"}
+              </button>
+              <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
+              <button onClick={shareRegistrationWhatsApp} disabled={!selected}>
+                Compartilhar convite
+              </button>
+            </div>
+          )}
         </section>
       ) : null}
     </AppShell>

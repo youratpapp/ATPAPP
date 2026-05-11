@@ -692,6 +692,172 @@
   min-height: 38px;
 }
 
+.my-matches-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+}
+
+.my-match-row {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  padding: var(--space-2);
+}
+
+.my-match-row:last-child {
+  margin-bottom: 0;
+}
+
+.my-match-row.done {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.my-match-row > button {
+  align-items: center;
+  background: transparent;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: auto;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.my-match-row > button:hover {
+  background: transparent;
+}
+
+.my-match-row span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.my-match-row strong {
+  color: var(--color-text);
+}
+
+.my-match-row small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.my-match-row em {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.my-match-result-tools {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.my-match-result-tools input,
+.my-match-result-tools button {
+  min-height: 38px;
+}
+
+.result-submission-status {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  margin: 0;
+}
+
+.result-review-panel {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+}
+
+.result-review-panel > div:first-child {
+  display: grid;
+  gap: 2px;
+}
+
+.result-review-panel strong {
+  color: var(--color-text);
+}
+
+.result-review-panel span,
+.result-review-panel small,
+.result-review-panel em {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-style: normal;
+}
+
+.result-review-item {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2);
+}
+
+.result-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.result-review-actions button {
+  min-height: 34px;
+}
+
+.settings-check {
+  align-items: flex-start;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex: 1 1 280px;
+  gap: var(--space-2);
+  margin: 0;
+  min-height: 54px;
+  padding: var(--space-2);
+}
+
+.settings-check input {
+  margin-top: 4px;
+  width: auto;
+}
+
+.settings-check span {
+  display: grid;
+  gap: 2px;
+}
+
+.settings-check strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.settings-check small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  line-height: 1.35;
+}
+
 .league-overview-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -707,6 +873,25 @@
 .invite-overview-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-bottom: var(--space-3);
+}
+
+.invite-confirmation {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-md);
+  color: #065f46;
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+}
+
+.invite-confirmation strong {
+  color: #047857;
+}
+
+.invite-confirmation span {
+  font-size: var(--font-size-sm);
 }
 
 .tournament-admin-ops {
@@ -832,6 +1017,10 @@
 
   .tournament-overview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .my-match-result-tools {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

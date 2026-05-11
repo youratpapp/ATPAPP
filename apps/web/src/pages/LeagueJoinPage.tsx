@@ -35,6 +35,7 @@ export function LeagueJoinPage({ user, profile }: Props) {
   const [ctx, setCtx] = useState<LeagueJoinContext | null>(null);
   const [playerName, setPlayerName] = useState(profile?.displayName || "");
   const [phone, setPhone] = useState(profile?.phone || "");
+  const [submittedStatus, setSubmittedStatus] = useState<"approved" | "pending" | "">("");
 
   useEffect(() => {
     const t = String(token || "").trim();
@@ -48,6 +49,8 @@ export function LeagueJoinPage({ user, profile }: Props) {
     getLeagueJoinContext(t)
       .then((row) => {
         setCtx(row);
+        setSubmittedStatus("");
+        setFeedback("");
       })
       .catch((err) => setError(err instanceof Error ? err.message : "Falha ao abrir link."))
       .finally(() => setLoading(false));
@@ -61,7 +64,9 @@ export function LeagueJoinPage({ user, profile }: Props) {
     setError("");
     try {
       const status = await requestLeagueJoinByLink(t, playerName, phone);
-      setFeedback(status === "approved" ? "Entrada aprovada. Voce ja esta na liga." : "Solicitacao enviada para aprovacao do organizador.");
+      const normalized = status === "approved" ? "approved" : "pending";
+      setSubmittedStatus(normalized);
+      setFeedback(normalized === "approved" ? "Entrada aprovada. Voce ja esta na liga." : "Solicitacao enviada para aprovacao do organizador.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Falha ao solicitar entrada.");
     } finally {
@@ -108,18 +113,33 @@ export function LeagueJoinPage({ user, profile }: Props) {
           <div className="events-filter-grid">
             <label>
               Nome do jogador
-              <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} />
+              <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} disabled={Boolean(submittedStatus)} />
             </label>
             <label>
               Telefone
-              <input value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={Boolean(submittedStatus)} />
             </label>
           </div>
-          <div className="modal-actions">
-            <button onClick={onJoin} disabled={busy || !playerName.trim()}>
-              {busy ? "Enviando..." : ctx.joinRequiresApproval ? "Solicitar entrada" : "Entrar na liga"}
-            </button>
-          </div>
+          {submittedStatus ? (
+            <div className="invite-confirmation">
+              <strong>{submittedStatus === "approved" ? "Entrada confirmada" : "Solicitacao recebida"}</strong>
+              <span>
+                {submittedStatus === "approved"
+                  ? "Voce ja pode acompanhar as partidas, chat e proximas rodadas da liga."
+                  : "O organizador precisa aprovar sua entrada antes de voce aparecer nas rodadas."}
+              </span>
+              <div className="cluster">
+                <button onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(ctx.leagueId)}`)}>Abrir liga</button>
+                <button onClick={() => navigate("/eventos/ligas?view=participating")}>Minhas ligas</button>
+              </div>
+            </div>
+          ) : (
+            <div className="modal-actions">
+              <button onClick={onJoin} disabled={busy || !playerName.trim()}>
+                {busy ? "Enviando..." : ctx.joinRequiresApproval ? "Solicitar entrada" : "Entrar na liga"}
+              </button>
+            </div>
+          )}
         </section>
       ) : null}
     </AppShell>

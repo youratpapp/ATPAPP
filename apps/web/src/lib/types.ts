@@ -35,6 +35,7 @@ export type TournamentSummary = {
   startsAt: string;
   registrationCloseAt: string;
   updatedAt: string;
+  playerResultSubmissionEnabled: boolean;
 };
 
 export type TournamentDetails = TournamentSummary & {
@@ -67,6 +68,24 @@ export type TournamentChatMessage = {
   isPinned: boolean;
   pinnedAt: string;
   createdAt: string;
+};
+
+export type TournamentMatchResultSubmission = {
+  id: string;
+  tournamentId: string;
+  submittedBy: string;
+  classKey: string;
+  classLabel: string;
+  phaseKey: string;
+  phaseLabel: string;
+  matchIndex: number;
+  side: "a" | "b";
+  matchTitle: string;
+  scoreText: string;
+  normalizedScore: string;
+  status: "pending" | "accepted" | "conflict" | "applied" | "rejected";
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type LeagueSummary = {

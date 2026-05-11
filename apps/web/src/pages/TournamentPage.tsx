@@ -9,13 +9,22 @@ import {
   loadTournamentChatMessages,
   loadTournamentDetails,
   loadTournamentRegistrations,
+  loadTournamentResultSubmissions,
+  markTournamentMatchResultSubmissionApplied,
   postTournamentAnnouncement,
   sendTournamentChatMessage,
   setTournamentPinnedMessage,
+  submitTournamentMatchResult,
   updateTournamentDetails,
   updateTournamentRegistrationStatus,
 } from "../lib/tournaments";
-import type { Profile, TournamentChatMessage, TournamentDetails, TournamentRegistration } from "../lib/types";
+import type {
+  Profile,
+  TournamentChatMessage,
+  TournamentDetails,
+  TournamentMatchResultSubmission,
+  TournamentRegistration,
+} from "../lib/types";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
 import {
   generateScheduleAssignments,
@@ -60,6 +69,22 @@ type MatchScoreDetail = {
 };
 
 type Feedback = { kind: "success" | "error" | "info"; text: string };
+type PlayerTournamentMatch = {
+  id: string;
+  classKey: string;
+  classLabel: string;
+  phaseKey: string;
+  phase: string;
+  matchIndex: number;
+  side: "a" | "b";
+  title: string;
+  status: "done" | "pending";
+  score: string;
+};
+type PlayerMatchResultDraft = {
+  matchId: string;
+  score: string;
+};
 type DraftClass = {
   id: string;
   nome: string;
@@ -127,6 +152,14 @@ function coerceAllowedTab(
 ): TabKey {
   const base = requested && VALID_TABS.includes(requested) ? requested : "jogos";
   return isTabAllowed(base, isOwner, canSeeClassificationTab, canUseChatTab) ? base : "jogos";
+}
+
+function normalizePlayerName(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 async function copyTextWithFallback(text: string): Promise<boolean> {
@@ -486,6 +519,36 @@ function scoringRulesHint(config: ClassData["config"]): string {
   if (config.tipoPontuacao === "pro_set") return "Informe os games do Pro Set (ate 8, tie-break em 8x8).";
   if (config.tipoPontuacao === "fast4") return "Informe games por set Fast4 (ate 4, tie-break em 4x4), no melhor de N sets.";
   return "Informe apenas pontos do Super Tie-Break (minimo 10 e diferenca minima de 2).";
+}
+
+function parseSubmittedScoreText(scoreText: string, config: ClassData["config"]): MatchScoreDetail | null {
+  const clean = scoreText.trim();
+  if (!clean) return null;
+  const pairRegex = /(\d{1,2})\s*[-xX/]\s*(\d{1,2})(?:\s*\((\d{1,2})\s*[-xX/]\s*(\d{1,2})\))?/g;
+  const pairs: Array<{ a: string; b: string; tbA: string; tbB: string }> = [];
+  let match: RegExpExecArray | null;
+  while ((match = pairRegex.exec(clean)) !== null) {
+    pairs.push({
+      a: match[1] || "",
+      b: match[2] || "",
+      tbA: match[3] || "",
+      tbB: match[4] || "",
+    });
+  }
+  if (!pairs.length) return null;
+
+  if (isSuperTieBreakPointsMode(config)) {
+    return normalizeMatchScoreDetail({ superTbA: pairs[0]?.a || "", superTbB: pairs[0]?.b || "" }, config);
+  }
+
+  const slots = setSlotsForType(config);
+  const sets = Array.from({ length: slots }, (_, idx) => pairs[idx] ?? emptyScoreSet());
+  const detail = normalizeMatchScoreDetail({ sets }, config);
+  if (config.tipoPontuacao === "melhor_de_3_super_tb" && pairs[2]) {
+    detail.superTbA = pairs[2].a;
+    detail.superTbB = pairs[2].b;
+  }
+  return detail;
 }
 
 function normalizeScoreTypeByModel(
@@ -1311,6 +1374,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [basicCityLoadError, setBasicCityLoadError] = useState("");
   const [basicVisibility, setBasicVisibility] = useState<"public" | "private">("private");
   const [basicStatus, setBasicStatus] = useState<TournamentStatus>("draft");
+  const [basicPlayerResultSubmissionEnabled, setBasicPlayerResultSubmissionEnabled] = useState(false);
   const [basicStartsAt, setBasicStartsAt] = useState("");
   const [basicRegistrationCloseAt, setBasicRegistrationCloseAt] = useState("");
   const [basicPosterUrl, setBasicPosterUrl] = useState("");
@@ -1320,6 +1384,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [chatText, setChatText] = useState("");
   const [announcementText, setAnnouncementText] = useState("");
   const [pinAnnouncement, setPinAnnouncement] = useState(false);
+  const [playerResultDraft, setPlayerResultDraft] = useState<PlayerMatchResultDraft>({ matchId: "", score: "" });
+  const [resultSubmissions, setResultSubmissions] = useState<TournamentMatchResultSubmission[]>([]);
+  const [resultSubmitting, setResultSubmitting] = useState(false);
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -1530,6 +1597,75 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       nextTab,
     };
   }, [canSeeClassificationTab, classes, draftCategories.length, isOwner, registrations]);
+  const myTournamentMatches = useMemo<PlayerTournamentMatch[]>(() => {
+    if (isOwner) return [];
+    const playerNames = new Set(
+      registrations
+        .filter((registration) => registration.userId === user.id && registration.status === "approved")
+        .map((registration) => normalizePlayerName(registration.playerName))
+        .filter(Boolean)
+    );
+    if (!playerNames.size && profile?.displayName) {
+      playerNames.add(normalizePlayerName(profile.displayName));
+    }
+    if (!playerNames.size) return [];
+
+    const out: PlayerTournamentMatch[] = [];
+    const sideForMatch = (match: GroupMatch | KnockoutMatch): "a" | "b" | null => {
+      const a = normalizePlayerName(String(match.a || ""));
+      const b = normalizePlayerName(String(match.b || ""));
+      const playerList = Array.from(playerNames);
+      if (a && playerList.some((name) => a === name || a.includes(name) || name.includes(a))) return "a";
+      if (b && playerList.some((name) => b === name || b.includes(name) || name.includes(b))) return "b";
+      return null;
+    };
+
+    for (const cls of classes) {
+      const classLabel = `${cls.categoryName} / ${cls.className}`;
+      for (const group of cls.data.grupos || []) {
+        for (let idx = 0; idx < group.matches.length; idx += 1) {
+          const match = group.matches[idx];
+          const side = sideForMatch(match);
+          if (!isRealMatch(match.a, match.b) || !side) continue;
+          out.push({
+            id: `${cls.key}:g:${group.name}:${idx}`,
+            classKey: cls.key,
+            classLabel,
+            phaseKey: `group:${group.name}`,
+            phase: group.name,
+            matchIndex: idx,
+            side,
+            title: `${match.a} x ${match.b}`,
+            status: match.done ? "done" : "pending",
+            score: formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, match.done, cls.data.config),
+          });
+        }
+      }
+      for (let roundIdx = 0; roundIdx < (cls.data.knockout?.rounds || []).length; roundIdx += 1) {
+        const round = cls.data.knockout?.rounds[roundIdx];
+        if (!round) continue;
+        for (let matchIdx = 0; matchIdx < round.matches.length; matchIdx += 1) {
+          const match = round.matches[matchIdx];
+          const side = sideForMatch(match);
+          if (!isRealMatch(match.a, match.b) || !side) continue;
+          out.push({
+            id: `${cls.key}:k:${roundIdx}:${matchIdx}`,
+            classKey: cls.key,
+            classLabel,
+            phaseKey: `ko:${roundIdx}`,
+            phase: round.name,
+            matchIndex: matchIdx,
+            side,
+            title: `${match.a} x ${match.b}`,
+            status: match.done ? "done" : "pending",
+            score: formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, match.done, cls.data.config),
+          });
+        }
+      }
+    }
+
+    return out.sort((a, b) => Number(a.status === "done") - Number(b.status === "done"));
+  }, [classes, isOwner, profile?.displayName, registrations, user.id]);
   const playersOverview = useMemo(() => {
     const totalPlayers = playerClassesSummary.reduce((acc, cls) => acc + (cls.participantes?.length || 0), 0);
     const totalClasses = playerClassesSummary.length;
@@ -1537,6 +1673,26 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     const approved = registrations.filter((r) => r.status === "approved").length;
     return { totalPlayers, totalClasses, pending, approved };
   }, [playerClassesSummary, registrations]);
+  const resultSubmissionByMatch = useMemo(() => {
+    const map = new Map<string, TournamentMatchResultSubmission[]>();
+    for (const submission of resultSubmissions) {
+      const key = `${submission.classKey}:${submission.phaseKey}:${submission.matchIndex}`;
+      const rows = map.get(key) || [];
+      rows.push(submission);
+      map.set(key, rows);
+    }
+    return map;
+  }, [resultSubmissions]);
+  const pendingResultReviewGroups = useMemo(() => {
+    return Array.from(resultSubmissionByMatch.values())
+      .map((rows) => rows.filter((submission) => ["pending", "accepted", "conflict"].includes(submission.status)))
+      .filter((rows) => rows.length > 0)
+      .sort((a, b) => (b[0]?.updatedAt || "").localeCompare(a[0]?.updatedAt || ""));
+  }, [resultSubmissionByMatch]);
+  const pendingResultReviewCount = useMemo(
+    () => pendingResultReviewGroups.reduce((acc, rows) => acc + rows.length, 0),
+    [pendingResultReviewGroups]
+  );
 
   const goToTab = (next: TabKey) => {
     if (!tournamentId) return;
@@ -1682,9 +1838,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
         setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
         setAgendaDirty(false);
-        const regs = await loadTournamentRegistrations(user, details.id, details.role);
+        const [regs, submissions] = await Promise.all([
+          loadTournamentRegistrations(user, details.id, details.role),
+          loadTournamentResultSubmissions(details.id).catch(() => [] as TournamentMatchResultSubmission[]),
+        ]);
         if (!alive) return;
         setRegistrations(regs);
+        setResultSubmissions(submissions);
         setFeedback(null);
       } catch (err) {
         if (!alive) return;
@@ -1754,10 +1914,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         ? tournament.status
         : "draft"
     );
+    setBasicPlayerResultSubmissionEnabled(Boolean(tournament.playerResultSubmissionEnabled));
     setBasicStartsAt(toDateTimeLocalValue(tournament.startsAt));
     setBasicRegistrationCloseAt(toDateTimeLocalValue(tournament.registrationCloseAt));
     setBasicPosterUrl(tournament.posterUrl || "");
-  }, [tournament?.id, tournament?.name, tournament?.city, tournament?.state, tournament?.visibility, tournament?.status, tournament?.startsAt, tournament?.registrationCloseAt, tournament?.posterUrl]);
+  }, [tournament?.id, tournament?.name, tournament?.city, tournament?.state, tournament?.visibility, tournament?.status, tournament?.playerResultSubmissionEnabled, tournament?.startsAt, tournament?.registrationCloseAt, tournament?.posterUrl]);
 
   useEffect(() => {
     if (!configEditorClass) return;
@@ -2036,6 +2197,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         state: normalizedBasicUf,
         visibility: basicVisibility,
         status: basicStatus,
+        playerResultSubmissionEnabled: basicPlayerResultSubmissionEnabled,
         startsAt: toIsoFromDateTimeLocal(basicStartsAt),
         registrationCloseAt: toIsoFromDateTimeLocal(basicRegistrationCloseAt),
         posterUrl: basicPosterUrl,
@@ -3003,6 +3165,65 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setFeedback({ kind: "success", text: "Convite aberto no WhatsApp." });
   };
 
+  const sharePlayerMatchResultWhatsApp = (match: PlayerTournamentMatch) => {
+    if (!tournament) return;
+    const score = playerResultDraft.matchId === match.id ? playerResultDraft.score.trim() : "";
+    const lines = [
+      `Resultado - ${tournament.name}`,
+      match.classLabel,
+      `${match.phase}: ${match.title}`,
+      `Placar: ${score || "preencher"}`,
+      "",
+      `Link: ${buildTournamentShareLink("jogos")}`,
+    ];
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    setFeedback({ kind: "success", text: "Mensagem de resultado aberta no WhatsApp." });
+  };
+
+  const submitPlayerMatchResultNow = async (match: PlayerTournamentMatch) => {
+    if (!tournament) return;
+    const score = playerResultDraft.matchId === match.id ? playerResultDraft.score.trim() : "";
+    if (!score) {
+      setFeedback({ kind: "error", text: "Informe o placar antes de enviar." });
+      return;
+    }
+    setResultSubmitting(true);
+    try {
+      const rows = await submitTournamentMatchResult({
+        tournamentId: tournament.id,
+        classKey: match.classKey,
+        classLabel: match.classLabel,
+        phaseKey: match.phaseKey,
+        phaseLabel: match.phase,
+        matchIndex: match.matchIndex,
+        side: match.side,
+        matchTitle: match.title,
+        scoreText: score,
+      });
+      const key = `${match.classKey}:${match.phaseKey}:${match.matchIndex}`;
+      setResultSubmissions((prev) => [
+        ...rows,
+        ...prev.filter((submission) => `${submission.classKey}:${submission.phaseKey}:${submission.matchIndex}` !== key),
+      ]);
+      setPlayerResultDraft({ matchId: "", score: "" });
+
+      const hasAccepted = rows.some((submission) => submission.status === "accepted");
+      const hasConflict = rows.some((submission) => submission.status === "conflict");
+      setFeedback({
+        kind: hasConflict ? "info" : "success",
+        text: hasAccepted
+          ? "Resultado conferido pelos dois lados. O organizador ainda precisa aplicar o placar oficial."
+          : hasConflict
+          ? "Resultado divergente enviado para analise do organizador."
+          : "Resultado enviado. Aguardando o outro lado ou revisao do organizador.",
+      });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao enviar resultado." });
+    } finally {
+      setResultSubmitting(false);
+    }
+  };
+
   const buildSelfRegistrationLink = () => {
     if (!tournament || !activeDraftCategory || !activeDraftClass) return "";
     const u = new URL(window.location.href);
@@ -3135,6 +3356,57 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     match.done = evaluated.done;
     match.winner = evaluated.winner === "a" ? match.a : evaluated.winner === "b" ? match.b : null;
     match.scoreLabel = encodeMatchScoreDetail(nextDetail);
+  };
+
+  const applySubmittedResultAsOfficial = async (submission: TournamentMatchResultSubmission) => {
+    if (!tournament || !canEditScores) return;
+    const ref = classes.find((cls) => cls.key === submission.classKey);
+    if (!ref) {
+      setFeedback({ kind: "error", text: "Classe da partida nao encontrada." });
+      return;
+    }
+    const detail = parseSubmittedScoreText(submission.scoreText, ref.data.config);
+    if (!detail) {
+      setFeedback({ kind: "error", text: "Nao foi possivel interpretar o placar enviado." });
+      return;
+    }
+    const evaluated = evaluateMatchScoreDetail(normalizeMatchScoreDetail(detail, ref.data.config), ref.data.config);
+    if (!evaluated.done || !evaluated.winner) {
+      setFeedback({ kind: "error", text: "O placar enviado nao fecha a partida pelas regras desta classe." });
+      return;
+    }
+
+    const next = structuredClone(ref.data);
+    let target: GroupMatch | KnockoutMatch | null = null;
+    if (submission.phaseKey.startsWith("group:")) {
+      const groupName = submission.phaseKey.slice("group:".length);
+      const group = next.grupos.find((item) => item.name === groupName);
+      target = (group?.matches[submission.matchIndex] as GroupMatch | undefined) ?? null;
+    } else if (submission.phaseKey.startsWith("ko:")) {
+      const roundIndex = Number.parseInt(submission.phaseKey.slice("ko:".length), 10);
+      const round = Number.isNaN(roundIndex) ? null : next.knockout?.rounds[roundIndex];
+      target = (round?.matches[submission.matchIndex] as KnockoutMatch | undefined) ?? null;
+    }
+
+    if (!target) {
+      setFeedback({ kind: "error", text: "Partida da submissao nao encontrada na chave atual." });
+      return;
+    }
+
+    try {
+      applyScoreDetailToMatch(next.config, target, () => detail);
+      const recomputed = recomputeClassData(next);
+      await persistClassData(ref, recomputed);
+      const rows = await markTournamentMatchResultSubmissionApplied(submission.id);
+      const key = `${submission.classKey}:${submission.phaseKey}:${submission.matchIndex}`;
+      setResultSubmissions((prev) => [
+        ...rows,
+        ...prev.filter((row) => `${row.classKey}:${row.phaseKey}:${row.matchIndex}` !== key),
+      ]);
+      setFeedback({ kind: "success", text: "Resultado aplicado como placar oficial." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aplicar resultado." });
+    }
   };
 
   const onUpdateGroupScoreDetail = async (
@@ -3483,9 +3755,91 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               ) : null}
 
+              {!isOwner && myTournamentMatches.length > 0 ? (
+                <div className="my-matches-panel">
+                  <div className="section-title" style={{ marginBottom: 8 }}>
+                    <h3>Minhas partidas</h3>
+                    <span className="home-league-chip member">{myTournamentMatches.length}</span>
+                  </div>
+                  {myTournamentMatches.slice(0, 6).map((match) => {
+                    const submissions = resultSubmissionByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
+                    const hasAccepted = submissions.some((submission) => submission.status === "accepted");
+                    const hasConflict = submissions.some((submission) => submission.status === "conflict");
+                    const submittedSides = new Set(submissions.map((submission) => submission.side)).size;
+                    const submissionStatusText = hasConflict
+                      ? "Divergente: organizador precisa revisar."
+                      : hasAccepted
+                      ? "Conferido pelos lados. Aguardando placar oficial."
+                      : submissions.length > 0
+                      ? `Enviado por ${submittedSides} lado(s).`
+                      : "";
+                    return (
+                      <div key={match.id} className={`my-match-row ${match.status}`}>
+                        <button type="button" onClick={() => setActiveClassKey(match.classKey)}>
+                          <span>
+                            <strong>{match.title}</strong>
+                            <small>{match.classLabel} - {match.phase}</small>
+                          </span>
+                          <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
+                        </button>
+                        {submissionStatusText ? <p className="result-submission-status">{submissionStatusText}</p> : null}
+                        {match.status === "pending" ? (
+                          <div className="my-match-result-tools">
+                            <input
+                              value={playerResultDraft.matchId === match.id ? playerResultDraft.score : ""}
+                              onChange={(event) => setPlayerResultDraft({ matchId: match.id, score: event.target.value })}
+                              placeholder="Placar"
+                            />
+                            {tournament.playerResultSubmissionEnabled ? (
+                              <button onClick={() => void submitPlayerMatchResultNow(match)} disabled={resultSubmitting}>
+                                Enviar
+                              </button>
+                            ) : null}
+                            <button onClick={() => sharePlayerMatchResultWhatsApp(match)}>WhatsApp</button>
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
+
               {isOwner ? (
                 <div className="tournament-admin-ops">
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>Operacoes e exportacoes</h3>
+                  {pendingResultReviewCount > 0 ? (
+                    <div className="result-review-panel">
+                      <div>
+                        <strong>{pendingResultReviewCount} envio(s) de resultado por jogadores</strong>
+                        <span>Resultados aceitos ou divergentes continuam invisiveis como placar oficial ate o organizador aplicar na partida.</span>
+                      </div>
+                      {pendingResultReviewGroups.slice(0, 5).map((rows) => {
+                        const first = rows[0];
+                        if (!first) return null;
+                        const hasConflict = rows.some((submission) => submission.status === "conflict");
+                        const hasAccepted = rows.some((submission) => submission.status === "accepted");
+                        return (
+                          <div key={`${first.classKey}:${first.phaseKey}:${first.matchIndex}`} className="result-review-item">
+                            <strong>{first.matchTitle}</strong>
+                            <small>{first.classLabel} - {first.phaseLabel}</small>
+                            <span>{hasConflict ? "Divergente" : hasAccepted ? "Conferido" : "Pendente"}</span>
+                            <em>{rows.map((submission) => `${submission.side.toUpperCase()}: ${submission.scoreText}`).join(" | ")}</em>
+                            <div className="result-review-actions">
+                              {rows.map((submission) => (
+                                <button
+                                  key={submission.id}
+                                  onClick={() => void applySubmittedResultAsOfficial(submission)}
+                                  disabled={saving}
+                                >
+                                  Aplicar {submission.side.toUpperCase()} {submission.scoreText}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : null}
                   <div className="cluster" style={{ marginBottom: 8 }}>
                     <button className="primary" onClick={() => void generateAllClasses()} disabled={saving}>
                       Gerar campeonatos
@@ -3766,6 +4120,17 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       <option value="finished">Finalizado</option>
                     </select>
                   </div>
+                  <label className="settings-check">
+                    <input
+                      type="checkbox"
+                      checked={basicPlayerResultSubmissionEnabled}
+                      onChange={(event) => setBasicPlayerResultSubmissionEnabled(event.target.checked)}
+                    />
+                    <span>
+                      <strong>Jogadores podem enviar resultados</strong>
+                      <small>Se ambos os lados enviarem o mesmo placar, o resultado fica conferido para revisao do organizador.</small>
+                    </span>
+                  </label>
                 </div>
                 <div className="cluster" style={{ marginTop: 8 }}>
                   <div style={{ flex: 1 }}>

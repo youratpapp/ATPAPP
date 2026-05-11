@@ -1,17 +1,24 @@
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
-import type { TournamentChatMessage, TournamentDetails, TournamentRegistration, TournamentSummary } from "./types";
+import type {
+  TournamentChatMessage,
+  TournamentDetails,
+  TournamentMatchResultSubmission,
+  TournamentRegistration,
+  TournamentSummary,
+} from "./types";
 
 const TABLE_TOURNAMENTS = "tournaments";
 const TABLE_MEMBERS = "tournament_members";
 const TABLE_REGISTRATIONS = "tournament_registrations";
 const TABLE_CHAT = "tournament_chat_messages";
+const TABLE_RESULT_SUBMISSIONS = "tournament_match_result_submissions";
 
 export const TOURNAMENT_COLUMNS =
-  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at";
+  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at,player_result_submission_enabled";
 
 const TOURNAMENT_DETAIL_COLUMNS =
-  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,created_at,updated_at,data";
+  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,created_at,updated_at,data,player_result_submission_enabled";
 
 export type TournamentRow = {
   id: string;
@@ -25,6 +32,7 @@ export type TournamentRow = {
   starts_at: string | null;
   registration_close_at: string | null;
   updated_at: string | null;
+  player_result_submission_enabled?: boolean | null;
 };
 
 type TournamentDetailRow = TournamentRow & {
@@ -55,6 +63,24 @@ type TournamentChatRow = {
   is_pinned: boolean | null;
   pinned_at: string | null;
   created_at: string | null;
+};
+
+type TournamentResultSubmissionRow = {
+  id: string;
+  tournament_id: string;
+  submitted_by: string;
+  class_key: string;
+  class_label: string;
+  phase_key: string;
+  phase_label: string;
+  match_index: number;
+  side: string;
+  match_title: string;
+  score_text: string;
+  normalized_score: string;
+  status: string;
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 function normalizeState(value: string | undefined): string | null {
@@ -91,6 +117,7 @@ export function rowToSummary(row: TournamentRow): TournamentSummary {
     startsAt: row.starts_at ?? "",
     registrationCloseAt: row.registration_close_at ?? "",
     updatedAt: row.updated_at ?? "",
+    playerResultSubmissionEnabled: Boolean(row.player_result_submission_enabled),
   };
 }
 
@@ -134,6 +161,27 @@ function chatRowToModel(row: TournamentChatRow, senderName: string): TournamentC
     isPinned: Boolean(row.is_pinned),
     pinnedAt: row.pinned_at ?? "",
     createdAt: row.created_at ?? "",
+  };
+}
+
+function resultSubmissionRowToModel(row: TournamentResultSubmissionRow): TournamentMatchResultSubmission {
+  const status = ["pending", "accepted", "conflict", "applied", "rejected"].includes(row.status) ? row.status : "pending";
+  return {
+    id: row.id,
+    tournamentId: row.tournament_id,
+    submittedBy: row.submitted_by,
+    classKey: row.class_key,
+    classLabel: row.class_label,
+    phaseKey: row.phase_key,
+    phaseLabel: row.phase_label,
+    matchIndex: Number(row.match_index || 0),
+    side: row.side === "b" ? "b" : "a",
+    matchTitle: row.match_title,
+    scoreText: row.score_text,
+    normalizedScore: row.normalized_score,
+    status: status as TournamentMatchResultSubmission["status"],
+    createdAt: row.created_at ?? "",
+    updatedAt: row.updated_at ?? "",
   };
 }
 
@@ -306,12 +354,13 @@ export async function updateTournamentDetails(
     startsAt?: string;
     registrationCloseAt?: string;
     posterUrl?: string;
+    playerResultSubmissionEnabled?: boolean;
     data?: Record<string, unknown>;
   }
 ): Promise<TournamentDetails> {
   if (!supabase) throw new Error("Supabase nao configurado.");
 
-  const payload = {
+  const payload: Record<string, unknown> = {
     name: patch.name.trim() || "Novo Torneio",
     city: patch.city?.trim() || null,
     state: normalizeState(patch.state),
@@ -323,6 +372,9 @@ export async function updateTournamentDetails(
     data: patch.data ?? {},
     updated_at: new Date().toISOString(),
   };
+  if (typeof patch.playerResultSubmissionEnabled === "boolean") {
+    payload.player_result_submission_enabled = patch.playerResultSubmissionEnabled;
+  }
 
   const { error } = await supabase
     .from(TABLE_TOURNAMENTS)
@@ -506,6 +558,55 @@ export async function setTournamentPinnedMessage(tournamentId: string, messageId
     p_message_id: messageId,
   });
   if (error) throw new Error(error.message);
+}
+
+export async function loadTournamentResultSubmissions(tournamentId: string): Promise<TournamentMatchResultSubmission[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_RESULT_SUBMISSIONS)
+    .select(
+      "id,tournament_id,submitted_by,class_key,class_label,phase_key,phase_label,match_index,side,match_title,score_text,normalized_score,status,created_at,updated_at"
+    )
+    .eq("tournament_id", tournamentId)
+    .order("updated_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentResultSubmissionRow[]).map(resultSubmissionRowToModel);
+}
+
+export async function submitTournamentMatchResult(input: {
+  tournamentId: string;
+  classKey: string;
+  classLabel: string;
+  phaseKey: string;
+  phaseLabel: string;
+  matchIndex: number;
+  side: "a" | "b";
+  matchTitle: string;
+  scoreText: string;
+}): Promise<TournamentMatchResultSubmission[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_submit_tournament_match_result", {
+    p_tournament_id: input.tournamentId,
+    p_class_key: input.classKey,
+    p_class_label: input.classLabel,
+    p_phase_key: input.phaseKey,
+    p_phase_label: input.phaseLabel,
+    p_match_index: input.matchIndex,
+    p_side: input.side,
+    p_match_title: input.matchTitle,
+    p_score_text: input.scoreText,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentResultSubmissionRow[]).map(resultSubmissionRowToModel);
+}
+
+export async function markTournamentMatchResultSubmissionApplied(submissionId: string): Promise<TournamentMatchResultSubmission[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_mark_tournament_match_result_submission_applied", {
+    p_submission_id: submissionId,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentResultSubmissionRow[]).map(resultSubmissionRowToModel);
 }
 
 export async function deleteTournamentChatMessage(tournamentId: string, messageId: string): Promise<void> {
