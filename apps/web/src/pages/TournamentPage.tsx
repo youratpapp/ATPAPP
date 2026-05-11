@@ -1384,6 +1384,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const tab = tournament ? coerceAllowedTab(requestedTab, isOwner, canSeeClassificationTab, canUseChatTab) : requestedTab;
   const canEditScores = isOwner;
   const showFloatingSave = isOwner && (tab === "organizacao" || tab === "jogadores");
+  const tournamentBackPath = isOwner ? "/eventos/torneios?view=organizing" : "/eventos/torneios?view=participating";
   const filteredRegistrations = useMemo(() => {
     if (registrationFilter === "all") return registrations;
     return registrations.filter((r) => r.status === registrationFilter);
@@ -3237,7 +3238,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       <div className="page-header" style={{ marginBottom: 12 }}>
         <h1>Torneio</h1>
         <div className="ph-actions">
-          <button onClick={() => navigate("/eventos")}>Voltar</button>
+          <button className="compact-action" onClick={() => navigate(tournamentBackPath)} aria-label="Voltar para torneios">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+            <span>Voltar</span>
+          </button>
         </div>
       </div>
 

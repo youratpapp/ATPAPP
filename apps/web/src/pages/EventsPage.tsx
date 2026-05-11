@@ -23,7 +23,7 @@ function formatDateRange(starts: string, ends?: string): string {
   if (Number.isNaN(s.getTime())) return starts;
   const opts: Intl.DateTimeFormatOptions = { day: "2-digit", month: "short" };
   const startStr = s.toLocaleDateString("pt-BR", opts);
-  if (!ends) return `${startStr} Â· ${s.getFullYear()}`;
+  if (!ends) return `${startStr} - ${s.getFullYear()}`;
   const e = new Date(ends);
   if (Number.isNaN(e.getTime())) return startStr;
   return `${startStr} - ${e.toLocaleDateString("pt-BR", opts)} ${e.getFullYear()}`;
@@ -102,6 +102,15 @@ function SearchIcon() {
   );
 }
 
+function BackIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 12H5" />
+      <path d="M12 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
 function EventCard({
   t,
   isOwner,
@@ -121,7 +130,7 @@ function EventCard({
         <img className="ec-poster" src={t.posterUrl} alt="" />
       ) : (
         <div className="ec-poster-placeholder">
-          <span>ðŸŽ¾</span>
+          <span>ATP</span>
         </div>
       )}
       <div className="ec-body">
@@ -401,6 +410,10 @@ export function EventsPage({ user, profile }: Props) {
           </p>
         </div>
         <div className="ph-actions">
+          <button className="compact-action" onClick={() => navigate("/eventos")} aria-label="Voltar para competicoes">
+            <BackIcon />
+            <span>Voltar</span>
+          </button>
           {mode === "participating" ? (
             <button className="compact-action" onClick={() => setShowJoin(true)} aria-label="Entrar por codigo" title="Entrar por codigo">
               <SearchIcon />
@@ -520,7 +533,7 @@ export function EventsPage({ user, profile }: Props) {
 
       {!loading && list.length === 0 ? (
         <div className="empty-state">
-          <span className="empty-emoji" aria-hidden>ðŸ“…</span>
+          <span className="empty-emoji" aria-hidden>ATP</span>
           <p>{mode === "organizing" ? "Voce ainda nao organiza torneios." : "Voce ainda nao esta em nenhum torneio."}</p>
           <button className="empty-action" onClick={() => (mode === "organizing" ? setShowCreate(true) : setShowJoin(true))}>
             {mode === "organizing" ? "Criar torneio" : "Entrar por codigo"}

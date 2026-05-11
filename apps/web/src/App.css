@@ -178,6 +178,8 @@
 .page-header .ph-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: var(--space-2);
 }
 
@@ -1271,6 +1273,7 @@ button:disabled {
   }
 
   .page-header .ph-actions {
+    justify-content: flex-start;
     flex-shrink: 0;
   }
 

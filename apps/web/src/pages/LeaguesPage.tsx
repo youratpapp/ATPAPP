@@ -35,6 +35,15 @@ function visLabel(v: LeagueSummary["visibility"]): string {
   return v === "public" ? "Publica" : "Privada";
 }
 
+function BackIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 12H5" />
+      <path d="M12 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
 export function LeaguesPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -118,6 +127,10 @@ export function LeaguesPage({ user, profile }: Props) {
           </p>
         </div>
         <div className="ph-actions">
+          <button className="compact-action" onClick={() => navigate("/eventos")} aria-label="Voltar para competicoes">
+            <BackIcon />
+            <span>Voltar</span>
+          </button>
           {mode === "organizing" ? (
             <button className="compact-action primary" onClick={() => setShowCreate(true)}>
               <span>+</span>

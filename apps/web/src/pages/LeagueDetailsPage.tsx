@@ -196,6 +196,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [generatedJoinLink, setGeneratedJoinLink] = useState("");
 
   const isOwner = Boolean(league && league.ownerId === user.id);
+  const leagueBackPath = isOwner ? "/eventos/ligas?view=organizing" : "/eventos/ligas?view=participating";
   const classById = useMemo(() => {
     const map: Record<string, LeagueClassSummary> = {};
     for (const c of classes) map[c.id] = c;
@@ -649,8 +650,12 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile}>
       <div className="section-title">
         <h2>{league?.name || "Liga"}</h2>
-        <button className="ghost" onClick={() => navigate("/eventos/ligas")}>
-          Voltar
+        <button className="compact-action" onClick={() => navigate(leagueBackPath)} aria-label="Voltar para ligas">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
+          </svg>
+          <span>Voltar</span>
         </button>
       </div>
 
