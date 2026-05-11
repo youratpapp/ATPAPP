@@ -12,7 +12,7 @@ type Props = {
   profile: Profile | null;
 };
 
-type TabKey = "all" | "participating" | "organizing";
+type ViewMode = "participating" | "organizing";
 type StatusFilter = "all" | "draft" | "registration_open" | "registration_closed" | "live" | "finished";
 type VisibilityFilter = "all" | "public" | "private";
 type SortKey = "updated_desc" | "updated_asc" | "starts_asc" | "starts_desc" | "name_asc";
@@ -59,10 +59,9 @@ function normalizeSearch(value: string): string {
     .trim();
 }
 
-function tabFromSearch(search: string): TabKey {
+function modeFromSearch(search: string): ViewMode {
   const view = new URLSearchParams(search).get("view");
   if (view === "organizing") return "organizing";
-  if (view === "all") return "all";
   return "participating";
 }
 
@@ -191,7 +190,7 @@ function EventCard({
 export function EventsPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [tab, setTab] = useState<TabKey>(() => tabFromSearch(location.search));
+  const [mode, setMode] = useState<ViewMode>(() => modeFromSearch(location.search));
   const [organizing, setOrganizing] = useState<TournamentSummary[]>([]);
   const [participating, setParticipating] = useState<TournamentSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -300,7 +299,7 @@ export function EventsPage({ user, profile }: Props) {
   }, [refresh]);
 
   useEffect(() => {
-    setTab(tabFromSearch(location.search));
+    setMode(modeFromSearch(location.search));
   }, [location.search]);
 
   const onCreate = async () => {
@@ -342,13 +341,9 @@ export function EventsPage({ user, profile }: Props) {
     }
   };
 
-  const mergedAll = useMemo(() => [...organizing, ...participating], [organizing, participating]);
-
   const listByTab = useMemo(() => {
-    if (tab === "organizing") return organizing;
-    if (tab === "participating") return participating;
-    return mergedAll;
-  }, [mergedAll, organizing, participating, tab]);
+    return mode === "organizing" ? organizing : participating;
+  }, [mode, organizing, participating]);
 
   const list = useMemo(() => {
     const term = normalizeSearch(search);
@@ -375,19 +370,16 @@ export function EventsPage({ user, profile }: Props) {
   }, [listByTab, normalizedSearchUf, search, searchCity, sortBy, statusFilter, visibilityFilter]);
 
   const kpis = useMemo(() => {
-    const total = mergedAll.length;
-    const open = mergedAll.filter((t) => t.status === "registration_open").length;
-    const live = mergedAll.filter((t) => t.status === "live").length;
-    const finished = mergedAll.filter((t) => t.status === "finished").length;
+    const scoped = mode === "organizing" ? organizing : participating;
+    const open = scoped.filter((t) => t.status === "registration_open").length;
+    const live = scoped.filter((t) => t.status === "live").length;
     return {
-      total,
       organizing: organizing.length,
       participating: participating.length,
       open,
       live,
-      finished,
     };
-  }, [mergedAll, organizing.length, participating.length]);
+  }, [mode, organizing, participating]);
 
   const copyInvite = (id: string) => {
     const link = `${window.location.origin}${window.location.pathname}#/join/${id}`;
@@ -401,49 +393,42 @@ export function EventsPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className="page-header">
         <div>
-          <h1>Torneios</h1>
-          <p className="page-intro">Comece pelo que voce esta jogando. Criacao e ajustes ficam separados para organizadores.</p>
+          <h1>{mode === "organizing" ? "Torneios que organizo" : "Torneios que jogo"}</h1>
+          <p className="page-intro">
+            {mode === "organizing"
+              ? "Crie torneios, acompanhe inscricoes e ajuste a organizacao."
+              : "Acompanhe somente torneios em que voce participa como jogador."}
+          </p>
         </div>
         <div className="ph-actions">
-          <button className="compact-action" onClick={() => setShowJoin(true)} aria-label="Entrar por codigo" title="Entrar por codigo">
-            <SearchIcon />
-            <span>Entrar</span>
-          </button>
-          <button className="compact-action primary" onClick={() => setShowCreate(true)} aria-label="Criar torneio">
-            <span>+</span>
-            <span>Criar</span>
-          </button>
+          {mode === "participating" ? (
+            <button className="compact-action" onClick={() => setShowJoin(true)} aria-label="Entrar por codigo" title="Entrar por codigo">
+              <SearchIcon />
+              <span>Entrar</span>
+            </button>
+          ) : (
+            <button className="compact-action primary" onClick={() => setShowCreate(true)} aria-label="Criar torneio">
+              <span>+</span>
+              <span>Criar</span>
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="tabs role-tabs">
-        <button className={tab === "participating" ? "active" : ""} onClick={() => setTab("participating")}>
-          Jogando {participating.length > 0 ? `(${participating.length})` : ""}
-        </button>
-        <button className={tab === "organizing" ? "active" : ""} onClick={() => setTab("organizing")}>
-          Organizando {organizing.length > 0 ? `(${organizing.length})` : ""}
-        </button>
-        <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
-          Todos
-        </button>
-      </div>
-
-      {tab !== "participating" || organizing.length > 0 ? (
-        <section className="events-kpi-grid">
-          <article className="events-kpi-card">
-            <p className="events-kpi-label">Jogando</p>
-            <p className="events-kpi-value">{kpis.participating}</p>
-          </article>
-          <article className="events-kpi-card">
-            <p className="events-kpi-label">Organizando</p>
-            <p className="events-kpi-value">{kpis.organizing}</p>
-          </article>
-          <article className="events-kpi-card">
-            <p className="events-kpi-label">Em andamento</p>
-            <p className="events-kpi-value">{kpis.live}</p>
-          </article>
-        </section>
-      ) : null}
+      <section className="events-kpi-grid">
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">{mode === "organizing" ? "Organizando" : "Jogando"}</p>
+          <p className="events-kpi-value">{mode === "organizing" ? kpis.organizing : kpis.participating}</p>
+        </article>
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Inscricoes abertas</p>
+          <p className="events-kpi-value">{kpis.open}</p>
+        </article>
+        <article className="events-kpi-card">
+          <p className="events-kpi-label">Em andamento</p>
+          <p className="events-kpi-value">{kpis.live}</p>
+        </article>
+      </section>
 
       <section className="events-filter-card">
         <div className="events-filter-grid">
@@ -536,9 +521,9 @@ export function EventsPage({ user, profile }: Props) {
       {!loading && list.length === 0 ? (
         <div className="empty-state">
           <span className="empty-emoji" aria-hidden>ðŸ“…</span>
-          <p>{tab === "organizing" ? "Voce ainda nao organiza torneios." : "Voce ainda nao esta em nenhum torneio."}</p>
-          <button className="empty-action" onClick={() => (tab === "organizing" ? setShowCreate(true) : setShowJoin(true))}>
-            {tab === "organizing" ? "Criar torneio" : "Entrar por codigo"}
+          <p>{mode === "organizing" ? "Voce ainda nao organiza torneios." : "Voce ainda nao esta em nenhum torneio."}</p>
+          <button className="empty-action" onClick={() => (mode === "organizing" ? setShowCreate(true) : setShowJoin(true))}>
+            {mode === "organizing" ? "Criar torneio" : "Entrar por codigo"}
           </button>
         </div>
       ) : null}

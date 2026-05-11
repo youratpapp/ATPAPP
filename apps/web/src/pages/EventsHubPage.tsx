@@ -42,13 +42,13 @@ export function EventsHubPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className="page-header">
         <div>
-          <h1>Jogar</h1>
-          <p className="page-intro">Atalhos para o uso diario: partidas, torneios e ligas em que voce participa.</p>
+          <h1>Competicoes</h1>
+          <p className="page-intro">Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.</p>
         </div>
       </div>
 
       <section className="section-card flow-card primary-flow">
-        <h3>Minha area de jogador</h3>
+        <h3>Como jogador</h3>
         <p className="subtle">Use estes caminhos para acompanhar jogos, classificacao, mensagens e inscricoes.</p>
         <div className="quick-grid">
           <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=participating")}>

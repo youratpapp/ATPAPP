@@ -58,7 +58,7 @@ type NavItem = {
 
 const ITEMS: NavItem[] = [
   { path: "/inicio", label: "Inicio", Icon: HomeIcon },
-  { path: "/eventos", label: "Jogar", Icon: TrophyIcon },
+  { path: "/eventos", label: "Competicoes", Icon: TrophyIcon },
   { path: "/locais", label: "Locais", Icon: LocationIcon },
   { path: "/ranking", label: "Ranking", Icon: StarIcon },
   { path: "/perfil", label: "Perfil", Icon: PersonIcon },

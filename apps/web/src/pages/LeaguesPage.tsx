@@ -10,12 +10,11 @@ type Props = {
   profile: Profile | null;
 };
 
-type RoleTab = "participating" | "organizing" | "all";
+type ViewMode = "participating" | "organizing";
 
-function tabFromSearch(search: string): RoleTab {
+function modeFromSearch(search: string): ViewMode {
   const view = new URLSearchParams(search).get("view");
   if (view === "organizing") return "organizing";
-  if (view === "all") return "all";
   return "participating";
 }
 
@@ -40,7 +39,7 @@ export function LeaguesPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const [items, setItems] = useState<LeagueSummary[]>([]);
-  const [tab, setTab] = useState<RoleTab>(() => tabFromSearch(location.search));
+  const [mode, setMode] = useState<ViewMode>(() => modeFromSearch(location.search));
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
@@ -69,7 +68,7 @@ export function LeaguesPage({ user, profile }: Props) {
   }, [refresh]);
 
   useEffect(() => {
-    setTab(tabFromSearch(location.search));
+    setMode(modeFromSearch(location.search));
   }, [location.search]);
 
   const totals = useMemo(() => {
@@ -80,10 +79,8 @@ export function LeaguesPage({ user, profile }: Props) {
   }, [items]);
 
   const visibleItems = useMemo(() => {
-    if (tab === "organizing") return items.filter((i) => i.role === "owner");
-    if (tab === "participating") return items.filter((i) => i.role !== "owner");
-    return items;
-  }, [items, tab]);
+    return mode === "organizing" ? items.filter((i) => i.role === "owner") : items.filter((i) => i.role !== "owner");
+  }, [items, mode]);
 
   async function onCreate() {
     setBusy(true);
@@ -113,37 +110,27 @@ export function LeaguesPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className="page-header">
         <div>
-          <h1>Ligas</h1>
-          <p className="page-intro">Acompanhe primeiro as ligas que voce joga. A criacao fica na area de organizador.</p>
+          <h1>{mode === "organizing" ? "Ligas que organizo" : "Ligas que jogo"}</h1>
+          <p className="page-intro">
+            {mode === "organizing"
+              ? "Crie ligas, aprove jogadores, gere rodadas e acompanhe temporadas."
+              : "Acompanhe somente ligas em que voce participa como jogador."}
+          </p>
         </div>
         <div className="ph-actions">
-          <button className="compact-action primary" onClick={() => setShowCreate(true)}>
-            <span>+</span>
-            <span>Criar</span>
-          </button>
+          {mode === "organizing" ? (
+            <button className="compact-action primary" onClick={() => setShowCreate(true)}>
+              <span>+</span>
+              <span>Criar</span>
+            </button>
+          ) : null}
         </div>
-      </div>
-
-      <div className="tabs role-tabs">
-        <button className={tab === "participating" ? "active" : ""} onClick={() => setTab("participating")}>
-          Jogando {totals.participating > 0 ? `(${totals.participating})` : ""}
-        </button>
-        <button className={tab === "organizing" ? "active" : ""} onClick={() => setTab("organizing")}>
-          Organizando {totals.owned > 0 ? `(${totals.owned})` : ""}
-        </button>
-        <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
-          Todas
-        </button>
       </div>
 
       <div className="events-kpi-grid">
         <article className="events-kpi-card">
-          <p className="events-kpi-label">Jogando</p>
-          <p className="events-kpi-value">{totals.participating}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Organizando</p>
-          <p className="events-kpi-value">{totals.owned}</p>
+          <p className="events-kpi-label">{mode === "organizing" ? "Organizando" : "Jogando"}</p>
+          <p className="events-kpi-value">{mode === "organizing" ? totals.owned : totals.participating}</p>
         </article>
         <article className="events-kpi-card">
           <p className="events-kpi-label">Ativas</p>
@@ -156,8 +143,8 @@ export function LeaguesPage({ user, profile }: Props) {
       {!loading && !visibleItems.length ? (
         <div className="empty-state">
           <span className="empty-emoji">ATP</span>
-          <p>{tab === "organizing" ? "Voce ainda nao organiza ligas." : "Voce ainda nao participa de ligas."}</p>
-          {tab === "organizing" ? (
+          <p>{mode === "organizing" ? "Voce ainda nao organiza ligas." : "Voce ainda nao participa de ligas."}</p>
+          {mode === "organizing" ? (
             <button className="empty-action" onClick={() => setShowCreate(true)}>
               Criar liga
             </button>

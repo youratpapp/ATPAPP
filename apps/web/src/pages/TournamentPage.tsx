@@ -43,6 +43,7 @@ type Props = {
 };
 
 type TabKey = "jogos" | "classificacao" | "organizacao" | "jogadores" | "chat";
+type TournamentStatus = "draft" | "registration_open" | "registration_closed" | "live" | "finished";
 type SetWinner = "a" | "b" | null;
 type MatchScoreSet = {
   a: string;
@@ -81,6 +82,35 @@ const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
 const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores", "chat"];
 const SCORE_DETAIL_PREFIX = "__atp_score_v1__:";
+
+function isRealMatch(a: string | null | undefined, b: string | null | undefined): boolean {
+  const left = String(a || "").trim();
+  const right = String(b || "").trim();
+  return Boolean(left && right && left !== "BYE" && right !== "BYE");
+}
+
+function isClassFinalized(data: ClassData): boolean {
+  const cls = recomputeClassData(data);
+  if (!cls.gerado) return false;
+
+  const knockoutRounds = cls.knockout?.rounds || [];
+  if (knockoutRounds.length > 0) {
+    const finalRound = knockoutRounds[knockoutRounds.length - 1];
+    const finalMatches = (finalRound?.matches || []).filter((m) => isRealMatch(m.a, m.b));
+    if (!finalMatches.length) return Boolean(finalRound?.matches?.some((m) => m.done && m.winner));
+    return finalMatches.every((m) => Boolean(m.done && m.winner));
+  }
+
+  const groupMatches = cls.grupos.flatMap((g) => g.matches || []).filter((m) => isRealMatch(m.a, m.b));
+  return groupMatches.length > 0 && groupMatches.every((m) => Boolean(m.done && m.winner));
+}
+
+function inferTournamentStatusFromData(data: Record<string, unknown>, fallback: TournamentStatus): TournamentStatus {
+  const generatedClasses = listLegacyClassesFromTournamentData(data).filter((cls) => cls.data.gerado);
+  if (!generatedClasses.length) return fallback;
+  if (generatedClasses.every((cls) => isClassFinalized(cls.data))) return "finished";
+  return "live";
+}
 
 function isTabAllowed(tab: TabKey, isOwner: boolean, canSeeClassificationTab: boolean, canUseChatTab: boolean): boolean {
   if ((tab === "organizacao" || tab === "jogadores") && !isOwner) return false;
@@ -1261,7 +1291,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [basicCityLoading, setBasicCityLoading] = useState(false);
   const [basicCityLoadError, setBasicCityLoadError] = useState("");
   const [basicVisibility, setBasicVisibility] = useState<"public" | "private">("private");
-  const [basicStatus, setBasicStatus] = useState<"draft" | "registration_open" | "registration_closed" | "live" | "finished">("draft");
+  const [basicStatus, setBasicStatus] = useState<TournamentStatus>("draft");
   const [basicStartsAt, setBasicStartsAt] = useState("");
   const [basicRegistrationCloseAt, setBasicRegistrationCloseAt] = useState("");
   const [basicPosterUrl, setBasicPosterUrl] = useState("");
@@ -1751,17 +1781,20 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const persistTournamentData = async (
     nextData: Record<string, unknown>,
     successText: string,
-    nextActiveKey = activeClassKey
+    nextActiveKey = activeClassKey,
+    statusOverride?: TournamentStatus
   ) => {
     if (!tournament) return;
     setSaving(true);
     try {
+      const currentStatus = tournament.status as TournamentStatus;
+      const nextStatus = statusOverride ?? inferTournamentStatusFromData(nextData, currentStatus);
       const updated = await updateTournamentDetails(user, tournament.id, {
         name: tournament.name,
         city: tournament.city,
         state: tournament.state,
         visibility: tournament.visibility === "public" ? "public" : "private",
-        status: tournament.status as "draft" | "registration_open" | "registration_closed" | "live" | "finished",
+        status: nextStatus,
         startsAt: tournament.startsAt,
         registrationCloseAt: tournament.registrationCloseAt,
         posterUrl: tournament.posterUrl,
@@ -2592,7 +2625,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}.` +
         (merged.stats.added > 0
           ? ` | inscricoes por link integradas: ${merged.stats.added} (duplicadas ${merged.stats.duplicated}, sem classe ${merged.stats.missingClass}, incompativeis ${merged.stats.incompatible}, invalidas ${merged.stats.invalid})`
-          : "")
+          : ""),
+      activeClassKey,
+      "live"
     );
     setDraftDirty(false);
     setAgendaDirty(false);
