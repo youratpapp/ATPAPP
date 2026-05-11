@@ -1002,6 +1002,60 @@ button:disabled {
   box-shadow: var(--shadow-md);
 }
 
+.home-action-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+}
+
+.home-action-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.home-action-card.urgent {
+  border-color: #fed7aa;
+  background: #fff7ed;
+}
+
+.home-action-card span {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 9px;
+  text-align: center;
+}
+
+.home-action-card.urgent span {
+  background: #ffedd5;
+  border-color: #fdba74;
+  color: #9a3412;
+}
+
+.home-action-label,
+.home-action-meta {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.home-action-title {
+  margin: 3px 0;
+  color: var(--color-text);
+  font-weight: 800;
+}
+
 .home-compact-title {
   margin: 0;
   color: var(--color-text);
@@ -1185,6 +1239,12 @@ button:disabled {
   .home-section .event-card .ec-poster,
   .home-section .event-card .ec-poster-placeholder {
     min-height: 96px;
+  }
+
+  .home-action-card,
+  .home-compact-card {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
