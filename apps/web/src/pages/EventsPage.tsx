@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
@@ -57,6 +57,13 @@ function normalizeSearch(value: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim();
+}
+
+function tabFromSearch(search: string): TabKey {
+  const view = new URLSearchParams(search).get("view");
+  if (view === "organizing") return "organizing";
+  if (view === "all") return "all";
+  return "participating";
 }
 
 function CalendarIcon() {
@@ -183,7 +190,8 @@ function EventCard({
 
 export function EventsPage({ user, profile }: Props) {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<TabKey>("all");
+  const location = useLocation();
+  const [tab, setTab] = useState<TabKey>(() => tabFromSearch(location.search));
   const [organizing, setOrganizing] = useState<TournamentSummary[]>([]);
   const [participating, setParticipating] = useState<TournamentSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -291,6 +299,10 @@ export function EventsPage({ user, profile }: Props) {
     refresh();
   }, [refresh]);
 
+  useEffect(() => {
+    setTab(tabFromSearch(location.search));
+  }, [location.search]);
+
   const onCreate = async () => {
     setBusy(true);
     try {
@@ -388,55 +400,50 @@ export function EventsPage({ user, profile }: Props) {
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className="page-header">
-        <h1>Eventos</h1>
+        <div>
+          <h1>Torneios</h1>
+          <p className="page-intro">Comece pelo que voce esta jogando. Criacao e ajustes ficam separados para organizadores.</p>
+        </div>
         <div className="ph-actions">
-          <button className="ph-icon-btn" onClick={() => setShowJoin(true)} aria-label="Buscar" title="Entrar por codigo">
+          <button className="compact-action" onClick={() => setShowJoin(true)} aria-label="Entrar por codigo" title="Entrar por codigo">
             <SearchIcon />
+            <span>Entrar</span>
           </button>
-          <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Criar evento">
-            +
+          <button className="compact-action primary" onClick={() => setShowCreate(true)} aria-label="Criar torneio">
+            <span>+</span>
+            <span>Criar</span>
           </button>
         </div>
       </div>
 
-      <section className="events-kpi-grid">
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Meus torneios</p>
-          <p className="events-kpi-value">{kpis.total}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Organizando</p>
-          <p className="events-kpi-value">{kpis.organizing}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Participando</p>
-          <p className="events-kpi-value">{kpis.participating}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Inscricoes abertas</p>
-          <p className="events-kpi-value">{kpis.open}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Em andamento</p>
-          <p className="events-kpi-value">{kpis.live}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Concluidos</p>
-          <p className="events-kpi-value">{kpis.finished}</p>
-        </article>
-      </section>
-
-      <div className="tabs">
-        <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
-          Todos
-        </button>
+      <div className="tabs role-tabs">
         <button className={tab === "participating" ? "active" : ""} onClick={() => setTab("participating")}>
-          Participando {participating.length > 0 ? `(${participating.length})` : ""}
+          Jogando {participating.length > 0 ? `(${participating.length})` : ""}
         </button>
         <button className={tab === "organizing" ? "active" : ""} onClick={() => setTab("organizing")}>
           Organizando {organizing.length > 0 ? `(${organizing.length})` : ""}
         </button>
+        <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
+          Todos
+        </button>
       </div>
+
+      {tab !== "participating" || organizing.length > 0 ? (
+        <section className="events-kpi-grid">
+          <article className="events-kpi-card">
+            <p className="events-kpi-label">Jogando</p>
+            <p className="events-kpi-value">{kpis.participating}</p>
+          </article>
+          <article className="events-kpi-card">
+            <p className="events-kpi-label">Organizando</p>
+            <p className="events-kpi-value">{kpis.organizing}</p>
+          </article>
+          <article className="events-kpi-card">
+            <p className="events-kpi-label">Em andamento</p>
+            <p className="events-kpi-value">{kpis.live}</p>
+          </article>
+        </section>
+      ) : null}
 
       <section className="events-filter-card">
         <div className="events-filter-grid">
@@ -529,9 +536,9 @@ export function EventsPage({ user, profile }: Props) {
       {!loading && list.length === 0 ? (
         <div className="empty-state">
           <span className="empty-emoji" aria-hidden>ðŸ“…</span>
-          <p>Nenhum evento encontrado.</p>
-          <button className="empty-action" onClick={() => setShowCreate(true)}>
-            Adicionar evento
+          <p>{tab === "organizing" ? "Voce ainda nao organiza torneios." : "Voce ainda nao esta em nenhum torneio."}</p>
+          <button className="empty-action" onClick={() => (tab === "organizing" ? setShowCreate(true) : setShowJoin(true))}>
+            {tab === "organizing" ? "Criar torneio" : "Entrar por codigo"}
           </button>
         </div>
       ) : null}

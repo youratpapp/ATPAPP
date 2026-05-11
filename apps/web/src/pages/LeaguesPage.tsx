@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { createLeague, loadMyLeagues } from "../lib/leagues";
@@ -9,6 +9,15 @@ type Props = {
   user: User;
   profile: Profile | null;
 };
+
+type RoleTab = "participating" | "organizing" | "all";
+
+function tabFromSearch(search: string): RoleTab {
+  const view = new URLSearchParams(search).get("view");
+  if (view === "organizing") return "organizing";
+  if (view === "all") return "all";
+  return "participating";
+}
 
 function typeLabel(v: LeagueSummary["leagueType"]): string {
   if (v === "dupla_fixa") return "Dupla fixa";
@@ -29,7 +38,9 @@ function visLabel(v: LeagueSummary["visibility"]): string {
 
 export function LeaguesPage({ user, profile }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [items, setItems] = useState<LeagueSummary[]>([]);
+  const [tab, setTab] = useState<RoleTab>(() => tabFromSearch(location.search));
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
@@ -57,11 +68,22 @@ export function LeaguesPage({ user, profile }: Props) {
     refresh();
   }, [refresh]);
 
+  useEffect(() => {
+    setTab(tabFromSearch(location.search));
+  }, [location.search]);
+
   const totals = useMemo(() => {
     const owned = items.filter((i) => i.role === "owner").length;
+    const participating = items.filter((i) => i.role !== "owner").length;
     const active = items.filter((i) => i.status === "active").length;
-    return { total: items.length, owned, active };
+    return { total: items.length, owned, participating, active };
   }, [items]);
+
+  const visibleItems = useMemo(() => {
+    if (tab === "organizing") return items.filter((i) => i.role === "owner");
+    if (tab === "participating") return items.filter((i) => i.role !== "owner");
+    return items;
+  }, [items, tab]);
 
   async function onCreate() {
     setBusy(true);
@@ -88,16 +110,36 @@ export function LeaguesPage({ user, profile }: Props) {
   }
 
   return (
-    <AppShell user={user} profile={profile}>
-      <div className="section-title">
-        <h2>Ligas</h2>
-        <button onClick={() => setShowCreate(true)}>Nova liga</button>
+    <AppShell user={user} profile={profile} showHeader={false}>
+      <div className="page-header">
+        <div>
+          <h1>Ligas</h1>
+          <p className="page-intro">Acompanhe primeiro as ligas que voce joga. A criacao fica na area de organizador.</p>
+        </div>
+        <div className="ph-actions">
+          <button className="compact-action primary" onClick={() => setShowCreate(true)}>
+            <span>+</span>
+            <span>Criar</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="tabs role-tabs">
+        <button className={tab === "participating" ? "active" : ""} onClick={() => setTab("participating")}>
+          Jogando {totals.participating > 0 ? `(${totals.participating})` : ""}
+        </button>
+        <button className={tab === "organizing" ? "active" : ""} onClick={() => setTab("organizing")}>
+          Organizando {totals.owned > 0 ? `(${totals.owned})` : ""}
+        </button>
+        <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
+          Todas
+        </button>
       </div>
 
       <div className="events-kpi-grid">
         <article className="events-kpi-card">
-          <p className="events-kpi-label">Total</p>
-          <p className="events-kpi-value">{totals.total}</p>
+          <p className="events-kpi-label">Jogando</p>
+          <p className="events-kpi-value">{totals.participating}</p>
         </article>
         <article className="events-kpi-card">
           <p className="events-kpi-label">Organizando</p>
@@ -111,17 +153,19 @@ export function LeaguesPage({ user, profile }: Props) {
 
       {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
       {loading ? <p className="subtle">Carregando...</p> : null}
-      {!loading && !items.length ? (
+      {!loading && !visibleItems.length ? (
         <div className="empty-state">
-          <span className="empty-emoji">🎾</span>
-          <p>Nenhuma liga encontrada.</p>
-          <button className="empty-action" onClick={() => setShowCreate(true)}>
-            Criar primeira liga
-          </button>
+          <span className="empty-emoji">ATP</span>
+          <p>{tab === "organizing" ? "Voce ainda nao organiza ligas." : "Voce ainda nao participa de ligas."}</p>
+          {tab === "organizing" ? (
+            <button className="empty-action" onClick={() => setShowCreate(true)}>
+              Criar liga
+            </button>
+          ) : null}
         </div>
       ) : null}
 
-      {items.map((item) => (
+      {visibleItems.map((item) => (
         <article key={item.id} className="event-card" onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(item.id)}`)}>
           <div className="ec-body">
             <div className="ec-name-row">

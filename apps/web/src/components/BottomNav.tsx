@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import type { ComponentType } from "react";
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
@@ -13,7 +14,7 @@ function TrophyIcon({ active }: { active: boolean }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M8 21h8M12 17v4" />
-      <path d={active ? "M17 4H7v5a5 5 0 0010 0V4z" : "M17 4H7v5a5 5 0 0010 0V4z"} fill={active ? "currentColor" : "none"} fillOpacity={active ? 0.15 : 0} />
+      <path d="M17 4H7v5a5 5 0 0010 0V4z" fill={active ? "currentColor" : "none"} fillOpacity={active ? 0.15 : 0} />
       <path d="M17 4H7v5a5 5 0 0010 0V4z" />
       <path d="M7 4H3v3a4 4 0 004 4M17 4h4v3a4 4 0 01-4 4" />
     </svg>
@@ -52,12 +53,12 @@ function PersonIcon({ active }: { active: boolean }) {
 type NavItem = {
   path: string;
   label: string;
-  Icon: React.ComponentType<{ active: boolean }>;
+  Icon: ComponentType<{ active: boolean }>;
 };
 
 const ITEMS: NavItem[] = [
-  { path: "/inicio", label: "Início", Icon: HomeIcon },
-  { path: "/eventos", label: "Eventos", Icon: TrophyIcon },
+  { path: "/inicio", label: "Inicio", Icon: HomeIcon },
+  { path: "/eventos", label: "Jogar", Icon: TrophyIcon },
   { path: "/locais", label: "Locais", Icon: LocationIcon },
   { path: "/ranking", label: "Ranking", Icon: StarIcon },
   { path: "/perfil", label: "Perfil", Icon: PersonIcon },
@@ -67,9 +68,9 @@ export function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   return (
-    <nav className="bottom-nav" aria-label="Navegação principal">
+    <nav className="bottom-nav" aria-label="Navegacao principal">
       {ITEMS.map((item) => {
-        const active = pathname.startsWith(item.path);
+        const active = pathname === item.path || pathname.startsWith(`${item.path}/`);
         return (
           <button
             key={item.path}

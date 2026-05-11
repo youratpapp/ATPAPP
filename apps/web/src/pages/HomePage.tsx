@@ -152,23 +152,23 @@ export function HomePage({ user, profile }: Props) {
       <div className="quick-grid">
         <button className="quick-action" onClick={() => navigate("/eventos")}>
           <span className="qa-icon"><TrophyIcon /></span>
-          <span>Meus Eventos</span>
+          <span>Jogar</span>
+        </button>
+        <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=participating")}>
+          <span className="qa-icon"><TennisIcon /></span>
+          <span>Meus torneios</span>
+        </button>
+        <button className="quick-action" onClick={() => navigate("/eventos/ligas?view=participating")}>
+          <span className="qa-icon"><BookmarkIcon /></span>
+          <span>Minhas ligas</span>
         </button>
         <button className="quick-action" onClick={() => navigate("/locais")}>
           <span className="qa-icon"><LocationIcon /></span>
           <span>Locais</span>
         </button>
-        <button className="quick-action" onClick={() => navigate("/eventos/ligas")}>
-          <span className="qa-icon"><BookmarkIcon /></span>
-          <span>Ligas</span>
-        </button>
-        <button className="quick-action disabled" onClick={() => alert("Reservas em breve.")}>
-          <span className="qa-icon"><BookmarkIcon /></span>
-          <span>Minhas Reservas</span>
-        </button>
-        <button className="quick-action disabled" onClick={() => alert("Meus Jogos em breve.")}>
-          <span className="qa-icon"><TennisIcon /></span>
-          <span>Meus Jogos</span>
+        <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+          <span className="qa-icon"><TrophyIcon /></span>
+          <span>Organizar</span>
         </button>
       </div>
 

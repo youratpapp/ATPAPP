@@ -237,6 +237,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     try {
       const details = await loadLeagueDetails(id);
       setLeague(details);
+      setActiveTab((current) => {
+        if (details.ownerId === user.id) return current;
+        return current === "visao" || current === "jogadores" ? "partidas" : current;
+      });
       setSettingsDraft({
         matchFormat: details.matchFormat,
         roundInterval: details.roundInterval,
@@ -627,11 +631,13 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         <>
           <div className="tabs" style={{ marginBottom: 12 }}>
             <button className={activeTab === "visao" ? "active" : ""} onClick={() => setActiveTab("visao")}>
-              Organizacao
+              {isOwner ? "Organizacao" : "Resumo"}
             </button>
-            <button className={activeTab === "jogadores" ? "active" : ""} onClick={() => setActiveTab("jogadores")}>
-              Jogadores
-            </button>
+            {isOwner ? (
+              <button className={activeTab === "jogadores" ? "active" : ""} onClick={() => setActiveTab("jogadores")}>
+                Jogadores
+              </button>
+            ) : null}
             <button className={activeTab === "partidas" ? "active" : ""} onClick={() => setActiveTab("partidas")}>
               Partidas
             </button>
