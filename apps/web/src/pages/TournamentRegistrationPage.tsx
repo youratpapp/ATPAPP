@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { StatusBadge } from "../components/StatusBadge";
 import {
   joinTournament,
   loadTournamentByRegistrationLink,
@@ -52,6 +53,15 @@ function extractClassOptions(dataRaw: Record<string, unknown>): ClassOption[] {
     });
   });
   return out;
+}
+
+function BackIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M19 12H5" />
+      <path d="M12 19l-7-7 7-7" />
+    </svg>
+  );
 }
 
 export function TournamentRegistrationPage({ user, profile }: Props) {
@@ -139,7 +149,10 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
       <div className="page-header" style={{ marginBottom: 12 }}>
         <h1>Inscricao</h1>
         <div className="ph-actions">
-          <button onClick={() => navigate("/eventos")}>Voltar</button>
+          <button className="compact-action" onClick={() => navigate("/eventos/torneios?view=participating")}>
+            <BackIcon />
+            <span>Voltar</span>
+          </button>
         </div>
       </div>
 
@@ -151,9 +164,29 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {!loading && tournament ? (
-        <section className="card">
-          <h2 style={{ marginTop: 0 }}>{tournament.name}</h2>
-          <p className="subtle">{[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}</p>
+        <section className="card invite-card">
+          <div className="section-title" style={{ marginBottom: 8 }}>
+            <h2>{tournament.name}</h2>
+            <StatusBadge status={tournament.status} />
+          </div>
+          <p className="subtle" style={{ marginTop: 0 }}>
+            {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}
+          </p>
+
+          <div className="tournament-overview-grid invite-overview-grid">
+            <div className="tournament-overview-kpi">
+              <strong>{options.length}</strong>
+              <span>Classes abertas</span>
+            </div>
+            <div className="tournament-overview-kpi">
+              <strong>{selected ? selected.categoryName : "-"}</strong>
+              <span>Categoria</span>
+            </div>
+            <div className="tournament-overview-kpi">
+              <strong>{selected ? selected.className : "-"}</strong>
+              <span>Classe escolhida</span>
+            </div>
+          </div>
 
           <label>Classe</label>
           <select value={selected?.classId ?? ""} onChange={(e) => setSelectedClassId(e.target.value)}>
@@ -177,7 +210,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
               onClick={submit}
               disabled={submitting || !selected || !playerName.trim() || options.length === 0}
             >
-              Solicitar inscricao
+              {submitting ? "Enviando..." : "Solicitar inscricao"}
             </button>
             <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
           </div>

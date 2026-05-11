@@ -439,6 +439,59 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
   }
 
+  function buildLeagueShareLink(): string {
+    if (!league) return "";
+    const u = new URL(window.location.href);
+    return `${u.origin}${u.pathname}#/eventos/ligas/${encodeURIComponent(league.id)}`;
+  }
+
+  async function copyLeagueShareLink() {
+    const copied = await copyTextWithFallback(buildLeagueShareLink());
+    setFeedback({
+      kind: "success",
+      text: copied ? "Link da liga copiado." : "Link da liga aberto para copia manual.",
+    });
+  }
+
+  async function copyLeagueJoinLinkFromHeader() {
+    await onCreateJoinLink();
+  }
+
+  async function shareLeagueInviteWhatsApp() {
+    if (!league) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      let joinUrl = "";
+      if (isOwner) {
+        const created = await createLeagueJoinLink({
+          leagueId: league.id,
+          seasonId: selectedSeasonId || null,
+          classId: selectedClassId || null,
+        });
+        joinUrl = created.url;
+        setGeneratedJoinLink(created.url);
+      }
+
+      const lines = [
+        `*${league.name}*`,
+        [league.category, league.classScope].filter(Boolean).join(" / ") || typeLabel(league.leagueType),
+        "",
+        "Acompanhe a liga:",
+        buildLeagueShareLink(),
+      ];
+      if (joinUrl) {
+        lines.push("", "Inscricao:", joinUrl);
+      }
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+      setFeedback({ kind: "success", text: "Convite da liga aberto no WhatsApp." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao compartilhar liga." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function onPublicJoin() {
     if (!league) return;
     setBusy(true);
@@ -760,6 +813,19 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <span>Proxima acao</span>
               <strong>{leagueOverview.nextAction}</strong>
             </button>
+            <div className="tournament-share-actions">
+              <button onClick={() => void copyLeagueShareLink()} disabled={busy}>
+                Copiar link
+              </button>
+              {isOwner ? (
+                <button onClick={() => void copyLeagueJoinLinkFromHeader()} disabled={busy}>
+                  Link de inscricao
+                </button>
+              ) : null}
+              <button onClick={() => void shareLeagueInviteWhatsApp()} disabled={busy}>
+                WhatsApp
+              </button>
+            </div>
           </section>
 
           <section className="section-card">

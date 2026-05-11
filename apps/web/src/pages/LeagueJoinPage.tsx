@@ -10,6 +10,21 @@ type Props = {
   profile: Profile | null;
 };
 
+function BackIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M19 12H5" />
+      <path d="M12 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
+function leagueTypeLabel(value: LeagueJoinContext["leagueType"]): string {
+  if (value === "dupla_fixa") return "Dupla fixa";
+  if (value === "dupla_rotativa") return "Dupla rotativa";
+  return "Simples";
+}
+
 export function LeagueJoinPage({ user, profile }: Props) {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -24,7 +39,7 @@ export function LeagueJoinPage({ user, profile }: Props) {
   useEffect(() => {
     const t = String(token || "").trim();
     if (!t) {
-      setError("Link inválido.");
+      setError("Link invalido.");
       setLoading(false);
       return;
     }
@@ -46,7 +61,7 @@ export function LeagueJoinPage({ user, profile }: Props) {
     setError("");
     try {
       const status = await requestLeagueJoinByLink(t, playerName, phone);
-      setFeedback(status === "approved" ? "Entrada aprovada. Você já está na liga." : "Solicitação enviada para aprovação do organizador.");
+      setFeedback(status === "approved" ? "Entrada aprovada. Voce ja esta na liga." : "Solicitacao enviada para aprovacao do organizador.");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Falha ao solicitar entrada.");
     } finally {
@@ -57,9 +72,10 @@ export function LeagueJoinPage({ user, profile }: Props) {
   return (
     <AppShell user={user} profile={profile}>
       <div className="section-title">
-        <h2>Inscrição na liga</h2>
-        <button className="ghost" onClick={() => navigate("/eventos/ligas")}>
-          Voltar
+        <h2>Inscricao na liga</h2>
+        <button className="compact-action" onClick={() => navigate("/eventos/ligas?view=participating")}>
+          <BackIcon />
+          <span>Voltar</span>
         </button>
       </div>
 
@@ -68,11 +84,27 @@ export function LeagueJoinPage({ user, profile }: Props) {
       {feedback ? <p className="feedback success">{feedback}</p> : null}
 
       {!loading && !error && ctx ? (
-        <section className="section-card">
+        <section className="section-card invite-card">
           <h3 style={{ marginTop: 0 }}>{ctx.leagueName}</h3>
           <p className="subtle" style={{ marginTop: 0 }}>
             {ctx.categoryName && ctx.className ? `${ctx.categoryName} / ${ctx.className}` : "Classe aberta"}
           </p>
+
+          <div className="tournament-overview-grid invite-overview-grid">
+            <div className="tournament-overview-kpi">
+              <strong>{leagueTypeLabel(ctx.leagueType)}</strong>
+              <span>Formato</span>
+            </div>
+            <div className="tournament-overview-kpi">
+              <strong>{ctx.joinRequiresApproval ? "Com aprovacao" : "Entrada direta"}</strong>
+              <span>Inscricao</span>
+            </div>
+            <div className="tournament-overview-kpi">
+              <strong>{ctx.categoryName || "Aberta"}</strong>
+              <span>Categoria</span>
+            </div>
+          </div>
+
           <div className="events-filter-grid">
             <label>
               Nome do jogador

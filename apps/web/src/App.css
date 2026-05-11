@@ -700,6 +700,15 @@
   padding: var(--space-3);
 }
 
+.invite-card {
+  max-width: 760px;
+}
+
+.invite-overview-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: var(--space-3);
+}
+
 .tournament-admin-ops {
   border: 1px solid var(--color-border);
   border-radius: 10px;
