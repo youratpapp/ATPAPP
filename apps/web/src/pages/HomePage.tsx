@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
-import type { Profile, TournamentSummary } from "../lib/types";
-import { buildTournamentUrl, loadUpcomingPublic } from "../lib/tournaments";
+import type { LeagueSummary, Profile, TournamentSummary } from "../lib/types";
+import { loadMyLeagues } from "../lib/leagues";
+import { buildTournamentUrl, loadDashboardData, loadUpcomingPublic } from "../lib/tournaments";
 
 type Props = {
   user: User;
@@ -16,6 +17,21 @@ function formatDateRange(starts: string): string {
   const d = new Date(starts);
   if (Number.isNaN(d.getTime())) return starts;
   return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+}
+
+function isActiveTournament(t: TournamentSummary): boolean {
+  return t.status === "registration_open" || t.status === "registration_closed" || t.status === "live";
+}
+
+function isActiveLeague(l: LeagueSummary): boolean {
+  return l.status === "active";
+}
+
+function leagueStatusLabel(status: LeagueSummary["status"]): string {
+  if (status === "active") return "Ativa";
+  if (status === "paused") return "Pausada";
+  if (status === "finished") return "Finalizada";
+  return "Rascunho";
 }
 
 function CalendarIcon() {
@@ -86,19 +102,53 @@ function EventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () => void }) 
   );
 }
 
+function SummaryCard({ label, value, detail }: { label: string; value: number; detail: string }) {
+  return (
+    <article className="home-summary-card">
+      <p>{label}</p>
+      <strong>{value}</strong>
+      <span>{detail}</span>
+    </article>
+  );
+}
+
+function LeagueCard({ league, onOpen }: { league: LeagueSummary; onOpen: () => void }) {
+  return (
+    <article className="home-compact-card" onClick={onOpen}>
+      <div>
+        <p className="home-compact-title">{league.name}</p>
+        <p className="home-compact-meta">
+          {[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
+        </p>
+      </div>
+      <span className={`home-league-chip ${league.role === "owner" ? "owner" : "member"}`}>
+        {leagueStatusLabel(league.status)}
+      </span>
+    </article>
+  );
+}
+
 export function HomePage({ user, profile }: Props) {
   const navigate = useNavigate();
   const [upcoming, setUpcoming] = useState<TournamentSummary[]>([]);
+  const [playingTournaments, setPlayingTournaments] = useState<TournamentSummary[]>([]);
+  const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
+  const [playingLeagues, setPlayingLeagues] = useState<LeagueSummary[]>([]);
+  const [organizingLeagues, setOrganizingLeagues] = useState<LeagueSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    loadUpcomingPublic(6)
-      .then((rows) => {
+    Promise.all([loadUpcomingPublic(4), loadDashboardData(user), loadMyLeagues()])
+      .then(([publicRows, dashboard, leagues]) => {
         if (!alive) return;
-        setUpcoming(rows);
+        setUpcoming(publicRows);
+        setPlayingTournaments(dashboard.participating.filter(isActiveTournament).slice(0, 3));
+        setOrganizingTournaments(dashboard.organizing.filter((t) => t.status !== "finished").slice(0, 3));
+        setPlayingLeagues(leagues.filter((l) => l.role !== "owner" && isActiveLeague(l)).slice(0, 3));
+        setOrganizingLeagues(leagues.filter((l) => l.role === "owner" && l.status !== "finished").slice(0, 3));
         setError("");
       })
       .catch((err: unknown) => {
@@ -111,19 +161,78 @@ export function HomePage({ user, profile }: Props) {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [user]);
+
+  const activePlayingCount = playingTournaments.length + playingLeagues.length;
+  const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
 
   return (
     <AppShell user={user} profile={profile} onBellClick={() => alert("Notificacoes em breve.")}>
       <div className="section-title">
-        <h2>Proximos eventos</h2>
+        <h2>Meu dia</h2>
+      </div>
+
+      {loading ? <p className="subtle">Carregando...</p> : null}
+      {error ? <p className="feedback error">{error}</p> : null}
+
+      {!loading && !error ? (
+        <>
+          <section className="home-summary-grid">
+            <SummaryCard label="Jogando" value={activePlayingCount} detail="competicoes ativas" />
+            <SummaryCard label="Organizando" value={activeOrganizingCount} detail="em aberto" />
+            <SummaryCard label="Publicos" value={upcoming.length} detail="eventos em destaque" />
+          </section>
+
+          {activePlayingCount > 0 ? (
+            <section className="home-section">
+              <div className="section-title">
+                <h2>Minhas competicoes</h2>
+              </div>
+              {playingTournaments.map((t) => (
+                <EventCard key={`play-t:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
+              ))}
+              {playingLeagues.map((league) => (
+                <LeagueCard
+                  key={`play-l:${league.id}`}
+                  league={league}
+                  onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
+                />
+              ))}
+            </section>
+          ) : (
+            <section className="home-empty-panel">
+              <strong>Nenhuma competicao ativa como jogador</strong>
+              <span>Quando voce entrar em torneios ou ligas, eles aparecem aqui.</span>
+            </section>
+          )}
+
+          {activeOrganizingCount > 0 ? (
+            <section className="home-section">
+              <div className="section-title">
+                <h2>Organizacao</h2>
+              </div>
+              {organizingTournaments.map((t) => (
+                <EventCard key={`org-t:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
+              ))}
+              {organizingLeagues.map((league) => (
+                <LeagueCard
+                  key={`org-l:${league.id}`}
+                  league={league}
+                  onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
+                />
+              ))}
+            </section>
+          ) : null}
+        </>
+      ) : null}
+
+      <div className="section-title">
+        <h2>Proximos eventos publicos</h2>
         <button className="link" onClick={() => navigate("/eventos/torneios")}>
           Ver todos
         </button>
       </div>
 
-      {loading ? <p className="subtle">Carregando...</p> : null}
-      {error ? <p className="feedback error">{error}</p> : null}
       {!loading && !error && upcoming.length === 0 ? (
         <p className="subtle">Nenhum evento publico em breve.</p>
       ) : null}
