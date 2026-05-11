@@ -3236,7 +3236,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className="page-header" style={{ marginBottom: 12 }}>
-        <h1>Torneio</h1>
+        <h1>{tournament?.name || "Torneio"}</h1>
         <div className="ph-actions">
           <button className="compact-action" onClick={() => navigate(tournamentBackPath)} aria-label="Voltar para torneios">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -3260,7 +3260,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         <>
           <article className="card" style={{ marginBottom: 12 }}>
             <div className="section-title" style={{ marginBottom: 8 }}>
-              <h2>{tournament.name}</h2>
+              <h2>{isOwner ? "Painel do organizador" : "Resumo do torneio"}</h2>
               <StatusBadge status={tournament.status} />
             </div>
             <p className="subtle" style={{ margin: 0 }}>
@@ -3268,7 +3268,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </p>
           </article>
 
-          <div className="tabs" style={{ marginBottom: 12 }}>
+          <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
             <button className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
               Jogos
             </button>
@@ -3309,9 +3309,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   </option>
                 ))}
               </select>
-              <p className="subtle" style={{ marginBottom: 0 }}>
-                Esta tela usa engine TypeScript (mesmas regras de grupos, mata-mata e classificacao), sem simplificar comportamento.
-              </p>
             </section>
           ) : null}
 

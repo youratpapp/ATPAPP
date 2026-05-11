@@ -1,7 +1,10 @@
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
-import type { Profile } from "../lib/types";
+import { loadMyLeagues } from "../lib/leagues";
+import type { LeagueSummary, Profile, TournamentSummary } from "../lib/types";
+import { buildTournamentUrl, loadDashboardData } from "../lib/tournaments";
 
 type Props = {
   user: User;
@@ -35,8 +38,99 @@ function SettingsIcon() {
   );
 }
 
+function statusLabel(status: TournamentSummary["status"] | LeagueSummary["status"]): string {
+  if (status === "registration_open") return "Inscricoes abertas";
+  if (status === "registration_closed") return "Inscricoes encerradas";
+  if (status === "live") return "Em andamento";
+  if (status === "finished") return "Finalizada";
+  if (status === "active") return "Ativa";
+  if (status === "paused") return "Pausada";
+  return "Rascunho";
+}
+
+function isActiveTournament(item: TournamentSummary): boolean {
+  return item.status === "registration_open" || item.status === "registration_closed" || item.status === "live";
+}
+
+function isActiveLeague(item: LeagueSummary): boolean {
+  return item.status === "active";
+}
+
+function FlowHeader({ title, detail }: { title: string; detail: string }) {
+  return (
+    <div className="hub-flow-header">
+      <div>
+        <h3>{title}</h3>
+        <p className="subtle">{detail}</p>
+      </div>
+    </div>
+  );
+}
+
+function CountBadge({ value }: { value: number }) {
+  return <strong className="hub-action-count">{value}</strong>;
+}
+
+function HubItemCard({ title, meta, status, onOpen }: { title: string; meta: string; status: string; onOpen: () => void }) {
+  return (
+    <article className="home-compact-card" onClick={onOpen}>
+      <div>
+        <p className="home-compact-title">{title}</p>
+        <p className="home-compact-meta">{meta}</p>
+      </div>
+      <span className="home-league-chip member">{status}</span>
+    </article>
+  );
+}
+
 export function EventsHubPage({ user, profile }: Props) {
   const navigate = useNavigate();
+  const [participatingTournaments, setParticipatingTournaments] = useState<TournamentSummary[]>([]);
+  const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
+  const [leagues, setLeagues] = useState<LeagueSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let alive = true;
+    setLoading(true);
+    Promise.all([loadDashboardData(user), loadMyLeagues()])
+      .then(([dashboard, leagueRows]) => {
+        if (!alive) return;
+        setParticipatingTournaments(dashboard.participating);
+        setOrganizingTournaments(dashboard.organizing);
+        setLeagues(leagueRows);
+        setError("");
+      })
+      .catch((err: unknown) => {
+        if (!alive) return;
+        setError(err instanceof Error ? err.message : "Falha ao carregar competicoes.");
+      })
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [user]);
+
+  const playingLeagues = useMemo(() => leagues.filter((league) => league.role !== "owner"), [leagues]);
+  const organizingLeagues = useMemo(() => leagues.filter((league) => league.role === "owner"), [leagues]);
+  const activePlayingTournaments = useMemo(
+    () => participatingTournaments.filter(isActiveTournament).slice(0, 2),
+    [participatingTournaments]
+  );
+  const activePlayingLeagues = useMemo(() => playingLeagues.filter(isActiveLeague).slice(0, 2), [playingLeagues]);
+  const activeOrganizingTournaments = useMemo(
+    () => organizingTournaments.filter((tournament) => tournament.status !== "finished").slice(0, 2),
+    [organizingTournaments]
+  );
+  const activeOrganizingLeagues = useMemo(
+    () => organizingLeagues.filter((league) => league.status !== "finished").slice(0, 2),
+    [organizingLeagues]
+  );
+  const playerCount = participatingTournaments.length + playingLeagues.length;
+  const organizerCount = organizingTournaments.length + organizingLeagues.length;
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
@@ -47,34 +141,95 @@ export function EventsHubPage({ user, profile }: Props) {
         </div>
       </div>
 
+      {loading ? <p className="subtle">Carregando...</p> : null}
+      {error ? <p className="feedback error">{error}</p> : null}
+
+      {!loading && !error ? (
+        <section className="home-summary-grid">
+          <article className="home-summary-card">
+            <p>Como jogador</p>
+            <strong>{playerCount}</strong>
+            <span>torneios e ligas</span>
+          </article>
+          <article className="home-summary-card">
+            <p>Organizando</p>
+            <strong>{organizerCount}</strong>
+            <span>eventos sob gestao</span>
+          </article>
+          <article className="home-summary-card">
+            <p>Ativos agora</p>
+            <strong>{activePlayingTournaments.length + activePlayingLeagues.length + activeOrganizingTournaments.length + activeOrganizingLeagues.length}</strong>
+            <span>em aberto</span>
+          </article>
+        </section>
+      ) : null}
+
       <section className="section-card flow-card primary-flow">
-        <h3>Como jogador</h3>
-        <p className="subtle">Use estes caminhos para acompanhar jogos, classificacao, mensagens e inscricoes.</p>
+        <FlowHeader title="Como jogador" detail="Acompanhe jogos, classificacao, mensagens e inscricoes." />
         <div className="quick-grid">
           <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=participating")}>
             <span className="qa-icon"><TrophyIcon /></span>
             <span>Torneios que jogo</span>
+            <CountBadge value={participatingTournaments.length} />
           </button>
           <button className="quick-action" onClick={() => navigate("/eventos/ligas?view=participating")}>
             <span className="qa-icon"><LeagueIcon /></span>
             <span>Ligas que jogo</span>
+            <CountBadge value={playingLeagues.length} />
           </button>
         </div>
+        {activePlayingTournaments.map((tournament) => (
+          <HubItemCard
+            key={`player-tournament:${tournament.id}`}
+            title={tournament.name}
+            meta={[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio"}
+            status={statusLabel(tournament.status)}
+            onOpen={() => navigate(buildTournamentUrl(tournament.id))}
+          />
+        ))}
+        {activePlayingLeagues.map((league) => (
+          <HubItemCard
+            key={`player-league:${league.id}`}
+            title={league.name}
+            meta={[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
+            status={statusLabel(league.status)}
+            onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
+          />
+        ))}
       </section>
 
       <section className="section-card flow-card">
-        <h3>Organizador</h3>
-        <p className="subtle">Criar eventos, aprovar inscritos, gerar rodadas e ajustar configuracoes.</p>
+        <FlowHeader title="Organizador" detail="Crie eventos, aprove inscritos, gere rodadas e ajuste configuracoes." />
         <div className="quick-grid">
           <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=organizing")}>
             <span className="qa-icon"><SettingsIcon /></span>
             <span>Gerir torneios</span>
+            <CountBadge value={organizingTournaments.length} />
           </button>
           <button className="quick-action" onClick={() => navigate("/eventos/ligas?view=organizing")}>
             <span className="qa-icon"><SettingsIcon /></span>
             <span>Gerir ligas</span>
+            <CountBadge value={organizingLeagues.length} />
           </button>
         </div>
+        {activeOrganizingTournaments.map((tournament) => (
+          <HubItemCard
+            key={`organizer-tournament:${tournament.id}`}
+            title={tournament.name}
+            meta={[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio"}
+            status={statusLabel(tournament.status)}
+            onOpen={() => navigate(buildTournamentUrl(tournament.id))}
+          />
+        ))}
+        {activeOrganizingLeagues.map((league) => (
+          <HubItemCard
+            key={`organizer-league:${league.id}`}
+            title={league.name}
+            meta={[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
+            status={statusLabel(league.status)}
+            onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
+          />
+        ))}
       </section>
     </AppShell>
   );

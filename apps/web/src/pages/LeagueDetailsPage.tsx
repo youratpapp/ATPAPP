@@ -665,7 +665,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
       {!loading && !error && league ? (
         <>
-          <div className="tabs" style={{ marginBottom: 12 }}>
+          <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
             <button className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
               {isOwner ? "Organizacao" : "Resumo"}
             </button>

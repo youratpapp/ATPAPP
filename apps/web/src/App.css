@@ -304,6 +304,24 @@
   display: block;
 }
 
+.app-tabs {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.app-tabs button {
+  flex: 0 0 auto;
+  min-width: max-content;
+  white-space: nowrap;
+}
+
 @media (min-width: 960px) {
   :root {
     --desktop-nav-width: 220px;
@@ -960,6 +978,27 @@ button:disabled {
 
 .flow-card .subtle {
   margin-top: 0;
+}
+
+.hub-flow-header {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.hub-action-count {
+  align-items: center;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-green-200);
+  border-radius: 999px;
+  color: var(--color-primary-strong);
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 900;
+  justify-content: center;
+  min-width: 24px;
+  padding: 2px 7px;
 }
 
 .primary-flow {
