@@ -11,6 +11,7 @@ import {
   loadLeagueChatMessages,
   loadLeagueClasses,
   loadLeagueDetails,
+  loadLeaguePlayerStandings,
   loadLeagueRegistrations,
   loadMatchAvailability,
   loadMatchMessages,
@@ -34,6 +35,7 @@ import type {
   LeagueMatchAvailability,
   LeagueMatchMessage,
   LeagueMatchSummary,
+  LeaguePlayerStanding,
   LeagueRegistration,
   LeagueResultSubmission,
   LeagueRoundSummary,
@@ -91,6 +93,20 @@ type LeagueSettingsDraft = {
   autoRoundGenerationEnabled: boolean;
 };
 
+type LeagueStandingRowView = LeaguePlayerStanding & {
+  position: number;
+  setDiff: number;
+  gameDiff: number;
+  movement: "promoted" | "relegated" | "stable";
+};
+
+type LeagueStandingClassView = {
+  classInfo: LeagueClassSummary;
+  rows: LeagueStandingRowView[];
+  promotedSlots: number;
+  relegatedSlots: number;
+};
+
 function typeLabel(v: LeagueDetails["leagueType"]): string {
   if (v === "dupla_fixa") return "Dupla fixa";
   if (v === "dupla_rotativa") return "Dupla rotativa";
@@ -106,6 +122,20 @@ function statusLabel(v: LeagueDetails["status"]): string {
 
 function classLabel(c: LeagueClassSummary): string {
   return `${c.categoryName} / ${c.className}`;
+}
+
+function sortStandingRows(rows: LeaguePlayerStanding[]): LeaguePlayerStanding[] {
+  return [...rows].sort((a, b) => {
+    if (b.wins !== a.wins) return b.wins - a.wins;
+    const setDiffA = a.setsFor - a.setsAgainst;
+    const setDiffB = b.setsFor - b.setsAgainst;
+    if (setDiffB !== setDiffA) return setDiffB - setDiffA;
+    const gameDiffA = a.gamesFor - a.gamesAgainst;
+    const gameDiffB = b.gamesFor - b.gamesAgainst;
+    if (gameDiffB !== gameDiffA) return gameDiffB - gameDiffA;
+    if (b.matchesPlayed !== a.matchesPlayed) return b.matchesPlayed - a.matchesPlayed;
+    return a.displayName.localeCompare(b.displayName, "pt-BR");
+  });
 }
 
 function matchStatusLabel(v: LeagueMatchSummary["status"]): string {
@@ -173,6 +203,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
   const [league, setLeague] = useState<LeagueDetails | null>(null);
   const [classes, setClasses] = useState<LeagueClassSummary[]>([]);
+  const [standings, setStandings] = useState<LeaguePlayerStanding[]>([]);
   const [registrations, setRegistrations] = useState<LeagueRegistration[]>([]);
   const [roundsData, setRoundsData] = useState<RoundWithMatches[]>([]);
   const [selectedSeasonId, setSelectedSeasonId] = useState("");
@@ -208,6 +239,53 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     const cls = classById[selectedClassId];
     return cls ? classLabel(cls) : "Classe selecionada";
   }, [classById, selectedClassId]);
+
+  const selectedSeason = useMemo(
+    () => league?.seasons.find((season) => season.id === selectedSeasonId) || null,
+    [league?.seasons, selectedSeasonId]
+  );
+
+  const standingsByClass = useMemo<LeagueStandingClassView[]>(() => {
+    const maxLevel = classes.reduce((max, cls) => Math.max(max, cls.levelOrder), 0);
+    return classes
+      .filter((cls) => !selectedClassId || cls.id === selectedClassId)
+      .map((cls) => {
+        const rows = sortStandingRows(
+          standings.filter((player) => player.classId === cls.id && player.status !== "inactive")
+        );
+        const promotedSlots = Math.max(0, cls.promotedSlots || league?.promotedCount || 0);
+        const relegatedSlots = Math.max(0, cls.relegatedSlots || league?.relegatedCount || 0);
+        const mapped = rows.map((row, index) => {
+          const position = index + 1;
+          const canPromote = cls.levelOrder > 1 && position <= promotedSlots;
+          const canRelegate = cls.levelOrder < maxLevel && position > Math.max(0, rows.length - relegatedSlots);
+          const movement: LeagueStandingRowView["movement"] = canPromote ? "promoted" : canRelegate ? "relegated" : "stable";
+          return {
+            ...row,
+            position,
+            setDiff: row.setsFor - row.setsAgainst,
+            gameDiff: row.gamesFor - row.gamesAgainst,
+            movement,
+          };
+        });
+        return {
+          classInfo: cls,
+          rows: mapped,
+          promotedSlots,
+          relegatedSlots,
+        };
+      });
+  }, [classes, league?.promotedCount, league?.relegatedCount, selectedClassId, standings]);
+
+  const standingsSummary = useMemo(() => {
+    const rows = standingsByClass.flatMap((group) => group.rows);
+    return {
+      players: rows.length,
+      promoted: rows.filter((row) => row.movement === "promoted").length,
+      relegated: rows.filter((row) => row.movement === "relegated").length,
+      inactive: standings.filter((player) => player.status === "inactive").length,
+    };
+  }, [standings, standingsByClass]);
 
   const filteredRegistrations = useMemo(() => {
     const byClass = selectedClassId.trim();
@@ -259,6 +337,48 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       nextTab,
     };
   }, [isOwner, league?.status, registrationStats.pending, roundsData]);
+
+  const leagueSeasonGuard = useMemo(() => {
+    const blockers: string[] = [];
+    const seasonRoundNumber = Number(selectedSeason?.currentRoundNumber || 0);
+    const targetRounds = Number(league?.roundsTotal || 0);
+    if (!classes.length) blockers.push("Crie ao menos uma classe na temporada.");
+    if (!standingsSummary.players) blockers.push("Adicione ou aprove jogadores ativos.");
+    if (targetRounds > 0 && seasonRoundNumber < targetRounds) {
+      blockers.push(`Rodadas geradas: ${seasonRoundNumber}/${targetRounds}.`);
+    }
+    if (leagueOverview.scheduling > 0) blockers.push("Existem partidas aguardando organizacao.");
+    if (leagueOverview.attention > 0) blockers.push("Resolva partidas em disputa ou analise administrativa.");
+    if (leagueOverview.pending > 0) blockers.push("Finalize resultados pendentes.");
+    if (registrationStats.pending > 0) blockers.push("Resolva inscricoes pendentes.");
+    if (selectedSeason?.status === "finished") {
+      return {
+        ready: true,
+        title: "Temporada finalizada",
+        detail: "Movimentacoes de classe ja podem ter sido aplicadas.",
+        blockers: [] as string[],
+      };
+    }
+    return {
+      ready: blockers.length === 0 && standingsSummary.players > 0,
+      title: blockers.length === 0 ? "Temporada pronta para fechamento" : "Temporada ainda nao pronta",
+      detail:
+        blockers.length === 0
+          ? "Confira as zonas de sobe/desce antes de aplicar movimentos."
+          : "Use este checklist para chegar ao fechamento com menos surpresa.",
+      blockers,
+    };
+  }, [
+    classes.length,
+    league?.roundsTotal,
+    leagueOverview.attention,
+    leagueOverview.pending,
+    leagueOverview.scheduling,
+    registrationStats.pending,
+    selectedSeason?.currentRoundNumber,
+    selectedSeason?.status,
+    standingsSummary.players,
+  ]);
 
   async function loadRoundsAndMatches(seasonId: string) {
     const rounds = await loadSeasonRounds(seasonId, 8);
@@ -312,11 +432,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       setSelectedSeasonId(initialSeasonId);
 
       if (initialSeasonId) {
-        const cls = await loadLeagueClasses(initialSeasonId);
+        const [cls, playerRows] = await Promise.all([
+          loadLeagueClasses(initialSeasonId),
+          loadLeaguePlayerStandings(initialSeasonId),
+        ]);
         setClasses(cls);
+        setStandings(playerRows);
         await loadRoundsAndMatches(initialSeasonId);
       } else {
         setClasses([]);
+        setStandings([]);
         setRoundsData([]);
       }
 
@@ -345,8 +470,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   useEffect(() => {
     if (!selectedSeasonId) return;
     loadLeagueClasses(selectedSeasonId).then(setClasses).catch(() => setClasses([]));
+    loadLeaguePlayerStandings(selectedSeasonId).then(setStandings).catch(() => setStandings([]));
     void loadRoundsAndMatches(selectedSeasonId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSeasonId, selectedClassId]);
 
   useEffect(() => {
@@ -813,6 +939,22 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <span>Proxima acao</span>
               <strong>{leagueOverview.nextAction}</strong>
             </button>
+            {isOwner ? (
+              <div className={`league-season-guard ${leagueSeasonGuard.ready ? "ready" : ""}`}>
+                <div>
+                  <span>Fechamento da temporada</span>
+                  <strong>{leagueSeasonGuard.title}</strong>
+                  <small>{leagueSeasonGuard.detail}</small>
+                </div>
+                {leagueSeasonGuard.blockers.length > 0 ? (
+                  <ul>
+                    {leagueSeasonGuard.blockers.slice(0, 5).map((blocker) => (
+                      <li key={blocker}>{blocker}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+            ) : null}
             <div className="tournament-share-actions">
               <button onClick={() => void copyLeagueShareLink()} disabled={busy}>
                 Copiar link
@@ -853,6 +995,75 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </select>
               </label>
             </div>
+          </section>
+
+          <section className="section-card">
+            <div className="section-title" style={{ marginBottom: 10 }}>
+              <div>
+                <h3 style={{ margin: 0 }}>Classificacao da temporada</h3>
+                <p className="subtle" style={{ margin: "4px 0 0" }}>
+                  Ordenacao: vitorias, saldo de sets, saldo de games, partidas jogadas e nome.
+                </p>
+              </div>
+            </div>
+            <div className="league-standings-summary">
+              <div>
+                <strong>{standingsSummary.players}</strong>
+                <span>Jogadores ativos</span>
+              </div>
+              <div>
+                <strong>{standingsSummary.promoted}</strong>
+                <span>Zona de subida</span>
+              </div>
+              <div>
+                <strong>{standingsSummary.relegated}</strong>
+                <span>Zona de descida</span>
+              </div>
+              <div>
+                <strong>{standingsSummary.inactive}</strong>
+                <span>Inativos fora da conta</span>
+              </div>
+            </div>
+            {!standingsByClass.length ? <p className="subtle">Sem classes para a temporada selecionada.</p> : null}
+            {standingsByClass.map((group) => (
+              <div key={`standing:${group.classInfo.id}`} className="league-standings-class">
+                <div className="league-standings-class-head">
+                  <strong>{classLabel(group.classInfo)}</strong>
+                  <span>
+                    Sobem {group.promotedSlots} | Descem {group.relegatedSlots}
+                  </span>
+                </div>
+                {!group.rows.length ? <p className="subtle">Sem jogadores ativos nesta classe.</p> : null}
+                {group.rows.length ? (
+                  <div className="league-standings-table">
+                    <div className="league-standings-row head">
+                      <span>#</span>
+                      <span>Jogador</span>
+                      <span>V-D</span>
+                      <span>Sets</span>
+                      <span>Games</span>
+                      <span>Pts</span>
+                    </div>
+                    {group.rows.map((row) => (
+                      <div key={row.id} className={`league-standings-row ${row.movement}`}>
+                        <span>{row.position}</span>
+                        <span>
+                          <strong>{row.displayName}</strong>
+                          {row.movement === "promoted" ? <em>Sobe</em> : null}
+                          {row.movement === "relegated" ? <em>Desce</em> : null}
+                        </span>
+                        <span>
+                          {row.wins}-{row.losses}
+                        </span>
+                        <span>{row.setDiff}</span>
+                        <span>{row.gameDiff}</span>
+                        <span>{row.rankingPoints}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ))}
           </section>
 
           {activeTab === "visao" ? (

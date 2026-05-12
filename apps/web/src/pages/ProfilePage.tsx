@@ -4,14 +4,32 @@ import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { supabase } from "../lib/supabase";
+import { loadLeagueDetails, loadMyLeagues, loadRoundMatches, loadSeasonRounds } from "../lib/leagues";
 import { upsertProfile, uploadAvatar } from "../lib/profiles";
-import type { Profile } from "../lib/types";
+import { buildTournamentUrl, loadDashboardData, loadTournamentDetails, loadTournamentRegistrations } from "../lib/tournaments";
+import type { LeagueMatchSummary, LeagueSummary, Profile, TournamentSummary } from "../lib/types";
 import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
+import { formatMatchScoreValues } from "../lib/tournament-score";
+import { isRealMatch } from "../lib/tournament-lifecycle";
+import { normalizePlayerName } from "../lib/tournament-page-utils";
+import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
+import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
 
 type Props = {
   user: User;
   profile: Profile | null;
   onProfileChange: (next: Profile) => void;
+};
+
+type ProfileRecentMatch = {
+  id: string;
+  sourceName: string;
+  targetPath: string;
+  classLabel: string;
+  title: string;
+  score: string;
+  result: "Vitoria" | "Derrota" | "Concluida";
+  updatedAt: string;
 };
 
 function EditIcon() {
@@ -105,6 +123,160 @@ function ChevronRight() {
   );
 }
 
+function statusIsActive(status: string): boolean {
+  return status !== "finished";
+}
+
+function matchHasPlayer(match: GroupMatch | KnockoutMatch, playerNames: Set<string>): boolean {
+  const a = normalizePlayerName(String(match.a || ""));
+  const b = normalizePlayerName(String(match.b || ""));
+  const names = Array.from(playerNames);
+  return Boolean(
+    (a && names.some((name) => a === name || a.includes(name) || name.includes(a))) ||
+      (b && names.some((name) => b === name || b.includes(name) || name.includes(b)))
+  );
+}
+
+function profileMatchResult(match: GroupMatch | KnockoutMatch, playerNames: Set<string>): ProfileRecentMatch["result"] {
+  const winner = normalizePlayerName(String(match.winner || ""));
+  if (!winner) return "Concluida";
+  const won = Array.from(playerNames).some((name) => winner === name || winner.includes(name) || name.includes(winner));
+  return won ? "Vitoria" : "Derrota";
+}
+
+function leagueMatchTitle(match: LeagueMatchSummary): string {
+  const side1 = match.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ") || "A definir";
+  const side2 = match.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ") || "A definir";
+  return `${side1} x ${side2}`;
+}
+
+function leagueMatchScore(match: LeagueMatchSummary): string {
+  const payload = match.resultPayload || {};
+  const summary = String(payload.summary || "").trim();
+  if (summary) return summary;
+  const sets1 = Number(payload.sets_side1 ?? 0);
+  const sets2 = Number(payload.sets_side2 ?? 0);
+  return `${sets1} x ${sets2}`;
+}
+
+function leagueMatchResult(match: LeagueMatchSummary, userId: string): ProfileRecentMatch["result"] {
+  const mySide = match.participants.find((participant) => participant.userId === userId)?.side || null;
+  const winnerSide = Number(match.resultPayload?.winner_side || 0);
+  if (!mySide || !winnerSide) return "Concluida";
+  return mySide === winnerSide ? "Vitoria" : "Derrota";
+}
+
+function profileCompetitionPath(item: TournamentSummary | LeagueSummary): string {
+  return "role" in item ? `/eventos/ligas/${encodeURIComponent(item.id)}` : buildTournamentUrl(item.id);
+}
+
+async function loadRecentTournamentMatches(user: User, profile: Profile | null, tournaments: TournamentSummary[]): Promise<ProfileRecentMatch[]> {
+  const groups = await Promise.all(
+    tournaments.slice(0, 6).map(async (tournament) => {
+      try {
+        const details = await loadTournamentDetails(user, tournament.id);
+        const registrations = await loadTournamentRegistrations(user, tournament.id, details.role);
+        const playerNames = new Set(
+          registrations
+            .filter((registration) => registration.userId === user.id && registration.status === "approved")
+            .map((registration) => normalizePlayerName(registration.playerName))
+            .filter(Boolean)
+        );
+        if (!playerNames.size && profile?.displayName) {
+          playerNames.add(normalizePlayerName(profile.displayName));
+        }
+        if (!playerNames.size) return [];
+
+        const out: ProfileRecentMatch[] = [];
+        for (const cls of listLegacyClassesFromTournamentData(details.data)) {
+          const classLabel = `${cls.categoryName} / ${cls.className}`;
+          for (const group of cls.data.grupos || []) {
+            for (let idx = 0; idx < group.matches.length; idx += 1) {
+              const match = group.matches[idx];
+              if (!match.done || !isRealMatch(match.a, match.b) || !matchHasPlayer(match, playerNames)) continue;
+              out.push({
+                id: `${tournament.id}:g:${cls.key}:${group.name}:${idx}`,
+                sourceName: tournament.name,
+                targetPath: buildTournamentUrl(tournament.id),
+                classLabel,
+                title: `${match.a} x ${match.b}`,
+                score: formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, match.done, cls.data.config),
+                result: profileMatchResult(match, playerNames),
+                updatedAt: tournament.updatedAt,
+              });
+            }
+          }
+
+          for (let roundIdx = 0; roundIdx < (cls.data.knockout?.rounds || []).length; roundIdx += 1) {
+            const round = cls.data.knockout?.rounds[roundIdx];
+            if (!round) continue;
+            for (let matchIdx = 0; matchIdx < round.matches.length; matchIdx += 1) {
+              const match = round.matches[matchIdx];
+              if (!match.done || !isRealMatch(match.a, match.b) || !matchHasPlayer(match, playerNames)) continue;
+              out.push({
+                id: `${tournament.id}:k:${cls.key}:${roundIdx}:${matchIdx}`,
+                sourceName: tournament.name,
+                targetPath: buildTournamentUrl(tournament.id),
+                classLabel,
+                title: `${match.a} x ${match.b}`,
+                score: formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, match.done, cls.data.config),
+                result: profileMatchResult(match, playerNames),
+                updatedAt: tournament.updatedAt,
+              });
+            }
+          }
+        }
+        return out;
+      } catch {
+        return [];
+      }
+    })
+  );
+
+  return groups
+    .flat()
+    .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
+    .slice(0, 4);
+}
+
+async function loadRecentLeagueMatches(user: User, leagues: LeagueSummary[]): Promise<ProfileRecentMatch[]> {
+  const groups = await Promise.all(
+    leagues
+      .filter((league) => league.role !== "owner")
+      .slice(0, 6)
+      .map(async (league) => {
+        try {
+          const details = await loadLeagueDetails(league.id);
+          const seasonId = details.seasons.find((season) => season.status === "active")?.id || details.seasons[0]?.id || "";
+          if (!seasonId) return [];
+          const rounds = await loadSeasonRounds(seasonId, 6);
+          const matchGroups = await Promise.all(
+            rounds.map(async (round) => {
+              const matches = await loadRoundMatches(round.id);
+              return matches
+                .filter((match) => (match.status === "encerrada" || match.status === "wo") && match.participants.some((p) => p.userId === user.id))
+                .map((match) => ({
+                  id: `${league.id}:${match.id}`,
+                  sourceName: league.name,
+                  targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}?tab=partidas`,
+                  classLabel: `Rodada ${round.roundNumber}`,
+                  title: leagueMatchTitle(match),
+                  score: leagueMatchScore(match),
+                  result: leagueMatchResult(match, user.id),
+                  updatedAt: match.scheduledAt || round.endsAt || league.updatedAt,
+                } satisfies ProfileRecentMatch));
+            })
+          );
+          return matchGroups.flat();
+        } catch {
+          return [];
+        }
+      })
+  );
+
+  return groups.flat();
+}
+
 export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -122,6 +294,13 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const [phone, setPhone] = useState(profile?.phone ?? "");
   const [birthDate, setBirthDate] = useState(profile?.birthDate ?? "");
   const [instagram, setInstagram] = useState(profile?.instagram ?? "");
+  const [activityLoading, setActivityLoading] = useState(true);
+  const [activityError, setActivityError] = useState("");
+  const [playingTournaments, setPlayingTournaments] = useState<TournamentSummary[]>([]);
+  const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
+  const [playingLeagues, setPlayingLeagues] = useState<LeagueSummary[]>([]);
+  const [organizingLeagues, setOrganizingLeagues] = useState<LeagueSummary[]>([]);
+  const [recentMatches, setRecentMatches] = useState<ProfileRecentMatch[]>([]);
   const normalizedUf = useMemo(() => normalizeStateUf(stateUf), [stateUf]);
   const cityValueInOptions = useMemo(
     () => cityOptions.some((item) => item.toLowerCase() === city.trim().toLowerCase()),
@@ -156,6 +335,39 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       cancelled = true;
     };
   }, [normalizedUf]);
+
+  useEffect(() => {
+    let alive = true;
+    setActivityLoading(true);
+    setActivityError("");
+    Promise.all([loadDashboardData(user), loadMyLeagues()])
+      .then(async ([dashboard, leagues]) => {
+        const [tournamentMatches, leagueMatches] = await Promise.all([
+          loadRecentTournamentMatches(user, profile, dashboard.participating),
+          loadRecentLeagueMatches(user, leagues),
+        ]);
+        if (!alive) return;
+        setPlayingTournaments(dashboard.participating.filter((item) => statusIsActive(item.status)));
+        setOrganizingTournaments(dashboard.organizing.filter((item) => statusIsActive(item.status)));
+        setPlayingLeagues(leagues.filter((item) => item.role !== "owner" && item.status !== "finished"));
+        setOrganizingLeagues(leagues.filter((item) => item.role === "owner" && item.status !== "finished"));
+        setRecentMatches(
+          [...tournamentMatches, ...leagueMatches]
+            .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
+            .slice(0, 5)
+        );
+      })
+      .catch((err: unknown) => {
+        if (!alive) return;
+        setActivityError(err instanceof Error ? err.message : "Falha ao carregar atividade.");
+      })
+      .finally(() => {
+        if (alive) setActivityLoading(false);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [profile, user]);
 
   const photoUrl = profile?.photoUrl ?? "";
   const initials = (profile?.displayName || user.email || "AT")
@@ -218,6 +430,247 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   };
 
   const locationLine = [profile?.city, profile?.state].filter(Boolean).join(" - ");
+  const playingCount = playingTournaments.length + playingLeagues.length;
+  const organizingCount = organizingTournaments.length + organizingLeagues.length;
+  const latestPlaying = [...playingTournaments, ...playingLeagues]
+    .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
+    .slice(0, 2);
+  const latestOrganizing = [...organizingTournaments, ...organizingLeagues]
+    .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
+    .slice(0, 2);
+  const playerActivityPath =
+    playingTournaments.length > 0 && playingLeagues.length === 0
+      ? "/eventos/torneios?view=participating"
+      : playingLeagues.length > 0 && playingTournaments.length === 0
+      ? "/eventos/ligas?view=participating"
+      : "/eventos";
+  const organizerActivityPath =
+    organizingTournaments.length > 0 && organizingLeagues.length === 0
+      ? "/eventos/torneios?view=organizing"
+      : organizingLeagues.length > 0 && organizingTournaments.length === 0
+      ? "/eventos/ligas?view=organizing"
+      : "/eventos";
+  const recentWins = recentMatches.filter((match) => match.result === "Vitoria").length;
+  const recentLosses = recentMatches.filter((match) => match.result === "Derrota").length;
+  const recentWinRate = recentWins + recentLosses > 0 ? Math.round((recentWins / (recentWins + recentLosses)) * 100) : 0;
+  const currentWinStreak = (() => {
+    let streak = 0;
+    for (const match of recentMatches) {
+      if (match.result === "Vitoria") {
+        streak += 1;
+        continue;
+      }
+      if (match.result === "Derrota") break;
+    }
+    return streak;
+  })();
+  const bestWinStreak = (() => {
+    let best = 0;
+    let running = 0;
+    for (const match of recentMatches) {
+      if (match.result === "Vitoria") {
+        running += 1;
+        best = Math.max(best, running);
+      } else if (match.result === "Derrota") {
+        running = 0;
+      }
+    }
+    return best;
+  })();
+  const profileComplete = Boolean(profile?.displayName && profile?.phone && profile?.city && profile?.state && profile?.birthDate);
+  const achievements = [
+    {
+      id: "profile-complete",
+      title: "Perfil pronto",
+      detail: "Nome, contato, cidade e nascimento preenchidos.",
+      unlocked: profileComplete,
+    },
+    {
+      id: "active-player",
+      title: "Em quadra",
+      detail: "Participando de ao menos uma competicao ativa.",
+      unlocked: playingCount > 0,
+    },
+    {
+      id: "first-win",
+      title: "Primeira vitoria",
+      detail: "Ja tem vitoria no historico recente.",
+      unlocked: recentWins > 0,
+    },
+    {
+      id: "win-streak",
+      title: "Sequencia quente",
+      detail: "Duas ou mais vitorias seguidas no historico recente.",
+      unlocked: currentWinStreak >= 2,
+    },
+    {
+      id: "organizer",
+      title: "Organizador",
+      detail: "Administrando torneio ou liga ativa.",
+      unlocked: organizingCount > 0,
+    },
+  ];
+  const unlockedAchievements = achievements.filter((achievement) => achievement.unlocked).length;
+  const playerXp =
+    (profileComplete ? 40 : 0) +
+    playingCount * 25 +
+    organizingCount * 20 +
+    recentMatches.length * 10 +
+    recentWins * 15 +
+    currentWinStreak * 10 +
+    unlockedAchievements * 20;
+  const playerLevel = Math.max(1, Math.floor(playerXp / 100) + 1);
+  const levelProgress = playerXp % 100;
+  const xpToNextLevel = 100 - levelProgress;
+  const trophyHistory = [
+    {
+      id: "first-win",
+      title: "Primeira vitoria",
+      detail: `${recentWins} vitoria${recentWins === 1 ? "" : "s"} no historico recente.`,
+      earned: recentWins > 0,
+    },
+    {
+      id: "streak",
+      title: "Sequencia recente",
+      detail: `Melhor sequencia recente: ${bestWinStreak}.`,
+      earned: bestWinStreak >= 2,
+    },
+    {
+      id: "active-player",
+      title: "Jogador ativo",
+      detail: `${playingCount} competicao${playingCount === 1 ? "" : "es"} como jogador.`,
+      earned: playingCount > 0,
+    },
+    {
+      id: "active-organizer",
+      title: "Organizador ativo",
+      detail: `${organizingCount} competicao${organizingCount === 1 ? "" : "es"} em organizacao.`,
+      earned: organizingCount > 0,
+    },
+  ].filter((trophy) => trophy.earned);
+  const recentTournamentMatches = recentMatches.filter((match) => !match.targetPath.includes("/eventos/ligas/")).length;
+  const recentLeagueMatches = recentMatches.length - recentTournamentMatches;
+  const recentCompetitionCount = new Set(recentMatches.map((match) => match.sourceName)).size;
+  const favoriteClass = (() => {
+    const counts = recentMatches.reduce<Record<string, number>>((acc, match) => {
+      const label = match.classLabel || "Sem classe";
+      acc[label] = (acc[label] || 0) + 1;
+      return acc;
+    }, {});
+    return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || "Sem dados";
+  })();
+  const performanceLabel =
+    recentMatches.length === 0
+      ? "Sem partidas recentes"
+      : recentWinRate >= 70
+      ? "Fase excelente"
+      : recentWinRate >= 50
+      ? "Fase positiva"
+      : recentWins > 0
+      ? "Em evolucao"
+      : "Buscando primeira vitoria";
+  const playerNameForComparison = normalizePlayerName(profile?.displayName || user.email?.split("@")[0] || "");
+  const headToHeadRows = Object.values(
+    recentMatches.reduce<
+      Record<string, { opponent: string; matches: number; wins: number; losses: number; lastSource: string }>
+    >((acc, match) => {
+      const sides = match.title.split(/\s+x\s+/i).map((side) => side.trim()).filter(Boolean);
+      const opponent =
+        sides.length >= 2 && playerNameForComparison
+          ? normalizePlayerName(sides[0]).includes(playerNameForComparison)
+            ? sides.slice(1).join(" x ")
+            : normalizePlayerName(sides.slice(1).join(" x ")).includes(playerNameForComparison)
+            ? sides[0]
+            : match.title
+          : match.title;
+      const key = normalizePlayerName(opponent);
+      if (!key) return acc;
+      acc[key] = acc[key] || { opponent, matches: 0, wins: 0, losses: 0, lastSource: match.sourceName };
+      acc[key].matches += 1;
+      acc[key].wins += match.result === "Vitoria" ? 1 : 0;
+      acc[key].losses += match.result === "Derrota" ? 1 : 0;
+      acc[key].lastSource = match.sourceName;
+      return acc;
+    }, {})
+  )
+    .sort((a, b) => {
+      const byMatches = b.matches - a.matches;
+      if (byMatches !== 0) return byMatches;
+      return b.wins - a.wins;
+    })
+    .slice(0, 3);
+  const rankingHistory = [
+    {
+      id: "level",
+      label: "Nivel atual",
+      value: `Nivel ${playerLevel}`,
+      detail: `${playerXp} XP acumulados`,
+    },
+    {
+      id: "performance",
+      label: "Fase recente",
+      value: performanceLabel,
+      detail: `${recentWinRate}% de aproveitamento`,
+    },
+    {
+      id: "streak",
+      label: "Sequencia",
+      value: `${currentWinStreak} atual`,
+      detail: `Melhor recente: ${bestWinStreak}`,
+    },
+    {
+      id: "volume",
+      label: "Volume",
+      value: `${recentMatches.length} partida${recentMatches.length === 1 ? "" : "s"}`,
+      detail: `${recentCompetitionCount} competicao${recentCompetitionCount === 1 ? "" : "es"}`,
+    },
+  ];
+  const shareProfileSummaryWhatsApp = () => {
+    const name = profile?.displayName || user.email?.split("@")[0] || "Atleta";
+    const lines = [
+      `Resumo ATP de ${name}`,
+      locationLine ? `Local: ${locationLine}` : "",
+      `Nivel ${playerLevel} - ${playerXp} XP`,
+      `Trofeus recentes: ${trophyHistory.length}`,
+      `Fase: ${performanceLabel}`,
+      `Historico de evolucao: ${recentWinRate}% aproveitamento, melhor sequencia ${bestWinStreak}`,
+      headToHeadRows[0]
+        ? `Principal confronto recente: ${headToHeadRows[0].opponent} (${headToHeadRows[0].wins}V/${headToHeadRows[0].losses}D)`
+        : "",
+      `Jogando: ${playingCount} competicao${playingCount === 1 ? "" : "es"}`,
+      `Organizando: ${organizingCount} competicao${organizingCount === 1 ? "" : "es"}`,
+      recentMatches.length > 0
+        ? `Ultimas ${recentMatches.length} partidas: ${recentWins}V / ${recentLosses}D (${recentWinRate}% aproveitamento, sequencia ${currentWinStreak})`
+        : "Ainda sem partidas recentes registradas.",
+      recentMatches[0] ? `Ultima partida: ${recentMatches[0].title} | ${recentMatches[0].result} | ${recentMatches[0].score}` : "",
+    ].filter(Boolean);
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    setFeedback({ kind: "success", text: "Resumo do perfil aberto no WhatsApp." });
+  };
+  const buildRecentMatchPostLines = (match: ProfileRecentMatch) => {
+    const name = profile?.displayName || user.email?.split("@")[0] || "Atleta";
+    return [
+      `${match.result === "Vitoria" ? "Vitoria confirmada" : match.result === "Derrota" ? "Partida encerrada" : "Resultado lancado"} - ${name}`,
+      match.sourceName,
+      match.classLabel,
+      match.title,
+      `${match.result} | ${match.score}`,
+      "Publicado pelo ATP APP",
+    ];
+  };
+  const shareRecentMatchWhatsApp = (match: ProfileRecentMatch) => {
+    const lines = buildRecentMatchPostLines(match);
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    setFeedback({ kind: "success", text: "Resultado aberto no WhatsApp." });
+  };
+  const copyRecentMatchPost = async (match: ProfileRecentMatch) => {
+    try {
+      await navigator.clipboard.writeText(buildRecentMatchPostLines(match).join("\n"));
+      setFeedback({ kind: "success", text: "Post da partida copiado." });
+    } catch {
+      setFeedback({ kind: "error", text: "Nao foi possivel copiar o post agora." });
+    }
+  };
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
@@ -263,6 +716,12 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         </div>
         <p className="profile-name">{profile?.displayName || user.email?.split("@")[0]}</p>
         <p className="profile-location">{locationLine || "Adicione cidade e estado"}</p>
+        <div className="profile-identity-pills">
+          <span>{profileComplete ? "Perfil completo" : "Perfil incompleto"}</span>
+          <span>Nivel {playerLevel}</span>
+          <span>{performanceLabel}</span>
+          <span>{playingCount > 0 ? "Jogador ativo" : "Sem competicao ativa"}</span>
+        </div>
       </div>
 
       {editing ? (
@@ -348,6 +807,228 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           </div>
         </div>
       )}
+
+      {!editing ? (
+        <div className="profile-activity-card">
+          <div className="section-title">
+            <h2>Minha atividade</h2>
+            <div className="cluster">
+              <button className="link" onClick={shareProfileSummaryWhatsApp}>
+                WhatsApp
+              </button>
+              <button className="link" onClick={() => navigate("/eventos")}>
+                Ver eventos
+              </button>
+            </div>
+          </div>
+          {activityLoading ? <p className="subtle">Carregando atividade...</p> : null}
+          {activityError ? <p className="feedback error">{activityError}</p> : null}
+          {!activityLoading && !activityError ? (
+            <>
+              <div className="profile-activity-grid">
+                <button className="profile-activity-kpi" onClick={() => navigate(playerActivityPath)}>
+                  <strong>{playingCount}</strong>
+                  <span>Jogando</span>
+                </button>
+                <button className="profile-activity-kpi" onClick={() => navigate(organizerActivityPath)}>
+                  <strong>{organizingCount}</strong>
+                  <span>Organizando</span>
+                </button>
+              </div>
+
+              {latestPlaying.length > 0 || latestOrganizing.length > 0 ? (
+                <div className="profile-activity-list">
+                  {latestPlaying.map((item) => (
+                    <button key={`profile-play:${item.id}`} onClick={() => navigate(profileCompetitionPath(item))}>
+                      <span>Jogando</span>
+                      <strong>{item.name}</strong>
+                    </button>
+                  ))}
+                  {latestOrganizing.map((item) => (
+                    <button key={`profile-org:${item.id}`} onClick={() => navigate(profileCompetitionPath(item))}>
+                      <span>Organizando</span>
+                      <strong>{item.name}</strong>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="subtle" style={{ marginBottom: 0 }}>
+                  Quando voce entrar em torneios ou ligas, seu historico comeca a aparecer aqui.
+                </p>
+              )}
+
+              <div className="profile-level-card">
+                <div className="profile-level-header">
+                  <div>
+                    <span>Nivel do jogador</span>
+                    <strong>Nivel {playerLevel}</strong>
+                  </div>
+                  <em>{playerXp} XP</em>
+                </div>
+                <div className="profile-level-bar" aria-label={`Progresso do nivel ${playerLevel}`}>
+                  <span style={{ width: `${levelProgress}%` }} />
+                </div>
+                <p>
+                  {levelProgress === 0 && playerXp > 0
+                    ? "Nivel recem alcancado. Continue jogando para avancar."
+                    : `${xpToNextLevel} XP para o proximo nivel.`}
+                </p>
+              </div>
+
+              <div className="profile-achievements">
+                <p className="profile-activity-heading">
+                  Conquistas ({unlockedAchievements}/{achievements.length})
+                </p>
+                <div className="profile-achievement-grid">
+                  {achievements.map((achievement) => (
+                    <div
+                      key={achievement.id}
+                      className={`profile-achievement ${achievement.unlocked ? "unlocked" : "locked"}`}
+                    >
+                      <strong>{achievement.title}</strong>
+                      <span>{achievement.detail}</span>
+                      <em>{achievement.unlocked ? "Liberada" : "Pendente"}</em>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="profile-trophy-history">
+                <p className="profile-activity-heading">Trofeus recentes</p>
+                {trophyHistory.length > 0 ? (
+                  <div className="profile-trophy-grid">
+                    {trophyHistory.map((trophy) => (
+                      <div key={trophy.id} className="profile-trophy">
+                        <strong>{trophy.title}</strong>
+                        <span>{trophy.detail}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="subtle" style={{ marginBottom: 0 }}>
+                    Vitorias, sequencias e competicoes ativas vao aparecer como trofeus aqui.
+                  </p>
+                )}
+              </div>
+
+              <div className="profile-ranking-history">
+                <p className="profile-activity-heading">Evolucao recente</p>
+                <div className="profile-ranking-timeline">
+                  {rankingHistory.map((item) => (
+                    <div key={item.id} className="profile-ranking-item">
+                      <span>{item.label}</span>
+                      <strong>{item.value}</strong>
+                      <em>{item.detail}</em>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {recentMatches.length > 0 ? (
+                <div className="profile-match-history">
+                  <p className="profile-activity-heading">Partidas recentes</p>
+                  <div className="profile-stats-grid">
+                    <div>
+                      <strong>{recentMatches.length}</strong>
+                      <span>Partidas</span>
+                    </div>
+                    <div>
+                      <strong>{recentWins}</strong>
+                      <span>Vitorias</span>
+                    </div>
+                    <div>
+                      <strong>{recentLosses}</strong>
+                      <span>Derrotas</span>
+                    </div>
+                    <div>
+                      <strong>{recentWinRate}%</strong>
+                      <span>Aproveit.</span>
+                    </div>
+                  </div>
+                  <div className="profile-stat-breakdown">
+                    <div>
+                      <span>Torneios</span>
+                      <strong>{recentTournamentMatches}</strong>
+                    </div>
+                    <div>
+                      <span>Ligas</span>
+                      <strong>{recentLeagueMatches}</strong>
+                    </div>
+                    <div>
+                      <span>Eventos</span>
+                      <strong>{recentCompetitionCount}</strong>
+                    </div>
+                    <div>
+                      <span>Classe mais jogada</span>
+                      <strong>{favoriteClass}</strong>
+                    </div>
+                  </div>
+                  <p className="profile-performance-label">{performanceLabel}</p>
+                  {headToHeadRows.length > 0 ? (
+                    <div className="profile-head-to-head">
+                      <p className="profile-activity-heading">Head-to-head recente</p>
+                      {headToHeadRows.map((row) => (
+                        <div key={normalizePlayerName(row.opponent)} className="profile-head-to-head-row">
+                          <div>
+                            <strong>{row.opponent}</strong>
+                            <span>{row.lastSource}</span>
+                          </div>
+                          <em>
+                            {row.wins}V / {row.losses}D
+                          </em>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                  <div className="profile-streak-panel">
+                    <div>
+                      <span>Sequencia atual</span>
+                      <strong>{currentWinStreak}</strong>
+                    </div>
+                    <p>
+                      {currentWinStreak > 0
+                        ? `Voce vem de ${currentWinStreak} vitoria${currentWinStreak === 1 ? "" : "s"} seguida${currentWinStreak === 1 ? "" : "s"}. Melhor sequencia recente: ${bestWinStreak}.`
+                        : bestWinStreak > 0
+                        ? `Melhor sequencia recente: ${bestWinStreak}.`
+                        : "Venca uma partida para iniciar sua sequencia."}
+                    </p>
+                  </div>
+                  <div className="profile-match-post">
+                    <p className="profile-match-post-label">Post da ultima partida</p>
+                    <strong>{recentMatches[0].title}</strong>
+                    <span>
+                      {recentMatches[0].sourceName} - {recentMatches[0].result} | {recentMatches[0].score}
+                    </span>
+                    <div className="profile-match-post-actions">
+                      <button onClick={() => copyRecentMatchPost(recentMatches[0])}>Copiar post</button>
+                      <button className="primary" onClick={() => shareRecentMatchWhatsApp(recentMatches[0])}>
+                        WhatsApp
+                      </button>
+                    </div>
+                  </div>
+                  {recentMatches.map((match) => (
+                    <article key={match.id} className="profile-match-history-row">
+                      <button className="profile-match-main" onClick={() => navigate(match.targetPath)}>
+                        <div>
+                          <span>{match.sourceName}</span>
+                          <strong>{match.title}</strong>
+                          <small>{match.classLabel}</small>
+                        </div>
+                        <em className={match.result === "Vitoria" ? "win" : match.result === "Derrota" ? "loss" : ""}>
+                          {match.result} | {match.score}
+                        </em>
+                      </button>
+                      <button className="profile-match-share" onClick={() => shareRecentMatchWhatsApp(match)}>
+                        WhatsApp
+                      </button>
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+            </>
+          ) : null}
+        </div>
+      ) : null}
 
       {!editing && (
         <div className="profile-rows-card">

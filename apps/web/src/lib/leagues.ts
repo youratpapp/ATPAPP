@@ -8,6 +8,7 @@ import type {
   LeagueMatchAvailability,
   LeagueMatchMessage,
   LeagueMatchSummary,
+  LeaguePlayerStanding,
   LeagueRegistration,
   LeagueResultSubmission,
   LeagueRoundSummary,
@@ -76,6 +77,28 @@ type ClassRow = {
   category_name: string;
   class_name: string;
   level_order: number | null;
+  promoted_slots: number | null;
+  relegated_slots: number | null;
+};
+
+type PlayerStandingRow = {
+  id: string;
+  league_id: string;
+  season_id: string;
+  class_id: string | null;
+  user_id: string | null;
+  display_name: string | null;
+  phone: string | null;
+  status: "active" | "inactive" | "recesso" | null;
+  matches_played: number | null;
+  wins: number | null;
+  losses: number | null;
+  sets_for: number | null;
+  sets_against: number | null;
+  games_for: number | null;
+  games_against: number | null;
+  ranking_points: number | null;
+  wo_against: number | null;
 };
 
 type RegistrationRow = {
@@ -341,7 +364,7 @@ export async function loadLeagueClasses(seasonId: string): Promise<LeagueClassSu
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { data, error } = await supabase
     .from("league_classes")
-    .select("id,season_id,category_name,class_name,level_order")
+    .select("id,season_id,category_name,class_name,level_order,promoted_slots,relegated_slots")
     .eq("season_id", seasonId)
     .order("level_order", { ascending: true });
   if (error) throw new Error(error.message);
@@ -351,6 +374,38 @@ export async function loadLeagueClasses(seasonId: string): Promise<LeagueClassSu
     categoryName: row.category_name,
     className: row.class_name,
     levelOrder: Number(row.level_order || 1),
+    promotedSlots: Number(row.promoted_slots || 0),
+    relegatedSlots: Number(row.relegated_slots || 0),
+  }));
+}
+
+export async function loadLeaguePlayerStandings(seasonId: string): Promise<LeaguePlayerStanding[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from("league_players")
+    .select(
+      "id,league_id,season_id,class_id,user_id,display_name,phone,status,matches_played,wins,losses,sets_for,sets_against,games_for,games_against,ranking_points,wo_against"
+    )
+    .eq("season_id", seasonId);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PlayerStandingRow[]).map((row) => ({
+    id: row.id,
+    leagueId: row.league_id,
+    seasonId: row.season_id,
+    classId: row.class_id,
+    userId: row.user_id,
+    displayName: row.display_name || "Jogador",
+    phone: row.phone || "",
+    status: row.status === "inactive" || row.status === "recesso" ? row.status : "active",
+    matchesPlayed: Number(row.matches_played || 0),
+    wins: Number(row.wins || 0),
+    losses: Number(row.losses || 0),
+    setsFor: Number(row.sets_for || 0),
+    setsAgainst: Number(row.sets_against || 0),
+    gamesFor: Number(row.games_for || 0),
+    gamesAgainst: Number(row.games_against || 0),
+    rankingPoints: Number(row.ranking_points || 0),
+    woAgainst: Number(row.wo_against || 0),
   }));
 }
 

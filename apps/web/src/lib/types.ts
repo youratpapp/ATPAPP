@@ -54,7 +54,7 @@ export type TournamentRegistration = {
   className: string;
   playerName: string;
   phone: string;
-  status: "pending" | "approved" | "rejected";
+  status: "pending" | "approved" | "waitlist" | "rejected";
   createdAt: string;
 };
 
@@ -84,6 +84,22 @@ export type TournamentMatchResultSubmission = {
   scoreText: string;
   normalizedScore: string;
   status: "pending" | "accepted" | "conflict" | "applied" | "rejected";
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TournamentMatchConfirmation = {
+  id: string;
+  tournamentId: string;
+  userId: string;
+  classKey: string;
+  classLabel: string;
+  phaseKey: string;
+  phaseLabel: string;
+  matchIndex: number;
+  side: "a" | "b";
+  matchTitle: string;
+  status: "confirmed" | "unavailable";
   createdAt: string;
   updatedAt: string;
 };
@@ -146,6 +162,28 @@ export type LeagueClassSummary = {
   categoryName: string;
   className: string;
   levelOrder: number;
+  promotedSlots: number;
+  relegatedSlots: number;
+};
+
+export type LeaguePlayerStanding = {
+  id: string;
+  leagueId: string;
+  seasonId: string;
+  classId: string | null;
+  userId: string | null;
+  displayName: string;
+  phone: string;
+  status: "active" | "inactive" | "recesso";
+  matchesPlayed: number;
+  wins: number;
+  losses: number;
+  setsFor: number;
+  setsAgainst: number;
+  gamesFor: number;
+  gamesAgainst: number;
+  rankingPoints: number;
+  woAgainst: number;
 };
 
 export type LeagueRegistration = {

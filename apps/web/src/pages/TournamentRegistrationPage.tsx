@@ -84,6 +84,27 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
     [options, selectedClassId]
   );
 
+  const registrationCloseLabel = useMemo(() => {
+    if (!tournament?.registrationCloseAt) return "Sem prazo definido";
+    const date = new Date(tournament.registrationCloseAt);
+    if (Number.isNaN(date.getTime())) return "Sem prazo definido";
+    return date.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+  }, [tournament?.registrationCloseAt]);
+
+  const registrationClosedReason = useMemo(() => {
+    if (!tournament) return "";
+    if (tournament.status !== "registration_open") {
+      return "As inscricoes deste torneio nao estao abertas no momento.";
+    }
+    if (tournament.registrationCloseAt) {
+      const closeAt = new Date(tournament.registrationCloseAt).getTime();
+      if (Number.isFinite(closeAt) && closeAt < Date.now()) {
+        return "O prazo de inscricao deste torneio foi encerrado.";
+      }
+    }
+    return "";
+  }, [tournament]);
+
   useEffect(() => {
     let alive = true;
     async function run() {
@@ -123,6 +144,10 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
 
   const submit = async () => {
     if (!tournament || !selected) return;
+    if (registrationClosedReason) {
+      setFeedback({ kind: "error", text: registrationClosedReason });
+      return;
+    }
     setSubmitting(true);
     try {
       await requestTournamentRegistration(user, tournament.id, {
@@ -193,6 +218,10 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
           <p className="subtle" style={{ marginTop: 0 }}>
             {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}
           </p>
+          <p className="subtle" style={{ marginTop: -4 }}>
+            Inscricoes ate: {registrationCloseLabel}
+          </p>
+          {registrationClosedReason ? <p className="feedback error">{registrationClosedReason}</p> : null}
 
           <div className="tournament-overview-grid invite-overview-grid">
             <div className="tournament-overview-kpi">
@@ -247,9 +276,9 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
               <button
                 className="primary"
                 onClick={submit}
-                disabled={submitting || !selected || !playerName.trim() || options.length === 0}
+                disabled={submitting || !!registrationClosedReason || !selected || !playerName.trim() || options.length === 0}
               >
-                {submitting ? "Enviando..." : "Solicitar inscricao"}
+                {submitting ? "Enviando..." : registrationClosedReason ? "Inscricoes fechadas" : "Solicitar inscricao"}
               </button>
               <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
               <button onClick={shareRegistrationWhatsApp} disabled={!selected}>

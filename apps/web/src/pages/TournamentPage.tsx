@@ -8,12 +8,14 @@ import {
   deleteTournament,
   loadTournamentChatMessages,
   loadTournamentDetails,
+  loadTournamentMatchConfirmations,
   loadTournamentRegistrations,
   loadTournamentResultSubmissions,
   markTournamentMatchResultSubmissionApplied,
   postTournamentAnnouncement,
   sendTournamentChatMessage,
   setTournamentPinnedMessage,
+  confirmTournamentMatch,
   submitTournamentMatchResult,
   updateTournamentDetails,
   updateTournamentRegistrationStatus,
@@ -22,6 +24,7 @@ import type {
   Profile,
   TournamentChatMessage,
   TournamentDetails,
+  TournamentMatchConfirmation,
   TournamentMatchResultSubmission,
   TournamentRegistration,
 } from "../lib/types";
@@ -36,6 +39,7 @@ import {
   type AgendaAssignment,
   type ScheduleClassInput,
 } from "../tournament-engine/agenda";
+import { assignmentSortValue, buildScheduleMatchKey, formatAssignmentTime } from "../lib/tournament-schedule";
 import {
   listLegacyClassesFromTournamentData,
   normalizeClassData,
@@ -44,6 +48,45 @@ import {
   type LegacyClassRef,
 } from "../tournament-engine/state-adapter";
 import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
+import {
+  asScore,
+  coerceScoreStringForSetInput,
+  decodeMatchScoreDetail,
+  emptyScoreSet,
+  encodeMatchScoreDetail,
+  evaluateMatchScoreDetail,
+  formatMatchScoreValues,
+  isSuperTieBreakPointsMode,
+  matchResultOriginLabel,
+  normalizeMatchScoreDetail,
+  normalizeSetCountByScoreType,
+  parseSubmittedScoreText,
+  scoringRulesHint,
+  scoringTypeLabel,
+  shouldShowSuperTbInput,
+  technicalWinScore,
+  visibleSetCount,
+  type MatchScoreDetail,
+} from "../lib/tournament-score";
+import {
+  buildTournamentClassCompletionRows,
+  coerceAllowedTournamentTab,
+  inferTournamentStatusFromData,
+  isRealMatch,
+  VALID_TOURNAMENT_TABS,
+  type TournamentStatus,
+  type TournamentTabKey,
+} from "../lib/tournament-lifecycle";
+import {
+  coerceScoreTypePatchByModel,
+  copyTextWithFallback,
+  normalizeNumberInputToOdd,
+  normalizePlayerName,
+  scopeClassKey,
+  setScoreUiValue,
+  toDateTimeLocalValue,
+  toIsoFromDateTimeLocal,
+} from "../lib/tournament-page-utils";
 
 type Props = {
   user: User;
@@ -51,27 +94,14 @@ type Props = {
   forcedTab?: TabKey;
 };
 
-type TabKey = "jogos" | "classificacao" | "organizacao" | "jogadores" | "chat";
-type TournamentStatus = "draft" | "registration_open" | "registration_closed" | "live" | "finished";
-type SetWinner = "a" | "b" | null;
-type MatchScoreSet = {
-  a: string;
-  b: string;
-  tbA: string;
-  tbB: string;
-};
-type MatchScoreDetail = {
-  v: 1;
-  tipo: ClassData["config"]["tipoPontuacao"];
-  sets: MatchScoreSet[];
-  superTbA: string;
-  superTbB: string;
-};
+type TabKey = TournamentTabKey;
 
 type Feedback = { kind: "success" | "error" | "info"; text: string };
 type PlayerTournamentMatch = {
   id: string;
   classKey: string;
+  categoryName: string;
+  className: string;
   classLabel: string;
   phaseKey: string;
   phase: string;
@@ -105,85 +135,7 @@ type ConfigScopeClass = {
 
 const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
-const VALID_TABS: TabKey[] = ["jogos", "classificacao", "organizacao", "jogadores", "chat"];
-const SCORE_DETAIL_PREFIX = "__atp_score_v1__:";
-
-function isRealMatch(a: string | null | undefined, b: string | null | undefined): boolean {
-  const left = String(a || "").trim();
-  const right = String(b || "").trim();
-  return Boolean(left && right && left !== "BYE" && right !== "BYE");
-}
-
-function isClassFinalized(data: ClassData): boolean {
-  const cls = recomputeClassData(data);
-  if (!cls.gerado) return false;
-
-  const knockoutRounds = cls.knockout?.rounds || [];
-  if (knockoutRounds.length > 0) {
-    const finalRound = knockoutRounds[knockoutRounds.length - 1];
-    const finalMatches = (finalRound?.matches || []).filter((m) => isRealMatch(m.a, m.b));
-    if (!finalMatches.length) return Boolean(finalRound?.matches?.some((m) => m.done && m.winner));
-    return finalMatches.every((m) => Boolean(m.done && m.winner));
-  }
-
-  const groupMatches = cls.grupos.flatMap((g) => g.matches || []).filter((m) => isRealMatch(m.a, m.b));
-  return groupMatches.length > 0 && groupMatches.every((m) => Boolean(m.done && m.winner));
-}
-
-function inferTournamentStatusFromData(data: Record<string, unknown>, fallback: TournamentStatus): TournamentStatus {
-  const generatedClasses = listLegacyClassesFromTournamentData(data).filter((cls) => cls.data.gerado);
-  if (!generatedClasses.length) return fallback;
-  if (generatedClasses.every((cls) => isClassFinalized(cls.data))) return "finished";
-  return "live";
-}
-
-function isTabAllowed(tab: TabKey, isOwner: boolean, canSeeClassificationTab: boolean, canUseChatTab: boolean): boolean {
-  if ((tab === "organizacao" || tab === "jogadores") && !isOwner) return false;
-  if (tab === "classificacao" && !canSeeClassificationTab) return false;
-  if (tab === "chat" && !canUseChatTab) return false;
-  return true;
-}
-
-function coerceAllowedTab(
-  requested: TabKey | null,
-  isOwner: boolean,
-  canSeeClassificationTab: boolean,
-  canUseChatTab: boolean
-): TabKey {
-  const base = requested && VALID_TABS.includes(requested) ? requested : "jogos";
-  return isTabAllowed(base, isOwner, canSeeClassificationTab, canUseChatTab) ? base : "jogos";
-}
-
-function normalizePlayerName(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
-}
-
-async function copyTextWithFallback(text: string): Promise<boolean> {
-  const value = text.trim();
-  if (!value) return false;
-  try {
-    if (navigator?.clipboard?.writeText) {
-      await navigator.clipboard.writeText(value);
-      return true;
-    }
-  } catch {
-    // Fallback below.
-  }
-  try {
-    window.prompt("Copie o link abaixo:", value);
-    return false;
-  } catch {
-    return false;
-  }
-}
-
-function scopeClassKey(categoryId: string, classId: string): string {
-  return `${categoryId}::${classId}`;
-}
+const VALID_TABS = VALID_TOURNAMENT_TABS;
 
 function SaveDiskIcon() {
   return (
@@ -207,397 +159,6 @@ function SaveDiskIcon() {
       <path d="M10 16h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
-}
-
-function asScore(value: string): number | null {
-  const v = value.trim();
-  if (!v) return null;
-  const n = Number.parseInt(v, 10);
-  if (Number.isNaN(n)) return null;
-  if (n < 0 || n > 99) return null;
-  return n;
-}
-
-function emptyScoreSet(): MatchScoreSet {
-  return { a: "", b: "", tbA: "", tbB: "" };
-}
-
-function numericInput(value: string): string {
-  return value.replace(/[^\d]/g, "");
-}
-
-function toDateTimeLocalValue(value: string | null | undefined): string {
-  const raw = (value || "").trim();
-  if (!raw) return "";
-  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(raw)) return raw;
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return "";
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mi = String(d.getMinutes()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
-}
-
-function toIsoFromDateTimeLocal(value: string): string {
-  const raw = value.trim();
-  if (!raw) return "";
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return "";
-  return d.toISOString();
-}
-
-function isSuperTieBreakPointsMode(config?: ClassData["config"]): boolean {
-  return config?.tipoPontuacao === "super_tb_unico" || config?.modeloCompeticao === "super_tiebreak";
-}
-
-function setSlotsForType(config: ClassData["config"]): number {
-  if (isSuperTieBreakPointsMode(config)) return 0;
-  if (config.tipoPontuacao === "melhor_de_3") return 3;
-  if (config.tipoPontuacao === "melhor_de_3_super_tb") return 2;
-  if (config.tipoPontuacao === "set_unico" || config.tipoPontuacao === "pro_set") return 1;
-  return normalizeNumeroSetsByType(config, config.numeroSets);
-}
-
-function normalizeMatchScoreDetail(detail: Partial<MatchScoreDetail> | null | undefined, config: ClassData["config"]): MatchScoreDetail {
-  const slots = setSlotsForType(config);
-  const sets = Array.from({ length: slots }, (_, idx) => {
-    const s = detail?.sets?.[idx];
-    return {
-      a: numericInput(String(s?.a || "")),
-      b: numericInput(String(s?.b || "")),
-      tbA: numericInput(String(s?.tbA || "")),
-      tbB: numericInput(String(s?.tbB || "")),
-    };
-  });
-  return {
-    v: 1,
-    tipo: config.tipoPontuacao,
-    sets,
-    superTbA: numericInput(String(detail?.superTbA || "")),
-    superTbB: numericInput(String(detail?.superTbB || "")),
-  };
-}
-
-function decodeMatchScoreDetail(
-  scoreLabel: string | undefined,
-  config: ClassData["config"],
-  s1: string | undefined,
-  s2: string | undefined
-): MatchScoreDetail {
-  const label = String(scoreLabel || "").trim();
-  if (label.startsWith(SCORE_DETAIL_PREFIX)) {
-    const raw = label.slice(SCORE_DETAIL_PREFIX.length);
-    try {
-      const parsed = JSON.parse(raw) as Partial<MatchScoreDetail>;
-      return normalizeMatchScoreDetail(parsed, config);
-    } catch {
-      // fallback below
-    }
-  }
-  if (isSuperTieBreakPointsMode(config)) {
-    return normalizeMatchScoreDetail({ superTbA: String(s1 || ""), superTbB: String(s2 || "") }, config);
-  }
-  return normalizeMatchScoreDetail(null, config);
-}
-
-function encodeMatchScoreDetail(detail: MatchScoreDetail): string {
-  return `${SCORE_DETAIL_PREFIX}${JSON.stringify(detail)}`;
-}
-
-function validateSuperTb(aRaw: string, bRaw: string, minimum = 10): { done: boolean; winner: SetWinner } {
-  const a = asScore(aRaw);
-  const b = asScore(bRaw);
-  if (a === null || b === null) return { done: false, winner: null };
-  if (a === b) return { done: false, winner: null };
-  const max = Math.max(a, b);
-  const diff = Math.abs(a - b);
-  if (max < minimum || diff < 2) return { done: false, winner: null };
-  return { done: true, winner: a > b ? "a" : "b" };
-}
-
-function validateSetGames(
-  aRaw: string,
-  bRaw: string,
-  targetGames: number,
-  tbAraw: string,
-  tbBraw: string
-): { done: boolean; winner: SetWinner } {
-  const a = asScore(aRaw);
-  const b = asScore(bRaw);
-  if (a === null || b === null) return { done: false, winner: null };
-  if (a === targetGames && b === targetGames) {
-    const tb = validateSuperTb(tbAraw, tbBraw, targetGames === 4 ? 5 : 7);
-    return tb.done ? { done: true, winner: tb.winner } : { done: false, winner: null };
-  }
-  if (a === b) return { done: false, winner: null };
-
-  const high = Math.max(a, b);
-  const low = Math.min(a, b);
-  const winner: SetWinner = a > b ? "a" : "b";
-  if (high === targetGames && low <= targetGames - 2) return { done: true, winner };
-  if (high === targetGames + 1 && (low === targetGames - 1 || low === targetGames)) {
-    if (low === targetGames) {
-      const tb = validateSuperTb(tbAraw, tbBraw, targetGames === 4 ? 5 : 7);
-      return tb.done ? { done: true, winner } : { done: false, winner: null };
-    }
-    return { done: true, winner };
-  }
-  return { done: false, winner: null };
-}
-
-function visibleSetCount(detail: MatchScoreDetail, config: ClassData["config"]): number {
-  if (config.tipoPontuacao !== "melhor_de_3") {
-    return detail.sets.length;
-  }
-  const s1 = detail.sets[0] ?? emptyScoreSet();
-  const s2 = detail.sets[1] ?? emptyScoreSet();
-  const v1 = validateSetGames(s1.a, s1.b, 6, s1.tbA, s1.tbB);
-  const v2 = validateSetGames(s2.a, s2.b, 6, s2.tbA, s2.tbB);
-  if (!v1.done || !v2.done) return 2;
-  if (v1.winner && v2.winner && v1.winner !== v2.winner) return Math.min(3, detail.sets.length);
-  return 2;
-}
-
-function shouldShowSuperTbInput(detail: MatchScoreDetail, config: ClassData["config"]): boolean {
-  if (config.tipoPontuacao !== "melhor_de_3_super_tb") return false;
-  const s1 = detail.sets[0] ?? emptyScoreSet();
-  const s2 = detail.sets[1] ?? emptyScoreSet();
-  const v1 = validateSetGames(s1.a, s1.b, 6, s1.tbA, s1.tbB);
-  const v2 = validateSetGames(s2.a, s2.b, 6, s2.tbA, s2.tbB);
-  return Boolean(v1.done && v2.done && v1.winner && v2.winner && v1.winner !== v2.winner);
-}
-
-function evaluateMatchScoreDetail(
-  detail: MatchScoreDetail,
-  config: ClassData["config"]
-): { done: boolean; winner: SetWinner; summaryA: string; summaryB: string } {
-  if (isSuperTieBreakPointsMode(config)) {
-    const tb = validateSuperTb(detail.superTbA, detail.superTbB, 10);
-    return {
-      done: tb.done,
-      winner: tb.winner,
-      summaryA: detail.superTbA || "",
-      summaryB: detail.superTbB || "",
-    };
-  }
-
-  if (config.tipoPontuacao === "melhor_de_3_super_tb") {
-    const s1 = detail.sets[0] ?? emptyScoreSet();
-    const s2 = detail.sets[1] ?? emptyScoreSet();
-    const r1 = validateSetGames(s1.a, s1.b, 6, s1.tbA, s1.tbB);
-    const r2 = validateSetGames(s2.a, s2.b, 6, s2.tbA, s2.tbB);
-    let winsA = 0;
-    let winsB = 0;
-
-    if (!r1.done) return { done: false, winner: null, summaryA: "0", summaryB: "0" };
-    if (!r2.done) {
-      if (r1.winner === "a") winsA = 1;
-      if (r1.winner === "b") winsB = 1;
-      return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
-    }
-
-    if (r1.winner === "a") winsA += 1;
-    if (r1.winner === "b") winsB += 1;
-    if (r2.winner === "a") winsA += 1;
-    if (r2.winner === "b") winsB += 1;
-
-    if (winsA === 2 || winsB === 2) {
-      return {
-        done: true,
-        winner: winsA === 2 ? "a" : "b",
-        summaryA: String(winsA),
-        summaryB: String(winsB),
-      };
-    }
-
-    const tb = validateSuperTb(detail.superTbA, detail.superTbB, 10);
-    if (!tb.done) return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
-    if (tb.winner === "a") winsA += 1;
-    if (tb.winner === "b") winsB += 1;
-    return {
-      done: true,
-      winner: tb.winner,
-      summaryA: String(winsA),
-      summaryB: String(winsB),
-    };
-  }
-
-  let winsA = 0;
-  let winsB = 0;
-  const targetWins = targetWinsByConfig(config);
-  const setCount = visibleSetCount(detail, config);
-  for (let i = 0; i < setCount; i += 1) {
-    const set = detail.sets[i] ?? emptyScoreSet();
-    const targetGames = config.tipoPontuacao === "fast4" ? 4 : config.tipoPontuacao === "pro_set" ? 8 : 6;
-    const res = validateSetGames(set.a, set.b, targetGames, set.tbA, set.tbB);
-    if (!res.done) return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
-    if (res.winner === "a") winsA += 1;
-    if (res.winner === "b") winsB += 1;
-    if (winsA >= targetWins || winsB >= targetWins) break;
-  }
-
-  if (winsA >= targetWins && winsB < targetWins) {
-    return { done: true, winner: "a", summaryA: String(winsA), summaryB: String(winsB) };
-  }
-  if (winsB >= targetWins && winsA < targetWins) {
-    return { done: true, winner: "b", summaryA: String(winsA), summaryB: String(winsB) };
-  }
-  return { done: false, winner: null, summaryA: String(winsA), summaryB: String(winsB) };
-}
-
-function normalizeNumeroSetsByType(config: ClassData["config"], raw: number): number {
-  if (config.tipoPontuacao === "set_unico" || config.tipoPontuacao === "pro_set" || config.tipoPontuacao === "super_tb_unico") {
-    return 1;
-  }
-  if (config.tipoPontuacao === "melhor_de_3" || config.tipoPontuacao === "melhor_de_3_super_tb") {
-    return 3;
-  }
-  const bounded = Math.max(1, Math.min(5, raw || 3));
-  return bounded % 2 === 0 ? bounded + 1 : bounded;
-}
-
-function targetWinsByConfig(config?: ClassData["config"]): number {
-  if (!config) return 1;
-  if (isSuperTieBreakPointsMode(config)) return 1;
-  if (config.tipoPontuacao === "melhor_de_3" || config.tipoPontuacao === "melhor_de_3_super_tb") return 2;
-  const bestOf = normalizeNumeroSetsByType(config, config.numeroSets);
-  return Math.max(1, Math.floor(bestOf / 2) + 1);
-}
-
-function scoringTypeLabel(tipo: ClassData["config"]["tipoPontuacao"]): string {
-  if (tipo === "melhor_de_3") return "1. Melhor de 3 sets tradicional";
-  if (tipo === "melhor_de_3_super_tb") return "2. Melhor de 3 com Super Tie-Break";
-  if (tipo === "set_unico") return "3. Set unico";
-  if (tipo === "pro_set") return "4. Pro Set";
-  if (tipo === "fast4") return "5. Fast4";
-  return "6. Super Tie-Break unico";
-}
-
-function formatMatchScoreValues(
-  s1: string | undefined,
-  s2: string | undefined,
-  scoreLabel: string | undefined,
-  done?: boolean,
-  config?: ClassData["config"]
-): string {
-  if (config && scoreLabel?.startsWith(SCORE_DETAIL_PREFIX)) {
-    const detail = decodeMatchScoreDetail(scoreLabel, config, s1, s2);
-    const parts: string[] = [];
-    const count = isSuperTieBreakPointsMode(config) ? 0 : visibleSetCount(detail, config);
-    for (let i = 0; i < count; i += 1) {
-      const set = detail.sets[i] ?? emptyScoreSet();
-      const a = set.a || "_";
-      const b = set.b || "_";
-      const tbSuffix = set.tbA && set.tbB ? ` (${set.tbA}-${set.tbB})` : "";
-      parts.push(`${a}/${b}${tbSuffix}`);
-    }
-    if (shouldShowSuperTbInput(detail, config)) {
-      parts.push(`STB ${detail.superTbA || "_"}-${detail.superTbB || "_"}`);
-    } else if (isSuperTieBreakPointsMode(config)) {
-      parts.push(`STB ${detail.superTbA || "_"}-${detail.superTbB || "_"}`);
-    }
-    return parts.join(" | ");
-  }
-  const a = String(s1 || "").trim();
-  const b = String(s2 || "").trim();
-  const sep = isSuperTieBreakPointsMode(config) ? "-" : " x ";
-  if (done) return `${a || "0"}${sep}${b || "0"}`;
-  if (!a && !b) return isSuperTieBreakPointsMode(config) ? "- - -" : "- x -";
-  return `${a || "_"}${sep}${b || "_"}`;
-}
-
-function scoringRulesHint(config: ClassData["config"]): string {
-  if (config.tipoPontuacao === "melhor_de_3") {
-    return "Informe games de cada set (6 games, tie-break em 6x6). O 3o set so aparece se ficar 1x1.";
-  }
-  if (config.tipoPontuacao === "melhor_de_3_super_tb") {
-    return "Informe games dos 2 primeiros sets; se ficar 1x1, habilita Super Tie-Break decisivo (ate 10, diferenca minima 2).";
-  }
-  if (config.tipoPontuacao === "set_unico") return "Informe os games de um unico set (6 games, tie-break em 6x6).";
-  if (config.tipoPontuacao === "pro_set") return "Informe os games do Pro Set (ate 8, tie-break em 8x8).";
-  if (config.tipoPontuacao === "fast4") return "Informe games por set Fast4 (ate 4, tie-break em 4x4), no melhor de N sets.";
-  return "Informe apenas pontos do Super Tie-Break (minimo 10 e diferenca minima de 2).";
-}
-
-function parseSubmittedScoreText(scoreText: string, config: ClassData["config"]): MatchScoreDetail | null {
-  const clean = scoreText.trim();
-  if (!clean) return null;
-  const pairRegex = /(\d{1,2})\s*[-xX/]\s*(\d{1,2})(?:\s*\((\d{1,2})\s*[-xX/]\s*(\d{1,2})\))?/g;
-  const pairs: Array<{ a: string; b: string; tbA: string; tbB: string }> = [];
-  let match: RegExpExecArray | null;
-  while ((match = pairRegex.exec(clean)) !== null) {
-    pairs.push({
-      a: match[1] || "",
-      b: match[2] || "",
-      tbA: match[3] || "",
-      tbB: match[4] || "",
-    });
-  }
-  if (!pairs.length) return null;
-
-  if (isSuperTieBreakPointsMode(config)) {
-    return normalizeMatchScoreDetail({ superTbA: pairs[0]?.a || "", superTbB: pairs[0]?.b || "" }, config);
-  }
-
-  const slots = setSlotsForType(config);
-  const sets = Array.from({ length: slots }, (_, idx) => pairs[idx] ?? emptyScoreSet());
-  const detail = normalizeMatchScoreDetail({ sets }, config);
-  if (config.tipoPontuacao === "melhor_de_3_super_tb" && pairs[2]) {
-    detail.superTbA = pairs[2].a;
-    detail.superTbB = pairs[2].b;
-  }
-  return detail;
-}
-
-function normalizeScoreTypeByModel(
-  model: ClassData["config"]["modeloCompeticao"],
-  current: ClassData["config"]["tipoPontuacao"]
-): ClassData["config"]["tipoPontuacao"] {
-  if (model === "super_tiebreak") return "super_tb_unico";
-  if (current === "super_tb_unico") return "melhor_de_3";
-  return current;
-}
-
-function normalizeSetCountByScoreType(
-  tipoPontuacao: ClassData["config"]["tipoPontuacao"],
-  raw: number
-): number {
-  const cfg = { tipoPontuacao } as ClassData["config"];
-  return normalizeNumeroSetsByType(cfg, raw);
-}
-
-function normalizeNumberInputToOdd(value: string, fallback: number): number {
-  const parsed = Number.parseInt(value.trim(), 10);
-  if (Number.isNaN(parsed)) return fallback;
-  const bounded = Math.max(1, Math.min(5, parsed));
-  return bounded % 2 === 0 ? bounded + 1 : bounded;
-}
-
-function coerceScoreStringForSetInput(value: string): string {
-  return value.replace(/[^\d]/g, "");
-}
-
-function setScoreUiValue(value: number | undefined | null): string {
-  if (value === undefined || value === null || Number.isNaN(Number(value))) return "";
-  return String(value);
-}
-
-function coerceScoreTypePatchByModel(
-  current: ClassData["config"],
-  patch: Partial<ClassData["config"]>
-): Partial<ClassData["config"]> {
-  const nextType = (patch.tipoPontuacao ?? current.tipoPontuacao) as ClassData["config"]["tipoPontuacao"];
-  const model = (patch.modeloCompeticao ?? current.modeloCompeticao) as ClassData["config"]["modeloCompeticao"];
-  const coercedType = normalizeScoreTypeByModel(model, nextType);
-  const rawSets = Number(patch.numeroSets ?? current.numeroSets ?? 3);
-  const numeroSets = normalizeSetCountByScoreType(coercedType, rawSets);
-  return {
-    ...patch,
-    tipoPontuacao: coercedType,
-    numeroSets,
-  };
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -1361,7 +922,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [numSetsInput, setNumSetsInput] = useState("3");
   const [duracaoMinInput, setDuracaoMinInput] = useState("45");
   const [registrations, setRegistrations] = useState<TournamentRegistration[]>([]);
-  const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
+  const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "waitlist" | "rejected">("all");
   const [selectedRegistrationIds, setSelectedRegistrationIds] = useState<string[]>([]);
   const [registrationBusy, setRegistrationBusy] = useState(false);
   const [configScopeCategoryId, setConfigScopeCategoryId] = useState("");
@@ -1387,6 +948,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [playerResultDraft, setPlayerResultDraft] = useState<PlayerMatchResultDraft>({ matchId: "", score: "" });
   const [resultSubmissions, setResultSubmissions] = useState<TournamentMatchResultSubmission[]>([]);
   const [resultSubmitting, setResultSubmitting] = useState(false);
+  const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
+  const [matchConfirming, setMatchConfirming] = useState(false);
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -1453,6 +1016,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([, rows]) => rows.sort((x, y) => x.quadra.localeCompare(y.quadra)));
   }, [agenda]);
+  const agendaAssignmentByMatchKey = useMemo(() => {
+    const map = new Map<string, AgendaAssignment>();
+    (agenda.assignments || []).forEach((assignment) => {
+      if (assignment.matchKey) map.set(assignment.matchKey, assignment);
+    });
+    return map;
+  }, [agenda.assignments]);
   const isOwner = tournament?.role === "owner";
   const hasGroupClasses = useMemo(
     () =>
@@ -1467,7 +1037,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const canSeeClassificationTab = isOwner || hasGroupClasses;
   const canUseChatTab = isOwner || tournament?.role === "participant";
   const requestedTab: TabKey = forcedTab && VALID_TABS.includes(forcedTab) ? forcedTab : "jogos";
-  const tab = tournament ? coerceAllowedTab(requestedTab, isOwner, canSeeClassificationTab, canUseChatTab) : requestedTab;
+  const tab = tournament
+    ? coerceAllowedTournamentTab(requestedTab, isOwner, canSeeClassificationTab, canUseChatTab)
+    : requestedTab;
   const canEditScores = isOwner;
   const showFloatingSave = isOwner && (tab === "organizacao" || tab === "jogadores");
   const tournamentBackPath = isOwner ? "/eventos/torneios?view=organizing" : "/eventos/torneios?view=participating";
@@ -1630,6 +1202,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           out.push({
             id: `${cls.key}:g:${group.name}:${idx}`,
             classKey: cls.key,
+            categoryName: cls.categoryName,
+            className: cls.className,
             classLabel,
             phaseKey: `group:${group.name}`,
             phase: group.name,
@@ -1651,6 +1225,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           out.push({
             id: `${cls.key}:k:${roundIdx}:${matchIdx}`,
             classKey: cls.key,
+            categoryName: cls.categoryName,
+            className: cls.className,
             classLabel,
             phaseKey: `ko:${roundIdx}`,
             phase: round.name,
@@ -1683,6 +1259,41 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
     return map;
   }, [resultSubmissions]);
+  const confirmationByMatch = useMemo(() => {
+    const map = new Map<string, TournamentMatchConfirmation[]>();
+    for (const confirmation of matchConfirmations) {
+      const key = `${confirmation.classKey}:${confirmation.phaseKey}:${confirmation.matchIndex}`;
+      const rows = map.get(key) || [];
+      rows.push(confirmation);
+      map.set(key, rows);
+    }
+    return map;
+  }, [matchConfirmations]);
+  const nextPlayerMatch = useMemo(() => {
+    const pending = myTournamentMatches.filter((match) => match.status === "pending");
+    if (!pending.length) return null;
+    return [...pending].sort((a, b) => {
+      const scheduleA = agendaAssignmentByMatchKey.get(
+        buildScheduleMatchKey(a.categoryName, a.className, a.phase, a.matchIndex)
+      );
+      const scheduleB = agendaAssignmentByMatchKey.get(
+        buildScheduleMatchKey(b.categoryName, b.className, b.phase, b.matchIndex)
+      );
+      const diff = assignmentSortValue(scheduleA) - assignmentSortValue(scheduleB);
+      if (diff !== 0) return diff;
+      return a.title.localeCompare(b.title, "pt-BR");
+    })[0] ?? null;
+  }, [agendaAssignmentByMatchKey, myTournamentMatches]);
+  const unavailableConfirmationGroups = useMemo(() => {
+    return Array.from(confirmationByMatch.values())
+      .map((rows) => rows.filter((confirmation) => confirmation.status === "unavailable"))
+      .filter((rows) => rows.length > 0)
+      .sort((a, b) => (b[0]?.updatedAt || "").localeCompare(a[0]?.updatedAt || ""));
+  }, [confirmationByMatch]);
+  const unavailableConfirmationCount = useMemo(
+    () => unavailableConfirmationGroups.reduce((acc, rows) => acc + rows.length, 0),
+    [unavailableConfirmationGroups]
+  );
   const pendingResultReviewGroups = useMemo(() => {
     return Array.from(resultSubmissionByMatch.values())
       .map((rows) => rows.filter((submission) => ["pending", "accepted", "conflict"].includes(submission.status)))
@@ -1693,10 +1304,102 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     () => pendingResultReviewGroups.reduce((acc, rows) => acc + rows.length, 0),
     [pendingResultReviewGroups]
   );
+  const classCompletionRows = useMemo(() => {
+    return buildTournamentClassCompletionRows(classes, pendingResultReviewGroups, unavailableConfirmationGroups);
+  }, [classes, pendingResultReviewGroups, unavailableConfirmationGroups]);
+  const tournamentPendingCenter = useMemo(() => {
+    const waitlistRegistrations = registrations.filter((r) => r.status === "waitlist").length;
+    const incompleteClasses = Math.max(0, tournamentOverview.totalClasses - tournamentOverview.generatedClasses);
+    const items = [
+      {
+        key: "registrations",
+        label: "Inscricoes",
+        detail: "Solicitacoes aguardando decisao",
+        count: tournamentOverview.pendingRegistrations,
+        tab: "jogadores" as TabKey,
+        filter: "pending" as const,
+      },
+      {
+        key: "waitlist",
+        label: "Lista de espera",
+        detail: "Atletas aguardando vaga",
+        count: waitlistRegistrations,
+        tab: "jogadores" as TabKey,
+        filter: "waitlist" as const,
+      },
+      {
+        key: "results",
+        label: "Resultados",
+        detail: "Envios de jogadores para revisar",
+        count: pendingResultReviewCount,
+        tab: "jogos" as TabKey,
+        filter: null,
+      },
+      {
+        key: "availability",
+        label: "Disponibilidade",
+        detail: "Avisos de atletas em jogos pendentes",
+        count: unavailableConfirmationCount,
+        tab: "jogos" as TabKey,
+        filter: null,
+      },
+      {
+        key: "classes",
+        label: "Classes",
+        detail: "Classes ainda nao geradas",
+        count: incompleteClasses,
+        tab: "organizacao" as TabKey,
+        filter: null,
+      },
+      {
+        key: "matches",
+        label: "Jogos",
+        detail: "Partidas sem resultado oficial",
+        count: tournamentOverview.pendingMatches,
+        tab: "jogos" as TabKey,
+        filter: null,
+      },
+    ];
+    return {
+      total: items.reduce((acc, item) => acc + item.count, 0),
+      items,
+    };
+  }, [
+    pendingResultReviewCount,
+    registrations,
+    tournamentOverview.generatedClasses,
+    tournamentOverview.pendingMatches,
+    tournamentOverview.pendingRegistrations,
+    tournamentOverview.totalClasses,
+    unavailableConfirmationCount,
+  ]);
+  const tournamentCompletionBlockers = useMemo(() => {
+    const blockers: string[] = [];
+    if (tournamentOverview.totalClasses === 0) blockers.push("Cadastre ao menos uma classe.");
+    if (tournamentOverview.generatedClasses < tournamentOverview.totalClasses) {
+      blockers.push("Gere todos os jogos das classes cadastradas.");
+    }
+    if (tournamentOverview.pendingRegistrations > 0) blockers.push("Resolva inscricoes pendentes.");
+    if (pendingResultReviewCount > 0) blockers.push("Revise resultados enviados por jogadores.");
+    if (unavailableConfirmationCount > 0) blockers.push("Trate avisos de indisponibilidade.");
+    if (tournamentOverview.pendingMatches > 0) blockers.push("Finalize os jogos pendentes.");
+    if (tournamentOverview.totalMatches === 0 && tournamentOverview.generatedClasses > 0) {
+      blockers.push("Confira se os jogos foram gerados corretamente.");
+    }
+    return blockers;
+  }, [
+    pendingResultReviewCount,
+    tournamentOverview.generatedClasses,
+    tournamentOverview.pendingMatches,
+    tournamentOverview.pendingRegistrations,
+    tournamentOverview.totalClasses,
+    tournamentOverview.totalMatches,
+    unavailableConfirmationCount,
+  ]);
 
   const goToTab = (next: TabKey) => {
     if (!tournamentId) return;
-    const allowed = coerceAllowedTab(next, isOwner, canSeeClassificationTab, canUseChatTab);
+    const allowed = coerceAllowedTournamentTab(next, isOwner, canSeeClassificationTab, canUseChatTab);
     navigate(
       `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
       { replace: false }
@@ -1838,13 +1541,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
         setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
         setAgendaDirty(false);
-        const [regs, submissions] = await Promise.all([
+        const [regs, submissions, confirmations] = await Promise.all([
           loadTournamentRegistrations(user, details.id, details.role),
           loadTournamentResultSubmissions(details.id).catch(() => [] as TournamentMatchResultSubmission[]),
+          loadTournamentMatchConfirmations(details.id).catch(() => [] as TournamentMatchConfirmation[]),
         ]);
         if (!alive) return;
         setRegistrations(regs);
         setResultSubmissions(submissions);
+        setMatchConfirmations(confirmations);
         setFeedback(null);
       } catch (err) {
         if (!alive) return;
@@ -2907,7 +2612,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     withCategories.linkGrupo = groupLink.trim();
     withCategories.agendaConfig = agendaConfig as unknown as Record<string, unknown>;
     withCategories.agenda = agenda as unknown as Record<string, unknown>;
-    await persistTournamentData(withCategories, "Alteracoes salvas com sucesso.");
+    const hasGeneratedClass = draftCategories.some((cat) => cat.classes.some((cls) => cls.data.gerado));
+    const nextStatus =
+      hasGeneratedClass
+        ? undefined
+        : draftCategories.length === 0
+        ? "draft"
+        : tournament.status === "live" || tournament.status === "finished"
+        ? "registration_closed"
+        : undefined;
+    await persistTournamentData(withCategories, "Alteracoes salvas com sucesso.", activeClassKey, nextStatus);
     setDraftDirty(false);
     setAgendaDirty(false);
   };
@@ -3168,16 +2882,36 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const sharePlayerMatchResultWhatsApp = (match: PlayerTournamentMatch) => {
     if (!tournament) return;
     const score = playerResultDraft.matchId === match.id ? playerResultDraft.score.trim() : "";
+    const scheduled = agendaAssignmentByMatchKey.get(
+      buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
+    );
     const lines = [
       `Resultado - ${tournament.name}`,
       match.classLabel,
       `${match.phase}: ${match.title}`,
+      scheduled ? `Agenda: ${formatAssignmentTime(scheduled)}` : "",
       `Placar: ${score || "preencher"}`,
+      "",
+      `Link: ${buildTournamentShareLink("jogos")}`,
+    ].filter(Boolean);
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
+    setFeedback({ kind: "success", text: "Mensagem de resultado aberta no WhatsApp." });
+  };
+
+  const shareUnavailableAlertWhatsApp = (rows: TournamentMatchConfirmation[]) => {
+    if (!tournament || !rows.length) return;
+    const first = rows[0];
+    if (!first) return;
+    const lines = [
+      `Indisponibilidade - ${tournament.name}`,
+      `${first.classLabel} / ${first.phaseLabel}`,
+      first.matchTitle,
+      `Lado(s): ${rows.map((confirmation) => confirmation.side.toUpperCase()).join(", ")}`,
       "",
       `Link: ${buildTournamentShareLink("jogos")}`,
     ];
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
-    setFeedback({ kind: "success", text: "Mensagem de resultado aberta no WhatsApp." });
+    setFeedback({ kind: "success", text: "Aviso de indisponibilidade aberto no WhatsApp." });
   };
 
   const submitPlayerMatchResultNow = async (match: PlayerTournamentMatch) => {
@@ -3224,6 +2958,37 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
   };
 
+  const confirmPlayerMatchNow = async (match: PlayerTournamentMatch, status: "confirmed" | "unavailable") => {
+    if (!tournament) return;
+    setMatchConfirming(true);
+    try {
+      const rows = await confirmTournamentMatch({
+        tournamentId: tournament.id,
+        classKey: match.classKey,
+        classLabel: match.classLabel,
+        phaseKey: match.phaseKey,
+        phaseLabel: match.phase,
+        matchIndex: match.matchIndex,
+        side: match.side,
+        matchTitle: match.title,
+        status,
+      });
+      const key = `${match.classKey}:${match.phaseKey}:${match.matchIndex}`;
+      setMatchConfirmations((prev) => [
+        ...rows,
+        ...prev.filter((confirmation) => `${confirmation.classKey}:${confirmation.phaseKey}:${confirmation.matchIndex}` !== key),
+      ]);
+      setFeedback({
+        kind: status === "confirmed" ? "success" : "info",
+        text: status === "confirmed" ? "Presenca confirmada para esta partida." : "Indisponibilidade registrada para o organizador.",
+      });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao confirmar partida." });
+    } finally {
+      setMatchConfirming(false);
+    }
+  };
+
   const buildSelfRegistrationLink = () => {
     if (!tournament || !activeDraftCategory || !activeDraftClass) return "";
     const u = new URL(window.location.href);
@@ -3255,7 +3020,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     });
   };
 
-  const updateRegistration = async (registrationId: string, status: "approved" | "rejected") => {
+  const updateRegistration = async (registrationId: string, status: "approved" | "waitlist" | "rejected") => {
     if (!tournament) return;
     try {
       setRegistrationBusy(true);
@@ -3265,7 +3030,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       setSelectedRegistrationIds((prev) => prev.filter((id) => id !== registrationId));
       setFeedback({
         kind: "success",
-        text: status === "approved" ? "Inscricao aprovada." : "Inscricao rejeitada.",
+        text:
+          status === "approved"
+            ? "Inscricao aprovada."
+            : status === "waitlist"
+            ? "Inscricao movida para lista de espera."
+            : "Inscricao rejeitada.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao atualizar inscricao." });
@@ -3292,7 +3062,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setSelectedRegistrationIds((prev) => prev.filter((id) => !pendingVisibleIds.includes(id)));
   };
 
-  const updateSelectedRegistrations = async (status: "approved" | "rejected") => {
+  const updateSelectedRegistrations = async (status: "approved" | "waitlist" | "rejected") => {
     if (!tournament) return;
     const ids = selectedRegistrationIds.filter((id) => pendingVisibleIds.includes(id));
     if (!ids.length) {
@@ -3310,6 +3080,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         text:
           status === "approved"
             ? `${ids.length} inscricao(oes) aprovada(s).`
+            : status === "waitlist"
+            ? `${ids.length} inscricao(oes) movida(s) para lista de espera.`
             : `${ids.length} inscricao(oes) rejeitada(s).`,
       });
     } catch (err) {
@@ -3346,16 +3118,38 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const applyScoreDetailToMatch = (
     config: ClassData["config"],
     match: GroupMatch | KnockoutMatch,
-    updater: (detail: MatchScoreDetail) => MatchScoreDetail
+    updater: (detail: MatchScoreDetail) => MatchScoreDetail,
+    resultOrigin: MatchScoreDetail["resultOrigin"] = "manual"
   ) => {
     const detail = decodeMatchScoreDetail(match.scoreLabel, config, match.s1, match.s2);
     const nextDetail = normalizeMatchScoreDetail(updater(detail), config);
+    nextDetail.resultOrigin = resultOrigin;
     const evaluated = evaluateMatchScoreDetail(nextDetail, config);
     match.s1 = evaluated.summaryA;
     match.s2 = evaluated.summaryB;
     match.done = evaluated.done;
     match.winner = evaluated.winner === "a" ? match.a : evaluated.winner === "b" ? match.b : null;
     match.scoreLabel = encodeMatchScoreDetail(nextDetail);
+  };
+
+  const applyWalkoverToMatch = (config: ClassData["config"], match: GroupMatch | KnockoutMatch, winnerSide: "a" | "b") => {
+    const winnerName = winnerSide === "a" ? match.a : match.b;
+    if (!winnerName || winnerName === "BYE") return false;
+    const score = technicalWinScore(config);
+    match.s1 = winnerSide === "a" ? score.winner : score.loser;
+    match.s2 = winnerSide === "b" ? score.winner : score.loser;
+    match.done = true;
+    match.winner = winnerName;
+    match.scoreLabel = `WO:${winnerSide}`;
+    return true;
+  };
+
+  const clearMatchResult = (match: GroupMatch | KnockoutMatch) => {
+    match.s1 = "";
+    match.s2 = "";
+    match.scoreLabel = "";
+    match.done = false;
+    match.winner = null;
   };
 
   const applySubmittedResultAsOfficial = async (submission: TournamentMatchResultSubmission) => {
@@ -3394,7 +3188,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
 
     try {
-      applyScoreDetailToMatch(next.config, target, () => detail);
+      applyScoreDetailToMatch(next.config, target, () => detail, "player");
       const recomputed = recomputeClassData(next);
       await persistClassData(ref, recomputed);
       const rows = await markTournamentMatchResultSubmissionApplied(submission.id);
@@ -3427,6 +3221,32 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     await persistClassData(ref, recomputed);
   };
 
+  const onSetGroupWalkover = async (
+    ref: LegacyClassRef,
+    groupIndex: number,
+    matchIndex: number,
+    winnerSide: "a" | "b"
+  ) => {
+    if (!canEditScores) return;
+    const next = structuredClone(ref.data);
+    const group = next.grupos[groupIndex];
+    const match = group?.matches[matchIndex] as GroupMatch | undefined;
+    if (!group || !match || !applyWalkoverToMatch(next.config, match, winnerSide)) return;
+    const recomputed = recomputeClassData(next);
+    await persistClassData(ref, recomputed);
+  };
+
+  const onClearGroupResult = async (ref: LegacyClassRef, groupIndex: number, matchIndex: number) => {
+    if (!canEditScores) return;
+    const next = structuredClone(ref.data);
+    const group = next.grupos[groupIndex];
+    const match = group?.matches[matchIndex] as GroupMatch | undefined;
+    if (!group || !match) return;
+    clearMatchResult(match);
+    const recomputed = recomputeClassData(next);
+    await persistClassData(ref, recomputed);
+  };
+
   const onUpdateKoScoreDetail = async (
     ref: LegacyClassRef,
     roundIndex: number,
@@ -3441,6 +3261,32 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
     applyScoreDetailToMatch(next.config, match, updater);
 
+    const recomputed = recomputeClassData(next);
+    await persistClassData(ref, recomputed);
+  };
+
+  const onSetKoWalkover = async (
+    ref: LegacyClassRef,
+    roundIndex: number,
+    matchIndex: number,
+    winnerSide: "a" | "b"
+  ) => {
+    if (!canEditScores) return;
+    const next = structuredClone(ref.data);
+    const round = next.knockout?.rounds[roundIndex];
+    const match = round?.matches[matchIndex] as KnockoutMatch | undefined;
+    if (!round || !match || !match.a || !match.b || !applyWalkoverToMatch(next.config, match, winnerSide)) return;
+    const recomputed = recomputeClassData(next);
+    await persistClassData(ref, recomputed);
+  };
+
+  const onClearKoResult = async (ref: LegacyClassRef, roundIndex: number, matchIndex: number) => {
+    if (!canEditScores) return;
+    const next = structuredClone(ref.data);
+    const round = next.knockout?.rounds[roundIndex];
+    const match = round?.matches[matchIndex] as KnockoutMatch | undefined;
+    if (!round || !match) return;
+    clearMatchResult(match);
     const recomputed = recomputeClassData(next);
     await persistClassData(ref, recomputed);
   };
@@ -3668,6 +3514,135 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               <span>Proxima acao</span>
               <strong>{tournamentOverview.nextAction}</strong>
             </button>
+            {isOwner ? (
+              <div className="organizer-pending-center">
+                <div className="organizer-pending-head">
+                  <div>
+                    <span>Centro de pendencias</span>
+                    <strong>
+                      {tournamentPendingCenter.total > 0
+                        ? `${tournamentPendingCenter.total} ponto(s) para acompanhar`
+                        : "Sem pendencias operacionais"}
+                    </strong>
+                  </div>
+                  <button onClick={() => goToTab(tournamentOverview.nextTab)}>Atuar agora</button>
+                </div>
+                <div className="organizer-pending-grid">
+                  {tournamentPendingCenter.items.map((item) => (
+                    <button
+                      key={item.key}
+                      className={item.count > 0 ? "needs-action" : ""}
+                      onClick={() => {
+                        if (item.filter) setRegistrationFilter(item.filter);
+                        goToTab(item.tab);
+                      }}
+                    >
+                      <strong>{item.count}</strong>
+                      <span>{item.label}</span>
+                      <small>{item.detail}</small>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            {isOwner ? (
+              <div className={`tournament-completion-guard ${tournamentCompletionBlockers.length === 0 ? "ready" : ""}`}>
+                <div>
+                  <span>Encerramento</span>
+                  <strong>
+                    {tournamentCompletionBlockers.length === 0
+                      ? "Torneio sem bloqueios aparentes"
+                      : `${tournamentCompletionBlockers.length} bloqueio(s) antes de finalizar`}
+                  </strong>
+                </div>
+                {tournamentCompletionBlockers.length > 0 ? (
+                  <ul>
+                    {tournamentCompletionBlockers.slice(0, 4).map((blocker) => (
+                      <li key={blocker}>{blocker}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>Confira classificacao e resultados oficiais antes de encerrar.</p>
+                )}
+                {classCompletionRows.length > 0 ? (
+                  <div className="class-completion-list">
+                    {classCompletionRows.slice(0, 6).map((row) => (
+                      <button
+                        key={row.key}
+                        className={row.ready ? "ready" : ""}
+                        onClick={() => {
+                          setActiveClassKey(row.key);
+                          goToTab("jogos");
+                        }}
+                      >
+                        <span>{row.ready ? "Pronta" : "Pendente"}</span>
+                        <strong>{row.label}</strong>
+                        <small>
+                          {row.doneMatches}/{row.totalMatches} jogos finalizados
+                          {row.blockers.length > 0 ? ` - ${row.blockers.slice(0, 2).join(" | ")}` : ""}
+                        </small>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+            {isOwner && unavailableConfirmationCount > 0 ? (
+              <div className="organizer-alert-card">
+                <span>Indisponibilidade avisada</span>
+                <strong>{unavailableConfirmationCount} aviso(s) em partidas pendentes</strong>
+                {unavailableConfirmationGroups.slice(0, 3).map((rows) => {
+                  const first = rows[0];
+                  if (!first) return null;
+                  return (
+                    <div key={`${first.classKey}:${first.phaseKey}:${first.matchIndex}`} className="organizer-alert-item">
+                      <small>
+                        {first.matchTitle} - {first.classLabel} / {first.phaseLabel}:{" "}
+                        {rows.map((confirmation) => confirmation.side.toUpperCase()).join(", ")}
+                      </small>
+                      <button onClick={() => shareUnavailableAlertWhatsApp(rows)}>WhatsApp</button>
+                    </div>
+                  );
+                })}
+                <button onClick={() => goToTab("jogos")}>Ver partidas</button>
+              </div>
+            ) : null}
+            {!isOwner && nextPlayerMatch ? (() => {
+              const scheduled = agendaAssignmentByMatchKey.get(
+                buildScheduleMatchKey(
+                  nextPlayerMatch.categoryName,
+                  nextPlayerMatch.className,
+                  nextPlayerMatch.phase,
+                  nextPlayerMatch.matchIndex
+                )
+              );
+              const confirmations = confirmationByMatch.get(
+                `${nextPlayerMatch.classKey}:${nextPlayerMatch.phaseKey}:${nextPlayerMatch.matchIndex}`
+              ) || [];
+              const myConfirmation = confirmations.find((confirmation) => confirmation.userId === user.id);
+              return (
+                <div className="player-next-match-card">
+                  <span>Proxima partida</span>
+                  <strong>{nextPlayerMatch.title}</strong>
+                  <small>{nextPlayerMatch.classLabel} - {nextPlayerMatch.phase}</small>
+                  {scheduled ? <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p> : null}
+                  {myConfirmation ? (
+                    <p className={`match-confirmation-status ${myConfirmation.status}`}>
+                      {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
+                    </p>
+                  ) : (
+                    <div className="match-confirmation-actions">
+                      <button onClick={() => void confirmPlayerMatchNow(nextPlayerMatch, "confirmed")} disabled={matchConfirming}>
+                        Confirmar presenca
+                      </button>
+                      <button onClick={() => void confirmPlayerMatchNow(nextPlayerMatch, "unavailable")} disabled={matchConfirming}>
+                        Nao posso jogar
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })() : null}
             <div className="tournament-share-actions">
               <button onClick={() => void copyTournamentShareLink()} disabled={saving}>
                 Copiar link
@@ -3731,28 +3706,36 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             <section className="card">
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
               {activeClass ? (
-                <div className="tournament-panel-kpis">
-                  <div className="tournament-panel-kpi">
-                    <strong>{activeClassMatchStats.totalMatches}</strong>
-                    <span>Partidas da classe</span>
+                <>
+                  <div className="tournament-panel-kpis">
+                    <div className="tournament-panel-kpi">
+                      <strong>{activeClassMatchStats.totalMatches}</strong>
+                      <span>Partidas da classe</span>
+                    </div>
+                    <div className="tournament-panel-kpi">
+                      <strong>{activeClassMatchStats.doneMatches}</strong>
+                      <span>Finalizadas</span>
+                    </div>
+                    <div className="tournament-panel-kpi">
+                      <strong>{activeClassMatchStats.pendingMatches}</strong>
+                      <span>Pendentes</span>
+                    </div>
+                    <div className="tournament-panel-kpi">
+                      <strong>{activeClassMatchStats.groups}</strong>
+                      <span>Grupos</span>
+                    </div>
+                    <div className="tournament-panel-kpi">
+                      <strong>{activeClassMatchStats.knockoutRounds}</strong>
+                      <span>Fases mata-mata</span>
+                    </div>
                   </div>
-                  <div className="tournament-panel-kpi">
-                    <strong>{activeClassMatchStats.doneMatches}</strong>
-                    <span>Finalizadas</span>
+                  <div className="match-status-legend">
+                    <span className="match-card-status pending">Pendente</span>
+                    <span className="match-card-status done">Finalizado</span>
+                    <span className="match-card-origin">WO</span>
+                    <span className="match-card-origin">Jogador</span>
                   </div>
-                  <div className="tournament-panel-kpi">
-                    <strong>{activeClassMatchStats.pendingMatches}</strong>
-                    <span>Pendentes</span>
-                  </div>
-                  <div className="tournament-panel-kpi">
-                    <strong>{activeClassMatchStats.groups}</strong>
-                    <span>Grupos</span>
-                  </div>
-                  <div className="tournament-panel-kpi">
-                    <strong>{activeClassMatchStats.knockoutRounds}</strong>
-                    <span>Fases mata-mata</span>
-                  </div>
-                </div>
+                </>
               ) : null}
 
               {!isOwner && myTournamentMatches.length > 0 ? (
@@ -3762,7 +3745,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <span className="home-league-chip member">{myTournamentMatches.length}</span>
                   </div>
                   {myTournamentMatches.slice(0, 6).map((match) => {
+                    const scheduled = agendaAssignmentByMatchKey.get(
+                      buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
+                    );
                     const submissions = resultSubmissionByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
+                    const confirmations = confirmationByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
+                    const myConfirmation = confirmations.find((confirmation) => confirmation.userId === user.id);
                     const hasAccepted = submissions.some((submission) => submission.status === "accepted");
                     const hasConflict = submissions.some((submission) => submission.status === "conflict");
                     const submittedSides = new Set(submissions.map((submission) => submission.side)).size;
@@ -3782,6 +3770,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                           </span>
                           <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
                         </button>
+                        {scheduled ? <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p> : null}
+                        {myConfirmation ? (
+                          <p className={`match-confirmation-status ${myConfirmation.status}`}>
+                            {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
+                          </p>
+                        ) : null}
                         {submissionStatusText ? <p className="result-submission-status">{submissionStatusText}</p> : null}
                         {match.status === "pending" ? (
                           <div className="my-match-result-tools">
@@ -3796,6 +3790,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                               </button>
                             ) : null}
                             <button onClick={() => sharePlayerMatchResultWhatsApp(match)}>WhatsApp</button>
+                          </div>
+                        ) : null}
+                        {match.status === "pending" ? (
+                          <div className="match-confirmation-actions">
+                            <button onClick={() => void confirmPlayerMatchNow(match, "confirmed")} disabled={matchConfirming}>
+                              Confirmar presenca
+                            </button>
+                            <button onClick={() => void confirmPlayerMatchNow(match, "unavailable")} disabled={matchConfirming}>
+                              Nao posso jogar
+                            </button>
                           </div>
                         ) : null}
                       </div>
@@ -3905,28 +3909,67 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <div key={`${activeClass.key}:g:${g.name}`} style={{ marginBottom: 14 }}>
                   <h3 style={{ marginBottom: 8 }}>{g.name}</h3>
                   {g.matches.length === 0 ? <p className="subtle">Sem partidas no grupo.</p> : null}
-                  {g.matches.map((m, mi) => (
-                    <div key={`${activeClass.key}:g:${gi}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
-                      <div className="match-card-head">
-                        <span className="match-card-index">Partida {mi + 1}</span>
-                        <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
-                          {m.done ? "Finalizado" : "Pendente"}
-                        </span>
+                  {g.matches.map((m, mi) => {
+                    const confirmationKey = `${activeClass.key}:group:${g.name}:${mi}`;
+                    const confirmations = confirmationByMatch.get(confirmationKey) || [];
+                    const scheduled = agendaAssignmentByMatchKey.get(
+                      buildScheduleMatchKey(activeClass.categoryName, activeClass.className, g.name, mi)
+                    );
+                    return (
+                      <div key={`${activeClass.key}:g:${gi}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
+                        <div className="match-card-head">
+                          <span className="match-card-index">Partida {mi + 1}</span>
+                          <div className="match-card-status-group">
+                            {m.done && matchResultOriginLabel(m.scoreLabel) ? (
+                              <span className="match-card-origin">{matchResultOriginLabel(m.scoreLabel)}</span>
+                            ) : null}
+                            <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
+                              {m.done ? "Finalizado" : "Pendente"}
+                            </span>
+                          </div>
+                        </div>
+                        {scheduled ? (
+                          <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p>
+                        ) : null}
+                        {isOwner && confirmations.length > 0 ? (
+                          <p className="match-confirmation-summary">
+                            Confirmacoes:{" "}
+                            {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
+                          </p>
+                        ) : null}
+                        <div className="match-player-row">
+                          <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
+                            {m.a || "A definir"}
+                          </span>
+                          <span className="match-player-vs">x</span>
+                          <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
+                            {m.b || "A definir"}
+                          </span>
+                        </div>
+                        {m.done ? (
+                          <p className="match-score-summary">
+                            {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
+                          </p>
+                        ) : null}
+                        {renderScoreFields(activeClass.data.config, m, !canEditScores, (updater) => {
+                          void onUpdateGroupScoreDetail(activeClass, gi, mi, updater);
+                        })}
+                        {canEditScores ? (
+                          <div className="match-admin-actions">
+                            <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "a")} disabled={saving || !m.a || !m.b}>
+                              WO {m.a || "A"}
+                            </button>
+                            <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "b")} disabled={saving || !m.a || !m.b}>
+                              WO {m.b || "B"}
+                            </button>
+                            <button className="danger" onClick={() => void onClearGroupResult(activeClass, gi, mi)} disabled={saving || !m.done}>
+                              Limpar resultado
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
-                      <div className="match-player-row">
-                        <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
-                          {m.a || "A definir"}
-                        </span>
-                        <span className="match-player-vs">x</span>
-                        <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
-                          {m.b || "A definir"}
-                        </span>
-                      </div>
-                      {renderScoreFields(activeClass.data.config, m, !canEditScores, (updater) => {
-                        void onUpdateGroupScoreDetail(activeClass, gi, mi, updater);
-                      })}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ))}
 
@@ -3934,28 +3977,67 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <div key={`${activeClass.key}:ko:${ri}`} style={{ marginBottom: 14 }}>
                   <h3 style={{ marginBottom: 8 }}>{round.name}</h3>
                   {round.matches.length === 0 ? <p className="subtle">Sem partidas nesta fase.</p> : null}
-                  {round.matches.map((m, mi) => (
-                    <div key={`${activeClass.key}:ko:${ri}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
-                      <div className="match-card-head">
-                        <span className="match-card-index">Jogo {mi + 1}</span>
-                        <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
-                          {m.done ? "Finalizado" : "Pendente"}
-                        </span>
+                  {round.matches.map((m, mi) => {
+                    const confirmationKey = `${activeClass.key}:ko:${ri}:${mi}`;
+                    const confirmations = confirmationByMatch.get(confirmationKey) || [];
+                    const scheduled = agendaAssignmentByMatchKey.get(
+                      buildScheduleMatchKey(activeClass.categoryName, activeClass.className, round.name, mi)
+                    );
+                    return (
+                      <div key={`${activeClass.key}:ko:${ri}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
+                        <div className="match-card-head">
+                          <span className="match-card-index">Jogo {mi + 1}</span>
+                          <div className="match-card-status-group">
+                            {m.done && matchResultOriginLabel(m.scoreLabel) ? (
+                              <span className="match-card-origin">{matchResultOriginLabel(m.scoreLabel)}</span>
+                            ) : null}
+                            <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
+                              {m.done ? "Finalizado" : "Pendente"}
+                            </span>
+                          </div>
+                        </div>
+                        {scheduled ? (
+                          <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p>
+                        ) : null}
+                        {isOwner && confirmations.length > 0 ? (
+                          <p className="match-confirmation-summary">
+                            Confirmacoes:{" "}
+                            {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
+                          </p>
+                        ) : null}
+                        <div className="match-player-row">
+                          <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
+                            {m.a || "A definir"}
+                          </span>
+                          <span className="match-player-vs">x</span>
+                          <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
+                            {m.b || "A definir"}
+                          </span>
+                        </div>
+                        {m.done ? (
+                          <p className="match-score-summary">
+                            {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
+                          </p>
+                        ) : null}
+                        {renderScoreFields(activeClass.data.config, m, !m.a || !m.b || !canEditScores, (updater) => {
+                          void onUpdateKoScoreDetail(activeClass, ri, mi, updater);
+                        })}
+                        {canEditScores ? (
+                          <div className="match-admin-actions">
+                            <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "a")} disabled={saving || !m.a || !m.b}>
+                              WO {m.a || "A"}
+                            </button>
+                            <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "b")} disabled={saving || !m.a || !m.b}>
+                              WO {m.b || "B"}
+                            </button>
+                            <button className="danger" onClick={() => void onClearKoResult(activeClass, ri, mi)} disabled={saving || !m.done}>
+                              Limpar resultado
+                            </button>
+                          </div>
+                        ) : null}
                       </div>
-                      <div className="match-player-row">
-                        <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
-                          {m.a || "A definir"}
-                        </span>
-                        <span className="match-player-vs">x</span>
-                        <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
-                          {m.b || "A definir"}
-                        </span>
-                      </div>
-                      {renderScoreFields(activeClass.data.config, m, !m.a || !m.b || !canEditScores, (updater) => {
-                        void onUpdateKoScoreDetail(activeClass, ri, mi, updater);
-                      })}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ))}
 
@@ -4648,6 +4730,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     Aprovadas ({registrations.filter((r) => r.status === "approved").length})
                   </button>
                   <button
+                    className={registrationFilter === "waitlist" ? "primary" : ""}
+                    onClick={() => setRegistrationFilter("waitlist")}
+                    disabled={registrationBusy}
+                  >
+                    Espera ({registrations.filter((r) => r.status === "waitlist").length})
+                  </button>
+                  <button
                     className={registrationFilter === "rejected" ? "primary" : ""}
                     onClick={() => setRegistrationFilter("rejected")}
                     disabled={registrationBusy}
@@ -4673,6 +4762,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       Aprovar selecionadas
                     </button>
                     <button
+                      onClick={() => void updateSelectedRegistrations("waitlist")}
+                      disabled={registrationBusy || selectedRegistrationIds.length === 0}
+                    >
+                      Lista de espera
+                    </button>
+                    <button
                       className="danger"
                       onClick={() => void updateSelectedRegistrations("rejected")}
                       disabled={registrationBusy || selectedRegistrationIds.length === 0}
@@ -4695,20 +4790,27 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         {r.phone || "Sem telefone"} | {new Date(r.createdAt || "").toLocaleString("pt-BR")} | {r.status}
                       </div>
                     </div>
-                    {r.status === "pending" ? (
+                    {r.status === "pending" || r.status === "waitlist" ? (
                       <div className="cluster">
-                        <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedRegistrationIds.includes(r.id)}
-                            onChange={(e) => toggleRegistrationSelection(r.id, e.target.checked)}
-                            disabled={registrationBusy}
-                          />
-                          Sel
-                        </label>
+                        {r.status === "pending" ? (
+                          <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                            <input
+                              type="checkbox"
+                              checked={selectedRegistrationIds.includes(r.id)}
+                              onChange={(e) => toggleRegistrationSelection(r.id, e.target.checked)}
+                              disabled={registrationBusy}
+                            />
+                            Sel
+                          </label>
+                        ) : null}
                         <button onClick={() => void updateRegistration(r.id, "approved")} disabled={saving || registrationBusy}>
-                          Aprovar
+                          {r.status === "waitlist" ? "Aprovar da espera" : "Aprovar"}
                         </button>
+                        {r.status === "pending" ? (
+                          <button onClick={() => void updateRegistration(r.id, "waitlist")} disabled={saving || registrationBusy}>
+                            Espera
+                          </button>
+                        ) : null}
                         <button className="danger" onClick={() => void updateRegistration(r.id, "rejected")} disabled={saving || registrationBusy}>
                           Rejeitar
                         </button>

@@ -12,6 +12,7 @@ import type {
   Profile,
   TournamentChatMessage,
   TournamentDetails,
+  TournamentMatchConfirmation,
   TournamentRegistration,
   TournamentSummary,
 } from "../lib/types";
@@ -19,6 +20,7 @@ import {
   loadLeagueChatMessages,
   loadLeagueDetails,
   loadLeagueRegistrations,
+  loadMatchAvailability,
   loadMyLeagues,
   loadRoundMatches,
   loadSeasonRounds,
@@ -28,6 +30,7 @@ import {
   loadDashboardData,
   loadTournamentChatMessages,
   loadTournamentDetails,
+  loadTournamentMatchConfirmations,
   loadTournamentRegistrations,
   loadUpcomingPublic,
 } from "../lib/tournaments";
@@ -49,6 +52,8 @@ type HomeLeagueAction = {
   status: LeagueMatchSummary["status"];
   title: string;
   kind: "confirm_result" | "send_result" | "schedule" | "play";
+  needsAvailability?: boolean;
+  availabilitySent?: boolean;
 };
 
 type HomeOrganizerAction = {
@@ -69,6 +74,10 @@ type HomeTournamentAction = {
   detail: string;
   label: string;
   tone: "urgent" | "neutral";
+  classKey?: string;
+  phaseKey?: string;
+  matchIndex?: number;
+  side?: "a" | "b";
 };
 
 type HomeNotice = {
@@ -78,7 +87,30 @@ type HomeNotice = {
   title: string;
   body: string;
   meta: string;
+  createdAt: string;
   tone: "urgent" | "neutral";
+};
+
+type HomeFeedItem = {
+  id: string;
+  targetPath: string;
+  sourceName: string;
+  title: string;
+  detail: string;
+  label: string;
+  sortAt: string;
+  tone: "urgent" | "neutral";
+};
+
+type HomeAgendaItem = {
+  id: string;
+  targetPath: string;
+  sourceName: string;
+  title: string;
+  when: string;
+  label: string;
+  sortAt: string;
+  reminderText: string;
 };
 
 type HomePriorityItem = {
@@ -188,10 +220,13 @@ function tournamentMatchTitle(match: GroupMatch | KnockoutMatch): string {
   return `${String(match.a || "A definir")} x ${String(match.b || "A definir")}`;
 }
 
-function tournamentMatchHasPlayer(match: GroupMatch | KnockoutMatch, playerNames: Set<string>): boolean {
+function tournamentMatchPlayerSide(match: GroupMatch | KnockoutMatch, playerNames: Set<string>): "a" | "b" | null {
   const a = normalizeName(String(match.a || ""));
   const b = normalizeName(String(match.b || ""));
-  return Boolean((a && playerNames.has(a)) || (b && playerNames.has(b)));
+  const names = Array.from(playerNames);
+  if (a && names.some((name) => a === name || a.includes(name) || name.includes(a))) return "a";
+  if (b && names.some((name) => b === name || b.includes(name) || name.includes(b))) return "b";
+  return null;
 }
 
 function collectPendingTournamentMatches(
@@ -206,7 +241,8 @@ function collectPendingTournamentMatches(
       for (let idx = 0; idx < group.matches.length; idx += 1) {
         const match = group.matches[idx];
         if (!isRealTournamentMatch(match) || match.done) continue;
-        if (playerNames && !tournamentMatchHasPlayer(match, playerNames)) continue;
+        const side = playerNames ? tournamentMatchPlayerSide(match, playerNames) : null;
+        if (playerNames && !side) continue;
         out.push({
           id: `${details.id}:g:${cls.key}:${group.name}:${idx}`,
           tournamentId: details.id,
@@ -215,6 +251,10 @@ function collectPendingTournamentMatches(
           detail: `${cls.categoryName} / ${cls.className} - ${group.name}`,
           label: "Resultado pendente",
           tone: "neutral",
+          classKey: cls.key,
+          phaseKey: `group:${group.name}`,
+          matchIndex: idx,
+          side: side ?? undefined,
         });
       }
     }
@@ -225,7 +265,8 @@ function collectPendingTournamentMatches(
       for (let matchIdx = 0; matchIdx < round.matches.length; matchIdx += 1) {
         const match = round.matches[matchIdx];
         if (!isRealTournamentMatch(match) || match.done) continue;
-        if (playerNames && !tournamentMatchHasPlayer(match, playerNames)) continue;
+        const side = playerNames ? tournamentMatchPlayerSide(match, playerNames) : null;
+        if (playerNames && !side) continue;
         out.push({
           id: `${details.id}:k:${cls.key}:${roundIdx}:${matchIdx}`,
           tournamentId: details.id,
@@ -234,12 +275,32 @@ function collectPendingTournamentMatches(
           detail: `${cls.categoryName} / ${cls.className} - ${round.name}`,
           label: "Resultado pendente",
           tone: "neutral",
+          classKey: cls.key,
+          phaseKey: `ko:${roundIdx}`,
+          matchIndex: matchIdx,
+          side: side ?? undefined,
         });
       }
     }
   }
 
   return out;
+}
+
+function confirmationKey(item: { classKey?: string; phaseKey?: string; matchIndex?: number }): string {
+  return `${item.classKey || ""}:${item.phaseKey || ""}:${Number(item.matchIndex ?? -1)}`;
+}
+
+function latestConfirmationForSide(
+  confirmations: TournamentMatchConfirmation[],
+  match: HomeTournamentAction
+): TournamentMatchConfirmation | null {
+  const key = confirmationKey(match);
+  return (
+    confirmations
+      .filter((confirmation) => confirmationKey(confirmation) === key && (!match.side || confirmation.side === match.side))
+      .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))[0] ?? null
+  );
 }
 
 async function loadLeagueActions(userId: string, leagues: LeagueSummary[]): Promise<HomeLeagueAction[]> {
@@ -254,10 +315,26 @@ async function loadLeagueActions(userId: string, leagues: LeagueSummary[]): Prom
         const matchGroups = await Promise.all(
           rounds.map(async (round) => {
             const matches = await loadRoundMatches(round.id);
-            return matches
+            const visibleMatches = matches
               .filter((match) => match.status !== "encerrada" && match.status !== "wo")
-              .filter((match) => match.participants.some((p) => p.userId === userId))
-              .map((match) => toHomeLeagueAction(league, round, match));
+              .filter((match) => match.participants.some((p) => p.userId === userId));
+            return Promise.all(
+              visibleMatches.map(async (match) => {
+                const action = toHomeLeagueAction(league, round, match);
+                if (action.kind !== "schedule") return action;
+
+                const myPlayerId = match.participants.find((p) => p.userId === userId)?.leaguePlayerId || "";
+                if (!myPlayerId) return action;
+
+                const availability = await loadMatchAvailability(match.id).catch(() => []);
+                const availabilitySent = availability.some((row) => row.leaguePlayerId === myPlayerId);
+                return {
+                  ...action,
+                  needsAvailability: !availabilitySent,
+                  availabilitySent,
+                };
+              })
+            );
           })
         );
         return matchGroups.flat();
@@ -294,7 +371,7 @@ async function loadOrganizerActions(leagues: LeagueSummary[]): Promise<HomeOrgan
         if (pending > 0) {
           actions.push({
             id: `${league.id}:registrations`,
-            targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+            targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}?tab=jogadores`,
             sourceName: league.name,
             title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
             detail: "Aprovar ou rejeitar jogadores",
@@ -310,18 +387,46 @@ async function loadOrganizerActions(leagues: LeagueSummary[]): Promise<HomeOrgan
         const matchGroups = await Promise.all(
           rounds.map(async (round) => {
             const matches = await loadRoundMatches(round.id);
-            return matches
+            const attentionMatches = matches
               .filter((match) => isOrganizerAttentionMatch(match.status))
-              .slice(0, 2)
-              .map((match) => ({
-                id: `${league.id}:${match.id}`,
-                targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
-                sourceName: league.name,
-                title: matchTitle(match),
-                detail: `Rodada ${round.roundNumber} - ${formatShortDateTime(match.scheduledAt || round.endsAt)}`,
-                label: matchStatusLabel(match.status),
-                tone: match.status === "em_disputa" || match.status === "em_analise_adm" ? "urgent" : "neutral",
-              } satisfies HomeOrganizerAction));
+              .slice(0, 2);
+            return Promise.all(
+              attentionMatches.map(async (match) => {
+                const participants = match.participants
+                  .map((participant) => participant.leaguePlayerId)
+                  .filter(Boolean);
+                const uniqueParticipants = new Set(participants);
+                const availability =
+                  match.status === "aguardando_organizacao" ? await loadMatchAvailability(match.id).catch(() => []) : [];
+                const uniqueAvailablePlayers = new Set(
+                  availability.map((row) => row.leaguePlayerId).filter((id) => uniqueParticipants.has(id))
+                );
+                const readyToSchedule =
+                  match.status === "aguardando_organizacao" &&
+                  uniqueParticipants.size > 0 &&
+                  uniqueAvailablePlayers.size >= uniqueParticipants.size;
+                const availabilityProgress =
+                  match.status === "aguardando_organizacao" && uniqueParticipants.size > 0
+                    ? `${uniqueAvailablePlayers.size}/${uniqueParticipants.size} disponibilidades`
+                    : "";
+
+                return {
+                  id: `${league.id}:${match.id}`,
+                  targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}?tab=partidas`,
+                  sourceName: league.name,
+                  title: matchTitle(match),
+                  detail: [
+                    `Rodada ${round.roundNumber} - ${formatShortDateTime(match.scheduledAt || round.endsAt)}`,
+                    availabilityProgress,
+                  ].filter(Boolean).join(" - "),
+                  label: readyToSchedule ? "Pronto para agendar" : matchStatusLabel(match.status),
+                  tone:
+                    readyToSchedule || match.status === "em_disputa" || match.status === "em_analise_adm"
+                      ? "urgent"
+                      : "neutral",
+                } satisfies HomeOrganizerAction;
+              })
+            );
           })
         );
         actions.push(...matchGroups.flat());
@@ -355,13 +460,39 @@ async function loadTournamentPlayerActions(
             .filter(Boolean)
         );
         if (!playerNames.size) return [];
-        return collectPendingTournamentMatches(details, playerNames).slice(0, 2);
+        const confirmations = await loadTournamentMatchConfirmations(tournament.id).catch(() => [] as TournamentMatchConfirmation[]);
+        return collectPendingTournamentMatches(details, playerNames)
+          .map((action) => {
+            const confirmation = latestConfirmationForSide(confirmations, action);
+            if (!confirmation) {
+              return {
+                ...action,
+                label: "Confirmar presenca",
+                tone: "urgent" as const,
+                detail: `${action.detail} - confirme se voce vai jogar`,
+              };
+            }
+            if (confirmation.status === "unavailable") {
+              return {
+                ...action,
+                label: "Indisponivel",
+                tone: "urgent" as const,
+                detail: `${action.detail} - avise o organizador se mudou`,
+              };
+            }
+            return action;
+          })
+          .sort((a, b) => Number(b.tone === "urgent") - Number(a.tone === "urgent"))
+          .slice(0, 2);
       } catch {
         return [];
       }
     })
   );
-  return groups.flat().slice(0, 5);
+  return groups
+    .flat()
+    .sort((a, b) => Number(b.tone === "urgent") - Number(a.tone === "urgent"))
+    .slice(0, 5);
 }
 
 async function loadTournamentOrganizerActions(
@@ -376,10 +507,11 @@ async function loadTournamentOrganizerActions(
         const details = await loadTournamentDetails(user, tournament.id);
         const registrations = await loadTournamentRegistrations(user, tournament.id, "owner");
         const pending = registrations.filter((registration: TournamentRegistration) => registration.status === "pending").length;
+        const waitlist = registrations.filter((registration: TournamentRegistration) => registration.status === "waitlist").length;
         if (pending > 0) {
           actions.push({
             id: `${tournament.id}:registrations`,
-            targetPath: buildTournamentUrl(tournament.id).replace("/jogos", "/jogadores"),
+            targetPath: tournamentTabUrl(tournament.id, "jogadores"),
             sourceName: tournament.name,
             title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
             detail: "Aprovar ou rejeitar jogadores",
@@ -387,18 +519,58 @@ async function loadTournamentOrganizerActions(
             tone: "urgent",
           });
         }
+        if (waitlist > 0) {
+          actions.push({
+            id: `${tournament.id}:waitlist`,
+            targetPath: tournamentTabUrl(tournament.id, "jogadores"),
+            sourceName: tournament.name,
+            title: `${waitlist} atleta${waitlist === 1 ? "" : "s"} em lista de espera`,
+            detail: "Promover para aprovados ou rejeitar quando a chave estiver definida",
+            label: "Lista de espera",
+            tone: "neutral",
+          });
+        }
 
         const pendingMatches = collectPendingTournamentMatches(details).slice(0, 2);
         actions.push(
           ...pendingMatches.map((match) => ({
             id: match.id,
-            targetPath: buildTournamentUrl(tournament.id),
+            targetPath: tournamentTabUrl(tournament.id, "jogos"),
             sourceName: tournament.name,
             title: match.title,
             detail: match.detail,
             label: match.label,
             tone: "neutral" as const,
           }))
+        );
+
+        const confirmations = await loadTournamentMatchConfirmations(tournament.id).catch(() => [] as TournamentMatchConfirmation[]);
+        const unavailableGroups = new Map<string, TournamentMatchConfirmation[]>();
+        confirmations
+          .filter((confirmation) => confirmation.status === "unavailable")
+          .forEach((confirmation) => {
+            const key = confirmationKey(confirmation);
+            unavailableGroups.set(key, [...(unavailableGroups.get(key) || []), confirmation]);
+          });
+
+        actions.push(
+          ...Array.from(unavailableGroups.values())
+            .map((rows) => rows.sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || "")))
+            .sort((a, b) => (b[0]?.updatedAt || "").localeCompare(a[0]?.updatedAt || ""))
+            .slice(0, 2)
+            .map((rows) => {
+              const first = rows[0] as TournamentMatchConfirmation;
+              const sides = rows.map((row) => (row.side === "a" ? "lado A" : "lado B")).join(", ");
+              return {
+                id: `${tournament.id}:unavailable:${confirmationKey(first)}`,
+                targetPath: tournamentTabUrl(tournament.id, "jogos"),
+                sourceName: tournament.name,
+                title: first.matchTitle,
+                detail: `${first.classLabel} - ${first.phaseLabel} - indisponivel: ${sides}`,
+                label: "Indisponibilidade",
+                tone: "urgent" as const,
+              };
+            })
         );
       } catch {
         // Keep the dashboard resilient if one tournament fails to load.
@@ -423,15 +595,20 @@ function chatNoticeSort<T extends { isPinned: boolean; messageType: string; pinn
   return (b.pinnedAt || b.createdAt || "").localeCompare(a.pinnedAt || a.createdAt || "");
 }
 
+function tournamentTabUrl(tournamentId: string, tab: "jogos" | "jogadores" | "chat"): string {
+  return `/eventos/${encodeURIComponent(tournamentId)}/${tab}`;
+}
+
 function tournamentMessageToNotice(tournament: TournamentSummary, message: TournamentChatMessage): HomeNotice {
   const urgent = message.isPinned || message.messageType === "announcement";
   return {
     id: `tournament:${tournament.id}:${message.id}`,
-    targetPath: buildTournamentUrl(tournament.id).replace("/jogos", "/chat"),
+    targetPath: tournamentTabUrl(tournament.id, "chat"),
     sourceName: tournament.name,
     title: urgent ? "Aviso do torneio" : "Mensagem recente",
     body: message.body,
     meta: `${message.senderName} - ${noticeDateLabel(message.createdAt)}`,
+    createdAt: message.createdAt,
     tone: urgent ? "urgent" : "neutral",
   };
 }
@@ -445,6 +622,7 @@ function leagueMessageToNotice(league: LeagueSummary, message: LeagueChatMessage
     title: urgent ? "Aviso da liga" : "Mensagem recente",
     body: message.body,
     meta: `${message.senderName} - ${noticeDateLabel(message.createdAt)}`,
+    createdAt: message.createdAt,
     tone: urgent ? "urgent" : "neutral",
   };
 }
@@ -613,6 +791,173 @@ function PriorityCard({ item, onOpen }: { item: HomePriorityItem; onOpen: () => 
   );
 }
 
+function ActivityFeedCard({ item, onOpen }: { item: HomeFeedItem; onOpen: () => void }) {
+  return (
+    <article className={`home-feed-card ${item.tone}`} onClick={onOpen}>
+      <div>
+        <p className="home-action-label">{item.sourceName}</p>
+        <p className="home-action-title">{item.title}</p>
+        <p className="home-action-body">{item.detail}</p>
+      </div>
+      <span>{item.label}</span>
+    </article>
+  );
+}
+
+function AgendaCard({
+  item,
+  onOpen,
+  onCopyReminder,
+  onShareReminder,
+}: {
+  item: HomeAgendaItem;
+  onOpen: () => void;
+  onCopyReminder: () => void;
+  onShareReminder: () => void;
+}) {
+  return (
+    <article className="home-agenda-card" onClick={onOpen}>
+      <div>
+        <p className="home-action-label">{item.sourceName}</p>
+        <p className="home-action-title">{item.title}</p>
+        <p className="home-action-body">{item.when}</p>
+      </div>
+      <div className="home-agenda-actions">
+        <span>{item.label}</span>
+        <button
+          onClick={(event) => {
+            event.stopPropagation();
+            onCopyReminder();
+          }}
+        >
+          Copiar lembrete
+        </button>
+        <button
+          className="primary"
+          onClick={(event) => {
+            event.stopPropagation();
+            onShareReminder();
+          }}
+        >
+          WhatsApp
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function buildAgendaItems(leagueActions: HomeLeagueAction[], tournamentActions: HomeTournamentAction[]): HomeAgendaItem[] {
+  const now = Date.now();
+  const nowIso = new Date(now).toISOString();
+  const weekAhead = now + 7 * 24 * 60 * 60 * 1000;
+  const leagueItems = leagueActions
+    .map((action): HomeAgendaItem => {
+      const dueDate = action.scheduledAt || action.roundEndsAt;
+      return {
+        id: `agenda-league:${action.id}`,
+        targetPath: `/eventos/ligas/${encodeURIComponent(action.leagueId)}?tab=partidas`,
+        sourceName: `${action.leagueName} - Rodada ${action.roundNumber}`,
+        title: action.title,
+        when: formatShortDateTime(dueDate),
+        label: action.needsAvailability ? "Disponibilidade" : matchStatusLabel(action.status),
+        sortAt: dueDate,
+        reminderText: [
+          `Lembrete ATP APP`,
+          `${action.leagueName} - Rodada ${action.roundNumber}`,
+          action.title,
+          `Quando: ${formatShortDateTime(dueDate)}`,
+          action.needsAvailability ? "Acao: informe seus horarios disponiveis." : `Status: ${matchStatusLabel(action.status)}.`,
+        ].join("\n"),
+      };
+    })
+    .filter((item) => {
+      const time = new Date(item.sortAt).getTime();
+      return Number.isNaN(time) || (time >= now && time <= weekAhead);
+    });
+
+  const tournamentItems = tournamentActions.map((action): HomeAgendaItem => ({
+    id: `agenda-tournament:${action.id}`,
+    targetPath: tournamentTabUrl(action.tournamentId, "jogos"),
+    sourceName: action.tournamentName,
+    title: action.title,
+    when: action.detail,
+    label: action.label,
+    sortAt: nowIso,
+    reminderText: [
+      `Lembrete ATP APP`,
+      action.tournamentName,
+      action.title,
+      action.detail,
+      `Acao: ${action.label}.`,
+    ].join("\n"),
+  }));
+
+  return [...tournamentItems, ...leagueItems]
+    .sort((a, b) => (a.sortAt || "").localeCompare(b.sortAt || ""))
+    .slice(0, 6);
+}
+
+function buildActivityFeed(
+  playingTournaments: TournamentSummary[],
+  organizingTournaments: TournamentSummary[],
+  playingLeagues: LeagueSummary[],
+  organizingLeagues: LeagueSummary[],
+  notices: HomeNotice[],
+  upcoming: TournamentSummary[]
+): HomeFeedItem[] {
+  const noticeItems = notices.map((notice): HomeFeedItem => ({
+    id: `feed-notice:${notice.id}`,
+    targetPath: notice.targetPath,
+    sourceName: notice.sourceName,
+    title: notice.title,
+    detail: `${notice.body} - ${notice.meta}`,
+    label: notice.tone === "urgent" ? "Aviso" : "Chat",
+    sortAt: notice.createdAt,
+    tone: notice.tone,
+  }));
+
+  const playingItems = [...playingTournaments, ...playingLeagues].map((item): HomeFeedItem => ({
+    id: `feed-playing:${item.id}`,
+    targetPath: "role" in item ? `/eventos/ligas/${encodeURIComponent(item.id)}` : buildTournamentUrl(item.id),
+    sourceName: item.name,
+    title: "Voce esta participando",
+    detail: "Acompanhe partidas, avisos e proximas acoes desta competicao.",
+    label: "Jogador",
+    sortAt: item.updatedAt,
+    tone: "neutral",
+  }));
+
+  const organizerItems = [...organizingTournaments, ...organizingLeagues].map((item): HomeFeedItem => ({
+    id: `feed-organizer:${item.id}`,
+    targetPath: "role" in item ? `/eventos/ligas/${encodeURIComponent(item.id)}` : buildTournamentUrl(item.id),
+    sourceName: item.name,
+    title: "Voce esta organizando",
+    detail: "Verifique inscricoes, partidas, comunicados e pendencias.",
+    label: "Organizacao",
+    sortAt: item.updatedAt,
+    tone: "neutral",
+  }));
+
+  const upcomingItems = upcoming.slice(0, 2).map((item): HomeFeedItem => ({
+    id: `feed-upcoming:${item.id}`,
+    targetPath: buildTournamentUrl(item.id),
+    sourceName: item.name,
+    title: "Evento publico em breve",
+    detail: item.startsAt ? `Inicio em ${formatDateRange(item.startsAt)}` : "Data a definir",
+    label: "Publico",
+    sortAt: item.startsAt || item.updatedAt,
+    tone: "neutral",
+  }));
+
+  return [...noticeItems, ...playingItems, ...organizerItems, ...upcomingItems]
+    .sort((a, b) => {
+      const urgent = Number(b.tone === "urgent") - Number(a.tone === "urgent");
+      if (urgent !== 0) return urgent;
+      return (b.sortAt || "").localeCompare(a.sortAt || "");
+    })
+    .slice(0, 6);
+}
+
 function buildPriorityItems(
   leagueActions: HomeLeagueAction[],
   tournamentActions: HomeTournamentAction[],
@@ -621,22 +966,31 @@ function buildPriorityItems(
 ): HomePriorityItem[] {
   const leagueItems = leagueActions.map((action): HomePriorityItem => {
     const dueDate = action.scheduledAt || action.roundEndsAt;
-    const urgent = action.kind === "confirm_result" || action.kind === "send_result";
+    const urgent = action.kind === "confirm_result" || action.kind === "send_result" || Boolean(action.needsAvailability);
+    const availabilityDetail = action.needsAvailability
+      ? "informe seus horarios"
+      : action.availabilitySent
+      ? "disponibilidade enviada"
+      : "";
     return {
       id: `league-action:${action.id}`,
-      targetPath: `/eventos/ligas/${encodeURIComponent(action.leagueId)}`,
+      targetPath: `/eventos/ligas/${encodeURIComponent(action.leagueId)}?tab=partidas`,
       sourceName: `${action.leagueName} - Rodada ${action.roundNumber}`,
       title: action.title,
-      detail: formatShortDateTime(dueDate),
-      label: matchStatusLabel(action.status),
+      detail: availabilityDetail ? `${formatShortDateTime(dueDate)} - ${availabilityDetail}` : formatShortDateTime(dueDate),
+      label: action.needsAvailability
+        ? "Enviar disponibilidade"
+        : action.availabilitySent
+        ? "Disponibilidade enviada"
+        : matchStatusLabel(action.status),
       tone: urgent ? "urgent" : "neutral",
-      order: urgent ? 10 : 40,
+      order: action.needsAvailability ? 12 : urgent ? 10 : 40,
     };
   });
 
   const tournamentItems = tournamentActions.map((action): HomePriorityItem => ({
     id: `tournament-action:${action.id}`,
-    targetPath: buildTournamentUrl(action.tournamentId),
+    targetPath: tournamentTabUrl(action.tournamentId, "jogos"),
     sourceName: action.tournamentName,
     title: action.title,
     detail: action.detail,
@@ -690,6 +1044,7 @@ export function HomePage({ user, profile }: Props) {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -729,18 +1084,42 @@ export function HomePage({ user, profile }: Props) {
 
   const activePlayingCount = playingTournaments.length + playingLeagues.length;
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
+  const agendaItems = buildAgendaItems(leagueActions, tournamentActions);
   const priorityItems = buildPriorityItems(leagueActions, tournamentActions, organizerActions, notices);
-  const urgentActionCount =
-    leagueActions.filter((a) => a.kind === "confirm_result" || a.kind === "send_result").length +
-    tournamentActions.filter((a) => a.tone === "urgent").length +
-    organizerActions.filter((a) => a.tone === "urgent").length;
+  const activityFeedItems = buildActivityFeed(
+    playingTournaments,
+    organizingTournaments,
+    playingLeagues,
+    organizingLeagues,
+    notices,
+    upcoming
+  );
+  const urgentPriorityItems = priorityItems.filter((item) => item.tone === "urgent");
+  const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
+  const urgentActionCount = urgentPriorityItems.length;
   const showPlayerEmptyRecommendation = activePlayingCount === 0 && upcoming.length > 0;
+  const copyAgendaReminder = async (item: HomeAgendaItem) => {
+    try {
+      await navigator.clipboard.writeText(item.reminderText);
+      setFeedback({ kind: "success", text: "Lembrete copiado." });
+    } catch {
+      setFeedback({ kind: "error", text: "Nao foi possivel copiar o lembrete agora." });
+    }
+  };
+  const shareAgendaReminder = (item: HomeAgendaItem) => {
+    window.open(
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(item.reminderText)}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+    setFeedback({ kind: "success", text: "Lembrete aberto no WhatsApp." });
+  };
 
   return (
     <AppShell
       user={user}
       profile={profile}
-      bellCount={priorityItems.length}
+      bellCount={urgentActionCount}
       onBellClick={() => setNotificationsOpen((open) => !open)}
     >
       <div className="section-title">
@@ -749,6 +1128,7 @@ export function HomePage({ user, profile }: Props) {
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {error ? <p className="feedback error">{error}</p> : null}
+      {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
 
       {notificationsOpen ? (
         <section className="home-notification-panel">
@@ -759,16 +1139,38 @@ export function HomePage({ user, profile }: Props) {
             </button>
           </div>
           {priorityItems.length > 0 ? (
-            priorityItems.slice(0, 5).map((item) => (
-              <PriorityCard
-                key={`bell:${item.id}`}
-                item={item}
-                onOpen={() => {
-                  setNotificationsOpen(false);
-                  navigate(item.targetPath);
-                }}
-              />
-            ))
+            <>
+              {urgentPriorityItems.length > 0 ? (
+                <div className="home-notification-group">
+                  <p className="home-notification-heading">Pendencias</p>
+                  {urgentPriorityItems.slice(0, 5).map((item) => (
+                    <PriorityCard
+                      key={`bell-urgent:${item.id}`}
+                      item={item}
+                      onOpen={() => {
+                        setNotificationsOpen(false);
+                        navigate(item.targetPath);
+                      }}
+                    />
+                  ))}
+                </div>
+              ) : null}
+              {followUpPriorityItems.length > 0 ? (
+                <div className="home-notification-group">
+                  <p className="home-notification-heading">Acompanhar</p>
+                  {followUpPriorityItems.slice(0, urgentPriorityItems.length > 0 ? 3 : 5).map((item) => (
+                    <PriorityCard
+                      key={`bell-follow:${item.id}`}
+                      item={item}
+                      onOpen={() => {
+                        setNotificationsOpen(false);
+                        navigate(item.targetPath);
+                      }}
+                    />
+                  ))}
+                </div>
+              ) : null}
+            </>
           ) : (
             <p className="subtle">Nada urgente agora.</p>
           )}
@@ -783,6 +1185,23 @@ export function HomePage({ user, profile }: Props) {
             <SummaryCard label="Pendencias" value={urgentActionCount} detail="resultados/confirmacoes" />
           </section>
 
+          {agendaItems.length > 0 ? (
+            <section className="home-section">
+              <div className="section-title">
+                <h2>Agenda da semana</h2>
+              </div>
+              {agendaItems.map((item) => (
+                <AgendaCard
+                  key={item.id}
+                  item={item}
+                  onOpen={() => navigate(item.targetPath)}
+                  onCopyReminder={() => copyAgendaReminder(item)}
+                  onShareReminder={() => shareAgendaReminder(item)}
+                />
+              ))}
+            </section>
+          ) : null}
+
           {priorityItems.length > 0 ? (
             <section className="home-section">
               <div className="section-title">
@@ -790,6 +1209,17 @@ export function HomePage({ user, profile }: Props) {
               </div>
               {priorityItems.map((item) => (
                 <PriorityCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
+              ))}
+            </section>
+          ) : null}
+
+          {activityFeedItems.length > 0 ? (
+            <section className="home-section">
+              <div className="section-title">
+                <h2>Atualizacoes recentes</h2>
+              </div>
+              {activityFeedItems.map((item) => (
+                <ActivityFeedCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
               ))}
             </section>
           ) : null}

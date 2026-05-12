@@ -3,6 +3,7 @@ import { supabase } from "./supabase";
 import type {
   TournamentChatMessage,
   TournamentDetails,
+  TournamentMatchConfirmation,
   TournamentMatchResultSubmission,
   TournamentRegistration,
   TournamentSummary,
@@ -13,6 +14,7 @@ const TABLE_MEMBERS = "tournament_members";
 const TABLE_REGISTRATIONS = "tournament_registrations";
 const TABLE_CHAT = "tournament_chat_messages";
 const TABLE_RESULT_SUBMISSIONS = "tournament_match_result_submissions";
+const TABLE_MATCH_CONFIRMATIONS = "tournament_match_confirmations";
 
 export const TOURNAMENT_COLUMNS =
   "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at,player_result_submission_enabled";
@@ -83,6 +85,22 @@ type TournamentResultSubmissionRow = {
   updated_at: string | null;
 };
 
+type TournamentMatchConfirmationRow = {
+  id: string;
+  tournament_id: string;
+  user_id: string;
+  class_key: string;
+  class_label: string;
+  phase_key: string;
+  phase_label: string;
+  match_index: number;
+  side: string;
+  match_title: string;
+  status: string;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
 function normalizeState(value: string | undefined): string | null {
   const clean = (value || "").trim().toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2);
   return clean || null;
@@ -143,7 +161,7 @@ function registrationRowToModel(row: TournamentRegistrationRow): TournamentRegis
     playerName: row.player_name ?? "",
     phone: row.phone ?? "",
     status:
-      row.status === "approved" || row.status === "rejected" || row.status === "pending"
+      row.status === "approved" || row.status === "rejected" || row.status === "waitlist" || row.status === "pending"
         ? row.status
         : "pending",
     createdAt: row.created_at ?? "",
@@ -180,6 +198,24 @@ function resultSubmissionRowToModel(row: TournamentResultSubmissionRow): Tournam
     scoreText: row.score_text,
     normalizedScore: row.normalized_score,
     status: status as TournamentMatchResultSubmission["status"],
+    createdAt: row.created_at ?? "",
+    updatedAt: row.updated_at ?? "",
+  };
+}
+
+function matchConfirmationRowToModel(row: TournamentMatchConfirmationRow): TournamentMatchConfirmation {
+  return {
+    id: row.id,
+    tournamentId: row.tournament_id,
+    userId: row.user_id,
+    classKey: row.class_key,
+    classLabel: row.class_label,
+    phaseKey: row.phase_key,
+    phaseLabel: row.phase_label,
+    matchIndex: Number(row.match_index || 0),
+    side: row.side === "b" ? "b" : "a",
+    matchTitle: row.match_title,
+    status: row.status === "unavailable" ? "unavailable" : "confirmed",
     createdAt: row.created_at ?? "",
     updatedAt: row.updated_at ?? "",
   };
@@ -423,35 +459,21 @@ export async function requestTournamentRegistration(
   }
 ): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  void user;
 
   const classId = String(input.classId || "").trim();
   const playerName = String(input.playerName || "").trim();
   if (!classId) throw new Error("Selecione uma classe.");
   if (!playerName) throw new Error("Informe seu nome.");
 
-  const check = await supabase
-    .from(TABLE_REGISTRATIONS)
-    .select("id,status")
-    .eq("tournament_id", tournamentId)
-    .eq("user_id", user.id)
-    .eq("class_id", classId)
-    .in("status", ["pending", "approved"])
-    .limit(1);
-  if (check.error) throw new Error(check.error.message);
-  if ((check.data ?? []).length > 0) {
-    throw new Error("Voce ja possui solicitacao pendente/aprovada nesta classe.");
-  }
-
-  const { error } = await supabase.from(TABLE_REGISTRATIONS).insert({
-    tournament_id: tournamentId,
-    user_id: user.id,
-    category_id: String(input.categoryId || "").trim() || null,
-    class_id: classId,
-    category_name: String(input.categoryName || "").trim() || "Categoria",
-    class_name: String(input.className || "").trim() || "Classe",
-    player_name: playerName,
-    phone: String(input.phone || "").trim() || null,
-    status: "pending",
+  const { error } = await supabase.rpc("app_request_tournament_registration", {
+    p_tournament_id: tournamentId,
+    p_category_id: String(input.categoryId || "").trim() || null,
+    p_class_id: classId,
+    p_category_name: String(input.categoryName || "").trim() || "Categoria",
+    p_class_name: String(input.className || "").trim() || "Classe",
+    p_player_name: playerName,
+    p_phone: String(input.phone || "").trim() || null,
   });
   if (error) throw new Error(error.message);
 }
@@ -459,7 +481,7 @@ export async function requestTournamentRegistration(
 export async function updateTournamentRegistrationStatus(
   tournamentId: string,
   registrationId: string,
-  status: "approved" | "rejected"
+  status: "approved" | "waitlist" | "rejected"
 ): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const rpc = await supabase.rpc("app_set_tournament_registration_status", {
@@ -607,6 +629,46 @@ export async function markTournamentMatchResultSubmissionApplied(submissionId: s
   });
   if (error) throw new Error(error.message);
   return ((data ?? []) as TournamentResultSubmissionRow[]).map(resultSubmissionRowToModel);
+}
+
+export async function loadTournamentMatchConfirmations(tournamentId: string): Promise<TournamentMatchConfirmation[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_MATCH_CONFIRMATIONS)
+    .select(
+      "id,tournament_id,user_id,class_key,class_label,phase_key,phase_label,match_index,side,match_title,status,created_at,updated_at"
+    )
+    .eq("tournament_id", tournamentId)
+    .order("updated_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentMatchConfirmationRow[]).map(matchConfirmationRowToModel);
+}
+
+export async function confirmTournamentMatch(input: {
+  tournamentId: string;
+  classKey: string;
+  classLabel: string;
+  phaseKey: string;
+  phaseLabel: string;
+  matchIndex: number;
+  side: "a" | "b";
+  matchTitle: string;
+  status: "confirmed" | "unavailable";
+}): Promise<TournamentMatchConfirmation[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_confirm_tournament_match", {
+    p_tournament_id: input.tournamentId,
+    p_class_key: input.classKey,
+    p_class_label: input.classLabel,
+    p_phase_key: input.phaseKey,
+    p_phase_label: input.phaseLabel,
+    p_match_index: input.matchIndex,
+    p_side: input.side,
+    p_match_title: input.matchTitle,
+    p_status: input.status,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentMatchConfirmationRow[]).map(matchConfirmationRowToModel);
 }
 
 export async function deleteTournamentChatMessage(tournamentId: string, messageId: string): Promise<void> {
