@@ -6,7 +6,10 @@ import type {
   TournamentMatchConfirmation,
   TournamentMatchResultSubmission,
   TournamentRegistration,
+  TournamentRole,
   TournamentSummary,
+  TournamentStaffMember,
+  TournamentStaffRole,
 } from "./types";
 
 const TABLE_TOURNAMENTS = "tournaments";
@@ -101,6 +104,34 @@ type TournamentMatchConfirmationRow = {
   created_at: string | null;
   updated_at: string | null;
 };
+
+type TournamentMemberRow = {
+  tournament_id: string;
+  user_id: string;
+  role: string | null;
+  created_at?: string | null;
+};
+
+type TournamentStaffRpcRow = {
+  tournament_id: string;
+  user_id: string;
+  email: string | null;
+  role: string | null;
+  created_at: string | null;
+};
+
+const TOURNAMENT_STAFF_ROLES = ["organizer", "scorekeeper", "checkin", "media"] as const;
+
+function normalizeTournamentRole(value: string | null | undefined): TournamentRole {
+  const role = String(value || "").trim();
+  if (role === "owner" || role === "participant" || role === "viewer") return role;
+  if ((TOURNAMENT_STAFF_ROLES as readonly string[]).includes(role)) return role as TournamentStaffRole;
+  return "viewer";
+}
+
+function isTournamentStaffRole(role: TournamentRole): role is TournamentStaffRole {
+  return (TOURNAMENT_STAFF_ROLES as readonly string[]).includes(role);
+}
 
 function normalizeState(value: string | undefined): string | null {
   const clean = (value || "").trim().toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2);
@@ -243,31 +274,42 @@ export async function loadDashboardData(user: User): Promise<DashboardData> {
 
   const memberRes = await supabase
     .from(TABLE_MEMBERS)
-    .select("tournament_id")
+    .select("tournament_id,role")
     .eq("user_id", user.id);
   if (memberRes.error) throw new Error(memberRes.error.message);
 
-  const memberIds = Array.from(
-    new Set(
-      ((memberRes.data ?? []) as { tournament_id: string }[])
-        .map((m) => m.tournament_id)
-        .filter((id) => id && !ownedIds.has(id))
-    )
+  const memberRows = ((memberRes.data ?? []) as TournamentMemberRow[]).filter((m) => m.tournament_id && !ownedIds.has(m.tournament_id));
+  const staffIds = Array.from(
+    new Set(memberRows.filter((m) => isTournamentStaffRole(normalizeTournamentRole(m.role))).map((m) => m.tournament_id))
+  );
+  const participantIds = Array.from(
+    new Set(memberRows.filter((m) => !isTournamentStaffRole(normalizeTournamentRole(m.role))).map((m) => m.tournament_id))
   );
 
   let participating: TournamentSummary[] = [];
-  if (memberIds.length) {
+  let staffOrganizing: TournamentSummary[] = [];
+  if (participantIds.length) {
     const partRes = await supabase
       .from(TABLE_TOURNAMENTS)
       .select(TOURNAMENT_COLUMNS)
-      .in("id", memberIds);
+      .in("id", participantIds);
     if (partRes.error) throw new Error(partRes.error.message);
     participating = ((partRes.data ?? []) as TournamentRow[])
       .map(rowToSummary)
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   }
+  if (staffIds.length) {
+    const staffRes = await supabase
+      .from(TABLE_TOURNAMENTS)
+      .select(TOURNAMENT_COLUMNS)
+      .in("id", staffIds);
+    if (staffRes.error) throw new Error(staffRes.error.message);
+    staffOrganizing = ((staffRes.data ?? []) as TournamentRow[])
+      .map(rowToSummary)
+      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  }
 
-  return { organizing, participating };
+  return { organizing: [...organizing, ...staffOrganizing], participating };
 }
 
 export async function loadUpcomingPublic(limit = 6): Promise<TournamentSummary[]> {
@@ -353,13 +395,16 @@ export async function loadTournamentDetails(user: User, tournamentId: string): P
   } else {
     const memberRes = await supabase
       .from(TABLE_MEMBERS)
-      .select("tournament_id")
+      .select("tournament_id,role")
       .eq("tournament_id", tournamentId)
       .eq("user_id", user.id)
       .maybeSingle();
 
     if (memberRes.error) throw new Error(memberRes.error.message);
-    if (memberRes.data) role = "participant";
+    if (memberRes.data) {
+      const memberRole = normalizeTournamentRole((memberRes.data as TournamentMemberRow).role);
+      role = memberRole === "viewer" ? "participant" : memberRole;
+    }
   }
 
   return detailRowToDetails(row, role);
@@ -443,13 +488,96 @@ export async function loadTournamentRegistrations(
     .eq("tournament_id", tournamentId)
     .order("created_at", { ascending: false });
 
-  if (role !== "owner") {
+  if (!(role === "owner" || role === "organizer" || role === "checkin")) {
     query = query.eq("user_id", user.id);
   }
 
   const { data, error } = await query;
   if (error) throw new Error(error.message);
   return ((data ?? []) as TournamentRegistrationRow[]).map(registrationRowToModel);
+}
+
+function staffRowToModel(row: TournamentMemberRow, email = ""): TournamentStaffMember | null {
+  const role = normalizeTournamentRole(row.role);
+  if (!isTournamentStaffRole(role)) return null;
+  return {
+    tournamentId: row.tournament_id,
+    userId: row.user_id,
+    email,
+    role,
+    createdAt: row.created_at ?? "",
+  };
+}
+
+function staffRpcRowToModel(row: TournamentStaffRpcRow): TournamentStaffMember | null {
+  const role = normalizeTournamentRole(row.role);
+  if (!isTournamentStaffRole(role)) return null;
+  return {
+    tournamentId: row.tournament_id,
+    userId: row.user_id,
+    email: row.email ?? "",
+    role,
+    createdAt: row.created_at ?? "",
+  };
+}
+
+export async function listTournamentStaff(tournamentId: string): Promise<TournamentStaffMember[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+
+  const { data, error } = await supabase
+    .from(TABLE_MEMBERS)
+    .select("tournament_id,user_id,role,created_at")
+    .eq("tournament_id", tournamentId)
+    .in("role", [...TOURNAMENT_STAFF_ROLES])
+    .order("created_at", { ascending: true });
+  if (error) throw new Error(error.message);
+
+  const rows = (data ?? []) as TournamentMemberRow[];
+  const userIds = Array.from(new Set(rows.map((row) => row.user_id).filter(Boolean)));
+  const nameMap = new Map<string, string>();
+  if (userIds.length) {
+    const profiles = await supabase
+      .from("profiles")
+      .select("user_id,display_name")
+      .in("user_id", userIds);
+    if (!profiles.error) {
+      ((profiles.data ?? []) as Array<{ user_id: string; display_name: string | null }>).forEach((profile) => {
+        nameMap.set(profile.user_id, (profile.display_name || "").trim());
+      });
+    }
+  }
+
+  return rows
+    .map((row) => staffRowToModel(row, nameMap.get(row.user_id) || "Usuario vinculado"))
+    .filter((row): row is TournamentStaffMember => Boolean(row));
+}
+
+export async function addTournamentStaff(
+  tournamentId: string,
+  email: string,
+  role: TournamentStaffRole
+): Promise<TournamentStaffMember> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_add_tournament_staff", {
+    p_tournament_id: tournamentId,
+    p_email: email,
+    p_role: role,
+  });
+  if (error) throw new Error(error.message);
+
+  const rowRaw = Array.isArray(data) ? data[0] : data;
+  const row = rowRaw ? staffRpcRowToModel(rowRaw as TournamentStaffRpcRow) : null;
+  if (!row) throw new Error("Nao foi possivel vincular este membro da equipe.");
+  return row;
+}
+
+export async function removeTournamentStaff(tournamentId: string, userId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_remove_tournament_staff", {
+    p_tournament_id: tournamentId,
+    p_user_id: userId,
+  });
+  if (error) throw new Error(error.message);
 }
 
 export async function requestTournamentRegistration(

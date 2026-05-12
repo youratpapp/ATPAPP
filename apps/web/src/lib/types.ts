@@ -418,7 +418,19 @@ export type TournamentSummary = {
 export type TournamentDetails = TournamentSummary & {
   createdAt: string;
   data: Record<string, unknown>;
-  role: "owner" | "participant" | "viewer";
+  role: TournamentRole;
+};
+
+export type TournamentRole = "owner" | "organizer" | "scorekeeper" | "checkin" | "media" | "participant" | "viewer";
+
+export type TournamentStaffRole = Extract<TournamentRole, "organizer" | "scorekeeper" | "checkin" | "media">;
+
+export type TournamentStaffMember = {
+  tournamentId: string;
+  userId: string;
+  email: string;
+  role: TournamentStaffRole;
+  createdAt: string;
 };
 
 export type TournamentRegistration = {

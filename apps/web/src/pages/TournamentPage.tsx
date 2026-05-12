@@ -5,8 +5,10 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import {
+  addTournamentStaff,
   deleteTournamentChatMessage,
   deleteTournament,
+  listTournamentStaff,
   loadTournamentChatMessages,
   loadTournamentDetails,
   loadTournamentMatchConfirmations,
@@ -14,6 +16,7 @@ import {
   loadTournamentResultSubmissions,
   markTournamentMatchResultSubmissionApplied,
   postTournamentAnnouncement,
+  removeTournamentStaff,
   sendTournamentChatMessage,
   setTournamentPinnedMessage,
   confirmTournamentMatch,
@@ -29,6 +32,9 @@ import type {
   TournamentMatchConfirmation,
   TournamentMatchResultSubmission,
   TournamentRegistration,
+  TournamentRole,
+  TournamentStaffMember,
+  TournamentStaffRole,
 } from "../lib/types";
 import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
@@ -74,7 +80,6 @@ import {
 import {
   buildTournamentClassCompletionRows,
   buildTournamentMatchOperationalState,
-  coerceAllowedTournamentTab,
   inferTournamentStatusFromData,
   isRealMatch,
   VALID_TOURNAMENT_TABS,
@@ -101,6 +106,61 @@ type Props = {
 type TabKey = TournamentTabKey;
 
 type Feedback = { kind: "success" | "error" | "info"; text: string };
+const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffRole, string> = {
+  organizer: "Coordenador",
+  scorekeeper: "Placar",
+  checkin: "Credenciamento",
+  media: "Comunicacao",
+};
+
+const TOURNAMENT_STAFF_ROLE_HINTS: Record<TournamentStaffRole, string> = {
+  organizer: "Acompanha jogadores, placares e comunicacao sem alterar estrutura do torneio.",
+  scorekeeper: "Edita jogos, aplica resultados e resolve placares pendentes.",
+  checkin: "Aprova inscricoes e organiza lista de jogadores.",
+  media: "Publica avisos, fixa mensagens e cuida do chat.",
+};
+
+function tournamentRoleCapabilities(role: TournamentRole) {
+  const isOwner = role === "owner";
+  const isOrganizer = role === "organizer";
+  return {
+    isOwner,
+    isStaff: role === "organizer" || role === "scorekeeper" || role === "checkin" || role === "media",
+    canManageTournament: isOwner,
+    canManagePlayers: isOwner || isOrganizer || role === "checkin",
+    canManageMatches: isOwner || isOrganizer || role === "scorekeeper",
+    canManageComms: isOwner || isOrganizer || role === "scorekeeper" || role === "checkin" || role === "media",
+  };
+}
+
+function coerceTournamentTabForCapabilities(
+  requested: TabKey | null,
+  caps: {
+    canManageTournament: boolean;
+    canManagePlayers: boolean;
+    canManageMatches: boolean;
+    canSeeClassificationTab: boolean;
+    canUseChatTab: boolean;
+    hideGamesInSetup: boolean;
+    hideOrganization: boolean;
+    hidePlayers: boolean;
+  }
+): TabKey {
+  const base = requested && VALID_TABS.includes(requested) ? requested : "jogos";
+  if (base === "organizacao" && (!caps.canManageTournament || caps.hideOrganization)) return caps.canManagePlayers ? "jogadores" : "jogos";
+  if (base === "jogadores" && (!caps.canManagePlayers || caps.hidePlayers)) {
+    if (caps.canManageMatches) return "jogos";
+    return caps.canUseChatTab ? "chat" : "jogos";
+  }
+  if (base === "classificacao" && !caps.canSeeClassificationTab) return "jogos";
+  if (base === "chat" && !caps.canUseChatTab) return "jogos";
+  if (base === "jogos" && caps.hideGamesInSetup) {
+    if (caps.canManageTournament) return "organizacao";
+    if (caps.canManagePlayers) return "jogadores";
+  }
+  return base;
+}
+
 type PlayerTournamentMatch = {
   id: string;
   classKey: string;
@@ -980,6 +1040,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
   const [matchConfirming, setMatchConfirming] = useState(false);
+  const [staffMembers, setStaffMembers] = useState<TournamentStaffMember[]>([]);
+  const [staffEmail, setStaffEmail] = useState("");
+  const [staffRole, setStaffRole] = useState<TournamentStaffRole>("scorekeeper");
+  const [staffBusy, setStaffBusy] = useState(false);
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -1053,7 +1117,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     });
     return map;
   }, [agenda.assignments]);
-  const isOwner = tournament?.role === "owner";
+  const roleCaps = tournamentRoleCapabilities(tournament?.role ?? "viewer");
+  const {
+    isOwner,
+    isStaff: isTournamentStaff,
+    canManageTournament,
+    canManagePlayers,
+    canManageMatches,
+    canManageComms,
+  } = roleCaps;
   const hasGroupClasses = useMemo(
     () =>
       classes.some((c) => {
@@ -1064,15 +1136,31 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       }),
     [classes]
   );
-  const canSeeClassificationTab = isOwner || hasGroupClasses;
-  const canUseChatTab = isOwner || tournament?.role === "participant";
+  const canSeeClassificationTab = canManageMatches || hasGroupClasses;
+  const canUseChatTab = canManageComms || tournament?.role === "participant";
+  const currentAdminPhaseKey = tournament
+    ? tournamentAdminPhaseFor(
+        (tournament.status || "draft") as TournamentStatus,
+        classes.filter((cls) => cls.data.gerado).length,
+        classes.length
+      )
+    : "setup";
   const requestedTab: TabKey = forcedTab && VALID_TABS.includes(forcedTab) ? forcedTab : "jogos";
   const tab = tournament
-    ? coerceAllowedTournamentTab(requestedTab, isOwner, canSeeClassificationTab, canUseChatTab)
+    ? coerceTournamentTabForCapabilities(requestedTab, {
+        canManageTournament,
+        canManagePlayers,
+        canManageMatches,
+        canSeeClassificationTab,
+        canUseChatTab,
+        hideGamesInSetup: canManageTournament && currentAdminPhaseKey === "setup",
+        hideOrganization: currentAdminPhaseKey === "live" || currentAdminPhaseKey === "finished",
+        hidePlayers: currentAdminPhaseKey === "finished",
+      })
     : requestedTab;
-  const canEditScores = isOwner;
-  const showFloatingSave = isOwner && (tab === "organizacao" || tab === "jogadores");
-  const tournamentBackPath = isOwner ? "/eventos/torneios?view=organizing" : "/eventos/torneios?view=participating";
+  const canEditScores = canManageMatches;
+  const showFloatingSave = canManageTournament && (tab === "organizacao" || tab === "jogadores");
+  const tournamentBackPath = isOwner || isTournamentStaff ? "/eventos/torneios?view=organizing" : "/eventos/torneios?view=participating";
   const filteredRegistrations = useMemo(() => {
     if (registrationFilter === "all") return registrations;
     return registrations.filter((r) => r.status === registrationFilter);
@@ -1175,14 +1263,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     const pendingRegistrations = registrations.filter((r) => r.status === "pending").length;
     let nextAction = "Acompanhar jogos e avisos do torneio.";
     let nextTab: TabKey = "jogos";
-    if (isOwner && pendingRegistrations > 0) {
+    if (canManagePlayers && pendingRegistrations > 0) {
       nextAction = "Aprovar ou rejeitar inscricoes pendentes.";
       nextTab = "jogadores";
-    } else if (isOwner && generatedClasses === 0 && draftCategories.length > 0) {
+    } else if (canManageTournament && generatedClasses === 0 && draftCategories.length > 0) {
       nextAction = "Gerar os jogos das classes configuradas.";
       nextTab = "jogos";
     } else if (pendingMatches > 0) {
-      nextAction = isOwner ? "Lancar ou revisar resultados pendentes." : "Acompanhar resultados pendentes.";
+      nextAction = canManageMatches ? "Lancar ou revisar resultados pendentes." : "Acompanhar resultados pendentes.";
       nextTab = "jogos";
     } else if (totalMatches > 0) {
       nextAction = "Conferir classificacao e encerramento do torneio.";
@@ -1198,7 +1286,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       nextAction,
       nextTab,
     };
-  }, [canSeeClassificationTab, classes, draftCategories.length, isOwner, registrations]);
+  }, [canManageMatches, canManagePlayers, canManageTournament, canSeeClassificationTab, classes, draftCategories.length, registrations]);
   const tournamentAdminPhase = useMemo(() => {
     const status = (tournament?.status || "draft") as TournamentStatus;
     const key = tournamentAdminPhaseFor(status, tournamentOverview.generatedClasses, tournamentOverview.totalClasses);
@@ -1222,7 +1310,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     };
   }, [paymentsByTarget, registrations]);
   const myTournamentMatches = useMemo<PlayerTournamentMatch[]>(() => {
-    if (isOwner) return [];
+    if (isOwner || isTournamentStaff) return [];
     const playerNames = new Set(
       registrations
         .filter((registration) => registration.userId === user.id && registration.status === "approved")
@@ -1293,7 +1381,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
 
     return out.sort((a, b) => Number(a.status === "done") - Number(b.status === "done"));
-  }, [classes, isOwner, profile?.displayName, registrations, user.id]);
+  }, [classes, isOwner, isTournamentStaff, profile?.displayName, registrations, user.id]);
   const playersOverview = useMemo(() => {
     const totalPlayers = playerClassesSummary.reduce((acc, cls) => acc + (cls.participantes?.length || 0), 0);
     const totalClasses = playerClassesSummary.length;
@@ -1420,13 +1508,21 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       finished: ["results"],
     };
     const visibleKeys = new Set(visibleByPhase[tournamentAdminPhase.key]);
-    const visibleItems = items.filter((item) => visibleKeys.has(item.key) || item.count > 0);
+    const visibleItems = items.filter((item) => {
+      if (["registrations", "waitlist"].includes(item.key) && !canManagePlayers) return false;
+      if (["results", "availability", "matches"].includes(item.key) && !canManageMatches) return false;
+      if (item.key === "classes" && !canManageTournament) return false;
+      return visibleKeys.has(item.key) || item.count > 0;
+    });
     return {
       total: visibleItems.reduce((acc, item) => acc + item.count, 0),
       items: visibleItems,
     };
   }, [
     pendingResultReviewCount,
+    canManageMatches,
+    canManagePlayers,
+    canManageTournament,
     registrations,
     tournamentAdminPhase.key,
     tournamentOverview.generatedClasses,
@@ -1461,7 +1557,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   const goToTab = (next: TabKey) => {
     if (!tournamentId) return;
-    const allowed = coerceAllowedTournamentTab(next, isOwner, canSeeClassificationTab, canUseChatTab);
+    const allowed = coerceTournamentTabForCapabilities(next, {
+      canManageTournament,
+      canManagePlayers,
+      canManageMatches,
+      canSeeClassificationTab,
+      canUseChatTab,
+      hideGamesInSetup: canManageTournament && tournamentAdminPhase.key === "setup",
+      hideOrganization: tournamentAdminPhase.key === "live" || tournamentAdminPhase.key === "finished",
+      hidePlayers: tournamentAdminPhase.key === "finished",
+    });
     navigate(
       `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
       { replace: false }
@@ -1469,14 +1574,36 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   };
 
   useEffect(() => {
-    if (!tournamentId || !isOwner) return;
+    if (!tournamentId || !(canManageTournament || canManagePlayers || canManageMatches || canManageComms)) return;
     const hiddenByPhase =
-      (tournamentAdminPhase.key === "setup" && tab === "jogos") ||
+      (canManageTournament && tournamentAdminPhase.key === "setup" && tab === "jogos") ||
       (tournamentAdminPhase.key === "live" && tab === "organizacao") ||
       (tournamentAdminPhase.key === "finished" && (tab === "organizacao" || tab === "jogadores"));
     if (!hiddenByPhase || tab === tournamentAdminPhase.primaryTab) return;
-    navigate(`/eventos/${encodeURIComponent(tournamentId)}/${tournamentAdminPhase.primaryTab}`, { replace: true });
-  }, [isOwner, navigate, tab, tournamentAdminPhase.key, tournamentAdminPhase.primaryTab, tournamentId]);
+    const next = coerceTournamentTabForCapabilities(tournamentAdminPhase.primaryTab, {
+      canManageTournament,
+      canManagePlayers,
+      canManageMatches,
+      canSeeClassificationTab,
+      canUseChatTab,
+      hideGamesInSetup: canManageTournament && tournamentAdminPhase.key === "setup",
+      hideOrganization: tournamentAdminPhase.key === "live" || tournamentAdminPhase.key === "finished",
+      hidePlayers: tournamentAdminPhase.key === "finished",
+    });
+    navigate(`/eventos/${encodeURIComponent(tournamentId)}/${next}`, { replace: true });
+  }, [
+    canManageComms,
+    canManageMatches,
+    canManagePlayers,
+    canManageTournament,
+    canSeeClassificationTab,
+    canUseChatTab,
+    navigate,
+    tab,
+    tournamentAdminPhase.key,
+    tournamentAdminPhase.primaryTab,
+    tournamentId,
+  ]);
 
   const pinnedChatMessage = useMemo(
     () => chatMessages.find((m) => m.isPinned) ?? null,
@@ -1514,7 +1641,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   };
 
   const postAnnouncementNow = async () => {
-    if (!tournament) return;
+    if (!tournament || !canManageComms) return;
     const text = announcementText.trim();
     if (!text) return;
     setChatBusy(true);
@@ -1532,7 +1659,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   };
 
   const pinMessageNow = async (messageId: string | null) => {
-    if (!tournament) return;
+    if (!tournament || !canManageComms) return;
     setChatBusy(true);
     try {
       await setTournamentPinnedMessage(tournament.id, messageId);
@@ -1545,7 +1672,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   };
 
   const deleteChatMessageNow = async (messageId: string) => {
-    if (!tournament) return;
+    if (!tournament || !canManageComms) return;
     setChatBusy(true);
     try {
       await deleteTournamentChatMessage(tournament.id, messageId);
@@ -1554,6 +1681,40 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao excluir mensagem." });
     } finally {
       setChatBusy(false);
+    }
+  };
+
+  const addTournamentStaffNow = async () => {
+    if (!tournament || !isOwner) return;
+    const email = staffEmail.trim();
+    if (!email) {
+      setFeedback({ kind: "error", text: "Informe o email do usuario que ja tem login." });
+      return;
+    }
+    setStaffBusy(true);
+    try {
+      const row = await addTournamentStaff(tournament.id, email, staffRole);
+      setStaffMembers((prev) => [row, ...prev.filter((item) => item.userId !== row.userId)]);
+      setStaffEmail("");
+      setFeedback({ kind: "success", text: "Acesso da equipe atualizado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao vincular equipe." });
+    } finally {
+      setStaffBusy(false);
+    }
+  };
+
+  const removeTournamentStaffNow = async (member: TournamentStaffMember) => {
+    if (!tournament || !isOwner) return;
+    setStaffBusy(true);
+    try {
+      await removeTournamentStaff(tournament.id, member.userId);
+      setStaffMembers((prev) => prev.filter((item) => item.userId !== member.userId));
+      setFeedback({ kind: "success", text: "Acesso removido da equipe." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao remover acesso." });
+    } finally {
+      setStaffBusy(false);
     }
   };
 
@@ -1613,19 +1774,22 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
         setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
         setAgendaDirty(false);
-        const [regs, submissions, confirmations, payments] = await Promise.all([
+        const detailsCaps = tournamentRoleCapabilities(details.role);
+        const [regs, submissions, confirmations, payments, staff] = await Promise.all([
           loadTournamentRegistrations(user, details.id, details.role),
           loadTournamentResultSubmissions(details.id).catch(() => [] as TournamentMatchResultSubmission[]),
           loadTournamentMatchConfirmations(details.id).catch(() => [] as TournamentMatchConfirmation[]),
           details.role === "owner"
             ? listMyPayments("tournament_registration").catch(() => [] as AppPayment[])
             : Promise.resolve([] as AppPayment[]),
+          detailsCaps.isOwner ? listTournamentStaff(details.id).catch(() => [] as TournamentStaffMember[]) : Promise.resolve([] as TournamentStaffMember[]),
         ]);
         if (!alive) return;
         setRegistrations(regs);
         setResultSubmissions(submissions);
         setMatchConfirmations(confirmations);
         setPaymentsByTarget(Object.fromEntries(payments.map((payment) => [`${payment.targetType}:${payment.targetId}`, payment])));
+        setStaffMembers(staff);
         setFeedback(null);
       } catch (err) {
         if (!alive) return;
@@ -3576,7 +3740,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         <>
           <article className="card" style={{ marginBottom: 12 }}>
             <div className="section-title" style={{ marginBottom: 8 }}>
-              <h2>{isOwner ? "Painel do organizador" : "Resumo do torneio"}</h2>
+              <h2>{isOwner || isTournamentStaff ? "Painel do torneio" : "Resumo do torneio"}</h2>
               <StatusBadge status={tournament.status} />
             </div>
             <p className="subtle" style={{ margin: 0 }}>
@@ -3595,7 +3759,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <strong>{tournamentOverview.pendingMatches}</strong>
                 <span>Jogos pendentes</span>
               </div>
-              {isOwner ? (
+              {canManagePlayers ? (
                 <div className="tournament-overview-kpi">
                   <strong>{tournamentOverview.pendingRegistrations}</strong>
                   <span>Inscricoes pendentes</span>
@@ -3606,7 +3770,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               <span>Proxima acao</span>
               <strong>{tournamentOverview.nextAction}</strong>
             </button>
-            {isOwner ? (
+            {canManageTournament ? (
               <div className="tournament-phase-flow">
                 {TOURNAMENT_ADMIN_PHASES.map((phase) => (
                   <button
@@ -3620,7 +3784,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 ))}
               </div>
             ) : null}
-            {isOwner ? (
+            {(canManageTournament || canManagePlayers || canManageMatches) && tournamentPendingCenter.items.length > 0 ? (
               <div className="organizer-pending-center">
                 <div className="organizer-pending-head">
                   <div>
@@ -3651,7 +3815,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               </div>
             ) : null}
-            {isOwner && tournamentAdminPhase.showCompletion ? (
+            {canManageTournament && tournamentAdminPhase.showCompletion ? (
               <div className={`tournament-completion-guard ${tournamentCompletionBlockers.length === 0 ? "ready" : ""}`}>
                 <div>
                   <span>Encerramento</span>
@@ -3693,7 +3857,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 ) : null}
               </div>
             ) : null}
-            {isOwner && unavailableConfirmationCount > 0 ? (
+            {canManageMatches && unavailableConfirmationCount > 0 ? (
               <div className="organizer-alert-card">
                 <span>Indisponibilidade avisada</span>
                 <strong>{unavailableConfirmationCount} aviso(s) em partidas pendentes</strong>
@@ -3713,7 +3877,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <button onClick={() => goToTab("jogos")}>Ver partidas</button>
               </div>
             ) : null}
-            {!isOwner && nextPlayerMatch ? (() => {
+            {!isOwner && !isTournamentStaff && nextPlayerMatch ? (() => {
               const scheduled = agendaAssignmentByMatchKey.get(
                 buildScheduleMatchKey(
                   nextPlayerMatch.categoryName,
@@ -3765,7 +3929,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           </article>
 
           <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
-            {(isOwner ? tournamentAdminPhase.key !== "setup" : true) ? (
+            {(canManageTournament ? tournamentAdminPhase.key !== "setup" : true) ? (
             <button className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
               Jogos
             </button>
@@ -3775,12 +3939,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 Classificacao
               </button>
             ) : null}
-            {isOwner && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
+            {canManageTournament && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
               <button className={tab === "organizacao" ? "active" : ""} onClick={() => goToTab("organizacao")}>
                 Organizacao
               </button>
             ) : null}
-            {isOwner && tournamentAdminPhase.key !== "finished" ? (
+            {canManagePlayers && tournamentAdminPhase.key !== "finished" ? (
               <button className={tab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
                 Jogadores
               </button>
@@ -3846,7 +4010,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </>
               ) : null}
 
-              {!isOwner && myTournamentMatches.length > 0 ? (
+              {!isOwner && !isTournamentStaff && myTournamentMatches.length > 0 ? (
                 <div className="my-matches-panel">
                   <div className="section-title" style={{ marginBottom: 8 }}>
                     <h3>Minhas partidas</h3>
@@ -3865,7 +4029,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       submissions,
                       confirmations,
                       myUserId: user.id,
-                      isOwner,
+                      isOwner: false,
                     });
                     const hasAccepted = submissions.some((submission) => submission.status === "accepted");
                     const hasConflict = submissions.some((submission) => submission.status === "conflict");
@@ -3928,7 +4092,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               ) : null}
 
-              {isOwner ? (
+              {canManageMatches ? (
                 <div className="tournament-admin-ops">
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>Operacoes e exportacoes</h3>
                   {pendingResultReviewCount > 0 ? (
@@ -4043,7 +4207,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       submissions,
                       confirmations,
                       myUserId: user.id,
-                      isOwner,
+                      isOwner: canManageMatches,
                     });
                     return (
                       <div key={`${activeClass.key}:g:${gi}:${mi}`} className={`match-card ${m.done ? "done" : "pending"} state-${opState.severity}`}>
@@ -4063,9 +4227,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         ) : null}
                         <p className={`match-operational-state ${opState.severity}`}>
                           <span>{opState.label}</span>
-                          <strong>{isOwner ? opState.ownerAction : opState.playerAction}</strong>
+                          <strong>{canManageMatches ? opState.ownerAction : opState.playerAction}</strong>
                         </p>
-                        {isOwner && confirmations.length > 0 ? (
+                        {canManageMatches && confirmations.length > 0 ? (
                           <p className="match-confirmation-summary">
                             Confirmacoes:{" "}
                             {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
@@ -4125,7 +4289,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       submissions,
                       confirmations,
                       myUserId: user.id,
-                      isOwner,
+                      isOwner: canManageMatches,
                     });
                     return (
                       <div key={`${activeClass.key}:ko:${ri}:${mi}`} className={`match-card ${m.done ? "done" : "pending"} state-${opState.severity}`}>
@@ -4145,9 +4309,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         ) : null}
                         <p className={`match-operational-state ${opState.severity}`}>
                           <span>{opState.label}</span>
-                          <strong>{isOwner ? opState.ownerAction : opState.playerAction}</strong>
+                          <strong>{canManageMatches ? opState.ownerAction : opState.playerAction}</strong>
                         </p>
-                        {isOwner && confirmations.length > 0 ? (
+                        {canManageMatches && confirmations.length > 0 ? (
                           <p className="match-confirmation-summary">
                             Confirmacoes:{" "}
                             {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
@@ -4235,7 +4399,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </section>
           ) : null}
 
-          {tab === "organizacao" && isOwner && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
+          {tab === "organizacao" && canManageTournament && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
             <section className="card">
               <h3 style={{ marginTop: 0 }}>Organizacao do torneio</h3>
               <div className="setup-overview">
@@ -4286,6 +4450,65 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               <p id="setup-players-hint" className="subtle" style={{ marginTop: 12, marginBottom: 0 }}>
                 Jogadores e aprovacoes de inscricao ficam na aba <strong>Jogadores</strong>.
               </p>
+
+              <div className="tournament-admin-ops" style={{ marginTop: 12 }}>
+                <div className="section-title" style={{ marginBottom: 8 }}>
+                  <div>
+                    <h3 style={{ margin: 0 }}>Equipe e permissoes</h3>
+                    <p className="subtle" style={{ margin: "4px 0 0 0" }}>
+                      Vincule usuarios que ja possuem login e entregue apenas a ferramenta necessaria.
+                    </p>
+                  </div>
+                </div>
+                <div className="cluster" style={{ alignItems: "flex-end" }}>
+                  <div style={{ flex: 1, minWidth: 220 }}>
+                    <label>Email do usuario</label>
+                    <input
+                      type="email"
+                      value={staffEmail}
+                      onChange={(event) => setStaffEmail(event.target.value)}
+                      placeholder="email@exemplo.com"
+                      disabled={staffBusy}
+                    />
+                  </div>
+                  <div style={{ width: 210 }}>
+                    <label>Funcao</label>
+                    <select
+                      value={staffRole}
+                      onChange={(event) => setStaffRole(event.target.value as TournamentStaffRole)}
+                      disabled={staffBusy}
+                    >
+                      {Object.entries(TOURNAMENT_STAFF_ROLE_LABELS).map(([role, label]) => (
+                        <option key={role} value={role}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button className="primary" onClick={() => void addTournamentStaffNow()} disabled={staffBusy || !staffEmail.trim()}>
+                    Vincular
+                  </button>
+                </div>
+                <p className="subtle" style={{ margin: "8px 0 10px 0" }}>
+                  {TOURNAMENT_STAFF_ROLE_HINTS[staffRole]}
+                </p>
+                {staffMembers.length === 0 ? (
+                  <p className="subtle" style={{ margin: 0 }}>Nenhum acesso de equipe vinculado.</p>
+                ) : (
+                  <div className="organizer-pending-grid">
+                    {staffMembers.map((member) => (
+                      <div key={member.userId} className="organizer-pending-card">
+                        <strong>{TOURNAMENT_STAFF_ROLE_LABELS[member.role]}</strong>
+                        <span>{member.email || "Usuario vinculado"}</span>
+                        <small>{TOURNAMENT_STAFF_ROLE_HINTS[member.role]}</small>
+                        <button className="danger" onClick={() => void removeTournamentStaffNow(member)} disabled={staffBusy}>
+                          Remover
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <div id="setup-basics" style={{ border: "1px solid var(--color-border)", borderRadius: 10, padding: 10, marginBottom: 12 }}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Dados iniciais do torneio</h3>
@@ -4728,7 +4951,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </section>
           ) : null}
 
-          {tab === "jogadores" && isOwner && tournamentAdminPhase.key !== "finished" ? (
+          {tab === "jogadores" && canManagePlayers && tournamentAdminPhase.key !== "finished" ? (
             <section className="card">
               <h3 style={{ marginTop: 0, marginBottom: 8 }}>Organizacao dos jogadores</h3>
               <div className="tournament-panel-kpis">
@@ -4750,6 +4973,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               </div>
 
+              {canManageTournament ? (
               <div className="tournament-admin-ops">
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Cadastro de jogadores por classe</h3>
                 {activeDraftCategory && activeDraftClass ? (
@@ -4862,6 +5086,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <p className="subtle">Crie ao menos uma categoria e classe na aba Organizacao para cadastrar jogadores.</p>
                 )}
               </div>
+              ) : (
+                <div className="tournament-admin-ops">
+                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>Credenciamento</h3>
+                  <p className="subtle" style={{ margin: 0 }}>
+                    Esta visao mostra aprovacoes e lista de inscricoes. Cadastro manual, sorteio e cabecas de chave ficam com o admin do torneio.
+                  </p>
+                </div>
+              )}
 
               <div className="tournament-admin-ops">
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
@@ -4955,9 +5187,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         <div className="payment-paid-label">Pago via stub</div>
                       ) : null}
                     </div>
-                    {r.status === "pending" || r.status === "waitlist" || paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid" ? (
+                    {r.status === "pending" || r.status === "waitlist" || (isOwner && paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid") ? (
                       <div className="cluster">
-                        {paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid" ? (
+                        {isOwner && paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid" ? (
                           <button onClick={() => void markTournamentRegistrationPaid(r)} disabled={saving || registrationBusy}>
                             Marcar pago
                           </button>
@@ -4990,6 +5222,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 ))}
               </div>
 
+              {canManageTournament ? (
               <div className="tournament-admin-ops" style={{ marginBottom: 0 }}>
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Lista completa de jogadores por classe</h3>
                 <p className="subtle" style={{ marginTop: 0 }}>
@@ -5052,6 +5285,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   </div>
                 ))}
               </div>
+              ) : null}
             </section>
           ) : null}
 
@@ -5063,7 +5297,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <button onClick={() => void refreshChat(true)} disabled={chatBusy || chatLoading}>
                     Atualizar
                   </button>
-                  {isOwner && pinnedChatMessage ? (
+                  {canManageComms && pinnedChatMessage ? (
                     <button className="ghost" onClick={() => void pinMessageNow(null)} disabled={chatBusy}>
                       Desfixar topo
                     </button>
@@ -5090,7 +5324,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </article>
               ) : null}
 
-              {isOwner ? (
+              {canManageComms ? (
                 <div className="tournament-admin-ops" style={{ marginBottom: 10 }}>
                   <h4 style={{ marginTop: 0, marginBottom: 8 }}>Aviso do admin</h4>
                   <textarea
@@ -5154,7 +5388,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         </span>
                       </div>
                       <p style={{ margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
-                      {isOwner ? (
+                      {canManageComms ? (
                         <div className="cluster" style={{ marginTop: 6 }}>
                           <button
                             className="ghost"
