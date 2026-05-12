@@ -157,11 +157,9 @@ export function LeaguesPage({ user, profile }: Props) {
         <div className="empty-state">
           <span className="empty-emoji">ATP</span>
           <p>{mode === "organizing" ? "Voce ainda nao organiza ligas." : "Voce ainda nao participa de ligas."}</p>
-          {mode === "organizing" ? (
-            <button className="empty-action" onClick={() => setShowCreate(true)}>
-              Criar liga
-            </button>
-          ) : null}
+          <button className="empty-action" onClick={() => (mode === "organizing" ? setShowCreate(true) : navigate("/eventos"))}>
+            {mode === "organizing" ? "Criar liga" : "Voltar para competicoes"}
+          </button>
         </div>
       ) : null}
 
@@ -225,7 +223,7 @@ export function LeaguesPage({ user, profile }: Props) {
               <button className="ghost" onClick={() => setShowCreate(false)} disabled={busy}>
                 Cancelar
               </button>
-              <button onClick={onCreate} disabled={busy}>
+              <button onClick={onCreate} disabled={busy || !name.trim()}>
                 {busy ? "Criando..." : "Criar"}
               </button>
             </div>

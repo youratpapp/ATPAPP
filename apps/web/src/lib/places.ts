@@ -5,24 +5,51 @@ import type {
   AcademyAttendance,
   AcademyCoach,
   AcademyEnrollment,
+  AcademyLessonFitSlot,
+  AcademyLessonRequest,
+  AcademyMakeupCredit,
+  AcademyPlannedAbsence,
+  AcademyProgressNote,
   AcademySlot,
+  AvailableCourt,
   CourtBooking,
+  CourtBookingWaitlistEntry,
   OpenMatch,
   OpenMatchComment,
   Place,
   PlaceCourt,
+  PlaceCrmContact,
+  PlaceExpense,
+  PlaceMembership,
+  PlaceMembershipPlan,
+  PlaceOrganization,
+  PlaceProductPlan,
+  PlacePosProduct,
+  PlacePosSale,
   PlaceStaffMember,
 } from "./types";
 
 const TABLE_PLACES = "places";
 const TABLE_FOLLOWERS = "place_followers";
+const TABLE_ORGANIZATIONS = "place_organizations";
 const TABLE_COURTS = "place_courts";
+const TABLE_MEMBERSHIP_PLANS = "place_membership_plans";
+const TABLE_MEMBERSHIPS = "place_memberships";
+const TABLE_CRM_CONTACTS = "place_crm_contacts";
+const TABLE_POS_PRODUCTS = "place_pos_products";
+const TABLE_POS_SALES = "place_pos_sales";
+const TABLE_EXPENSES = "place_expenses";
 const TABLE_BOOKINGS = "court_bookings";
+const TABLE_BOOKING_WAITLIST = "court_booking_waitlist";
 const TABLE_ACADEMY_CLASSES = "place_academy_classes";
 const TABLE_ACADEMY_COACHES = "place_coaches";
 const TABLE_ACADEMY_SLOTS = "place_academy_slots";
 const TABLE_ACADEMY_ENROLLMENTS = "place_academy_enrollments";
 const TABLE_ACADEMY_ATTENDANCE = "place_academy_attendance";
+const TABLE_ACADEMY_ABSENCES = "place_academy_planned_absences";
+const TABLE_ACADEMY_LESSON_REQUESTS = "place_academy_lesson_requests";
+const TABLE_ACADEMY_MAKEUPS = "place_academy_makeup_credits";
+const TABLE_ACADEMY_PROGRESS = "place_academy_progress_notes";
 const TABLE_OPEN_MATCHES = "open_matches";
 const TABLE_OPEN_MATCH_PARTICIPANTS = "open_match_participants";
 const TABLE_OPEN_MATCH_COMMENTS = "open_match_comments";
@@ -32,6 +59,8 @@ const TABLE_PLACE_STAFF = "place_staff";
 type PlaceRow = {
   id: string;
   owner_id: string;
+  organization_id?: string | null;
+  product_plan?: string | null;
   name: string;
   city: string | null;
   state: string | null;
@@ -40,12 +69,114 @@ type PlaceRow = {
   cover_url: string | null;
 };
 
+const PLACE_SELECT_FIELDS = "id,owner_id,organization_id,product_plan,name,city,state,description,logo_url,cover_url";
+
+function normalizePlaceProductPlan(plan?: string | null): PlaceProductPlan {
+  return plan === "club_basic" || plan === "academy" || plan === "multi_unit" ? plan : "club_pro";
+}
+
+type OrganizationRow = {
+  id: string;
+  owner_id: string;
+  name: string;
+  city: string | null;
+  state: string | null;
+  created_at: string | null;
+};
+
 type CourtRow = {
   id: string;
   place_id: string;
   name: string;
   surface: string | null;
+  booking_fee_cents?: number | null;
+  member_booking_fee_cents?: number | null;
   is_active: boolean | null;
+};
+
+type AvailableCourtRow = CourtRow & {
+  court_id?: string;
+  effective_fee_cents: number | null;
+  is_member_price: boolean | null;
+};
+
+type MembershipPlanRow = {
+  id: string;
+  place_id: string;
+  name: string;
+  monthly_fee_cents: number | null;
+  court_discount_percent: number | null;
+  academy_discount_percent: number | null;
+  is_active: boolean | null;
+  created_at: string | null;
+};
+
+type MembershipRow = {
+  id: string;
+  place_id: string;
+  plan_id: string | null;
+  user_id: string;
+  member_name: string;
+  phone: string | null;
+  status: "pending" | "active" | "cancelled";
+  starts_on: string | null;
+  ends_on: string | null;
+  notes: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type CrmContactRow = {
+  id: string;
+  place_id: string;
+  name: string;
+  phone: string | null;
+  email: string | null;
+  source: string | null;
+  interest: string | null;
+  status: "lead" | "contacted" | "converted" | "archived";
+  notes: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type PosProductRow = {
+  id: string;
+  place_id: string;
+  name: string;
+  category: string | null;
+  price_cents: number | null;
+  stock_quantity: number | null;
+  is_active: boolean | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type PosSaleRow = {
+  id: string;
+  place_id: string;
+  product_id: string | null;
+  product_name: string;
+  buyer_name: string | null;
+  quantity: number | null;
+  unit_amount_cents: number | null;
+  total_amount_cents: number | null;
+  status: "paid" | "cancelled";
+  sold_at: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type ExpenseRow = {
+  id: string;
+  place_id: string;
+  category: string | null;
+  description: string;
+  amount_cents: number | null;
+  spent_on: string;
+  status: "posted" | "cancelled";
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 type BookingRow = {
@@ -58,6 +189,23 @@ type BookingRow = {
   starts_at: string;
   ends_at: string;
   status: "pending" | "confirmed" | "cancelled" | "blocked";
+  notes: string | null;
+  recurrence_group_id?: string | null;
+  recurrence_index?: number | null;
+  recurrence_total?: number | null;
+  created_at: string | null;
+};
+
+type BookingWaitlistRow = {
+  id: string;
+  place_id: string;
+  court_id: string;
+  user_id: string;
+  player_name: string;
+  phone: string | null;
+  starts_at: string;
+  ends_at: string;
+  status: "waiting" | "invited" | "cancelled" | "booked";
   notes: string | null;
   created_at: string | null;
 };
@@ -73,7 +221,13 @@ type AcademyClassRow = {
   starts_at: string;
   ends_at: string;
   level: string | null;
+  gender_scope?: "male" | "female" | "mixed" | null;
+  age_group?: "kids" | "adult" | null;
+  min_age?: number | null;
+  max_age?: number | null;
+  allow_makeup?: boolean | null;
   capacity: number | null;
+  monthly_fee_cents?: number | null;
   is_active: boolean | null;
 };
 
@@ -84,6 +238,7 @@ type AcademyCoachRow = {
   name: string;
   email: string | null;
   phone: string | null;
+  commission_percent?: number | null;
   is_active: boolean | null;
 };
 
@@ -104,11 +259,12 @@ type AcademyEnrollmentRow = {
   id: string;
   place_id: string;
   class_id: string;
-  user_id: string;
+  user_id: string | null;
   player_name: string;
   phone: string | null;
   status: "pending" | "active" | "cancelled";
   notes: string | null;
+  source?: "online" | "admin" | "linked" | null;
   created_at: string | null;
 };
 
@@ -117,10 +273,99 @@ type AcademyAttendanceRow = {
   place_id: string;
   class_id: string;
   enrollment_id: string;
-  user_id: string;
+  user_id: string | null;
   attended_on: string;
   status: "present" | "absent";
   notes: string | null;
+  marked_by: string;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type AcademyPlannedAbsenceRow = {
+  id: string;
+  place_id: string;
+  class_id: string;
+  enrollment_id: string;
+  user_id: string | null;
+  absence_on: string;
+  status: "open" | "used" | "cancelled";
+  notes: string | null;
+  created_by: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type AcademyLessonFitSlotRow = {
+  class_id: string;
+  place_id: string;
+  title: string;
+  coach_id: string | null;
+  coach_name: string | null;
+  court_id: string | null;
+  weekday: number | null;
+  starts_at: string;
+  ends_at: string;
+  level: string | null;
+  gender_scope: "male" | "female" | "mixed" | null;
+  age_group: "kids" | "adult" | null;
+  min_age: number | null;
+  max_age: number | null;
+  capacity: number | null;
+  active_enrollments: number | null;
+  open_absences: number | null;
+  approved_requests: number | null;
+  available_spots: number | null;
+  monthly_fee_cents: number | null;
+};
+
+type AcademyLessonRequestRow = {
+  id: string;
+  place_id: string;
+  class_id: string;
+  absence_id: string | null;
+  makeup_credit_id: string | null;
+  requested_by: string | null;
+  requested_on: string;
+  request_type: "makeup" | "drop_in";
+  player_name: string;
+  phone: string | null;
+  email: string | null;
+  age: number | null;
+  level_label: string | null;
+  notes: string | null;
+  status: "pending" | "approved" | "rejected" | "cancelled";
+  payment_status: "pending" | "paid" | "waived";
+  amount_cents: number | null;
+  approved_by: string | null;
+  approved_at: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type AcademyMakeupCreditRow = {
+  id: string;
+  place_id: string;
+  class_id: string;
+  enrollment_id: string;
+  user_id: string | null;
+  source_attendance_id: string | null;
+  status: "open" | "used" | "cancelled";
+  notes: string | null;
+  used_at: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type AcademyProgressNoteRow = {
+  id: string;
+  place_id: string;
+  class_id: string;
+  enrollment_id: string;
+  user_id: string | null;
+  level_label: string | null;
+  focus: string | null;
+  notes: string;
   marked_by: string;
   created_at: string | null;
   updated_at: string | null;
@@ -159,6 +404,8 @@ function rowToPlace(row: PlaceRow, followerCount = 0, isFollowing = false): Plac
   return {
     id: row.id,
     ownerId: row.owner_id,
+    organizationId: row.organization_id || "",
+    productPlan: normalizePlaceProductPlan(row.product_plan),
     name: row.name,
     city: row.city ?? "",
     state: row.state ?? "",
@@ -176,7 +423,108 @@ function rowToCourt(row: CourtRow): PlaceCourt {
     placeId: row.place_id,
     name: row.name,
     surface: row.surface || "",
+    bookingFeeCents: Number(row.booking_fee_cents || 0),
+    memberBookingFeeCents: row.member_booking_fee_cents ?? null,
     isActive: row.is_active !== false,
+  };
+}
+
+function rowToAvailableCourt(row: AvailableCourtRow): AvailableCourt {
+  return {
+    ...rowToCourt({ ...row, id: row.court_id || row.id }),
+    effectiveFeeCents: Number(row.effective_fee_cents || 0),
+    isMemberPrice: Boolean(row.is_member_price),
+  };
+}
+
+function rowToMembershipPlan(row: MembershipPlanRow): PlaceMembershipPlan {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    name: row.name,
+    monthlyFeeCents: Number(row.monthly_fee_cents || 0),
+    courtDiscountPercent: Number(row.court_discount_percent || 0),
+    academyDiscountPercent: Number(row.academy_discount_percent || 0),
+    isActive: row.is_active !== false,
+    createdAt: row.created_at || "",
+  };
+}
+
+function rowToMembership(row: MembershipRow): PlaceMembership {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    planId: row.plan_id || "",
+    userId: row.user_id,
+    memberName: row.member_name,
+    phone: row.phone || "",
+    status: row.status,
+    startsOn: row.starts_on || "",
+    endsOn: row.ends_on || "",
+    notes: row.notes || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToCrmContact(row: CrmContactRow): PlaceCrmContact {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    name: row.name,
+    phone: row.phone || "",
+    email: row.email || "",
+    source: row.source || "",
+    interest: row.interest || "",
+    status: row.status,
+    notes: row.notes || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToPosProduct(row: PosProductRow): PlacePosProduct {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    name: row.name,
+    category: row.category || "",
+    priceCents: Number(row.price_cents || 0),
+    stockQuantity: Number(row.stock_quantity || 0),
+    isActive: row.is_active !== false,
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToPosSale(row: PosSaleRow): PlacePosSale {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    productId: row.product_id || "",
+    productName: row.product_name,
+    buyerName: row.buyer_name || "",
+    quantity: Number(row.quantity || 0),
+    unitAmountCents: Number(row.unit_amount_cents || 0),
+    totalAmountCents: Number(row.total_amount_cents || 0),
+    status: row.status,
+    soldAt: row.sold_at || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToExpense(row: ExpenseRow): PlaceExpense {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    category: row.category || "",
+    description: row.description,
+    amountCents: Number(row.amount_cents || 0),
+    spentOn: row.spent_on,
+    status: row.status,
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
   };
 }
 
@@ -185,6 +533,26 @@ function rowToBooking(row: BookingRow, courtName = "", placeName = ""): CourtBoo
     id: row.id,
     placeId: row.place_id,
     placeName,
+    courtId: row.court_id,
+    courtName,
+    userId: row.user_id,
+    playerName: row.player_name,
+    phone: row.phone || "",
+    startsAt: row.starts_at,
+    endsAt: row.ends_at,
+    status: row.status,
+    notes: row.notes || "",
+    recurrenceGroupId: row.recurrence_group_id || "",
+    recurrenceIndex: Number(row.recurrence_index || 0),
+    recurrenceTotal: Number(row.recurrence_total || 0),
+    createdAt: row.created_at || "",
+  };
+}
+
+function rowToBookingWaitlist(row: BookingWaitlistRow, courtName = ""): CourtBookingWaitlistEntry {
+  return {
+    id: row.id,
+    placeId: row.place_id,
     courtId: row.court_id,
     courtName,
     userId: row.user_id,
@@ -210,7 +578,13 @@ function rowToAcademyClass(row: AcademyClassRow): AcademyClass {
     startsAt: row.starts_at,
     endsAt: row.ends_at,
     level: row.level || "",
+    genderScope: row.gender_scope || "mixed",
+    ageGroup: row.age_group || "adult",
+    minAge: row.min_age ?? null,
+    maxAge: row.max_age ?? null,
+    allowMakeup: row.allow_makeup !== false,
     capacity: row.capacity ?? 8,
+    monthlyFeeCents: Number(row.monthly_fee_cents || 0),
     isActive: row.is_active !== false,
   };
 }
@@ -223,6 +597,7 @@ function rowToAcademyCoach(row: AcademyCoachRow): AcademyCoach {
     name: row.name,
     email: row.email || "",
     phone: row.phone || "",
+    commissionPercent: Number(row.commission_percent || 0),
     isActive: row.is_active !== false,
   };
 }
@@ -252,6 +627,7 @@ function rowToAcademyEnrollment(row: AcademyEnrollmentRow): AcademyEnrollment {
     phone: row.phone || "",
     status: row.status,
     notes: row.notes || "",
+    source: row.source || "online",
     createdAt: row.created_at || "",
   };
 }
@@ -266,6 +642,105 @@ function rowToAcademyAttendance(row: AcademyAttendanceRow): AcademyAttendance {
     attendedOn: row.attended_on,
     status: row.status,
     notes: row.notes || "",
+    markedBy: row.marked_by,
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToAcademyPlannedAbsence(row: AcademyPlannedAbsenceRow): AcademyPlannedAbsence {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    classId: row.class_id,
+    enrollmentId: row.enrollment_id,
+    userId: row.user_id,
+    absenceOn: row.absence_on,
+    status: row.status,
+    notes: row.notes || "",
+    createdBy: row.created_by || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToAcademyLessonFitSlot(row: AcademyLessonFitSlotRow): AcademyLessonFitSlot {
+  return {
+    classId: row.class_id,
+    placeId: row.place_id,
+    title: row.title,
+    coachId: row.coach_id,
+    coachName: row.coach_name || "",
+    courtId: row.court_id,
+    weekday: Number(row.weekday || 0),
+    startsAt: row.starts_at,
+    endsAt: row.ends_at,
+    level: row.level || "",
+    genderScope: row.gender_scope || "mixed",
+    ageGroup: row.age_group || "adult",
+    minAge: row.min_age ?? null,
+    maxAge: row.max_age ?? null,
+    capacity: Number(row.capacity || 0),
+    activeEnrollments: Number(row.active_enrollments || 0),
+    openAbsences: Number(row.open_absences || 0),
+    approvedRequests: Number(row.approved_requests || 0),
+    availableSpots: Number(row.available_spots || 0),
+    monthlyFeeCents: Number(row.monthly_fee_cents || 0),
+  };
+}
+
+function rowToAcademyLessonRequest(row: AcademyLessonRequestRow): AcademyLessonRequest {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    classId: row.class_id,
+    absenceId: row.absence_id,
+    makeupCreditId: row.makeup_credit_id,
+    requestedBy: row.requested_by,
+    requestedOn: row.requested_on,
+    requestType: row.request_type,
+    playerName: row.player_name,
+    phone: row.phone || "",
+    email: row.email || "",
+    age: row.age ?? null,
+    levelLabel: row.level_label || "",
+    notes: row.notes || "",
+    status: row.status,
+    paymentStatus: row.payment_status,
+    amountCents: Number(row.amount_cents || 0),
+    approvedBy: row.approved_by,
+    approvedAt: row.approved_at || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToAcademyMakeupCredit(row: AcademyMakeupCreditRow): AcademyMakeupCredit {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    classId: row.class_id,
+    enrollmentId: row.enrollment_id,
+    userId: row.user_id,
+    sourceAttendanceId: row.source_attendance_id || "",
+    status: row.status,
+    notes: row.notes || "",
+    usedAt: row.used_at || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToAcademyProgressNote(row: AcademyProgressNoteRow): AcademyProgressNote {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    classId: row.class_id,
+    enrollmentId: row.enrollment_id,
+    userId: row.user_id,
+    levelLabel: row.level_label || "",
+    focus: row.focus || "",
+    notes: row.notes,
     markedBy: row.marked_by,
     createdAt: row.created_at || "",
     updatedAt: row.updated_at || "",
@@ -321,6 +796,17 @@ function rowToPlaceStaff(row: PlaceStaffRow): PlaceStaffMember {
   };
 }
 
+function rowToOrganization(row: OrganizationRow): PlaceOrganization {
+  return {
+    id: row.id,
+    ownerId: row.owner_id,
+    name: row.name,
+    city: row.city || "",
+    state: row.state || "",
+    createdAt: row.created_at || "",
+  };
+}
+
 async function decoratePlaces(rows: PlaceRow[], userId: string): Promise<Place[]> {
   if (!supabase || rows.length === 0) {
     return rows.map((r) => rowToPlace(r));
@@ -348,7 +834,7 @@ export async function listAllPlaces(user: User): Promise<Place[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_PLACES)
-    .select("id,owner_id,name,city,state,description,logo_url,cover_url")
+    .select(PLACE_SELECT_FIELDS)
     .order("name", { ascending: true });
   if (error) throw new Error(error.message);
   return decoratePlaces((data ?? []) as PlaceRow[], user.id);
@@ -358,7 +844,7 @@ export async function listPlacesIOwn(user: User): Promise<Place[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_PLACES)
-    .select("id,owner_id,name,city,state,description,logo_url,cover_url")
+    .select(PLACE_SELECT_FIELDS)
     .eq("owner_id", user.id)
     .order("name", { ascending: true });
   if (error) throw new Error(error.message);
@@ -377,7 +863,7 @@ export async function listPlacesIFollow(user: User): Promise<Place[]> {
 
   const { data, error } = await supabase
     .from(TABLE_PLACES)
-    .select("id,owner_id,name,city,state,description,logo_url,cover_url")
+    .select(PLACE_SELECT_FIELDS)
     .in("id", ids)
     .order("name", { ascending: true });
   if (error) throw new Error(error.message);
@@ -386,24 +872,66 @@ export async function listPlacesIFollow(user: User): Promise<Place[]> {
 
 export async function createPlace(
   user: User,
-  input: { name: string; city?: string; state?: string; description?: string; logoUrl?: string }
+  input: { name: string; city?: string; state?: string; description?: string; logoUrl?: string; organizationId?: string; productPlan?: PlaceProductPlan }
 ): Promise<Place> {
   if (!supabase) throw new Error("Supabase não configurado.");
   const payload = {
     owner_id: user.id,
+    organization_id: input.organizationId || null,
     name: input.name.trim(),
     city: input.city?.trim() || null,
     state: (input.state?.trim() || "").toUpperCase().slice(0, 2) || null,
     description: input.description?.trim() || null,
     logo_url: input.logoUrl || null,
+    product_plan: input.productPlan || "club_pro",
   };
   const { data, error } = await supabase
     .from(TABLE_PLACES)
     .insert(payload)
-    .select("id,owner_id,name,city,state,description,logo_url,cover_url")
+    .select(PLACE_SELECT_FIELDS)
     .single();
   if (error) throw new Error(error.message);
   return rowToPlace(data as PlaceRow);
+}
+
+export async function updatePlaceProductPlan(placeId: string, productPlan: PlaceProductPlan): Promise<Place> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_update_place_product_plan", {
+    p_place_id: placeId,
+    p_product_plan: productPlan,
+  });
+  if (error) throw new Error(error.message);
+  return rowToPlace(((data ?? []) as PlaceRow[])[0]);
+}
+
+export async function listMyPlaceOrganizations(user: User): Promise<PlaceOrganization[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ORGANIZATIONS)
+    .select("id,owner_id,name,city,state,created_at")
+    .eq("owner_id", user.id)
+    .order("name", { ascending: true });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as OrganizationRow[]).map(rowToOrganization);
+}
+
+export async function createPlaceOrganization(
+  user: User,
+  input: { name: string; city?: string; state?: string }
+): Promise<PlaceOrganization> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_ORGANIZATIONS)
+    .insert({
+      owner_id: user.id,
+      name: input.name.trim(),
+      city: input.city?.trim() || null,
+      state: (input.state?.trim() || "").toUpperCase().slice(0, 2) || null,
+    })
+    .select("id,owner_id,name,city,state,created_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToOrganization(data as OrganizationRow);
 }
 
 export async function followPlace(user: User, placeId: string): Promise<void> {
@@ -440,7 +968,7 @@ export async function listPlaceCourts(placeId: string): Promise<PlaceCourt[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_COURTS)
-    .select("id,place_id,name,surface,is_active")
+    .select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active")
     .eq("place_id", placeId)
     .order("name", { ascending: true });
   if (error) throw new Error(error.message);
@@ -460,10 +988,286 @@ export async function createPlaceCourt(input: {
       name: input.name.trim(),
       surface: input.surface?.trim() || null,
     })
-    .select("id,place_id,name,surface,is_active")
+    .select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active")
     .single();
   if (error) throw new Error(error.message);
   return rowToCourt(data as CourtRow);
+}
+
+export async function listPlaceMembershipPlans(placeId: string): Promise<PlaceMembershipPlan[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_MEMBERSHIP_PLANS)
+    .select("id,place_id,name,monthly_fee_cents,court_discount_percent,academy_discount_percent,is_active,created_at")
+    .eq("place_id", placeId)
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as MembershipPlanRow[]).map(rowToMembershipPlan);
+}
+
+export async function createPlaceMembershipPlan(input: {
+  placeId: string;
+  name: string;
+  monthlyFeeCents?: number;
+  courtDiscountPercent?: number;
+  academyDiscountPercent?: number;
+}): Promise<PlaceMembershipPlan> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_MEMBERSHIP_PLANS)
+    .insert({
+      place_id: input.placeId,
+      name: input.name.trim(),
+      monthly_fee_cents: Math.max(0, Math.floor(input.monthlyFeeCents || 0)),
+      court_discount_percent: Math.max(0, Math.min(100, Math.floor(input.courtDiscountPercent || 0))),
+      academy_discount_percent: Math.max(0, Math.min(100, Math.floor(input.academyDiscountPercent || 0))),
+    })
+    .select("id,place_id,name,monthly_fee_cents,court_discount_percent,academy_discount_percent,is_active,created_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToMembershipPlan(data as MembershipPlanRow);
+}
+
+export async function updatePlaceMembershipPlan(
+  planId: string,
+  patch: Partial<Pick<PlaceMembershipPlan, "name" | "monthlyFeeCents" | "courtDiscountPercent" | "academyDiscountPercent" | "isActive">>
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const payload: Record<string, unknown> = {};
+  if (patch.name !== undefined) payload.name = patch.name.trim();
+  if (patch.monthlyFeeCents !== undefined) payload.monthly_fee_cents = Math.max(0, Math.floor(patch.monthlyFeeCents || 0));
+  if (patch.courtDiscountPercent !== undefined) payload.court_discount_percent = Math.max(0, Math.min(100, Math.floor(patch.courtDiscountPercent || 0)));
+  if (patch.academyDiscountPercent !== undefined) payload.academy_discount_percent = Math.max(0, Math.min(100, Math.floor(patch.academyDiscountPercent || 0)));
+  if (patch.isActive !== undefined) payload.is_active = patch.isActive;
+  const { error } = await supabase.from(TABLE_MEMBERSHIP_PLANS).update(payload).eq("id", planId);
+  if (error) throw new Error(error.message);
+}
+
+export async function listPlaceMemberships(placeId: string): Promise<PlaceMembership[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_MEMBERSHIPS)
+    .select("id,place_id,plan_id,user_id,member_name,phone,status,starts_on,ends_on,notes,created_at,updated_at")
+    .eq("place_id", placeId)
+    .neq("status", "cancelled")
+    .order("created_at", { ascending: false })
+    .limit(120);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as MembershipRow[]).map(rowToMembership);
+}
+
+export async function listMyPlaceMemberships(): Promise<PlaceMembership[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_MEMBERSHIPS)
+    .select("id,place_id,plan_id,user_id,member_name,phone,status,starts_on,ends_on,notes,created_at,updated_at")
+    .neq("status", "cancelled")
+    .order("created_at", { ascending: false })
+    .limit(120);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as MembershipRow[]).map(rowToMembership);
+}
+
+export async function requestPlaceMembership(input: {
+  placeId: string;
+  planId: string;
+  memberName: string;
+  phone?: string;
+  notes?: string;
+}): Promise<PlaceMembership> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_request_place_membership", {
+    p_place_id: input.placeId,
+    p_plan_id: input.planId,
+    p_member_name: input.memberName,
+    p_phone: input.phone || null,
+    p_notes: input.notes || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as MembershipRow[])[0];
+  if (!row) throw new Error("Solicitacao de socio nao criada.");
+  return rowToMembership(row);
+}
+
+export async function updatePlaceMembershipStatus(
+  membershipId: string,
+  status: PlaceMembership["status"]
+): Promise<PlaceMembership> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_update_place_membership_status", {
+    p_membership_id: membershipId,
+    p_status: status,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as MembershipRow[])[0];
+  if (!row) throw new Error("Socio nao atualizado.");
+  return rowToMembership(row);
+}
+
+export async function listPlaceCrmContacts(placeId: string): Promise<PlaceCrmContact[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_CRM_CONTACTS)
+    .select("id,place_id,name,phone,email,source,interest,status,notes,created_at,updated_at")
+    .eq("place_id", placeId)
+    .neq("status", "archived")
+    .order("created_at", { ascending: false })
+    .limit(120);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as CrmContactRow[]).map(rowToCrmContact);
+}
+
+export async function createPlaceCrmContact(input: {
+  placeId: string;
+  name: string;
+  phone?: string;
+  email?: string;
+  source?: string;
+  interest?: string;
+  notes?: string;
+}): Promise<PlaceCrmContact> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_CRM_CONTACTS)
+    .insert({
+      place_id: input.placeId,
+      name: input.name.trim(),
+      phone: input.phone?.trim() || null,
+      email: input.email?.trim() || null,
+      source: input.source?.trim() || null,
+      interest: input.interest?.trim() || null,
+      notes: input.notes?.trim() || null,
+    })
+    .select("id,place_id,name,phone,email,source,interest,status,notes,created_at,updated_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToCrmContact(data as CrmContactRow);
+}
+
+export async function updatePlaceCrmContactStatus(
+  contactId: string,
+  status: PlaceCrmContact["status"]
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_CRM_CONTACTS).update({ status }).eq("id", contactId);
+  if (error) throw new Error(error.message);
+}
+
+export async function listPlacePosProducts(placeId: string): Promise<PlacePosProduct[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_POS_PRODUCTS)
+    .select("id,place_id,name,category,price_cents,stock_quantity,is_active,created_at,updated_at")
+    .eq("place_id", placeId)
+    .eq("is_active", true)
+    .order("name", { ascending: true });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PosProductRow[]).map(rowToPosProduct);
+}
+
+export async function createPlacePosProduct(input: {
+  placeId: string;
+  name: string;
+  category?: string;
+  priceCents?: number;
+  stockQuantity?: number;
+}): Promise<PlacePosProduct> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_POS_PRODUCTS)
+    .insert({
+      place_id: input.placeId,
+      name: input.name.trim(),
+      category: input.category?.trim() || null,
+      price_cents: Math.max(0, Math.floor(input.priceCents || 0)),
+      stock_quantity: Math.max(0, Math.floor(input.stockQuantity || 0)),
+    })
+    .select("id,place_id,name,category,price_cents,stock_quantity,is_active,created_at,updated_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToPosProduct(data as PosProductRow);
+}
+
+export async function listPlacePosSales(placeId: string): Promise<PlacePosSale[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_POS_SALES)
+    .select("id,place_id,product_id,product_name,buyer_name,quantity,unit_amount_cents,total_amount_cents,status,sold_at,created_at,updated_at")
+    .eq("place_id", placeId)
+    .order("sold_at", { ascending: false })
+    .limit(120);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PosSaleRow[]).map(rowToPosSale);
+}
+
+export async function recordPlacePosSale(input: {
+  placeId: string;
+  productId?: string | null;
+  productName?: string;
+  buyerName?: string;
+  quantity?: number;
+  unitAmountCents?: number;
+}): Promise<PlacePosSale> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_record_place_pos_sale", {
+    p_place_id: input.placeId,
+    p_product_id: input.productId || null,
+    p_product_name: input.productName || null,
+    p_buyer_name: input.buyerName || null,
+    p_quantity: input.quantity || 1,
+    p_unit_amount_cents: input.unitAmountCents || 0,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as PosSaleRow[])[0];
+  if (!row) throw new Error("Venda nao registrada.");
+  return rowToPosSale(row);
+}
+
+export async function cancelPlacePosSale(saleId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_POS_SALES).update({ status: "cancelled" }).eq("id", saleId);
+  if (error) throw new Error(error.message);
+}
+
+export async function listPlaceExpenses(placeId: string): Promise<PlaceExpense[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_EXPENSES)
+    .select("id,place_id,category,description,amount_cents,spent_on,status,created_at,updated_at")
+    .eq("place_id", placeId)
+    .order("spent_on", { ascending: false })
+    .limit(120);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as ExpenseRow[]).map(rowToExpense);
+}
+
+export async function createPlaceExpense(input: {
+  placeId: string;
+  category?: string;
+  description: string;
+  amountCents: number;
+  spentOn?: string;
+}): Promise<PlaceExpense> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_EXPENSES)
+    .insert({
+      place_id: input.placeId,
+      category: input.category?.trim() || null,
+      description: input.description.trim(),
+      amount_cents: Math.max(0, Math.floor(input.amountCents || 0)),
+      spent_on: input.spentOn || new Date().toISOString().slice(0, 10),
+    })
+    .select("id,place_id,category,description,amount_cents,spent_on,status,created_at,updated_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToExpense(data as ExpenseRow);
+}
+
+export async function cancelPlaceExpense(expenseId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_EXPENSES).update({ status: "cancelled" }).eq("id", expenseId);
+  if (error) throw new Error(error.message);
 }
 
 export async function listPlaceBookings(placeId: string): Promise<CourtBooking[]> {
@@ -472,7 +1276,7 @@ export async function listPlaceBookings(placeId: string): Promise<CourtBooking[]
   const courtNameById = new Map(courts.map((court) => [court.id, court.name]));
   const { data, error } = await supabase
     .from(TABLE_BOOKINGS)
-    .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,created_at")
+    .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,recurrence_group_id,recurrence_index,recurrence_total,created_at")
     .eq("place_id", placeId)
     .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
     .order("starts_at", { ascending: true })
@@ -481,11 +1285,51 @@ export async function listPlaceBookings(placeId: string): Promise<CourtBooking[]
   return ((data ?? []) as BookingRow[]).map((row) => rowToBooking(row, courtNameById.get(row.court_id) || ""));
 }
 
+export async function listPlaceBookingWaitlist(placeId: string): Promise<CourtBookingWaitlistEntry[]> {
+  if (!supabase) return [];
+  const courts = await listPlaceCourts(placeId);
+  const courtNameById = new Map(courts.map((court) => [court.id, court.name]));
+  const { data, error } = await supabase
+    .from(TABLE_BOOKING_WAITLIST)
+    .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,created_at")
+    .eq("place_id", placeId)
+    .neq("status", "cancelled")
+    .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+    .order("starts_at", { ascending: true })
+    .limit(80);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as BookingWaitlistRow[]).map((row) => rowToBookingWaitlist(row, courtNameById.get(row.court_id) || ""));
+}
+
+export async function listMyCourtBookingWaitlist(): Promise<CourtBookingWaitlistEntry[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_BOOKING_WAITLIST)
+    .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,created_at")
+    .in("status", ["waiting", "invited"])
+    .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+    .order("starts_at", { ascending: true })
+    .limit(80);
+  if (error) throw new Error(error.message);
+
+  const rows = (data ?? []) as BookingWaitlistRow[];
+  if (!rows.length) return [];
+
+  const courtIds = Array.from(new Set(rows.map((row) => row.court_id).filter(Boolean)));
+  const courtResult = courtIds.length
+    ? await supabase.from(TABLE_COURTS).select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active").in("id", courtIds)
+    : { data: [], error: null };
+  if (courtResult.error) throw new Error(courtResult.error.message);
+  const courtNameById = new Map(((courtResult.data ?? []) as CourtRow[]).map((court) => [court.id, court.name]));
+
+  return rows.map((row) => rowToBookingWaitlist(row, courtNameById.get(row.court_id) || ""));
+}
+
 export async function listMyCourtBookings(): Promise<CourtBooking[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_BOOKINGS)
-    .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,created_at")
+    .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,recurrence_group_id,recurrence_index,recurrence_total,created_at")
     .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
     .order("starts_at", { ascending: true })
     .limit(80);
@@ -499,7 +1343,7 @@ export async function listMyCourtBookings(): Promise<CourtBooking[]> {
 
   const [courtResult, placeResult] = await Promise.all([
     courtIds.length > 0
-      ? supabase.from(TABLE_COURTS).select("id,place_id,name,surface,is_active").in("id", courtIds)
+      ? supabase.from(TABLE_COURTS).select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active").in("id", courtIds)
       : Promise.resolve({ data: [], error: null }),
     placeIds.length > 0
       ? supabase.from(TABLE_PLACES).select("id,owner_id,name,city,state,description,logo_url,cover_url").in("id", placeIds)
@@ -543,6 +1387,90 @@ export async function createCourtBooking(input: {
   return rowToBooking(row, courtName);
 }
 
+export async function searchAvailableCourts(input: {
+  placeId: string;
+  startsAt: string;
+  endsAt: string;
+}): Promise<AvailableCourt[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_search_available_courts", {
+    p_place_id: input.placeId,
+    p_starts_at: input.startsAt,
+    p_ends_at: input.endsAt,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AvailableCourtRow[]).map(rowToAvailableCourt);
+}
+
+export async function createRecurringCourtBookings(input: {
+  placeId: string;
+  courtId: string;
+  startsAt: string;
+  endsAt: string;
+  weeks: number;
+  playerName: string;
+  phone?: string;
+  notes?: string;
+}): Promise<CourtBooking[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_create_recurring_court_bookings", {
+    p_place_id: input.placeId,
+    p_court_id: input.courtId,
+    p_starts_at: input.startsAt,
+    p_ends_at: input.endsAt,
+    p_weeks: Math.max(1, Math.min(26, Math.floor(input.weeks || 1))),
+    p_player_name: input.playerName,
+    p_phone: input.phone || null,
+    p_notes: input.notes || null,
+  });
+  if (error) throw new Error(error.message);
+  const rows = (data ?? []) as BookingRow[];
+  if (!rows.length) throw new Error("Reservas nao criadas.");
+  const courts = await listPlaceCourts(input.placeId);
+  const courtName = courts.find((court) => court.id === rows[0]?.court_id)?.name || "";
+  return rows.map((row) => rowToBooking(row, courtName));
+}
+
+export async function joinCourtBookingWaitlist(input: {
+  placeId: string;
+  courtId: string;
+  startsAt: string;
+  endsAt: string;
+  playerName: string;
+  phone?: string;
+  notes?: string;
+}): Promise<CourtBookingWaitlistEntry> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_join_court_booking_waitlist", {
+    p_place_id: input.placeId,
+    p_court_id: input.courtId,
+    p_starts_at: input.startsAt,
+    p_ends_at: input.endsAt,
+    p_player_name: input.playerName,
+    p_phone: input.phone || null,
+    p_notes: input.notes || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as BookingWaitlistRow[])[0];
+  if (!row) throw new Error("Entrada na lista de espera nao criada.");
+  const courts = await listPlaceCourts(input.placeId);
+  const courtName = courts.find((court) => court.id === row.court_id)?.name || "";
+  return rowToBookingWaitlist(row, courtName);
+}
+
+export async function promoteCourtBookingWaitlist(waitlistId: string): Promise<CourtBooking> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_promote_court_booking_waitlist", {
+    p_waitlist_id: waitlistId,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as BookingRow[])[0];
+  if (!row) throw new Error("Reserva nao criada a partir da espera.");
+  const courts = await listPlaceCourts(row.place_id);
+  const courtName = courts.find((court) => court.id === row.court_id)?.name || "";
+  return rowToBooking(row, courtName);
+}
+
 export async function createCourtBlock(input: {
   placeId: string;
   courtId: string;
@@ -572,11 +1500,41 @@ export async function updateCourtBookingStatus(bookingId: string, status: CourtB
   if (error) throw new Error(error.message);
 }
 
+export async function cancelCourtBookingSeries(bookingId: string): Promise<number> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_cancel_court_booking_series", {
+    p_booking_id: bookingId,
+  });
+  if (error) throw new Error(error.message);
+  return Number(data || 0);
+}
+
+export async function updateCourtBookingWaitlistStatus(
+  waitlistId: string,
+  status: CourtBookingWaitlistEntry["status"]
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_BOOKING_WAITLIST).update({ status }).eq("id", waitlistId);
+  if (error) throw new Error(error.message);
+}
+
+export async function updatePlaceCourtPricing(courtId: string, bookingFeeCents: number, memberBookingFeeCents?: number | null): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const payload: Record<string, number | null> = {
+    booking_fee_cents: Math.max(0, Math.floor(bookingFeeCents || 0)),
+  };
+  if (memberBookingFeeCents !== undefined) {
+    payload.member_booking_fee_cents = memberBookingFeeCents === null ? null : Math.max(0, Math.floor(memberBookingFeeCents || 0));
+  }
+  const { error } = await supabase.from(TABLE_COURTS).update(payload).eq("id", courtId);
+  if (error) throw new Error(error.message);
+}
+
 export async function listPlaceAcademyClasses(placeId: string): Promise<AcademyClass[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_CLASSES)
-    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,capacity,is_active")
+    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
     .eq("place_id", placeId)
     .order("weekday", { ascending: true })
     .order("starts_at", { ascending: true });
@@ -588,7 +1546,7 @@ export async function listPlaceCoaches(placeId: string): Promise<AcademyCoach[]>
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_COACHES)
-    .select("id,place_id,user_id,name,email,phone,is_active")
+    .select("id,place_id,user_id,name,email,phone,commission_percent,is_active")
     .eq("place_id", placeId)
     .order("name", { ascending: true });
   if (error) throw new Error(error.message);
@@ -610,10 +1568,31 @@ export async function createPlaceCoach(input: {
       email: input.email?.trim() || null,
       phone: input.phone?.trim() || null,
     })
-    .select("id,place_id,user_id,name,email,phone,is_active")
+    .select("id,place_id,user_id,name,email,phone,commission_percent,is_active")
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyCoach(data as AcademyCoachRow);
+}
+
+export async function linkPlaceCoachByEmail(coachId: string, email: string): Promise<AcademyCoach> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_link_place_coach_by_email", {
+    p_coach_id: coachId,
+    p_email: email,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyCoachRow[])[0];
+  if (!row) throw new Error("Professor nao vinculado.");
+  return rowToAcademyCoach(row);
+}
+
+export async function updatePlaceCoachCommission(coachId: string, commissionPercent: number): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase
+    .from(TABLE_ACADEMY_COACHES)
+    .update({ commission_percent: Math.max(0, Math.min(100, Math.floor(commissionPercent || 0))) })
+    .eq("id", coachId);
+  if (error) throw new Error(error.message);
 }
 
 export async function listPlaceAcademySlots(placeId: string): Promise<AcademySlot[]> {
@@ -657,6 +1636,15 @@ export async function createPlaceAcademySlot(input: {
   return rowToAcademySlot(data as AcademySlotRow);
 }
 
+export async function updatePlaceAcademySlotStatus(
+  slotId: string,
+  status: AcademySlot["status"]
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_ACADEMY_SLOTS).update({ status }).eq("id", slotId);
+  if (error) throw new Error(error.message);
+}
+
 export async function createPlaceAcademyClass(input: {
   placeId: string;
   coachId?: string | null;
@@ -667,7 +1655,13 @@ export async function createPlaceAcademyClass(input: {
   startsAt: string;
   endsAt: string;
   level?: string;
+  genderScope?: AcademyClass["genderScope"];
+  ageGroup?: AcademyClass["ageGroup"];
+  minAge?: number | null;
+  maxAge?: number | null;
+  allowMakeup?: boolean;
   capacity?: number;
+  monthlyFeeCents?: number;
 }): Promise<AcademyClass> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { data, error } = await supabase
@@ -682,20 +1676,47 @@ export async function createPlaceAcademyClass(input: {
       starts_at: input.startsAt,
       ends_at: input.endsAt,
       level: input.level?.trim() || null,
+      gender_scope: input.genderScope || "mixed",
+      age_group: input.ageGroup || "adult",
+      min_age: typeof input.minAge === "number" ? Math.max(0, Math.floor(input.minAge)) : null,
+      max_age: typeof input.maxAge === "number" ? Math.max(0, Math.floor(input.maxAge)) : null,
+      allow_makeup: input.allowMakeup !== false,
       capacity: Math.max(1, Number(input.capacity) || 8),
+      monthly_fee_cents: Math.max(0, Math.floor(input.monthlyFeeCents || 0)),
     })
-    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,capacity,is_active")
+    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyClass(data as AcademyClassRow);
+}
+
+export async function updatePlaceAcademyClassPricing(classId: string, monthlyFeeCents: number): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase
+    .from(TABLE_ACADEMY_CLASSES)
+    .update({ monthly_fee_cents: Math.max(0, Math.floor(monthlyFeeCents || 0)) })
+    .eq("id", classId);
+  if (error) throw new Error(error.message);
 }
 
 export async function listPlaceAcademyEnrollments(placeId: string): Promise<AcademyEnrollment[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_ENROLLMENTS)
-    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,created_at")
+    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
     .eq("place_id", placeId)
+    .neq("status", "cancelled")
+    .order("created_at", { ascending: false })
+    .limit(80);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyEnrollmentRow[]).map(rowToAcademyEnrollment);
+}
+
+export async function listMyAcademyEnrollments(): Promise<AcademyEnrollment[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_ENROLLMENTS)
+    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
     .neq("status", "cancelled")
     .order("created_at", { ascending: false })
     .limit(80);
@@ -722,10 +1743,35 @@ export async function createAcademyEnrollment(input: {
       phone: input.phone?.trim() || null,
       notes: input.notes?.trim() || null,
     })
-    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,created_at")
+    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyEnrollment(data as AcademyEnrollmentRow);
+}
+
+export async function createAcademyEnrollmentForStudent(input: {
+  placeId: string;
+  classId: string;
+  playerName: string;
+  phone?: string;
+  email?: string;
+  notes?: string;
+  status?: "pending" | "active";
+}): Promise<AcademyEnrollment> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_create_academy_enrollment_for_student", {
+    p_place_id: input.placeId,
+    p_class_id: input.classId,
+    p_player_name: input.playerName,
+    p_phone: input.phone || null,
+    p_email: input.email || null,
+    p_notes: input.notes || null,
+    p_status: input.status || "active",
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyEnrollmentRow[])[0];
+  if (!row) throw new Error("Aluno nao matriculado.");
+  return rowToAcademyEnrollment(row);
 }
 
 export async function updateAcademyEnrollmentStatus(
@@ -749,6 +1795,122 @@ export async function listPlaceAcademyAttendance(placeId: string): Promise<Acade
   return ((data ?? []) as AcademyAttendanceRow[]).map(rowToAcademyAttendance);
 }
 
+export async function listPlaceAcademyPlannedAbsences(placeId: string): Promise<AcademyPlannedAbsence[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_ABSENCES)
+    .select("id,place_id,class_id,enrollment_id,user_id,absence_on,status,notes,created_by,created_at,updated_at")
+    .eq("place_id", placeId)
+    .neq("status", "cancelled")
+    .order("absence_on", { ascending: true })
+    .limit(200);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyPlannedAbsenceRow[]).map(rowToAcademyPlannedAbsence);
+}
+
+export async function reportAcademyAbsence(input: {
+  enrollmentId: string;
+  absenceOn: string;
+  notes?: string;
+}): Promise<AcademyPlannedAbsence> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_report_academy_absence", {
+    p_enrollment_id: input.enrollmentId,
+    p_absence_on: input.absenceOn,
+    p_notes: input.notes || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyPlannedAbsenceRow[])[0];
+  if (!row) throw new Error("Ausencia nao registrada.");
+  return rowToAcademyPlannedAbsence(row);
+}
+
+export async function listPlaceAcademyLessonRequests(placeId: string): Promise<AcademyLessonRequest[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_LESSON_REQUESTS)
+    .select("id,place_id,class_id,absence_id,makeup_credit_id,requested_by,requested_on,request_type,player_name,phone,email,age,level_label,notes,status,payment_status,amount_cents,approved_by,approved_at,created_at,updated_at")
+    .eq("place_id", placeId)
+    .order("requested_on", { ascending: true })
+    .order("created_at", { ascending: false })
+    .limit(200);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyLessonRequestRow[]).map(rowToAcademyLessonRequest);
+}
+
+export async function searchAcademyLessonFitSlots(input: {
+  placeId: string;
+  requestedOn: string;
+  level?: string;
+  period?: "" | "morning" | "afternoon" | "night";
+  coachId?: string;
+  age?: number | null;
+  genderScope?: "" | AcademyClass["genderScope"];
+}): Promise<AcademyLessonFitSlot[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_search_academy_lesson_fit_slots", {
+    p_place_id: input.placeId,
+    p_requested_on: input.requestedOn,
+    p_level: input.level || null,
+    p_period: input.period || null,
+    p_coach_id: input.coachId || null,
+    p_age: input.age ?? null,
+    p_gender_scope: input.genderScope || null,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyLessonFitSlotRow[]).map(rowToAcademyLessonFitSlot);
+}
+
+export async function requestAcademyLessonFit(input: {
+  placeId: string;
+  classId: string;
+  requestedOn: string;
+  requestType: AcademyLessonRequest["requestType"];
+  playerName: string;
+  phone?: string;
+  email?: string;
+  age?: number | null;
+  level?: string;
+  notes?: string;
+  makeupCreditId?: string;
+}): Promise<AcademyLessonRequest> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_request_academy_lesson_fit", {
+    p_place_id: input.placeId,
+    p_class_id: input.classId,
+    p_requested_on: input.requestedOn,
+    p_request_type: input.requestType,
+    p_player_name: input.playerName,
+    p_phone: input.phone || null,
+    p_email: input.email || null,
+    p_age: input.age ?? null,
+    p_level: input.level || null,
+    p_notes: input.notes || null,
+    p_makeup_credit_id: input.makeupCreditId || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyLessonRequestRow[])[0];
+  if (!row) throw new Error("Solicitacao nao registrada.");
+  return rowToAcademyLessonRequest(row);
+}
+
+export async function updateAcademyLessonRequestStatus(
+  requestId: string,
+  status: AcademyLessonRequest["status"],
+  paymentStatus?: AcademyLessonRequest["paymentStatus"]
+): Promise<AcademyLessonRequest> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_update_academy_lesson_request_status", {
+    p_request_id: requestId,
+    p_status: status,
+    p_payment_status: paymentStatus || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyLessonRequestRow[])[0];
+  if (!row) throw new Error("Solicitacao nao atualizada.");
+  return rowToAcademyLessonRequest(row);
+}
+
 export async function markAcademyAttendance(input: {
   enrollmentId: string;
   attendedOn: string;
@@ -766,6 +1928,100 @@ export async function markAcademyAttendance(input: {
   const row = ((data ?? []) as AcademyAttendanceRow[])[0];
   if (!row) throw new Error("Presenca nao registrada.");
   return rowToAcademyAttendance(row);
+}
+
+export async function listPlaceAcademyMakeupCredits(placeId: string): Promise<AcademyMakeupCredit[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_MAKEUPS)
+    .select("id,place_id,class_id,enrollment_id,user_id,source_attendance_id,status,notes,used_at,created_at,updated_at")
+    .eq("place_id", placeId)
+    .neq("status", "cancelled")
+    .order("created_at", { ascending: false })
+    .limit(200);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyMakeupCreditRow[]).map(rowToAcademyMakeupCredit);
+}
+
+export async function listMyAcademyMakeupCredits(): Promise<AcademyMakeupCredit[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_MAKEUPS)
+    .select("id,place_id,class_id,enrollment_id,user_id,source_attendance_id,status,notes,used_at,created_at,updated_at")
+    .eq("status", "open")
+    .order("created_at", { ascending: false })
+    .limit(80);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyMakeupCreditRow[]).map(rowToAcademyMakeupCredit);
+}
+
+export async function createAcademyMakeupCredit(attendanceId: string, notes?: string): Promise<AcademyMakeupCredit> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_create_academy_makeup_credit", {
+    p_attendance_id: attendanceId,
+    p_notes: notes || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyMakeupCreditRow[])[0];
+  if (!row) throw new Error("Reposicao nao criada.");
+  return rowToAcademyMakeupCredit(row);
+}
+
+export async function updateAcademyMakeupCreditStatus(
+  creditId: string,
+  status: AcademyMakeupCredit["status"]
+): Promise<AcademyMakeupCredit> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_update_academy_makeup_credit_status", {
+    p_credit_id: creditId,
+    p_status: status,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyMakeupCreditRow[])[0];
+  if (!row) throw new Error("Reposicao nao atualizada.");
+  return rowToAcademyMakeupCredit(row);
+}
+
+export async function listPlaceAcademyProgressNotes(placeId: string): Promise<AcademyProgressNote[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_PROGRESS)
+    .select("id,place_id,class_id,enrollment_id,user_id,level_label,focus,notes,marked_by,created_at,updated_at")
+    .eq("place_id", placeId)
+    .order("created_at", { ascending: false })
+    .limit(200);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyProgressNoteRow[]).map(rowToAcademyProgressNote);
+}
+
+export async function listMyAcademyProgressNotes(): Promise<AcademyProgressNote[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_PROGRESS)
+    .select("id,place_id,class_id,enrollment_id,user_id,level_label,focus,notes,marked_by,created_at,updated_at")
+    .order("created_at", { ascending: false })
+    .limit(80);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyProgressNoteRow[]).map(rowToAcademyProgressNote);
+}
+
+export async function createAcademyProgressNote(input: {
+  enrollmentId: string;
+  levelLabel?: string;
+  focus?: string;
+  notes: string;
+}): Promise<AcademyProgressNote> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_create_academy_progress_note", {
+    p_enrollment_id: input.enrollmentId,
+    p_level_label: input.levelLabel || null,
+    p_focus: input.focus || null,
+    p_notes: input.notes,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyProgressNoteRow[])[0];
+  if (!row) throw new Error("Evolucao nao registrada.");
+  return rowToAcademyProgressNote(row);
 }
 
 export async function listOpenMatches(user: User, placeIds: string[] = []): Promise<OpenMatch[]> {

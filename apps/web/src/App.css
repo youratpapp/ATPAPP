@@ -2134,6 +2134,23 @@ button:disabled {
   color: var(--color-text);
 }
 
+.home-ok-panel {
+  background: linear-gradient(180deg, #ffffff 0%, var(--color-primary-soft) 100%);
+  border-color: var(--color-green-200);
+}
+
+.home-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.home-empty-actions button {
+  font-size: var(--font-size-xs);
+  min-height: 34px;
+}
+
 /* ----- Status badge ----- */
 .status-badge {
   display: inline-block;
@@ -3780,6 +3797,23 @@ button:disabled {
   color: var(--color-text-subtle);
 }
 
+.place-feature-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-2);
+}
+
+.place-feature-strip span {
+  background: #eef6f1;
+  border: 1px solid #cfe9d8;
+  border-radius: var(--radius-pill);
+  color: var(--color-primary-strong);
+  font-size: 11px;
+  font-weight: 900;
+  padding: 3px 8px;
+}
+
 .place-card .pc-logo {
   width: 64px;
   height: 64px;
@@ -3822,6 +3856,22 @@ button:disabled {
   padding-top: var(--space-2);
 }
 
+.place-player-note {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.place-player-note strong {
+  color: var(--color-text);
+}
+
+.place-player-note span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
 .place-booking-head {
   align-items: center;
   display: flex;
@@ -3837,6 +3887,13 @@ button:disabled {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 800;
+}
+
+.place-plan-hint {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  margin: -4px 0 2px;
 }
 
 .place-court-create,
@@ -3881,9 +3938,24 @@ button:disabled {
 }
 
 .academy-resource-card span {
+  align-items: center;
   color: var(--color-text-subtle);
+  display: flex;
   font-size: var(--font-size-xs);
   font-weight: 800;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.academy-resource-card button {
+  min-height: 28px;
+  padding: 4px 8px;
+}
+
+.academy-conflict-note {
+  align-self: center;
+  grid-column: 1 / -1;
+  margin: 0;
 }
 
 .staff-panel {
@@ -3969,6 +4041,59 @@ button:disabled {
   gap: var(--space-2);
 }
 
+.court-calendar-panel {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-2);
+}
+
+.court-calendar-panel input[type="date"] {
+  max-width: 170px;
+}
+
+.court-calendar-grid {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.court-calendar-column {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: var(--space-2);
+}
+
+.court-calendar-column strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.court-calendar-column span,
+.court-calendar-column small {
+  border-radius: var(--radius-sm);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  padding: 4px 6px;
+}
+
+.court-calendar-column span {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.court-calendar-column span.blocked {
+  background: #fffbeb;
+  border-color: #fcd34d;
+}
+
 .place-booking-row {
   align-items: center;
   background: #f8fafc;
@@ -4008,6 +4133,11 @@ button:disabled {
 .place-booking-row small {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
+}
+
+.payment-paid-label {
+  color: var(--color-primary-strong) !important;
+  font-weight: 900;
 }
 
 .place-booking-row > span {
@@ -4126,6 +4256,10 @@ button:disabled {
   .open-match-main {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .court-calendar-grid {
+    grid-template-columns: 1fr;
   }
 
   .open-match-comments div {

@@ -520,7 +520,7 @@ function tryRestoreLastHashRoute(): boolean {
   try {
     last = String(window.sessionStorage.getItem(LAST_HASH_ROUTE_KEY) || "").trim();
   } catch {
-    last = "";
+    // Ignore storage errors and keep the empty fallback.
   }
   if (!last.startsWith("/")) return false;
 

@@ -17,10 +17,10 @@ const TABLE_RESULT_SUBMISSIONS = "tournament_match_result_submissions";
 const TABLE_MATCH_CONFIRMATIONS = "tournament_match_confirmations";
 
 export const TOURNAMENT_COLUMNS =
-  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at,player_result_submission_enabled";
+  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at,player_result_submission_enabled,registration_fee_cents";
 
 const TOURNAMENT_DETAIL_COLUMNS =
-  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,created_at,updated_at,data,player_result_submission_enabled";
+  "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,created_at,updated_at,data,player_result_submission_enabled,registration_fee_cents";
 
 export type TournamentRow = {
   id: string;
@@ -35,6 +35,7 @@ export type TournamentRow = {
   registration_close_at: string | null;
   updated_at: string | null;
   player_result_submission_enabled?: boolean | null;
+  registration_fee_cents?: number | null;
 };
 
 type TournamentDetailRow = TournamentRow & {
@@ -136,6 +137,7 @@ export function rowToSummary(row: TournamentRow): TournamentSummary {
     registrationCloseAt: row.registration_close_at ?? "",
     updatedAt: row.updated_at ?? "",
     playerResultSubmissionEnabled: Boolean(row.player_result_submission_enabled),
+    registrationFeeCents: Number(row.registration_fee_cents || 0),
   };
 }
 
@@ -391,6 +393,7 @@ export async function updateTournamentDetails(
     registrationCloseAt?: string;
     posterUrl?: string;
     playerResultSubmissionEnabled?: boolean;
+    registrationFeeCents?: number;
     data?: Record<string, unknown>;
   }
 ): Promise<TournamentDetails> {
@@ -410,6 +413,9 @@ export async function updateTournamentDetails(
   };
   if (typeof patch.playerResultSubmissionEnabled === "boolean") {
     payload.player_result_submission_enabled = patch.playerResultSubmissionEnabled;
+  }
+  if (typeof patch.registrationFeeCents === "number") {
+    payload.registration_fee_cents = Math.max(0, Math.floor(patch.registrationFeeCents || 0));
   }
 
   const { error } = await supabase
@@ -447,7 +453,7 @@ export async function loadTournamentRegistrations(
 }
 
 export async function requestTournamentRegistration(
-  user: User,
+  _user: User,
   tournamentId: string,
   input: {
     categoryId: string;
@@ -459,7 +465,6 @@ export async function requestTournamentRegistration(
   }
 ): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
-  void user;
 
   const classId = String(input.classId || "").trim();
   const playerName = String(input.playerName || "").trim();

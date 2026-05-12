@@ -378,6 +378,23 @@ export function EventsPage({ user, profile }: Props) {
     return out;
   }, [listByTab, normalizedSearchUf, search, searchCity, sortBy, statusFilter, visibilityFilter]);
 
+  const hasActiveFilters = Boolean(
+    search.trim() ||
+      normalizedSearchUf ||
+      searchCity.trim() ||
+      statusFilter !== "all" ||
+      visibilityFilter !== "all"
+  );
+
+  const clearFilters = () => {
+    setSearch("");
+    setSearchState("");
+    setSearchCity("");
+    setSearchCityOptions([]);
+    setStatusFilter("all");
+    setVisibilityFilter("all");
+  };
+
   const kpis = useMemo(() => {
     const scoped = mode === "organizing" ? organizing : participating;
     const open = scoped.filter((t) => t.status === "registration_open").length;
@@ -534,9 +551,28 @@ export function EventsPage({ user, profile }: Props) {
       {!loading && list.length === 0 ? (
         <div className="empty-state">
           <span className="empty-emoji" aria-hidden>ATP</span>
-          <p>{mode === "organizing" ? "Voce ainda nao organiza torneios." : "Voce ainda nao esta em nenhum torneio."}</p>
-          <button className="empty-action" onClick={() => (mode === "organizing" ? setShowCreate(true) : setShowJoin(true))}>
-            {mode === "organizing" ? "Criar torneio" : "Entrar por codigo"}
+          <p>
+            {listByTab.length > 0 && hasActiveFilters
+              ? "Nenhum torneio encontrado com estes filtros."
+              : mode === "organizing"
+              ? "Voce ainda nao organiza torneios."
+              : "Voce ainda nao esta em nenhum torneio."}
+          </p>
+          <button
+            className="empty-action"
+            onClick={() => {
+              if (listByTab.length > 0 && hasActiveFilters) {
+                clearFilters();
+                return;
+              }
+              if (mode === "organizing") {
+                setShowCreate(true);
+                return;
+              }
+              setShowJoin(true);
+            }}
+          >
+            {listByTab.length > 0 && hasActiveFilters ? "Limpar filtros" : mode === "organizing" ? "Criar torneio" : "Entrar por codigo"}
           </button>
         </div>
       ) : null}

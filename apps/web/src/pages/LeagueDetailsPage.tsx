@@ -33,6 +33,7 @@ import {
   submitLeagueMatchResult,
   updateLeagueSettings,
 } from "../lib/leagues";
+import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
 import type {
   LeagueChatMessage,
   LeagueClassSummary,
@@ -47,6 +48,7 @@ import type {
   LeagueRoundSummary,
   LeagueSchedulerRun,
   Profile,
+  AppPayment,
 } from "../lib/types";
 import { buildLeagueMatchOperationalState, summarizeLeagueMatchStatuses } from "../lib/league-match-state";
 
@@ -99,6 +101,7 @@ type LeagueSettingsDraft = {
   publicJoinEnabled: boolean;
   joinRequiresApproval: boolean;
   autoRoundGenerationEnabled: boolean;
+  registrationFeeCents: number;
 };
 
 type LeagueStandingRowView = LeaguePlayerStanding & {
@@ -293,6 +296,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [messageDraftByMatch, setMessageDraftByMatch] = useState<Record<string, string>>({});
   const [myAvailabilityByMatch, setMyAvailabilityByMatch] = useState<Record<string, string[]>>({});
   const [settingsDraft, setSettingsDraft] = useState<LeagueSettingsDraft | null>(null);
+  const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
   const [leagueChat, setLeagueChat] = useState<LeagueChatMessage[]>([]);
   const [schedulerRuns, setSchedulerRuns] = useState<LeagueSchedulerRun[]>([]);
   const [leagueChatDraft, setLeagueChatDraft] = useState("");
@@ -377,6 +381,15 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }),
     [filteredRegistrations]
   );
+  const registrationPaymentStats = useMemo(() => {
+    const payments = filteredRegistrations
+      .map((registration) => paymentsByTarget[`league_registration:${registration.id}`])
+      .filter((payment): payment is AppPayment => Boolean(payment && payment.status === "paid"));
+    return {
+      paidCount: payments.length,
+      paidAmountCents: payments.reduce((sum, payment) => sum + payment.amountCents, 0),
+    };
+  }, [filteredRegistrations, paymentsByTarget]);
 
   const leagueOverview = useMemo(() => {
     const matches = roundsData.flatMap((row) => row.matches);
@@ -503,6 +516,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         publicJoinEnabled: details.publicJoinEnabled,
         joinRequiresApproval: details.joinRequiresApproval,
         autoRoundGenerationEnabled: details.autoRoundGenerationEnabled,
+        registrationFeeCents: details.registrationFeeCents,
       });
       const initialSeasonId = selectedSeasonId || details.seasons.find((s) => s.status === "active")?.id || details.seasons[0]?.id || "";
       setSelectedSeasonId(initialSeasonId);
@@ -525,15 +539,18 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       }
 
       if (details.ownerId === user.id) {
-        const [registrationRows, schedulerRows] = await Promise.all([
+        const [registrationRows, schedulerRows, paymentRows] = await Promise.all([
           loadLeagueRegistrations(id),
           loadLeagueSchedulerRuns(id).catch(() => [] as LeagueSchedulerRun[]),
+          listMyPayments("league_registration").catch(() => [] as AppPayment[]),
         ]);
         setRegistrations(registrationRows);
         setSchedulerRuns(schedulerRows);
+        setPaymentsByTarget(Object.fromEntries(paymentRows.map((payment) => [`${payment.targetType}:${payment.targetId}`, payment])));
       } else {
         setRegistrations([]);
         setSchedulerRuns([]);
+        setPaymentsByTarget({});
       }
       setLeagueChat(await loadLeagueChatMessages(id).catch(() => []));
     } catch (err) {
@@ -718,7 +735,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       });
       setFeedback({
         kind: "success",
-        text: status === "approved" ? "Inscricao aprovada automaticamente." : "Solicitacao enviada para aprovacao.",
+        text:
+          status === "approved"
+            ? "Inscricao aprovada automaticamente. O pagamento sera confirmado pela plataforma."
+            : "Solicitacao enviada para aprovacao. O pagamento sera confirmado pela plataforma.",
       });
       await loadAll();
     } catch (err) {
@@ -751,12 +771,33 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         leagueId: league.id,
         ...settingsDraft,
         roundIntervalDays: settingsDraft.roundIntervalDays,
-        resultDeadlineDays: settingsDraft.roundIntervalDays,
+        resultDeadlineDays: settingsDraft.resultDeadlineDays,
       });
       setFeedback({ kind: "success", text: "Configuracoes da liga salvas." });
       await loadAll();
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar configuracoes." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onMarkLeagueRegistrationPaid(registration: LeagueRegistration) {
+    if (!league) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const payment = await markStubPaymentPaidForParticipant({
+        targetType: "league_registration",
+        targetId: registration.id,
+        amountCents: league.registrationFeeCents,
+        description: `${league.name} - inscricao ${registration.playerName}`,
+        metadata: { source: "league_admin_manual_stub", leagueId: league.id },
+      });
+      setPaymentsByTarget((prev) => ({ ...prev, [`${payment.targetType}:${payment.targetId}`]: payment }));
+      setFeedback({ kind: "success", text: "Pagamento da inscricao marcado pelo admin." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao marcar pagamento." });
     } finally {
       setBusy(false);
     }
@@ -1322,9 +1363,21 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               ? {
                                   ...prev,
                                   roundIntervalDays: Math.max(1, Number(e.target.value || 1)),
-                                  resultDeadlineDays: Math.max(1, Number(e.target.value || 1)),
                                 }
                               : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Prazo para resultado (dias)
+                      <input
+                        type="number"
+                        min={1}
+                        value={settingsDraft.resultDeadlineDays}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, resultDeadlineDays: Math.max(1, Number(e.target.value || 1)) } : prev
                           )
                         }
                       />
@@ -1377,6 +1430,20 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         onChange={(e) =>
                           setSettingsDraft((prev) =>
                             prev ? { ...prev, maxRecesses: Math.max(0, Number(e.target.value || 0)) } : prev
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      Valor inscricao (R$)
+                      <input
+                        type="number"
+                        min={0}
+                        step="1"
+                        value={Math.round(settingsDraft.registrationFeeCents / 100)}
+                        onChange={(e) =>
+                          setSettingsDraft((prev) =>
+                            prev ? { ...prev, registrationFeeCents: Math.max(0, Math.round(Number(e.target.value || 0) * 100)) } : prev
                           )
                         }
                       />
@@ -1543,7 +1610,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   </div>
                   <div className="modal-actions">
                     <button onClick={onPublicJoin} disabled={busy || !joinPlayerName.trim()}>
-                      {league.joinRequiresApproval ? "Solicitar inscricao" : "Entrar na liga"}
+                      {league.joinRequiresApproval ? "Solicitar inscricao" : "Entrar na liga"} · {formatMoneyFromCents(league.registrationFeeCents)}
                     </button>
                   </div>
                 </section>
@@ -1595,7 +1662,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 {isOwner ? (
                   <p className="subtle" style={{ marginTop: 0 }}>
                     Classe: {selectedClassLabel} | Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas:{" "}
-                    {registrationStats.rejected}
+                    {registrationStats.rejected} | Pagas: {registrationPaymentStats.paidCount}/{filteredRegistrations.length} ·{" "}
+                    {formatMoneyFromCents(registrationPaymentStats.paidAmountCents)}
                   </p>
                 ) : (
                   <p className="subtle">Somente o admin aprova solicitacoes.</p>
@@ -1614,15 +1682,29 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               <span>Status: {r.status}</span>
                               <span>Origem: {r.source === "link" ? "Link" : r.source === "public" ? "Publica" : "Admin"}</span>
                               <span>Classe: {cls ? classLabel(cls) : "-"}</span>
+                              {paymentsByTarget[`league_registration:${r.id}`]?.status === "paid" ? (
+                                <span className="payment-paid-label">Pago via stub</span>
+                              ) : null}
                             </p>
                           </div>
                           {r.status === "pending" ? (
                             <div className="li-actions">
+                              {paymentsByTarget[`league_registration:${r.id}`]?.status !== "paid" ? (
+                                <button onClick={() => void onMarkLeagueRegistrationPaid(r)} disabled={busy}>
+                                  Marcar pago
+                                </button>
+                              ) : null}
                               <button onClick={() => onApproveRegistration(r.id, "approved")} disabled={busy}>
                                 Aprovar
                               </button>
                               <button className="danger" onClick={() => onApproveRegistration(r.id, "rejected")} disabled={busy}>
                                 Rejeitar
+                              </button>
+                            </div>
+                          ) : paymentsByTarget[`league_registration:${r.id}`]?.status !== "paid" ? (
+                            <div className="li-actions">
+                              <button onClick={() => void onMarkLeagueRegistrationPaid(r)} disabled={busy}>
+                                Marcar pago
                               </button>
                             </div>
                           ) : null}

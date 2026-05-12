@@ -10,9 +10,13 @@ export type Profile = {
   bio: string;
 };
 
+export type PlaceProductPlan = "club_basic" | "academy" | "club_pro" | "multi_unit";
+
 export type Place = {
   id: string;
   ownerId: string;
+  organizationId: string;
+  productPlan: PlaceProductPlan;
   name: string;
   city: string;
   state: string;
@@ -21,6 +25,15 @@ export type Place = {
   coverUrl: string;
   followerCount: number;
   isFollowing: boolean;
+};
+
+export type PlaceOrganization = {
+  id: string;
+  ownerId: string;
+  name: string;
+  city: string;
+  state: string;
+  createdAt: string;
 };
 
 export type PlaceStaffMember = {
@@ -36,7 +49,93 @@ export type PlaceCourt = {
   placeId: string;
   name: string;
   surface: string;
+  bookingFeeCents: number;
+  memberBookingFeeCents: number | null;
   isActive: boolean;
+};
+
+export type AvailableCourt = PlaceCourt & {
+  effectiveFeeCents: number;
+  isMemberPrice: boolean;
+};
+
+export type PlaceMembershipPlan = {
+  id: string;
+  placeId: string;
+  name: string;
+  monthlyFeeCents: number;
+  courtDiscountPercent: number;
+  academyDiscountPercent: number;
+  isActive: boolean;
+  createdAt: string;
+};
+
+export type PlaceMembership = {
+  id: string;
+  placeId: string;
+  planId: string;
+  userId: string;
+  memberName: string;
+  phone: string;
+  status: "pending" | "active" | "cancelled";
+  startsOn: string;
+  endsOn: string;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlaceCrmContact = {
+  id: string;
+  placeId: string;
+  name: string;
+  phone: string;
+  email: string;
+  source: string;
+  interest: string;
+  status: "lead" | "contacted" | "converted" | "archived";
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlacePosProduct = {
+  id: string;
+  placeId: string;
+  name: string;
+  category: string;
+  priceCents: number;
+  stockQuantity: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlacePosSale = {
+  id: string;
+  placeId: string;
+  productId: string;
+  productName: string;
+  buyerName: string;
+  quantity: number;
+  unitAmountCents: number;
+  totalAmountCents: number;
+  status: "paid" | "cancelled";
+  soldAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlaceExpense = {
+  id: string;
+  placeId: string;
+  category: string;
+  description: string;
+  amountCents: number;
+  spentOn: string;
+  status: "posted" | "cancelled";
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type CourtBooking = {
@@ -52,6 +151,24 @@ export type CourtBooking = {
   endsAt: string;
   status: "pending" | "confirmed" | "cancelled" | "blocked";
   notes: string;
+  recurrenceGroupId: string;
+  recurrenceIndex: number;
+  recurrenceTotal: number;
+  createdAt: string;
+};
+
+export type CourtBookingWaitlistEntry = {
+  id: string;
+  placeId: string;
+  courtId: string;
+  courtName: string;
+  userId: string;
+  playerName: string;
+  phone: string;
+  startsAt: string;
+  endsAt: string;
+  status: "waiting" | "invited" | "cancelled" | "booked";
+  notes: string;
   createdAt: string;
 };
 
@@ -66,7 +183,13 @@ export type AcademyClass = {
   startsAt: string;
   endsAt: string;
   level: string;
+  genderScope: "male" | "female" | "mixed";
+  ageGroup: "kids" | "adult";
+  minAge: number | null;
+  maxAge: number | null;
+  allowMakeup: boolean;
   capacity: number;
+  monthlyFeeCents: number;
   isActive: boolean;
 };
 
@@ -77,6 +200,7 @@ export type AcademyCoach = {
   name: string;
   email: string;
   phone: string;
+  commissionPercent: number;
   isActive: boolean;
 };
 
@@ -97,11 +221,12 @@ export type AcademyEnrollment = {
   id: string;
   placeId: string;
   classId: string;
-  userId: string;
+  userId: string | null;
   playerName: string;
   phone: string;
   status: "pending" | "active" | "cancelled";
   notes: string;
+  source: "online" | "admin" | "linked";
   createdAt: string;
 };
 
@@ -110,9 +235,98 @@ export type AcademyAttendance = {
   placeId: string;
   classId: string;
   enrollmentId: string;
-  userId: string;
+  userId: string | null;
   attendedOn: string;
   status: "present" | "absent";
+  notes: string;
+  markedBy: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AcademyPlannedAbsence = {
+  id: string;
+  placeId: string;
+  classId: string;
+  enrollmentId: string;
+  userId: string | null;
+  absenceOn: string;
+  status: "open" | "used" | "cancelled";
+  notes: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AcademyLessonFitSlot = {
+  classId: string;
+  placeId: string;
+  title: string;
+  coachId: string | null;
+  coachName: string;
+  courtId: string | null;
+  weekday: number;
+  startsAt: string;
+  endsAt: string;
+  level: string;
+  genderScope: "male" | "female" | "mixed";
+  ageGroup: "kids" | "adult";
+  minAge: number | null;
+  maxAge: number | null;
+  capacity: number;
+  activeEnrollments: number;
+  openAbsences: number;
+  approvedRequests: number;
+  availableSpots: number;
+  monthlyFeeCents: number;
+};
+
+export type AcademyLessonRequest = {
+  id: string;
+  placeId: string;
+  classId: string;
+  absenceId: string | null;
+  makeupCreditId: string | null;
+  requestedBy: string | null;
+  requestedOn: string;
+  requestType: "makeup" | "drop_in";
+  playerName: string;
+  phone: string;
+  email: string;
+  age: number | null;
+  levelLabel: string;
+  notes: string;
+  status: "pending" | "approved" | "rejected" | "cancelled";
+  paymentStatus: "pending" | "paid" | "waived";
+  amountCents: number;
+  approvedBy: string | null;
+  approvedAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AcademyMakeupCredit = {
+  id: string;
+  placeId: string;
+  classId: string;
+  enrollmentId: string;
+  userId: string | null;
+  sourceAttendanceId: string;
+  status: "open" | "used" | "cancelled";
+  notes: string;
+  usedAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AcademyProgressNote = {
+  id: string;
+  placeId: string;
+  classId: string;
+  enrollmentId: string;
+  userId: string | null;
+  levelLabel: string;
+  focus: string;
   notes: string;
   markedBy: string;
   createdAt: string;
@@ -154,6 +368,37 @@ export type NotificationPreferences = {
   reminderHoursBefore: number;
 };
 
+export type AppPayment = {
+  id: string;
+  userId: string;
+  targetType: string;
+  targetId: string;
+  amountCents: number;
+  currency: string;
+  status: "pending" | "paid" | "failed" | "refunded";
+  provider: string;
+  description: string;
+  metadata: Record<string, unknown>;
+  billingPeriod: string;
+  paidAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AppPaymentReminder = {
+  id: string;
+  placeId: string;
+  userId: string;
+  targetType: string;
+  targetId: string;
+  billingPeriod: string;
+  channel: "manual" | "whatsapp" | "email" | "push";
+  status: "queued" | "sent" | "cancelled";
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type TournamentSummary = {
   id: string;
   name: string;
@@ -167,6 +412,7 @@ export type TournamentSummary = {
   registrationCloseAt: string;
   updatedAt: string;
   playerResultSubmissionEnabled: boolean;
+  registrationFeeCents: number;
 };
 
 export type TournamentDetails = TournamentSummary & {
@@ -281,6 +527,7 @@ export type LeagueDetails = {
   publicJoinEnabled: boolean;
   joinRequiresApproval: boolean;
   autoRoundGenerationEnabled: boolean;
+  registrationFeeCents: number;
   status: "draft" | "active" | "paused" | "finished";
   visibility: "private" | "public";
   updatedAt: string;
@@ -445,6 +692,7 @@ export type LeagueJoinContext = {
   classId: string | null;
   categoryName: string | null;
   className: string | null;
+  registrationFeeCents: number;
 };
 
 export type LeagueChatMessage = {

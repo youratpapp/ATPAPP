@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { getLeagueJoinContext, requestLeagueJoinByLink } from "../lib/leagues";
+import { formatMoneyFromCents } from "../lib/payments";
 import type { LeagueJoinContext, Profile } from "../lib/types";
 
 type Props = {
@@ -66,7 +67,11 @@ export function LeagueJoinPage({ user, profile }: Props) {
       const status = await requestLeagueJoinByLink(t, playerName, phone);
       const normalized = status === "approved" ? "approved" : "pending";
       setSubmittedStatus(normalized);
-      setFeedback(normalized === "approved" ? "Entrada aprovada. Voce ja esta na liga." : "Solicitacao enviada para aprovacao do organizador.");
+      setFeedback(
+        normalized === "approved"
+          ? "Entrada aprovada. O pagamento sera confirmado pela plataforma."
+          : "Solicitacao enviada para aprovacao do organizador. O pagamento sera confirmado pela plataforma."
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Falha ao solicitar entrada.");
     } finally {
@@ -107,6 +112,10 @@ export function LeagueJoinPage({ user, profile }: Props) {
             <div className="tournament-overview-kpi">
               <strong>{ctx.categoryName || "Aberta"}</strong>
               <span>Categoria</span>
+            </div>
+            <div className="tournament-overview-kpi">
+              <strong>{formatMoneyFromCents(ctx.registrationFeeCents)}</strong>
+              <span>Inscricao</span>
             </div>
           </div>
 

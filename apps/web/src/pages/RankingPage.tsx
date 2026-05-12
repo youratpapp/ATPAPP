@@ -48,7 +48,7 @@ export function RankingPage({ user, profile }: Props) {
   }, []);
 
   const selectedLeague = useMemo(() => leagues.find((league) => league.id === leagueId) || null, [leagueId, leagues]);
-  const availableSeasons = selectedLeagueDetails?.seasons || [];
+  const availableSeasons = useMemo(() => selectedLeagueDetails?.seasons || [], [selectedLeagueDetails?.seasons]);
 
   useEffect(() => {
     if (scope !== "league") {

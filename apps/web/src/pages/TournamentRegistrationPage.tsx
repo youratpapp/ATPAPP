@@ -9,6 +9,7 @@ import {
   loadTournamentDetails,
   requestTournamentRegistration,
 } from "../lib/tournaments";
+import { formatMoneyFromCents } from "../lib/payments";
 import type { Profile, TournamentDetails } from "../lib/types";
 
 type Props = {
@@ -164,7 +165,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
         // Non-blocking for registration.
       }
       setSubmittedClass(selected);
-      setFeedback({ kind: "success", text: "Solicitacao enviada com sucesso." });
+      setFeedback({ kind: "success", text: "Solicitacao enviada com sucesso. O pagamento sera confirmado pela plataforma." });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao enviar solicitacao." });
     } finally {
@@ -235,6 +236,10 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
             <div className="tournament-overview-kpi">
               <strong>{selected ? selected.className : "-"}</strong>
               <span>Classe escolhida</span>
+            </div>
+            <div className="tournament-overview-kpi">
+              <strong>{formatMoneyFromCents(tournament.registrationFeeCents)}</strong>
+              <span>Inscricao</span>
             </div>
           </div>
 

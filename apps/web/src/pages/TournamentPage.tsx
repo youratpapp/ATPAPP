@@ -1,5 +1,6 @@
 ﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useCallback } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
@@ -21,6 +22,7 @@ import {
   updateTournamentRegistrationStatus,
 } from "../lib/tournaments";
 import type {
+  AppPayment,
   Profile,
   TournamentChatMessage,
   TournamentDetails,
@@ -28,6 +30,7 @@ import type {
   TournamentMatchResultSubmission,
   TournamentRegistration,
 } from "../lib/types";
+import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
 import {
   generateScheduleAssignments,
@@ -939,6 +942,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [basicPlayerResultSubmissionEnabled, setBasicPlayerResultSubmissionEnabled] = useState(false);
   const [basicStartsAt, setBasicStartsAt] = useState("");
   const [basicRegistrationCloseAt, setBasicRegistrationCloseAt] = useState("");
+  const [basicRegistrationFee, setBasicRegistrationFee] = useState("0");
   const [basicPosterUrl, setBasicPosterUrl] = useState("");
   const [chatMessages, setChatMessages] = useState<TournamentChatMessage[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
@@ -950,6 +954,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [resultSubmissions, setResultSubmissions] = useState<TournamentMatchResultSubmission[]>([]);
   const [resultSubmitting, setResultSubmitting] = useState(false);
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
+  const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
   const [matchConfirming, setMatchConfirming] = useState(false);
 
   const activeClass = useMemo(
@@ -1170,6 +1175,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       nextTab,
     };
   }, [canSeeClassificationTab, classes, draftCategories.length, isOwner, registrations]);
+  const tournamentPaymentSummary = useMemo(() => {
+    const payments = registrations
+      .map((registration) => paymentsByTarget[`tournament_registration:${registration.id}`])
+      .filter((payment): payment is AppPayment => Boolean(payment && payment.status === "paid"));
+    return {
+      paidCount: payments.length,
+      paidAmountCents: payments.reduce((sum, payment) => sum + payment.amountCents, 0),
+    };
+  }, [paymentsByTarget, registrations]);
   const myTournamentMatches = useMemo<PlayerTournamentMatch[]>(() => {
     if (isOwner) return [];
     const playerNames = new Set(
@@ -1412,7 +1426,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     [chatMessages]
   );
 
-  const refreshChat = async (showSpinner = false) => {
+  const refreshChat = useCallback(async (showSpinner = false) => {
     if (!tournament) return;
     if (!canUseChatTab) return;
     if (showSpinner) setChatLoading(true);
@@ -1424,7 +1438,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     } finally {
       if (showSpinner) setChatLoading(false);
     }
-  };
+  }, [canUseChatTab, tournament]);
 
   const sendChatMessageNow = async () => {
     if (!tournament) return;
@@ -1542,15 +1556,19 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         setAgendaConfig(normalizeAgendaConfig((raw.agendaConfig as Partial<AgendaConfig> | undefined) ?? null));
         setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
         setAgendaDirty(false);
-        const [regs, submissions, confirmations] = await Promise.all([
+        const [regs, submissions, confirmations, payments] = await Promise.all([
           loadTournamentRegistrations(user, details.id, details.role),
           loadTournamentResultSubmissions(details.id).catch(() => [] as TournamentMatchResultSubmission[]),
           loadTournamentMatchConfirmations(details.id).catch(() => [] as TournamentMatchConfirmation[]),
+          details.role === "owner"
+            ? listMyPayments("tournament_registration").catch(() => [] as AppPayment[])
+            : Promise.resolve([] as AppPayment[]),
         ]);
         if (!alive) return;
         setRegistrations(regs);
         setResultSubmissions(submissions);
         setMatchConfirmations(confirmations);
+        setPaymentsByTarget(Object.fromEntries(payments.map((payment) => [`${payment.targetType}:${payment.targetId}`, payment])));
         setFeedback(null);
       } catch (err) {
         if (!alive) return;
@@ -1623,21 +1641,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setBasicPlayerResultSubmissionEnabled(Boolean(tournament.playerResultSubmissionEnabled));
     setBasicStartsAt(toDateTimeLocalValue(tournament.startsAt));
     setBasicRegistrationCloseAt(toDateTimeLocalValue(tournament.registrationCloseAt));
+    setBasicRegistrationFee(String(Math.max(0, Math.round((tournament.registrationFeeCents || 0) / 100))));
     setBasicPosterUrl(tournament.posterUrl || "");
-  }, [tournament?.id, tournament?.name, tournament?.city, tournament?.state, tournament?.visibility, tournament?.status, tournament?.playerResultSubmissionEnabled, tournament?.startsAt, tournament?.registrationCloseAt, tournament?.posterUrl]);
+  }, [tournament]);
 
   useEffect(() => {
     if (!configEditorClass) return;
     setNumGruposInput(String(configEditorClass.data.config.numGrupos ?? 2));
     setClassificadosInput(String(configEditorClass.data.config.classificadosPorGrupo ?? 2));
     setNumSetsInput(setScoreUiValue(configEditorClass.data.config.numeroSets));
-  }, [
-    configEditorClass?.categoryId,
-    configEditorClass?.classId,
-    configEditorClass?.data.config.numGrupos,
-    configEditorClass?.data.config.classificadosPorGrupo,
-    configEditorClass?.data.config.numeroSets,
-  ]);
+  }, [configEditorClass]);
 
   useEffect(() => {
     setDuracaoMinInput(String(agendaConfig.duracaoMin ?? 45));
@@ -1677,7 +1690,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       stop = true;
       window.clearInterval(timer);
     };
-  }, [tournament?.id, tab, canUseChatTab]);
+  }, [tournament, tab, canUseChatTab, refreshChat]);
 
   const applyUpdatedTournamentState = async (
     updated: TournamentDetails,
@@ -1906,6 +1919,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         playerResultSubmissionEnabled: basicPlayerResultSubmissionEnabled,
         startsAt: toIsoFromDateTimeLocal(basicStartsAt),
         registrationCloseAt: toIsoFromDateTimeLocal(basicRegistrationCloseAt),
+        registrationFeeCents: Math.max(0, Math.round(Number(basicRegistrationFee || 0) * 100)),
         posterUrl: basicPosterUrl,
         data: withCategories,
       });
@@ -3040,6 +3054,26 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao atualizar inscricao." });
+    } finally {
+      setRegistrationBusy(false);
+    }
+  };
+
+  const markTournamentRegistrationPaid = async (registration: TournamentRegistration) => {
+    if (!tournament) return;
+    try {
+      setRegistrationBusy(true);
+      const payment = await markStubPaymentPaidForParticipant({
+        targetType: "tournament_registration",
+        targetId: registration.id,
+        amountCents: tournament.registrationFeeCents,
+        description: `${tournament.name} - inscricao ${registration.playerName}`,
+        metadata: { source: "tournament_admin_manual_stub", tournamentId: tournament.id },
+      });
+      setPaymentsByTarget((prev) => ({ ...prev, [`${payment.targetType}:${payment.targetId}`]: payment }));
+      setFeedback({ kind: "success", text: "Pagamento da inscricao marcado pelo organizador." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao marcar pagamento." });
     } finally {
       setRegistrationBusy(false);
     }
@@ -4264,6 +4298,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <label>Fechamento de inscricao</label>
                     <input type="datetime-local" value={basicRegistrationCloseAt} onChange={(e) => setBasicRegistrationCloseAt(e.target.value)} />
                   </div>
+                  <div style={{ width: 180 }}>
+                    <label>Valor inscricao (R$)</label>
+                    <input
+                      type="number"
+                      min={0}
+                      step="1"
+                      value={basicRegistrationFee}
+                      onChange={(e) => setBasicRegistrationFee(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <label style={{ marginTop: 8 }}>Poster (URL)</label>
                 <input value={basicPosterUrl} onChange={(e) => setBasicPosterUrl(e.target.value)} />
@@ -4748,6 +4792,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
               <div className="tournament-admin-ops">
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
+                <p className="subtle" style={{ marginTop: 0 }}>
+                  Pagas no stub: {tournamentPaymentSummary.paidCount}/{registrations.length} ·{" "}
+                  {formatMoneyFromCents(tournamentPaymentSummary.paidAmountCents)}
+                </p>
                 <div className="cluster" style={{ marginBottom: 8 }}>
                   <button
                     className={registrationFilter === "all" ? "primary" : ""}
@@ -4830,9 +4878,17 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       <div className="subtle">
                         {r.phone || "Sem telefone"} | {new Date(r.createdAt || "").toLocaleString("pt-BR")} | {r.status}
                       </div>
+                      {paymentsByTarget[`tournament_registration:${r.id}`]?.status === "paid" ? (
+                        <div className="payment-paid-label">Pago via stub</div>
+                      ) : null}
                     </div>
-                    {r.status === "pending" || r.status === "waitlist" ? (
+                    {r.status === "pending" || r.status === "waitlist" || paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid" ? (
                       <div className="cluster">
+                        {paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid" ? (
+                          <button onClick={() => void markTournamentRegistrationPaid(r)} disabled={saving || registrationBusy}>
+                            Marcar pago
+                          </button>
+                        ) : null}
                         {r.status === "pending" ? (
                           <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                             <input

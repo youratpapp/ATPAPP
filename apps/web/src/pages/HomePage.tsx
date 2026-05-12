@@ -10,6 +10,9 @@ import type {
   LeagueRoundSummary,
   LeagueSummary,
   Profile,
+  AcademyEnrollment,
+  AcademyMakeupCredit,
+  PlaceMembership,
   TournamentChatMessage,
   TournamentDetails,
   TournamentMatchConfirmation,
@@ -34,7 +37,19 @@ import {
   loadTournamentRegistrations,
   loadUpcomingPublic,
 } from "../lib/tournaments";
-import { listMyCourtBookings, listPlaceBookings, listPlacesIOwn } from "../lib/places";
+import {
+  listMyAcademyEnrollments,
+  listMyAcademyMakeupCredits,
+  listMyCourtBookings,
+  listMyCourtBookingWaitlist,
+  listMyPlaceMemberships,
+  listPlaceAcademyEnrollments,
+  listPlaceAcademyMakeupCredits,
+  listPlaceBookings,
+  listPlaceBookingWaitlist,
+  listPlaceMemberships,
+  listPlacesIOwn,
+} from "../lib/places";
 import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
 import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
 
@@ -91,6 +106,29 @@ type HomeCourtBookingAction = {
   status: "pending" | "confirmed" | "cancelled" | "blocked";
   role: "player" | "owner";
   playerName: string;
+};
+
+type HomeCourtWaitlistAction = {
+  id: string;
+  placeId: string;
+  placeName: string;
+  courtName: string;
+  startsAt: string;
+  endsAt: string;
+  status: "waiting" | "invited" | "cancelled" | "booked";
+  role: "player" | "owner";
+  playerName: string;
+};
+
+type HomeAcademyAction = {
+  id: string;
+  targetPath: string;
+  sourceName: string;
+  title: string;
+  detail: string;
+  label: string;
+  tone: "urgent" | "neutral";
+  order: number;
 };
 
 type HomeNotice = {
@@ -755,6 +793,161 @@ async function loadCourtBookingActions(user: User): Promise<HomeCourtBookingActi
     .slice(0, 12);
 }
 
+async function loadCourtWaitlistActions(user: User): Promise<HomeCourtWaitlistAction[]> {
+  const [myWaitlist, ownedPlaces] = await Promise.all([
+    listMyCourtBookingWaitlist().catch(() => []),
+    listPlacesIOwn(user),
+  ]);
+  const ownedGroups = await Promise.all(
+    ownedPlaces.map(async (place) => {
+      try {
+        const entries = await listPlaceBookingWaitlist(place.id);
+        return entries
+          .filter((entry) => entry.status === "waiting" || entry.status === "invited")
+          .map((entry): HomeCourtWaitlistAction => ({
+            id: `owner:${entry.id}`,
+            placeId: entry.placeId,
+            placeName: place.name,
+            courtName: entry.courtName || "Quadra",
+            startsAt: entry.startsAt,
+            endsAt: entry.endsAt,
+            status: entry.status,
+            role: "owner",
+            playerName: entry.playerName,
+          }));
+      } catch {
+        return [];
+      }
+    })
+  );
+
+  const playerItems = myWaitlist.map((entry): HomeCourtWaitlistAction => ({
+    id: `player:${entry.id}`,
+    placeId: entry.placeId,
+    placeName: "Local",
+    courtName: entry.courtName || "Quadra",
+    startsAt: entry.startsAt,
+    endsAt: entry.endsAt,
+    status: entry.status,
+    role: "player",
+    playerName: entry.playerName,
+  }));
+
+  return dedupeById([...ownedGroups.flat(), ...playerItems])
+    .sort((a, b) => (a.startsAt || "").localeCompare(b.startsAt || ""))
+    .slice(0, 8);
+}
+
+async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
+  const [ownedPlaces, myEnrollments, myMakeups, myMemberships] = await Promise.all([
+    listPlacesIOwn(user),
+    listMyAcademyEnrollments().catch(() => [] as AcademyEnrollment[]),
+    listMyAcademyMakeupCredits().catch(() => [] as AcademyMakeupCredit[]),
+    listMyPlaceMemberships().catch(() => [] as PlaceMembership[]),
+  ]);
+
+  const ownerGroups = await Promise.all(
+    ownedPlaces.map(async (place) => {
+      try {
+        const [enrollments, makeups, memberships] = await Promise.all([
+          listPlaceAcademyEnrollments(place.id).catch(() => [] as AcademyEnrollment[]),
+          listPlaceAcademyMakeupCredits(place.id).catch(() => [] as AcademyMakeupCredit[]),
+          listPlaceMemberships(place.id).catch(() => [] as PlaceMembership[]),
+        ]);
+        const pending = enrollments.filter((item) => item.status === "pending").length;
+        const openMakeups = makeups.filter((item) => item.status === "open").length;
+        const pendingMemberships = memberships.filter((item) => item.status === "pending").length;
+        const actions: HomeAcademyAction[] = [];
+        if (pendingMemberships > 0) {
+          actions.push({
+            id: `membership-owner:${place.id}:pending`,
+            targetPath: "/locais",
+            sourceName: place.name,
+            title: `${pendingMemberships} solicitacao${pendingMemberships === 1 ? "" : "es"} de socio`,
+            detail: "Ative planos e acompanhe mensalidades do clube.",
+            label: "Socios",
+            tone: "urgent",
+            order: 7,
+          });
+        }
+        if (pending > 0) {
+          actions.push({
+            id: `academy-owner:${place.id}:pending`,
+            targetPath: "/locais",
+            sourceName: place.name,
+            title: `${pending} interesse${pending === 1 ? "" : "s"} em aula`,
+            detail: "Revise matriculas pendentes da academia.",
+            label: "Academia",
+            tone: "urgent",
+            order: 9,
+          });
+        }
+        if (openMakeups > 0) {
+          actions.push({
+            id: `academy-owner:${place.id}:makeups`,
+            targetPath: "/locais",
+            sourceName: place.name,
+            title: `${openMakeups} reposicao${openMakeups === 1 ? "" : "es"} aberta${openMakeups === 1 ? "" : "s"}`,
+            detail: "Acompanhe creditos de reposicao dos alunos.",
+            label: "Reposicoes",
+            tone: "neutral",
+            order: 38,
+          });
+        }
+        return actions;
+      } catch {
+        return [];
+      }
+    })
+  );
+
+  const playerEnrollmentActions = myEnrollments
+    .filter((item) => item.userId === user.id)
+    .slice(0, 3)
+    .map((item): HomeAcademyAction => ({
+      id: `academy-player:${item.id}`,
+      targetPath: "/locais",
+      sourceName: "Academia",
+      title: item.status === "pending" ? "Matricula aguardando aprovacao" : "Matricula ativa",
+      detail: item.status === "pending" ? "Aguarde a academia revisar seu interesse." : "Acompanhe sua turma e pagamentos.",
+      label: "Aulas",
+      tone: item.status === "pending" ? "urgent" : "neutral",
+      order: item.status === "pending" ? 28 : 58,
+    }));
+
+  const playerMakeupActions = myMakeups
+    .filter((item) => item.userId === user.id)
+    .slice(0, 3)
+    .map((item): HomeAcademyAction => ({
+      id: `academy-makeup:${item.id}`,
+      targetPath: "/locais",
+      sourceName: "Academia",
+      title: "Reposicao disponivel",
+      detail: "Voce possui credito de reposicao aberto.",
+      label: "Reposicao",
+      tone: "neutral",
+      order: 36,
+    }));
+
+  const playerMembershipActions = myMemberships
+    .filter((item) => item.userId === user.id)
+    .slice(0, 3)
+    .map((item): HomeAcademyAction => ({
+      id: `membership-player:${item.id}`,
+      targetPath: "/locais",
+      sourceName: "Clube",
+      title: item.status === "pending" ? "Plano de socio aguardando aprovacao" : "Plano de socio ativo",
+      detail: item.status === "pending" ? "Aguarde o clube revisar sua solicitacao." : "Acompanhe mensalidades e beneficios do plano.",
+      label: "Socio",
+      tone: item.status === "pending" ? "urgent" : "neutral",
+      order: item.status === "pending" ? 26 : 56,
+    }));
+
+  return dedupeById([...ownerGroups.flat(), ...playerEnrollmentActions, ...playerMakeupActions, ...playerMembershipActions])
+    .sort((a, b) => a.order - b.order)
+    .slice(0, 8);
+}
+
 function toHomeLeagueAction(
   league: LeagueSummary,
   round: LeagueRoundSummary,
@@ -1089,6 +1282,8 @@ function buildPriorityItems(
   tournamentActions: HomeTournamentAction[],
   organizerActions: HomeOrganizerAction[],
   courtBookingActions: HomeCourtBookingAction[],
+  courtWaitlistActions: HomeCourtWaitlistAction[],
+  academyActions: HomeAcademyAction[],
   notices: HomeNotice[]
 ): HomePriorityItem[] {
   const leagueItems = leagueActions.map((action): HomePriorityItem => {
@@ -1165,7 +1360,32 @@ function buildPriorityItems(
     order: notice.tone === "urgent" ? 20 : 55,
   }));
 
-  return [...organizerItems, ...courtItems, ...leagueItems, ...tournamentItems, ...noticeItems]
+  const academyItems = academyActions.map((action): HomePriorityItem => ({
+    id: `academy-action:${action.id}`,
+    targetPath: action.targetPath,
+    sourceName: action.sourceName,
+    title: action.title,
+    detail: action.detail,
+    label: action.label,
+    tone: action.tone,
+    order: action.order,
+  }));
+
+  const waitlistItems = courtWaitlistActions.map((action): HomePriorityItem => {
+    const ownerWaiting = action.role === "owner" && action.status === "waiting";
+    return {
+      id: `court-waitlist:${action.id}`,
+      targetPath: "/locais",
+      sourceName: action.placeName,
+      title: action.role === "owner" ? `Espera de ${action.playerName}` : "Lista de espera de quadra",
+      detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${action.status === "invited" ? "convidado" : "aguardando"}`,
+      label: ownerWaiting ? "Gerenciar espera" : "Espera de quadra",
+      tone: ownerWaiting ? "urgent" : "neutral",
+      order: ownerWaiting ? 10 : 42,
+    };
+  });
+
+  return [...organizerItems, ...courtItems, ...waitlistItems, ...academyItems, ...leagueItems, ...tournamentItems, ...noticeItems]
     .sort((a, b) => {
       const byOrder = a.order - b.order;
       if (byOrder !== 0) return byOrder;
@@ -1185,6 +1405,8 @@ export function HomePage({ user, profile }: Props) {
   const [tournamentActions, setTournamentActions] = useState<HomeTournamentAction[]>([]);
   const [organizerActions, setOrganizerActions] = useState<HomeOrganizerAction[]>([]);
   const [courtBookingActions, setCourtBookingActions] = useState<HomeCourtBookingAction[]>([]);
+  const [courtWaitlistActions, setCourtWaitlistActions] = useState<HomeCourtWaitlistAction[]>([]);
+  const [academyActions, setAcademyActions] = useState<HomeAcademyAction[]>([]);
   const [notices, setNotices] = useState<HomeNotice[]>([]);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -1202,6 +1424,8 @@ export function HomePage({ user, profile }: Props) {
           leagueOrgActions,
           tournamentOrgActions,
           bookingActions,
+          waitlistActions,
+          academyDailyActions,
           homeNotices,
         ] = await Promise.all([
           loadLeagueActions(user.id, leagues),
@@ -1209,6 +1433,8 @@ export function HomePage({ user, profile }: Props) {
           loadOrganizerActions(leagues),
           loadTournamentOrganizerActions(user, dashboard.organizing),
           loadCourtBookingActions(user),
+          loadCourtWaitlistActions(user),
+          loadAcademyActions(user),
           loadHomeNotices([...dashboard.participating, ...dashboard.organizing], leagues),
         ]);
         if (!alive) return;
@@ -1221,6 +1447,8 @@ export function HomePage({ user, profile }: Props) {
         setTournamentActions(tournamentPlayerActions);
         setOrganizerActions([...leagueOrgActions, ...tournamentOrgActions].slice(0, 8));
         setCourtBookingActions(bookingActions);
+        setCourtWaitlistActions(waitlistActions);
+        setAcademyActions(academyDailyActions);
         setNotices(homeNotices);
         setError("");
       })
@@ -1239,7 +1467,7 @@ export function HomePage({ user, profile }: Props) {
   const activePlayingCount = playingTournaments.length + playingLeagues.length;
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
   const agendaItems = buildAgendaItems(leagueActions, tournamentActions, courtBookingActions);
-  const priorityItems = buildPriorityItems(leagueActions, tournamentActions, organizerActions, courtBookingActions, notices);
+  const priorityItems = buildPriorityItems(leagueActions, tournamentActions, organizerActions, courtBookingActions, courtWaitlistActions, academyActions, notices);
   const activityFeedItems = buildActivityFeed(
     playingTournaments,
     organizingTournaments,
@@ -1352,6 +1580,13 @@ export function HomePage({ user, profile }: Props) {
             <SummaryCard label="Pendencias" value={urgentActionCount} detail="acoes em aberto" />
           </section>
 
+          {agendaItems.length === 0 && priorityItems.length === 0 && activityFeedItems.length === 0 ? (
+            <section className="home-empty-panel home-ok-panel">
+              <strong>Tudo em dia</strong>
+              <span>Sem pendencias ou compromissos proximos agora.</span>
+            </section>
+          ) : null}
+
           {agendaItems.length > 0 ? (
             <section className="home-section">
               <div className="section-title">
@@ -1416,6 +1651,17 @@ export function HomePage({ user, profile }: Props) {
                   ? "Eventos publicos em breve aparecem abaixo para voce avaliar."
                   : "Quando voce entrar em torneios ou ligas, eles aparecem aqui."}
               </span>
+              <div className="home-empty-actions">
+                <button type="button" onClick={() => navigate("/eventos/torneios")}>
+                  Ver torneios
+                </button>
+                <button type="button" onClick={() => navigate("/eventos/ligas")}>
+                  Ver ligas
+                </button>
+                <button type="button" onClick={() => navigate("/locais")}>
+                  Buscar locais
+                </button>
+              </div>
             </section>
           )}
 

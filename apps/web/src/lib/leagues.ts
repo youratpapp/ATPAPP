@@ -58,6 +58,7 @@ type LeagueRow = {
   public_join_enabled: boolean | null;
   join_requires_approval: boolean | null;
   auto_round_generation_enabled: boolean | null;
+  registration_fee_cents?: number | null;
   status: string | null;
   visibility: string | null;
   updated_at: string | null;
@@ -211,6 +212,7 @@ type JoinContextRpcRow = {
   class_id: string | null;
   category_name: string | null;
   class_name: string | null;
+  registration_fee_cents?: number | null;
 };
 
 type GenerateRoundRow = {
@@ -334,7 +336,7 @@ export async function loadLeagueDetails(leagueId: string): Promise<LeagueDetails
   const { data, error } = await supabase
     .from(TABLE_LEAGUES)
     .select(
-      "id,owner_id,name,league_type,category,class_scope,match_format,rounds_total,round_interval,round_interval_days,result_deadline_days,tolerance_days,promoted_count,relegated_count,max_recesses,wildcard_enabled,no_ad_enabled,tie_break_rule,wo_rule,public_join_enabled,join_requires_approval,auto_round_generation_enabled,status,visibility,updated_at"
+      "id,owner_id,name,league_type,category,class_scope,match_format,rounds_total,round_interval,round_interval_days,result_deadline_days,tolerance_days,promoted_count,relegated_count,max_recesses,wildcard_enabled,no_ad_enabled,tie_break_rule,wo_rule,public_join_enabled,join_requires_approval,auto_round_generation_enabled,registration_fee_cents,status,visibility,updated_at"
     )
     .eq("id", leagueId)
     .maybeSingle();
@@ -372,6 +374,7 @@ export async function loadLeagueDetails(leagueId: string): Promise<LeagueDetails
     publicJoinEnabled: row.public_join_enabled !== false,
     joinRequiresApproval: row.join_requires_approval !== false,
     autoRoundGenerationEnabled: row.auto_round_generation_enabled !== false,
+    registrationFeeCents: Number(row.registration_fee_cents || 0),
     status: normalizeLeagueStatus(row.status),
     visibility: normalizeLeagueVisibility(row.visibility),
     updatedAt: row.updated_at ?? "",
@@ -545,6 +548,7 @@ export async function getLeagueJoinContext(token: string): Promise<LeagueJoinCon
     classId: row.class_id,
     categoryName: row.category_name,
     className: row.class_name,
+    registrationFeeCents: Number(row.registration_fee_cents || 0),
   };
 }
 
@@ -576,6 +580,39 @@ export async function requestPublicLeagueJoin(input: {
   });
   if (error) throw new Error(error.message);
   return String(data || "pending");
+}
+
+export async function loadMyLeagueRegistration(
+  leagueId: string,
+  seasonId?: string | null
+): Promise<LeagueRegistration | null> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const auth = await supabase.auth.getUser();
+  if (auth.error || !auth.data.user) throw new Error(auth.error?.message || "Usuario nao autenticado.");
+  let query = supabase
+    .from("league_registrations")
+    .select("id,league_id,season_id,class_id,user_id,player_name,phone,status,source,created_at")
+    .eq("league_id", leagueId)
+    .eq("user_id", auth.data.user.id)
+    .order("created_at", { ascending: false })
+    .limit(1);
+  if (seasonId) query = query.eq("season_id", seasonId);
+  const { data, error } = await query.maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) return null;
+  const row = data as RegistrationRow;
+  return {
+    id: row.id,
+    leagueId: row.league_id,
+    seasonId: row.season_id,
+    classId: row.class_id,
+    userId: row.user_id,
+    playerName: row.player_name,
+    phone: row.phone || "",
+    status: row.status,
+    source: row.source,
+    createdAt: row.created_at || "",
+  };
 }
 
 export async function loadLeagueRegistrations(leagueId: string): Promise<LeagueRegistration[]> {
@@ -837,15 +874,17 @@ export async function updateLeagueSettings(input: {
   publicJoinEnabled: boolean;
   joinRequiresApproval: boolean;
   autoRoundGenerationEnabled: boolean;
+  registrationFeeCents?: number;
 }): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
-  const syncedDays = Math.max(1, Math.floor(input.roundIntervalDays || 14));
+  const roundIntervalDays = Math.max(1, Math.floor(input.roundIntervalDays || 14));
+  const resultDeadlineDays = Math.max(1, Math.floor(input.resultDeadlineDays || roundIntervalDays));
   const { error } = await supabase.rpc("app_update_league_settings", {
     p_league_id: input.leagueId,
     p_match_format: input.matchFormat,
     p_round_interval: input.roundInterval,
-    p_round_interval_days: syncedDays,
-    p_result_deadline_days: syncedDays,
+    p_round_interval_days: roundIntervalDays,
+    p_result_deadline_days: resultDeadlineDays,
     p_tolerance_days: Math.max(0, Math.floor(input.toleranceDays || 0)),
     p_promoted_count: Math.max(0, Math.floor(input.promotedCount || 0)),
     p_relegated_count: Math.max(0, Math.floor(input.relegatedCount || 0)),
@@ -859,6 +898,11 @@ export async function updateLeagueSettings(input: {
     p_auto_round_generation_enabled: Boolean(input.autoRoundGenerationEnabled),
   });
   if (error) throw new Error(error.message);
+  const feeRes = await supabase
+    .from(TABLE_LEAGUES)
+    .update({ registration_fee_cents: Math.max(0, Math.floor(input.registrationFeeCents || 0)) })
+    .eq("id", input.leagueId);
+  if (feeRes.error) throw new Error(feeRes.error.message);
 }
 
 export async function applyLeagueSeasonMovements(input: {

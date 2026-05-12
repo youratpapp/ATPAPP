@@ -122,7 +122,7 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     limit = parseLimit((body as Record<string, unknown>)?.p_limit);
   } catch {
-    limit = 50;
+    // Keep the default limit when the request body is not readable.
   }
 
   const admin = createClient(supabaseUrl, adminKey, {
