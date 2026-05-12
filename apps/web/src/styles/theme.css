@@ -18,9 +18,10 @@
   --color-green-200: #a8dfbf;
   --color-green-100: #e6f4ed;
 
-  --color-bg: #f5f7fb;
+  --color-bg: #f4f7f5;
   --color-surface: #ffffff;
   --color-surface-muted: #f8fafc;
+  --color-surface-raised: #ffffff;
   --color-border: #e2e8f0;
   --color-border-strong: #cbd5e1;
 
@@ -47,6 +48,7 @@
   --color-primary-fg: #ffffff;
   --color-primary-soft: var(--color-green-100);
   --color-primary-strong: var(--color-green-700);
+  --color-primary-ring: rgba(30, 124, 70, 0.18);
 
   --color-secondary: var(--color-navy-800);
   --color-secondary-fg: #ffffff;
@@ -79,9 +81,10 @@
   --radius-xl: 24px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px rgba(15, 30, 61, 0.06);
-  --shadow-md: 0 8px 20px rgba(15, 30, 61, 0.08);
-  --shadow-lg: 0 16px 32px rgba(15, 30, 61, 0.12);
+  --shadow-xs: 0 1px 2px rgba(15, 30, 61, 0.05);
+  --shadow-sm: 0 2px 8px rgba(15, 30, 61, 0.06);
+  --shadow-md: 0 10px 24px rgba(15, 30, 61, 0.09);
+  --shadow-lg: 0 18px 42px rgba(15, 30, 61, 0.14);
 
   /* Layout */
   --bottom-nav-height: 68px;

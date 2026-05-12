@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import type { ComponentType } from "react";
+import logoMark from "../assets/logo-atp-mark.svg";
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
@@ -69,6 +70,10 @@ export function BottomNav() {
   const { pathname } = useLocation();
   return (
     <nav className="bottom-nav" aria-label="Navegacao principal">
+      <div className="bottom-nav-brand" aria-hidden>
+        <img src={logoMark} alt="" />
+        <span>Gestao esportiva</span>
+      </div>
       {ITEMS.map((item) => {
         const active = pathname === item.path || pathname.startsWith(`${item.path}/`);
         return (

@@ -167,6 +167,16 @@ function leagueMatchResult(match: LeagueMatchSummary, userId: string): ProfileRe
   return mySide === winnerSide ? "Vitoria" : "Derrota";
 }
 
+function WhatsAppAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="brand-app-icon">
+      <circle cx="12" cy="12" r="10" fill="#25d366" />
+      <path d="M7.5 18.2l.8-2.9a6.5 6.5 0 1 1 2.5 1.9z" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.7 8.7c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.4c.1.3.1.5-.1.7l-.4.5c.6 1 1.3 1.7 2.4 2.3l.5-.5c.2-.2.4-.3.7-.1l1.4.6c.3.1.4.3.4.6v.4c0 .4-.2.7-.5.9-.5.3-1.5.4-2.9-.2-2.4-1-4.3-3.1-4.8-5.1-.2-.7-.1-1.2.1-1.5z" fill="#fff" />
+    </svg>
+  );
+}
+
 function profileCompetitionPath(item: TournamentSummary | LeagueSummary): string {
   return "role" in item ? `/eventos/ligas/${encodeURIComponent(item.id)}` : buildTournamentUrl(item.id);
 }
@@ -841,7 +851,8 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           <div className="section-title">
             <h2>Minha atividade</h2>
             <div className="cluster">
-              <button className="link" onClick={shareProfileSummaryWhatsApp}>
+              <button className="link" onClick={shareProfileSummaryWhatsApp} title="Compartilhar pelo WhatsApp" aria-label="Compartilhar pelo WhatsApp">
+                <WhatsAppAppIcon />
                 WhatsApp
               </button>
               <button className="link" onClick={() => navigate("/eventos")}>
@@ -1029,7 +1040,8 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                     </span>
                     <div className="profile-match-post-actions">
                       <button onClick={() => copyRecentMatchPost(recentMatches[0])}>Copiar post</button>
-                      <button className="primary" onClick={() => shareRecentMatchWhatsApp(recentMatches[0])}>
+                      <button className="primary" onClick={() => shareRecentMatchWhatsApp(recentMatches[0])} title="Compartilhar pelo WhatsApp" aria-label="Compartilhar pelo WhatsApp">
+                        <WhatsAppAppIcon />
                         WhatsApp
                       </button>
                     </div>
@@ -1046,7 +1058,8 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                           {match.result} | {match.score}
                         </em>
                       </button>
-                      <button className="profile-match-share" onClick={() => shareRecentMatchWhatsApp(match)}>
+                      <button className="profile-match-share" onClick={() => shareRecentMatchWhatsApp(match)} title="Compartilhar pelo WhatsApp" aria-label="Compartilhar pelo WhatsApp">
+                        <WhatsAppAppIcon />
                         WhatsApp
                       </button>
                     </article>

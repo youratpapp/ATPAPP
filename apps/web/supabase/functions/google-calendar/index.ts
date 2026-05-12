@@ -159,19 +159,22 @@ async function getGoogleEmail(accessToken: string): Promise<string> {
 async function syncEvents(input: {
   admin: ReturnType<typeof createClient>;
   userId: string;
-  tournamentId: string;
+  sourceType: "tournament" | "league";
+  sourceId: string;
   accessToken: string;
   timeZone: string;
   events: CalendarEventInput[];
 }): Promise<number> {
   let synced = 0;
+  const tableName = input.sourceType === "league" ? "league_calendar_events" : "tournament_calendar_events";
+  const sourceColumn = input.sourceType === "league" ? "league_id" : "tournament_id";
   for (const event of input.events) {
     const eventHash = await sha256Hex(JSON.stringify(event));
     const existing = await input.admin
-      .from("tournament_calendar_events")
+      .from(tableName)
       .select("id,provider_event_id,event_hash")
       .eq("user_id", input.userId)
-      .eq("tournament_id", input.tournamentId)
+      .eq(sourceColumn, input.sourceId)
       .eq("match_uid", event.uid)
       .eq("provider", "google")
       .maybeSingle();
@@ -208,16 +211,16 @@ async function syncEvents(input: {
     if (!googleEventId) throw new Error("Google nao retornou o evento criado.");
 
     await input.admin
-      .from("tournament_calendar_events")
+      .from(tableName)
       .upsert({
         user_id: input.userId,
-        tournament_id: input.tournamentId,
+        [sourceColumn]: input.sourceId,
         match_uid: event.uid,
         provider: "google",
         provider_event_id: googleEventId,
         event_hash: eventHash,
         updated_at: new Date().toISOString(),
-      }, { onConflict: "user_id,tournament_id,match_uid,provider" });
+      }, { onConflict: `user_id,${sourceColumn},match_uid,provider` });
     synced += 1;
   }
   return synced;
@@ -246,7 +249,13 @@ Deno.serve(async (req) => {
     const stateRaw = url.searchParams.get("state") || "";
     if (!code || !stateRaw) return jsonResponse(400, { ok: false, message: "Callback invalido." });
 
-    const state = JSON.parse(base64UrlDecode(stateRaw)) as { userId: string; requestId?: string; returnTo?: string };
+    const state = JSON.parse(base64UrlDecode(stateRaw)) as {
+      userId: string;
+      requestId?: string;
+      returnTo?: string;
+      sourceType?: "tournament" | "league";
+      sourceId?: string;
+    };
     const token = await exchangeCodeForToken({ code, clientId, clientSecret, redirectUri });
     const email = await getGoogleEmail(token.access_token);
     const expiresAt = new Date(Date.now() + Math.max(60, Number(token.expires_in || 3600) - 60) * 1000).toISOString();
@@ -267,7 +276,7 @@ Deno.serve(async (req) => {
     if (state.requestId) {
       const request = await admin
         .from("user_calendar_sync_requests")
-        .select("id,user_id,tournament_id,return_to,payload,status,expires_at")
+        .select("id,user_id,tournament_id,league_id,request_type,return_to,payload,status,expires_at")
         .eq("id", state.requestId)
         .eq("user_id", state.userId)
         .maybeSingle();
@@ -275,10 +284,15 @@ Deno.serve(async (req) => {
         returnTo = cleanReturnTo(request.data.return_to, returnTo);
         try {
           const payload = request.data.payload as { events?: CalendarEventInput[] };
+          const sourceType = request.data.request_type === "league_matches" ? "league" : "tournament";
+          const sourceId = sourceType === "league"
+            ? String(request.data.league_id || "")
+            : String(request.data.tournament_id || "");
           const syncedCount = await syncEvents({
             admin,
             userId: state.userId,
-            tournamentId: String(request.data.tournament_id || ""),
+            sourceType,
+            sourceId,
             accessToken: token.access_token,
             timeZone,
             events: Array.isArray(payload.events) ? payload.events : [],
@@ -321,14 +335,18 @@ Deno.serve(async (req) => {
   const body = await req.json().catch(() => ({})) as {
     action?: string;
     tournamentId?: string;
+    leagueId?: string;
     returnTo?: string;
     events?: CalendarEventInput[];
   };
-  if (body.action !== "syncTournament") return jsonResponse(400, { ok: false, message: "Acao invalida." });
+  if (body.action !== "syncTournament" && body.action !== "syncLeague") {
+    return jsonResponse(400, { ok: false, message: "Acao invalida." });
+  }
 
-  const tournamentId = String(body.tournamentId || "");
+  const sourceType = body.action === "syncLeague" ? "league" : "tournament";
+  const sourceId = String(sourceType === "league" ? body.leagueId || "" : body.tournamentId || "");
   const events = Array.isArray(body.events) ? body.events.filter((event) => event.uid && event.title && event.startsAt && event.endsAt) : [];
-  if (!tournamentId || events.length === 0) return jsonResponse(400, { ok: false, message: "Sem jogos para sincronizar." });
+  if (!sourceId || events.length === 0) return jsonResponse(400, { ok: false, message: "Sem jogos para sincronizar." });
 
   const connection = await admin
     .from("user_calendar_connections")
@@ -346,13 +364,20 @@ Deno.serve(async (req) => {
     const request = await admin.from("user_calendar_sync_requests").insert({
       user_id: user.id,
       provider: "google",
-      request_type: "tournament_matches",
-      tournament_id: tournamentId,
+      request_type: sourceType === "league" ? "league_matches" : "tournament_matches",
+      tournament_id: sourceType === "tournament" ? sourceId : null,
+      league_id: sourceType === "league" ? sourceId : null,
       return_to: cleanReturnTo(body.returnTo, appUrl || "/"),
       payload: { events },
     }).select("id,return_to").single();
     if (request.error) return jsonResponse(500, { ok: false, message: request.error.message });
-    const state = base64UrlEncode(JSON.stringify({ userId: user.id, requestId: request.data.id, returnTo: request.data.return_to }));
+    const state = base64UrlEncode(JSON.stringify({
+      userId: user.id,
+      requestId: request.data.id,
+      returnTo: request.data.return_to,
+      sourceType,
+      sourceId,
+    }));
     return jsonResponse(200, { ok: false, authUrl: buildAuthUrl({ clientId, redirectUri, state }) });
   }
 
@@ -361,7 +386,23 @@ Deno.serve(async (req) => {
       await admin.from("user_calendar_connections").update({ status: "revoked", updated_at: new Date().toISOString() })
         .eq("user_id", user.id)
         .eq("provider", "google");
-      const state = base64UrlEncode(JSON.stringify({ userId: user.id, returnTo: cleanReturnTo(body.returnTo, appUrl || "/") }));
+      const request = await admin.from("user_calendar_sync_requests").insert({
+        user_id: user.id,
+        provider: "google",
+        request_type: sourceType === "league" ? "league_matches" : "tournament_matches",
+        tournament_id: sourceType === "tournament" ? sourceId : null,
+        league_id: sourceType === "league" ? sourceId : null,
+        return_to: cleanReturnTo(body.returnTo, appUrl || "/"),
+        payload: { events },
+      }).select("id,return_to").single();
+      if (request.error) return jsonResponse(500, { ok: false, message: request.error.message });
+      const state = base64UrlEncode(JSON.stringify({
+        userId: user.id,
+        requestId: request.data.id,
+        returnTo: request.data.return_to,
+        sourceType,
+        sourceId,
+      }));
       return jsonResponse(200, { ok: false, authUrl: buildAuthUrl({ clientId, redirectUri, state }) });
     }
     const refreshed = await refreshAccessToken({ refreshToken, clientId, clientSecret });
@@ -375,6 +416,6 @@ Deno.serve(async (req) => {
     }).eq("user_id", user.id).eq("provider", "google");
   }
 
-  const syncedCount = await syncEvents({ admin, userId: user.id, tournamentId, accessToken, timeZone, events });
+  const syncedCount = await syncEvents({ admin, userId: user.id, sourceType, sourceId, accessToken, timeZone, events });
   return jsonResponse(200, { ok: true, syncedCount });
 });

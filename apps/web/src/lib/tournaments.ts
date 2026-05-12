@@ -14,6 +14,7 @@ import type {
 
 const TABLE_TOURNAMENTS = "tournaments";
 const TABLE_MEMBERS = "tournament_members";
+const TABLE_STAFF_INVITES = "tournament_staff_invites";
 const TABLE_REGISTRATIONS = "tournament_registrations";
 const TABLE_CHAT = "tournament_chat_messages";
 const TABLE_RESULT_SUBMISSIONS = "tournament_match_result_submissions";
@@ -112,12 +113,21 @@ type TournamentMemberRow = {
   created_at?: string | null;
 };
 
+type TournamentStaffInviteRow = {
+  tournament_id: string;
+  email: string;
+  role: string | null;
+  created_at?: string | null;
+  status?: string | null;
+};
+
 type TournamentStaffRpcRow = {
   tournament_id: string;
-  user_id: string;
+  user_id: string | null;
   email: string | null;
   role: string | null;
   created_at: string | null;
+  status?: string | null;
 };
 
 const TOURNAMENT_STAFF_ROLES = ["organizer", "scorekeeper", "checkin", "media"] as const;
@@ -259,8 +269,16 @@ export type DashboardData = {
   participating: TournamentSummary[];
 };
 
+export async function claimTournamentStaffInvites(): Promise<number> {
+  if (!supabase) return 0;
+  const { data, error } = await supabase.rpc("app_claim_tournament_staff_invites");
+  if (error) throw new Error(error.message);
+  return Number(data || 0);
+}
+
 export async function loadDashboardData(user: User): Promise<DashboardData> {
   if (!supabase) return { organizing: [], participating: [] };
+  await claimTournamentStaffInvites().catch(() => 0);
 
   const ownedRes = await supabase
     .from(TABLE_TOURNAMENTS)
@@ -378,6 +396,7 @@ export async function joinTournament(user: User, tournamentId: string): Promise<
 
 export async function loadTournamentDetails(user: User, tournamentId: string): Promise<TournamentDetails> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  await claimTournamentStaffInvites().catch(() => 0);
 
   const { data, error } = await supabase
     .from(TABLE_TOURNAMENTS)
@@ -506,6 +525,7 @@ function staffRowToModel(row: TournamentMemberRow, email = ""): TournamentStaffM
     email,
     role,
     createdAt: row.created_at ?? "",
+    status: "active",
   };
 }
 
@@ -518,19 +538,43 @@ function staffRpcRowToModel(row: TournamentStaffRpcRow): TournamentStaffMember |
     email: row.email ?? "",
     role,
     createdAt: row.created_at ?? "",
+    status: row.status === "pending" ? "pending" : "active",
+  };
+}
+
+function staffInviteRowToModel(row: TournamentStaffInviteRow): TournamentStaffMember | null {
+  const role = normalizeTournamentRole(row.role);
+  if (!isTournamentStaffRole(role) || row.status !== "pending") return null;
+  return {
+    tournamentId: row.tournament_id,
+    userId: null,
+    email: row.email ?? "",
+    role,
+    createdAt: row.created_at ?? "",
+    status: "pending",
   };
 }
 
 export async function listTournamentStaff(tournamentId: string): Promise<TournamentStaffMember[]> {
   if (!supabase) throw new Error("Supabase nao configurado.");
 
-  const { data, error } = await supabase
-    .from(TABLE_MEMBERS)
-    .select("tournament_id,user_id,role,created_at")
-    .eq("tournament_id", tournamentId)
-    .in("role", [...TOURNAMENT_STAFF_ROLES])
-    .order("created_at", { ascending: true });
+  const [staffRows, inviteRows] = await Promise.all([
+    supabase
+      .from(TABLE_MEMBERS)
+      .select("tournament_id,user_id,role,created_at")
+      .eq("tournament_id", tournamentId)
+      .in("role", [...TOURNAMENT_STAFF_ROLES])
+      .order("created_at", { ascending: true }),
+    supabase
+      .from(TABLE_STAFF_INVITES)
+      .select("tournament_id,email,role,status,created_at")
+      .eq("tournament_id", tournamentId)
+      .eq("status", "pending")
+      .order("created_at", { ascending: true }),
+  ]);
+  const { data, error } = staffRows;
   if (error) throw new Error(error.message);
+  if (inviteRows.error) throw new Error(inviteRows.error.message);
 
   const rows = (data ?? []) as TournamentMemberRow[];
   const userIds = Array.from(new Set(rows.map((row) => row.user_id).filter(Boolean)));
@@ -547,9 +591,13 @@ export async function listTournamentStaff(tournamentId: string): Promise<Tournam
     }
   }
 
-  return rows
+  const active = rows
     .map((row) => staffRowToModel(row, nameMap.get(row.user_id) || "Usuario vinculado"))
     .filter((row): row is TournamentStaffMember => Boolean(row));
+  const pending = ((inviteRows.data ?? []) as TournamentStaffInviteRow[])
+    .map(staffInviteRowToModel)
+    .filter((row): row is TournamentStaffMember => Boolean(row));
+  return [...pending, ...active];
 }
 
 export async function addTournamentStaff(
@@ -577,6 +625,24 @@ export async function removeTournamentStaff(tournamentId: string, userId: string
     p_tournament_id: tournamentId,
     p_user_id: userId,
   });
+  if (error) throw new Error(error.message);
+}
+
+export async function cancelTournamentStaffInvite(
+  tournamentId: string,
+  email: string,
+  role: TournamentStaffRole
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) throw new Error("Email obrigatorio.");
+  const { error } = await supabase
+    .from(TABLE_STAFF_INVITES)
+    .delete()
+    .eq("tournament_id", tournamentId)
+    .eq("email", normalizedEmail)
+    .eq("role", role)
+    .eq("status", "pending");
   if (error) throw new Error(error.message);
 }
 

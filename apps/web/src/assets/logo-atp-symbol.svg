@@ -1,0 +1,12 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ATP Symbol</title>
+  <desc id="desc">Compact tennis court and ball symbol for ATP</desc>
+  <rect width="96" height="96" rx="22" fill="#0A1530"/>
+  <rect x="14" y="18" width="68" height="60" rx="14" fill="#102244"/>
+  <path d="M26 28H70L62 68H34L26 28Z" fill="#163866"/>
+  <path d="M48 28V68" stroke="#A8DFBF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M30 48H66" stroke="#A8DFBF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M26 28H70L62 68H34L26 28Z" stroke="#E6F4ED" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="65" cy="31" r="9" fill="#25A05A"/>
+  <path d="M58.8 37.2C63 35.5 66.5 32.1 68.1 27.8" stroke="#E6F4ED" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -38,10 +38,11 @@ export type PlaceOrganization = {
 
 export type PlaceStaffMember = {
   placeId: string;
-  userId: string;
+  userId: string | null;
   email: string;
   role: "manager" | "coach" | "frontdesk";
   createdAt: string;
+  status?: "active" | "pending";
 };
 
 export type PlaceCourt = {
@@ -427,10 +428,11 @@ export type TournamentStaffRole = Extract<TournamentRole, "organizer" | "scoreke
 
 export type TournamentStaffMember = {
   tournamentId: string;
-  userId: string;
+  userId: string | null;
   email: string;
   role: TournamentStaffRole;
   createdAt: string;
+  status?: "active" | "pending";
 };
 
 export type TournamentRegistration = {

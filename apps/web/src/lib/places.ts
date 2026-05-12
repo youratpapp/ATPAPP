@@ -55,6 +55,7 @@ const TABLE_OPEN_MATCH_PARTICIPANTS = "open_match_participants";
 const TABLE_OPEN_MATCH_COMMENTS = "open_match_comments";
 const TABLE_OPEN_MATCH_REACTIONS = "open_match_reactions";
 const TABLE_PLACE_STAFF = "place_staff";
+const TABLE_PLACE_STAFF_INVITES = "place_staff_invites";
 
 type PlaceRow = {
   id: string;
@@ -394,10 +395,11 @@ type OpenMatchCommentRow = {
 
 type PlaceStaffRow = {
   place_id: string;
-  user_id: string;
+  user_id: string | null;
   email?: string | null;
   role: "manager" | "coach" | "frontdesk" | string;
   created_at: string | null;
+  status?: "active" | "pending" | string | null;
 };
 
 function rowToPlace(row: PlaceRow, followerCount = 0, isFollowing = false): Place {
@@ -793,6 +795,7 @@ function rowToPlaceStaff(row: PlaceStaffRow): PlaceStaffMember {
     email: row.email || "",
     role: row.role === "coach" || row.role === "frontdesk" ? row.role : "manager",
     createdAt: row.created_at || "",
+    status: row.status === "pending" ? "pending" : "active",
   };
 }
 
@@ -853,6 +856,7 @@ export async function listPlacesIOwn(user: User): Promise<Place[]> {
 
 export async function listPlacesIAccess(user: User): Promise<Place[]> {
   if (!supabase) return [];
+  await claimPlaceStaffInvites().catch(() => 0);
   const [owned, staffRows] = await Promise.all([
     listPlacesIOwn(user),
     supabase.from(TABLE_PLACE_STAFF).select("place_id").eq("user_id", user.id),
@@ -873,6 +877,13 @@ export async function listPlacesIAccess(user: User): Promise<Place[]> {
   if (error) throw new Error(error.message);
 
   return [...owned, ...(await decoratePlaces((data ?? []) as PlaceRow[], user.id))].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function claimPlaceStaffInvites(): Promise<number> {
+  if (!supabase) return 0;
+  const { data, error } = await supabase.rpc("app_claim_place_staff_invites");
+  if (error) throw new Error(error.message);
+  return Number(data || 0);
 }
 
 export async function listPlacesIFollow(user: User): Promise<Place[]> {
@@ -1899,6 +1910,9 @@ export async function requestAcademyLessonFit(input: {
   makeupCreditId?: string;
 }): Promise<AcademyLessonRequest> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  if (input.requestType === "makeup" && !input.makeupCreditId) {
+    throw new Error("Reposicao exige um credito aberto.");
+  }
   const { data, error } = await supabase.rpc("app_request_academy_lesson_fit", {
     p_place_id: input.placeId,
     p_class_id: input.classId,
@@ -2202,13 +2216,27 @@ export async function toggleOpenMatchReaction(user: User, match: OpenMatch): Pro
 
 export async function listPlaceStaff(placeId: string): Promise<PlaceStaffMember[]> {
   if (!supabase) return [];
-  const { data, error } = await supabase
-    .from(TABLE_PLACE_STAFF)
-    .select("place_id,user_id,role,created_at")
-    .eq("place_id", placeId)
-    .order("created_at", { ascending: false });
-  if (error) throw new Error(error.message);
-  return ((data ?? []) as PlaceStaffRow[]).map(rowToPlaceStaff);
+  await claimPlaceStaffInvites().catch(() => 0);
+  const [staffRows, inviteRows] = await Promise.all([
+    supabase
+      .from(TABLE_PLACE_STAFF)
+      .select("place_id,user_id,role,created_at")
+      .eq("place_id", placeId)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from(TABLE_PLACE_STAFF_INVITES)
+      .select("place_id,email,role,created_at,status")
+      .eq("place_id", placeId)
+      .eq("status", "pending")
+      .order("created_at", { ascending: false }),
+  ]);
+  if (staffRows.error) throw new Error(staffRows.error.message);
+  if (inviteRows.error) throw new Error(inviteRows.error.message);
+  const active = ((staffRows.data ?? []) as PlaceStaffRow[]).map((row) => rowToPlaceStaff({ ...row, status: "active" }));
+  const pending = ((inviteRows.data ?? []) as PlaceStaffRow[]).map((row) =>
+    rowToPlaceStaff({ ...row, user_id: null, status: "pending" })
+  );
+  return [...pending, ...active];
 }
 
 export async function addPlaceStaff(input: {
@@ -2231,5 +2259,19 @@ export async function addPlaceStaff(input: {
 export async function removePlaceStaff(placeId: string, userId: string): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { error } = await supabase.from(TABLE_PLACE_STAFF).delete().eq("place_id", placeId).eq("user_id", userId);
+  if (error) throw new Error(error.message);
+}
+
+export async function cancelPlaceStaffInvite(placeId: string, email: string, role: PlaceStaffMember["role"]): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!normalizedEmail) throw new Error("Email obrigatorio.");
+  const { error } = await supabase
+    .from(TABLE_PLACE_STAFF_INVITES)
+    .delete()
+    .eq("place_id", placeId)
+    .eq("email", normalizedEmail)
+    .eq("role", role)
+    .eq("status", "pending");
   if (error) throw new Error(error.message);
 }

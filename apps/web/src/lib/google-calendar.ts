@@ -33,3 +33,21 @@ export async function syncTournamentMatchesToGoogleCalendar(input: {
   if (error) throw new Error(error.message);
   return (data ?? { ok: false, message: "Resposta vazia." }) as GoogleCalendarSyncResult;
 }
+
+export async function syncLeagueMatchesToGoogleCalendar(input: {
+  leagueId: string;
+  returnTo: string;
+  events: GoogleCalendarSyncEvent[];
+}): Promise<GoogleCalendarSyncResult> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.functions.invoke("google-calendar", {
+    body: {
+      action: "syncLeague",
+      leagueId: input.leagueId,
+      returnTo: input.returnTo,
+      events: input.events,
+    },
+  });
+  if (error) throw new Error(error.message);
+  return (data ?? { ok: false, message: "Resposta vazia." }) as GoogleCalendarSyncResult;
+}

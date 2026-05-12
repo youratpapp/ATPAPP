@@ -34,6 +34,7 @@ import {
   updateLeagueSettings,
 } from "../lib/leagues";
 import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
+import { syncLeagueMatchesToGoogleCalendar } from "../lib/google-calendar";
 import type {
   LeagueChatMessage,
   LeagueClassSummary,
@@ -67,17 +68,33 @@ function parsePageTab(value: string | null): PageTab {
 
 function normalizePageTab(tab: PageTab, isOwner: boolean): PageTab {
   if (isOwner) return tab;
-  return tab === "visao" || tab === "jogadores" ? "partidas" : tab;
+  return tab === "jogadores" ? "partidas" : tab;
 }
 
 type MatchForm = {
-  sets1: string;
-  sets2: string;
-  games1: string;
-  games2: string;
+  scoreRows: MatchScoreRow[];
   winnerSide: "1" | "2";
   isWo: boolean;
   summary: string;
+};
+
+type MatchScoreRow = {
+  side1: string;
+  side2: string;
+};
+
+type ComputedMatchScore = {
+  sets1: number;
+  sets2: number;
+  games1: number;
+  games2: number;
+  winnerSide: "1" | "2";
+  summaryScore: string;
+};
+
+type LeagueScoreValidation = {
+  ok: boolean;
+  message?: string;
 };
 
 type RoundWithMatches = {
@@ -124,6 +141,16 @@ type CommonAvailabilitySlot = {
   playerNames: string[];
 };
 
+type MyLeagueMatch = {
+  id: string;
+  title: string;
+  classLabel: string;
+  roundLabel: string;
+  status: LeagueMatchSummary["status"];
+  scheduledAt: string;
+  match: LeagueMatchSummary;
+};
+
 function typeLabel(v: LeagueDetails["leagueType"]): string {
   if (v === "dupla_fixa") return "Dupla fixa";
   if (v === "dupla_rotativa") return "Dupla rotativa";
@@ -168,6 +195,13 @@ function matchStatusLabel(v: LeagueMatchSummary["status"]): string {
 function formatDateTime(value: string): string {
   if (!value) return "-";
   return new Date(value).toLocaleString("pt-BR");
+}
+
+function addMinutesIso(value: string, minutes: number): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  date.setMinutes(date.getMinutes() + minutes);
+  return date.toISOString();
 }
 
 function toDateTimeInputValue(iso: string): string {
@@ -219,15 +253,142 @@ function buildCommonAvailabilitySlots(availability: LeagueMatchAvailability[]): 
     .sort((a, b) => new Date(a.availableAt).getTime() - new Date(b.availableAt).getTime());
 }
 
-function defaultMatchForm(): MatchForm {
+function WhatsAppAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="brand-app-icon">
+      <circle cx="12" cy="12" r="10" fill="#25d366" />
+      <path d="M7.5 18.2l.8-2.9a6.5 6.5 0 1 1 2.5 1.9z" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.7 8.7c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.4c.1.3.1.5-.1.7l-.4.5c.6 1 1.3 1.7 2.4 2.3l.5-.5c.2-.2.4-.3.7-.1l1.4.6c.3.1.4.3.4.6v.4c0 .4-.2.7-.5.9-.5.3-1.5.4-2.9-.2-2.4-1-4.3-3.1-4.8-5.1-.2-.7-.1-1.2.1-1.5z" fill="#fff" />
+    </svg>
+  );
+}
+
+function GoogleCalendarAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="brand-app-icon">
+      <rect x="3" y="4" width="18" height="17" rx="3" fill="#fff" />
+      <path d="M6 2v4M18 2v4" stroke="#5f6368" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M6 4h12a3 3 0 0 1 3 3v2H3V7a3 3 0 0 1 3-3z" fill="#1a73e8" />
+      <path d="M5 9h14v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" fill="#fff" />
+      <path d="M8 12h3v3H8z" fill="#34a853" />
+      <path d="M13 12h3v3h-3z" fill="#fbbc04" />
+      <path d="M8 16h3v2H8z" fill="#ea4335" />
+      <path d="M13 16h3v2h-3z" fill="#1a73e8" />
+    </svg>
+  );
+}
+
+function leagueScoreRowsForFormat(format: string): string[] {
+  if (format === "set_unico") return ["Set 1"];
+  if (format === "pro_set") return ["Pro set"];
+  if (format === "super_tb_unico") return ["Super TB"];
+  if (format === "melhor_de_3_super_tb") return ["Set 1", "Set 2", "Super TB"];
+  if (format === "fast4") return ["Set 1", "Set 2", "Tie-break"];
+  return ["Set 1", "Set 2", "Set 3"];
+}
+
+function validateLeagueScoreRow(format: string, label: string, side1: number, side2: number): LeagueScoreValidation {
+  const high = Math.max(side1, side2);
+  const low = Math.min(side1, side2);
+  const diff = high - low;
+
+  if (side1 < 0 || side2 < 0 || side1 === side2) {
+    return { ok: false, message: `${label}: placar incompleto ou empatado.` };
+  }
+
+  if (label === "Super TB" || format === "super_tb_unico") {
+    return high >= 10 && diff >= 2
+      ? { ok: true }
+      : { ok: false, message: `${label}: o super tie-break precisa fechar em 10+ com 2 pontos de diferenca.` };
+  }
+
+  if (label === "Tie-break") {
+    return high >= 7 && diff >= 2
+      ? { ok: true }
+      : { ok: false, message: `${label}: o tie-break precisa fechar em 7+ com 2 pontos de diferenca.` };
+  }
+
+  if (format === "fast4") {
+    return (high === 4 && low <= 2) || (high === 5 && low === 3)
+      ? { ok: true }
+      : { ok: false, message: `${label}: no Fast4 use 4/0, 4/1, 4/2 ou 5/3.` };
+  }
+
+  if (format === "pro_set") {
+    return (high === 8 && low <= 6) || (high === 9 && low === 7)
+      ? { ok: true }
+      : { ok: false, message: `${label}: no pro set use 8/0 ate 8/6 ou 9/7.` };
+  }
+
+  return (high === 6 && low <= 4) || (high === 7 && (low === 5 || low === 6))
+    ? { ok: true }
+    : { ok: false, message: `${label}: use um placar de set valido, como 6/4, 7/5 ou 7/6.` };
+}
+
+function emptyScoreRows(format: string): MatchScoreRow[] {
+  return leagueScoreRowsForFormat(format).map(() => ({ side1: "", side2: "" }));
+}
+
+function normalizeMatchForm(form: MatchForm | undefined, format: string): MatchForm {
+  const rows = emptyScoreRows(format);
+  form?.scoreRows?.forEach((row, index) => {
+    if (index < rows.length) {
+      rows[index] = {
+        side1: String(row.side1 || "").replace(/[^\d]/g, ""),
+        side2: String(row.side2 || "").replace(/[^\d]/g, ""),
+      };
+    }
+  });
   return {
-    sets1: "2",
-    sets2: "0",
-    games1: "12",
-    games2: "6",
-    winnerSide: "1",
-    isWo: false,
-    summary: "",
+    scoreRows: rows,
+    winnerSide: form?.winnerSide || "1",
+    isWo: Boolean(form?.isWo),
+    summary: form?.summary || "",
+  };
+}
+
+function computeLeagueMatchScore(form: MatchForm, format: string): ComputedMatchScore | null {
+  const labels = leagueScoreRowsForFormat(format);
+  const rows = form.scoreRows.map((row, index) => ({
+    side1: row.side1 === "" ? null : Number(row.side1),
+    side2: row.side2 === "" ? null : Number(row.side2),
+    label: labels[index] || `Set ${index + 1}`,
+  }));
+  const firstEmptyIndex = rows.findIndex((row) => row.side1 === null && row.side2 === null);
+  if (firstEmptyIndex >= 0 && rows.slice(firstEmptyIndex + 1).some((row) => row.side1 !== null || row.side2 !== null)) {
+    return null;
+  }
+  const playedRows = rows.filter((row) => row.side1 !== null || row.side2 !== null);
+
+  let sets1 = 0;
+  let sets2 = 0;
+  let games1 = 0;
+  let games2 = 0;
+  const summaryParts: string[] = [];
+
+  for (const row of playedRows) {
+    if (row.side1 === null || row.side2 === null || row.side1 === row.side2) return null;
+    const valid = validateLeagueScoreRow(format, row.label, row.side1, row.side2);
+    if (!valid.ok) return null;
+    games1 += row.side1;
+    games2 += row.side2;
+    if (row.side1 > row.side2) sets1 += 1;
+    else sets2 += 1;
+    summaryParts.push(`${row.side1}/${row.side2}`);
+  }
+
+  if (!summaryParts.length || sets1 === sets2) return null;
+
+  const targetSets = labels.length === 1 ? 1 : Math.floor(labels.length / 2) + 1;
+  if (Math.max(sets1, sets2) < targetSets) return null;
+
+  return {
+    sets1,
+    sets2,
+    games1,
+    games2,
+    winnerSide: sets1 > sets2 ? "1" : "2",
+    summaryScore: summaryParts.join(" "),
   };
 }
 
@@ -305,6 +466,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newClassName, setNewClassName] = useState("");
   const [generatedJoinLink, setGeneratedJoinLink] = useState("");
+  const [showFinishedMyLeagueMatches, setShowFinishedMyLeagueMatches] = useState(false);
+  const [calendarSyncing, setCalendarSyncing] = useState(false);
 
   const isOwner = Boolean(league && league.ownerId === user.id);
   const leagueBackPath = isOwner ? "/eventos/ligas?view=organizing" : "/eventos/ligas?view=participating";
@@ -426,6 +589,51 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       nextTab,
     };
   }, [isOwner, league?.status, registrationStats.pending, roundsData]);
+
+  const myLeagueMatches = useMemo<MyLeagueMatch[]>(() => {
+    if (isOwner) return [];
+    const out: MyLeagueMatch[] = [];
+    for (const { round, matches } of roundsData) {
+      for (const match of matches) {
+        const isMine = match.participants.some((participant) => participant.userId === user.id);
+        if (!isMine) continue;
+        const side1 = match.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ") || "A definir";
+        const side2 = match.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ") || "A definir";
+        const cls = match.classId ? classById[match.classId] : null;
+        out.push({
+          id: match.id,
+          title: `${side1} x ${side2}`,
+          classLabel: cls ? classLabel(cls) : selectedClassLabel,
+          roundLabel: `Rodada ${round.roundNumber}`,
+          status: match.status,
+          scheduledAt: match.scheduledAt,
+          match,
+        });
+      }
+    }
+    return out.sort((a, b) => {
+      const aDone = a.status === "encerrada" || a.status === "wo";
+      const bDone = b.status === "encerrada" || b.status === "wo";
+      if (aDone !== bDone) return Number(aDone) - Number(bDone);
+      const ad = a.scheduledAt ? new Date(a.scheduledAt).getTime() : Number.MAX_SAFE_INTEGER;
+      const bd = b.scheduledAt ? new Date(b.scheduledAt).getTime() : Number.MAX_SAFE_INTEGER;
+      if (ad !== bd) return ad - bd;
+      return a.title.localeCompare(b.title, "pt-BR");
+    });
+  }, [classById, isOwner, roundsData, selectedClassLabel, user.id]);
+
+  const myPendingLeagueMatches = useMemo(
+    () => myLeagueMatches.filter((match) => match.status !== "encerrada" && match.status !== "wo"),
+    [myLeagueMatches]
+  );
+  const myFinishedLeagueMatches = useMemo(
+    () => myLeagueMatches.filter((match) => match.status === "encerrada" || match.status === "wo"),
+    [myLeagueMatches]
+  );
+  const visibleMyLeagueMatches = useMemo(() => {
+    const source = showFinishedMyLeagueMatches ? myLeagueMatches : myPendingLeagueMatches;
+    return (source.length ? source : myLeagueMatches).slice(0, 6);
+  }, [myLeagueMatches, myPendingLeagueMatches, showFinishedMyLeagueMatches]);
 
   const leagueSeasonGuard = useMemo(() => {
     const blockers: string[] = [];
@@ -847,6 +1055,50 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
   }
 
+  async function syncMyLeagueGoogleCalendar() {
+    if (!league) return;
+    const scheduledMatches = myLeagueMatches.filter((match) => Boolean(match.scheduledAt));
+    if (!scheduledMatches.length) {
+      setFeedback({ kind: "error", text: "Nenhuma das suas partidas possui horario definido ainda." });
+      return;
+    }
+
+    setCalendarSyncing(true);
+    setFeedback(null);
+    try {
+      const result = await syncLeagueMatchesToGoogleCalendar({
+        leagueId: league.id,
+        returnTo: window.location.href,
+        events: scheduledMatches.map((item) => ({
+          uid: `${league.id}:${item.id}`,
+          title: `${league.name}: ${item.title}`,
+          startsAt: item.scheduledAt,
+          endsAt: addMinutesIso(item.scheduledAt, 90),
+          description: [
+            league.name,
+            item.classLabel,
+            item.roundLabel,
+            buildLeagueShareLink(),
+          ].filter(Boolean).join("\n"),
+        })),
+      });
+      if (result.authUrl) {
+        window.location.assign(result.authUrl);
+        return;
+      }
+      setFeedback({
+        kind: result.ok ? "success" : "error",
+        text: result.ok
+          ? `${result.syncedCount || scheduledMatches.length} partida(s) sincronizada(s) no Google Agenda.`
+          : result.message || "Falha ao sincronizar Google Agenda.",
+      });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao sincronizar Google Agenda." });
+    } finally {
+      setCalendarSyncing(false);
+    }
+  }
+
   async function onPostLeagueAnnouncement() {
     if (!league || !isOwner) return;
     const text = announcementDraft.trim();
@@ -896,31 +1148,42 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   }
 
   function getMatchForm(matchId: string): MatchForm {
-    return matchForms[matchId] || defaultMatchForm();
+    return normalizeMatchForm(matchForms[matchId], league?.matchFormat || "melhor_de_3");
   }
 
   function setMatchForm(matchId: string, next: Partial<MatchForm>) {
     setMatchForms((prev) => ({
       ...prev,
-      [matchId]: { ...(prev[matchId] || defaultMatchForm()), ...next },
+      [matchId]: { ...normalizeMatchForm(prev[matchId], league?.matchFormat || "melhor_de_3"), ...next },
     }));
   }
 
   async function onSubmitResult(match: LeagueMatchSummary) {
     const f = getMatchForm(match.id);
+    const computed = f.isWo
+      ? {
+          sets1: f.winnerSide === "1" ? 2 : 0,
+          sets2: f.winnerSide === "2" ? 2 : 0,
+          games1: 0,
+          games2: 0,
+          winnerSide: f.winnerSide,
+          summaryScore: "WO",
+        }
+      : computeLeagueMatchScore(f, league?.matchFormat || "melhor_de_3");
+    if (!computed) {
+      setFeedback({ kind: "error", text: "Preencha um placar valido para o formato da liga." });
+      return;
+    }
+    const side1Name = match.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ");
+    const side2Name = match.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ");
     const payload = {
-      sets_side1: Number(f.sets1 || 0),
-      sets_side2: Number(f.sets2 || 0),
-      games_side1: Number(f.games1 || 0),
-      games_side2: Number(f.games2 || 0),
-      winner_side: Number(f.winnerSide || "1"),
+      sets_side1: computed.sets1,
+      sets_side2: computed.sets2,
+      games_side1: computed.games1,
+      games_side2: computed.games2,
+      winner_side: Number(computed.winnerSide),
       is_wo: f.isWo,
-      summary:
-        f.summary.trim() ||
-        `${match.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ")} ${f.sets1}-${f.sets2} ${match.participants
-          .filter((p) => p.side === 2)
-          .map((p) => p.displayName)
-          .join(" / ")}`,
+      summary: f.summary.trim() || `${side1Name} ${computed.summaryScore} ${side2Name}`,
     };
     setBusy(true);
     setFeedback(null);
@@ -956,22 +1219,30 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   async function onAdminResolveResult(match: LeagueMatchSummary) {
     if (!isOwner) return;
     const f = getMatchForm(match.id);
+    const computed = f.isWo
+      ? {
+          sets1: f.winnerSide === "1" ? 2 : 0,
+          sets2: f.winnerSide === "2" ? 2 : 0,
+          games1: 0,
+          games2: 0,
+          winnerSide: f.winnerSide,
+          summaryScore: "WO",
+        }
+      : computeLeagueMatchScore(f, league?.matchFormat || "melhor_de_3");
+    if (!computed) {
+      setFeedback({ kind: "error", text: "Preencha um placar valido para o formato da liga." });
+      return;
+    }
+    const side1Name = match.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ");
+    const side2Name = match.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ");
     const payload = {
-      sets_side1: Number(f.sets1 || 0),
-      sets_side2: Number(f.sets2 || 0),
-      games_side1: Number(f.games1 || 0),
-      games_side2: Number(f.games2 || 0),
-      winner_side: Number(f.winnerSide || "1"),
+      sets_side1: computed.sets1,
+      sets_side2: computed.sets2,
+      games_side1: computed.games1,
+      games_side2: computed.games2,
+      winner_side: Number(computed.winnerSide),
       is_wo: f.isWo,
-      summary:
-        f.summary.trim() ||
-        `Resolvido pelo admin: ${match.participants
-          .filter((p) => p.side === 1)
-          .map((p) => p.displayName)
-          .join(" / ")} ${f.sets1}-${f.sets2} ${match.participants
-          .filter((p) => p.side === 2)
-          .map((p) => p.displayName)
-          .join(" / ")}`,
+      summary: f.summary.trim() || `Resolvido pelo admin: ${side1Name} ${computed.summaryScore} ${side2Name}`,
     };
     setBusy(true);
     setFeedback(null);
@@ -1086,7 +1357,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         <>
           <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
             <button className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
-              {isOwner ? "Organizacao" : "Resumo"}
+              {isOwner ? "Organizacao" : "Classificacao"}
             </button>
             {isOwner ? (
               <button className={activeTab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
@@ -1101,25 +1372,28 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </button>
           </div>
 
-          <div className="events-kpi-grid">
-            <article className="events-kpi-card">
-              <p className="events-kpi-label">Tipo</p>
-              <p className="events-kpi-value" style={{ fontSize: "var(--font-size-md)" }}>
-                {typeLabel(league.leagueType)}
-              </p>
-            </article>
-            <article className="events-kpi-card">
-              <p className="events-kpi-label">Status</p>
-              <p className="events-kpi-value" style={{ fontSize: "var(--font-size-md)" }}>
-                {statusLabel(league.status)}
-              </p>
-            </article>
-            <article className="events-kpi-card">
-              <p className="events-kpi-label">Temporadas</p>
-              <p className="events-kpi-value">{league.seasons.length}</p>
-            </article>
-          </div>
+          {isOwner && activeTab === "visao" ? (
+            <div className="events-kpi-grid">
+              <article className="events-kpi-card">
+                <p className="events-kpi-label">Tipo</p>
+                <p className="events-kpi-value" style={{ fontSize: "var(--font-size-md)" }}>
+                  {typeLabel(league.leagueType)}
+                </p>
+              </article>
+              <article className="events-kpi-card">
+                <p className="events-kpi-label">Status</p>
+                <p className="events-kpi-value" style={{ fontSize: "var(--font-size-md)" }}>
+                  {statusLabel(league.status)}
+                </p>
+              </article>
+              <article className="events-kpi-card">
+                <p className="events-kpi-label">Temporadas</p>
+                <p className="events-kpi-value">{league.seasons.length}</p>
+              </article>
+            </div>
+          ) : null}
 
+          {isOwner && activeTab === "visao" ? (
           <section className="league-overview-card">
             <div className="tournament-overview-grid">
               <div className="tournament-overview-kpi">
@@ -1143,28 +1417,30 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <span>Proxima acao</span>
               <strong>{leagueOverview.nextAction}</strong>
             </button>
-            <div className="league-core-state-grid">
-              <button onClick={() => goToTab("partidas")} className={leagueOverview.scheduling > 0 ? "needs-action" : ""}>
-                <strong>{leagueOverview.scheduling}</strong>
-                <span>Agendar</span>
-                <small>Partidas aguardando organizacao</small>
-              </button>
-              <button onClick={() => goToTab("partidas")} className={leagueOverview.result > 0 ? "needs-action" : ""}>
-                <strong>{leagueOverview.result}</strong>
-                <span>Resultado</span>
-                <small>Jogos esperando placar</small>
-              </button>
-              <button onClick={() => goToTab("partidas")} className={leagueOverview.confirmation > 0 ? "needs-action" : ""}>
-                <strong>{leagueOverview.confirmation}</strong>
-                <span>Confirmar</span>
-                <small>Resultados aguardando aceite</small>
-              </button>
-              <button onClick={() => goToTab("partidas")} className={leagueOverview.attention > 0 ? "needs-action danger" : ""}>
-                <strong>{leagueOverview.attention}</strong>
-                <span>Intervir</span>
-                <small>Disputa ou analise admin</small>
-              </button>
-            </div>
+            {isOwner ? (
+              <div className="league-core-state-grid">
+                <button onClick={() => goToTab("partidas")} className={leagueOverview.scheduling > 0 ? "needs-action" : ""}>
+                  <strong>{leagueOverview.scheduling}</strong>
+                  <span>Agendar</span>
+                  <small>Partidas aguardando organizacao</small>
+                </button>
+                <button onClick={() => goToTab("partidas")} className={leagueOverview.result > 0 ? "needs-action" : ""}>
+                  <strong>{leagueOverview.result}</strong>
+                  <span>Resultado</span>
+                  <small>Jogos esperando placar</small>
+                </button>
+                <button onClick={() => goToTab("partidas")} className={leagueOverview.confirmation > 0 ? "needs-action" : ""}>
+                  <strong>{leagueOverview.confirmation}</strong>
+                  <span>Confirmar</span>
+                  <small>Resultados aguardando aceite</small>
+                </button>
+                <button onClick={() => goToTab("partidas")} className={leagueOverview.attention > 0 ? "needs-action danger" : ""}>
+                  <strong>{leagueOverview.attention}</strong>
+                  <span>Intervir</span>
+                  <small>Disputa ou analise admin</small>
+                </button>
+              </div>
+            ) : null}
             {isOwner ? (
               <div className={`league-season-guard ${leagueSeasonGuard.ready ? "ready" : ""}`}>
                 <div>
@@ -1195,12 +1471,22 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   Link de inscricao
                 </button>
               ) : null}
-              <button onClick={() => void shareLeagueInviteWhatsApp()} disabled={busy}>
-                WhatsApp
+              <button
+                className="brand-icon-btn"
+                onClick={() => void shareLeagueInviteWhatsApp()}
+                disabled={busy}
+                title="Compartilhar pelo WhatsApp"
+                aria-label="Compartilhar pelo WhatsApp"
+              >
+                <WhatsAppAppIcon />
+                <span>WhatsApp</span>
               </button>
             </div>
           </section>
+          ) : null}
 
+          {activeTab === "visao" ? (
+            <>
           <section className="section-card">
             <h3 style={{ marginTop: 0, marginBottom: 10 }}>Filtro de visualizacao</h3>
             <div className="events-filter-grid">
@@ -1311,8 +1597,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               </div>
             ) : null}
           </section>
+            </>
+          ) : null}
 
-          {activeTab === "visao" ? (
+          {activeTab === "visao" && isOwner ? (
             <>
               <section className="section-card">
                 <h3 style={{ marginTop: 0, marginBottom: 10 }}>Config da liga</h3>
@@ -1719,6 +2007,69 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           {activeTab === "partidas" ? (
             <section className="section-card">
               <h3 style={{ marginTop: 0, marginBottom: 10 }}>Partidas por rodada</h3>
+              {!isOwner && myLeagueMatches.length > 0 ? (
+                <div className="my-matches-panel">
+                  <div className="section-title" style={{ marginBottom: 8 }}>
+                    <h3>Minhas partidas</h3>
+                    <div className="cluster">
+                      <span className="home-league-chip member">{myPendingLeagueMatches.length} pendente(s)</span>
+                      {myFinishedLeagueMatches.length > 0 ? (
+                        <button
+                          className="link"
+                          onClick={() => setShowFinishedMyLeagueMatches((value) => !value)}
+                        >
+                          {showFinishedMyLeagueMatches
+                            ? "Ocultar finalizadas"
+                            : `Ver ${myFinishedLeagueMatches.length} finalizada(s)`}
+                        </button>
+                      ) : null}
+                      <button
+                        className="brand-icon-btn"
+                        onClick={() => void syncMyLeagueGoogleCalendar()}
+                        disabled={busy || calendarSyncing}
+                        title="Sincronizar no Google Agenda"
+                        aria-label="Sincronizar no Google Agenda"
+                      >
+                        <GoogleCalendarAppIcon />
+                        <span>Agenda</span>
+                      </button>
+                    </div>
+                  </div>
+                  {visibleMyLeagueMatches.map((item) => {
+                    const availability = availabilityByMatch[item.id] || [];
+                    const submissions = matchSubmissions[item.id] || [];
+                    const myPlayer = item.match.participants.find((participant) => participant.userId === user.id);
+                    const opState = buildLeagueMatchOperationalState({
+                      match: item.match,
+                      availability,
+                      submissions,
+                      myPlayer,
+                      isOwner: false,
+                    });
+                    return (
+                      <div key={`my-league:${item.id}`} className={`my-match-row ${item.status === "encerrada" || item.status === "wo" ? "done" : "pending"}`}>
+                        <button type="button" onClick={() => void openMatchRoom(item.match)}>
+                          <span>
+                            <strong>{item.title}</strong>
+                            <small>{item.classLabel} - {item.roundLabel}</small>
+                          </span>
+                          <em>{matchStatusLabel(item.status)}</em>
+                        </button>
+                        {item.scheduledAt ? <p className="match-schedule-info">{formatDateTime(item.scheduledAt)}</p> : null}
+                        <p className={`match-operational-state ${opState.severity}`}>
+                          <span>{opState.label}</span>
+                          <strong>{opState.playerAction}</strong>
+                        </p>
+                        <div className="match-confirmation-actions">
+                          <button onClick={() => void openMatchRoom(item.match)}>
+                            {expandedMatchId === item.id ? "Fechar sala" : "Abrir sala"}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
               {!roundsData.length ? <p className="subtle">Sem rodadas geradas.</p> : null}
               {roundsData.map(({ round, matches }) => (
                 <div key={round.id} style={{ marginBottom: 14 }}>
@@ -1733,6 +2084,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     const side1 = m.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ") || "A definir";
                     const side2 = m.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ") || "A definir";
                     const form = getMatchForm(m.id);
+                    const scoreRowLabels = leagueScoreRowsForFormat(league.matchFormat);
                     const subs = matchSubmissions[m.id] || [];
                     const avail = availabilityByMatch[m.id] || [];
                     const commonAvailability = buildCommonAvailabilitySlots(avail);
@@ -1859,28 +2211,55 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
                             <section className="league-room-panel league-room-result">
                               <h4>Resultado e confirmacao</h4>
+                              <div className="my-match-score-fields league-score-fields">
+                                <p className="my-match-score-map">
+                                  <span>
+                                    <strong>1</strong> {side1}
+                                  </span>
+                                  <span>
+                                    <strong>2</strong> {side2}
+                                  </span>
+                                </p>
+                                {scoreRowLabels.map((label, rowIndex) => (
+                                  <label key={`${m.id}:score:${label}`} className="league-score-row">
+                                    <span>{label}</span>
+                                    <input
+                                      className="match-score-input"
+                                      inputMode="numeric"
+                                      placeholder="1"
+                                      value={form.scoreRows[rowIndex]?.side1 || ""}
+                                      disabled={form.isWo}
+                                      onChange={(e) => {
+                                        const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                                        rows[rowIndex] = { ...rows[rowIndex], side1: e.target.value.replace(/[^\d]/g, "") };
+                                        setMatchForm(m.id, { scoreRows: rows });
+                                      }}
+                                    />
+                                    <input
+                                      className="match-score-input"
+                                      inputMode="numeric"
+                                      placeholder="2"
+                                      value={form.scoreRows[rowIndex]?.side2 || ""}
+                                      disabled={form.isWo}
+                                      onChange={(e) => {
+                                        const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                                        rows[rowIndex] = { ...rows[rowIndex], side2: e.target.value.replace(/[^\d]/g, "") };
+                                        setMatchForm(m.id, { scoreRows: rows });
+                                      }}
+                                    />
+                                  </label>
+                                ))}
+                              </div>
                               <div className="events-filter-grid">
                                 <label>
-                                  Sets lado 1
-                                  <input value={form.sets1} onChange={(e) => setMatchForm(m.id, { sets1: e.target.value.replace(/[^\d]/g, "") })} />
-                                </label>
-                                <label>
-                                  Sets lado 2
-                                  <input value={form.sets2} onChange={(e) => setMatchForm(m.id, { sets2: e.target.value.replace(/[^\d]/g, "") })} />
-                                </label>
-                                <label>
-                                  Games lado 1
-                                  <input value={form.games1} onChange={(e) => setMatchForm(m.id, { games1: e.target.value.replace(/[^\d]/g, "") })} />
-                                </label>
-                                <label>
-                                  Games lado 2
-                                  <input value={form.games2} onChange={(e) => setMatchForm(m.id, { games2: e.target.value.replace(/[^\d]/g, "") })} />
-                                </label>
-                                <label>
-                                  Vencedor
-                                  <select value={form.winnerSide} onChange={(e) => setMatchForm(m.id, { winnerSide: e.target.value as "1" | "2" })}>
-                                    <option value="1">Lado 1</option>
-                                    <option value="2">Lado 2</option>
+                                  Vencedor se WO
+                                  <select
+                                    value={form.winnerSide}
+                                    disabled={!form.isWo}
+                                    onChange={(e) => setMatchForm(m.id, { winnerSide: e.target.value as "1" | "2" })}
+                                  >
+                                    <option value="1">{side1}</option>
+                                    <option value="2">{side2}</option>
                                   </select>
                                 </label>
                                 <label>
@@ -1908,6 +2287,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                                     <div key={s.id} className="league-submission-row">
                                       <span>
                                         Submissao em {formatDateTime(s.createdAt)} | Status: {s.status}
+                                        {typeof s.payload.summary === "string" && s.payload.summary ? ` | ${s.payload.summary}` : ""}
                                       </span>
                                       {s.status === "pending" ? (
                                         <span>

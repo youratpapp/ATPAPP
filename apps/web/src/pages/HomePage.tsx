@@ -1075,6 +1075,16 @@ function ActivityFeedCard({ item, onOpen }: { item: HomeFeedItem; onOpen: () => 
   );
 }
 
+function WhatsAppAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="brand-app-icon">
+      <circle cx="12" cy="12" r="10" fill="#25d366" />
+      <path d="M7.5 18.2l.8-2.9a6.5 6.5 0 1 1 2.5 1.9z" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.7 8.7c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.4c.1.3.1.5-.1.7l-.4.5c.6 1 1.3 1.7 2.4 2.3l.5-.5c.2-.2.4-.3.7-.1l1.4.6c.3.1.4.3.4.6v.4c0 .4-.2.7-.5.9-.5.3-1.5.4-2.9-.2-2.4-1-4.3-3.1-4.8-5.1-.2-.7-.1-1.2.1-1.5z" fill="#fff" />
+    </svg>
+  );
+}
+
 function AgendaCard({
   item,
   onOpen,
@@ -1105,11 +1115,14 @@ function AgendaCard({
         </button>
         <button
           className="primary"
+          title="Enviar pelo WhatsApp"
+          aria-label="Enviar pelo WhatsApp"
           onClick={(event) => {
             event.stopPropagation();
             onShareReminder();
           }}
         >
+          <WhatsAppAppIcon />
           WhatsApp
         </button>
       </div>
@@ -1459,6 +1472,29 @@ export function HomePage({ user, profile }: Props) {
   const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
   const urgentActionCount = urgentPriorityItems.length;
   const showPlayerEmptyRecommendation = activePlayingCount === 0 && upcoming.length > 0;
+  const heroTitle = urgentActionCount > 0
+    ? `${urgentActionCount} pendencia${urgentActionCount > 1 ? "s" : ""} para resolver`
+    : agendaItems.length > 0
+      ? "Voce tem compromisso na agenda"
+      : "Seu dia esta livre";
+  const heroDetail = urgentActionCount > 0
+    ? "Resolva agora para manter seus jogos e atividades em movimento."
+    : agendaItems.length > 0
+      ? `${agendaItems[0]?.title || "Proximo compromisso"} - ${agendaItems[0]?.when || "em breve"}`
+      : activePlayingCount > 0
+        ? "Acompanhe suas competicoes e fique pronto para o proximo jogo."
+        : "Encontre competicoes, locais e oportunidades para jogar.";
+  const handleHeroAction = () => {
+    if (urgentActionCount > 0) {
+      setNotificationsOpen(true);
+      return;
+    }
+    if (agendaItems.length > 0 && agendaItems[0]) {
+      navigate(agendaItems[0].targetPath);
+      return;
+    }
+    navigate("/eventos");
+  };
   const copyAgendaReminder = async (item: HomeAgendaItem) => {
     try {
       await navigator.clipboard.writeText(item.reminderText);
@@ -1483,9 +1519,36 @@ export function HomePage({ user, profile }: Props) {
       bellCount={urgentActionCount}
       onBellClick={() => setNotificationsOpen((open) => !open)}
     >
-      <div className="section-title">
-        <h2>Meu dia</h2>
-      </div>
+      <section className="home-hero">
+        <div>
+          <p className="home-hero-kicker">Meu dia</p>
+          <h1>{heroTitle}</h1>
+          <p>{heroDetail}</p>
+        </div>
+        <div className="home-hero-actions">
+          <button className="primary" type="button" onClick={handleHeroAction}>
+            {urgentActionCount > 0 ? "Resolver agora" : agendaItems.length > 0 ? "Abrir compromisso" : "Explorar eventos"}
+          </button>
+          <button type="button" onClick={() => navigate("/ranking")}>
+            Ver ranking
+          </button>
+        </div>
+      </section>
+
+      <section className="home-quick-strip" aria-label="Acoes rapidas">
+        <button type="button" onClick={() => navigate("/eventos")}>
+          <span>Competir</span>
+          <strong>Torneios e ligas</strong>
+        </button>
+        <button type="button" onClick={() => navigate("/locais")}>
+          <span>Jogar</span>
+          <strong>Locais e quadras</strong>
+        </button>
+        <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+          <span>Organizar</span>
+          <strong>Criar ou gerir</strong>
+        </button>
+      </section>
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {error ? <p className="feedback error">{error}</p> : null}

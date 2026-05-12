@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 import type { Profile } from "../lib/types";
 import { BottomNav } from "./BottomNav";
-import logoMark from "../assets/logo-atp-mark.svg";
+import logoSymbol from "../assets/logo-atp-symbol.svg";
 
 type Props = {
   user: User;
@@ -50,7 +50,7 @@ export function AppShell({ user, profile, children, showHeader = true, onBellCli
               </div>
             </div>
             <div className="app-header-actions">
-              <img src={logoMark} alt="ATP" className="app-header-mark" />
+              <img src={logoSymbol} alt="ATP" className="app-header-mark" />
               {onBellClick ? (
                 <button className="icon-btn app-bell-btn" onClick={onBellClick} aria-label="Notificacoes">
                   <BellIcon />

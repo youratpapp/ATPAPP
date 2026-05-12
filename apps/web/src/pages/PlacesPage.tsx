@@ -4,6 +4,7 @@ import { AppShell } from "../components/AppShell";
 import {
   addOpenMatchComment,
   addPlaceStaff,
+  cancelPlaceStaffInvite,
   cancelPlaceExpense,
   cancelPlacePosSale,
   cancelCourtBookingSeries,
@@ -1017,6 +1018,30 @@ export function PlacesPage({ user, profile }: Props) {
     }
   };
 
+  const onAdminMarkCourtBookingPaid = async (booking: CourtBooking, payment: AppPayment) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const updatedPayment = await markStubPaymentPaidForParticipant({
+        targetType: "court_booking",
+        targetId: booking.id,
+        amountCents: payment.amountCents,
+        billingPeriod: payment.billingPeriod,
+        description: payment.description || `Reserva de quadra - ${booking.playerName}`,
+        metadata: { source: "court_booking_admin_manual_stub", bookingId: booking.id, placeId: booking.placeId },
+      });
+      setPaymentsByTarget((prev) => ({
+        ...prev,
+        [paymentMapKey(updatedPayment.targetType, updatedPayment.targetId, updatedPayment.billingPeriod)]: updatedPayment,
+      }));
+      setFeedback({ kind: "success", text: "Pagamento da reserva marcado como pago." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao marcar pagamento da reserva.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const onCancelBookingSeries = async (placeId: string, bookingId: string) => {
     setBusy(true);
     setFeedback(null);
@@ -1184,10 +1209,15 @@ export function PlacesPage({ user, profile }: Props) {
     setBusy(true);
     setFeedback(null);
     try {
-      await linkPlaceCoachByEmail(coach.id, email);
+      const updated = await linkPlaceCoachByEmail(coach.id, email);
       setCoachLinkDraftByCoach((prev) => ({ ...prev, [coach.id]: "" }));
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: "Professor vinculado ao login." });
+      setFeedback({
+        kind: "success",
+        text: updated.userId
+          ? "Professor vinculado ao login."
+          : "Convite pendente criado. Quando o professor cadastrar esse e-mail, o login sera vinculado automaticamente.",
+      });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao vincular professor.") });
     } finally {
@@ -1347,6 +1377,13 @@ export function PlacesPage({ user, profile }: Props) {
       notes: "",
     };
     if (!search.requestedOn || !draft.playerName.trim()) return;
+    const openMakeupCredit = draft.requestType === "makeup"
+      ? (academyMakeupsByPlace[placeId] || []).find((credit) => credit.status === "open" && credit.userId === user.id)
+      : null;
+    if (draft.requestType === "makeup" && !openMakeupCredit) {
+      setFeedback({ kind: "error", text: "Voce nao tem credito de reposicao aberto para usar neste encaixe." });
+      return;
+    }
     setBusy(true);
     setFeedback(null);
     try {
@@ -1361,6 +1398,7 @@ export function PlacesPage({ user, profile }: Props) {
         age: draft.age ? Number(draft.age) : null,
         level: draft.level,
         notes: draft.notes,
+        makeupCreditId: openMakeupCredit?.id,
       });
       setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [slot.classId]: { ...draft, notes: "" } }));
       await refreshPlaceResources(placeId);
@@ -1582,10 +1620,15 @@ export function PlacesPage({ user, profile }: Props) {
     setBusy(true);
     setFeedback(null);
     try {
-      await addPlaceStaff({ placeId: place.id, email: draft.email, role: draft.role });
+      const row = await addPlaceStaff({ placeId: place.id, email: draft.email, role: draft.role });
       setStaffDraftByPlace((prev) => ({ ...prev, [place.id]: { ...draft, email: "" } }));
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Membro da equipe adicionado." });
+      setFeedback({
+        kind: "success",
+        text: row.status === "pending"
+          ? "Convite pendente criado. Quando a pessoa cadastrar esse e-mail, o acesso sera liberado automaticamente."
+          : "Membro da equipe adicionado.",
+      });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao adicionar equipe.") });
     } finally {
@@ -1593,13 +1636,18 @@ export function PlacesPage({ user, profile }: Props) {
     }
   };
 
-  const onRemoveStaff = async (place: Place, staffUserId: string) => {
+  const onRemoveStaff = async (place: Place, member: PlaceStaffMember) => {
+    const staffUserId = member.userId;
     setBusy(true);
     setFeedback(null);
     try {
-      await removePlaceStaff(place.id, staffUserId);
+      if (staffUserId) {
+        await removePlaceStaff(place.id, staffUserId);
+      } else {
+        await cancelPlaceStaffInvite(place.id, member.email, member.role);
+      }
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Membro removido." });
+      setFeedback({ kind: "success", text: staffUserId ? "Membro removido." : "Convite pendente cancelado." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao remover equipe.") });
     } finally {
@@ -1867,7 +1915,11 @@ export function PlacesPage({ user, profile }: Props) {
           genderScope: "" as const,
         };
         const fitSlots = academyFitSlotsByPlace[p.id] || [];
-        const pendingLessonRequests = academyLessonRequests.filter((request) => request.status === "pending");
+        const actionableLessonRequests = academyLessonRequests.filter(
+          (request) =>
+            request.status === "pending" ||
+            (request.status === "approved" && request.requestType === "drop_in" && request.paymentStatus !== "paid")
+        );
         const placeOpenMatches = openMatches.filter((match) => match.placeId === p.id);
         const resourceDayClasses = visibleAcademyClasses.filter((item) => item.weekday === academyDraft.weekday);
         const resourceDaySlots = academySlots.filter((item) => item.weekday === academyDraft.weekday && item.status === "open");
@@ -1904,7 +1956,7 @@ export function PlacesPage({ user, profile }: Props) {
           bookingWaitlist: bookingWaitlist.filter((entry) => entry.status === "waiting").length,
           academyClasses: activeAcademyClasses.length,
           pendingEnrollments: academyEnrollments.filter((enrollment) => enrollment.status === "pending").length,
-          pendingLessonRequests: pendingLessonRequests.length,
+          pendingLessonRequests: actionableLessonRequests.length,
           activeMembers: memberships.filter((membership) => membership.status === "active").length,
           pendingMemberships: memberships.filter((membership) => membership.status === "pending").length,
           crmLeads: crmContacts.filter((contact) => contact.status === "lead").length,
@@ -2079,14 +2131,18 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
                 {staff.length ? (
                   <div className="place-staff-list">
-                    {staff.map((member) => (
-                      <span key={member.userId}>
-                        {member.email || member.userId.slice(0, 8)} ({member.role})
-                        <button className="danger" onClick={() => void onRemoveStaff(p, member.userId)} disabled={busy}>
-                          Remover
-                        </button>
-                      </span>
-                    ))}
+                    {staff.map((member) => {
+                      const activeUserId = member.userId;
+                      return (
+                        <span key={activeUserId || `${member.email}:${member.role}`}>
+                          {member.email || activeUserId?.slice(0, 8) || "Convite pendente"} ({member.role})
+                          {member.status === "pending" ? <small> convite pendente</small> : null}
+                          <button className="danger" onClick={() => void onRemoveStaff(p, member)} disabled={busy}>
+                            {activeUserId ? "Remover" : "Cancelar convite"}
+                          </button>
+                        </span>
+                      );
+                    })}
                   </div>
                 ) : (
                   <p className="subtle">Sem equipe adicional.</p>
@@ -2691,7 +2747,9 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
               ) : null}
               <div className="place-booking-list">
-                {bookings.slice(0, 5).map((booking) => (
+                {bookings.slice(0, 5).map((booking) => {
+                  const bookingPayment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
+                  return (
                   <div key={booking.id} className={`place-booking-row ${booking.status}`}>
                     <div>
                       <strong>{booking.courtName || "Quadra"}</strong>
@@ -2706,8 +2764,10 @@ export function PlacesPage({ user, profile }: Props) {
                           Serie {booking.recurrenceIndex}/{booking.recurrenceTotal}
                         </small>
                       ) : null}
-                      {paymentsByTarget[paymentMapKey("court_booking", booking.id)]?.status === "paid" ? (
+                      {bookingPayment?.status === "paid" ? (
                         <small className="payment-paid-label">Pago</small>
+                      ) : bookingPayment?.status === "pending" ? (
+                        <small>Pagamento pendente: {formatMoneyFromCents(bookingPayment.amountCents)}</small>
                       ) : null}
                     </div>
                     {canManageBookings && booking.status !== "cancelled" ? (
@@ -2720,6 +2780,11 @@ export function PlacesPage({ user, profile }: Props) {
                         <button className="danger" onClick={() => void onUpdateBooking(p.id, booking.id, "cancelled")} disabled={busy}>
                           {booking.status === "blocked" ? "Liberar" : "Cancelar"}
                         </button>
+                        {bookingPayment?.status === "pending" ? (
+                          <button onClick={() => void onAdminMarkCourtBookingPaid(booking, bookingPayment)} disabled={busy}>
+                            Marcar pago
+                          </button>
+                        ) : null}
                         {booking.recurrenceGroupId ? (
                           <button className="danger" onClick={() => void onCancelBookingSeries(p.id, booking.id)} disabled={busy}>
                             Cancelar serie
@@ -2728,7 +2793,7 @@ export function PlacesPage({ user, profile }: Props) {
                       </span>
                     ) : booking.userId === user.id && booking.status !== "cancelled" ? (
                       <span>
-                        {paymentsByTarget[paymentMapKey("court_booking", booking.id)]?.status === "paid" ? (
+                        {bookingPayment?.status === "paid" ? (
                           <small className="payment-paid-label">Pago</small>
                         ) : (
                           <small>Pagamento sera confirmado pela plataforma</small>
@@ -2744,7 +2809,8 @@ export function PlacesPage({ user, profile }: Props) {
                       </span>
                     ) : null}
                   </div>
-                ))}
+                  );
+                })}
                 {!bookings.length ? <p className="subtle">Sem reservas recentes.</p> : null}
               </div>
               {bookingWaitlist.length ? (
@@ -3208,9 +3274,9 @@ export function PlacesPage({ user, profile }: Props) {
                       </button>
                     </div>
                   </div>
-                  {canManageAcademy && pendingLessonRequests.length ? (
+                  {canManageAcademy && actionableLessonRequests.length ? (
                     <span>
-                      {pendingLessonRequests.slice(0, 4).map((request) => {
+                      {actionableLessonRequests.slice(0, 4).map((request) => {
                         const requestClass = academyClasses.find((item) => item.id === request.classId);
                         const paid = paymentsByTarget[paymentMapKey("academy_lesson_request", request.id)]?.status === "paid" || request.paymentStatus === "paid";
                         return (
@@ -3218,12 +3284,18 @@ export function PlacesPage({ user, profile }: Props) {
                             {request.playerName} | {request.requestType === "makeup" ? "reposicao" : "avulsa"} | {requestClass?.title || "turma"} |{" "}
                             {new Date(`${request.requestedOn}T00:00:00`).toLocaleDateString("pt-BR")}
                             {request.amountCents ? ` | ${formatMoneyFromCents(request.amountCents)}` : ""}
-                            <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "approved")} disabled={busy}>
-                              Aprovar
-                            </button>
-                            <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "rejected")} disabled={busy}>
-                              Recusar
-                            </button>
+                            {request.status === "pending" ? (
+                              <>
+                                <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "approved")} disabled={busy}>
+                                  Aprovar
+                                </button>
+                                <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "rejected")} disabled={busy}>
+                                  Recusar
+                                </button>
+                              </>
+                            ) : (
+                              <span>aprovado</span>
+                            )}
                             {canManageFinance && request.requestType === "drop_in" && !paid ? (
                               <button onClick={() => void onMarkLessonRequestPaid(p.id, request)} disabled={busy}>
                                 Marcar pago
@@ -3237,6 +3309,7 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
                 {fitSlots.slice(0, 6).map((slot) => {
                   const classCourt = activeCourts.find((court) => court.id === slot.courtId);
+                  const openMakeupCredits = academyMakeups.filter((credit) => credit.status === "open" && credit.userId === user.id);
                   const requestDraft = academyLessonRequestDraftByClass[slot.classId] || {
                     requestType: "drop_in" as const,
                     playerName: profile?.displayName || user.email || "Aluno",
@@ -3258,6 +3331,7 @@ export function PlacesPage({ user, profile }: Props) {
                           {slot.coachName || "Professor"} | {slot.level || "nivel livre"} | {slot.availableSpots} vaga(s) |{" "}
                           {slot.openAbsences ? `${slot.openAbsences} ausencia(s) avisada(s)` : "capacidade disponivel"} | avulsa estimada{" "}
                           {formatMoneyFromCents(Math.round(slot.monthlyFeeCents / 4))}
+                          {requestDraft.requestType === "makeup" ? ` | reposicoes abertas: ${openMakeupCredits.length}` : ""}
                         </small>
                       </div>
                       <span>
@@ -3303,7 +3377,11 @@ export function PlacesPage({ user, profile }: Props) {
                           }
                           placeholder="Observacao"
                         />
-                        <button className="primary" onClick={() => void onRequestAcademyLessonFit(p.id, slot)} disabled={busy || !requestDraft.playerName.trim()}>
+                        <button
+                          className="primary"
+                          onClick={() => void onRequestAcademyLessonFit(p.id, slot)}
+                          disabled={busy || !requestDraft.playerName.trim() || (requestDraft.requestType === "makeup" && openMakeupCredits.length === 0)}
+                        >
                           Solicitar
                         </button>
                       </span>

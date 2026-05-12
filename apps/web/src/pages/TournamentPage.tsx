@@ -6,6 +6,7 @@ import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import {
   addTournamentStaff,
+  cancelTournamentStaffInvite,
   deleteTournamentChatMessage,
   deleteTournament,
   listTournamentStaff,
@@ -172,6 +173,8 @@ type PlayerTournamentMatch = {
   phase: string;
   matchIndex: number;
   side: "a" | "b";
+  playerA: string;
+  playerB: string;
   title: string;
   status: "done" | "pending";
   score: string;
@@ -1025,6 +1028,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [announcementText, setAnnouncementText] = useState("");
   const [pinAnnouncement, setPinAnnouncement] = useState(false);
   const [playerResultDraft, setPlayerResultDraft] = useState<PlayerMatchResultDraft>({ matchId: "", detail: null });
+  const [showFinishedMyMatches, setShowFinishedMyMatches] = useState(false);
   const [resultSubmissions, setResultSubmissions] = useState<TournamentMatchResultSubmission[]>([]);
   const [resultSubmitting, setResultSubmitting] = useState(false);
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
@@ -1340,6 +1344,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             phase: group.name,
             matchIndex: idx,
             side,
+            playerA: String(match.a || ""),
+            playerB: String(match.b || ""),
             title: `${match.a} x ${match.b}`,
             status: match.done ? "done" : "pending",
             score: formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, match.done, cls.data.config),
@@ -1363,6 +1369,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             phase: round.name,
             matchIndex: matchIdx,
             side,
+            playerA: String(match.a || ""),
+            playerB: String(match.b || ""),
             title: `${match.a} x ${match.b}`,
             status: match.done ? "done" : "pending",
             score: formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, match.done, cls.data.config),
@@ -1415,6 +1423,18 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       return a.title.localeCompare(b.title, "pt-BR");
     })[0] ?? null;
   }, [agendaAssignmentByMatchKey, myTournamentMatches]);
+  const myPendingMatches = useMemo(
+    () => myTournamentMatches.filter((match) => match.status === "pending"),
+    [myTournamentMatches]
+  );
+  const myFinishedMatches = useMemo(
+    () => myTournamentMatches.filter((match) => match.status === "done"),
+    [myTournamentMatches]
+  );
+  const visibleMyTournamentMatches = useMemo(() => {
+    const source = showFinishedMyMatches ? myTournamentMatches : myPendingMatches;
+    return (source.length ? source : myTournamentMatches).slice(0, 6);
+  }, [myPendingMatches, myTournamentMatches, showFinishedMyMatches]);
   const unavailableConfirmationGroups = useMemo(() => {
     return Array.from(confirmationByMatch.values())
       .map((rows) => rows.filter((confirmation) => confirmation.status === "unavailable"))
@@ -1679,15 +1699,27 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     if (!tournament || !isOwner) return;
     const email = staffEmail.trim();
     if (!email) {
-      setFeedback({ kind: "error", text: "Informe o email do usuario que ja tem login." });
+      setFeedback({ kind: "error", text: "Informe o email do usuario." });
       return;
     }
     setStaffBusy(true);
     try {
       const row = await addTournamentStaff(tournament.id, email, staffRole);
-      setStaffMembers((prev) => [row, ...prev.filter((item) => item.userId !== row.userId)]);
+      setStaffMembers((prev) => [
+        row,
+        ...prev.filter((item) =>
+          row.userId
+            ? item.userId !== row.userId
+            : !(item.status === "pending" && item.email.toLowerCase() === row.email.toLowerCase() && item.role === row.role)
+        ),
+      ]);
       setStaffEmail("");
-      setFeedback({ kind: "success", text: "Acesso da equipe atualizado." });
+      setFeedback({
+        kind: "success",
+        text: row.status === "pending"
+          ? "Convite pendente criado. Quando a pessoa criar login com esse email, o acesso entra automaticamente."
+          : "Acesso da equipe atualizado.",
+      });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao vincular equipe." });
     } finally {
@@ -1697,11 +1729,19 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   const removeTournamentStaffNow = async (member: TournamentStaffMember) => {
     if (!tournament || !isOwner) return;
+    const userId = member.userId;
     setStaffBusy(true);
     try {
-      await removeTournamentStaff(tournament.id, member.userId);
-      setStaffMembers((prev) => prev.filter((item) => item.userId !== member.userId));
-      setFeedback({ kind: "success", text: "Acesso removido da equipe." });
+      if (userId) {
+        await removeTournamentStaff(tournament.id, userId);
+        setStaffMembers((prev) => prev.filter((item) => item.userId !== userId));
+      } else {
+        await cancelTournamentStaffInvite(tournament.id, member.email, member.role);
+        setStaffMembers((prev) =>
+          prev.filter((item) => !(item.status === "pending" && item.email === member.email && item.role === member.role))
+        );
+      }
+      setFeedback({ kind: "success", text: userId ? "Acesso removido da equipe." : "Convite pendente cancelado." });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao remover acesso." });
     } finally {
@@ -3890,7 +3930,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         {first.matchTitle} - {first.classLabel} / {first.phaseLabel}:{" "}
                         {rows.map((confirmation) => confirmation.side.toUpperCase()).join(", ")}
                       </small>
-                      <button onClick={() => shareUnavailableAlertWhatsApp(rows)}>WhatsApp</button>
+                      <button
+                        className="brand-icon-btn"
+                        onClick={() => shareUnavailableAlertWhatsApp(rows)}
+                        title="Avisar pelo WhatsApp"
+                        aria-label="Avisar pelo WhatsApp"
+                      >
+                        <WhatsAppAppIcon />
+                        <span>WhatsApp</span>
+                      </button>
                     </div>
                   );
                 })}
@@ -3942,8 +3990,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   Link de inscricao
                 </button>
               ) : null}
-              <button onClick={shareTournamentInviteWhatsApp} disabled={saving}>
-                WhatsApp
+              <button
+                className="brand-icon-btn"
+                onClick={shareTournamentInviteWhatsApp}
+                disabled={saving}
+                title="Compartilhar pelo WhatsApp"
+                aria-label="Compartilhar pelo WhatsApp"
+              >
+                <WhatsAppAppIcon />
+                <span>WhatsApp</span>
               </button>
             </div>
           </article>
@@ -3997,7 +4052,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           {tab === "jogos" ? (
             <section className="card">
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
-              {activeClass ? (
+              {activeClass && canManageMatches ? (
                 <>
                   <div className="tournament-panel-kpis">
                     <div className="tournament-panel-kpi">
@@ -4035,7 +4090,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <div className="section-title" style={{ marginBottom: 8 }}>
                     <h3>Minhas partidas</h3>
                     <div className="cluster">
-                      <span className="home-league-chip member">{myTournamentMatches.length}</span>
+                      <span className="home-league-chip member">{myPendingMatches.length} pendente(s)</span>
+                      {myFinishedMatches.length > 0 ? (
+                        <button
+                          className="link"
+                          onClick={() => setShowFinishedMyMatches((value) => !value)}
+                        >
+                          {showFinishedMyMatches ? "Ocultar finalizadas" : `Ver ${myFinishedMatches.length} finalizada(s)`}
+                        </button>
+                      ) : null}
                       <button
                         className="brand-icon-btn"
                         onClick={() => void syncMyTournamentGoogleCalendar()}
@@ -4048,7 +4111,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       </button>
                     </div>
                   </div>
-                  {myTournamentMatches.slice(0, 6).map((match) => {
+                  {visibleMyTournamentMatches.map((match) => {
                     const scheduled = agendaAssignmentByMatchKey.get(
                       buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
                     );
@@ -4109,6 +4172,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         {match.status === "pending" && matchClassRef && playerScoreMatch ? (
                           <div className="my-match-result-tools">
                             <div className="my-match-score-fields">
+                              <p className="my-match-score-map">
+                                <span><strong>A</strong> {match.playerA}</span>
+                                <span><strong>B</strong> {match.playerB}</span>
+                              </p>
                               {renderScoreFields(matchClassRef.data.config, playerScoreMatch, false, (updater) => {
                                 const current = draftDetailForMatch(match, matchClassRef.data.config);
                                 setPlayerResultDraft({
@@ -4212,8 +4279,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <button onClick={exportBackupJson} disabled={saving}>
                       Backup
                     </button>
-                    <button onClick={sendWhatsAppSummary} disabled={saving}>
-                      Enviar no WhatsApp
+                    <button
+                      className="brand-icon-btn"
+                      onClick={sendWhatsAppSummary}
+                      disabled={saving}
+                      title="Enviar resumo pelo WhatsApp"
+                      aria-label="Enviar resumo pelo WhatsApp"
+                    >
+                      <WhatsAppAppIcon />
+                      <span>WhatsApp</span>
                     </button>
                     <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
                       <span className="subtle">Restore:</span>
@@ -4232,7 +4306,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
                   </p>
                 </div>
-              ) : (
+              ) : !isOwner && !isTournamentStaff ? null : (
                 <div className="tournament-admin-ops">
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>Exportacoes</h3>
                   <div className="cluster">
@@ -4306,9 +4380,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                             {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
                           </p>
                         ) : null}
-                        {renderScoreFields(activeClass.data.config, m, !canEditScores, (updater) => {
+                        {canEditScores ? renderScoreFields(activeClass.data.config, m, false, (updater) => {
                           void onUpdateGroupScoreDetail(activeClass, gi, mi, updater);
-                        })}
+                        }) : null}
                         {canEditScores ? (
                           <div className="match-admin-actions">
                             <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "a")} disabled={saving || !m.a || !m.b}>
@@ -4388,9 +4462,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                             {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
                           </p>
                         ) : null}
-                        {renderScoreFields(activeClass.data.config, m, !m.a || !m.b || !canEditScores, (updater) => {
+                        {canEditScores ? renderScoreFields(activeClass.data.config, m, !m.a || !m.b, (updater) => {
                           void onUpdateKoScoreDetail(activeClass, ri, mi, updater);
-                        })}
+                        }) : null}
                         {canEditScores ? (
                           <div className="match-admin-actions">
                             <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "a")} disabled={saving || !m.a || !m.b}>
@@ -4513,7 +4587,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <div>
                     <h3 style={{ margin: 0 }}>Equipe e permissoes</h3>
                     <p className="subtle" style={{ margin: "4px 0 0 0" }}>
-                      Vincule usuarios que ja possuem login e entregue apenas a ferramenta necessaria.
+                      Convide por email e entregue apenas a ferramenta necessaria. Se a pessoa ainda nao tiver login,
+                      o acesso fica pendente.
                     </p>
                   </div>
                 </div>
@@ -4554,12 +4629,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 ) : (
                   <div className="organizer-pending-grid">
                     {staffMembers.map((member) => (
-                      <div key={member.userId} className="organizer-pending-card">
+                      <div key={member.userId || `${member.email}:${member.role}`} className="organizer-pending-card">
                         <strong>{TOURNAMENT_STAFF_ROLE_LABELS[member.role]}</strong>
                         <span>{member.email || "Usuario vinculado"}</span>
+                        {member.status === "pending" ? <small>Convite pendente</small> : null}
                         <small>{TOURNAMENT_STAFF_ROLE_HINTS[member.role]}</small>
                         <button className="danger" onClick={() => void removeTournamentStaffNow(member)} disabled={staffBusy}>
-                          Remover
+                          {member.userId ? "Remover" : "Cancelar convite"}
                         </button>
                       </div>
                     ))}
