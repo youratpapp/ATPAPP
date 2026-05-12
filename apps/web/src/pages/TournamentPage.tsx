@@ -140,6 +140,30 @@ type ConfigScopeClass = {
 const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
 const VALID_TABS = VALID_TOURNAMENT_TABS;
+type TournamentAdminPhaseKey = "setup" | "registration" | "draw" | "live" | "finished";
+
+const TOURNAMENT_ADMIN_PHASES: Array<{ key: TournamentAdminPhaseKey; label: string; detail: string }> = [
+  { key: "setup", label: "Configurar", detail: "Dados, classes, agenda" },
+  { key: "registration", label: "Inscricoes", detail: "Aprovar e cobrar" },
+  { key: "draw", label: "Sorteio", detail: "Gerar jogos" },
+  { key: "live", label: "Ao vivo", detail: "Resultados" },
+  { key: "finished", label: "Historico", detail: "Campeoes e resumo" },
+];
+
+function tournamentAdminPhaseFor(status: TournamentStatus, generatedClasses: number, totalClasses: number): TournamentAdminPhaseKey {
+  if (status === "finished") return "finished";
+  if (status === "live") return "live";
+  if (status === "registration_open") return "registration";
+  if (status === "registration_closed") return generatedClasses < totalClasses ? "draw" : "live";
+  return generatedClasses > 0 ? "draw" : "setup";
+}
+
+function primaryTournamentTabForPhase(phase: TournamentAdminPhaseKey, canSeeClassificationTab: boolean): TabKey {
+  if (phase === "setup") return "organizacao";
+  if (phase === "registration" || phase === "draw") return "jogadores";
+  if (phase === "finished") return canSeeClassificationTab ? "classificacao" : "jogos";
+  return "jogos";
+}
 
 function SaveDiskIcon() {
   return (
@@ -1175,6 +1199,19 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       nextTab,
     };
   }, [canSeeClassificationTab, classes, draftCategories.length, isOwner, registrations]);
+  const tournamentAdminPhase = useMemo(() => {
+    const status = (tournament?.status || "draft") as TournamentStatus;
+    const key = tournamentAdminPhaseFor(status, tournamentOverview.generatedClasses, tournamentOverview.totalClasses);
+    const meta = TOURNAMENT_ADMIN_PHASES.find((item) => item.key === key) || TOURNAMENT_ADMIN_PHASES[0];
+    return {
+      ...meta,
+      primaryTab: primaryTournamentTabForPhase(key, canSeeClassificationTab),
+      showSetup: key === "setup" || key === "draw",
+      showRegistrationOps: key === "registration" || key === "draw",
+      showLiveOps: key === "live",
+      showCompletion: key === "live" || key === "finished",
+    };
+  }, [canSeeClassificationTab, tournament?.status, tournamentOverview.generatedClasses, tournamentOverview.totalClasses]);
   const tournamentPaymentSummary = useMemo(() => {
     const payments = registrations
       .map((registration) => paymentsByTarget[`tournament_registration:${registration.id}`])
@@ -1375,13 +1412,23 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         filter: null,
       },
     ];
+    const visibleByPhase: Record<TournamentAdminPhaseKey, string[]> = {
+      setup: ["classes"],
+      registration: ["registrations", "waitlist"],
+      draw: ["registrations", "waitlist", "classes"],
+      live: ["results", "availability", "matches"],
+      finished: ["results"],
+    };
+    const visibleKeys = new Set(visibleByPhase[tournamentAdminPhase.key]);
+    const visibleItems = items.filter((item) => visibleKeys.has(item.key) || item.count > 0);
     return {
-      total: items.reduce((acc, item) => acc + item.count, 0),
-      items,
+      total: visibleItems.reduce((acc, item) => acc + item.count, 0),
+      items: visibleItems,
     };
   }, [
     pendingResultReviewCount,
     registrations,
+    tournamentAdminPhase.key,
     tournamentOverview.generatedClasses,
     tournamentOverview.pendingMatches,
     tournamentOverview.pendingRegistrations,
@@ -1420,6 +1467,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       { replace: false }
     );
   };
+
+  useEffect(() => {
+    if (!tournamentId || !isOwner) return;
+    const hiddenByPhase =
+      (tournamentAdminPhase.key === "setup" && tab === "jogos") ||
+      (tournamentAdminPhase.key === "live" && tab === "organizacao") ||
+      (tournamentAdminPhase.key === "finished" && (tab === "organizacao" || tab === "jogadores"));
+    if (!hiddenByPhase || tab === tournamentAdminPhase.primaryTab) return;
+    navigate(`/eventos/${encodeURIComponent(tournamentId)}/${tournamentAdminPhase.primaryTab}`, { replace: true });
+  }, [isOwner, navigate, tab, tournamentAdminPhase.key, tournamentAdminPhase.primaryTab, tournamentId]);
 
   const pinnedChatMessage = useMemo(
     () => chatMessages.find((m) => m.isPinned) ?? null,
@@ -3550,17 +3607,31 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               <strong>{tournamentOverview.nextAction}</strong>
             </button>
             {isOwner ? (
+              <div className="tournament-phase-flow">
+                {TOURNAMENT_ADMIN_PHASES.map((phase) => (
+                  <button
+                    key={phase.key}
+                    className={phase.key === tournamentAdminPhase.key ? "active" : ""}
+                    onClick={() => goToTab(phase.key === tournamentAdminPhase.key ? tournamentAdminPhase.primaryTab : primaryTournamentTabForPhase(phase.key, canSeeClassificationTab))}
+                  >
+                    <span>{phase.label}</span>
+                    <small>{phase.detail}</small>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {isOwner ? (
               <div className="organizer-pending-center">
                 <div className="organizer-pending-head">
                   <div>
-                    <span>Centro de pendencias</span>
+                    <span>{tournamentAdminPhase.label}</span>
                     <strong>
                       {tournamentPendingCenter.total > 0
                         ? `${tournamentPendingCenter.total} ponto(s) para acompanhar`
-                        : "Sem pendencias operacionais"}
+                        : "Sem pendencias nesta etapa"}
                     </strong>
                   </div>
-                  <button onClick={() => goToTab(tournamentOverview.nextTab)}>Atuar agora</button>
+                  <button onClick={() => goToTab(tournamentAdminPhase.primaryTab)}>Abrir etapa</button>
                 </div>
                 <div className="organizer-pending-grid">
                   {tournamentPendingCenter.items.map((item) => (
@@ -3580,7 +3651,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               </div>
             ) : null}
-            {isOwner ? (
+            {isOwner && tournamentAdminPhase.showCompletion ? (
               <div className={`tournament-completion-guard ${tournamentCompletionBlockers.length === 0 ? "ready" : ""}`}>
                 <div>
                   <span>Encerramento</span>
@@ -3694,20 +3765,22 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           </article>
 
           <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
+            {(isOwner ? tournamentAdminPhase.key !== "setup" : true) ? (
             <button className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
               Jogos
             </button>
+            ) : null}
             {canSeeClassificationTab ? (
               <button className={tab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
                 Classificacao
               </button>
             ) : null}
-            {isOwner ? (
+            {isOwner && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
               <button className={tab === "organizacao" ? "active" : ""} onClick={() => goToTab("organizacao")}>
                 Organizacao
               </button>
             ) : null}
-            {isOwner ? (
+            {isOwner && tournamentAdminPhase.key !== "finished" ? (
               <button className={tab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
                 Jogadores
               </button>
@@ -4162,7 +4235,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </section>
           ) : null}
 
-          {tab === "organizacao" && isOwner ? (
+          {tab === "organizacao" && isOwner && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
             <section className="card">
               <h3 style={{ marginTop: 0 }}>Organizacao do torneio</h3>
               <div className="setup-overview">
@@ -4655,7 +4728,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </section>
           ) : null}
 
-          {tab === "jogadores" && isOwner ? (
+          {tab === "jogadores" && isOwner && tournamentAdminPhase.key !== "finished" ? (
             <section className="card">
               <h3 style={{ marginTop: 0, marginBottom: 8 }}>Organizacao dos jogadores</h3>
               <div className="tournament-panel-kpis">
