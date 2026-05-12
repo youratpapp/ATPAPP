@@ -37,6 +37,7 @@ import type {
   TournamentStaffRole,
 } from "../lib/types";
 import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
+import { syncTournamentMatchesToGoogleCalendar } from "../lib/google-calendar";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
 import {
   generateScheduleAssignments,
@@ -518,62 +519,6 @@ function competitionModelLabel(config: ClassData["config"]): string {
   return "Super Tie-Break (base grupos)";
 }
 
-function buildMatchScoreLookup(classes: LegacyClassRef[]): Map<string, string> {
-  const map = new Map<string, string>();
-  const keyOf = (categoryName: string, className: string, matchLabel: string) =>
-    `${categoryName}||${className}||${matchLabel}`.toLowerCase();
-
-  classes.forEach((cls) => {
-    const cat = cls.categoryName;
-    const kls = cls.className;
-
-    (cls.data.grupos || []).forEach((g) => {
-      (g.matches || []).forEach((m, mi) => {
-        const label = `${g.name} #${mi + 1}`;
-        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, cls.data.config));
-      });
-    });
-
-    (cls.data.knockout?.rounds || []).forEach((round) => {
-      (round.matches || []).forEach((m, mi) => {
-        const label = `${round.name} #${mi + 1}`;
-        map.set(keyOf(cat, kls, label), formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, cls.data.config));
-      });
-    });
-  });
-
-  return map;
-}
-
-function buildMatchWinnerLookup(classes: LegacyClassRef[]): Map<string, string> {
-  const map = new Map<string, string>();
-  const keyOf = (categoryName: string, className: string, matchLabel: string) =>
-    `${categoryName}||${className}||${matchLabel}`.toLowerCase();
-
-  classes.forEach((cls) => {
-    const cat = cls.categoryName;
-    const kls = cls.className;
-
-    (cls.data.grupos || []).forEach((g) => {
-      (g.matches || []).forEach((m, mi) => {
-        const label = `${g.name} #${mi + 1}`;
-        const winner = String(m.winner || "").trim();
-        if (winner) map.set(keyOf(cat, kls, label), winner);
-      });
-    });
-
-    (cls.data.knockout?.rounds || []).forEach((round) => {
-      (round.matches || []).forEach((m, mi) => {
-        const label = `${round.name} #${mi + 1}`;
-        const winner = String(m.winner || "").trim();
-        if (winner) map.set(keyOf(cat, kls, label), winner);
-      });
-    });
-  });
-
-  return map;
-}
-
 function parseDraftCategories(dataRaw: Record<string, unknown>): DraftCategory[] {
   const data = asRecord(dataRaw) ?? {};
   const categories = asArray(data.categorias);
@@ -1040,6 +985,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
   const [matchConfirming, setMatchConfirming] = useState(false);
+  const [calendarSyncing, setCalendarSyncing] = useState(false);
   const [staffMembers, setStaffMembers] = useState<TournamentStaffMember[]>([]);
   const [staffEmail, setStaffEmail] = useState("");
   const [staffRole, setStaffRole] = useState<TournamentStaffRole>("scorekeeper");
@@ -2889,7 +2835,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
   };
 
-  const exportAgendaByCourt = () => {
+  const copyAgendaByCourtSummary = async () => {
     if (!agenda.assignments.length) {
       setFeedback({ kind: "error", text: "A agenda ainda nao foi gerada." });
       return;
@@ -2906,64 +2852,75 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       if (list) list.push(m);
       else byCourt.set(m.quadra, [m]);
     });
-    const scoreLookup = buildMatchScoreLookup(classes);
-    const winnerLookup = buildMatchWinnerLookup(classes);
-    const modelLookup = new Map<string, string>();
-    classes.forEach((cls) => {
-      modelLookup.set(
-        `${cls.categoryName}||${cls.className}`.toLowerCase(),
-        competitionModelLabel(cls.data.config)
-      );
-    });
-    const scoreKey = (categoria: string, classe: string, matchLabel: string) =>
-      `${categoria}||${classe}||${matchLabel}`.toLowerCase();
-
-    const out: string[] = [];
-    out.push("<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\">");
-    out.push("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-    out.push(`<title>${tournament?.name || "Torneio"} - Lista por Quadra</title>`);
-    out.push(
-      "<style>body{font-family:Arial,sans-serif;color:#111;margin:20px}h1{font-size:22px}.meta{font-size:12px;color:#444}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border:1px solid #bbb;padding:6px}th{background:#f2f2f2}.quadra{margin:20px 0;page-break-after:always}.quadra:last-child{page-break-after:auto}.winner{color:#15803d;font-weight:700}@page{size:A4 portrait;margin:10mm}</style>"
-    );
-    out.push("</head><body>");
-    out.push(`<h1>${tournament?.name || "Torneio"} - Lista de Jogos por Quadra</h1>`);
-    out.push(
-      `<div class="meta">Partidas alocadas: ${agenda.assignments.length}/${agenda.total}${
-        agenda.unassigned > 0 ? ` | Sem encaixe: ${agenda.unassigned}` : ""
-      }</div>`
-    );
+    const out: string[] = [
+      tournament?.name || "Torneio",
+      `Agenda: ${agenda.assignments.length}/${agenda.total}${agenda.unassigned > 0 ? ` | sem encaixe: ${agenda.unassigned}` : ""}`,
+    ];
     Array.from(byCourt.entries()).forEach(([court, rows]) => {
-      out.push(`<section class="quadra"><h2>${court}</h2>`);
-      out.push(
-        "<table><thead><tr><th>#</th><th>Data</th><th>Horario</th><th>Categoria</th><th>Classe</th><th>Modelo</th><th>Fase</th><th>Jogo</th><th>Placar</th></tr></thead><tbody>"
-      );
+      out.push("", `Quadra: ${court}`);
       rows.forEach((r, idx) => {
         const phase = `${r.round}${r.isFinal ? " (FINAL)" : r.isSemifinal ? " (SEMIFINAL)" : ""}`;
-        const key = scoreKey(r.categoria, r.classe, r.matchLabel);
-        const score = scoreLookup.get(key) || "- x -";
-        const model = modelLookup.get(`${r.categoria}||${r.classe}`.toLowerCase()) || "-";
-        const winner = String(winnerLookup.get(key) || "").trim().toLowerCase();
-        const p1 = String(r.p1 || "").trim();
-        const p2 = String(r.p2 || "").trim();
-        const p1IsWinner = !!winner && winner === p1.toLowerCase();
-        const p2IsWinner = !!winner && winner === p2.toLowerCase();
-        const gameHtml = `${
-          p1IsWinner ? `<span class="winner">${p1}</span>` : p1
-        } x ${p2IsWinner ? `<span class="winner">${p2}</span>` : p2}`;
-        out.push(
-          `<tr><td>${idx + 1}</td><td>${r.data}</td><td>${r.hora}-${r.horaFim}</td><td>${r.categoria}</td><td>${r.classe}</td><td>${model}</td><td>${phase}</td><td>${gameHtml}</td><td>${score}</td></tr>`
-        );
+        out.push(`${idx + 1}. ${r.data} ${r.hora}-${r.horaFim} | ${r.categoria}/${r.classe} | ${phase} | ${r.p1} x ${r.p2}`);
       });
-      out.push("</tbody></table></section>");
     });
-    out.push("</body></html>");
+    const copied = await copyTextWithFallback(out.join("\n"));
+    setFeedback({
+      kind: copied ? "success" : "info",
+      text: copied ? "Agenda por quadra copiada." : "Agenda aberta para copia manual.",
+    });
+  };
 
-    const safeName = String(tournament?.name || "torneio")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    downloadTextFile(out.join(""), `${safeName || "torneio"}-lista-quadras.html`, "text/html;charset=utf-8");
-    setFeedback({ kind: "success", text: "Lista por quadra exportada." });
+  const syncMyTournamentGoogleCalendar = async () => {
+    if (!tournament) return;
+    const scheduledMatches = myTournamentMatches
+      .map((match) => ({
+        match,
+        scheduled: agendaAssignmentByMatchKey.get(
+          buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
+        ),
+      }))
+      .filter((row): row is { match: PlayerTournamentMatch; scheduled: AgendaAssignment } => Boolean(row.scheduled));
+
+    if (!scheduledMatches.length) {
+      setFeedback({ kind: "error", text: "Nenhum dos seus jogos possui horario definido ainda." });
+      return;
+    }
+
+    setCalendarSyncing(true);
+    try {
+      const result = await syncTournamentMatchesToGoogleCalendar({
+        tournamentId: tournament.id,
+        returnTo: window.location.href,
+        events: scheduledMatches.map(({ match, scheduled }) => ({
+          uid: `${tournament.id}:${match.id}`,
+          title: `${tournament.name}: ${match.title}`,
+          startsAt: `${scheduled.data}T${scheduled.hora}:00`,
+          endsAt: `${scheduled.data}T${scheduled.horaFim}:00`,
+          location: scheduled.quadra,
+          description: [
+            tournament.name,
+            match.classLabel,
+            match.phase,
+            `Quadra: ${scheduled.quadra}`,
+            buildTournamentShareLink("jogos"),
+          ].filter(Boolean).join("\n"),
+        })),
+      });
+      if (result.authUrl) {
+        window.location.assign(result.authUrl);
+        return;
+      }
+      setFeedback({
+        kind: result.ok ? "success" : "error",
+        text: result.ok
+          ? `${result.syncedCount || scheduledMatches.length} jogo(s) sincronizado(s) no Google Agenda.`
+          : result.message || "Falha ao sincronizar Google Agenda.",
+      });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao sincronizar Google Agenda." });
+    } finally {
+      setCalendarSyncing(false);
+    }
   };
 
   const exportBackupJson = () => {
@@ -4014,7 +3971,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <div className="my-matches-panel">
                   <div className="section-title" style={{ marginBottom: 8 }}>
                     <h3>Minhas partidas</h3>
-                    <span className="home-league-chip member">{myTournamentMatches.length}</span>
+                    <div className="cluster">
+                      <span className="home-league-chip member">{myTournamentMatches.length}</span>
+                      <button onClick={() => void syncMyTournamentGoogleCalendar()} disabled={saving || calendarSyncing}>
+                        Google Agenda
+                      </button>
+                    </div>
                   </div>
                   {myTournamentMatches.slice(0, 6).map((match) => {
                     const scheduled = agendaAssignmentByMatchKey.get(
@@ -4146,8 +4108,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     </button>
                   </div>
                   <div className="cluster">
-                    <button onClick={exportAgendaByCourt} disabled={saving}>
-                      Exportar lista de quadras
+                    <button onClick={() => void copyAgendaByCourtSummary()} disabled={saving}>
+                      Copiar agenda por quadra
                     </button>
                     <button onClick={() => void exportActiveClassPng()} disabled={saving}>
                       Exportar Chave Campeonato
