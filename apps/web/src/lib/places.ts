@@ -851,6 +851,30 @@ export async function listPlacesIOwn(user: User): Promise<Place[]> {
   return decoratePlaces((data ?? []) as PlaceRow[], user.id);
 }
 
+export async function listPlacesIAccess(user: User): Promise<Place[]> {
+  if (!supabase) return [];
+  const [owned, staffRows] = await Promise.all([
+    listPlacesIOwn(user),
+    supabase.from(TABLE_PLACE_STAFF).select("place_id").eq("user_id", user.id),
+  ]);
+  if (staffRows.error) throw new Error(staffRows.error.message);
+
+  const ownedIds = new Set(owned.map((place) => place.id));
+  const staffPlaceIds = ((staffRows.data ?? []) as { place_id: string }[])
+    .map((row) => row.place_id)
+    .filter((id) => !ownedIds.has(id));
+  if (!staffPlaceIds.length) return owned;
+
+  const { data, error } = await supabase
+    .from(TABLE_PLACES)
+    .select(PLACE_SELECT_FIELDS)
+    .in("id", staffPlaceIds)
+    .order("name", { ascending: true });
+  if (error) throw new Error(error.message);
+
+  return [...owned, ...(await decoratePlaces((data ?? []) as PlaceRow[], user.id))].sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export async function listPlacesIFollow(user: User): Promise<Place[]> {
   if (!supabase) return [];
   const { data: follows, error: fErr } = await supabase

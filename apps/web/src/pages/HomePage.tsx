@@ -48,7 +48,8 @@ import {
   listPlaceBookings,
   listPlaceBookingWaitlist,
   listPlaceMemberships,
-  listPlacesIOwn,
+  listPlacesIAccess,
+  listPlaceStaff,
 } from "../lib/places";
 import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
 import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
@@ -174,6 +175,8 @@ type HomePriorityItem = {
   tone: "urgent" | "neutral";
   order: number;
 };
+
+type HomePlaceAccessRole = "owner" | "manager" | "coach" | "frontdesk" | "";
 
 function formatDateRange(starts: string): string {
   if (!starts) return "Data a definir";
@@ -752,10 +755,23 @@ async function loadHomeNotices(tournaments: TournamentSummary[], leagues: League
     .slice(0, 5);
 }
 
+async function listPlaceAccessEntries(user: User): Promise<Array<{ place: Awaited<ReturnType<typeof listPlacesIAccess>>[number]; role: HomePlaceAccessRole }>> {
+  const places = await listPlacesIAccess(user).catch(() => []);
+  const rows = await Promise.all(
+    places.map(async (place) => {
+      const staff = await listPlaceStaff(place.id).catch(() => []);
+      const role = place.ownerId === user.id ? "owner" : staff.find((member) => member.userId === user.id)?.role || "";
+      return { place, role: role as HomePlaceAccessRole };
+    })
+  );
+  return rows.filter((entry) => Boolean(entry.role));
+}
+
 async function loadCourtBookingActions(user: User): Promise<HomeCourtBookingAction[]> {
-  const [myBookings, ownedPlaces] = await Promise.all([listMyCourtBookings(), listPlacesIOwn(user)]);
+  const [myBookings, placeEntries] = await Promise.all([listMyCourtBookings(), listPlaceAccessEntries(user)]);
+  const bookingManagers = placeEntries.filter((entry) => entry.role === "owner" || entry.role === "manager" || entry.role === "frontdesk");
   const ownedBookingGroups = await Promise.all(
-    ownedPlaces.map(async (place) => {
+    bookingManagers.map(async ({ place }) => {
       try {
         const bookings = await listPlaceBookings(place.id);
         return bookings.map((booking): HomeCourtBookingAction => ({
@@ -794,12 +810,13 @@ async function loadCourtBookingActions(user: User): Promise<HomeCourtBookingActi
 }
 
 async function loadCourtWaitlistActions(user: User): Promise<HomeCourtWaitlistAction[]> {
-  const [myWaitlist, ownedPlaces] = await Promise.all([
+  const [myWaitlist, placeEntries] = await Promise.all([
     listMyCourtBookingWaitlist().catch(() => []),
-    listPlacesIOwn(user),
+    listPlaceAccessEntries(user),
   ]);
+  const bookingManagers = placeEntries.filter((entry) => entry.role === "owner" || entry.role === "manager" || entry.role === "frontdesk");
   const ownedGroups = await Promise.all(
-    ownedPlaces.map(async (place) => {
+    bookingManagers.map(async ({ place }) => {
       try {
         const entries = await listPlaceBookingWaitlist(place.id);
         return entries
@@ -839,15 +856,15 @@ async function loadCourtWaitlistActions(user: User): Promise<HomeCourtWaitlistAc
 }
 
 async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
-  const [ownedPlaces, myEnrollments, myMakeups, myMemberships] = await Promise.all([
-    listPlacesIOwn(user),
+  const [placeEntries, myEnrollments, myMakeups, myMemberships] = await Promise.all([
+    listPlaceAccessEntries(user),
     listMyAcademyEnrollments().catch(() => [] as AcademyEnrollment[]),
     listMyAcademyMakeupCredits().catch(() => [] as AcademyMakeupCredit[]),
     listMyPlaceMemberships().catch(() => [] as PlaceMembership[]),
   ]);
 
   const ownerGroups = await Promise.all(
-    ownedPlaces.map(async (place) => {
+    placeEntries.map(async ({ place, role }) => {
       try {
         const [enrollments, makeups, memberships] = await Promise.all([
           listPlaceAcademyEnrollments(place.id).catch(() => [] as AcademyEnrollment[]),
@@ -858,7 +875,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
         const openMakeups = makeups.filter((item) => item.status === "open").length;
         const pendingMemberships = memberships.filter((item) => item.status === "pending").length;
         const actions: HomeAcademyAction[] = [];
-        if (pendingMemberships > 0) {
+        if ((role === "owner" || role === "manager") && pendingMemberships > 0) {
           actions.push({
             id: `membership-owner:${place.id}:pending`,
             targetPath: "/locais",
@@ -870,7 +887,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
             order: 7,
           });
         }
-        if (pending > 0) {
+        if (role !== "frontdesk" && pending > 0) {
           actions.push({
             id: `academy-owner:${place.id}:pending`,
             targetPath: "/locais",

@@ -47,11 +47,11 @@ import {
   listPlaceExpenses,
   listPlaceMembershipPlans,
   listPlaceMemberships,
+  listPlacesIAccess,
   listMyPlaceOrganizations,
   listPlacePosProducts,
   listPlacePosSales,
   listPlacesIFollow,
-  listPlacesIOwn,
   requestPlaceMembership,
   reportAcademyAbsence,
   requestAcademyLessonFit,
@@ -386,7 +386,7 @@ export function PlacesPage({ user, profile }: Props) {
       const orgRows = await listMyPlaceOrganizations(user).catch(() => [] as PlaceOrganization[]);
       setOrganizations(orgRows);
       const fetcher =
-        tab === "all" ? listAllPlaces : tab === "following" ? listPlacesIFollow : listPlacesIOwn;
+        tab === "all" ? listAllPlaces : tab === "following" ? listPlacesIFollow : listPlacesIAccess;
       const rows = await fetcher(user);
       setPlaces(rows);
       const entries = await Promise.all(
@@ -1655,7 +1655,7 @@ export function PlacesPage({ user, profile }: Props) {
         </div>
       ) : null}
 
-      {!loading ? (
+      {!loading && tab !== "mine" ? (
         <section className="open-matches-panel">
           <div className="place-booking-head">
             <strong>Partidas abertas</strong>
@@ -1785,6 +1785,10 @@ export function PlacesPage({ user, profile }: Props) {
         const staff = staffByPlace[p.id] || [];
         const access = placeResourceAccess(p, user.id, staff);
         const { staffRole, canManagePlace, canUseBookings, canUseAcademy, canUseCrm, canUseMemberships, canManageBookings, canManageAcademy, canManageFinance } = access;
+        const isPlayerView = !staffRole;
+        const showMembershipTools = canUseMemberships && (canManageFinance || isPlayerView || Boolean(myMembership));
+        const showBookingTools = canUseBookings && staffRole !== "coach";
+        const showAcademyTools = canUseAcademy;
         const activeAcademyClasses = academyClasses.filter((item) => item.isActive);
         const currentCoach = academyCoaches.find((coach) => coach.userId === user.id) || null;
         const displayedCoaches = staffRole === "coach" && currentCoach ? [currentCoach] : academyCoaches;
@@ -2095,7 +2099,7 @@ export function PlacesPage({ user, profile }: Props) {
                 <span>Siga o local para receber novidades e chamadas de partida quando estiverem disponiveis.</span>
               </div>
             ) : null}
-            {canUseMemberships || myMembership ? (
+            {showMembershipTools || (myMembership && isPlayerView) ? (
             <div className="place-booking-panel">
               <div className="place-booking-head">
                 <strong>Planos e socios</strong>
@@ -2455,7 +2459,7 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
               </div>
             ) : null}
-            {canUseBookings ? (
+            {showBookingTools ? (
             <div className="place-booking-panel">
               <div className="place-booking-head">
                 <strong>Quadras e reservas</strong>
@@ -2785,7 +2789,7 @@ export function PlacesPage({ user, profile }: Props) {
               ) : null}
             </div>
             ) : null}
-            {canUseAcademy ? (
+            {showAcademyTools ? (
             <div className="place-booking-panel academy-panel">
               <div className="place-booking-head">
                 <strong>Academia e aulas</strong>
@@ -3334,7 +3338,8 @@ export function PlacesPage({ user, profile }: Props) {
                             const plan = membershipPlans.find((item) => item.id === myMembership.planId);
                             const memberPrice = plan ? Math.round((academyClass.monthlyFeeCents * (100 - plan.academyDiscountPercent)) / 100) : academyClass.monthlyFeeCents;
                             return plan && plan.academyDiscountPercent > 0 ? ` | socio ${formatMoneyFromCents(memberPrice)}` : "";
-                          })() : ""} | Hoje: {presentCount} presente(s) | Reposicoes: {classMakeups.length} | Ausencias avisadas: {plannedAbsences.length}
+                          })() : ""}
+                          {canManageAcademy ? ` | Hoje: ${presentCount} presente(s) | Reposicoes: ${classMakeups.length} | Ausencias avisadas: ${plannedAbsences.length}` : ""}
                         </small>
                         <small>
                           {academyClass.genderScope === "male" ? "Masculina" : academyClass.genderScope === "female" ? "Feminina" : "Mista"} |{" "}
@@ -3554,11 +3559,11 @@ export function PlacesPage({ user, profile }: Props) {
                             Cancelar interesse
                           </button>
                         </span>
-                      ) : (
+                      ) : isPlayerView ? (
                         <button className="primary" onClick={() => void onCreateAcademyEnrollment(p, academyClass)} disabled={busy}>
                           Tenho interesse
                         </button>
-                      )}
+                      ) : null}
                     </div>
                   );
                 })}
