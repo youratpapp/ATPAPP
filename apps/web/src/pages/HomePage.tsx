@@ -238,34 +238,6 @@ function formatShortDateTime(value: string): string {
   });
 }
 
-function formatIcsDate(date: Date): string {
-  return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
-}
-
-function escapeIcsText(value: string): string {
-  return value.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
-}
-
-function agendaItemToIcs(item: HomeAgendaItem): string {
-  const start = new Date(item.sortAt);
-  const safeStart = Number.isNaN(start.getTime()) ? new Date() : start;
-  const end = new Date(safeStart.getTime() + 60 * 60 * 1000);
-  return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//ATP APP//Agenda//PT-BR",
-    "BEGIN:VEVENT",
-    `UID:${escapeIcsText(item.id)}@atp-app`,
-    `DTSTAMP:${formatIcsDate(new Date())}`,
-    `DTSTART:${formatIcsDate(safeStart)}`,
-    `DTEND:${formatIcsDate(end)}`,
-    `SUMMARY:${escapeIcsText(`${item.sourceName} - ${item.title}`)}`,
-    `DESCRIPTION:${escapeIcsText(item.reminderText)}`,
-    "END:VEVENT",
-    "END:VCALENDAR",
-  ].join("\r\n");
-}
-
 function dedupeById<T extends { id: string }>(items: T[]): T[] {
   const seen = new Set<string>();
   return items.filter((item) => {
@@ -1108,13 +1080,11 @@ function AgendaCard({
   onOpen,
   onCopyReminder,
   onShareReminder,
-  onDownloadCalendar,
 }: {
   item: HomeAgendaItem;
   onOpen: () => void;
   onCopyReminder: () => void;
   onShareReminder: () => void;
-  onDownloadCalendar: () => void;
 }) {
   return (
     <article className="home-agenda-card" onClick={onOpen}>
@@ -1141,14 +1111,6 @@ function AgendaCard({
           }}
         >
           WhatsApp
-        </button>
-        <button
-          onClick={(event) => {
-            event.stopPropagation();
-            onDownloadCalendar();
-          }}
-        >
-          Calendario
         </button>
       </div>
     </article>
@@ -1513,19 +1475,6 @@ export function HomePage({ user, profile }: Props) {
     );
     setFeedback({ kind: "success", text: "Lembrete aberto no WhatsApp." });
   };
-  const downloadAgendaCalendar = (item: HomeAgendaItem) => {
-    const blob = new Blob([agendaItemToIcs(item)], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    const safeName = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "agenda";
-    link.href = url;
-    link.download = `${safeName}.ics`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    setFeedback({ kind: "success", text: "Evento de calendario gerado." });
-  };
 
   return (
     <AppShell
@@ -1616,7 +1565,6 @@ export function HomePage({ user, profile }: Props) {
                   onOpen={() => navigate(item.targetPath)}
                   onCopyReminder={() => copyAgendaReminder(item)}
                   onShareReminder={() => shareAgendaReminder(item)}
-                  onDownloadCalendar={() => downloadAgendaCalendar(item)}
                 />
               ))}
             </section>

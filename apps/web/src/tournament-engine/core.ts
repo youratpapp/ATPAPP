@@ -1,3 +1,9 @@
+import {
+  decodeMatchScoreDetail,
+  evaluateMatchScoreDetail,
+  SCORE_DETAIL_PREFIX,
+} from "../lib/tournament-score";
+
 export type TournamentConfig = {
   tipo: "duplas" | "simples";
   formato: "grupos" | "mata_mata";
@@ -329,6 +335,14 @@ function winnerFromMatch(m: KnockoutMatch, config?: TournamentConfig): string | 
   if (m.a === "BYE" && m.b && m.b !== "BYE") return m.b;
   if (m.b === "BYE" && m.a && m.a !== "BYE") return m.a;
   if (!m.done) return null;
+  if (config && String(m.scoreLabel || "").startsWith(SCORE_DETAIL_PREFIX)) {
+    const detail = decodeMatchScoreDetail(m.scoreLabel, config, m.s1, m.s2);
+    const evaluated = evaluateMatchScoreDetail(detail, config);
+    if (!evaluated.done) return null;
+    if (evaluated.winner === "a") return m.a;
+    if (evaluated.winner === "b") return m.b;
+    return null;
+  }
   const a = Number.parseInt(m.s1, 10);
   const b = Number.parseInt(m.s2, 10);
   if (Number.isNaN(a) || Number.isNaN(b)) return null;
