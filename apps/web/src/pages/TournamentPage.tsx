@@ -3822,34 +3822,46 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
       {!loading && tournament ? (
         <>
+          {(tab === "jogos" || tab === "classificacao") ? (
+            <section className="card tournament-class-switcher">
+              <div>
+                <span>Resumo por classe</span>
+                <strong>Classe ativa</strong>
+              </div>
+              <select
+                aria-label="Classe ativa"
+                value={activeClass?.key ?? ""}
+                onChange={(e) => setActiveClassKey(e.target.value)}
+                disabled={classes.length === 0}
+              >
+                {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
+                {classes.map((c) => (
+                  <option key={c.key} value={c.key}>
+                    {c.categoryName} / {c.className}
+                  </option>
+                ))}
+              </select>
+            </section>
+          ) : null}
+
           <article className="card" style={{ marginBottom: 12 }}>
             <div className="section-title" style={{ marginBottom: 8 }}>
-              <h2>{isOwner || isTournamentStaff ? "Painel do torneio" : "Resumo do torneio"}</h2>
+              <h2>
+                {(tab === "jogos" || tab === "classificacao") && activeClass
+                  ? "Resumo da classe"
+                  : isOwner || isTournamentStaff
+                  ? "Painel do torneio"
+                  : "Resumo do torneio"}
+              </h2>
               <StatusBadge status={tournament.status} />
             </div>
             <p className="subtle" style={{ margin: 0 }}>
               {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}
             </p>
-            {(tab === "jogos" || tab === "classificacao") ? (
-              <section className="tournament-class-switcher">
-                <div>
-                  <span>Resumo por classe</span>
-                  <strong>Classe ativa</strong>
-                </div>
-                <select
-                  aria-label="Classe ativa"
-                  value={activeClass?.key ?? ""}
-                  onChange={(e) => setActiveClassKey(e.target.value)}
-                  disabled={classes.length === 0}
-                >
-                  {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
-                  {classes.map((c) => (
-                    <option key={c.key} value={c.key}>
-                      {c.categoryName} / {c.className}
-                    </option>
-                  ))}
-                </select>
-              </section>
+            {(tab === "jogos" || tab === "classificacao") && activeClass ? (
+              <p className="tournament-summary-context">
+                {activeClass.categoryName} / {activeClass.className}
+              </p>
             ) : null}
             <div className="tournament-overview-grid">
               {(tab === "jogos" || tab === "classificacao") && activeClass ? (
@@ -3890,9 +3902,18 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               ) : null}
             </div>
-            <button className="tournament-next-action" onClick={() => goToTab(tournamentOverview.nextTab)}>
-              <span>Proxima acao</span>
-              <strong>{tournamentOverview.nextAction}</strong>
+            <button
+              className="tournament-next-action"
+              onClick={() => goToTab((tab === "jogos" || tab === "classificacao") && activeClass ? "jogos" : tournamentOverview.nextTab)}
+            >
+              <span>{(tab === "jogos" || tab === "classificacao") && activeClass ? "Proxima acao da classe" : "Proxima acao"}</span>
+              <strong>
+                {(tab === "jogos" || tab === "classificacao") && activeClass
+                  ? activeClassMatchStats.pendingMatches > 0
+                    ? "Acompanhar jogos pendentes desta classe."
+                    : "Classe sem jogos pendentes."
+                  : tournamentOverview.nextAction}
+              </strong>
             </button>
             {canManageTournament ? (
               <div className="tournament-phase-flow">
@@ -4009,7 +4030,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <button onClick={() => goToTab("jogos")}>Ver partidas</button>
               </div>
             ) : null}
-            {!isOwner && !isTournamentStaff && tab !== "jogos" && nextPlayerMatch ? (() => {
+            {!isOwner && !isTournamentStaff && tab !== "jogos" && nextPlayerMatch && nextPlayerMatch.classKey === activeClass?.key ? (() => {
               const scheduled = agendaAssignmentByMatchKey.get(
                 buildScheduleMatchKey(
                   nextPlayerMatch.categoryName,
