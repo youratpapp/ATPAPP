@@ -17,6 +17,15 @@ export type TournamentClassCompletionRow = {
   ready: boolean;
 };
 
+export type TournamentMatchOperationalState = {
+  key: "schedule" | "confirmation" | "availability" | "result" | "review" | "finished";
+  label: string;
+  detail: string;
+  severity: "ok" | "info" | "warning" | "danger";
+  playerAction: string;
+  ownerAction: string;
+};
+
 export const VALID_TOURNAMENT_TABS: TournamentTabKey[] = ["jogos", "classificacao", "organizacao", "jogadores", "chat"];
 
 export function isRealMatch(a: string | null | undefined, b: string | null | undefined): boolean {
@@ -109,4 +118,90 @@ export function buildTournamentClassCompletionRows(
       ready: blockers.length === 0 && cls.data.gerado && realMatches.length > 0,
     };
   });
+}
+
+export function buildTournamentMatchOperationalState(input: {
+  done: boolean;
+  scoreLabel?: string;
+  hasSchedule: boolean;
+  submissions: TournamentMatchResultSubmission[];
+  confirmations: TournamentMatchConfirmation[];
+  myUserId?: string | null;
+  isOwner: boolean;
+}): TournamentMatchOperationalState {
+  const { done, scoreLabel, hasSchedule, submissions, confirmations, myUserId } = input;
+  const unavailable = confirmations.filter((confirmation) => confirmation.status === "unavailable");
+  const confirmed = confirmations.filter((confirmation) => confirmation.status === "confirmed");
+  const pendingSubmissions = submissions.filter((submission) => ["pending", "accepted", "conflict"].includes(submission.status));
+  const hasConflict = pendingSubmissions.some((submission) => submission.status === "conflict");
+  const hasAccepted = pendingSubmissions.some((submission) => submission.status === "accepted");
+  const myConfirmation = myUserId ? confirmations.find((confirmation) => confirmation.userId === myUserId) : null;
+
+  if (done) {
+    return {
+      key: "finished",
+      label: String(scoreLabel || "").startsWith("WO:") ? "Finalizada por WO" : "Partida finalizada",
+      detail: "Resultado oficial ja aparece no torneio.",
+      severity: "ok",
+      playerAction: "Conferir resultado",
+      ownerAction: "Conferir chave",
+    };
+  }
+
+  if (unavailable.length > 0) {
+    return {
+      key: "availability",
+      label: "Indisponibilidade avisada",
+      detail: `${unavailable.length} lado(s) avisaram que nao podem jogar.`,
+      severity: "danger",
+      playerAction: myConfirmation?.status === "unavailable" ? "Aguardar organizador" : "Confirmar disponibilidade",
+      ownerAction: "Reorganizar partida",
+    };
+  }
+
+  if (pendingSubmissions.length > 0) {
+    return {
+      key: "review",
+      label: hasConflict ? "Resultado divergente" : hasAccepted ? "Resultado conferido" : "Resultado enviado",
+      detail: hasConflict
+        ? "Envios dos jogadores divergem e precisam de decisao do organizador."
+        : hasAccepted
+        ? "Os lados bateram o placar; falta aplicar como oficial."
+        : `${pendingSubmissions.length} envio(s) aguardando outro lado ou revisao.`,
+      severity: hasConflict ? "danger" : "warning",
+      playerAction: hasAccepted ? "Aguardar aplicacao" : "Acompanhar envio",
+      ownerAction: hasAccepted || hasConflict ? "Revisar e aplicar" : "Monitorar envios",
+    };
+  }
+
+  if (!hasSchedule) {
+    return {
+      key: "schedule",
+      label: "Sem horario",
+      detail: "Partida gerada, mas ainda sem data/quadra no cronograma.",
+      severity: "warning",
+      playerAction: "Aguardar agenda",
+      ownerAction: "Agendar partida",
+    };
+  }
+
+  if (confirmed.length < 2) {
+    return {
+      key: "confirmation",
+      label: "Aguardando presenca",
+      detail: `${confirmed.length}/2 lado(s) confirmaram presenca.`,
+      severity: "info",
+      playerAction: myConfirmation?.status === "confirmed" ? "Aguardar adversario" : "Confirmar presenca",
+      ownerAction: "Cobrar confirmacao",
+    };
+  }
+
+  return {
+    key: "result",
+    label: "Aguardando resultado",
+    detail: "Presenca encaminhada. Falta placar oficial.",
+    severity: "info",
+    playerAction: "Enviar resultado",
+    ownerAction: "Lancar resultado",
+  };
 }

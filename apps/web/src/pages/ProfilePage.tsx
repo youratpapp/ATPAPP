@@ -5,9 +5,10 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { supabase } from "../lib/supabase";
 import { loadLeagueDetails, loadMyLeagues, loadRoundMatches, loadSeasonRounds } from "../lib/leagues";
+import { loadNotificationPreferences, saveNotificationPreferences } from "../lib/notification-preferences";
 import { upsertProfile, uploadAvatar } from "../lib/profiles";
 import { buildTournamentUrl, loadDashboardData, loadTournamentDetails, loadTournamentRegistrations } from "../lib/tournaments";
-import type { LeagueMatchSummary, LeagueSummary, Profile, TournamentSummary } from "../lib/types";
+import type { LeagueMatchSummary, LeagueSummary, NotificationPreferences, Profile, TournamentSummary } from "../lib/types";
 import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
 import { formatMatchScoreValues } from "../lib/tournament-score";
 import { isRealMatch } from "../lib/tournament-lifecycle";
@@ -301,6 +302,13 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const [playingLeagues, setPlayingLeagues] = useState<LeagueSummary[]>([]);
   const [organizingLeagues, setOrganizingLeagues] = useState<LeagueSummary[]>([]);
   const [recentMatches, setRecentMatches] = useState<ProfileRecentMatch[]>([]);
+  const [notificationPrefs, setNotificationPrefs] = useState<NotificationPreferences>({
+    whatsappReminders: true,
+    matchReminders: true,
+    bookingReminders: true,
+    socialUpdates: false,
+    reminderHoursBefore: 24,
+  });
   const normalizedUf = useMemo(() => normalizeStateUf(stateUf), [stateUf]);
   const cityValueInOptions = useMemo(
     () => cityOptions.some((item) => item.toLowerCase() === city.trim().toLowerCase()),
@@ -338,6 +346,11 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
 
   useEffect(() => {
     let alive = true;
+    loadNotificationPreferences(user)
+      .then((prefs) => {
+        if (alive) setNotificationPrefs(prefs);
+      })
+      .catch(() => undefined);
     setActivityLoading(true);
     setActivityError("");
     Promise.all([loadDashboardData(user), loadMyLeagues()])
@@ -427,6 +440,21 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
     alert(
       "Para excluir sua conta, escreva para suporte@atp.tennis com o e-mail desta conta. Em breve haverá fluxo automático."
     );
+  };
+
+  const onSaveNotificationPrefs = async (nextPrefs: NotificationPreferences) => {
+    setNotificationPrefs(nextPrefs);
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const saved = await saveNotificationPreferences(user, nextPrefs);
+      setNotificationPrefs(saved);
+      setFeedback({ kind: "success", text: "Preferencias salvas." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar preferencias." });
+    } finally {
+      setBusy(false);
+    }
   };
 
   const locationLine = [profile?.city, profile?.state].filter(Boolean).join(" - ");
@@ -1029,6 +1057,66 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           ) : null}
         </div>
       ) : null}
+
+      {!editing && (
+        <div className="profile-rows-card notification-pref-card">
+          <div className="section-title">
+            <h2>Lembretes</h2>
+          </div>
+          <label>
+            <input
+              type="checkbox"
+              checked={notificationPrefs.whatsappReminders}
+              onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, whatsappReminders: event.target.checked })}
+              disabled={busy}
+            />
+            Preparar lembretes para WhatsApp
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={notificationPrefs.matchReminders}
+              onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, matchReminders: event.target.checked })}
+              disabled={busy}
+            />
+            Partidas e resultados
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={notificationPrefs.bookingReminders}
+              onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, bookingReminders: event.target.checked })}
+              disabled={busy}
+            />
+            Reservas de quadra
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={notificationPrefs.socialUpdates}
+              onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, socialUpdates: event.target.checked })}
+              disabled={busy}
+            />
+            Atualizacoes sociais
+          </label>
+          <label>
+            Antecedencia do lembrete
+            <select
+              value={notificationPrefs.reminderHoursBefore}
+              onChange={(event) =>
+                void onSaveNotificationPrefs({ ...notificationPrefs, reminderHoursBefore: Number(event.target.value) })
+              }
+              disabled={busy}
+            >
+              <option value={6}>6 horas antes</option>
+              <option value={12}>12 horas antes</option>
+              <option value={24}>1 dia antes</option>
+              <option value={48}>2 dias antes</option>
+            </select>
+          </label>
+          <p className="subtle">Preferencias salvas para a futura engine de notificacoes. Hoje a Home continua usando lembretes manuais.</p>
+        </div>
+      )}
 
       {!editing && (
         <div className="profile-rows-card">

@@ -3,6 +3,9 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import {
+  adminResolveLeagueMatchResult,
+  applyLeagueSeasonMovements,
+  createLeagueRankingSnapshot,
   createLeagueClass,
   deleteLeagueChatMessage,
   confirmLeagueMatchResult,
@@ -12,7 +15,9 @@ import {
   loadLeagueClasses,
   loadLeagueDetails,
   loadLeaguePlayerStandings,
+  loadLeagueRankingSnapshots,
   loadLeagueRegistrations,
+  loadLeagueSchedulerRuns,
   loadMatchAvailability,
   loadMatchMessages,
   loadMatchSubmissions,
@@ -36,11 +41,14 @@ import type {
   LeagueMatchMessage,
   LeagueMatchSummary,
   LeaguePlayerStanding,
+  LeagueRankingSnapshot,
   LeagueRegistration,
   LeagueResultSubmission,
   LeagueRoundSummary,
+  LeagueSchedulerRun,
   Profile,
 } from "../lib/types";
+import { buildLeagueMatchOperationalState, summarizeLeagueMatchStatuses } from "../lib/league-match-state";
 
 type Props = {
   user: User;
@@ -107,6 +115,12 @@ type LeagueStandingClassView = {
   relegatedSlots: number;
 };
 
+type CommonAvailabilitySlot = {
+  key: string;
+  availableAt: string;
+  playerNames: string[];
+};
+
 function typeLabel(v: LeagueDetails["leagueType"]): string {
   if (v === "dupla_fixa") return "Dupla fixa";
   if (v === "dupla_rotativa") return "Dupla rotativa";
@@ -160,6 +174,48 @@ function toDateTimeInputValue(iso: string): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+function availabilityMinuteKey(value: string): string {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return value;
+  d.setSeconds(0, 0);
+  return d.toISOString();
+}
+
+function buildCommonAvailabilitySlots(availability: LeagueMatchAvailability[]): CommonAvailabilitySlot[] {
+  const grouped = new Map<
+    string,
+    {
+      availableAt: string;
+      playerIds: Set<string>;
+      playerNames: Set<string>;
+    }
+  >();
+
+  availability.forEach((item) => {
+    const key = availabilityMinuteKey(item.availableAt);
+    const current =
+      grouped.get(key) ||
+      {
+        availableAt: item.availableAt,
+        playerIds: new Set<string>(),
+        playerNames: new Set<string>(),
+      };
+
+    current.playerIds.add(item.leaguePlayerId);
+    current.playerNames.add(item.playerName || "Jogador");
+    grouped.set(key, current);
+  });
+
+  return Array.from(grouped.entries())
+    .filter(([, value]) => value.playerIds.size >= 2)
+    .map(([key, value]) => ({
+      key,
+      availableAt: value.availableAt,
+      playerNames: Array.from(value.playerNames),
+    }))
+    .sort((a, b) => new Date(a.availableAt).getTime() - new Date(b.availableAt).getTime());
+}
+
 function defaultMatchForm(): MatchForm {
   return {
     sets1: "2",
@@ -170,6 +226,24 @@ function defaultMatchForm(): MatchForm {
     isWo: false,
     summary: "",
   };
+}
+
+function schedulerEventLabel(detail: Record<string, unknown>): string {
+  const event = String(detail.event || "");
+  if (event === "season_finalized") return "Temporada finalizada";
+  if (event === "round_generated") return "Rodada gerada";
+  return "Execucao registrada";
+}
+
+function schedulerEventDetail(detail: Record<string, unknown>): string {
+  const event = String(detail.event || "");
+  if (event === "season_finalized") {
+    return `Movimentos: ${Number(detail.movements_count || 0)}`;
+  }
+  if (event === "round_generated") {
+    return `Partidas criadas: ${Number(detail.matches_created || 0)}`;
+  }
+  return "Sem detalhe adicional";
 }
 
 async function copyTextWithFallback(text: string): Promise<boolean> {
@@ -204,6 +278,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [league, setLeague] = useState<LeagueDetails | null>(null);
   const [classes, setClasses] = useState<LeagueClassSummary[]>([]);
   const [standings, setStandings] = useState<LeaguePlayerStanding[]>([]);
+  const [rankingSnapshots, setRankingSnapshots] = useState<LeagueRankingSnapshot[]>([]);
   const [registrations, setRegistrations] = useState<LeagueRegistration[]>([]);
   const [roundsData, setRoundsData] = useState<RoundWithMatches[]>([]);
   const [selectedSeasonId, setSelectedSeasonId] = useState("");
@@ -219,6 +294,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [myAvailabilityByMatch, setMyAvailabilityByMatch] = useState<Record<string, string[]>>({});
   const [settingsDraft, setSettingsDraft] = useState<LeagueSettingsDraft | null>(null);
   const [leagueChat, setLeagueChat] = useState<LeagueChatMessage[]>([]);
+  const [schedulerRuns, setSchedulerRuns] = useState<LeagueSchedulerRun[]>([]);
   const [leagueChatDraft, setLeagueChatDraft] = useState("");
   const [announcementDraft, setAnnouncementDraft] = useState("");
   const [announcementPin, setAnnouncementPin] = useState(true);
@@ -304,19 +380,17 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
   const leagueOverview = useMemo(() => {
     const matches = roundsData.flatMap((row) => row.matches);
-    const finished = matches.filter((m) => m.status === "encerrada" || m.status === "wo").length;
-    const pending = Math.max(0, matches.length - finished);
-    const attention = matches.filter((m) => m.status === "em_disputa" || m.status === "em_analise_adm").length;
-    const scheduling = matches.filter((m) => m.status === "aguardando_organizacao").length;
+    const statusSummary = summarizeLeagueMatchStatuses(matches);
+    const pending = Math.max(0, matches.length - statusSummary.finished);
     let nextAction = "Acompanhar partidas e mensagens da liga.";
     let nextTab: PageTab = "partidas";
     if (isOwner && registrationStats.pending > 0) {
       nextAction = "Aprovar ou rejeitar inscricoes pendentes.";
       nextTab = "jogadores";
-    } else if (isOwner && scheduling > 0) {
+    } else if (isOwner && statusSummary.scheduling > 0) {
       nextAction = "Organizar partidas ainda sem agenda.";
       nextTab = "partidas";
-    } else if (attention > 0) {
+    } else if (statusSummary.attention > 0) {
       nextAction = isOwner ? "Resolver partidas em disputa ou analise." : "Acompanhar partidas em analise.";
       nextTab = "partidas";
     } else if (pending > 0) {
@@ -329,10 +403,12 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     return {
       rounds: roundsData.length,
       matches: matches.length,
-      finished,
+      finished: statusSummary.finished,
       pending,
-      attention,
-      scheduling,
+      attention: statusSummary.attention,
+      scheduling: statusSummary.scheduling,
+      result: statusSummary.result,
+      confirmation: statusSummary.confirmation,
       nextAction,
       nextTab,
     };
@@ -432,23 +508,32 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       setSelectedSeasonId(initialSeasonId);
 
       if (initialSeasonId) {
-        const [cls, playerRows] = await Promise.all([
+        const [cls, playerRows, snapshotRows] = await Promise.all([
           loadLeagueClasses(initialSeasonId),
           loadLeaguePlayerStandings(initialSeasonId),
+          loadLeagueRankingSnapshots(initialSeasonId).catch(() => [] as LeagueRankingSnapshot[]),
         ]);
         setClasses(cls);
         setStandings(playerRows);
+        setRankingSnapshots(snapshotRows);
         await loadRoundsAndMatches(initialSeasonId);
       } else {
         setClasses([]);
         setStandings([]);
+        setRankingSnapshots([]);
         setRoundsData([]);
       }
 
       if (details.ownerId === user.id) {
-        setRegistrations(await loadLeagueRegistrations(id));
+        const [registrationRows, schedulerRows] = await Promise.all([
+          loadLeagueRegistrations(id),
+          loadLeagueSchedulerRuns(id).catch(() => [] as LeagueSchedulerRun[]),
+        ]);
+        setRegistrations(registrationRows);
+        setSchedulerRuns(schedulerRows);
       } else {
         setRegistrations([]);
+        setSchedulerRuns([]);
       }
       setLeagueChat(await loadLeagueChatMessages(id).catch(() => []));
     } catch (err) {
@@ -471,6 +556,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     if (!selectedSeasonId) return;
     loadLeagueClasses(selectedSeasonId).then(setClasses).catch(() => setClasses([]));
     loadLeaguePlayerStandings(selectedSeasonId).then(setStandings).catch(() => setStandings([]));
+    loadLeagueRankingSnapshots(selectedSeasonId).then(setRankingSnapshots).catch(() => setRankingSnapshots([]));
     void loadRoundsAndMatches(selectedSeasonId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSeasonId, selectedClassId]);
@@ -826,6 +912,83 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
   }
 
+  async function onAdminResolveResult(match: LeagueMatchSummary) {
+    if (!isOwner) return;
+    const f = getMatchForm(match.id);
+    const payload = {
+      sets_side1: Number(f.sets1 || 0),
+      sets_side2: Number(f.sets2 || 0),
+      games_side1: Number(f.games1 || 0),
+      games_side2: Number(f.games2 || 0),
+      winner_side: Number(f.winnerSide || "1"),
+      is_wo: f.isWo,
+      summary:
+        f.summary.trim() ||
+        `Resolvido pelo admin: ${match.participants
+          .filter((p) => p.side === 1)
+          .map((p) => p.displayName)
+          .join(" / ")} ${f.sets1}-${f.sets2} ${match.participants
+          .filter((p) => p.side === 2)
+          .map((p) => p.displayName)
+          .join(" / ")}`,
+    };
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await adminResolveLeagueMatchResult(match.id, payload, f.summary.trim() || "Resolvido pelo organizador da liga");
+      setMatchSubmissions((prev) => ({ ...prev, [match.id]: [] }));
+      setFeedback({ kind: "success", text: "Partida resolvida pelo admin e ranking atualizado." });
+      await loadAll();
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao resolver partida pelo admin." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onApplySeasonMovements() {
+    if (!league || !selectedSeasonId || !leagueSeasonGuard.ready || selectedSeason?.status === "finished") return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const rows = await applyLeagueSeasonMovements({
+        leagueId: league.id,
+        seasonId: selectedSeasonId,
+        note: "Aplicado pelo painel da liga",
+      });
+      setFeedback({
+        kind: "success",
+        text: rows.length
+          ? `Movimentacoes aplicadas: ${rows.length}.`
+          : "Temporada conferida. Nenhuma movimentacao de classe a aplicar.",
+      });
+      await loadAll();
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aplicar movimentos da temporada." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onCreateRankingSnapshot() {
+    if (!league || !selectedSeasonId || !isOwner) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await createLeagueRankingSnapshot({
+        leagueId: league.id,
+        seasonId: selectedSeasonId,
+        classId: selectedClassId || null,
+      });
+      setRankingSnapshots(await loadLeagueRankingSnapshots(selectedSeasonId));
+      setFeedback({ kind: "success", text: "Snapshot do ranking salvo." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar snapshot do ranking." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function onSaveAvailability(match: LeagueMatchSummary) {
     const myPlayer = match.participants.find((p) => p.userId === user.id);
     if (!myPlayer?.leaguePlayerId) return;
@@ -939,6 +1102,28 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <span>Proxima acao</span>
               <strong>{leagueOverview.nextAction}</strong>
             </button>
+            <div className="league-core-state-grid">
+              <button onClick={() => goToTab("partidas")} className={leagueOverview.scheduling > 0 ? "needs-action" : ""}>
+                <strong>{leagueOverview.scheduling}</strong>
+                <span>Agendar</span>
+                <small>Partidas aguardando organizacao</small>
+              </button>
+              <button onClick={() => goToTab("partidas")} className={leagueOverview.result > 0 ? "needs-action" : ""}>
+                <strong>{leagueOverview.result}</strong>
+                <span>Resultado</span>
+                <small>Jogos esperando placar</small>
+              </button>
+              <button onClick={() => goToTab("partidas")} className={leagueOverview.confirmation > 0 ? "needs-action" : ""}>
+                <strong>{leagueOverview.confirmation}</strong>
+                <span>Confirmar</span>
+                <small>Resultados aguardando aceite</small>
+              </button>
+              <button onClick={() => goToTab("partidas")} className={leagueOverview.attention > 0 ? "needs-action danger" : ""}>
+                <strong>{leagueOverview.attention}</strong>
+                <span>Intervir</span>
+                <small>Disputa ou analise admin</small>
+              </button>
+            </div>
             {isOwner ? (
               <div className={`league-season-guard ${leagueSeasonGuard.ready ? "ready" : ""}`}>
                 <div>
@@ -952,6 +1137,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       <li key={blocker}>{blocker}</li>
                     ))}
                   </ul>
+                ) : null}
+                {leagueSeasonGuard.ready && selectedSeason?.status !== "finished" ? (
+                  <button onClick={() => void onApplySeasonMovements()} disabled={busy}>
+                    Aplicar sobe/desce
+                  </button>
                 ) : null}
               </div>
             ) : null}
@@ -1005,6 +1195,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   Ordenacao: vitorias, saldo de sets, saldo de games, partidas jogadas e nome.
                 </p>
               </div>
+              {isOwner ? (
+                <button onClick={() => void onCreateRankingSnapshot()} disabled={busy || !standingsSummary.players}>
+                  Salvar snapshot
+                </button>
+              ) : null}
             </div>
             <div className="league-standings-summary">
               <div>
@@ -1064,6 +1259,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 ) : null}
               </div>
             ))}
+            {rankingSnapshots.length ? (
+              <div className="league-ranking-snapshots">
+                <strong>Historico salvo</strong>
+                {rankingSnapshots.slice(0, 4).map((snapshot) => (
+                  <span key={snapshot.id}>
+                    {new Date(snapshot.computedAt).toLocaleString("pt-BR")} - {snapshot.ranking.length} jogadores
+                  </span>
+                ))}
+              </div>
+            ) : null}
           </section>
 
           {activeTab === "visao" ? (
@@ -1291,6 +1496,38 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 ) : null}
               </section>
 
+              {isOwner ? (
+                <section className="section-card">
+                  <div className="section-title" style={{ marginBottom: 10 }}>
+                    <div>
+                      <h3 style={{ margin: 0 }}>Agendador automatico</h3>
+                      <p className="subtle" style={{ margin: "4px 0 0" }}>
+                        Ultimas execucoes ligadas a esta liga.
+                      </p>
+                    </div>
+                  </div>
+                  {!schedulerRuns.length ? (
+                    <p className="subtle">Ainda sem execucoes registradas para esta liga.</p>
+                  ) : null}
+                  <div className="league-scheduler-run-list">
+                    {schedulerRuns.map((run) => (
+                      <div key={run.id} className="league-scheduler-run">
+                        <div>
+                          <strong>{formatDateTime(run.executedAt)}</strong>
+                          <span>{run.details.length} evento(s) nesta liga</span>
+                        </div>
+                        {run.details.map((detail, idx) => (
+                          <p key={`${run.id}:${idx}`}>
+                            <span>{schedulerEventLabel(detail)}</span>
+                            <em>{schedulerEventDetail(detail)}</em>
+                          </p>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
+
               {!isOwner && league.visibility === "public" && league.publicJoinEnabled ? (
                 <section className="section-card">
                   <h3 style={{ marginTop: 0, marginBottom: 10 }}>Inscricao publica</h3>
@@ -1416,12 +1653,20 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     const form = getMatchForm(m.id);
                     const subs = matchSubmissions[m.id] || [];
                     const avail = availabilityByMatch[m.id] || [];
+                    const commonAvailability = buildCommonAvailabilitySlots(avail);
                     const msgs = messagesByMatch[m.id] || [];
                     const mySlots = myAvailabilityByMatch[m.id] || ["", "", ""];
                     const myPlayer = m.participants.find((p) => p.userId === user.id);
                     const allowRoom = Boolean(myPlayer || isOwner);
+                    const opState = buildLeagueMatchOperationalState({
+                      match: m,
+                      availability: avail,
+                      submissions: subs,
+                      myPlayer,
+                      isOwner,
+                    });
                     return (
-                      <article key={m.id} className="league-match-card">
+                      <article key={m.id} className={`league-match-card state-${opState.severity}`}>
                         <div className="league-match-card-top">
                           <div>
                             <p className="league-match-title">
@@ -1429,13 +1674,25 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                             </p>
                             <p className="league-match-sub">Status: {matchStatusLabel(m.status)}</p>
                           </div>
+                          <span className={`league-match-state-pill ${opState.severity}`}>{opState.label}</span>
                           <button className="ghost" onClick={() => void openMatchRoom(m)} disabled={!allowRoom}>
                             {expandedMatchId === m.id ? "Fechar sala" : "Abrir sala"}
                           </button>
                         </div>
+                        <div className="league-match-next-state">
+                          <span>{opState.detail}</span>
+                          <strong>{isOwner ? opState.ownerAction : opState.playerAction}</strong>
+                        </div>
 
                         {expandedMatchId === m.id ? (
                           <div className="league-room-grid">
+                            <section className={`league-room-panel league-room-state state-${opState.severity}`}>
+                              <h4>Estado da partida</h4>
+                              <strong>{opState.label}</strong>
+                              <p>{opState.detail}</p>
+                              <span>{isOwner ? opState.ownerAction : opState.playerAction}</span>
+                            </section>
+
                             <section className="league-room-panel">
                               <h4>Participantes e contatos</h4>
                               {m.participants.map((p, pIdx) => (
@@ -1473,6 +1730,18 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               ) : (
                                 <p className="subtle">Somente participantes podem registrar disponibilidade.</p>
                               )}
+                              {commonAvailability.length ? (
+                                <div className="league-common-availability">
+                                  <strong>Horarios em comum</strong>
+                                  {commonAvailability.map((slot) => (
+                                    <span key={slot.key}>
+                                      {new Date(slot.availableAt).toLocaleString("pt-BR")} · {slot.playerNames.join(" / ")}
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : avail.length > 1 ? (
+                                <p className="subtle">Ainda sem horarios em comum.</p>
+                              ) : null}
                               <div className="league-availability-list">
                                 {avail.map((a) => (
                                   <p key={a.id}>
@@ -1545,6 +1814,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                                 <button onClick={() => void onSubmitResult(m)} disabled={busy}>
                                   Enviar resultado
                                 </button>
+                                {isOwner && m.status !== "encerrada" && m.status !== "wo" ? (
+                                  <button className="danger" onClick={() => void onAdminResolveResult(m)} disabled={busy}>
+                                    Resolver pelo admin
+                                  </button>
+                                ) : null}
                               </div>
                               {subs.length ? (
                                 <div className="league-submission-list">

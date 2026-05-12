@@ -9,9 +9,11 @@ import type {
   LeagueMatchMessage,
   LeagueMatchSummary,
   LeaguePlayerStanding,
+  LeagueRankingSnapshot,
   LeagueRegistration,
   LeagueResultSubmission,
   LeagueRoundSummary,
+  LeagueSchedulerRun,
   LeagueSeasonSummary,
   LeagueSummary,
 } from "./types";
@@ -101,6 +103,16 @@ type PlayerStandingRow = {
   wo_against: number | null;
 };
 
+type RankingSnapshotRow = {
+  id: string;
+  league_id: string;
+  season_id: string;
+  class_id: string | null;
+  round_id: string | null;
+  computed_at: string;
+  ranking: Array<Record<string, unknown>> | null;
+};
+
 type RegistrationRow = {
   id: string;
   league_id: string;
@@ -167,6 +179,13 @@ type MessageRow = {
   sender_user_id: string | null;
   body: string;
   created_at: string | null;
+};
+
+type SchedulerRunRow = {
+  id: string;
+  executed_at: string;
+  generated_count: number | null;
+  details: unknown;
 };
 
 type LeagueChatRow = {
@@ -407,6 +426,49 @@ export async function loadLeaguePlayerStandings(seasonId: string): Promise<Leagu
     rankingPoints: Number(row.ranking_points || 0),
     woAgainst: Number(row.wo_against || 0),
   }));
+}
+
+function rowToRankingSnapshot(row: RankingSnapshotRow): LeagueRankingSnapshot {
+  return {
+    id: row.id,
+    leagueId: row.league_id,
+    seasonId: row.season_id,
+    classId: row.class_id,
+    roundId: row.round_id,
+    computedAt: row.computed_at,
+    ranking: Array.isArray(row.ranking) ? row.ranking : [],
+  };
+}
+
+export async function loadLeagueRankingSnapshots(seasonId: string): Promise<LeagueRankingSnapshot[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from("league_ranking_snapshots")
+    .select("id,league_id,season_id,class_id,round_id,computed_at,ranking")
+    .eq("season_id", seasonId)
+    .order("computed_at", { ascending: false })
+    .limit(8);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as RankingSnapshotRow[]).map(rowToRankingSnapshot);
+}
+
+export async function createLeagueRankingSnapshot(input: {
+  leagueId: string;
+  seasonId: string;
+  classId?: string | null;
+  roundId?: string | null;
+}): Promise<LeagueRankingSnapshot> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_create_league_ranking_snapshot", {
+    p_league_id: input.leagueId,
+    p_season_id: input.seasonId,
+    p_class_id: input.classId || null,
+    p_round_id: input.roundId || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as RankingSnapshotRow[])[0];
+  if (!row) throw new Error("Snapshot nao criado.");
+  return rowToRankingSnapshot(row);
 }
 
 export async function createLeagueClass(input: {
@@ -662,6 +724,20 @@ export async function confirmLeagueMatchResult(
   if (error) throw new Error(error.message);
 }
 
+export async function adminResolveLeagueMatchResult(
+  matchId: string,
+  payload: Record<string, unknown>,
+  reason?: string
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_admin_resolve_league_match_result", {
+    p_match_id: matchId,
+    p_payload: payload,
+    p_reason: reason || null,
+  });
+  if (error) throw new Error(error.message);
+}
+
 export async function loadMatchAvailability(matchId: string): Promise<LeagueMatchAvailability[]> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { data, error } = await supabase
@@ -808,6 +884,21 @@ export async function applyLeagueSeasonMovements(input: {
     fromClassId: row.from_class_id,
     toClassId: row.to_class_id,
     movement: row.movement,
+  }));
+}
+
+export async function loadLeagueSchedulerRuns(leagueId: string, limit = 5): Promise<LeagueSchedulerRun[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_get_league_scheduler_runs", {
+    p_league_id: leagueId,
+    p_limit: limit,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as SchedulerRunRow[]).map((row) => ({
+    id: row.id,
+    executedAt: row.executed_at,
+    generatedCount: Number(row.generated_count || 0),
+    details: Array.isArray(row.details) ? (row.details as Array<Record<string, unknown>>) : [],
   }));
 }
 

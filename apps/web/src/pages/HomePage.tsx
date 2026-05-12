@@ -34,6 +34,7 @@ import {
   loadTournamentRegistrations,
   loadUpcomingPublic,
 } from "../lib/tournaments";
+import { listMyCourtBookings, listPlaceBookings, listPlacesIOwn } from "../lib/places";
 import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
 import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
 
@@ -78,6 +79,18 @@ type HomeTournamentAction = {
   phaseKey?: string;
   matchIndex?: number;
   side?: "a" | "b";
+};
+
+type HomeCourtBookingAction = {
+  id: string;
+  placeId: string;
+  placeName: string;
+  courtName: string;
+  startsAt: string;
+  endsAt: string;
+  status: "pending" | "confirmed" | "cancelled" | "blocked";
+  role: "player" | "owner";
+  playerName: string;
 };
 
 type HomeNotice = {
@@ -156,6 +169,13 @@ function matchStatusLabel(status: LeagueMatchSummary["status"]): string {
   return "Analise do admin";
 }
 
+function courtBookingStatusLabel(status: HomeCourtBookingAction["status"]): string {
+  if (status === "confirmed") return "Reserva confirmada";
+  if (status === "cancelled") return "Reserva cancelada";
+  if (status === "blocked") return "Horario bloqueado";
+  return "Aguardando confirmacao";
+}
+
 function actionKindFromMatch(status: LeagueMatchSummary["status"]): HomeLeagueAction["kind"] {
   if (status === "aguardando_confirmacao") return "confirm_result";
   if (status === "aguardando_resultado" || status === "em_disputa") return "send_result";
@@ -175,6 +195,34 @@ function formatShortDateTime(value: string): string {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function formatIcsDate(date: Date): string {
+  return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+}
+
+function escapeIcsText(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
+}
+
+function agendaItemToIcs(item: HomeAgendaItem): string {
+  const start = new Date(item.sortAt);
+  const safeStart = Number.isNaN(start.getTime()) ? new Date() : start;
+  const end = new Date(safeStart.getTime() + 60 * 60 * 1000);
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//ATP APP//Agenda//PT-BR",
+    "BEGIN:VEVENT",
+    `UID:${escapeIcsText(item.id)}@atp-app`,
+    `DTSTAMP:${formatIcsDate(new Date())}`,
+    `DTSTART:${formatIcsDate(safeStart)}`,
+    `DTEND:${formatIcsDate(end)}`,
+    `SUMMARY:${escapeIcsText(`${item.sourceName} - ${item.title}`)}`,
+    `DESCRIPTION:${escapeIcsText(item.reminderText)}`,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
 }
 
 function dedupeById<T extends { id: string }>(items: T[]): T[] {
@@ -666,6 +714,47 @@ async function loadHomeNotices(tournaments: TournamentSummary[], leagues: League
     .slice(0, 5);
 }
 
+async function loadCourtBookingActions(user: User): Promise<HomeCourtBookingAction[]> {
+  const [myBookings, ownedPlaces] = await Promise.all([listMyCourtBookings(), listPlacesIOwn(user)]);
+  const ownedBookingGroups = await Promise.all(
+    ownedPlaces.map(async (place) => {
+      try {
+        const bookings = await listPlaceBookings(place.id);
+        return bookings.map((booking): HomeCourtBookingAction => ({
+          id: `owner:${booking.id}`,
+          placeId: booking.placeId,
+          placeName: place.name,
+          courtName: booking.courtName || "Quadra",
+          startsAt: booking.startsAt,
+          endsAt: booking.endsAt,
+          status: booking.status,
+          role: "owner",
+          playerName: booking.playerName,
+        }));
+      } catch {
+        return [];
+      }
+    })
+  );
+
+  const playerItems = myBookings.map((booking): HomeCourtBookingAction => ({
+    id: `player:${booking.id}`,
+    placeId: booking.placeId,
+    placeName: booking.placeName || "Local",
+    courtName: booking.courtName || "Quadra",
+    startsAt: booking.startsAt,
+    endsAt: booking.endsAt,
+    status: booking.status,
+    role: "player",
+    playerName: booking.playerName,
+  }));
+
+  return dedupeById([...ownedBookingGroups.flat(), ...playerItems])
+    .filter((booking) => booking.status !== "cancelled")
+    .sort((a, b) => (a.startsAt || "").localeCompare(b.startsAt || ""))
+    .slice(0, 12);
+}
+
 function toHomeLeagueAction(
   league: LeagueSummary,
   round: LeagueRoundSummary,
@@ -809,11 +898,13 @@ function AgendaCard({
   onOpen,
   onCopyReminder,
   onShareReminder,
+  onDownloadCalendar,
 }: {
   item: HomeAgendaItem;
   onOpen: () => void;
   onCopyReminder: () => void;
   onShareReminder: () => void;
+  onDownloadCalendar: () => void;
 }) {
   return (
     <article className="home-agenda-card" onClick={onOpen}>
@@ -841,12 +932,24 @@ function AgendaCard({
         >
           WhatsApp
         </button>
+        <button
+          onClick={(event) => {
+            event.stopPropagation();
+            onDownloadCalendar();
+          }}
+        >
+          Calendario
+        </button>
       </div>
     </article>
   );
 }
 
-function buildAgendaItems(leagueActions: HomeLeagueAction[], tournamentActions: HomeTournamentAction[]): HomeAgendaItem[] {
+function buildAgendaItems(
+  leagueActions: HomeLeagueAction[],
+  tournamentActions: HomeTournamentAction[],
+  courtBookingActions: HomeCourtBookingAction[]
+): HomeAgendaItem[] {
   const now = Date.now();
   const nowIso = new Date(now).toISOString();
   const weekAhead = now + 7 * 24 * 60 * 60 * 1000;
@@ -892,7 +995,30 @@ function buildAgendaItems(leagueActions: HomeLeagueAction[], tournamentActions: 
     ].join("\n"),
   }));
 
-  return [...tournamentItems, ...leagueItems]
+  const courtItems = courtBookingActions
+    .filter((action) => action.status !== "cancelled")
+    .map((action): HomeAgendaItem => ({
+      id: `agenda-court:${action.id}`,
+      targetPath: "/locais",
+      sourceName: action.placeName,
+      title: `${action.courtName} - ${courtBookingStatusLabel(action.status)}`,
+      when: `${formatShortDateTime(action.startsAt)} ate ${formatShortDateTime(action.endsAt)}`,
+      label: action.role === "owner" && action.status === "pending" ? "Confirmar reserva" : "Reserva de quadra",
+      sortAt: action.startsAt,
+      reminderText: [
+        `Lembrete ATP APP`,
+        action.placeName,
+        `${action.courtName} - ${courtBookingStatusLabel(action.status)}`,
+        `Quando: ${formatShortDateTime(action.startsAt)}`,
+        action.role === "owner" ? `Jogador: ${action.playerName}.` : "Acao: acompanhe sua reserva.",
+      ].join("\n"),
+    }))
+    .filter((item) => {
+      const time = new Date(item.sortAt).getTime();
+      return Number.isNaN(time) || (time >= now && time <= weekAhead);
+    });
+
+  return [...tournamentItems, ...courtItems, ...leagueItems]
     .sort((a, b) => (a.sortAt || "").localeCompare(b.sortAt || ""))
     .slice(0, 6);
 }
@@ -962,6 +1088,7 @@ function buildPriorityItems(
   leagueActions: HomeLeagueAction[],
   tournamentActions: HomeTournamentAction[],
   organizerActions: HomeOrganizerAction[],
+  courtBookingActions: HomeCourtBookingAction[],
   notices: HomeNotice[]
 ): HomePriorityItem[] {
   const leagueItems = leagueActions.map((action): HomePriorityItem => {
@@ -1010,6 +1137,23 @@ function buildPriorityItems(
     order: action.tone === "urgent" ? 5 : 35,
   }));
 
+  const courtItems = courtBookingActions.map((action): HomePriorityItem => {
+    const startsTime = new Date(action.startsAt).getTime();
+    const startsSoon = !Number.isNaN(startsTime) && startsTime <= Date.now() + 24 * 60 * 60 * 1000;
+    const ownerPending = action.role === "owner" && action.status === "pending";
+    const urgent = ownerPending || startsSoon;
+    return {
+      id: `court-booking:${action.id}`,
+      targetPath: "/locais",
+      sourceName: action.placeName,
+      title: action.role === "owner" ? `Reserva de ${action.playerName}` : action.courtName,
+      detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${courtBookingStatusLabel(action.status)}`,
+      label: ownerPending ? "Confirmar reserva" : "Reserva de quadra",
+      tone: urgent ? "urgent" : "neutral",
+      order: ownerPending ? 8 : startsSoon ? 30 : 50,
+    };
+  });
+
   const noticeItems = notices.map((notice): HomePriorityItem => ({
     id: `notice:${notice.id}`,
     targetPath: notice.targetPath,
@@ -1021,7 +1165,7 @@ function buildPriorityItems(
     order: notice.tone === "urgent" ? 20 : 55,
   }));
 
-  return [...organizerItems, ...leagueItems, ...tournamentItems, ...noticeItems]
+  return [...organizerItems, ...courtItems, ...leagueItems, ...tournamentItems, ...noticeItems]
     .sort((a, b) => {
       const byOrder = a.order - b.order;
       if (byOrder !== 0) return byOrder;
@@ -1040,6 +1184,7 @@ export function HomePage({ user, profile }: Props) {
   const [leagueActions, setLeagueActions] = useState<HomeLeagueAction[]>([]);
   const [tournamentActions, setTournamentActions] = useState<HomeTournamentAction[]>([]);
   const [organizerActions, setOrganizerActions] = useState<HomeOrganizerAction[]>([]);
+  const [courtBookingActions, setCourtBookingActions] = useState<HomeCourtBookingAction[]>([]);
   const [notices, setNotices] = useState<HomeNotice[]>([]);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -1051,11 +1196,19 @@ export function HomePage({ user, profile }: Props) {
     setLoading(true);
     Promise.all([loadUpcomingPublic(4), loadDashboardData(user), loadMyLeagues()])
       .then(async ([publicRows, dashboard, leagues]) => {
-        const [actions, tournamentPlayerActions, leagueOrgActions, tournamentOrgActions, homeNotices] = await Promise.all([
+        const [
+          actions,
+          tournamentPlayerActions,
+          leagueOrgActions,
+          tournamentOrgActions,
+          bookingActions,
+          homeNotices,
+        ] = await Promise.all([
           loadLeagueActions(user.id, leagues),
           loadTournamentPlayerActions(user, dashboard.participating),
           loadOrganizerActions(leagues),
           loadTournamentOrganizerActions(user, dashboard.organizing),
+          loadCourtBookingActions(user),
           loadHomeNotices([...dashboard.participating, ...dashboard.organizing], leagues),
         ]);
         if (!alive) return;
@@ -1067,6 +1220,7 @@ export function HomePage({ user, profile }: Props) {
         setLeagueActions(actions);
         setTournamentActions(tournamentPlayerActions);
         setOrganizerActions([...leagueOrgActions, ...tournamentOrgActions].slice(0, 8));
+        setCourtBookingActions(bookingActions);
         setNotices(homeNotices);
         setError("");
       })
@@ -1084,8 +1238,8 @@ export function HomePage({ user, profile }: Props) {
 
   const activePlayingCount = playingTournaments.length + playingLeagues.length;
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
-  const agendaItems = buildAgendaItems(leagueActions, tournamentActions);
-  const priorityItems = buildPriorityItems(leagueActions, tournamentActions, organizerActions, notices);
+  const agendaItems = buildAgendaItems(leagueActions, tournamentActions, courtBookingActions);
+  const priorityItems = buildPriorityItems(leagueActions, tournamentActions, organizerActions, courtBookingActions, notices);
   const activityFeedItems = buildActivityFeed(
     playingTournaments,
     organizingTournaments,
@@ -1113,6 +1267,19 @@ export function HomePage({ user, profile }: Props) {
       "noopener,noreferrer"
     );
     setFeedback({ kind: "success", text: "Lembrete aberto no WhatsApp." });
+  };
+  const downloadAgendaCalendar = (item: HomeAgendaItem) => {
+    const blob = new Blob([agendaItemToIcs(item)], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const safeName = item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "agenda";
+    link.href = url;
+    link.download = `${safeName}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setFeedback({ kind: "success", text: "Evento de calendario gerado." });
   };
 
   return (
@@ -1182,7 +1349,7 @@ export function HomePage({ user, profile }: Props) {
           <section className="home-summary-grid">
             <SummaryCard label="Jogando" value={activePlayingCount} detail="competicoes ativas" />
             <SummaryCard label="Organizando" value={activeOrganizingCount} detail="em aberto" />
-            <SummaryCard label="Pendencias" value={urgentActionCount} detail="resultados/confirmacoes" />
+            <SummaryCard label="Pendencias" value={urgentActionCount} detail="acoes em aberto" />
           </section>
 
           {agendaItems.length > 0 ? (
@@ -1197,6 +1364,7 @@ export function HomePage({ user, profile }: Props) {
                   onOpen={() => navigate(item.targetPath)}
                   onCopyReminder={() => copyAgendaReminder(item)}
                   onShareReminder={() => shareAgendaReminder(item)}
+                  onDownloadCalendar={() => downloadAgendaCalendar(item)}
                 />
               ))}
             </section>

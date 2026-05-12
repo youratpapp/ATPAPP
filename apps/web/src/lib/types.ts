@@ -23,6 +23,137 @@ export type Place = {
   isFollowing: boolean;
 };
 
+export type PlaceStaffMember = {
+  placeId: string;
+  userId: string;
+  email: string;
+  role: "manager" | "coach" | "frontdesk";
+  createdAt: string;
+};
+
+export type PlaceCourt = {
+  id: string;
+  placeId: string;
+  name: string;
+  surface: string;
+  isActive: boolean;
+};
+
+export type CourtBooking = {
+  id: string;
+  placeId: string;
+  placeName: string;
+  courtId: string;
+  courtName: string;
+  userId: string;
+  playerName: string;
+  phone: string;
+  startsAt: string;
+  endsAt: string;
+  status: "pending" | "confirmed" | "cancelled" | "blocked";
+  notes: string;
+  createdAt: string;
+};
+
+export type AcademyClass = {
+  id: string;
+  placeId: string;
+  coachId: string | null;
+  courtId: string | null;
+  title: string;
+  coachName: string;
+  weekday: number;
+  startsAt: string;
+  endsAt: string;
+  level: string;
+  capacity: number;
+  isActive: boolean;
+};
+
+export type AcademyCoach = {
+  id: string;
+  placeId: string;
+  userId: string | null;
+  name: string;
+  email: string;
+  phone: string;
+  isActive: boolean;
+};
+
+export type AcademySlot = {
+  id: string;
+  placeId: string;
+  coachId: string | null;
+  courtId: string | null;
+  weekday: number;
+  startsAt: string;
+  endsAt: string;
+  capacity: number;
+  status: "open" | "assigned" | "blocked";
+  notes: string;
+};
+
+export type AcademyEnrollment = {
+  id: string;
+  placeId: string;
+  classId: string;
+  userId: string;
+  playerName: string;
+  phone: string;
+  status: "pending" | "active" | "cancelled";
+  notes: string;
+  createdAt: string;
+};
+
+export type AcademyAttendance = {
+  id: string;
+  placeId: string;
+  classId: string;
+  enrollmentId: string;
+  userId: string;
+  attendedOn: string;
+  status: "present" | "absent";
+  notes: string;
+  markedBy: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type OpenMatch = {
+  id: string;
+  creatorId: string;
+  placeId: string | null;
+  placeName: string;
+  city: string;
+  state: string;
+  startsAt: string;
+  level: string;
+  notes: string;
+  status: "open" | "closed" | "cancelled";
+  createdAt: string;
+  participantCount: number;
+  commentCount: number;
+  reactionCount: number;
+  joinedByMe: boolean;
+  reactedByMe: boolean;
+};
+
+export type OpenMatchComment = {
+  id: string;
+  openMatchId: string;
+  userId: string;
+  body: string;
+  createdAt: string;
+};
+
+export type NotificationPreferences = {
+  whatsappReminders: boolean;
+  matchReminders: boolean;
+  bookingReminders: boolean;
+  socialUpdates: boolean;
+  reminderHoursBefore: number;
+};
+
 export type TournamentSummary = {
   id: string;
   name: string;
@@ -186,6 +317,41 @@ export type LeaguePlayerStanding = {
   woAgainst: number;
 };
 
+export type LeagueRankingSnapshot = {
+  id: string;
+  leagueId: string;
+  seasonId: string;
+  classId: string | null;
+  roundId: string | null;
+  computedAt: string;
+  ranking: Array<Record<string, unknown>>;
+};
+
+export type PublicRankingRow = {
+  leaguePlayerId: string;
+  leagueId: string;
+  leagueName: string;
+  seasonId: string;
+  seasonName: string;
+  classId: string | null;
+  categoryName: string;
+  className: string;
+  displayName: string;
+  userId: string | null;
+  city: string;
+  state: string;
+  matchesPlayed: number;
+  wins: number;
+  losses: number;
+  setsFor: number;
+  setsAgainst: number;
+  gamesFor: number;
+  gamesAgainst: number;
+  rankingPoints: number;
+  woAgainst: number;
+  position: number;
+};
+
 export type LeagueRegistration = {
   id: string;
   leagueId: string;
@@ -258,6 +424,13 @@ export type LeagueMatchMessage = {
   senderUserId: string | null;
   body: string;
   createdAt: string;
+};
+
+export type LeagueSchedulerRun = {
+  id: string;
+  executedAt: string;
+  generatedCount: number;
+  details: Array<Record<string, unknown>>;
 };
 
 export type LeagueJoinContext = {

@@ -70,6 +70,7 @@ import {
 } from "../lib/tournament-score";
 import {
   buildTournamentClassCompletionRows,
+  buildTournamentMatchOperationalState,
   coerceAllowedTournamentTab,
   inferTournamentStatusFromData,
   isRealMatch,
@@ -3751,6 +3752,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     const submissions = resultSubmissionByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
                     const confirmations = confirmationByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
                     const myConfirmation = confirmations.find((confirmation) => confirmation.userId === user.id);
+                    const opState = buildTournamentMatchOperationalState({
+                      done: match.status === "done",
+                      hasSchedule: Boolean(scheduled),
+                      submissions,
+                      confirmations,
+                      myUserId: user.id,
+                      isOwner,
+                    });
                     const hasAccepted = submissions.some((submission) => submission.status === "accepted");
                     const hasConflict = submissions.some((submission) => submission.status === "conflict");
                     const submittedSides = new Set(submissions.map((submission) => submission.side)).size;
@@ -3771,6 +3780,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                           <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
                         </button>
                         {scheduled ? <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p> : null}
+                        <p className={`match-operational-state ${opState.severity}`}>
+                          <span>{opState.label}</span>
+                          <strong>{opState.playerAction}</strong>
+                        </p>
                         {myConfirmation ? (
                           <p className={`match-confirmation-status ${myConfirmation.status}`}>
                             {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
@@ -3915,8 +3928,18 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     const scheduled = agendaAssignmentByMatchKey.get(
                       buildScheduleMatchKey(activeClass.categoryName, activeClass.className, g.name, mi)
                     );
+                    const submissions = resultSubmissionByMatch.get(confirmationKey) || [];
+                    const opState = buildTournamentMatchOperationalState({
+                      done: Boolean(m.done),
+                      scoreLabel: m.scoreLabel,
+                      hasSchedule: Boolean(scheduled),
+                      submissions,
+                      confirmations,
+                      myUserId: user.id,
+                      isOwner,
+                    });
                     return (
-                      <div key={`${activeClass.key}:g:${gi}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
+                      <div key={`${activeClass.key}:g:${gi}:${mi}`} className={`match-card ${m.done ? "done" : "pending"} state-${opState.severity}`}>
                         <div className="match-card-head">
                           <span className="match-card-index">Partida {mi + 1}</span>
                           <div className="match-card-status-group">
@@ -3931,6 +3954,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         {scheduled ? (
                           <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p>
                         ) : null}
+                        <p className={`match-operational-state ${opState.severity}`}>
+                          <span>{opState.label}</span>
+                          <strong>{isOwner ? opState.ownerAction : opState.playerAction}</strong>
+                        </p>
                         {isOwner && confirmations.length > 0 ? (
                           <p className="match-confirmation-summary">
                             Confirmacoes:{" "}
@@ -3983,8 +4010,18 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     const scheduled = agendaAssignmentByMatchKey.get(
                       buildScheduleMatchKey(activeClass.categoryName, activeClass.className, round.name, mi)
                     );
+                    const submissions = resultSubmissionByMatch.get(confirmationKey) || [];
+                    const opState = buildTournamentMatchOperationalState({
+                      done: Boolean(m.done),
+                      scoreLabel: m.scoreLabel,
+                      hasSchedule: Boolean(scheduled),
+                      submissions,
+                      confirmations,
+                      myUserId: user.id,
+                      isOwner,
+                    });
                     return (
-                      <div key={`${activeClass.key}:ko:${ri}:${mi}`} className={`match-card ${m.done ? "done" : "pending"}`}>
+                      <div key={`${activeClass.key}:ko:${ri}:${mi}`} className={`match-card ${m.done ? "done" : "pending"} state-${opState.severity}`}>
                         <div className="match-card-head">
                           <span className="match-card-index">Jogo {mi + 1}</span>
                           <div className="match-card-status-group">
@@ -3999,6 +4036,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         {scheduled ? (
                           <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p>
                         ) : null}
+                        <p className={`match-operational-state ${opState.severity}`}>
+                          <span>{opState.label}</span>
+                          <strong>{isOwner ? opState.ownerAction : opState.playerAction}</strong>
+                        </p>
                         {isOwner && confirmations.length > 0 ? (
                           <p className="match-confirmation-summary">
                             Confirmacoes:{" "}
