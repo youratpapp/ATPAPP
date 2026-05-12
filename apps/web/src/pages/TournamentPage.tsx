@@ -4347,7 +4347,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
                   </p>
                 </div>
-              ) : !isOwner && !isTournamentStaff ? null : (
+              ) : (
                 <div className="tournament-admin-ops">
                   <h3 style={{ marginTop: 0, marginBottom: 8 }}>Exportacoes</h3>
                   <div className="cluster">

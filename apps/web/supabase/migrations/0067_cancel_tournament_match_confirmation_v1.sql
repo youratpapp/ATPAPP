@@ -65,3 +65,15 @@ $$;
 
 revoke all on function public.app_cancel_tournament_match_confirmation(uuid, text, text, integer) from public;
 grant execute on function public.app_cancel_tournament_match_confirmation(uuid, text, text, integer) to authenticated;
+
+drop policy if exists tournament_match_confirmations_member_self_delete on public.tournament_match_confirmations;
+create policy tournament_match_confirmations_member_self_delete
+on public.tournament_match_confirmations
+for delete
+to authenticated
+using (
+  user_id = auth.uid()
+  and public.app_is_tournament_member(tournament_id)
+);
+
+notify pgrst, 'reload schema';

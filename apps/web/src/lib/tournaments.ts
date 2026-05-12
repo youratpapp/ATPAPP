@@ -883,7 +883,22 @@ export async function cancelTournamentMatchConfirmation(input: {
     p_phase_key: input.phaseKey,
     p_match_index: input.matchIndex,
   });
-  if (error) throw new Error(error.message);
+  if (error) {
+    const isSchemaCacheMiss =
+      error.code === "PGRST202" ||
+      /schema cache|could not find the function/i.test(error.message || "");
+    if (!isSchemaCacheMiss) throw new Error(error.message);
+
+    const del = await supabase
+      .from(TABLE_MATCH_CONFIRMATIONS)
+      .delete()
+      .eq("tournament_id", input.tournamentId)
+      .eq("class_key", input.classKey.trim())
+      .eq("phase_key", input.phaseKey.trim())
+      .eq("match_index", Math.max(0, input.matchIndex));
+    if (del.error) throw new Error(del.error.message);
+    return loadTournamentMatchConfirmations(input.tournamentId);
+  }
   return ((data ?? []) as TournamentMatchConfirmationRow[]).map(matchConfirmationRowToModel);
 }
 
