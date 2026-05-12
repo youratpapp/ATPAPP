@@ -6,6 +6,7 @@ import { AppShell } from "../components/AppShell";
 import { StatusBadge } from "../components/StatusBadge";
 import {
   addTournamentStaff,
+  cancelTournamentMatchConfirmation,
   cancelTournamentStaffInvite,
   deleteTournamentChatMessage,
   deleteTournament,
@@ -3285,6 +3286,29 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
   };
 
+  const cancelPlayerMatchConfirmationNow = async (match: PlayerTournamentMatch) => {
+    if (!tournament) return;
+    setMatchConfirming(true);
+    try {
+      const rows = await cancelTournamentMatchConfirmation({
+        tournamentId: tournament.id,
+        classKey: match.classKey,
+        phaseKey: match.phaseKey,
+        matchIndex: match.matchIndex,
+      });
+      const key = `${match.classKey}:${match.phaseKey}:${match.matchIndex}`;
+      setMatchConfirmations((prev) => [
+        ...rows,
+        ...prev.filter((confirmation) => `${confirmation.classKey}:${confirmation.phaseKey}:${confirmation.matchIndex}` !== key),
+      ]);
+      setFeedback({ kind: "info", text: "Confirmacao removida. Voce pode responder novamente." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao desfazer confirmacao." });
+    } finally {
+      setMatchConfirming(false);
+    }
+  };
+
   const buildSelfRegistrationLink = () => {
     if (!tournament || !activeDraftCategory || !activeDraftClass) return "";
     const u = new URL(window.location.href);
@@ -3965,9 +3989,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <small>{nextPlayerMatch.classLabel} - {nextPlayerMatch.phase}</small>
                   {scheduled ? <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p> : null}
                   {myConfirmation ? (
-                    <p className={`match-confirmation-status ${myConfirmation.status}`}>
-                      {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
-                    </p>
+                    <div className="match-confirmation-response">
+                      <p className={`match-confirmation-status ${myConfirmation.status}`}>
+                        {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
+                      </p>
+                      <button onClick={() => void cancelPlayerMatchConfirmationNow(nextPlayerMatch)} disabled={matchConfirming}>
+                        {myConfirmation.status === "confirmed" ? "Desfazer confirmacao" : "Alterar resposta"}
+                      </button>
+                    </div>
                   ) : (
                     <div className="match-confirmation-actions">
                       <button onClick={() => void confirmPlayerMatchNow(nextPlayerMatch, "confirmed")} disabled={matchConfirming}>
@@ -4032,9 +4061,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           </div>
 
           {tab === "jogos" || tab === "classificacao" ? (
-            <section className="card" style={{ marginBottom: 12 }}>
-              <label>Classe ativa</label>
+            <section className="card tournament-class-switcher">
+              <div>
+                <span>Contexto da tela</span>
+                <strong>Classe ativa</strong>
+              </div>
               <select
+                aria-label="Classe ativa"
                 value={activeClass?.key ?? ""}
                 onChange={(e) => setActiveClassKey(e.target.value)}
                 disabled={classes.length === 0}
@@ -4050,7 +4083,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           ) : null}
 
           {tab === "jogos" ? (
-            <section className="card">
+            <section className="card tournament-games-card">
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
               {activeClass && canManageMatches ? (
                 <>
@@ -4087,9 +4120,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
               {!isOwner && !isTournamentStaff && myTournamentMatches.length > 0 ? (
                 <div className="my-matches-panel">
-                  <div className="section-title" style={{ marginBottom: 8 }}>
-                    <h3>Minhas partidas</h3>
-                    <div className="cluster">
+                  <div className="my-matches-head">
+                    <div>
+                      <span>Sua central no torneio</span>
+                      <h3>Minhas partidas</h3>
+                    </div>
+                    <div className="my-matches-tools">
                       <span className="home-league-chip member">{myPendingMatches.length} pendente(s)</span>
                       {myFinishedMatches.length > 0 ? (
                         <button
@@ -4164,9 +4200,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                           <strong>{opState.playerAction}</strong>
                         </p>
                         {myConfirmation ? (
-                          <p className={`match-confirmation-status ${myConfirmation.status}`}>
-                            {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
-                          </p>
+                          <div className="match-confirmation-response">
+                            <p className={`match-confirmation-status ${myConfirmation.status}`}>
+                              {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
+                            </p>
+                            <button onClick={() => void cancelPlayerMatchConfirmationNow(match)} disabled={matchConfirming}>
+                              {myConfirmation.status === "confirmed" ? "Desfazer confirmacao" : "Alterar resposta"}
+                            </button>
+                          </div>
                         ) : null}
                         {submissionStatusText ? <p className="result-submission-status">{submissionStatusText}</p> : null}
                         {match.status === "pending" && matchClassRef && playerScoreMatch ? (
@@ -4200,7 +4241,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                             </button>
                           </div>
                         ) : null}
-                        {match.status === "pending" ? (
+                        {match.status === "pending" && !myConfirmation ? (
                           <div className="match-confirmation-actions">
                             <button onClick={() => void confirmPlayerMatchNow(match, "confirmed")} disabled={matchConfirming}>
                               Confirmar presenca
@@ -4320,9 +4361,17 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               )}
 
+              {activeClass ? (
+                <div className="tournament-bracket-heading">
+                  <span>Visao geral</span>
+                  <h3>Chave da classe</h3>
+                  <p>{activeClass.categoryName} / {activeClass.className}</p>
+                </div>
+              ) : null}
+
               {activeClass?.data.grupos.map((g, gi) => (
-                <div key={`${activeClass.key}:g:${g.name}`} style={{ marginBottom: 14 }}>
-                  <h3 style={{ marginBottom: 8 }}>{g.name}</h3>
+                <div key={`${activeClass.key}:g:${g.name}`} className="tournament-phase-section">
+                  <h3>{g.name}</h3>
                   {g.matches.length === 0 ? <p className="subtle">Sem partidas no grupo.</p> : null}
                   {g.matches.map((m, mi) => {
                     const confirmationKey = `${activeClass.key}:group:${g.name}:${mi}`;
@@ -4403,8 +4452,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               ))}
 
               {activeClass?.data.knockout?.rounds.map((round, ri) => (
-                <div key={`${activeClass.key}:ko:${ri}`} style={{ marginBottom: 14 }}>
-                  <h3 style={{ marginBottom: 8 }}>{round.name}</h3>
+                <div key={`${activeClass.key}:ko:${ri}`} className="tournament-phase-section">
+                  <h3>{round.name}</h3>
                   {round.matches.length === 0 ? <p className="subtle">Sem partidas nesta fase.</p> : null}
                   {round.matches.map((m, mi) => {
                     const confirmationKey = `${activeClass.key}:ko:${ri}:${mi}`;

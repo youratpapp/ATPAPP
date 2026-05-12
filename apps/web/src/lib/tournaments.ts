@@ -870,6 +870,23 @@ export async function confirmTournamentMatch(input: {
   return ((data ?? []) as TournamentMatchConfirmationRow[]).map(matchConfirmationRowToModel);
 }
 
+export async function cancelTournamentMatchConfirmation(input: {
+  tournamentId: string;
+  classKey: string;
+  phaseKey: string;
+  matchIndex: number;
+}): Promise<TournamentMatchConfirmation[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_cancel_tournament_match_confirmation", {
+    p_tournament_id: input.tournamentId,
+    p_class_key: input.classKey,
+    p_phase_key: input.phaseKey,
+    p_match_index: input.matchIndex,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentMatchConfirmationRow[]).map(matchConfirmationRowToModel);
+}
+
 export async function deleteTournamentChatMessage(tournamentId: string, messageId: string): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { error } = await supabase

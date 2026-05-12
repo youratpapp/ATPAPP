@@ -1013,21 +1013,42 @@
 }
 
 .my-matches-panel {
+  background: #f8fafc;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: #fff;
-  margin-bottom: var(--space-3);
+  border-radius: var(--radius-sm);
   padding: var(--space-3);
 }
 
+.my-matches-head {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.my-matches-head > div:first-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.my-matches-tools {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
 .my-match-row {
-  background: #f8fafc;
+  background: #fff;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   display: grid;
   gap: var(--space-2);
   margin-bottom: var(--space-2);
-  padding: var(--space-2);
+  padding: var(--space-3);
 }
 
 .my-match-row:last-child {
@@ -1072,11 +1093,15 @@
 }
 
 .my-match-row em {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
   color: var(--color-text-muted);
   flex-shrink: 0;
   font-size: var(--font-size-xs);
   font-style: normal;
   font-weight: 800;
+  padding: 3px 8px;
 }
 
 .my-match-result-tools {
@@ -1174,6 +1199,13 @@
 }
 
 .match-confirmation-actions {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(2, minmax(0, max-content));
+}
+
+.match-confirmation-response {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
@@ -1181,6 +1213,18 @@
 
 .match-confirmation-actions button {
   min-height: 34px;
+}
+
+.match-confirmation-response button {
+  background: #fff;
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+  min-height: 34px;
+}
+
+.match-confirmation-response button:hover:not(:disabled) {
+  background: var(--color-surface-muted);
+  border-color: var(--color-border-strong);
 }
 
 .result-review-panel {
@@ -1191,6 +1235,30 @@
   gap: var(--space-2);
   margin-bottom: var(--space-3);
   padding: var(--space-3);
+}
+
+.tournament-bracket-heading {
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: 2px;
+  padding-top: var(--space-3);
+}
+
+.tournament-bracket-heading p {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.tournament-phase-section {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.tournament-phase-section h3 {
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  margin: 0;
 }
 
 .result-review-panel > div:first-child {
@@ -1536,6 +1604,40 @@
   background: #fff;
 }
 
+.tournament-class-switcher {
+  align-items: center;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
+  margin-bottom: 12px;
+}
+
+.tournament-class-switcher > div {
+  display: grid;
+  gap: 2px;
+}
+
+.tournament-class-switcher span,
+.my-matches-head span,
+.tournament-bracket-heading span {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.tournament-class-switcher strong,
+.my-matches-head h3,
+.tournament-bracket-heading h3 {
+  color: var(--color-text);
+  margin: 0;
+}
+
+.tournament-games-card {
+  display: grid;
+  gap: var(--space-4);
+}
+
 .registration-row {
   border-top: 1px solid var(--color-border);
   padding: 8px 0;
@@ -1751,6 +1853,68 @@
 }
 
 @media (max-width: 900px) {
+  .tournament-class-switcher {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .tournament-games-card {
+    padding: var(--space-3);
+  }
+
+  .my-matches-head {
+    display: grid;
+  }
+
+  .my-matches-tools {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+  }
+
+  .my-matches-tools > * {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .my-match-row > button {
+    align-items: flex-start;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .my-match-row em {
+    justify-self: flex-start;
+  }
+
+  .my-match-result-tools > button {
+    width: 100%;
+  }
+
+  .match-confirmation-actions,
+  .match-confirmation-response {
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .match-confirmation-actions button,
+  .match-confirmation-response button,
+  .match-confirmation-status {
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .match-operational-state {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .match-operational-state strong {
+    text-align: left;
+  }
+
   .tournament-panel-kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
