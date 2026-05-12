@@ -178,7 +178,7 @@ type PlayerTournamentMatch = {
 };
 type PlayerMatchResultDraft = {
   matchId: string;
-  score: string;
+  detail: MatchScoreDetail | null;
 };
 type DraftClass = {
   id: string;
@@ -248,6 +248,51 @@ function SaveDiskIcon() {
       <path d="M10 16h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
+}
+
+function GoogleCalendarAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="brand-app-icon">
+      <rect x="4" y="3" width="16" height="18" rx="3" fill="#fff" />
+      <path d="M7 3h10a3 3 0 0 1 3 3v2H4V6a3 3 0 0 1 3-3z" fill="#4285f4" />
+      <path d="M4 8h16v4H4z" fill="#34a853" />
+      <path d="M4 12h16v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="#fff" />
+      <path d="M4 12h3v9H7a3 3 0 0 1-3-3z" fill="#fbbc04" />
+      <path d="M17 12h3v6a3 3 0 0 1-3 3z" fill="#ea4335" />
+      <text x="12" y="18" textAnchor="middle" fontSize="7" fontWeight="800" fill="#1f2937">31</text>
+    </svg>
+  );
+}
+
+function WhatsAppAppIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="brand-app-icon">
+      <circle cx="12" cy="12" r="10" fill="#25d366" />
+      <path d="M7.5 18.2l.8-2.9a6.5 6.5 0 1 1 2.5 1.9z" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.7 8.7c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.4c.1.3.1.5-.1.7l-.4.5c.6 1 1.3 1.7 2.4 2.3l.5-.5c.2-.2.4-.3.7-.1l1.4.6c.3.1.4.3.4.6v.4c0 .4-.2.7-.5.9-.5.3-1.5.4-2.9-.2-2.4-1-4.3-3.1-4.8-5.1-.2-.7-.1-1.2.1-1.5z" fill="#fff" />
+    </svg>
+  );
+}
+
+function scoreDetailToSubmissionText(detail: MatchScoreDetail, config: ClassData["config"]): string {
+  const normalized = normalizeMatchScoreDetail(detail, config);
+  if (isSuperTieBreakPointsMode(config)) {
+    return normalized.superTbA && normalized.superTbB ? `${normalized.superTbA}-${normalized.superTbB}` : "";
+  }
+
+  const parts: string[] = [];
+  const count = visibleSetCount(normalized, config);
+  for (let idx = 0; idx < count; idx += 1) {
+    const set = normalized.sets[idx] ?? emptyScoreSet();
+    if (!set.a || !set.b) continue;
+    parts.push(`${set.a}-${set.b}${set.tbA && set.tbB ? ` (${set.tbA}-${set.tbB})` : ""}`);
+  }
+
+  if (shouldShowSuperTbInput(normalized, config) && normalized.superTbA && normalized.superTbB) {
+    parts.push(`${normalized.superTbA}-${normalized.superTbB}`);
+  }
+
+  return parts.join(" ");
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -979,7 +1024,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [chatText, setChatText] = useState("");
   const [announcementText, setAnnouncementText] = useState("");
   const [pinAnnouncement, setPinAnnouncement] = useState(false);
-  const [playerResultDraft, setPlayerResultDraft] = useState<PlayerMatchResultDraft>({ matchId: "", score: "" });
+  const [playerResultDraft, setPlayerResultDraft] = useState<PlayerMatchResultDraft>({ matchId: "", detail: null });
   const [resultSubmissions, setResultSubmissions] = useState<TournamentMatchResultSubmission[]>([]);
   const [resultSubmitting, setResultSubmitting] = useState(false);
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
@@ -3072,9 +3117,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setFeedback({ kind: "success", text: "Convite aberto no WhatsApp." });
   };
 
-  const sharePlayerMatchResultWhatsApp = (match: PlayerTournamentMatch) => {
+  const draftDetailForMatch = (match: PlayerTournamentMatch, config: ClassData["config"]): MatchScoreDetail => {
+    if (playerResultDraft.matchId === match.id && playerResultDraft.detail) {
+      return normalizeMatchScoreDetail(playerResultDraft.detail, config);
+    }
+    return normalizeMatchScoreDetail(null, config);
+  };
+
+  const sharePlayerMatchResultWhatsApp = (match: PlayerTournamentMatch, config: ClassData["config"]) => {
     if (!tournament) return;
-    const score = playerResultDraft.matchId === match.id ? playerResultDraft.score.trim() : "";
+    const score = scoreDetailToSubmissionText(draftDetailForMatch(match, config), config);
     const scheduled = agendaAssignmentByMatchKey.get(
       buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
     );
@@ -3109,9 +3161,20 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   const submitPlayerMatchResultNow = async (match: PlayerTournamentMatch) => {
     if (!tournament) return;
-    const score = playerResultDraft.matchId === match.id ? playerResultDraft.score.trim() : "";
+    const ref = classes.find((cls) => cls.key === match.classKey);
+    if (!ref) {
+      setFeedback({ kind: "error", text: "Classe da partida nao encontrada." });
+      return;
+    }
+    const detail = draftDetailForMatch(match, ref.data.config);
+    const evaluated = evaluateMatchScoreDetail(detail, ref.data.config);
+    const score = scoreDetailToSubmissionText(detail, ref.data.config);
     if (!score) {
       setFeedback({ kind: "error", text: "Informe o placar antes de enviar." });
+      return;
+    }
+    if (!evaluated.done || !evaluated.winner) {
+      setFeedback({ kind: "error", text: "O placar ainda nao fecha a partida pelas regras desta classe." });
       return;
     }
     setResultSubmitting(true);
@@ -3132,7 +3195,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         ...rows,
         ...prev.filter((submission) => `${submission.classKey}:${submission.phaseKey}:${submission.matchIndex}` !== key),
       ]);
-      setPlayerResultDraft({ matchId: "", score: "" });
+      setPlayerResultDraft({ matchId: "", detail: null });
 
       const hasAccepted = rows.some((submission) => submission.status === "accepted");
       const hasConflict = rows.some((submission) => submission.status === "conflict");
@@ -3973,8 +4036,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <h3>Minhas partidas</h3>
                     <div className="cluster">
                       <span className="home-league-chip member">{myTournamentMatches.length}</span>
-                      <button onClick={() => void syncMyTournamentGoogleCalendar()} disabled={saving || calendarSyncing}>
-                        Google Agenda
+                      <button
+                        className="brand-icon-btn"
+                        onClick={() => void syncMyTournamentGoogleCalendar()}
+                        disabled={saving || calendarSyncing}
+                        title="Sincronizar no Google Agenda"
+                        aria-label="Sincronizar no Google Agenda"
+                      >
+                        <GoogleCalendarAppIcon />
+                        <span>Agenda</span>
                       </button>
                     </div>
                   </div>
@@ -3996,6 +4066,19 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     const hasAccepted = submissions.some((submission) => submission.status === "accepted");
                     const hasConflict = submissions.some((submission) => submission.status === "conflict");
                     const submittedSides = new Set(submissions.map((submission) => submission.side)).size;
+                    const matchClassRef = classes.find((cls) => cls.key === match.classKey);
+                    const playerScoreDetail = matchClassRef ? draftDetailForMatch(match, matchClassRef.data.config) : null;
+                    const playerScoreMatch: GroupMatch | null = playerScoreDetail
+                      ? {
+                          a: "A",
+                          b: "B",
+                          s1: "",
+                          s2: "",
+                          scoreLabel: encodeMatchScoreDetail(playerScoreDetail),
+                          done: false,
+                          winner: null,
+                        }
+                      : null;
                     const submissionStatusText = hasConflict
                       ? "Divergente: organizador precisa revisar."
                       : hasAccepted
@@ -4023,19 +4106,31 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                           </p>
                         ) : null}
                         {submissionStatusText ? <p className="result-submission-status">{submissionStatusText}</p> : null}
-                        {match.status === "pending" ? (
+                        {match.status === "pending" && matchClassRef && playerScoreMatch ? (
                           <div className="my-match-result-tools">
-                            <input
-                              value={playerResultDraft.matchId === match.id ? playerResultDraft.score : ""}
-                              onChange={(event) => setPlayerResultDraft({ matchId: match.id, score: event.target.value })}
-                              placeholder="Placar"
-                            />
+                            <div className="my-match-score-fields">
+                              {renderScoreFields(matchClassRef.data.config, playerScoreMatch, false, (updater) => {
+                                const current = draftDetailForMatch(match, matchClassRef.data.config);
+                                setPlayerResultDraft({
+                                  matchId: match.id,
+                                  detail: normalizeMatchScoreDetail(updater(current), matchClassRef.data.config),
+                                });
+                              })}
+                            </div>
                             {tournament.playerResultSubmissionEnabled ? (
                               <button onClick={() => void submitPlayerMatchResultNow(match)} disabled={resultSubmitting}>
                                 Enviar
                               </button>
                             ) : null}
-                            <button onClick={() => sharePlayerMatchResultWhatsApp(match)}>WhatsApp</button>
+                            <button
+                              className="brand-icon-btn"
+                              onClick={() => sharePlayerMatchResultWhatsApp(match, matchClassRef.data.config)}
+                              title="Enviar pelo WhatsApp"
+                              aria-label="Enviar pelo WhatsApp"
+                            >
+                              <WhatsAppAppIcon />
+                              <span>WhatsApp</span>
+                            </button>
                           </div>
                         ) : null}
                         {match.status === "pending" ? (

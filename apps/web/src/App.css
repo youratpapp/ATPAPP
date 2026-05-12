@@ -1045,9 +1045,30 @@
   grid-template-columns: minmax(0, 1fr) auto auto;
 }
 
+.my-match-score-fields {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
 .my-match-result-tools input,
 .my-match-result-tools button {
   min-height: 38px;
+}
+
+.brand-icon-btn {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.brand-app-icon {
+  flex: 0 0 auto;
+  height: 18px;
+  width: 18px;
 }
 
 .result-submission-status {
