@@ -3830,19 +3830,59 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             <p className="subtle" style={{ margin: 0 }}>
               {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}
             </p>
+            {(tab === "jogos" || tab === "classificacao") ? (
+              <section className="tournament-class-switcher">
+                <div>
+                  <span>Resumo por classe</span>
+                  <strong>Classe ativa</strong>
+                </div>
+                <select
+                  aria-label="Classe ativa"
+                  value={activeClass?.key ?? ""}
+                  onChange={(e) => setActiveClassKey(e.target.value)}
+                  disabled={classes.length === 0}
+                >
+                  {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
+                  {classes.map((c) => (
+                    <option key={c.key} value={c.key}>
+                      {c.categoryName} / {c.className}
+                    </option>
+                  ))}
+                </select>
+              </section>
+            ) : null}
             <div className="tournament-overview-grid">
-              <div className="tournament-overview-kpi">
-                <strong>{tournamentOverview.generatedClasses}/{tournamentOverview.totalClasses}</strong>
-                <span>Classes geradas</span>
-              </div>
-              <div className="tournament-overview-kpi">
-                <strong>{tournamentOverview.doneMatches}/{tournamentOverview.totalMatches}</strong>
-                <span>Jogos finalizados</span>
-              </div>
-              <div className="tournament-overview-kpi">
-                <strong>{tournamentOverview.pendingMatches}</strong>
-                <span>Jogos pendentes</span>
-              </div>
+              {(tab === "jogos" || tab === "classificacao") && activeClass ? (
+                <>
+                  <div className="tournament-overview-kpi">
+                    <strong>{activeClassMatchStats.totalMatches}</strong>
+                    <span>Partidas da classe</span>
+                  </div>
+                  <div className="tournament-overview-kpi">
+                    <strong>{activeClassMatchStats.doneMatches}</strong>
+                    <span>Finalizadas</span>
+                  </div>
+                  <div className="tournament-overview-kpi">
+                    <strong>{activeClassMatchStats.pendingMatches}</strong>
+                    <span>Pendentes</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="tournament-overview-kpi">
+                    <strong>{tournamentOverview.generatedClasses}/{tournamentOverview.totalClasses}</strong>
+                    <span>Classes geradas</span>
+                  </div>
+                  <div className="tournament-overview-kpi">
+                    <strong>{tournamentOverview.doneMatches}/{tournamentOverview.totalMatches}</strong>
+                    <span>Jogos finalizados</span>
+                  </div>
+                  <div className="tournament-overview-kpi">
+                    <strong>{tournamentOverview.pendingMatches}</strong>
+                    <span>Jogos pendentes</span>
+                  </div>
+                </>
+              )}
               {canManagePlayers ? (
                 <div className="tournament-overview-kpi">
                   <strong>{tournamentOverview.pendingRegistrations}</strong>
@@ -3969,7 +4009,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <button onClick={() => goToTab("jogos")}>Ver partidas</button>
               </div>
             ) : null}
-            {!isOwner && !isTournamentStaff && nextPlayerMatch ? (() => {
+            {!isOwner && !isTournamentStaff && tab !== "jogos" && nextPlayerMatch ? (() => {
               const scheduled = agendaAssignmentByMatchKey.get(
                 buildScheduleMatchKey(
                   nextPlayerMatch.categoryName,
@@ -4011,6 +4051,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               );
             })() : null}
             <div className="tournament-share-actions">
+              <button onClick={() => void exportActiveClassPng()} disabled={saving || !activeClass}>
+                Exportar chave
+              </button>
               <button onClick={() => void copyTournamentShareLink()} disabled={saving}>
                 Copiar link
               </button>
@@ -4059,28 +4102,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               </button>
             ) : null}
           </div>
-
-          {tab === "jogos" || tab === "classificacao" ? (
-            <section className="card tournament-class-switcher">
-              <div>
-                <span>Contexto da tela</span>
-                <strong>Classe ativa</strong>
-              </div>
-              <select
-                aria-label="Classe ativa"
-                value={activeClass?.key ?? ""}
-                onChange={(e) => setActiveClassKey(e.target.value)}
-                disabled={classes.length === 0}
-              >
-                {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
-                {classes.map((c) => (
-                  <option key={c.key} value={c.key}>
-                    {c.categoryName} / {c.className}
-                  </option>
-                ))}
-              </select>
-            </section>
-          ) : null}
 
           {tab === "jogos" ? (
             <section className="card tournament-games-card">
@@ -4347,19 +4368,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
                   </p>
                 </div>
-              ) : (
-                <div className="tournament-admin-ops">
-                  <h3 style={{ marginTop: 0, marginBottom: 8 }}>Exportacoes</h3>
-                  <div className="cluster">
-                    <button onClick={() => void exportActiveClassPng()} disabled={saving}>
-                      Exportar Chave Campeonato
-                    </button>
-                  </div>
-                  <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
-                    Visualizacao em modo jogador: sem alteracao de placares.
-                  </p>
-                </div>
-              )}
+              ) : null}
 
               {activeClass ? (
                 <div className="tournament-bracket-heading">

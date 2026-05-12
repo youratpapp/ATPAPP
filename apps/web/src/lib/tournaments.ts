@@ -889,14 +889,23 @@ export async function cancelTournamentMatchConfirmation(input: {
       /schema cache|could not find the function/i.test(error.message || "");
     if (!isSchemaCacheMiss) throw new Error(error.message);
 
+    const auth = await supabase.auth.getUser();
+    const userId = auth.data.user?.id || "";
+    if (!userId) throw new Error("Nao autenticado.");
+
     const del = await supabase
       .from(TABLE_MATCH_CONFIRMATIONS)
       .delete()
+      .select("id")
       .eq("tournament_id", input.tournamentId)
+      .eq("user_id", userId)
       .eq("class_key", input.classKey.trim())
       .eq("phase_key", input.phaseKey.trim())
       .eq("match_index", Math.max(0, input.matchIndex));
     if (del.error) throw new Error(del.error.message);
+    if (!del.data?.length) {
+      throw new Error("Nao foi possivel remover a confirmacao no banco. Aplique a migration 0067 e recarregue o schema.");
+    }
     return loadTournamentMatchConfirmations(input.tournamentId);
   }
   return ((data ?? []) as TournamentMatchConfirmationRow[]).map(matchConfirmationRowToModel);
