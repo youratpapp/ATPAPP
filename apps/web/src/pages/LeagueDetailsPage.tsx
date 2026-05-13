@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { CompetitionHeader, CompetitionOperationalQueue, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
+import { ResponsiveFilterSheet } from "../components/ResponsiveFilterSheet";
 import {
   adminResolveLeagueMatchResult,
   applyLeagueSeasonMovements,
@@ -1338,7 +1339,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   }
 
   return (
-    <AppShell user={user} profile={profile}>
+    <AppShell user={user} profile={profile} showHeader={false}>
       <CompetitionHeader
         title={league?.name || "Liga"}
         subtitle={league ? `${typeLabel(league.leagueType)} | ${league.visibility === "public" ? "Publica" : "Privada"}` : "Carregando competicao"}
@@ -1353,24 +1354,34 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
       {!loading && !error && league ? (
         <>
-          <section className="competition-filter-stack competition-filter-stack-priority">
-            <CompetitionScopeSelector
-              eyebrow="Escopo da liga"
-              label="Temporada"
-              title="Temporada ativa"
-              value={selectedSeasonId}
-              onChange={setSelectedSeasonId}
-              options={league.seasons.map((season) => ({ value: season.id, label: `${season.name} (#${season.seasonNumber})` }))}
-            />
-            <CompetitionScopeSelector
-              eyebrow="Escopo da liga"
-              label="Classe"
-              title="Classe ativa"
-              value={selectedClassId}
-              onChange={setSelectedClassId}
-              options={[{ value: "", label: "Todas as classes" }, ...classes.map((item) => ({ value: item.id, label: classLabel(item) }))]}
-            />
-          </section>
+          <ResponsiveFilterSheet
+            buttonLabel="Escopo da liga"
+            eyebrow="Filtros da liga"
+            title="Temporada e classe"
+            summary={[
+              league.seasons.find((season) => season.id === selectedSeasonId)?.name || "Temporada",
+              selectedClassId ? classes.find((item) => item.id === selectedClassId)?.className || "Classe" : "Todas as classes",
+            ].join(" | ")}
+          >
+            <section className="competition-filter-stack competition-filter-stack-priority">
+              <CompetitionScopeSelector
+                eyebrow="Escopo da liga"
+                label="Temporada"
+                title="Temporada ativa"
+                value={selectedSeasonId}
+                onChange={setSelectedSeasonId}
+                options={league.seasons.map((season) => ({ value: season.id, label: `${season.name} (#${season.seasonNumber})` }))}
+              />
+              <CompetitionScopeSelector
+                eyebrow="Escopo da liga"
+                label="Classe"
+                title="Classe ativa"
+                value={selectedClassId}
+                onChange={setSelectedClassId}
+                options={[{ value: "", label: "Todas as classes" }, ...classes.map((item) => ({ value: item.id, label: classLabel(item) }))]}
+              />
+            </section>
+          </ResponsiveFilterSheet>
 
           <CompetitionTabs
             activeValue={activeTab}

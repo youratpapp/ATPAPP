@@ -1,4 +1,5 @@
 import type { PlaceCrmContact, PlaceCrmInteraction } from "../../lib/types";
+import { EntityActionRow } from "./PlaceWorkspaceUi";
 
 export type PlaceCrmInteractionDraft = {
   body: string;
@@ -47,21 +48,47 @@ export function PlaceCrmContactRow({
   onUpdateFollowUp,
   onUpdateOwner,
 }: PlaceCrmContactRowProps) {
+  const primaryAction =
+    contact.status === "lead" ? (
+      <button type="button" className="primary" onClick={onMarkContacted} disabled={busy}>
+        Marcar contatado
+      </button>
+    ) : contact.status !== "converted" ? (
+      <button type="button" className="primary" onClick={onMarkConverted} disabled={busy}>
+        Marcar convertido
+      </button>
+    ) : (
+      <button type="button" onClick={onOpenHistory}>
+        Ver historico
+      </button>
+    );
+  const contactDetail = [
+    [contact.phone, contact.email].filter(Boolean).join(" | "),
+    contact.nextContactOn ? `Proximo contato: ${contact.nextContactOn}` : "Sem proximo contato",
+    followUpDue ? "Fazer follow-up" : "",
+  ].filter(Boolean).join(" | ");
+
   return (
-    <div className={`place-booking-row ${contact.status}`}>
-      <div>
-        <strong>{contact.name}</strong>
-        <span>{[contact.interest, contact.source, contact.status, contact.ownerLabel ? `Resp. ${contact.ownerLabel}` : ""].filter(Boolean).join(" | ")}</span>
-        <small>
-          {[contact.phone, contact.email, contact.notes].filter(Boolean).join(" | ")}
-          {contact.nextContactOn ? ` | Proximo contato: ${contact.nextContactOn}` : " | Sem proximo contato"}
-          {followUpDue ? " | Fazer follow-up" : ""}
-        </small>
-        <button className="link" type="button" onClick={onOpenHistory}>
-          Ver historico ({interactionCount})
-        </button>
-      </div>
-      <span>
+    <EntityActionRow
+      className={`crm-contact-row ${contact.status}${followUpDue ? " due" : ""}`}
+      title={contact.name}
+      status={contact.status}
+      context={[contact.interest, contact.source, contact.ownerLabel ? `Resp. ${contact.ownerLabel}` : ""].filter(Boolean).join(" | ")}
+      detail={contactDetail}
+      primaryAction={primaryAction}
+      actions={
+        <>
+          <button type="button" onClick={onOpenHistory}>
+            Historico ({interactionCount})
+          </button>
+          <button type="button" className="danger" onClick={onArchive} disabled={busy}>
+            Arquivar
+          </button>
+        </>
+      }
+    >
+      {contact.notes ? <small>{contact.notes}</small> : null}
+      <div className="crm-row-controls" aria-label={`Rotina de ${contact.name}`}>
         <input
           list={ownerListId}
           value={ownerDraft}
@@ -76,20 +103,7 @@ export function PlaceCrmContactRow({
         <button type="button" onClick={onUpdateFollowUp} disabled={busy}>
           Agendar contato
         </button>
-        {contact.status === "lead" ? (
-          <button type="button" onClick={onMarkContacted} disabled={busy}>
-            Contatado
-          </button>
-        ) : null}
-        {contact.status !== "converted" ? (
-          <button type="button" onClick={onMarkConverted} disabled={busy}>
-            Convertido
-          </button>
-        ) : null}
-        <button type="button" className="danger" onClick={onArchive} disabled={busy}>
-          Arquivar
-        </button>
-      </span>
+      </div>
       <div className="crm-interaction-panel">
         <select
           value={interactionDraft.interactionType}
@@ -118,6 +132,6 @@ export function PlaceCrmContactRow({
           Registrar interacao
         </button>
       </div>
-    </div>
+    </EntityActionRow>
   );
 }

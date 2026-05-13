@@ -45,6 +45,8 @@ Visual:
 - status a esquerda;
 - CTA a direita no desktop;
 - CTA abaixo ou full-width no mobile quando necessario.
+- em competicoes, pendencias devem parecer rows, nao cards de KPI.
+- detalhe/status deve ficar a direita no desktop e abaixo no mobile.
 
 Correto:
 
@@ -70,6 +72,7 @@ Uso:
 - produto;
 - partida;
 - local.
+- recebivel financeiro.
 
 Anatomia:
 
@@ -95,6 +98,16 @@ Anti-pattern:
 - transformar cada entidade em card alto;
 - repetir todos os metadados quando bastam 2;
 - deixar 4 botoes equivalentes.
+
+Uso atual no produto:
+
+- CRM do local: lead/cliente com interesse, origem, responsavel, follow-up e acao primaria contextual.
+- Financeiro do local: recebivel com cliente/turma, valor, status e lembrete como acao primaria.
+
+Variacao importante:
+
+- status pode aparecer como badge discreto junto do titulo quando a linha precisa preservar densidade;
+- follow-up vencido pode elevar borda/status, mas nao deve transformar a linha em card de alerta grande.
 
 ## Sidebar
 
@@ -257,6 +270,9 @@ Regras:
 - acoes grandes;
 - maximo 5 escolhas principais;
 - listas longas precisam busca.
+- usar `ResponsiveFilterSheet` quando o filtro deve ficar inline no desktop e virar sheet no mobile.
+- o botao mobile deve resumir o escopo ativo, nao apenas dizer "Filtros".
+- desktop nao deve esconder filtro frequente em sheet quando a operacao depende dele.
 
 ## QuickActions
 

@@ -111,7 +111,7 @@ export function CompetitionOperationalQueue({ items, onOpenAll, title }: Competi
           <span>Fila operacional</span>
           <strong>{title}</strong>
         </div>
-        {onOpenAll ? <button onClick={onOpenAll}>Abrir fila</button> : null}
+        {onOpenAll ? <button className="quiet" onClick={onOpenAll}>Abrir fila</button> : null}
       </div>
       <div className="competition-operational-queue-grid">
         {items.map((item) => (

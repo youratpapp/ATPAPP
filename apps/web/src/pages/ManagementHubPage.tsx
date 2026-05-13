@@ -202,7 +202,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <span>Fila do dia</span>
                   <h2>O que precisa de atencao agora</h2>
                 </div>
-                <button onClick={() => navigate("/locais")}>Ver locais publicos</button>
+                <button className="quiet" onClick={() => navigate("/locais")}>Ver locais publicos</button>
               </div>
               {activeAggregateQueueRows.length ? (
                 <div className="management-priority-list">
@@ -344,12 +344,12 @@ export function ManagementHubPage({ user, profile }: Props) {
                         <button className="primary" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
                           Abrir operacao
                         </button>
-                        <button onClick={() => navigate(`/locais/${encodeURIComponent(place.id)}`)}>Pagina publica</button>
+                        <button className="secondary" onClick={() => navigate(`/locais/${encodeURIComponent(place.id)}`)}>Pagina publica</button>
                       </div>
 
                       <div className="management-row-modules">
                         {moduleShortcuts.map((module) => (
-                          <button key={`${place.id}:${module}`} onClick={() => navigate(buildPlaceAdminPath(place.id, module))}>
+                          <button className="quiet" key={`${place.id}:${module}`} onClick={() => navigate(buildPlaceAdminPath(place.id, module))}>
                             {PLACE_MANAGEMENT_MODULE_LABELS[module]}
                           </button>
                         ))}

@@ -1,5 +1,5 @@
 import type { PlaceClientReceivable } from "./PlaceClientRelationshipModule";
-import { WorkspaceList, WorkspaceRow } from "./PlaceWorkspaceUi";
+import { EntityActionRow, WorkspaceList } from "./PlaceWorkspaceUi";
 
 type PlaceFinanceReceivablesModuleProps = {
   academyReceivables: PlaceClientReceivable[];
@@ -24,24 +24,28 @@ export function PlaceFinanceReceivablesModule({
     <WorkspaceList>
       {receivables.length ? (
         <div className="cluster">
-          <button type="button" onClick={() => onCreatePaymentReminderBatch(receivables)} disabled={busy}>
+          <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(receivables)} disabled={busy}>
             Lembrar todos
           </button>
-          <button type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy || !membershipReceivables.length}>
+          <button className="quiet" type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy || !membershipReceivables.length}>
             Socios
           </button>
-          <button type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy || !academyReceivables.length}>
+          <button className="quiet" type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy || !academyReceivables.length}>
             Academia
           </button>
         </div>
       ) : null}
       {receivables.slice(0, 12).map((receivable) => (
-        <WorkspaceRow
+        <EntityActionRow
           key={`finance-open:${receivable.id}`}
+          className={`finance-receivable-row ${receivable.status}`}
           title={receivable.title}
-          detail={`${receivable.subtitle} | ${formatMoneyFromCents(receivable.amountCents)}`}
-          actions={
+          context={receivable.subtitle}
+          detail={formatMoneyFromCents(receivable.amountCents)}
+          status={receivable.status === "pending_approval" ? "Aguardando aprovacao" : "Em aberto"}
+          primaryAction={
             <button
+              className="primary"
               type="button"
               onClick={() => onCreatePaymentReminder(receivable.targetType, receivable.targetId, receivable.billingPeriod, receivable.reminder)}
               disabled={busy}
@@ -50,8 +54,8 @@ export function PlaceFinanceReceivablesModule({
             </button>
           }
         >
-          <small>{receivable.status === "pending_approval" ? "Aguardando aprovacao" : "Pagamento em aberto"}</small>
-        </WorkspaceRow>
+          <small>{receivable.billingPeriod ? `Periodo ${receivable.billingPeriod}` : "Pagamento em aberto"}</small>
+        </EntityActionRow>
       ))}
       {!receivables.length ? <p className="subtle">Sem recebiveis em aberto.</p> : null}
     </WorkspaceList>

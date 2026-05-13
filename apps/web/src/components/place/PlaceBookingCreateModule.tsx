@@ -67,18 +67,18 @@ export function PlaceBookingCreateModule({
             title="Repetir por semanas"
             aria-label="Repetir por semanas"
           />
-          <button onClick={onSearch} disabled={busy || !draft.startsAt || !draft.endsAt}>
+          <button className="secondary" onClick={onSearch} disabled={busy || !draft.startsAt || !draft.endsAt}>
             Buscar
           </button>
           <button className="primary" onClick={onReserve} disabled={busy || !hasRequiredFields}>
             Reservar {selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : ""}
           </button>
           {canManageBookings ? (
-            <button onClick={onBlock} disabled={busy || !hasRequiredFields}>
+            <button className="quiet" onClick={onBlock} disabled={busy || !hasRequiredFields}>
               Bloquear
             </button>
           ) : null}
-          <button onClick={onJoinWaitlist} disabled={busy || !hasRequiredFields}>
+          <button className="quiet" onClick={onJoinWaitlist} disabled={busy || !hasRequiredFields}>
             Entrar na espera
           </button>
         </div>
@@ -88,7 +88,7 @@ export function PlaceBookingCreateModule({
           {availableCourts.map((court) => (
             <button
               key={`available-court:${court.id}`}
-              className={draft.courtId === court.id ? "primary" : ""}
+              className={draft.courtId === court.id ? "secondary" : "quiet"}
               onClick={() => onChangeDraft({ ...draft, courtId: court.id })}
               disabled={busy}
             >

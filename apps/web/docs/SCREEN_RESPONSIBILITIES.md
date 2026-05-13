@@ -56,11 +56,14 @@ Quando uma tela cresce demais:
 - 2026-05-13: `/gestao` ganhou comportamento mobile-first mais claro, com header compacto, stats em trilho horizontal e atalhos de modulo em scroll lateral para evitar empilhamento.
 - 2026-05-13: `/gestao/:placeId/:module` ganhou shell de workspace mais compacto, com modulo ativo antes de setup/configuracao e fila operacional antes de metricas.
 - 2026-05-13: navegacao global desktop passou a separar Jogar, Operar e Conta, reforcando que `Gestao` e contexto operacional e `Locais` e camada publica/descoberta.
+- 2026-05-13: `/inicio` foi reajustada para Player App por proxima acao, com painel do dia, rows de pendencia/agenda/clube e atalhos de jogador antes de secoes secundarias.
 - 2026-05-13: CRM de locais iniciou separacao real por dominio com `PlaceCrmModule`; `PlacesPage` passa a orquestrar dados/navegacao e delegar captura, lista, historico e acoes de CRM ao modulo.
+- 2026-05-13: contatos/leads do CRM passaram a usar `EntityActionRow`, com acao primaria contextual e historico/arquivamento como acoes secundarias.
 - 2026-05-13: planos e socios de locais foram isolados em `PlaceMembershipModule`, reduzindo mistura entre captura de lead, recorrencia, status do jogador e cobranca dentro da pagina principal.
 - 2026-05-13: fila diaria de atendimento de clientes foi isolada em `PlaceClientActionQueue`, reforcando a separacao entre operacao do dia e configuracao/relatorios.
 - 2026-05-13: rotina de relacionamento e cobranca de clientes foi isolada em `PlaceClientRelationshipModule`, deixando a subvisao responsavel por follow-up, lead parado, inadimplencia e lembretes segmentados.
 - 2026-05-13: recebiveis financeiros foram isolados em `PlaceFinanceReceivablesModule`, usando o mesmo contrato de recebiveis de Clientes para reduzir duplicidade entre cobranca e relacionamento.
+- 2026-05-13: recebiveis financeiros passaram a usar `EntityActionRow`, deixando valor, status e lembrete claros sem virar card alto.
 - 2026-05-13: resumo financeiro foi isolado em `PlaceFinanceOverviewModule`, deixando a subvisao de resumo focada em KPIs e nao em formularios ou lancamentos.
 - 2026-05-13: despesas financeiras foram isoladas em `PlaceFinanceExpensesModule`, evitando duas renderizacoes divergentes para a mesma responsabilidade.
 - 2026-05-13: ofertas e creditos financeiros foram isolados em `PlaceFinancePackagesModule`, separando catalogo/venda/saude de saldo da orquestracao da tela principal.
@@ -87,6 +90,7 @@ Quando uma tela cresce demais:
 - 2026-05-13: cabecalho de torneio/liga foi padronizado em `CompetitionHeader`, alinhando titulo, contexto, status e retorno.
 - 2026-05-13: fila de pendencias do torneio foi alinhada a liga com `CompetitionOperationalQueue`, reforcando competicoes como operacao por prioridades.
 - 2026-05-13: Competition OS ganhou base visual compartilhada: liga mostra temporada/classe antes de tabs/KPIs, filas viraram rows e publicacao ficou visualmente secundaria.
+- 2026-05-13: filtros de temporada/classe da liga passaram a usar `ResponsiveFilterSheet`, reduzindo empilhamento mobile sem esconder escopo no desktop.
 - 2026-05-13: criacao de torneio/liga passou a usar `SetupWizard`, separando decisoes iniciais em etapas curtas e reduzindo friccao no setup.
 - 2026-05-13: criacao de turma da Academia passou a usar `SetupWizard`, separando identidade, agenda e perfil/preco para reduzir densidade no modulo.
 - 2026-05-13: paginas passaram a carregar por rota com `React.lazy`/`Suspense`, alinhando a estrutura tecnica com responsabilidades de tela separadas por dominio.

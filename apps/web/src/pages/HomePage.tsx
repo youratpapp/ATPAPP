@@ -1041,32 +1041,6 @@ function SummaryCard({ label, value, detail }: { label: string; value: number; d
   );
 }
 
-function PlayerHubCard({
-  label,
-  title,
-  detail,
-  count,
-  action,
-  onOpen,
-}: {
-  label: string;
-  title: string;
-  detail: string;
-  count: number;
-  action: string;
-  onOpen: () => void;
-}) {
-  return (
-    <button type="button" className="player-hub-card" onClick={onOpen}>
-      <span>{label}</span>
-      <strong>{title}</strong>
-      <small>{detail}</small>
-      <em>{count}</em>
-      <b>{action}</b>
-    </button>
-  );
-}
-
 function PlayerHubSection({
   label,
   title,
@@ -1552,9 +1526,6 @@ export function HomePage({ user, profile }: Props) {
   const urgentPriorityItems = priorityItems.filter((item) => item.tone === "urgent");
   const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
   const urgentActionCount = urgentPriorityItems.length;
-  const playerBookingCount = courtBookingActions.filter((item) => item.role === "player" && item.status !== "cancelled").length;
-  const playerMatchActionCount = leagueActions.length + tournamentActions.length;
-  const playerAcademyCount = academyActions.length;
   const nextPlayerAgenda = agendaItems[0] || null;
   const nextPlayerPriority = urgentPriorityItems[0] || priorityItems[0] || null;
   const nextPlayerLearning = academyActions.find((item) => item.id.startsWith("academy-player") || item.id.startsWith("academy-makeup") || item.id.startsWith("membership-player")) || null;
@@ -1659,6 +1630,41 @@ export function HomePage({ user, profile }: Props) {
       : activePlayingCount > 0
         ? "Acompanhe suas competicoes e fique pronto para o proximo jogo."
         : "Encontre competicoes, locais e oportunidades para jogar.";
+  const todayRows = [
+    {
+      label: urgentActionCount > 0 ? "Pendencia" : "Agora",
+      title: nextPlayerPriority?.title || "Nada pendente",
+      detail: nextPlayerPriority?.detail || "Seu fluxo esta limpo no momento.",
+      action: urgentActionCount > 0 ? "Resolver" : "Ver avisos",
+      tone: urgentActionCount > 0 ? "urgent" : "neutral",
+      disabled: !nextPlayerPriority && urgentActionCount === 0,
+      onOpen: () => {
+        if (nextPlayerPriority) {
+          navigate(nextPlayerPriority.targetPath);
+          return;
+        }
+        setNotificationsOpen(true);
+      },
+    },
+    {
+      label: "Agenda",
+      title: nextPlayerAgenda?.title || "Sem compromisso",
+      detail: nextPlayerAgenda ? `${nextPlayerAgenda.when} - ${nextPlayerAgenda.sourceName}` : "Reserve quadra, entre em uma aula ou participe de um evento.",
+      action: nextPlayerAgenda ? "Abrir" : "Buscar",
+      tone: "neutral",
+      disabled: false,
+      onOpen: () => navigate(nextPlayerAgenda?.targetPath || "/locais"),
+    },
+    {
+      label: "Clube",
+      title: nextPlayerLearning?.title || "Aulas e planos",
+      detail: nextPlayerLearning?.detail || "Turmas, reposicoes e planos aparecem quando houver vinculo.",
+      action: nextPlayerLearning ? "Ver" : "Explorar",
+      tone: "neutral",
+      disabled: false,
+      onOpen: () => navigate(nextPlayerLearning?.targetPath || "/locais"),
+    },
+  ];
   const handleHeroAction = () => {
     if (urgentActionCount > 0) {
       setNotificationsOpen(true);
@@ -1694,35 +1700,60 @@ export function HomePage({ user, profile }: Props) {
       bellCount={urgentActionCount}
       onBellClick={() => setNotificationsOpen((open) => !open)}
     >
-      <section className="home-hero">
-        <div>
-          <p className="home-hero-kicker">Meu dia</p>
-          <h1>{heroTitle}</h1>
-          <p>{heroDetail}</p>
+      <section className="home-player-os" aria-label="Resumo do jogador">
+        <div className="home-today-panel">
+          <div className="home-today-copy">
+            <p className="home-hero-kicker">Player App</p>
+            <h1>{heroTitle}</h1>
+            <p>{heroDetail}</p>
+          </div>
+          <ActionBar className="home-hero-actions" label="Acoes principais do dia">
+            <button className="primary" type="button" onClick={handleHeroAction}>
+              {urgentActionCount > 0 ? "Resolver agora" : agendaItems.length > 0 ? "Abrir compromisso" : "Explorar eventos"}
+            </button>
+            <button className="quiet" type="button" onClick={() => navigate("/ranking")}>
+              Ranking
+            </button>
+          </ActionBar>
+          <div className="home-today-rows" aria-label="Proximas acoes do jogador">
+            {todayRows.map((row) => (
+              <button
+                key={row.label}
+                type="button"
+                className={row.tone === "urgent" ? "urgent" : ""}
+                onClick={row.onOpen}
+                disabled={row.disabled}
+              >
+                <span>{row.label}</span>
+                <strong>{row.title}</strong>
+                <small>{row.detail}</small>
+                <em>{row.action}</em>
+              </button>
+            ))}
+          </div>
         </div>
-        <ActionBar className="home-hero-actions" label="Acoes principais do dia">
-          <button className="primary" type="button" onClick={handleHeroAction}>
-            {urgentActionCount > 0 ? "Resolver agora" : agendaItems.length > 0 ? "Abrir compromisso" : "Explorar eventos"}
-          </button>
-          <button type="button" onClick={() => navigate("/ranking")}>
-            Ver ranking
-          </button>
-        </ActionBar>
-      </section>
 
-      <section className="home-quick-strip" aria-label="Acoes rapidas">
-        <button type="button" onClick={() => navigate("/eventos")}>
-          <span>Competir</span>
-          <strong>Torneios e ligas</strong>
-        </button>
-        <button type="button" onClick={() => navigate("/locais")}>
-          <span>Jogar</span>
-          <strong>Locais e quadras</strong>
-        </button>
-        <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-          <span>Organizar</span>
-          <strong>Criar ou gerir</strong>
-        </button>
+        <aside className="home-player-side" aria-label="Atalhos e sinais do jogador">
+          <div className="home-quick-strip" aria-label="Acoes rapidas">
+            <button type="button" onClick={() => navigate("/eventos")}>
+              <span>Competir</span>
+              <strong>Torneios e ligas</strong>
+            </button>
+            <button type="button" onClick={() => navigate("/locais")}>
+              <span>Jogar</span>
+              <strong>Locais e quadras</strong>
+            </button>
+            <button type="button" onClick={() => navigate("/perfil")}>
+              <span>Perfil</span>
+              <strong>Historico esportivo</strong>
+            </button>
+          </div>
+          <div className="home-summary-grid">
+            <SummaryCard label="Jogando" value={activePlayingCount} detail="ativas" />
+            <SummaryCard label="Agenda" value={agendaItems.length} detail="semana" />
+            <SummaryCard label="Pendencias" value={urgentActionCount} detail="abertas" />
+          </div>
+        </aside>
       </section>
 
       {loading ? <p className="subtle">Carregando...</p> : null}
@@ -1778,66 +1809,9 @@ export function HomePage({ user, profile }: Props) {
 
       {!loading && !error ? (
         <>
-          <section className="home-summary-grid">
-            <SummaryCard label="Jogando" value={activePlayingCount} detail="competicoes ativas" />
-            <SummaryCard label="Organizando" value={activeOrganizingCount} detail="em aberto" />
-            <SummaryCard label="Pendencias" value={urgentActionCount} detail="acoes em aberto" />
-          </section>
-
           <section className="player-hub-panel">
             <div className="section-title">
               <h2>Central do jogador</h2>
-            </div>
-            <div className="player-hub-grid">
-              <PlayerHubCard
-                label="Reservas"
-                title="Minhas quadras"
-                detail={playerBookingCount > 0 ? "Acompanhe horarios confirmados e pendentes." : "Busque locais e solicite um horario."}
-                count={playerBookingCount}
-                action={playerBookingCount > 0 ? "Abrir reservas" : "Buscar quadras"}
-                onOpen={() => navigate("/locais")}
-              />
-              <PlayerHubCard
-                label="Partidas"
-                title="Jogos e resultados"
-                detail={playerMatchActionCount > 0 ? "Resolva confirmacoes, horarios e placares." : "Entre em torneios ou ligas para jogar."}
-                count={playerMatchActionCount}
-                action={playerMatchActionCount > 0 ? "Ver partidas" : "Ver eventos"}
-                onOpen={() => navigate("/eventos")}
-              />
-              <PlayerHubCard
-                label="Aulas"
-                title="Academia"
-                detail={playerAcademyCount > 0 ? "Veja aulas, reposicoes e pendencias." : "Encontre turmas e professores nos locais."}
-                count={playerAcademyCount}
-                action={playerAcademyCount > 0 ? "Abrir aulas" : "Buscar turmas"}
-                onOpen={() => navigate("/locais")}
-              />
-              <PlayerHubCard
-                label="Historico"
-                title="Perfil esportivo"
-                detail="Resultados, conquistas, estatisticas e dados do jogador."
-                count={playingTournaments.length + playingLeagues.length}
-                action="Abrir perfil"
-                onOpen={() => navigate("/perfil")}
-              />
-            </div>
-            <div className="player-hub-brief">
-              <button type="button" onClick={() => nextPlayerPriority ? navigate(nextPlayerPriority.targetPath) : setNotificationsOpen(true)} disabled={!nextPlayerPriority}>
-                <span>Agora</span>
-                <strong>{nextPlayerPriority?.title || "Nada pendente"}</strong>
-                <small>{nextPlayerPriority?.detail || "Seu fluxo esta limpo no momento."}</small>
-              </button>
-              <button type="button" onClick={() => nextPlayerAgenda ? navigate(nextPlayerAgenda.targetPath) : navigate("/locais")} disabled={!nextPlayerAgenda && loading}>
-                <span>Proximo compromisso</span>
-                <strong>{nextPlayerAgenda?.title || "Sem agenda"}</strong>
-                <small>{nextPlayerAgenda ? `${nextPlayerAgenda.when} - ${nextPlayerAgenda.sourceName}` : "Reserve quadra, entre em uma aula ou participe de um evento."}</small>
-              </button>
-              <button type="button" onClick={() => nextPlayerLearning ? navigate(nextPlayerLearning.targetPath) : navigate("/locais")}>
-                <span>Aulas e clube</span>
-                <strong>{nextPlayerLearning?.title || "Explorar locais"}</strong>
-                <small>{nextPlayerLearning?.detail || "Encontre turmas, planos e reposicoes disponiveis."}</small>
-              </button>
             </div>
             <div className="player-hub-workspace">
               <PlayerHubSection
@@ -1968,13 +1942,13 @@ export function HomePage({ user, profile }: Props) {
                   : "Quando voce entrar em torneios ou ligas, eles aparecem aqui."}
               </span>
               <ActionBar className="home-empty-actions" label="Acoes para encontrar competicoes">
-                <button type="button" onClick={() => navigate("/eventos/torneios")}>
+                <button className="secondary" type="button" onClick={() => navigate("/eventos/torneios")}>
                   Ver torneios
                 </button>
-                <button type="button" onClick={() => navigate("/eventos/ligas")}>
+                <button className="secondary" type="button" onClick={() => navigate("/eventos/ligas")}>
                   Ver ligas
                 </button>
-                <button type="button" onClick={() => navigate("/locais")}>
+                <button className="quiet" type="button" onClick={() => navigate("/locais")}>
                   Buscar locais
                 </button>
               </ActionBar>

@@ -253,9 +253,9 @@ Entregue em 2026-05-13:
 - tabs de competicao ganharam estado ativo forte e uniforme;
 - mobile adapta filas para rows de duas linhas sem tabela larga.
 
-### [>] MOBILE-01 - Padronizar bottom sheets para filtros e detalhes
+### [x] MOBILE-01 - Padronizar bottom sheets para filtros e detalhes
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -296,9 +296,17 @@ Criterios de conclusao:
 - pelo menos uma tela critica usando sheet/drawer corretamente no mobile;
 - documentar padrao em `COMPONENT_GRAMMAR.md` se mudar.
 
-### [ ] ROWS-01 - Aplicar `EntityActionRow` nas listas operacionais principais
+Entregue em 2026-05-13:
 
-Status: `[ ]` pendente
+- criado `ResponsiveFilterSheet` para manter filtros inline no desktop e abrir bottom sheet no mobile;
+- liga passou a usar sheet mobile para temporada/classe em vez de empilhar filtros no corpo principal;
+- `EntityDrawer` foi refinado no mobile para parecer bottom sheet real, com alca visual, altura controlada e acoes confortaveis;
+- desktop preserva filtros visiveis quando eles ajudam a operacao em volume;
+- padrao documentado para proximas telas criticas.
+
+### [x] ROWS-01 - Aplicar `EntityActionRow` nas listas operacionais principais
+
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -340,9 +348,19 @@ Criterios de conclusao:
 - detalhe vai para drawer/sheet;
 - mobile nao usa tabela larga.
 
-### [ ] HOME-01 - Redesenhar Home do jogador por proxima acao
+Entregue em 2026-05-13:
 
-Status: `[ ]` pendente
+- CRM passou a usar `EntityActionRow` para leads/clientes, com nome, origem/interesse, responsavel, follow-up e status na mesma leitura;
+- acao primaria do CRM ficou contextual: marcar contato, marcar convertido ou ver historico;
+- historico e arquivamento ficaram secundarios, reduzindo botoes equivalentes na linha;
+- controles de responsavel/proximo contato ficaram compactos e colapsam em uma coluna no mobile;
+- recebiveis financeiros passaram a usar `EntityActionRow`, com valor, status e lembrete como acao primaria;
+- linhas ganharam badge de status discreto, destaque para convertido e alerta visual para follow-up vencido;
+- primeira onda cobre CRM e recebiveis; reservas/alunos ja usam rows de workspace e partidas ficam para refinamento interno do Competition OS.
+
+### [x] HOME-01 - Redesenhar Home do jogador por proxima acao
+
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -380,9 +398,19 @@ Criterios de conclusao:
 - primeira viewport responde "o que faco agora?";
 - sem excesso de cards equivalentes.
 
+Entregue em 2026-05-13:
+
+- `/inicio` deixou de abrir com hero grande, atalhos e KPIs soltos;
+- primeira viewport agora usa um painel `Player App` com titulo do dia, acao primaria e rows de proxima acao;
+- rows do dia cobrem pendencia, agenda e clube/aulas com acao curta e contexto imediato;
+- atalhos rapidos foram reduzidos para tarefas de jogador: competir, jogar/reservar e perfil;
+- KPIs viraram sinais de suporte ao lado do painel, nao dashboard principal;
+- cards antigos da central foram removidos da primeira leitura, mantendo secoes detalhadas abaixo;
+- organizacao continua em secao propria, sem disputar com rotina do jogador.
+
 ## P2 - Refinamento de percepcao premium
 
-### [ ] VISUAL-01 - Auditoria global de botoes e CTA hierarchy
+### [>] VISUAL-01 - Auditoria global de botoes e CTA hierarchy
 
 Status: `[ ]` pendente
 

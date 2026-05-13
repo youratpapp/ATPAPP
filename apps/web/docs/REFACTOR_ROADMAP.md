@@ -79,6 +79,7 @@ Evoluido em 2026-05-13:
 - criado `ActionBar` para padronizar grupos de CTAs em home, competicoes, torneio, liga e pagina publica de local.
 - criado `ScreenState` para padronizar estados de loading/erro/vazio, aplicado em Ranking e hubs de Torneios/Ligas.
 - criado `EntityDrawer` e aplicado no historico do CRM do local para tirar detalhe/historico da linha principal.
+- aplicado `EntityActionRow` em CRM e recebiveis financeiros do local, levando status, contexto e acao primaria para linhas densas em vez de cards/listas soltas.
 
 Impacto operacional:
 
@@ -174,6 +175,8 @@ Evoluido em 2026-05-13:
 - `/gestao` recebeu refinamento mobile-first: header compacto, stats em trilho horizontal, rows tocaveis e atalhos de modulos sem empilhar verticalmente.
 - `/gestao/:placeId/:module` recebeu refinamento inicial de workspace: `PlaceAdminShell` compacto, modulo ativo com hierarquia clara, setup secundario e dashboard com fila antes de metricas.
 - navegacao desktop passou a agrupar entradas em Jogar, Operar e Conta, com contexto visual para Management OS sem transformar mobile em sidebar comprimida.
+- CRM e recebiveis financeiros receberam primeira onda de rows operacionais com `EntityActionRow`, reduzindo botoes equivalentes e mantendo detalhe/historico como acao secundaria.
+- `/inicio` recebeu primeira reestruturacao de Player App: painel do dia, rows de proxima acao e atalhos de jogador substituem hero grande, quick strip generico e KPIs soltos.
 
 ## Fase 3 - CompetitionShell
 
@@ -204,6 +207,7 @@ Evoluido em 2026-05-13:
 - criado `CompetitionHeader` e aplicado em torneio/liga para padronizar titulo, contexto, status e acao de voltar.
 - torneio passou a usar `CompetitionOperationalQueue` no centro de pendencias, alinhando fila de inscricoes, resultados, disponibilidade e jogos com a liga.
 - Competition OS recebeu refinamento visual: liga coloca temporada/classe antes de tabs e KPIs, torneio usa overview da mesma familia, filas viraram rows e publicacao ficou secundaria.
+- filtros de temporada/classe da liga passaram a usar `ResponsiveFilterSheet`, mantendo desktop inline e mobile em bottom sheet.
 
 ## Fase 4 - Wizards de criacao
 

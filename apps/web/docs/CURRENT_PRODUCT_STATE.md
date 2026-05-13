@@ -133,6 +133,9 @@ Card e excecao em operacao diaria. Row e padrao.
 - Muitos modulos de locais foram extraidos de `PlacesPage`.
 - Competition OS iniciou padroes comuns com selector, fila, publishing e header.
 - Competition OS ja recebeu base visual compartilhada: header compacto, escopo antes de numeros, fila em rows e publicacao secundaria.
+- Mobile ja iniciou padrao concreto de bottom sheet com `ResponsiveFilterSheet` aplicado nos filtros de temporada/classe da liga.
+- `EntityActionRow` ja saiu da documentacao e entrou em uso real em CRM e recebiveis financeiros do local.
+- `/inicio` ja iniciou transicao para Player App orientado por proxima acao, com painel do dia e rows de pendencia/agenda/clube antes de conteudo secundario.
 - Visual language premium foi documentada.
 - `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` foram criados.
 - `/gestao` ja foi refinada para ocultar cards zerados e usar rows operacionais de local.
@@ -144,12 +147,13 @@ Card e excecao em operacao diaria. Row e padrao.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
 - Competition OS ja esta mais consistente visualmente, mas ainda precisa refinamento profundo de fluxos internos de torneio/liga.
-- Mobile ainda pode parecer desktop empilhado em varias telas.
-- Home do jogador ainda precisa reforcar proxima acao e reduzir ruido.
+- Mobile ainda pode parecer desktop empilhado em varias telas, mas filtros de liga ja usam sheet responsivo como primeiro padrao.
+- Home do jogador ja reforca proxima acao na primeira viewport, mas ainda pode evoluir feed, estados vazios e detalhe mobile.
 - Paginas publicas ainda precisam mais percepcao premium e conversao clara.
 - Typography e spacing ainda variam demais entre telas antigas.
 - Muitos formularios ainda aparecem inline.
 - Algumas telas ainda exibem KPIs antes de tarefas.
+- Partidas/alunos ainda precisam segunda onda de rows quando o fluxo interno pedir detalhe em drawer/sheet.
 
 ## Problemas atuais a atacar
 
@@ -160,7 +164,7 @@ Card e excecao em operacao diaria. Row e padrao.
 5. Competition OS ainda precisa evoluir fluxos internos e estados mobile de detalhes/filtros.
 6. Place admin ainda com resquicios de cockpit antigo.
 7. Public pages ainda pouco memoraveis.
-8. Tabelas/listas ainda sem gramatica mobile uniforme.
+8. Tabelas/listas ainda precisam expandir a gramatica mobile uniforme para mais dominios.
 9. Filtros e detalhes ainda ocupando corpo principal demais.
 10. Estados vazios e setup nem sempre guiam a proxima acao.
 
@@ -231,15 +235,14 @@ Antes de mexer em qualquer tela:
 
 ## Prioridades de frontend
 
-1. Refinar `ManagementShell` e `/gestao`.
-2. Padronizar bottom sheets e detalhes mobile.
-3. Refinar os modulos internos de `/gestao/:placeId/:module` com rows e acoes primarias.
+1. Auditar hierarquia de botoes e CTAs nas telas prioritarias.
+2. Refinar `ManagementShell` e `/gestao`.
+3. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
 4. Melhorar navegacao/sidebar por permissoes e atalhos contextuais.
-5. Padronizar rows operacionais.
-6. Reduzir dashboards informativos.
-7. Aplicar mobile sheets e sticky actions.
-8. Revisar typography/spacing global.
-9. Refinar paginas publicas.
+5. Reduzir dashboards informativos.
+6. Aplicar mobile sheets e sticky actions.
+7. Revisar typography/spacing global.
+8. Refinar paginas publicas.
 
 ## Prioridades mobile
 
