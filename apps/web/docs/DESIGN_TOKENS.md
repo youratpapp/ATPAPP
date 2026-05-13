@@ -67,6 +67,7 @@ Regras:
 - Publico/marketing pode usar `2xl` e `3xl`.
 - Nao usar fonte gigante dentro de cards compactos.
 - Letter spacing deve ser 0, salvo labels uppercase muito curtos.
+- Tamanho de fonte deve usar tokens fixos; nao usar escala por viewport.
 
 ## Spacing
 

@@ -8,6 +8,8 @@ Documentos de execucao visual: `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.
 
 Documentos de continuidade: `CURRENT_PRODUCT_STATE.md` e `EXECUTION_QUEUE.md`.
 
+Documentos de perfis e discoverability: `PROFILE_PLAN_ACCESS_MODEL.md` e `TASK_DISCOVERY_ONBOARDING.md`.
+
 Data: 2026-05-13
 
 ## Objetivo
@@ -668,6 +670,9 @@ Status:
 - [feito] criado `ManagementShell` como camada visual/operacional propria para `/gestao` e para o admin de local.
 - [feito] `/gestao` deixou de usar hero grande e passou a usar cabecalho operacional compacto com contexto, acoes e indicadores.
 - [feito] rota administrativa do local passou a renderizar dentro do mesmo shell de gestao, reduzindo a sensacao de subpagina de `Locais`.
+- [feito] navegacao global passou a esconder `Gestao` quando nao ha local acessivel, mostrar `Organizar` quando ha competicao administrada e manter `Locais` no contexto de descoberta/player.
+- [feito] setup de Gestao passou a expor quick actions semanticas para cadastrar quadra, professor, turma, regras e plano quando essas bases estao incompletas.
+- [feito] `/gestao` passou a mostrar checklist de implantacao por local com progresso e etapas acionaveis, aparecendo apenas quando a base operacional ainda esta incompleta.
 
 ### Bloco 2 - Extrair `PlaceAdminShell`
 
@@ -709,6 +714,24 @@ Impacto:
 - mais seguranca cognitiva;
 - experiencia personalizada.
 
+Recalibracao 2026-05-13:
+
+- jogador comum nao deve ver Gestao;
+- organizador de torneio/liga deve entrar em Competition Management, nao em gestao completa de academia;
+- professor autonomo deve ver operacao leve de aulas/alunos, nao ERP completo;
+- academia/clube deve ver Management OS completo conforme plano e permissao;
+- navegacao global deve separar Jogar, Organizar e Operar quando o usuario tiver mais de um contexto.
+
+Status:
+
+- [feito] professor com papel `coach` recebeu entrada leve em `/gestao`, focada em aulas, turmas e alunos.
+- [feito] fila de Gestao passou a filtrar pendencias por modulo acessivel, evitando sinais de cantina/financeiro/equipe para professor.
+
+Documentos-base:
+
+- `PROFILE_PLAN_ACCESS_MODEL.md`;
+- `TASK_DISCOVERY_ONBOARDING.md`.
+
 ### Bloco 4 - Competition OS
 
 Prioridade: alta.
@@ -724,6 +747,20 @@ Impacto:
 
 - organizador reaprende menos;
 - jogador nao confunde evento que joga com evento que administra.
+
+Recalibracao 2026-05-13:
+
+- `/eventos` deve evoluir para separar explicitamente competicoes que jogo, competicoes que organizo e descoberta;
+- criar torneio/liga deve ser uma intencao visivel para quem tem plano de organizador;
+- publicacao/configuracao continuam secundarias em relacao a fila operacional.
+
+Status:
+
+- [feito] `/eventos` passou a exibir os recortes `Jogando`, `Organizando` e `Descobrir` como intencoes separadas.
+- [feito] usuarios com competicoes organizadas veem a fila operacional de organizador antes da descoberta publica.
+- [feito] jogador comum deixa de ver `Criar torneio`/`Criar liga` como CTA principal no hub; criacao fica nas listas em modo `organizing`.
+- [feito] descoberta recebeu acoes de entrada por convite/codigo, ligas, locais publicos e acesso secundario ao contexto de organizacao.
+- [feito] organizador novo recebeu roteiro secundario de primeiro evento, com criar torneio/liga como passos acionaveis e publicacao/operacao como proximos passos explicativos.
 
 ### Bloco 5 - Player Home simplificada
 

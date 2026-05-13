@@ -62,7 +62,7 @@ export function AppShell({ user, profile, children, showHeader = true, onBellCli
         </header>
       ) : null}
       <main className="app-content">{children}</main>
-      <BottomNav />
+      <BottomNav user={user} />
     </div>
   );
 }

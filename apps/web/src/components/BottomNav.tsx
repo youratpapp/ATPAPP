@@ -1,6 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import type { ComponentType } from "react";
+import type { User } from "@supabase/supabase-js";
+import { useEffect, useMemo, useState } from "react";
 import logoMark from "../assets/logo-atp-mark.svg";
+import { EMPTY_WORKSPACE_ACCESS, loadWorkspaceAccessSummary, type WorkspaceAccessSummary } from "../lib/workspace-access";
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
@@ -63,30 +66,70 @@ function PersonIcon({ active }: { active: boolean }) {
 }
 
 type NavItem = {
-  group: "player" | "operations" | "account";
+  activePath?: string;
+  group: "player" | "organize" | "operations" | "account";
   path: string;
   label: string;
   Icon: ComponentType<{ active: boolean }>;
 };
 
-const ITEMS: NavItem[] = [
+const BASE_ITEMS: NavItem[] = [
   { group: "player", path: "/inicio", label: "Inicio", Icon: HomeIcon },
-  { group: "player", path: "/eventos", label: "Competicoes", Icon: TrophyIcon },
-  { group: "operations", path: "/gestao", label: "Gestao", Icon: ManagementIcon },
-  { group: "operations", path: "/locais", label: "Locais", Icon: LocationIcon },
+  { group: "player", path: "/eventos", label: "Competir", Icon: TrophyIcon },
+  { group: "player", path: "/locais", label: "Locais", Icon: LocationIcon },
   { group: "player", path: "/ranking", label: "Ranking", Icon: StarIcon },
   { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon },
 ];
 
 const GROUPS: Array<{ id: NavItem["group"]; label: string }> = [
   { id: "player", label: "Jogar" },
+  { id: "organize", label: "Organizar" },
   { id: "operations", label: "Operar" },
   { id: "account", label: "Conta" },
 ];
 
-export function BottomNav() {
+function buildNavItems(access: WorkspaceAccessSummary, pathname: string, search: string): NavItem[] {
+  const items = [...BASE_ITEMS];
+  const shouldShowCompetitionManagement = access.hasCompetitionManagement || (pathname.startsWith("/eventos") && search.includes("organizing"));
+  const shouldShowManagement = access.hasManagement || pathname.startsWith("/gestao");
+
+  if (shouldShowCompetitionManagement) {
+    items.push({
+      activePath: "/eventos/torneios",
+      group: "organize",
+      path: "/eventos/torneios?view=organizing",
+      label: "Organizar",
+      Icon: TrophyIcon,
+    });
+  }
+
+  if (shouldShowManagement) {
+    items.push({ group: "operations", path: "/gestao", label: "Gestao", Icon: ManagementIcon });
+  }
+
+  return items;
+}
+
+export function BottomNav({ user }: { user: User }) {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const [access, setAccess] = useState<WorkspaceAccessSummary>(EMPTY_WORKSPACE_ACCESS);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadWorkspaceAccessSummary(user)
+      .then((summary) => {
+        if (!cancelled) setAccess(summary);
+      })
+      .catch(() => {
+        if (!cancelled) setAccess(EMPTY_WORKSPACE_ACCESS);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  const items = useMemo(() => buildNavItems(access, pathname, search), [access, pathname, search]);
   const contextLabel = pathname.startsWith("/gestao")
     ? "Management OS"
     : pathname.startsWith("/eventos")
@@ -100,11 +143,15 @@ export function BottomNav() {
         <span>Gestao esportiva</span>
         <small className="bottom-nav-context">{contextLabel}</small>
       </div>
-      {GROUPS.map((group) => (
+      {GROUPS.map((group) => {
+        const groupItems = items.filter((item) => item.group === group.id);
+        if (!groupItems.length) return null;
+        return (
         <div className="bottom-nav-group" key={group.id}>
           <span className="bottom-nav-group-label">{group.label}</span>
-          {ITEMS.filter((item) => item.group === group.id).map((item) => {
-            const active = pathname === item.path || pathname.startsWith(`${item.path}/`);
+          {groupItems.map((item) => {
+            const activePath = item.activePath || item.path.split("?")[0] || item.path;
+            const active = pathname === activePath || pathname.startsWith(`${activePath}/`);
             return (
               <button
                 key={item.path}
@@ -120,7 +167,8 @@ export function BottomNav() {
             );
           })}
         </div>
-      ))}
+        );
+      })}
     </nav>
   );
 }

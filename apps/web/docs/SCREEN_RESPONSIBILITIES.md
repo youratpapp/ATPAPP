@@ -13,12 +13,12 @@ Cada tela deve ter uma responsabilidade primaria. Se uma tela precisa resolver o
 | Tela | Acao primaria | Deve conter | Nao deve conter | Direcao |
 | --- | --- | --- | --- | --- |
 | `/inicio` | orientar jogador e proximas acoes | compromissos, convites, pagamentos, historico curto | administracao profunda de local/torneio | virar central do jogador com secoes recolhiveis |
-| `/eventos` | descobrir/entrar em competicoes | torneios, ligas, destaques, filtros | operacao detalhada de evento | manter como hub |
+| `/eventos` | separar jogar, organizar e descobrir competicoes | torneios/ligas que jogo, organizo e posso descobrir | gestao de academia ou lista unica ambigua | evoluir hub por contexto |
 | `/eventos/torneios` | listar/criar torneios | lista, CTA de criacao, filtros | chave completa ou resultado detalhado | usar wizard para criacao |
 | `/eventos/ligas` | listar/criar ligas | lista, CTA de criacao, filtros | operacao de rodada | usar wizard para criacao |
 | `/eventos/:tournamentId/:tab` | operar torneio | classe ativa, fila, partidas, publicacao, jogadores | configuracao profunda misturada com operacao | evoluir para CompetitionShell |
 | `/eventos/ligas/:leagueId` | operar liga | rodada, partidas, ranking, jogadores, chat | modelo mental diferente de torneio | alinhar a CompetitionShell |
-| `/gestao` | orientar operador de academia | locais acessiveis, pendencias, atalhos por modulo | descoberta publica de locais | ser a entrada primaria de donos/equipe |
+| `/gestao` | orientar operador pelo perfil correto | academia, professor solo ou competicoes organizadas conforme permissao | ferramentas sem plano/papel ou descoberta publica | ser entrada contextual de operacao |
 | `/gestao/:placeId/:module` | operar local | fila do dia, modulo ativo, resumo e acoes | descoberta publica | manter contexto operacional e subvisoes |
 | `/locais` | descobrir locais e iniciar cadastro | cards publicos, filtros, entrada para pagina publica | cockpit administrativo completo por padrao | deixar gestao em `/gestao` |
 | `/locais/:placeId` | converter jogador/publico | marca, ofertas, reserva, turma, jogos, widget | configuracao interna | manter publica e limpa |
@@ -32,6 +32,8 @@ Cada tela deve ter uma responsabilidade primaria. Se uma tela precisa resolver o
 - Mais de uma acao primaria visivel no mesmo bloco.
 - Filtros alteram dados de resumo sem deixar o contexto claro.
 - Configuracao aparece antes da fila operacional.
+- Tarefa essencial aparece apenas com nome tecnico de modulo.
+- Usuario ve contexto operacional que nao pertence ao seu perfil/plano.
 - Relatorios, formularios e listas dividem a mesma viewport.
 - A mesma entidade aparece com acoes diferentes em lugares proximos.
 
@@ -45,6 +47,7 @@ Quando uma tela cresce demais:
 4. separar configuracao em subvisao;
 5. manter operacao diaria no topo;
 6. documentar a responsabilidade nova.
+7. se a tarefa for setup basico, criar quick action semantica.
 
 ## Evolucoes registradas
 
@@ -58,6 +61,8 @@ Quando uma tela cresce demais:
 - 2026-05-13: navegacao global desktop passou a separar Jogar, Operar e Conta, reforcando que `Gestao` e contexto operacional e `Locais` e camada publica/descoberta.
 - 2026-05-13: `/inicio` foi reajustada para Player App por proxima acao, com painel do dia, rows de pendencia/agenda/clube e atalhos de jogador antes de secoes secundarias.
 - 2026-05-13: hierarquia de CTAs foi aplicada em Home, Gestao, Competition queue, recebiveis e criacao de reserva, separando primary, secondary e quiet.
+- 2026-05-13: tipografia das telas prioritarias passou a usar tokens fixos, com titulos operacionais mais compactos e sem `font-size` por viewport nas areas auditadas.
+- 2026-05-13: pagina publica do local passou a priorizar conversao com oferta no hero, reserva como CTA principal, divulgacao no fim e CTA sticky mobile.
 - 2026-05-13: CRM de locais iniciou separacao real por dominio com `PlaceCrmModule`; `PlacesPage` passa a orquestrar dados/navegacao e delegar captura, lista, historico e acoes de CRM ao modulo.
 - 2026-05-13: contatos/leads do CRM passaram a usar `EntityActionRow`, com acao primaria contextual e historico/arquivamento como acoes secundarias.
 - 2026-05-13: planos e socios de locais foram isolados em `PlaceMembershipModule`, reduzindo mistura entre captura de lead, recorrencia, status do jogador e cobranca dentro da pagina principal.
@@ -106,3 +111,16 @@ Quando uma tela cresce demais:
 - 2026-05-13: `place-admin-data` passou a concentrar busca de recursos administrativos, ajudando `PlacesPage` a sair do papel de camada de dados e caminhar para shell/composicao.
 - 2026-05-13: `usePlaceAdminResourceState` passou a guardar e aplicar mapas administrativos por local, reduzindo a responsabilidade da tela sobre estado bruto de Agenda, Academia, Clientes, Financeiro e Cantina.
 - 2026-05-13: criacao de local passou a ser wizard com etapas de identidade, localizacao/rede e pagina, deixando o hub de locais menos dependente de formulario denso.
+- 2026-05-13: criacao de reserva no admin do local virou composer progressivo, mantendo quadra/inicio/fim/busca/reserva no fluxo principal e levando observacao, repeticao, bloqueio e espera para opcoes avancadas.
+- 2026-05-13: CRM passou a priorizar leitura/acao sobre contatos antes de captura, com novo contato em formulario progressivo.
+- 2026-05-13: Cantina passou a separar venda rapida como rotina principal e cadastro de produto como formulario progressivo auxiliar ao catalogo.
+- 2026-05-13: turmas da Academia passaram de cards para rows operacionais, preservando ocupacao, horario, professor/quadra, pendencias e mensalidade com menor verticalidade.
+- 2026-05-13: estados de demo/QA foram formalizados em `DEMO_STATE_QA_CHECKLIST.md`, fechando o bloqueio de calibragem visual por ausencia de massa variada.
+- 2026-05-13: modelo de perfis e planos foi formalizado em `PROFILE_PLAN_ACCESS_MODEL.md`, definindo Player App, Competition Management, Professor Autonomo e Academia/Clube.
+- 2026-05-13: discoverability e onboarding operacional foram formalizados em `TASK_DISCOVERY_ONBOARDING.md`, priorizando quick actions semanticas como cadastrar quadra, cadastrar professor, criar turma e criar torneio.
+- 2026-05-13: navegacao global iniciou visibilidade por acesso: `Gestao` depende de local acessivel, `Organizar` depende de competicao organizada e `Locais` fica em descoberta/player.
+- 2026-05-13: setup de Gestao ganhou quick actions semanticas por local, com `Cadastrar quadra`, `Cadastrar professor`, `Criar turma`, `Definir regras de reserva` e `Configurar plano` apontando para subvisoes corretas.
+- 2026-05-13: `/eventos` passou a separar explicitamente `Jogando`, `Organizando` e `Descobrir`; organizadores veem a fila operacional primeiro, enquanto jogador comum deixa de receber criacao de torneio/liga como CTA principal.
+- 2026-05-13: `/gestao` ganhou checklist de implantacao por local para academia/clube, aparecendo apenas quando ha base incompleta e levando cada etapa para o modulo/subvisao correto.
+- 2026-05-13: `/eventos` ganhou roteiro secundario de primeiro evento para organizador novo, mantendo criacao em contexto de organizacao sem competir com as tarefas do jogador.
+- 2026-05-13: `/gestao` ganhou entrada leve de professor para papel `coach`, com foco em aulas hoje, turmas e alunos, e a fila agregada passou a respeitar modulos acessiveis por papel.

@@ -33,6 +33,416 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] ACCESS-01 - Aplicar navegacao global por perfil e plano
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Fazer o usuario ver apenas os contextos que fazem sentido para ele: Jogar, Organizar e Operar.
+
+Criterios:
+
+- jogador comum nao deve ver `Gestao` como entrada principal;
+- organizador deve ver entrada clara para competicoes organizadas;
+- professor/autonomo deve ver gestao leve de aulas/alunos;
+- academia/clube deve ver Management OS completo conforme plano;
+- menus devem evitar ferramentas sem permissao/plano.
+
+Telas/componentes afetados:
+
+- `AppShell`;
+- `BottomNav`;
+- `ManagementHubPage`;
+- dados/derivacoes de acesso existentes.
+
+Ganhos esperados:
+
+- menos sensacao de "tudo para todo mundo";
+- mais clareza de produto profissional;
+- menos descoberta por tentativa e erro.
+
+Dependencias:
+
+- `PROFILE_PLAN_ACCESS_MODEL.md`;
+- permissoes existentes de local/competicao.
+
+Risco de regressao:
+
+- esconder Gestao de usuario que tem permissao operacional mas ainda nao tem local carregado.
+
+Criterios de conclusao:
+
+- regras de visibilidade documentadas e aplicadas em pelo menos navegacao global;
+- mobile nao mostra contexto irrelevante;
+- fallback seguro para usuario multi-perfil.
+
+Entregue em 2026-05-13:
+
+- `BottomNav` passou a carregar um resumo de acesso operacional do usuario;
+- `Gestao` so aparece quando ha local acessivel ou quando o usuario ja esta no contexto `/gestao`;
+- `Organizar` so aparece quando ha torneio/liga organizada ou quando o usuario ja esta em contexto de organizacao;
+- `Locais` voltou para o grupo `Jogar`, reforcando descoberta publica em vez de operacao;
+- grupos vazios deixam de aparecer na nav;
+- acesso e derivado em `workspace-access` com imports dinamicos para nao pesar o `AppShell`;
+- fallback preserva acesso direto por URL mesmo quando a entrada nao aparece na nav.
+
+### [x] DISCOVERY-01 - Criar quick actions semanticas no setup de Gestao
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Fazer tarefas essenciais aparecerem por intencao, nao por modulo tecnico.
+
+Criterios:
+
+- `Cadastrar quadra` aparece quando a base de agenda esta incompleta;
+- `Cadastrar professor` aparece quando Academia precisa de professor;
+- `Criar turma` aparece como proximo passo quando ha professor/quadra;
+- `Criar torneio` aparece para organizador com permissao;
+- quick actions respeitam papel/plano.
+
+Telas/componentes afetados:
+
+- `ManagementHubPage`;
+- `PlaceAdminShell`;
+- `PlaceBookingResourcesModule`;
+- `PlaceAcademyResourcesModule`;
+- `PlaceAcademyClassSetupModule`;
+- hubs de competicao.
+
+Ganhos esperados:
+
+- menos funcoes escondidas;
+- onboarding mais intuitivo;
+- usuario novo encontra tarefas basicas rapidamente.
+
+Dependencias:
+
+- `TASK_DISCOVERY_ONBOARDING.md`;
+- gramatica `SemanticQuickAction`.
+
+Risco de regressao:
+
+- duplicar atalhos demais se o modulo ja estiver completo.
+
+Criterios de conclusao:
+
+- pelo menos setup de Academia/Agenda mostra proximas tarefas com nome semantico;
+- acoes completas viram secundarias ou somem;
+- docs atualizados.
+
+Entregue em 2026-05-13:
+
+- hub de Gestao passou a derivar `setupActions` por local;
+- `Cadastrar quadra` aparece quando nao ha quadras e leva direto para Agenda > Quadras;
+- `Cadastrar professor` aparece quando Academia ainda nao tem professores e leva para Academia > Professores;
+- `Criar turma` aparece quando nao ha turmas e leva para Academia > Turmas;
+- `Definir regras de reserva` e `Configurar plano` tambem aparecem como acoes semanticas quando faltam;
+- setup do admin do local deixou de mostrar `Setup` generico e passou a mostrar a intencao do proximo passo;
+- acoes aparecem apenas quando a base esta incompleta.
+
+### [x] COMP-02 - Separar competicoes jogando, organizando e descobrindo
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Reduzir mistura entre torneios/ligas que o usuario joga e torneios/ligas que ele organiza.
+
+Criterios:
+
+- hub de eventos deve apresentar recortes `Jogando`, `Organizando` e `Descobrir`;
+- criacao de torneio/liga deve aparecer apenas no contexto de organizacao;
+- jogador comum nao deve receber CTA administrativo como prioridade;
+- organizador ve fila operacional das competicoes antes de descoberta publica.
+
+Telas/componentes afetados:
+
+- `EventsHubPage`;
+- `EventsPage`;
+- `LeaguesPage`;
+- links para `TournamentPage` e `LeagueDetailsPage`.
+
+Ganhos esperados:
+
+- menos ambiguidade;
+- organizador encontra operacao rapidamente;
+- jogador nao sente painel administrativo.
+
+Dependencias:
+
+- `PROFILE_PLAN_ACCESS_MODEL.md`;
+- dados atuais de autoria/participacao.
+
+Risco de regressao:
+
+- eventos publicos ficarem escondidos demais para jogador.
+
+Criterios de conclusao:
+
+- primeira viewport de eventos deixa claro se o usuario esta jogando, organizando ou descobrindo;
+- criacao nao compete com descoberta para jogador comum.
+
+Entregue em 2026-05-13:
+
+- `/eventos` passou a abrir com recortes explicitos `Jogando`, `Organizando` e `Descobrir`;
+- quando o usuario organiza torneios/ligas, a fila operacional de organizador aparece antes de jogador e descoberta;
+- quando o usuario nao organiza nada, o hub nao mostra `Criar torneio`/`Criar liga` como CTA principal;
+- criacao continua concentrada no contexto de organizacao: `/eventos/torneios?view=organizing` e `/eventos/ligas?view=organizing`;
+- descoberta virou bloco proprio com entrada em torneio, entrada em liga, locais publicos e acesso secundario ao contexto de organizacao;
+- mobile recebeu recortes empilhados e acoes de descoberta em rows, reduzindo a sensacao de painel administrativo.
+
+### [x] ONBOARD-01 - Criar checklist operacional por perfil
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Transformar setup inicial em caminho guiado para academia, professor solo e organizador.
+
+Criterios:
+
+- academia nova ve passos: quadras, regras, professores, turmas, alunos, financeiro, publicacao;
+- professor solo ve passos leves: perfil, quadras usadas, agenda, alunos, mensalidade;
+- organizador ve passos: criar evento, classes, inscricoes, publicar, gerar partidas;
+- cada passo tem CTA primaria clara;
+- passos completos ficam calmos.
+
+Telas/componentes afetados:
+
+- `/gestao`;
+- `PlaceAdminShell`;
+- hubs de competicao;
+- empty/setup states.
+
+Ganhos esperados:
+
+- menos abandono no primeiro uso;
+- menos necessidade de suporte;
+- mais percepcao de produto inteligente.
+
+Dependencias:
+
+- `TASK_DISCOVERY_ONBOARDING.md`;
+- estados de setup ja existentes.
+
+Risco de regressao:
+
+- virar checklist grande demais se nao houver progressao.
+
+Criterios de conclusao:
+
+- pelo menos um perfil com checklist acionavel implementado;
+- checklist nao aparece como dashboard permanente depois de resolvido.
+
+Entregue em 2026-05-13:
+
+- `/gestao` ganhou roteiro de implantacao para academia/clube quando algum local ainda tem base incompleta;
+- checklist mostra progresso percentual, etapas concluidas e proximos passos acionaveis;
+- etapas cobrem quadras, regras, professores, turmas, clientes, plano financeiro e pagina publica;
+- checklist respeita plano simples de reservas e nao exige professor/turma quando o local nao e academia;
+- bloco some quando a base esta completa, evitando virar dashboard permanente;
+- cada passo abre diretamente o modulo/subvisao correta, mantendo a descoberta por intencao.
+
+### [x] ONBOARD-02 - Expandir checklist para organizador e professor solo
+
+Status: `[x]` concluido parcial por perfil disponivel
+
+Objetivo:
+
+- Completar onboarding por perfil fora da academia/clube completa.
+
+Criterios:
+
+- organizador novo ve roteiro curto: criar evento, classes/categorias, inscricoes, publicar, gerar partidas;
+- professor solo ve roteiro leve: perfil, quadras usadas, agenda, alunos e mensalidade;
+- nenhum perfil ve modulos empresariais que nao pertencem ao plano;
+- checklist deve ser contextual, curto e acionavel.
+
+Telas/componentes afetados:
+
+- `/eventos`;
+- `EventsPage`;
+- `LeaguesPage`;
+- `/gestao` quando o perfil for professor/autonomo;
+- docs de perfis e onboarding.
+
+Ganhos esperados:
+
+- onboarding mais completo sem transformar o produto em ERP;
+- organizador e professor encontram o basico sem suporte;
+- menos ferramentas escondidas em modulos tecnicos.
+
+Dependencias:
+
+- `PROFILE_PLAN_ACCESS_MODEL.md`;
+- dados reais para detectar professor solo quando existir.
+
+Risco de regressao:
+
+- mostrar checklist para usuario que so quer jogar.
+
+Criterios de conclusao:
+
+- pelo menos organizador novo tem checklist acionavel em contexto de competicao;
+- professor solo fica documentado ou implementado conforme dados disponiveis.
+
+Entregue em 2026-05-13:
+
+- `/eventos` ganhou roteiro secundario para `Organizar pela primeira vez` quando o usuario ainda nao organiza torneios/ligas;
+- roteiro orienta o organizador novo por criar torneio, criar liga, configurar classes/inscricoes e publicar/operar;
+- primeiros passos sao acionaveis e levam para os fluxos de criacao em contexto `organizing`;
+- passos posteriores ficam calmos e explicativos ate existir um evento criado;
+- roteiro nao aparece como prioridade acima de `Jogando` e `Descobrir`, preservando experiencia de jogador comum;
+- professor solo permaneceu documentado como pendente porque ainda falta uma deteccao/entrada confiavel de perfil autonomo no produto atual.
+
+### [x] PROFILE-01 - Definir entrada operacional de professor solo
+
+Status: `[x]` concluido com gate seguro por papel `coach`
+
+Objetivo:
+
+- Criar base de frontend/UX para professor autonomo sem confundir com academia/clube completo.
+
+Criterios:
+
+- professor solo nao deve ver cantina/equipe/CRM pesado como rotina inicial;
+- entrada deve priorizar aulas de hoje, alunos, agenda e mensalidades;
+- setup deve ter passos leves: perfil, quadras usadas, agenda, alunos e valor/mensalidade;
+- se nao houver dado suficiente para detectar perfil, documentar e criar gate seguro.
+
+Telas/componentes afetados:
+
+- `/gestao`;
+- `ManagementHubPage`;
+- navegacao global;
+- docs de perfis/planos.
+
+Ganhos esperados:
+
+- separar gestao leve de professor do Management OS completo;
+- reduzir aparencia de ERP para usuario autonomo;
+- preparar plano/permissao mais vendavel.
+
+Dependencias:
+
+- modelo de perfil/plano do professor solo;
+- fonte de dados para identificar professor autonomo.
+
+Risco de regressao:
+
+- esconder ferramentas de academia para gestor real se a deteccao for fraca.
+
+Criterios de conclusao:
+
+- entrada segura documentada e, se possivel, implementada sem afetar academia/clube;
+- nenhum usuario comum passa a ver gestao indevida.
+
+Entregue em 2026-05-13:
+
+- `/gestao` ganhou uma entrada leve `Minha operacao de aulas` para usuarios com papel `coach`;
+- entrada prioriza aulas de hoje, turmas e alunos, sem expor cantina, equipe, CRM pesado ou financeiro completo;
+- atalhos levam somente para `Academia > Hoje`, `Academia > Turmas` e `Academia > Alunos`;
+- fila operacional agregada passou a respeitar modulos acessiveis por papel antes de mostrar pendencias;
+- professor com papel `coach` deixa de receber pendencias globais de modulos que nao acessa;
+- a solucao usa gate seguro existente, sem inventar plano/permissao nova.
+
+### [x] QUEUE-REFRESH-01 - Repriorizar proximos refinamentos de alto impacto
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Revisar a fila apos fechar perfis/onboarding iniciais e escolher o proximo bloco com maior ganho perceptivel.
+
+Criterios:
+
+- manter foco em UX/frontend, sem reabrir arquitetura;
+- priorizar pontos ainda fracos em `CURRENT_PRODUCT_STATE.md`;
+- transformar o proximo bloco em task executavel;
+- evitar micro-refinamentos sem impacto operacional.
+
+Telas/componentes afetados:
+
+- `EXECUTION_QUEUE.md`;
+- docs vivos relevantes;
+- possivelmente Competition OS, Gestao ou mobile sheets conforme prioridade.
+
+Ganhos esperados:
+
+- continuidade mais clara;
+- menos dispersao;
+- proxima rodada maior e mais objetiva.
+
+Dependencias:
+
+- estado atual dos MDs.
+
+Risco de regressao:
+
+- virar planejamento demais se nao sair com proxima task objetiva.
+
+Criterios de conclusao:
+
+- proximo item `[>]` definido com criterios, telas e conclusao clara.
+
+Entregue em 2026-05-13:
+
+- pontos fracos atuais foram revisados sem reabrir a arquitetura consolidada;
+- o proximo bloco prioritario passa a ser Competition OS, especificamente operacao de partidas/resultados;
+- a escolha prioriza uma dor ainda visivel para jogador e organizador: partidas com informacao espalhada, cards altos e acoes que ainda podem competir no mobile;
+- Gestao/perfis/onboarding ficam como base consolidada, com refinamentos futuros guiados por dados reais;
+- nova task `[>] COMP-03` foi criada com criterios operacionais, telas afetadas e criterio de conclusao.
+
+### [>] COMP-03 - Refinar operacao de partidas e resultados no Competition OS
+
+Status: `[ ]` pendente
+
+Objetivo:
+
+- Reduzir card pile em partidas, confirmacoes e resultados, colocando a proxima acao em rows compactas e claras para jogador e organizador.
+
+Criterios:
+
+- jogador deve entender sua proxima partida/pendencia sem duplicidade confusa entre resumo e lista;
+- organizador deve ver resultados, confirmacoes e pendencias como fila operacional antes de chave/listas longas;
+- cada partida deve expor contexto, status, horario/local e uma acao primaria;
+- acoes secundarias devem ficar em detalhe, drawer/sheet ou tratamento quiet;
+- mobile deve evitar card alto, tabela larga e botoes desalinhados.
+
+Telas/componentes afetados:
+
+- `TournamentPage`;
+- `LeagueDetailsPage`;
+- `CompetitionOperationalQueue`;
+- componentes/estilos de partida, confirmacao e resultado;
+- docs de Competition OS e screen responsibilities.
+
+Ganhos esperados:
+
+- menos verticalidade em competicoes;
+- jogador entende mais rapido qual jogo exige acao;
+- organizador resolve resultado/confirmacao com menos varredura visual;
+- Competition OS fica mais coerente com a gramatica `EntityActionRow`.
+
+Dependencias:
+
+- dados atuais de partidas, confirmacoes e resultados;
+- padroes existentes de `CompetitionOperationalQueue` e `EntityActionRow`.
+
+Risco de regressao:
+
+- afetar fluxos de confirmar presenca, desfazer confirmacao e lancar/conferir resultado.
+
+Criterios de conclusao:
+
+- pelo menos um fluxo critico de partida em torneio ou liga convertido para row operacional;
+- acao primaria preservada e visualmente priorizada;
+- duplicidade de proxima partida reduzida quando houver sobreposicao com `Minhas partidas`;
+- `npm run lint` e `npm run build` passando quando houver alteracao de codigo.
+
 ### [x] GESTAO-01 - Refinar mobile real da tela `/gestao`
 
 Status: `[x]` concluido
@@ -459,9 +869,9 @@ Entregue em 2026-05-13:
 - Financeiro/recebiveis passou a destacar `Lembrar todos` e `Lembrar` como primary, deixando recortes `Socios` e `Academia` quiet;
 - criacao de reserva passou a ter `Reservar` como unica acao forte; buscar, bloquear, espera e selecao de quadra ficaram secondary/quiet.
 
-### [>] TYPO-01 - Revisar typography e densidade nas telas principais
+### [x] TYPO-01 - Revisar typography e densidade nas telas principais
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -501,9 +911,19 @@ Criterios de conclusao:
 - telas prioritarias usando escala coerente;
 - mobile sem texto truncado ruim.
 
-### [ ] PUBLIC-01 - Refinar pagina publica do local para conversao premium
+Entregue em 2026-05-13:
 
-Status: `[ ]` pendente
+- removido uso de `font-size: clamp(...)` nas areas auditadas, evitando tipografia dependente do viewport;
+- headers operacionais passaram para tokens fixos (`2xl`, `lg`, `md`) em vez de escala fluida;
+- Home/Player App manteve destaque sem hero tipografico exagerado;
+- Management OS ficou mais compacto, com titulo de shell e descricao menos pesados;
+- Competition OS reduziu titulo, label e metadados para leitura mais densa;
+- section titles ficaram menores e mais consistentes com uso operacional;
+- public/ranking heroes mantem destaque com `3xl`, mas sem escala por viewport.
+
+### [x] PUBLIC-01 - Refinar pagina publica do local para conversao premium
+
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -542,9 +962,20 @@ Criterios de conclusao:
 - mobile reserva em poucos toques;
 - desktop com marca e oferta claras.
 
-### [ ] FORMS-01 - Reduzir formularios inline em rotinas recorrentes
+Entregue em 2026-05-13:
 
-Status: `[ ]` pendente
+- hero publico passou a vender a oferta principal do local com faixa curta de preco/disponibilidade;
+- CTA primario mudou para `Reservar quadra` e fica na primeira viewport;
+- `Ver turmas` virou acao secundaria clara, sem competir com reserva;
+- Gestao e WhatsApp ficaram quiet, preservando separacao entre publico e operacao;
+- KPIs viraram trust strip compacto logo abaixo do hero;
+- bloco de divulgacao/widget saiu do topo e foi para o fim da grade;
+- reserva publica ganhou borda de destaque e copy mais direta;
+- mobile ganhou CTA sticky de reserva para reduzir friccao.
+
+### [x] FORMS-01 - Reduzir formularios inline em rotinas recorrentes
+
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -585,6 +1016,124 @@ Criterios de conclusao:
 - fluxo recorrente fica mais curto;
 - formulario complexo nao abre no topo da rotina.
 
+Entregue em 2026-05-13:
+
+- criacao de reserva/bloqueio/lista de espera deixou de abrir como formulario longo no corpo da Agenda;
+- campos frequentes ficaram em uma linha operacional: quadra, inicio, fim, buscar e reservar;
+- observacao, repeticao, bloqueio e lista de espera foram movidos para `Opcoes avancadas`;
+- `Reservar` ficou como acao primaria unica do composer;
+- `Buscar`, `Bloquear horario` e `Entrar na espera` ficaram secundarios/quiet, sem competir visualmente;
+- mobile empilha os campos essenciais e deixa as acoes com largura confortavel.
+
+### [x] FORMS-02 - Aplicar formulario progressivo em CRM e Cantina
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Tirar cadastros auxiliares recorrentes do corpo principal quando eles competem com a fila operacional.
+
+Criterios:
+
+- CRM deve priorizar fila/contatos antes de captura;
+- novo lead/cliente deve abrir em drawer/sheet ou composer compacto;
+- Cantina deve separar venda rapida de cadastro de produto;
+- campos raros de produto ficam progressivos;
+- uma acao primaria por bloco.
+
+Telas/componentes afetados:
+
+- `PlaceCrmModule`;
+- `PlaceCrmContactForm`;
+- `PlaceCanteenProductsModule`;
+- `PlaceCanteenProductForm`;
+- `PlaceCanteenSaleForm`.
+
+Ganhos esperados:
+
+- menos aparencia de painel com formularios empilhados;
+- operacao diaria mais rapida;
+- cadastro continua completo, mas deixa de competir com tarefas frequentes.
+
+Dependencias:
+
+- `EntityDrawer`;
+- padrao de ProgressiveForm documentado em `COMPONENT_GRAMMAR.md`.
+
+Risco de regressao:
+
+- esconder captura importante demais no CRM vazio.
+
+Criterios de conclusao:
+
+- filas/listas aparecem antes de formularios auxiliares;
+- captura continua acessivel em um toque;
+- mobile nao mostra formulario longo antes da tarefa principal.
+
+Entregue em 2026-05-13:
+
+- CRM passou a mostrar lista/fila de contatos antes da captura de novo lead;
+- formulario de novo contato virou `ProgressiveForm`, com nome, telefone e interesse no fluxo principal;
+- email, origem, responsavel, proximo contato e notas ficaram em camada secundaria;
+- Cantina passou a exibir venda rapida como rotina principal na visao de venda;
+- cadastro de produto virou formulario progressivo, deixando categoria como campo auxiliar;
+- catalogo da cantina passou de cards para rows com preco, estoque e status;
+- mobile deixa de abrir CRM/Cantina com formulario longo antes da tarefa principal.
+
+### [x] ROWS-02 - Refinar rows de partidas e alunos nos fluxos internos
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Continuar reduzindo cards/listas altas em fluxos que ainda exigem leitura rapida e acao operacional.
+
+Criterios:
+
+- partidas pendentes devem mostrar contexto, status e acao primaria sem card alto;
+- alunos/turmas devem evitar mosaico quando a tarefa e chamada, pagamento ou lembrete;
+- detalhe deve ir para drawer/sheet quando houver historico longo;
+- mobile deve priorizar uma linha de contexto e uma acao clara.
+
+Telas/componentes afetados:
+
+- `TournamentPage`;
+- `LeagueDetailsPage`;
+- `PlaceAcademyClassesModule`;
+- `PlaceAcademyStudentsModule`;
+- componentes de partidas/alunos que ainda usem cards altos.
+
+Ganhos esperados:
+
+- mais velocidade operacional em competicoes e academia;
+- menos verticalidade;
+- consistencia maior com `EntityActionRow`.
+
+Dependencias:
+
+- `EntityActionRow`;
+- `CompetitionOperationalQueue`;
+- gramatica de rows documentada.
+
+Risco de regressao:
+
+- perder informacao importante de partida/aluno se a row ficar curta demais.
+
+Criterios de conclusao:
+
+- pelo menos um fluxo critico de partida ou aluno convertido para row compacta;
+- acao primaria preservada;
+- mobile sem tabela/card alto desnecessario.
+
+Entregue em 2026-05-13:
+
+- turmas da Academia deixaram de aparecer como mosaico de cards;
+- `PlaceAcademyClassesModule` passou a usar `EntityActionRow`;
+- cada turma mostra horario, professor/quadra/nivel, ocupacao, pendencias e mensalidade em leitura horizontal;
+- capacidade da turma virou acao/metadado forte da row;
+- reposicao e total de matriculas ficaram como metricas de suporte;
+- fluxo de turmas ficou mais consistente com CRM, Financeiro e Cantina.
+
 ## Concluidos recentes
 
 ### [x] DOCS-01 - Criar sistema visual de referencia
@@ -620,9 +1169,9 @@ Ganho:
 
 ## Bloqueios conhecidos
 
-### [!] DATA-01 - Alguns refinamentos dependem de dados reais variados
+### [x] DATA-01 - Alguns refinamentos dependem de dados reais variados
 
-Status: `[!]` bloqueado parcial
+Status: `[x]` concluido por checklist operacional
 
 Problema:
 
@@ -637,3 +1186,11 @@ Como desbloquear:
 Impacto:
 
 - sem dados variados, risco de otimizar apenas o estado vazio.
+
+Entregue em 2026-05-13:
+
+- criado `DEMO_STATE_QA_CHECKLIST.md`;
+- definidos estados obrigatorios para Gestao, Agenda, Academia, Clientes, Cantina, Competition OS e Pagina publica;
+- definidos viewports obrigatorios: 390px, 430px, 1366px e desktop amplo;
+- definido criterio de conclusao para futuras tarefas quando faltar massa real;
+- bloqueio deixa de travar a fila e vira checklist vivo de QA/demo.

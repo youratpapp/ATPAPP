@@ -104,6 +104,8 @@ Uso atual no produto:
 
 - CRM do local: lead/cliente com interesse, origem, responsavel, follow-up e acao primaria contextual.
 - Financeiro do local: recebivel com cliente/turma, valor, status e lembrete como acao primaria.
+- Cantina: produto com categoria, preco, estoque e status de estoque.
+- Academia: turma com horario, professor/quadra/nivel, ocupacao, pendencias e metricas de suporte.
 
 Variacao importante:
 
@@ -286,6 +288,10 @@ Uso:
 - registrar venda;
 - confirmar presenca;
 - adicionar aluno.
+- cadastrar quadra;
+- cadastrar professor;
+- criar turma;
+- criar torneio;
 
 Anatomia:
 
@@ -305,6 +311,101 @@ Mobile:
 Anti-pattern:
 
 - botao flutuante generico com muitas acoes sem prioridade.
+
+Variacao: SemanticQuickAction
+
+Uso:
+
+- setup inicial;
+- onboarding operacional;
+- entrada de perfil;
+- tarefas que o usuario procura por intencao.
+
+Regra:
+
+```text
+O texto deve ser a tarefa real: Cadastrar quadra, Cadastrar professor, Criar torneio.
+```
+
+Nao usar:
+
+- Recursos;
+- Configurar modulo;
+- Gerenciar itens;
+- Abrir ferramenta.
+
+Comportamento:
+
+- aparece apenas se o plano/papel permite;
+- se faltar dependencia, leva ao passo anterior;
+- se a tarefa ja estiver resolvida, vira secundaria ou some;
+- mobile pode abrir bottom sheet com no maximo 5 tarefas principais.
+
+## ProgressiveForms
+
+Uso:
+
+- reserva/bloqueio;
+- captura de lead;
+- cadastro de produto;
+- lancamento financeiro simples;
+- edicao curta de entidade.
+
+Regra principal:
+
+```text
+Campos frequentes no composer. Campos raros em avancado, drawer, sheet ou wizard.
+```
+
+Desktop:
+
+- primeira linha deve conter apenas o necessario para concluir a tarefa recorrente;
+- acao primaria fica visivel e unica;
+- acoes alternativas ficam `secondary` ou `quiet`;
+- detalhes raros usam disclosure (`Opcoes avancadas`) ou drawer.
+
+Mobile:
+
+- campos essenciais empilham em ordem de decisao;
+- CTA principal deve ter largura confortavel;
+- detalhes raros ficam abaixo de summary ou em bottom sheet;
+- formulario nao deve ocupar a primeira viewport antes da fila operacional.
+
+Correto:
+
+```text
+Quadra | Inicio | Fim | Buscar | Reservar
+Opcoes avancadas: observacao, repetir, bloquear, lista de espera
+```
+
+Incorreto:
+
+```text
+Formulario com 8 campos, 4 botoes equivalentes e lista de resultados todos no mesmo bloco.
+```
+
+Uso atual no produto:
+
+- criacao de reserva no admin do local: campos essenciais ficam no composer principal; observacao, repeticao, bloqueio e lista de espera ficam em `Opcoes avancadas`.
+- CRM do local: contatos/leads aparecem antes da captura; novo contato expande apenas quando necessario.
+- Cantina: venda rapida fica como rotina principal; cadastro de produto fica progressivo e auxiliar ao catalogo.
+
+## PublicHero
+
+Uso:
+
+- pagina publica do local;
+- inscricao publica;
+- descoberta de clube/competicao.
+
+Regras:
+
+- marca, localidade e oferta principal na primeira viewport;
+- uma CTA primaria de conversao;
+- acao secundaria apenas se ampliar conversao, como turmas;
+- acoes internas/gestao devem ser quiet;
+- divulgacao/widget fica depois da conversao;
+- mobile pode usar CTA sticky quando reserva/inscricao for objetivo principal.
 
 ## Tables
 

@@ -149,6 +149,7 @@ Evoluido em 2026-05-13:
 - criado `PlaceAcademyClassSetupModule` para tirar criacao de turma/horario aberto do corpo inline e concentrar setup de turma em um fluxo unico.
 - criado `PlaceAcademyFitModule` para separar busca de encaixes, aula avulsa, reposicao e aprovacao de pedidos em uma fila propria.
 - criado `WorkspaceEmptyState` e aplicado em Academia para transformar telas vazias em proxima acao clara.
+- turmas da Academia passaram a usar `EntityActionRow`, reduzindo mosaico de cards e alinhando ocupacao, pendencias e mensalidade ao padrao operacional.
 - App passou a carregar paginas por rota com `React.lazy`/`Suspense`, reduzindo o bundle inicial e preparando separacao real por dominios.
 - criada rota `/locais/:placeId/admin` com subrota por modulo para iniciar a separacao real entre descoberta publica e operacao administrativa.
 - troca de modulo no admin do local passou a sincronizar a URL com slugs operacionais em portugues.
@@ -178,6 +179,8 @@ Evoluido em 2026-05-13:
 - CRM e recebiveis financeiros receberam primeira onda de rows operacionais com `EntityActionRow`, reduzindo botoes equivalentes e mantendo detalhe/historico como acao secundaria.
 - `/inicio` recebeu primeira reestruturacao de Player App: painel do dia, rows de proxima acao e atalhos de jogador substituem hero grande, quick strip generico e KPIs soltos.
 - primeira auditoria de CTA hierarchy aplicada: `secondary` ficou menos pesado, `quiet` foi criado e telas prioritarias passaram a destacar uma acao principal por contexto.
+- primeira revisao de typography aplicada: headers operacionais e heroes auditados passaram a usar tokens fixos, reduzindo variacao por viewport e peso visual excessivo.
+- pagina publica do local recebeu primeira rodada de conversao premium: oferta no hero, reserva como CTA principal, trust strip compacto, divulgacao no fim e sticky CTA mobile.
 
 ## Fase 3 - CompetitionShell
 
@@ -210,6 +213,13 @@ Evoluido em 2026-05-13:
 - Competition OS recebeu refinamento visual: liga coloca temporada/classe antes de tabs e KPIs, torneio usa overview da mesma familia, filas viraram rows e publicacao ficou secundaria.
 - filtros de temporada/classe da liga passaram a usar `ResponsiveFilterSheet`, mantendo desktop inline e mobile em bottom sheet.
 
+Proximo foco definido em 2026-05-13:
+
+- refinar operacao interna de partidas/resultados no Competition OS;
+- reduzir cards altos e duplicidade entre resumo, `Minhas partidas`, chave e fila operacional;
+- transformar confirmacao, resultado e conferencia em rows com contexto, status e uma acao primaria;
+- preservar fluxos sensiveis de confirmar presenca, desfazer confirmacao e lancar/conferir resultado.
+
 ## Fase 4 - Wizards de criacao
 
 Prioridade: media-alta.
@@ -235,6 +245,8 @@ Evoluido em 2026-05-13:
 - criacao de torneio passou de modal simples para wizard com identidade/acesso e local.
 - criacao de liga passou de modal simples para wizard com identidade/formato e recorte/acesso.
 - criacao de turma da Academia passou a usar `SetupWizard` dentro de `PlaceAcademyClassSetupModule`, separando identidade, agenda e perfil/preco.
+- criacao de reserva/bloqueio/lista de espera passou a usar composer progressivo em `PlaceBookingCreateModule`, deixando campos frequentes no fluxo principal e campos raros em `Opcoes avancadas`.
+- CRM e Cantina passaram a usar formularios progressivos para captura/cadastro auxiliar, preservando lista/fila e venda rapida como tarefas principais.
 
 ## Fase 4.5 - Performance estrutural
 
@@ -289,7 +301,12 @@ Entregas:
 - abandono de wizard;
 - acoes mais usadas por persona;
 - pontos de retorno/erro.
+- checklist de estados demo/QA para validar telas com dados vazios, cheios, pendentes e mobile.
 
 Impacto:
 
 - evolucao baseada em comportamento real.
+
+Evoluido em 2026-05-13:
+
+- criado `DEMO_STATE_QA_CHECKLIST.md` com estados minimos por Gestao, Agenda, Academia, Clientes, Cantina, Competition OS e Pagina publica.

@@ -2727,7 +2727,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           {
             key: "courts",
             done: activeCourts.length > 0,
-            title: "Quadras",
+            title: "Cadastrar quadra",
             detail: activeCourts.length ? `${countLabel(activeCourts.length, "quadra cadastrada", "quadras cadastradas")}` : "Cadastre pelo menos uma quadra para reservas.",
             module: "bookings" as PlaceManagementModule,
           },
@@ -2739,20 +2739,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             module: "team" as PlaceManagementModule,
           },
           {
-            key: "academy",
-            done: !access.canUseAcademy || (academyCoaches.length > 0 && activeAcademyClasses.length > 0),
-            title: "Academia",
+            key: "academy-coaches",
+            done: !access.canUseAcademy || academyCoaches.length > 0,
+            title: "Cadastrar professor",
             detail: access.canUseAcademy
-              ? academyCoaches.length && activeAcademyClasses.length
-                ? `${countLabel(academyCoaches.length, "professor", "professores")}, ${countLabel(activeAcademyClasses.length, "turma", "turmas")}`
-                : "Cadastre professores e turmas basicas."
+              ? academyCoaches.length
+                ? `${countLabel(academyCoaches.length, "professor cadastrado", "professores cadastrados")}`
+                : "Cadastre professores para liberar grade, chamada e aulas."
+              : "Modulo desativado no plano.",
+            module: "academy" as PlaceManagementModule,
+          },
+          {
+            key: "academy-classes",
+            done: !access.canUseAcademy || activeAcademyClasses.length > 0,
+            title: "Criar turma",
+            detail: access.canUseAcademy
+              ? activeAcademyClasses.length
+                ? `${countLabel(activeAcademyClasses.length, "turma ativa", "turmas ativas")}`
+                : "Crie a primeira turma para organizar alunos e mensalidades."
               : "Modulo desativado no plano.",
             module: "academy" as PlaceManagementModule,
           },
           {
             key: "clients",
             done: !access.canUseMemberships || activeMembershipPlans.length > 0,
-            title: "Planos de socio",
+            title: "Configurar plano",
             detail: access.canUseMemberships
               ? activeMembershipPlans.length
                 ? `${countLabel(activeMembershipPlans.length, "plano ativo", "planos ativos")}`
@@ -3906,19 +3917,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       />
                     ) : null}
                     {canteenView === "sell" ? (
-                      <WorkspaceGrid>
-                        <WorkspaceCard
-                          title="Venda rapida"
-                          subtitle="Selecione um produto abaixo ou registre item avulso."
-                          metrics={[`${posSaleDraft.quantity} un.`, posSaleDraft.unitAmount ? `R$ ${posSaleDraft.unitAmount}` : "Valor aberto"]}
-                        />
-                      </WorkspaceGrid>
+                      <PlaceCanteenSaleForm
+                        busy={busy}
+                        draft={posSaleDraft}
+                        products={posProducts}
+                        onChange={(draft) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                        onSubmit={() => void onRecordPosSale(p)}
+                      />
                     ) : null}
                     {canteenView === "stock" ? (
                       <PlaceCanteenStockModule countLabel={countLabel} formatMoneyFromCents={formatMoneyFromCents} products={posProducts} />
                     ) : null}
                     {canteenView === "products" ? (
-                      <PlaceCanteenProductsModule formatMoneyFromCents={formatMoneyFromCents} products={posProducts} />
+                      <>
+                        <PlaceCanteenProductsModule formatMoneyFromCents={formatMoneyFromCents} products={posProducts} />
+                        <PlaceCanteenProductForm
+                          busy={busy}
+                          draft={posProductDraft}
+                          onChange={(draft) => setPosProductDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                          onSubmit={() => void onCreatePosProduct(p)}
+                        />
+                      </>
                     ) : null}
                   </CanteenWorkspaceShell>
                 ) : null}

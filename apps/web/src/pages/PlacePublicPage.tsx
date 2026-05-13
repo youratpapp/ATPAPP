@@ -155,6 +155,17 @@ export function PlacePublicPage({ user, profile }: Props) {
     () => activeClasses.filter((academyClass) => academyClass.monthlyFeeCents > 0).sort((a, b) => a.monthlyFeeCents - b.monthlyFeeCents)[0],
     [activeClasses]
   );
+  const hasBookableOffer = activeCourts.length > 0;
+  const hasAcademyOffer = activeClasses.length > 0;
+  const heroOffer = hasBookableOffer
+    ? cheapestCourt
+      ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
+      : "Quadras disponiveis para reserva"
+    : hasAcademyOffer
+      ? cheapestClass
+        ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
+        : "Turmas abertas para novos alunos"
+      : "Clube esportivo aberto para comunidade";
 
   const sharePlace = () => {
     if (!place) return;
@@ -285,23 +296,29 @@ export function PlacePublicPage({ user, profile }: Props) {
               <div>
                 <span>{location || "Clube de esportes de raquete"}</span>
                 <h2>{place.name}</h2>
-                <p>{place.description || "Reserve quadra, acompanhe turmas, encontre jogos abertos e veja os planos do local."}</p>
+                <p>{place.description || "Reserve quadra, entre em turmas, encontre jogos abertos e veja os planos do local."}</p>
+                <div className="place-public-offer-strip" aria-label="Ofertas do local">
+                  <strong>{heroOffer}</strong>
+                  <small>{activeCourts.length} quadra(s) | {activeClasses.length} turma(s) | {matches.length} jogo(s) aberto(s)</small>
+                </div>
                 <ActionBar className="place-public-hero-actions" label="Acoes publicas do local">
                   <button className="primary" onClick={() => document.getElementById("place-public-booking")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-                    Solicitar reserva
+                    Reservar quadra
+                  </button>
+                  <button className="secondary" onClick={() => document.getElementById("place-public-academy")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                    Ver turmas
                   </button>
                   {canOpenAdmin ? (
-                    <button onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
+                    <button className="quiet" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
                       Gestao
                     </button>
                   ) : null}
-                  <button onClick={sharePlace}>WhatsApp</button>
-                  <button onClick={() => void copyLink()}>Copiar link</button>
+                  <button className="quiet" onClick={sharePlace}>WhatsApp</button>
                 </ActionBar>
               </div>
             </section>
 
-            <section className="place-public-kpis">
+            <section className="place-public-kpis place-public-trust-strip">
               <article>
                 <strong>{activeCourts.length}</strong>
                 <span>quadras ativas</span>
@@ -321,26 +338,9 @@ export function PlacePublicPage({ user, profile }: Props) {
             </section>
 
             <section className="place-public-grid">
-              <article className="place-public-channel-card">
-                <PublishingKit
-                  eyebrow="Canais publicos"
-                  title="Divulgar local"
-                  hint="Use o link na bio, WhatsApp e Instagram. Para site proprio, copie o widget incorporavel."
-                  actions={
-                    <>
-                      <button onClick={() => void copyLink()}>Copiar link</button>
-                      <button onClick={() => void copyWidget()}>Copiar widget</button>
-                      <button onClick={sharePlace}>Compartilhar WhatsApp</button>
-                    </>
-                  }
-                />
-                <code>{publicLink}</code>
-                {channelFeedback ? <p className="subtle">{channelFeedback}</p> : null}
-              </article>
-
               <article id="place-public-booking" className="place-public-booking-card">
-                <span>Reserva publica</span>
-                <h3>Solicitar horario</h3>
+                <span>Reserva</span>
+                <h3>Escolha um horario</h3>
                 <div className="place-public-booking-form">
                   <label>
                     Quadra
@@ -409,7 +409,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                   </label>
                 </div>
                 <div className="place-public-hero-actions">
-                  <button onClick={() => void checkAvailability()} disabled={availabilityBusy || !bookingDraft.startsAt || !bookingDraft.endsAt}>
+                  <button className="secondary" onClick={() => void checkAvailability()} disabled={availabilityBusy || !bookingDraft.startsAt || !bookingDraft.endsAt}>
                     Verificar disponibilidade
                   </button>
                   <button
@@ -419,7 +419,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                   >
                     Solicitar reserva
                   </button>
-                  <button onClick={() => navigate("/locais")}>Ver agenda completa</button>
+                  <button className="quiet" onClick={() => navigate("/locais")}>Ver outros locais</button>
                 </div>
                 {bookingFeedback ? <p className="subtle">{bookingFeedback}</p> : null}
               </article>
@@ -437,7 +437,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                 {cheapestCourt ? <p className="subtle">A partir de {formatMoneyFromCents(cheapestCourt.bookingFeeCents)} por reserva.</p> : null}
               </article>
 
-              <article>
+              <article id="place-public-academy">
                 <span>Academia</span>
                 <h3>Turmas e professores</h3>
                 <div className="place-public-booking-form compact">
@@ -543,7 +543,30 @@ export function PlacePublicPage({ user, profile }: Props) {
                 ))}
                 {!activePlans.length ? <p className="subtle">Planos ainda nao publicados.</p> : null}
               </article>
+
+              <article className="place-public-channel-card">
+                <PublishingKit
+                  eyebrow="Compartilhar"
+                  title="Levar para WhatsApp ou site"
+                  hint="Use o link na bio, envie no WhatsApp ou incorpore no site do clube."
+                  actions={
+                    <>
+                      <button className="secondary" onClick={() => void copyLink()}>Copiar link</button>
+                      <button className="quiet" onClick={() => void copyWidget()}>Copiar widget</button>
+                      <button className="quiet" onClick={sharePlace}>WhatsApp</button>
+                    </>
+                  }
+                />
+                <code>{publicLink}</code>
+                {channelFeedback ? <p className="subtle">{channelFeedback}</p> : null}
+              </article>
             </section>
+
+            <div className="place-public-sticky-cta" aria-label="Acao rapida de reserva">
+              <button className="primary" onClick={() => document.getElementById("place-public-booking")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
+                Reservar quadra
+              </button>
+            </div>
           </>
         ) : null}
       </div>

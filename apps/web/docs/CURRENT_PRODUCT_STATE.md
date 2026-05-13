@@ -10,6 +10,8 @@ Fonte principal:
 - `DESIGN_TOKENS.md`
 - `SCREEN_RESPONSIBILITIES.md`
 - `REFACTOR_ROADMAP.md`
+- `PROFILE_PLAN_ACCESS_MODEL.md`
+- `TASK_DISCOVERY_ONBOARDING.md`
 
 Data: 2026-05-13
 
@@ -36,6 +38,13 @@ Existe ainda uma camada publica:
 - paginas publicas de locais;
 - inscricao publica de torneios;
 - descoberta de locais/competicoes.
+
+A proxima evolucao consolidada e tornar essas experiencias visiveis por perfil, plano e intencao:
+
+- jogador comum entra apenas no Player App;
+- organizador entra em Competition Management;
+- professor autonomo entra em uma gestao leve de aulas/alunos;
+- academia/clube entra no Management OS completo conforme plano/permissao.
 
 ## Arquitetura consolidada
 
@@ -110,6 +119,7 @@ Padrao de componentes:
 - `Drawer`: detalhe e edicao curta no desktop.
 - `BottomSheet`: escolha, filtro e detalhe curto no mobile.
 - `QuickActions`: tarefa frequente, nao menu generico.
+- `SemanticQuickAction`: atalho nomeado pela intencao do usuario, como Cadastrar quadra, Cadastrar professor ou Criar torneio.
 - `Table`: desktop para volume; mobile vira rows.
 - `Filters`: frequentes visiveis, raros em drawer/sheet.
 
@@ -137,6 +147,20 @@ Card e excecao em operacao diaria. Row e padrao.
 - `EntityActionRow` ja saiu da documentacao e entrou em uso real em CRM e recebiveis financeiros do local.
 - `/inicio` ja iniciou transicao para Player App orientado por proxima acao, com painel do dia e rows de pendencia/agenda/clube antes de conteudo secundario.
 - Hierarquia de CTAs iniciou padrao real: `primary` para acao principal, `secondary` para acao alternativa com borda e `quiet` para suporte/atalhos.
+- Tipografia principal ja iniciou padrao por tokens fixos, sem `font-size` fluido por viewport nas areas auditadas.
+- Pagina publica do local ja iniciou conversao premium: oferta no hero, reserva como CTA principal, divulgacao no fim e CTA sticky mobile.
+- Criacao de reserva na Agenda ja iniciou formulario progressivo: campos essenciais no composer principal e observacao/repeticao/bloqueio/lista de espera em `Opcoes avancadas`.
+- CRM e Cantina ja iniciaram formularios progressivos: lista/fila e venda rapida aparecem antes de cadastro auxiliar.
+- Turmas da Academia ja iniciaram padrao de rows operacionais com ocupacao, horario, pendencias e mensalidade em leitura compacta.
+- Estados de demo/QA foram documentados em `DEMO_STATE_QA_CHECKLIST.md` para evitar calibragem visual apenas em telas vazias.
+- Modelo de perfis/planos foi consolidado em `PROFILE_PLAN_ACCESS_MODEL.md`.
+- Discoverability e onboarding operacional foram consolidados em `TASK_DISCOVERY_ONBOARDING.md`.
+- Navegacao global ja iniciou visibilidade por acesso: `Gestao` depende de local acessivel, `Organizar` depende de competicao organizada e `Locais` voltou para descoberta/player.
+- Setup da Gestao ja iniciou quick actions semanticas: `Cadastrar quadra`, `Cadastrar professor`, `Criar turma`, `Definir regras de reserva` e `Configurar plano` aparecem quando faltam.
+- Hub de competicoes ja separa `Jogando`, `Organizando` e `Descobrir`, priorizando fila operacional quando o usuario organiza e evitando CTA administrativo como prioridade para jogador comum.
+- `/gestao` ja possui checklist de implantacao para academia/clube, com progresso, etapas concluidas e proximo passo acionavel; ele aparece apenas enquanto a base esta incompleta.
+- `/eventos` ja possui roteiro secundario para organizador novo, levando para criar torneio/liga e explicando classes, inscricoes, publicacao e operacao sem virar CTA principal para jogador comum.
+- `/gestao` ja possui entrada leve de professor para papel `coach`, priorizando aulas de hoje, turmas e alunos sem expor modulos empresariais.
 - Visual language premium foi documentada.
 - `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` foram criados.
 - `/gestao` ja foi refinada para ocultar cards zerados e usar rows operacionais de local.
@@ -147,14 +171,17 @@ Card e excecao em operacao diaria. Row e padrao.
 - `PlacesPage` ainda concentra muita orquestracao e ainda influencia a sensacao de admin template.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
+- Sistema ja iniciou visibilidade por perfil/plano na navegacao global, mas ainda precisa aplicar isso nos hubs internos e entradas de setup.
+- Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; ainda falta calibrar fluxos internos especificos por massa real.
+- Acoes de setup de local ja comecaram a ficar semanticamente descobriveis; criacao de torneio/liga ja fica concentrada no contexto de organizacao do Competition OS.
 - Competition OS ja esta mais consistente visualmente, mas ainda precisa refinamento profundo de fluxos internos de torneio/liga.
 - Mobile ainda pode parecer desktop empilhado em varias telas, mas filtros de liga ja usam sheet responsivo como primeiro padrao.
 - Home do jogador ja reforca proxima acao na primeira viewport, mas ainda pode evoluir feed, estados vazios e detalhe mobile.
-- Paginas publicas ainda precisam mais percepcao premium e conversao clara.
-- Typography e spacing ainda variam demais entre telas antigas.
-- Muitos formularios ainda aparecem inline.
+- Paginas publicas ja ganharam primeira rodada de conversao premium, mas ainda podem evoluir imagem, prova social e fluxo de pagamento.
+- Typography e spacing ja melhoraram nas telas prioritarias, mas ainda precisam segunda onda em telas antigas e formularios.
+- Muitos formularios ainda aparecem inline, mas Agenda, CRM e Cantina ja abriram a primeira onda de composer progressivo.
 - Algumas telas ainda exibem KPIs antes de tarefas.
-- Partidas/alunos ainda precisam segunda onda de rows quando o fluxo interno pedir detalhe em drawer/sheet.
+- Partidas e alguns fluxos de alunos ainda podem receber segunda onda de rows quando o fluxo interno pedir detalhe em drawer/sheet.
 
 ## Problemas atuais a atacar
 
@@ -168,6 +195,8 @@ Card e excecao em operacao diaria. Row e padrao.
 8. Tabelas/listas ainda precisam expandir a gramatica mobile uniforme para mais dominios.
 9. Filtros e detalhes ainda ocupando corpo principal demais.
 10. Estados vazios e setup nem sempre guiam a proxima acao.
+11. Funcoes importantes ainda podem ficar escondidas por modulo tecnico em vez de aparecer por intencao.
+12. Onboarding por perfil ainda precisa conduzir melhor academia, professor solo e organizador no primeiro uso.
 
 ## Objetivos UX atuais
 
@@ -179,6 +208,8 @@ Card e excecao em operacao diaria. Row e padrao.
 - Criar sensacao de app esportivo moderno no player/publico.
 - Tornar competicoes mais consistentes para jogador e organizador.
 - Deixar visualmente claro o que e rotina, configuracao, publicacao e relatorio.
+- Mostrar somente o que faz sentido para o perfil, plano e permissao.
+- Nomear tarefas do jeito que o usuario pensa: cadastrar quadra, cadastrar professor, criar torneio, cobrar aluno.
 
 ## Anti-patterns proibidos
 
@@ -191,6 +222,9 @@ Card e excecao em operacao diaria. Row e padrao.
 - Configuracao antes da fila operacional.
 - Mobile como desktop empilhado.
 - Menu mostrando ferramenta sem permissao/plano.
+- Gestao visivel para jogador comum sem papel operacional.
+- Torneios que jogo e torneios que organizo misturados sem contexto.
+- Funcao essencial escondida apenas em "Recursos" ou "Ajustes".
 - Tabela larga sem alternativa mobile.
 - Modal central enorme para tarefa recorrente.
 - Criar componente novo sem ganho perceptivel de UX.
@@ -236,13 +270,19 @@ Antes de mexer em qualquer tela:
 
 ## Prioridades de frontend
 
-1. Revisar typography e densidade nas telas principais.
-2. Refinar `ManagementShell` e `/gestao`.
-3. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
-4. Melhorar navegacao/sidebar por permissoes e atalhos contextuais.
-5. Reduzir dashboards informativos.
-6. Aplicar mobile sheets e sticky actions.
-7. Refinar paginas publicas.
+1. Refinar operacao de partidas/resultados no Competition OS com rows, hierarchy clara e mobile-first.
+2. Aplicar segunda onda de rows em fluxos de alunos quando houver dados/estado visual suficiente.
+3. Reorganizar entradas internas de `/gestao` por tipo de operador quando a deteccao de perfil/plano estiver mais completa.
+4. Expandir quick actions semanticas para cobranca e rotinas recorrentes.
+5. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
+6. Reduzir dashboards informativos.
+7. Aplicar mobile sheets e sticky actions.
+
+Proximo bloco definido em 2026-05-13:
+
+- `COMP-03`: partidas, confirmacoes e resultados no Competition OS devem sair de card/lista alta e virar filas/rows operacionais com uma acao primaria por partida.
+- Motivo: e a maior pendencia visivel apos a consolidacao inicial de Gestao, perfis, onboarding e Competition OS base.
+- Cuidado: preservar os fluxos de confirmar presenca, desfazer confirmacao e lancar/conferir resultado.
 
 ## Prioridades mobile
 

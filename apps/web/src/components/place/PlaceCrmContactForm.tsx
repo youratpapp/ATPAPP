@@ -11,6 +11,7 @@ export type PlaceCrmContactDraft = {
 
 type PlaceCrmContactFormProps = {
   busy: boolean;
+  defaultOpen?: boolean;
   draft: PlaceCrmContactDraft;
   ownerListId: string;
   ownerOptions: string[];
@@ -18,30 +19,59 @@ type PlaceCrmContactFormProps = {
   onSubmit: () => void;
 };
 
-export function PlaceCrmContactForm({ busy, draft, ownerListId, ownerOptions, onChange, onSubmit }: PlaceCrmContactFormProps) {
+export function PlaceCrmContactForm({ busy, defaultOpen = false, draft, ownerListId, ownerOptions, onChange, onSubmit }: PlaceCrmContactFormProps) {
   return (
-    <div className="place-staff-form">
-      <input value={draft.name} onChange={(event) => onChange({ ...draft, name: event.target.value })} placeholder="Nome" />
-      <input value={draft.phone} onChange={(event) => onChange({ ...draft, phone: event.target.value })} placeholder="Telefone" />
-      <input value={draft.email} onChange={(event) => onChange({ ...draft, email: event.target.value })} placeholder="Email" />
-      <input value={draft.source} onChange={(event) => onChange({ ...draft, source: event.target.value })} placeholder="Origem" />
-      <input value={draft.interest} onChange={(event) => onChange({ ...draft, interest: event.target.value })} placeholder="Interesse" />
-      <input value={draft.notes} onChange={(event) => onChange({ ...draft, notes: event.target.value })} placeholder="Notas" />
-      <input type="date" value={draft.nextContactOn} onChange={(event) => onChange({ ...draft, nextContactOn: event.target.value })} aria-label="Proximo contato" />
-      <input
-        list={ownerListId}
-        value={draft.ownerLabel}
-        onChange={(event) => onChange({ ...draft, ownerLabel: event.target.value })}
-        placeholder="Responsavel"
-      />
+    <details className="progressive-form" open={defaultOpen}>
+      <summary>Novo contato</summary>
+      <div className="progressive-form-primary">
+        <label>
+          Nome
+          <input value={draft.name} onChange={(event) => onChange({ ...draft, name: event.target.value })} placeholder="Nome do lead ou aluno" />
+        </label>
+        <label>
+          Telefone
+          <input value={draft.phone} onChange={(event) => onChange({ ...draft, phone: event.target.value })} placeholder="WhatsApp" />
+        </label>
+        <label>
+          Interesse
+          <input value={draft.interest} onChange={(event) => onChange({ ...draft, interest: event.target.value })} placeholder="Turma, plano ou aula" />
+        </label>
+        <button type="button" className="primary" onClick={onSubmit} disabled={busy || !draft.name.trim()}>
+          Criar contato
+        </button>
+      </div>
+      <div className="progressive-form-secondary">
+        <label>
+          Email
+          <input value={draft.email} onChange={(event) => onChange({ ...draft, email: event.target.value })} placeholder="Email" />
+        </label>
+        <label>
+          Origem
+          <input value={draft.source} onChange={(event) => onChange({ ...draft, source: event.target.value })} placeholder="Instagram, indicacao, recepcao" />
+        </label>
+        <label>
+          Proximo contato
+          <input type="date" value={draft.nextContactOn} onChange={(event) => onChange({ ...draft, nextContactOn: event.target.value })} aria-label="Proximo contato" />
+        </label>
+        <label>
+          Responsavel
+          <input
+            list={ownerListId}
+            value={draft.ownerLabel}
+            onChange={(event) => onChange({ ...draft, ownerLabel: event.target.value })}
+            placeholder="Responsavel"
+          />
+        </label>
+        <label className="progressive-form-wide">
+          Notas
+          <input value={draft.notes} onChange={(event) => onChange({ ...draft, notes: event.target.value })} placeholder="Contexto adicional" />
+        </label>
+      </div>
       <datalist id={ownerListId}>
         {ownerOptions.map((owner) => (
           <option key={owner} value={owner} />
         ))}
       </datalist>
-      <button type="button" onClick={onSubmit} disabled={busy || !draft.name.trim()}>
-        Criar contato
-      </button>
-    </div>
+    </details>
   );
 }

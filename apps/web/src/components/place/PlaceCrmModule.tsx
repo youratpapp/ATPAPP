@@ -100,7 +100,6 @@ export function PlaceCrmModule({
           <span>Follow-ups hoje</span>
         </div>
       </div>
-      <PlaceCrmContactForm busy={busy} draft={draft} ownerListId={ownerListId} ownerOptions={ownerOptions} onChange={onChangeDraft} onSubmit={onCreateContact} />
       <div className="place-booking-list">
         {contacts.slice(0, 6).map((contact) => {
           const followUpDraft = followUpDraftsByContact[contact.id] ?? contact.nextContactOn ?? todayDate;
@@ -134,6 +133,15 @@ export function PlaceCrmModule({
         })}
         {!contacts.length ? <p className="subtle">Sem contatos no CRM.</p> : null}
       </div>
+      <PlaceCrmContactForm
+        busy={busy}
+        defaultOpen={!contacts.length}
+        draft={draft}
+        ownerListId={ownerListId}
+        ownerOptions={ownerOptions}
+        onChange={onChangeDraft}
+        onSubmit={onCreateContact}
+      />
       <PlaceCrmHistoryDrawer
         busy={busy}
         contact={drawerContact}

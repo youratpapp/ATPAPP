@@ -96,7 +96,7 @@ export function PlaceAdminShell({
         </div>
         {nextStep ? (
           <button className="place-next-step" type="button" onClick={() => onModuleChange(nextStep.module)}>
-            <strong>Setup</strong>
+            <strong>{nextStep.title}</strong>
             <span>{nextStep.detail}</span>
           </button>
         ) : (

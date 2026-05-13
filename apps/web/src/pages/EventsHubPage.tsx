@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
@@ -39,6 +39,15 @@ function SettingsIcon() {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
 function statusLabel(status: TournamentSummary["status"] | LeagueSummary["status"]): string {
   if (status === "registration_open") return "Inscricoes abertas";
   if (status === "registration_closed") return "Inscricoes encerradas";
@@ -72,6 +81,32 @@ function CountBadge({ value }: { value: number }) {
   return <strong className="hub-action-count">{value}</strong>;
 }
 
+function IntentPill({
+  label,
+  detail,
+  count,
+  targetId,
+}: {
+  label: string;
+  detail: string;
+  count?: number;
+  targetId: string;
+}) {
+  return (
+    <button
+      className="competition-intent-pill"
+      type="button"
+      onClick={() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+    >
+      <span>
+        <strong>{label}</strong>
+        <small>{detail}</small>
+      </span>
+      {typeof count === "number" ? <CountBadge value={count} /> : null}
+    </button>
+  );
+}
+
 function HubItemCard({ title, meta, status, onOpen }: { title: string; meta: string; status: string; onOpen: () => void }) {
   return (
     <article className="home-compact-card" onClick={onOpen}>
@@ -81,6 +116,80 @@ function HubItemCard({ title, meta, status, onOpen }: { title: string; meta: str
       </div>
       <span className="home-league-chip member">{status}</span>
     </article>
+  );
+}
+
+function DiscoveryAction({
+  icon,
+  title,
+  detail,
+  onOpen,
+}: {
+  icon: ReactNode;
+  title: string;
+  detail: string;
+  onOpen: () => void;
+}) {
+  return (
+    <button className="competition-discovery-action" type="button" onClick={onOpen}>
+      <span className="qa-icon">{icon}</span>
+      <span>
+        <strong>{title}</strong>
+        <small>{detail}</small>
+      </span>
+    </button>
+  );
+}
+
+function OrganizerStarter({ onCreateLeague, onCreateTournament }: { onCreateLeague: () => void; onCreateTournament: () => void }) {
+  const steps = [
+    {
+      action: onCreateTournament,
+      detail: "Ideal para evento com classes, chave, inscritos e publicacao.",
+      label: "Criar torneio",
+      state: "Comece aqui",
+    },
+    {
+      action: onCreateLeague,
+      detail: "Ideal para temporada recorrente, rodadas e ranking.",
+      label: "Criar liga",
+      state: "Opcional",
+    },
+    {
+      detail: "Depois de criar, organize categorias e criterios de entrada.",
+      label: "Classes e inscricoes",
+      state: "Proximo",
+    },
+    {
+      detail: "Publique link, confirme inscritos e gere jogos/rodadas.",
+      label: "Publicar e operar",
+      state: "Proximo",
+    },
+  ];
+  return (
+    <section className="competition-starter-panel" aria-label="Roteiro para organizar primeira competicao">
+      <div className="hub-flow-header">
+        <div>
+          <h3>Organizar pela primeira vez</h3>
+          <p className="subtle">Um roteiro curto para sair do zero sem procurar ferramentas escondidas.</p>
+        </div>
+      </div>
+      <div className="competition-starter-steps">
+        {steps.map((step) => (
+          <button
+            key={step.label}
+            className={step.action ? "competition-starter-step actionable" : "competition-starter-step"}
+            type="button"
+            onClick={step.action}
+            disabled={!step.action}
+          >
+            <span>{step.state}</span>
+            <strong>{step.label}</strong>
+            <small>{step.detail}</small>
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -134,6 +243,7 @@ export function EventsHubPage({ user, profile }: Props) {
   const organizerCount = organizingTournaments.length + organizingLeagues.length;
   const activePlayerCount = activePlayingTournaments.length + activePlayingLeagues.length;
   const activeOrganizerCount = activeOrganizingTournaments.length + activeOrganizingLeagues.length;
+  const hasOrganizerContext = organizerCount > 0;
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
@@ -148,27 +258,75 @@ export function EventsHubPage({ user, profile }: Props) {
       {error ? <p className="feedback error">{error}</p> : null}
 
       {!loading && !error ? (
-        <section className="home-summary-grid">
-          <article className="home-summary-card">
-            <p>Como jogador</p>
-            <strong>{playerCount}</strong>
-            <span>torneios e ligas</span>
-          </article>
-          <article className="home-summary-card">
-            <p>Organizando</p>
-            <strong>{organizerCount}</strong>
-            <span>eventos sob gestao</span>
-          </article>
-          <article className="home-summary-card">
-            <p>Ativos agora</p>
-            <strong>{activePlayerCount + activeOrganizerCount}</strong>
-            <span>em aberto</span>
-          </article>
+        <section className="competition-intent-strip" aria-label="Recortes de competicoes">
+          <IntentPill
+            label="Jogando"
+            detail="partidas e inscricoes"
+            count={playerCount}
+            targetId="competitions-playing"
+          />
+          <IntentPill
+            label="Organizando"
+            detail="operacao e publicacao"
+            count={organizerCount}
+            targetId={hasOrganizerContext ? "competitions-organizing" : "competitions-discover"}
+          />
+          <IntentPill label="Descobrir" detail="convites, locais e entrada" targetId="competitions-discover" />
         </section>
       ) : null}
 
-      <section className="section-card flow-card primary-flow">
-        <FlowHeader title="Como jogador" detail="Acompanhe jogos, classificacao, mensagens e inscricoes." />
+      {hasOrganizerContext ? (
+        <section id="competitions-organizing" className="section-card flow-card primary-flow">
+          <FlowHeader title="Organizando agora" detail="Fila operacional das competicoes que dependem de voce." />
+          <div className="quick-grid">
+            <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+              <span className="qa-icon"><SettingsIcon /></span>
+              <span>Gerir torneios</span>
+              <CountBadge value={organizingTournaments.length} />
+            </button>
+            <button className="quick-action" onClick={() => navigate("/eventos/ligas?view=organizing")}>
+              <span className="qa-icon"><SettingsIcon /></span>
+              <span>Gerir ligas</span>
+              <CountBadge value={organizingLeagues.length} />
+            </button>
+          </div>
+          {activeOrganizingTournaments.map((tournament) => (
+            <HubItemCard
+              key={`organizer-tournament:${tournament.id}`}
+              title={tournament.name}
+              meta={[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio"}
+              status={statusLabel(tournament.status)}
+              onOpen={() => navigate(buildTournamentUrl(tournament.id))}
+            />
+          ))}
+          {activeOrganizingLeagues.map((league) => (
+            <HubItemCard
+              key={`organizer-league:${league.id}`}
+              title={league.name}
+              meta={[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
+              status={statusLabel(league.status)}
+              onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
+            />
+          ))}
+          {activeOrganizerCount === 0 ? (
+            <div className="home-empty-panel">
+              <strong>Nenhuma operacao ativa agora</strong>
+              <span>Seus eventos estao sem pendencias visiveis. Abra a lista para publicar, ajustar inscricoes ou criar o proximo evento.</span>
+              <ActionBar className="home-empty-actions" label="Acoes de organizador em competicoes">
+                <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+                  Torneios organizados
+                </button>
+                <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
+                  Ligas organizadas
+                </button>
+              </ActionBar>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
+      <section id="competitions-playing" className={`section-card flow-card ${hasOrganizerContext ? "" : "primary-flow"}`}>
+        <FlowHeader title="Jogando" detail="Acompanhe jogos, classificacao, mensagens e inscricoes em que voce participa." />
         <div className="quick-grid">
           <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=participating")}>
             <span className="qa-icon"><TrophyIcon /></span>
@@ -215,54 +373,42 @@ export function EventsHubPage({ user, profile }: Props) {
         ) : null}
       </section>
 
-      {organizerCount > 0 ? (
-        <section className="section-card flow-card">
-          <FlowHeader title="Organizador" detail="Crie eventos, aprove inscritos, gere rodadas e ajuste configuracoes." />
-          <div className="quick-grid">
-            <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-              <span className="qa-icon"><SettingsIcon /></span>
-              <span>Gerir torneios</span>
-              <CountBadge value={organizingTournaments.length} />
-            </button>
-            <button className="quick-action" onClick={() => navigate("/eventos/ligas?view=organizing")}>
-              <span className="qa-icon"><SettingsIcon /></span>
-              <span>Gerir ligas</span>
-              <CountBadge value={organizingLeagues.length} />
-            </button>
-          </div>
-          {activeOrganizingTournaments.map((tournament) => (
-            <HubItemCard
-              key={`organizer-tournament:${tournament.id}`}
-              title={tournament.name}
-              meta={[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio"}
-              status={statusLabel(tournament.status)}
-              onOpen={() => navigate(buildTournamentUrl(tournament.id))}
-            />
-          ))}
-          {activeOrganizingLeagues.map((league) => (
-            <HubItemCard
-              key={`organizer-league:${league.id}`}
-              title={league.name}
-              meta={[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
-              status={statusLabel(league.status)}
-              onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
-            />
-          ))}
-        </section>
-      ) : (
-        <section className="home-empty-panel">
-          <strong>Ferramentas de organizador</strong>
-          <span>Use quando for criar seu primeiro torneio ou liga.</span>
-          <ActionBar className="home-empty-actions" label="Acoes de organizador em competicoes">
-            <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-              Criar torneio
-            </button>
-            <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
-              Criar liga
-            </button>
-          </ActionBar>
-        </section>
-      )}
+      <section id="competitions-discover" className="section-card flow-card competition-discovery">
+        <FlowHeader title="Descobrir" detail="Entre por convite, encontre lugares para jogar ou abra o contexto de organizacao quando fizer sentido." />
+        <div className="competition-discovery-grid">
+          <DiscoveryAction
+            icon={<TrophyIcon />}
+            title="Entrar em torneio"
+            detail="Use convite, codigo ou inscricao recebida."
+            onOpen={() => navigate("/eventos/torneios?view=participating")}
+          />
+          <DiscoveryAction
+            icon={<LeagueIcon />}
+            title="Entrar em liga"
+            detail="Acompanhe ligas onde voce joga."
+            onOpen={() => navigate("/eventos/ligas?view=participating")}
+          />
+          <DiscoveryAction
+            icon={<SearchIcon />}
+            title="Encontrar locais"
+            detail="Veja clubes e academias publicas."
+            onOpen={() => navigate("/locais")}
+          />
+          <DiscoveryAction
+            icon={<SettingsIcon />}
+            title="Organizar evento"
+            detail="Abre o contexto de criacao e gestao."
+            onOpen={() => navigate("/eventos/torneios?view=organizing")}
+          />
+        </div>
+      </section>
+
+      {!hasOrganizerContext ? (
+        <OrganizerStarter
+          onCreateTournament={() => navigate("/eventos/torneios?view=organizing")}
+          onCreateLeague={() => navigate("/eventos/ligas?view=organizing")}
+        />
+      ) : null}
     </AppShell>
   );
 }
