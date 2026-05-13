@@ -14,6 +14,14 @@ Documento de referencia: `ARCHITECTURE_RECALIBRATION.md`.
 
 Documento de direcao frontend/UX: `FRONTEND_UX_REARCHITECTURE.md`.
 
+Documento de linguagem visual/premium: `PREMIUM_UX_VISUAL_LANGUAGE.md`.
+
+Documentos de execucao visual: `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md`.
+
+Estado operacional atual: `CURRENT_PRODUCT_STATE.md`.
+
+Fila continua de execucao: `EXECUTION_QUEUE.md`.
+
 Correcao de rumo:
 
 - modularizacao continua importante, mas nao deve virar fim em si mesma;
@@ -30,6 +38,7 @@ Sequencia ajustada:
 4. iniciar `CompetitionShell` com separacao clara entre jogando e organizando;
 5. revisar Home do jogador para ficar centrada em proxima acao;
 6. aplicar visual system premium em rows, cards, botoes, badges e estados.
+7. reduzir KPIs/cards zerados e trocar dashboards informativos por filas de decisao.
 
 ## Fase 0 - Memoria arquitetural
 
@@ -156,6 +165,13 @@ Evoluido em 2026-05-13:
 - rotas canonicas do admin de local passaram a ser `/gestao/:placeId/:module`, deixando `/locais/:placeId/admin` como compatibilidade e reduzindo a sensacao de ferramenta empilhada dentro de Locais.
 - criado `ManagementShell` e aplicado em `/gestao` e no admin de local, iniciando a separacao visual real entre Management OS e areas publicas/player.
 - cabecalho de gestao ficou mais compacto e operacional, substituindo hero grande por contexto, acoes e indicadores de rotina.
+- iniciado `PlaceAdminShell` como casca propria do admin do local, concentrando papel, plano, localidade, features, implantacao e navegacao de modulos fora do cockpit generico.
+- criado `PREMIUM_UX_VISUAL_LANGUAGE.md` para guiar densidade, hierarchy, estados e interacao premium antes de novos refinamentos visuais.
+- `/gestao` passou a ocultar cards de pendencias zeradas e exibir estado de operacao em dia, deixando a fila do dia focada no que realmente exige acao.
+- criados `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` como camada pratica para evoluir o frontend por referencia visual, componente e token.
+- `/gestao` foi refinada para usar rows operacionais de local em vez de grid de cards, reduzindo verticalidade, botoes equivalentes e sensacao de admin template.
+- criados `CURRENT_PRODUCT_STATE.md` e `EXECUTION_QUEUE.md` para sair da fase de replanejamento e entrar em execucao continua por prioridade.
+- `/gestao` recebeu refinamento mobile-first: header compacto, stats em trilho horizontal, rows tocaveis e atalhos de modulos sem empilhar verticalmente.
 
 ## Fase 3 - CompetitionShell
 

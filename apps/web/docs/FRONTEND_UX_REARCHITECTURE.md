@@ -2,6 +2,12 @@
 
 Fonte principal: `product-architecture-ux-audit.md`.
 
+Documento visual complementar: `PREMIUM_UX_VISUAL_LANGUAGE.md`.
+
+Documentos de execucao visual: `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md`.
+
+Documentos de continuidade: `CURRENT_PRODUCT_STATE.md` e `EXECUTION_QUEUE.md`.
+
 Data: 2026-05-13
 
 ## Objetivo
@@ -680,6 +686,12 @@ Impacto:
 - PlacesPage volta a ser descoberta/criacao/publicacao;
 - gestao vira area independente.
 
+Status:
+
+- [iniciado] criado `PlaceAdminShell` para concentrar o cabecalho/cockpit operacional do local, substituindo o uso direto do cockpit dentro de `PlacesPage`.
+- [iniciado] admin do local passou a expor papel, plano, localidade, features, implantacao e modulo ativo por uma casca propria de gestao.
+- [pendente] mover o corpo dos modulos e derivacoes de dados para um `PlaceAdminShell`/container completo, reduzindo a dependencia estrutural de `PlacesPage`.
+
 ### Bloco 3 - PermissionGate e menus por papel
 
 Prioridade: alta.
@@ -731,7 +743,9 @@ Impacto:
 
 ### Bloco 6 - Visual system premium
 
-Prioridade: media-alta.
+Prioridade: alta.
+
+Documento de regra: `PREMIUM_UX_VISUAL_LANGUAGE.md`.
 
 Entregas:
 
@@ -742,12 +756,22 @@ Entregas:
 - tabelas responsivas;
 - empty states premium;
 - revisao de tipografia e espacamento.
+- reducao de mosaicos de KPIs zerados;
+- dashboards orientados a decisao antes de dados.
 
 Impacto:
 
 - percepcao de produto profissional;
 - menos UI divergente;
 - mais velocidade de evolucao.
+
+Status:
+
+- [feito] criado `PREMIUM_UX_VISUAL_LANGUAGE.md` como contrato visual/UX para reduzir ruido, excesso de cards e aparencia de admin template.
+- [feito] `/gestao` passou a mostrar apenas pendencias reais na fila do dia; quando tudo esta zerado, exibe estado calmo de operacao em dia em vez de mosaico de cards.
+- [feito] criados `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` para transformar referencias premium em criterios concretos de frontend.
+- [feito] `/gestao` passou de grid de cards de locais para lista operacional em rows, com identidade, pulso, tarefas, setup e acoes em hierarchy mais clara.
+- [feito] criados `CURRENT_PRODUCT_STATE.md` e `EXECUTION_QUEUE.md` para manter estado consolidado e fila de execucao incremental sem reabrir a arquitetura conceitual.
 
 ## O que remover ou reduzir
 

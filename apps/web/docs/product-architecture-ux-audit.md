@@ -12,6 +12,12 @@ Este arquivo e a fonte de verdade arquitetural. Os documentos abaixo detalham de
 
 - `ARCHITECTURE_RECALIBRATION.md`: rechecagem de rumo e criterio de prioridade apos as primeiras evolucoes.
 - `FRONTEND_UX_REARCHITECTURE.md`: direcao profunda de produto/frontend para separar player app, management OS, competition OS e visual premium.
+- `PREMIUM_UX_VISUAL_LANGUAGE.md`: linguagem visual, densidade, hierarchy e regras de interacao para tirar o app da sensacao de dashboard generico.
+- `VISUAL_REFERENCE_SYSTEM.md`: referencias reais e traducoes praticas para spacing, hierarchy, navegacao e comportamento.
+- `COMPONENT_GRAMMAR.md`: gramatica visual e operacional dos componentes criticos.
+- `DESIGN_TOKENS.md`: uso pratico de tokens de cor, tipografia, spacing, radius, sombras e densidade.
+- `CURRENT_PRODUCT_STATE.md`: memoria curta do estado atual, decisoes consolidadas, criterios permanentes e o que nao reabrir.
+- `EXECUTION_QUEUE.md`: fila operacional continua para executar frontend/UX premium por prioridade.
 - `PRODUCT_ARCHITECTURE.md`: principios, camadas e fronteiras de dominio.
 - `SYSTEM_FLOWS.md`: fluxos reais por persona e contexto.
 - `SCREEN_RESPONSIBILITIES.md`: responsabilidade primaria de cada tela.

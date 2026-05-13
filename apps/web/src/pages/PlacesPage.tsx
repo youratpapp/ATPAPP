@@ -40,7 +40,7 @@ import { PlaceFinanceExpensesModule, type PlaceExpenseDraft } from "../component
 import { PlaceFinanceOverviewModule } from "../components/place/PlaceFinanceOverviewModule";
 import { PlaceFinancePackagesModule, type PlaceCreditPackageDraft, type PlaceCreditPurchaseDraft } from "../components/place/PlaceFinancePackagesModule";
 import { PlaceFinanceReceivablesModule } from "../components/place/PlaceFinanceReceivablesModule";
-import { PlaceManagementCockpit } from "../components/place/PlaceManagementCockpit";
+import { PlaceAdminShell } from "../components/place/PlaceAdminShell";
 import { PlaceMembershipModule, type PlaceMembershipPlanDraft } from "../components/place/PlaceMembershipModule";
 import { PlaceOperationsDashboard } from "../components/place/PlaceOperationsDashboard";
 import { OperationalQueue, WorkspaceCard, WorkspaceGrid, WorkspaceList, WorkspaceRow } from "../components/place/PlaceWorkspaceUi";
@@ -2927,8 +2927,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               ) : null}
             </div>
             {isManagementCockpit ? (
-              <PlaceManagementCockpit
+              <PlaceAdminShell
                 currentModule={currentManagementModule}
+                featureLabels={enabledFeatures}
+                locationLabel={[p.city, p.state].filter(Boolean).join(" - ")}
                 moduleCounts={moduleCounts}
                 modules={managementModules}
                 nextStep={nextSetupItem}
@@ -2938,6 +2940,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   operationalStats.pendingLessonRequests +
                   operationalStats.pendingMemberships
                 }
+                planLabel={PLACE_PRODUCT_PLAN_LABELS[p.productPlan]}
                 placeName={p.name}
                 setupPercent={setupPercent}
                 staffRoleLabel={STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]]}

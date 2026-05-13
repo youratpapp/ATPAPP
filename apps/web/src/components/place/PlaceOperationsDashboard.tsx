@@ -29,6 +29,10 @@ export function PlaceOperationsDashboard({ balanceText, metrics, queueItems, onM
         <strong>Hoje e prioridades</strong>
         <span>{balanceText} saldo</span>
       </div>
+      <OperationalQueue title="Fila de trabalho">
+        {queueItems.length ? <OperationalQueueItems items={queueItems.map((item) => ({ ...item, action: () => onModuleChange(item.module) }))} /> : null}
+      </OperationalQueue>
+      <span className="place-support-label">Sinais de suporte</span>
       <MetricStrip
         className="place-operations-grid"
         items={metrics.map((metric) => ({
@@ -39,9 +43,6 @@ export function PlaceOperationsDashboard({ balanceText, metrics, queueItems, onM
           onSelect: () => onModuleChange(metric.module),
         }))}
       />
-      <OperationalQueue title="Fila de trabalho">
-        {queueItems.length ? <OperationalQueueItems items={queueItems.map((item) => ({ ...item, action: () => onModuleChange(item.module) }))} /> : null}
-      </OperationalQueue>
     </div>
   );
 }

@@ -163,6 +163,7 @@ export function ManagementHubPage({ user, profile }: Props) {
     [entries]
   );
   const aggregate = useMemo(() => totalSummaries(Object.values(summariesByPlace)), [summariesByPlace]);
+  const activeAggregateQueueRows = useMemo(() => queueRows(aggregate).filter((row) => row.value > 0), [aggregate]);
 
   return (
     <ManagementShell
@@ -201,115 +202,162 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <span>Fila do dia</span>
                   <h2>O que precisa de atencao agora</h2>
                 </div>
-                <button onClick={() => navigate("/locais")}>Ver pagina publica</button>
+                <button onClick={() => navigate("/locais")}>Ver locais publicos</button>
               </div>
-              <div className="management-queue-grid">
-                {queueRows(aggregate).map((row) => (
-                  <article key={row.label} className={row.value ? "has-work" : ""}>
-                    <strong>{row.value}</strong>
-                    <span>{row.label}</span>
-                  </article>
-                ))}
-              </div>
+              {activeAggregateQueueRows.length ? (
+                <div className="management-priority-list">
+                  {activeAggregateQueueRows.map((row) => (
+                    <button
+                      key={row.label}
+                      className="management-priority-row"
+                      onClick={() => {
+                        const targetPlace = places.find((place) => {
+                          const placeSummary = summariesByPlace[place.id];
+                          if (!placeSummary) return false;
+                          return queueRows(placeSummary).some(
+                            (placeRow) => placeRow.label === row.label && placeRow.module === row.module && placeRow.value > 0
+                          );
+                        });
+                        if (targetPlace) navigate(buildPlaceAdminPath(targetPlace.id, row.module));
+                      }}
+                    >
+                      <span>
+                        <strong>{row.label}</strong>
+                        <small>Abrir primeiro local com acao pendente</small>
+                      </span>
+                      <b>{row.value}</b>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="management-good-state">
+                  <strong>Operacao em dia</strong>
+                  <span>Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar agenda, setup ou pagina publica.</span>
+                </div>
+              )}
             </section>
 
-            <section className="management-place-grid" aria-label="Locais em gestao">
-              {places.map((place) => {
-                const entry = entriesByPlace[place.id];
-                const staff = entry?.staff || [];
-                const access = placeResourceAccess(place, user.id, staff as PlaceStaffMember[]);
-                const modules = placeManagementModules(access);
-                const moduleShortcuts = PRIORITY_MODULES.filter((module) => modules.includes(module));
-                const summary = summariesByPlace[place.id] || summarizePlace({
-                  academyAbsences: [],
-                  academyAttendance: [],
-                  academyClasses: [],
-                  academyCoaches: [],
-                  academyEnrollments: [],
-                  academyLessonRequests: [],
-                  academyMakeups: [],
-                  academyProgress: [],
-                  academySlots: [],
-                  bookingRules: [],
-                  bookingWaitlist: [],
-                  bookings: [],
-                  courts: [],
-                  creditPackages: [],
-                  creditPurchases: [],
-                  crmContacts: [],
-                  crmInteractions: [],
-                  expenses: [],
-                  membershipPlans: [],
-                  memberships: [],
-                  placeId: place.id,
-                  posProducts: [],
-                  posSales: [],
-                  staff: [],
-                });
-                const role = ROLE_LABELS[access.staffRole] || "Equipe";
-                return (
-                  <article key={place.id} className="management-place-card">
-                    <header>
-                      <div className="management-place-logo" aria-hidden>
-                        {place.logoUrl ? <img src={place.logoUrl} alt="" /> : placeInitials(place.name)}
+            <section className="management-workspace" aria-label="Locais em gestao">
+              <div className="management-workspace-head">
+                <div>
+                  <span>Workspaces</span>
+                  <h2>Locais sob sua gestao</h2>
+                </div>
+                <p>{countLabel(places.length, "local com acesso operacional", "locais com acesso operacional")}</p>
+              </div>
+              <div className="management-place-list">
+                {places.map((place) => {
+                  const entry = entriesByPlace[place.id];
+                  const staff = entry?.staff || [];
+                  const access = placeResourceAccess(place, user.id, staff as PlaceStaffMember[]);
+                  const modules = placeManagementModules(access);
+                  const moduleShortcuts = PRIORITY_MODULES.filter((module) => modules.includes(module));
+                  const summary = summariesByPlace[place.id] || summarizePlace({
+                    academyAbsences: [],
+                    academyAttendance: [],
+                    academyClasses: [],
+                    academyCoaches: [],
+                    academyEnrollments: [],
+                    academyLessonRequests: [],
+                    academyMakeups: [],
+                    academyProgress: [],
+                    academySlots: [],
+                    bookingRules: [],
+                    bookingWaitlist: [],
+                    bookings: [],
+                    courts: [],
+                    creditPackages: [],
+                    creditPurchases: [],
+                    crmContacts: [],
+                    crmInteractions: [],
+                    expenses: [],
+                    membershipPlans: [],
+                    memberships: [],
+                    placeId: place.id,
+                    posProducts: [],
+                    posSales: [],
+                    staff: [],
+                  });
+                  const activePlaceQueueRows = queueRows(summary).filter((row) => row.value > 0);
+                  const role = ROLE_LABELS[access.staffRole] || "Equipe";
+                  const totalPending = pendingTotal(summary);
+                  return (
+                    <article key={place.id} className={totalPending ? "management-place-row needs-attention" : "management-place-row"}>
+                      <div className="management-row-identity">
+                        <div className="management-place-logo" aria-hidden>
+                          {place.logoUrl ? <img src={place.logoUrl} alt="" /> : placeInitials(place.name)}
+                        </div>
+                        <div>
+                          <span>
+                            {role} | {PLAN_LABELS[place.productPlan]}
+                          </span>
+                          <h2>{place.name}</h2>
+                          <p>{[place.city, place.state].filter(Boolean).join(" - ") || "Local sem cidade definida"}</p>
+                        </div>
                       </div>
-                      <div>
+
+                      <div className="management-row-pulse">
+                        <strong>{totalPending ? `${totalPending} pendencia(s)` : "Em dia"}</strong>
                         <span>
-                          {role} | {PLAN_LABELS[place.productPlan]}
+                          {summary.todayBookings
+                            ? `${summary.todayBookings} reserva(s) hoje`
+                            : summary.setupGaps.length
+                              ? "Configure a base operacional"
+                              : "Sem reservas para hoje"}
                         </span>
-                        <h2>{place.name}</h2>
-                        <p>{[place.city, place.state].filter(Boolean).join(" - ") || "Local sem cidade definida"}</p>
                       </div>
-                    </header>
 
-                    <div className="management-place-priority">
-                      <strong>{pendingTotal(summary) ? `${pendingTotal(summary)} pendencia(s)` : "Operacao em dia"}</strong>
-                      <span>
-                        {summary.todayBookings
-                          ? `${summary.todayBookings} reserva(s) hoje`
-                          : summary.setupGaps.length
-                            ? "Configure a base operacional"
-                            : "Sem reservas para hoje"}
-                      </span>
-                    </div>
-
-                    <div className="management-place-metrics">
-                      {queueRows(summary).slice(0, 4).map((row) => (
-                        <button
-                          key={`${place.id}:${row.label}`}
-                          className={row.value ? "has-work" : ""}
-                          onClick={() => navigate(buildPlaceAdminPath(place.id, modules.includes(row.module) ? row.module : "dashboard"))}
-                        >
-                          <strong>{row.value}</strong>
-                          <span>{row.label}</span>
-                        </button>
-                      ))}
-                    </div>
-
-                    {summary.setupGaps.length ? (
-                      <div className="management-setup-strip">
-                        <span>Base incompleta</span>
-                        <strong>{summary.setupGaps.slice(0, 2).join(" | ")}</strong>
+                      <div className="management-row-tasks">
+                        {activePlaceQueueRows.length ? (
+                          activePlaceQueueRows.slice(0, 3).map((row) => (
+                            <button
+                              key={`${place.id}:${row.label}`}
+                              className="management-row-task"
+                              onClick={() => navigate(buildPlaceAdminPath(place.id, modules.includes(row.module) ? row.module : "dashboard"))}
+                            >
+                              <b>{row.value}</b>
+                              <span>{row.label}</span>
+                            </button>
+                          ))
+                        ) : (
+                          <div className="management-quiet-summary">
+                            <strong>Sem pendencias criticas</strong>
+                            <span>
+                              {summary.todayBookings
+                                ? `${summary.todayBookings} reserva(s) programada(s) hoje`
+                                : summary.setupGaps.length
+                                  ? "Complete a base para liberar a rotina operacional"
+                                  : "Agenda livre para hoje"}
+                            </span>
+                          </div>
+                        )}
                       </div>
-                    ) : null}
 
-                    <div className="management-card-actions">
-                      <button className="primary" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
-                        Abrir operacao
-                      </button>
-                      <button onClick={() => navigate(`/locais/${encodeURIComponent(place.id)}`)}>Pagina publica</button>
-                    </div>
+                      {summary.setupGaps.length ? (
+                        <div className="management-row-setup">
+                          <span>Base incompleta</span>
+                          <strong>{summary.setupGaps.slice(0, 2).join(" | ")}</strong>
+                        </div>
+                      ) : null}
 
-                    <div className="management-module-shortcuts">
-                      {moduleShortcuts.map((module) => (
-                        <button key={`${place.id}:${module}`} onClick={() => navigate(buildPlaceAdminPath(place.id, module))}>
-                          {PLACE_MANAGEMENT_MODULE_LABELS[module]}
+                      <div className="management-row-actions">
+                        <button className="primary" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
+                          Abrir operacao
                         </button>
-                      ))}
-                    </div>
-                  </article>
-                );
-              })}
+                        <button onClick={() => navigate(`/locais/${encodeURIComponent(place.id)}`)}>Pagina publica</button>
+                      </div>
+
+                      <div className="management-row-modules">
+                        {moduleShortcuts.map((module) => (
+                          <button key={`${place.id}:${module}`} onClick={() => navigate(buildPlaceAdminPath(place.id, module))}>
+                            {PLACE_MANAGEMENT_MODULE_LABELS[module]}
+                          </button>
+                        ))}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
             </section>
           </>
         ) : null}
