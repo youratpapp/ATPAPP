@@ -11,6 +11,7 @@ Esta auditoria olha o produto como sistema operacional para clubes, academias, j
 Este arquivo e a fonte de verdade arquitetural. Os documentos abaixo detalham decisoes operacionais e devem ser mantidos junto com qualquer mudanca relevante:
 
 - `ARCHITECTURE_RECALIBRATION.md`: rechecagem de rumo e criterio de prioridade apos as primeiras evolucoes.
+- `FRONTEND_UX_REARCHITECTURE.md`: direcao profunda de produto/frontend para separar player app, management OS, competition OS e visual premium.
 - `PRODUCT_ARCHITECTURE.md`: principios, camadas e fronteiras de dominio.
 - `SYSTEM_FLOWS.md`: fluxos reais por persona e contexto.
 - `SCREEN_RESPONSIBILITIES.md`: responsabilidade primaria de cada tela.

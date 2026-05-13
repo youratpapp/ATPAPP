@@ -2,6 +2,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { ManagementShell } from "../components/management/ManagementShell";
 import { AcademyWorkspaceShell, type AcademyManagementView } from "../components/place/AcademyWorkspaceShell";
 import { BookingWorkspaceShell, type BookingManagementView } from "../components/place/BookingWorkspaceShell";
 import { CanteenWorkspaceShell, type CanteenManagementView } from "../components/place/CanteenWorkspaceShell";
@@ -2028,24 +2029,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const visiblePlaces = adminPlaceId ? places.filter((place) => place.id === adminPlaceId) : places;
   const adminRoutePlace = visiblePlaces[0] || null;
 
-  return (
-    <AppShell user={user} profile={profile} showHeader={false}>
-      {/* Page header */}
-      <div className="page-header">
-        <h1>{isAdminRoute ? adminRoutePlace?.name || "Gestao do local" : "Locais"}</h1>
-        <div className="ph-actions">
-          {isAdminRoute && adminPlaceId ? (
-            <>
-              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Pagina publica</button>
-              <button onClick={() => navigate("/gestao")}>Central de gestao</button>
-            </>
-          ) : (
+  const pageContent = (
+    <>
+      {!isAdminRoute ? (
+        <div className="page-header">
+          <h1>Locais</h1>
+          <div className="ph-actions">
             <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Adicionar local">
               +
             </button>
-          )}
+          </div>
         </div>
-      </div>
+      ) : null}
 
       {!isAdminRoute ? (
         <div className="tabs">
@@ -4686,6 +4681,34 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </div>
       ) : null}
 
+    </>
+  );
+
+  if (isAdminRoute) {
+    return (
+      <ManagementShell
+        user={user}
+        profile={profile}
+        eyebrow="Operacao do local"
+        title={adminRoutePlace?.name || "Gestao do local"}
+        description="Rotina diaria, configuracao, equipe e publicacao ficam separadas por modulo para reduzir ruido operacional."
+        actions={
+          adminPlaceId ? (
+            <>
+              <button onClick={() => navigate("/gestao")}>Central de gestao</button>
+              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Pagina publica</button>
+            </>
+          ) : null
+        }
+      >
+        {pageContent}
+      </ManagementShell>
+    );
+  }
+
+  return (
+    <AppShell user={user} profile={profile} showHeader={false}>
+      {pageContent}
     </AppShell>
   );
 }

@@ -50,6 +50,7 @@ Quando uma tela cresce demais:
 
 - 2026-05-13: criada tela `/gestao` como central operacional de academia/clube, reduzindo a mistura entre descoberta publica de locais e trabalho diario de equipe.
 - 2026-05-13: responsabilidade principal de operar local migrou para `/gestao/:placeId/:module`, mantendo `/locais/:placeId/admin` apenas como rota legada de compatibilidade.
+- 2026-05-13: `ManagementShell` passou a envolver `/gestao` e admin de local, dando cabecalho operacional proprio para contexto, acoes e indicadores sem depender do layout de `Locais`.
 - 2026-05-13: CRM de locais iniciou separacao real por dominio com `PlaceCrmModule`; `PlacesPage` passa a orquestrar dados/navegacao e delegar captura, lista, historico e acoes de CRM ao modulo.
 - 2026-05-13: planos e socios de locais foram isolados em `PlaceMembershipModule`, reduzindo mistura entre captura de lead, recorrencia, status do jogador e cobranca dentro da pagina principal.
 - 2026-05-13: fila diaria de atendimento de clientes foi isolada em `PlaceClientActionQueue`, reforcando a separacao entre operacao do dia e configuracao/relatorios.

@@ -5479,6 +5479,88 @@ button:disabled {
 }
 
 /* ----- Management hub ----- */
+.management-shell-page {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.management-shell-header {
+  align-items: stretch;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr) auto;
+  padding: var(--space-4);
+}
+
+.management-shell-title {
+  align-content: center;
+  display: grid;
+  gap: 4px;
+}
+
+.management-shell-title span {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.management-shell-title h1 {
+  color: var(--color-text);
+  font-size: clamp(1.55rem, 3.2vw, 2.4rem);
+  line-height: var(--line-tight);
+  margin: 0;
+}
+
+.management-shell-title p {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 760px;
+}
+
+.management-shell-stats {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.management-shell-stats article {
+  align-content: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  min-height: 76px;
+  padding: var(--space-2);
+}
+
+.management-shell-stats strong {
+  color: var(--color-text);
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+}
+
+.management-shell-stats small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+}
+
+.management-shell-actions {
+  align-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
 .management-hub-page {
   display: grid;
   gap: var(--space-4);
@@ -8390,8 +8472,13 @@ button,
   }
 
   .management-hub-hero,
+  .management-shell-header,
   .management-place-grid {
     grid-template-columns: 1fr;
+  }
+
+  .management-shell-actions {
+    justify-content: flex-start;
   }
 
   .management-queue-grid {
@@ -8488,6 +8575,7 @@ button,
   .place-public-highlights,
   .ranking-hero-kpis,
   .management-hub-kpis,
+  .management-shell-stats,
   .management-place-metrics,
   .tournament-overview-grid,
   .tournament-panel-kpis {
@@ -8540,6 +8628,7 @@ button,
 
   .home-summary-grid,
   .management-hub-kpis,
+  .management-shell-stats,
   .management-place-metrics,
   .management-queue-grid,
   .place-public-kpis,

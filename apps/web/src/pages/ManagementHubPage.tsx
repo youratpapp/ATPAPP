@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
-import { AppShell } from "../components/AppShell";
+import { ManagementShell } from "../components/management/ManagementShell";
 import { fetchPlacesWorkspaceData, type PlaceAdminResourceEntry } from "../lib/place-admin-data";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import {
@@ -165,29 +165,19 @@ export function ManagementHubPage({ user, profile }: Props) {
   const aggregate = useMemo(() => totalSummaries(Object.values(summariesByPlace)), [summariesByPlace]);
 
   return (
-    <AppShell user={user} profile={profile} showHeader={false}>
-      <main className="management-hub-page">
-        <section className="management-hub-hero">
-          <div>
-            <span>Central operacional</span>
-            <h1>Gestao da academia</h1>
-            <p>Uma entrada propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.</p>
-          </div>
-          <div className="management-hub-kpis" aria-label="Resumo operacional">
-            <article>
-              <strong>{places.length}</strong>
-              <small>{countLabel(places.length, "local acessivel", "locais acessiveis")}</small>
-            </article>
-            <article>
-              <strong>{pendingTotal(aggregate)}</strong>
-              <small>pendencias operacionais</small>
-            </article>
-            <article>
-              <strong>{aggregate.todayBookings}</strong>
-              <small>reservas hoje</small>
-            </article>
-          </div>
-        </section>
+    <ManagementShell
+      user={user}
+      profile={profile}
+      eyebrow="Central operacional"
+      title="Gestao"
+      description="Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada."
+      stats={[
+        { label: countLabel(places.length, "local acessivel", "locais acessiveis"), value: places.length },
+        { label: "pendencias operacionais", value: pendingTotal(aggregate) },
+        { label: "reservas hoje", value: aggregate.todayBookings },
+      ]}
+    >
+      <div className="management-hub-page">
 
         {error ? <p className="feedback error">{error}</p> : null}
         {loading ? <p className="subtle">Carregando central de gestao...</p> : null}
@@ -323,7 +313,7 @@ export function ManagementHubPage({ user, profile }: Props) {
             </section>
           </>
         ) : null}
-      </main>
-    </AppShell>
+      </div>
+    </ManagementShell>
   );
 }

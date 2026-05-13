@@ -12,6 +12,8 @@ Reduzir acoplamento, padronizar operacao e transformar paginas grandes em worksp
 
 Documento de referencia: `ARCHITECTURE_RECALIBRATION.md`.
 
+Documento de direcao frontend/UX: `FRONTEND_UX_REARCHITECTURE.md`.
+
 Correcao de rumo:
 
 - modularizacao continua importante, mas nao deve virar fim em si mesma;
@@ -22,10 +24,12 @@ Correcao de rumo:
 
 Sequencia ajustada:
 
-1. fechar Academia: criacao de turma/horario, encaixes e estados vazios acionaveis;
-2. iniciar CompetitionShell para torneio/liga;
-3. criar primeiros wizards de setup;
-4. voltar a hooks/rotas/code splitting de Places.
+1. consolidar `ManagementShell` e separar de vez a experiencia de gestao da vitrine de locais;
+2. extrair `PlaceAdminShell` para reduzir dependencia conceitual de `PlacesPage`;
+3. criar `PermissionGate`/menus por papel e plano;
+4. iniciar `CompetitionShell` com separacao clara entre jogando e organizando;
+5. revisar Home do jogador para ficar centrada em proxima acao;
+6. aplicar visual system premium em rows, cards, botoes, badges e estados.
 
 ## Fase 0 - Memoria arquitetural
 
@@ -150,6 +154,8 @@ Evoluido em 2026-05-13:
 - removido bloco legado duplicado de cockpit administrativo de locais, mantendo uma unica fonte visual via `PlaceManagementCockpit`.
 - criado `ManagementHubPage` em `/gestao` como porta operacional propria para donos/equipe, com pendencias por local e atalhos para Agenda, Academia, Clientes, Financeiro e Cantina.
 - rotas canonicas do admin de local passaram a ser `/gestao/:placeId/:module`, deixando `/locais/:placeId/admin` como compatibilidade e reduzindo a sensacao de ferramenta empilhada dentro de Locais.
+- criado `ManagementShell` e aplicado em `/gestao` e no admin de local, iniciando a separacao visual real entre Management OS e areas publicas/player.
+- cabecalho de gestao ficou mais compacto e operacional, substituindo hero grande por contexto, acoes e indicadores de rotina.
 
 ## Fase 3 - CompetitionShell
 
