@@ -120,11 +120,14 @@ Visual:
 - fundo branco ou navy muito discreto;
 - item ativo com barra lateral ou capsule suave;
 - sem bordas pesadas em cada item.
+- desktop pode agrupar entradas globais em Jogar, Operar e Conta.
+- contexto atual pode aparecer como chip curto: Player App, Competition OS ou Management OS.
 
 Mobile:
 
 - nao comprimir sidebar;
 - usar bottom nav global + module switcher/bottom sheet.
+- esconder cabecalhos de grupo e manter apenas itens essenciais.
 
 Anti-pattern:
 

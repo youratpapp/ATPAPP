@@ -4025,7 +4025,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             />
           ) : null}
 
-          <article className="card" style={{ marginBottom: 12 }}>
+          <article className="card competition-overview-card" style={{ marginBottom: 12 }}>
             <div className="section-title" style={{ marginBottom: 8 }}>
               <h2>
                 {activeClass

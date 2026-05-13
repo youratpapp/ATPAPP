@@ -128,8 +128,11 @@ Card e excecao em operacao diaria. Row e padrao.
 - Rotas canonicas de admin de local usam `/gestao/:placeId/:module`.
 - `ManagementShell` envolve gestao.
 - `PlaceAdminShell` iniciou separacao do cockpit administrativo do local.
+- `PlaceAdminShell` ja foi refinado para workspace compacto: modulo ativo em destaque, setup secundario e fila antes de metricas.
+- Navegacao desktop ja agrupa entradas globais em Jogar, Operar e Conta, com contexto visual para Management OS.
 - Muitos modulos de locais foram extraidos de `PlacesPage`.
 - Competition OS iniciou padroes comuns com selector, fila, publishing e header.
+- Competition OS ja recebeu base visual compartilhada: header compacto, escopo antes de numeros, fila em rows e publicacao secundaria.
 - Visual language premium foi documentada.
 - `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` foram criados.
 - `/gestao` ja foi refinada para ocultar cards zerados e usar rows operacionais de local.
@@ -138,9 +141,9 @@ Card e excecao em operacao diaria. Row e padrao.
 ### Ainda fraco
 
 - `PlacesPage` ainda concentra muita orquestracao e ainda influencia a sensacao de admin template.
-- Admin de local ainda precisa parecer mais workspace e menos cockpit de cards.
-- Sidebar/global navigation ainda nao comunica contextos com qualidade premium suficiente.
-- Competition OS ainda nao esta totalmente fechado como experiencia unica.
+- Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
+- Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
+- Competition OS ja esta mais consistente visualmente, mas ainda precisa refinamento profundo de fluxos internos de torneio/liga.
 - Mobile ainda pode parecer desktop empilhado em varias telas.
 - Home do jogador ainda precisa reforcar proxima acao e reduzir ruido.
 - Paginas publicas ainda precisam mais percepcao premium e conversao clara.
@@ -153,8 +156,8 @@ Card e excecao em operacao diaria. Row e padrao.
 1. Excesso de card/box em telas operacionais.
 2. Acoes secundarias competindo com a acao primaria.
 3. Mobile com pilhas longas de blocos.
-4. Sidebar/global nav ainda com cara de app generico.
-5. Competition OS ainda parcialmente fragmentado.
+4. Sidebar/global nav ainda precisa evoluir permissoes, atalhos contextuais e estados por papel.
+5. Competition OS ainda precisa evoluir fluxos internos e estados mobile de detalhes/filtros.
 6. Place admin ainda com resquicios de cockpit antigo.
 7. Public pages ainda pouco memoraveis.
 8. Tabelas/listas ainda sem gramatica mobile uniforme.
@@ -229,9 +232,9 @@ Antes de mexer em qualquer tela:
 ## Prioridades de frontend
 
 1. Refinar `ManagementShell` e `/gestao`.
-2. Refinar admin de local dentro de `/gestao/:placeId/:module`.
-3. Melhorar navegacao/sidebar por contexto.
-4. Fechar base visual do Competition OS.
+2. Padronizar bottom sheets e detalhes mobile.
+3. Refinar os modulos internos de `/gestao/:placeId/:module` com rows e acoes primarias.
+4. Melhorar navegacao/sidebar por permissoes e atalhos contextuais.
 5. Padronizar rows operacionais.
 6. Reduzir dashboards informativos.
 7. Aplicar mobile sheets e sticky actions.

@@ -1353,6 +1353,25 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
       {!loading && !error && league ? (
         <>
+          <section className="competition-filter-stack competition-filter-stack-priority">
+            <CompetitionScopeSelector
+              eyebrow="Escopo da liga"
+              label="Temporada"
+              title="Temporada ativa"
+              value={selectedSeasonId}
+              onChange={setSelectedSeasonId}
+              options={league.seasons.map((season) => ({ value: season.id, label: `${season.name} (#${season.seasonNumber})` }))}
+            />
+            <CompetitionScopeSelector
+              eyebrow="Escopo da liga"
+              label="Classe"
+              title="Classe ativa"
+              value={selectedClassId}
+              onChange={setSelectedClassId}
+              options={[{ value: "", label: "Todas as classes" }, ...classes.map((item) => ({ value: item.id, label: classLabel(item) }))]}
+            />
+          </section>
+
           <CompetitionTabs
             activeValue={activeTab}
             ariaLabel="Visoes da liga"
@@ -1518,25 +1537,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
           {activeTab === "visao" ? (
             <>
-          <section className="competition-filter-stack">
-            <CompetitionScopeSelector
-              eyebrow="Filtro de visualizacao"
-              label="Temporada"
-              title="Temporada ativa"
-              value={selectedSeasonId}
-              onChange={setSelectedSeasonId}
-              options={league.seasons.map((season) => ({ value: season.id, label: `${season.name} (#${season.seasonNumber})` }))}
-            />
-            <CompetitionScopeSelector
-              eyebrow="Filtro de visualizacao"
-              label="Classe"
-              title="Classe ativa"
-              value={selectedClassId}
-              onChange={setSelectedClassId}
-              options={[{ value: "", label: "Todas as classes" }, ...classes.map((item) => ({ value: item.id, label: classLabel(item) }))]}
-            />
-          </section>
-
           <section className="section-card">
             <div className="section-title" style={{ marginBottom: 10 }}>
               <div>

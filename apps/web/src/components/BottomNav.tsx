@@ -63,45 +63,64 @@ function PersonIcon({ active }: { active: boolean }) {
 }
 
 type NavItem = {
+  group: "player" | "operations" | "account";
   path: string;
   label: string;
   Icon: ComponentType<{ active: boolean }>;
 };
 
 const ITEMS: NavItem[] = [
-  { path: "/inicio", label: "Inicio", Icon: HomeIcon },
-  { path: "/eventos", label: "Competicoes", Icon: TrophyIcon },
-  { path: "/gestao", label: "Gestao", Icon: ManagementIcon },
-  { path: "/locais", label: "Locais", Icon: LocationIcon },
-  { path: "/ranking", label: "Ranking", Icon: StarIcon },
-  { path: "/perfil", label: "Perfil", Icon: PersonIcon },
+  { group: "player", path: "/inicio", label: "Inicio", Icon: HomeIcon },
+  { group: "player", path: "/eventos", label: "Competicoes", Icon: TrophyIcon },
+  { group: "operations", path: "/gestao", label: "Gestao", Icon: ManagementIcon },
+  { group: "operations", path: "/locais", label: "Locais", Icon: LocationIcon },
+  { group: "player", path: "/ranking", label: "Ranking", Icon: StarIcon },
+  { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon },
+];
+
+const GROUPS: Array<{ id: NavItem["group"]; label: string }> = [
+  { id: "player", label: "Jogar" },
+  { id: "operations", label: "Operar" },
+  { id: "account", label: "Conta" },
 ];
 
 export function BottomNav() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const contextLabel = pathname.startsWith("/gestao")
+    ? "Management OS"
+    : pathname.startsWith("/eventos")
+      ? "Competition OS"
+      : "Player App";
+
   return (
-    <nav className="bottom-nav" aria-label="Navegacao principal">
+    <nav className={`bottom-nav${pathname.startsWith("/gestao") ? " is-management" : ""}`} aria-label="Navegacao principal">
       <div className="bottom-nav-brand" aria-hidden>
         <img src={logoMark} alt="" />
         <span>Gestao esportiva</span>
+        <small className="bottom-nav-context">{contextLabel}</small>
       </div>
-      {ITEMS.map((item) => {
-        const active = pathname === item.path || pathname.startsWith(`${item.path}/`);
-        return (
-          <button
-            key={item.path}
-            className={active ? "active" : ""}
-            onClick={() => navigate(item.path)}
-            aria-current={active ? "page" : undefined}
-          >
-            <span className="nav-icon" aria-hidden>
-              <item.Icon active={active} />
-            </span>
-            <span>{item.label}</span>
-          </button>
-        );
-      })}
+      {GROUPS.map((group) => (
+        <div className="bottom-nav-group" key={group.id}>
+          <span className="bottom-nav-group-label">{group.label}</span>
+          {ITEMS.filter((item) => item.group === group.id).map((item) => {
+            const active = pathname === item.path || pathname.startsWith(`${item.path}/`);
+            return (
+              <button
+                key={item.path}
+                className={active ? "active" : ""}
+                onClick={() => navigate(item.path)}
+                aria-current={active ? "page" : undefined}
+              >
+                <span className="nav-icon" aria-hidden>
+                  <item.Icon active={active} />
+                </span>
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      ))}
     </nav>
   );
 }

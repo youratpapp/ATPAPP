@@ -172,6 +172,8 @@ Evoluido em 2026-05-13:
 - `/gestao` foi refinada para usar rows operacionais de local em vez de grid de cards, reduzindo verticalidade, botoes equivalentes e sensacao de admin template.
 - criados `CURRENT_PRODUCT_STATE.md` e `EXECUTION_QUEUE.md` para sair da fase de replanejamento e entrar em execucao continua por prioridade.
 - `/gestao` recebeu refinamento mobile-first: header compacto, stats em trilho horizontal, rows tocaveis e atalhos de modulos sem empilhar verticalmente.
+- `/gestao/:placeId/:module` recebeu refinamento inicial de workspace: `PlaceAdminShell` compacto, modulo ativo com hierarquia clara, setup secundario e dashboard com fila antes de metricas.
+- navegacao desktop passou a agrupar entradas em Jogar, Operar e Conta, com contexto visual para Management OS sem transformar mobile em sidebar comprimida.
 
 ## Fase 3 - CompetitionShell
 
@@ -201,6 +203,7 @@ Evoluido em 2026-05-13:
 - criado `CompetitionTabs` e aplicado em torneio/liga para padronizar subvisoes, scroll mobile e badges de pendencia.
 - criado `CompetitionHeader` e aplicado em torneio/liga para padronizar titulo, contexto, status e acao de voltar.
 - torneio passou a usar `CompetitionOperationalQueue` no centro de pendencias, alinhando fila de inscricoes, resultados, disponibilidade e jogos com a liga.
+- Competition OS recebeu refinamento visual: liga coloca temporada/classe antes de tabs e KPIs, torneio usa overview da mesma familia, filas viraram rows e publicacao ficou secundaria.
 
 ## Fase 4 - Wizards de criacao
 

@@ -23,6 +23,14 @@ Entradas:
 
 Regra: nao adicionar item global para cada modulo administrativo. `Gestao` e a unica porta global da operacao de academia/clube; agenda, academia, financeiro, cantina, equipe e ajustes continuam dentro do workspace da entidade.
 
+No desktop, a navegacao global deve comunicar contexto sem aumentar rotas:
+
+- `Jogar`: Inicio, Competicoes, Ranking.
+- `Operar`: Gestao, Locais.
+- `Conta`: Perfil.
+
+No mobile, esses grupos nao aparecem como cabecalhos; a bottom nav continua simples e curta.
+
 ### L1 - Hubs de dominio
 
 Exemplos:
@@ -141,3 +149,4 @@ Direcao:
 - 2026-05-13: contrato tecnico de slugs, parser e construcao de URL do admin de locais foi centralizado em `place-admin-navigation`.
 - 2026-05-13: resolucao de subvisao administrativa foi centralizada em `resolvePlaceAdminView`, mantendo defaults e canonizacao em um unico contrato.
 - 2026-05-13: sincronizacao de rota administrativa de local passou para `usePlaceAdminRouteSync`, separando contrato navegavel da renderizacao da tela.
+- 2026-05-13: sidebar desktop passou a agrupar navegacao global em Jogar, Operar e Conta, com chip de contexto (`Player App`, `Competition OS`, `Management OS`) e mobile preservado como bottom nav simples.

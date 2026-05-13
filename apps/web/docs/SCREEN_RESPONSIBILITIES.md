@@ -54,6 +54,8 @@ Quando uma tela cresce demais:
 - 2026-05-13: `PlaceAdminShell` iniciou a separacao da responsabilidade de cockpit/contexto do local, deixando `PlacesPage` menos responsavel pela experiencia administrativa.
 - 2026-05-13: `/gestao` reduziu o papel de dashboard e passou a tratar locais como rows operacionais com pulso, tarefas e acoes, mantendo cards apenas para fila/estado quando fizer sentido.
 - 2026-05-13: `/gestao` ganhou comportamento mobile-first mais claro, com header compacto, stats em trilho horizontal e atalhos de modulo em scroll lateral para evitar empilhamento.
+- 2026-05-13: `/gestao/:placeId/:module` ganhou shell de workspace mais compacto, com modulo ativo antes de setup/configuracao e fila operacional antes de metricas.
+- 2026-05-13: navegacao global desktop passou a separar Jogar, Operar e Conta, reforcando que `Gestao` e contexto operacional e `Locais` e camada publica/descoberta.
 - 2026-05-13: CRM de locais iniciou separacao real por dominio com `PlaceCrmModule`; `PlacesPage` passa a orquestrar dados/navegacao e delegar captura, lista, historico e acoes de CRM ao modulo.
 - 2026-05-13: planos e socios de locais foram isolados em `PlaceMembershipModule`, reduzindo mistura entre captura de lead, recorrencia, status do jogador e cobranca dentro da pagina principal.
 - 2026-05-13: fila diaria de atendimento de clientes foi isolada em `PlaceClientActionQueue`, reforcando a separacao entre operacao do dia e configuracao/relatorios.
@@ -84,6 +86,7 @@ Quando uma tela cresce demais:
 - 2026-05-13: tabs de torneio/liga foram padronizadas em `CompetitionTabs`, com badges de pendencia e comportamento mobile consistente.
 - 2026-05-13: cabecalho de torneio/liga foi padronizado em `CompetitionHeader`, alinhando titulo, contexto, status e retorno.
 - 2026-05-13: fila de pendencias do torneio foi alinhada a liga com `CompetitionOperationalQueue`, reforcando competicoes como operacao por prioridades.
+- 2026-05-13: Competition OS ganhou base visual compartilhada: liga mostra temporada/classe antes de tabs/KPIs, filas viraram rows e publicacao ficou visualmente secundaria.
 - 2026-05-13: criacao de torneio/liga passou a usar `SetupWizard`, separando decisoes iniciais em etapas curtas e reduzindo friccao no setup.
 - 2026-05-13: criacao de turma da Academia passou a usar `SetupWizard`, separando identidade, agenda e perfil/preco para reduzir densidade no modulo.
 - 2026-05-13: paginas passaram a carregar por rota com `React.lazy`/`Suspense`, alinhando a estrutura tecnica com responsabilidades de tela separadas por dominio.

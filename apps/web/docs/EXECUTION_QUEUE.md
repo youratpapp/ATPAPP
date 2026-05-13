@@ -89,9 +89,9 @@ Entregue em 2026-05-13:
 - atalhos de modulos viraram trilho horizontal, evitando uma lista vertical longa;
 - acao primaria continua clara e pagina publica ficou secundaria.
 
-### [>] GESTAO-02 - Refinar admin de local como workspace, nao cockpit de cards
+### [x] GESTAO-02 - Refinar admin de local como workspace, nao cockpit de cards
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -132,9 +132,19 @@ Criterios de conclusao:
 - configuracao fica visualmente secundaria;
 - mobile nao fica com blocos enormes empilhados.
 
-### [ ] SIDEBAR-01 - Criar navegacao premium para Management OS
+Entregue em 2026-05-13:
 
-Status: `[ ]` pendente
+- `PlaceAdminShell` ficou mais compacto e com cara de workspace;
+- contexto do local, papel e plano ficaram no topo sem hero grande;
+- modulo ativo ganhou hierarquia propria antes de setup/configuracao;
+- setup e features viraram faixa secundaria discreta;
+- dashboard de operacao passou a mostrar fila de trabalho antes das metricas;
+- metricas do dashboard foram reduzidas para sinais de suporte;
+- mobile ganhou setup em coluna, features em trilho e grid de sinais mais compacto.
+
+### [x] SIDEBAR-01 - Criar navegacao premium para Management OS
+
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -176,11 +186,20 @@ Criterios de conclusao:
 - mobile mantem bottom nav simples;
 - nav nao mostra ferramentas sem contexto.
 
+Entregue em 2026-05-13:
+
+- navegacao desktop passou a agrupar entradas em `Jogar`, `Operar` e `Conta`;
+- sidebar mostra contexto atual (`Player App`, `Competition OS`, `Management OS`);
+- estado de Gestao aplica tratamento visual proprio sem criar nova rota;
+- item ativo ficou mais forte e menos dependente de card verde;
+- mobile manteve bottom nav simples usando os mesmos itens globais;
+- modulos internos continuam aparecendo apenas dentro do workspace do local, conforme plano/acesso.
+
 ## P1 - Alto impacto
 
-### [ ] COMP-01 - Finalizar visual base do Competition OS
+### [x] COMP-01 - Finalizar visual base do Competition OS
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -224,7 +243,17 @@ Criterios de conclusao:
 - classe/rodada/temporada sempre claros;
 - sem proxima partida duplicada de forma confusa.
 
-### [ ] MOBILE-01 - Padronizar bottom sheets para filtros e detalhes
+Entregue em 2026-05-13:
+
+- header compartilhado de competicao ficou mais compacto e consistente;
+- liga agora mostra temporada/classe ativa antes de tabs, KPIs e listas;
+- torneio usa o mesmo card visual de overview do Competition OS;
+- fila operacional virou leitura em rows, reduzindo mosaico de cards;
+- publicacao ficou visualmente secundaria com borda tracejada e menos peso;
+- tabs de competicao ganharam estado ativo forte e uniforme;
+- mobile adapta filas para rows de duas linhas sem tabela larga.
+
+### [>] MOBILE-01 - Padronizar bottom sheets para filtros e detalhes
 
 Status: `[ ]` pendente
 
