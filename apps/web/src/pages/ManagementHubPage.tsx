@@ -46,6 +46,8 @@ type SetupChecklistStep = {
 };
 
 const PRIORITY_MODULES: PlaceManagementModule[] = ["bookings", "academy", "clients", "finance", "canteen"];
+const COACH_PRIORITY_MODULES: PlaceManagementModule[] = ["academy"];
+const FRONTDESK_PRIORITY_MODULES: PlaceManagementModule[] = ["bookings", "academy"];
 
 const PLAN_LABELS: Record<Place["productPlan"], string> = {
   academy: "Academia",
@@ -220,6 +222,44 @@ function weekdayLabel(value: number): string {
   return ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"][value] || "Dia";
 }
 
+function operatorProfileFor(access: ReturnType<typeof placeResourceAccess>, place: Place) {
+  if (access.staffRole === "coach" && !access.canManagePlace) {
+    return {
+      moduleShortcuts: COACH_PRIORITY_MODULES,
+      primaryLabel: "Abrir aulas",
+      primaryModule: "academy" as PlaceManagementModule,
+      primaryView: "hoje",
+      secondaryLabel: "Alunos",
+      secondaryModule: "academy" as PlaceManagementModule,
+      secondaryView: "alunos",
+      subtitle: "Rotina de professor",
+    };
+  }
+  if (access.staffRole === "frontdesk" && !access.canManagePlace) {
+    return {
+      moduleShortcuts: FRONTDESK_PRIORITY_MODULES,
+      primaryLabel: "Abrir agenda",
+      primaryModule: "bookings" as PlaceManagementModule,
+      primaryView: "calendario",
+      secondaryLabel: "Aulas",
+      secondaryModule: "academy" as PlaceManagementModule,
+      secondaryView: "hoje",
+      subtitle: "Recepcao e agenda",
+    };
+  }
+  const isCompleteOperation = place.productPlan === "club_pro" || place.productPlan === "multi_unit";
+  return {
+    moduleShortcuts: PRIORITY_MODULES,
+    primaryLabel: "Abrir operacao",
+    primaryModule: "dashboard" as PlaceManagementModule,
+    primaryView: undefined,
+    secondaryLabel: "Pagina publica",
+    secondaryModule: undefined,
+    secondaryView: undefined,
+    subtitle: isCompleteOperation ? "Operacao completa" : PLAN_LABELS[place.productPlan],
+  };
+}
+
 export function ManagementHubPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const [places, setPlaces] = useState<Place[]>([]);
@@ -281,9 +321,13 @@ export function ManagementHubPage({ user, profile }: Props) {
     () =>
       places
         .map((place) => ({ place, summary: summariesByPlace[place.id] }))
-        .filter((item): item is { place: Place; summary: PlaceOperationSummary } => Boolean(item.summary?.setupGaps.length))
+        .filter((item): item is { place: Place; summary: PlaceOperationSummary } => {
+          if (!item.summary?.setupGaps.length) return false;
+          const access = accessByPlace[item.place.id] || placeResourceAccess(item.place, user.id, []);
+          return access.canManagePlace;
+        })
         .sort((a, b) => a.summary.setupProgress - b.summary.setupProgress),
-    [places, summariesByPlace]
+    [accessByPlace, places, summariesByPlace, user.id]
   );
   const setupFocus = setupPlaces[0];
   const coachWorkspaces = useMemo(
@@ -483,7 +527,16 @@ export function ManagementHubPage({ user, profile }: Props) {
                   const staff = entry?.staff || [];
                   const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, staff as PlaceStaffMember[]);
                   const modules = placeManagementModules(access);
-                  const moduleShortcuts = PRIORITY_MODULES.filter((module) => modules.includes(module));
+                  const operatorProfile = operatorProfileFor(access, place);
+                  const moduleShortcuts = operatorProfile.moduleShortcuts.filter((module) => modules.includes(module));
+                  const primaryModule = modules.includes(operatorProfile.primaryModule)
+                    ? operatorProfile.primaryModule
+                    : modules.includes("academy")
+                      ? "academy"
+                      : "dashboard";
+                  const primaryView = primaryModule === operatorProfile.primaryModule ? operatorProfile.primaryView : undefined;
+                  const secondaryModule =
+                    operatorProfile.secondaryModule && modules.includes(operatorProfile.secondaryModule) ? operatorProfile.secondaryModule : undefined;
                   const summary = summariesByPlace[place.id] || summarizePlace({
                     academyAbsences: [],
                     academyAttendance: [],
@@ -521,7 +574,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                         </div>
                         <div>
                           <span>
-                            {role} | {PLAN_LABELS[place.productPlan]}
+                            {role} | {operatorProfile.subtitle}
                           </span>
                           <h2>{place.name}</h2>
                           <p>{[place.city, place.state].filter(Boolean).join(" - ") || "Local sem cidade definida"}</p>
@@ -592,10 +645,24 @@ export function ManagementHubPage({ user, profile }: Props) {
                       ) : null}
 
                       <div className="management-row-actions">
-                        <button className="primary" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
-                          Abrir operacao
+                        <button
+                          className="primary"
+                          onClick={() => navigate(buildPlaceAdminPath(place.id, primaryModule, primaryView))}
+                        >
+                          {operatorProfile.primaryLabel}
                         </button>
-                        <button className="secondary" onClick={() => navigate(`/locais/${encodeURIComponent(place.id)}`)}>Pagina publica</button>
+                        {secondaryModule ? (
+                          <button
+                            className="secondary"
+                            onClick={() => navigate(buildPlaceAdminPath(place.id, secondaryModule, operatorProfile.secondaryView))}
+                          >
+                            {operatorProfile.secondaryLabel}
+                          </button>
+                        ) : access.canManagePlace ? (
+                          <button className="secondary" onClick={() => navigate(`/locais/${encodeURIComponent(place.id)}`)}>
+                            {operatorProfile.secondaryLabel}
+                          </button>
+                        ) : null}
                       </div>
 
                       <div className="management-row-modules">

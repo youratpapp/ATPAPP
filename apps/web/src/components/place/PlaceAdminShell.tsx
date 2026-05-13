@@ -11,13 +11,13 @@ type PlaceAdminShellProps = {
   locationLabel: string;
   moduleCounts: Record<PlaceManagementModule, number>;
   modules: PlaceManagementModule[];
-  nextStep: { title: string; detail: string; module: PlaceManagementModule } | null;
+  nextStep: { title: string; detail: string; module: PlaceManagementModule; viewSegment?: string } | null;
   pendingCount: number;
   planLabel: string;
   placeName: string;
   setupPercent: number;
   staffRoleLabel: string;
-  onModuleChange: (module: PlaceManagementModule) => void;
+  onModuleChange: (module: PlaceManagementModule, viewSegment?: string) => void;
 };
 
 export function PlaceAdminShell({
@@ -35,6 +35,12 @@ export function PlaceAdminShell({
   onModuleChange,
 }: PlaceAdminShellProps) {
   const modulePendingCount = moduleCounts[currentModule] || 0;
+  const preferredModules: PlaceManagementModule[] = ["dashboard", "bookings", "academy", "clients", "finance"];
+  const visibleModules = [
+    ...preferredModules.filter((module) => modules.includes(module)),
+    currentModule,
+  ].filter((module, index, list): module is PlaceManagementModule => Boolean(module) && list.indexOf(module) === index).slice(0, 5);
+  const overflowModules = modules.filter((module) => !visibleModules.includes(module));
 
   return (
     <section className="place-admin-shell" aria-label={`Gestao de ${placeName}`}>
@@ -57,7 +63,7 @@ export function PlaceAdminShell({
       </div>
 
       <div className="place-management-tabs" role="tablist" aria-label={`Modulos de ${placeName}`}>
-        {modules.map((module) => (
+        {visibleModules.map((module) => (
           <button
             key={`${placeName}:module:${module}`}
             className={currentModule === module ? "active" : ""}
@@ -68,6 +74,24 @@ export function PlaceAdminShell({
             {moduleCounts[module] ? <em>{moduleCounts[module]}</em> : null}
           </button>
         ))}
+        {overflowModules.length ? (
+          <details className="place-management-more">
+            <summary>Mais</summary>
+            <div>
+              {overflowModules.map((module) => (
+                <button
+                  key={`${placeName}:module-more:${module}`}
+                  className={currentModule === module ? "active" : ""}
+                  onClick={() => onModuleChange(module)}
+                  type="button"
+                >
+                  <span>{PLACE_MANAGEMENT_MODULE_LABELS[module]}</span>
+                  {moduleCounts[module] ? <em>{moduleCounts[module]}</em> : null}
+                </button>
+              ))}
+            </div>
+          </details>
+        ) : null}
       </div>
 
       <div className="place-module-context">
@@ -95,7 +119,7 @@ export function PlaceAdminShell({
           {!featureLabels.length ? <span>Operacao basica</span> : null}
         </div>
         {nextStep ? (
-          <button className="place-next-step" type="button" onClick={() => onModuleChange(nextStep.module)}>
+          <button className="place-next-step" type="button" onClick={() => onModuleChange(nextStep.module, nextStep.viewSegment)}>
             <strong>{nextStep.title}</strong>
             <span>{nextStep.detail}</span>
           </button>

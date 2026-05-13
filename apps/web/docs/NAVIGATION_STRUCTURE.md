@@ -150,3 +150,6 @@ Direcao:
 - 2026-05-13: resolucao de subvisao administrativa foi centralizada em `resolvePlaceAdminView`, mantendo defaults e canonizacao em um unico contrato.
 - 2026-05-13: sincronizacao de rota administrativa de local passou para `usePlaceAdminRouteSync`, separando contrato navegavel da renderizacao da tela.
 - 2026-05-13: sidebar desktop passou a agrupar navegacao global em Jogar, Operar e Conta, com chip de contexto (`Player App`, `Competition OS`, `Management OS`) e mobile preservado como bottom nav simples.
+- 2026-05-13: entradas internas de `/gestao` passaram a priorizar destino por papel: professor abre Academia/Hoje, recepcao abre Agenda/Calendario e gestor abre dashboard operacional.
+- 2026-05-13: `/eventos` preserva `Organizar evento` como opcao contextual em Descobrir, sem roteiro administrativo nobre para jogador comum sem competicao organizada.
+- 2026-05-13: quick actions administrativas passaram a aceitar subvisao de destino; `Cadastrar professor` abre Academia/Professores, `Criar turma` abre Academia/Turmas, `Publicar pagina` abre Ajustes/Estrutura editavel e acoes originadas em Recursos tambem mudam para a tela executavel.

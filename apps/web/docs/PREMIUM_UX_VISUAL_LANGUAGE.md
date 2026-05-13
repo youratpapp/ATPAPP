@@ -572,3 +572,37 @@ Premium aqui significa:
 - sente que o sistema antecipa a rotina;
 - consegue operar no mobile sem brigar com a tela;
 - percebe confianca visual suficiente para pagar pelo produto.
+
+## Aplicacao visual em andamento
+
+### Sidebar / navegacao
+
+Decisao aplicada em 2026-05-13:
+
+- Gestao pode ter tratamento visual proprio de workspace, desde que nao vire decoracao.
+- O estado ativo deve ser mais evidente que o icone.
+- Grupos de navegacao devem ser silenciosos; o usuario precisa perceber contexto antes de perceber menu.
+- Mobile pode usar trilho horizontal quando houver mais de 4 entradas, evitando grid comprimido.
+
+Antipattern agora proibido:
+
+- sidebar identica para Player App e Management OS quando o usuario esta operando uma academia.
+- item ativo dependente apenas de borda ou cor fraca.
+
+### Home / dashboard
+
+Decisao aplicada em 2026-05-13:
+
+- Home nao deve abrir com hero administrativo.
+- A primeira viewport deve responder `o que faco agora?`, nao apresentar vitrine de KPIs.
+- Proxima partida/reserva, pendencia e agenda compacta valem mais que cards informativos.
+- Zeros nao devem ganhar protagonismo.
+
+### Gestao
+
+Decisao aplicada em 2026-05-13:
+
+- Gestao deve parecer cockpit operacional, com headers compactos e rows densas.
+- Command panel existe para tarefa e setup, nao para mosaico de modulo.
+- Abas primarias ficam limitadas a 5; o restante vai para overflow contextual.
+- Sombra, borda e caixa devem ser usadas como suporte, nao como estrutura dominante.

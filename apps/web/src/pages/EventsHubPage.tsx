@@ -141,58 +141,6 @@ function DiscoveryAction({
   );
 }
 
-function OrganizerStarter({ onCreateLeague, onCreateTournament }: { onCreateLeague: () => void; onCreateTournament: () => void }) {
-  const steps = [
-    {
-      action: onCreateTournament,
-      detail: "Ideal para evento com classes, chave, inscritos e publicacao.",
-      label: "Criar torneio",
-      state: "Comece aqui",
-    },
-    {
-      action: onCreateLeague,
-      detail: "Ideal para temporada recorrente, rodadas e ranking.",
-      label: "Criar liga",
-      state: "Opcional",
-    },
-    {
-      detail: "Depois de criar, organize categorias e criterios de entrada.",
-      label: "Classes e inscricoes",
-      state: "Proximo",
-    },
-    {
-      detail: "Publique link, confirme inscritos e gere jogos/rodadas.",
-      label: "Publicar e operar",
-      state: "Proximo",
-    },
-  ];
-  return (
-    <section className="competition-starter-panel" aria-label="Roteiro para organizar primeira competicao">
-      <div className="hub-flow-header">
-        <div>
-          <h3>Organizar pela primeira vez</h3>
-          <p className="subtle">Um roteiro curto para sair do zero sem procurar ferramentas escondidas.</p>
-        </div>
-      </div>
-      <div className="competition-starter-steps">
-        {steps.map((step) => (
-          <button
-            key={step.label}
-            className={step.action ? "competition-starter-step actionable" : "competition-starter-step"}
-            type="button"
-            onClick={step.action}
-            disabled={!step.action}
-          >
-            <span>{step.state}</span>
-            <strong>{step.label}</strong>
-            <small>{step.detail}</small>
-          </button>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 export function EventsHubPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const [participatingTournaments, setParticipatingTournaments] = useState<TournamentSummary[]>([]);
@@ -403,12 +351,6 @@ export function EventsHubPage({ user, profile }: Props) {
         </div>
       </section>
 
-      {!hasOrganizerContext ? (
-        <OrganizerStarter
-          onCreateTournament={() => navigate("/eventos/torneios?view=organizing")}
-          onCreateLeague={() => navigate("/eventos/ligas?view=organizing")}
-        />
-      ) : null}
     </AppShell>
   );
 }

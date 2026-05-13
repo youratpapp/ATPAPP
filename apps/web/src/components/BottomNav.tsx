@@ -147,7 +147,7 @@ export function BottomNav({ user }: { user: User }) {
         const groupItems = items.filter((item) => item.group === group.id);
         if (!groupItems.length) return null;
         return (
-        <div className="bottom-nav-group" key={group.id}>
+        <div className={`bottom-nav-group bottom-nav-group-${group.id}`} key={group.id}>
           <span className="bottom-nav-group-label">{group.label}</span>
           {groupItems.map((item) => {
             const activePath = item.activePath || item.path.split("?")[0] || item.path;

@@ -302,6 +302,13 @@ Uso:
 - cobrar socio;
 - cobrar aluno;
 
+Regra de destino:
+
+- a quick action deve abrir a subvisao onde a tarefa e concluida, nao uma tela de resumo;
+- `Cadastrar professor` precisa cair em Professores com formulario de professor;
+- `Criar turma` precisa cair em Turmas com wizard de turma;
+- se a tela de destino nao permite executar a tarefa, a quick action esta errada mesmo que o modulo esteja correto.
+
 Anatomia:
 
 ```text
@@ -481,6 +488,59 @@ Regras:
 - sem grid de 4 colunas;
 - status textual + cor;
 - acoes secundarias ocultas.
+
+## Workspace Sidebar
+
+Uso:
+
+- Management OS;
+- Competition OS quando houver operacao;
+- contextos com permissoes/modulos.
+
+Desktop:
+
+- superficie quieta;
+- contexto atual acima dos itens;
+- item ativo com maior contraste que os inativos;
+- grupos devem existir por significado, nao por decoracao;
+- evitar bordas em todos os itens.
+
+Mobile:
+
+- bottom/trilho compacto;
+- toque minimo 44px;
+- labels curtos;
+- overflow horizontal ou sheet quando houver excesso;
+- nao comprimir 6+ itens em grid fixo.
+
+Anti-pattern:
+
+- mesma sidebar visual para jogador e gestor;
+- icones grandes competindo com texto;
+- modulo sem permissao aparecendo como entrada principal;
+- active state baseado apenas em um detalhe sutil.
+
+## Tab Overflow
+
+Uso:
+
+- telas internas com muitos submodulos;
+- Gestao do local;
+- configuracoes com acoes raras.
+
+Regras:
+
+- maximo 5 abas primarias visiveis;
+- abas mais frequentes primeiro;
+- modulo atual nunca deve desaparecer sem contexto;
+- excedentes entram em `Mais`/sheet;
+- mobile deve preferir linha rolavel curta ou bottom sheet.
+
+Anti-pattern:
+
+- 8+ abas lado a lado;
+- abas tecnicas com nomes que nao representam intencao do usuario;
+- colocar acao primaria dentro de aba rara sem quick action semantica.
 
 ## Anti-patterns globais
 

@@ -171,7 +171,7 @@ Nao mostrar:
 | Intencao | Entrada preferida | Fallback | Deve aparecer como |
 | --- | --- | --- | --- |
 | Cadastrar quadra | Setup da Gestao | Agenda > Recursos | Quick action |
-| Cadastrar professor | Setup da Academia | Academia > Professores/Recursos | Quick action |
+| Cadastrar professor | Setup da Academia | Academia > Professores | Quick action |
 | Criar turma | Setup da Academia | Academia > Turmas | Quick action |
 | Criar reserva | Agenda do local | Gestao > fila do dia | Quick action |
 | Cadastrar cliente | Clientes/CRM | Gestao > quick action | Progressive form |
@@ -211,7 +211,7 @@ Mostrar:
 
 Status:
 
-- [feito] Hub de Gestao mostra `Cadastrar professor` quando faltam professores e envia para Academia > Professores.
+- [corrigido] Hub de Gestao mostra `Cadastrar professor` quando faltam professores e envia para Academia > Professores, onde tambem fica o cadastro.
 
 Nao exigir:
 
@@ -229,7 +229,19 @@ Mostrar:
 
 Status:
 
-- [feito] Hub de Gestao mostra `Criar turma` quando faltam turmas e envia para Academia > Turmas.
+- [corrigido] Hub de Gestao mostra `Criar turma` quando faltam turmas e envia para Academia > Turmas, onde tambem fica o wizard de criacao.
+
+## Regra de destino semantico
+
+Todo atalho por intencao precisa abrir a subvisao onde a tarefa pode ser feita, nao apenas o modulo relacionado.
+
+Exemplos:
+
+- `Cadastrar professor` -> `Academia > Professores`, com formulario de professor visivel.
+- `Criar turma` -> `Academia > Turmas`, com wizard de turma visivel.
+- `Cadastrar quadra` -> `Agenda > Quadras`, com formulario de quadra visivel.
+- `Criar turma` a partir de um horario aberto -> preenche o rascunho e leva para `Academia > Turmas`, nao permanece em Recursos.
+- `Publicar pagina` -> `Ajustes > Estrutura`, com formulario editavel de dados publicos.
 
 ### Quando ha cobranca pendente
 
@@ -254,7 +266,7 @@ Status:
 
 - [parcial] Hub de competicoes separa `Jogando`, `Organizando` e `Descobrir`, sem promover criacao para jogador comum.
 - [feito] Criacao de torneio/liga fica dentro das listas em contexto `organizing`.
-- [feito] `/eventos` mostra roteiro secundario para organizador novo criar torneio/liga e entender classes, inscricoes, publicacao e operacao.
+- [ajustado] `/eventos` nao mostra mais roteiro grande de organizador para jogador comum; criacao permanece acessivel por `Organizar evento` em Descobrir e pelas listas de contexto organizador.
 
 ### Quando usuario so joga
 

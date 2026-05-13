@@ -106,6 +106,7 @@ import {
   updatePlaceCreditPackageStatus,
   updatePlaceCrmContactStatus,
   updatePlaceMembershipStatus,
+  updatePlaceProfile,
   updatePlaceProductPlan,
   updatePlaceAcademySlotStatus,
   linkPlaceCoachByEmail,
@@ -171,6 +172,7 @@ type Props = {
 type TabKey = "all" | "following" | "mine";
 type AcademyStudentFilter = { query: string; classId: string; status: "" | AcademyEnrollment["status"] };
 type CrmInteractionDraft = { interactionType: PlaceCrmInteraction["interactionType"]; body: string; nextContactOn: string };
+type PlaceProfileDraft = { city: string; description: string; logoUrl: string; name: string; state: string };
 type BookingRuleDraft = {
   name: string;
   profileScope: PlaceBookingRule["profileScope"];
@@ -521,6 +523,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [staffDraftByPlace, setStaffDraftByPlace] = useState<Record<string, { email: string; role: PlaceStaffMember["role"] }>>({});
   const [reportPeriodByPlace, setReportPeriodByPlace] = useState<Record<string, AnalyticsReportPeriod>>({});
   const [reportRangeByPlace, setReportRangeByPlace] = useState<Record<string, { startDate: string; endDate: string }>>({});
+  const [placeProfileDraftByPlace, setPlaceProfileDraftByPlace] = useState<Record<string, PlaceProfileDraft>>({});
+  const [placeProfileLogoFileByPlace, setPlaceProfileLogoFileByPlace] = useState<Record<string, File | null>>({});
 
   const [showCreate, setShowCreate] = useState(false);
   const [name, setName] = useState("");
@@ -686,6 +690,49 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       await refresh();
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar local.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onSavePlaceProfile = async (place: Place) => {
+    const draft = placeProfileDraftByPlace[place.id] || {
+      name: place.name,
+      city: place.city,
+      state: place.state,
+      description: place.description,
+      logoUrl: place.logoUrl,
+    };
+    if (!draft.name.trim()) {
+      setFeedback({ kind: "error", text: "Informe o nome do local." });
+      return;
+    }
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const logoFile = placeProfileLogoFileByPlace[place.id];
+      const logoUrl = logoFile ? await uploadPlaceLogo(user, logoFile) : draft.logoUrl;
+      const updated = await updatePlaceProfile(user, place.id, {
+        ...draft,
+        state: normalizeStateUf(draft.state),
+        logoUrl,
+      });
+      setPlaces((rows) => rows.map((item) => (item.id === place.id ? updated : item)));
+      setPlaceProfileDraftByPlace((prev) => ({
+        ...prev,
+        [place.id]: {
+          name: updated.name,
+          city: updated.city,
+          state: updated.state,
+          description: updated.description,
+          logoUrl: updated.logoUrl,
+        },
+      }));
+      setPlaceProfileLogoFileByPlace((prev) => ({ ...prev, [place.id]: null }));
+      setFeedback({ kind: "success", text: "Dados publicos atualizados." });
+      await refresh();
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar dados publicos.") });
     } finally {
       setBusy(false);
     }
@@ -2250,6 +2297,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const expenses = expensesByPlace[p.id] || [];
         const myMembership = memberships.find((item) => item.userId === user.id && item.status !== "cancelled");
         const organization = organizations.find((item) => item.id === p.organizationId);
+        const placeProfileDraft = placeProfileDraftByPlace[p.id] || {
+          name: p.name,
+          city: p.city,
+          state: p.state,
+          description: p.description,
+          logoUrl: p.logoUrl,
+        };
         const activeCourts = courts.filter((court) => court.isActive);
         const bookings = bookingsByPlace[p.id] || [];
         const bookingWaitlist = bookingWaitlistByPlace[p.id] || [];
@@ -2723,6 +2777,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             title: "Dados do local",
             detail: p.description ? "Descricao preenchida" : "Inclua horarios, contato e orientacoes para alunos.",
             module: "settings" as PlaceManagementModule,
+            viewSegment: "estrutura",
           },
           {
             key: "courts",
@@ -2730,6 +2785,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             title: "Cadastrar quadra",
             detail: activeCourts.length ? `${countLabel(activeCourts.length, "quadra cadastrada", "quadras cadastradas")}` : "Cadastre pelo menos uma quadra para reservas.",
             module: "bookings" as PlaceManagementModule,
+            viewSegment: "quadras",
           },
           {
             key: "team",
@@ -2737,6 +2793,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             title: "Equipe",
             detail: staff.length ? `${countLabel(staff.length, "membro ou convite", "membros ou convites")}` : "Convide recepcao, gerente ou professor.",
             module: "team" as PlaceManagementModule,
+            viewSegment: "equipe",
           },
           {
             key: "academy-coaches",
@@ -2748,6 +2805,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 : "Cadastre professores para liberar grade, chamada e aulas."
               : "Modulo desativado no plano.",
             module: "academy" as PlaceManagementModule,
+            viewSegment: "professores",
           },
           {
             key: "academy-classes",
@@ -2759,6 +2817,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 : "Crie a primeira turma para organizar alunos e mensalidades."
               : "Modulo desativado no plano.",
             module: "academy" as PlaceManagementModule,
+            viewSegment: "turmas",
           },
           {
             key: "clients",
@@ -2770,6 +2829,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 : "Crie um plano antes de divulgar mensalistas."
               : "Modulo desativado no plano.",
             module: "clients" as PlaceManagementModule,
+            viewSegment: "socios",
           },
           {
             key: "canteen",
@@ -2781,6 +2841,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 : "Cadastre produtos para venda rapida."
               : "Modulo desativado no plano.",
             module: "canteen" as PlaceManagementModule,
+            viewSegment: "produtos",
           },
         ];
         const setupDoneCount = setupChecklist.filter((item) => item.done).length;
@@ -2955,7 +3016,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 placeName={p.name}
                 setupPercent={setupPercent}
                 staffRoleLabel={STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]]}
-                onModuleChange={(module) => selectManagementModule(p.id, module)}
+                onModuleChange={(module, viewSegment) => selectManagementModule(p.id, module, viewSegment)}
               />
             ) : null}
             {showManagementModule("dashboard") && isManagementCockpit ? (
@@ -3323,21 +3384,62 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     </WorkspaceGrid>
                   ) : null}
                   {settingsView === "structure" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard title="Quadras" subtitle="Base para reservas e bloqueios" value={activeCourts.length} />
-                      <WorkspaceCard
-                        title="Academia"
-                        subtitle="Professores e turmas ativas"
-                        value={activeAcademyClasses.length}
-                        metrics={[countLabel(academyCoaches.length, "professor", "professores"), countLabel(academySlots.length, "janela", "janelas")]}
-                      />
-                      <WorkspaceCard
-                        title="Relacionamento"
-                        subtitle="Planos e contatos comerciais"
-                        value={activeMembershipPlans.length}
-                        metrics={[countLabel(memberships.length, "socio", "socios"), countLabel(crmContacts.length, "contato", "contatos")]}
-                      />
-                    </WorkspaceGrid>
+                    <>
+                      {isOwner ? (
+                        <div className="place-staff-form">
+                          <input
+                            value={placeProfileDraft.name}
+                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, name: event.target.value } }))}
+                            placeholder="Nome publico do local"
+                          />
+                          <input
+                            value={placeProfileDraft.city}
+                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, city: event.target.value } }))}
+                            placeholder="Cidade"
+                          />
+                          <input
+                            value={placeProfileDraft.state}
+                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, state: normalizeStateUf(event.target.value) } }))}
+                            placeholder="UF"
+                            maxLength={2}
+                          />
+                          <textarea
+                            value={placeProfileDraft.description}
+                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, description: event.target.value } }))}
+                            placeholder="Descricao publica, horarios, contato e orientacoes"
+                            rows={3}
+                          />
+                          <input
+                            value={placeProfileDraft.logoUrl}
+                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, logoUrl: event.target.value } }))}
+                            placeholder="URL do logo"
+                          />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(event) => setPlaceProfileLogoFileByPlace((prev) => ({ ...prev, [p.id]: event.target.files?.[0] || null }))}
+                          />
+                          <button onClick={() => void onSavePlaceProfile(p)} disabled={busy || !placeProfileDraft.name.trim()}>
+                            Salvar dados publicos
+                          </button>
+                        </div>
+                      ) : null}
+                      <WorkspaceGrid>
+                        <WorkspaceCard title="Quadras" subtitle="Base para reservas e bloqueios" value={activeCourts.length} />
+                        <WorkspaceCard
+                          title="Academia"
+                          subtitle="Professores e turmas ativas"
+                          value={activeAcademyClasses.length}
+                          metrics={[countLabel(academyCoaches.length, "professor", "professores"), countLabel(academySlots.length, "janela", "janelas")]}
+                        />
+                        <WorkspaceCard
+                          title="Relacionamento"
+                          subtitle="Planos e contatos comerciais"
+                          value={activeMembershipPlans.length}
+                          metrics={[countLabel(memberships.length, "socio", "socios"), countLabel(crmContacts.length, "contato", "contatos")]}
+                        />
+                      </WorkspaceGrid>
+                    </>
                   ) : null}
                 </SettingsWorkspaceShell>
               </div>
@@ -3355,7 +3457,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       key={`${p.id}:setup:${item.key}`}
                       className={item.done ? "done" : ""}
                       type="button"
-                      onClick={() => selectManagementModule(p.id, item.module)}
+                      onClick={() => navigate(buildPlaceAdminPath(p.id, item.module, item.viewSegment))}
                       disabled={!managementModules.includes(item.module)}
                     >
                       <strong>{item.done ? "OK" : "Pendente"} Â· {item.title}</strong>
@@ -4201,17 +4303,32 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       enrollments={academyEnrollments}
                       makeups={openAcademyMakeups}
                       onOpenClasses={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
-                      onOpenSetup={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "resources" }))}
+                      onOpenSetup={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
                     />
                   ) : null}
                   {academyView === "classes" ? (
-                    <PlaceAcademyClassesModule
-                      activeCourts={activeCourts}
-                      classes={visibleAcademyClasses}
-                      enrollments={academyEnrollments}
-                      onOpenSetup={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "resources" }))}
-                      weekdayLabels={WEEKDAY_LABELS}
-                    />
+                    <>
+                      <PlaceAcademyClassesModule
+                        activeCourts={activeCourts}
+                        classes={visibleAcademyClasses}
+                        enrollments={academyEnrollments}
+                        weekdayLabels={WEEKDAY_LABELS}
+                      />
+                      {canManagePlace ? (
+                        <PlaceAcademyClassSetupModule
+                          activeCourts={activeCourts}
+                          busy={busy}
+                          coachConflict={draftCoachConflict}
+                          coaches={academyCoaches}
+                          courtConflict={draftCourtConflict}
+                          draft={academyDraft}
+                          onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                          onCreateClass={() => void onCreateAcademyClass(p)}
+                          onCreateSlot={() => void onCreateAcademySlot(p)}
+                          weekdayLabels={WEEKDAY_LABELS}
+                        />
+                      ) : null}
+                    </>
                   ) : null}
                   {academyView === "students" ? (
                     <PlaceAcademyStudentsModule
@@ -4262,10 +4379,22 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                   {academyView === "coaches" ? (
                     <PlaceAcademyCoachesModule
+                      busy={busy}
+                      canManageFinance={canManageFinance}
+                      canManagePlace={canManagePlace}
+                      coachCommissionDraftByCoach={coachCommissionDraftByCoach}
                       classes={visibleAcademyClasses}
+                      coachDraft={coachDraft}
+                      coachLinkDraftByCoach={coachLinkDraftByCoach}
                       coaches={displayedCoaches}
                       enrollments={academyEnrollments}
+                      onChangeCoachCommissionDraft={(coachId, value) => setCoachCommissionDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
+                      onChangeCoachDraft={(draft) => setCoachDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                      onChangeCoachLinkDraft={(coachId, value) => setCoachLinkDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
                       onAdjustAgenda={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "resources" }))}
+                      onCreateCoach={() => void onCreateCoach(p)}
+                      onLinkCoachLogin={(coach) => void onLinkCoachLogin(p.id, coach)}
+                      onSaveCoachCommission={(coach) => void onSaveCoachCommission(p.id, coach)}
                       slots={academySlots}
                       todayClasses={todayClasses}
                       weekdayLabels={WEEKDAY_LABELS}
@@ -4299,17 +4428,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               {showAcademyResources && canManageAcademy ? (
                 <>
                   <PlaceAcademyResourcesModule
-                    activeClasses={activeAcademyClasses}
                     activeCourts={activeCourts}
                     busy={busy}
-                    canManageFinance={canManageFinance}
-                    canManagePlace={canManagePlace}
-                    coachCommissionDraftByCoach={coachCommissionDraftByCoach}
-                    coachDraft={coachDraft}
-                    coachLinkDraftByCoach={coachLinkDraftByCoach}
                     coaches={displayedCoaches}
-                    enrollments={academyEnrollments}
-                    onChangeAcademyDraftFromSlot={(patch) =>
+                    onChangeAcademyDraftFromSlot={(patch) => {
                       setAcademyClassDraftByPlace((prev) => ({
                         ...prev,
                         [p.id]: {
@@ -4317,31 +4439,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           ...patch,
                           coachName: patch.coachName || academyDraft.coachName,
                         },
-                      }))
-                    }
-                    onChangeCoachCommissionDraft={(coachId, value) => setCoachCommissionDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
-                    onChangeCoachDraft={(draft) => setCoachDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
-                    onChangeCoachLinkDraft={(coachId, value) => setCoachLinkDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
-                    onCreateCoach={() => void onCreateCoach(p)}
-                    onLinkCoachLogin={(coach) => void onLinkCoachLogin(p.id, coach)}
-                    onSaveCoachCommission={(coach) => void onSaveCoachCommission(p.id, coach)}
+                      }));
+                      setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
+                    }}
                     resourceDayClasses={resourceDayClasses}
                     resourceDaySlots={resourceDaySlots}
                   />
-                  {canManagePlace ? (
-                    <PlaceAcademyClassSetupModule
-                      activeCourts={activeCourts}
-                      busy={busy}
-                      coachConflict={draftCoachConflict}
-                      coaches={academyCoaches}
-                      courtConflict={draftCourtConflict}
-                      draft={academyDraft}
-                      onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
-                      onCreateClass={() => void onCreateAcademyClass(p)}
-                      onCreateSlot={() => void onCreateAcademySlot(p)}
-                      weekdayLabels={WEEKDAY_LABELS}
-                    />
-                  ) : null}
                 </>
               ) : null}
               {showAcademyRequests ? (

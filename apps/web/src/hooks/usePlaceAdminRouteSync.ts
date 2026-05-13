@@ -123,10 +123,10 @@ export function usePlaceAdminRouteSync({
   ]);
 
   const selectManagementModule = useCallback(
-    (placeId: string, module: PlaceManagementModule) => {
+    (placeId: string, module: PlaceManagementModule, viewSegment?: string) => {
       setManagementModuleByPlace((prev) => ({ ...prev, [placeId]: module }));
       if (isAdminRoute) {
-        navigate(buildPlaceAdminPath(placeId, module));
+        navigate(buildPlaceAdminPath(placeId, module, viewSegment));
       }
     },
     [isAdminRoute, navigate, setManagementModuleByPlace]

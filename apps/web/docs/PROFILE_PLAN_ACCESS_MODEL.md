@@ -359,6 +359,8 @@ Status:
 - [feito] Professor ve `Minha operacao de aulas` com aulas de hoje, turmas e alunos.
 - [feito] Atalhos do professor levam apenas para o modulo Academia, sem cantina/equipe/financeiro completo.
 - [feito] Fila agregada da Gestao filtra pendencias por modulo acessivel antes de mostrar ao usuario.
+- [feito] Rows internas de locais para professor priorizam `Abrir aulas` e `Alunos`, sem expor pagina publica/setup completo como caminho principal.
+- [feito] Recepcao tem entrada proporcional com `Abrir agenda` e `Aulas`; gestor/dono mantem `Abrir operacao` e pagina publica.
 
 ### Finance
 
@@ -419,6 +421,10 @@ Se o usuario e apenas jogador:
 ```text
 Gestao nao aparece.
 ```
+
+Status:
+
+- [feito] `/eventos` nao mostra mais roteiro grande de organizador para jogador comum; `Organizar evento` permanece como opcao contextual em `Descobrir`.
 
 ### Regra 2 - Modulo so aparece se houver permissao e utilidade
 

@@ -33,6 +33,111 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] VISUAL-02 - Refinar sidebar, Home e Gestao para reduzir admin-template feeling
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Aplicar a auditoria visual sem reabrir arquitetura: menos cards, menos caixas, mais workspace feeling e mais hierarchy.
+
+Criterios:
+
+- sidebar de Gestao deve parecer cockpit/workspace, nao template generico;
+- Home deve responder proxima acao e pendencias sem hero/dashboard exagerado;
+- Gestao deve reduzir verticalidade e containerizacao;
+- abas internas devem expor no maximo 5 opcoes principais;
+- mobile 360-430px deve ter navegacao mais confortavel.
+
+Telas/componentes afetados:
+
+- `BottomNav`;
+- `ManagementShell`;
+- `ManagementHubPage`;
+- `HomePage`;
+- `PlaceAdminShell`;
+- `App.css`.
+
+Ganhos esperados:
+
+- percepcao premium mais forte;
+- menos sensacao de painel antigo;
+- menos ruído visual;
+- primeira viewport mais orientada a tarefa;
+- mobile menos comprimido.
+
+Dependencias:
+
+- `APP_UX_PRODUCT_AUDIT.md`;
+- `CURRENT_PRODUCT_STATE.md`;
+- `PREMIUM_UX_VISUAL_LANGUAGE.md`;
+- `COMPONENT_GRAMMAR.md`.
+
+Risco de regressao:
+
+- esconder modulo importante no overflow de abas;
+- contraste insuficiente na sidebar de Gestao;
+- validar com dados reais porque o ambiente local sem env mostra apenas tela de configuracao.
+
+Criterios de conclusao:
+
+- lint e build passando;
+- limite de 5 abas aplicado em Gestao do local;
+- docs vivos atualizados;
+- tentativa de screenshot mobile/desktop registrada.
+
+Entregue em 2026-05-13:
+
+- `BottomNav` recebeu estado visual especifico para Gestao, com contexto escuro/verde, active state mais forte e mobile horizontal compacto;
+- `HomePage` recebeu tratamento mais quieto para o painel principal, reduzindo hero/dashboard feeling;
+- `ManagementShell` e `ManagementHubPage` ficaram mais densos e menos card-heavy;
+- `PlaceAdminShell` passou a renderizar 5 abas primarias e mover excedentes para `Mais`;
+- screenshots gerados em `web/docs/screenshots/`, mas bloqueados por falta de configuracao local do Supabase.
+
+### [>] VISUAL-03 - Validar e calibrar telas premium com dados reais
+
+Status: `[>]` prioridade atual
+
+Objetivo:
+
+- Confirmar a nova linguagem visual em estados reais: cheio, vazio, pendente, erro e mobile autenticado.
+
+Criterios:
+
+- usar dados reais ou seed demo;
+- capturar Gestao, Home, Competition OS e pagina publica em 390px, 430px e desktop;
+- corrigir overflow, contraste, hierarquia e textos que so aparecem com massa real;
+- manter screenshots antes/depois quando houver ambiente valido.
+
+Telas/componentes afetados:
+
+- `/inicio`;
+- `/gestao`;
+- `PlaceAdminShell`;
+- `Competition OS`;
+- pagina publica do local.
+
+Ganhos esperados:
+
+- reduzir risco de refino baseado em estado vazio;
+- fechar lacunas mobile;
+- transformar auditoria visual em criterio verificavel.
+
+Dependencias:
+
+- `.env`/Supabase local ou staging;
+- `DEMO_STATE_QA_CHECKLIST.md`.
+
+Risco de regressao:
+
+- validacao ficar estetica demais se nao houver dados operacionais variados.
+
+Criterios de conclusao:
+
+- screenshots validos anexados;
+- ajustes visuais aplicados nos problemas encontrados;
+- docs atualizados com achados.
+
 ### [x] ACCESS-01 - Aplicar navegacao global por perfil e plano
 
 Status: `[x]` concluido
@@ -712,9 +817,9 @@ Entregue em 2026-05-13:
 - mobile empilha a faixa e as rows de cobranca com botoes full-width;
 - `npm run lint` e `npm run build` passaram.
 
-### [>] PROFILE-02 - Refinar entradas internas de Gestao por operador
+### [x] PROFILE-02 - Refinar entradas internas de Gestao por operador
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -753,6 +858,68 @@ Criterios de conclusao:
 
 - pelo menos uma entrada interna muda por perfil/papel sem remover acesso existente;
 - fallback preserva acesso administrativo quando a deteccao for incompleta;
+- docs vivos atualizados;
+- `npm run lint` e `npm run build` passando se houver alteracao de codigo.
+
+Entregue em 2026-05-13:
+
+- `ManagementHubPage` passou a calcular um perfil operacional por local com base em papel e plano, sem reabrir o modelo de acesso;
+- professor `coach` sem gestao completa agora recebe CTA primario `Abrir aulas`, atalho secundario `Alunos` e apenas `Academia` como modulo nobre;
+- recepcao recebe entrada proporcional com `Abrir agenda`, `Aulas` e atalhos leves de Agenda/Academia;
+- gestor/dono continua com operacao completa, pagina publica e atalhos amplos;
+- checklist de implantacao completo deixou de aparecer para professor sem permissao de gestao, evitando setup empresarial fora de contexto;
+- `EventsHubPage` deixou de mostrar roteiro grande de organizador para todo jogador comum; organizar evento segue disponivel como opcao contextual em `Descobrir`;
+- `npm run lint` e `npm run build` passaram.
+
+### [>] ROUTINE-02 - Expandir quick actions semanticas para rotinas recorrentes
+
+Status: `[ ]` pendente
+
+Atualizacao 2026-05-13:
+
+- corrigido fluxo critico de setup da Academia: `Cadastrar professor` abre Professores com formulario executavel, `Criar turma` abre Turmas com wizard executavel;
+- corrigido fluxo `Publicar pagina`: Ajustes/Estrutura agora tem edicao direta dos dados publicos do local;
+- `Recursos` ficou restrito a disponibilidade operacional e janelas abertas;
+- usar uma janela aberta agora leva para Turmas com rascunho preenchido, evitando terminar a acao em tela errada.
+
+Objetivo:
+
+- Levar a mesma logica task-first de cobranca/setup para reservas, aulas e atendimento, reduzindo a necessidade de procurar funcoes por modulo tecnico.
+- Aplicar a regra de destino semantico: cada quick action precisa abrir a subvisao onde a tarefa pode ser concluida.
+
+Criterios:
+
+- rotinas como `Criar reserva`, `Chamar lista de espera`, `Fazer chamada`, `Cadastrar cliente` e `Registrar venda` devem aparecer por intencao quando houver contexto real;
+- rotinas ja existentes devem ser auditadas contra `SEMANTIC_FLOW_AUDIT.md`;
+- nao criar painel permanente de atalhos zerados;
+- manter uma acao primaria por row ou bloco operacional;
+- mobile deve resolver a tarefa em poucos toques.
+
+Telas/componentes afetados:
+
+- `ManagementHubPage`;
+- modulos de Agenda, Academia, Clientes/CRM e Cantina;
+- docs de discoverability/onboarding e component grammar.
+
+Ganhos esperados:
+
+- menos menu tecnico;
+- rotina diaria mais clara para recepcao/professor/gestor;
+- mais sensacao de sistema que conduz o usuario.
+
+Dependencias:
+
+- dados atuais de reservas, lista de espera, aulas, contatos e vendas.
+
+Risco de regressao:
+
+- duplicar atalhos que ja existem dentro dos modulos.
+
+Criterios de conclusao:
+
+- pelo menos duas rotinas recorrentes ganham entrada semantica contextual;
+- atalhos aparecem somente quando fazem sentido;
+- toda quick action nova ou alterada tem destino executavel;
 - docs vivos atualizados;
 - `npm run lint` e `npm run build` passando se houver alteracao de codigo.
 

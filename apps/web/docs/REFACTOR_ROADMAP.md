@@ -231,7 +231,11 @@ Evoluido em 2026-05-13:
 - sala aberta da liga passou a priorizar estado, disponibilidade e resultado, deixando participantes e chat em disclosures;
 - alunos da Academia passaram a usar `EntityActionRow`, com uma acao primaria contextual e acoes secundarias em disclosure;
 - cobrancas recorrentes passaram a aparecer como tarefa semantica em Financeiro e Clientes/CRM, com `Enviar lembrete`, `Cobrar socios` e `Cobrar alunos` somente quando ha pendencia real;
-- proxima onda definida: refinar entradas internas de Gestao por operador.
+- entradas internas de Gestao passaram a variar por operador: professor abre aulas/alunos, recepcao abre agenda/aulas e gestor mantem operacao completa;
+- Eventos deixou de promover roteiro grande de organizador para jogador comum, mantendo organizar como opcao contextual;
+- corrigido o destino semantico de `Cadastrar professor` e `Criar turma`: cadastro fica na mesma subvisao da entidade, nao em `Recursos`;
+- criado `SEMANTIC_FLOW_AUDIT.md` para impedir quick actions que abrem o modulo certo mas a tela errada;
+- proxima onda definida: expandir quick actions semanticas para rotinas recorrentes alem de cobranca.
 
 ## Fase 4 - Wizards de criacao
 

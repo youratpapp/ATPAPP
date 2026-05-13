@@ -130,3 +130,8 @@ Quando uma tela cresce demais:
 - 2026-05-13: sala de partida da liga passou a separar tarefas principais de suporte: estado, disponibilidade e resultado ficam em primeiro nivel; participantes e chat ficam progressivos.
 - 2026-05-13: lista de alunos da Academia passou a priorizar a acao diaria por aluno, usando row com status/pagamento/presenca e deixando acoes secundarias em disclosure.
 - 2026-05-13: Financeiro e Clientes/CRM passaram a tratar cobranca como tarefa semantica (`Enviar lembrete`, `Cobrar socios`, `Cobrar alunos`) derivada de pendencia real, nao como dashboard tecnico permanente.
+- 2026-05-13: `/gestao` passou a adaptar CTA e atalhos internos por papel do local: professor abre aulas/alunos, recepcao abre agenda/aulas e gestor mantem operacao completa.
+- 2026-05-13: `/eventos` deixou de mostrar roteiro grande de organizador para jogador comum; organizacao permanece como opcao contextual em `Descobrir`.
+- 2026-05-13: `Academia > Professores` passou a conter tambem o cadastro de professor, corrigindo o fluxo em que `Cadastrar professor` caia em uma listagem sem acao executavel.
+- 2026-05-13: `Academia > Turmas` passou a conter tambem o wizard de criacao de turma, evitando mandar `Criar turma` para uma area generica de recursos.
+- 2026-05-13: `Ajustes > Estrutura` passou a conter edicao direta dos dados publicos do local, para que `Publicar pagina` nao termine em uma tela apenas informativa.

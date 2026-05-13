@@ -1090,6 +1090,30 @@ export async function createPlace(
   return rowToPlace(data as PlaceRow);
 }
 
+export async function updatePlaceProfile(
+  user: User,
+  placeId: string,
+  input: { name: string; city?: string; state?: string; description?: string; logoUrl?: string }
+): Promise<Place> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const payload = {
+    name: input.name.trim(),
+    city: input.city?.trim() || null,
+    state: (input.state?.trim() || "").toUpperCase().slice(0, 2) || null,
+    description: input.description?.trim() || null,
+    logo_url: input.logoUrl?.trim() || null,
+  };
+  const { data, error } = await supabase
+    .from(TABLE_PLACES)
+    .update(payload)
+    .eq("id", placeId)
+    .eq("owner_id", user.id)
+    .select(PLACE_SELECT_FIELDS)
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToPlace(data as PlaceRow);
+}
+
 export async function updatePlaceProductPlan(placeId: string, productPlan: PlaceProductPlan): Promise<Place> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { data, error } = await supabase.rpc("app_update_place_product_plan", {

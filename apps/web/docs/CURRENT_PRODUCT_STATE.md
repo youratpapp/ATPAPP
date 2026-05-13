@@ -177,7 +177,7 @@ Card e excecao em operacao diaria. Row e padrao.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
 - Sistema ja iniciou visibilidade por perfil/plano na navegacao global, mas ainda precisa aplicar isso nos hubs internos e entradas de setup.
-- Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; ainda falta calibrar fluxos internos especificos por massa real.
+- Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; entradas internas agora tambem mudam prioridade por papel, mas ainda falta calibrar fluxos internos especificos por massa real.
 - Acoes de setup de local ja comecaram a ficar semanticamente descobriveis; criacao de torneio/liga ja fica concentrada no contexto de organizacao do Competition OS.
 - Competition OS ja esta mais consistente visualmente; torneio, lista de partidas da liga e sala da liga ja usam mais hierarchy operacional.
 - Mobile ainda pode parecer desktop empilhado em varias telas, mas filtros de liga ja usam sheet responsivo como primeiro padrao.
@@ -187,6 +187,7 @@ Card e excecao em operacao diaria. Row e padrao.
 - Muitos formularios ainda aparecem inline, mas Agenda, CRM e Cantina ja abriram a primeira onda de composer progressivo.
 - Algumas telas ainda exibem KPIs antes de tarefas.
 - Cobrancas recorrentes ja ganharam primeira camada task-first em Financeiro e Clientes/CRM, com `Enviar lembrete`, `Cobrar socios` e `Cobrar alunos` a partir de pendencia real.
+- Auditoria de destino semantico foi iniciada em `SEMANTIC_FLOW_AUDIT.md`: quick action so conta como pronta quando abre a subvisao onde a tarefa pode ser concluida.
 
 ## Problemas atuais a atacar
 
@@ -200,7 +201,7 @@ Card e excecao em operacao diaria. Row e padrao.
 8. Tabelas/listas ainda precisam expandir a gramatica mobile uniforme para mais dominios.
 9. Filtros e detalhes ainda ocupando corpo principal demais.
 10. Estados vazios e setup nem sempre guiam a proxima acao.
-11. Funcoes importantes ainda podem ficar escondidas por modulo tecnico em vez de aparecer por intencao, especialmente nas entradas internas por perfil.
+11. Funcoes importantes ainda podem ficar escondidas por modulo tecnico em vez de aparecer por intencao em rotinas recorrentes alem de cobranca/setup.
 12. Onboarding por perfil ainda precisa conduzir melhor academia, professor solo e organizador no primeiro uso.
 
 ## Objetivos UX atuais
@@ -230,6 +231,7 @@ Card e excecao em operacao diaria. Row e padrao.
 - Gestao visivel para jogador comum sem papel operacional.
 - Torneios que jogo e torneios que organizo misturados sem contexto.
 - Funcao essencial escondida apenas em "Recursos" ou "Ajustes".
+- Quick action que abre modulo certo mas subvisao errada.
 - Tabela larga sem alternativa mobile.
 - Modal central enorme para tarefa recorrente.
 - Criar componente novo sem ganho perceptivel de UX.
@@ -275,8 +277,8 @@ Antes de mexer em qualquer tela:
 
 ## Prioridades de frontend
 
-1. Reorganizar entradas internas de `/gestao` por tipo de operador sem reabrir a arquitetura de perfis.
-2. Expandir quick actions semanticas para outras rotinas recorrentes alem de cobranca.
+1. Expandir quick actions semanticas para outras rotinas recorrentes alem de cobranca.
+2. Reorganizar/refinar rotinas internas por operador conforme massa real de uso.
 3. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
 4. Reduzir dashboards informativos remanescentes.
 5. Aplicar mobile sheets e sticky actions onde ainda houver detalhe pesado no corpo da tela.
@@ -289,8 +291,21 @@ Bloco executado em 2026-05-13:
 - `MOBILE-02`: sala aberta da liga passou a priorizar estado, disponibilidade e resultado; participantes/chat viraram disclosures.
 - `ACADEMY-02`: alunos da Academia passaram a usar `EntityActionRow`, com check-in/ativar/marcar pago como acao primaria contextual e acoes secundarias em disclosure.
 - `BILLING-02`: Financeiro e Clientes/CRM passaram a expor cobranca por intencao (`Enviar lembrete`, `Cobrar socios`, `Cobrar alunos`) somente quando ha pendencia real.
-- Proximo foco: `PROFILE-02`, refinando entradas internas de Gestao por operador sem esconder acesso existente.
+- `PROFILE-02`: Gestao passou a ajustar CTA e atalhos por papel do local; professor ve `Abrir aulas`/`Alunos`, recepcao ve `Abrir agenda`/`Aulas`, gestor mantem operacao completa.
+- `PROFILE-02`: Eventos deixou de exibir roteiro grande de organizador para jogador comum; organizacao segue como opcao contextual em `Descobrir`.
+- Correção de fluxo: `Cadastrar professor` agora leva a `Academia > Professores` com formulario de cadastro, `Criar turma` leva a `Academia > Turmas` com wizard de criacao, `Publicar pagina` leva a `Ajustes > Estrutura` com formulario editavel, e `Recursos` deixou de misturar dados/comissao/login de professores.
+- Proximo foco: `ROUTINE-02`, expandindo quick actions semanticas para reservas, aulas, atendimento e venda sem criar painel permanente.
 - Cuidado permanente: preservar os fluxos de confirmar presenca, desfazer confirmacao e lancar/conferir resultado.
+
+Bloco visual executado em 2026-05-13:
+
+- `VISUAL-02`: sidebar em contexto de Gestao ganhou tratamento de workspace, com superficie mais quieta, contexto escuro/verde, estado ativo mais claro e menos aparencia de template generico.
+- `VISUAL-02`: Home deixou de abrir com hero operacional pesado; a primeira viewport agora deve se comportar como painel task-first compacto, com proxima acao e agenda tendo mais peso que KPIs.
+- `VISUAL-02`: Gestao reduziu sensacao de dashboard por cards; header, command panel, fila, rows de local e onboarding ficaram mais densos, com menos sombra e menos caixas.
+- `VISUAL-02`: `PlaceAdminShell` passou a limitar abas primarias a 5 e mover o restante para overflow `Mais`, preservando modulos sem poluir mobile.
+- `VISUAL-02`: bottom navigation mobile virou trilho horizontal compacto, reduzindo grid fixo comprimido e melhorando toque em 360-430px.
+- Verificacao: lint e build passaram; screenshots foram tentados em 390px, 430px e 1366px, mas o ambiente local exibiu somente `Configuracao necessaria` por falta de env/Supabase.
+- Proximo foco visual: calibrar as mesmas telas com seed/sessao real e aplicar o mesmo ritmo em Competition OS e pagina publica.
 
 ## Prioridades mobile
 

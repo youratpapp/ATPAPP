@@ -1,13 +1,26 @@
 import type { AcademyClass, AcademyCoach, AcademyEnrollment, AcademySlot } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 import { formatMoneyFromCents } from "../../lib/payments";
-import { WorkspaceList, WorkspaceMetrics, WorkspaceRow } from "./PlaceWorkspaceUi";
+import { WorkspaceEmptyState, WorkspaceList, WorkspaceMetrics, WorkspaceRow } from "./PlaceWorkspaceUi";
+import type { PlaceAcademyCoachDraft } from "./PlaceAcademyResourcesModule";
 
 type Props = {
+  busy: boolean;
+  canManageFinance: boolean;
+  canManagePlace: boolean;
+  coachCommissionDraftByCoach: Record<string, string>;
   classes: AcademyClass[];
+  coachDraft: PlaceAcademyCoachDraft;
+  coachLinkDraftByCoach: Record<string, string>;
   coaches: AcademyCoach[];
   enrollments: AcademyEnrollment[];
+  onChangeCoachCommissionDraft: (coachId: string, value: string) => void;
+  onChangeCoachDraft: (draft: PlaceAcademyCoachDraft) => void;
+  onChangeCoachLinkDraft: (coachId: string, value: string) => void;
   onAdjustAgenda: () => void;
+  onCreateCoach: () => void;
+  onLinkCoachLogin: (coach: AcademyCoach) => void;
+  onSaveCoachCommission: (coach: AcademyCoach) => void;
   slots: AcademySlot[];
   todayClasses: AcademyClass[];
   weekdayLabels: string[];
@@ -17,9 +30,39 @@ function openWhatsApp(message: string): void {
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
 }
 
-export function PlaceAcademyCoachesModule({ classes, coaches, enrollments, onAdjustAgenda, slots, todayClasses, weekdayLabels }: Props) {
+export function PlaceAcademyCoachesModule({
+  busy,
+  canManageFinance,
+  canManagePlace,
+  coachCommissionDraftByCoach,
+  classes,
+  coachDraft,
+  coachLinkDraftByCoach,
+  coaches,
+  enrollments,
+  onChangeCoachCommissionDraft,
+  onChangeCoachDraft,
+  onChangeCoachLinkDraft,
+  onAdjustAgenda,
+  onCreateCoach,
+  onLinkCoachLogin,
+  onSaveCoachCommission,
+  slots,
+  todayClasses,
+  weekdayLabels,
+}: Props) {
   return (
     <WorkspaceList>
+      {canManagePlace ? (
+        <div className="place-staff-form">
+          <input value={coachDraft.name} onChange={(event) => onChangeCoachDraft({ ...coachDraft, name: event.target.value })} placeholder="Novo professor" />
+          <input value={coachDraft.phone} onChange={(event) => onChangeCoachDraft({ ...coachDraft, phone: event.target.value })} placeholder="Telefone" />
+          <input value={coachDraft.email} onChange={(event) => onChangeCoachDraft({ ...coachDraft, email: event.target.value })} placeholder="Email" />
+          <button onClick={onCreateCoach} disabled={busy || !coachDraft.name.trim()}>
+            Cadastrar professor
+          </button>
+        </div>
+      ) : null}
       {coaches.map((coach) => {
         const coachClasses = classes.filter((academyClass) => academyClass.coachId === coach.id);
         const coachClassIds = new Set(coachClasses.map((academyClass) => academyClass.id));
@@ -48,6 +91,31 @@ export function PlaceAcademyCoachesModule({ classes, coaches, enrollments, onAdj
               </>
             }
           >
+            {canManageFinance ? (
+              <span className="cluster">
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={coachCommissionDraftByCoach[coach.id] ?? String(coach.commissionPercent)}
+                  onChange={(event) => onChangeCoachCommissionDraft(coach.id, event.target.value)}
+                  aria-label={`Comissao de ${coach.name}`}
+                />
+                <button onClick={() => onSaveCoachCommission(coach)} disabled={busy}>
+                  Salvar comissao
+                </button>
+              </span>
+            ) : null}
+            {canManagePlace && !coach.userId ? (
+              <span className="cluster">
+                <input value={coachLinkDraftByCoach[coach.id] ?? coach.email} onChange={(event) => onChangeCoachLinkDraft(coach.id, event.target.value)} placeholder="Email do login" />
+                <button onClick={() => onLinkCoachLogin(coach)} disabled={busy}>
+                  Vincular login
+                </button>
+              </span>
+            ) : coach.userId ? (
+              <small>Login vinculado</small>
+            ) : null}
             <small>
               {nextCoachClass
                 ? `Proxima turma na grade: ${weekdayLabels[nextCoachClass.weekday] || "Dia"} ${nextCoachClass.startsAt.slice(0, 5)} - ${nextCoachClass.title}`
@@ -66,7 +134,19 @@ export function PlaceAcademyCoachesModule({ classes, coaches, enrollments, onAdj
           </WorkspaceRow>
         );
       })}
-      {!coaches.length ? <p className="subtle">Cadastre professores para montar a agenda da academia.</p> : null}
+      {!coaches.length ? (
+        <WorkspaceEmptyState
+          title="Nenhum professor cadastrado"
+          detail="Cadastre o primeiro professor aqui para liberar turmas, chamada e agenda."
+          action={
+            canManagePlace ? (
+              <button className="primary" onClick={onCreateCoach} disabled={busy || !coachDraft.name.trim()}>
+                Cadastrar professor
+              </button>
+            ) : null
+          }
+        />
+      ) : null}
     </WorkspaceList>
   );
 }

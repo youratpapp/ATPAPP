@@ -7,11 +7,10 @@ type Props = {
   activeCourts: PlaceCourt[];
   classes: AcademyClass[];
   enrollments: AcademyEnrollment[];
-  onOpenSetup?: () => void;
   weekdayLabels: string[];
 };
 
-export function PlaceAcademyClassesModule({ activeCourts, classes, enrollments, onOpenSetup, weekdayLabels }: Props) {
+export function PlaceAcademyClassesModule({ activeCourts, classes, enrollments, weekdayLabels }: Props) {
   return (
     <WorkspaceList>
       {classes.slice(0, 12).map((academyClass) => {
@@ -44,7 +43,6 @@ export function PlaceAcademyClassesModule({ activeCourts, classes, enrollments, 
         <WorkspaceEmptyState
           title="Nenhuma turma cadastrada"
           detail="Cadastre a primeira turma com professor, quadra, horario, capacidade e mensalidade para liberar matriculas."
-          action={onOpenSetup ? <button onClick={onOpenSetup}>Criar turma</button> : null}
         />
       ) : null}
     </WorkspaceList>
