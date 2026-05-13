@@ -39,6 +39,8 @@ Divida tecnica aqui inclui codigo, arquitetura de UX, duplicidade funcional e pa
 - Estado dos recursos administrativos por local saiu do bloco principal de `PlacesPage` para `usePlaceAdminResourceState`.
 - Criacao de local saiu de formulario denso em modal para `PlaceCreateWizard`, reduzindo friccao e preparando onboarding guiado.
 - Bloco legado duplicado de cockpit administrativo foi removido da `PlacesPage`.
+- Entrada operacional saiu da percepcao de subpagina de `Locais` e ganhou `/gestao`, com painel de pendencias por local e atalhos por modulo.
+- Builder canonico do admin de locais passou a apontar para `/gestao/:placeId/:module`, mantendo `/locais/:placeId/admin` como rota legada de compatibilidade.
 
 ## Critica
 
@@ -61,7 +63,7 @@ Acao:
 
 Evidencia atual:
 
-- o code splitting inicial reduziu o bundle principal e removeu o alerta de chunk acima de 500 kB; a divida restante e separar melhor dados/hooks de `PlacesPage` e dominios compartilhados.
+- o code splitting inicial reduziu o bundle principal e removeu o alerta de chunk acima de 500 kB; `/gestao` reduziu a divida de percepcao/navegacao, mas a divida restante e separar melhor dados/hooks de `PlacesPage` e dominios compartilhados.
 
 ### TournamentPage monolitica
 

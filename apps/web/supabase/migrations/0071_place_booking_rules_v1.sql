@@ -176,6 +176,10 @@ begin
 end;
 $$;
 
+-- The v0061 version returned fewer OUT columns; PostgreSQL cannot change a
+-- table-returning function shape with CREATE OR REPLACE.
+drop function if exists public.app_search_available_courts(uuid, timestamptz, timestamptz);
+
 create or replace function public.app_search_available_courts(
   p_place_id uuid,
   p_starts_at timestamptz,

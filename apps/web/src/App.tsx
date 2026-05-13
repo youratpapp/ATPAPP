@@ -18,6 +18,7 @@ const HomePage = lazy(() => import("./pages/HomePage").then((module) => ({ defau
 const LeagueDetailsPage = lazy(() => import("./pages/LeagueDetailsPage").then((module) => ({ default: module.LeagueDetailsPage })));
 const LeagueJoinPage = lazy(() => import("./pages/LeagueJoinPage").then((module) => ({ default: module.LeagueJoinPage })));
 const LeaguesPage = lazy(() => import("./pages/LeaguesPage").then((module) => ({ default: module.LeaguesPage })));
+const ManagementHubPage = lazy(() => import("./pages/ManagementHubPage").then((module) => ({ default: module.ManagementHubPage })));
 const PlacePublicPage = lazy(() => import("./pages/PlacePublicPage").then((module) => ({ default: module.PlacePublicPage })));
 const PlaceAdminPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlaceAdminPage })));
 const PlacesPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlacesPage })));
@@ -247,6 +248,9 @@ function AppInner() {
         <Route path="/ligas" element={<Navigate to="/eventos/ligas" replace />} />
         <Route path="/ligas/:leagueId" element={<LegacyLeagueDetailsRedirect />} />
         <Route path="/ligas/inscricao/:token" element={<LegacyLeagueJoinRedirect />} />
+        <Route path="/gestao" element={<ManagementHubPage user={authUser} profile={profile} />} />
+        <Route path="/gestao/:placeId" element={<PlaceAdminPage user={authUser} profile={profile} />} />
+        <Route path="/gestao/:placeId/:module" element={<PlaceAdminPage user={authUser} profile={profile} />} />
         <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
         <Route path="/locais/:placeId/admin" element={<PlaceAdminPage user={authUser} profile={profile} />} />
         <Route path="/locais/:placeId/admin/:module" element={<PlaceAdminPage user={authUser} profile={profile} />} />

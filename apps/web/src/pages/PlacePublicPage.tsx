@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
 import { PublishingKit } from "../components/PublishingKit";
+import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import {
   createAcademyEnrollment,
   createCourtBooking,
@@ -290,7 +291,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                     Solicitar reserva
                   </button>
                   {canOpenAdmin ? (
-                    <button onClick={() => navigate(`/locais/${encodeURIComponent(place.id)}/admin`)}>
+                    <button onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
                       Gestao
                     </button>
                   ) : null}

@@ -125,6 +125,7 @@ import {
   paymentMapKey,
 } from "../lib/place-admin-data";
 import {
+  buildPlaceAdminPath,
   parsePlaceAdminModule,
 } from "../lib/place-admin-navigation";
 import { createPaymentReminderForParticipant, formatMoneyFromCents, markStubPaymentPaidForParticipant } from "../lib/payments";
@@ -2036,7 +2037,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           {isAdminRoute && adminPlaceId ? (
             <>
               <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Pagina publica</button>
-              <button onClick={() => navigate("/locais")}>Locais</button>
+              <button onClick={() => navigate("/gestao")}>Central de gestao</button>
             </>
           ) : (
             <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Adicionar local">
@@ -2081,8 +2082,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               : "Nenhum local cadastrado."}
           </p>
           {isAdminRoute ? (
-            <button className="empty-action" onClick={() => navigate("/locais")}>
-              Voltar para locais
+            <button className="empty-action" onClick={() => navigate("/gestao")}>
+              Voltar para gestao
             </button>
           ) : (
             <button className="empty-action" onClick={() => setShowCreate(true)}>
@@ -2899,12 +2900,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <button onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
                     Pagina publica
                   </button>
-                  <button onClick={() => navigate("/locais")}>
-                    Voltar
+                  <button onClick={() => navigate("/gestao")}>
+                    Central de gestao
                   </button>
                 </>
               ) : canManagePlace ? (
-                <button className="primary" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}/admin`)}>
+                <button className="primary" onClick={() => navigate(buildPlaceAdminPath(p.id, "dashboard"))}>
                   Gestao
                 </button>
               ) : !isOwner ? (

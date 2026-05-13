@@ -270,7 +270,7 @@
   bottom: 0;
   z-index: 100;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   padding: var(--space-2) var(--space-1) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
   background: rgba(255, 255, 255, 0.97);
   border-top: 1px solid rgba(203, 213, 225, 0.88);
@@ -5478,6 +5478,299 @@ button:disabled {
   gap: 4px;
 }
 
+/* ----- Management hub ----- */
+.management-hub-page {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.management-hub-hero {
+  align-items: stretch;
+  background: linear-gradient(135deg, #082f2a 0%, #0f513f 54%, #123a48 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  color: #fff;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  padding: var(--space-5);
+}
+
+.management-hub-hero > div:first-child {
+  align-content: center;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.management-hub-hero span,
+.management-section-title span,
+.management-place-card header span,
+.management-empty-state span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.management-hub-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: var(--line-tight);
+  margin: 0;
+}
+
+.management-hub-hero p {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 800;
+  line-height: 1.45;
+  margin: 0;
+  max-width: 720px;
+}
+
+.management-hub-kpis {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.management-hub-kpis article {
+  align-content: end;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-md);
+  display: grid;
+  min-height: 124px;
+  padding: var(--space-3);
+}
+
+.management-hub-kpis strong {
+  color: #fff;
+  font-size: var(--font-size-3xl);
+  line-height: 1;
+}
+
+.management-hub-kpis small {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+}
+
+.management-command-panel,
+.management-place-card,
+.management-empty-state {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.management-command-panel,
+.management-empty-state {
+  padding: var(--space-4);
+}
+
+.management-section-title {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.management-section-title span {
+  color: var(--color-primary-strong);
+}
+
+.management-section-title h2,
+.management-empty-state h2 {
+  color: var(--color-text);
+  line-height: var(--line-title);
+  margin: 2px 0 0;
+}
+
+.management-queue-grid {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.management-queue-grid article,
+.management-place-metrics button {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: 3px;
+  min-height: 78px;
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.management-queue-grid article.has-work,
+.management-place-metrics button.has-work {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.management-queue-grid strong,
+.management-place-metrics strong {
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
+  line-height: 1;
+}
+
+.management-queue-grid span,
+.management-place-metrics span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+}
+
+.management-place-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.management-place-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.management-place-card header {
+  align-items: start;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 64px minmax(0, 1fr);
+}
+
+.management-place-logo {
+  align-items: center;
+  aspect-ratio: 1;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-green-200);
+  border-radius: var(--radius-md);
+  color: var(--color-primary-strong);
+  display: flex;
+  font-size: var(--font-size-lg);
+  font-weight: 950;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.management-place-logo img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.management-place-card header span {
+  color: var(--color-primary-strong);
+}
+
+.management-place-card h2 {
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
+  line-height: var(--line-title);
+  margin: 2px 0;
+}
+
+.management-place-card p {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  margin: 0;
+}
+
+.management-place-priority {
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: 3px;
+  padding: var(--space-3);
+}
+
+.management-place-priority strong {
+  color: var(--color-text);
+  font-weight: 950;
+}
+
+.management-place-priority span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+}
+
+.management-place-metrics {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.management-place-metrics button {
+  color: inherit;
+  cursor: pointer;
+  min-height: 70px;
+}
+
+.management-setup-strip {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2);
+}
+
+.management-setup-strip span {
+  color: #9a3412;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.management-setup-strip strong {
+  color: #7c2d12;
+  font-size: var(--font-size-sm);
+}
+
+.management-card-actions,
+.management-module-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.management-card-actions button {
+  flex: 1 1 160px;
+}
+
+.management-module-shortcuts button {
+  background: var(--color-surface-muted);
+  flex: 1 1 120px;
+  min-height: 34px;
+  padding: 6px 10px;
+}
+
+.management-empty-state {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+  max-width: 720px;
+}
+
+.management-empty-state span {
+  color: var(--color-primary-strong);
+}
+
+.management-empty-state p {
+  color: var(--color-text-subtle);
+  font-weight: 800;
+  margin: 0;
+}
+
 .place-card .pc-logo {
   width: 64px;
   height: 64px;
@@ -8095,6 +8388,15 @@ button,
   .place-public-hero-logo {
     width: 88px;
   }
+
+  .management-hub-hero,
+  .management-place-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .management-queue-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
@@ -8185,6 +8487,8 @@ button,
   .place-public-kpis,
   .place-public-highlights,
   .ranking-hero-kpis,
+  .management-hub-kpis,
+  .management-place-metrics,
   .tournament-overview-grid,
   .tournament-panel-kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -8204,6 +8508,15 @@ button,
   .ranking-row {
     min-width: 680px;
   }
+
+  .management-section-title {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .management-section-title button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 420px) {
@@ -8212,6 +8525,7 @@ button,
   }
 
   .home-hero,
+  .management-hub-hero,
   .place-public-hero,
   .ranking-hero-panel,
   .card,
@@ -8225,6 +8539,9 @@ button,
   }
 
   .home-summary-grid,
+  .management-hub-kpis,
+  .management-place-metrics,
+  .management-queue-grid,
   .place-public-kpis,
   .place-public-highlights,
   .ranking-hero-kpis,
@@ -8236,11 +8553,13 @@ button,
   .home-section .event-card,
   .event-card,
   .place-card,
+  .management-place-card header,
   .place-public-hero {
     grid-template-columns: 1fr;
   }
 
   .place-card .pc-logo,
+  .management-place-logo,
   .place-public-hero-logo {
     width: 56px;
   }

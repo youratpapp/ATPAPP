@@ -26,15 +26,16 @@ Este arquivo e a fonte de verdade arquitetural. Os documentos abaixo detalham de
 
 ### Navegacao principal
 
-O app usa uma navegacao principal curta, com 5 entradas:
+O app usa uma navegacao principal curta, agora com entrada propria para operacao:
 
 - Inicio: central de acao do jogador e resumo operacional.
 - Competicoes: hub para torneios e ligas.
-- Locais: descoberta de clubes, pagina publica e cockpit de gestao.
+- Gestao: central operacional para donos/equipe de academias e clubes.
+- Locais: descoberta de clubes, pagina publica e criacao inicial.
 - Ranking: ranking geral/cidade/liga.
 - Perfil: dados do usuario, atividade e historico.
 
-Essa camada esta correta para mobile-first. O problema nao esta no menu principal; esta na profundidade e densidade dentro de algumas rotas.
+Essa camada esta correta para mobile-first desde que `Gestao` seja uma porta unica da operacao, e nao um menu para cada modulo administrativo.
 
 ### Rotas principais
 
@@ -44,7 +45,9 @@ Essa camada esta correta para mobile-first. O problema nao esta no menu principa
 - `/eventos/ligas`: lista/criacao de ligas.
 - `/eventos/ligas/:leagueId`: detalhe da liga.
 - `/eventos/ligas/inscricao/:token`: entrada por link.
-- `/locais`: descoberta e gestao de locais.
+- `/gestao`: central operacional dos locais acessiveis.
+- `/gestao/:placeId/:module`: workspace de gestao por local e modulo.
+- `/locais`: descoberta, pagina publica e criacao inicial de locais.
 - `/locais/:placeId`: pagina publica do local.
 - `/ranking`: ranking competitivo.
 - `/perfil`: perfil e historico.
@@ -82,7 +85,7 @@ Essa camada esta correta para mobile-first. O problema nao esta no menu principa
 
 ### Cockpit de Locais
 
-`/locais` e hoje um app administrativo completo dentro de uma rota. O cockpit tem 8 modulos:
+`/gestao` passa a ser a entrada operacional de donos/equipe. `/locais` fica como descoberta/publicacao. O cockpit tem 8 modulos:
 
 - Painel.
 - Agenda.
@@ -103,7 +106,7 @@ Cada modulo possui subvisoes:
 - Equipe: Resumo, Equipe, Convites, Papeis.
 - Ajustes: Resumo, Setup, Plano, Estrutura.
 
-Esse desenho modular e bom, mas a implementacao ainda concentra dados, regras, formularios e renderizacao em uma unica pagina muito grande.
+Esse desenho modular e bom, mas a implementacao ainda concentra parte dos dados, regras, formularios e renderizacao em uma unica pagina muito grande. A rota dedicada melhora a arquitetura de experiencia, mas a separacao tecnica do shell administrativo ainda deve continuar.
 
 ### Competicoes
 
@@ -406,9 +409,10 @@ Mesmo que a logica interna seja diferente, o operador precisa reconhecer o mesmo
    - Impacto: tira regra de negocio do JSX.
 
 3. Criar rota dedicada para gestao de local.
-   - `/locais/:placeId/admin`.
-   - `/locais/:placeId/admin/agenda`.
-   - `/locais/:placeId/admin/academia`.
+   - [feito] `/gestao`.
+   - [feito] `/gestao/:placeId/painel`.
+   - [feito] `/gestao/:placeId/agenda`.
+   - [feito] `/gestao/:placeId/academia`.
    - A rota `/locais` fica descoberta/lista.
    - Impacto: separa comprador/jogador de gestor.
 

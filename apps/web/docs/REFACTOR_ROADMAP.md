@@ -148,6 +148,8 @@ Evoluido em 2026-05-13:
 - criado `usePlaceAdminResourceState` para concentrar mapas de dados administrativos por local e aplicar refresh completo/pontual fora do corpo da `PlacesPage`.
 - criado `PlaceCreateWizard` e aplicado na criacao de local, separando identidade, localizacao/rede e pagina inicial em etapas curtas.
 - removido bloco legado duplicado de cockpit administrativo de locais, mantendo uma unica fonte visual via `PlaceManagementCockpit`.
+- criado `ManagementHubPage` em `/gestao` como porta operacional propria para donos/equipe, com pendencias por local e atalhos para Agenda, Academia, Clientes, Financeiro e Cantina.
+- rotas canonicas do admin de local passaram a ser `/gestao/:placeId/:module`, deixando `/locais/:placeId/admin` como compatibilidade e reduzindo a sensacao de ferramenta empilhada dentro de Locais.
 
 ## Fase 3 - CompetitionShell
 

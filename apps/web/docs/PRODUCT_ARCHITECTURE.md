@@ -44,6 +44,8 @@ Separar sempre:
 
 Regra: a primeira tela de gestao deve priorizar pendencias e proximas acoes, nao cadastro e configuracao.
 
+Decisao de navegacao: a operacao de clube/academia tem entrada propria em `/gestao`. Ela nao deve parecer uma aba escondida dentro de `Locais`. `Locais` e descoberta/publicacao; `Gestao` e trabalho diario da equipe.
+
 ### 3. Camada de competicoes
 
 Objetivo: oferecer torneios, ligas, rankings e partidas com uma linguagem operacional comum.
@@ -86,6 +88,13 @@ Regra: toda ferramenta publica precisa ter link copiavel, texto pronto para What
 Responsavel por local, marca, equipe, permissao, quadras, agenda, academia, clientes, financeiro, cantina e relatorios do local.
 
 Risco atual: dominio muito concentrado em `PlacesPage.tsx`.
+
+Direcao atual: manter compatibilidade tecnica enquanto a experiencia migra para uma camada operacional dedicada:
+
+- `/locais`: vitrine, descoberta e criacao inicial.
+- `/locais/:placeId`: pagina publica do local.
+- `/gestao`: central operacional de locais acessiveis.
+- `/gestao/:placeId/:module`: workspace de operacao por modulo.
 
 ### Bookings
 

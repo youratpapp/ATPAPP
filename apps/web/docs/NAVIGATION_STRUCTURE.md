@@ -16,21 +16,25 @@ Entradas:
 
 - Inicio
 - Competicoes
+- Gestao
 - Locais
 - Ranking
 - Perfil
 
-Regra: nao adicionar item global para cada modulo administrativo. Isso aumenta carga cognitiva do jogador.
+Regra: nao adicionar item global para cada modulo administrativo. `Gestao` e a unica porta global da operacao de academia/clube; agenda, academia, financeiro, cantina, equipe e ajustes continuam dentro do workspace da entidade.
 
 ### L1 - Hubs de dominio
 
 Exemplos:
 
 - Competicoes
+- Gestao
 - Locais
 - Ranking
 
 Responsabilidade: descoberta, lista, criacao inicial e acesso aos workspaces.
+
+`Gestao` tem responsabilidade diferente de `Locais`: e a central de operacao diaria para donos/equipe. `Locais` continua sendo descoberta, pagina publica e criacao inicial.
 
 ### L2 - Workspace de entidade
 
@@ -85,19 +89,23 @@ Atual:
 
 - `/locais`
 - `/locais/:placeId`
+- `/gestao`
+- `/gestao/:placeId/:module`
 
 Direcao:
 
 - `/locais`: descoberta/lista.
 - `/locais/:placeId`: pagina publica.
-- [feito] `/locais/:placeId/admin`: cockpit.
-- [feito] `/locais/:placeId/admin/agenda`
-- [feito] `/locais/:placeId/admin/academia`
-- [feito] `/locais/:placeId/admin/clientes`
-- [feito] `/locais/:placeId/admin/financeiro`
-- [feito] `/locais/:placeId/admin/cantina`
-- [feito] `/locais/:placeId/admin/equipe`
-- [feito] `/locais/:placeId/admin/ajustes`
+- [feito] `/gestao`: central operacional dos locais acessiveis.
+- [feito] `/gestao/:placeId/painel`: cockpit do local.
+- [feito] `/gestao/:placeId/agenda`
+- [feito] `/gestao/:placeId/academia`
+- [feito] `/gestao/:placeId/clientes`
+- [feito] `/gestao/:placeId/financeiro`
+- [feito] `/gestao/:placeId/cantina`
+- [feito] `/gestao/:placeId/equipe`
+- [feito] `/gestao/:placeId/ajustes`
+- [legado] `/locais/:placeId/admin`: compatibilidade; deve normalizar para `/gestao`.
 
 ## Regras para tabs
 
@@ -122,6 +130,8 @@ Direcao:
 
 ## Evolucoes registradas
 
+- 2026-05-13: criada entrada global `/gestao` como central operacional de donos/equipe, separando operacao diaria da descoberta publica de `Locais`.
+- 2026-05-13: rotas administrativas canonicas migraram para `/gestao/:placeId/:module`; rotas antigas `/locais/:placeId/admin` permanecem como compatibilidade e normalizam para a nova estrutura.
 - 2026-05-13: criada rota `/locais/:placeId/admin` e subrota `/locais/:placeId/admin/:module`, separando entrada administrativa da pagina publica do local.
 - 2026-05-13: hub de locais passou a oferecer CTA `Gestao` para usuarios com acesso administrativo, enquanto a pagina publica manteve CTA separado para o dono entrar na operacao.
 - 2026-05-13: subrotas administrativas passaram a usar nomes operacionais em portugues e sincronizar com a troca de modulo no cockpit.

@@ -242,7 +242,7 @@ export function parsePlaceAdminModule(value: string | undefined): PlaceManagemen
 }
 
 export function buildPlaceAdminPath(placeId: string, module: PlaceManagementModule, viewSegment?: string): string {
-  const path = `/locais/${encodeURIComponent(placeId)}/admin/${PLACE_ADMIN_MODULE_SEGMENTS[module]}`;
+  const path = `/gestao/${encodeURIComponent(placeId)}/${PLACE_ADMIN_MODULE_SEGMENTS[module]}`;
   if (!viewSegment) return path;
   const params = new URLSearchParams();
   params.set(PLACE_ADMIN_VIEW_PARAM, viewSegment);

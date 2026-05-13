@@ -32,6 +32,17 @@ function LocationIcon({ active }: { active: boolean }) {
   );
 }
 
+function ManagementIcon({ active }: { active: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="16" rx="2" fill={active ? "currentColor" : "none"} fillOpacity={active ? 0.12 : 0} />
+      <path d="M8 4V2h8v2" />
+      <path d="M3 10h18" />
+      <path d="M8 15h3M14 15h2" />
+    </svg>
+  );
+}
+
 function StarIcon({ active }: { active: boolean }) {
   return (
     <svg viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -60,6 +71,7 @@ type NavItem = {
 const ITEMS: NavItem[] = [
   { path: "/inicio", label: "Inicio", Icon: HomeIcon },
   { path: "/eventos", label: "Competicoes", Icon: TrophyIcon },
+  { path: "/gestao", label: "Gestao", Icon: ManagementIcon },
   { path: "/locais", label: "Locais", Icon: LocationIcon },
   { path: "/ranking", label: "Ranking", Icon: StarIcon },
   { path: "/perfil", label: "Perfil", Icon: PersonIcon },

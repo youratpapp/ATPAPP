@@ -18,9 +18,11 @@ Cada tela deve ter uma responsabilidade primaria. Se uma tela precisa resolver o
 | `/eventos/ligas` | listar/criar ligas | lista, CTA de criacao, filtros | operacao de rodada | usar wizard para criacao |
 | `/eventos/:tournamentId/:tab` | operar torneio | classe ativa, fila, partidas, publicacao, jogadores | configuracao profunda misturada com operacao | evoluir para CompetitionShell |
 | `/eventos/ligas/:leagueId` | operar liga | rodada, partidas, ranking, jogadores, chat | modelo mental diferente de torneio | alinhar a CompetitionShell |
-| `/locais` | descobrir locais e acessar gestao | cards publicos, filtros, entrada para admin | cockpit administrativo completo por padrao | separar descoberta de admin |
+| `/gestao` | orientar operador de academia | locais acessiveis, pendencias, atalhos por modulo | descoberta publica de locais | ser a entrada primaria de donos/equipe |
+| `/gestao/:placeId/:module` | operar local | fila do dia, modulo ativo, resumo e acoes | descoberta publica | manter contexto operacional e subvisoes |
+| `/locais` | descobrir locais e iniciar cadastro | cards publicos, filtros, entrada para pagina publica | cockpit administrativo completo por padrao | deixar gestao em `/gestao` |
 | `/locais/:placeId` | converter jogador/publico | marca, ofertas, reserva, turma, jogos, widget | configuracao interna | manter publica e limpa |
-| `/locais/:placeId/admin` | operar local | fila do dia, modulos, resumo | descoberta publica | evoluir subrotas por modulo |
+| `/locais/:placeId/admin` | compatibilidade de rota | redirecionar/normalizar para gestao | ser destino principal novo | manter legado temporario |
 | `/ranking` | comparar desempenho | ranking, filtros, regras, exportacao | configuracao de liga completa | manter como leitura competitiva |
 | `/perfil` | identidade e historico | dados, preferencia, atividade | gestao operacional | manter pessoal |
 | `/inscricao/:tournamentId` | converter inscricao | informacoes essenciais, classe, CTA | operacao do torneio | landing mobile-first |
@@ -46,6 +48,8 @@ Quando uma tela cresce demais:
 
 ## Evolucoes registradas
 
+- 2026-05-13: criada tela `/gestao` como central operacional de academia/clube, reduzindo a mistura entre descoberta publica de locais e trabalho diario de equipe.
+- 2026-05-13: responsabilidade principal de operar local migrou para `/gestao/:placeId/:module`, mantendo `/locais/:placeId/admin` apenas como rota legada de compatibilidade.
 - 2026-05-13: CRM de locais iniciou separacao real por dominio com `PlaceCrmModule`; `PlacesPage` passa a orquestrar dados/navegacao e delegar captura, lista, historico e acoes de CRM ao modulo.
 - 2026-05-13: planos e socios de locais foram isolados em `PlaceMembershipModule`, reduzindo mistura entre captura de lead, recorrencia, status do jogador e cobranca dentro da pagina principal.
 - 2026-05-13: fila diaria de atendimento de clientes foi isolada em `PlaceClientActionQueue`, reforcando a separacao entre operacao do dia e configuracao/relatorios.
