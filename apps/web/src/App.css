@@ -176,7 +176,7 @@
 
 .page-header h1 {
   margin: 0;
-  font-size: clamp(1.65rem, 4vw, var(--font-size-3xl));
+  font-size: var(--font-size-2xl);
   font-weight: 950;
   color: var(--color-text);
   letter-spacing: 0;
@@ -1782,7 +1782,7 @@
 
 .tournament-registration-hero h2 {
   color: #fff;
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: var(--font-size-3xl);
   line-height: 1;
   margin: var(--space-3) 0 var(--space-2);
 }
@@ -1924,7 +1924,7 @@
 
 .competition-header h1 {
   color: var(--color-text);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   font-weight: 950;
   line-height: var(--line-title);
   margin: 0;
@@ -1933,7 +1933,7 @@
 .competition-header span {
   color: var(--color-text-subtle);
   font-size: var(--font-size-sm);
-  font-weight: 850;
+  font-weight: 700;
 }
 
 .competition-header-actions {
@@ -1958,8 +1958,7 @@
 .competition-scope-selector span {
   color: var(--color-primary-strong);
   font-size: var(--font-size-xs);
-  font-weight: 900;
-  text-transform: uppercase;
+  font-weight: 850;
 }
 
 .competition-scope-selector strong {
@@ -2014,8 +2013,7 @@
 .competition-operational-queue-head span {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
-  font-weight: 900;
-  text-transform: uppercase;
+  font-weight: 850;
 }
 
 .competition-operational-queue-head strong {
@@ -2068,7 +2066,7 @@
 .competition-operational-queue-grid span,
 .competition-operational-queue-grid small {
   font-size: var(--font-size-xs);
-  font-weight: 850;
+  font-weight: 750;
 }
 
 .competition-operational-queue-grid small {
@@ -2762,15 +2760,15 @@
 
 .section-title h2 {
   margin: 0;
-  font-size: var(--font-size-lg);
-  font-weight: 900;
+  font-size: var(--font-size-md);
+  font-weight: 950;
   line-height: var(--line-title);
   color: var(--color-text);
 }
 
 .section-title .link {
-  font-weight: 700;
-  font-size: var(--font-size-sm);
+  font-weight: 850;
+  font-size: var(--font-size-xs);
   color: var(--color-primary-strong);
   background: none;
   border: none;
@@ -2780,7 +2778,7 @@
 .subtle {
   color: var(--color-text-subtle);
   font-size: var(--font-size-sm);
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .feedback {
@@ -3090,7 +3088,7 @@ button:disabled {
 
 .home-hero h1 {
   color: #fff;
-  font-size: clamp(1.35rem, 2vw, 2rem);
+  font-size: var(--font-size-2xl);
   line-height: 1.1;
   margin: 0;
 }
@@ -3152,7 +3150,7 @@ button:disabled {
 
 .home-today-copy h1 {
   color: #fff;
-  font-size: clamp(1.55rem, 3vw, 2.6rem);
+  font-size: var(--font-size-2xl);
   font-weight: 950;
   letter-spacing: 0;
   line-height: var(--line-tight);
@@ -3198,9 +3196,8 @@ button:disabled {
 .home-today-rows span {
   color: var(--color-green-200);
   font-size: var(--font-size-xs);
-  font-weight: 950;
+  font-weight: 850;
   grid-row: 1 / span 2;
-  text-transform: uppercase;
 }
 
 .home-today-rows strong {
@@ -5699,7 +5696,7 @@ button:disabled {
 
 .place-public-hero h2 {
   color: #fff;
-  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-size: var(--font-size-3xl);
   line-height: 1;
   margin: var(--space-1) 0 var(--space-2);
 }
@@ -5858,7 +5855,7 @@ button:disabled {
 
 .management-shell-title h1 {
   color: var(--color-text);
-  font-size: clamp(1.45rem, 2.5vw, 2.05rem);
+  font-size: var(--font-size-2xl);
   line-height: var(--line-tight);
   margin: 0;
 }
@@ -5866,7 +5863,7 @@ button:disabled {
 .management-shell-title p {
   color: var(--color-text-subtle);
   font-size: var(--font-size-sm);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.45;
   margin: 0;
   max-width: 760px;
@@ -5943,7 +5940,7 @@ button:disabled {
 
 .management-hub-hero h1 {
   color: #fff;
-  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-size: var(--font-size-3xl);
   line-height: var(--line-tight);
   margin: 0;
 }
@@ -6333,7 +6330,7 @@ button:disabled {
   color: var(--color-primary-strong);
 }
 
-.management-row-actions button:not(.primary) {
+.management-row-actions button:not(.primary):not(.secondary):not(.quiet) {
   background: var(--color-surface-muted);
 }
 
@@ -8427,7 +8424,7 @@ button:disabled {
 
 .ranking-hero-panel h2 {
   color: #fff;
-  font-size: clamp(1.7rem, 4vw, 2.8rem);
+  font-size: var(--font-size-3xl);
   line-height: 1;
   margin: var(--space-2) 0;
 }

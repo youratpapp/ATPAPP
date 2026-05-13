@@ -137,8 +137,8 @@ Regras:
 | Tipo | Visual | Exemplo |
 | --- | --- | --- |
 | Primary | verde solido | Abrir operacao, Confirmar, Cobrar |
-| Secondary | branco/borda | Pagina publica, Copiar link |
-| Quiet | texto/chip | Ver detalhes, Ajustar filtros |
+| Secondary | branco/borda, sombra minima | Pagina publica, Buscar, Copiar link |
+| Quiet | transparente, sem sombra, borda so no hover | Ver detalhes, Ajustar filtros, atalhos de modulo |
 | Danger | vermelho contido | Cancelar reserva |
 | Setup | amber suave | Completar base |
 
@@ -164,6 +164,7 @@ Se tudo e primary, nada e primary.
 - Usa tokens existentes antes de criar cor nova?
 - Zeros foram tratados como estado calmo?
 - Acao primaria usa `primary`; secundaria nao compete?
+- Acoes de suporte usam `quiet` quando nao devem disputar a decisao principal?
 - Row tem altura suficiente para toque?
 - Mobile nao depende de grid desktop?
 - Status usa cor com significado?

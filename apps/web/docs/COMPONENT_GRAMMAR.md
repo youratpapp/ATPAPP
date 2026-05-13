@@ -16,6 +16,7 @@ Definir como componentes devem parecer e se comportar no app. Este documento e p
 4. Detalhes vao para drawer, bottom sheet ou subvisao.
 5. Mobile usa rows e sheets; desktop usa rows, paines e tabelas.
 6. Card e excecao em operacao diaria; row e padrao.
+7. `primary` e reservado para a proxima acao; `secondary` e alternativa com borda; `quiet` e suporte sem competir.
 
 ## OperationalQueue
 
@@ -147,6 +148,7 @@ Anti-pattern:
 - todos os modulos visiveis para todos;
 - icones decorativos sem funcao;
 - item ativo apenas por cor fraca.
+- atalhos de modulo com peso de botao primario.
 
 ## Topbar / ContextHeader
 

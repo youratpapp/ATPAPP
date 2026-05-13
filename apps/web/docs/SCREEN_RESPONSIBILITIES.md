@@ -57,6 +57,7 @@ Quando uma tela cresce demais:
 - 2026-05-13: `/gestao/:placeId/:module` ganhou shell de workspace mais compacto, com modulo ativo antes de setup/configuracao e fila operacional antes de metricas.
 - 2026-05-13: navegacao global desktop passou a separar Jogar, Operar e Conta, reforcando que `Gestao` e contexto operacional e `Locais` e camada publica/descoberta.
 - 2026-05-13: `/inicio` foi reajustada para Player App por proxima acao, com painel do dia, rows de pendencia/agenda/clube e atalhos de jogador antes de secoes secundarias.
+- 2026-05-13: hierarquia de CTAs foi aplicada em Home, Gestao, Competition queue, recebiveis e criacao de reserva, separando primary, secondary e quiet.
 - 2026-05-13: CRM de locais iniciou separacao real por dominio com `PlaceCrmModule`; `PlacesPage` passa a orquestrar dados/navegacao e delegar captura, lista, historico e acoes de CRM ao modulo.
 - 2026-05-13: contatos/leads do CRM passaram a usar `EntityActionRow`, com acao primaria contextual e historico/arquivamento como acoes secundarias.
 - 2026-05-13: planos e socios de locais foram isolados em `PlaceMembershipModule`, reduzindo mistura entre captura de lead, recorrencia, status do jogador e cobranca dentro da pagina principal.

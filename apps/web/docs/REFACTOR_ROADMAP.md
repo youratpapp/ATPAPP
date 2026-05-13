@@ -177,6 +177,7 @@ Evoluido em 2026-05-13:
 - navegacao desktop passou a agrupar entradas em Jogar, Operar e Conta, com contexto visual para Management OS sem transformar mobile em sidebar comprimida.
 - CRM e recebiveis financeiros receberam primeira onda de rows operacionais com `EntityActionRow`, reduzindo botoes equivalentes e mantendo detalhe/historico como acao secundaria.
 - `/inicio` recebeu primeira reestruturacao de Player App: painel do dia, rows de proxima acao e atalhos de jogador substituem hero grande, quick strip generico e KPIs soltos.
+- primeira auditoria de CTA hierarchy aplicada: `secondary` ficou menos pesado, `quiet` foi criado e telas prioritarias passaram a destacar uma acao principal por contexto.
 
 ## Fase 3 - CompetitionShell
 

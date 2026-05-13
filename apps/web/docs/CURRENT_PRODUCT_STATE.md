@@ -136,6 +136,7 @@ Card e excecao em operacao diaria. Row e padrao.
 - Mobile ja iniciou padrao concreto de bottom sheet com `ResponsiveFilterSheet` aplicado nos filtros de temporada/classe da liga.
 - `EntityActionRow` ja saiu da documentacao e entrou em uso real em CRM e recebiveis financeiros do local.
 - `/inicio` ja iniciou transicao para Player App orientado por proxima acao, com painel do dia e rows de pendencia/agenda/clube antes de conteudo secundario.
+- Hierarquia de CTAs iniciou padrao real: `primary` para acao principal, `secondary` para acao alternativa com borda e `quiet` para suporte/atalhos.
 - Visual language premium foi documentada.
 - `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` foram criados.
 - `/gestao` ja foi refinada para ocultar cards zerados e usar rows operacionais de local.
@@ -235,14 +236,13 @@ Antes de mexer em qualquer tela:
 
 ## Prioridades de frontend
 
-1. Auditar hierarquia de botoes e CTAs nas telas prioritarias.
+1. Revisar typography e densidade nas telas principais.
 2. Refinar `ManagementShell` e `/gestao`.
 3. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
 4. Melhorar navegacao/sidebar por permissoes e atalhos contextuais.
 5. Reduzir dashboards informativos.
 6. Aplicar mobile sheets e sticky actions.
-7. Revisar typography/spacing global.
-8. Refinar paginas publicas.
+7. Refinar paginas publicas.
 
 ## Prioridades mobile
 

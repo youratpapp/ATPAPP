@@ -410,9 +410,9 @@ Entregue em 2026-05-13:
 
 ## P2 - Refinamento de percepcao premium
 
-### [>] VISUAL-01 - Auditoria global de botoes e CTA hierarchy
+### [x] VISUAL-01 - Auditoria global de botoes e CTA hierarchy
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -449,7 +449,17 @@ Criterios de conclusao:
 - audit checklist aplicado nas telas prioritarias;
 - exemplos incorretos corrigidos.
 
-### [ ] TYPO-01 - Revisar typography e densidade nas telas principais
+Entregue em 2026-05-13:
+
+- `secondary` deixou de ser botao escuro e virou botao branco/borda, coerente com acao secundaria;
+- criado padrao visual `quiet` para links, filtros, modulo auxiliar e acoes que nao devem competir com a primaria;
+- Home passou a usar `Ranking` como quiet e acoes vazias com secondary/quiet em vez de botoes equivalentes;
+- Gestao passou a separar `Abrir operacao` como primary, `Pagina publica` como secondary e atalhos de modulo como quiet;
+- Competition queue passou a tratar `Abrir fila` como quiet;
+- Financeiro/recebiveis passou a destacar `Lembrar todos` e `Lembrar` como primary, deixando recortes `Socios` e `Academia` quiet;
+- criacao de reserva passou a ter `Reservar` como unica acao forte; buscar, bloquear, espera e selecao de quadra ficaram secondary/quiet.
+
+### [>] TYPO-01 - Revisar typography e densidade nas telas principais
 
 Status: `[ ]` pendente
 
