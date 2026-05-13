@@ -1,27 +1,30 @@
-import { useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigured } from "./lib/supabase";
 import { fetchProfile } from "./lib/profiles";
 import { buildTournamentUrl, joinTournament } from "./lib/tournaments";
 import type { Profile } from "./lib/types";
-import { AuthPage } from "./pages/AuthPage";
-import { HomePage } from "./pages/HomePage";
-import { EventsPage } from "./pages/EventsPage";
-import { EventsHubPage } from "./pages/EventsHubPage";
-import { PlacesPage } from "./pages/PlacesPage";
-import { RankingPage } from "./pages/RankingPage";
-import { ProfilePage } from "./pages/ProfilePage";
-import { TournamentPage } from "./pages/TournamentPage";
-import { TournamentRegistrationPage } from "./pages/TournamentRegistrationPage";
-import { CompleteProfilePage } from "./pages/CompleteProfilePage";
-import { LeaguesPage } from "./pages/LeaguesPage";
-import { LeagueDetailsPage } from "./pages/LeagueDetailsPage";
-import { LeagueJoinPage } from "./pages/LeagueJoinPage";
 import "./App.css";
 
 const BOOT_TIMEOUT_MS = 8000;
 const LAST_HASH_ROUTE_KEY = "atp:last-hash-route";
+
+const AuthPage = lazy(() => import("./pages/AuthPage").then((module) => ({ default: module.AuthPage })));
+const CompleteProfilePage = lazy(() => import("./pages/CompleteProfilePage").then((module) => ({ default: module.CompleteProfilePage })));
+const EventsHubPage = lazy(() => import("./pages/EventsHubPage").then((module) => ({ default: module.EventsHubPage })));
+const EventsPage = lazy(() => import("./pages/EventsPage").then((module) => ({ default: module.EventsPage })));
+const HomePage = lazy(() => import("./pages/HomePage").then((module) => ({ default: module.HomePage })));
+const LeagueDetailsPage = lazy(() => import("./pages/LeagueDetailsPage").then((module) => ({ default: module.LeagueDetailsPage })));
+const LeagueJoinPage = lazy(() => import("./pages/LeagueJoinPage").then((module) => ({ default: module.LeagueJoinPage })));
+const LeaguesPage = lazy(() => import("./pages/LeaguesPage").then((module) => ({ default: module.LeaguesPage })));
+const PlacePublicPage = lazy(() => import("./pages/PlacePublicPage").then((module) => ({ default: module.PlacePublicPage })));
+const PlaceAdminPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlaceAdminPage })));
+const PlacesPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlacesPage })));
+const ProfilePage = lazy(() => import("./pages/ProfilePage").then((module) => ({ default: module.ProfilePage })));
+const RankingPage = lazy(() => import("./pages/RankingPage").then((module) => ({ default: module.RankingPage })));
+const TournamentPage = lazy(() => import("./pages/TournamentPage").then((module) => ({ default: module.TournamentPage })));
+const TournamentRegistrationPage = lazy(() => import("./pages/TournamentRegistrationPage").then((module) => ({ default: module.TournamentRegistrationPage })));
 
 function isFilled(value: string | null | undefined): boolean {
   return Boolean(value && value.trim());
@@ -38,6 +41,16 @@ function hasRequiredLoginData(user: User | null, profile: Profile | null): boole
     isFilled(profile.city) &&
     isFilled(profile.state) &&
     isFilled(profile.birthDate)
+  );
+}
+
+function AppLoadingState() {
+  return (
+    <main className="auth-page">
+      <section className="auth-card">
+        <h1>Carregando...</h1>
+      </section>
+    </main>
   );
 }
 
@@ -181,90 +194,81 @@ function AppInner() {
   }
 
   if (bootLoading) {
-    return (
-      <main className="auth-page">
-        <section className="auth-card">
-          <h1>Carregando...</h1>
-        </section>
-      </main>
-    );
+    return <AppLoadingState />;
   }
 
   if (authUser && profileLoading && !profile) {
-    return (
-      <main className="auth-page">
-        <section className="auth-card">
-          <h1>Carregando...</h1>
-        </section>
-      </main>
-    );
+    return <AppLoadingState />;
   }
 
   if (authUser && !profileResolved) {
-    return (
-      <main className="auth-page">
-        <section className="auth-card">
-          <h1>Carregando...</h1>
-        </section>
-      </main>
-    );
+    return <AppLoadingState />;
   }
 
   if (!authUser) {
     return (
-      <Routes>
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/auth/callback" element={<AuthCallbackPage />} />
-        <Route path="*" element={<AuthRequiredRedirect />} />
-      </Routes>
+      <Suspense fallback={<AppLoadingState />}>
+        <Routes>
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/callback" element={<AuthCallbackPage />} />
+          <Route path="*" element={<AuthRequiredRedirect />} />
+        </Routes>
+      </Suspense>
     );
   }
 
   if (!hasRequiredLoginData(authUser, profile)) {
     return (
-      <Routes>
-        <Route
-          path="/completar-cadastro"
-          element={<CompleteProfilePage user={authUser} profile={profile} onProfileChange={onProfileChange} />}
-        />
-        <Route path="*" element={<Navigate to="/completar-cadastro" replace />} />
-      </Routes>
+      <Suspense fallback={<AppLoadingState />}>
+        <Routes>
+          <Route
+            path="/completar-cadastro"
+            element={<CompleteProfilePage user={authUser} profile={profile} onProfileChange={onProfileChange} />}
+          />
+          <Route path="*" element={<Navigate to="/completar-cadastro" replace />} />
+        </Routes>
+      </Suspense>
     );
   }
 
   return (
-    <Routes>
-      <Route path="/auth" element={<AuthAlreadySignedInRedirect />} />
-      <Route path="/auth/callback" element={<AuthAlreadySignedInRedirect />} />
-      <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
-      <Route path="/" element={<Navigate to="/inicio" replace />} />
-      <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
-      <Route path="/eventos" element={<EventsHubPage user={authUser} profile={profile} />} />
-      <Route path="/eventos/torneios" element={<EventsPage user={authUser} profile={profile} />} />
-      <Route path="/eventos/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />
-      <Route path="/eventos/ligas/:leagueId" element={<LeagueDetailsPage user={authUser} profile={profile} />} />
-      <Route path="/eventos/ligas/inscricao/:token" element={<LeagueJoinPage user={authUser} profile={profile} />} />
-      <Route path="/ligas" element={<Navigate to="/eventos/ligas" replace />} />
-      <Route path="/ligas/:leagueId" element={<LegacyLeagueDetailsRedirect />} />
-      <Route path="/ligas/inscricao/:token" element={<LegacyLeagueJoinRedirect />} />
-      <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
-      <Route path="/ranking" element={<RankingPage user={authUser} profile={profile} />} />
-      <Route
-        path="/perfil"
-        element={<ProfilePage user={authUser} profile={profile} onProfileChange={onProfileChange} />}
-      />
-      <Route path="/eventos/:tournamentId" element={<TournamentRootRedirect />} />
-      <Route path="/eventos/:tournamentId/jogos" element={<TournamentPage user={authUser} profile={profile} forcedTab="jogos" />} />
-      <Route path="/eventos/:tournamentId/classificacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="classificacao" />} />
-      <Route path="/eventos/:tournamentId/organizacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="organizacao" />} />
-      <Route path="/eventos/:tournamentId/jogadores" element={<TournamentPage user={authUser} profile={profile} forcedTab="jogadores" />} />
-      <Route path="/eventos/:tournamentId/chat" element={<TournamentPage user={authUser} profile={profile} forcedTab="chat" />} />
-      <Route path="/inscricao/:tournamentId" element={<TournamentRegistrationPage user={authUser} profile={profile} />} />
-      <Route path="/join/:tournamentId" element={<JoinFromLinkPage user={authUser} />} />
-      <Route path="/t/:tournamentId" element={<LegacyRedirectPage />} />
-      <Route path="/dashboard" element={<Navigate to="/eventos" replace />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <Suspense fallback={<AppLoadingState />}>
+      <Routes>
+        <Route path="/auth" element={<AuthAlreadySignedInRedirect />} />
+        <Route path="/auth/callback" element={<AuthAlreadySignedInRedirect />} />
+        <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
+        <Route path="/" element={<Navigate to="/inicio" replace />} />
+        <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
+        <Route path="/eventos" element={<EventsHubPage user={authUser} profile={profile} />} />
+        <Route path="/eventos/torneios" element={<EventsPage user={authUser} profile={profile} />} />
+        <Route path="/eventos/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />
+        <Route path="/eventos/ligas/:leagueId" element={<LeagueDetailsPage user={authUser} profile={profile} />} />
+        <Route path="/eventos/ligas/inscricao/:token" element={<LeagueJoinPage user={authUser} profile={profile} />} />
+        <Route path="/ligas" element={<Navigate to="/eventos/ligas" replace />} />
+        <Route path="/ligas/:leagueId" element={<LegacyLeagueDetailsRedirect />} />
+        <Route path="/ligas/inscricao/:token" element={<LegacyLeagueJoinRedirect />} />
+        <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
+        <Route path="/locais/:placeId/admin" element={<PlaceAdminPage user={authUser} profile={profile} />} />
+        <Route path="/locais/:placeId/admin/:module" element={<PlaceAdminPage user={authUser} profile={profile} />} />
+        <Route path="/locais/:placeId" element={<PlacePublicPage user={authUser} profile={profile} />} />
+        <Route path="/ranking" element={<RankingPage user={authUser} profile={profile} />} />
+        <Route
+          path="/perfil"
+          element={<ProfilePage user={authUser} profile={profile} onProfileChange={onProfileChange} />}
+        />
+        <Route path="/eventos/:tournamentId" element={<TournamentRootRedirect />} />
+        <Route path="/eventos/:tournamentId/jogos" element={<TournamentPage user={authUser} profile={profile} forcedTab="jogos" />} />
+        <Route path="/eventos/:tournamentId/classificacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="classificacao" />} />
+        <Route path="/eventos/:tournamentId/organizacao" element={<TournamentPage user={authUser} profile={profile} forcedTab="organizacao" />} />
+        <Route path="/eventos/:tournamentId/jogadores" element={<TournamentPage user={authUser} profile={profile} forcedTab="jogadores" />} />
+        <Route path="/eventos/:tournamentId/chat" element={<TournamentPage user={authUser} profile={profile} forcedTab="chat" />} />
+        <Route path="/inscricao/:tournamentId" element={<TournamentRegistrationPage user={authUser} profile={profile} />} />
+        <Route path="/join/:tournamentId" element={<JoinFromLinkPage user={authUser} />} />
+        <Route path="/t/:tournamentId" element={<LegacyRedirectPage />} />
+        <Route path="/dashboard" element={<Navigate to="/eventos" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 }
 

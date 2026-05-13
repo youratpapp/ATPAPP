@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCallback } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { CompetitionHeader, CompetitionOperationalQueue, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
 import { StatusBadge } from "../components/StatusBadge";
 import {
   addTournamentStaff,
@@ -51,7 +52,7 @@ import {
   type AgendaAssignment,
   type ScheduleClassInput,
 } from "../tournament-engine/agenda";
-import { assignmentSortValue, buildScheduleMatchKey, formatAssignmentTime } from "../lib/tournament-schedule";
+import { buildScheduleMatchKey, formatAssignmentTime } from "../lib/tournament-schedule";
 import {
   listLegacyClassesFromTournamentData,
   normalizeClassData,
@@ -1106,6 +1107,21 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       .sort((a, b) => a[0].localeCompare(b[0]))
       .map(([, rows]) => rows.sort((x, y) => x.quadra.localeCompare(y.quadra)));
   }, [agenda]);
+  const agendaByCourt = useMemo(() => {
+    const map = new Map<string, AgendaAssignment[]>();
+    (agenda.assignments || []).forEach((assignment) => {
+      const key = assignment.quadra || "Quadra";
+      const rows = map.get(key);
+      if (rows) rows.push(assignment);
+      else map.set(key, [assignment]);
+    });
+    return Array.from(map.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([court, rows]) => ({
+        court,
+        rows: rows.sort((a, b) => `${a.data}|${a.hora}|${a.classe}`.localeCompare(`${b.data}|${b.hora}|${b.classe}`)),
+      }));
+  }, [agenda.assignments]);
   const agendaAssignmentByMatchKey = useMemo(() => {
     const map = new Map<string, AgendaAssignment>();
     (agenda.assignments || []).forEach((assignment) => {
@@ -1239,6 +1255,50 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       pendingMatches: Math.max(0, all.length - done),
     };
   }, [activeClass]);
+  const tournamentPodiumRows = useMemo(() => {
+    return classes.map((cls) => {
+      const classLabel = `${cls.categoryName} / ${cls.className}`;
+      const rounds = cls.data.knockout?.rounds || [];
+      const finalRound = rounds[rounds.length - 1];
+      const finalMatch = (finalRound?.matches || []).find((match) => isRealMatch(match.a, match.b) && match.done && match.winner);
+      if (finalMatch?.winner) {
+        const a = String(finalMatch.a || "");
+        const b = String(finalMatch.b || "");
+        return {
+          key: cls.key,
+          classLabel,
+          champion: String(finalMatch.winner),
+          runnerUp: finalMatch.winner === a ? b : a,
+          status: "Finalizada",
+          source: finalRound?.name || "Final",
+        };
+      }
+
+      const groupTables = Object.values(cls.data.tabelaPorGrupo || {});
+      if (!rounds.length && groupTables.length === 1) {
+        const [leader, runnerUp] = groupTables[0] || [];
+        if (leader?.[0]) {
+          return {
+            key: cls.key,
+            classLabel,
+            champion: leader[0],
+            runnerUp: runnerUp?.[0] || "",
+            status: "Classificacao",
+            source: "Grupo unico",
+          };
+        }
+      }
+
+      return {
+        key: cls.key,
+        classLabel,
+        champion: "",
+        runnerUp: "",
+        status: cls.data.gerado ? "Em disputa" : "Nao gerada",
+        source: "A definir",
+      };
+    });
+  }, [classes]);
   const tournamentOverview = useMemo(() => {
     let totalMatches = 0;
     let doneMatches = 0;
@@ -1409,21 +1469,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
     return map;
   }, [matchConfirmations]);
-  const nextPlayerMatch = useMemo(() => {
-    const pending = myTournamentMatches.filter((match) => match.status === "pending");
-    if (!pending.length) return null;
-    return [...pending].sort((a, b) => {
-      const scheduleA = agendaAssignmentByMatchKey.get(
-        buildScheduleMatchKey(a.categoryName, a.className, a.phase, a.matchIndex)
-      );
-      const scheduleB = agendaAssignmentByMatchKey.get(
-        buildScheduleMatchKey(b.categoryName, b.className, b.phase, b.matchIndex)
-      );
-      const diff = assignmentSortValue(scheduleA) - assignmentSortValue(scheduleB);
-      if (diff !== 0) return diff;
-      return a.title.localeCompare(b.title, "pt-BR");
-    })[0] ?? null;
-  }, [agendaAssignmentByMatchKey, myTournamentMatches]);
   const myPendingMatches = useMemo(
     () => myTournamentMatches.filter((match) => match.status === "pending"),
     [myTournamentMatches]
@@ -2956,6 +3001,157 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     });
   };
 
+  const copyTournamentPodiumSummary = async () => {
+    if (!tournamentPodiumRows.length) {
+      setFeedback({ kind: "error", text: "Nenhuma classe encontrada para montar o podio." });
+      return;
+    }
+
+    const out: string[] = [tournament?.name || "Torneio", "Podio por classe"];
+    tournamentPodiumRows.forEach((row) => {
+      out.push("");
+      out.push(row.classLabel);
+      if (row.champion) {
+        out.push(`Campeao: ${row.champion}`);
+        if (row.runnerUp) out.push(`Vice: ${row.runnerUp}`);
+      } else {
+        out.push(`Status: ${row.status}`);
+      }
+    });
+
+    const copied = await copyTextWithFallback(out.join("\n"));
+    setFeedback({
+      kind: copied ? "success" : "info",
+      text: copied ? "Podio copiado para divulgacao." : "Podio aberto para copia manual.",
+    });
+  };
+
+  const buildTournamentPublicationLines = (limitAgenda = 12): string[] => {
+    if (!tournament) return [];
+    const location = [tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir";
+    const lines: string[] = [
+      String(tournament.name || "Torneio").toUpperCase(),
+      location,
+      "",
+      `Classes: ${tournamentOverview.generatedClasses}/${tournamentOverview.totalClasses} geradas`,
+      `Jogos: ${tournamentOverview.doneMatches}/${tournamentOverview.totalMatches} finalizados`,
+      tournamentOverview.pendingMatches > 0 ? `Pendentes: ${tournamentOverview.pendingMatches}` : "Todas as partidas finalizadas",
+    ];
+
+    if (agenda.assignments.length) {
+      const sortedAgenda = [...agenda.assignments].sort((a, b) => {
+        if (a.data !== b.data) return a.data.localeCompare(b.data);
+        if (a.hora !== b.hora) return a.hora.localeCompare(b.hora);
+        return a.quadra.localeCompare(b.quadra);
+      });
+      lines.push("", "AGENDA");
+      sortedAgenda.slice(0, limitAgenda).forEach((row, index) => {
+        const stage = row.isFinal ? "FINAL" : row.isSemifinal ? "SEMIFINAL" : row.round;
+        lines.push(`${index + 1}. ${row.data} ${row.hora}-${row.horaFim} | ${row.quadra} | ${row.categoria}/${row.classe} | ${stage}`);
+        lines.push(`   ${row.p1} x ${row.p2}`);
+      });
+      if (sortedAgenda.length > limitAgenda) lines.push(`... +${sortedAgenda.length - limitAgenda} jogos na agenda completa`);
+    }
+
+    const readyPodium = tournamentPodiumRows.filter((row) => row.champion);
+    if (readyPodium.length) {
+      lines.push("", "PODIO");
+      readyPodium.forEach((row) => {
+        lines.push(`${row.classLabel}`);
+        lines.push(`Campeao: ${row.champion}`);
+        if (row.runnerUp) lines.push(`Vice: ${row.runnerUp}`);
+      });
+    }
+
+    lines.push("", buildTournamentShareLink("jogos"));
+    return lines;
+  };
+
+  const copyTournamentPublicationSummary = async () => {
+    const copied = await copyTextWithFallback(buildTournamentPublicationLines(18).join("\n"));
+    setFeedback({
+      kind: copied ? "success" : "info",
+      text: copied ? "Publicacao do torneio copiada." : "Publicacao aberta para copia manual.",
+    });
+  };
+
+  const shareTournamentPublicationWhatsApp = () => {
+    if (!tournament) return;
+    const text = buildTournamentPublicationLines(10)
+      .map((line, index) => (index === 0 ? `*${line}*` : line))
+      .join("\n");
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+    setFeedback({ kind: "success", text: "Publicacao aberta no WhatsApp." });
+  };
+
+  const exportTournamentPublicationPng = async () => {
+    if (!tournament) return;
+    const agendaRows = [...agenda.assignments]
+      .sort((a, b) => `${a.data}|${a.hora}|${a.quadra}`.localeCompare(`${b.data}|${b.hora}|${b.quadra}`))
+      .slice(0, 10);
+    const podiumRows = tournamentPodiumRows.filter((row) => row.champion).slice(0, 6);
+    const width = 1080;
+    const rowCount = 6 + agendaRows.length * 2 + podiumRows.length * 2;
+    const height = Math.max(760, 240 + rowCount * 34);
+    let y = 56;
+    const out: string[] = [];
+    out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`);
+    out.push(`<rect width="${width}" height="${height}" fill="#f5f7f6"/>`);
+    out.push(`<rect x="36" y="32" width="${width - 72}" height="${height - 64}" rx="28" fill="#ffffff" stroke="#dbe5ee"/>`);
+    out.push(`<rect x="36" y="32" width="${width - 72}" height="190" rx="28" fill="#081225"/>`);
+    out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="20" fill="#a7e3c4" font-weight="800">PUBLICACAO OFICIAL</text>`);
+    y += 56;
+    out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="48" fill="#ffffff" font-weight="900">${escXml(tournament.name)}</text>`);
+    y += 38;
+    out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="24" fill="#c8d2df">${escXml([tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir")}</text>`);
+    y = 260;
+    const kpis = [
+      [`${tournamentOverview.generatedClasses}/${tournamentOverview.totalClasses}`, "Classes"],
+      [`${tournamentOverview.doneMatches}/${tournamentOverview.totalMatches}`, "Jogos finalizados"],
+      [`${tournamentOverview.pendingMatches}`, "Pendentes"],
+    ];
+    kpis.forEach(([value, label], index) => {
+      const x = 76 + index * 300;
+      out.push(`<rect x="${x}" y="${y}" width="260" height="96" rx="16" fill="#f8fafc" stroke="#e4e9ef"/>`);
+      out.push(`<text x="${x + 22}" y="${y + 42}" font-family="Inter, Arial, sans-serif" font-size="32" fill="#081225" font-weight="900">${escXml(value)}</text>`);
+      out.push(`<text x="${x + 22}" y="${y + 70}" font-family="Inter, Arial, sans-serif" font-size="16" fill="#66758c" font-weight="800">${escXml(label)}</text>`);
+    });
+    y += 142;
+    out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="28" fill="#081225" font-weight="900">Agenda destaque</text>`);
+    y += 28;
+    if (agendaRows.length) {
+      agendaRows.forEach((row) => {
+        const stage = row.isFinal ? "FINAL" : row.isSemifinal ? "SEMIFINAL" : row.round;
+        out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="20" fill="#0d172a" font-weight="850">${escXml(`${row.data} ${row.hora}-${row.horaFim} | ${row.quadra} | ${row.categoria}/${row.classe} | ${stage}`)}</text>`);
+        y += 26;
+        out.push(`<text x="98" y="${y}" font-family="Inter, Arial, sans-serif" font-size="18" fill="#40506a">${escXml(`${row.p1} x ${row.p2}`)}</text>`);
+        y += 30;
+      });
+    } else {
+      out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="20" fill="#66758c">Agenda ainda nao gerada.</text>`);
+      y += 42;
+    }
+    if (podiumRows.length) {
+      y += 12;
+      out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="28" fill="#081225" font-weight="900">Podio</text>`);
+      y += 34;
+      podiumRows.forEach((row) => {
+        out.push(`<text x="76" y="${y}" font-family="Inter, Arial, sans-serif" font-size="20" fill="#0d172a" font-weight="850">${escXml(row.classLabel)}</text>`);
+        y += 25;
+        out.push(`<text x="98" y="${y}" font-family="Inter, Arial, sans-serif" font-size="18" fill="#40506a">${escXml(`Campeao: ${row.champion}${row.runnerUp ? ` | Vice: ${row.runnerUp}` : ""}`)}</text>`);
+        y += 30;
+      });
+    }
+    out.push(`<text x="76" y="${height - 72}" font-family="Inter, Arial, sans-serif" font-size="18" fill="#16804e" font-weight="800">${escXml(buildTournamentShareLink("jogos"))}</text>`);
+    out.push(`</svg>`);
+    const safeName = String(tournament.name || "torneio")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    await downloadSvgAsPng(out.join(""), width, height, `${safeName || "torneio"}-publicacao.png`);
+    setFeedback({ kind: "success", text: "Publicacao visual exportada em PNG." });
+  };
+
   const syncMyTournamentGoogleCalendar = async () => {
     if (!tournament) return;
     const scheduledMatches = myTournamentMatches
@@ -3799,18 +3995,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
-      <div className="page-header" style={{ marginBottom: 12 }}>
-        <h1>{tournament?.name || "Torneio"}</h1>
-        <div className="ph-actions">
-          <button className="compact-action" onClick={() => navigate(tournamentBackPath)} aria-label="Voltar para torneios">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M19 12H5" />
-              <path d="M12 19l-7-7 7-7" />
-            </svg>
-            <span>Voltar</span>
-          </button>
-        </div>
-      </div>
+      <CompetitionHeader
+        title={tournament?.name || "Torneio"}
+        subtitle={tournament ? [tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir" : "Carregando competicao"}
+        status={tournament ? <StatusBadge status={tournament.status} /> : null}
+        backLabel="Voltar para torneios"
+        onBack={() => navigate(tournamentBackPath)}
+      />
 
       {feedback ? (
         <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
@@ -3822,33 +4013,25 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
       {!loading && tournament ? (
         <>
-          {(tab === "jogos" || tab === "classificacao") ? (
-            <section className="card tournament-class-switcher">
-              <div>
-                <span>Resumo por classe</span>
-                <strong>Classe ativa</strong>
-              </div>
-              <select
-                aria-label="Classe ativa"
-                value={activeClass?.key ?? ""}
-                onChange={(e) => setActiveClassKey(e.target.value)}
-                disabled={classes.length === 0}
-              >
-                {classes.length === 0 ? <option value="">Sem classes cadastradas</option> : null}
-                {classes.map((c) => (
-                  <option key={c.key} value={c.key}>
-                    {c.categoryName} / {c.className}
-                  </option>
-                ))}
-              </select>
-            </section>
+          {classes.length > 0 ? (
+            <CompetitionScopeSelector
+              eyebrow="Resumo por classe"
+              label="Classe ativa"
+              title="Classe ativa"
+              value={activeClass?.key ?? ""}
+              onChange={setActiveClassKey}
+              disabled={classes.length === 0}
+              options={classes.map((c) => ({ value: c.key, label: `${c.categoryName} / ${c.className}` }))}
+            />
           ) : null}
 
           <article className="card" style={{ marginBottom: 12 }}>
             <div className="section-title" style={{ marginBottom: 8 }}>
               <h2>
-                {(tab === "jogos" || tab === "classificacao") && activeClass
-                  ? "Resumo da classe"
+                {activeClass
+                  ? canManageTournament
+                    ? "Painel da classe"
+                    : "Resumo da classe"
                   : isOwner || isTournamentStaff
                   ? "Painel do torneio"
                   : "Resumo do torneio"}
@@ -3858,13 +4041,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             <p className="subtle" style={{ margin: 0 }}>
               {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}
             </p>
-            {(tab === "jogos" || tab === "classificacao") && activeClass ? (
+            {activeClass ? (
               <p className="tournament-summary-context">
                 {activeClass.categoryName} / {activeClass.className}
               </p>
             ) : null}
             <div className="tournament-overview-grid">
-              {(tab === "jogos" || tab === "classificacao") && activeClass ? (
+              {activeClass ? (
                 <>
                   <div className="tournament-overview-kpi">
                     <strong>{activeClassMatchStats.totalMatches}</strong>
@@ -3904,11 +4087,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </div>
             <button
               className="tournament-next-action"
-              onClick={() => goToTab((tab === "jogos" || tab === "classificacao") && activeClass ? "jogos" : tournamentOverview.nextTab)}
+              onClick={() => goToTab(activeClass ? "jogos" : tournamentOverview.nextTab)}
             >
-              <span>{(tab === "jogos" || tab === "classificacao") && activeClass ? "Proxima acao da classe" : "Proxima acao"}</span>
+              <span>{activeClass ? "Proxima acao da classe" : "Proxima acao"}</span>
               <strong>
-                {(tab === "jogos" || tab === "classificacao") && activeClass
+                {activeClass
                   ? activeClassMatchStats.pendingMatches > 0
                     ? "Acompanhar jogos pendentes desta classe."
                     : "Classe sem jogos pendentes."
@@ -3930,35 +4113,25 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               </div>
             ) : null}
             {(canManageTournament || canManagePlayers || canManageMatches) && tournamentPendingCenter.items.length > 0 ? (
-              <div className="organizer-pending-center">
-                <div className="organizer-pending-head">
-                  <div>
-                    <span>{tournamentAdminPhase.label}</span>
-                    <strong>
-                      {tournamentPendingCenter.total > 0
-                        ? `${tournamentPendingCenter.total} ${tournamentPendingCenter.total === 1 ? "ponto" : "pontos"} para acompanhar`
-                        : "Sem pendencias nesta etapa"}
-                    </strong>
-                  </div>
-                  <button onClick={() => goToTab(tournamentAdminPhase.primaryTab)}>Abrir etapa</button>
-                </div>
-                <div className="organizer-pending-grid">
-                  {tournamentPendingCenter.items.map((item) => (
-                    <button
-                      key={item.key}
-                      className={item.count > 0 ? "needs-action" : ""}
-                      onClick={() => {
-                        if (item.filter) setRegistrationFilter(item.filter);
-                        goToTab(item.tab);
-                      }}
-                    >
-                      <strong>{item.count}</strong>
-                      <span>{item.label}</span>
-                      <small>{item.detail}</small>
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <CompetitionOperationalQueue
+                title={
+                  tournamentPendingCenter.total > 0
+                    ? `${tournamentAdminPhase.label}: ${tournamentPendingCenter.total} ${tournamentPendingCenter.total === 1 ? "ponto" : "pontos"} para acompanhar`
+                    : `${tournamentAdminPhase.label}: sem pendencias nesta etapa`
+                }
+                onOpenAll={() => goToTab(tournamentAdminPhase.primaryTab)}
+                items={tournamentPendingCenter.items.map((item) => ({
+                  id: item.key,
+                  count: item.count,
+                  label: item.label,
+                  detail: item.detail,
+                  tone: item.count > 0 ? "attention" : "neutral",
+                  onClick: () => {
+                    if (item.filter) setRegistrationFilter(item.filter);
+                    goToTab(item.tab);
+                  },
+                }))}
+              />
             ) : null}
             {canManageTournament && tournamentAdminPhase.showCompletion ? (
               <div className={`tournament-completion-guard ${tournamentCompletionBlockers.length === 0 ? "ready" : ""}`}>
@@ -4030,99 +4203,91 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 <button onClick={() => goToTab("jogos")}>Ver partidas</button>
               </div>
             ) : null}
-            {!isOwner && !isTournamentStaff && tab !== "jogos" && nextPlayerMatch && nextPlayerMatch.classKey === activeClass?.key ? (() => {
-              const scheduled = agendaAssignmentByMatchKey.get(
-                buildScheduleMatchKey(
-                  nextPlayerMatch.categoryName,
-                  nextPlayerMatch.className,
-                  nextPlayerMatch.phase,
-                  nextPlayerMatch.matchIndex
-                )
-              );
-              const confirmations = confirmationByMatch.get(
-                `${nextPlayerMatch.classKey}:${nextPlayerMatch.phaseKey}:${nextPlayerMatch.matchIndex}`
-              ) || [];
-              const myConfirmation = confirmations.find((confirmation) => confirmation.userId === user.id);
-              return (
-                <div className="player-next-match-card">
-                  <span>Proxima partida</span>
-                  <strong>{nextPlayerMatch.title}</strong>
-                  <small>{nextPlayerMatch.classLabel} - {nextPlayerMatch.phase}</small>
-                  {scheduled ? <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p> : null}
-                  {myConfirmation ? (
-                    <div className="match-confirmation-response">
-                      <p className={`match-confirmation-status ${myConfirmation.status}`}>
-                        {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
-                      </p>
-                      <button onClick={() => void cancelPlayerMatchConfirmationNow(nextPlayerMatch)} disabled={matchConfirming}>
-                        {myConfirmation.status === "confirmed" ? "Desfazer confirmacao" : "Alterar resposta"}
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="match-confirmation-actions">
-                      <button onClick={() => void confirmPlayerMatchNow(nextPlayerMatch, "confirmed")} disabled={matchConfirming}>
-                        Confirmar presenca
-                      </button>
-                      <button onClick={() => void confirmPlayerMatchNow(nextPlayerMatch, "unavailable")} disabled={matchConfirming}>
-                        Nao posso jogar
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })() : null}
-            <div className="tournament-share-actions">
-              <button onClick={() => void exportActiveClassPng()} disabled={saving || !activeClass}>
-                Exportar chave
-              </button>
-              <button onClick={() => void copyTournamentShareLink()} disabled={saving}>
-                Copiar link
-              </button>
-              {isOwner ? (
-                <button onClick={() => void copyTournamentRegistrationLink()} disabled={saving}>
-                  Link de inscricao
-                </button>
-              ) : null}
-              <button
-                className="brand-icon-btn"
-                onClick={shareTournamentInviteWhatsApp}
-                disabled={saving}
-                title="Compartilhar pelo WhatsApp"
-                aria-label="Compartilhar pelo WhatsApp"
-              >
-                <WhatsAppAppIcon />
-                <span>WhatsApp</span>
-              </button>
-            </div>
+            <CompetitionPublishingPanel
+              label="Acoes de publicacao do torneio"
+              hint="Agenda, status, podio e link oficial em um formato facil de copiar, enviar ou exportar."
+              actions={
+                <>
+                  <button onClick={() => void exportActiveClassPng()} disabled={saving || !activeClass}>
+                    Exportar chave da classe
+                  </button>
+                  <button onClick={() => void copyTournamentShareLink()} disabled={saving}>
+                    Copiar link
+                  </button>
+                  {isOwner ? (
+                    <button onClick={() => void copyTournamentRegistrationLink()} disabled={saving}>
+                      Link de inscricao
+                    </button>
+                  ) : null}
+                  <button
+                    className="brand-icon-btn"
+                    onClick={shareTournamentInviteWhatsApp}
+                    disabled={saving}
+                    title="Compartilhar pelo WhatsApp"
+                    aria-label="Compartilhar pelo WhatsApp"
+                  >
+                    <WhatsAppAppIcon />
+                    <span>WhatsApp</span>
+                  </button>
+                </>
+              }
+              kitActions={
+                <>
+                  <button onClick={() => void copyTournamentPublicationSummary()} disabled={saving}>
+                    Copiar publicacao
+                  </button>
+                  <button onClick={() => void exportTournamentPublicationPng()} disabled={saving}>
+                    Exportar arte PNG
+                  </button>
+                  <button
+                    className="brand-icon-btn"
+                    onClick={shareTournamentPublicationWhatsApp}
+                    disabled={saving}
+                    title="Enviar publicacao pelo WhatsApp"
+                    aria-label="Enviar publicacao pelo WhatsApp"
+                  >
+                    <WhatsAppAppIcon />
+                    <span>WhatsApp</span>
+                  </button>
+                </>
+              }
+            />
           </article>
 
-          <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
-            {(canManageTournament ? tournamentAdminPhase.key !== "setup" : true) ? (
-            <button className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
-              Jogos
-            </button>
-            ) : null}
-            {canSeeClassificationTab ? (
-              <button className={tab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
-                Classificacao
-              </button>
-            ) : null}
-            {canManageTournament && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
-              <button className={tab === "organizacao" ? "active" : ""} onClick={() => goToTab("organizacao")}>
-                Organizacao
-              </button>
-            ) : null}
-            {canManagePlayers && tournamentAdminPhase.key !== "finished" ? (
-              <button className={tab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
-                Jogadores
-              </button>
-            ) : null}
-            {canUseChatTab ? (
-              <button className={tab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
-                Chat
-              </button>
-            ) : null}
-          </div>
+          <CompetitionTabs
+            activeValue={tab}
+            ariaLabel="Visoes do torneio"
+            onChange={(value) => goToTab(value as TabKey)}
+            items={[
+              {
+                value: "jogos",
+                label: "Jogos",
+                badge: activeClassMatchStats.pendingMatches > 0 ? activeClassMatchStats.pendingMatches : undefined,
+                hidden: canManageTournament ? tournamentAdminPhase.key === "setup" : false,
+              },
+              {
+                value: "classificacao",
+                label: "Classificacao",
+                hidden: !canSeeClassificationTab,
+              },
+              {
+                value: "organizacao",
+                label: "Organizacao",
+                hidden: !canManageTournament || tournamentAdminPhase.key === "live" || tournamentAdminPhase.key === "finished",
+              },
+              {
+                value: "jogadores",
+                label: "Jogadores",
+                badge: tournamentOverview.pendingRegistrations > 0 ? tournamentOverview.pendingRegistrations : undefined,
+                hidden: !canManagePlayers || tournamentAdminPhase.key === "finished",
+              },
+              {
+                value: "chat",
+                label: "Chat",
+                hidden: !canUseChatTab,
+              },
+            ]}
+          />
 
           {tab === "jogos" ? (
             <section className="card tournament-games-card">
@@ -4158,6 +4323,72 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <span className="match-card-origin">Jogador</span>
                   </div>
                 </>
+              ) : null}
+
+              {agendaByCourt.length ? (
+                <div className="tournament-court-agenda-panel">
+                  <div className="tournament-court-agenda-head">
+                    <div>
+                      <span>Agenda do torneio</span>
+                      <h3>Por quadra</h3>
+                    </div>
+                    <button onClick={() => void copyAgendaByCourtSummary()} disabled={saving}>
+                      Copiar agenda
+                    </button>
+                  </div>
+                  <div className="tournament-court-agenda-grid">
+                    {agendaByCourt.map(({ court, rows }) => (
+                      <article key={`court-agenda:${court}`}>
+                        <header>
+                          <strong>{court}</strong>
+                          <span>{rows.length} {rows.length === 1 ? "jogo" : "jogos"}</span>
+                        </header>
+                        {rows.slice(0, 5).map((row, index) => (
+                          <div key={`${court}:${row.matchKey || index}`} className="tournament-court-agenda-row">
+                            <strong>{row.data} {row.hora}-{row.horaFim}</strong>
+                            <small>{row.categoria} / {row.classe} | {row.round}{row.isSemifinal ? " (Semi)" : ""}{row.isFinal ? " (Final)" : ""}</small>
+                            <span>{row.p1} x {row.p2}</span>
+                          </div>
+                        ))}
+                        {rows.length > 5 ? <small className="subtle">+{rows.length - 5} jogos nessa quadra</small> : null}
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {tournamentPodiumRows.length ? (
+                <div className="tournament-podium-panel">
+                  <div className="tournament-podium-head">
+                    <div>
+                      <span>Encerramento</span>
+                      <h3>Podio por classe</h3>
+                    </div>
+                    <button onClick={() => void copyTournamentPodiumSummary()} disabled={saving}>
+                      Copiar podio
+                    </button>
+                  </div>
+                  <div className="tournament-podium-grid">
+                    {tournamentPodiumRows.map((row) => (
+                      <article
+                        key={`podium:${row.key}`}
+                        className={row.champion ? "ready" : ""}
+                      >
+                        <span>{row.status}</span>
+                        <strong>{row.classLabel}</strong>
+                        {row.champion ? (
+                          <>
+                            <p><b>Campeao</b>{row.champion}</p>
+                            {row.runnerUp ? <p><b>Vice</b>{row.runnerUp}</p> : null}
+                          </>
+                        ) : (
+                          <p className="subtle">Campeao a definir conforme os resultados.</p>
+                        )}
+                        <small>{row.source}</small>
+                      </article>
+                    ))}
+                  </div>
+                </div>
               ) : null}
 
               {!isOwner && !isTournamentStaff && myTournamentMatches.length > 0 ? (

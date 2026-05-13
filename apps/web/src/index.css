@@ -12,6 +12,9 @@ body,
   font-family: var(--font-family);
   color: var(--color-text);
   background: var(--color-bg);
+  line-height: var(--line-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -31,4 +34,8 @@ input,
 select,
 textarea {
   font-family: inherit;
+}
+
+::selection {
+  background: rgba(22, 128, 78, 0.18);
 }

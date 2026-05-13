@@ -17,8 +17,12 @@ import type {
   OpenMatch,
   OpenMatchComment,
   Place,
+  PlaceBookingRule,
   PlaceCourt,
+  PlaceCreditPackage,
+  PlaceCreditPurchase,
   PlaceCrmContact,
+  PlaceCrmInteraction,
   PlaceExpense,
   PlaceMembership,
   PlaceMembershipPlan,
@@ -33,9 +37,13 @@ const TABLE_PLACES = "places";
 const TABLE_FOLLOWERS = "place_followers";
 const TABLE_ORGANIZATIONS = "place_organizations";
 const TABLE_COURTS = "place_courts";
+const TABLE_BOOKING_RULES = "place_booking_rules";
 const TABLE_MEMBERSHIP_PLANS = "place_membership_plans";
 const TABLE_MEMBERSHIPS = "place_memberships";
 const TABLE_CRM_CONTACTS = "place_crm_contacts";
+const TABLE_CRM_INTERACTIONS = "place_crm_interactions";
+const TABLE_CREDIT_PACKAGES = "place_credit_packages";
+const TABLE_CREDIT_PURCHASES = "place_credit_purchases";
 const TABLE_POS_PRODUCTS = "place_pos_products";
 const TABLE_POS_SALES = "place_pos_sales";
 const TABLE_EXPENSES = "place_expenses";
@@ -99,6 +107,28 @@ type AvailableCourtRow = CourtRow & {
   court_id?: string;
   effective_fee_cents: number | null;
   is_member_price: boolean | null;
+  rule_id?: string | null;
+  rule_name?: string | null;
+  requires_approval?: boolean | null;
+};
+
+type BookingRuleRow = {
+  id: string;
+  place_id: string;
+  name: string;
+  profile_scope: "all" | "public" | "member";
+  weekdays: number[] | null;
+  starts_at: string;
+  ends_at: string;
+  price_cents: number | null;
+  member_price_cents: number | null;
+  min_minutes: number | null;
+  max_minutes: number | null;
+  advance_days: number | null;
+  requires_approval: boolean | null;
+  is_active: boolean | null;
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 type MembershipPlanRow = {
@@ -136,6 +166,50 @@ type CrmContactRow = {
   source: string | null;
   interest: string | null;
   status: "lead" | "contacted" | "converted" | "archived";
+  notes: string | null;
+  next_contact_on: string | null;
+  owner_label: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type CrmInteractionRow = {
+  id: string;
+  place_id: string;
+  contact_id: string;
+  interaction_type: "note" | "call" | "whatsapp" | "email" | "visit" | "follow_up";
+  body: string;
+  next_contact_on: string | null;
+  created_at: string | null;
+};
+
+type CreditPackageRow = {
+  id: string;
+  place_id: string;
+  name: string;
+  package_type: "court_credit" | "lesson_credit" | "day_pass";
+  quantity: number | null;
+  price_cents: number | null;
+  validity_days: number | null;
+  is_active: boolean | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type CreditPurchaseRow = {
+  id: string;
+  place_id: string;
+  package_id: string | null;
+  package_name: string;
+  package_type: "court_credit" | "lesson_credit" | "day_pass";
+  buyer_name: string;
+  phone: string | null;
+  initial_quantity: number | null;
+  remaining_quantity: number | null;
+  amount_cents: number | null;
+  purchased_on: string | null;
+  expires_on: string | null;
+  status: "active" | "used" | "expired" | "cancelled";
   notes: string | null;
   created_at: string | null;
   updated_at: string | null;
@@ -436,6 +510,30 @@ function rowToAvailableCourt(row: AvailableCourtRow): AvailableCourt {
     ...rowToCourt({ ...row, id: row.court_id || row.id }),
     effectiveFeeCents: Number(row.effective_fee_cents || 0),
     isMemberPrice: Boolean(row.is_member_price),
+    ruleId: row.rule_id || "",
+    ruleName: row.rule_name || "",
+    requiresApproval: row.requires_approval !== false,
+  };
+}
+
+function rowToBookingRule(row: BookingRuleRow): PlaceBookingRule {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    name: row.name,
+    profileScope: row.profile_scope,
+    weekdays: Array.isArray(row.weekdays) ? row.weekdays : [],
+    startsAt: row.starts_at?.slice(0, 5) || "06:00",
+    endsAt: row.ends_at?.slice(0, 5) || "23:00",
+    priceCents: row.price_cents,
+    memberPriceCents: row.member_price_cents,
+    minMinutes: Number(row.min_minutes || 60),
+    maxMinutes: Number(row.max_minutes || 120),
+    advanceDays: Number(row.advance_days || 14),
+    requiresApproval: row.requires_approval !== false,
+    isActive: row.is_active !== false,
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
   };
 }
 
@@ -479,6 +577,56 @@ function rowToCrmContact(row: CrmContactRow): PlaceCrmContact {
     source: row.source || "",
     interest: row.interest || "",
     status: row.status,
+    notes: row.notes || "",
+    nextContactOn: row.next_contact_on || "",
+    ownerLabel: row.owner_label || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToCrmInteraction(row: CrmInteractionRow): PlaceCrmInteraction {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    contactId: row.contact_id,
+    interactionType: row.interaction_type || "note",
+    body: row.body || "",
+    nextContactOn: row.next_contact_on || "",
+    createdAt: row.created_at || "",
+  };
+}
+
+function rowToCreditPackage(row: CreditPackageRow): PlaceCreditPackage {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    name: row.name,
+    packageType: row.package_type || "court_credit",
+    quantity: Number(row.quantity || 1),
+    priceCents: Number(row.price_cents || 0),
+    validityDays: Number(row.validity_days || 30),
+    isActive: row.is_active !== false,
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToCreditPurchase(row: CreditPurchaseRow): PlaceCreditPurchase {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    packageId: row.package_id,
+    packageName: row.package_name,
+    packageType: row.package_type || "court_credit",
+    buyerName: row.buyer_name,
+    phone: row.phone || "",
+    initialQuantity: Number(row.initial_quantity || 0),
+    remainingQuantity: Number(row.remaining_quantity || 0),
+    amountCents: Number(row.amount_cents || 0),
+    purchasedOn: row.purchased_on || "",
+    expiresOn: row.expires_on || "",
+    status: row.status || "active",
     notes: row.notes || "",
     createdAt: row.created_at || "",
     updatedAt: row.updated_at || "",
@@ -843,6 +991,19 @@ export async function listAllPlaces(user: User): Promise<Place[]> {
   return decoratePlaces((data ?? []) as PlaceRow[], user.id);
 }
 
+export async function getPlaceById(user: User, placeId: string): Promise<Place | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from(TABLE_PLACES)
+    .select(PLACE_SELECT_FIELDS)
+    .eq("id", placeId)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) return null;
+  const [place] = await decoratePlaces([data as PlaceRow], user.id);
+  return place || null;
+}
+
 export async function listPlacesIOwn(user: User): Promise<Place[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
@@ -1010,6 +1171,61 @@ export async function listPlaceCourts(placeId: string): Promise<PlaceCourt[]> {
   return ((data ?? []) as CourtRow[]).map(rowToCourt);
 }
 
+export async function listPlaceBookingRules(placeId: string): Promise<PlaceBookingRule[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_BOOKING_RULES)
+    .select("id,place_id,name,profile_scope,weekdays,starts_at,ends_at,price_cents,member_price_cents,min_minutes,max_minutes,advance_days,requires_approval,is_active,created_at,updated_at")
+    .eq("place_id", placeId)
+    .order("starts_at", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as BookingRuleRow[]).map(rowToBookingRule);
+}
+
+export async function createPlaceBookingRule(input: {
+  placeId: string;
+  name: string;
+  profileScope: PlaceBookingRule["profileScope"];
+  weekdays: number[];
+  startsAt: string;
+  endsAt: string;
+  priceCents?: number | null;
+  memberPriceCents?: number | null;
+  minMinutes: number;
+  maxMinutes: number;
+  advanceDays: number;
+  requiresApproval: boolean;
+}): Promise<PlaceBookingRule> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_BOOKING_RULES)
+    .insert({
+      place_id: input.placeId,
+      name: input.name.trim(),
+      profile_scope: input.profileScope,
+      weekdays: input.weekdays.length ? input.weekdays : [0, 1, 2, 3, 4, 5, 6],
+      starts_at: input.startsAt,
+      ends_at: input.endsAt,
+      price_cents: input.priceCents ?? null,
+      member_price_cents: input.memberPriceCents ?? null,
+      min_minutes: Math.max(1, Math.floor(input.minMinutes || 60)),
+      max_minutes: Math.max(1, Math.floor(input.maxMinutes || 120)),
+      advance_days: Math.max(0, Math.floor(input.advanceDays || 0)),
+      requires_approval: input.requiresApproval,
+    })
+    .select("id,place_id,name,profile_scope,weekdays,starts_at,ends_at,price_cents,member_price_cents,min_minutes,max_minutes,advance_days,requires_approval,is_active,created_at,updated_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToBookingRule(data as BookingRuleRow);
+}
+
+export async function updatePlaceBookingRuleStatus(ruleId: string, isActive: boolean): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_BOOKING_RULES).update({ is_active: isActive }).eq("id", ruleId);
+  if (error) throw new Error(error.message);
+}
+
 export async function createPlaceCourt(input: {
   placeId: string;
   name: string;
@@ -1143,7 +1359,7 @@ export async function listPlaceCrmContacts(placeId: string): Promise<PlaceCrmCon
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_CRM_CONTACTS)
-    .select("id,place_id,name,phone,email,source,interest,status,notes,created_at,updated_at")
+    .select("id,place_id,name,phone,email,source,interest,status,notes,next_contact_on,owner_label,created_at,updated_at")
     .eq("place_id", placeId)
     .neq("status", "archived")
     .order("created_at", { ascending: false })
@@ -1160,6 +1376,8 @@ export async function createPlaceCrmContact(input: {
   source?: string;
   interest?: string;
   notes?: string;
+  nextContactOn?: string;
+  ownerLabel?: string;
 }): Promise<PlaceCrmContact> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { data, error } = await supabase
@@ -1172,11 +1390,60 @@ export async function createPlaceCrmContact(input: {
       source: input.source?.trim() || null,
       interest: input.interest?.trim() || null,
       notes: input.notes?.trim() || null,
+      next_contact_on: input.nextContactOn?.trim() || null,
+      owner_label: input.ownerLabel?.trim() || null,
     })
-    .select("id,place_id,name,phone,email,source,interest,status,notes,created_at,updated_at")
+    .select("id,place_id,name,phone,email,source,interest,status,notes,next_contact_on,owner_label,created_at,updated_at")
     .single();
   if (error) throw new Error(error.message);
   return rowToCrmContact(data as CrmContactRow);
+}
+
+export async function listPlaceCrmInteractions(placeId: string): Promise<PlaceCrmInteraction[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_CRM_INTERACTIONS)
+    .select("id,place_id,contact_id,interaction_type,body,next_contact_on,created_at")
+    .eq("place_id", placeId)
+    .order("created_at", { ascending: false })
+    .limit(160);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as CrmInteractionRow[]).map(rowToCrmInteraction);
+}
+
+export async function createPlaceCrmInteraction(input: {
+  placeId: string;
+  contactId: string;
+  interactionType?: PlaceCrmInteraction["interactionType"];
+  body: string;
+  nextContactOn?: string;
+}): Promise<PlaceCrmInteraction> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_CRM_INTERACTIONS)
+    .insert({
+      place_id: input.placeId,
+      contact_id: input.contactId,
+      interaction_type: input.interactionType || "note",
+      body: input.body.trim(),
+      next_contact_on: input.nextContactOn?.trim() || null,
+    })
+    .select("id,place_id,contact_id,interaction_type,body,next_contact_on,created_at")
+    .single();
+  if (error) throw new Error(error.message);
+  if (input.nextContactOn?.trim()) {
+    await updatePlaceCrmContactFollowUp(input.contactId, input.nextContactOn);
+  }
+  return rowToCrmInteraction(data as CrmInteractionRow);
+}
+
+export async function updatePlaceCrmContactOwner(contactId: string, ownerLabel: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase
+    .from(TABLE_CRM_CONTACTS)
+    .update({ owner_label: ownerLabel.trim() || null })
+    .eq("id", contactId);
+  if (error) throw new Error(error.message);
 }
 
 export async function updatePlaceCrmContactStatus(
@@ -1186,6 +1453,106 @@ export async function updatePlaceCrmContactStatus(
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { error } = await supabase.from(TABLE_CRM_CONTACTS).update({ status }).eq("id", contactId);
   if (error) throw new Error(error.message);
+}
+
+export async function updatePlaceCrmContactFollowUp(
+  contactId: string,
+  nextContactOn: string
+): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase
+    .from(TABLE_CRM_CONTACTS)
+    .update({ next_contact_on: nextContactOn.trim() || null })
+    .eq("id", contactId);
+  if (error) throw new Error(error.message);
+}
+
+export async function listPlaceCreditPackages(placeId: string): Promise<PlaceCreditPackage[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_CREDIT_PACKAGES)
+    .select("id,place_id,name,package_type,quantity,price_cents,validity_days,is_active,created_at,updated_at")
+    .eq("place_id", placeId)
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as CreditPackageRow[]).map(rowToCreditPackage);
+}
+
+export async function createPlaceCreditPackage(input: {
+  placeId: string;
+  name: string;
+  packageType: PlaceCreditPackage["packageType"];
+  quantity: number;
+  priceCents: number;
+  validityDays: number;
+}): Promise<PlaceCreditPackage> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_CREDIT_PACKAGES)
+    .insert({
+      place_id: input.placeId,
+      name: input.name.trim(),
+      package_type: input.packageType,
+      quantity: Math.max(1, Math.floor(input.quantity || 1)),
+      price_cents: Math.max(0, Math.floor(input.priceCents || 0)),
+      validity_days: Math.max(1, Math.floor(input.validityDays || 30)),
+    })
+    .select("id,place_id,name,package_type,quantity,price_cents,validity_days,is_active,created_at,updated_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToCreditPackage(data as CreditPackageRow);
+}
+
+export async function updatePlaceCreditPackageStatus(packageId: string, isActive: boolean): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from(TABLE_CREDIT_PACKAGES).update({ is_active: isActive }).eq("id", packageId);
+  if (error) throw new Error(error.message);
+}
+
+export async function listPlaceCreditPurchases(placeId: string): Promise<PlaceCreditPurchase[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_CREDIT_PURCHASES)
+    .select("id,place_id,package_id,package_name,package_type,buyer_name,phone,initial_quantity,remaining_quantity,amount_cents,purchased_on,expires_on,status,notes,created_at,updated_at")
+    .eq("place_id", placeId)
+    .neq("status", "cancelled")
+    .order("created_at", { ascending: false })
+    .limit(160);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as CreditPurchaseRow[]).map(rowToCreditPurchase);
+}
+
+export async function recordPlaceCreditPurchase(input: {
+  placeId: string;
+  packageId: string;
+  buyerName: string;
+  phone?: string;
+  notes?: string;
+}): Promise<PlaceCreditPurchase> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_record_place_credit_purchase", {
+    p_place_id: input.placeId,
+    p_package_id: input.packageId,
+    p_buyer_name: input.buyerName,
+    p_phone: input.phone || null,
+    p_notes: input.notes || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as CreditPurchaseRow[])[0];
+  if (!row) throw new Error("Compra de pacote nao registrada.");
+  return rowToCreditPurchase(row);
+}
+
+export async function consumePlaceCreditPurchase(purchaseId: string, units = 1): Promise<PlaceCreditPurchase> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_consume_place_credit_purchase", {
+    p_purchase_id: purchaseId,
+    p_units: Math.max(1, Math.floor(units || 1)),
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as CreditPurchaseRow[])[0];
+  if (!row) throw new Error("Credito nao atualizado.");
+  return rowToCreditPurchase(row);
 }
 
 export async function listPlacePosProducts(placeId: string): Promise<PlacePosProduct[]> {

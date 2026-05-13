@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { ScreenState } from "../components/ScreenState";
+import { SetupWizard } from "../components/SetupWizard";
 import { StatusBadge } from "../components/StatusBadge";
 import type { Profile, TournamentSummary } from "../lib/types";
 import { buildTournamentUrl, createTournament, joinTournament, loadDashboardData } from "../lib/tournaments";
@@ -546,20 +548,28 @@ export function EventsPage({ user, profile }: Props) {
         </p>
       ) : null}
 
-      {loading ? <p className="subtle">Carregando...</p> : null}
+      {loading ? <ScreenState kind="loading" icon="Torneios" title="Carregando torneios" detail="Buscando seus eventos, filtros e convites disponiveis." /> : null}
 
       {!loading && list.length === 0 ? (
-        <div className="empty-state">
-          <span className="empty-emoji" aria-hidden>ATP</span>
-          <p>
-            {listByTab.length > 0 && hasActiveFilters
-              ? "Nenhum torneio encontrado com estes filtros."
+        <ScreenState
+          icon="ATP"
+          title={
+            listByTab.length > 0 && hasActiveFilters
+              ? "Nenhum torneio encontrado com estes filtros"
               : mode === "organizing"
-              ? "Voce ainda nao organiza torneios."
-              : "Voce ainda nao esta em nenhum torneio."}
-          </p>
+              ? "Voce ainda nao organiza torneios"
+              : "Voce ainda nao esta em nenhum torneio"
+          }
+          detail={
+            listByTab.length > 0 && hasActiveFilters
+              ? "Limpe filtros ou ajuste busca, status, visibilidade e periodo."
+              : mode === "organizing"
+              ? "Crie o primeiro torneio quando quiser abrir inscricoes ou montar uma chave."
+              : "Entre por codigo ou acompanhe torneios publicos disponiveis."
+          }
+          action={
           <button
-            className="empty-action"
+            type="button"
             onClick={() => {
               if (listByTab.length > 0 && hasActiveFilters) {
                 clearFilters();
@@ -574,7 +584,8 @@ export function EventsPage({ user, profile }: Props) {
           >
             {listByTab.length > 0 && hasActiveFilters ? "Limpar filtros" : mode === "organizing" ? "Criar torneio" : "Entrar por codigo"}
           </button>
-        </div>
+          }
+        />
       ) : null}
 
       {list.map((t) => (
@@ -590,53 +601,75 @@ export function EventsPage({ user, profile }: Props) {
       {showCreate ? (
         <div className="modal-backdrop" onClick={() => setShowCreate(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2>Novo torneio</h2>
-            <label>Nome</label>
-            <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Ex.: Aberto de Primavera" />
-            <label>Estado (UF)</label>
-            <select
-              value={newState}
-              onChange={(e) => {
-                const nextUf = normalizeStateUf(e.target.value);
-                setNewState(nextUf);
-                setNewCity("");
-              }}
-            >
-              <option value="">Selecione</option>
-              {BRAZILIAN_STATES.map((state) => (
-                <option key={`event-state:${state.uf}`} value={state.uf}>
-                  {state.uf} - {state.name}
-                </option>
-              ))}
-            </select>
-            <label>Cidade</label>
-            <select value={newCity} onChange={(e) => setNewCity(e.target.value)} disabled={!normalizedNewUf || newCityLoading}>
-              <option value="">
-                {!normalizedNewUf
-                  ? "Selecione o estado primeiro"
-                  : newCityLoading
-                  ? "Carregando municipios..."
-                  : "Selecione o municipio"}
-              </option>
-              {newCityValueInOptions ? null : newCity.trim() ? <option value={newCity}>{newCity}</option> : null}
-              {newCityOptions.map((cityName) => (
-                <option key={`event-city:${cityName}`} value={cityName}>
-                  {cityName}
-                </option>
-              ))}
-            </select>
-            {newCityLoadError ? <p className="feedback error">{newCityLoadError}</p> : null}
-            <label>Visibilidade</label>
-            <select value={newVisibility} onChange={(e) => setNewVisibility(e.target.value as "private" | "public")}>
-              <option value="private">Somente por link</option>
-              <option value="public">Publico</option>
-            </select>
-            <div className="row" style={{ marginTop: 16 }}>
-              <button onClick={() => setShowCreate(false)} disabled={busy}>Cancelar</button>
-              <button className="primary" onClick={onCreate} disabled={busy || !newName.trim()}>
-                Criar e abrir
-              </button>
-            </div>
+            <SetupWizard
+              title="Novo torneio"
+              subtitle="Crie a estrutura inicial. Categorias, classes e regras entram na organizacao do torneio."
+              busy={busy}
+              finishLabel="Criar e abrir"
+              onCancel={() => setShowCreate(false)}
+              onFinish={onCreate}
+              steps={[
+                {
+                  id: "identity",
+                  label: "Identidade",
+                  detail: "Nome e acesso",
+                  canContinue: Boolean(newName.trim()),
+                  content: (
+                    <>
+                      <label>Nome</label>
+                      <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Ex.: Aberto de Primavera" />
+                      <label>Visibilidade</label>
+                      <select value={newVisibility} onChange={(e) => setNewVisibility(e.target.value as "private" | "public")}>
+                        <option value="private">Somente por link</option>
+                        <option value="public">Publico</option>
+                      </select>
+                    </>
+                  ),
+                },
+                {
+                  id: "location",
+                  label: "Local",
+                  detail: "Estado e cidade",
+                  content: (
+                    <>
+                      <label>Estado (UF)</label>
+                      <select
+                        value={newState}
+                        onChange={(e) => {
+                          const nextUf = normalizeStateUf(e.target.value);
+                          setNewState(nextUf);
+                          setNewCity("");
+                        }}
+                      >
+                        <option value="">Selecione</option>
+                        {BRAZILIAN_STATES.map((state) => (
+                          <option key={`event-state:${state.uf}`} value={state.uf}>
+                            {state.uf} - {state.name}
+                          </option>
+                        ))}
+                      </select>
+                      <label>Cidade</label>
+                      <select value={newCity} onChange={(e) => setNewCity(e.target.value)} disabled={!normalizedNewUf || newCityLoading}>
+                        <option value="">
+                          {!normalizedNewUf
+                            ? "Selecione o estado primeiro"
+                            : newCityLoading
+                            ? "Carregando municipios..."
+                            : "Selecione o municipio"}
+                        </option>
+                        {newCityValueInOptions ? null : newCity.trim() ? <option value={newCity}>{newCity}</option> : null}
+                        {newCityOptions.map((cityName) => (
+                          <option key={`event-city:${cityName}`} value={cityName}>
+                            {cityName}
+                          </option>
+                        ))}
+                      </select>
+                      {newCityLoadError ? <p className="feedback error">{newCityLoadError}</p> : null}
+                    </>
+                  ),
+                },
+              ]}
+            />
           </div>
         </div>
       ) : null}

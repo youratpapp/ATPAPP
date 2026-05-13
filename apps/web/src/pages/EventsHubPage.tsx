@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
+import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
 import { loadMyLeagues } from "../lib/leagues";
 import type { LeagueSummary, Profile, TournamentSummary } from "../lib/types";
@@ -202,14 +203,14 @@ export function EventsHubPage({ user, profile }: Props) {
           <div className="home-empty-panel">
             <strong>Nada ativo como jogador</strong>
             <span>Entre em um torneio por convite ou acompanhe ligas em que voce participar.</span>
-            <div className="home-empty-actions">
+            <ActionBar className="home-empty-actions" label="Acoes de jogador em competicoes">
               <button type="button" onClick={() => navigate("/eventos/torneios?view=participating")}>
                 Meus torneios
               </button>
               <button type="button" onClick={() => navigate("/eventos/ligas?view=participating")}>
                 Minhas ligas
               </button>
-            </div>
+            </ActionBar>
           </div>
         ) : null}
       </section>
@@ -252,14 +253,14 @@ export function EventsHubPage({ user, profile }: Props) {
         <section className="home-empty-panel">
           <strong>Ferramentas de organizador</strong>
           <span>Use quando for criar seu primeiro torneio ou liga.</span>
-          <div className="home-empty-actions">
+          <ActionBar className="home-empty-actions" label="Acoes de organizador em competicoes">
             <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
               Criar torneio
             </button>
             <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
               Criar liga
             </button>
-          </div>
+          </ActionBar>
         </section>
       )}
     </AppShell>

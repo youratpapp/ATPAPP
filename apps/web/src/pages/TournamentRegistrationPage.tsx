@@ -56,6 +56,13 @@ function extractClassOptions(dataRaw: Record<string, unknown>): ClassOption[] {
   return out;
 }
 
+function formatEventDate(value: string): string {
+  if (!value) return "Data a definir";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Data a definir";
+  return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+}
+
 function BackIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -84,6 +91,11 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
     () => options.find((o) => o.classId === selectedClassId) ?? options[0] ?? null,
     [options, selectedClassId]
   );
+  const categoryCount = useMemo(
+    () => new Set(options.map((option) => option.categoryId)).size,
+    [options]
+  );
+  const locationLabel = [tournament?.city, tournament?.state].filter(Boolean).join(" - ") || "Local a definir";
 
   const registrationCloseLabel = useMemo(() => {
     if (!tournament?.registrationCloseAt) return "Sem prazo definido";
@@ -211,86 +223,117 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {!loading && tournament ? (
-        <section className="card invite-card">
-          <div className="section-title" style={{ marginBottom: 8 }}>
-            <h2>{tournament.name}</h2>
-            <StatusBadge status={tournament.status} />
-          </div>
-          <p className="subtle" style={{ marginTop: 0 }}>
-            {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}
-          </p>
-          <p className="subtle" style={{ marginTop: -4 }}>
-            Inscricoes ate: {registrationCloseLabel}
-          </p>
-          {registrationClosedReason ? <p className="feedback error">{registrationClosedReason}</p> : null}
-
-          <div className="tournament-overview-grid invite-overview-grid">
-            <div className="tournament-overview-kpi">
-              <strong>{options.length}</strong>
-              <span>Classes abertas</span>
-            </div>
-            <div className="tournament-overview-kpi">
-              <strong>{selected ? selected.categoryName : "-"}</strong>
-              <span>Categoria</span>
-            </div>
-            <div className="tournament-overview-kpi">
-              <strong>{selected ? selected.className : "-"}</strong>
-              <span>Classe escolhida</span>
-            </div>
-            <div className="tournament-overview-kpi">
-              <strong>{formatMoneyFromCents(tournament.registrationFeeCents)}</strong>
-              <span>Inscricao</span>
-            </div>
-          </div>
-
-          <label>Classe</label>
-          <select
-            value={selected?.classId ?? ""}
-            onChange={(e) => {
-              setSelectedClassId(e.target.value);
-              setSubmittedClass(null);
-            }}
-          >
-            {options.length === 0 ? <option value="">Sem classes disponiveis</option> : null}
-            {options.map((o) => (
-              <option key={`${o.categoryId}:${o.classId}`} value={o.classId}>
-                {o.categoryName} / {o.className}
-              </option>
-            ))}
-          </select>
-
-          <label>Nome do atleta</label>
-          <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Seu nome" />
-
-          <label>Telefone</label>
-          <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(67) 99999-9999" />
-
-          {submittedClass ? (
-            <div className="invite-confirmation">
-              <strong>Solicitacao recebida</strong>
-              <span>
-                Voce pediu inscricao em {submittedClass.categoryName} / {submittedClass.className}. O organizador deve aprovar antes de voce aparecer na chave.
-              </span>
-              <div className="cluster">
-                <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
-                <button onClick={shareRegistrationWhatsApp}>Compartilhar convite</button>
+        <section className="tournament-registration-layout">
+          <article className="tournament-registration-hero">
+            {tournament.posterUrl ? (
+              <img src={tournament.posterUrl} alt="" />
+            ) : null}
+            <div>
+              <div className="tournament-registration-status">
+                <StatusBadge status={tournament.status} />
+                <span>{tournament.visibility === "public" ? "Evento publico" : "Convite por link"}</span>
+              </div>
+              <h2>{tournament.name}</h2>
+              <p>{locationLabel}</p>
+              <div className="tournament-registration-facts">
+                <span>Inicio: {formatEventDate(tournament.startsAt)}</span>
+                <span>Inscricoes ate: {registrationCloseLabel}</span>
+                <span>Taxa: {formatMoneyFromCents(tournament.registrationFeeCents)}</span>
               </div>
             </div>
-          ) : (
-            <div className="cluster" style={{ marginTop: 12 }}>
-              <button
-                className="primary"
-                onClick={submit}
-                disabled={submitting || !!registrationClosedReason || !selected || !playerName.trim() || options.length === 0}
+          </article>
+
+          <div className="tournament-registration-grid">
+            <article className="card invite-card">
+              <div className="section-title" style={{ marginBottom: 8 }}>
+                <h2>Solicitar inscricao</h2>
+                <span className="home-league-chip member">{selected ? `${selected.categoryName} / ${selected.className}` : "Escolha uma classe"}</span>
+              </div>
+              {registrationClosedReason ? <p className="feedback error">{registrationClosedReason}</p> : null}
+
+              <div className="tournament-overview-grid invite-overview-grid">
+                <div className="tournament-overview-kpi">
+                  <strong>{categoryCount}</strong>
+                  <span>Categorias</span>
+                </div>
+                <div className="tournament-overview-kpi">
+                  <strong>{options.length}</strong>
+                  <span>Classes abertas</span>
+                </div>
+                <div className="tournament-overview-kpi">
+                  <strong>{formatMoneyFromCents(tournament.registrationFeeCents)}</strong>
+                  <span>Inscricao</span>
+                </div>
+              </div>
+
+              <label>Classe</label>
+              <select
+                value={selected?.classId ?? ""}
+                onChange={(e) => {
+                  setSelectedClassId(e.target.value);
+                  setSubmittedClass(null);
+                }}
               >
-                {submitting ? "Enviando..." : registrationClosedReason ? "Inscricoes fechadas" : "Solicitar inscricao"}
-              </button>
-              <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
-              <button onClick={shareRegistrationWhatsApp} disabled={!selected}>
-                Compartilhar convite
-              </button>
-            </div>
-          )}
+                {options.length === 0 ? <option value="">Sem classes disponiveis</option> : null}
+                {options.map((o) => (
+                  <option key={`${o.categoryId}:${o.classId}`} value={o.classId}>
+                    {o.categoryName} / {o.className}
+                  </option>
+                ))}
+              </select>
+
+              <label>Nome do atleta</label>
+              <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Seu nome" />
+
+              <label>Telefone</label>
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(67) 99999-9999" />
+
+              {submittedClass ? (
+                <div className="invite-confirmation">
+                  <strong>Solicitacao recebida</strong>
+                  <span>
+                    Voce pediu inscricao em {submittedClass.categoryName} / {submittedClass.className}. O organizador deve aprovar antes de voce aparecer na chave.
+                  </span>
+                  <div className="cluster">
+                    <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
+                    <button onClick={shareRegistrationWhatsApp}>Compartilhar convite</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="cluster" style={{ marginTop: 12 }}>
+                  <button
+                    className="primary"
+                    onClick={submit}
+                    disabled={submitting || !!registrationClosedReason || !selected || !playerName.trim() || options.length === 0}
+                  >
+                    {submitting ? "Enviando..." : registrationClosedReason ? "Inscricoes fechadas" : "Solicitar inscricao"}
+                  </button>
+                  <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
+                  <button onClick={shareRegistrationWhatsApp} disabled={!selected}>
+                    Compartilhar convite
+                  </button>
+                </div>
+              )}
+            </article>
+
+            <aside className="tournament-registration-side">
+              <div>
+                <span>Como funciona</span>
+                <strong>Pedido com aprovacao</strong>
+                <p>Depois de solicitar a inscricao, o organizador confere a classe e libera sua entrada na chave.</p>
+              </div>
+              <div>
+                <span>Compartilhamento</span>
+                <strong>Link pronto para WhatsApp</strong>
+                <p>Compartilhe o convite ja apontando para a classe selecionada.</p>
+              </div>
+              <div>
+                <span>Organizacao</span>
+                <strong>Dados para o torneio</strong>
+                <p>Seu nome e telefone ajudam a validar pagamento, chamada e comunicados do evento.</p>
+              </div>
+            </aside>
+          </div>
         </section>
       ) : null}
     </AppShell>

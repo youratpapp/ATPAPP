@@ -58,6 +58,28 @@ export type PlaceCourt = {
 export type AvailableCourt = PlaceCourt & {
   effectiveFeeCents: number;
   isMemberPrice: boolean;
+  ruleId: string;
+  ruleName: string;
+  requiresApproval: boolean;
+};
+
+export type PlaceBookingRule = {
+  id: string;
+  placeId: string;
+  name: string;
+  profileScope: "all" | "public" | "member";
+  weekdays: number[];
+  startsAt: string;
+  endsAt: string;
+  priceCents: number | null;
+  memberPriceCents: number | null;
+  minMinutes: number;
+  maxMinutes: number;
+  advanceDays: number;
+  requiresApproval: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type PlaceMembershipPlan = {
@@ -95,6 +117,50 @@ export type PlaceCrmContact = {
   source: string;
   interest: string;
   status: "lead" | "contacted" | "converted" | "archived";
+  notes: string;
+  nextContactOn: string;
+  ownerLabel: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlaceCrmInteraction = {
+  id: string;
+  placeId: string;
+  contactId: string;
+  interactionType: "note" | "call" | "whatsapp" | "email" | "visit" | "follow_up";
+  body: string;
+  nextContactOn: string;
+  createdAt: string;
+};
+
+export type PlaceCreditPackage = {
+  id: string;
+  placeId: string;
+  name: string;
+  packageType: "court_credit" | "lesson_credit" | "day_pass";
+  quantity: number;
+  priceCents: number;
+  validityDays: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlaceCreditPurchase = {
+  id: string;
+  placeId: string;
+  packageId: string | null;
+  packageName: string;
+  packageType: "court_credit" | "lesson_credit" | "day_pass";
+  buyerName: string;
+  phone: string;
+  initialQuantity: number;
+  remainingQuantity: number;
+  amountCents: number;
+  purchasedOn: string;
+  expiresOn: string;
+  status: "active" | "used" | "expired" | "cancelled";
   notes: string;
   createdAt: string;
   updatedAt: string;

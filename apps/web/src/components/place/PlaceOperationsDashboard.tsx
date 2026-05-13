@@ -1,4 +1,6 @@
+import { MetricStrip } from "../MetricStrip";
 import type { PlaceManagementModule } from "../../lib/place-management";
+import { OperationalQueue, OperationalQueueItems } from "./PlaceWorkspaceUi";
 
 type OperationMetric = {
   disabled: boolean;
@@ -27,25 +29,19 @@ export function PlaceOperationsDashboard({ balanceText, metrics, queueItems, onM
         <strong>Hoje e prioridades</strong>
         <span>{balanceText} saldo</span>
       </div>
-      <div className="place-operations-grid">
-        {metrics.map((metric) => (
-          <button key={metric.module} type="button" onClick={() => onModuleChange(metric.module)} disabled={metric.disabled}>
-            <strong>{metric.value}</strong>
-            <span>{metric.label}</span>
-          </button>
-        ))}
-      </div>
-      <div className="place-action-queue">
-        <strong>Fila de trabalho</strong>
-        <div>
-          {queueItems.map((item) => (
-            <button key={item.id} type="button" onClick={() => onModuleChange(item.module)}>
-              {item.label}
-            </button>
-          ))}
-          {!queueItems.length ? <span>Nenhuma pendencia critica agora.</span> : null}
-        </div>
-      </div>
+      <MetricStrip
+        className="place-operations-grid"
+        items={metrics.map((metric) => ({
+          id: metric.module,
+          label: metric.label,
+          value: metric.value,
+          disabled: metric.disabled,
+          onSelect: () => onModuleChange(metric.module),
+        }))}
+      />
+      <OperationalQueue title="Fila de trabalho">
+        {queueItems.length ? <OperationalQueueItems items={queueItems.map((item) => ({ ...item, action: () => onModuleChange(item.module) }))} /> : null}
+      </OperationalQueue>
     </div>
   );
 }

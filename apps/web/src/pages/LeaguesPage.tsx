@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { ScreenState } from "../components/ScreenState";
+import { SetupWizard } from "../components/SetupWizard";
 import { createLeague, loadMyLeagues } from "../lib/leagues";
 import type { LeagueSummary, Profile } from "../lib/types";
 
@@ -152,15 +154,18 @@ export function LeaguesPage({ user, profile }: Props) {
       </div>
 
       {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
-      {loading ? <p className="subtle">Carregando...</p> : null}
+      {loading ? <ScreenState kind="loading" icon="Ligas" title="Carregando ligas" detail="Buscando ligas ativas, rascunhos e participacoes." /> : null}
       {!loading && !visibleItems.length ? (
-        <div className="empty-state">
-          <span className="empty-emoji">ATP</span>
-          <p>{mode === "organizing" ? "Voce ainda nao organiza ligas." : "Voce ainda nao participa de ligas."}</p>
-          <button className="empty-action" onClick={() => (mode === "organizing" ? setShowCreate(true) : navigate("/eventos"))}>
-            {mode === "organizing" ? "Criar liga" : "Voltar para competicoes"}
-          </button>
-        </div>
+        <ScreenState
+          icon="ATP"
+          title={mode === "organizing" ? "Voce ainda nao organiza ligas" : "Voce ainda nao participa de ligas"}
+          detail={mode === "organizing" ? "Crie uma liga para rodadas recorrentes, ranking e classificacao por temporada." : "Volte ao hub de competicoes para encontrar torneios, ligas e convites."}
+          action={
+            <button type="button" onClick={() => (mode === "organizing" ? setShowCreate(true) : navigate("/eventos"))}>
+              {mode === "organizing" ? "Criar liga" : "Voltar para competicoes"}
+            </button>
+          }
+        />
       ) : null}
 
       {visibleItems.map((item) => (
@@ -189,44 +194,64 @@ export function LeaguesPage({ user, profile }: Props) {
       {showCreate ? (
         <div className="modal-backdrop" onClick={() => !busy && setShowCreate(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h3>Criar liga</h3>
-            <label>
-              Nome da liga
-              <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Liga ATP Dourados" />
-            </label>
-            <label>
-              Tipo
-              <select value={leagueType} onChange={(e) => setLeagueType(e.target.value as LeagueSummary["leagueType"])}>
-                <option value="simples">Simples</option>
-                <option value="dupla_fixa">Dupla fixa</option>
-                <option value="dupla_rotativa">Dupla rotativa</option>
-              </select>
-            </label>
-            <div className="form-row">
-              <label>
-                Categoria
-                <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Ex.: Masculino" />
-              </label>
-              <label>
-                Classe
-                <input value={classScope} onChange={(e) => setClassScope(e.target.value)} placeholder="Ex.: Classe A" />
-              </label>
-            </div>
-            <label>
-              Visibilidade
-              <select value={visibility} onChange={(e) => setVisibility(e.target.value as LeagueSummary["visibility"])}>
-                <option value="private">Privada</option>
-                <option value="public">Publica</option>
-              </select>
-            </label>
-            <div className="modal-actions">
-              <button className="ghost" onClick={() => setShowCreate(false)} disabled={busy}>
-                Cancelar
-              </button>
-              <button onClick={onCreate} disabled={busy || !name.trim()}>
-                {busy ? "Criando..." : "Criar"}
-              </button>
-            </div>
+            <SetupWizard
+              title="Criar liga"
+              subtitle="Comece pelo essencial. Depois a configuracao fina fica dentro da liga."
+              busy={busy}
+              finishLabel="Criar liga"
+              onCancel={() => setShowCreate(false)}
+              onFinish={onCreate}
+              steps={[
+                {
+                  id: "identity",
+                  label: "Identidade",
+                  detail: "Nome e formato",
+                  canContinue: Boolean(name.trim()),
+                  content: (
+                    <>
+                      <label>
+                        Nome da liga
+                        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Liga ATP Dourados" />
+                      </label>
+                      <label>
+                        Tipo
+                        <select value={leagueType} onChange={(e) => setLeagueType(e.target.value as LeagueSummary["leagueType"])}>
+                          <option value="simples">Simples</option>
+                          <option value="dupla_fixa">Dupla fixa</option>
+                          <option value="dupla_rotativa">Dupla rotativa</option>
+                        </select>
+                      </label>
+                    </>
+                  ),
+                },
+                {
+                  id: "scope",
+                  label: "Recorte",
+                  detail: "Categoria e acesso",
+                  content: (
+                    <>
+                      <div className="form-row">
+                        <label>
+                          Categoria
+                          <input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Ex.: Masculino" />
+                        </label>
+                        <label>
+                          Classe
+                          <input value={classScope} onChange={(e) => setClassScope(e.target.value)} placeholder="Ex.: Classe A" />
+                        </label>
+                      </div>
+                      <label>
+                        Visibilidade
+                        <select value={visibility} onChange={(e) => setVisibility(e.target.value as LeagueSummary["visibility"])}>
+                          <option value="private">Privada</option>
+                          <option value="public">Publica</option>
+                        </select>
+                      </label>
+                    </>
+                  ),
+                },
+              ]}
+            />
           </div>
         </div>
       ) : null}

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { CompetitionHeader, CompetitionOperationalQueue, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
 import {
   adminResolveLeagueMatchResult,
   applyLeagueSeasonMovements,
@@ -1338,16 +1339,13 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
   return (
     <AppShell user={user} profile={profile}>
-      <div className="section-title">
-        <h2>{league?.name || "Liga"}</h2>
-        <button className="compact-action" onClick={() => navigate(leagueBackPath)} aria-label="Voltar para ligas">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <path d="M19 12H5" />
-            <path d="M12 19l-7-7 7-7" />
-          </svg>
-          <span>Voltar</span>
-        </button>
-      </div>
+      <CompetitionHeader
+        title={league?.name || "Liga"}
+        subtitle={league ? `${typeLabel(league.leagueType)} | ${league.visibility === "public" ? "Publica" : "Privada"}` : "Carregando competicao"}
+        status={league ? statusLabel(league.status) : null}
+        backLabel="Voltar para ligas"
+        onBack={() => navigate(leagueBackPath)}
+      />
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {error ? <p className="feedback error">{error}</p> : null}
@@ -1355,22 +1353,33 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
       {!loading && !error && league ? (
         <>
-          <div className="tabs app-tabs" style={{ marginBottom: 12 }}>
-            <button className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
-              {isOwner ? "Organizacao" : "Classificacao"}
-            </button>
-            {isOwner ? (
-              <button className={activeTab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
-                Jogadores
-              </button>
-            ) : null}
-            <button className={activeTab === "partidas" ? "active" : ""} onClick={() => goToTab("partidas")}>
-              Partidas
-            </button>
-            <button className={activeTab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
-              Chat
-            </button>
-          </div>
+          <CompetitionTabs
+            activeValue={activeTab}
+            ariaLabel="Visoes da liga"
+            onChange={(value) => goToTab(value as PageTab)}
+            items={[
+              {
+                value: "visao",
+                label: isOwner ? "Organizacao" : "Classificacao",
+                badge: isOwner && registrationStats.pending > 0 ? registrationStats.pending : undefined,
+              },
+              {
+                value: "jogadores",
+                label: "Jogadores",
+                badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
+                hidden: !isOwner,
+              },
+              {
+                value: "partidas",
+                label: "Partidas",
+                badge: leagueOverview.pending > 0 ? leagueOverview.pending : undefined,
+              },
+              {
+                value: "chat",
+                label: "Chat",
+              },
+            ]}
+          />
 
           {isOwner && activeTab === "visao" ? (
             <div className="events-kpi-grid">
@@ -1418,28 +1427,44 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <strong>{leagueOverview.nextAction}</strong>
             </button>
             {isOwner ? (
-              <div className="league-core-state-grid">
-                <button onClick={() => goToTab("partidas")} className={leagueOverview.scheduling > 0 ? "needs-action" : ""}>
-                  <strong>{leagueOverview.scheduling}</strong>
-                  <span>Agendar</span>
-                  <small>Partidas aguardando organizacao</small>
-                </button>
-                <button onClick={() => goToTab("partidas")} className={leagueOverview.result > 0 ? "needs-action" : ""}>
-                  <strong>{leagueOverview.result}</strong>
-                  <span>Resultado</span>
-                  <small>Jogos esperando placar</small>
-                </button>
-                <button onClick={() => goToTab("partidas")} className={leagueOverview.confirmation > 0 ? "needs-action" : ""}>
-                  <strong>{leagueOverview.confirmation}</strong>
-                  <span>Confirmar</span>
-                  <small>Resultados aguardando aceite</small>
-                </button>
-                <button onClick={() => goToTab("partidas")} className={leagueOverview.attention > 0 ? "needs-action danger" : ""}>
-                  <strong>{leagueOverview.attention}</strong>
-                  <span>Intervir</span>
-                  <small>Disputa ou analise admin</small>
-                </button>
-              </div>
+              <CompetitionOperationalQueue
+                title="Pendencias da rodada"
+                onOpenAll={() => goToTab("partidas")}
+                items={[
+                  {
+                    id: "schedule",
+                    count: leagueOverview.scheduling,
+                    label: "Agendar",
+                    detail: "Partidas aguardando organizacao",
+                    tone: leagueOverview.scheduling > 0 ? "attention" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                  {
+                    id: "result",
+                    count: leagueOverview.result,
+                    label: "Resultado",
+                    detail: "Jogos esperando placar",
+                    tone: leagueOverview.result > 0 ? "attention" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                  {
+                    id: "confirmation",
+                    count: leagueOverview.confirmation,
+                    label: "Confirmar",
+                    detail: "Resultados aguardando aceite",
+                    tone: leagueOverview.confirmation > 0 ? "attention" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                  {
+                    id: "attention",
+                    count: leagueOverview.attention,
+                    label: "Intervir",
+                    detail: "Disputa ou analise admin",
+                    tone: leagueOverview.attention > 0 ? "danger" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                ]}
+              />
             ) : null}
             {isOwner ? (
               <div className={`league-season-guard ${leagueSeasonGuard.ready ? "ready" : ""}`}>
@@ -1462,56 +1487,54 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 ) : null}
               </div>
             ) : null}
-            <div className="tournament-share-actions">
-              <button onClick={() => void copyLeagueShareLink()} disabled={busy}>
-                Copiar link
-              </button>
-              {isOwner ? (
-                <button onClick={() => void copyLeagueJoinLinkFromHeader()} disabled={busy}>
-                  Link de inscricao
-                </button>
-              ) : null}
-              <button
-                className="brand-icon-btn"
-                onClick={() => void shareLeagueInviteWhatsApp()}
-                disabled={busy}
-                title="Compartilhar pelo WhatsApp"
-                aria-label="Compartilhar pelo WhatsApp"
-              >
-                <WhatsAppAppIcon />
-                <span>WhatsApp</span>
-              </button>
-            </div>
+            <CompetitionPublishingPanel
+              label="Acoes de publicacao da liga"
+              hint="Link publico, convite e inscricao sempre no mesmo padrao das competicoes."
+              actions={
+                <>
+                  <button onClick={() => void copyLeagueShareLink()} disabled={busy}>
+                    Copiar link
+                  </button>
+                  {isOwner ? (
+                    <button onClick={() => void copyLeagueJoinLinkFromHeader()} disabled={busy}>
+                      Link de inscricao
+                    </button>
+                  ) : null}
+                  <button
+                    className="brand-icon-btn"
+                    onClick={() => void shareLeagueInviteWhatsApp()}
+                    disabled={busy}
+                    title="Compartilhar pelo WhatsApp"
+                    aria-label="Compartilhar pelo WhatsApp"
+                  >
+                    <WhatsAppAppIcon />
+                    <span>WhatsApp</span>
+                  </button>
+                </>
+              }
+            />
           </section>
           ) : null}
 
           {activeTab === "visao" ? (
             <>
-          <section className="section-card">
-            <h3 style={{ marginTop: 0, marginBottom: 10 }}>Filtro de visualizacao</h3>
-            <div className="events-filter-grid">
-              <label>
-                Temporada
-                <select value={selectedSeasonId} onChange={(e) => setSelectedSeasonId(e.target.value)}>
-                  {league.seasons.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name} (#{s.seasonNumber})
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Classe
-                <select value={selectedClassId} onChange={(e) => setSelectedClassId(e.target.value)}>
-                  <option value="">Todas</option>
-                  {classes.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {classLabel(c)}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
+          <section className="competition-filter-stack">
+            <CompetitionScopeSelector
+              eyebrow="Filtro de visualizacao"
+              label="Temporada"
+              title="Temporada ativa"
+              value={selectedSeasonId}
+              onChange={setSelectedSeasonId}
+              options={league.seasons.map((season) => ({ value: season.id, label: `${season.name} (#${season.seasonNumber})` }))}
+            />
+            <CompetitionScopeSelector
+              eyebrow="Filtro de visualizacao"
+              label="Classe"
+              title="Classe ativa"
+              value={selectedClassId}
+              onChange={setSelectedClassId}
+              options={[{ value: "", label: "Todas as classes" }, ...classes.map((item) => ({ value: item.id, label: classLabel(item) }))]}
+            />
           </section>
 
           <section className="section-card">

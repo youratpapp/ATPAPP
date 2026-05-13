@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+﻿import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { AcademyWorkspaceShell, type AcademyManagementView } from "../components/place/AcademyWorkspaceShell";
@@ -6,10 +7,42 @@ import { BookingWorkspaceShell, type BookingManagementView } from "../components
 import { CanteenWorkspaceShell, type CanteenManagementView } from "../components/place/CanteenWorkspaceShell";
 import { ClientsWorkspaceShell, type ClientsManagementView } from "../components/place/ClientsWorkspaceShell";
 import { FinanceWorkspaceShell, type FinanceManagementView } from "../components/place/FinanceWorkspaceShell";
-import { PlaceAnalyticsPanel } from "../components/place/PlaceAnalyticsPanel";
+import { PlaceAcademyClassSetupModule } from "../components/place/PlaceAcademyClassSetupModule";
+import { PlaceAcademyClassesModule } from "../components/place/PlaceAcademyClassesModule";
+import { PlaceAcademyCoachesModule } from "../components/place/PlaceAcademyCoachesModule";
+import { PlaceAcademyFitModule } from "../components/place/PlaceAcademyFitModule";
+import { PlaceAcademyOperationalQueues } from "../components/place/PlaceAcademyOperationalQueues";
+import { PlaceAcademyRequestsModule } from "../components/place/PlaceAcademyRequestsModule";
+import { PlaceAcademyResourcesModule } from "../components/place/PlaceAcademyResourcesModule";
+import { PlaceAcademyStudentsModule } from "../components/place/PlaceAcademyStudentsModule";
+import { PlaceAcademyTodayModule } from "../components/place/PlaceAcademyTodayModule";
+import { PlaceCanteenProductsModule } from "../components/place/PlaceCanteenProductsModule";
+import { PlaceCanteenProductForm, type PlacePosProductDraft } from "../components/place/PlaceCanteenProductForm";
+import { PlaceCanteenSaleForm, type PlacePosSaleDraft } from "../components/place/PlaceCanteenSaleForm";
+import { PlaceCanteenSummaryModule } from "../components/place/PlaceCanteenSummaryModule";
+import { PlaceCanteenStockModule } from "../components/place/PlaceCanteenStockModule";
+import { PlaceCreateWizard } from "../components/place/PlaceCreateWizard";
+import { PlaceAnalyticsPanel, type AnalyticsReportPeriod } from "../components/place/PlaceAnalyticsPanel";
+import { PlaceBookingCalendarModule } from "../components/place/PlaceBookingCalendarModule";
+import { PlaceBookingCreateModule } from "../components/place/PlaceBookingCreateModule";
+import { PlaceBookingDetailedListModule } from "../components/place/PlaceBookingDetailedListModule";
+import { PlaceBookingOperationalQueues } from "../components/place/PlaceBookingOperationalQueues";
+import { PlaceBookingReservationsModule } from "../components/place/PlaceBookingReservationsModule";
+import { PlaceBookingResourcesModule } from "../components/place/PlaceBookingResourcesModule";
+import { PlaceBookingTodayModule } from "../components/place/PlaceBookingTodayModule";
+import { PlaceBookingWaitlistModule } from "../components/place/PlaceBookingWaitlistModule";
+import { PlaceClientActionQueue } from "../components/place/PlaceClientActionQueue";
+import { PlaceClientRelationshipModule, type PlaceClientReceivable } from "../components/place/PlaceClientRelationshipModule";
+import type { PlaceCrmContactDraft } from "../components/place/PlaceCrmContactForm";
+import { PlaceCrmModule } from "../components/place/PlaceCrmModule";
+import { PlaceFinanceExpensesModule, type PlaceExpenseDraft } from "../components/place/PlaceFinanceExpensesModule";
+import { PlaceFinanceOverviewModule } from "../components/place/PlaceFinanceOverviewModule";
+import { PlaceFinancePackagesModule, type PlaceCreditPackageDraft, type PlaceCreditPurchaseDraft } from "../components/place/PlaceFinancePackagesModule";
+import { PlaceFinanceReceivablesModule } from "../components/place/PlaceFinanceReceivablesModule";
 import { PlaceManagementCockpit } from "../components/place/PlaceManagementCockpit";
+import { PlaceMembershipModule, type PlaceMembershipPlanDraft } from "../components/place/PlaceMembershipModule";
 import { PlaceOperationsDashboard } from "../components/place/PlaceOperationsDashboard";
-import { WorkspaceCard, WorkspaceGrid, WorkspaceList, WorkspaceRow } from "../components/place/PlaceWorkspaceUi";
+import { OperationalQueue, WorkspaceCard, WorkspaceGrid, WorkspaceList, WorkspaceRow } from "../components/place/PlaceWorkspaceUi";
 import { SettingsWorkspaceShell, type SettingsManagementView } from "../components/place/SettingsWorkspaceShell";
 import { TeamWorkspaceShell, type TeamManagementView } from "../components/place/TeamWorkspaceShell";
 import {
@@ -24,6 +57,7 @@ import {
   createAcademyProgressNote,
   createCourtBlock,
   createCourtBooking,
+  createPlaceBookingRule,
   createRecurringCourtBookings,
   joinCourtBookingWaitlist,
   createOpenMatch,
@@ -32,38 +66,18 @@ import {
   createPlaceAcademySlot,
   createPlaceCoach,
   createPlaceCourt,
+  createPlaceCreditPackage,
   createPlaceCrmContact,
+  createPlaceCrmInteraction,
   createPlaceExpense,
   createPlaceMembershipPlan,
   createPlaceOrganization,
   createPlacePosProduct,
   followPlace,
   joinOpenMatch,
-  listPlaceAcademyLessonRequests,
   listOpenMatchComments,
-  listAllPlaces,
   listOpenMatches,
-  listPlaceStaff,
-  listPlaceAcademyClasses,
-  listPlaceAcademyAttendance,
-  listPlaceAcademyEnrollments,
-  listPlaceAcademyMakeupCredits,
-  listPlaceAcademyPlannedAbsences,
-  listPlaceAcademyProgressNotes,
-  listPlaceAcademySlots,
-  listPlaceBookings,
-  listPlaceBookingWaitlist,
-  listPlaceCoaches,
-  listPlaceCourts,
-  listPlaceCrmContacts,
-  listPlaceExpenses,
-  listPlaceMembershipPlans,
-  listPlaceMemberships,
-  listPlacesIAccess,
-  listMyPlaceOrganizations,
-  listPlacePosProducts,
-  listPlacePosSales,
-  listPlacesIFollow,
+  markAcademyAttendance,
   requestPlaceMembership,
   reportAcademyAbsence,
   requestAcademyLessonFit,
@@ -74,15 +88,21 @@ import {
   updateAcademyLessonRequestStatus,
   updateAcademyMakeupCreditStatus,
   closeOpenMatch,
+  consumePlaceCreditPurchase,
   removePlaceStaff,
   promoteCourtBookingWaitlist,
+  recordPlaceCreditPurchase,
   recordPlacePosSale,
   toggleOpenMatchReaction,
   updateCourtBookingStatus,
   updateCourtBookingWaitlistStatus,
+  updatePlaceBookingRuleStatus,
+  updatePlaceCrmContactFollowUp,
+  updatePlaceCrmContactOwner,
   updatePlaceCourtPricing,
   updatePlaceAcademyClassPricing,
   updatePlaceCoachCommission,
+  updatePlaceCreditPackageStatus,
   updatePlaceCrmContactStatus,
   updatePlaceMembershipStatus,
   updatePlaceProductPlan,
@@ -91,15 +111,25 @@ import {
   uploadPlaceLogo,
 } from "../lib/places";
 import {
-  PLACE_MANAGEMENT_MODULE_DESCRIPTIONS,
-  PLACE_MANAGEMENT_MODULE_LABELS,
   featureList,
   placeManagementModules,
   placeResourceAccess,
   type PlaceManagementModule,
   countLabel,
 } from "../lib/place-management";
-import { createPaymentReminderForParticipant, formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
+import {
+  entriesToPlaceAdminResourceMaps,
+  fetchPlaceAdminResources,
+  fetchPlacePaymentsByTarget,
+  fetchPlacesWorkspaceData,
+  paymentMapKey,
+} from "../lib/place-admin-data";
+import {
+  parsePlaceAdminModule,
+} from "../lib/place-admin-navigation";
+import { createPaymentReminderForParticipant, formatMoneyFromCents, markStubPaymentPaidForParticipant } from "../lib/payments";
+import { usePlaceAdminResourceState } from "../hooks/usePlaceAdminResourceState";
+import { usePlaceAdminRouteSync } from "../hooks/usePlaceAdminRouteSync";
 import type {
   AcademyClass,
   AcademyAttendance,
@@ -108,9 +138,6 @@ import type {
   AcademyLessonFitSlot,
   AcademyLessonRequest,
   AcademyMakeupCredit,
-  AcademyPlannedAbsence,
-  AcademyProgressNote,
-  AcademySlot,
   AvailableCourt,
   AppPayment,
   CourtBooking,
@@ -118,30 +145,62 @@ import type {
   OpenMatch,
   OpenMatchComment,
   Place,
+  PlaceBookingRule,
   PlaceCourt,
+  PlaceCreditPackage,
   PlaceCrmContact,
-  PlaceExpense,
+  PlaceCrmInteraction,
   PlaceMembership,
   PlaceMembershipPlan,
   PlaceOrganization,
   PlaceProductPlan,
-  PlacePosProduct,
-  PlacePosSale,
   PlaceStaffMember,
   Profile,
 } from "../lib/types";
-import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
+import { listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
 
 type Props = {
+  adminModule?: PlaceManagementModule;
+  adminPlaceId?: string;
   user: User;
   profile: Profile | null;
 };
 
 type TabKey = "all" | "following" | "mine";
 type AcademyStudentFilter = { query: string; classId: string; status: "" | AcademyEnrollment["status"] };
+type CrmInteractionDraft = { interactionType: PlaceCrmInteraction["interactionType"]; body: string; nextContactOn: string };
+type BookingRuleDraft = {
+  name: string;
+  profileScope: PlaceBookingRule["profileScope"];
+  weekdays: string;
+  startsAt: string;
+  endsAt: string;
+  price: string;
+  memberPrice: string;
+  minMinutes: string;
+  maxMinutes: string;
+  advanceDays: string;
+  requiresApproval: boolean;
+};
 
 const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
-
+const EMPTY_CRM_DRAFT: PlaceCrmContactDraft = { name: "", phone: "", email: "", source: "", interest: "", notes: "", nextContactOn: "", ownerLabel: "" };
+const DEFAULT_CRM_INTERACTION_DRAFT: CrmInteractionDraft = { interactionType: "whatsapp", body: "", nextContactOn: "" };
+const DEFAULT_CREDIT_PACKAGE_DRAFT: PlaceCreditPackageDraft = { name: "", packageType: "court_credit", quantity: "5", price: "0", validityDays: "30" };
+const DEFAULT_CREDIT_PURCHASE_DRAFT: PlaceCreditPurchaseDraft = { packageId: "", buyerName: "", phone: "", notes: "" };
+const DEFAULT_BOOKING_RULE_DRAFT: BookingRuleDraft = {
+  name: "Horario padrao",
+  profileScope: "all",
+  weekdays: "1,2,3,4,5",
+  startsAt: "06:00",
+  endsAt: "23:00",
+  price: "",
+  memberPrice: "",
+  minMinutes: "60",
+  maxMinutes: "120",
+  advanceDays: "14",
+  requiresApproval: true,
+};
 const PLACE_PRODUCT_PLAN_LABELS: Record<PlaceProductPlan, string> = {
   club_basic: "Clube: reservas",
   academy: "Academia: turmas",
@@ -154,6 +213,12 @@ const PLACE_PRODUCT_PLAN_HINTS: Record<PlaceProductPlan, string> = {
   academy: "Professores, turmas, presenca e evolucao.",
   club_pro: "Reservas, academia, socios, CRM e financeiro.",
   multi_unit: "Pacote completo para rede com unidades.",
+};
+
+const BOOKING_PROFILE_SCOPE_LABELS: Record<PlaceBookingRule["profileScope"], string> = {
+  all: "Todos",
+  public: "Avulso",
+  member: "Socio",
 };
 
 const STAFF_ROLE_LABELS: Record<"owner" | PlaceStaffMember["role"], string> = {
@@ -192,16 +257,118 @@ function currentBillingPeriod(): string {
   return todayDateInputValue().slice(0, 7);
 }
 
-function paymentMapKey(targetType: string, targetId: string, billingPeriod = ""): string {
-  return `${targetType}:${targetId}:${billingPeriod}`;
-}
-
 function dateInputValue(value: string): string {
   if (!value) return "";
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return "";
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function nextWeekdayLabel(weekday: number, startsAt: string): string {
+  const today = new Date();
+  const target = Number.isFinite(weekday) ? weekday : today.getDay();
+  const diff = (target - today.getDay() + 7) % 7;
+  const next = new Date(today);
+  next.setDate(today.getDate() + diff);
+  const date = next.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+  return `${WEEKDAY_LABELS[target] || "Dia"} ${date}, ${startsAt.slice(0, 5)}`;
+}
+
+function isDateInReportPeriod(value: string, period: AnalyticsReportPeriod): boolean {
+  if (period === "all") return true;
+  const date = value.includes("T") ? dateInputValue(value) : value.slice(0, 10);
+  if (!date) return false;
+  if (period === "today") return date === todayDateInputValue();
+  return date.slice(0, 7) === currentBillingPeriod();
+}
+
+function isDateInCustomRange(value: string, startDate: string, endDate: string): boolean {
+  const date = value.includes("T") ? dateInputValue(value) : value.slice(0, 10);
+  if (!date) return false;
+  if (startDate && date < startDate) return false;
+  if (endDate && date > endDate) return false;
+  return true;
+}
+
+function reportDayCount(period: AnalyticsReportPeriod, dates: string[]): number {
+  if (period === "today") return 1;
+  if (period === "month") {
+    const [year, month] = currentBillingPeriod().split("-").map(Number);
+    return new Date(year, month, 0).getDate();
+  }
+  const uniqueDays = new Set(dates.map((date) => date.slice(0, 10)).filter(Boolean));
+  return Math.max(1, uniqueDays.size);
+}
+
+function customRangeDayCount(startDate: string, endDate: string): number {
+  if (!startDate || !endDate) return 1;
+  const start = new Date(`${startDate}T00:00:00`).getTime();
+  const end = new Date(`${endDate}T00:00:00`).getTime();
+  if (Number.isNaN(start) || Number.isNaN(end) || end < start) return 1;
+  return Math.floor((end - start) / 86_400_000) + 1;
+}
+
+function courtWaitlistStatusLabel(status: CourtBookingWaitlistEntry["status"]): string {
+  if (status === "waiting") return "Aguardando convite";
+  if (status === "invited") return "Convidado";
+  if (status === "booked") return "Reserva criada";
+  return "Cancelado";
+}
+
+function waitingSinceLabel(createdAt: string): string {
+  const created = new Date(createdAt).getTime();
+  if (Number.isNaN(created)) return "sem horario de entrada";
+  const minutes = Math.max(0, Math.round((Date.now() - created) / 60000));
+  if (minutes < 60) return `${minutes} min na espera`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h na espera`;
+  const days = Math.floor(hours / 24);
+  return `${days}d na espera`;
+}
+
+function bookingRuleWeekdaysLabel(weekdays: number[]): string {
+  if (!weekdays.length || weekdays.length === 7) return "Todos os dias";
+  return weekdays
+    .slice()
+    .sort((a, b) => a - b)
+    .map((day) => WEEKDAY_LABELS[day] || String(day))
+    .join(", ");
+}
+
+function parseBookingRuleWeekdays(value: string): number[] {
+  const rows = value
+    .split(",")
+    .map((item) => Number(item.trim()))
+    .filter((item) => Number.isInteger(item) && item >= 0 && item <= 6);
+  return Array.from(new Set(rows));
+}
+
+function waitlistEntryIsPromotable(entry: CourtBookingWaitlistEntry, bookings: CourtBooking[]): boolean {
+  const entryStarts = new Date(entry.startsAt).getTime();
+  const entryEnds = new Date(entry.endsAt).getTime();
+  return !bookings.some((booking) => {
+    if (booking.courtId !== entry.courtId || booking.status === "cancelled") return false;
+    return new Date(booking.startsAt).getTime() < entryEnds && new Date(booking.endsAt).getTime() > entryStarts;
+  });
+}
+
+function csvCell(value: string | number): string {
+  const text = String(value).replace(/"/g, '""');
+  return `"${text}"`;
+}
+
+function downloadCsvFile(filename: string, rows: Array<Array<string | number>>): void {
+  const csv = rows.map((row) => row.map(csvCell).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function timeRangesOverlap(startA: string, endA: string, startB: string, endB: string): boolean {
@@ -234,8 +401,15 @@ function ThumbUpIcon() {
   );
 }
 
-export function PlacesPage({ user, profile }: Props) {
-  const [tab, setTab] = useState<TabKey>("all");
+export function PlaceAdminPage({ user, profile }: Props) {
+  const { module, placeId } = useParams();
+  return <PlacesPage adminPlaceId={placeId} adminModule={parsePlaceAdminModule(module)} user={user} profile={profile} />;
+}
+
+export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) {
+  const navigate = useNavigate();
+  const isAdminRoute = Boolean(adminPlaceId);
+  const [tab, setTab] = useState<TabKey>(isAdminRoute ? "mine" : "all");
   const [managementModuleByPlace, setManagementModuleByPlace] = useState<Record<string, PlaceManagementModule>>({});
   const [academyViewByPlace, setAcademyViewByPlace] = useState<Record<string, AcademyManagementView>>({});
   const [bookingViewByPlace, setBookingViewByPlace] = useState<Record<string, BookingManagementView>>({});
@@ -251,36 +425,50 @@ export function PlacesPage({ user, profile }: Props) {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: "info" | "error" | "success"; text: string } | null>(null);
-  const [courtsByPlace, setCourtsByPlace] = useState<Record<string, PlaceCourt[]>>({});
-  const [membershipPlansByPlace, setMembershipPlansByPlace] = useState<Record<string, PlaceMembershipPlan[]>>({});
-  const [membershipsByPlace, setMembershipsByPlace] = useState<Record<string, PlaceMembership[]>>({});
-  const [crmContactsByPlace, setCrmContactsByPlace] = useState<Record<string, PlaceCrmContact[]>>({});
-  const [posProductsByPlace, setPosProductsByPlace] = useState<Record<string, PlacePosProduct[]>>({});
-  const [posSalesByPlace, setPosSalesByPlace] = useState<Record<string, PlacePosSale[]>>({});
-  const [expensesByPlace, setExpensesByPlace] = useState<Record<string, PlaceExpense[]>>({});
-  const [bookingsByPlace, setBookingsByPlace] = useState<Record<string, CourtBooking[]>>({});
-  const [bookingWaitlistByPlace, setBookingWaitlistByPlace] = useState<Record<string, CourtBookingWaitlistEntry[]>>({});
-  const [academyClassesByPlace, setAcademyClassesByPlace] = useState<Record<string, AcademyClass[]>>({});
-  const [academyCoachesByPlace, setAcademyCoachesByPlace] = useState<Record<string, AcademyCoach[]>>({});
-  const [academySlotsByPlace, setAcademySlotsByPlace] = useState<Record<string, AcademySlot[]>>({});
-  const [academyEnrollmentsByPlace, setAcademyEnrollmentsByPlace] = useState<Record<string, AcademyEnrollment[]>>({});
-  const [academyAttendanceByPlace, setAcademyAttendanceByPlace] = useState<Record<string, AcademyAttendance[]>>({});
-  const [academyAbsencesByPlace, setAcademyAbsencesByPlace] = useState<Record<string, AcademyPlannedAbsence[]>>({});
-  const [academyLessonRequestsByPlace, setAcademyLessonRequestsByPlace] = useState<Record<string, AcademyLessonRequest[]>>({});
-  const [academyMakeupsByPlace, setAcademyMakeupsByPlace] = useState<Record<string, AcademyMakeupCredit[]>>({});
-  const [academyProgressByPlace, setAcademyProgressByPlace] = useState<Record<string, AcademyProgressNote[]>>({});
-  const [staffByPlace, setStaffByPlace] = useState<Record<string, PlaceStaffMember[]>>({});
-  const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
+  const {
+    academyAbsencesByPlace,
+    academyAttendanceByPlace,
+    academyClassesByPlace,
+    academyCoachesByPlace,
+    academyEnrollmentsByPlace,
+    academyLessonRequestsByPlace,
+    academyMakeupsByPlace,
+    academyProgressByPlace,
+    academySlotsByPlace,
+    bookingRulesByPlace,
+    bookingWaitlistByPlace,
+    bookingsByPlace,
+    courtsByPlace,
+    creditPackagesByPlace,
+    creditPurchasesByPlace,
+    crmContactsByPlace,
+    crmInteractionsByPlace,
+    expensesByPlace,
+    membershipPlansByPlace,
+    membershipsByPlace,
+    paymentsByTarget,
+    posProductsByPlace,
+    posSalesByPlace,
+    replaceAllPlaceAdminResources,
+    replaceOnePlaceAdminResource,
+    setPaymentsByTarget,
+    staffByPlace,
+  } = usePlaceAdminResourceState();
   const [courtDraftByPlace, setCourtDraftByPlace] = useState<Record<string, string>>({});
-  const [membershipPlanDraftByPlace, setMembershipPlanDraftByPlace] = useState<
-    Record<string, { name: string; monthlyFee: string; courtDiscount: string; academyDiscount: string }>
-  >({});
+  const [membershipPlanDraftByPlace, setMembershipPlanDraftByPlace] = useState<Record<string, PlaceMembershipPlanDraft>>({});
+  const [creditPackageDraftByPlace, setCreditPackageDraftByPlace] = useState<Record<string, PlaceCreditPackageDraft>>({});
+  const [creditPurchaseDraftByPlace, setCreditPurchaseDraftByPlace] = useState<Record<string, PlaceCreditPurchaseDraft>>({});
   const [membershipNoteByPlan, setMembershipNoteByPlan] = useState<Record<string, string>>({});
-  const [crmDraftByPlace, setCrmDraftByPlace] = useState<Record<string, { name: string; phone: string; email: string; source: string; interest: string; notes: string }>>({});
-  const [posProductDraftByPlace, setPosProductDraftByPlace] = useState<Record<string, { name: string; category: string; price: string; stock: string }>>({});
-  const [posSaleDraftByPlace, setPosSaleDraftByPlace] = useState<Record<string, { productId: string; productName: string; buyerName: string; quantity: string; unitAmount: string }>>({});
-  const [expenseDraftByPlace, setExpenseDraftByPlace] = useState<Record<string, { category: string; description: string; amount: string; spentOn: string }>>({});
+  const [crmDraftByPlace, setCrmDraftByPlace] = useState<Record<string, PlaceCrmContactDraft>>({});
+  const [crmFollowUpDraftByContact, setCrmFollowUpDraftByContact] = useState<Record<string, string>>({});
+  const [crmHistoryDrawerContactId, setCrmHistoryDrawerContactId] = useState("");
+  const [crmOwnerDraftByContact, setCrmOwnerDraftByContact] = useState<Record<string, string>>({});
+  const [crmInteractionDraftByContact, setCrmInteractionDraftByContact] = useState<Record<string, CrmInteractionDraft>>({});
+  const [posProductDraftByPlace, setPosProductDraftByPlace] = useState<Record<string, PlacePosProductDraft>>({});
+  const [posSaleDraftByPlace, setPosSaleDraftByPlace] = useState<Record<string, PlacePosSaleDraft>>({});
+  const [expenseDraftByPlace, setExpenseDraftByPlace] = useState<Record<string, PlaceExpenseDraft>>({});
   const [courtPriceDraftByCourt, setCourtPriceDraftByCourt] = useState<Record<string, { publicPrice: string; memberPrice: string }>>({});
+  const [bookingRuleDraftByPlace, setBookingRuleDraftByPlace] = useState<Record<string, BookingRuleDraft>>({});
   const [availableCourtsByPlace, setAvailableCourtsByPlace] = useState<Record<string, AvailableCourt[]>>({});
   const [academyClassPriceDraftByClass, setAcademyClassPriceDraftByClass] = useState<Record<string, string>>({});
   const [coachCommissionDraftByCoach, setCoachCommissionDraftByCoach] = useState<Record<string, string>>({});
@@ -325,9 +513,12 @@ export function PlacesPage({ user, profile }: Props) {
   const [academyEnrollmentNoteByClass, setAcademyEnrollmentNoteByClass] = useState<Record<string, string>>({});
   const [academyProgressDraftByEnrollment, setAcademyProgressDraftByEnrollment] = useState<Record<string, { level: string; focus: string; notes: string }>>({});
   const [openMatchDraft, setOpenMatchDraft] = useState({ placeId: "", startsAt: "", level: "", notes: "" });
+  const [openMatchFilter, setOpenMatchFilter] = useState<{ query: string; status: "" | OpenMatch["status"] }>({ query: "", status: "open" });
   const [openMatchCommentsById, setOpenMatchCommentsById] = useState<Record<string, OpenMatchComment[]>>({});
   const [openMatchCommentDraftById, setOpenMatchCommentDraftById] = useState<Record<string, string>>({});
   const [staffDraftByPlace, setStaffDraftByPlace] = useState<Record<string, { email: string; role: PlaceStaffMember["role"] }>>({});
+  const [reportPeriodByPlace, setReportPeriodByPlace] = useState<Record<string, AnalyticsReportPeriod>>({});
+  const [reportRangeByPlace, setReportRangeByPlace] = useState<Record<string, { startDate: string; endDate: string }>>({});
 
   const [showCreate, setShowCreate] = useState(false);
   const [name, setName] = useState("");
@@ -376,79 +567,56 @@ export function PlacesPage({ user, profile }: Props) {
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const orgRows = await listMyPlaceOrganizations(user).catch(() => [] as PlaceOrganization[]);
-      setOrganizations(orgRows);
-      const fetcher =
-        tab === "all" ? listAllPlaces : tab === "following" ? listPlacesIFollow : listPlacesIAccess;
-      const rows = await fetcher(user);
-      setPlaces(rows);
-      const entries = await Promise.all(
-        rows.map(async (place) => {
-          const staff = await listPlaceStaff(place.id).catch(() => [] as PlaceStaffMember[]);
-          const access = placeResourceAccess(place, user.id, staff);
-          const [courts, membershipPlans, memberships, crmContacts, posProducts, posSales, expenses, bookings, bookingWaitlist, academyClasses, academyCoaches, academySlots, academyEnrollments, academyAttendance, academyAbsences, academyLessonRequests, academyMakeups, academyProgress] = await Promise.all([
-            access.canUseBookings || access.canUseAcademy ? listPlaceCourts(place.id).catch(() => [] as PlaceCourt[]) : Promise.resolve([] as PlaceCourt[]),
-            access.canUseMemberships ? listPlaceMembershipPlans(place.id).catch(() => [] as PlaceMembershipPlan[]) : Promise.resolve([] as PlaceMembershipPlan[]),
-            access.canUseMemberships ? listPlaceMemberships(place.id).catch(() => [] as PlaceMembership[]) : Promise.resolve([] as PlaceMembership[]),
-            access.canUseCrm && access.canManagePlace ? listPlaceCrmContacts(place.id).catch(() => [] as PlaceCrmContact[]) : Promise.resolve([] as PlaceCrmContact[]),
-            access.canManageFinance ? listPlacePosProducts(place.id).catch(() => [] as PlacePosProduct[]) : Promise.resolve([] as PlacePosProduct[]),
-            access.canManageFinance ? listPlacePosSales(place.id).catch(() => [] as PlacePosSale[]) : Promise.resolve([] as PlacePosSale[]),
-            access.canManageFinance ? listPlaceExpenses(place.id).catch(() => [] as PlaceExpense[]) : Promise.resolve([] as PlaceExpense[]),
-            access.canUseBookings ? listPlaceBookings(place.id).catch(() => [] as CourtBooking[]) : Promise.resolve([] as CourtBooking[]),
-            access.canUseBookings ? listPlaceBookingWaitlist(place.id).catch(() => [] as CourtBookingWaitlistEntry[]) : Promise.resolve([] as CourtBookingWaitlistEntry[]),
-            access.canUseAcademy ? listPlaceAcademyClasses(place.id).catch(() => [] as AcademyClass[]) : Promise.resolve([] as AcademyClass[]),
-            access.canUseAcademy ? listPlaceCoaches(place.id).catch(() => [] as AcademyCoach[]) : Promise.resolve([] as AcademyCoach[]),
-            access.canManageAcademy ? listPlaceAcademySlots(place.id).catch(() => [] as AcademySlot[]) : Promise.resolve([] as AcademySlot[]),
-            access.canUseAcademy ? listPlaceAcademyEnrollments(place.id).catch(() => [] as AcademyEnrollment[]) : Promise.resolve([] as AcademyEnrollment[]),
-            access.canUseAcademy ? listPlaceAcademyAttendance(place.id).catch(() => [] as AcademyAttendance[]) : Promise.resolve([] as AcademyAttendance[]),
-            access.canUseAcademy ? listPlaceAcademyPlannedAbsences(place.id).catch(() => [] as AcademyPlannedAbsence[]) : Promise.resolve([] as AcademyPlannedAbsence[]),
-            access.canUseAcademy ? listPlaceAcademyLessonRequests(place.id).catch(() => [] as AcademyLessonRequest[]) : Promise.resolve([] as AcademyLessonRequest[]),
-            access.canUseAcademy ? listPlaceAcademyMakeupCredits(place.id).catch(() => [] as AcademyMakeupCredit[]) : Promise.resolve([] as AcademyMakeupCredit[]),
-            access.canUseAcademy ? listPlaceAcademyProgressNotes(place.id).catch(() => [] as AcademyProgressNote[]) : Promise.resolve([] as AcademyProgressNote[]),
-          ]);
-          return { placeId: place.id, courts, membershipPlans, memberships, crmContacts, posProducts, posSales, expenses, bookings, bookingWaitlist, academyClasses, academyCoaches, academySlots, academyEnrollments, academyAttendance, academyAbsences, academyLessonRequests, academyMakeups, academyProgress, staff };
-        })
-      );
-      setCourtsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.courts])));
-      setMembershipPlansByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.membershipPlans])));
-      setMembershipsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.memberships])));
-      setCrmContactsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.crmContacts])));
-      setPosProductsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.posProducts])));
-      setPosSalesByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.posSales])));
-      setExpensesByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.expenses])));
-      setBookingsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.bookings])));
-      setBookingWaitlistByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.bookingWaitlist])));
-      setAcademyClassesByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyClasses])));
-      setAcademyCoachesByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyCoaches])));
-      setAcademySlotsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academySlots])));
-      setAcademyEnrollmentsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyEnrollments])));
-      setAcademyAttendanceByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyAttendance])));
-      setAcademyAbsencesByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyAbsences])));
-      setAcademyLessonRequestsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyLessonRequests])));
-      setAcademyMakeupsByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyMakeups])));
-      setAcademyProgressByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyProgress])));
-      setStaffByPlace(Object.fromEntries(entries.map((entry) => [entry.placeId, entry.staff])));
-      const paymentRows = (
-        await Promise.all([
-          listMyPayments("court_booking").catch(() => [] as AppPayment[]),
-          listMyPayments("academy_enrollment").catch(() => [] as AppPayment[]),
-          listMyPayments("academy_lesson_request").catch(() => [] as AppPayment[]),
-          listMyPayments("place_membership").catch(() => [] as AppPayment[]),
-        ])
-      ).flat();
-      setPaymentsByTarget(Object.fromEntries(paymentRows.map((payment) => [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod), payment])));
-      setOpenMatches(await listOpenMatches(user, rows.map((place) => place.id)).catch(() => [] as OpenMatch[]));
+      const data = await fetchPlacesWorkspaceData({ isAdminRoute, tab, user });
+      const maps = entriesToPlaceAdminResourceMaps(data.entries);
+      setOrganizations(data.organizations);
+      setPlaces(data.places);
+      replaceAllPlaceAdminResources(maps);
+      setPaymentsByTarget(data.paymentsByTarget);
+      setOpenMatches(data.openMatches);
       setFeedback(null);
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao carregar.") });
     } finally {
       setLoading(false);
     }
-  }, [tab, user]);
+  }, [isAdminRoute, replaceAllPlaceAdminResources, setPaymentsByTarget, tab, user]);
 
   useEffect(() => {
     refresh();
   }, [refresh]);
+
+  useEffect(() => {
+    if (!isAdminRoute || tab === "mine") return;
+    setTab("mine");
+  }, [isAdminRoute, tab]);
+
+  const {
+    selectAcademyView,
+    selectBookingView,
+    selectCanteenView,
+    selectClientsView,
+    selectFinanceView,
+    selectManagementModule,
+    selectSettingsView,
+    selectTeamView,
+  } = usePlaceAdminRouteSync({
+    adminModule,
+    adminPlaceId,
+    isAdminRoute,
+    loading,
+    places,
+    staffByPlace,
+    userId: user.id,
+    setAcademyViewByPlace,
+    setBookingViewByPlace,
+    setCanteenViewByPlace,
+    setClientsViewByPlace,
+    setFinanceViewByPlace,
+    setManagementModuleByPlace,
+    setSettingsViewByPlace,
+    setTeamViewByPlace,
+  });
 
   const onToggleFollow = async (place: Place) => {
     setBusy(true);
@@ -539,66 +707,9 @@ export function PlacesPage({ user, profile }: Props) {
 
   const refreshPlaceResources = async (placeId: string) => {
     const place = places.find((item) => item.id === placeId);
-    const staff = await listPlaceStaff(placeId).catch(() => [] as PlaceStaffMember[]);
-    const access = place
-      ? placeResourceAccess(place, user.id, staff)
-      : {
-          canUseBookings: true,
-          canUseAcademy: true,
-          canUseMemberships: true,
-          canUseCrm: true,
-          canManagePlace: true,
-          canManageFinance: true,
-          canManageAcademy: true,
-        };
-    const [courts, membershipPlans, memberships, crmContacts, posProducts, posSales, expenses, bookings, bookingWaitlist, academyClasses, academyCoaches, academySlots, academyEnrollments, academyAttendance, academyAbsences, academyLessonRequests, academyMakeups, academyProgress] = await Promise.all([
-      access.canUseBookings || access.canUseAcademy ? listPlaceCourts(placeId).catch(() => [] as PlaceCourt[]) : Promise.resolve([] as PlaceCourt[]),
-      access.canUseMemberships ? listPlaceMembershipPlans(placeId).catch(() => [] as PlaceMembershipPlan[]) : Promise.resolve([] as PlaceMembershipPlan[]),
-      access.canUseMemberships ? listPlaceMemberships(placeId).catch(() => [] as PlaceMembership[]) : Promise.resolve([] as PlaceMembership[]),
-      access.canUseCrm && access.canManagePlace ? listPlaceCrmContacts(placeId).catch(() => [] as PlaceCrmContact[]) : Promise.resolve([] as PlaceCrmContact[]),
-      access.canManageFinance ? listPlacePosProducts(placeId).catch(() => [] as PlacePosProduct[]) : Promise.resolve([] as PlacePosProduct[]),
-      access.canManageFinance ? listPlacePosSales(placeId).catch(() => [] as PlacePosSale[]) : Promise.resolve([] as PlacePosSale[]),
-      access.canManageFinance ? listPlaceExpenses(placeId).catch(() => [] as PlaceExpense[]) : Promise.resolve([] as PlaceExpense[]),
-      access.canUseBookings ? listPlaceBookings(placeId).catch(() => [] as CourtBooking[]) : Promise.resolve([] as CourtBooking[]),
-      access.canUseBookings ? listPlaceBookingWaitlist(placeId).catch(() => [] as CourtBookingWaitlistEntry[]) : Promise.resolve([] as CourtBookingWaitlistEntry[]),
-      access.canUseAcademy ? listPlaceAcademyClasses(placeId).catch(() => [] as AcademyClass[]) : Promise.resolve([] as AcademyClass[]),
-      access.canUseAcademy ? listPlaceCoaches(placeId).catch(() => [] as AcademyCoach[]) : Promise.resolve([] as AcademyCoach[]),
-      access.canManageAcademy ? listPlaceAcademySlots(placeId).catch(() => [] as AcademySlot[]) : Promise.resolve([] as AcademySlot[]),
-      access.canUseAcademy ? listPlaceAcademyEnrollments(placeId).catch(() => [] as AcademyEnrollment[]) : Promise.resolve([] as AcademyEnrollment[]),
-      access.canUseAcademy ? listPlaceAcademyAttendance(placeId).catch(() => [] as AcademyAttendance[]) : Promise.resolve([] as AcademyAttendance[]),
-      access.canUseAcademy ? listPlaceAcademyPlannedAbsences(placeId).catch(() => [] as AcademyPlannedAbsence[]) : Promise.resolve([] as AcademyPlannedAbsence[]),
-      access.canUseAcademy ? listPlaceAcademyLessonRequests(placeId).catch(() => [] as AcademyLessonRequest[]) : Promise.resolve([] as AcademyLessonRequest[]),
-      access.canUseAcademy ? listPlaceAcademyMakeupCredits(placeId).catch(() => [] as AcademyMakeupCredit[]) : Promise.resolve([] as AcademyMakeupCredit[]),
-      access.canUseAcademy ? listPlaceAcademyProgressNotes(placeId).catch(() => [] as AcademyProgressNote[]) : Promise.resolve([] as AcademyProgressNote[]),
-    ]);
-    setCourtsByPlace((prev) => ({ ...prev, [placeId]: courts }));
-    setMembershipPlansByPlace((prev) => ({ ...prev, [placeId]: membershipPlans }));
-    setMembershipsByPlace((prev) => ({ ...prev, [placeId]: memberships }));
-    setCrmContactsByPlace((prev) => ({ ...prev, [placeId]: crmContacts }));
-    setPosProductsByPlace((prev) => ({ ...prev, [placeId]: posProducts }));
-    setPosSalesByPlace((prev) => ({ ...prev, [placeId]: posSales }));
-    setExpensesByPlace((prev) => ({ ...prev, [placeId]: expenses }));
-    setBookingsByPlace((prev) => ({ ...prev, [placeId]: bookings }));
-    setBookingWaitlistByPlace((prev) => ({ ...prev, [placeId]: bookingWaitlist }));
-    setAcademyClassesByPlace((prev) => ({ ...prev, [placeId]: academyClasses }));
-    setAcademyCoachesByPlace((prev) => ({ ...prev, [placeId]: academyCoaches }));
-    setAcademySlotsByPlace((prev) => ({ ...prev, [placeId]: academySlots }));
-    setAcademyEnrollmentsByPlace((prev) => ({ ...prev, [placeId]: academyEnrollments }));
-    setAcademyAttendanceByPlace((prev) => ({ ...prev, [placeId]: academyAttendance }));
-    setAcademyAbsencesByPlace((prev) => ({ ...prev, [placeId]: academyAbsences }));
-    setAcademyLessonRequestsByPlace((prev) => ({ ...prev, [placeId]: academyLessonRequests }));
-    setAcademyMakeupsByPlace((prev) => ({ ...prev, [placeId]: academyMakeups }));
-    setAcademyProgressByPlace((prev) => ({ ...prev, [placeId]: academyProgress }));
-    setStaffByPlace((prev) => ({ ...prev, [placeId]: staff }));
-    const paymentRows = (
-      await Promise.all([
-        listMyPayments("court_booking").catch(() => [] as AppPayment[]),
-        listMyPayments("academy_enrollment").catch(() => [] as AppPayment[]),
-        listMyPayments("academy_lesson_request").catch(() => [] as AppPayment[]),
-        listMyPayments("place_membership").catch(() => [] as AppPayment[]),
-      ])
-    ).flat();
-    setPaymentsByTarget(Object.fromEntries(paymentRows.map((payment) => [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod), payment])));
+    const entry = await fetchPlaceAdminResources({ place, placeId, userId: user.id });
+    replaceOnePlaceAdminResource(entry);
+    setPaymentsByTarget(await fetchPlacePaymentsByTarget());
   };
 
   const onCreateCourt = async (place: Place) => {
@@ -637,6 +748,52 @@ export function PlacesPage({ user, profile }: Props) {
       setFeedback({ kind: "success", text: "Valores da quadra salvos." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao salvar valor da quadra.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onCreateBookingRule = async (place: Place) => {
+    const draft = bookingRuleDraftByPlace[place.id] || DEFAULT_BOOKING_RULE_DRAFT;
+    if (!draft.name.trim()) return;
+    const priceReais = draft.price.trim() === "" ? null : Number(draft.price);
+    const memberPriceReais = draft.memberPrice.trim() === "" ? null : Number(draft.memberPrice);
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await createPlaceBookingRule({
+        placeId: place.id,
+        name: draft.name,
+        profileScope: draft.profileScope,
+        weekdays: parseBookingRuleWeekdays(draft.weekdays),
+        startsAt: draft.startsAt || "06:00",
+        endsAt: draft.endsAt || "23:00",
+        priceCents: priceReais === null ? null : Math.max(0, Math.round((Number.isFinite(priceReais) ? priceReais : 0) * 100)),
+        memberPriceCents: memberPriceReais === null ? null : Math.max(0, Math.round((Number.isFinite(memberPriceReais) ? memberPriceReais : 0) * 100)),
+        minMinutes: Number(draft.minMinutes || 60),
+        maxMinutes: Number(draft.maxMinutes || 120),
+        advanceDays: Number(draft.advanceDays || 14),
+        requiresApproval: draft.requiresApproval,
+      });
+      setBookingRuleDraftByPlace((prev) => ({ ...prev, [place.id]: DEFAULT_BOOKING_RULE_DRAFT }));
+      await refreshPlaceResources(place.id);
+      setFeedback({ kind: "success", text: "Regra de reserva criada." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar regra de reserva.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onToggleBookingRule = async (placeId: string, rule: PlaceBookingRule) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updatePlaceBookingRuleStatus(rule.id, !rule.isActive);
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: rule.isActive ? "Regra pausada." : "Regra reativada." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar regra de reserva.") });
     } finally {
       setBusy(false);
     }
@@ -703,6 +860,81 @@ export function PlacesPage({ user, profile }: Props) {
     }
   };
 
+  const onCreateCreditPackage = async (place: Place) => {
+    const draft = creditPackageDraftByPlace[place.id] || DEFAULT_CREDIT_PACKAGE_DRAFT;
+    if (!draft.name.trim()) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await createPlaceCreditPackage({
+        placeId: place.id,
+        name: draft.name,
+        packageType: draft.packageType,
+        quantity: Number(draft.quantity || 1),
+        priceCents: Math.max(0, Math.round(Number(draft.price || 0) * 100)),
+        validityDays: Number(draft.validityDays || 30),
+      });
+      setCreditPackageDraftByPlace((prev) => ({ ...prev, [place.id]: DEFAULT_CREDIT_PACKAGE_DRAFT }));
+      await refreshPlaceResources(place.id);
+      setFeedback({ kind: "success", text: "Pacote de credito criado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar pacote.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onToggleCreditPackage = async (placeId: string, item: PlaceCreditPackage) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updatePlaceCreditPackageStatus(item.id, !item.isActive);
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: item.isActive ? "Pacote pausado." : "Pacote reativado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar pacote.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onRecordCreditPurchase = async (place: Place) => {
+    const draft = creditPurchaseDraftByPlace[place.id] || DEFAULT_CREDIT_PURCHASE_DRAFT;
+    if (!draft.packageId || !draft.buyerName.trim()) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await recordPlaceCreditPurchase({
+        placeId: place.id,
+        packageId: draft.packageId,
+        buyerName: draft.buyerName,
+        phone: draft.phone,
+        notes: draft.notes,
+      });
+      setCreditPurchaseDraftByPlace((prev) => ({ ...prev, [place.id]: { ...DEFAULT_CREDIT_PURCHASE_DRAFT, packageId: draft.packageId } }));
+      await refreshPlaceResources(place.id);
+      setFeedback({ kind: "success", text: "Venda de pacote registrada com saldo." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar venda de pacote.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onConsumeCreditPurchase = async (placeId: string, purchaseId: string) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await consumePlaceCreditPurchase(purchaseId, 1);
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Credito consumido." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao consumir credito.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const onAdminMarkMembershipPaid = async (plan: PlaceMembershipPlan, membership: PlaceMembership) => {
     const billingPeriod = currentBillingPeriod();
     setBusy(true);
@@ -744,8 +976,35 @@ export function PlacesPage({ user, profile }: Props) {
     }
   };
 
+  const onCreatePaymentReminderBatch = async (
+    targets: Array<{ targetType: string; targetId: string; billingPeriod: string; reminder: string }>
+  ) => {
+    const rows = targets.filter((target) => target.targetId && target.reminder);
+    if (!rows.length) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await Promise.all(
+        rows.map((target) =>
+          createPaymentReminderForParticipant({
+            targetType: target.targetType,
+            targetId: target.targetId,
+            billingPeriod: target.billingPeriod,
+            message: target.reminder,
+            channel: "manual",
+          })
+        )
+      );
+      setFeedback({ kind: "success", text: `${rows.length} lembrete${rows.length === 1 ? "" : "s"} registrado${rows.length === 1 ? "" : "s"}.` });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar lembretes.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const onCreateCrmContact = async (place: Place) => {
-    const draft = crmDraftByPlace[place.id] || { name: "", phone: "", email: "", source: "", interest: "", notes: "" };
+    const draft = crmDraftByPlace[place.id] || EMPTY_CRM_DRAFT;
     if (!draft.name.trim()) return;
     setBusy(true);
     setFeedback(null);
@@ -758,8 +1017,10 @@ export function PlacesPage({ user, profile }: Props) {
         source: draft.source,
         interest: draft.interest,
         notes: draft.notes,
+        nextContactOn: draft.nextContactOn,
+        ownerLabel: draft.ownerLabel,
       });
-      setCrmDraftByPlace((prev) => ({ ...prev, [place.id]: { name: "", phone: "", email: "", source: "", interest: "", notes: "" } }));
+      setCrmDraftByPlace((prev) => ({ ...prev, [place.id]: EMPTY_CRM_DRAFT }));
       await refreshPlaceResources(place.id);
       setFeedback({ kind: "success", text: "Contato criado no CRM." });
     } catch (err) {
@@ -778,6 +1039,59 @@ export function PlacesPage({ user, profile }: Props) {
       setFeedback({ kind: "success", text: "Contato atualizado." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar contato.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onUpdateCrmContactFollowUp = async (placeId: string, contactId: string) => {
+    const nextContactOn = crmFollowUpDraftByContact[contactId] || todayDateInputValue();
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updatePlaceCrmContactFollowUp(contactId, nextContactOn);
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Proximo contato atualizado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar proximo contato.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onUpdateCrmContactOwner = async (placeId: string, contact: PlaceCrmContact) => {
+    const ownerLabel = crmOwnerDraftByContact[contact.id] ?? contact.ownerLabel;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updatePlaceCrmContactOwner(contact.id, ownerLabel);
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Responsavel do CRM atualizado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar responsavel.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onCreateCrmInteraction = async (placeId: string, contact: PlaceCrmContact) => {
+    const draft = crmInteractionDraftByContact[contact.id] || DEFAULT_CRM_INTERACTION_DRAFT;
+    if (!draft.body.trim()) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await createPlaceCrmInteraction({
+        placeId,
+        contactId: contact.id,
+        interactionType: draft.interactionType,
+        body: draft.body,
+        nextContactOn: draft.nextContactOn,
+      });
+      setCrmInteractionDraftByContact((prev) => ({ ...prev, [contact.id]: DEFAULT_CRM_INTERACTION_DRAFT }));
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Interacao registrada no CRM." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar interacao.") });
     } finally {
       setBusy(false);
     }
@@ -1326,6 +1640,30 @@ export function PlacesPage({ user, profile }: Props) {
     }
   };
 
+  const onMarkAcademyAttendance = async (
+    placeId: string,
+    enrollmentId: string,
+    status: AcademyAttendance["status"],
+    notes = ""
+  ) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await markAcademyAttendance({
+        enrollmentId,
+        attendedOn: todayDateInputValue(),
+        status,
+        notes,
+      });
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: status === "present" ? "Presenca registrada." : "Falta registrada." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar chamada.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const onSearchAcademyFitSlots = async (placeId: string) => {
     const filters = academyFitSearchByPlace[placeId] || {
       requestedOn: todayDateInputValue(),
@@ -1647,29 +1985,80 @@ export function PlacesPage({ user, profile }: Props) {
     }
   };
 
+  const openMatchCommunityStats = {
+    open: openMatches.filter((match) => match.status === "open").length,
+    participants: openMatches.reduce((sum, match) => sum + match.participantCount, 0),
+    comments: openMatches.reduce((sum, match) => sum + match.commentCount, 0),
+  };
+  const visibleOpenMatches = openMatches.filter((match) => {
+    const query = openMatchFilter.query.trim().toLowerCase();
+    const text = [match.placeName, match.city, match.state, match.level, match.notes]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    return (!openMatchFilter.status || match.status === openMatchFilter.status) && (!query || text.includes(query));
+  });
+  const sharePlace = (place: Place) => {
+    const location = [place.city, place.state].filter(Boolean).join(" - ");
+    const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(place.id)}`;
+    const text = [
+      `Conheca ${place.name}`,
+      location ? `Local: ${location}` : "",
+      place.description || "",
+      publicLink,
+    ]
+      .filter(Boolean)
+      .join("\n");
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+  };
+  const copyPlaceLink = async (place: Place) => {
+    const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(place.id)}`;
+    try {
+      await navigator.clipboard.writeText(publicLink);
+      setFeedback({ kind: "success", text: `Link publico de ${place.name} copiado.` });
+    } catch {
+      setFeedback({ kind: "error", text: "Nao foi possivel copiar o link." });
+    }
+  };
+  const shareAcademyContact = (message: string) => {
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  };
+
+  const visiblePlaces = adminPlaceId ? places.filter((place) => place.id === adminPlaceId) : places;
+  const adminRoutePlace = visiblePlaces[0] || null;
+
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       {/* Page header */}
       <div className="page-header">
-        <h1>Locais</h1>
+        <h1>{isAdminRoute ? adminRoutePlace?.name || "Gestao do local" : "Locais"}</h1>
         <div className="ph-actions">
-          <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Adicionar local">
-            +
-          </button>
+          {isAdminRoute && adminPlaceId ? (
+            <>
+              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Pagina publica</button>
+              <button onClick={() => navigate("/locais")}>Locais</button>
+            </>
+          ) : (
+            <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Adicionar local">
+              +
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="tabs">
-        <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
-          Próximos
-        </button>
-        <button className={tab === "following" ? "active" : ""} onClick={() => setTab("following")}>
-          Seguindo
-        </button>
-        <button className={tab === "mine" ? "active" : ""} onClick={() => setTab("mine")}>
-          Meus Locais
-        </button>
-      </div>
+      {!isAdminRoute ? (
+        <div className="tabs">
+          <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
+            Proximos
+          </button>
+          <button className={tab === "following" ? "active" : ""} onClick={() => setTab("following")}>
+            Seguindo
+          </button>
+          <button className={tab === "mine" ? "active" : ""} onClick={() => setTab("mine")}>
+            Meus Locais
+          </button>
+        </div>
+      ) : null}
 
       {feedback ? (
         <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
@@ -1679,27 +2068,69 @@ export function PlacesPage({ user, profile }: Props) {
 
       {loading ? <p className="subtle">Carregando...</p> : null}
 
-      {!loading && places.length === 0 ? (
+      {!loading && visiblePlaces.length === 0 ? (
         <div className="empty-state">
-          <span className="empty-emoji" aria-hidden>📍</span>
+          <span className="empty-emoji" aria-hidden>ðŸ“</span>
           <p>
-            {tab === "following"
-              ? "Você ainda não segue nenhum local."
+            {isAdminRoute
+              ? "Voce nao tem acesso administrativo a este local."
+              : tab === "following"
+              ? "VocÃª ainda nÃ£o segue nenhum local."
               : tab === "mine"
-              ? "Você ainda não criou nenhum local."
+              ? "VocÃª ainda nÃ£o criou nenhum local."
               : "Nenhum local cadastrado."}
           </p>
-          <button className="empty-action" onClick={() => setShowCreate(true)}>
-            Adicionar local
-          </button>
+          {isAdminRoute ? (
+            <button className="empty-action" onClick={() => navigate("/locais")}>
+              Voltar para locais
+            </button>
+          ) : (
+            <button className="empty-action" onClick={() => setShowCreate(true)}>
+              Adicionar local
+            </button>
+          )}
         </div>
       ) : null}
 
-      {!loading && tab !== "mine" ? (
+      {!loading && !isAdminRoute && tab !== "mine" ? (
         <section className="open-matches-panel">
           <div className="place-booking-head">
-            <strong>Partidas abertas</strong>
-            <span>{countLabel(openMatches.length, "chamada", "chamadas")}</span>
+            <div>
+              <strong>Partidas abertas</strong>
+              <small>Chame jogadores da comunidade para completar a quadra.</small>
+            </div>
+            <span>{countLabel(openMatchCommunityStats.open, "chamada aberta", "chamadas abertas")}</span>
+          </div>
+          <div className="open-match-community-grid">
+            <div>
+              <strong>{openMatchCommunityStats.open}</strong>
+              <span>Jogos abertos</span>
+            </div>
+            <div>
+              <strong>{openMatchCommunityStats.participants}</strong>
+              <span>Interessados</span>
+            </div>
+            <div>
+              <strong>{openMatchCommunityStats.comments}</strong>
+              <span>Conversas</span>
+            </div>
+          </div>
+          <div className="open-match-filter">
+            <input
+              value={openMatchFilter.query}
+              onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, query: event.target.value }))}
+              placeholder="Filtrar por local, cidade, nivel ou mensagem"
+            />
+            <select
+              value={openMatchFilter.status}
+              onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, status: event.target.value as "" | OpenMatch["status"] }))}
+            >
+              <option value="">Todos os status</option>
+              <option value="open">Abertas</option>
+              <option value="closed">Fechadas</option>
+              <option value="cancelled">Canceladas</option>
+            </select>
+            <span>{countLabel(visibleOpenMatches.length, "partida encontrada", "partidas encontradas")}</span>
           </div>
           <div className="open-match-form">
             <select
@@ -1733,10 +2164,13 @@ export function PlacesPage({ user, profile }: Props) {
             </button>
           </div>
           <div className="open-match-list">
-            {openMatches.slice(0, 6).map((match) => (
+            {visibleOpenMatches.slice(0, 6).map((match) => (
               <div key={match.id} className="open-match-row">
                 <div className="open-match-main">
                   <div>
+                    <span className={`open-match-status ${match.status}`}>
+                      {match.status === "open" ? "Aberta" : match.status === "closed" ? "Fechada" : "Cancelada"}
+                    </span>
                     <strong>{match.placeName || [match.city, match.state].filter(Boolean).join(" - ") || "Local a combinar"}</strong>
                     <span>
                       {match.startsAt ? new Date(match.startsAt).toLocaleString("pt-BR") : "Horario a combinar"}
@@ -1793,12 +2227,12 @@ export function PlacesPage({ user, profile }: Props) {
                 ) : null}
               </div>
             ))}
-            {!openMatches.length ? <p className="subtle">Nenhuma partida aberta por aqui.</p> : null}
+            {!visibleOpenMatches.length ? <p className="subtle">Nenhuma partida encontrada para estes filtros.</p> : null}
           </div>
         </section>
       ) : null}
 
-      {places.map((p) => {
+      {visiblePlaces.map((p) => {
         const initials = (p.name || "L")
           .split(/\s+/)
           .filter(Boolean)
@@ -1807,9 +2241,13 @@ export function PlacesPage({ user, profile }: Props) {
           .join("");
         const isOwner = p.ownerId === user.id;
         const courts = courtsByPlace[p.id] || [];
+        const bookingRules = bookingRulesByPlace[p.id] || [];
         const membershipPlans = membershipPlansByPlace[p.id] || [];
         const activeMembershipPlans = membershipPlans.filter((plan) => plan.isActive);
         const memberships = membershipsByPlace[p.id] || [];
+        const creditPackages = creditPackagesByPlace[p.id] || [];
+        const activeCreditPackages = creditPackages.filter((item) => item.isActive);
+        const creditPurchases = creditPurchasesByPlace[p.id] || [];
         const crmContacts = crmContactsByPlace[p.id] || [];
         const posProducts = posProductsByPlace[p.id] || [];
         const posSales = posSalesByPlace[p.id] || [];
@@ -1871,6 +2309,7 @@ export function PlacesPage({ user, profile }: Props) {
           notes: "",
           repeatWeeks: "1",
         };
+        const bookingRuleDraft = bookingRuleDraftByPlace[p.id] || DEFAULT_BOOKING_RULE_DRAFT;
         const availableCourts = availableCourtsByPlace[p.id] || [];
         const selectedCourt = activeCourts.find((court) => court.id === bookingDraft.courtId) || availableCourts.find((court) => court.id === bookingDraft.courtId);
         const selectedCourtPrice = availableCourts.find((court) => court.id === bookingDraft.courtId)?.effectiveFeeCents ?? (() => {
@@ -1896,7 +2335,22 @@ export function PlacesPage({ user, profile }: Props) {
         const enabledFeatures = featureList(access);
         const staffDraft = staffDraftByPlace[p.id] || { email: "", role: "manager" as const };
         const membershipDraft = membershipPlanDraftByPlace[p.id] || { name: "", monthlyFee: "0", courtDiscount: "0", academyDiscount: "0" };
-        const crmDraft = crmDraftByPlace[p.id] || { name: "", phone: "", email: "", source: "", interest: "", notes: "" };
+        const creditPackageDraft = creditPackageDraftByPlace[p.id] || DEFAULT_CREDIT_PACKAGE_DRAFT;
+        const creditPurchaseDraft = creditPurchaseDraftByPlace[p.id] || { ...DEFAULT_CREDIT_PURCHASE_DRAFT, packageId: activeCreditPackages[0]?.id || "" };
+        const crmDraft = crmDraftByPlace[p.id] || EMPTY_CRM_DRAFT;
+        const crmInteractions = crmInteractionsByPlace[p.id] || [];
+        const crmInteractionsByContact = crmInteractions.reduce<Record<string, PlaceCrmInteraction[]>>((acc, interaction) => {
+          const list = acc[interaction.contactId] || [];
+          list.push(interaction);
+          acc[interaction.contactId] = list;
+          return acc;
+        }, {});
+        const crmOwnerOptions = Array.from(
+          new Set([
+            profile?.displayName || "Eu",
+            ...staff.map((member) => member.email).filter(Boolean),
+          ])
+        );
         const posProductDraft = posProductDraftByPlace[p.id] || { name: "", category: "", price: "0", stock: "0" };
         const posSaleDraft = posSaleDraftByPlace[p.id] || { productId: posProducts[0]?.id || "", productName: "", buyerName: "", quantity: "1", unitAmount: "0" };
         const expenseDraft = expenseDraftByPlace[p.id] || { category: "", description: "", amount: "0", spentOn: todayDateInputValue() };
@@ -1964,7 +2418,30 @@ export function PlacesPage({ user, profile }: Props) {
           posRevenueCents: posSales.filter((sale) => sale.status === "paid").reduce((sum, sale) => sum + sale.totalAmountCents, 0),
           expenseCents: expenses.filter((expense) => expense.status === "posted").reduce((sum, expense) => sum + expense.amountCents, 0),
         };
-        const financeReceivables = [
+        const activeCreditPurchases = creditPurchases.filter((purchase) => purchase.status === "active");
+        const creditBalanceUnits = activeCreditPurchases.reduce((sum, purchase) => sum + purchase.remainingQuantity, 0);
+        const creditPackageRevenueCents = creditPurchases
+          .filter((purchase) => purchase.status !== "cancelled")
+          .reduce((sum, purchase) => sum + purchase.amountCents, 0);
+        const creditPurchasesExpiringSoon = activeCreditPurchases
+          .filter((purchase) => {
+            if (!purchase.expiresOn) return false;
+            const days = Math.ceil((new Date(purchase.expiresOn).getTime() - Date.now()) / (24 * 60 * 60 * 1000));
+            return days >= 0 && days <= 7;
+          })
+          .sort((a, b) => (a.expiresOn || "").localeCompare(b.expiresOn || ""));
+        const creditPurchasesLowBalance = activeCreditPurchases
+          .filter((purchase) => purchase.remainingQuantity > 0 && purchase.remainingQuantity <= Math.max(1, Math.ceil(purchase.initialQuantity * 0.25)))
+          .sort((a, b) => a.remainingQuantity - b.remainingQuantity);
+        const creditPurchasesExpired = activeCreditPurchases.filter((purchase) => purchase.expiresOn && purchase.expiresOn < todayDateInputValue());
+        const creditUsagePct = creditPurchases.reduce((sum, purchase) => sum + purchase.initialQuantity, 0)
+          ? Math.round(
+              ((creditPurchases.reduce((sum, purchase) => sum + purchase.initialQuantity, 0) - creditBalanceUnits) /
+                creditPurchases.reduce((sum, purchase) => sum + purchase.initialQuantity, 0)) *
+                100
+            )
+          : 0;
+        const financeReceivables: PlaceClientReceivable[] = [
           ...memberships
             .filter((membership) => membership.status === "active" || membership.status === "pending")
             .map((membership) => {
@@ -1975,7 +2452,7 @@ export function PlacesPage({ user, profile }: Props) {
                 title: membership.memberName,
                 subtitle: plan?.name || "Plano de socio",
                 amountCents: plan?.monthlyFeeCents || 0,
-                status: payment?.status === "paid" ? "paid" : membership.status === "pending" ? "pending_approval" : "open",
+                status: (payment?.status === "paid" ? "paid" : membership.status === "pending" ? "pending_approval" : "open") as PlaceClientReceivable["status"],
                 reminder: `${membership.memberName}, sua mensalidade de socio esta pendente.`,
                 targetType: "place_membership",
                 targetId: membership.id,
@@ -1992,7 +2469,7 @@ export function PlacesPage({ user, profile }: Props) {
                 title: enrollment.playerName,
                 subtitle: academyClass?.title || "Turma",
                 amountCents: academyClass?.monthlyFeeCents || 0,
-                status: payment?.status === "paid" ? "paid" : enrollment.status === "pending" ? "pending_approval" : "open",
+                status: (payment?.status === "paid" ? "paid" : enrollment.status === "pending" ? "pending_approval" : "open") as PlaceClientReceivable["status"],
                 reminder: `${enrollment.playerName}, sua mensalidade da turma ${academyClass?.title || "da academia"} esta pendente.`,
                 targetType: "academy_enrollment",
                 targetId: enrollment.id,
@@ -2001,17 +2478,95 @@ export function PlacesPage({ user, profile }: Props) {
             }),
         ];
         const openReceivables = financeReceivables.filter((item) => item.status !== "paid");
+        const openMembershipReceivables = openReceivables.filter((item) => item.targetType === "place_membership");
+        const openAcademyReceivables = openReceivables.filter((item) => item.targetType === "academy_enrollment");
+        const openReceivablesAmountCents = openReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
+        const activeAcademyRevenueCents = academyEnrollments
+          .filter((enrollment) => enrollment.status === "active")
+          .reduce((sum, enrollment) => {
+            const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+            return sum + (academyClass?.monthlyFeeCents || 0);
+          }, 0);
+        const activeMembershipRevenueCents = memberships
+          .filter((membership) => membership.status === "active")
+          .reduce((sum, membership) => {
+            const plan = membershipPlans.find((item) => item.id === membership.planId);
+            return sum + (plan?.monthlyFeeCents || 0);
+          }, 0);
+        const lessonPackageRevenueCents = academyLessonRequests
+          .filter((request) => request.status === "approved" && request.paymentStatus === "paid")
+          .reduce((sum, request) => sum + request.amountCents, 0);
         const lowStockProducts = posProducts.filter((product) => product.stockQuantity <= 3);
         const pendingBookings = bookings.filter((booking) => booking.status === "pending");
         const todayBookings = bookings
           .filter((booking) => booking.status !== "cancelled" && dateInputValue(booking.startsAt) === todayDateInputValue())
           .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
         const waitingCourtEntries = bookingWaitlist.filter((entry) => entry.status === "waiting");
+        const bookingConfirmationRate = bookings.length
+          ? Math.round((bookings.filter((booking) => booking.status === "confirmed").length / bookings.length) * 100)
+          : 0;
+        const activeStudentCount = academyEnrollments.filter((enrollment) => enrollment.status === "active").length;
         const todayPosSales = posSales.filter((sale) => sale.status === "paid" && dateInputValue(sale.createdAt) === todayDateInputValue());
         const todayPosRevenueCents = todayPosSales.reduce((sum, sale) => sum + sale.totalAmountCents, 0);
         const todayClasses = visibleAcademyClasses
           .filter((academyClass) => academyClass.weekday === new Date().getDay())
           .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+        const reportPeriod = reportPeriodByPlace[p.id] || "month";
+        const reportRange = reportRangeByPlace[p.id] || { startDate: todayDateInputValue(), endDate: todayDateInputValue() };
+        const isInReportPeriod = (value: string) =>
+          reportPeriod === "custom"
+            ? isDateInCustomRange(value, reportRange.startDate, reportRange.endDate)
+            : isDateInReportPeriod(value, reportPeriod);
+        const reportBookings = bookings
+          .filter((booking) => booking.status !== "cancelled" && isInReportPeriod(booking.startsAt))
+          .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+        const reportBookingDates = reportBookings.map((booking) => dateInputValue(booking.startsAt));
+        const reportSales = posSales.filter((sale) => sale.status === "paid" && isInReportPeriod(sale.soldAt || sale.createdAt));
+        const reportExpenses = expenses.filter((expense) => expense.status === "posted" && isInReportPeriod(expense.spentOn));
+        const reportAttendance = academyAttendance.filter((attendance) => isInReportPeriod(attendance.attendedOn));
+        const reportLessonRevenueCents = academyLessonRequests
+          .filter((request) => request.status === "approved" && request.paymentStatus === "paid" && isInReportPeriod(request.requestedOn))
+          .reduce((sum, request) => sum + request.amountCents, 0);
+        const reportPaidBookingAmountCents = reportBookings.reduce((sum, booking) => {
+          const payment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
+          return payment?.status === "paid" ? sum + payment.amountCents : sum;
+        }, 0);
+        const reportPosRevenueCents = reportSales.reduce((sum, sale) => sum + sale.totalAmountCents, 0);
+        const reportExpenseCents = reportExpenses.reduce((sum, expense) => sum + expense.amountCents, 0);
+        const reportReservedMinutes = reportBookings
+          .filter((booking) => booking.status !== "blocked")
+          .reduce((sum, booking) => sum + minutesBetween(booking.startsAt, booking.endsAt), 0);
+        const reportAvailableMinutes = activeCourts.length * 14 * 60 * (
+          reportPeriod === "custom"
+            ? customRangeDayCount(reportRange.startDate, reportRange.endDate)
+            : reportDayCount(reportPeriod, reportBookingDates)
+        );
+        const reportOccupancyPct = reportAvailableMinutes ? Math.min(100, Math.round((reportReservedMinutes / reportAvailableMinutes) * 100)) : 0;
+        const reportAttendanceRate = reportAttendance.length
+          ? Math.round((reportAttendance.filter((attendance) => attendance.status === "present").length / reportAttendance.length) * 100)
+          : 0;
+        const reportNetCents = reportPaidBookingAmountCents + reportPosRevenueCents + reportLessonRevenueCents - reportExpenseCents;
+        const reportBookingsByHour = Array.from(
+          reportBookings.reduce((acc, booking) => {
+            const hour = new Date(booking.startsAt).getHours();
+            const label = Number.isFinite(hour) ? `${String(hour).padStart(2, "0")}:00` : "Sem hora";
+            acc.set(label, (acc.get(label) || 0) + 1);
+            return acc;
+          }, new Map<string, number>())
+        ).sort((a, b) => b[1] - a[1]);
+        const reportBookingsByWeekday = Array.from(
+          reportBookings.reduce((acc, booking) => {
+            const day = new Date(booking.startsAt).getDay();
+            const label = WEEKDAY_LABELS[day] || "Dia";
+            acc.set(label, (acc.get(label) || 0) + 1);
+            return acc;
+          }, new Map<string, number>())
+        ).sort((a, b) => b[1] - a[1]);
+        const reportRevenueByModule = [
+          ["Reservas", reportPaidBookingAmountCents] as const,
+          ["Cantina", reportPosRevenueCents] as const,
+          ["Aulas avulsas", reportLessonRevenueCents] as const,
+        ].sort((a, b) => b[1] - a[1]);
         const pendingClientActions = [
           ...memberships.filter((membership) => membership.status === "pending").map((membership) => ({
             id: `membership-action:${membership.id}`,
@@ -2028,6 +2583,142 @@ export function PlacesPage({ user, profile }: Props) {
             title: enrollment.playerName,
             text: "Interesse em turma aguardando aprovacao",
           })),
+        ];
+        const crmStageCounts = {
+          lead: crmContacts.filter((contact) => contact.status === "lead").length,
+          contacted: crmContacts.filter((contact) => contact.status === "contacted").length,
+          converted: crmContacts.filter((contact) => contact.status === "converted").length,
+          archived: crmContacts.filter((contact) => contact.status === "archived").length,
+        };
+        const crmFollowUpsDue = crmContacts.filter(
+          (contact) => contact.status !== "converted" && contact.nextContactOn && contact.nextContactOn <= todayDateInputValue()
+        ).length;
+        const crmFollowUpContacts = crmContacts
+          .filter((contact) => contact.status !== "converted" && contact.status !== "archived" && contact.nextContactOn && contact.nextContactOn <= todayDateInputValue())
+          .sort((a, b) => (a.nextContactOn || "").localeCompare(b.nextContactOn || ""));
+        const crmStaleContacts = crmContacts
+          .filter((contact) => {
+            if (contact.status === "converted" || contact.status === "archived") return false;
+            const interactions = crmInteractionsByContact[contact.id] || [];
+            return !contact.nextContactOn && interactions.length === 0;
+          })
+          .slice(0, 6);
+        const crmConversionRate = crmContacts.length
+          ? Math.round((crmStageCounts.converted / crmContacts.length) * 100)
+          : 0;
+        const crmSources = Array.from(
+          crmContacts.reduce((acc, contact) => {
+            const key = contact.source.trim() || "Sem origem";
+            acc.set(key, (acc.get(key) || 0) + 1);
+            return acc;
+          }, new Map<string, number>())
+        ).sort((a, b) => b[1] - a[1]);
+        const crmInterests = Array.from(
+          crmContacts.reduce((acc, contact) => {
+            const key = contact.interest.trim() || "Sem interesse";
+            acc.set(key, (acc.get(key) || 0) + 1);
+            return acc;
+          }, new Map<string, number>())
+        ).sort((a, b) => b[1] - a[1]);
+        const crmRelationshipSegments = [
+          {
+            label: "Follow-ups hoje",
+            value: crmFollowUpContacts.length,
+            detail: crmFollowUpContacts.slice(0, 2).map((contact) => contact.name).join(", ") || "Sem retorno vencido",
+          },
+          {
+            label: "Leads parados",
+            value: crmStaleContacts.length,
+            detail: crmStaleContacts.slice(0, 2).map((contact) => contact.name).join(", ") || "Sem lead parado",
+          },
+          {
+            label: "Inadimplentes",
+            value: openReceivables.filter((receivable) => receivable.status === "open").length,
+            detail: formatMoneyFromCents(openReceivables.filter((receivable) => receivable.status === "open").reduce((sum, receivable) => sum + receivable.amountCents, 0)),
+          },
+          {
+            label: "Solicitacoes",
+            value: pendingClientActions.length,
+            detail: "Socios, leads e alunos aguardando acao",
+          },
+        ];
+        const reportTopProduct = Array.from(
+          reportSales.reduce((acc, sale) => {
+            const key = sale.productName || "Produto";
+            acc.set(key, (acc.get(key) || 0) + sale.quantity);
+            return acc;
+          }, new Map<string, number>())
+        ).sort((a, b) => b[1] - a[1])[0];
+        const reportModuleRows = [
+          {
+            title: "Agenda",
+            value: reportBookings.length,
+            detail: `${reportOccupancyPct}% de ocupacao estimada, ${reportBookings.filter((booking) => booking.status === "confirmed").length} confirmadas`,
+          },
+          {
+            title: "Academia",
+            value: reportAttendance.length,
+            detail: `${reportAttendanceRate}% de presenca, ${activeStudentCount} alunos ativos`,
+          },
+          {
+            title: "Financeiro",
+            value: formatMoneyFromCents(reportNetCents),
+            detail: `entradas ${formatMoneyFromCents(reportPaidBookingAmountCents + reportPosRevenueCents + reportLessonRevenueCents)} menos despesas ${formatMoneyFromCents(reportExpenseCents)}`,
+          },
+          {
+            title: "CRM",
+            value: `${crmConversionRate}%`,
+            detail: `${crmStageCounts.lead} leads, origem principal ${crmSources[0]?.[0] || "sem origem"}`,
+          },
+          {
+            title: "Cantina",
+            value: formatMoneyFromCents(reportPosRevenueCents),
+            detail: reportTopProduct ? `${reportTopProduct[0]} lidera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
+          },
+        ];
+        const reportMetrics = [
+          { label: "Quadras", value: operationalStats.courts },
+          { label: "Reservas no periodo", value: reportBookings.length },
+          { label: "Ocupacao estimada", value: `${reportOccupancyPct}%` },
+          { label: "Taxa confirmacao geral", value: `${bookingConfirmationRate}%` },
+          { label: "Reservas pendentes", value: operationalStats.pendingBookings },
+          { label: "Reservas confirmadas", value: operationalStats.confirmedBookings },
+          { label: "Espera de quadra", value: operationalStats.bookingWaitlist },
+          { label: "Turmas", value: operationalStats.academyClasses },
+          { label: "Alunos ativos", value: activeStudentCount },
+          { label: "Chamada no periodo", value: reportAttendance.length },
+          { label: "Presenca no periodo", value: `${reportAttendanceRate}%` },
+          { label: "Interesses em aula", value: operationalStats.pendingEnrollments },
+          { label: "Socios ativos", value: operationalStats.activeMembers },
+          { label: "Solicitacoes de socio", value: operationalStats.pendingMemberships },
+          { label: "Conversao CRM", value: `${crmConversionRate}%` },
+          { label: "Leads no CRM", value: operationalStats.crmLeads },
+          { label: "Reposicoes abertas", value: operationalStats.openMakeups },
+          { label: "Encaixes pendentes", value: operationalStats.pendingLessonRequests },
+          { label: "Partidas abertas", value: operationalStats.openMatches },
+          { label: "Receita mensal prevista", value: formatMoneyFromCents(activeMembershipRevenueCents + activeAcademyRevenueCents) },
+          { label: "Recebiveis em aberto", value: formatMoneyFromCents(openReceivablesAmountCents) },
+          { label: "Reservas pagas no periodo", value: formatMoneyFromCents(reportPaidBookingAmountCents) },
+          { label: "Receita POS no periodo", value: formatMoneyFromCents(reportPosRevenueCents) },
+          { label: "Despesas no periodo", value: formatMoneyFromCents(reportExpenseCents) },
+          { label: "Saldo do periodo", value: formatMoneyFromCents(reportNetCents) },
+        ];
+        const reportPeakRows = [
+          {
+            label: "Horario mais forte",
+            value: reportBookingsByHour[0]?.[0] || "-",
+            detail: reportBookingsByHour[0] ? countLabel(reportBookingsByHour[0][1], "reserva no periodo", "reservas no periodo") : "Sem reservas no periodo",
+          },
+          {
+            label: "Dia mais forte",
+            value: reportBookingsByWeekday[0]?.[0] || "-",
+            detail: reportBookingsByWeekday[0] ? countLabel(reportBookingsByWeekday[0][1], "reserva no periodo", "reservas no periodo") : "Sem reservas no periodo",
+          },
+          {
+            label: "Receita destaque",
+            value: reportRevenueByModule[0]?.[0] || "-",
+            detail: reportRevenueByModule[0] ? formatMoneyFromCents(reportRevenueByModule[0][1]) : "Sem receita no periodo",
+          },
         ];
         const setupChecklist = [
           {
@@ -2109,6 +2800,7 @@ export function PlacesPage({ user, profile }: Props) {
         const showClientsOverview = !showClientsWorkspace || clientsView === "overview";
         const showClientsMembers = !showClientsWorkspace || clientsView === "members";
         const showClientsLeads = !showClientsWorkspace || clientsView === "leads";
+        const showClientsRelationship = !showClientsWorkspace || clientsView === "relationship";
         const teamView = (teamViewByPlace[p.id] || "overview") as TeamManagementView;
         const showTeamWorkspace = isManagementCockpit && isOwner;
         const showTeamStaff = !showTeamWorkspace || teamView === "staff";
@@ -2126,6 +2818,7 @@ export function PlacesPage({ user, profile }: Props) {
         const showFinanceWorkspace = isManagementCockpit && canManageFinance;
         const showFinanceOverview = !showFinanceWorkspace || financeView === "overview";
         const showFinanceReceivables = !showFinanceWorkspace || financeView === "receivables";
+        const showFinancePackages = !showFinanceWorkspace || financeView === "packages";
         const showFinanceExpenses = !showFinanceWorkspace || financeView === "expenses";
         const canteenView = (canteenViewByPlace[p.id] || "today") as CanteenManagementView;
         const showCanteenWorkspace = isManagementCockpit && canManageFinance;
@@ -2168,7 +2861,7 @@ export function PlacesPage({ user, profile }: Props) {
                 </span>
                 {organization ? <span className="pc-meta-row">Unidade de {organization.name}</span> : null}
                 <span className="pc-meta-row">
-                  {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} · {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
+                  {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} Â· {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
                 </span>
               </div>
               <div className="place-feature-strip">
@@ -2177,22 +2870,65 @@ export function PlacesPage({ user, profile }: Props) {
                 ))}
                 {!enabledFeatures.length ? <span>Somente acompanhamento</span> : null}
               </div>
+              {p.description ? <p className="place-public-description">{p.description}</p> : null}
+              <div className="place-public-highlights">
+                <span>
+                  <strong>{activeCourts.length}</strong>
+                  quadras
+                </span>
+                <span>
+                  <strong>{activeAcademyClasses.length}</strong>
+                  turmas
+                </span>
+                <span>
+                  <strong>{placeOpenMatches.length}</strong>
+                  jogos abertos
+                </span>
+                <span>
+                  <strong>{activeMembershipPlans.length}</strong>
+                  planos
+                </span>
+              </div>
             </div>
             <div className="pc-logo" aria-hidden>
               {p.logoUrl ? <img src={p.logoUrl} alt="" /> : initials}
             </div>
             <div className="pc-actions">
-              {!isOwner ? (
+              {isAdminRoute ? (
+                <>
+                  <button onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
+                    Pagina publica
+                  </button>
+                  <button onClick={() => navigate("/locais")}>
+                    Voltar
+                  </button>
+                </>
+              ) : canManagePlace ? (
+                <button className="primary" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}/admin`)}>
+                  Gestao
+                </button>
+              ) : !isOwner ? (
                 <button
                   className={p.isFollowing ? "" : "primary"}
                   disabled={busy}
                   onClick={() => onToggleFollow(p)}
                 >
-                  {p.isFollowing ? "✓ Seguindo" : "Seguir"}
+                  {p.isFollowing ? "âœ“ Seguindo" : "Seguir"}
                 </button>
-              ) : (
-                <button disabled>Meu local</button>
-              )}
+              ) : null}
+              {!isAdminRoute ? (
+                <>
+                  <button onClick={() => sharePlace(p)}>
+                    WhatsApp
+                  </button>
+                  <button onClick={() => void copyPlaceLink(p)}>
+                    Copiar link
+                  </button>
+                  <button onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
+                    Ver pagina
+                  </button>
+                </>
+              ) : null}
             </div>
             {isManagementCockpit ? (
               <PlaceManagementCockpit
@@ -2209,55 +2945,8 @@ export function PlacesPage({ user, profile }: Props) {
                 placeName={p.name}
                 setupPercent={setupPercent}
                 staffRoleLabel={STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]]}
-                onModuleChange={(module) => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: module }))}
+                onModuleChange={(module) => selectManagementModule(p.id, module)}
               />
-            ) : null}
-            {currentManagementModule === ("__legacy_cockpit__" as PlaceManagementModule) && nextSetupItem ? (
-              <div className="place-management-cockpit">
-                <div className="place-management-intro">
-                  <div>
-                    <strong>Gestao operacional</strong>
-                    <span>
-                      {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]]} ·{" "}
-                      {countLabel(operationalStats.pendingBookings + operationalStats.pendingEnrollments + operationalStats.pendingLessonRequests + operationalStats.pendingMemberships, "pendencia", "pendencias")}
-                    </span>
-                  </div>
-                  <small>{setupPercent}% implantado · {nextSetupItem ? `Proximo: ${nextSetupItem.title}` : "Operacao basica pronta"}</small>
-                </div>
-                <div className="place-management-health">
-                  <span style={{ width: `${setupPercent}%` }} />
-                </div>
-                {nextSetupItem ? (
-                  <button
-                    className="place-next-step"
-                    type="button"
-                    onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: nextSetupItem.module }))}
-                  >
-                    <strong>Proximo passo</strong>
-                    <span>{nextSetupItem.detail}</span>
-                  </button>
-                ) : null}
-                <div className="place-management-tabs" role="tablist" aria-label={`Gestao de ${p.name}`}>
-                  {managementModules.map((module) => (
-                    <button
-                      key={`${p.id}:module:${module}`}
-                      className={currentManagementModule === module ? "active" : ""}
-                      onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: module }))}
-                      type="button"
-                    >
-                      <span>{PLACE_MANAGEMENT_MODULE_LABELS[module]}</span>
-                      {moduleCounts[module] ? <em>{moduleCounts[module]}</em> : null}
-                    </button>
-                  ))}
-                </div>
-                <div className="place-module-context">
-                  <div>
-                    <strong>{PLACE_MANAGEMENT_MODULE_LABELS[currentManagementModule]}</strong>
-                    <span>{PLACE_MANAGEMENT_MODULE_DESCRIPTIONS[currentManagementModule]}</span>
-                  </div>
-                  {moduleCounts[currentManagementModule] ? <small>{countLabel(moduleCounts[currentManagementModule], "item para acompanhar", "itens para acompanhar")}</small> : <small>Sem pendencias neste modulo</small>}
-                </div>
-              </div>
             ) : null}
             {showManagementModule("dashboard") && isManagementCockpit ? (
               <PlaceOperationsDashboard
@@ -2300,7 +2989,7 @@ export function PlacesPage({ user, profile }: Props) {
                     module: "finance" as PlaceManagementModule,
                   })),
                 ]}
-                onModuleChange={(module) => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: module }))}
+                onModuleChange={(module) => selectManagementModule(p.id, module)}
               />
             ) : null}
             {currentManagementModule === ("__legacy_dashboard__" as PlaceManagementModule) ? (
@@ -2310,77 +2999,69 @@ export function PlacesPage({ user, profile }: Props) {
                   <span>{formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)} saldo</span>
                 </div>
                 <div className="place-operations-grid">
-                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "bookings" }))} disabled={!managementModules.includes("bookings")}>
+                  <button type="button" onClick={() => selectManagementModule(p.id, "bookings")} disabled={!managementModules.includes("bookings")}>
                     <strong>{operationalStats.pendingBookings}</strong>
                     <span>Reservas para revisar</span>
                   </button>
-                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "academy" }))} disabled={!managementModules.includes("academy")}>
+                  <button type="button" onClick={() => selectManagementModule(p.id, "academy")} disabled={!managementModules.includes("academy")}>
                     <strong>{operationalStats.pendingLessonRequests + operationalStats.pendingEnrollments}</strong>
                     <span>Aulas e encaixes pendentes</span>
                   </button>
-                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "clients" }))} disabled={!managementModules.includes("clients")}>
+                  <button type="button" onClick={() => selectManagementModule(p.id, "clients")} disabled={!managementModules.includes("clients")}>
                     <strong>{operationalStats.pendingMemberships + operationalStats.crmLeads}</strong>
                     <span>Clientes para acionar</span>
                   </button>
-                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "canteen" }))} disabled={!managementModules.includes("canteen")}>
+                  <button type="button" onClick={() => selectManagementModule(p.id, "canteen")} disabled={!managementModules.includes("canteen")}>
                     <strong>{formatMoneyFromCents(operationalStats.posRevenueCents)}</strong>
                     <span>Vendas da cantina</span>
                   </button>
                 </div>
-                <div className="place-action-queue">
-                  <strong>Fila de trabalho</strong>
-                  <div>
+                <OperationalQueue title="Fila de trabalho">
                     {bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => (
-                      <button key={`queue-booking:${booking.id}`} type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "bookings" }))}>
-                        Reserva pendente · {booking.courtName || "Quadra"} · {new Date(booking.startsAt).toLocaleString("pt-BR")}
+                      <button key={`queue-booking:${booking.id}`} type="button" onClick={() => selectManagementModule(p.id, "bookings")}>
+                        Reserva pendente Â· {booking.courtName || "Quadra"} Â· {new Date(booking.startsAt).toLocaleString("pt-BR")}
                       </button>
                     ))}
                     {actionableLessonRequests.slice(0, 3).map((request) => (
-                      <button key={`queue-lesson:${request.id}`} type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "academy" }))}>
-                        Encaixe pendente · {request.playerName} · {request.requestedOn}
+                      <button key={`queue-lesson:${request.id}`} type="button" onClick={() => selectManagementModule(p.id, "academy")}>
+                        Encaixe pendente Â· {request.playerName} Â· {request.requestedOn}
                       </button>
                     ))}
                     {openReceivables.slice(0, 3).map((receivable) => (
-                      <button key={`queue-receivable:${receivable.id}`} type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "finance" }))}>
-                        Recebimento pendente · {receivable.title} · {formatMoneyFromCents(receivable.amountCents)}
+                      <button key={`queue-receivable:${receivable.id}`} type="button" onClick={() => selectManagementModule(p.id, "finance")}>
+                        Recebimento pendente Â· {receivable.title} Â· {formatMoneyFromCents(receivable.amountCents)}
                       </button>
                     ))}
                     {!bookings.some((booking) => booking.status === "pending") && !actionableLessonRequests.length && !openReceivables.length ? (
                       <span>Nenhuma pendencia critica agora.</span>
                     ) : null}
-                  </div>
-                </div>
+                </OperationalQueue>
               </div>
             ) : null}
             {showManagementModule("dashboard") && isOwner ? (
               <PlaceAnalyticsPanel
                 busy={busy}
                 canManagePlan={canManagePlace}
-                metrics={[
-                  { label: "Quadras", value: operationalStats.courts },
-                  { label: "Reservas pendentes", value: operationalStats.pendingBookings },
-                  { label: "Reservas confirmadas", value: operationalStats.confirmedBookings },
-                  { label: "Espera de quadra", value: operationalStats.bookingWaitlist },
-                  { label: "Turmas", value: operationalStats.academyClasses },
-                  { label: "Interesses em aula", value: operationalStats.pendingEnrollments },
-                  { label: "Socios ativos", value: operationalStats.activeMembers },
-                  { label: "Solicitacoes de socio", value: operationalStats.pendingMemberships },
-                  { label: "Leads no CRM", value: operationalStats.crmLeads },
-                  { label: "Reposicoes abertas", value: operationalStats.openMakeups },
-                  { label: "Encaixes pendentes", value: operationalStats.pendingLessonRequests },
-                  { label: "Partidas abertas", value: operationalStats.openMatches },
-                  { label: "Reservas pagas", value: formatMoneyFromCents(operationalStats.paidBookingAmountCents) },
-                  { label: "Receita POS", value: formatMoneyFromCents(operationalStats.posRevenueCents) },
-                  { label: "Despesas", value: formatMoneyFromCents(operationalStats.expenseCents) },
-                  {
-                    label: "Saldo operacional",
-                    value: formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents),
-                  },
-                ]}
+                metrics={reportMetrics}
+                moduleRows={reportModuleRows}
+                peakRows={reportPeakRows}
                 plan={p.productPlan}
                 planHint={PLACE_PRODUCT_PLAN_HINTS[p.productPlan]}
                 planOptions={Object.entries(PLACE_PRODUCT_PLAN_LABELS).map(([value, label]) => ({ value: value as PlaceProductPlan, label }))}
+                reportEndDate={reportRange.endDate}
+                reportPeriod={reportPeriod}
+                reportStartDate={reportRange.startDate}
+                onExport={() =>
+                  downloadCsvFile(`${p.name.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-relatorio-${reportPeriod}.csv`, [
+                    ["tipo", "nome", "valor", "detalhe"],
+                    ...reportMetrics.map((metric) => ["metrica", metric.label, metric.value, ""]),
+                    ...reportModuleRows.map((row) => ["modulo", row.title, row.value, row.detail]),
+                    ...reportPeakRows.map((row) => ["pico", row.label, row.value, row.detail]),
+                  ])
+                }
                 onPlanChange={(plan) => void onUpdatePlaceProductPlan(p, plan)}
+                onReportRangeChange={(range) => setReportRangeByPlace((prev) => ({ ...prev, [p.id]: range }))}
+                onReportPeriodChange={(period) => setReportPeriodByPlace((prev) => ({ ...prev, [p.id]: period }))}
               />
             ) : null}
             {currentManagementModule === ("__legacy_analytics__" as PlaceManagementModule) ? (
@@ -2473,7 +3154,7 @@ export function PlacesPage({ user, profile }: Props) {
               <div className="place-booking-panel staff-panel">
                 <TeamWorkspaceShell
                   activeView={teamView}
-                  onViewChange={(view) => setTeamViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                  onViewChange={(view) => selectTeamView(p.id, view)}
                 >
                   {teamView === "overview" ? (
                     <WorkspaceGrid>
@@ -2603,7 +3284,7 @@ export function PlacesPage({ user, profile }: Props) {
               <div className="place-booking-panel place-settings-panel">
                 <SettingsWorkspaceShell
                   activeView={settingsView}
-                  onViewChange={(view) => setSettingsViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                  onViewChange={(view) => selectSettingsView(p.id, view)}
                 >
                   {settingsView === "overview" ? (
                     <WorkspaceGrid>
@@ -2664,10 +3345,10 @@ export function PlacesPage({ user, profile }: Props) {
                       key={`${p.id}:setup:${item.key}`}
                       className={item.done ? "done" : ""}
                       type="button"
-                      onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: item.module }))}
+                      onClick={() => selectManagementModule(p.id, item.module)}
                       disabled={!managementModules.includes(item.module)}
                     >
-                      <strong>{item.done ? "OK" : "Pendente"} · {item.title}</strong>
+                      <strong>{item.done ? "OK" : "Pendente"} Â· {item.title}</strong>
                       <span>{item.detail}</span>
                     </button>
                   ))}
@@ -2698,7 +3379,7 @@ export function PlacesPage({ user, profile }: Props) {
               <div className="place-booking-panel">
                 <ClientsWorkspaceShell
                   activeView={clientsView}
-                  onViewChange={(view) => setClientsViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                  onViewChange={(view) => selectClientsView(p.id, view)}
                 >
                   {clientsView === "overview" ? (
                     <WorkspaceGrid>
@@ -2710,6 +3391,16 @@ export function PlacesPage({ user, profile }: Props) {
                           countLabel(activeMembershipPlans.length, "plano ativo", "planos ativos"),
                           `${countLabel(operationalStats.pendingMemberships, "solicitacao", "solicitacoes")} de socio`,
                           countLabel(operationalStats.crmLeads, "lead aberto", "leads abertos"),
+                        ]}
+                      />
+                      <WorkspaceCard
+                        title="Funil comercial"
+                        subtitle="Entrada, contato e conversao"
+                        value={`${crmConversionRate}%`}
+                        metrics={[
+                          `${crmStageCounts.lead} novos`,
+                          `${crmStageCounts.contacted} contatados`,
+                          `${crmStageCounts.converted} convertidos`,
                         ]}
                       />
                       <WorkspaceCard title="Atendimento pendente" subtitle="Fila para responder antes que o cliente esfrie" value={pendingClientActions.length}>
@@ -2761,9 +3452,9 @@ export function PlacesPage({ user, profile }: Props) {
                         subtitle="Leads, contatos feitos e conversoes"
                         value={crmContacts.length}
                         metrics={[
-                          countLabel(crmContacts.filter((contact) => contact.status === "lead").length, "lead", "leads"),
-                          countLabel(crmContacts.filter((contact) => contact.status === "contacted").length, "contatado", "contatados"),
-                          countLabel(crmContacts.filter((contact) => contact.status === "converted").length, "convertido", "convertidos"),
+                          countLabel(crmStageCounts.lead, "lead", "leads"),
+                          countLabel(crmStageCounts.contacted, "contatado", "contatados"),
+                          countLabel(crmStageCounts.converted, "convertido", "convertidos"),
                         ]}
                       />
                       <WorkspaceCard title="Proximos retornos" subtitle="Priorize quem ainda esta em aberto" value={operationalStats.crmLeads}>
@@ -2777,41 +3468,60 @@ export function PlacesPage({ user, profile }: Props) {
                           {!operationalStats.crmLeads ? <span>Sem leads abertos.</span> : null}
                         </WorkspaceList>
                       </WorkspaceCard>
+                      <WorkspaceCard title="Origem dos leads" subtitle="Canais que mais geram oportunidade" value={crmSources.length}>
+                        <WorkspaceList>
+                          {crmSources.slice(0, 4).map(([source, count]) => (
+                            <span key={`lead-source:${source}`}>
+                              <strong>{source}</strong>
+                              <small>{countLabel(count, "contato", "contatos")}</small>
+                            </span>
+                          ))}
+                          {!crmSources.length ? <span>Sem origem cadastrada ainda.</span> : null}
+                        </WorkspaceList>
+                      </WorkspaceCard>
+                      <WorkspaceCard title="Interesses mais comuns" subtitle="Ajuda a vender turma, plano ou reserva" value={crmInterests.length}>
+                        <WorkspaceList>
+                          {crmInterests.slice(0, 4).map(([interest, count]) => (
+                            <span key={`lead-interest:${interest}`}>
+                              <strong>{interest}</strong>
+                              <small>{countLabel(count, "contato", "contatos")}</small>
+                            </span>
+                          ))}
+                          {!crmInterests.length ? <span>Sem interesses cadastrados ainda.</span> : null}
+                        </WorkspaceList>
+                      </WorkspaceCard>
                     </WorkspaceGrid>
                   ) : null}
+                  {showClientsRelationship ? (
+                    <PlaceClientRelationshipModule
+                      academyReceivables={openAcademyReceivables}
+                      busy={busy}
+                      countLabel={countLabel}
+                      followUpContacts={crmFollowUpContacts}
+                      formatMoneyFromCents={formatMoneyFromCents}
+                      membershipReceivables={openMembershipReceivables}
+                      openReceivables={openReceivables}
+                      openReceivablesAmountCents={openReceivablesAmountCents}
+                      relationshipSegments={crmRelationshipSegments}
+                      staleContacts={crmStaleContacts}
+                      onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
+                      onCreatePaymentReminderBatch={(receivables) => void onCreatePaymentReminderBatch(receivables)}
+                      onMarkContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
+                      onScheduleContact={(contact) => void onUpdateCrmContactFollowUp(p.id, contact.id)}
+                    />
+                  ) : null}
                   {clientsView === "requests" ? (
-                    <WorkspaceList>
-                      {memberships.filter((membership) => membership.status === "pending").map((membership) => (
-                        <WorkspaceRow
-                          key={`client-request-membership:${membership.id}`}
-                          title={membership.memberName}
-                          detail="Solicitacao de socio aguardando aprovacao"
-                          actions={
-                            <>
-                            <button onClick={() => void onUpdateMembership(p.id, membership.id, "active")} disabled={busy}>
-                              Ativar
-                            </button>
-                            <button className="danger" onClick={() => void onUpdateMembership(p.id, membership.id, "cancelled")} disabled={busy}>
-                              Cancelar
-                            </button>
-                            </>
-                          }
-                        />
-                      ))}
-                      {academyEnrollments.filter((enrollment) => enrollment.status === "pending").map((enrollment) => (
-                        <WorkspaceRow
-                          key={`client-request-enrollment:${enrollment.id}`}
-                          title={enrollment.playerName}
-                          detail="Interesse em turma aguardando aprovacao"
-                          actions={
-                            <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
-                              Ativar
-                            </button>
-                          }
-                        />
-                      ))}
-                      {!pendingClientActions.length ? <p className="subtle">Sem pendencias de clientes no momento.</p> : null}
-                    </WorkspaceList>
+                    <PlaceClientActionQueue
+                      academyEnrollments={academyEnrollments}
+                      busy={busy}
+                      contacts={crmContacts}
+                      memberships={memberships}
+                      onActivateEnrollment={(enrollment) => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")}
+                      onActivateMembership={(membership) => void onUpdateMembership(p.id, membership.id, "active")}
+                      onCancelMembership={(membership) => void onUpdateMembership(p.id, membership.id, "cancelled")}
+                      onMarkContactContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
+                      onMarkContactConverted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "converted")}
+                    />
                   ) : null}
                 </ClientsWorkspaceShell>
               </div>
@@ -2839,340 +3549,148 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
               ) : null}
               {isManagementCockpit && pendingClientActions.length ? (
-                <div className="place-action-queue compact">
-                  <strong>Atendimento e relacionamento</strong>
-                  <div>
-                    {memberships.filter((membership) => membership.status === "pending").slice(0, 3).map((membership) => (
-                      <span key={`client-membership:${membership.id}`}>
-                        <strong>{membership.memberName}</strong>
-                        Solicitação de sócio aguardando aprovação
-                        <button onClick={() => void onUpdateMembership(p.id, membership.id, "active")} disabled={busy}>
-                          Ativar
-                        </button>
-                        <button className="danger" onClick={() => void onUpdateMembership(p.id, membership.id, "cancelled")} disabled={busy}>
-                          Cancelar
-                        </button>
-                      </span>
-                    ))}
-                    {crmContacts.filter((contact) => contact.status === "lead").slice(0, 3).map((contact) => (
-                      <span key={`client-lead:${contact.id}`}>
-                        <strong>{contact.name}</strong>
-                        {[contact.interest, contact.source].filter(Boolean).join(" | ") || "Lead sem origem definida"}
-                        <button onClick={() => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")} disabled={busy}>
-                          Contatado
-                        </button>
-                        <button onClick={() => void onUpdateCrmContactStatus(p.id, contact.id, "converted")} disabled={busy}>
-                          Convertido
-                        </button>
-                      </span>
-                    ))}
-                    {academyEnrollments.filter((enrollment) => enrollment.status === "pending").slice(0, 3).map((enrollment) => (
-                      <span key={`client-enrollment:${enrollment.id}`}>
-                        <strong>{enrollment.playerName}</strong>
-                        Interesse em turma aguardando aprovação
-                        <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
-                          Ativar
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                <PlaceClientActionQueue
+                  academyEnrollments={academyEnrollments}
+                  busy={busy}
+                  compact
+                  contacts={crmContacts}
+                  memberships={memberships}
+                  onActivateEnrollment={(enrollment) => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")}
+                  onActivateMembership={(membership) => void onUpdateMembership(p.id, membership.id, "active")}
+                  onCancelMembership={(membership) => void onUpdateMembership(p.id, membership.id, "cancelled")}
+                  onMarkContactContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
+                  onMarkContactConverted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "converted")}
+                />
               ) : null}
-              <div className="place-booking-head">
-                <strong>Planos e socios</strong>
-                <span>{countLabel(activeMembershipPlans.length, "plano", "planos")}</span>
-              </div>
-              {canManageFinance ? (
-                <div className="place-staff-form">
-                  <input
-                    value={membershipDraft.name}
-                    onChange={(event) =>
-                      setMembershipPlanDraftByPlace((prev) => ({ ...prev, [p.id]: { ...membershipDraft, name: event.target.value } }))
-                    }
-                    placeholder="Plano"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    value={membershipDraft.monthlyFee}
-                    onChange={(event) =>
-                      setMembershipPlanDraftByPlace((prev) => ({ ...prev, [p.id]: { ...membershipDraft, monthlyFee: event.target.value } }))
-                    }
-                    placeholder="Mensalidade R$"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    max={100}
-                    value={membershipDraft.courtDiscount}
-                    onChange={(event) =>
-                      setMembershipPlanDraftByPlace((prev) => ({ ...prev, [p.id]: { ...membershipDraft, courtDiscount: event.target.value } }))
-                    }
-                    placeholder="% quadra"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    max={100}
-                    value={membershipDraft.academyDiscount}
-                    onChange={(event) =>
-                      setMembershipPlanDraftByPlace((prev) => ({ ...prev, [p.id]: { ...membershipDraft, academyDiscount: event.target.value } }))
-                    }
-                    placeholder="% aulas"
-                  />
-                  <button onClick={() => void onCreateMembershipPlan(p)} disabled={busy || !membershipDraft.name.trim()}>
-                    Criar plano
-                  </button>
-                </div>
-              ) : null}
-              {activeMembershipPlans.length ? (
-                <div className="place-court-list">
-                  {activeMembershipPlans.map((plan) => {
-                    const alreadyMember = Boolean(myMembership);
-                    return (
-                      <span key={plan.id}>
-                        {plan.name} · {formatMoneyFromCents(plan.monthlyFeeCents)} / mes · quadras {plan.courtDiscountPercent}% · aulas {plan.academyDiscountPercent}%
-                        {!staffRole && !alreadyMember ? (
-                          <>
-                            <input
-                              value={membershipNoteByPlan[plan.id] || ""}
-                              onChange={(event) =>
-                                setMembershipNoteByPlan((prev) => ({ ...prev, [plan.id]: event.target.value }))
-                              }
-                              placeholder="Mensagem opcional"
-                            />
-                            <button className="primary" onClick={() => void onRequestMembership(p, plan)} disabled={busy}>
-                              Quero ser socio
-                            </button>
-                          </>
-                        ) : null}
-                      </span>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="subtle">Sem planos de socio cadastrados.</p>
-              )}
-              {myMembership && !staffRole ? (
-                <div className="place-booking-list">
-                  <div className={`place-booking-row ${myMembership.status}`}>
-                    <div>
-                      <strong>{membershipPlans.find((plan) => plan.id === myMembership.planId)?.name || "Plano de socio"}</strong>
-                      <small>
-                        {myMembership.status === "active" ? "Ativo" : "Aguardando aprovacao"} |{" "}
-                        {paymentsByTarget[paymentMapKey("place_membership", myMembership.id, currentBillingPeriod())]?.status === "paid"
-                          ? "mensalidade paga"
-                          : "pagamento sera confirmado pela plataforma"}
-                      </small>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-              {canManageFinance && memberships.length ? (
-                <div className="place-booking-list">
-                  <strong>Socios e solicitacoes</strong>
-                  {memberships.slice(0, 8).map((membership) => {
-                    const plan = membershipPlans.find((item) => item.id === membership.planId);
-                    const paid = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())]?.status === "paid";
-                    return (
-                      <div key={membership.id} className={`place-booking-row ${membership.status}`}>
-                        <div>
-                          <strong>{membership.memberName}</strong>
-                          <span>{plan?.name || "Plano"} · {membership.status}</span>
-                          <small>{paid ? "Mensalidade paga no mes" : "Mensalidade pendente"}{membership.phone ? ` | ${membership.phone}` : ""}</small>
-                        </div>
-                        <span>
-                          {membership.status === "pending" ? (
-                            <button onClick={() => void onUpdateMembership(p.id, membership.id, "active")} disabled={busy}>
-                              Ativar
-                            </button>
-                          ) : null}
-                          {membership.status === "active" && plan && !paid ? (
-                            <button onClick={() => void onAdminMarkMembershipPaid(plan, membership)} disabled={busy}>
-                              Marcar pago
-                            </button>
-                          ) : null}
-                          {!paid ? (
-                            <button
-                              onClick={() =>
-                                void onCreatePaymentReminder(
-                                  "place_membership",
-                                  membership.id,
-                                  currentBillingPeriod(),
-                                  `${membership.memberName}, sua mensalidade de socio esta pendente.`
-                                )
-                              }
-                              disabled={busy}
-                            >
-                              Lembrar
-                            </button>
-                          ) : null}
-                          {membership.status !== "cancelled" ? (
-                            <button className="danger" onClick={() => void onUpdateMembership(p.id, membership.id, "cancelled")} disabled={busy}>
-                              Cancelar
-                            </button>
-                          ) : null}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : null}
+              <PlaceMembershipModule
+                activePlans={activeMembershipPlans}
+                allPlans={membershipPlans}
+                billingPeriod={currentBillingPeriod()}
+                busy={busy}
+                canManageFinance={canManageFinance}
+                countLabel={countLabel}
+                draft={membershipDraft}
+                formatMoneyFromCents={formatMoneyFromCents}
+                memberships={memberships}
+                membershipNotesByPlan={membershipNoteByPlan}
+                myMembership={myMembership}
+                paymentsByTarget={paymentsByTarget}
+                staffRole={Boolean(staffRole)}
+                onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
+                onCreatePlan={() => void onCreateMembershipPlan(p)}
+                onDraftChange={(draft) => setMembershipPlanDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                onMarkPaid={(plan, membership) => void onAdminMarkMembershipPaid(plan, membership)}
+                onMembershipNoteChange={(planId, value) => setMembershipNoteByPlan((prev) => ({ ...prev, [planId]: value }))}
+                onRequestMembership={(plan) => void onRequestMembership(p, plan)}
+                onUpdateMembership={(membershipId, status) => void onUpdateMembership(p.id, membershipId, status)}
+                paymentMapKey={paymentMapKey}
+              />
             </div>
             ) : null}
             {showManagementModule("clients") && showClientsLeads && canUseCrm && canManagePlace ? (
-              <div className="place-booking-panel">
-                <div className="place-booking-head">
-                  <strong>CRM do local</strong>
-                  <span>{countLabel(crmContacts.length, "contato", "contatos")}</span>
-                </div>
-                <div className="place-staff-form">
-                  <input
-                    value={crmDraft.name}
-                    onChange={(event) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: { ...crmDraft, name: event.target.value } }))}
-                    placeholder="Nome"
-                  />
-                  <input
-                    value={crmDraft.phone}
-                    onChange={(event) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: { ...crmDraft, phone: event.target.value } }))}
-                    placeholder="Telefone"
-                  />
-                  <input
-                    value={crmDraft.email}
-                    onChange={(event) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: { ...crmDraft, email: event.target.value } }))}
-                    placeholder="Email"
-                  />
-                  <input
-                    value={crmDraft.source}
-                    onChange={(event) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: { ...crmDraft, source: event.target.value } }))}
-                    placeholder="Origem"
-                  />
-                  <input
-                    value={crmDraft.interest}
-                    onChange={(event) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: { ...crmDraft, interest: event.target.value } }))}
-                    placeholder="Interesse"
-                  />
-                  <input
-                    value={crmDraft.notes}
-                    onChange={(event) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: { ...crmDraft, notes: event.target.value } }))}
-                    placeholder="Notas"
-                  />
-                  <button onClick={() => void onCreateCrmContact(p)} disabled={busy || !crmDraft.name.trim()}>
-                    Criar contato
-                  </button>
-                </div>
-                <div className="place-booking-list">
-                  {crmContacts.slice(0, 6).map((contact) => (
-                    <div key={contact.id} className={`place-booking-row ${contact.status}`}>
-                      <div>
-                        <strong>{contact.name}</strong>
-                        <span>{[contact.interest, contact.source, contact.status].filter(Boolean).join(" | ")}</span>
-                        <small>{[contact.phone, contact.email, contact.notes].filter(Boolean).join(" | ")}</small>
-                      </div>
-                      <span>
-                        {contact.status === "lead" ? (
-                          <button onClick={() => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")} disabled={busy}>
-                            Contatado
-                          </button>
-                        ) : null}
-                        {contact.status !== "converted" ? (
-                          <button onClick={() => void onUpdateCrmContactStatus(p.id, contact.id, "converted")} disabled={busy}>
-                            Convertido
-                          </button>
-                        ) : null}
-                        <button className="danger" onClick={() => void onUpdateCrmContactStatus(p.id, contact.id, "archived")} disabled={busy}>
-                          Arquivar
-                        </button>
-                      </span>
-                    </div>
-                  ))}
-                  {!crmContacts.length ? <p className="subtle">Sem contatos no CRM.</p> : null}
-                </div>
-              </div>
+              <PlaceCrmModule
+                busy={busy}
+                contactCountLabel={countLabel(crmContacts.length, "contato", "contatos")}
+                contacts={crmContacts}
+                conversionRate={crmConversionRate}
+                draft={crmDraft}
+                emptyInteractionDraft={DEFAULT_CRM_INTERACTION_DRAFT}
+                followUpDraftsByContact={crmFollowUpDraftByContact}
+                followUpsDue={crmFollowUpsDue}
+                historyContactId={crmHistoryDrawerContactId}
+                interactionDraftsByContact={crmInteractionDraftByContact}
+                interactionsByContact={crmInteractionsByContact}
+                ownerDraftsByContact={crmOwnerDraftByContact}
+                ownerListId={`crm-owners-${p.id}`}
+                ownerOptions={crmOwnerOptions}
+                stageCounts={crmStageCounts}
+                todayDate={todayDateInputValue()}
+                onArchiveContact={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "archived")}
+                onChangeDraft={(draft) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                onChangeFollowUpDraft={(contact, value) => setCrmFollowUpDraftByContact((prev) => ({ ...prev, [contact.id]: value }))}
+                onChangeInteractionDraft={(contact, draft) => setCrmInteractionDraftByContact((prev) => ({ ...prev, [contact.id]: draft }))}
+                onChangeOwnerDraft={(contact, value) => setCrmOwnerDraftByContact((prev) => ({ ...prev, [contact.id]: value }))}
+                onCloseHistory={() => setCrmHistoryDrawerContactId("")}
+                onCreateContact={() => void onCreateCrmContact(p)}
+                onCreateInteraction={(contact) => void onCreateCrmInteraction(p.id, contact)}
+                onMarkContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
+                onMarkConverted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "converted")}
+                onOpenHistory={(contact) => setCrmHistoryDrawerContactId(contact.id)}
+                onSaveHistoryFollowUp={(contact) => void onUpdateCrmContactFollowUp(p.id, contact.id)}
+                onUpdateFollowUp={(contact) => void onUpdateCrmContactFollowUp(p.id, contact.id)}
+                onUpdateOwner={(contact) => void onUpdateCrmContactOwner(p.id, contact)}
+              />
             ) : null}
             {showManagementModule("finance") && canManageFinance ? (
               <div className="place-booking-panel place-finance-panel">
                 {showFinanceWorkspace ? (
                   <FinanceWorkspaceShell
                     activeView={financeView}
-                    onViewChange={(view) => setFinanceViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                    onViewChange={(view) => selectFinanceView(p.id, view)}
                   >
                     {financeView === "overview" ? (
-                      <WorkspaceGrid>
-                        <WorkspaceCard
-                          title="Saldo operacional"
-                          subtitle="Reservas, cantina e despesas lancadas"
-                          value={formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)}
-                          metrics={[
-                            `${formatMoneyFromCents(operationalStats.paidBookingAmountCents)} reservas`,
-                            `${formatMoneyFromCents(operationalStats.posRevenueCents)} cantina`,
-                            `${formatMoneyFromCents(operationalStats.expenseCents)} despesas`,
-                          ]}
-                        />
-                        <WorkspaceCard
-                          title="Recebiveis em aberto"
-                          subtitle="Mensalidades e cobrancas pendentes"
-                          value={openReceivables.length}
-                          detail={openReceivables.slice(0, 4).map((item) => item.title).join(", ") || "Sem pendencias financeiras"}
-                        />
-                        <WorkspaceCard
-                          title="Despesas recentes"
-                          subtitle="Lancamentos postados"
-                          value={expenses.filter((expense) => expense.status === "posted").length}
-                          detail={expenses.slice(0, 3).map((expense) => expense.description).join(", ") || "Sem despesas recentes"}
-                        />
-                      </WorkspaceGrid>
+                      <PlaceFinanceOverviewModule
+                        activeAcademyClassCount={activeAcademyClasses.length}
+                        activeMembershipPlanCount={activeMembershipPlans.length}
+                        creditBalanceUnits={creditBalanceUnits}
+                        expenseCents={operationalStats.expenseCents}
+                        expenses={expenses}
+                        formatMoneyFromCents={formatMoneyFromCents}
+                        openReceivables={openReceivables}
+                        paidBookingAmountCents={operationalStats.paidBookingAmountCents}
+                        packageRevenueCents={creditPackageRevenueCents}
+                        posRevenueCents={operationalStats.posRevenueCents}
+                        recurringRevenueCents={activeMembershipRevenueCents + activeAcademyRevenueCents}
+                        countLabel={countLabel}
+                      />
                     ) : null}
                     {financeView === "receivables" ? (
-                      <WorkspaceList>
-                        {openReceivables.slice(0, 12).map((receivable) => (
-                          <WorkspaceRow
-                            key={`finance-open:${receivable.id}`}
-                            title={receivable.title}
-                            detail={`${receivable.subtitle} | ${formatMoneyFromCents(receivable.amountCents)}`}
-                            actions={
-                              <button
-                                onClick={() =>
-                                  void onCreatePaymentReminder(
-                                    receivable.targetType,
-                                    receivable.targetId,
-                                    receivable.billingPeriod,
-                                    receivable.reminder
-                                  )
-                                }
-                                disabled={busy}
-                              >
-                                Lembrar
-                              </button>
-                            }
-                          >
-                            <small>{receivable.status === "pending_approval" ? "Aguardando aprovacao" : "Pagamento em aberto"}</small>
-                          </WorkspaceRow>
-                        ))}
-                        {!openReceivables.length ? <p className="subtle">Sem recebiveis em aberto.</p> : null}
-                      </WorkspaceList>
+                      <PlaceFinanceReceivablesModule
+                        academyReceivables={openAcademyReceivables}
+                        busy={busy}
+                        formatMoneyFromCents={formatMoneyFromCents}
+                        membershipReceivables={openMembershipReceivables}
+                        receivables={openReceivables}
+                        onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
+                        onCreatePaymentReminderBatch={(receivables) => void onCreatePaymentReminderBatch(receivables)}
+                      />
+                    ) : null}
+                    {financeView === "packages" ? (
+                      <PlaceFinancePackagesModule
+                        academyClasses={activeAcademyClasses}
+                        academyLessonRequests={academyLessonRequests}
+                        activeCreditPackages={activeCreditPackages}
+                        busy={busy}
+                        countLabel={countLabel}
+                        creditBalanceUnits={creditBalanceUnits}
+                        creditPackageDraft={creditPackageDraft}
+                        creditPackageRevenueCents={creditPackageRevenueCents}
+                        creditPackages={creditPackages}
+                        creditPurchaseDraft={creditPurchaseDraft}
+                        creditPurchases={creditPurchases}
+                        creditPurchasesExpired={creditPurchasesExpired}
+                        creditPurchasesExpiringSoon={creditPurchasesExpiringSoon}
+                        creditPurchasesLowBalance={creditPurchasesLowBalance}
+                        creditUsagePct={creditUsagePct}
+                        formatMoneyFromCents={formatMoneyFromCents}
+                        lessonPackageRevenueCents={lessonPackageRevenueCents}
+                        membershipPlans={activeMembershipPlans}
+                        recurringRevenueCents={activeMembershipRevenueCents + activeAcademyRevenueCents}
+                        onConsumeCreditPurchase={(purchase) => void onConsumeCreditPurchase(p.id, purchase.id)}
+                        onCreateCreditPackage={() => void onCreateCreditPackage(p)}
+                        onCreditPackageDraftChange={(draft) => setCreditPackageDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                        onCreditPurchaseDraftChange={(draft) => setCreditPurchaseDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                        onRecordCreditPurchase={() => void onRecordCreditPurchase(p)}
+                        onToggleCreditPackage={(creditPackage) => void onToggleCreditPackage(p.id, creditPackage)}
+                      />
                     ) : null}
                     {financeView === "expenses" ? (
-                      <WorkspaceList>
-                        {expenses.slice(0, 10).map((expense) => (
-                          <WorkspaceRow
-                            key={`finance-expense-workspace:${expense.id}`}
-                            className={expense.status}
-                            title={expense.description}
-                            detail={`${formatMoneyFromCents(expense.amountCents)} | ${expense.category || "Despesa"} | ${expense.spentOn}`}
-                            actions={
-                              expense.status === "posted" ? (
-                                <button className="danger" onClick={() => void onCancelExpense(p.id, expense.id)} disabled={busy}>
-                                  Cancelar
-                                </button>
-                              ) : null
-                            }
-                          >
-                            <small>{expense.status}</small>
-                          </WorkspaceRow>
-                        ))}
-                        {!expenses.length ? <p className="subtle">Sem despesas recentes.</p> : null}
-                      </WorkspaceList>
+                      <PlaceFinanceExpensesModule
+                        busy={busy}
+                        expenses={expenses}
+                        formatMoneyFromCents={formatMoneyFromCents}
+                        onCancelExpense={(expense) => void onCancelExpense(p.id, expense.id)}
+                      />
                     ) : null}
                   </FinanceWorkspaceShell>
                 ) : null}
@@ -3208,6 +3726,19 @@ export function PlacesPage({ user, profile }: Props) {
                     <strong>Contas a receber</strong>
                     <span>{countLabel(openReceivables.length, "pendente", "pendentes")}</span>
                   </div>
+                  {openReceivables.length ? (
+                    <div className="cluster" style={{ marginBottom: 8 }}>
+                      <button onClick={() => void onCreatePaymentReminderBatch(openReceivables)} disabled={busy}>
+                        Lembrar todos
+                      </button>
+                      <button onClick={() => void onCreatePaymentReminderBatch(openMembershipReceivables)} disabled={busy || !openMembershipReceivables.length}>
+                        Socios
+                      </button>
+                      <button onClick={() => void onCreatePaymentReminderBatch(openAcademyReceivables)} disabled={busy || !openAcademyReceivables.length}>
+                        Academia
+                      </button>
+                    </div>
+                  ) : null}
                   {memberships.filter((membership) => membership.status === "active").slice(0, 6).map((membership) => {
                     const plan = membershipPlans.find((item) => item.id === membership.planId);
                     const paid = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())]?.status === "paid";
@@ -3307,53 +3838,52 @@ export function PlacesPage({ user, profile }: Props) {
                   {!financeReceivables.length ? <p className="subtle">Sem mensalidades ou cobrancas ativas.</p> : null}
                 </div>
                 ) : null}
-                {showFinanceExpenses ? (
-                <>
-                <div className="place-staff-form">
-                  <input
-                    value={expenseDraft.category}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, category: event.target.value } }))}
-                    placeholder="Categoria"
-                  />
-                  <input
-                    value={expenseDraft.description}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, description: event.target.value } }))}
-                    placeholder="Despesa"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    value={expenseDraft.amount}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, amount: event.target.value } }))}
-                    placeholder="Valor R$"
-                  />
-                  <input
-                    type="date"
-                    value={expenseDraft.spentOn}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, spentOn: event.target.value || todayDateInputValue() } }))}
-                  />
-                  <button onClick={() => void onCreateExpense(p)} disabled={busy || !expenseDraft.description.trim()}>
-                    Registrar despesa
-                  </button>
-                </div>
+                {showFinancePackages ? (
                 <div className="place-booking-list">
-                  {expenses.slice(0, 6).map((expense) => (
-                    <div key={`finance-expense:${expense.id}`} className={`place-booking-row ${expense.status}`}>
+                  <div className="place-booking-head">
+                    <strong>Planos e pacotes</strong>
+                    <span>{formatMoneyFromCents(activeMembershipRevenueCents + activeAcademyRevenueCents)} receita mensal prevista</span>
+                  </div>
+                  {[...activeMembershipPlans.slice(0, 4).map((plan) => ({
+                    id: `legacy-plan:${plan.id}`,
+                    title: plan.name,
+                    detail: `${formatMoneyFromCents(plan.monthlyFeeCents)} / mes | quadras ${plan.courtDiscountPercent}% | aulas ${plan.academyDiscountPercent}%`,
+                  })), ...activeAcademyClasses.slice(0, 4).map((academyClass) => ({
+                    id: `legacy-class:${academyClass.id}`,
+                    title: academyClass.title,
+                    detail: `${formatMoneyFromCents(academyClass.monthlyFeeCents)} / mes | ${academyClass.capacity} vagas`,
+                  }))].map((item) => (
+                    <div key={item.id} className="place-booking-row">
                       <div>
-                        <strong>{expense.description}</strong>
-                        <span>{formatMoneyFromCents(expense.amountCents)} | {expense.category || "Despesa"}</span>
-                        <small>{expense.spentOn} | {expense.status}</small>
+                        <strong>{item.title}</strong>
+                        <small>{item.detail}</small>
                       </div>
-                      {expense.status === "posted" ? (
-                        <button className="danger" onClick={() => void onCancelExpense(p.id, expense.id)} disabled={busy}>
-                          Cancelar
-                        </button>
-                      ) : null}
                     </div>
                   ))}
-                  {!expenses.length ? <p className="subtle">Sem despesas recentes.</p> : null}
+                  <div className="place-booking-row confirmed">
+                    <div>
+                      <strong>Mapa de ofertas</strong>
+                      <small>
+                        Socio recorrente, turma mensal e aula avulsa podem ser vendidos agora. Credito com saldo fica bloqueado ate existir controle de saldo e consumo por aluno.
+                      </small>
+                    </div>
+                  </div>
+                  {!activeMembershipPlans.length && !activeAcademyClasses.length ? (
+                    <p className="subtle">Sem planos ou turmas para vender como pacote.</p>
+                  ) : null}
                 </div>
-                </>
+                ) : null}
+                {showFinanceExpenses ? (
+                <PlaceFinanceExpensesModule
+                  busy={busy}
+                  draft={expenseDraft}
+                  expenses={expenses}
+                  formatMoneyFromCents={formatMoneyFromCents}
+                  limit={6}
+                  onCancelExpense={(expense) => void onCancelExpense(p.id, expense.id)}
+                  onCreateExpense={() => void onCreateExpense(p)}
+                  onDraftChange={(draft) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...draft, spentOn: draft.spentOn || todayDateInputValue() } }))}
+                />
                 ) : null}
               </div>
             ) : null}
@@ -3362,29 +3892,19 @@ export function PlacesPage({ user, profile }: Props) {
                 {showCanteenWorkspace ? (
                   <CanteenWorkspaceShell
                     activeView={canteenView}
-                    onViewChange={(view) => setCanteenViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                    onViewChange={(view) => selectCanteenView(p.id, view)}
                   >
                     {canteenView === "today" ? (
-                      <WorkspaceGrid>
-                        <WorkspaceCard
-                          title="Caixa da cantina hoje"
-                          subtitle={countLabel(todayPosSales.length, "venda paga", "vendas pagas")}
-                          value={formatMoneyFromCents(todayPosRevenueCents)}
-                          detail={todayPosSales.slice(0, 4).map((sale) => sale.productName).join(", ") || "Nenhuma venda hoje"}
-                        />
-                        <WorkspaceCard
-                          title="Estoque baixo"
-                          subtitle="Itens com ate 3 unidades"
-                          value={lowStockProducts.length}
-                          detail={lowStockProducts.map((product) => `${product.name} (${product.stockQuantity})`).join(", ") || "Estoque sem alerta"}
-                        />
-                        <WorkspaceCard
-                          title="Produtos ativos"
-                          subtitle="Tabela atual de venda"
-                          value={posProducts.length}
-                          detail={posProducts.slice(0, 5).map((product) => product.name).join(", ") || "Cadastre produtos para vender"}
-                        />
-                      </WorkspaceGrid>
+                      <PlaceCanteenSummaryModule
+                        busy={busy}
+                        countLabel={countLabel}
+                        formatMoneyFromCents={formatMoneyFromCents}
+                        lowStockProducts={lowStockProducts}
+                        products={posProducts}
+                        sales={posSales}
+                        todayRevenueCents={todayPosRevenueCents}
+                        todaySales={todayPosSales}
+                      />
                     ) : null}
                     {canteenView === "sell" ? (
                       <WorkspaceGrid>
@@ -3396,182 +3916,47 @@ export function PlacesPage({ user, profile }: Props) {
                       </WorkspaceGrid>
                     ) : null}
                     {canteenView === "stock" ? (
-                      <WorkspaceList>
-                        {posProducts.slice(0, 12).map((product) => (
-                          <WorkspaceRow
-                            key={`canteen-stock:${product.id}`}
-                            className={product.stockQuantity <= 3 ? "blocked" : ""}
-                            title={product.name}
-                            detail={`${product.category || "Produto"} | ${formatMoneyFromCents(product.priceCents)}`}
-                          >
-                            <small>{product.stockQuantity} em estoque{product.stockQuantity <= 3 ? " | revisar reposicao" : ""}</small>
-                          </WorkspaceRow>
-                        ))}
-                        {!posProducts.length ? <p className="subtle">Cadastre produtos para controlar estoque.</p> : null}
-                      </WorkspaceList>
+                      <PlaceCanteenStockModule countLabel={countLabel} formatMoneyFromCents={formatMoneyFromCents} products={posProducts} />
                     ) : null}
                     {canteenView === "products" ? (
-                      <WorkspaceGrid>
-                        {posProducts.slice(0, 12).map((product) => (
-                          <WorkspaceCard
-                            key={`canteen-product:${product.id}`}
-                            title={product.name}
-                            subtitle={product.category || "Produto"}
-                            value={formatMoneyFromCents(product.priceCents)}
-                            detail={`${product.stockQuantity} em estoque`}
-                          />
-                        ))}
-                        {!posProducts.length ? <p className="subtle">Nenhum produto cadastrado.</p> : null}
-                      </WorkspaceGrid>
+                      <PlaceCanteenProductsModule formatMoneyFromCents={formatMoneyFromCents} products={posProducts} />
                     ) : null}
                   </CanteenWorkspaceShell>
                 ) : null}
                 {showCanteenSummary ? (
-                <>
-                <div className="place-booking-head">
-                  <strong>Cantina e vendas</strong>
-                  <span>{formatMoneyFromCents(operationalStats.posRevenueCents - operationalStats.expenseCents)} saldo POS</span>
-                </div>
-                <div className="place-module-summary">
-                  <div>
-                    <strong>{formatMoneyFromCents(todayPosRevenueCents)}</strong>
-                    <span>Vendas hoje</span>
-                  </div>
-                  <div>
-                    <strong>{todayPosSales.length}</strong>
-                    <span>Itens vendidos hoje</span>
-                  </div>
-                  <div>
-                    <strong>{posProducts.length}</strong>
-                    <span>Produtos cadastrados</span>
-                  </div>
-                  <div>
-                    <strong>{lowStockProducts.length}</strong>
-                    <span>Estoque baixo</span>
-                  </div>
-                </div>
-                </>
+                <PlaceCanteenSummaryModule
+                  balanceCents={operationalStats.posRevenueCents - operationalStats.expenseCents}
+                  busy={busy}
+                  countLabel={countLabel}
+                  formatMoneyFromCents={formatMoneyFromCents}
+                  lowStockProducts={lowStockProducts}
+                  products={posProducts}
+                  sales={posSales}
+                  todayRevenueCents={todayPosRevenueCents}
+                  todaySales={todayPosSales}
+                  variant="legacy"
+                  onCancelSale={(sale) => void onCancelPosSale(p.id, sale.id)}
+                />
                 ) : null}
                 {showCanteenProducts ? (
-                <div className="place-staff-form">
-                  <input
-                    value={posProductDraft.name}
-                    onChange={(event) => setPosProductDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posProductDraft, name: event.target.value } }))}
-                    placeholder="Produto"
-                  />
-                  <input
-                    value={posProductDraft.category}
-                    onChange={(event) => setPosProductDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posProductDraft, category: event.target.value } }))}
-                    placeholder="Categoria"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    value={posProductDraft.price}
-                    onChange={(event) => setPosProductDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posProductDraft, price: event.target.value } }))}
-                    placeholder="Preco R$"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    value={posProductDraft.stock}
-                    onChange={(event) => setPosProductDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posProductDraft, stock: event.target.value } }))}
-                    placeholder="Estoque"
-                  />
-                  <button onClick={() => void onCreatePosProduct(p)} disabled={busy || !posProductDraft.name.trim()}>
-                    Criar produto
-                  </button>
-                </div>
+                <PlaceCanteenProductForm
+                  busy={busy}
+                  draft={posProductDraft}
+                  onChange={(draft) => setPosProductDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                  onSubmit={() => void onCreatePosProduct(p)}
+                />
                 ) : null}
                 {showCanteenSale ? (
-                <div className="place-staff-form">
-                  <select
-                    value={posSaleDraft.productId}
-                    onChange={(event) => {
-                      const product = posProducts.find((item) => item.id === event.target.value);
-                      setPosSaleDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: {
-                          ...posSaleDraft,
-                          productId: event.target.value,
-                          productName: product?.name || "",
-                          unitAmount: product ? String(Math.round(product.priceCents / 100)) : posSaleDraft.unitAmount,
-                        },
-                      }));
-                    }}
-                  >
-                    <option value="">Venda avulsa</option>
-                    {posProducts.map((product) => (
-                      <option key={product.id} value={product.id}>
-                        {product.name} ({product.stockQuantity})
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    value={posSaleDraft.productName}
-                    onChange={(event) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posSaleDraft, productName: event.target.value } }))}
-                    placeholder="Produto avulso"
-                  />
-                  <input
-                    value={posSaleDraft.buyerName}
-                    onChange={(event) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posSaleDraft, buyerName: event.target.value } }))}
-                    placeholder="Cliente"
-                  />
-                  <input
-                    type="number"
-                    min={1}
-                    value={posSaleDraft.quantity}
-                    onChange={(event) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posSaleDraft, quantity: event.target.value } }))}
-                    placeholder="Qtd"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    value={posSaleDraft.unitAmount}
-                    onChange={(event) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: { ...posSaleDraft, unitAmount: event.target.value } }))}
-                    placeholder="Valor R$"
-                  />
-                  <button onClick={() => void onRecordPosSale(p)} disabled={busy || (!posSaleDraft.productId && !posSaleDraft.productName.trim())}>
-                    Registrar venda
-                  </button>
-                </div>
+                <PlaceCanteenSaleForm
+                  busy={busy}
+                  draft={posSaleDraft}
+                  products={posProducts}
+                  onChange={(draft) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                  onSubmit={() => void onRecordPosSale(p)}
+                />
                 ) : null}
                 {showCanteenStock ? (
-                <div className="place-booking-list">
-                  <div className="place-booking-head">
-                    <strong>Estoque</strong>
-                    <span>{countLabel(lowStockProducts.length, "item baixo", "itens baixos")}</span>
-                  </div>
-                  {posProducts.slice(0, 8).map((product) => (
-                    <div key={`stock:${product.id}`} className={`place-booking-row ${product.stockQuantity <= 3 ? "blocked" : ""}`}>
-                      <div>
-                        <strong>{product.name}</strong>
-                        <span>{product.category || "Produto"} | {formatMoneyFromCents(product.priceCents)}</span>
-                        <small>{product.stockQuantity} em estoque{product.stockQuantity <= 3 ? " | revisar reposicao" : ""}</small>
-                      </div>
-                    </div>
-                  ))}
-                  {!posProducts.length ? <p className="subtle">Cadastre produtos para vender na recepcao ou cantina.</p> : null}
-                </div>
-                ) : null}
-                {showCanteenSummary ? (
-                <div className="place-booking-list">
-                  {posSales.slice(0, 4).map((sale) => (
-                    <div key={sale.id} className={`place-booking-row ${sale.status}`}>
-                      <div>
-                        <strong>{sale.productName}</strong>
-                        <span>{sale.quantity} x {formatMoneyFromCents(sale.unitAmountCents)} = {formatMoneyFromCents(sale.totalAmountCents)}</span>
-                        <small>{sale.buyerName || "Cliente avulso"} | {sale.status}</small>
-                      </div>
-                      {sale.status === "paid" ? (
-                        <button className="danger" onClick={() => void onCancelPosSale(p.id, sale.id)} disabled={busy}>
-                          Cancelar
-                        </button>
-                      ) : null}
-                    </div>
-                  ))}
-                  {!posSales.length ? <p className="subtle">Sem vendas recentes.</p> : null}
-                </div>
+                <PlaceCanteenStockModule countLabel={countLabel} formatMoneyFromCents={formatMoneyFromCents} products={posProducts} showHeader />
                 ) : null}
               </div>
             ) : null}
@@ -3598,532 +3983,155 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
               ) : null}
               {isManagementCockpit ? (
-                <div className="place-action-queue compact">
-                  <strong>Agenda de hoje</strong>
-                  <div>
-                    {todayBookings.slice(0, 6).map((booking) => (
-                      <span key={`today-booking:${booking.id}`}>
-                        <strong>{new Date(booking.startsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</strong>
-                        {booking.courtName || "Quadra"} · {booking.status === "blocked" ? "Bloqueio" : booking.playerName}
-                      </span>
-                    ))}
-                    {!todayBookings.length ? <span>Nenhuma reserva para hoje.</span> : null}
-                  </div>
-                </div>
-              ) : null}
-              {canManageBookings && pendingBookings.length ? (
-                <div className="place-action-queue compact">
-                  <strong>Reservas aguardando confirmação</strong>
-                  <div>
-                    {pendingBookings.slice(0, 6).map((booking) => (
-                      <span key={`pending-booking:${booking.id}`}>
-                        <strong>{booking.courtName || "Quadra"}</strong>
-                        {booking.playerName} · {new Date(booking.startsAt).toLocaleString("pt-BR")}
-                        <button onClick={() => void onUpdateBooking(p.id, booking.id, "confirmed")} disabled={busy}>
-                          Confirmar
-                        </button>
-                        <button className="danger" onClick={() => void onUpdateBooking(p.id, booking.id, "cancelled")} disabled={busy}>
-                          Cancelar
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-              {canManageBookings && waitingCourtEntries.length ? (
-                <div className="place-action-queue compact">
-                  <strong>Lista de espera</strong>
-                  <div>
-                    {waitingCourtEntries.slice(0, 6).map((entry) => (
-                      <span key={`waiting-entry:${entry.id}`}>
-                        <strong>{entry.playerName}</strong>
-                        {entry.courtName || "Quadra"} · {new Date(entry.startsAt).toLocaleString("pt-BR")}
-                        <button onClick={() => void onPromoteBookingWaitlist(p.id, entry.id)} disabled={busy}>
-                          Criar reserva
-                        </button>
-                        <button onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "invited")} disabled={busy}>
-                          Convidar
-                        </button>
-                        <button className="danger" onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "cancelled")} disabled={busy}>
-                          Remover
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                <PlaceBookingOperationalQueues
+                  busy={busy}
+                  canManageBookings={canManageBookings}
+                  isWaitlistPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
+                  onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                  onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                  onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
+                  pendingBookings={pendingBookings}
+                  todayBookings={todayBookings}
+                  waitingSinceLabel={waitingSinceLabel}
+                  waitlistEntries={waitingCourtEntries}
+                />
               ) : null}
               {showBookingWorkspace ? (
                 <BookingWorkspaceShell
                   activeView={bookingView}
-                  onViewChange={(view) => setBookingViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                  onViewChange={(view) => selectBookingView(p.id, view)}
                 >
-                  {bookingView === "today" ? (
-                    <div className="academy-workspace-grid">
-                      {todayBookings.slice(0, 8).map((booking) => {
-                        const bookingPayment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
-                        return (
-                          <div key={`booking-today:${booking.id}`} className="academy-workspace-card">
-                            <header>
-                              <div>
-                                <strong>
-                                  {new Date(booking.startsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {booking.courtName || "Quadra"}
-                                </strong>
-                                <span>{booking.status === "blocked" ? "Bloqueio operacional" : booking.playerName}</span>
-                              </div>
-                              <b>{booking.status}</b>
-                            </header>
-                            <div className="academy-workspace-metrics">
-                              <span>{new Date(booking.endsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
-                              <span>{bookingPayment?.status === "paid" ? "Pago" : bookingPayment?.status === "pending" ? "Pagamento pendente" : "Sem pagamento"}</span>
-                              {booking.recurrenceTotal > 1 ? <span>Serie {booking.recurrenceIndex}/{booking.recurrenceTotal}</span> : null}
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {!todayBookings.length ? <p className="subtle">Nenhuma reserva para hoje.</p> : null}
-                    </div>
+                    {bookingView === "today" ? (
+                    <PlaceBookingTodayModule
+                      bookings={todayBookings}
+                      getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                    />
                   ) : null}
                   {bookingView === "reservations" ? (
-                    <div className="academy-workspace-list">
-                      {bookings.slice(0, 10).map((booking) => (
-                        <div key={`booking-summary:${booking.id}`} className="academy-workspace-row">
-                          <div>
-                            <strong>{booking.courtName || "Quadra"}</strong>
-                            <span>{booking.playerName} | {new Date(booking.startsAt).toLocaleString("pt-BR")} | {booking.status}</span>
-                          </div>
-                          <span>
-                            {canManageBookings && booking.status === "pending" ? (
-                              <button onClick={() => void onUpdateBooking(p.id, booking.id, "confirmed")} disabled={busy}>
-                                Confirmar
-                              </button>
-                            ) : null}
-                            {canManageBookings && booking.status !== "cancelled" ? (
-                              <button className="danger" onClick={() => void onUpdateBooking(p.id, booking.id, "cancelled")} disabled={busy}>
-                                {booking.status === "blocked" ? "Liberar" : "Cancelar"}
-                              </button>
-                            ) : null}
-                          </span>
-                        </div>
-                      ))}
-                      {!bookings.length ? <p className="subtle">Sem reservas recentes.</p> : null}
-                    </div>
+                    <PlaceBookingReservationsModule
+                      bookings={bookings}
+                      busy={busy}
+                      canManageBookings={canManageBookings}
+                      onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                    />
                   ) : null}
                   {bookingView === "calendar" ? (
-                    <div className="academy-workspace-grid">
-                      <div className="academy-workspace-card">
-                        <header>
-                          <div>
-                            <strong>Ocupacao do dia</strong>
-                            <span>{courtCalendarDay}</span>
-                          </div>
-                          <b>{calendarOccupancyPct}%</b>
-                        </header>
-                        <div className="academy-workspace-metrics">
-                          <span>{countLabel(calendarBookings.filter((booking) => booking.status !== "blocked").length, "reserva", "reservas")}</span>
-                          <span>{(calendarReservedMinutes / 60).toFixed(1)}h reservadas</span>
-                          <span>{(calendarBlockedMinutes / 60).toFixed(1)}h bloqueadas</span>
-                        </div>
-                      </div>
-                    </div>
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Ocupacao do dia"
+                        subtitle={courtCalendarDay}
+                        value={`${calendarOccupancyPct}%`}
+                        metrics={[
+                          countLabel(calendarBookings.filter((booking) => booking.status !== "blocked").length, "reserva", "reservas"),
+                          `${(calendarReservedMinutes / 60).toFixed(1)}h reservadas`,
+                          `${(calendarBlockedMinutes / 60).toFixed(1)}h bloqueadas`,
+                        ]}
+                      />
+                    </WorkspaceGrid>
                   ) : null}
                   {bookingView === "new" ? (
-                    <div className="academy-workspace-grid">
-                      <div className="academy-workspace-card">
-                        <header>
-                          <div>
-                            <strong>Criar reserva ou bloqueio</strong>
-                            <span>Use o formulario abaixo para buscar disponibilidade e confirmar o horario.</span>
-                          </div>
-                        </header>
-                        <div className="academy-workspace-metrics">
-                          <span>{countLabel(availableCourts.length, "quadra disponivel", "quadras disponiveis")}</span>
-                          <span>{selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : "Sem valor selecionado"}</span>
-                        </div>
-                      </div>
-                    </div>
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Criar reserva ou bloqueio"
+                        subtitle="Use o formulario abaixo para buscar disponibilidade e confirmar o horario."
+                        metrics={[
+                          countLabel(availableCourts.length, "quadra disponivel", "quadras disponiveis"),
+                          selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : "Sem valor selecionado",
+                          availableCourts.find((court) => court.id === bookingDraft.courtId)?.ruleName || "Regra padrao",
+                        ]}
+                      />
+                    </WorkspaceGrid>
                   ) : null}
                   {bookingView === "waitlist" ? (
-                    <div className="academy-workspace-list">
-                      {bookingWaitlist.slice(0, 10).map((entry) => (
-                        <div key={`booking-waitlist-summary:${entry.id}`} className="academy-workspace-row">
-                          <div>
-                            <strong>{entry.playerName}</strong>
-                            <span>{entry.courtName || "Quadra"} | {new Date(entry.startsAt).toLocaleString("pt-BR")} | {entry.status}</span>
-                          </div>
-                          <span>
-                            {canManageBookings && (entry.status === "waiting" || entry.status === "invited") ? (
-                              <button className="primary" onClick={() => void onPromoteBookingWaitlist(p.id, entry.id)} disabled={busy}>
-                                Criar reserva
-                              </button>
-                            ) : null}
-                            {canManageBookings && entry.status === "waiting" ? (
-                              <button onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "invited")} disabled={busy}>
-                                Convidar
-                              </button>
-                            ) : null}
-                          </span>
-                        </div>
-                      ))}
-                      {!bookingWaitlist.length ? <p className="subtle">Ninguem aguardando horario.</p> : null}
-                    </div>
+                    <PlaceBookingWaitlistModule
+                      busy={busy}
+                      canManageBookings={canManageBookings}
+                      entries={bookingWaitlist}
+                      isPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
+                      onPromoteEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                      onUpdateEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
+                      statusLabel={courtWaitlistStatusLabel}
+                      waitingSinceLabel={waitingSinceLabel}
+                    />
                   ) : null}
                   {bookingView === "resources" ? (
-                    <div className="academy-workspace-grid">
-                      <div className="academy-workspace-card">
-                        <header>
-                          <div>
-                            <strong>Quadras cadastradas</strong>
-                            <span>{countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}</span>
-                          </div>
-                        </header>
-                        <small>{activeCourts.map((court) => court.name).join(", ") || "Cadastre a primeira quadra"}</small>
-                      </div>
-                    </div>
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Quadras cadastradas"
+                        subtitle={countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}
+                        detail={activeCourts.map((court) => court.name).join(", ") || "Cadastre a primeira quadra"}
+                      />
+                    </WorkspaceGrid>
                   ) : null}
                 </BookingWorkspaceShell>
               ) : null}
               {showBookingResources ? (
-              <>
-              <div className="place-booking-head">
-                <strong>Quadras e reservas</strong>
-                <span>{countLabel(activeCourts.length, "quadra", "quadras")}</span>
-              </div>
-              {canManageBookings ? (
-                <div className="place-court-create">
-                  <input
-                    value={courtDraftByPlace[p.id] || ""}
-                    onChange={(event) => setCourtDraftByPlace((prev) => ({ ...prev, [p.id]: event.target.value }))}
-                    placeholder="Nova quadra"
-                  />
-                  <button onClick={() => void onCreateCourt(p)} disabled={busy || !(courtDraftByPlace[p.id] || "").trim()}>
-                    Adicionar
-                  </button>
-                </div>
-              ) : null}
-              {activeCourts.length ? (
-                <div className="place-court-list">
-                  {activeCourts.map((court) => {
-                    const priceDraft = courtPriceDraftByCourt[court.id] || {
-                      publicPrice: String(Math.round(court.bookingFeeCents / 100)),
-                      memberPrice: court.memberBookingFeeCents === null ? "" : String(Math.round(court.memberBookingFeeCents / 100)),
-                    };
-                    return (
-                    <span key={court.id}>
-                      {court.name} · {formatMoneyFromCents(court.bookingFeeCents)}
-                      {court.memberBookingFeeCents !== null ? ` | mensalista ${formatMoneyFromCents(court.memberBookingFeeCents)}` : ""}
-                      {myMembership?.status === "active" ? (() => {
-                        const plan = membershipPlans.find((item) => item.id === myMembership.planId);
-                        const memberPrice = court.memberBookingFeeCents ?? (plan ? Math.round((court.bookingFeeCents * (100 - plan.courtDiscountPercent)) / 100) : court.bookingFeeCents);
-                        return ` | seu valor ${formatMoneyFromCents(memberPrice)}`;
-                      })() : ""}
-                      {canManageFinance ? (
-                        <>
-                          <input
-                            type="number"
-                            min={0}
-                            step="1"
-                            value={priceDraft.publicPrice}
-                            onChange={(event) =>
-                              setCourtPriceDraftByCourt((prev) => ({ ...prev, [court.id]: { ...priceDraft, publicPrice: event.target.value } }))
-                            }
-                            aria-label={`Valor publico da ${court.name}`}
-                            placeholder="Publico R$"
-                          />
-                          <input
-                            type="number"
-                            min={0}
-                            step="1"
-                            value={priceDraft.memberPrice}
-                            onChange={(event) =>
-                              setCourtPriceDraftByCourt((prev) => ({ ...prev, [court.id]: { ...priceDraft, memberPrice: event.target.value } }))
-                            }
-                            aria-label={`Valor mensalista da ${court.name}`}
-                            placeholder="Mensalista R$"
-                          />
-                          <button onClick={() => void onSaveCourtPrice(p.id, court)} disabled={busy}>
-                            Salvar
-                          </button>
-                        </>
-                      ) : null}
-                    </span>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="subtle">Sem quadras cadastradas para reserva.</p>
-              )}
-              </>
+                <PlaceBookingResourcesModule
+                  activeCourts={activeCourts}
+                  bookingRuleDraft={bookingRuleDraft}
+                  bookingRules={bookingRules}
+                  busy={busy}
+                  canManageBookings={canManageBookings}
+                  canManageFinance={canManageFinance}
+                  courtDraft={courtDraftByPlace[p.id] || ""}
+                  courtPriceDraftByCourt={courtPriceDraftByCourt}
+                  membershipPlans={membershipPlans}
+                  myMembership={myMembership}
+                  onChangeCourtDraft={(value) => setCourtDraftByPlace((prev) => ({ ...prev, [p.id]: value }))}
+                  onChangeCourtPriceDraft={(courtId, draft) => setCourtPriceDraftByCourt((prev) => ({ ...prev, [courtId]: draft }))}
+                  onChangeRuleDraft={(draft) => setBookingRuleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                  onCreateCourt={() => void onCreateCourt(p)}
+                  onCreateRule={() => void onCreateBookingRule(p)}
+                  onSaveCourtPrice={(court) => void onSaveCourtPrice(p.id, court)}
+                  onToggleRule={(rule) => void onToggleBookingRule(p.id, rule)}
+                  ruleProfileScopeLabels={BOOKING_PROFILE_SCOPE_LABELS}
+                  ruleWeekdaysLabel={bookingRuleWeekdaysLabel}
+                />
               ) : null}
               {showBookingCreate && activeCourts.length ? (
-                <div className="place-booking-form">
-                  <select
-                    value={bookingDraft.courtId || activeCourts[0]?.id || ""}
-                    onChange={(event) =>
-                      setBookingDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...bookingDraft, courtId: event.target.value },
-                      }))
-                    }
-                  >
-                    {(availableCourts.length ? availableCourts : activeCourts).map((court) => (
-                      <option key={court.id} value={court.id}>
-                        {court.name}
-                        {"effectiveFeeCents" in court ? ` - ${formatMoneyFromCents((court as AvailableCourt).effectiveFeeCents)}` : ""}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    type="datetime-local"
-                    value={bookingDraft.startsAt}
-                    onChange={(event) =>
-                      setBookingDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...bookingDraft, startsAt: event.target.value },
-                      }))
-                    }
-                  />
-                  <input
-                    type="datetime-local"
-                    value={bookingDraft.endsAt}
-                    onChange={(event) =>
-                      setBookingDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...bookingDraft, endsAt: event.target.value },
-                      }))
-                    }
-                  />
-                  <input
-                    value={bookingDraft.notes}
-                    onChange={(event) =>
-                      setBookingDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...bookingDraft, notes: event.target.value },
-                      }))
-                    }
-                    placeholder="Observacao"
-                  />
-                  <input
-                    type="number"
-                    min={1}
-                    max={26}
-                    value={bookingDraft.repeatWeeks}
-                    onChange={(event) =>
-                      setBookingDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...bookingDraft, repeatWeeks: event.target.value },
-                      }))
-                    }
-                    title="Repetir por semanas"
-                    aria-label="Repetir por semanas"
-                  />
-                  <button
-                    onClick={() => void onSearchAvailableCourts(p)}
-                    disabled={busy || !bookingDraft.startsAt || !bookingDraft.endsAt}
-                  >
-                    Buscar
-                  </button>
-                  <button
-                    className="primary"
-                    onClick={() => void onCreateBooking(p)}
-                    disabled={busy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt}
-                  >
-                    Reservar {selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : ""}
-                  </button>
-                  {canManageBookings ? (
-                    <button
-                      onClick={() => void onCreateCourtBlock(p)}
-                      disabled={busy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt}
-                    >
-                      Bloquear
-                    </button>
-                  ) : null}
-                  <button
-                    onClick={() => void onJoinBookingWaitlist(p)}
-                    disabled={busy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt}
-                  >
-                    Entrar na espera
-                  </button>
-                </div>
-              ) : null}
-              {showBookingCreate && availableCourts.length ? (
-                <div className="place-court-list">
-                  {availableCourts.map((court) => (
-                    <button
-                      key={`available-court:${court.id}`}
-                      className={bookingDraft.courtId === court.id ? "primary" : ""}
-                      onClick={() => setBookingDraftByPlace((prev) => ({ ...prev, [p.id]: { ...bookingDraft, courtId: court.id } }))}
-                      disabled={busy}
-                    >
-                      {court.name} | {formatMoneyFromCents(court.effectiveFeeCents)}
-                      {court.isMemberPrice ? " mensalista" : ""}
-                    </button>
-                  ))}
-                </div>
+                <PlaceBookingCreateModule
+                  activeCourts={activeCourts}
+                  availableCourts={availableCourts}
+                  busy={busy}
+                  canManageBookings={canManageBookings}
+                  draft={bookingDraft}
+                  onBlock={() => void onCreateCourtBlock(p)}
+                  onChangeDraft={(draft) => setBookingDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                  onJoinWaitlist={() => void onJoinBookingWaitlist(p)}
+                  onReserve={() => void onCreateBooking(p)}
+                  onSearch={() => void onSearchAvailableCourts(p)}
+                  selectedCourtPrice={selectedCourtPrice}
+                />
               ) : null}
               {showBookingCalendar && activeCourts.length ? (
-                <div className="court-calendar-panel">
-                  <div className="place-booking-head">
-                    <strong>Calendario das quadras</strong>
-                    <input
-                      type="date"
-                      value={courtCalendarDay}
-                      onChange={(event) =>
-                        setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: event.target.value || todayDateInputValue() }))
-                      }
-                    />
-                  </div>
-                  <div className="court-calendar-grid">
-                    {activeCourts.map((court) => {
-                      const courtBookings = calendarBookings.filter((booking) => booking.courtId === court.id);
-                      return (
-                        <div key={`calendar:${court.id}`} className="court-calendar-column">
-                          <strong>{court.name}</strong>
-                          {courtBookings.length ? (
-                            courtBookings.map((booking) => (
-                              <span key={`calendar-booking:${booking.id}`} className={booking.status}>
-                                {new Date(booking.startsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}-
-                                {new Date(booking.endsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} ·{" "}
-                                {booking.status === "blocked" ? "Bloqueio" : booking.playerName}
-                              </span>
-                            ))
-                          ) : (
-                            <small>Livre no dia.</small>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                  {canManageBookings ? (
-                    <div className="place-analytics-grid court-occupancy-grid">
-                      <div>
-                        <strong>{calendarBookings.filter((booking) => booking.status !== "blocked").length}</strong>
-                        <span>Reservas no dia</span>
-                      </div>
-                      <div>
-                        <strong>{(calendarReservedMinutes / 60).toFixed(1)}h</strong>
-                        <span>Horas reservadas</span>
-                      </div>
-                      <div>
-                        <strong>{(calendarBlockedMinutes / 60).toFixed(1)}h</strong>
-                        <span>Horas bloqueadas</span>
-                      </div>
-                      <div>
-                        <strong>{calendarOccupancyPct}%</strong>
-                        <span>Ocupacao estimada</span>
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
+                <PlaceBookingCalendarModule
+                  activeCourts={activeCourts}
+                  blockedMinutes={calendarBlockedMinutes}
+                  bookings={calendarBookings}
+                  canManageBookings={canManageBookings}
+                  day={courtCalendarDay}
+                  occupancyPct={calendarOccupancyPct}
+                  onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
+                  reservedMinutes={calendarReservedMinutes}
+                />
               ) : null}
-              {showBookingReservations ? (
-              <div className="place-booking-list">
-                {bookings.slice(0, 5).map((booking) => {
-                  const bookingPayment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
-                  return (
-                  <div key={booking.id} className={`place-booking-row ${booking.status}`}>
-                    <div>
-                      <strong>{booking.courtName || "Quadra"}</strong>
-                      <span>
-                        {new Date(booking.startsAt).toLocaleString("pt-BR")} - {new Date(booking.endsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
-                      </span>
-                      <small>
-                        {booking.playerName} | {booking.status}
-                      </small>
-                      {booking.recurrenceTotal > 1 ? (
-                        <small>
-                          Serie {booking.recurrenceIndex}/{booking.recurrenceTotal}
-                        </small>
-                      ) : null}
-                      {bookingPayment?.status === "paid" ? (
-                        <small className="payment-paid-label">Pago</small>
-                      ) : bookingPayment?.status === "pending" ? (
-                        <small>Pagamento pendente: {formatMoneyFromCents(bookingPayment.amountCents)}</small>
-                      ) : null}
-                    </div>
-                    {canManageBookings && booking.status !== "cancelled" ? (
-                      <span>
-                        {booking.status === "pending" ? (
-                          <button onClick={() => void onUpdateBooking(p.id, booking.id, "confirmed")} disabled={busy}>
-                            Confirmar
-                          </button>
-                        ) : null}
-                        <button className="danger" onClick={() => void onUpdateBooking(p.id, booking.id, "cancelled")} disabled={busy}>
-                          {booking.status === "blocked" ? "Liberar" : "Cancelar"}
-                        </button>
-                        {bookingPayment?.status === "pending" ? (
-                          <button onClick={() => void onAdminMarkCourtBookingPaid(booking, bookingPayment)} disabled={busy}>
-                            Marcar pago
-                          </button>
-                        ) : null}
-                        {booking.recurrenceGroupId ? (
-                          <button className="danger" onClick={() => void onCancelBookingSeries(p.id, booking.id)} disabled={busy}>
-                            Cancelar serie
-                          </button>
-                        ) : null}
-                      </span>
-                    ) : booking.userId === user.id && booking.status !== "cancelled" ? (
-                      <span>
-                        {bookingPayment?.status === "paid" ? (
-                          <small className="payment-paid-label">Pago</small>
-                        ) : (
-                          <small>Pagamento sera confirmado pela plataforma</small>
-                        )}
-                        <button className="danger" onClick={() => void onUpdateBooking(p.id, booking.id, "cancelled")} disabled={busy}>
-                          Cancelar
-                        </button>
-                        {booking.recurrenceGroupId ? (
-                          <button className="danger" onClick={() => void onCancelBookingSeries(p.id, booking.id)} disabled={busy}>
-                            Cancelar serie
-                          </button>
-                        ) : null}
-                      </span>
-                    ) : null}
-                  </div>
-                  );
-                })}
-                {!bookings.length ? <p className="subtle">Sem reservas recentes.</p> : null}
-              </div>
-              ) : null}
-              {showBookingWaitlist && bookingWaitlist.length ? (
-                <div className="place-booking-list">
-                  <strong>Lista de espera</strong>
-                  {bookingWaitlist.slice(0, 5).map((entry) => (
-                    <div key={entry.id} className={`place-booking-row ${entry.status}`}>
-                      <div>
-                        <strong>{entry.courtName || "Quadra"}</strong>
-                        <span>
-                          {new Date(entry.startsAt).toLocaleString("pt-BR")} -{" "}
-                          {new Date(entry.endsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
-                        </span>
-                        <small>
-                          {entry.playerName} | {entry.status}
-                        </small>
-                      </div>
-                      {canManageBookings ? (
-                        <span>
-                          {entry.status === "waiting" || entry.status === "invited" ? (
-                            <button className="primary" onClick={() => void onPromoteBookingWaitlist(p.id, entry.id)} disabled={busy}>
-                              Criar reserva
-                            </button>
-                          ) : null}
-                          {entry.status === "waiting" ? (
-                            <button onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "invited")} disabled={busy}>
-                              Convidar
-                            </button>
-                          ) : null}
-                          <button className="danger" onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "cancelled")} disabled={busy}>
-                            Remover
-                          </button>
-                        </span>
-                      ) : entry.userId === user.id && entry.status !== "cancelled" ? (
-                        <button className="danger" onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "cancelled")} disabled={busy}>
-                          Sair da espera
-                        </button>
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-              ) : null}
+              <PlaceBookingDetailedListModule
+                bookings={bookings}
+                busy={busy}
+                canManageBookings={canManageBookings}
+                currentUserId={user.id}
+                getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                onCancelSeries={(bookingId) => void onCancelBookingSeries(p.id, bookingId)}
+                onMarkPaid={(booking, payment) => void onAdminMarkCourtBookingPaid(booking, payment)}
+                onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
+                showReservations={showBookingReservations}
+                showWaitlist={showBookingWaitlist}
+                statusLabel={courtWaitlistStatusLabel}
+                waitingSinceLabel={waitingSinceLabel}
+                waitlistEntries={bookingWaitlist}
+              />
             </div>
             ) : null}
             {showManagementModule("academy") && showAcademyTools ? (
@@ -4149,339 +4157,120 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
               ) : null}
               {isManagementCockpit ? (
-                <div className="place-action-queue compact">
-                  <strong>Aulas do dia</strong>
-                  <div>
-                    {todayClasses.slice(0, 6).map((academyClass) => (
-                      <span key={`today-class:${academyClass.id}`}>
-                        <strong>{academyClass.startsAt.slice(0, 5)}</strong>
-                        {academyClass.title} · {academyClass.coachName || "Professor"} · {academyClass.level || "nivel livre"}
-                      </span>
-                    ))}
-                    {!todayClasses.length ? <span>Nenhuma turma programada para hoje.</span> : null}
-                  </div>
-                </div>
-              ) : null}
-              {canManageAcademy && (academyEnrollments.some((enrollment) => enrollment.status === "pending") || actionableLessonRequests.length) ? (
-                <div className="place-action-queue compact">
-                  <strong>Pendências da academia</strong>
-                  <div>
-                    {academyEnrollments.filter((enrollment) => enrollment.status === "pending").slice(0, 4).map((enrollment) => {
-                      const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
-                      return (
-                        <span key={`pending-enrollment:${enrollment.id}`}>
-                          <strong>{enrollment.playerName}</strong>
-                          Matrícula em {academyClass?.title || "turma"} aguardando aprovação
-                          <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
-                            Ativar
-                          </button>
-                          <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "cancelled")} disabled={busy}>
-                            Cancelar
-                          </button>
-                        </span>
-                      );
-                    })}
-                    {actionableLessonRequests.slice(0, 4).map((request) => (
-                      <span key={`pending-lesson:${request.id}`}>
-                        <strong>{request.playerName}</strong>
-                        {request.requestType === "makeup" ? "Reposição" : "Aula avulsa"} · {request.requestedOn} · {request.status}
-                        {request.status === "pending" ? (
-                          <>
-                            <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "approved")} disabled={busy}>
-                              Aprovar
-                            </button>
-                            <button className="danger" onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "rejected")} disabled={busy}>
-                              Recusar
-                            </button>
-                          </>
-                        ) : request.paymentStatus !== "paid" ? (
-                          <button onClick={() => void onMarkLessonRequestPaid(p.id, request)} disabled={busy}>
-                            Marcar pago
-                          </button>
-                        ) : null}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                <PlaceAcademyOperationalQueues
+                  actionableLessonRequests={actionableLessonRequests}
+                  academyClasses={academyClasses}
+                  busy={busy}
+                  canManageAcademy={canManageAcademy}
+                  onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                  onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
+                  onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
+                  pendingEnrollments={academyEnrollments.filter((enrollment) => enrollment.status === "pending")}
+                  todayClasses={todayClasses}
+                />
               ) : null}
               {showAcademyWorkspace ? (
                 <AcademyWorkspaceShell
                   activeView={academyView}
-                  onViewChange={(view) => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                  onViewChange={(view) => selectAcademyView(p.id, view)}
                 >
                   {academyView === "today" ? (
-                    <div className="academy-workspace-grid">
-                      {todayClasses.slice(0, 8).map((academyClass) => {
-                        const enrollments = academyEnrollments.filter((item) => item.classId === academyClass.id);
-                        const activeCount = enrollments.filter((item) => item.status === "active").length;
-                        const classAttendanceToday = todayAttendance.filter((item) => item.classId === academyClass.id);
-                        const presentCount = classAttendanceToday.filter((item) => item.status === "present").length;
-                        const classMakeups = openAcademyMakeups.filter((item) => item.classId === academyClass.id);
-                        const plannedAbsences = academyAbsences.filter((item) => item.classId === academyClass.id && item.status === "open");
-                        const classCourt = activeCourts.find((court) => court.id === academyClass.courtId);
-                        return (
-                          <div key={`academy-today:${academyClass.id}`} className="academy-workspace-card">
-                            <header>
-                              <div>
-                                <strong>{academyClass.startsAt.slice(0, 5)} - {academyClass.title}</strong>
-                                <span>{[academyClass.coachName || "Professor", classCourt?.name, academyClass.level].filter(Boolean).join(" | ")}</span>
-                              </div>
-                              <b>{activeCount}/{academyClass.capacity}</b>
-                            </header>
-                            <div className="academy-workspace-metrics">
-                              <span>{countLabel(presentCount, "presente", "presentes")}</span>
-                              <span>{countLabel(plannedAbsences.length, "falta avisada", "faltas avisadas")}</span>
-                              <span>{countLabel(classMakeups.length, "reposicao", "reposicoes")}</span>
-                            </div>
-                            <small>{enrollments.filter((item) => item.status === "active").map((item) => item.playerName).join(", ") || "Sem alunos ativos"}</small>
-                          </div>
-                        );
-                      })}
-                      {!todayClasses.length ? <p className="subtle">Nenhuma aula programada para hoje.</p> : null}
-                    </div>
+                    <PlaceAcademyTodayModule
+                      activeCourts={activeCourts}
+                      absences={academyAbsences}
+                      attendanceToday={todayAttendance}
+                      classes={todayClasses}
+                      enrollments={academyEnrollments}
+                      makeups={openAcademyMakeups}
+                      onOpenClasses={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
+                      onOpenSetup={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "resources" }))}
+                    />
                   ) : null}
                   {academyView === "classes" ? (
-                    <div className="academy-workspace-grid">
-                      {visibleAcademyClasses.slice(0, 12).map((academyClass) => {
-                        const enrollments = academyEnrollments.filter((item) => item.classId === academyClass.id);
-                        const activeCount = enrollments.filter((item) => item.status === "active").length;
-                        const pendingCount = enrollments.filter((item) => item.status === "pending").length;
-                        const classCourt = activeCourts.find((court) => court.id === academyClass.courtId);
-                        return (
-                          <div key={`academy-class-dashboard:${academyClass.id}`} className="academy-workspace-card">
-                            <header>
-                              <div>
-                                <strong>{academyClass.title}</strong>
-                                <span>
-                                  {WEEKDAY_LABELS[academyClass.weekday] || "Dia"} {academyClass.startsAt.slice(0, 5)} - {academyClass.endsAt.slice(0, 5)}
-                                </span>
-                              </div>
-                              <b>{activeCount}/{academyClass.capacity}</b>
-                            </header>
-                            <small>{[academyClass.coachName || "Professor", classCourt?.name, academyClass.level || "nivel livre"].filter(Boolean).join(" | ")}</small>
-                            <div className="academy-workspace-metrics">
-                              <span>{formatMoneyFromCents(academyClass.monthlyFeeCents)}</span>
-                              <span>{countLabel(pendingCount, "pendente", "pendentes")}</span>
-                              <span>{academyClass.allowMakeup ? "Reposicao permitida" : "Sem reposicao"}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {!visibleAcademyClasses.length ? <p className="subtle">Sem turmas cadastradas.</p> : null}
-                    </div>
+                    <PlaceAcademyClassesModule
+                      activeCourts={activeCourts}
+                      classes={visibleAcademyClasses}
+                      enrollments={academyEnrollments}
+                      onOpenSetup={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "resources" }))}
+                      weekdayLabels={WEEKDAY_LABELS}
+                    />
                   ) : null}
                   {academyView === "students" ? (
-                    <div className="academy-workspace-list">
-                      <div className="academy-student-toolbar">
-                        <input
-                          value={academyStudentFilter.query}
-                          onChange={(event) =>
-                            setAcademyStudentFilterByPlace((prev) => ({
-                              ...prev,
-                              [p.id]: { ...academyStudentFilter, query: event.target.value },
-                            }))
-                          }
-                          placeholder="Buscar aluno, telefone, turma ou professor"
-                        />
-                        <select
-                          value={academyStudentFilter.classId}
-                          onChange={(event) =>
-                            setAcademyStudentFilterByPlace((prev) => ({
-                              ...prev,
-                              [p.id]: { ...academyStudentFilter, classId: event.target.value },
-                            }))
-                          }
-                        >
-                          <option value="">Todas as turmas</option>
-                          {visibleAcademyClasses.map((academyClass) => (
-                            <option key={`student-filter-class:${academyClass.id}`} value={academyClass.id}>
-                              {academyClass.title}
-                            </option>
-                          ))}
-                        </select>
-                        <select
-                          value={academyStudentFilter.status}
-                          onChange={(event) =>
-                            setAcademyStudentFilterByPlace((prev) => ({
-                              ...prev,
-                              [p.id]: { ...academyStudentFilter, status: event.target.value as AcademyStudentFilter["status"] },
-                            }))
-                          }
-                        >
-                          <option value="">Todos os status</option>
-                          <option value="active">Ativos</option>
-                          <option value="pending">Pendentes</option>
-                          <option value="cancelled">Cancelados</option>
-                        </select>
-                        <span>{countLabel(visibleAcademyStudentEnrollments.length, "aluno encontrado", "alunos encontrados")}</span>
-                      </div>
-                      {visibleAcademyStudentEnrollments.slice(0, 24).map((enrollment) => {
-                        const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
-                        const latestProgress = academyProgress.find((item) => item.enrollmentId === enrollment.id);
-                        const paid = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid";
-                        const openMakeupCount = openAcademyMakeups.filter((item) => item.enrollmentId === enrollment.id).length;
-                        const openAbsenceCount = academyAbsences.filter((item) => item.enrollmentId === enrollment.id && item.status === "open").length;
-                        const attendedCount = academyAttendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "present").length;
-                        const missedCount = academyAttendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "absent").length;
-                        return (
-                          <div key={`academy-student:${enrollment.id}`} className="academy-workspace-row">
-                            <div>
-                              <strong>{enrollment.playerName}</strong>
-                              <span>
-                                {academyClass?.title || "Turma"} | {enrollment.status} | {paid ? "mensalidade paga" : "mensalidade pendente"}
-                                {enrollment.phone ? ` | ${enrollment.phone}` : ""}
-                              </span>
-                              <small>{latestProgress ? `Evolucao: ${latestProgress.levelLabel || latestProgress.focus || latestProgress.notes}` : "Sem evolucao registrada"}</small>
-                              <div className="academy-workspace-metrics">
-                                <span>{countLabel(attendedCount, "presenca", "presencas")}</span>
-                                <span>{countLabel(missedCount, "falta", "faltas")}</span>
-                                <span>{countLabel(openAbsenceCount, "falta avisada", "faltas avisadas")}</span>
-                                <span>{countLabel(openMakeupCount, "reposicao aberta", "reposicoes abertas")}</span>
-                              </div>
-                            </div>
-                            <span>
-                              {enrollment.status === "pending" ? (
-                                <>
-                                  <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
-                                    Ativar
-                                  </button>
-                                  <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "cancelled")} disabled={busy}>
-                                    Cancelar
-                                  </button>
-                                </>
-                              ) : null}
-                              {canManageFinance && enrollment.status === "active" && !paid && academyClass ? (
-                                <button onClick={() => void onAdminMarkEnrollmentPaid(academyClass, enrollment)} disabled={busy}>
-                                  Marcar pago
-                                </button>
-                              ) : null}
-                              {canManageFinance && enrollment.status === "active" && !paid && academyClass ? (
-                                <button
-                                  onClick={() =>
-                                    void onCreatePaymentReminder(
-                                      "academy_enrollment",
-                                      enrollment.id,
-                                      academyBillingPeriod,
-                                      `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
-                                    )
-                                  }
-                                  disabled={busy}
-                                >
-                                  Lembrar
-                                </button>
-                              ) : null}
-                              {enrollment.status === "active" ? (
-                              <button onClick={() => void onReportAcademyAbsence(p.id, enrollment.id)} disabled={busy}>
-                                Avisou falta
-                              </button>
-                              ) : null}
-                            </span>
-                          </div>
-                        );
-                      })}
-                      {!visibleAcademyStudentEnrollments.length ? <p className="subtle">Nenhum aluno encontrado para estes filtros.</p> : null}
-                    </div>
+                    <PlaceAcademyStudentsModule
+                      absences={academyAbsences}
+                      attendance={academyAttendance}
+                      billingPeriod={academyBillingPeriod}
+                      busy={busy}
+                      canManageFinance={canManageFinance}
+                      classes={academyClasses}
+                      enrollments={academyEnrollments}
+                      filter={academyStudentFilter}
+                      isEnrollmentPaid={(enrollmentId) => paymentsByTarget[paymentMapKey("academy_enrollment", enrollmentId, academyBillingPeriod)]?.status === "paid"}
+                      makeups={openAcademyMakeups}
+                      onChangeFilter={(filter) => setAcademyStudentFilterByPlace((prev) => ({ ...prev, [p.id]: filter }))}
+                      onCreatePaymentReminder={(enrollment, academyClass) =>
+                        void onCreatePaymentReminder(
+                          "academy_enrollment",
+                          enrollment.id,
+                          academyBillingPeriod,
+                          `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
+                        )
+                      }
+                      onMarkAttendance={(enrollmentId, status) => void onMarkAcademyAttendance(p.id, enrollmentId, status)}
+                      onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment)}
+                      onReportAbsence={(enrollmentId) => void onReportAcademyAbsence(p.id, enrollmentId)}
+                      onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
+                      progress={academyProgress}
+                      todayAttendance={todayAttendance}
+                      visibleClasses={visibleAcademyClasses}
+                      visibleEnrollments={visibleAcademyStudentEnrollments}
+                    />
                   ) : null}
                   {academyView === "requests" ? (
-                    <div className="academy-workspace-list">
-                      {pendingAcademyEnrollments.slice(0, 8).map((enrollment) => {
-                        const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
-                        return (
-                          <div key={`academy-request-enrollment:${enrollment.id}`} className="academy-workspace-row">
-                            <div>
-                              <strong>{enrollment.playerName}</strong>
-                              <span>Matricula em {academyClass?.title || "turma"} aguardando aprovacao</span>
-                            </div>
-                            <span>
-                              <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
-                                Ativar
-                              </button>
-                              <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "cancelled")} disabled={busy}>
-                                Cancelar
-                              </button>
-                            </span>
-                          </div>
-                        );
-                      })}
-                      {actionableLessonRequests.slice(0, 8).map((request) => {
-                        const requestClass = academyClasses.find((item) => item.id === request.classId);
-                        return (
-                          <div key={`academy-request-lesson:${request.id}`} className="academy-workspace-row">
-                            <div>
-                              <strong>{request.playerName}</strong>
-                              <span>{request.requestType === "makeup" ? "Reposicao" : "Aula avulsa"} | {requestClass?.title || "turma"} | {request.requestedOn}</span>
-                            </div>
-                            <span>
-                              {request.status === "pending" ? (
-                                <>
-                                  <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "approved")} disabled={busy}>
-                                    Aprovar
-                                  </button>
-                                  <button className="danger" onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "rejected")} disabled={busy}>
-                                    Recusar
-                                  </button>
-                                </>
-                              ) : request.paymentStatus !== "paid" ? (
-                                <button onClick={() => void onMarkLessonRequestPaid(p.id, request)} disabled={busy}>
-                                  Marcar pago
-                                </button>
-                              ) : null}
-                            </span>
-                          </div>
-                        );
-                      })}
-                      {openAcademyMakeups.slice(0, 8).map((credit) => {
-                        const academyClass = academyClasses.find((item) => item.id === credit.classId);
-                        const enrollment = academyEnrollments.find((item) => item.id === credit.enrollmentId);
-                        return (
-                          <div key={`academy-makeup:${credit.id}`} className="academy-workspace-row">
-                            <div>
-                              <strong>{enrollment?.playerName || "Aluno"}</strong>
-                              <span>Reposicao aberta | {academyClass?.title || "turma"} | gerada em {dateInputValue(credit.createdAt)}</span>
-                            </div>
-                            <span>
-                              <button onClick={() => void onUpdateMakeupCredit(p.id, credit.id, "used")} disabled={busy}>
-                                Usar reposicao
-                              </button>
-                            </span>
-                          </div>
-                        );
-                      })}
-                      {!pendingAcademyEnrollments.length && !actionableLessonRequests.length && !openAcademyMakeups.length ? (
-                        <p className="subtle">Sem pendencias abertas na academia.</p>
-                      ) : null}
-                    </div>
+                    <PlaceAcademyRequestsModule
+                      busy={busy}
+                      classes={academyClasses}
+                      enrollments={academyEnrollments}
+                      lessonRequests={actionableLessonRequests}
+                      makeups={openAcademyMakeups}
+                      onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                      onOpenFit={() => void onSearchAcademyFitSlots(p.id)}
+                      onShareContact={shareAcademyContact}
+                      onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
+                      onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
+                      onUseMakeup={(creditId) => void onUpdateMakeupCredit(p.id, creditId, "used")}
+                      pendingEnrollments={pendingAcademyEnrollments}
+                    />
+                  ) : null}
+                  {academyView === "coaches" ? (
+                    <PlaceAcademyCoachesModule
+                      classes={visibleAcademyClasses}
+                      coaches={displayedCoaches}
+                      enrollments={academyEnrollments}
+                      onAdjustAgenda={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "resources" }))}
+                      slots={academySlots}
+                      todayClasses={todayClasses}
+                      weekdayLabels={WEEKDAY_LABELS}
+                    />
                   ) : null}
                   {academyView === "resources" ? (
-                    <div className="academy-workspace-grid">
-                      <div className="academy-workspace-card">
-                        <header>
-                          <div>
-                            <strong>Professores</strong>
-                            <span>{countLabel(displayedCoaches.length, "professor", "professores")}</span>
-                          </div>
-                        </header>
-                        <small>{displayedCoaches.map((coach) => coach.name).join(", ") || "Cadastre o primeiro professor"}</small>
-                      </div>
-                      <div className="academy-workspace-card">
-                        <header>
-                          <div>
-                            <strong>Quadras</strong>
-                            <span>{countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}</span>
-                          </div>
-                        </header>
-                        <small>{activeCourts.map((court) => court.name).join(", ") || "Cadastre quadras para montar turmas"}</small>
-                      </div>
-                      <div className="academy-workspace-card">
-                        <header>
-                          <div>
-                            <strong>Horarios abertos</strong>
-                            <span>{countLabel(resourceDaySlots.length, "horario", "horarios")}</span>
-                          </div>
-                        </header>
-                        <small>Use os horarios livres abaixo para criar turmas sem conflito.</small>
-                      </div>
-                    </div>
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Professores"
+                        subtitle={countLabel(displayedCoaches.length, "professor", "professores")}
+                        detail={displayedCoaches.map((coach) => coach.name).join(", ") || "Cadastre o primeiro professor"}
+                      />
+                      <WorkspaceCard
+                        title="Quadras"
+                        subtitle={countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}
+                        detail={activeCourts.map((court) => court.name).join(", ") || "Cadastre quadras para montar turmas"}
+                      />
+                      <WorkspaceCard
+                        title="Horarios abertos"
+                        subtitle={countLabel(resourceDaySlots.length, "horario", "horarios")}
+                        detail="Use os horarios livres abaixo para criar turmas sem conflito."
+                      />
+                    </WorkspaceGrid>
                   ) : null}
                 </AcademyWorkspaceShell>
               ) : null}
@@ -4491,533 +4280,79 @@ export function PlacesPage({ user, profile }: Props) {
               </div>
               {showAcademyResources && canManageAcademy ? (
                 <>
+                  <PlaceAcademyResourcesModule
+                    activeClasses={activeAcademyClasses}
+                    activeCourts={activeCourts}
+                    busy={busy}
+                    canManageFinance={canManageFinance}
+                    canManagePlace={canManagePlace}
+                    coachCommissionDraftByCoach={coachCommissionDraftByCoach}
+                    coachDraft={coachDraft}
+                    coachLinkDraftByCoach={coachLinkDraftByCoach}
+                    coaches={displayedCoaches}
+                    enrollments={academyEnrollments}
+                    onChangeAcademyDraftFromSlot={(patch) =>
+                      setAcademyClassDraftByPlace((prev) => ({
+                        ...prev,
+                        [p.id]: {
+                          ...academyDraft,
+                          ...patch,
+                          coachName: patch.coachName || academyDraft.coachName,
+                        },
+                      }))
+                    }
+                    onChangeCoachCommissionDraft={(coachId, value) => setCoachCommissionDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
+                    onChangeCoachDraft={(draft) => setCoachDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                    onChangeCoachLinkDraft={(coachId, value) => setCoachLinkDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
+                    onCreateCoach={() => void onCreateCoach(p)}
+                    onLinkCoachLogin={(coach) => void onLinkCoachLogin(p.id, coach)}
+                    onSaveCoachCommission={(coach) => void onSaveCoachCommission(p.id, coach)}
+                    resourceDayClasses={resourceDayClasses}
+                    resourceDaySlots={resourceDaySlots}
+                  />
                   {canManagePlace ? (
-                  <div className="place-staff-form">
-                    <input
-                      value={coachDraft.name}
-                      onChange={(event) =>
-                        setCoachDraftByPlace((prev) => ({ ...prev, [p.id]: { ...coachDraft, name: event.target.value } }))
-                      }
-                      placeholder="Novo professor"
+                    <PlaceAcademyClassSetupModule
+                      activeCourts={activeCourts}
+                      busy={busy}
+                      coachConflict={draftCoachConflict}
+                      coaches={academyCoaches}
+                      courtConflict={draftCourtConflict}
+                      draft={academyDraft}
+                      onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                      onCreateClass={() => void onCreateAcademyClass(p)}
+                      onCreateSlot={() => void onCreateAcademySlot(p)}
+                      weekdayLabels={WEEKDAY_LABELS}
                     />
-                    <input
-                      value={coachDraft.phone}
-                      onChange={(event) =>
-                        setCoachDraftByPlace((prev) => ({ ...prev, [p.id]: { ...coachDraft, phone: event.target.value } }))
-                      }
-                      placeholder="Telefone"
-                    />
-                    <input
-                      value={coachDraft.email}
-                      onChange={(event) =>
-                        setCoachDraftByPlace((prev) => ({ ...prev, [p.id]: { ...coachDraft, email: event.target.value } }))
-                      }
-                      placeholder="Email"
-                    />
-                    <button onClick={() => void onCreateCoach(p)} disabled={busy || !coachDraft.name.trim()}>
-                      Cadastrar professor
-                    </button>
-                  </div>
-                  ) : null}
-                  <div className="academy-resource-grid">
-                    <div className="academy-resource-card">
-                      <strong>Professores</strong>
-                      {displayedCoaches.length ? (
-                        displayedCoaches.map((coach) => {
-                          const busyClasses = resourceDayClasses.filter((item) => item.coachId === coach.id);
-                          const coachClasses = activeAcademyClasses.filter((item) => item.coachId === coach.id);
-                          const coachMonthlyRevenue = coachClasses.reduce((sum, item) => {
-                            const activeCountForClass = academyEnrollments.filter((enrollment) => enrollment.classId === item.id && enrollment.status === "active").length;
-                            return sum + activeCountForClass * item.monthlyFeeCents;
-                          }, 0);
-                          const estimatedCommission = Math.round((coachMonthlyRevenue * coach.commissionPercent) / 100);
-                          return (
-                            <span key={coach.id}>
-                              {coach.name}: {busyClasses.length ? busyClasses.map((item) => `${item.startsAt.slice(0, 5)}-${item.endsAt.slice(0, 5)}`).join(", ") : "livre"}
-                              {" "}· comissao {coach.commissionPercent}% · estimada {formatMoneyFromCents(estimatedCommission)}
-                              {canManageFinance ? (
-                                <>
-                                  <input
-                                    type="number"
-                                    min={0}
-                                    max={100}
-                                    value={coachCommissionDraftByCoach[coach.id] ?? String(coach.commissionPercent)}
-                                    onChange={(event) =>
-                                      setCoachCommissionDraftByCoach((prev) => ({ ...prev, [coach.id]: event.target.value }))
-                                    }
-                                    aria-label={`Comissao de ${coach.name}`}
-                                  />
-                                  <button onClick={() => void onSaveCoachCommission(p.id, coach)} disabled={busy}>
-                                    Salvar comissao
-                                  </button>
-                                </>
-                              ) : null}
-                              {canManagePlace && !coach.userId ? (
-                                <span className="cluster" style={{ marginTop: 6 }}>
-                                  <input
-                                    value={coachLinkDraftByCoach[coach.id] ?? coach.email}
-                                    onChange={(event) => setCoachLinkDraftByCoach((prev) => ({ ...prev, [coach.id]: event.target.value }))}
-                                    placeholder="Email do login"
-                                  />
-                                  <button onClick={() => void onLinkCoachLogin(p.id, coach)} disabled={busy}>
-                                    Vincular login
-                                  </button>
-                                </span>
-                              ) : coach.userId ? (
-                                <small>Login vinculado</small>
-                              ) : null}
-                            </span>
-                          );
-                        })
-                      ) : (
-                        <span>Nenhum professor cadastrado.</span>
-                      )}
-                    </div>
-                    <div className="academy-resource-card">
-                      <strong>Quadras</strong>
-                      {activeCourts.length ? (
-                        activeCourts.map((court) => {
-                          const busyClasses = resourceDayClasses.filter((item) => item.courtId === court.id);
-                          return (
-                            <span key={court.id}>
-                              {court.name}: {busyClasses.length ? busyClasses.map((item) => `${item.startsAt.slice(0, 5)}-${item.endsAt.slice(0, 5)}`).join(", ") : "livre"}
-                            </span>
-                          );
-                        })
-                      ) : (
-                        <span>Nenhuma quadra cadastrada.</span>
-                      )}
-                    </div>
-                    <div className="academy-resource-card">
-                      <strong>Horarios abertos</strong>
-                      {resourceDaySlots.length ? (
-                        resourceDaySlots.map((slot) => {
-                          const coach = academyCoaches.find((item) => item.id === slot.coachId);
-                          const court = activeCourts.find((item) => item.id === slot.courtId);
-                          return (
-                            <span key={slot.id}>
-                              {slot.startsAt.slice(0, 5)}-{slot.endsAt.slice(0, 5)} · {[coach?.name, court?.name].filter(Boolean).join(" / ") || "flexivel"} · {slot.capacity} vagas
-                              <button
-                                onClick={() =>
-                                  setAcademyClassDraftByPlace((prev) => ({
-                                    ...prev,
-                                    [p.id]: {
-                                      ...academyDraft,
-                                      slotId: slot.id,
-                                      coachId: slot.coachId || "",
-                                      courtId: slot.courtId || "",
-                                      coachName: coach?.name || academyDraft.coachName,
-                                      weekday: slot.weekday,
-                                      startsAt: slot.startsAt.slice(0, 5),
-                                      endsAt: slot.endsAt.slice(0, 5),
-                                      capacity: String(slot.capacity),
-                                    },
-                                  }))
-                                }
-                                disabled={busy}
-                              >
-                                Usar
-                              </button>
-                            </span>
-                          );
-                        })
-                      ) : (
-                        <span>Nenhum horario aberto neste dia.</span>
-                      )}
-                    </div>
-                  </div>
-                  {canManagePlace ? (
-                  <div className="place-academy-form">
-                  <input
-                    value={academyDraft.title}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, title: event.target.value },
-                      }))
-                    }
-                    placeholder="Turma ou aula"
-                  />
-                  <select
-                    value={academyDraft.coachId}
-                    onChange={(event) => {
-                      const coach = academyCoaches.find((item) => item.id === event.target.value);
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, coachId: event.target.value, coachName: coach?.name || academyDraft.coachName },
-                      }));
-                    }}
-                  >
-                    <option value="">Professor</option>
-                    {academyCoaches.map((coach) => (
-                      <option key={coach.id} value={coach.id}>
-                        {coach.name}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    value={academyDraft.courtId}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, courtId: event.target.value },
-                      }))
-                    }
-                  >
-                    <option value="">Quadra</option>
-                    {activeCourts.map((court) => (
-                      <option key={court.id} value={court.id}>
-                        {court.name}
-                      </option>
-                    ))}
-                  </select>
-                  {draftCoachConflict || draftCourtConflict ? (
-                    <p className="feedback error academy-conflict-note">
-                      {draftCoachConflict ? "Professor ocupado neste horario. " : ""}
-                      {draftCourtConflict ? "Quadra ocupada neste horario." : ""}
-                    </p>
-                  ) : null}
-                  <input
-                    value={academyDraft.coachName}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, coachName: event.target.value },
-                      }))
-                    }
-                    placeholder="Professor"
-                  />
-                  <select
-                    value={academyDraft.weekday}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, weekday: Number(event.target.value) },
-                      }))
-                    }
-                  >
-                    {WEEKDAY_LABELS.map((label, index) => (
-                      <option key={`academy-day:${index}`} value={index}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    type="time"
-                    value={academyDraft.startsAt}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, startsAt: event.target.value },
-                      }))
-                    }
-                  />
-                  <input
-                    type="time"
-                    value={academyDraft.endsAt}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, endsAt: event.target.value },
-                      }))
-                    }
-                  />
-                  <input
-                    value={academyDraft.level}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, level: event.target.value },
-                      }))
-                    }
-                    placeholder="Nivel"
-                  />
-                  <select
-                    value={academyDraft.genderScope}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, genderScope: event.target.value as AcademyClass["genderScope"] },
-                      }))
-                    }
-                  >
-                    <option value="mixed">Mista</option>
-                    <option value="male">Masculina</option>
-                    <option value="female">Feminina</option>
-                  </select>
-                  <select
-                    value={academyDraft.ageGroup}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, ageGroup: event.target.value as AcademyClass["ageGroup"] },
-                      }))
-                    }
-                  >
-                    <option value="adult">Adulto</option>
-                    <option value="kids">Infantil</option>
-                  </select>
-                  <input
-                    type="number"
-                    min="0"
-                    value={academyDraft.minAge}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, minAge: event.target.value },
-                      }))
-                    }
-                    placeholder="Idade min."
-                  />
-                  <input
-                    type="number"
-                    min="0"
-                    value={academyDraft.maxAge}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, maxAge: event.target.value },
-                      }))
-                    }
-                    placeholder="Idade max."
-                  />
-                  <input
-                    type="number"
-                    min="1"
-                    value={academyDraft.capacity}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, capacity: event.target.value },
-                      }))
-                    }
-                    placeholder="Vagas"
-                  />
-                  <input
-                    type="number"
-                    min="0"
-                    step="1"
-                    value={academyDraft.monthlyFee || "0"}
-                    onChange={(event) =>
-                      setAcademyClassDraftByPlace((prev) => ({
-                        ...prev,
-                        [p.id]: { ...academyDraft, monthlyFee: event.target.value },
-                      }))
-                    }
-                    placeholder="Mensalidade R$"
-                  />
-                  <button className="primary" onClick={() => void onCreateAcademyClass(p)} disabled={busy || !academyDraft.title.trim() || !academyDraft.coachId || draftCoachConflict || draftCourtConflict}>
-                    Criar turma
-                  </button>
-                  <button onClick={() => void onCreateAcademySlot(p)} disabled={busy || !academyDraft.coachId || !academyDraft.startsAt || !academyDraft.endsAt || draftCoachConflict || draftCourtConflict}>
-                    Abrir horario do professor
-                  </button>
-                  </div>
                   ) : null}
                 </>
               ) : null}
               {showAcademyRequests ? (
-              <div className="place-booking-list">
-                <div className="place-booking-row">
-                  <div>
-                    <strong>Encaixes</strong>
-                    <div className="cluster" style={{ marginTop: 6 }}>
-                      <input
-                        type="date"
-                        value={fitSearch.requestedOn}
-                        onChange={(event) =>
-                          setAcademyFitSearchByPlace((prev) => ({
-                            ...prev,
-                            [p.id]: { ...fitSearch, requestedOn: event.target.value },
-                          }))
-                        }
-                      />
-                      <input
-                        value={fitSearch.level}
-                        onChange={(event) =>
-                          setAcademyFitSearchByPlace((prev) => ({
-                            ...prev,
-                            [p.id]: { ...fitSearch, level: event.target.value },
-                          }))
-                        }
-                        placeholder="Nivel/classe"
-                      />
-                      <select
-                        value={fitSearch.period}
-                        onChange={(event) =>
-                          setAcademyFitSearchByPlace((prev) => ({
-                            ...prev,
-                            [p.id]: { ...fitSearch, period: event.target.value as "" | "morning" | "afternoon" | "night" },
-                          }))
-                        }
-                      >
-                        <option value="">Qualquer periodo</option>
-                        <option value="morning">Manha</option>
-                        <option value="afternoon">Tarde</option>
-                        <option value="night">Noite</option>
-                      </select>
-                      <select
-                        value={fitSearch.coachId}
-                        onChange={(event) =>
-                          setAcademyFitSearchByPlace((prev) => ({
-                            ...prev,
-                            [p.id]: { ...fitSearch, coachId: event.target.value },
-                          }))
-                        }
-                      >
-                        <option value="">Qualquer professor</option>
-                        {displayedCoaches.map((coach) => (
-                          <option key={`fit-coach:${coach.id}`} value={coach.id}>
-                            {coach.name}
-                          </option>
-                        ))}
-                      </select>
-                      <input
-                        type="number"
-                        min="0"
-                        value={fitSearch.age}
-                        onChange={(event) =>
-                          setAcademyFitSearchByPlace((prev) => ({
-                            ...prev,
-                            [p.id]: { ...fitSearch, age: event.target.value },
-                          }))
-                        }
-                        placeholder="Idade"
-                      />
-                      <select
-                        value={fitSearch.genderScope}
-                        onChange={(event) =>
-                          setAcademyFitSearchByPlace((prev) => ({
-                            ...prev,
-                            [p.id]: { ...fitSearch, genderScope: event.target.value as "" | AcademyClass["genderScope"] },
-                          }))
-                        }
-                      >
-                        <option value="">M/F/Mista</option>
-                        <option value="male">Masculina</option>
-                        <option value="female">Feminina</option>
-                        <option value="mixed">Mista</option>
-                      </select>
-                      <button onClick={() => void onSearchAcademyFitSlots(p.id)} disabled={busy || !fitSearch.requestedOn}>
-                        Buscar
-                      </button>
-                    </div>
-                  </div>
-                  {canManageAcademy && actionableLessonRequests.length ? (
-                    <span>
-                      {actionableLessonRequests.slice(0, 4).map((request) => {
-                        const requestClass = academyClasses.find((item) => item.id === request.classId);
-                        const paid = paymentsByTarget[paymentMapKey("academy_lesson_request", request.id)]?.status === "paid" || request.paymentStatus === "paid";
-                        return (
-                          <small key={request.id} className="place-enrollment-chip">
-                            {request.playerName} | {request.requestType === "makeup" ? "reposicao" : "avulsa"} | {requestClass?.title || "turma"} |{" "}
-                            {new Date(`${request.requestedOn}T00:00:00`).toLocaleDateString("pt-BR")}
-                            {request.amountCents ? ` | ${formatMoneyFromCents(request.amountCents)}` : ""}
-                            {request.status === "pending" ? (
-                              <>
-                                <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "approved")} disabled={busy}>
-                                  Aprovar
-                                </button>
-                                <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "rejected")} disabled={busy}>
-                                  Recusar
-                                </button>
-                              </>
-                            ) : (
-                              <span>aprovado</span>
-                            )}
-                            {canManageFinance && request.requestType === "drop_in" && !paid ? (
-                              <button onClick={() => void onMarkLessonRequestPaid(p.id, request)} disabled={busy}>
-                                Marcar pago
-                              </button>
-                            ) : null}
-                          </small>
-                        );
-                      })}
-                    </span>
-                  ) : null}
-                </div>
-                {fitSlots.slice(0, 6).map((slot) => {
-                  const classCourt = activeCourts.find((court) => court.id === slot.courtId);
-                  const openMakeupCredits = academyMakeups.filter((credit) => credit.status === "open" && credit.userId === user.id);
-                  const requestDraft = academyLessonRequestDraftByClass[slot.classId] || {
-                    requestType: "drop_in" as const,
-                    playerName: profile?.displayName || user.email || "Aluno",
-                    phone: profile?.phone || "",
-                    email: user.email || "",
-                    age: fitSearch.age,
-                    level: fitSearch.level || slot.level,
-                    notes: "",
-                  };
-                  return (
-                    <div key={`fit-slot:${slot.classId}`} className="place-booking-row">
-                      <div>
-                        <strong>{slot.title}</strong>
-                        <span>
-                          {WEEKDAY_LABELS[slot.weekday] || "Dia"} {slot.startsAt.slice(0, 5)} - {slot.endsAt.slice(0, 5)}
-                          {classCourt ? ` | ${classCourt.name}` : ""}
-                        </span>
-                        <small>
-                          {slot.coachName || "Professor"} | {slot.level || "nivel livre"} | {countLabel(slot.availableSpots, "vaga", "vagas")} |{" "}
-                          {slot.openAbsences ? `${countLabel(slot.openAbsences, "ausencia avisada", "ausencias avisadas")}` : "capacidade disponivel"} | avulsa estimada{" "}
-                          {formatMoneyFromCents(Math.round(slot.monthlyFeeCents / 4))}
-                          {requestDraft.requestType === "makeup" ? ` | reposicoes abertas: ${openMakeupCredits.length}` : ""}
-                        </small>
-                      </div>
-                      <span>
-                        <select
-                          value={requestDraft.requestType}
-                          onChange={(event) =>
-                            setAcademyLessonRequestDraftByClass((prev) => ({
-                              ...prev,
-                              [slot.classId]: { ...requestDraft, requestType: event.target.value as AcademyLessonRequest["requestType"] },
-                            }))
-                          }
-                        >
-                          <option value="drop_in">Aula avulsa</option>
-                          <option value="makeup">Reposicao</option>
-                        </select>
-                        <input
-                          value={requestDraft.playerName}
-                          onChange={(event) =>
-                            setAcademyLessonRequestDraftByClass((prev) => ({
-                              ...prev,
-                              [slot.classId]: { ...requestDraft, playerName: event.target.value },
-                            }))
-                          }
-                          placeholder="Aluno"
-                        />
-                        <input
-                          value={requestDraft.phone}
-                          onChange={(event) =>
-                            setAcademyLessonRequestDraftByClass((prev) => ({
-                              ...prev,
-                              [slot.classId]: { ...requestDraft, phone: event.target.value },
-                            }))
-                          }
-                          placeholder="Telefone"
-                        />
-                        <input
-                          value={requestDraft.notes}
-                          onChange={(event) =>
-                            setAcademyLessonRequestDraftByClass((prev) => ({
-                              ...prev,
-                              [slot.classId]: { ...requestDraft, notes: event.target.value },
-                            }))
-                          }
-                          placeholder="Observacao"
-                        />
-                        <button
-                          className="primary"
-                          onClick={() => void onRequestAcademyLessonFit(p.id, slot)}
-                          disabled={busy || !requestDraft.playerName.trim() || (requestDraft.requestType === "makeup" && openMakeupCredits.length === 0)}
-                        >
-                          Solicitar
-                        </button>
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+                <PlaceAcademyFitModule
+                  activeCourts={activeCourts}
+                  actionableLessonRequests={actionableLessonRequests}
+                  busy={busy}
+                  canManageAcademy={canManageAcademy}
+                  canManageFinance={canManageFinance}
+                  classes={academyClasses}
+                  coaches={displayedCoaches}
+                  fitSearch={fitSearch}
+                  fitSlots={fitSlots}
+                  isLessonRequestPaid={(request) =>
+                    paymentsByTarget[paymentMapKey("academy_lesson_request", request.id)]?.status === "paid" || request.paymentStatus === "paid"
+                  }
+                  lessonRequestDraftByClass={academyLessonRequestDraftByClass}
+                  makeups={academyMakeups}
+                  onChangeFitSearch={(search) => setAcademyFitSearchByPlace((prev) => ({ ...prev, [p.id]: search }))}
+                  onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
+                  onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                  onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
+                  onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
+                  onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
+                  profile={profile}
+                  userEmail={user.email || ""}
+                  userId={user.id}
+                  weekdayLabels={WEEKDAY_LABELS}
+                />
               ) : null}
               {showAcademyClasses ? (
               <div className="place-booking-list">
@@ -5131,11 +4466,15 @@ export function PlacesPage({ user, profile }: Props) {
                           {enrollments.slice(0, 3).map((enrollment) => {
                             const progressDraft = academyProgressDraftByEnrollment[enrollment.id] || { level: "", focus: "", notes: "" };
                             const latestProgress = academyProgress.filter((item) => item.enrollmentId === enrollment.id)[0];
+                            const todayEnrollmentAttendance = todayAttendance.find((item) => item.enrollmentId === enrollment.id);
                             return (
                             <small key={enrollment.id} className="place-enrollment-chip">
                               {enrollment.playerName} ({enrollment.status})
-                              {paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid" ? " · pago no mes" : ""}
-                              {latestProgress ? ` · evolucao: ${latestProgress.levelLabel || latestProgress.focus || "registrada"}` : ""}
+                              {paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid" ? " Â· pago no mes" : ""}
+                              {latestProgress ? ` Â· evolucao: ${latestProgress.levelLabel || latestProgress.focus || "registrada"}` : ""}
+                              {todayEnrollmentAttendance ? (
+                                <> Â· {todayEnrollmentAttendance.status === "present" ? "check-in hoje" : "falta hoje"}</>
+                              ) : null}
                               {enrollment.status === "pending" ? (
                                 <>
                                   <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
@@ -5169,6 +4508,18 @@ export function PlacesPage({ user, profile }: Props) {
                                     ) : null}
                                   <button onClick={() => void onReportAcademyAbsence(p.id, enrollment.id)} disabled={busy}>
                                     Avisou falta
+                                  </button>
+                                  <button
+                                    onClick={() => void onMarkAcademyAttendance(p.id, enrollment.id, "present")}
+                                    disabled={busy || todayEnrollmentAttendance?.status === "present"}
+                                  >
+                                    Check-in
+                                  </button>
+                                  <button
+                                    onClick={() => void onMarkAcademyAttendance(p.id, enrollment.id, "absent")}
+                                    disabled={busy || todayEnrollmentAttendance?.status === "absent"}
+                                  >
+                                    Falta
                                   </button>
                                   <input
                                     value={progressDraft.level}
@@ -5215,61 +4566,74 @@ export function PlacesPage({ user, profile }: Props) {
                           })}
                         </span>
                       ) : myEnrollment ? (
-                        <span>
-                          {paymentsByTarget[paymentMapKey("academy_enrollment", myEnrollment.id, academyBillingPeriod)]?.status === "paid" ? (
-                            <small className="payment-paid-label">Pago</small>
-                          ) : (
-                            <small>Aguardando confirmacao de pagamento</small>
-                          )}
-                          {academyMakeups.filter((credit) => credit.enrollmentId === myEnrollment.id && credit.status === "open").length ? (
-                            <small>Reposicao disponivel</small>
-                          ) : null}
-                          {academyProgress.filter((item) => item.enrollmentId === myEnrollment.id)[0] ? (
-                            <small>
-                              Evolucao:{" "}
-                              {academyProgress.filter((item) => item.enrollmentId === myEnrollment.id)[0].levelLabel ||
-                                academyProgress.filter((item) => item.enrollmentId === myEnrollment.id)[0].focus ||
-                                academyProgress.filter((item) => item.enrollmentId === myEnrollment.id)[0].notes}
-                            </small>
-                          ) : null}
-                          <small>
-                            Colegas:{" "}
-                            {enrollments
-                              .filter((item) => item.status === "active")
-                              .map((item) => item.playerName)
-                              .join(", ") || "sem colegas ativos"}
-                          </small>
-                          <div className="cluster">
-                            <input
-                              type="date"
-                              value={(academyAbsenceDraftByEnrollment[myEnrollment.id] || { absenceOn: todayDateInputValue(), notes: "" }).absenceOn}
-                              onChange={(event) => {
-                                const draft = academyAbsenceDraftByEnrollment[myEnrollment.id] || { absenceOn: todayDateInputValue(), notes: "" };
-                                setAcademyAbsenceDraftByEnrollment((prev) => ({
-                                  ...prev,
-                                  [myEnrollment.id]: { ...draft, absenceOn: event.target.value },
-                                }));
-                              }}
-                            />
-                            <input
-                              value={(academyAbsenceDraftByEnrollment[myEnrollment.id] || { absenceOn: todayDateInputValue(), notes: "" }).notes}
-                              onChange={(event) => {
-                                const draft = academyAbsenceDraftByEnrollment[myEnrollment.id] || { absenceOn: todayDateInputValue(), notes: "" };
-                                setAcademyAbsenceDraftByEnrollment((prev) => ({
-                                  ...prev,
-                                  [myEnrollment.id]: { ...draft, notes: event.target.value },
-                                }));
-                              }}
-                              placeholder="Aviso opcional"
-                            />
-                            <button onClick={() => void onReportAcademyAbsence(p.id, myEnrollment.id)} disabled={busy || !academyClass.allowMakeup}>
-                              Avisar falta
-                            </button>
-                          </div>
-                          <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, myEnrollment.id, "cancelled")} disabled={busy}>
-                            Cancelar interesse
-                          </button>
-                        </span>
+                        (() => {
+                          const paymentPaid = paymentsByTarget[paymentMapKey("academy_enrollment", myEnrollment.id, academyBillingPeriod)]?.status === "paid";
+                          const openMakeups = academyMakeups.filter((credit) => credit.enrollmentId === myEnrollment.id && credit.status === "open");
+                          const myProgress = academyProgress.find((item) => item.enrollmentId === myEnrollment.id);
+                          const myAttendance = academyAttendance.filter((item) => item.enrollmentId === myEnrollment.id);
+                          const presentTotal = myAttendance.filter((item) => item.status === "present").length;
+                          const absentTotal = myAttendance.filter((item) => item.status === "absent").length;
+                          const absenceDraft = academyAbsenceDraftByEnrollment[myEnrollment.id] || { absenceOn: todayDateInputValue(), notes: "" };
+                          const classmates = enrollments
+                            .filter((item) => item.status === "active" && item.id !== myEnrollment.id)
+                            .map((item) => item.playerName)
+                            .slice(0, 4);
+                          return (
+                            <span className="academy-player-summary">
+                              <div className="academy-player-card">
+                                <header>
+                                  <div>
+                                    <strong>Minha turma</strong>
+                                    <small>{nextWeekdayLabel(academyClass.weekday, academyClass.startsAt)} | {classCourt?.name || "quadra a definir"}</small>
+                                  </div>
+                                  <b className={paymentPaid ? "paid" : "pending"}>{paymentPaid ? "Mensalidade paga" : "Pagamento pendente"}</b>
+                                </header>
+                                <div className="academy-player-metrics">
+                                  <span><strong>{openMakeups.length}</strong> reposicoes</span>
+                                  <span><strong>{presentTotal}</strong> presencas</span>
+                                  <span><strong>{absentTotal}</strong> faltas</span>
+                                </div>
+                                <small>
+                                  {myProgress
+                                    ? `Evolucao: ${myProgress.levelLabel || myProgress.focus || myProgress.notes}`
+                                    : "Evolucao ainda nao registrada pelo professor."}
+                                </small>
+                                <small>
+                                  Colegas: {classmates.length ? classmates.join(", ") : "voce e o primeiro aluno ativo visivel"}
+                                </small>
+                                <div className="academy-player-actions">
+                                  <input
+                                    type="date"
+                                    value={absenceDraft.absenceOn}
+                                    onChange={(event) => {
+                                      setAcademyAbsenceDraftByEnrollment((prev) => ({
+                                        ...prev,
+                                        [myEnrollment.id]: { ...absenceDraft, absenceOn: event.target.value },
+                                      }));
+                                    }}
+                                    aria-label="Data da falta"
+                                  />
+                                  <input
+                                    value={absenceDraft.notes}
+                                    onChange={(event) => {
+                                      setAcademyAbsenceDraftByEnrollment((prev) => ({
+                                        ...prev,
+                                        [myEnrollment.id]: { ...absenceDraft, notes: event.target.value },
+                                      }));
+                                    }}
+                                    placeholder="Aviso opcional"
+                                  />
+                                  <button onClick={() => void onReportAcademyAbsence(p.id, myEnrollment.id)} disabled={busy || !academyClass.allowMakeup}>
+                                    Avisar falta
+                                  </button>
+                                  <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, myEnrollment.id, "cancelled")} disabled={busy}>
+                                    Sair da turma
+                                  </button>
+                                </div>
+                              </div>
+                            </span>
+                          );
+                        })()
                       ) : isPlayerView ? (
                         <button className="primary" onClick={() => void onCreateAcademyEnrollment(p, academyClass)} disabled={busy}>
                           Tenho interesse
@@ -5290,94 +4654,33 @@ export function PlacesPage({ user, profile }: Props) {
       {showCreate ? (
         <div className="modal-backdrop" onClick={() => !busy && setShowCreate(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2>Novo local</h2>
-            <p className="modal-helper">
-              Comece com os dados principais. Depois complete quadras, equipe, planos e operacao em Configuracoes.
-            </p>
-            <label>Nome</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Cesão Tênis Club" />
-            <label>Organizacao / rede</label>
-            <select value={organizationId} onChange={(e) => setOrganizationId(e.target.value)}>
-              <option value="">Sem organizacao</option>
-              {organizations.map((org) => (
-                <option key={org.id} value={org.id}>
-                  {org.name}
-                </option>
-              ))}
-            </select>
-            {!organizationId ? (
-              <input
-                value={organizationName}
-                onChange={(e) => setOrganizationName(e.target.value)}
-                placeholder="Criar nova organizacao/rede"
-              />
-            ) : null}
-            <label>Plano inicial</label>
-            <select value={productPlan} onChange={(e) => setProductPlan(e.target.value as PlaceProductPlan)}>
-              {Object.entries(PLACE_PRODUCT_PLAN_LABELS).map(([value, label]) => (
-                <option key={`new-place-plan:${value}`} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-            <p className="modal-helper">{PLACE_PRODUCT_PLAN_HINTS[productPlan]}</p>
-            <div className="row">
-              <div>
-                <label>UF</label>
-                <select
-                  value={stateUf}
-                  onChange={(e) => {
-                    const nextUf = normalizeStateUf(e.target.value);
-                    setStateUf(nextUf);
-                    setCity("");
-                  }}
-                >
-                  <option value="">Selecione</option>
-                  {BRAZILIAN_STATES.map((state) => (
-                    <option key={`place-state:${state.uf}`} value={state.uf}>
-                      {state.uf} - {state.name}
-                    </option>
-                    ))}
-                  </select>
-                </div>
-              <div>
-                <label>Cidade</label>
-                <select value={city} onChange={(e) => setCity(e.target.value)} disabled={!normalizedUf || cityLoading}>
-                  <option value="">
-                    {!normalizedUf
-                      ? "Selecione o estado primeiro"
-                      : cityLoading
-                      ? "Carregando municipios..."
-                      : "Selecione o municipio"}
-                  </option>
-                  {cityValueInOptions ? null : city.trim() ? <option value={city}>{city}</option> : null}
-                  {cityOptions.map((cityName) => (
-                    <option key={`place-city:${cityName}`} value={cityName}>
-                      {cityName}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            {cityLoadError ? <p className="feedback error">{cityLoadError}</p> : null}
-            <label>Descrição</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Horarios, WhatsApp, regras de reserva, endereco complementar..."
+            <PlaceCreateWizard
+              busy={busy}
+              city={city}
+              cityLoadError={cityLoadError}
+              cityLoading={cityLoading}
+              cityOptions={cityOptions}
+              cityValueInOptions={cityValueInOptions}
+              description={description}
+              name={name}
+              organizationId={organizationId}
+              organizationName={organizationName}
+              organizations={organizations}
+              planHints={PLACE_PRODUCT_PLAN_HINTS}
+              planLabels={PLACE_PRODUCT_PLAN_LABELS}
+              productPlan={productPlan}
+              stateUf={stateUf}
+              onCancel={() => setShowCreate(false)}
+              onCityChange={setCity}
+              onDescriptionChange={setDescription}
+              onFinish={onCreate}
+              onLogoChange={setLogoFile}
+              onNameChange={setName}
+              onOrganizationIdChange={setOrganizationId}
+              onOrganizationNameChange={setOrganizationName}
+              onProductPlanChange={setProductPlan}
+              onStateUfChange={setStateUf}
             />
-            <label>Logo (opcional)</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setLogoFile(e.target.files?.[0] ?? null)}
-            />
-            <div className="row" style={{ marginTop: 16 }}>
-              <button onClick={() => setShowCreate(false)} disabled={busy}>Cancelar</button>
-              <button className="primary" onClick={onCreate} disabled={busy || !name.trim()}>
-                Criar
-              </button>
-            </div>
           </div>
         </div>
       ) : null}

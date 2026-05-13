@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { PublishingKit } from "../components/PublishingKit";
+import { ScreenState } from "../components/ScreenState";
 import { loadLeagueDetails, loadMyLeagues } from "../lib/leagues";
 import { loadPublicRankings } from "../lib/rankings";
 import { followUser, listFollowingIds, unfollowUser } from "../lib/social";
@@ -21,10 +23,38 @@ function locationLabel(row: PublicRankingRow): string {
   return [row.city, row.state].filter(Boolean).join(" - ") || "Local nao informado";
 }
 
+function winRate(row: PublicRankingRow): number {
+  const total = row.wins + row.losses;
+  if (total <= 0) return 0;
+  return Math.round((row.wins / total) * 100);
+}
+
+function leagueTypeLabel(value: LeagueDetails["leagueType"] | LeagueSummary["leagueType"] | undefined): string {
+  if (value === "dupla_fixa") return "Dupla fixa";
+  if (value === "dupla_rotativa") return "Dupla rotativa";
+  return "Simples";
+}
+
+function matchFormatLabel(value: string | undefined): string {
+  if (value === "set_unico") return "Set unico";
+  if (value === "super_tiebreak") return "Super tie-break";
+  if (value === "melhor_de_3_com_super") return "Melhor de 3 com super tie-break";
+  return "Melhor de 3";
+}
+
+function roundIntervalLabel(value: string | undefined, days: number): string {
+  if (value === "semanal") return "Rodada semanal";
+  if (value === "mensal") return "Rodada mensal";
+  if (days > 0) return `A cada ${days} dias`;
+  return "Rodada quinzenal";
+}
+
 export function RankingPage({ user, profile }: Props) {
   const [scope, setScope] = useState<RankingScope>("general");
   const [leagueId, setLeagueId] = useState("");
   const [seasonId, setSeasonId] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [classFilter, setClassFilter] = useState("");
   const [leagues, setLeagues] = useState<LeagueSummary[]>([]);
   const [selectedLeagueDetails, setSelectedLeagueDetails] = useState<LeagueDetails | null>(null);
   const [rows, setRows] = useState<PublicRankingRow[]>([]);
@@ -32,6 +62,7 @@ export function RankingPage({ user, profile }: Props) {
   const [busyFollowId, setBusyFollowId] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState("");
 
   useEffect(() => {
     let alive = true;
@@ -128,8 +159,131 @@ export function RankingPage({ user, profile }: Props) {
     };
   }, [rows, user]);
 
-  const visibleRows = rows.slice(0, 80);
-  const myRows = rows.filter((row) => row.userId === user.id).slice(0, 3);
+  const classOptions = useMemo(() => {
+    return Array.from(new Set(rows.map(classLabel))).sort((a, b) => a.localeCompare(b));
+  }, [rows]);
+  const filteredRows = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    return rows.filter((row) => {
+      const rowClassLabel = classLabel(row);
+      const text = [row.displayName, row.leagueName, row.seasonName, rowClassLabel, locationLabel(row)]
+        .join(" ")
+        .toLowerCase();
+      return (!classFilter || rowClassLabel === classFilter) && (!query || text.includes(query));
+    });
+  }, [classFilter, rows, searchQuery]);
+
+  useEffect(() => {
+    if (classFilter && !classOptions.includes(classFilter)) {
+      setClassFilter("");
+    }
+  }, [classFilter, classOptions]);
+
+  const visibleRows = filteredRows.slice(0, 80);
+  const myRows = filteredRows.filter((row) => row.userId === user.id).slice(0, 3);
+  const leader = filteredRows[0] || null;
+  const totalPlayers = filteredRows.length;
+  const totalMatches = filteredRows.reduce((acc, row) => acc + row.matchesPlayed, 0);
+  const averagePoints = totalPlayers > 0
+    ? Math.round(filteredRows.reduce((acc, row) => acc + row.rankingPoints, 0) / totalPlayers)
+    : 0;
+  const scopeLabel = scope === "city"
+    ? [profile?.city, profile?.state].filter(Boolean).join(" - ") || "Minha cidade"
+    : scope === "league"
+    ? selectedLeague?.name || "Liga / clube"
+    : "Ranking geral";
+  const activeSeason = useMemo(
+    () => availableSeasons.find((season) => season.id === seasonId) || availableSeasons[0] || null,
+    [availableSeasons, seasonId]
+  );
+  const rankingRaceRows = useMemo(() => {
+    const firstPoints = filteredRows[0]?.rankingPoints || 0;
+    return filteredRows.slice(0, 5).map((row, index) => ({
+      ...row,
+      effectivePosition: row.position || index + 1,
+      gapToLeader: Math.max(0, firstPoints - row.rankingPoints),
+    }));
+  }, [filteredRows]);
+  const classBreakdownRows = useMemo(() => {
+    const grouped = new Map<string, PublicRankingRow[]>();
+    filteredRows.forEach((row) => {
+      const key = classLabel(row);
+      grouped.set(key, [...(grouped.get(key) || []), row]);
+    });
+    return Array.from(grouped.entries())
+      .map(([label, items]) => {
+        const sorted = [...items].sort((a, b) => b.rankingPoints - a.rankingPoints);
+        const matches = items.reduce((acc, row) => acc + row.matchesPlayed, 0);
+        const activePlayers = items.filter((row) => row.matchesPlayed > 0).length;
+        return {
+          label,
+          players: items.length,
+          activePlayers,
+          matches,
+          leader: sorted[0]?.displayName || "Sem lider",
+          leaderPoints: sorted[0]?.rankingPoints || 0,
+        };
+      })
+      .sort((a, b) => b.players - a.players || b.matches - a.matches)
+      .slice(0, 6);
+  }, [filteredRows]);
+  const classCount = classOptions.length;
+  const highActivityPlayers = filteredRows.filter((row) => row.matchesPlayed >= 3).length;
+  const playersWithMatches = filteredRows.filter((row) => row.matchesPlayed > 0).length;
+  const rankingCompleteness = totalPlayers > 0 ? Math.round((playersWithMatches / totalPlayers) * 100) : 0;
+  const exportRankingCsv = () => {
+    const header = ["posicao", "jogador", "liga", "temporada", "classe", "cidade", "vitorias", "derrotas", "jogos", "pontos"];
+    const lines = visibleRows.map((row, index) => [
+      row.position || index + 1,
+      row.displayName,
+      row.leagueName,
+      row.seasonName,
+      classLabel(row),
+      locationLabel(row),
+      row.wins,
+      row.losses,
+      row.matchesPlayed,
+      row.rankingPoints,
+    ].map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","));
+    const blob = new Blob([[header.join(","), ...lines].join("\n")], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ranking-${scope}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setFeedback("Ranking exportado em CSV.");
+  };
+  const copyRankingSnapshot = async () => {
+    const lines = [
+      `Ranking - ${scopeLabel}`,
+      `${filteredRows.length} jogadores | ${totalMatches} jogos | media ${averagePoints} pts`,
+      classFilter ? `Classe: ${classFilter}` : `Classes: ${classCount}`,
+      "",
+      ...visibleRows.slice(0, 10).map((row, index) => `#${row.position || index + 1} ${row.displayName} - ${row.rankingPoints} pts (${row.wins}-${row.losses})`),
+    ];
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      setFeedback("Resumo do ranking copiado.");
+    } catch {
+      setFeedback("Nao foi possivel copiar o ranking agora.");
+    }
+  };
+  const selectedRules = selectedLeagueDetails
+    ? [
+        { label: "Formato", value: `${leagueTypeLabel(selectedLeagueDetails.leagueType)} - ${matchFormatLabel(selectedLeagueDetails.matchFormat)}` },
+        { label: "Rodadas", value: `${selectedLeagueDetails.roundsTotal || activeSeason?.currentRoundNumber || 0} previstas` },
+        { label: "Prazo de resultado", value: `${selectedLeagueDetails.resultDeadlineDays || 0} dias` },
+        { label: "Intervalo", value: roundIntervalLabel(selectedLeagueDetails.roundInterval, selectedLeagueDetails.roundIntervalDays) },
+        { label: "Sobe / desce", value: `${selectedLeagueDetails.promotedCount || 0} sobem / ${selectedLeagueDetails.relegatedCount || 0} descem` },
+        { label: "Recessos", value: `${selectedLeagueDetails.maxRecesses || 0} por temporada` },
+      ]
+    : [
+        { label: "Recorte", value: scopeLabel },
+        { label: "Classes", value: `${classCount || 0} em exibicao` },
+        { label: "Jogadores ativos", value: `${highActivityPlayers} com 3+ jogos` },
+        { label: "Criterio atual", value: "Pontos, vitorias e jogos lancados" },
+      ];
 
   const onToggleFollow = async (targetUserId: string) => {
     if (!targetUserId || targetUserId === user.id) return;
@@ -160,42 +314,91 @@ export function RankingPage({ user, profile }: Props) {
         <h1>Ranking</h1>
       </div>
 
-      <div className="ranking-scope-tabs">
-        <button className={scope === "general" ? "active" : ""} onClick={() => setScope("general")}>
-          Geral
-        </button>
-        <button className={scope === "city" ? "active" : ""} onClick={() => setScope("city")}>
-          Minha cidade
-        </button>
-        <button className={scope === "league" ? "active" : ""} onClick={() => setScope("league")}>
-          Liga / clube
-        </button>
-      </div>
+      <section className="ranking-hero-panel">
+        <div>
+          <span>Ranking competitivo</span>
+          <h2>{scopeLabel}</h2>
+          <p>Compare desempenho por cidade, liga e temporada. Pontos, vitorias e jogos alimentam a evolucao do jogador.</p>
+        </div>
+        <div className="ranking-hero-kpis">
+          <article>
+            <strong>{totalPlayers}</strong>
+            <span>Jogadores</span>
+          </article>
+          <article>
+            <strong>{totalMatches}</strong>
+            <span>Partidas</span>
+          </article>
+          <article>
+            <strong>{averagePoints}</strong>
+            <span>Media pts</span>
+          </article>
+        </div>
+      </section>
 
-      {scope === "league" ? (
-        <section className="ranking-filters">
-          <select value={leagueId} onChange={(event) => setLeagueId(event.target.value)}>
-            {leagues.map((league) => (
-              <option key={league.id} value={league.id}>
-                {league.name}
+      <section className="ranking-control-panel">
+        <div className="ranking-scope-tabs">
+          <button className={scope === "general" ? "active" : ""} onClick={() => setScope("general")}>
+            Geral
+          </button>
+          <button className={scope === "city" ? "active" : ""} onClick={() => setScope("city")}>
+            Minha cidade
+          </button>
+          <button className={scope === "league" ? "active" : ""} onClick={() => setScope("league")}>
+            Liga / clube
+          </button>
+        </div>
+
+        {scope === "league" ? (
+          <div className="ranking-filters">
+            <select value={leagueId} onChange={(event) => setLeagueId(event.target.value)}>
+              {leagues.map((league) => (
+                <option key={league.id} value={league.id}>
+                  {league.name}
+                </option>
+              ))}
+            </select>
+            <select value={seasonId} onChange={(event) => setSeasonId(event.target.value)} disabled={!availableSeasons.length}>
+              {availableSeasons.map((season) => (
+                <option key={season.id} value={season.id}>
+                  {season.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+        <div className="ranking-filters">
+          <input
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Buscar jogador, liga ou cidade"
+          />
+          <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
+            <option value="">Todas as classes</option>
+            {classOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
               </option>
             ))}
           </select>
-          <select value={seasonId} onChange={(event) => setSeasonId(event.target.value)} disabled={!availableSeasons.length}>
-            {availableSeasons.map((season) => (
-              <option key={season.id} value={season.id}>
-                {season.name}
-              </option>
-            ))}
-          </select>
-        </section>
-      ) : null}
+        </div>
+        <p className="ranking-filter-summary">
+          {filteredRows.length} de {rows.length} jogador{rows.length === 1 ? "" : "es"} neste recorte
+          {classFilter ? ` · ${classFilter}` : ""}
+        </p>
+      </section>
 
       {scope === "city" && (!profile?.city || !profile?.state) ? (
-        <p className="feedback error">Complete cidade e UF no perfil para ver o ranking local.</p>
+        <ScreenState
+          kind="error"
+          icon="Perfil incompleto"
+          title="Cidade e UF ainda nao foram definidos"
+          detail="Complete seu perfil para ver o ranking local com contexto correto."
+        />
       ) : null}
-      {error ? <p className="feedback error">{error}</p> : null}
-      {loading ? <p className="subtle">Carregando ranking...</p> : null}
+      {error ? <ScreenState kind="error" title="Nao foi possivel carregar o ranking" detail={error} /> : null}
+      {feedback ? <p className="feedback success">{feedback}</p> : null}
+      {loading ? <ScreenState kind="loading" icon="Ranking" title="Carregando ranking" detail="Buscando jogadores, ligas e recortes disponiveis." /> : null}
 
       {!loading && myRows.length > 0 ? (
         <section className="ranking-my-card">
@@ -208,10 +411,126 @@ export function RankingPage({ user, profile }: Props) {
         </section>
       ) : null}
 
+      {!loading && leader ? (
+        <section className="ranking-feature-grid">
+          <article className="ranking-leader-card">
+            <span>Lider do recorte</span>
+            <strong>#{leader.position || 1} {leader.displayName}</strong>
+            <small>{leader.leagueName} - {classLabel(leader)}</small>
+            <div>
+              <b>{leader.rankingPoints} pts</b>
+              <b>{winRate(leader)}% aproveit.</b>
+              <b>{leader.matchesPlayed} jogos</b>
+            </div>
+          </article>
+          {myRows[0] ? (
+            <article className="ranking-player-card">
+              <span>Seu momento</span>
+              <strong>#{myRows[0].position || "-"} {myRows[0].displayName}</strong>
+              <small>{myRows[0].leagueName} - {classLabel(myRows[0])}</small>
+              <div>
+                <b>{myRows[0].rankingPoints} pts</b>
+                <b>{myRows[0].wins}-{myRows[0].losses}</b>
+                <b>{winRate(myRows[0])}% aproveit.</b>
+              </div>
+            </article>
+          ) : (
+            <article className="ranking-player-card">
+              <span>Seu momento</span>
+              <strong>Entre em uma liga</strong>
+              <small>Quando voce aparecer em uma temporada, sua posicao fica destacada aqui.</small>
+            </article>
+          )}
+        </section>
+      ) : null}
+
+      {!loading && filteredRows.length > 0 ? (
+        <section className="ranking-ops-grid">
+          <article className="ranking-rules-card">
+            <span>{selectedLeagueDetails ? "Regulamento da liga" : "Como ler este recorte"}</span>
+            <h3>{selectedLeagueDetails?.name || scopeLabel}</h3>
+            <div>
+              {selectedRules.map((rule) => (
+                <p key={rule.label}>
+                  <b>{rule.label}</b>
+                  <strong>{rule.value}</strong>
+                </p>
+              ))}
+            </div>
+            {activeSeason ? (
+              <small>
+                Temporada: {activeSeason.name} - rodada {activeSeason.currentRoundNumber || 0}
+              </small>
+            ) : (
+              <small>Use o filtro de liga para ver temporada, formato e regras de acesso.</small>
+            )}
+          </article>
+          <article className="ranking-race-card">
+            <span>Corrida do ranking</span>
+            <h3>Disputa pelo topo</h3>
+            <div>
+              {rankingRaceRows.map((row) => (
+                <p key={`race:${row.leaguePlayerId}`}>
+                  <b>#{row.effectivePosition}</b>
+                  <strong>{row.displayName}</strong>
+                  <em>{row.gapToLeader === 0 ? "lider" : `${row.gapToLeader} pts atras`}</em>
+                </p>
+              ))}
+            </div>
+            <small>{classFilter || "Todas as classes"} - {totalMatches} jogos no recorte</small>
+          </article>
+          <article className="ranking-class-map-card">
+            <span>Mapa de classes</span>
+            <h3>Onde a liga esta viva</h3>
+            <div>
+              {classBreakdownRows.map((row) => (
+                <p key={`class-map:${row.label}`}>
+                  <b>{row.label}</b>
+                  <strong>{row.players} jogadores - {row.matches} jogos</strong>
+                  <em>{row.leader} - {row.leaderPoints} pts</em>
+                </p>
+              ))}
+            </div>
+            <small>{rankingCompleteness}% dos jogadores ja possuem partida lancada neste recorte.</small>
+          </article>
+          <article className="ranking-tools-card">
+            <PublishingKit
+              eyebrow="Ferramentas"
+              title="Publicacao e gestao"
+              hint="Copie o top 10 para WhatsApp ou exporte CSV para conferencia interna do clube."
+              actions={
+                <>
+                  <button onClick={() => void copyRankingSnapshot()} disabled={!visibleRows.length}>
+                    Copiar top 10
+                  </button>
+                  <button className="primary" onClick={exportRankingCsv} disabled={!visibleRows.length}>
+                    Exportar CSV
+                  </button>
+                </>
+              }
+            />
+            <small>Use junto dos filtros de liga, temporada, classe e busca.</small>
+          </article>
+        </section>
+      ) : null}
+
       {!loading && !visibleRows.length ? (
-        <div className="empty-state">
-          <p>Nenhum ranking encontrado para este filtro.</p>
-        </div>
+        <ScreenState
+          icon="Sem resultado"
+          title="Nenhum ranking encontrado para este filtro"
+          detail="Ajuste busca, classe, liga ou temporada para ampliar o recorte."
+          action={
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery("");
+                setClassFilter("");
+              }}
+            >
+              Limpar filtros
+            </button>
+          }
+        />
       ) : null}
 
       {visibleRows.length ? (
@@ -238,7 +557,8 @@ export function RankingPage({ user, profile }: Props) {
                 </small>
               </span>
               <span>
-                {row.wins}-{row.losses}
+                <strong>{row.wins}-{row.losses}</strong>
+                <small>{winRate(row)}%</small>
               </span>
               <span>{row.rankingPoints}</span>
               <span>
