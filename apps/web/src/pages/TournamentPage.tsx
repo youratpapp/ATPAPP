@@ -2999,7 +2999,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       setFeedback({
         kind: result.ok ? "success" : "error",
         text: result.ok
-          ? `${result.syncedCount || scheduledMatches.length} jogo(s) sincronizado(s) no Google Agenda.`
+          ? `${result.syncedCount || scheduledMatches.length} ${(result.syncedCount || scheduledMatches.length) === 1 ? "jogo sincronizado" : "jogos sincronizados"} no Google Agenda.`
           : result.message || "Falha ao sincronizar Google Agenda.",
       });
     } catch (err) {
@@ -3192,7 +3192,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       `Indisponibilidade - ${tournament.name}`,
       `${first.classLabel} / ${first.phaseLabel}`,
       first.matchTitle,
-      `Lado(s): ${rows.map((confirmation) => confirmation.side.toUpperCase()).join(", ")}`,
+      `${rows.length === 1 ? "Lado" : "Lados"}: ${rows.map((confirmation) => confirmation.side.toUpperCase()).join(", ")}`,
       "",
       `Link: ${buildTournamentShareLink("jogos")}`,
     ];
@@ -3419,10 +3419,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         kind: "success",
         text:
           status === "approved"
-            ? `${ids.length} inscricao(oes) aprovada(s).`
+            ? `${ids.length} ${ids.length === 1 ? "inscricao aprovada" : "inscricoes aprovadas"}.`
             : status === "waitlist"
-            ? `${ids.length} inscricao(oes) movida(s) para lista de espera.`
-            : `${ids.length} inscricao(oes) rejeitada(s).`,
+            ? `${ids.length} ${ids.length === 1 ? "inscricao movida" : "inscricoes movidas"} para lista de espera.`
+            : `${ids.length} ${ids.length === 1 ? "inscricao rejeitada" : "inscricoes rejeitadas"}.`,
       });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha na atualizacao em lote." });
@@ -3936,7 +3936,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <span>{tournamentAdminPhase.label}</span>
                     <strong>
                       {tournamentPendingCenter.total > 0
-                        ? `${tournamentPendingCenter.total} ponto(s) para acompanhar`
+                        ? `${tournamentPendingCenter.total} ${tournamentPendingCenter.total === 1 ? "ponto" : "pontos"} para acompanhar`
                         : "Sem pendencias nesta etapa"}
                     </strong>
                   </div>
@@ -3967,7 +3967,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <strong>
                     {tournamentCompletionBlockers.length === 0
                       ? "Torneio sem bloqueios aparentes"
-                      : `${tournamentCompletionBlockers.length} bloqueio(s) antes de finalizar`}
+                      : `${tournamentCompletionBlockers.length} ${tournamentCompletionBlockers.length === 1 ? "bloqueio" : "bloqueios"} antes de finalizar`}
                   </strong>
                 </div>
                 {tournamentCompletionBlockers.length > 0 ? (
@@ -4005,7 +4005,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             {canManageMatches && unavailableConfirmationCount > 0 ? (
               <div className="organizer-alert-card">
                 <span>Indisponibilidade avisada</span>
-                <strong>{unavailableConfirmationCount} aviso(s) em partidas pendentes</strong>
+                <strong>{unavailableConfirmationCount} {unavailableConfirmationCount === 1 ? "aviso" : "avisos"} em partidas pendentes</strong>
                 {unavailableConfirmationGroups.slice(0, 3).map((rows) => {
                   const first = rows[0];
                   if (!first) return null;
@@ -4168,13 +4168,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       <h3>Minhas partidas</h3>
                     </div>
                     <div className="my-matches-tools">
-                      <span className="home-league-chip member">{myPendingMatches.length} pendente(s)</span>
+                      <span className="home-league-chip member">{myPendingMatches.length} {myPendingMatches.length === 1 ? "pendente" : "pendentes"}</span>
                       {myFinishedMatches.length > 0 ? (
                         <button
                           className="link"
                           onClick={() => setShowFinishedMyMatches((value) => !value)}
                         >
-                          {showFinishedMyMatches ? "Ocultar finalizadas" : `Ver ${myFinishedMatches.length} finalizada(s)`}
+                          {showFinishedMyMatches ? "Ocultar finalizadas" : `Ver ${myFinishedMatches.length} ${myFinishedMatches.length === 1 ? "finalizada" : "finalizadas"}`}
                         </button>
                       ) : null}
                       <button
@@ -4225,7 +4225,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       : hasAccepted
                       ? "Conferido pelos lados. Aguardando placar oficial."
                       : submissions.length > 0
-                      ? `Enviado por ${submittedSides} lado(s).`
+                      ? `Enviado por ${submittedSides} ${submittedSides === 1 ? "lado" : "lados"}.`
                       : "";
                     return (
                       <div key={match.id} className={`my-match-row ${match.status}`}>
@@ -4305,7 +4305,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   {pendingResultReviewCount > 0 ? (
                     <div className="result-review-panel">
                       <div>
-                        <strong>{pendingResultReviewCount} envio(s) de resultado por jogadores</strong>
+                        <strong>{pendingResultReviewCount} {pendingResultReviewCount === 1 ? "envio" : "envios"} de resultado por jogadores</strong>
                         <span>Resultados aceitos ou divergentes continuam invisiveis como placar oficial ate o organizador aplicar na partida.</span>
                       </div>
                       {pendingResultReviewGroups.slice(0, 5).map((rows) => {
@@ -5310,7 +5310,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               <div className="tournament-admin-ops">
                 <h3 style={{ marginTop: 0, marginBottom: 8 }}>Inscricoes por link</h3>
                 <p className="subtle" style={{ marginTop: 0 }}>
-                  Pagas no stub: {tournamentPaymentSummary.paidCount}/{registrations.length} ·{" "}
+                  Pagas manualmente: {tournamentPaymentSummary.paidCount}/{registrations.length} ·{" "}
                   {formatMoneyFromCents(tournamentPaymentSummary.paidAmountCents)}
                 </p>
                 <div className="cluster" style={{ marginBottom: 8 }}>
@@ -5396,7 +5396,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         {r.phone || "Sem telefone"} | {new Date(r.createdAt || "").toLocaleString("pt-BR")} | {r.status}
                       </div>
                       {paymentsByTarget[`tournament_registration:${r.id}`]?.status === "paid" ? (
-                        <div className="payment-paid-label">Pago via stub</div>
+                        <div className="payment-paid-label">Pagamento registrado</div>
                       ) : null}
                     </div>
                     {r.status === "pending" || r.status === "waitlist" || (isOwner && paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid") ? (

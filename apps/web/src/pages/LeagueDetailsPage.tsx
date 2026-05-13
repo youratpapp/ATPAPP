@@ -1089,7 +1089,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       setFeedback({
         kind: result.ok ? "success" : "error",
         text: result.ok
-          ? `${result.syncedCount || scheduledMatches.length} partida(s) sincronizada(s) no Google Agenda.`
+          ? `${result.syncedCount || scheduledMatches.length} ${(result.syncedCount || scheduledMatches.length) === 1 ? "partida sincronizada" : "partidas sincronizadas"} no Google Agenda.`
           : result.message || "Falha ao sincronizar Google Agenda.",
       });
     } catch (err) {
@@ -1869,7 +1869,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       <div key={run.id} className="league-scheduler-run">
                         <div>
                           <strong>{formatDateTime(run.executedAt)}</strong>
-                          <span>{run.details.length} evento(s) nesta liga</span>
+                          <span>{run.details.length} {run.details.length === 1 ? "evento" : "eventos"} nesta liga</span>
                         </div>
                         {run.details.map((detail, idx) => (
                           <p key={`${run.id}:${idx}`}>
@@ -1971,7 +1971,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               <span>Origem: {r.source === "link" ? "Link" : r.source === "public" ? "Publica" : "Admin"}</span>
                               <span>Classe: {cls ? classLabel(cls) : "-"}</span>
                               {paymentsByTarget[`league_registration:${r.id}`]?.status === "paid" ? (
-                                <span className="payment-paid-label">Pago via stub</span>
+                                <span className="payment-paid-label">Pagamento registrado</span>
                               ) : null}
                             </p>
                           </div>
@@ -2012,7 +2012,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   <div className="section-title" style={{ marginBottom: 8 }}>
                     <h3>Minhas partidas</h3>
                     <div className="cluster">
-                      <span className="home-league-chip member">{myPendingLeagueMatches.length} pendente(s)</span>
+                      <span className="home-league-chip member">{myPendingLeagueMatches.length} {myPendingLeagueMatches.length === 1 ? "pendente" : "pendentes"}</span>
                       {myFinishedLeagueMatches.length > 0 ? (
                         <button
                           className="link"
@@ -2020,7 +2020,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         >
                           {showFinishedMyLeagueMatches
                             ? "Ocultar finalizadas"
-                            : `Ver ${myFinishedLeagueMatches.length} finalizada(s)`}
+                            : `Ver ${myFinishedLeagueMatches.length} ${myFinishedLeagueMatches.length === 1 ? "finalizada" : "finalizadas"}`}
                         </button>
                       ) : null}
                       <button

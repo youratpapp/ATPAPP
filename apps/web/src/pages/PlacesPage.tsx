@@ -1,6 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { AcademyWorkspaceShell, type AcademyManagementView } from "../components/place/AcademyWorkspaceShell";
+import { BookingWorkspaceShell, type BookingManagementView } from "../components/place/BookingWorkspaceShell";
+import { CanteenWorkspaceShell, type CanteenManagementView } from "../components/place/CanteenWorkspaceShell";
+import { ClientsWorkspaceShell, type ClientsManagementView } from "../components/place/ClientsWorkspaceShell";
+import { FinanceWorkspaceShell, type FinanceManagementView } from "../components/place/FinanceWorkspaceShell";
+import { PlaceAnalyticsPanel } from "../components/place/PlaceAnalyticsPanel";
+import { PlaceManagementCockpit } from "../components/place/PlaceManagementCockpit";
+import { PlaceOperationsDashboard } from "../components/place/PlaceOperationsDashboard";
+import { WorkspaceCard, WorkspaceGrid, WorkspaceList, WorkspaceRow } from "../components/place/PlaceWorkspaceUi";
+import { SettingsWorkspaceShell, type SettingsManagementView } from "../components/place/SettingsWorkspaceShell";
+import { TeamWorkspaceShell, type TeamManagementView } from "../components/place/TeamWorkspaceShell";
 import {
   addOpenMatchComment,
   addPlaceStaff,
@@ -79,6 +90,15 @@ import {
   linkPlaceCoachByEmail,
   uploadPlaceLogo,
 } from "../lib/places";
+import {
+  PLACE_MANAGEMENT_MODULE_DESCRIPTIONS,
+  PLACE_MANAGEMENT_MODULE_LABELS,
+  featureList,
+  placeManagementModules,
+  placeResourceAccess,
+  type PlaceManagementModule,
+  countLabel,
+} from "../lib/place-management";
 import { createPaymentReminderForParticipant, formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
 import type {
   AcademyClass,
@@ -118,6 +138,7 @@ type Props = {
 };
 
 type TabKey = "all" | "following" | "mine";
+type AcademyStudentFilter = { query: string; classId: string; status: "" | AcademyEnrollment["status"] };
 
 const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
@@ -142,16 +163,6 @@ const STAFF_ROLE_LABELS: Record<"owner" | PlaceStaffMember["role"], string> = {
   frontdesk: "Recepcao",
 };
 
-function placeProductFeatures(plan: PlaceProductPlan) {
-  return {
-    bookings: plan === "club_basic" || plan === "club_pro" || plan === "multi_unit",
-    academy: plan === "academy" || plan === "club_pro" || plan === "multi_unit",
-    finance: plan === "club_pro" || plan === "multi_unit",
-    crm: plan === "club_pro" || plan === "multi_unit",
-    memberships: plan === "club_pro" || plan === "multi_unit",
-  };
-}
-
 function friendlyError(err: unknown, fallback: string): string {
   const text = err instanceof Error ? err.message : "";
   const lower = text.toLowerCase();
@@ -169,34 +180,6 @@ function friendlyError(err: unknown, fallback: string): string {
     return text;
   }
   return text || fallback;
-}
-
-function placeResourceAccess(place: Place, userId: string, staff: PlaceStaffMember[]) {
-  const staffRole = place.ownerId === userId ? "owner" : staff.find((member) => member.userId === userId)?.role || "";
-  const canManagePlace = staffRole === "owner" || staffRole === "manager";
-  const features = placeProductFeatures(place.productPlan);
-  return {
-    staffRole,
-    canManagePlace,
-    canUseBookings: features.bookings,
-    canUseAcademy: features.academy,
-    canUseFinance: features.finance,
-    canUseCrm: features.crm,
-    canUseMemberships: features.memberships,
-    canManageBookings: features.bookings && (canManagePlace || staffRole === "frontdesk"),
-    canManageAcademy: features.academy && (canManagePlace || staffRole === "coach"),
-    canManageFinance: features.finance && canManagePlace,
-  };
-}
-
-function featureList(access: ReturnType<typeof placeResourceAccess>): string[] {
-  return [
-    access.canUseBookings ? "Reservas" : "",
-    access.canUseAcademy ? "Academia" : "",
-    access.canUseMemberships ? "Socios" : "",
-    access.canUseCrm ? "CRM" : "",
-    access.canUseFinance ? "Financeiro" : "",
-  ].filter(Boolean);
 }
 
 function todayDateInputValue(): string {
@@ -253,6 +236,15 @@ function ThumbUpIcon() {
 
 export function PlacesPage({ user, profile }: Props) {
   const [tab, setTab] = useState<TabKey>("all");
+  const [managementModuleByPlace, setManagementModuleByPlace] = useState<Record<string, PlaceManagementModule>>({});
+  const [academyViewByPlace, setAcademyViewByPlace] = useState<Record<string, AcademyManagementView>>({});
+  const [bookingViewByPlace, setBookingViewByPlace] = useState<Record<string, BookingManagementView>>({});
+  const [canteenViewByPlace, setCanteenViewByPlace] = useState<Record<string, CanteenManagementView>>({});
+  const [clientsViewByPlace, setClientsViewByPlace] = useState<Record<string, ClientsManagementView>>({});
+  const [financeViewByPlace, setFinanceViewByPlace] = useState<Record<string, FinanceManagementView>>({});
+  const [settingsViewByPlace, setSettingsViewByPlace] = useState<Record<string, SettingsManagementView>>({});
+  const [teamViewByPlace, setTeamViewByPlace] = useState<Record<string, TeamManagementView>>({});
+  const [academyStudentFilterByPlace, setAcademyStudentFilterByPlace] = useState<Record<string, AcademyStudentFilter>>({});
   const [places, setPlaces] = useState<Place[]>([]);
   const [organizations, setOrganizations] = useState<PlaceOrganization[]>([]);
   const [openMatches, setOpenMatches] = useState<OpenMatch[]>([]);
@@ -946,7 +938,7 @@ export function PlacesPage({ user, profile }: Props) {
       if (rows[0]) {
         setBookingDraftByPlace((prev) => ({ ...prev, [place.id]: { ...draft, courtId: rows[0].id } }));
       }
-      setFeedback({ kind: rows.length ? "success" : "info", text: rows.length ? `${rows.length} quadra(s) livre(s) neste horario.` : "Nenhuma quadra livre neste horario." });
+      setFeedback({ kind: rows.length ? "success" : "info", text: rows.length ? `${countLabel(rows.length, "quadra livre", "quadras livres")} neste horario.` : "Nenhuma quadra livre neste horario." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao buscar quadras livres.") });
     } finally {
@@ -1048,7 +1040,7 @@ export function PlacesPage({ user, profile }: Props) {
     try {
       const cancelled = await cancelCourtBookingSeries(bookingId);
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: `${cancelled || 0} reserva(s) da serie cancelada(s).` });
+      setFeedback({ kind: "success", text: `${countLabel(cancelled || 0, "reserva da serie cancelada", "reservas da serie canceladas")}.` });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao cancelar serie.") });
     } finally {
@@ -1357,7 +1349,7 @@ export function PlacesPage({ user, profile }: Props) {
         genderScope: filters.genderScope,
       });
       setAcademyFitSlotsByPlace((prev) => ({ ...prev, [placeId]: rows }));
-      setFeedback({ kind: "success", text: rows.length ? `${rows.length} horario(s) com encaixe encontrado(s).` : "Nenhum encaixe encontrado para estes filtros." });
+      setFeedback({ kind: "success", text: rows.length ? `${countLabel(rows.length, "horario com encaixe encontrado", "horarios com encaixe encontrados")}.` : "Nenhum encaixe encontrado para estes filtros." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao buscar encaixes.") });
     } finally {
@@ -1707,7 +1699,7 @@ export function PlacesPage({ user, profile }: Props) {
         <section className="open-matches-panel">
           <div className="place-booking-head">
             <strong>Partidas abertas</strong>
-            <span>{openMatches.length} chamada(s)</span>
+            <span>{countLabel(openMatches.length, "chamada", "chamadas")}</span>
           </div>
           <div className="open-match-form">
             <select
@@ -1751,7 +1743,7 @@ export function PlacesPage({ user, profile }: Props) {
                       {match.level ? ` | ${match.level}` : ""}
                     </span>
                     <small>
-                      {match.participantCount} interessado(s) | {match.reactionCount} curtida(s) | {match.commentCount} comentario(s)
+                      {countLabel(match.participantCount, "interessado", "interessados")} | {countLabel(match.reactionCount, "curtida", "curtidas")} | {countLabel(match.commentCount, "comentario", "comentarios")}
                       {match.notes ? ` | ${match.notes}` : ""}
                     </small>
                   </div>
@@ -1850,6 +1842,9 @@ export function PlacesPage({ user, profile }: Props) {
         const academyLessonRequests = academyLessonRequestsByPlace[p.id] || [];
         const academyMakeups = academyMakeupsByPlace[p.id] || [];
         const academyProgress = academyProgressByPlace[p.id] || [];
+        const pendingAcademyEnrollments = academyEnrollments.filter((item) => item.status === "pending");
+        const openAcademyMakeups = academyMakeups.filter((item) => item.status === "open");
+        const academyStudentFilter = academyStudentFilterByPlace[p.id] || { query: "", classId: "", status: "active" as const };
         const academyBillingPeriod = currentBillingPeriod();
         const todayAttendance = academyAttendance.filter((item) => item.attendedOn === todayDateInputValue());
         const academyDraft = academyClassDraftByPlace[p.id] || {
@@ -1969,6 +1964,193 @@ export function PlacesPage({ user, profile }: Props) {
           posRevenueCents: posSales.filter((sale) => sale.status === "paid").reduce((sum, sale) => sum + sale.totalAmountCents, 0),
           expenseCents: expenses.filter((expense) => expense.status === "posted").reduce((sum, expense) => sum + expense.amountCents, 0),
         };
+        const financeReceivables = [
+          ...memberships
+            .filter((membership) => membership.status === "active" || membership.status === "pending")
+            .map((membership) => {
+              const plan = membershipPlans.find((item) => item.id === membership.planId);
+              const payment = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())];
+              return {
+                id: `membership:${membership.id}`,
+                title: membership.memberName,
+                subtitle: plan?.name || "Plano de socio",
+                amountCents: plan?.monthlyFeeCents || 0,
+                status: payment?.status === "paid" ? "paid" : membership.status === "pending" ? "pending_approval" : "open",
+                reminder: `${membership.memberName}, sua mensalidade de socio esta pendente.`,
+                targetType: "place_membership",
+                targetId: membership.id,
+                billingPeriod: currentBillingPeriod(),
+              };
+            }),
+          ...academyEnrollments
+            .filter((enrollment) => enrollment.status === "active" || enrollment.status === "pending")
+            .map((enrollment) => {
+              const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+              const payment = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)];
+              return {
+                id: `academy:${enrollment.id}`,
+                title: enrollment.playerName,
+                subtitle: academyClass?.title || "Turma",
+                amountCents: academyClass?.monthlyFeeCents || 0,
+                status: payment?.status === "paid" ? "paid" : enrollment.status === "pending" ? "pending_approval" : "open",
+                reminder: `${enrollment.playerName}, sua mensalidade da turma ${academyClass?.title || "da academia"} esta pendente.`,
+                targetType: "academy_enrollment",
+                targetId: enrollment.id,
+                billingPeriod: academyBillingPeriod,
+              };
+            }),
+        ];
+        const openReceivables = financeReceivables.filter((item) => item.status !== "paid");
+        const lowStockProducts = posProducts.filter((product) => product.stockQuantity <= 3);
+        const pendingBookings = bookings.filter((booking) => booking.status === "pending");
+        const todayBookings = bookings
+          .filter((booking) => booking.status !== "cancelled" && dateInputValue(booking.startsAt) === todayDateInputValue())
+          .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+        const waitingCourtEntries = bookingWaitlist.filter((entry) => entry.status === "waiting");
+        const todayPosSales = posSales.filter((sale) => sale.status === "paid" && dateInputValue(sale.createdAt) === todayDateInputValue());
+        const todayPosRevenueCents = todayPosSales.reduce((sum, sale) => sum + sale.totalAmountCents, 0);
+        const todayClasses = visibleAcademyClasses
+          .filter((academyClass) => academyClass.weekday === new Date().getDay())
+          .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+        const pendingClientActions = [
+          ...memberships.filter((membership) => membership.status === "pending").map((membership) => ({
+            id: `membership-action:${membership.id}`,
+            title: membership.memberName,
+            text: "Solicitacao de socio aguardando aprovacao",
+          })),
+          ...crmContacts.filter((contact) => contact.status === "lead").map((contact) => ({
+            id: `crm-action:${contact.id}`,
+            title: contact.name,
+            text: [contact.interest, contact.source].filter(Boolean).join(" | ") || "Lead sem proxima acao",
+          })),
+          ...academyEnrollments.filter((enrollment) => enrollment.status === "pending").map((enrollment) => ({
+            id: `enrollment-action:${enrollment.id}`,
+            title: enrollment.playerName,
+            text: "Interesse em turma aguardando aprovacao",
+          })),
+        ];
+        const setupChecklist = [
+          {
+            key: "profile",
+            done: Boolean(p.name && p.city && p.state && p.description),
+            title: "Dados do local",
+            detail: p.description ? "Descricao preenchida" : "Inclua horarios, contato e orientacoes para alunos.",
+            module: "settings" as PlaceManagementModule,
+          },
+          {
+            key: "courts",
+            done: activeCourts.length > 0,
+            title: "Quadras",
+            detail: activeCourts.length ? `${countLabel(activeCourts.length, "quadra cadastrada", "quadras cadastradas")}` : "Cadastre pelo menos uma quadra para reservas.",
+            module: "bookings" as PlaceManagementModule,
+          },
+          {
+            key: "team",
+            done: staff.length > 0,
+            title: "Equipe",
+            detail: staff.length ? `${countLabel(staff.length, "membro ou convite", "membros ou convites")}` : "Convide recepcao, gerente ou professor.",
+            module: "team" as PlaceManagementModule,
+          },
+          {
+            key: "academy",
+            done: !access.canUseAcademy || (academyCoaches.length > 0 && activeAcademyClasses.length > 0),
+            title: "Academia",
+            detail: access.canUseAcademy
+              ? academyCoaches.length && activeAcademyClasses.length
+                ? `${countLabel(academyCoaches.length, "professor", "professores")}, ${countLabel(activeAcademyClasses.length, "turma", "turmas")}`
+                : "Cadastre professores e turmas basicas."
+              : "Modulo desativado no plano.",
+            module: "academy" as PlaceManagementModule,
+          },
+          {
+            key: "clients",
+            done: !access.canUseMemberships || activeMembershipPlans.length > 0,
+            title: "Planos de socio",
+            detail: access.canUseMemberships
+              ? activeMembershipPlans.length
+                ? `${countLabel(activeMembershipPlans.length, "plano ativo", "planos ativos")}`
+                : "Crie um plano antes de divulgar mensalistas."
+              : "Modulo desativado no plano.",
+            module: "clients" as PlaceManagementModule,
+          },
+          {
+            key: "canteen",
+            done: !access.canUseFinance || posProducts.length > 0,
+            title: "Cantina",
+            detail: access.canUseFinance
+              ? posProducts.length
+                ? `${countLabel(posProducts.length, "produto cadastrado", "produtos cadastrados")}`
+                : "Cadastre produtos para venda rapida."
+              : "Modulo desativado no plano.",
+            module: "canteen" as PlaceManagementModule,
+          },
+        ];
+        const setupDoneCount = setupChecklist.filter((item) => item.done).length;
+        const managementModules = placeManagementModules(access);
+        const setupPercent = Math.round((setupDoneCount / setupChecklist.length) * 100);
+        const nextSetupItem = setupChecklist.find((item) => !item.done && managementModules.includes(item.module)) || null;
+        const currentManagementModule = managementModules.includes(managementModuleByPlace[p.id] || "dashboard")
+          ? managementModuleByPlace[p.id] || "dashboard"
+          : managementModules[0] || "dashboard";
+        const moduleCounts: Record<PlaceManagementModule, number> = {
+          dashboard: operationalStats.pendingBookings + operationalStats.pendingEnrollments + operationalStats.pendingLessonRequests + operationalStats.pendingMemberships + openReceivables.length,
+          bookings: pendingBookings.length + waitingCourtEntries.length,
+          academy: operationalStats.pendingEnrollments + operationalStats.pendingLessonRequests + operationalStats.openMakeups,
+          clients: pendingClientActions.length,
+          finance: openReceivables.length + expenses.filter((expense) => expense.status === "posted").length,
+          canteen: lowStockProducts.length + todayPosSales.length,
+          team: staff.filter((member) => member.status === "pending").length,
+          settings: setupChecklist.length - setupDoneCount,
+        };
+        const isManagementCockpit = Boolean(staffRole);
+        const showManagementModule = (module: PlaceManagementModule) => !isManagementCockpit || currentManagementModule === module;
+        const clientsView = (clientsViewByPlace[p.id] || "overview") as ClientsManagementView;
+        const showClientsWorkspace = isManagementCockpit && (showMembershipTools || (canUseCrm && canManagePlace));
+        const showClientsOverview = !showClientsWorkspace || clientsView === "overview";
+        const showClientsMembers = !showClientsWorkspace || clientsView === "members";
+        const showClientsLeads = !showClientsWorkspace || clientsView === "leads";
+        const teamView = (teamViewByPlace[p.id] || "overview") as TeamManagementView;
+        const showTeamWorkspace = isManagementCockpit && isOwner;
+        const showTeamStaff = !showTeamWorkspace || teamView === "staff";
+        const settingsView = (settingsViewByPlace[p.id] || "overview") as SettingsManagementView;
+        const showSettingsWorkspace = isManagementCockpit && isOwner;
+        const showSettingsDetails = !showSettingsWorkspace || settingsView === "setup" || settingsView === "plan";
+        const bookingView = (bookingViewByPlace[p.id] || "today") as BookingManagementView;
+        const showBookingWorkspace = isManagementCockpit && showBookingTools;
+        const showBookingResources = !showBookingWorkspace || bookingView === "resources";
+        const showBookingCreate = !showBookingWorkspace || bookingView === "new";
+        const showBookingCalendar = !showBookingWorkspace || bookingView === "calendar";
+        const showBookingReservations = !showBookingWorkspace || bookingView === "reservations";
+        const showBookingWaitlist = !showBookingWorkspace || bookingView === "waitlist";
+        const financeView = (financeViewByPlace[p.id] || "overview") as FinanceManagementView;
+        const showFinanceWorkspace = isManagementCockpit && canManageFinance;
+        const showFinanceOverview = !showFinanceWorkspace || financeView === "overview";
+        const showFinanceReceivables = !showFinanceWorkspace || financeView === "receivables";
+        const showFinanceExpenses = !showFinanceWorkspace || financeView === "expenses";
+        const canteenView = (canteenViewByPlace[p.id] || "today") as CanteenManagementView;
+        const showCanteenWorkspace = isManagementCockpit && canManageFinance;
+        const showCanteenSummary = !showCanteenWorkspace || canteenView === "today";
+        const showCanteenSale = !showCanteenWorkspace || canteenView === "sell";
+        const showCanteenStock = !showCanteenWorkspace || canteenView === "stock";
+        const showCanteenProducts = !showCanteenWorkspace || canteenView === "products";
+        const academyView = (academyViewByPlace[p.id] || "today") as AcademyManagementView;
+        const showAcademyWorkspace = isManagementCockpit && showAcademyTools;
+        const showAcademyResources = !showAcademyWorkspace || academyView === "resources";
+        const showAcademyRequests = !showAcademyWorkspace || academyView === "requests";
+        const showAcademyClasses = !showAcademyWorkspace || academyView === "classes";
+        const normalizedAcademyStudentQuery = academyStudentFilter.query.trim().toLowerCase();
+        const visibleAcademyStudentEnrollments = academyEnrollments.filter((enrollment) => {
+          const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+          const searchText = [enrollment.playerName, enrollment.phone, academyClass?.title, academyClass?.coachName, academyClass?.level]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+          return (
+            (!academyStudentFilter.status || enrollment.status === academyStudentFilter.status) &&
+            (!academyStudentFilter.classId || enrollment.classId === academyStudentFilter.classId) &&
+            (!normalizedAcademyStudentQuery || searchText.includes(normalizedAcademyStudentQuery))
+          );
+        });
         return (
           <article key={p.id} className="place-card">
             <div>
@@ -2012,7 +2194,196 @@ export function PlacesPage({ user, profile }: Props) {
                 <button disabled>Meu local</button>
               )}
             </div>
-            {isOwner ? (
+            {isManagementCockpit ? (
+              <PlaceManagementCockpit
+                currentModule={currentManagementModule}
+                moduleCounts={moduleCounts}
+                modules={managementModules}
+                nextStep={nextSetupItem}
+                pendingCount={
+                  operationalStats.pendingBookings +
+                  operationalStats.pendingEnrollments +
+                  operationalStats.pendingLessonRequests +
+                  operationalStats.pendingMemberships
+                }
+                placeName={p.name}
+                setupPercent={setupPercent}
+                staffRoleLabel={STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]]}
+                onModuleChange={(module) => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: module }))}
+              />
+            ) : null}
+            {currentManagementModule === ("__legacy_cockpit__" as PlaceManagementModule) && nextSetupItem ? (
+              <div className="place-management-cockpit">
+                <div className="place-management-intro">
+                  <div>
+                    <strong>Gestao operacional</strong>
+                    <span>
+                      {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]]} ·{" "}
+                      {countLabel(operationalStats.pendingBookings + operationalStats.pendingEnrollments + operationalStats.pendingLessonRequests + operationalStats.pendingMemberships, "pendencia", "pendencias")}
+                    </span>
+                  </div>
+                  <small>{setupPercent}% implantado · {nextSetupItem ? `Proximo: ${nextSetupItem.title}` : "Operacao basica pronta"}</small>
+                </div>
+                <div className="place-management-health">
+                  <span style={{ width: `${setupPercent}%` }} />
+                </div>
+                {nextSetupItem ? (
+                  <button
+                    className="place-next-step"
+                    type="button"
+                    onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: nextSetupItem.module }))}
+                  >
+                    <strong>Proximo passo</strong>
+                    <span>{nextSetupItem.detail}</span>
+                  </button>
+                ) : null}
+                <div className="place-management-tabs" role="tablist" aria-label={`Gestao de ${p.name}`}>
+                  {managementModules.map((module) => (
+                    <button
+                      key={`${p.id}:module:${module}`}
+                      className={currentManagementModule === module ? "active" : ""}
+                      onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: module }))}
+                      type="button"
+                    >
+                      <span>{PLACE_MANAGEMENT_MODULE_LABELS[module]}</span>
+                      {moduleCounts[module] ? <em>{moduleCounts[module]}</em> : null}
+                    </button>
+                  ))}
+                </div>
+                <div className="place-module-context">
+                  <div>
+                    <strong>{PLACE_MANAGEMENT_MODULE_LABELS[currentManagementModule]}</strong>
+                    <span>{PLACE_MANAGEMENT_MODULE_DESCRIPTIONS[currentManagementModule]}</span>
+                  </div>
+                  {moduleCounts[currentManagementModule] ? <small>{countLabel(moduleCounts[currentManagementModule], "item para acompanhar", "itens para acompanhar")}</small> : <small>Sem pendencias neste modulo</small>}
+                </div>
+              </div>
+            ) : null}
+            {showManagementModule("dashboard") && isManagementCockpit ? (
+              <PlaceOperationsDashboard
+                balanceText={formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)}
+                metrics={[
+                  { disabled: !managementModules.includes("bookings"), label: "Reservas para revisar", module: "bookings", value: operationalStats.pendingBookings },
+                  {
+                    disabled: !managementModules.includes("academy"),
+                    label: "Aulas e encaixes pendentes",
+                    module: "academy",
+                    value: operationalStats.pendingLessonRequests + operationalStats.pendingEnrollments,
+                  },
+                  {
+                    disabled: !managementModules.includes("clients"),
+                    label: "Clientes para acionar",
+                    module: "clients",
+                    value: operationalStats.pendingMemberships + operationalStats.crmLeads,
+                  },
+                  {
+                    disabled: !managementModules.includes("canteen"),
+                    label: "Vendas da cantina",
+                    module: "canteen",
+                    value: formatMoneyFromCents(operationalStats.posRevenueCents),
+                  },
+                ]}
+                queueItems={[
+                  ...bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => ({
+                    id: `queue-booking:${booking.id}`,
+                    label: `Reserva pendente | ${booking.courtName || "Quadra"} | ${new Date(booking.startsAt).toLocaleString("pt-BR")}`,
+                    module: "bookings" as PlaceManagementModule,
+                  })),
+                  ...actionableLessonRequests.slice(0, 3).map((request) => ({
+                    id: `queue-lesson:${request.id}`,
+                    label: `Encaixe pendente | ${request.playerName} | ${request.requestedOn}`,
+                    module: "academy" as PlaceManagementModule,
+                  })),
+                  ...openReceivables.slice(0, 3).map((receivable) => ({
+                    id: `queue-receivable:${receivable.id}`,
+                    label: `Recebimento pendente | ${receivable.title} | ${formatMoneyFromCents(receivable.amountCents)}`,
+                    module: "finance" as PlaceManagementModule,
+                  })),
+                ]}
+                onModuleChange={(module) => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: module }))}
+              />
+            ) : null}
+            {currentManagementModule === ("__legacy_dashboard__" as PlaceManagementModule) ? (
+              <div className="place-booking-panel place-operations-board">
+                <div className="place-booking-head">
+                  <strong>Hoje e prioridades</strong>
+                  <span>{formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)} saldo</span>
+                </div>
+                <div className="place-operations-grid">
+                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "bookings" }))} disabled={!managementModules.includes("bookings")}>
+                    <strong>{operationalStats.pendingBookings}</strong>
+                    <span>Reservas para revisar</span>
+                  </button>
+                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "academy" }))} disabled={!managementModules.includes("academy")}>
+                    <strong>{operationalStats.pendingLessonRequests + operationalStats.pendingEnrollments}</strong>
+                    <span>Aulas e encaixes pendentes</span>
+                  </button>
+                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "clients" }))} disabled={!managementModules.includes("clients")}>
+                    <strong>{operationalStats.pendingMemberships + operationalStats.crmLeads}</strong>
+                    <span>Clientes para acionar</span>
+                  </button>
+                  <button type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "canteen" }))} disabled={!managementModules.includes("canteen")}>
+                    <strong>{formatMoneyFromCents(operationalStats.posRevenueCents)}</strong>
+                    <span>Vendas da cantina</span>
+                  </button>
+                </div>
+                <div className="place-action-queue">
+                  <strong>Fila de trabalho</strong>
+                  <div>
+                    {bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => (
+                      <button key={`queue-booking:${booking.id}`} type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "bookings" }))}>
+                        Reserva pendente · {booking.courtName || "Quadra"} · {new Date(booking.startsAt).toLocaleString("pt-BR")}
+                      </button>
+                    ))}
+                    {actionableLessonRequests.slice(0, 3).map((request) => (
+                      <button key={`queue-lesson:${request.id}`} type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "academy" }))}>
+                        Encaixe pendente · {request.playerName} · {request.requestedOn}
+                      </button>
+                    ))}
+                    {openReceivables.slice(0, 3).map((receivable) => (
+                      <button key={`queue-receivable:${receivable.id}`} type="button" onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: "finance" }))}>
+                        Recebimento pendente · {receivable.title} · {formatMoneyFromCents(receivable.amountCents)}
+                      </button>
+                    ))}
+                    {!bookings.some((booking) => booking.status === "pending") && !actionableLessonRequests.length && !openReceivables.length ? (
+                      <span>Nenhuma pendencia critica agora.</span>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+            {showManagementModule("dashboard") && isOwner ? (
+              <PlaceAnalyticsPanel
+                busy={busy}
+                canManagePlan={canManagePlace}
+                metrics={[
+                  { label: "Quadras", value: operationalStats.courts },
+                  { label: "Reservas pendentes", value: operationalStats.pendingBookings },
+                  { label: "Reservas confirmadas", value: operationalStats.confirmedBookings },
+                  { label: "Espera de quadra", value: operationalStats.bookingWaitlist },
+                  { label: "Turmas", value: operationalStats.academyClasses },
+                  { label: "Interesses em aula", value: operationalStats.pendingEnrollments },
+                  { label: "Socios ativos", value: operationalStats.activeMembers },
+                  { label: "Solicitacoes de socio", value: operationalStats.pendingMemberships },
+                  { label: "Leads no CRM", value: operationalStats.crmLeads },
+                  { label: "Reposicoes abertas", value: operationalStats.openMakeups },
+                  { label: "Encaixes pendentes", value: operationalStats.pendingLessonRequests },
+                  { label: "Partidas abertas", value: operationalStats.openMatches },
+                  { label: "Reservas pagas", value: formatMoneyFromCents(operationalStats.paidBookingAmountCents) },
+                  { label: "Receita POS", value: formatMoneyFromCents(operationalStats.posRevenueCents) },
+                  { label: "Despesas", value: formatMoneyFromCents(operationalStats.expenseCents) },
+                  {
+                    label: "Saldo operacional",
+                    value: formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents),
+                  },
+                ]}
+                plan={p.productPlan}
+                planHint={PLACE_PRODUCT_PLAN_HINTS[p.productPlan]}
+                planOptions={Object.entries(PLACE_PRODUCT_PLAN_LABELS).map(([value, label]) => ({ value: value as PlaceProductPlan, label }))}
+                onPlanChange={(plan) => void onUpdatePlaceProductPlan(p, plan)}
+              />
+            ) : null}
+            {currentManagementModule === ("__legacy_analytics__" as PlaceManagementModule) ? (
               <div className="place-booking-panel place-analytics-panel">
                 <div className="place-booking-head">
                   <strong>Indicadores do local</strong>
@@ -2081,7 +2452,7 @@ export function PlacesPage({ user, profile }: Props) {
                   </div>
                   <div>
                     <strong>{formatMoneyFromCents(operationalStats.paidBookingAmountCents)}</strong>
-                    <span>Receita stub</span>
+                    <span>Reservas pagas</span>
                   </div>
                   <div>
                     <strong>{formatMoneyFromCents(operationalStats.posRevenueCents)}</strong>
@@ -2098,11 +2469,79 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
               </div>
             ) : null}
-            {isOwner ? (
+            {showManagementModule("team") && showTeamWorkspace ? (
+              <div className="place-booking-panel staff-panel">
+                <TeamWorkspaceShell
+                  activeView={teamView}
+                  onViewChange={(view) => setTeamViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                >
+                  {teamView === "overview" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Equipe ativa"
+                        subtitle="Operadores com acesso ao local"
+                        value={staff.filter((member) => member.status !== "pending").length}
+                        metrics={[
+                          countLabel(staff.filter((member) => member.role === "manager").length, "gerente", "gerentes"),
+                          countLabel(staff.filter((member) => member.role === "frontdesk").length, "recepcao", "recepcao"),
+                          countLabel(staff.filter((member) => member.role === "coach").length, "professor", "professores"),
+                        ]}
+                      />
+                      <WorkspaceCard
+                        title="Acessos pendentes"
+                        subtitle="Convites que ainda precisam ser aceitos"
+                        value={staff.filter((member) => member.status === "pending").length}
+                      >
+                        <WorkspaceList>
+                          {staff.filter((member) => member.status === "pending").slice(0, 4).map((member) => (
+                            <span key={`team-pending:${member.email}:${member.role}`}>
+                              <strong>{member.email || "Convite pendente"}</strong>
+                              <small>{member.role}</small>
+                            </span>
+                          ))}
+                          {!staff.some((member) => member.status === "pending") ? <span>Nenhum convite pendente.</span> : null}
+                        </WorkspaceList>
+                      </WorkspaceCard>
+                    </WorkspaceGrid>
+                  ) : null}
+                  {teamView === "invites" ? (
+                    <WorkspaceList>
+                      {staff.filter((member) => member.status === "pending").map((member) => (
+                        <WorkspaceRow
+                          key={`team-invite:${member.email}:${member.role}`}
+                          title={member.email || "Convite pendente"}
+                          detail={`${member.role} aguardando aceite`}
+                          actions={
+                            <button className="danger" onClick={() => void onRemoveStaff(p, member)} disabled={busy}>
+                              Cancelar convite
+                            </button>
+                          }
+                        />
+                      ))}
+                      {!staff.some((member) => member.status === "pending") ? <p className="subtle">Sem convites pendentes.</p> : null}
+                    </WorkspaceList>
+                  ) : null}
+                  {teamView === "staff" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard title="Gestao de acesso" subtitle="Adicione pessoas pelo email e acompanhe a equipe abaixo." value={staff.length} />
+                      <WorkspaceCard title="Boa pratica" subtitle="Use o menor papel suficiente para cada rotina operacional." value={staff.filter((member) => member.status === "pending").length} />
+                    </WorkspaceGrid>
+                  ) : null}
+                  {teamView === "roles" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard title="Gerente" subtitle="Administra operacao, clientes, agenda, financeiro e configuracoes do local." />
+                      <WorkspaceCard title="Recepcao" subtitle="Cuida de reservas, check-in, fila de espera e atendimento diario." />
+                      <WorkspaceCard title="Professor" subtitle="Acessa turmas, chamada, faltas, reposicoes e evolucao dos alunos." />
+                    </WorkspaceGrid>
+                  ) : null}
+                </TeamWorkspaceShell>
+              </div>
+            ) : null}
+            {showManagementModule("team") && showTeamStaff && isOwner ? (
               <div className="place-booking-panel staff-panel">
                 <div className="place-booking-head">
                   <strong>Equipe do local</strong>
-                  <span>{staff.length} membro(s)</span>
+                  <span>{countLabel(staff.length, "membro", "membros")}</span>
                 </div>
                 <div className="place-staff-form">
                   <input
@@ -2147,6 +2586,11 @@ export function PlacesPage({ user, profile }: Props) {
                 ) : (
                   <p className="subtle">Sem equipe adicional.</p>
                 )}
+                <div className="place-role-guide">
+                  <span><strong>Gerente</strong> administra operacao, clientes, agenda e financeiro.</span>
+                  <span><strong>Recepcao</strong> cuida de reservas, check-in e rotina de atendimento.</span>
+                  <span><strong>Professor</strong> acessa turmas, chamada, faltas e evolucao de alunos.</span>
+                </div>
               </div>
             ) : null}
             {!isOwner && !canUseBookings && !canUseAcademy && !canUseMemberships ? (
@@ -2155,11 +2599,288 @@ export function PlacesPage({ user, profile }: Props) {
                 <span>Siga o local para receber novidades e chamadas de partida quando estiverem disponiveis.</span>
               </div>
             ) : null}
-            {showMembershipTools || (myMembership && isPlayerView) ? (
+            {showManagementModule("settings") && showSettingsWorkspace ? (
+              <div className="place-booking-panel place-settings-panel">
+                <SettingsWorkspaceShell
+                  activeView={settingsView}
+                  onViewChange={(view) => setSettingsViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                >
+                  {settingsView === "overview" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Prontidao do local"
+                        subtitle="Checklist basico para operar sem atrito"
+                        value={`${setupDoneCount}/${setupChecklist.length}`}
+                        metrics={[
+                          `${setupPercent}% concluido`,
+                          PLACE_PRODUCT_PLAN_LABELS[p.productPlan],
+                          countLabel(setupChecklist.length - setupDoneCount, "pendencia", "pendencias"),
+                        ]}
+                      />
+                      <WorkspaceCard title="Proximo ajuste" subtitle="O item mais importante para liberar valor rapido" value={nextSetupItem ? "1" : "OK"}>
+                        <WorkspaceList>
+                          {nextSetupItem ? (
+                            <span>
+                              <strong>{nextSetupItem.title}</strong>
+                              <small>{nextSetupItem.detail}</small>
+                            </span>
+                          ) : (
+                            <span>Configuracao essencial pronta.</span>
+                          )}
+                        </WorkspaceList>
+                      </WorkspaceCard>
+                    </WorkspaceGrid>
+                  ) : null}
+                  {settingsView === "structure" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard title="Quadras" subtitle="Base para reservas e bloqueios" value={activeCourts.length} />
+                      <WorkspaceCard
+                        title="Academia"
+                        subtitle="Professores e turmas ativas"
+                        value={activeAcademyClasses.length}
+                        metrics={[countLabel(academyCoaches.length, "professor", "professores"), countLabel(academySlots.length, "janela", "janelas")]}
+                      />
+                      <WorkspaceCard
+                        title="Relacionamento"
+                        subtitle="Planos e contatos comerciais"
+                        value={activeMembershipPlans.length}
+                        metrics={[countLabel(memberships.length, "socio", "socios"), countLabel(crmContacts.length, "contato", "contatos")]}
+                      />
+                    </WorkspaceGrid>
+                  ) : null}
+                </SettingsWorkspaceShell>
+              </div>
+            ) : null}
+            {showManagementModule("settings") && showSettingsDetails && isOwner ? (
+              <div className="place-booking-panel place-settings-panel">
+                <div className="place-booking-head">
+                  <strong>Configuracoes do local</strong>
+                  <span>{setupDoneCount}/{setupChecklist.length} prontos</span>
+                </div>
+                <p className="place-plan-hint">{PLACE_PRODUCT_PLAN_HINTS[p.productPlan]}</p>
+                <div className="place-setup-checklist">
+                  {setupChecklist.map((item) => (
+                    <button
+                      key={`${p.id}:setup:${item.key}`}
+                      className={item.done ? "done" : ""}
+                      type="button"
+                      onClick={() => setManagementModuleByPlace((prev) => ({ ...prev, [p.id]: item.module }))}
+                      disabled={!managementModules.includes(item.module)}
+                    >
+                      <strong>{item.done ? "OK" : "Pendente"} · {item.title}</strong>
+                      <span>{item.detail}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="place-staff-form">
+                  <select
+                    value={p.productPlan}
+                    onChange={(event) => void onUpdatePlaceProductPlan(p, event.target.value as PlaceProductPlan)}
+                    disabled={busy || !canManagePlace}
+                    aria-label="Plano do local"
+                  >
+                    {Object.entries(PLACE_PRODUCT_PLAN_LABELS).map(([value, label]) => (
+                      <option key={`settings-plan:${value}`} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="place-settings-note">Use este modulo para plano, estrutura e regras operacionais.</span>
+                </div>
+                <div className="place-role-guide">
+                  <span><strong>Estrutura</strong> {countLabel(activeCourts.length, "quadra", "quadras")}, {countLabel(academyCoaches.length, "professor", "professores")}, {countLabel(activeAcademyClasses.length, "turma", "turmas")}.</span>
+                  <span><strong>Plano ativo</strong> {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} define quais modulos ficam disponiveis.</span>
+                  <span><strong>Proximo basico</strong> revisar horarios, precos, equipe e planos antes de divulgar o local.</span>
+                </div>
+              </div>
+            ) : null}
+            {showManagementModule("clients") && showClientsWorkspace ? (
+              <div className="place-booking-panel">
+                <ClientsWorkspaceShell
+                  activeView={clientsView}
+                  onViewChange={(view) => setClientsViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                >
+                  {clientsView === "overview" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Base de relacionamento"
+                        subtitle="Socios, leads e alunos em acompanhamento"
+                        value={operationalStats.activeMembers}
+                        metrics={[
+                          countLabel(activeMembershipPlans.length, "plano ativo", "planos ativos"),
+                          `${countLabel(operationalStats.pendingMemberships, "solicitacao", "solicitacoes")} de socio`,
+                          countLabel(operationalStats.crmLeads, "lead aberto", "leads abertos"),
+                        ]}
+                      />
+                      <WorkspaceCard title="Atendimento pendente" subtitle="Fila para responder antes que o cliente esfrie" value={pendingClientActions.length}>
+                        <WorkspaceList>
+                          {pendingClientActions.slice(0, 4).map((action) => (
+                            <span key={`client-overview:${action.id}`}>
+                              <strong>{action.title}</strong>
+                              <small>{action.text}</small>
+                            </span>
+                          ))}
+                          {!pendingClientActions.length ? <span>Tudo em dia na central de clientes.</span> : null}
+                        </WorkspaceList>
+                      </WorkspaceCard>
+                    </WorkspaceGrid>
+                  ) : null}
+                  {clientsView === "members" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard title="Planos ativos" subtitle="Oferta de recorrencia para socios do local" value={activeMembershipPlans.length}>
+                        <WorkspaceList>
+                          {activeMembershipPlans.slice(0, 4).map((plan) => (
+                            <span key={`plan-summary:${plan.id}`}>
+                              <strong>{plan.name}</strong>
+                              <small>{formatMoneyFromCents(plan.monthlyFeeCents)} / mes | quadras {plan.courtDiscountPercent}% | aulas {plan.academyDiscountPercent}%</small>
+                            </span>
+                          ))}
+                          {!activeMembershipPlans.length ? <span>Cadastre planos para vender recorrencia.</span> : null}
+                        </WorkspaceList>
+                      </WorkspaceCard>
+                      <WorkspaceCard title="Socios ativos" subtitle="Pagamentos e situacao do mes" value={operationalStats.activeMembers}>
+                        <WorkspaceList>
+                          {memberships.filter((membership) => membership.status === "active").slice(0, 4).map((membership) => {
+                            const paid = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())]?.status === "paid";
+                            return (
+                              <span key={`member-summary:${membership.id}`}>
+                                <strong>{membership.memberName}</strong>
+                                <small>{paid ? "Mensalidade paga" : "Mensalidade em aberto"}</small>
+                              </span>
+                            );
+                          })}
+                          {!memberships.some((membership) => membership.status === "active") ? <span>Nenhum socio ativo ainda.</span> : null}
+                        </WorkspaceList>
+                      </WorkspaceCard>
+                    </WorkspaceGrid>
+                  ) : null}
+                  {clientsView === "leads" ? (
+                    <WorkspaceGrid>
+                      <WorkspaceCard
+                        title="Funil comercial"
+                        subtitle="Leads, contatos feitos e conversoes"
+                        value={crmContacts.length}
+                        metrics={[
+                          countLabel(crmContacts.filter((contact) => contact.status === "lead").length, "lead", "leads"),
+                          countLabel(crmContacts.filter((contact) => contact.status === "contacted").length, "contatado", "contatados"),
+                          countLabel(crmContacts.filter((contact) => contact.status === "converted").length, "convertido", "convertidos"),
+                        ]}
+                      />
+                      <WorkspaceCard title="Proximos retornos" subtitle="Priorize quem ainda esta em aberto" value={operationalStats.crmLeads}>
+                        <WorkspaceList>
+                          {crmContacts.filter((contact) => contact.status === "lead").slice(0, 4).map((contact) => (
+                            <span key={`lead-summary:${contact.id}`}>
+                              <strong>{contact.name}</strong>
+                              <small>{[contact.interest, contact.source, contact.phone].filter(Boolean).join(" | ") || "Sem detalhes cadastrados"}</small>
+                            </span>
+                          ))}
+                          {!operationalStats.crmLeads ? <span>Sem leads abertos.</span> : null}
+                        </WorkspaceList>
+                      </WorkspaceCard>
+                    </WorkspaceGrid>
+                  ) : null}
+                  {clientsView === "requests" ? (
+                    <WorkspaceList>
+                      {memberships.filter((membership) => membership.status === "pending").map((membership) => (
+                        <WorkspaceRow
+                          key={`client-request-membership:${membership.id}`}
+                          title={membership.memberName}
+                          detail="Solicitacao de socio aguardando aprovacao"
+                          actions={
+                            <>
+                            <button onClick={() => void onUpdateMembership(p.id, membership.id, "active")} disabled={busy}>
+                              Ativar
+                            </button>
+                            <button className="danger" onClick={() => void onUpdateMembership(p.id, membership.id, "cancelled")} disabled={busy}>
+                              Cancelar
+                            </button>
+                            </>
+                          }
+                        />
+                      ))}
+                      {academyEnrollments.filter((enrollment) => enrollment.status === "pending").map((enrollment) => (
+                        <WorkspaceRow
+                          key={`client-request-enrollment:${enrollment.id}`}
+                          title={enrollment.playerName}
+                          detail="Interesse em turma aguardando aprovacao"
+                          actions={
+                            <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
+                              Ativar
+                            </button>
+                          }
+                        />
+                      ))}
+                      {!pendingClientActions.length ? <p className="subtle">Sem pendencias de clientes no momento.</p> : null}
+                    </WorkspaceList>
+                  ) : null}
+                </ClientsWorkspaceShell>
+              </div>
+            ) : null}
+            {showManagementModule("clients") && showClientsMembers && (showMembershipTools || (myMembership && isPlayerView)) ? (
             <div className="place-booking-panel">
+              {isManagementCockpit && showClientsOverview ? (
+                <div className="place-module-summary">
+                  <div>
+                    <strong>{operationalStats.activeMembers}</strong>
+                    <span>Socios ativos</span>
+                  </div>
+                  <div>
+                    <strong>{operationalStats.pendingMemberships}</strong>
+                    <span>Solicitacoes pendentes</span>
+                  </div>
+                  <div>
+                    <strong>{operationalStats.crmLeads}</strong>
+                    <span>Leads em aberto</span>
+                  </div>
+                  <div>
+                    <strong>{pendingClientActions.length}</strong>
+                    <span>Acoes de cliente</span>
+                  </div>
+                </div>
+              ) : null}
+              {isManagementCockpit && pendingClientActions.length ? (
+                <div className="place-action-queue compact">
+                  <strong>Atendimento e relacionamento</strong>
+                  <div>
+                    {memberships.filter((membership) => membership.status === "pending").slice(0, 3).map((membership) => (
+                      <span key={`client-membership:${membership.id}`}>
+                        <strong>{membership.memberName}</strong>
+                        Solicitação de sócio aguardando aprovação
+                        <button onClick={() => void onUpdateMembership(p.id, membership.id, "active")} disabled={busy}>
+                          Ativar
+                        </button>
+                        <button className="danger" onClick={() => void onUpdateMembership(p.id, membership.id, "cancelled")} disabled={busy}>
+                          Cancelar
+                        </button>
+                      </span>
+                    ))}
+                    {crmContacts.filter((contact) => contact.status === "lead").slice(0, 3).map((contact) => (
+                      <span key={`client-lead:${contact.id}`}>
+                        <strong>{contact.name}</strong>
+                        {[contact.interest, contact.source].filter(Boolean).join(" | ") || "Lead sem origem definida"}
+                        <button onClick={() => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")} disabled={busy}>
+                          Contatado
+                        </button>
+                        <button onClick={() => void onUpdateCrmContactStatus(p.id, contact.id, "converted")} disabled={busy}>
+                          Convertido
+                        </button>
+                      </span>
+                    ))}
+                    {academyEnrollments.filter((enrollment) => enrollment.status === "pending").slice(0, 3).map((enrollment) => (
+                      <span key={`client-enrollment:${enrollment.id}`}>
+                        <strong>{enrollment.playerName}</strong>
+                        Interesse em turma aguardando aprovação
+                        <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
+                          Ativar
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
               <div className="place-booking-head">
                 <strong>Planos e socios</strong>
-                <span>{activeMembershipPlans.length} plano(s)</span>
+                <span>{countLabel(activeMembershipPlans.length, "plano", "planos")}</span>
               </div>
               {canManageFinance ? (
                 <div className="place-staff-form">
@@ -2299,11 +3020,11 @@ export function PlacesPage({ user, profile }: Props) {
               ) : null}
             </div>
             ) : null}
-            {canUseCrm && canManagePlace ? (
+            {showManagementModule("clients") && showClientsLeads && canUseCrm && canManagePlace ? (
               <div className="place-booking-panel">
                 <div className="place-booking-head">
                   <strong>CRM do local</strong>
-                  <span>{crmContacts.length} contato(s)</span>
+                  <span>{countLabel(crmContacts.length, "contato", "contatos")}</span>
                 </div>
                 <div className="place-staff-form">
                   <input
@@ -2369,12 +3090,369 @@ export function PlacesPage({ user, profile }: Props) {
                 </div>
               </div>
             ) : null}
-            {canManageFinance ? (
-              <div className="place-booking-panel">
+            {showManagementModule("finance") && canManageFinance ? (
+              <div className="place-booking-panel place-finance-panel">
+                {showFinanceWorkspace ? (
+                  <FinanceWorkspaceShell
+                    activeView={financeView}
+                    onViewChange={(view) => setFinanceViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                  >
+                    {financeView === "overview" ? (
+                      <WorkspaceGrid>
+                        <WorkspaceCard
+                          title="Saldo operacional"
+                          subtitle="Reservas, cantina e despesas lancadas"
+                          value={formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)}
+                          metrics={[
+                            `${formatMoneyFromCents(operationalStats.paidBookingAmountCents)} reservas`,
+                            `${formatMoneyFromCents(operationalStats.posRevenueCents)} cantina`,
+                            `${formatMoneyFromCents(operationalStats.expenseCents)} despesas`,
+                          ]}
+                        />
+                        <WorkspaceCard
+                          title="Recebiveis em aberto"
+                          subtitle="Mensalidades e cobrancas pendentes"
+                          value={openReceivables.length}
+                          detail={openReceivables.slice(0, 4).map((item) => item.title).join(", ") || "Sem pendencias financeiras"}
+                        />
+                        <WorkspaceCard
+                          title="Despesas recentes"
+                          subtitle="Lancamentos postados"
+                          value={expenses.filter((expense) => expense.status === "posted").length}
+                          detail={expenses.slice(0, 3).map((expense) => expense.description).join(", ") || "Sem despesas recentes"}
+                        />
+                      </WorkspaceGrid>
+                    ) : null}
+                    {financeView === "receivables" ? (
+                      <WorkspaceList>
+                        {openReceivables.slice(0, 12).map((receivable) => (
+                          <WorkspaceRow
+                            key={`finance-open:${receivable.id}`}
+                            title={receivable.title}
+                            detail={`${receivable.subtitle} | ${formatMoneyFromCents(receivable.amountCents)}`}
+                            actions={
+                              <button
+                                onClick={() =>
+                                  void onCreatePaymentReminder(
+                                    receivable.targetType,
+                                    receivable.targetId,
+                                    receivable.billingPeriod,
+                                    receivable.reminder
+                                  )
+                                }
+                                disabled={busy}
+                              >
+                                Lembrar
+                              </button>
+                            }
+                          >
+                            <small>{receivable.status === "pending_approval" ? "Aguardando aprovacao" : "Pagamento em aberto"}</small>
+                          </WorkspaceRow>
+                        ))}
+                        {!openReceivables.length ? <p className="subtle">Sem recebiveis em aberto.</p> : null}
+                      </WorkspaceList>
+                    ) : null}
+                    {financeView === "expenses" ? (
+                      <WorkspaceList>
+                        {expenses.slice(0, 10).map((expense) => (
+                          <WorkspaceRow
+                            key={`finance-expense-workspace:${expense.id}`}
+                            className={expense.status}
+                            title={expense.description}
+                            detail={`${formatMoneyFromCents(expense.amountCents)} | ${expense.category || "Despesa"} | ${expense.spentOn}`}
+                            actions={
+                              expense.status === "posted" ? (
+                                <button className="danger" onClick={() => void onCancelExpense(p.id, expense.id)} disabled={busy}>
+                                  Cancelar
+                                </button>
+                              ) : null
+                            }
+                          >
+                            <small>{expense.status}</small>
+                          </WorkspaceRow>
+                        ))}
+                        {!expenses.length ? <p className="subtle">Sem despesas recentes.</p> : null}
+                      </WorkspaceList>
+                    ) : null}
+                  </FinanceWorkspaceShell>
+                ) : null}
+                {showFinanceOverview ? (
+                <>
                 <div className="place-booking-head">
-                  <strong>Loja e financeiro</strong>
+                  <strong>Financeiro</strong>
+                  <span>{formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)} saldo operacional</span>
+                </div>
+                <div className="place-analytics-grid compact">
+                  <div>
+                    <strong>{formatMoneyFromCents(operationalStats.paidBookingAmountCents)}</strong>
+                    <span>Reservas pagas</span>
+                  </div>
+                  <div>
+                    <strong>{formatMoneyFromCents(operationalStats.posRevenueCents)}</strong>
+                    <span>Vendas registradas</span>
+                  </div>
+                  <div>
+                    <strong>{formatMoneyFromCents(operationalStats.expenseCents)}</strong>
+                    <span>Despesas lancadas</span>
+                  </div>
+                  <div>
+                    <strong>{operationalStats.pendingMemberships}</strong>
+                    <span>Socios pendentes</span>
+                  </div>
+                </div>
+                </>
+                ) : null}
+                {showFinanceReceivables ? (
+                <div className="place-booking-list">
+                  <div className="place-booking-head">
+                    <strong>Contas a receber</strong>
+                    <span>{countLabel(openReceivables.length, "pendente", "pendentes")}</span>
+                  </div>
+                  {memberships.filter((membership) => membership.status === "active").slice(0, 6).map((membership) => {
+                    const plan = membershipPlans.find((item) => item.id === membership.planId);
+                    const paid = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())]?.status === "paid";
+                    if (!plan || paid) return null;
+                    return (
+                      <div key={`finance-membership:${membership.id}`} className="place-booking-row">
+                        <div>
+                          <strong>{membership.memberName}</strong>
+                          <span>{plan.name} | {formatMoneyFromCents(plan.monthlyFeeCents)}</span>
+                          <small>Mensalidade de socio em aberto</small>
+                        </div>
+                        <span>
+                          <button onClick={() => void onAdminMarkMembershipPaid(plan, membership)} disabled={busy}>
+                            Marcar pago
+                          </button>
+                          <button
+                            onClick={() =>
+                              void onCreatePaymentReminder(
+                                "place_membership",
+                                membership.id,
+                                currentBillingPeriod(),
+                                `${membership.memberName}, sua mensalidade de socio esta pendente.`
+                              )
+                            }
+                            disabled={busy}
+                          >
+                            Lembrar
+                          </button>
+                        </span>
+                      </div>
+                    );
+                  })}
+                  {academyEnrollments.filter((enrollment) => enrollment.status === "active").slice(0, 6).map((enrollment) => {
+                    const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+                    const paid = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid";
+                    if (!academyClass || paid) return null;
+                    return (
+                      <div key={`finance-enrollment:${enrollment.id}`} className="place-booking-row">
+                        <div>
+                          <strong>{enrollment.playerName}</strong>
+                          <span>{academyClass.title} | {formatMoneyFromCents(academyClass.monthlyFeeCents)}</span>
+                          <small>Mensalidade da turma em aberto</small>
+                        </div>
+                        <span>
+                          <button onClick={() => void onAdminMarkEnrollmentPaid(academyClass, enrollment)} disabled={busy}>
+                            Marcar pago
+                          </button>
+                          <button
+                            onClick={() =>
+                              void onCreatePaymentReminder(
+                                "academy_enrollment",
+                                enrollment.id,
+                                academyBillingPeriod,
+                                `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
+                              )
+                            }
+                            disabled={busy}
+                          >
+                            Lembrar
+                          </button>
+                        </span>
+                      </div>
+                    );
+                  })}
+                  {financeReceivables.filter((receivable) => receivable.status !== "open").slice(0, 10).map((receivable) => (
+                    <div key={receivable.id} className={`place-booking-row ${receivable.status === "paid" ? "confirmed" : ""}`}>
+                      <div>
+                        <strong>{receivable.title}</strong>
+                        <span>{receivable.subtitle} | {formatMoneyFromCents(receivable.amountCents)}</span>
+                        <small>
+                          {receivable.status === "paid"
+                            ? "Pago no periodo"
+                            : receivable.status === "pending_approval"
+                            ? "Aguardando aprovacao"
+                            : "Pagamento em aberto"}
+                        </small>
+                      </div>
+                      {receivable.status !== "paid" ? (
+                        <span>
+                          <button
+                            onClick={() =>
+                              void onCreatePaymentReminder(
+                                receivable.targetType,
+                                receivable.targetId,
+                                receivable.billingPeriod,
+                                receivable.reminder
+                              )
+                            }
+                            disabled={busy}
+                          >
+                            Lembrar
+                          </button>
+                        </span>
+                      ) : null}
+                    </div>
+                  ))}
+                  {!financeReceivables.length ? <p className="subtle">Sem mensalidades ou cobrancas ativas.</p> : null}
+                </div>
+                ) : null}
+                {showFinanceExpenses ? (
+                <>
+                <div className="place-staff-form">
+                  <input
+                    value={expenseDraft.category}
+                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, category: event.target.value } }))}
+                    placeholder="Categoria"
+                  />
+                  <input
+                    value={expenseDraft.description}
+                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, description: event.target.value } }))}
+                    placeholder="Despesa"
+                  />
+                  <input
+                    type="number"
+                    min={0}
+                    value={expenseDraft.amount}
+                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, amount: event.target.value } }))}
+                    placeholder="Valor R$"
+                  />
+                  <input
+                    type="date"
+                    value={expenseDraft.spentOn}
+                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, spentOn: event.target.value || todayDateInputValue() } }))}
+                  />
+                  <button onClick={() => void onCreateExpense(p)} disabled={busy || !expenseDraft.description.trim()}>
+                    Registrar despesa
+                  </button>
+                </div>
+                <div className="place-booking-list">
+                  {expenses.slice(0, 6).map((expense) => (
+                    <div key={`finance-expense:${expense.id}`} className={`place-booking-row ${expense.status}`}>
+                      <div>
+                        <strong>{expense.description}</strong>
+                        <span>{formatMoneyFromCents(expense.amountCents)} | {expense.category || "Despesa"}</span>
+                        <small>{expense.spentOn} | {expense.status}</small>
+                      </div>
+                      {expense.status === "posted" ? (
+                        <button className="danger" onClick={() => void onCancelExpense(p.id, expense.id)} disabled={busy}>
+                          Cancelar
+                        </button>
+                      ) : null}
+                    </div>
+                  ))}
+                  {!expenses.length ? <p className="subtle">Sem despesas recentes.</p> : null}
+                </div>
+                </>
+                ) : null}
+              </div>
+            ) : null}
+            {showManagementModule("canteen") && canManageFinance ? (
+              <div className="place-booking-panel">
+                {showCanteenWorkspace ? (
+                  <CanteenWorkspaceShell
+                    activeView={canteenView}
+                    onViewChange={(view) => setCanteenViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                  >
+                    {canteenView === "today" ? (
+                      <WorkspaceGrid>
+                        <WorkspaceCard
+                          title="Caixa da cantina hoje"
+                          subtitle={countLabel(todayPosSales.length, "venda paga", "vendas pagas")}
+                          value={formatMoneyFromCents(todayPosRevenueCents)}
+                          detail={todayPosSales.slice(0, 4).map((sale) => sale.productName).join(", ") || "Nenhuma venda hoje"}
+                        />
+                        <WorkspaceCard
+                          title="Estoque baixo"
+                          subtitle="Itens com ate 3 unidades"
+                          value={lowStockProducts.length}
+                          detail={lowStockProducts.map((product) => `${product.name} (${product.stockQuantity})`).join(", ") || "Estoque sem alerta"}
+                        />
+                        <WorkspaceCard
+                          title="Produtos ativos"
+                          subtitle="Tabela atual de venda"
+                          value={posProducts.length}
+                          detail={posProducts.slice(0, 5).map((product) => product.name).join(", ") || "Cadastre produtos para vender"}
+                        />
+                      </WorkspaceGrid>
+                    ) : null}
+                    {canteenView === "sell" ? (
+                      <WorkspaceGrid>
+                        <WorkspaceCard
+                          title="Venda rapida"
+                          subtitle="Selecione um produto abaixo ou registre item avulso."
+                          metrics={[`${posSaleDraft.quantity} un.`, posSaleDraft.unitAmount ? `R$ ${posSaleDraft.unitAmount}` : "Valor aberto"]}
+                        />
+                      </WorkspaceGrid>
+                    ) : null}
+                    {canteenView === "stock" ? (
+                      <WorkspaceList>
+                        {posProducts.slice(0, 12).map((product) => (
+                          <WorkspaceRow
+                            key={`canteen-stock:${product.id}`}
+                            className={product.stockQuantity <= 3 ? "blocked" : ""}
+                            title={product.name}
+                            detail={`${product.category || "Produto"} | ${formatMoneyFromCents(product.priceCents)}`}
+                          >
+                            <small>{product.stockQuantity} em estoque{product.stockQuantity <= 3 ? " | revisar reposicao" : ""}</small>
+                          </WorkspaceRow>
+                        ))}
+                        {!posProducts.length ? <p className="subtle">Cadastre produtos para controlar estoque.</p> : null}
+                      </WorkspaceList>
+                    ) : null}
+                    {canteenView === "products" ? (
+                      <WorkspaceGrid>
+                        {posProducts.slice(0, 12).map((product) => (
+                          <WorkspaceCard
+                            key={`canteen-product:${product.id}`}
+                            title={product.name}
+                            subtitle={product.category || "Produto"}
+                            value={formatMoneyFromCents(product.priceCents)}
+                            detail={`${product.stockQuantity} em estoque`}
+                          />
+                        ))}
+                        {!posProducts.length ? <p className="subtle">Nenhum produto cadastrado.</p> : null}
+                      </WorkspaceGrid>
+                    ) : null}
+                  </CanteenWorkspaceShell>
+                ) : null}
+                {showCanteenSummary ? (
+                <>
+                <div className="place-booking-head">
+                  <strong>Cantina e vendas</strong>
                   <span>{formatMoneyFromCents(operationalStats.posRevenueCents - operationalStats.expenseCents)} saldo POS</span>
                 </div>
+                <div className="place-module-summary">
+                  <div>
+                    <strong>{formatMoneyFromCents(todayPosRevenueCents)}</strong>
+                    <span>Vendas hoje</span>
+                  </div>
+                  <div>
+                    <strong>{todayPosSales.length}</strong>
+                    <span>Itens vendidos hoje</span>
+                  </div>
+                  <div>
+                    <strong>{posProducts.length}</strong>
+                    <span>Produtos cadastrados</span>
+                  </div>
+                  <div>
+                    <strong>{lowStockProducts.length}</strong>
+                    <span>Estoque baixo</span>
+                  </div>
+                </div>
+                </>
+                ) : null}
+                {showCanteenProducts ? (
                 <div className="place-staff-form">
                   <input
                     value={posProductDraft.name}
@@ -2404,6 +3482,8 @@ export function PlacesPage({ user, profile }: Props) {
                     Criar produto
                   </button>
                 </div>
+                ) : null}
+                {showCanteenSale ? (
                 <div className="place-staff-form">
                   <select
                     value={posSaleDraft.productId}
@@ -2455,33 +3535,26 @@ export function PlacesPage({ user, profile }: Props) {
                     Registrar venda
                   </button>
                 </div>
-                <div className="place-staff-form">
-                  <input
-                    value={expenseDraft.category}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, category: event.target.value } }))}
-                    placeholder="Categoria"
-                  />
-                  <input
-                    value={expenseDraft.description}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, description: event.target.value } }))}
-                    placeholder="Despesa"
-                  />
-                  <input
-                    type="number"
-                    min={0}
-                    value={expenseDraft.amount}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, amount: event.target.value } }))}
-                    placeholder="Valor R$"
-                  />
-                  <input
-                    type="date"
-                    value={expenseDraft.spentOn}
-                    onChange={(event) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...expenseDraft, spentOn: event.target.value || todayDateInputValue() } }))}
-                  />
-                  <button onClick={() => void onCreateExpense(p)} disabled={busy || !expenseDraft.description.trim()}>
-                    Registrar despesa
-                  </button>
+                ) : null}
+                {showCanteenStock ? (
+                <div className="place-booking-list">
+                  <div className="place-booking-head">
+                    <strong>Estoque</strong>
+                    <span>{countLabel(lowStockProducts.length, "item baixo", "itens baixos")}</span>
+                  </div>
+                  {posProducts.slice(0, 8).map((product) => (
+                    <div key={`stock:${product.id}`} className={`place-booking-row ${product.stockQuantity <= 3 ? "blocked" : ""}`}>
+                      <div>
+                        <strong>{product.name}</strong>
+                        <span>{product.category || "Produto"} | {formatMoneyFromCents(product.priceCents)}</span>
+                        <small>{product.stockQuantity} em estoque{product.stockQuantity <= 3 ? " | revisar reposicao" : ""}</small>
+                      </div>
+                    </div>
+                  ))}
+                  {!posProducts.length ? <p className="subtle">Cadastre produtos para vender na recepcao ou cantina.</p> : null}
                 </div>
+                ) : null}
+                {showCanteenSummary ? (
                 <div className="place-booking-list">
                   {posSales.slice(0, 4).map((sale) => (
                     <div key={sale.id} className={`place-booking-row ${sale.status}`}>
@@ -2497,29 +3570,223 @@ export function PlacesPage({ user, profile }: Props) {
                       ) : null}
                     </div>
                   ))}
-                  {expenses.slice(0, 4).map((expense) => (
-                    <div key={expense.id} className={`place-booking-row ${expense.status}`}>
-                      <div>
-                        <strong>{expense.description}</strong>
-                        <span>{formatMoneyFromCents(expense.amountCents)} | {expense.category || "Despesa"}</span>
-                        <small>{expense.spentOn} | {expense.status}</small>
-                      </div>
-                      {expense.status === "posted" ? (
-                        <button className="danger" onClick={() => void onCancelExpense(p.id, expense.id)} disabled={busy}>
-                          Cancelar
-                        </button>
-                      ) : null}
-                    </div>
-                  ))}
-                  {!posSales.length && !expenses.length ? <p className="subtle">Sem vendas ou despesas recentes.</p> : null}
+                  {!posSales.length ? <p className="subtle">Sem vendas recentes.</p> : null}
                 </div>
+                ) : null}
               </div>
             ) : null}
-            {showBookingTools ? (
+            {showManagementModule("bookings") && showBookingTools ? (
             <div className="place-booking-panel">
+              {isManagementCockpit ? (
+                <div className="place-module-summary">
+                  <div>
+                    <strong>{todayBookings.length}</strong>
+                    <span>Reservas hoje</span>
+                  </div>
+                  <div>
+                    <strong>{pendingBookings.length}</strong>
+                    <span>Pendentes</span>
+                  </div>
+                  <div>
+                    <strong>{waitingCourtEntries.length}</strong>
+                    <span>Na espera</span>
+                  </div>
+                  <div>
+                    <strong>{calendarOccupancyPct}%</strong>
+                    <span>Ocupacao do dia</span>
+                  </div>
+                </div>
+              ) : null}
+              {isManagementCockpit ? (
+                <div className="place-action-queue compact">
+                  <strong>Agenda de hoje</strong>
+                  <div>
+                    {todayBookings.slice(0, 6).map((booking) => (
+                      <span key={`today-booking:${booking.id}`}>
+                        <strong>{new Date(booking.startsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</strong>
+                        {booking.courtName || "Quadra"} · {booking.status === "blocked" ? "Bloqueio" : booking.playerName}
+                      </span>
+                    ))}
+                    {!todayBookings.length ? <span>Nenhuma reserva para hoje.</span> : null}
+                  </div>
+                </div>
+              ) : null}
+              {canManageBookings && pendingBookings.length ? (
+                <div className="place-action-queue compact">
+                  <strong>Reservas aguardando confirmação</strong>
+                  <div>
+                    {pendingBookings.slice(0, 6).map((booking) => (
+                      <span key={`pending-booking:${booking.id}`}>
+                        <strong>{booking.courtName || "Quadra"}</strong>
+                        {booking.playerName} · {new Date(booking.startsAt).toLocaleString("pt-BR")}
+                        <button onClick={() => void onUpdateBooking(p.id, booking.id, "confirmed")} disabled={busy}>
+                          Confirmar
+                        </button>
+                        <button className="danger" onClick={() => void onUpdateBooking(p.id, booking.id, "cancelled")} disabled={busy}>
+                          Cancelar
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {canManageBookings && waitingCourtEntries.length ? (
+                <div className="place-action-queue compact">
+                  <strong>Lista de espera</strong>
+                  <div>
+                    {waitingCourtEntries.slice(0, 6).map((entry) => (
+                      <span key={`waiting-entry:${entry.id}`}>
+                        <strong>{entry.playerName}</strong>
+                        {entry.courtName || "Quadra"} · {new Date(entry.startsAt).toLocaleString("pt-BR")}
+                        <button onClick={() => void onPromoteBookingWaitlist(p.id, entry.id)} disabled={busy}>
+                          Criar reserva
+                        </button>
+                        <button onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "invited")} disabled={busy}>
+                          Convidar
+                        </button>
+                        <button className="danger" onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "cancelled")} disabled={busy}>
+                          Remover
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {showBookingWorkspace ? (
+                <BookingWorkspaceShell
+                  activeView={bookingView}
+                  onViewChange={(view) => setBookingViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                >
+                  {bookingView === "today" ? (
+                    <div className="academy-workspace-grid">
+                      {todayBookings.slice(0, 8).map((booking) => {
+                        const bookingPayment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
+                        return (
+                          <div key={`booking-today:${booking.id}`} className="academy-workspace-card">
+                            <header>
+                              <div>
+                                <strong>
+                                  {new Date(booking.startsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })} - {booking.courtName || "Quadra"}
+                                </strong>
+                                <span>{booking.status === "blocked" ? "Bloqueio operacional" : booking.playerName}</span>
+                              </div>
+                              <b>{booking.status}</b>
+                            </header>
+                            <div className="academy-workspace-metrics">
+                              <span>{new Date(booking.endsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
+                              <span>{bookingPayment?.status === "paid" ? "Pago" : bookingPayment?.status === "pending" ? "Pagamento pendente" : "Sem pagamento"}</span>
+                              {booking.recurrenceTotal > 1 ? <span>Serie {booking.recurrenceIndex}/{booking.recurrenceTotal}</span> : null}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {!todayBookings.length ? <p className="subtle">Nenhuma reserva para hoje.</p> : null}
+                    </div>
+                  ) : null}
+                  {bookingView === "reservations" ? (
+                    <div className="academy-workspace-list">
+                      {bookings.slice(0, 10).map((booking) => (
+                        <div key={`booking-summary:${booking.id}`} className="academy-workspace-row">
+                          <div>
+                            <strong>{booking.courtName || "Quadra"}</strong>
+                            <span>{booking.playerName} | {new Date(booking.startsAt).toLocaleString("pt-BR")} | {booking.status}</span>
+                          </div>
+                          <span>
+                            {canManageBookings && booking.status === "pending" ? (
+                              <button onClick={() => void onUpdateBooking(p.id, booking.id, "confirmed")} disabled={busy}>
+                                Confirmar
+                              </button>
+                            ) : null}
+                            {canManageBookings && booking.status !== "cancelled" ? (
+                              <button className="danger" onClick={() => void onUpdateBooking(p.id, booking.id, "cancelled")} disabled={busy}>
+                                {booking.status === "blocked" ? "Liberar" : "Cancelar"}
+                              </button>
+                            ) : null}
+                          </span>
+                        </div>
+                      ))}
+                      {!bookings.length ? <p className="subtle">Sem reservas recentes.</p> : null}
+                    </div>
+                  ) : null}
+                  {bookingView === "calendar" ? (
+                    <div className="academy-workspace-grid">
+                      <div className="academy-workspace-card">
+                        <header>
+                          <div>
+                            <strong>Ocupacao do dia</strong>
+                            <span>{courtCalendarDay}</span>
+                          </div>
+                          <b>{calendarOccupancyPct}%</b>
+                        </header>
+                        <div className="academy-workspace-metrics">
+                          <span>{countLabel(calendarBookings.filter((booking) => booking.status !== "blocked").length, "reserva", "reservas")}</span>
+                          <span>{(calendarReservedMinutes / 60).toFixed(1)}h reservadas</span>
+                          <span>{(calendarBlockedMinutes / 60).toFixed(1)}h bloqueadas</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                  {bookingView === "new" ? (
+                    <div className="academy-workspace-grid">
+                      <div className="academy-workspace-card">
+                        <header>
+                          <div>
+                            <strong>Criar reserva ou bloqueio</strong>
+                            <span>Use o formulario abaixo para buscar disponibilidade e confirmar o horario.</span>
+                          </div>
+                        </header>
+                        <div className="academy-workspace-metrics">
+                          <span>{countLabel(availableCourts.length, "quadra disponivel", "quadras disponiveis")}</span>
+                          <span>{selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : "Sem valor selecionado"}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                  {bookingView === "waitlist" ? (
+                    <div className="academy-workspace-list">
+                      {bookingWaitlist.slice(0, 10).map((entry) => (
+                        <div key={`booking-waitlist-summary:${entry.id}`} className="academy-workspace-row">
+                          <div>
+                            <strong>{entry.playerName}</strong>
+                            <span>{entry.courtName || "Quadra"} | {new Date(entry.startsAt).toLocaleString("pt-BR")} | {entry.status}</span>
+                          </div>
+                          <span>
+                            {canManageBookings && (entry.status === "waiting" || entry.status === "invited") ? (
+                              <button className="primary" onClick={() => void onPromoteBookingWaitlist(p.id, entry.id)} disabled={busy}>
+                                Criar reserva
+                              </button>
+                            ) : null}
+                            {canManageBookings && entry.status === "waiting" ? (
+                              <button onClick={() => void onUpdateBookingWaitlist(p.id, entry.id, "invited")} disabled={busy}>
+                                Convidar
+                              </button>
+                            ) : null}
+                          </span>
+                        </div>
+                      ))}
+                      {!bookingWaitlist.length ? <p className="subtle">Ninguem aguardando horario.</p> : null}
+                    </div>
+                  ) : null}
+                  {bookingView === "resources" ? (
+                    <div className="academy-workspace-grid">
+                      <div className="academy-workspace-card">
+                        <header>
+                          <div>
+                            <strong>Quadras cadastradas</strong>
+                            <span>{countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}</span>
+                          </div>
+                        </header>
+                        <small>{activeCourts.map((court) => court.name).join(", ") || "Cadastre a primeira quadra"}</small>
+                      </div>
+                    </div>
+                  ) : null}
+                </BookingWorkspaceShell>
+              ) : null}
+              {showBookingResources ? (
+              <>
               <div className="place-booking-head">
                 <strong>Quadras e reservas</strong>
-                <span>{activeCourts.length} quadra(s)</span>
+                <span>{countLabel(activeCourts.length, "quadra", "quadras")}</span>
               </div>
               {canManageBookings ? (
                 <div className="place-court-create">
@@ -2585,7 +3852,9 @@ export function PlacesPage({ user, profile }: Props) {
               ) : (
                 <p className="subtle">Sem quadras cadastradas para reserva.</p>
               )}
-              {activeCourts.length ? (
+              </>
+              ) : null}
+              {showBookingCreate && activeCourts.length ? (
                 <div className="place-booking-form">
                   <select
                     value={bookingDraft.courtId || activeCourts[0]?.id || ""}
@@ -2676,7 +3945,7 @@ export function PlacesPage({ user, profile }: Props) {
                   </button>
                 </div>
               ) : null}
-              {availableCourts.length ? (
+              {showBookingCreate && availableCourts.length ? (
                 <div className="place-court-list">
                   {availableCourts.map((court) => (
                     <button
@@ -2691,7 +3960,7 @@ export function PlacesPage({ user, profile }: Props) {
                   ))}
                 </div>
               ) : null}
-              {activeCourts.length ? (
+              {showBookingCalendar && activeCourts.length ? (
                 <div className="court-calendar-panel">
                   <div className="place-booking-head">
                     <strong>Calendario das quadras</strong>
@@ -2746,6 +4015,7 @@ export function PlacesPage({ user, profile }: Props) {
                   ) : null}
                 </div>
               ) : null}
+              {showBookingReservations ? (
               <div className="place-booking-list">
                 {bookings.slice(0, 5).map((booking) => {
                   const bookingPayment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
@@ -2813,7 +4083,8 @@ export function PlacesPage({ user, profile }: Props) {
                 })}
                 {!bookings.length ? <p className="subtle">Sem reservas recentes.</p> : null}
               </div>
-              {bookingWaitlist.length ? (
+              ) : null}
+              {showBookingWaitlist && bookingWaitlist.length ? (
                 <div className="place-booking-list">
                   <strong>Lista de espera</strong>
                   {bookingWaitlist.slice(0, 5).map((entry) => (
@@ -2855,13 +4126,370 @@ export function PlacesPage({ user, profile }: Props) {
               ) : null}
             </div>
             ) : null}
-            {showAcademyTools ? (
+            {showManagementModule("academy") && showAcademyTools ? (
             <div className="place-booking-panel academy-panel">
+              {isManagementCockpit ? (
+                <div className="place-module-summary">
+                  <div>
+                    <strong>{todayClasses.length}</strong>
+                    <span>Aulas hoje</span>
+                  </div>
+                  <div>
+                    <strong>{operationalStats.pendingEnrollments}</strong>
+                    <span>Matriculas pendentes</span>
+                  </div>
+                  <div>
+                    <strong>{operationalStats.pendingLessonRequests}</strong>
+                    <span>Encaixes pendentes</span>
+                  </div>
+                  <div>
+                    <strong>{operationalStats.openMakeups}</strong>
+                    <span>Reposicoes abertas</span>
+                  </div>
+                </div>
+              ) : null}
+              {isManagementCockpit ? (
+                <div className="place-action-queue compact">
+                  <strong>Aulas do dia</strong>
+                  <div>
+                    {todayClasses.slice(0, 6).map((academyClass) => (
+                      <span key={`today-class:${academyClass.id}`}>
+                        <strong>{academyClass.startsAt.slice(0, 5)}</strong>
+                        {academyClass.title} · {academyClass.coachName || "Professor"} · {academyClass.level || "nivel livre"}
+                      </span>
+                    ))}
+                    {!todayClasses.length ? <span>Nenhuma turma programada para hoje.</span> : null}
+                  </div>
+                </div>
+              ) : null}
+              {canManageAcademy && (academyEnrollments.some((enrollment) => enrollment.status === "pending") || actionableLessonRequests.length) ? (
+                <div className="place-action-queue compact">
+                  <strong>Pendências da academia</strong>
+                  <div>
+                    {academyEnrollments.filter((enrollment) => enrollment.status === "pending").slice(0, 4).map((enrollment) => {
+                      const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+                      return (
+                        <span key={`pending-enrollment:${enrollment.id}`}>
+                          <strong>{enrollment.playerName}</strong>
+                          Matrícula em {academyClass?.title || "turma"} aguardando aprovação
+                          <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
+                            Ativar
+                          </button>
+                          <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "cancelled")} disabled={busy}>
+                            Cancelar
+                          </button>
+                        </span>
+                      );
+                    })}
+                    {actionableLessonRequests.slice(0, 4).map((request) => (
+                      <span key={`pending-lesson:${request.id}`}>
+                        <strong>{request.playerName}</strong>
+                        {request.requestType === "makeup" ? "Reposição" : "Aula avulsa"} · {request.requestedOn} · {request.status}
+                        {request.status === "pending" ? (
+                          <>
+                            <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "approved")} disabled={busy}>
+                              Aprovar
+                            </button>
+                            <button className="danger" onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "rejected")} disabled={busy}>
+                              Recusar
+                            </button>
+                          </>
+                        ) : request.paymentStatus !== "paid" ? (
+                          <button onClick={() => void onMarkLessonRequestPaid(p.id, request)} disabled={busy}>
+                            Marcar pago
+                          </button>
+                        ) : null}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {showAcademyWorkspace ? (
+                <AcademyWorkspaceShell
+                  activeView={academyView}
+                  onViewChange={(view) => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: view }))}
+                >
+                  {academyView === "today" ? (
+                    <div className="academy-workspace-grid">
+                      {todayClasses.slice(0, 8).map((academyClass) => {
+                        const enrollments = academyEnrollments.filter((item) => item.classId === academyClass.id);
+                        const activeCount = enrollments.filter((item) => item.status === "active").length;
+                        const classAttendanceToday = todayAttendance.filter((item) => item.classId === academyClass.id);
+                        const presentCount = classAttendanceToday.filter((item) => item.status === "present").length;
+                        const classMakeups = openAcademyMakeups.filter((item) => item.classId === academyClass.id);
+                        const plannedAbsences = academyAbsences.filter((item) => item.classId === academyClass.id && item.status === "open");
+                        const classCourt = activeCourts.find((court) => court.id === academyClass.courtId);
+                        return (
+                          <div key={`academy-today:${academyClass.id}`} className="academy-workspace-card">
+                            <header>
+                              <div>
+                                <strong>{academyClass.startsAt.slice(0, 5)} - {academyClass.title}</strong>
+                                <span>{[academyClass.coachName || "Professor", classCourt?.name, academyClass.level].filter(Boolean).join(" | ")}</span>
+                              </div>
+                              <b>{activeCount}/{academyClass.capacity}</b>
+                            </header>
+                            <div className="academy-workspace-metrics">
+                              <span>{countLabel(presentCount, "presente", "presentes")}</span>
+                              <span>{countLabel(plannedAbsences.length, "falta avisada", "faltas avisadas")}</span>
+                              <span>{countLabel(classMakeups.length, "reposicao", "reposicoes")}</span>
+                            </div>
+                            <small>{enrollments.filter((item) => item.status === "active").map((item) => item.playerName).join(", ") || "Sem alunos ativos"}</small>
+                          </div>
+                        );
+                      })}
+                      {!todayClasses.length ? <p className="subtle">Nenhuma aula programada para hoje.</p> : null}
+                    </div>
+                  ) : null}
+                  {academyView === "classes" ? (
+                    <div className="academy-workspace-grid">
+                      {visibleAcademyClasses.slice(0, 12).map((academyClass) => {
+                        const enrollments = academyEnrollments.filter((item) => item.classId === academyClass.id);
+                        const activeCount = enrollments.filter((item) => item.status === "active").length;
+                        const pendingCount = enrollments.filter((item) => item.status === "pending").length;
+                        const classCourt = activeCourts.find((court) => court.id === academyClass.courtId);
+                        return (
+                          <div key={`academy-class-dashboard:${academyClass.id}`} className="academy-workspace-card">
+                            <header>
+                              <div>
+                                <strong>{academyClass.title}</strong>
+                                <span>
+                                  {WEEKDAY_LABELS[academyClass.weekday] || "Dia"} {academyClass.startsAt.slice(0, 5)} - {academyClass.endsAt.slice(0, 5)}
+                                </span>
+                              </div>
+                              <b>{activeCount}/{academyClass.capacity}</b>
+                            </header>
+                            <small>{[academyClass.coachName || "Professor", classCourt?.name, academyClass.level || "nivel livre"].filter(Boolean).join(" | ")}</small>
+                            <div className="academy-workspace-metrics">
+                              <span>{formatMoneyFromCents(academyClass.monthlyFeeCents)}</span>
+                              <span>{countLabel(pendingCount, "pendente", "pendentes")}</span>
+                              <span>{academyClass.allowMakeup ? "Reposicao permitida" : "Sem reposicao"}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {!visibleAcademyClasses.length ? <p className="subtle">Sem turmas cadastradas.</p> : null}
+                    </div>
+                  ) : null}
+                  {academyView === "students" ? (
+                    <div className="academy-workspace-list">
+                      <div className="academy-student-toolbar">
+                        <input
+                          value={academyStudentFilter.query}
+                          onChange={(event) =>
+                            setAcademyStudentFilterByPlace((prev) => ({
+                              ...prev,
+                              [p.id]: { ...academyStudentFilter, query: event.target.value },
+                            }))
+                          }
+                          placeholder="Buscar aluno, telefone, turma ou professor"
+                        />
+                        <select
+                          value={academyStudentFilter.classId}
+                          onChange={(event) =>
+                            setAcademyStudentFilterByPlace((prev) => ({
+                              ...prev,
+                              [p.id]: { ...academyStudentFilter, classId: event.target.value },
+                            }))
+                          }
+                        >
+                          <option value="">Todas as turmas</option>
+                          {visibleAcademyClasses.map((academyClass) => (
+                            <option key={`student-filter-class:${academyClass.id}`} value={academyClass.id}>
+                              {academyClass.title}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          value={academyStudentFilter.status}
+                          onChange={(event) =>
+                            setAcademyStudentFilterByPlace((prev) => ({
+                              ...prev,
+                              [p.id]: { ...academyStudentFilter, status: event.target.value as AcademyStudentFilter["status"] },
+                            }))
+                          }
+                        >
+                          <option value="">Todos os status</option>
+                          <option value="active">Ativos</option>
+                          <option value="pending">Pendentes</option>
+                          <option value="cancelled">Cancelados</option>
+                        </select>
+                        <span>{countLabel(visibleAcademyStudentEnrollments.length, "aluno encontrado", "alunos encontrados")}</span>
+                      </div>
+                      {visibleAcademyStudentEnrollments.slice(0, 24).map((enrollment) => {
+                        const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+                        const latestProgress = academyProgress.find((item) => item.enrollmentId === enrollment.id);
+                        const paid = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid";
+                        const openMakeupCount = openAcademyMakeups.filter((item) => item.enrollmentId === enrollment.id).length;
+                        const openAbsenceCount = academyAbsences.filter((item) => item.enrollmentId === enrollment.id && item.status === "open").length;
+                        const attendedCount = academyAttendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "present").length;
+                        const missedCount = academyAttendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "absent").length;
+                        return (
+                          <div key={`academy-student:${enrollment.id}`} className="academy-workspace-row">
+                            <div>
+                              <strong>{enrollment.playerName}</strong>
+                              <span>
+                                {academyClass?.title || "Turma"} | {enrollment.status} | {paid ? "mensalidade paga" : "mensalidade pendente"}
+                                {enrollment.phone ? ` | ${enrollment.phone}` : ""}
+                              </span>
+                              <small>{latestProgress ? `Evolucao: ${latestProgress.levelLabel || latestProgress.focus || latestProgress.notes}` : "Sem evolucao registrada"}</small>
+                              <div className="academy-workspace-metrics">
+                                <span>{countLabel(attendedCount, "presenca", "presencas")}</span>
+                                <span>{countLabel(missedCount, "falta", "faltas")}</span>
+                                <span>{countLabel(openAbsenceCount, "falta avisada", "faltas avisadas")}</span>
+                                <span>{countLabel(openMakeupCount, "reposicao aberta", "reposicoes abertas")}</span>
+                              </div>
+                            </div>
+                            <span>
+                              {enrollment.status === "pending" ? (
+                                <>
+                                  <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
+                                    Ativar
+                                  </button>
+                                  <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "cancelled")} disabled={busy}>
+                                    Cancelar
+                                  </button>
+                                </>
+                              ) : null}
+                              {canManageFinance && enrollment.status === "active" && !paid && academyClass ? (
+                                <button onClick={() => void onAdminMarkEnrollmentPaid(academyClass, enrollment)} disabled={busy}>
+                                  Marcar pago
+                                </button>
+                              ) : null}
+                              {canManageFinance && enrollment.status === "active" && !paid && academyClass ? (
+                                <button
+                                  onClick={() =>
+                                    void onCreatePaymentReminder(
+                                      "academy_enrollment",
+                                      enrollment.id,
+                                      academyBillingPeriod,
+                                      `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
+                                    )
+                                  }
+                                  disabled={busy}
+                                >
+                                  Lembrar
+                                </button>
+                              ) : null}
+                              {enrollment.status === "active" ? (
+                              <button onClick={() => void onReportAcademyAbsence(p.id, enrollment.id)} disabled={busy}>
+                                Avisou falta
+                              </button>
+                              ) : null}
+                            </span>
+                          </div>
+                        );
+                      })}
+                      {!visibleAcademyStudentEnrollments.length ? <p className="subtle">Nenhum aluno encontrado para estes filtros.</p> : null}
+                    </div>
+                  ) : null}
+                  {academyView === "requests" ? (
+                    <div className="academy-workspace-list">
+                      {pendingAcademyEnrollments.slice(0, 8).map((enrollment) => {
+                        const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+                        return (
+                          <div key={`academy-request-enrollment:${enrollment.id}`} className="academy-workspace-row">
+                            <div>
+                              <strong>{enrollment.playerName}</strong>
+                              <span>Matricula em {academyClass?.title || "turma"} aguardando aprovacao</span>
+                            </div>
+                            <span>
+                              <button onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")} disabled={busy}>
+                                Ativar
+                              </button>
+                              <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, enrollment.id, "cancelled")} disabled={busy}>
+                                Cancelar
+                              </button>
+                            </span>
+                          </div>
+                        );
+                      })}
+                      {actionableLessonRequests.slice(0, 8).map((request) => {
+                        const requestClass = academyClasses.find((item) => item.id === request.classId);
+                        return (
+                          <div key={`academy-request-lesson:${request.id}`} className="academy-workspace-row">
+                            <div>
+                              <strong>{request.playerName}</strong>
+                              <span>{request.requestType === "makeup" ? "Reposicao" : "Aula avulsa"} | {requestClass?.title || "turma"} | {request.requestedOn}</span>
+                            </div>
+                            <span>
+                              {request.status === "pending" ? (
+                                <>
+                                  <button onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "approved")} disabled={busy}>
+                                    Aprovar
+                                  </button>
+                                  <button className="danger" onClick={() => void onUpdateAcademyLessonRequest(p.id, request, "rejected")} disabled={busy}>
+                                    Recusar
+                                  </button>
+                                </>
+                              ) : request.paymentStatus !== "paid" ? (
+                                <button onClick={() => void onMarkLessonRequestPaid(p.id, request)} disabled={busy}>
+                                  Marcar pago
+                                </button>
+                              ) : null}
+                            </span>
+                          </div>
+                        );
+                      })}
+                      {openAcademyMakeups.slice(0, 8).map((credit) => {
+                        const academyClass = academyClasses.find((item) => item.id === credit.classId);
+                        const enrollment = academyEnrollments.find((item) => item.id === credit.enrollmentId);
+                        return (
+                          <div key={`academy-makeup:${credit.id}`} className="academy-workspace-row">
+                            <div>
+                              <strong>{enrollment?.playerName || "Aluno"}</strong>
+                              <span>Reposicao aberta | {academyClass?.title || "turma"} | gerada em {dateInputValue(credit.createdAt)}</span>
+                            </div>
+                            <span>
+                              <button onClick={() => void onUpdateMakeupCredit(p.id, credit.id, "used")} disabled={busy}>
+                                Usar reposicao
+                              </button>
+                            </span>
+                          </div>
+                        );
+                      })}
+                      {!pendingAcademyEnrollments.length && !actionableLessonRequests.length && !openAcademyMakeups.length ? (
+                        <p className="subtle">Sem pendencias abertas na academia.</p>
+                      ) : null}
+                    </div>
+                  ) : null}
+                  {academyView === "resources" ? (
+                    <div className="academy-workspace-grid">
+                      <div className="academy-workspace-card">
+                        <header>
+                          <div>
+                            <strong>Professores</strong>
+                            <span>{countLabel(displayedCoaches.length, "professor", "professores")}</span>
+                          </div>
+                        </header>
+                        <small>{displayedCoaches.map((coach) => coach.name).join(", ") || "Cadastre o primeiro professor"}</small>
+                      </div>
+                      <div className="academy-workspace-card">
+                        <header>
+                          <div>
+                            <strong>Quadras</strong>
+                            <span>{countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}</span>
+                          </div>
+                        </header>
+                        <small>{activeCourts.map((court) => court.name).join(", ") || "Cadastre quadras para montar turmas"}</small>
+                      </div>
+                      <div className="academy-workspace-card">
+                        <header>
+                          <div>
+                            <strong>Horarios abertos</strong>
+                            <span>{countLabel(resourceDaySlots.length, "horario", "horarios")}</span>
+                          </div>
+                        </header>
+                        <small>Use os horarios livres abaixo para criar turmas sem conflito.</small>
+                      </div>
+                    </div>
+                  ) : null}
+                </AcademyWorkspaceShell>
+              ) : null}
               <div className="place-booking-head">
                 <strong>Academia e aulas</strong>
-                <span>{activeAcademyClasses.length} turma(s)</span>
+                <span>{countLabel(activeAcademyClasses.length, "turma", "turmas")}</span>
               </div>
-              {canManageAcademy ? (
+              {showAcademyResources && canManageAcademy ? (
                 <>
                   {canManagePlace ? (
                   <div className="place-staff-form">
@@ -3188,6 +4816,7 @@ export function PlacesPage({ user, profile }: Props) {
                   ) : null}
                 </>
               ) : null}
+              {showAcademyRequests ? (
               <div className="place-booking-list">
                 <div className="place-booking-row">
                   <div>
@@ -3328,8 +4957,8 @@ export function PlacesPage({ user, profile }: Props) {
                           {classCourt ? ` | ${classCourt.name}` : ""}
                         </span>
                         <small>
-                          {slot.coachName || "Professor"} | {slot.level || "nivel livre"} | {slot.availableSpots} vaga(s) |{" "}
-                          {slot.openAbsences ? `${slot.openAbsences} ausencia(s) avisada(s)` : "capacidade disponivel"} | avulsa estimada{" "}
+                          {slot.coachName || "Professor"} | {slot.level || "nivel livre"} | {countLabel(slot.availableSpots, "vaga", "vagas")} |{" "}
+                          {slot.openAbsences ? `${countLabel(slot.openAbsences, "ausencia avisada", "ausencias avisadas")}` : "capacidade disponivel"} | avulsa estimada{" "}
                           {formatMoneyFromCents(Math.round(slot.monthlyFeeCents / 4))}
                           {requestDraft.requestType === "makeup" ? ` | reposicoes abertas: ${openMakeupCredits.length}` : ""}
                         </small>
@@ -3389,6 +5018,8 @@ export function PlacesPage({ user, profile }: Props) {
                   );
                 })}
               </div>
+              ) : null}
+              {showAcademyClasses ? (
               <div className="place-booking-list">
                 {visibleAcademyClasses.slice(0, 5).map((academyClass) => {
                   const enrollments = academyEnrollments.filter((item) => item.classId === academyClass.id);
@@ -3417,7 +5048,9 @@ export function PlacesPage({ user, profile }: Props) {
                             const memberPrice = plan ? Math.round((academyClass.monthlyFeeCents * (100 - plan.academyDiscountPercent)) / 100) : academyClass.monthlyFeeCents;
                             return plan && plan.academyDiscountPercent > 0 ? ` | socio ${formatMoneyFromCents(memberPrice)}` : "";
                           })() : ""}
-                          {canManageAcademy ? ` | Hoje: ${presentCount} presente(s) | Reposicoes: ${classMakeups.length} | Ausencias avisadas: ${plannedAbsences.length}` : ""}
+                          {canManageAcademy
+                            ? ` | Hoje: ${countLabel(presentCount, "presente", "presentes")} | Reposicoes: ${classMakeups.length} | Ausencias avisadas: ${plannedAbsences.length}`
+                            : ""}
                         </small>
                         <small>
                           {academyClass.genderScope === "male" ? "Masculina" : academyClass.genderScope === "female" ? "Feminina" : "Mista"} |{" "}
@@ -3647,6 +5280,7 @@ export function PlacesPage({ user, profile }: Props) {
                 })}
                 {!visibleAcademyClasses.length ? <p className="subtle">Sem turmas cadastradas.</p> : null}
               </div>
+              ) : null}
             </div>
             ) : null}
           </article>
@@ -3657,6 +5291,9 @@ export function PlacesPage({ user, profile }: Props) {
         <div className="modal-backdrop" onClick={() => !busy && setShowCreate(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>Novo local</h2>
+            <p className="modal-helper">
+              Comece com os dados principais. Depois complete quadras, equipe, planos e operacao em Configuracoes.
+            </p>
             <label>Nome</label>
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Cesão Tênis Club" />
             <label>Organizacao / rede</label>
@@ -3683,6 +5320,7 @@ export function PlacesPage({ user, profile }: Props) {
                 </option>
               ))}
             </select>
+            <p className="modal-helper">{PLACE_PRODUCT_PLAN_HINTS[productPlan]}</p>
             <div className="row">
               <div>
                 <label>UF</label>
@@ -3726,7 +5364,7 @@ export function PlacesPage({ user, profile }: Props) {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Quadras, contato, horários..."
+              placeholder="Horarios, WhatsApp, regras de reserva, endereco complementar..."
             />
             <label>Logo (opcional)</label>
             <input
@@ -3747,4 +5385,5 @@ export function PlacesPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+
 

@@ -447,9 +447,10 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   };
 
   const onDeleteAccount = () => {
-    alert(
-      "Para excluir sua conta, escreva para suporte@atp.tennis com o e-mail desta conta. Em breve haverá fluxo automático."
-    );
+    setFeedback({
+      kind: "info",
+      text: "Para excluir sua conta, escreva para suporte@atp.tennis usando o e-mail desta conta.",
+    });
   };
 
   const onSaveNotificationPrefs = async (nextPrefs: NotificationPreferences) => {
@@ -1179,7 +1180,12 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
 
           <div
             className="profile-row tappable"
-            onClick={() => alert("Política de privacidade em construção.")}
+            onClick={() =>
+              setFeedback({
+                kind: "info",
+                text: "A política de privacidade ainda está sendo finalizada. Enquanto isso, fale com suporte@atp.tennis.",
+              })
+            }
           >
             <span className="pr-icon"><ShieldIcon /></span>
             <div className="pr-content">
