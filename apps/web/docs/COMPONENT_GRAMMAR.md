@@ -104,8 +104,14 @@ Uso atual no produto:
 
 - CRM do local: lead/cliente com interesse, origem, responsavel, follow-up e acao primaria contextual.
 - Financeiro do local: recebivel com cliente/turma, valor, status e lembrete como acao primaria.
+- Clientes/CRM do local: cobranca pendente usa row com cliente, origem, valor e `Enviar lembrete` como acao primaria, evitando tratar inadimplencia como painel separado.
 - Cantina: produto com categoria, preco, estoque e status de estoque.
 - Academia: turma com horario, professor/quadra/nivel, ocupacao, pendencias e metricas de suporte.
+- Academia: aluno com turma, telefone, pagamento, presenca e uma acao primaria contextual; acoes secundarias ficam em disclosure.
+- Competition OS: `Minhas partidas` do torneio com partida, classe/fase, horario, estado operacional, presenca e acao primaria em zonas separadas.
+- Competition OS: partidas de grupos/mata-mata do torneio com numero, jogadores, status, horario, confirmacoes e placar em leitura row-like.
+- Competition OS: partidas da liga com rodada/jogadores, horario, status, estado operacional e acao `Abrir sala` em row compacta.
+- Competition OS: sala de partida da liga com estado/disponibilidade/resultado como zonas principais e participantes/chat em disclosures.
 
 Variacao importante:
 
@@ -292,6 +298,9 @@ Uso:
 - cadastrar professor;
 - criar turma;
 - criar torneio;
+- enviar lembrete;
+- cobrar socio;
+- cobrar aluno;
 
 Anatomia:
 
@@ -389,6 +398,8 @@ Uso atual no produto:
 - criacao de reserva no admin do local: campos essenciais ficam no composer principal; observacao, repeticao, bloqueio e lista de espera ficam em `Opcoes avancadas`.
 - CRM do local: contatos/leads aparecem antes da captura; novo contato expande apenas quando necessario.
 - Cantina: venda rapida fica como rotina principal; cadastro de produto fica progressivo e auxiliar ao catalogo.
+- Torneio: envio/compartilhamento de resultado em `Minhas partidas` fica em disclosure `Informar resultado`, preservando a row principal para status e confirmacao.
+- Torneio: edicao de placar, WO e limpeza nas partidas da chave ficam em disclosure `Lancar/Editar placar`, preservando a row principal para leitura da partida.
 
 ## PublicHero
 

@@ -161,6 +161,11 @@ Card e excecao em operacao diaria. Row e padrao.
 - `/gestao` ja possui checklist de implantacao para academia/clube, com progresso, etapas concluidas e proximo passo acionavel; ele aparece apenas enquanto a base esta incompleta.
 - `/eventos` ja possui roteiro secundario para organizador novo, levando para criar torneio/liga e explicando classes, inscricoes, publicacao e operacao sem virar CTA principal para jogador comum.
 - `/gestao` ja possui entrada leve de professor para papel `coach`, priorizando aulas de hoje, turmas e alunos sem expor modulos empresariais.
+- `Minhas partidas` do torneio ja iniciou gramatica de row operacional: status/contexto e acao primaria ficam separados, e envio de resultado abre em disclosure progressivo.
+- Partidas de grupos e mata-mata do torneio ja iniciaram estrutura row-like, com placar/WO/limpeza em disclosure progressivo.
+- Lista de partidas da liga ja iniciou estrutura row operacional, alinhando `Minhas partidas` e partidas por rodada ao padrao do torneio.
+- Sala de partida da liga ja separa estado/disponibilidade/resultado de participantes/chat, usando disclosures para areas secundarias.
+- Lista de alunos da Academia ja usa `EntityActionRow`, com uma acao primaria por aluno e acoes secundarias em disclosure.
 - Visual language premium foi documentada.
 - `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` foram criados.
 - `/gestao` ja foi refinada para ocultar cards zerados e usar rows operacionais de local.
@@ -174,14 +179,14 @@ Card e excecao em operacao diaria. Row e padrao.
 - Sistema ja iniciou visibilidade por perfil/plano na navegacao global, mas ainda precisa aplicar isso nos hubs internos e entradas de setup.
 - Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; ainda falta calibrar fluxos internos especificos por massa real.
 - Acoes de setup de local ja comecaram a ficar semanticamente descobriveis; criacao de torneio/liga ja fica concentrada no contexto de organizacao do Competition OS.
-- Competition OS ja esta mais consistente visualmente, mas ainda precisa refinamento profundo de fluxos internos de torneio/liga.
+- Competition OS ja esta mais consistente visualmente; torneio, lista de partidas da liga e sala da liga ja usam mais hierarchy operacional.
 - Mobile ainda pode parecer desktop empilhado em varias telas, mas filtros de liga ja usam sheet responsivo como primeiro padrao.
 - Home do jogador ja reforca proxima acao na primeira viewport, mas ainda pode evoluir feed, estados vazios e detalhe mobile.
 - Paginas publicas ja ganharam primeira rodada de conversao premium, mas ainda podem evoluir imagem, prova social e fluxo de pagamento.
 - Typography e spacing ja melhoraram nas telas prioritarias, mas ainda precisam segunda onda em telas antigas e formularios.
 - Muitos formularios ainda aparecem inline, mas Agenda, CRM e Cantina ja abriram a primeira onda de composer progressivo.
 - Algumas telas ainda exibem KPIs antes de tarefas.
-- Partidas e alguns fluxos de alunos ainda podem receber segunda onda de rows quando o fluxo interno pedir detalhe em drawer/sheet.
+- Cobrancas recorrentes ja ganharam primeira camada task-first em Financeiro e Clientes/CRM, com `Enviar lembrete`, `Cobrar socios` e `Cobrar alunos` a partir de pendencia real.
 
 ## Problemas atuais a atacar
 
@@ -195,7 +200,7 @@ Card e excecao em operacao diaria. Row e padrao.
 8. Tabelas/listas ainda precisam expandir a gramatica mobile uniforme para mais dominios.
 9. Filtros e detalhes ainda ocupando corpo principal demais.
 10. Estados vazios e setup nem sempre guiam a proxima acao.
-11. Funcoes importantes ainda podem ficar escondidas por modulo tecnico em vez de aparecer por intencao.
+11. Funcoes importantes ainda podem ficar escondidas por modulo tecnico em vez de aparecer por intencao, especialmente nas entradas internas por perfil.
 12. Onboarding por perfil ainda precisa conduzir melhor academia, professor solo e organizador no primeiro uso.
 
 ## Objetivos UX atuais
@@ -270,19 +275,22 @@ Antes de mexer em qualquer tela:
 
 ## Prioridades de frontend
 
-1. Refinar operacao de partidas/resultados no Competition OS com rows, hierarchy clara e mobile-first.
-2. Aplicar segunda onda de rows em fluxos de alunos quando houver dados/estado visual suficiente.
-3. Reorganizar entradas internas de `/gestao` por tipo de operador quando a deteccao de perfil/plano estiver mais completa.
-4. Expandir quick actions semanticas para cobranca e rotinas recorrentes.
-5. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
-6. Reduzir dashboards informativos.
-7. Aplicar mobile sheets e sticky actions.
+1. Reorganizar entradas internas de `/gestao` por tipo de operador sem reabrir a arquitetura de perfis.
+2. Expandir quick actions semanticas para outras rotinas recorrentes alem de cobranca.
+3. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
+4. Reduzir dashboards informativos remanescentes.
+5. Aplicar mobile sheets e sticky actions onde ainda houver detalhe pesado no corpo da tela.
 
-Proximo bloco definido em 2026-05-13:
+Bloco executado em 2026-05-13:
 
-- `COMP-03`: partidas, confirmacoes e resultados no Competition OS devem sair de card/lista alta e virar filas/rows operacionais com uma acao primaria por partida.
-- Motivo: e a maior pendencia visivel apos a consolidacao inicial de Gestao, perfis, onboarding e Competition OS base.
-- Cuidado: preservar os fluxos de confirmar presenca, desfazer confirmacao e lancar/conferir resultado.
+- `COMP-03`: `Minhas partidas` no torneio virou row operacional, com confirmar presenca como acao primaria e resultado em disclosure progressivo.
+- `COMP-04`: partidas de grupos/mata-mata do torneio passaram a usar estrutura row-like e controles de placar em disclosure.
+- `COMP-05`: lista de partidas da liga e `Minhas partidas` da liga passaram a usar rows compactas com estado operacional e acao clara para abrir sala.
+- `MOBILE-02`: sala aberta da liga passou a priorizar estado, disponibilidade e resultado; participantes/chat viraram disclosures.
+- `ACADEMY-02`: alunos da Academia passaram a usar `EntityActionRow`, com check-in/ativar/marcar pago como acao primaria contextual e acoes secundarias em disclosure.
+- `BILLING-02`: Financeiro e Clientes/CRM passaram a expor cobranca por intencao (`Enviar lembrete`, `Cobrar socios`, `Cobrar alunos`) somente quando ha pendencia real.
+- Proximo foco: `PROFILE-02`, refinando entradas internas de Gestao por operador sem esconder acesso existente.
+- Cuidado permanente: preservar os fluxos de confirmar presenca, desfazer confirmacao e lancar/conferir resultado.
 
 ## Prioridades mobile
 

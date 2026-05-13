@@ -2082,22 +2082,26 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     });
                     return (
                       <div key={`my-league:${item.id}`} className={`my-match-row ${item.status === "encerrada" || item.status === "wo" ? "done" : "pending"}`}>
-                        <button type="button" onClick={() => void openMatchRoom(item.match)}>
-                          <span>
-                            <strong>{item.title}</strong>
-                            <small>{item.classLabel} - {item.roundLabel}</small>
-                          </span>
-                          <em>{matchStatusLabel(item.status)}</em>
-                        </button>
-                        {item.scheduledAt ? <p className="match-schedule-info">{formatDateTime(item.scheduledAt)}</p> : null}
-                        <p className={`match-operational-state ${opState.severity}`}>
-                          <span>{opState.label}</span>
-                          <strong>{opState.playerAction}</strong>
-                        </p>
-                        <div className="match-confirmation-actions">
-                          <button onClick={() => void openMatchRoom(item.match)}>
-                            {expandedMatchId === item.id ? "Fechar sala" : "Abrir sala"}
+                        <div className="my-match-main">
+                          <button className="my-match-summary" type="button" onClick={() => void openMatchRoom(item.match)}>
+                            <span>
+                              <strong>{item.title}</strong>
+                              <small>{item.classLabel} - {item.roundLabel}</small>
+                            </span>
+                            <em>{matchStatusLabel(item.status)}</em>
                           </button>
+                          <div className="my-match-context">
+                            {item.scheduledAt ? <span className="match-schedule-info">{formatDateTime(item.scheduledAt)}</span> : null}
+                            <span className={`match-operational-state ${opState.severity}`}>
+                              <span>{opState.label}</span>
+                              <strong>{opState.playerAction}</strong>
+                            </span>
+                          </div>
+                          <div className="my-match-actions">
+                            <button onClick={() => void openMatchRoom(item.match)}>
+                              {expandedMatchId === item.id ? "Fechar sala" : "Abrir sala"}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     );
@@ -2135,21 +2139,25 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     });
                     return (
                       <article key={m.id} className={`league-match-card state-${opState.severity}`}>
-                        <div className="league-match-card-top">
-                          <div>
-                            <p className="league-match-title">
-                              Jogo {idx + 1}: {side1} x {side2}
-                            </p>
-                            <p className="league-match-sub">Status: {matchStatusLabel(m.status)}</p>
+                        <div className="league-match-main">
+                          <div className="league-match-identity">
+                            <span className="league-match-index">Jogo {idx + 1}</span>
+                            <p className="league-match-title">{side1} x {side2}</p>
+                            <p className="league-match-sub">{m.scheduledAt ? formatDateTime(m.scheduledAt) : `Rodada ${round.roundNumber}`}</p>
                           </div>
-                          <span className={`league-match-state-pill ${opState.severity}`}>{opState.label}</span>
-                          <button className="ghost" onClick={() => void openMatchRoom(m)} disabled={!allowRoom}>
-                            {expandedMatchId === m.id ? "Fechar sala" : "Abrir sala"}
-                          </button>
-                        </div>
-                        <div className="league-match-next-state">
-                          <span>{opState.detail}</span>
-                          <strong>{isOwner ? opState.ownerAction : opState.playerAction}</strong>
+                          <div className="league-match-context">
+                            <span className={`league-match-state-pill ${opState.severity}`}>{opState.label}</span>
+                            <span className="league-match-status">{matchStatusLabel(m.status)}</span>
+                            <span className="league-match-next-state">
+                              <span>{opState.detail}</span>
+                              <strong>{isOwner ? opState.ownerAction : opState.playerAction}</strong>
+                            </span>
+                          </div>
+                          <div className="league-match-actions">
+                            <button className="ghost" onClick={() => void openMatchRoom(m)} disabled={!allowRoom}>
+                              {expandedMatchId === m.id ? "Fechar sala" : "Abrir sala"}
+                            </button>
+                          </div>
                         </div>
 
                         {expandedMatchId === m.id ? (
@@ -2161,17 +2169,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               <span>{isOwner ? opState.ownerAction : opState.playerAction}</span>
                             </section>
 
-                            <section className="league-room-panel">
-                              <h4>Participantes e contatos</h4>
-                              {m.participants.map((p, pIdx) => (
-                                <div key={`${p.leaguePlayerId || "x"}-${pIdx}`} className="league-participant-row">
-                                  <span>{p.displayName}</span>
-                                  <span>{p.phone || "-"}</span>
-                                </div>
-                              ))}
-                            </section>
-
-                            <section className="league-room-panel">
+                            <section className="league-room-panel league-room-priority">
                               <h4>Disponibilidade</h4>
                               {myPlayer?.leaguePlayerId ? (
                                 <>
@@ -2220,30 +2218,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               </div>
                             </section>
 
-                            <section className="league-room-panel">
-                              <h4>Mini chat</h4>
-                              <div className="league-chat-box">
-                                {msgs.map((msg) => (
-                                  <div key={msg.id} className={msg.senderUserId === user.id ? "league-chat-me" : "league-chat-other"}>
-                                    <p>{msg.body}</p>
-                                    <span>{formatDateTime(msg.createdAt)}</span>
-                                  </div>
-                                ))}
-                                {!msgs.length ? <p className="subtle">Sem mensagens ainda.</p> : null}
-                              </div>
-                              <div className="league-chat-send">
-                                <input
-                                  value={messageDraftByMatch[m.id] || ""}
-                                  onChange={(e) => setMessageDraftByMatch((prev) => ({ ...prev, [m.id]: e.target.value }))}
-                                  placeholder="Escreva uma mensagem"
-                                />
-                                <button onClick={() => void onSendMessage(m.id)} disabled={busy}>
-                                  Enviar
-                                </button>
-                              </div>
-                            </section>
-
-                            <section className="league-room-panel league-room-result">
+                            <section className="league-room-panel league-room-result league-room-priority">
                               <h4>Resultado e confirmacao</h4>
                               <div className="my-match-score-fields league-score-fields">
                                 <p className="my-match-score-map">
@@ -2340,6 +2315,45 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                                 <p className="subtle">Sem submissao enviada.</p>
                               )}
                             </section>
+
+                            <details className="league-room-panel league-room-disclosure">
+                              <summary>
+                                <span>Participantes e contatos</span>
+                                <small>{m.participants.length} jogadores</small>
+                              </summary>
+                              {m.participants.map((p, pIdx) => (
+                                <div key={`${p.leaguePlayerId || "x"}-${pIdx}`} className="league-participant-row">
+                                  <span>{p.displayName}</span>
+                                  <span>{p.phone || "-"}</span>
+                                </div>
+                              ))}
+                            </details>
+
+                            <details className="league-room-panel league-room-disclosure league-room-chat">
+                              <summary>
+                                <span>Mini chat</span>
+                                <small>{msgs.length ? `${msgs.length} mensagens` : "Sem mensagens"}</small>
+                              </summary>
+                              <div className="league-chat-box">
+                                {msgs.map((msg) => (
+                                  <div key={msg.id} className={msg.senderUserId === user.id ? "league-chat-me" : "league-chat-other"}>
+                                    <p>{msg.body}</p>
+                                    <span>{formatDateTime(msg.createdAt)}</span>
+                                  </div>
+                                ))}
+                                {!msgs.length ? <p className="subtle">Sem mensagens ainda.</p> : null}
+                              </div>
+                              <div className="league-chat-send">
+                                <input
+                                  value={messageDraftByMatch[m.id] || ""}
+                                  onChange={(e) => setMessageDraftByMatch((prev) => ({ ...prev, [m.id]: e.target.value }))}
+                                  placeholder="Escreva uma mensagem"
+                                />
+                                <button onClick={() => void onSendMessage(m.id)} disabled={busy}>
+                                  Enviar
+                                </button>
+                              </div>
+                            </details>
                           </div>
                         ) : null}
                       </article>

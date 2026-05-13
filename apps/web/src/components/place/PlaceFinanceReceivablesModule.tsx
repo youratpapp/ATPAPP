@@ -20,18 +20,24 @@ export function PlaceFinanceReceivablesModule({
   onCreatePaymentReminder,
   onCreatePaymentReminderBatch,
 }: PlaceFinanceReceivablesModuleProps) {
+  const receivableLabel = `${receivables.length} ${receivables.length === 1 ? "pendencia aberta" : "pendencias abertas"}`;
+
   return (
     <WorkspaceList>
       {receivables.length ? (
-        <div className="cluster">
+        <div className="billing-quick-actions">
+          <div>
+            <strong>Cobranca recorrente</strong>
+            <span>{receivableLabel}</span>
+          </div>
           <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(receivables)} disabled={busy}>
-            Lembrar todos
+            Enviar lembrete geral
           </button>
           <button className="quiet" type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy || !membershipReceivables.length}>
-            Socios
+            Cobrar socios
           </button>
           <button className="quiet" type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy || !academyReceivables.length}>
-            Academia
+            Cobrar alunos
           </button>
         </div>
       ) : null}
@@ -50,7 +56,7 @@ export function PlaceFinanceReceivablesModule({
               onClick={() => onCreatePaymentReminder(receivable.targetType, receivable.targetId, receivable.billingPeriod, receivable.reminder)}
               disabled={busy}
             >
-              Lembrar
+              Enviar lembrete
             </button>
           }
         >

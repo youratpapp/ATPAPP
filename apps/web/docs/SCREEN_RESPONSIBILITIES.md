@@ -124,3 +124,9 @@ Quando uma tela cresce demais:
 - 2026-05-13: `/gestao` ganhou checklist de implantacao por local para academia/clube, aparecendo apenas quando ha base incompleta e levando cada etapa para o modulo/subvisao correto.
 - 2026-05-13: `/eventos` ganhou roteiro secundario de primeiro evento para organizador novo, mantendo criacao em contexto de organizacao sem competir com as tarefas do jogador.
 - 2026-05-13: `/gestao` ganhou entrada leve de professor para papel `coach`, com foco em aulas hoje, turmas e alunos, e a fila agregada passou a respeitar modulos acessiveis por papel.
+- 2026-05-13: `Minhas partidas` dentro do torneio passou a responder primeiro "qual partida exige acao agora?", separando status/contexto/acao primaria em row e movendo envio de resultado para disclosure progressivo.
+- 2026-05-13: partidas de grupos/mata-mata dentro do torneio passaram a priorizar leitura da partida na row principal, deixando placar, WO e limpeza como tarefa progressiva de operador.
+- 2026-05-13: partidas da liga passaram a priorizar leitura por rodada/jogadores/status/proxima acao antes da sala, mantendo disponibilidade, resultado, confirmacao e chat dentro do detalhe acionavel.
+- 2026-05-13: sala de partida da liga passou a separar tarefas principais de suporte: estado, disponibilidade e resultado ficam em primeiro nivel; participantes e chat ficam progressivos.
+- 2026-05-13: lista de alunos da Academia passou a priorizar a acao diaria por aluno, usando row com status/pagamento/presenca e deixando acoes secundarias em disclosure.
+- 2026-05-13: Financeiro e Clientes/CRM passaram a tratar cobranca como tarefa semantica (`Enviar lembrete`, `Cobrar socios`, `Cobrar alunos`) derivada de pendencia real, nao como dashboard tecnico permanente.

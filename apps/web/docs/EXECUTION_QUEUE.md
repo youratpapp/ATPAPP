@@ -396,9 +396,9 @@ Entregue em 2026-05-13:
 - Gestao/perfis/onboarding ficam como base consolidada, com refinamentos futuros guiados por dados reais;
 - nova task `[>] COMP-03` foi criada com criterios operacionais, telas afetadas e criterio de conclusao.
 
-### [>] COMP-03 - Refinar operacao de partidas e resultados no Competition OS
+### [x] COMP-03 - Refinar operacao de partidas e resultados no Competition OS
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -442,6 +442,319 @@ Criterios de conclusao:
 - acao primaria preservada e visualmente priorizada;
 - duplicidade de proxima partida reduzida quando houver sobreposicao com `Minhas partidas`;
 - `npm run lint` e `npm run build` passando quando houver alteracao de codigo.
+
+Entregue em 2026-05-13:
+
+- `Minhas partidas` do torneio deixou de empilhar status, confirmacao, placar e botoes como card alto;
+- cada partida do jogador agora abre como row operacional: identidade da partida, contexto/status e acoes ficam em zonas separadas;
+- confirmacao de presenca virou acao primaria clara; `Nao posso jogar`, `Desfazer` e `Alterar` ficaram quiet;
+- envio/compartilhamento de resultado saiu da area principal e foi para disclosure progressivo `Informar resultado`;
+- agenda, estado operacional, presenca e envio de resultado ficam como chips/rows compactas;
+- mobile empilha row, contexto e acoes em blocos tocaveis, sem tabela larga e sem botoes desalinhados;
+- `npm run lint` e `npm run build` passaram.
+
+### [x] COMP-04 - Refinar partidas da chave para operador e jogador
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Levar a mesma gramatica row/progressive disclosure para partidas de grupos e mata-mata, reduzindo `match-card` alto na chave do torneio.
+
+Criterios:
+
+- partidas da chave devem mostrar numero, jogadores, status, horario e proxima acao em leitura horizontal;
+- edicao de placar e WO deve ficar como camada progressiva quando nao for a acao principal;
+- confirmacoes e envios de resultado devem aparecer como sinais compactos;
+- organizador deve identificar rapidamente jogos com conflito, indisponibilidade ou resultado pendente;
+- mobile deve evitar bloco alto por partida quando houver muitos jogos.
+
+Telas/componentes afetados:
+
+- `TournamentPage`;
+- estilos `match-card`, `match-player-row`, `match-admin-actions`;
+- docs de Competition OS e component grammar.
+
+Ganhos esperados:
+
+- chave do torneio fica mais profissional e escaneavel;
+- operador resolve placares e conflitos com menos scroll;
+- visual da partida fica consistente entre `Minhas partidas` e chave.
+
+Dependencias:
+
+- fluxo atual de edicao de placar, WO e limpar resultado.
+
+Risco de regressao:
+
+- esconder demais controles de placar para organizador durante operacao ao vivo.
+
+Criterios de conclusao:
+
+- pelo menos grupos ou mata-mata usam estrutura mais row-like;
+- controles de placar continuam acessiveis;
+- `npm run lint` e `npm run build` passando.
+
+Entregue em 2026-05-13:
+
+- partidas de grupos e mata-mata do torneio passaram a usar uma estrutura mais row-like;
+- linha principal mostra numero do jogo, jogadores, status, horario, estado operacional, confirmacoes e placar oficial em leitura compacta;
+- controles de placar, WO e limpar resultado foram movidos para disclosure `Lancar/Editar placar`;
+- sinais de confirmacao e resultado ficaram compactos, sem empilhar blocos altos por partida;
+- mobile empilha contexto e controles progressivos sem tabela larga;
+- `npm run lint` e `npm run build` passaram.
+
+### [x] COMP-05 - Refinar partidas da liga e sala de jogo
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Levar a mesma gramatica de rows e progressive disclosure para `LeagueDetailsPage`, reduzindo `league-match-card` alto e deixando a sala de partida mais focada por tarefa.
+
+Criterios:
+
+- partidas da liga devem expor rodada, jogadores, status, horario e proxima acao em row compacta;
+- sala de partida deve separar resultado, disponibilidade, chat e confirmacao em zonas claras;
+- jogador deve ver primeiro a acao que resolve a partida: disponibilidade, enviar resultado ou confirmar;
+- organizador deve identificar conflitos e resultados pendentes sem abrir todos os detalhes;
+- mobile deve evitar salas longas abertas por padrao.
+
+Telas/componentes afetados:
+
+- `LeagueDetailsPage`;
+- estilos `league-match-card`, `league-room-*`, `league-submission-row`;
+- docs de Competition OS.
+
+Ganhos esperados:
+
+- liga fica visualmente alinhada ao torneio;
+- menos scroll para jogador e organizador;
+- menos mistura entre chat, resultado e disponibilidade.
+
+Dependencias:
+
+- fluxo atual de abertura da sala de partida;
+- funcoes de disponibilidade, envio e confirmacao de resultado.
+
+Risco de regressao:
+
+- esconder conversa/confirmacao quando a partida esta em disputa.
+
+Criterios de conclusao:
+
+- ao menos a lista de partidas da rodada usa row operacional;
+- sala/detalhe continua acessivel por acao clara;
+- `npm run lint` e `npm run build` passando.
+
+Entregue em 2026-05-13:
+
+- `Minhas partidas` da liga passou a usar a mesma estrutura operacional do torneio: identidade, contexto/status e acao em zonas separadas;
+- partidas por rodada deixaram de abrir com topo de card generico e passaram a mostrar jogo, jogadores, horario/rodada, status e proxima acao em row compacta;
+- botao `Abrir sala` ficou como acao clara da row, preservando disponibilidade, resultado, chat e confirmacao dentro da sala;
+- estado operacional da partida ficou visivel sem precisar abrir detalhes;
+- mobile empilha identidade, contexto e acao sem card alto ou botoes desalinhados;
+- `npm run lint` e `npm run build` passaram.
+
+### [x] MOBILE-02 - Refinar sala de partida da liga em zonas progressivas
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Reduzir a densidade da sala aberta da liga, separando disponibilidade, resultado, participantes e chat em zonas progressivas ou compactas.
+
+Criterios:
+
+- estado da partida deve continuar primeiro dentro da sala;
+- disponibilidade e resultado devem ter hierarquia maior que chat quando forem a proxima acao;
+- participantes/contatos devem ser compactos;
+- chat nao deve ocupar altura excessiva no mobile;
+- confirmacoes de resultado devem aparecer como rows compactas.
+
+Telas/componentes afetados:
+
+- `LeagueDetailsPage`;
+- estilos `league-room-*`, `league-chat-*`, `league-submission-row`;
+- docs de mobile friction/component grammar.
+
+Ganhos esperados:
+
+- menos scroll quando a sala esta aberta;
+- jogador resolve disponibilidade/resultado mais rapido;
+- organizador enxerga conflito sem ler todos os blocos.
+
+Dependencias:
+
+- estrutura atual da sala de partida.
+
+Risco de regressao:
+
+- esconder chat quando ele for necessario para combinacao de horario.
+
+Criterios de conclusao:
+
+- sala aberta fica organizada por prioridade operacional;
+- mobile nao abre quatro paineis longos equivalentes;
+- `npm run lint` e `npm run build` passando.
+
+Entregue em 2026-05-13:
+
+- sala da partida da liga passou a ordenar primeiro estado, disponibilidade e resultado;
+- participantes/contatos e mini chat viraram disclosures compactos;
+- disponibilidade e resultado receberam peso de tarefa principal dentro da sala;
+- chat continua acessivel, mas deixa de ocupar altura antes da resolucao operacional;
+- mobile abre a sala com menos paineis equivalentes e mais progressao por prioridade;
+- `npm run lint` e `npm run build` passaram.
+
+### [x] ACADEMY-02 - Refinar alunos e chamadas da Academia em rows operacionais
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Continuar a segunda onda de rows nos fluxos de alunos/chamada, reduzindo listas altas e formularios concorrendo com rotina de aula.
+
+Criterios:
+
+- alunos devem mostrar nome, turma/contexto, pagamento/presenca e acao primaria em row;
+- chamada deve priorizar marcar presenca/falta/reposicao sem abrir card alto;
+- detalhes historicos devem ir para area progressiva ou drawer/sheet;
+- mobile deve evitar varias metricas e botoes por aluno na mesma primeira leitura.
+
+Telas/componentes afetados:
+
+- `PlaceAcademyStudentsModule`;
+- `PlaceAcademyTodayModule`;
+- `PlaceAcademyClassesModule` se houver chamada/turma;
+- estilos de workspace da Academia.
+
+Ganhos esperados:
+
+- operacao de professor/equipe fica mais rapida;
+- menos sensacao de ERP;
+- Academia fica mais alinhada aos rows de CRM, Financeiro, Cantina e Competicoes.
+
+Dependencias:
+
+- dados atuais de alunos, turmas, presenca e pagamentos.
+
+Risco de regressao:
+
+- esconder informacao de pagamento ou chamada que hoje esta visivel demais, mas e usada no dia a dia.
+
+Criterios de conclusao:
+
+- pelo menos um fluxo critico de aluno/chamada convertido ou compactado em row operacional;
+- acao primaria preservada;
+- `npm run lint` e `npm run build` passando.
+
+Entregue em 2026-05-13:
+
+- lista de alunos da Academia passou a usar `EntityActionRow`;
+- cada aluno agora mostra turma, telefone, pagamento e presenca em sinais compactos;
+- a row escolhe uma acao primaria por contexto: ativar pendente, check-in quando a chamada esta pendente ou marcar pago quando a mensalidade exige acao;
+- acoes secundarias como cancelar, lembrar, avisar falta e marcar falta foram movidas para disclosure `Acoes`;
+- historico de evolucao e metricas ficam abaixo da leitura principal, sem competir com a tarefa do dia;
+- mobile reduz a quantidade de botoes simultaneos por aluno;
+- `npm run lint` e `npm run build` passaram.
+
+### [x] BILLING-02 - Tornar cobrancas recorrentes mais descobriveis e task-first
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Expandir quick actions semanticas para cobranca e rotinas recorrentes, reduzindo a necessidade de procurar cobranca em modulos tecnicos.
+
+Criterios:
+
+- Gestao/Academia/Financeiro devem expor intencoes como `Cobrar aluno`, `Enviar lembrete` ou `Marcar pago` quando houver pendencia real;
+- acoes de cobranca nao devem aparecer como dashboard permanente quando tudo esta em dia;
+- uma acao primaria por pendencia financeira;
+- mobile deve permitir resolver cobranca em poucos toques.
+
+Telas/componentes afetados:
+
+- `ManagementHubPage`;
+- `PlaceFinanceReceivablesModule`;
+- `PlaceAcademyStudentsModule`;
+- `PlaceClientRelationshipModule` se houver inadimplencia/relacionamento;
+- docs de discoverability/onboarding.
+
+Ganhos esperados:
+
+- menos funcao escondida;
+- gestor/professor entende rapidamente quem precisa ser cobrado;
+- financeiro fica mais operacional e menos relatorio.
+
+Dependencias:
+
+- dados atuais de recebiveis, mensalidades e pagamentos.
+
+Risco de regressao:
+
+- duplicar atalhos de cobranca em Gestao, Financeiro e Alunos.
+
+Criterios de conclusao:
+
+- pelo menos uma entrada semantica de cobranca aparece a partir de pendencia real;
+- acao leva direto ao contexto correto ou executa lembrete/pagamento;
+- `npm run lint` e `npm run build` passando se houver alteracao de codigo.
+
+Entregue em 2026-05-13:
+
+- Financeiro passou a abrir recebiveis com faixa semantica `Cobranca recorrente`, exibida apenas quando ha pendencias reais;
+- atalhos passaram a usar linguagem de intencao: `Enviar lembrete geral`, `Cobrar socios` e `Cobrar alunos`;
+- cada recebivel manteve uma acao primaria clara: `Enviar lembrete`;
+- Clientes/CRM trocou `Inadimplentes` por `Cobrancas pendentes`, com rows operacionais e valor/contexto visiveis;
+- `Lembretes segmentados` virou `Acoes de cobranca`, mantendo recortes por socio, aluno e todos em aberto sem parecer dashboard tecnico;
+- mobile empilha a faixa e as rows de cobranca com botoes full-width;
+- `npm run lint` e `npm run build` passaram.
+
+### [>] PROFILE-02 - Refinar entradas internas de Gestao por operador
+
+Status: `[ ]` pendente
+
+Objetivo:
+
+- Aplicar a separacao de perfis/planos dentro dos hubs internos, para que academia/clube, professor solo e organizador vejam atalhos e rotinas proporcionais ao papel.
+
+Criterios:
+
+- nao reabrir arquitetura de perfis, apenas aplicar o modelo atual nas entradas internas;
+- gestor de academia ve rotinas completas de operacao, setup, equipe, financeiro e publicacao;
+- professor solo ve foco em agenda, alunos, turmas leves e mensalidades, sem cantina/CRM pesado como prioridade;
+- organizador ve Competition OS como entrada administrativa primaria;
+- jogador comum nao recebe CTA de gestao como tarefa principal.
+
+Telas/componentes afetados:
+
+- `ManagementHubPage`;
+- `EventsHubPage`;
+- navegacao global/contextual;
+- docs de perfil/plano e screen responsibilities.
+
+Ganhos esperados:
+
+- menos sensacao de que todas as ferramentas existem para todo mundo;
+- entrada mais profissional para quem trabalha no app;
+- menos descoberta por tentativa e erro.
+
+Dependencias:
+
+- dados atuais de `accessByPlace`, papeis administrativos e competicoes organizadas.
+
+Risco de regressao:
+
+- esconder ferramenta que ainda nao tem permissao granular perfeita.
+
+Criterios de conclusao:
+
+- pelo menos uma entrada interna muda por perfil/papel sem remover acesso existente;
+- fallback preserva acesso administrativo quando a deteccao for incompleta;
+- docs vivos atualizados;
+- `npm run lint` e `npm run build` passando se houver alteracao de codigo.
 
 ### [x] GESTAO-01 - Refinar mobile real da tela `/gestao`
 

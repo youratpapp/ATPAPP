@@ -175,7 +175,7 @@ Nao mostrar:
 | Criar turma | Setup da Academia | Academia > Turmas | Quick action |
 | Criar reserva | Agenda do local | Gestao > fila do dia | Quick action |
 | Cadastrar cliente | Clientes/CRM | Gestao > quick action | Progressive form |
-| Cobrar cliente | Financeiro/Clientes | Fila de inadimplentes | Row action |
+| Cobrar cliente | Financeiro/Clientes | Cobrancas pendentes | Row action |
 | Criar torneio | Organizando competicoes | Eventos | Setup wizard |
 | Criar liga | Organizando competicoes | Eventos | Setup wizard |
 | Lancar resultado | Competition OS | Minha partida | Row action |
@@ -230,6 +230,17 @@ Mostrar:
 Status:
 
 - [feito] Hub de Gestao mostra `Criar turma` quando faltam turmas e envia para Academia > Turmas.
+
+### Quando ha cobranca pendente
+
+Mostrar:
+
+- `Enviar lembrete` na row da pendencia;
+- atalhos `Cobrar socios`, `Cobrar alunos` e `Enviar lembrete geral` apenas quando houver recebiveis reais.
+
+Status:
+
+- [feito] Financeiro e Clientes/CRM exibem cobranca como tarefa semantica derivada de pendencia real, sem criar dashboard permanente quando tudo esta em dia.
 
 ### Quando nao ha competicao organizada
 

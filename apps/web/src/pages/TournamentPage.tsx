@@ -4458,33 +4458,54 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       : submissions.length > 0
                       ? `Enviado por ${submittedSides} ${submittedSides === 1 ? "lado" : "lados"}.`
                       : "";
+                    const canSendPlayerResult = match.status === "pending" && matchClassRef && playerScoreMatch && tournament.playerResultSubmissionEnabled;
                     return (
                       <div key={match.id} className={`my-match-row ${match.status}`}>
-                        <button type="button" onClick={() => setActiveClassKey(match.classKey)}>
-                          <span>
-                            <strong>{match.title}</strong>
-                            <small>{match.classLabel} - {match.phase}</small>
-                          </span>
-                          <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
-                        </button>
-                        {scheduled ? <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p> : null}
-                        <p className={`match-operational-state ${opState.severity}`}>
-                          <span>{opState.label}</span>
-                          <strong>{opState.playerAction}</strong>
-                        </p>
-                        {myConfirmation ? (
-                          <div className="match-confirmation-response">
-                            <p className={`match-confirmation-status ${myConfirmation.status}`}>
-                              {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
-                            </p>
-                            <button onClick={() => void cancelPlayerMatchConfirmationNow(match)} disabled={matchConfirming}>
-                              {myConfirmation.status === "confirmed" ? "Desfazer confirmacao" : "Alterar resposta"}
-                            </button>
+                        <div className="my-match-main">
+                          <button className="my-match-summary" type="button" onClick={() => setActiveClassKey(match.classKey)}>
+                            <span>
+                              <strong>{match.title}</strong>
+                              <small>{match.classLabel} - {match.phase}</small>
+                            </span>
+                            <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
+                          </button>
+                          <div className="my-match-context">
+                            {scheduled ? <span className="match-schedule-info">{formatAssignmentTime(scheduled)}</span> : null}
+                            <span className={`match-operational-state ${opState.severity}`}>
+                              <span>{opState.label}</span>
+                              <strong>{opState.playerAction}</strong>
+                            </span>
+                            {myConfirmation ? (
+                              <span className={`match-confirmation-status ${myConfirmation.status}`}>
+                                {myConfirmation.status === "confirmed" ? "Presenca confirmada" : "Indisponibilidade avisada"}
+                              </span>
+                            ) : null}
+                            {submissionStatusText ? <span className="result-submission-status">{submissionStatusText}</span> : null}
                           </div>
-                        ) : null}
-                        {submissionStatusText ? <p className="result-submission-status">{submissionStatusText}</p> : null}
+                          <div className="my-match-actions">
+                            {match.status === "pending" && !myConfirmation ? (
+                              <>
+                                <button onClick={() => void confirmPlayerMatchNow(match, "confirmed")} disabled={matchConfirming}>
+                                  Confirmar presenca
+                                </button>
+                                <button className="quiet" onClick={() => void confirmPlayerMatchNow(match, "unavailable")} disabled={matchConfirming}>
+                                  Nao posso jogar
+                                </button>
+                              </>
+                            ) : null}
+                            {myConfirmation ? (
+                              <button className="quiet" onClick={() => void cancelPlayerMatchConfirmationNow(match)} disabled={matchConfirming}>
+                                {myConfirmation.status === "confirmed" ? "Desfazer" : "Alterar"}
+                              </button>
+                            ) : null}
+                          </div>
+                        </div>
                         {match.status === "pending" && matchClassRef && playerScoreMatch ? (
-                          <div className="my-match-result-tools">
+                          <details className="my-match-result-tools">
+                            <summary>
+                              <span>{canSendPlayerResult ? "Informar resultado" : "Compartilhar placar"}</span>
+                              <small>Placar e WhatsApp</small>
+                            </summary>
                             <div className="my-match-score-fields">
                               <p className="my-match-score-map">
                                 <span><strong>A</strong> {match.playerA}</span>
@@ -4512,17 +4533,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                               <WhatsAppAppIcon />
                               <span>WhatsApp</span>
                             </button>
-                          </div>
-                        ) : null}
-                        {match.status === "pending" && !myConfirmation ? (
-                          <div className="match-confirmation-actions">
-                            <button onClick={() => void confirmPlayerMatchNow(match, "confirmed")} disabled={matchConfirming}>
-                              Confirmar presenca
-                            </button>
-                            <button onClick={() => void confirmPlayerMatchNow(match, "unavailable")} disabled={matchConfirming}>
-                              Nao posso jogar
-                            </button>
-                          </div>
+                          </details>
                         ) : null}
                       </div>
                     );
@@ -4652,59 +4663,64 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     });
                     return (
                       <div key={`${activeClass.key}:g:${gi}:${mi}`} className={`match-card ${m.done ? "done" : "pending"} state-${opState.severity}`}>
-                        <div className="match-card-head">
-                          <span className="match-card-index">Partida {mi + 1}</span>
-                          <div className="match-card-status-group">
-                            {m.done && matchResultOriginLabel(m.scoreLabel) ? (
-                              <span className="match-card-origin">{matchResultOriginLabel(m.scoreLabel)}</span>
-                            ) : null}
+                        <div className="match-row-main">
+                          <div className="match-row-title">
+                            <span className="match-card-index">Partida {mi + 1}</span>
+                            <div className="match-player-row">
+                              <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
+                                {m.a || "A definir"}
+                              </span>
+                              <span className="match-player-vs">x</span>
+                              <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
+                                {m.b || "A definir"}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="match-row-context">
                             <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
                               {m.done ? "Finalizado" : "Pendente"}
                             </span>
+                            {m.done && matchResultOriginLabel(m.scoreLabel) ? (
+                              <span className="match-card-origin">{matchResultOriginLabel(m.scoreLabel)}</span>
+                            ) : null}
+                            {scheduled ? <span className="match-schedule-info">{formatAssignmentTime(scheduled)}</span> : null}
+                            <span className={`match-operational-state ${opState.severity}`}>
+                              <span>{opState.label}</span>
+                              <strong>{canManageMatches ? opState.ownerAction : opState.playerAction}</strong>
+                            </span>
+                            {canManageMatches && confirmations.length > 0 ? (
+                              <span className="match-confirmation-summary">
+                                Confirmacoes: {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
+                              </span>
+                            ) : null}
+                            {m.done ? (
+                              <span className="match-score-summary">
+                                {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
+                              </span>
+                            ) : null}
                           </div>
                         </div>
-                        {scheduled ? (
-                          <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p>
-                        ) : null}
-                        <p className={`match-operational-state ${opState.severity}`}>
-                          <span>{opState.label}</span>
-                          <strong>{canManageMatches ? opState.ownerAction : opState.playerAction}</strong>
-                        </p>
-                        {canManageMatches && confirmations.length > 0 ? (
-                          <p className="match-confirmation-summary">
-                            Confirmacoes:{" "}
-                            {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
-                          </p>
-                        ) : null}
-                        <div className="match-player-row">
-                          <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
-                            {m.a || "A definir"}
-                          </span>
-                          <span className="match-player-vs">x</span>
-                          <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
-                            {m.b || "A definir"}
-                          </span>
-                        </div>
-                        {m.done ? (
-                          <p className="match-score-summary">
-                            {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
-                          </p>
-                        ) : null}
-                        {canEditScores ? renderScoreFields(activeClass.data.config, m, false, (updater) => {
-                          void onUpdateGroupScoreDetail(activeClass, gi, mi, updater);
-                        }) : null}
                         {canEditScores ? (
-                          <div className="match-admin-actions">
-                            <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "a")} disabled={saving || !m.a || !m.b}>
-                              WO {m.a || "A"}
-                            </button>
-                            <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "b")} disabled={saving || !m.a || !m.b}>
-                              WO {m.b || "B"}
-                            </button>
-                            <button className="danger" onClick={() => void onClearGroupResult(activeClass, gi, mi)} disabled={saving || !m.done}>
-                              Limpar resultado
-                            </button>
-                          </div>
+                          <details className="match-score-disclosure">
+                            <summary>
+                              <span>{m.done ? "Editar placar" : "Lancar placar"}</span>
+                              <small>Placar, WO e limpeza</small>
+                            </summary>
+                            {renderScoreFields(activeClass.data.config, m, false, (updater) => {
+                              void onUpdateGroupScoreDetail(activeClass, gi, mi, updater);
+                            })}
+                            <div className="match-admin-actions">
+                              <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "a")} disabled={saving || !m.a || !m.b}>
+                                WO {m.a || "A"}
+                              </button>
+                              <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "b")} disabled={saving || !m.a || !m.b}>
+                                WO {m.b || "B"}
+                              </button>
+                              <button className="danger" onClick={() => void onClearGroupResult(activeClass, gi, mi)} disabled={saving || !m.done}>
+                                Limpar resultado
+                              </button>
+                            </div>
+                          </details>
                         ) : null}
                       </div>
                     );
@@ -4734,59 +4750,64 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     });
                     return (
                       <div key={`${activeClass.key}:ko:${ri}:${mi}`} className={`match-card ${m.done ? "done" : "pending"} state-${opState.severity}`}>
-                        <div className="match-card-head">
-                          <span className="match-card-index">Jogo {mi + 1}</span>
-                          <div className="match-card-status-group">
-                            {m.done && matchResultOriginLabel(m.scoreLabel) ? (
-                              <span className="match-card-origin">{matchResultOriginLabel(m.scoreLabel)}</span>
-                            ) : null}
+                        <div className="match-row-main">
+                          <div className="match-row-title">
+                            <span className="match-card-index">Jogo {mi + 1}</span>
+                            <div className="match-player-row">
+                              <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
+                                {m.a || "A definir"}
+                              </span>
+                              <span className="match-player-vs">x</span>
+                              <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
+                                {m.b || "A definir"}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="match-row-context">
                             <span className={`match-card-status ${m.done ? "done" : "pending"}`}>
                               {m.done ? "Finalizado" : "Pendente"}
                             </span>
+                            {m.done && matchResultOriginLabel(m.scoreLabel) ? (
+                              <span className="match-card-origin">{matchResultOriginLabel(m.scoreLabel)}</span>
+                            ) : null}
+                            {scheduled ? <span className="match-schedule-info">{formatAssignmentTime(scheduled)}</span> : null}
+                            <span className={`match-operational-state ${opState.severity}`}>
+                              <span>{opState.label}</span>
+                              <strong>{canManageMatches ? opState.ownerAction : opState.playerAction}</strong>
+                            </span>
+                            {canManageMatches && confirmations.length > 0 ? (
+                              <span className="match-confirmation-summary">
+                                Confirmacoes: {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
+                              </span>
+                            ) : null}
+                            {m.done ? (
+                              <span className="match-score-summary">
+                                {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
+                              </span>
+                            ) : null}
                           </div>
                         </div>
-                        {scheduled ? (
-                          <p className="match-schedule-info">{formatAssignmentTime(scheduled)}</p>
-                        ) : null}
-                        <p className={`match-operational-state ${opState.severity}`}>
-                          <span>{opState.label}</span>
-                          <strong>{canManageMatches ? opState.ownerAction : opState.playerAction}</strong>
-                        </p>
-                        {canManageMatches && confirmations.length > 0 ? (
-                          <p className="match-confirmation-summary">
-                            Confirmacoes:{" "}
-                            {confirmations.map((confirmation) => `${confirmation.side.toUpperCase()} ${confirmation.status === "confirmed" ? "ok" : "indisponivel"}`).join(" | ")}
-                          </p>
-                        ) : null}
-                        <div className="match-player-row">
-                          <span className={`match-player-name ${m.done && m.winner === m.a ? "winner" : ""}`}>
-                            {m.a || "A definir"}
-                          </span>
-                          <span className="match-player-vs">x</span>
-                          <span className={`match-player-name ${m.done && m.winner === m.b ? "winner" : ""}`}>
-                            {m.b || "A definir"}
-                          </span>
-                        </div>
-                        {m.done ? (
-                          <p className="match-score-summary">
-                            {formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, activeClass.data.config)}
-                          </p>
-                        ) : null}
-                        {canEditScores ? renderScoreFields(activeClass.data.config, m, !m.a || !m.b, (updater) => {
-                          void onUpdateKoScoreDetail(activeClass, ri, mi, updater);
-                        }) : null}
                         {canEditScores ? (
-                          <div className="match-admin-actions">
-                            <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "a")} disabled={saving || !m.a || !m.b}>
-                              WO {m.a || "A"}
-                            </button>
-                            <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "b")} disabled={saving || !m.a || !m.b}>
-                              WO {m.b || "B"}
-                            </button>
-                            <button className="danger" onClick={() => void onClearKoResult(activeClass, ri, mi)} disabled={saving || !m.done}>
-                              Limpar resultado
-                            </button>
-                          </div>
+                          <details className="match-score-disclosure">
+                            <summary>
+                              <span>{m.done ? "Editar placar" : "Lancar placar"}</span>
+                              <small>Placar, WO e limpeza</small>
+                            </summary>
+                            {renderScoreFields(activeClass.data.config, m, !m.a || !m.b, (updater) => {
+                              void onUpdateKoScoreDetail(activeClass, ri, mi, updater);
+                            })}
+                            <div className="match-admin-actions">
+                              <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "a")} disabled={saving || !m.a || !m.b}>
+                                WO {m.a || "A"}
+                              </button>
+                              <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "b")} disabled={saving || !m.a || !m.b}>
+                                WO {m.b || "B"}
+                              </button>
+                              <button className="danger" onClick={() => void onClearKoResult(activeClass, ri, mi)} disabled={saving || !m.done}>
+                                Limpar resultado
+                              </button>
+                            </div>
+                          </details>
                         ) : null}
                       </div>
                     );

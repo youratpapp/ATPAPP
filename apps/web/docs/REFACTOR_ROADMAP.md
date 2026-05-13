@@ -220,6 +220,19 @@ Proximo foco definido em 2026-05-13:
 - transformar confirmacao, resultado e conferencia em rows com contexto, status e uma acao primaria;
 - preservar fluxos sensiveis de confirmar presenca, desfazer confirmacao e lancar/conferir resultado.
 
+Evoluido em 2026-05-13:
+
+- `Minhas partidas` do torneio passou de card alto para row operacional;
+- confirmar presenca ficou como acao primaria e indisponibilidade/desfazer ficaram quiet;
+- envio/compartilhamento de resultado passou para disclosure progressivo, reduzindo altura da lista e mantendo o fluxo acessivel;
+- partidas de grupos/mata-mata do torneio passaram a usar estrutura mais row-like;
+- edicao de placar, WO e limpeza foram movidos para disclosure progressivo;
+- lista de partidas da liga passou a usar row compacta com identidade, contexto, status operacional e acao para abrir sala;
+- sala aberta da liga passou a priorizar estado, disponibilidade e resultado, deixando participantes e chat em disclosures;
+- alunos da Academia passaram a usar `EntityActionRow`, com uma acao primaria contextual e acoes secundarias em disclosure;
+- cobrancas recorrentes passaram a aparecer como tarefa semantica em Financeiro e Clientes/CRM, com `Enviar lembrete`, `Cobrar socios` e `Cobrar alunos` somente quando ha pendencia real;
+- proxima onda definida: refinar entradas internas de Gestao por operador.
+
 ## Fase 4 - Wizards de criacao
 
 Prioridade: media-alta.

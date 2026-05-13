@@ -1,5 +1,5 @@
 import type { PlaceCrmContact } from "../../lib/types";
-import { WorkspaceCard, WorkspaceGrid, WorkspaceList } from "./PlaceWorkspaceUi";
+import { EntityActionRow, WorkspaceCard, WorkspaceGrid, WorkspaceList } from "./PlaceWorkspaceUi";
 
 export type PlaceClientReceivable = {
   amountCents: number;
@@ -99,45 +99,79 @@ export function PlaceClientRelationshipModule({
           {!staleContacts.length ? <span>Sem lead parado.</span> : null}
         </WorkspaceList>
       </WorkspaceCard>
-      <WorkspaceCard title="Inadimplentes" subtitle="Recebiveis abertos ligados ao cliente" value={openOnlyReceivables.length}>
+      <WorkspaceCard title="Cobrancas pendentes" subtitle="Clientes que precisam de lembrete" value={openOnlyReceivables.length}>
         <WorkspaceList>
           {openOnlyReceivables.slice(0, 5).map((receivable) => (
-            <span key={`crm-receivable:${receivable.id}`}>
-              <strong>{receivable.title}</strong>
-              <small>{receivable.subtitle} | {formatMoneyFromCents(receivable.amountCents)}</small>
-              <button type="button" onClick={() => onCreatePaymentReminder(receivable.targetType, receivable.targetId, receivable.billingPeriod, receivable.reminder)} disabled={busy}>
-                Lembrar
-              </button>
-            </span>
+            <EntityActionRow
+              key={`crm-receivable:${receivable.id}`}
+              className="finance-receivable-row open"
+              title={receivable.title}
+              context={receivable.subtitle}
+              detail={formatMoneyFromCents(receivable.amountCents)}
+              status="Em aberto"
+              primaryAction={
+                <button
+                  className="primary"
+                  type="button"
+                  onClick={() => onCreatePaymentReminder(receivable.targetType, receivable.targetId, receivable.billingPeriod, receivable.reminder)}
+                  disabled={busy}
+                >
+                  Enviar lembrete
+                </button>
+              }
+            >
+              <small>{receivable.billingPeriod ? `Periodo ${receivable.billingPeriod}` : "Pagamento em aberto"}</small>
+            </EntityActionRow>
           ))}
-          {!openOnlyReceivables.length ? <span>Sem inadimplencia aberta.</span> : null}
+          {!openOnlyReceivables.length ? <span>Sem cobranca pendente.</span> : null}
         </WorkspaceList>
       </WorkspaceCard>
-      <WorkspaceCard title="Lembretes segmentados" subtitle="Acione grupos sem misturar operacoes" value={openReceivables.length}>
-        <WorkspaceList>
-          <span>
-            <strong>Mensalidades de socio</strong>
-            <small>{countLabel(membershipReceivables.length, "pendencia", "pendencias")}</small>
-            <button type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy || !membershipReceivables.length}>
-              Lembrar socios
-            </button>
-          </span>
-          <span>
-            <strong>Mensalidades da academia</strong>
-            <small>{countLabel(academyReceivables.length, "pendencia", "pendencias")}</small>
-            <button type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy || !academyReceivables.length}>
-              Lembrar alunos
-            </button>
-          </span>
-          <span>
-            <strong>Todos em aberto</strong>
-            <small>{formatMoneyFromCents(openReceivablesAmountCents)}</small>
-            <button type="button" onClick={() => onCreatePaymentReminderBatch(openReceivables)} disabled={busy || !openReceivables.length}>
-              Lembrar todos
-            </button>
-          </span>
-        </WorkspaceList>
-      </WorkspaceCard>
+      {openReceivables.length ? (
+        <WorkspaceCard title="Acoes de cobranca" subtitle="Atalhos por intencao real" value={openReceivables.length}>
+          <WorkspaceList>
+            {membershipReceivables.length ? (
+              <EntityActionRow
+                className="billing-segment-row"
+                title="Cobrar socios"
+                context={countLabel(membershipReceivables.length, "pendencia", "pendencias")}
+                detail="Mensalidades de socio"
+                status="Pendente"
+                primaryAction={
+                  <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy}>
+                    Enviar lembrete
+                  </button>
+                }
+              />
+            ) : null}
+            {academyReceivables.length ? (
+              <EntityActionRow
+                className="billing-segment-row"
+                title="Cobrar alunos"
+                context={countLabel(academyReceivables.length, "pendencia", "pendencias")}
+                detail="Mensalidades da academia"
+                status="Pendente"
+                primaryAction={
+                  <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy}>
+                    Enviar lembrete
+                  </button>
+                }
+              />
+            ) : null}
+            <EntityActionRow
+              className="billing-segment-row"
+              title="Cobrar todos em aberto"
+              context={countLabel(openReceivables.length, "pendencia", "pendencias")}
+              detail={formatMoneyFromCents(openReceivablesAmountCents)}
+              status="Pendente"
+              primaryAction={
+                <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(openReceivables)} disabled={busy}>
+                  Enviar lembrete
+                </button>
+              }
+            />
+          </WorkspaceList>
+        </WorkspaceCard>
+      ) : null}
     </WorkspaceGrid>
   );
 }

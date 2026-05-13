@@ -7,7 +7,7 @@ import type {
   AcademyProgressNote,
 } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
-import { WorkspaceList, WorkspaceMetrics, WorkspaceRow } from "./PlaceWorkspaceUi";
+import { EntityActionRow, WorkspaceList, WorkspaceMetrics } from "./PlaceWorkspaceUi";
 
 export type PlaceAcademyStudentFilter = {
   classId: string;
@@ -89,20 +89,44 @@ export function PlaceAcademyStudentsModule({
         const attendedCount = attendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "present").length;
         const missedCount = attendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "absent").length;
         const todayEnrollmentAttendance = todayAttendance.find((item) => item.enrollmentId === enrollment.id);
+        const attendanceLabel = todayEnrollmentAttendance
+          ? todayEnrollmentAttendance.status === "present"
+            ? "Presente hoje"
+            : "Falta hoje"
+          : "Chamada pendente";
+        const paymentLabel = paid ? "Mensalidade paga" : "Mensalidade pendente";
+        const primaryAction =
+          enrollment.status === "pending" ? (
+            <button onClick={() => onUpdateEnrollment(enrollment.id, "active")} disabled={busy}>
+              Ativar
+            </button>
+          ) : enrollment.status === "active" && !todayEnrollmentAttendance ? (
+            <button onClick={() => onMarkAttendance(enrollment.id, "present")} disabled={busy}>
+              Check-in
+            </button>
+          ) : enrollment.status === "active" && canManageFinance && !paid && academyClass ? (
+            <button onClick={() => onMarkPaid(academyClass, enrollment)} disabled={busy}>
+              Marcar pago
+            </button>
+          ) : (
+            <span>{enrollment.status === "active" ? "Em dia" : enrollment.status}</span>
+          );
         return (
-          <WorkspaceRow
+          <EntityActionRow
             key={`academy-student:${enrollment.id}`}
+            className={!paid && enrollment.status === "active" ? "due academy-student-row" : "academy-student-row"}
+            context={academyClass?.title || "Turma"}
+            detail={[enrollment.phone, paymentLabel, attendanceLabel].filter(Boolean).join(" | ")}
+            primaryAction={primaryAction}
+            status={enrollment.status === "active" ? "Ativo" : enrollment.status === "pending" ? "Pendente" : "Cancelado"}
             title={enrollment.playerName}
-            detail={`${academyClass?.title || "Turma"} | ${enrollment.status} | ${paid ? "mensalidade paga" : "mensalidade pendente"}${
-              enrollment.phone ? ` | ${enrollment.phone}` : ""
-            }`}
             actions={
-              <>
+              <details className="academy-student-actions">
+                <summary>
+                  <span>Acoes</span>
+                </summary>
                 {enrollment.status === "pending" ? (
                   <>
-                    <button onClick={() => onUpdateEnrollment(enrollment.id, "active")} disabled={busy}>
-                      Ativar
-                    </button>
                     <button className="danger" onClick={() => onUpdateEnrollment(enrollment.id, "cancelled")} disabled={busy}>
                       Cancelar
                     </button>
@@ -131,11 +155,10 @@ export function PlaceAcademyStudentsModule({
                     </button>
                   </>
                 ) : null}
-              </>
+              </details>
             }
           >
             <small>{latestProgress ? `Evolucao: ${latestProgress.levelLabel || latestProgress.focus || latestProgress.notes}` : "Sem evolucao registrada"}</small>
-            {todayEnrollmentAttendance ? <small>{todayEnrollmentAttendance.status === "present" ? "Check-in feito hoje" : "Falta marcada hoje"}</small> : null}
             <WorkspaceMetrics
               items={[
                 countLabel(attendedCount, "presenca", "presencas"),
@@ -146,7 +169,7 @@ export function PlaceAcademyStudentsModule({
                 countLabel(enrollments.filter((item) => item.classId === enrollment.classId && item.status === "active").length, "colega ativo", "colegas ativos"),
               ]}
             />
-          </WorkspaceRow>
+          </EntityActionRow>
         );
       })}
       {!visibleEnrollments.length ? <p className="subtle">Nenhum aluno encontrado para estes filtros.</p> : null}
