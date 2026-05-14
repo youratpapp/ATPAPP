@@ -2093,6 +2093,8 @@ Entregue em 2026-05-14:
 - `Reservar quadra` e `Entrar em aula` nao listam academias genericas antes da busca; orientam o filtro e depois devolvem quadras livres ou turmas com vaga;
 - `/gestao` acessado por Player puro agora mostra ausencia de permissao e volta para Inicio/Locais publicos;
 - `/gestao/:placeId/:module` deixou de renderizar a camada publica de `Locais` no topo; o usuario entra direto no workspace operacional do local;
+- navegacao de modulos do local deixou de usar `Mais` artificial em desktop; agora exibe todos os modulos liberados por plano/permissao em barra horizontal adaptativa;
+- plano `academy` tambem ganhou `Agenda`, mantendo agenda operacional para aulas, quadras, horarios e ocupacao;
 - operador com entitlement mas sem local continua vendo setup profissional.
 
 Ganho:

@@ -8021,8 +8021,7 @@ button:disabled {
   scrollbar-width: thin;
 }
 
-.place-management-tabs button,
-.place-management-more summary {
+.place-management-tabs button {
   align-items: center;
   background: transparent;
   border: 1px solid transparent;
@@ -8038,40 +8037,7 @@ button:disabled {
   padding: 7px 12px;
 }
 
-.place-management-more summary {
-  cursor: pointer;
-  list-style: none;
-}
-
-.place-management-more summary::-webkit-details-marker {
-  display: none;
-}
-
-.place-management-more {
-  position: relative;
-}
-
-.place-management-more > div {
-  background: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
-  display: grid;
-  gap: 4px;
-  min-width: 180px;
-  padding: 6px;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 6px);
-  z-index: 12;
-}
-
-.place-management-more > div button {
-  justify-content: flex-start;
-}
-
-.place-management-tabs button em,
-.place-management-more button em {
+.place-management-tabs button em {
   background: #e5e7eb;
   border-radius: var(--radius-pill);
   color: var(--color-text);
@@ -8088,13 +8054,6 @@ button:disabled {
   border-color: var(--color-text);
   color: var(--color-primary-strong);
   color: #ffffff;
-}
-
-.place-management-more summary:hover,
-.place-management-more[open] summary {
-  background: var(--color-surface-muted);
-  border-color: var(--color-border);
-  color: var(--color-text);
 }
 
 .place-management-tabs button.active em {
@@ -11873,15 +11832,6 @@ button,
     white-space: nowrap;
   }
 
-  .place-management-more {
-    position: static;
-  }
-
-  .place-management-more > div {
-    left: 0;
-    max-width: calc(100vw - 32px);
-    right: auto;
-  }
 }
 
 @media (max-width: 420px) {

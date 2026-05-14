@@ -361,6 +361,7 @@ Bloco de discoverability executado em 2026-05-13:
 - `PlacesPage` passou a abrir `/locais` em estado neutro de escolha de intencao, evitando assumir reserva de quadra como fluxo padrao e reduzindo confusao entre procurar jogador, reservar quadra e entrar em aula.
 - `Reservar quadra` e `Entrar em aula` em `/locais` nao devem listar academias genericas antes da busca. A primeira resposta publica desses fluxos deve ser quadra livre ou turma com vaga.
 - `/gestao/:placeId/:module` nao deve renderizar cabecalho/listagem publica de `Locais`. A primeira dobra da gestao local pertence ao workspace operacional; pagina publica fica apenas como acao secundaria.
+- Gestao local nao deve esconder modulos em `Mais` quando existe espaco. A navegacao principal do local usa barra horizontal adaptativa/rolavel, e o plano `academy` tambem tem `Agenda` porque aula, turma e quadra dependem de agenda operacional.
 - `BottomNav` deixou de mostrar `Management OS` para Player puro que acessa `/gestao` diretamente sem permissao.
 - `ManagementHubPage` passou a diferenciar Player sem permissao de operador sem local; acesso direto a `/gestao` por jogador puro volta para Inicio/Locais publicos em vez de sugerir setup profissional.
 - Restam riscos de API/dados detectados por screenshots, especialmente `500` em `place_academy_enrollments` e `app_payments`.
