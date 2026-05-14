@@ -8,7 +8,9 @@ import type {
   AcademyMakeupCredit,
   AcademyPlannedAbsence,
   AcademyProgressNote,
+  AcademySettings,
   AcademySlot,
+  AcademyStudentContract,
   AppPayment,
   CourtBooking,
   CourtBookingWaitlistEntry,
@@ -50,6 +52,8 @@ export function usePlaceAdminResourceState() {
   const [academyLessonRequestsByPlace, setAcademyLessonRequestsByPlace] = useState<Record<string, AcademyLessonRequest[]>>({});
   const [academyMakeupsByPlace, setAcademyMakeupsByPlace] = useState<Record<string, AcademyMakeupCredit[]>>({});
   const [academyProgressByPlace, setAcademyProgressByPlace] = useState<Record<string, AcademyProgressNote[]>>({});
+  const [academySettingsByPlace, setAcademySettingsByPlace] = useState<Record<string, AcademySettings>>({});
+  const [academyStudentContractsByPlace, setAcademyStudentContractsByPlace] = useState<Record<string, AcademyStudentContract[]>>({});
   const [staffByPlace, setStaffByPlace] = useState<Record<string, PlaceStaffMember[]>>({});
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
 
@@ -76,6 +80,8 @@ export function usePlaceAdminResourceState() {
     setAcademyLessonRequestsByPlace(maps.academyLessonRequestsByPlace);
     setAcademyMakeupsByPlace(maps.academyMakeupsByPlace);
     setAcademyProgressByPlace(maps.academyProgressByPlace);
+    setAcademySettingsByPlace(maps.academySettingsByPlace);
+    setAcademyStudentContractsByPlace(maps.academyStudentContractsByPlace);
     setStaffByPlace(maps.staffByPlace);
   }, []);
 
@@ -103,6 +109,8 @@ export function usePlaceAdminResourceState() {
     setAcademyLessonRequestsByPlace((prev) => ({ ...prev, [placeId]: entry.academyLessonRequests }));
     setAcademyMakeupsByPlace((prev) => ({ ...prev, [placeId]: entry.academyMakeups }));
     setAcademyProgressByPlace((prev) => ({ ...prev, [placeId]: entry.academyProgress }));
+    setAcademySettingsByPlace((prev) => ({ ...prev, [placeId]: entry.academySettings }));
+    setAcademyStudentContractsByPlace((prev) => ({ ...prev, [placeId]: entry.academyStudentContracts }));
     setStaffByPlace((prev) => ({ ...prev, [placeId]: entry.staff }));
   }, []);
 
@@ -115,6 +123,8 @@ export function usePlaceAdminResourceState() {
     academyLessonRequestsByPlace,
     academyMakeupsByPlace,
     academyProgressByPlace,
+    academySettingsByPlace,
+    academyStudentContractsByPlace,
     academySlotsByPlace,
     bookingRulesByPlace,
     bookingWaitlistByPlace,

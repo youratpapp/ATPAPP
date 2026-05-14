@@ -62,6 +62,12 @@ function kindLabel(kind: PendingRow["kind"]): string {
   return "Reposicao aberta";
 }
 
+function makeupCreditContext(credit: AcademyMakeupCredit): string {
+  if (credit.sourceAbsenceId) return "Reposicao aberta por ausencia avisada";
+  if (credit.sourceAttendanceId) return "Reposicao aberta por falta marcada";
+  return "Reposicao aberta manual";
+}
+
 export function PlaceAcademyRequestsModule({
   busy,
   classes,
@@ -293,7 +299,7 @@ export function PlaceAcademyRequestsModule({
           return (
             <EntityActionRow
               key={row.id}
-              context="Credito de reposicao"
+              context={makeupCreditContext(row.credit)}
               detail={`${row.academyClass?.title || "Turma"} | gerada em ${dateInputValue(row.credit.createdAt)}${enrollment?.phone ? ` | ${enrollment.phone}` : ""}`}
               primaryAction={
                 <button type="button" onClick={() => openFitDrawer(row.credit.id)}>

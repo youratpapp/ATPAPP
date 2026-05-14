@@ -40,6 +40,8 @@ drop table if exists
   public.seed_products,
   public.seed_crm_contacts,
   public.seed_bookings,
+  public.seed_contract_classes,
+  public.seed_contracts,
   public.seed_enrollments,
   public.seed_classes,
   public.seed_memberships,

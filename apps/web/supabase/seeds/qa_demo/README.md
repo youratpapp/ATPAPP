@@ -2,6 +2,8 @@
 
 Seed destrutivo para banco paralelo/local. Rode os arquivos SQL em ordem:
 
+Pre-requisito: rode as migrations mais recentes antes do seed, especialmente `0079_academy_student_contracts_v1.sql` e `0080_academy_absence_notice_credit_v1.sql`. O seed atual usa contratos de aluno, `contract_id` nas matriculas, regra de antecedencia de reposicao e credito por `source_absence_id`.
+
 1. `01_cleanup.sql`
 2. `02_users.sql`
    - Se o login demo retornar `Database error querying schema`, rode `02_repair_auth_login.sql`.
@@ -33,5 +35,13 @@ Se o `04_academy.sql` for repetido depois do `05_bookings.sql`, ele remove reser
 O `02_users.sql` preserva o `id` de usuarios demo ja existentes e atualiza senha/metadados sem apagar o registro de `auth.users`. Isso evita erro de e-mail duplicado e evita quebrar ownership por cascade.
 
 O erro `Database error querying schema` no login geralmente indica metadados internos incompletos em `auth.users` ou `auth.identities`. O `02_users.sql` ja preenche os tokens internos como string vazia, e o `02_repair_auth_login.sql` corrige usuarios demo ja existentes sem apagar os dados publicos.
+
+Academia v2:
+
+- `04_academy.sql` cria `place_academy_student_contracts` para alunos reais vinculados a usuarios, com planos de 1x, 2x e 3x por semana.
+- Cada contrato gera matriculas vinculadas em uma ou mais turmas, mantendo o aluno como usuario unico para notificacoes e Player App.
+- `05_bookings.sql` gera mensalidades em `app_payments` com `target_type = 'academy_student_contract'`, incluindo pagas, pendentes atuais e pendentes atrasadas.
+- `04_academy.sql` tambem cria ausencias avisadas dentro e fora do prazo configurado, creditos de reposicao abertos, usados e cancelados.
+- Os pagamentos legados por `academy_enrollment` ficam apenas para compatibilidade de dados antigos; a massa nova usa contrato como entidade financeira canonica.
 
 Se o seed antigo ja tiver apagado dados por cascade, rode novamente `03_places.sql` ate `08_leagues.sql`. Depois rode `10_verify_and_relink_owner.sql` para confirmar os vinculos.

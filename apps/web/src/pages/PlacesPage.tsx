@@ -54,7 +54,6 @@ import {
   cancelPlacePosSale,
   cancelCourtBookingSeries,
   createAcademyEnrollment,
-  createAcademyEnrollmentForStudent,
   createAcademyProgressNote,
   createCourtBlock,
   createCourtBooking,
@@ -67,6 +66,7 @@ import {
   createPlaceAcademyClass,
   createPlaceAcademyClassFromSlot,
   createPlaceAcademySlot,
+  createAcademyStudentContract,
   createPlaceCoach,
   createPlaceCourt,
   createPlaceCreditPackage,
@@ -106,6 +106,7 @@ import {
   updatePlaceCoach,
   updatePlaceBookingRuleStatus,
   updatePlaceAcademyClass,
+  updatePlaceAcademySettings,
   updatePlaceCrmContactFollowUp,
   updatePlaceCrmContactOwner,
   updatePlaceCourtPricing,
@@ -154,6 +155,8 @@ import type {
   AcademyLessonFitSlot,
   AcademyLessonRequest,
   AcademyMakeupCredit,
+  AcademySettings,
+  AcademyStudentContract,
   AcademySlot,
   AvailableCourt,
   AppPayment,
@@ -212,6 +215,16 @@ type AcademyStudentFilter = {
   payment: "" | "paid" | "pending";
   query: string;
   status: "" | AcademyEnrollment["status"];
+};
+type AcademyStudentContractDraft = {
+  classIds: string[];
+  email: string;
+  monthlyFee: string;
+  name: string;
+  notes: string;
+  phone: string;
+  startsOn: string;
+  weeklyLessonsCount: string;
 };
 type CrmInteractionDraft = { interactionType: PlaceCrmInteraction["interactionType"]; body: string; nextContactOn: string };
 type PlaceProfileDraft = { city: string; description: string; logoUrl: string; name: string; state: string };
@@ -308,6 +321,70 @@ function todayDateInputValue(): string {
 
 function currentBillingPeriod(): string {
   return todayDateInputValue().slice(0, 7);
+}
+
+function findAcademyStudentContract(enrollment: AcademyEnrollment, contracts: AcademyStudentContract[]): AcademyStudentContract | null {
+  return enrollment.contractId ? contracts.find((contract) => contract.id === enrollment.contractId) || null : null;
+}
+
+function academyStudentBillingPayment(
+  enrollment: AcademyEnrollment,
+  contract: AcademyStudentContract | null,
+  paymentsByTarget: Record<string, AppPayment>,
+  billingPeriod: string
+): AppPayment | undefined {
+  const contractPayment = contract ? paymentsByTarget[paymentMapKey("academy_student_contract", contract.id, billingPeriod)] : undefined;
+  const legacyPayment = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, billingPeriod)];
+  return contractPayment || legacyPayment;
+}
+
+function academyStudentBillingPaid(
+  enrollment: AcademyEnrollment,
+  contract: AcademyStudentContract | null,
+  paymentsByTarget: Record<string, AppPayment>,
+  billingPeriod: string
+): boolean {
+  return academyStudentBillingPayment(enrollment, contract, paymentsByTarget, billingPeriod)?.status === "paid";
+}
+
+function academyStudentBillingTarget(
+  academyClass: AcademyClass,
+  enrollment: AcademyEnrollment,
+  contract: AcademyStudentContract | null,
+  billingPeriod: string
+) {
+  if (contract) {
+    return {
+      amountCents: contract.monthlyFeeCents,
+      description: `${contract.studentName} - mensalidade academia ${billingPeriod}`,
+      metadata: { classId: academyClass.id, contractId: contract.id, enrollmentId: enrollment.id, source: "academy_contract_admin_manual_stub" },
+      reminder: `${contract.studentName}, sua mensalidade da academia esta pendente.`,
+      targetId: contract.id,
+      targetType: "academy_student_contract",
+      title: contract.studentName,
+    };
+  }
+  return {
+    amountCents: academyClass.monthlyFeeCents,
+    description: `${academyClass.title} - mensalidade ${billingPeriod}`,
+    metadata: { classId: academyClass.id, enrollmentId: enrollment.id, source: "academy_admin_manual_stub" },
+    reminder: `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`,
+    targetId: enrollment.id,
+    targetType: "academy_enrollment",
+    title: enrollment.playerName,
+  };
+}
+
+function academyLessonNoticeEligible(academyClass: AcademyClass | undefined, absenceOn: string, settings: AcademySettings): boolean {
+  if (!academyClass || !absenceOn || !settings.autoCreateMakeupCreditOnNotice || !academyClass.allowMakeup) return false;
+  const [year, month, day] = absenceOn.split("-").map(Number);
+  if (!year || !month || !day) return false;
+  const lessonDate = new Date(year, month - 1, day);
+  if (lessonDate.getDay() !== academyClass.weekday) return false;
+  const [hours, minutes] = academyClass.startsAt.slice(0, 5).split(":").map(Number);
+  lessonDate.setHours(hours || 0, minutes || 0, 0, 0);
+  const threshold = Date.now() + Math.max(0, settings.makeupNoticeHours) * 60 * 60 * 1000;
+  return lessonDate.getTime() >= threshold;
 }
 
 function dateInputValue(value: string): string {
@@ -560,6 +637,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     academyLessonRequestsByPlace,
     academyMakeupsByPlace,
     academyProgressByPlace,
+    academySettingsByPlace,
+    academyStudentContractsByPlace,
     academySlotsByPlace,
     bookingRulesByPlace,
     bookingWaitlistByPlace,
@@ -626,7 +705,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       }
     >
   >({});
-  const [academyStudentDraftByClass, setAcademyStudentDraftByClass] = useState<Record<string, { name: string; phone: string; email: string; notes: string }>>({});
+  const [academyStudentDraftByClass, setAcademyStudentDraftByClass] = useState<Record<string, AcademyStudentContractDraft>>({});
   const [academyAbsenceDraftByEnrollment, setAcademyAbsenceDraftByEnrollment] = useState<Record<string, { absenceOn: string; notes: string }>>({});
   const [academyFitSearchByPlace, setAcademyFitSearchByPlace] = useState<
     Record<string, { requestedOn: string; level: string; period: "" | "morning" | "afternoon" | "night"; coachId: string; age: string; genderScope: "" | AcademyClass["genderScope"] }>
@@ -1190,6 +1269,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
 
+  const onMarkReceivablePaid = async (receivable: PlaceClientReceivable) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const payment = await markStubPaymentPaidForParticipant({
+        targetType: receivable.targetType,
+        targetId: receivable.targetId,
+        amountCents: receivable.amountCents,
+        billingPeriod: receivable.billingPeriod,
+        description: `${receivable.subtitle} - ${receivable.billingPeriod}`,
+        metadata: { receivableId: receivable.id, source: "finance_receivable_manual_stub" },
+      });
+      setPaymentsByTarget((prev) => ({ ...prev, [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod)]: payment }));
+      setFeedback({ kind: "success", text: "Recebivel marcado como pago." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao marcar recebivel.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const onCreatePaymentReminderBatch = async (
     targets: Array<{ targetType: string; targetId: string; billingPeriod: string; reminder: string }>
   ) => {
@@ -1608,21 +1708,22 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
 
-  const onAdminMarkEnrollmentPaid = async (academyClass: AcademyClass, enrollment: AcademyEnrollment) => {
+  const onAdminMarkEnrollmentPaid = async (academyClass: AcademyClass, enrollment: AcademyEnrollment, contract?: AcademyStudentContract | null) => {
     const billingPeriod = currentBillingPeriod();
+    const target = academyStudentBillingTarget(academyClass, enrollment, contract || null, billingPeriod);
     setBusy(true);
     setFeedback(null);
     try {
       const payment = await markStubPaymentPaidForParticipant({
-        targetType: "academy_enrollment",
-        targetId: enrollment.id,
-        amountCents: academyClass.monthlyFeeCents,
+        targetType: target.targetType,
+        targetId: target.targetId,
+        amountCents: target.amountCents,
         billingPeriod,
-        description: `${academyClass.title} - mensalidade ${billingPeriod}`,
-        metadata: { source: "academy_admin_manual_stub", classId: academyClass.id },
+        description: target.description,
+        metadata: target.metadata,
       });
       setPaymentsByTarget((prev) => ({ ...prev, [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod)]: payment }));
-      setFeedback({ kind: "success", text: "Mensalidade marcada como paga pelo admin." });
+      setFeedback({ kind: "success", text: contract ? "Mensalidade do contrato marcada como paga." : "Mensalidade marcada como paga pelo admin." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao marcar mensalidade.") });
     } finally {
@@ -1892,24 +1993,70 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
 
-  const onCreateAcademyStudentByAdmin = async (place: Place, academyClass: AcademyClass) => {
-    const draft = academyStudentDraftByClass[academyClass.id] || { name: "", phone: "", email: "", notes: "" };
-    if (!draft.name.trim()) return;
+  const onUpdateAcademySettings = async (
+    placeId: string,
+    draft: { autoCreateMakeupCreditOnNotice: boolean; makeupNoticeHours: string }
+  ) => {
     setBusy(true);
     setFeedback(null);
     try {
-      await createAcademyEnrollmentForStudent({
+      await updatePlaceAcademySettings({
+        placeId,
+        autoCreateMakeupCreditOnNotice: draft.autoCreateMakeupCreditOnNotice,
+        makeupNoticeHours: Number(draft.makeupNoticeHours) || 0,
+      });
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Regra de reposicao por ausencia avisada atualizada." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar regra de reposicao.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onCreateAcademyStudentByAdmin = async (place: Place, academyClass: AcademyClass) => {
+    const draft = academyStudentDraftByClass[academyClass.id] || {
+      classIds: [academyClass.id],
+      email: "",
+      monthlyFee: String(Math.round(academyClass.monthlyFeeCents / 100)),
+      name: "",
+      notes: "",
+      phone: "",
+      startsOn: todayDateInputValue(),
+      weeklyLessonsCount: "1",
+    };
+    const selectedClassIds = Array.from(new Set([academyClass.id, ...(draft.classIds || [])])).filter(Boolean);
+    if (!draft.name.trim() || !draft.email.trim() || !selectedClassIds.length) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await createAcademyStudentContract({
         placeId: place.id,
-        classId: academyClass.id,
-        playerName: draft.name,
-        phone: draft.phone,
+        studentName: draft.name,
         email: draft.email,
+        phone: draft.phone,
+        weeklyLessonsCount: Number(draft.weeklyLessonsCount) || selectedClassIds.length || 1,
+        monthlyFeeCents: Math.max(0, Math.round((Number(draft.monthlyFee) || 0) * 100)),
+        startsOn: draft.startsOn || todayDateInputValue(),
         notes: draft.notes,
+        classIds: selectedClassIds,
         status: "active",
       });
-      setAcademyStudentDraftByClass((prev) => ({ ...prev, [academyClass.id]: { name: "", phone: "", email: "", notes: "" } }));
+      setAcademyStudentDraftByClass((prev) => ({
+        ...prev,
+        [academyClass.id]: {
+          classIds: [academyClass.id],
+          email: "",
+          monthlyFee: String(Math.round(academyClass.monthlyFeeCents / 100)),
+          name: "",
+          notes: "",
+          phone: "",
+          startsOn: todayDateInputValue(),
+          weeklyLessonsCount: "1",
+        },
+      }));
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: draft.email.trim() ? "Aluno vinculado/matriculado." : "Aluno sem login matriculado." });
+      setFeedback({ kind: "success", text: "Contrato do aluno criado com plano e horarios semanais." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao matricular aluno.") });
     } finally {
@@ -1920,6 +2067,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const onReportAcademyAbsence = async (placeId: string, enrollmentId: string) => {
     const draft = academyAbsenceDraftByEnrollment[enrollmentId] || { absenceOn: todayDateInputValue(), notes: "" };
     if (!draft.absenceOn) return;
+    const enrollment = (academyEnrollmentsByPlace[placeId] || []).find((item) => item.id === enrollmentId);
+    const academyClass = enrollment ? (academyClassesByPlace[placeId] || []).find((item) => item.id === enrollment.classId) : undefined;
+    const settings = academySettingsByPlace[placeId] || {
+      placeId,
+      makeupNoticeHours: 12,
+      autoCreateMakeupCreditOnNotice: true,
+      updatedBy: null,
+      createdAt: "",
+      updatedAt: "",
+    };
+    const shouldCreateCredit = academyLessonNoticeEligible(academyClass, draft.absenceOn, settings);
     setBusy(true);
     setFeedback(null);
     try {
@@ -1930,7 +2088,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       });
       setAcademyAbsenceDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: { absenceOn: todayDateInputValue(), notes: "" } }));
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: "Ausencia avisada. A vaga ficou liberada para reposicao/aula avulsa." });
+      setFeedback({
+        kind: "success",
+        text: shouldCreateCredit
+          ? "Ausencia avisada. Credito de reposicao criado e vaga liberada."
+          : settings.autoCreateMakeupCreditOnNotice
+            ? `Ausencia registrada. Fora da regra de ${settings.makeupNoticeHours}h, nao gerou credito automatico.`
+            : "Ausencia registrada. Credito automatico esta desativado na configuracao da academia.",
+      });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao avisar ausencia.") });
     } finally {
@@ -3406,6 +3571,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const academyLessonRequests = academyLessonRequestsByPlace[p.id] || [];
         const academyMakeups = academyMakeupsByPlace[p.id] || [];
         const academyProgress = academyProgressByPlace[p.id] || [];
+        const academySettings: AcademySettings = academySettingsByPlace[p.id] || {
+          placeId: p.id,
+          makeupNoticeHours: 12,
+          autoCreateMakeupCreditOnNotice: true,
+          updatedBy: null,
+          createdAt: "",
+          updatedAt: "",
+        };
+        const academyStudentContracts = academyStudentContractsByPlace[p.id] || [];
         const pendingAcademyEnrollments = academyEnrollments.filter((item) => item.status === "pending");
         const openAcademyMakeups = academyMakeups.filter((item) => item.status === "open");
         const storedAcademyStudentFilter = academyStudentFilterByPlace[p.id];
@@ -3417,6 +3591,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           attendance: storedAcademyStudentFilter?.attendance || "",
         };
         const academyBillingPeriod = currentBillingPeriod();
+        const getAcademyStudentContract = (enrollment: AcademyEnrollment) => findAcademyStudentContract(enrollment, academyStudentContracts);
+        const isAcademyStudentPaid = (enrollment: AcademyEnrollment) =>
+          academyStudentBillingPaid(enrollment, getAcademyStudentContract(enrollment), paymentsByTarget, academyBillingPeriod);
+        const getAcademyStudentTarget = (academyClass: AcademyClass, enrollment: AcademyEnrollment) =>
+          academyStudentBillingTarget(academyClass, enrollment, getAcademyStudentContract(enrollment), academyBillingPeriod);
         const todayAttendance = academyAttendance.filter((item) => item.attendedOn === todayDateInputValue());
         const academyDraft = academyClassDraftByPlace[p.id] || {
           title: "",
@@ -3593,8 +3772,26 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 billingPeriod: currentBillingPeriod(),
               };
             }),
+          ...academyStudentContracts
+            .filter((contract) => contract.status === "active" || contract.status === "pending")
+            .map((contract) => {
+              const contractEnrollments = academyEnrollments.filter((enrollment) => enrollment.contractId === contract.id);
+              const primaryClass = academyClasses.find((item) => item.id === contractEnrollments[0]?.classId);
+              const payment = paymentsByTarget[paymentMapKey("academy_student_contract", contract.id, academyBillingPeriod)];
+              return {
+                id: `academy-contract:${contract.id}`,
+                title: contract.studentName,
+                subtitle: [`Plano ${contract.weeklyLessonsCount}x/semana`, primaryClass?.title].filter(Boolean).join(" | "),
+                amountCents: contract.monthlyFeeCents,
+                status: (payment?.status === "paid" ? "paid" : contract.status === "pending" ? "pending_approval" : "open") as PlaceClientReceivable["status"],
+                reminder: `${contract.studentName}, sua mensalidade da academia esta pendente.`,
+                targetType: "academy_student_contract",
+                targetId: contract.id,
+                billingPeriod: academyBillingPeriod,
+              };
+            }),
           ...academyEnrollments
-            .filter((enrollment) => enrollment.status === "active" || enrollment.status === "pending")
+            .filter((enrollment) => (enrollment.status === "active" || enrollment.status === "pending") && !enrollment.contractId)
             .map((enrollment) => {
               const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
               const payment = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)];
@@ -3613,10 +3810,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         ];
         const openReceivables = financeReceivables.filter((item) => item.status !== "paid");
         const openMembershipReceivables = openReceivables.filter((item) => item.targetType === "place_membership");
-        const openAcademyReceivables = openReceivables.filter((item) => item.targetType === "academy_enrollment");
+        const openAcademyReceivables = openReceivables.filter((item) => item.targetType === "academy_enrollment" || item.targetType === "academy_student_contract");
         const openReceivablesAmountCents = openReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
-        const activeAcademyRevenueCents = academyEnrollments
-          .filter((enrollment) => enrollment.status === "active")
+        const activeAcademyRevenueCents =
+          academyStudentContracts
+            .filter((contract) => contract.status === "active")
+            .reduce((sum, contract) => sum + contract.monthlyFeeCents, 0) +
+          academyEnrollments
+          .filter((enrollment) => enrollment.status === "active" && !enrollment.contractId)
           .reduce((sum, enrollment) => {
             const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
             return sum + (academyClass?.monthlyFeeCents || 0);
@@ -3987,11 +4188,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const normalizedAcademyStudentQuery = academyStudentFilter.query.trim().toLowerCase();
         const visibleAcademyStudentEnrollments = academyEnrollments.filter((enrollment) => {
           const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
-          const paid = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid";
+          const contract = getAcademyStudentContract(enrollment);
+          const paid = isAcademyStudentPaid(enrollment);
           const todayEnrollmentAttendance = todayAttendance.find((item) => item.enrollmentId === enrollment.id);
           const hasOpenAbsence = academyAbsences.some((item) => item.enrollmentId === enrollment.id && item.status === "open");
           const hasOpenMakeup = openAcademyMakeups.some((item) => item.enrollmentId === enrollment.id);
-          const searchText = [enrollment.playerName, enrollment.phone, enrollment.notes, academyClass?.title, academyClass?.coachName, academyClass?.level]
+          const searchText = [contract?.studentName, contract?.inviteEmail, enrollment.playerName, enrollment.phone, enrollment.notes, academyClass?.title, academyClass?.coachName, academyClass?.level]
             .filter(Boolean)
             .join(" ")
             .toLowerCase();
@@ -5048,28 +5250,25 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </div>
                     );
                   })}
-                  {academyEnrollments.filter((enrollment) => enrollment.status === "active").slice(0, 6).map((enrollment) => {
-                    const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
-                    const paid = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid";
-                    if (!academyClass || paid) return null;
+                  {openAcademyReceivables.slice(0, 6).map((receivable) => {
                     return (
-                      <div key={`finance-enrollment:${enrollment.id}`} className="place-booking-row">
+                      <div key={`finance-academy:${receivable.id}`} className="place-booking-row">
                         <div>
-                          <strong>{enrollment.playerName}</strong>
-                          <span>{academyClass.title} | {formatMoneyFromCents(academyClass.monthlyFeeCents)}</span>
-                          <small>Mensalidade da turma em aberto</small>
+                          <strong>{receivable.title}</strong>
+                          <span>{receivable.subtitle} | {formatMoneyFromCents(receivable.amountCents)}</span>
+                          <small>{receivable.targetType === "academy_student_contract" ? "Mensalidade do contrato em aberto" : "Mensalidade da turma em aberto"}</small>
                         </div>
                         <span>
-                          <button onClick={() => void onAdminMarkEnrollmentPaid(academyClass, enrollment)} disabled={busy}>
+                          <button onClick={() => void onMarkReceivablePaid(receivable)} disabled={busy}>
                             Marcar pago
                           </button>
                           <button
                             onClick={() =>
                               void onCreatePaymentReminder(
-                                "academy_enrollment",
-                                enrollment.id,
-                                academyBillingPeriod,
-                                `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
+                                receivable.targetType,
+                                receivable.targetId,
+                                receivable.billingPeriod,
+                                receivable.reminder
                               )
                             }
                             disabled={busy}
@@ -5513,19 +5712,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         classes={visibleAcademyClasses}
                         coaches={academyCoaches}
                         enrollments={academyEnrollments}
-                        isEnrollmentPaid={(enrollmentId) => paymentsByTarget[paymentMapKey("academy_enrollment", enrollmentId, academyBillingPeriod)]?.status === "paid"}
+                        isEnrollmentPaid={(enrollmentId) => {
+                          const enrollment = academyEnrollments.find((item) => item.id === enrollmentId);
+                          return enrollment ? isAcademyStudentPaid(enrollment) : false;
+                        }}
                         onChangeClassPriceDraft={(classId, value) => setAcademyClassPriceDraftByClass((prev) => ({ ...prev, [classId]: value }))}
                         onChangeStudentDraft={(classId, draft) => setAcademyStudentDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
-                        onCreatePaymentReminder={(enrollment, academyClass) =>
-                          void onCreatePaymentReminder(
-                            "academy_enrollment",
-                            enrollment.id,
-                            academyBillingPeriod,
-                            `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
-                          )
-                        }
+                        onCreatePaymentReminder={(enrollment, academyClass) => {
+                          const target = getAcademyStudentTarget(academyClass, enrollment);
+                          return void onCreatePaymentReminder(target.targetType, target.targetId, academyBillingPeriod, target.reminder);
+                        }}
                         onCreateStudent={(academyClass) => void onCreateAcademyStudentByAdmin(p, academyClass)}
-                        onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment)}
+                        onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment, getAcademyStudentContract(enrollment))}
                         onSaveClassPrice={(academyClass) => void onSaveAcademyClassPrice(p.id, academyClass)}
                         onUpdateClass={(academyClass, patch) => void onUpdateAcademyClass(p.id, academyClass, patch)}
                         onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
@@ -5561,24 +5759,24 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       canManageFinance={canManageFinance}
                       canManagePlace={canManagePlace}
                       classes={academyClasses}
+                      contracts={academyStudentContracts}
                       enrollments={academyEnrollments}
                       filter={academyStudentFilter}
-                      isEnrollmentPaid={(enrollmentId) => paymentsByTarget[paymentMapKey("academy_enrollment", enrollmentId, academyBillingPeriod)]?.status === "paid"}
+                      isEnrollmentPaid={(enrollmentId) => {
+                        const enrollment = academyEnrollments.find((item) => item.id === enrollmentId);
+                        return enrollment ? isAcademyStudentPaid(enrollment) : false;
+                      }}
                       makeups={openAcademyMakeups}
                       onChangeAbsenceDraft={(enrollmentId, draft) => setAcademyAbsenceDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: draft }))}
                       onChangeFilter={(filter) => setAcademyStudentFilterByPlace((prev) => ({ ...prev, [p.id]: filter }))}
                       onChangeProgressDraft={(enrollmentId, draft) => setAcademyProgressDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: draft }))}
                       onCreateProgressNote={(enrollmentId) => void onCreateProgressNote(p.id, enrollmentId)}
-                      onCreatePaymentReminder={(enrollment, academyClass) =>
-                        void onCreatePaymentReminder(
-                          "academy_enrollment",
-                          enrollment.id,
-                          academyBillingPeriod,
-                          `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
-                        )
-                      }
+                      onCreatePaymentReminder={(enrollment, academyClass) => {
+                        const target = getAcademyStudentTarget(academyClass, enrollment);
+                        return void onCreatePaymentReminder(target.targetType, target.targetId, academyBillingPeriod, target.reminder);
+                      }}
                       onMarkAttendance={(enrollmentId, status) => void onMarkAcademyAttendance(p.id, enrollmentId, status)}
-                      onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment)}
+                      onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment, getAcademyStudentContract(enrollment))}
                       onReportAbsence={(enrollmentId) => void onReportAcademyAbsence(p.id, enrollmentId)}
                       onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
                       onUpdateEnrollmentDetails={(enrollmentId, patch) => void onUpdateAcademyEnrollmentDetails(p.id, enrollmentId, patch)}
@@ -5702,7 +5900,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
                           }}
                           onCreateSlot={(draft, status) => void onCreateAcademyResourceSlot(p, draft, status)}
+                          onUpdateSettings={(draft) => void onUpdateAcademySettings(p.id, draft)}
                           onUpdateSlotStatus={(slot, status) => void onUpdateAcademyResourceSlotStatus(p.id, slot, status)}
+                          settings={academySettings}
                           slots={academySlots}
                           weekdayLabels={WEEKDAY_LABELS}
                         />
@@ -5736,7 +5936,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
                     }}
                     onCreateSlot={(draft, status) => void onCreateAcademyResourceSlot(p, draft, status)}
+                    onUpdateSettings={(draft) => void onUpdateAcademySettings(p.id, draft)}
                     onUpdateSlotStatus={(slot, status) => void onUpdateAcademyResourceSlotStatus(p.id, slot, status)}
+                    settings={academySettings}
                     slots={academySlots}
                     weekdayLabels={WEEKDAY_LABELS}
                   />
@@ -5886,10 +6088,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             const progressDraft = academyProgressDraftByEnrollment[enrollment.id] || { level: "", focus: "", notes: "" };
                             const latestProgress = academyProgress.filter((item) => item.enrollmentId === enrollment.id)[0];
                             const todayEnrollmentAttendance = todayAttendance.find((item) => item.enrollmentId === enrollment.id);
+                            const enrollmentPaid = isAcademyStudentPaid(enrollment);
+                            const billingTarget = getAcademyStudentTarget(academyClass, enrollment);
                             return (
                             <small key={enrollment.id} className="place-enrollment-chip">
                               {enrollment.playerName} ({enrollment.status})
-                              {paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid" ? " Â· pago no mes" : ""}
+                              {enrollmentPaid ? " Â· pago no mes" : ""}
                               {latestProgress ? ` Â· evolucao: ${latestProgress.levelLabel || latestProgress.focus || "registrada"}` : ""}
                               {todayEnrollmentAttendance ? (
                                 <> Â· {todayEnrollmentAttendance.status === "present" ? "check-in hoje" : "falta hoje"}</>
@@ -5905,19 +6109,19 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                 </>
                               ) : enrollment.status === "active" ? (
                                 <>
-                                    {canManageFinance && paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status !== "paid" ? (
-                                      <button onClick={() => void onAdminMarkEnrollmentPaid(academyClass, enrollment)} disabled={busy}>
+                                    {canManageFinance && !enrollmentPaid ? (
+                                      <button onClick={() => void onAdminMarkEnrollmentPaid(academyClass, enrollment, getAcademyStudentContract(enrollment))} disabled={busy}>
                                         Marcar pago
                                       </button>
                                     ) : null}
-                                    {canManageFinance && paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status !== "paid" ? (
+                                    {canManageFinance && !enrollmentPaid ? (
                                       <button
                                         onClick={() =>
                                           void onCreatePaymentReminder(
-                                            "academy_enrollment",
-                                            enrollment.id,
+                                            billingTarget.targetType,
+                                            billingTarget.targetId,
                                             academyBillingPeriod,
-                                            `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
+                                            billingTarget.reminder
                                           )
                                         }
                                         disabled={busy}
@@ -5986,7 +6190,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         </span>
                       ) : myEnrollment ? (
                         (() => {
-                          const paymentPaid = paymentsByTarget[paymentMapKey("academy_enrollment", myEnrollment.id, academyBillingPeriod)]?.status === "paid";
+                          const paymentPaid = isAcademyStudentPaid(myEnrollment);
                           const openMakeups = academyMakeups.filter((credit) => credit.enrollmentId === myEnrollment.id && credit.status === "open");
                           const myProgress = academyProgress.find((item) => item.enrollmentId === myEnrollment.id);
                           const myAttendance = academyAttendance.filter((item) => item.enrollmentId === myEnrollment.id);

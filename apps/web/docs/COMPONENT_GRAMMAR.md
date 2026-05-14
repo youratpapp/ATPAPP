@@ -291,6 +291,10 @@ Implementado em 2026-05-14:
 - `FitDrawer` tambem recebeu contexto de `Reposicao aberta`, travando aluno/tipo quando a secretaria agenda um credito especifico.
 - `Configuracao` da Academia passou a usar gramatica de `Escala semanal`: data de referencia escolhe o dia da semana, e janelas/bloqueios deixam claro que sao recorrentes.
 - `CoachDrawer` passou a editar campos avancados reais de professor em `Perfil operacional`; especialidades, niveis, bio publica e observacoes internas nao aparecem no cadastro rapido nem como inputs permanentes.
+- `ClassDrawer` passou a criar aluno pelo contrato semanal canonico: usuario/email, plano, mensalidade, inicio e horarios selecionados no mesmo foco curto, sem wizard nem formulario repetido na lista.
+- `StudentDrawer` passou a reconhecer contratos vinculados e mostrar plano/horarios do contrato antes dos detalhes de matricula isolada.
+- A area financeira de `ClassDrawer`/`StudentDrawer` deve acionar cobranca pelo contrato (`academy_student_contract`) quando existir, mantendo matricula (`academy_enrollment`) apenas como fallback legado.
+- `Configuracao > Quadras e horarios` passou a expor regra operacional curta para reposicao por ausencia avisada; `Pendencias` e `StudentDrawer` mostram a origem do credito sem transformar isso em wizard.
 
 Regra:
 

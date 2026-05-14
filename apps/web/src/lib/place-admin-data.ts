@@ -4,6 +4,7 @@ import {
   listAllPlaces,
   listMyPlaceOrganizations,
   listOpenMatches,
+  getPlaceAcademySettings,
   listPlaceAcademyAttendance,
   listPlaceAcademyClasses,
   listPlaceAcademyEnrollments,
@@ -12,6 +13,7 @@ import {
   listPlaceAcademyPlannedAbsences,
   listPlaceAcademyProgressNotes,
   listPlaceAcademySlots,
+  listPlaceAcademyStudentContracts,
   listPlaceBookingRules,
   listPlaceBookings,
   listPlaceBookingWaitlist,
@@ -40,7 +42,9 @@ import type {
   AcademyMakeupCredit,
   AcademyPlannedAbsence,
   AcademyProgressNote,
+  AcademySettings,
   AcademySlot,
+  AcademyStudentContract,
   AppPayment,
   CourtBooking,
   CourtBookingWaitlistEntry,
@@ -72,7 +76,9 @@ export type PlaceAdminResourceEntry = {
   academyLessonRequests: AcademyLessonRequest[];
   academyMakeups: AcademyMakeupCredit[];
   academyProgress: AcademyProgressNote[];
+  academySettings: AcademySettings;
   academySlots: AcademySlot[];
+  academyStudentContracts: AcademyStudentContract[];
   bookingRules: PlaceBookingRule[];
   bookingWaitlist: CourtBookingWaitlistEntry[];
   bookings: CourtBooking[];
@@ -99,7 +105,9 @@ export type PlaceAdminResourceMaps = {
   academyLessonRequestsByPlace: Record<string, AcademyLessonRequest[]>;
   academyMakeupsByPlace: Record<string, AcademyMakeupCredit[]>;
   academyProgressByPlace: Record<string, AcademyProgressNote[]>;
+  academySettingsByPlace: Record<string, AcademySettings>;
   academySlotsByPlace: Record<string, AcademySlot[]>;
+  academyStudentContractsByPlace: Record<string, AcademyStudentContract[]>;
   bookingRulesByPlace: Record<string, PlaceBookingRule[]>;
   bookingWaitlistByPlace: Record<string, CourtBookingWaitlistEntry[]>;
   bookingsByPlace: Record<string, CourtBooking[]>;
@@ -151,7 +159,9 @@ export function entriesToPlaceAdminResourceMaps(entries: PlaceAdminResourceEntry
     academyLessonRequestsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyLessonRequests])),
     academyMakeupsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyMakeups])),
     academyProgressByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyProgress])),
+    academySettingsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academySettings])),
     academySlotsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academySlots])),
+    academyStudentContractsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.academyStudentContracts])),
     bookingRulesByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.bookingRules])),
     bookingWaitlistByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.bookingWaitlist])),
     bookingsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.bookings])),
@@ -178,6 +188,7 @@ export async function fetchPlacePaymentsByTarget(): Promise<Record<string, AppPa
     await Promise.all([
       listMyPayments("court_booking").catch(() => [] as AppPayment[]),
       listMyPayments("academy_enrollment").catch(() => [] as AppPayment[]),
+      listMyPayments("academy_student_contract").catch(() => [] as AppPayment[]),
       listMyPayments("academy_lesson_request").catch(() => [] as AppPayment[]),
       listMyPayments("place_membership").catch(() => [] as AppPayment[]),
     ])
@@ -215,6 +226,8 @@ export async function fetchPlaceAdminResources(input: {
     academyLessonRequests,
     academyMakeups,
     academyProgress,
+    academySettings,
+    academyStudentContracts,
   ] = await Promise.all([
     access.canUseBookings || access.canUseAcademy ? listPlaceCourts(input.placeId).catch(() => [] as PlaceCourt[]) : Promise.resolve([] as PlaceCourt[]),
     access.canUseBookings && access.canManagePlace ? listPlaceBookingRules(input.placeId).catch(() => [] as PlaceBookingRule[]) : Promise.resolve([] as PlaceBookingRule[]),
@@ -238,6 +251,8 @@ export async function fetchPlaceAdminResources(input: {
     access.canUseAcademy ? listPlaceAcademyLessonRequests(input.placeId).catch(() => [] as AcademyLessonRequest[]) : Promise.resolve([] as AcademyLessonRequest[]),
     access.canUseAcademy ? listPlaceAcademyMakeupCredits(input.placeId).catch(() => [] as AcademyMakeupCredit[]) : Promise.resolve([] as AcademyMakeupCredit[]),
     access.canUseAcademy ? listPlaceAcademyProgressNotes(input.placeId).catch(() => [] as AcademyProgressNote[]) : Promise.resolve([] as AcademyProgressNote[]),
+    access.canManageAcademy ? getPlaceAcademySettings(input.placeId).catch(() => ({ placeId: input.placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" }) as AcademySettings) : Promise.resolve({ placeId: input.placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" } as AcademySettings),
+    access.canUseAcademy ? listPlaceAcademyStudentContracts(input.placeId).catch(() => [] as AcademyStudentContract[]) : Promise.resolve([] as AcademyStudentContract[]),
   ]);
   return {
     academyAbsences,
@@ -248,7 +263,9 @@ export async function fetchPlaceAdminResources(input: {
     academyLessonRequests,
     academyMakeups,
     academyProgress,
+    academySettings,
     academySlots,
+    academyStudentContracts,
     bookingRules,
     bookingWaitlist,
     bookings,

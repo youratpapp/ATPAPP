@@ -37,7 +37,7 @@ delete from public.notification_preferences
 where user_id in (select id from public.seed_users);
 
 delete from public.app_payments
-where target_type in ('court_booking', 'place_membership', 'academy_enrollment')
+where target_type in ('court_booking', 'place_membership', 'academy_enrollment', 'academy_student_contract')
   and (
     user_id in (select id from public.seed_users)
     or (metadata ? 'place_id' and (metadata->>'place_id')::uuid in (select id from public.seed_places))
@@ -159,32 +159,50 @@ select
   case when period_no = 0 and (abs(('x' || substr(md5(m.id::text), 1, 6))::bit(24)::int) % 7 = 0) then null else date_trunc('month', current_date - (period_no || ' months')::interval) + interval '5 days' end,
   date_trunc('month', current_date - (period_no || ' months')::interval),
   now()
-from public.seed_memberships m
-join public.seed_membership_plans mp on mp.id = m.plan_id
+from public.place_memberships m
+join public.place_membership_plans mp on mp.id = m.plan_id
 cross join generate_series(0, 5) as periods(period_no)
-where m.status = 'active';
+where m.place_id in (select id from public.seed_places)
+  and m.status = 'active';
 
 insert into public.app_payments (
   user_id, target_type, target_id, amount_cents, currency, status, provider, description, metadata, billing_period, paid_at, created_at, updated_at
 )
 select
-  e.user_id,
-  'academy_enrollment',
-  e.id,
+  c.user_id,
+  'academy_student_contract',
+  c.id,
   c.monthly_fee_cents,
   'BRL',
-  case when period_no = 0 and (abs(('x' || substr(md5(e.id::text), 1, 6))::bit(24)::int) % 6 = 0) then 'pending' else 'paid' end,
+  case
+    when period_no = 0 and (abs(('x' || substr(md5(c.id::text), 1, 6))::bit(24)::int) % 5 = 0) then 'pending'
+    when period_no in (1, 2) and (abs(('x' || substr(md5(c.id::text || period_no::text), 1, 6))::bit(24)::int) % 17 = 0) then 'pending'
+    else 'paid'
+  end,
   'stub',
-  'Mensalidade da turma ' || c.title,
-  jsonb_build_object('seed', true, 'place_id', e.place_id),
+  'Mensalidade academia - plano ' || c.weekly_lessons_count || 'x/semana',
+  jsonb_build_object(
+    'seed', true,
+    'place_id', c.place_id,
+    'payment_kind', 'academy_student_contract',
+    'weekly_lessons_count', c.weekly_lessons_count,
+    'is_overdue', period_no > 0
+  ),
   to_char(current_date - (period_no || ' months')::interval, 'YYYY-MM'),
-  case when period_no = 0 and (abs(('x' || substr(md5(e.id::text), 1, 6))::bit(24)::int) % 6 = 0) then null else date_trunc('month', current_date - (period_no || ' months')::interval) + interval '6 days' end,
+  case
+    when (
+      period_no = 0 and (abs(('x' || substr(md5(c.id::text), 1, 6))::bit(24)::int) % 5 = 0)
+    ) or (
+      period_no in (1, 2) and (abs(('x' || substr(md5(c.id::text || period_no::text), 1, 6))::bit(24)::int) % 17 = 0)
+    ) then null
+    else date_trunc('month', current_date - (period_no || ' months')::interval) + interval '6 days'
+  end,
   date_trunc('month', current_date - (period_no || ' months')::interval),
   now()
-from public.seed_enrollments e
-join public.seed_classes c on c.id = e.class_id
+from public.place_academy_student_contracts c
 cross join generate_series(0, 5) as periods(period_no)
-where e.status = 'active';
+where c.place_id in (select id from public.seed_places)
+  and c.status = 'active';
 
 -- ---------------------------------------------------------------------
 -- 5b) Open matches, social graph, followers and notification preferences

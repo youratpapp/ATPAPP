@@ -66,6 +66,12 @@ Quando uma tela cresce demais:
 - 2026-05-14: `Pendencias > Reposicao aberta > Agendar reposicao` passou a abrir `FitDrawer` com credito selecionado e usar RPC transacional `app_admin_schedule_academy_makeup_credit(...)`.
 - 2026-05-14: `Configuracao` da Academia passou a comunicar `place_academy_slots` como escala semanal recorrente, com data apenas de referencia, janela semanal, janela convertida e bloqueio semanal.
 - 2026-05-14: `Professores > CoachDrawer` ganhou perfil operacional persistido com especialidades, niveis atendidos, bio publica, observacoes internas e controle de perfil publico, mantendo cadastro rapido simples.
+- 2026-05-14: nova responsabilidade planejada para `Academia > Alunos`: aluno deve ser tratado como usuario/contrato semanal da academia, com plano, mensalidade e horarios vinculados. `place_academy_enrollments` continua como vinculo por turma para chamada/presenca, mas nao deve ser a unica entidade percebida pelo operador.
+- 2026-05-14: ausencia avisada na Academia precisa respeitar antecedencia minima configurada pela academia e gerar credito de reposicao automaticamente quando a regra permitir.
+- 2026-05-14: migration `0079_academy_student_contracts_v1.sql` criou a base de contrato semanal do aluno; `Academia > Alunos` deve passar a listar/agrupar por contrato/usuario e nao por matricula isolada.
+- 2026-05-14: `Grade > Turma > Novo aluno` passou a criar contrato semanal por usuario/email com horarios selecionados; `Academia > Alunos` agrega alunos por contrato quando disponivel e mostra horarios vinculados no drawer.
+- 2026-05-14: mensalidade da Academia passou a priorizar `academy_student_contract` em alunos contratados; `academy_enrollment` permanece como fallback apenas para matriculas antigas sem contrato.
+- 2026-05-14: `Academia > Configuracao` ganhou regra de antecedencia de reposicao; ausencia avisada no prazo gera credito automatico com origem rastreavel, e `Pendencias`/`StudentDrawer` diferenciam a origem do credito.
 - 2026-05-13: criada tela `/gestao` como central operacional de academia/clube, reduzindo a mistura entre descoberta publica de locais e trabalho diario de equipe.
 - 2026-05-13: responsabilidade principal de operar local migrou para `/gestao/:placeId/:module`, mantendo `/locais/:placeId/admin` apenas como rota legada de compatibilidade.
 - 2026-05-13: `ManagementShell` passou a envolver `/gestao` e admin de local, dando cabecalho operacional proprio para contexto, acoes e indicadores sem depender do layout de `Locais`.

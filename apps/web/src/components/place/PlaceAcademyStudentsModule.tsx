@@ -8,6 +8,7 @@ import type {
   AcademyMakeupCredit,
   AcademyPlannedAbsence,
   AcademyProgressNote,
+  AcademyStudentContract,
 } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 import { formatMoneyFromCents } from "../../lib/payments";
@@ -51,6 +52,7 @@ type Props = {
   canManageFinance: boolean;
   canManagePlace: boolean;
   classes: AcademyClass[];
+  contracts: AcademyStudentContract[];
   enrollments: AcademyEnrollment[];
   filter: PlaceAcademyStudentFilter;
   isEnrollmentPaid: (enrollmentId: string) => boolean;
@@ -108,6 +110,7 @@ export function PlaceAcademyStudentsModule({
   canManageFinance,
   canManagePlace,
   classes,
+  contracts,
   enrollments,
   filter,
   isEnrollmentPaid,
@@ -145,13 +148,32 @@ export function PlaceAcademyStudentsModule({
     setEditDraft(toStudentEditDraft(selectedEnrollment));
   }, [selectedEnrollment]);
 
-  const listedEnrollments = visibleEnrollments.slice(0, visibleLimit);
+  const studentGroups = visibleEnrollments.reduce<
+    Array<{ key: string; contract: AcademyStudentContract | null; enrollments: AcademyEnrollment[]; representative: AcademyEnrollment }>
+  >((groups, enrollment) => {
+    const contract = enrollment.contractId ? contracts.find((item) => item.id === enrollment.contractId) || null : null;
+    const key = contract?.id || `enrollment:${enrollment.id}`;
+    const existing = groups.find((item) => item.key === key);
+    if (existing) {
+      existing.enrollments.push(enrollment);
+      return groups;
+    }
+    groups.push({ key, contract, enrollments: [enrollment], representative: enrollment });
+    return groups;
+  }, []);
+  const listedStudentGroups = studentGroups.slice(0, visibleLimit);
   const hasActiveFilter = Boolean(filter.query || filter.classId || filter.status || filter.payment || filter.attendance);
 
   const clearFilters = () => onChangeFilter({ query: "", classId: "", status: "active", payment: "", attendance: "" });
 
   const selectedClass = selectedEnrollment ? classes.find((item) => item.id === selectedEnrollment.classId) || null : null;
   const selectedDraftClass = editDraft ? classes.find((item) => item.id === editDraft.classId) || null : null;
+  const selectedContract = selectedEnrollment?.contractId ? contracts.find((item) => item.id === selectedEnrollment.contractId) || null : null;
+  const selectedContractEnrollments = selectedContract
+    ? enrollments.filter((item) => item.contractId === selectedContract.id)
+    : selectedEnrollment
+      ? [selectedEnrollment]
+      : [];
   const selectedPaid = selectedEnrollment ? isEnrollmentPaid(selectedEnrollment.id) : false;
   const selectedTodayAttendance = selectedEnrollment ? todayAttendance.find((item) => item.enrollmentId === selectedEnrollment.id) || null : null;
   const selectedAttendance = selectedEnrollment ? attendance.filter((item) => item.enrollmentId === selectedEnrollment.id) : [];
@@ -200,30 +222,42 @@ export function PlaceAcademyStudentsModule({
             <option value="has_makeup">Com reposicao aberta</option>
           </select>
           <span>
-            Exibindo {Math.min(visibleLimit, visibleEnrollments.length)} de {visibleEnrollments.length}
+            Exibindo {Math.min(visibleLimit, studentGroups.length)} de {studentGroups.length}
           </span>
         </div>
 
-        {listedEnrollments.map((enrollment) => {
+        {listedStudentGroups.map(({ contract, enrollments: groupEnrollments, key, representative: enrollment }) => {
           const academyClass = classes.find((item) => item.id === enrollment.classId);
+          const contractClasses = groupEnrollments
+            .map((item) => classes.find((academyClassItem) => academyClassItem.id === item.classId))
+            .filter(Boolean) as AcademyClass[];
           const latestProgress = progress.find((item) => item.enrollmentId === enrollment.id);
-          const paid = isEnrollmentPaid(enrollment.id);
-          const openMakeupCount = makeups.filter((item) => item.enrollmentId === enrollment.id).length;
-          const openAbsenceCount = absences.filter((item) => item.enrollmentId === enrollment.id && item.status === "open").length;
-          const attendedCount = attendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "present").length;
-          const missedCount = attendance.filter((item) => item.enrollmentId === enrollment.id && item.status === "absent").length;
-          const todayEnrollmentAttendance = todayAttendance.find((item) => item.enrollmentId === enrollment.id);
-          const attendanceLabel = todayEnrollmentAttendance
-            ? todayEnrollmentAttendance.status === "present"
-              ? "Presente hoje"
-              : "Falta hoje"
+          const paid = groupEnrollments.every((item) => isEnrollmentPaid(item.id));
+          const groupEnrollmentIds = new Set(groupEnrollments.map((item) => item.id));
+          const openMakeupCount = makeups.filter((item) => groupEnrollmentIds.has(item.enrollmentId)).length;
+          const openAbsenceCount = absences.filter((item) => groupEnrollmentIds.has(item.enrollmentId) && item.status === "open").length;
+          const attendedCount = attendance.filter((item) => groupEnrollmentIds.has(item.enrollmentId) && item.status === "present").length;
+          const missedCount = attendance.filter((item) => groupEnrollmentIds.has(item.enrollmentId) && item.status === "absent").length;
+          const todayGroupAttendance = todayAttendance.filter((item) => groupEnrollmentIds.has(item.enrollmentId));
+          const hasPresentToday = todayGroupAttendance.some((item) => item.status === "present");
+          const hasAbsentToday = todayGroupAttendance.some((item) => item.status === "absent");
+          const attendanceLabel = hasPresentToday
+            ? "Presente hoje"
+            : hasAbsentToday
+              ? "Falta hoje"
             : "Chamada pendente";
-          const paymentLabel = paid ? "Mensalidade paga" : "Mensalidade pendente";
+          const paymentLabel = contract
+            ? paid
+              ? "Mensalidade do contrato paga"
+              : `${formatMoneyFromCents(contract.monthlyFeeCents)} / mes pendente`
+            : paid
+              ? "Mensalidade paga"
+              : "Mensalidade pendente";
           return (
             <EntityActionRow
-              key={`academy-student:${enrollment.id}`}
+              key={`academy-student:${key}`}
               className={!paid && enrollment.status === "active" ? "due academy-student-row" : "academy-student-row"}
-              context={academyClass?.title || "Turma"}
+              context={contract ? `Plano ${contract.weeklyLessonsCount}x/semana` : academyClass?.title || "Turma"}
               detail={[enrollment.phone, paymentLabel, attendanceLabel].filter(Boolean).join(" | ")}
               primaryAction={
                 <button type="button" onClick={() => setSelectedEnrollmentId(enrollment.id)}>
@@ -231,9 +265,17 @@ export function PlaceAcademyStudentsModule({
                 </button>
               }
               status={statusLabel(enrollment.status)}
-              title={enrollment.playerName}
+              title={contract?.studentName || enrollment.playerName}
             >
-              <small>{latestProgress ? `Evolucao: ${latestProgress.levelLabel || latestProgress.focus || latestProgress.notes}` : "Sem evolucao registrada"}</small>
+              <small>
+                {contractClasses.length > 1
+                  ? contractClasses
+                      .map((item) => `${item.title} ${item.startsAt.slice(0, 5)}`)
+                      .join(" | ")
+                  : latestProgress
+                    ? `Evolucao: ${latestProgress.levelLabel || latestProgress.focus || latestProgress.notes}`
+                    : "Sem evolucao registrada"}
+              </small>
               <WorkspaceMetrics
                 items={[
                   countLabel(attendedCount, "presenca", "presencas"),
@@ -241,14 +283,14 @@ export function PlaceAcademyStudentsModule({
                   countLabel(openAbsenceCount, "falta avisada", "faltas avisadas"),
                   countLabel(openMakeupCount, "reposicao aberta", "reposicoes abertas"),
                   `Competencia ${billingPeriod}`,
-                  countLabel(enrollments.filter((item) => item.classId === enrollment.classId && item.status === "active").length, "colega ativo", "colegas ativos"),
+                  countLabel(groupEnrollments.length, "horario semanal", "horarios semanais"),
                 ]}
               />
             </EntityActionRow>
           );
         })}
 
-        {visibleEnrollments.length > visibleLimit ? (
+        {studentGroups.length > visibleLimit ? (
           <button type="button" className="secondary" onClick={() => setVisibleLimit((current) => current + DEFAULT_VISIBLE_LIMIT)}>
             Ver mais alunos
           </button>
@@ -339,12 +381,32 @@ export function PlaceAcademyStudentsModule({
               </div>
               <WorkspaceMetrics
                 items={[
+                  selectedContract ? `Plano ${selectedContract.weeklyLessonsCount}x/semana` : "Matricula avulsa",
+                  selectedContract
+                    ? selectedPaid
+                      ? `${formatMoneyFromCents(selectedContract.monthlyFeeCents)} / mes pago`
+                      : `${formatMoneyFromCents(selectedContract.monthlyFeeCents)} / mes pendente`
+                    : "Mensalidade por turma",
+                  countLabel(selectedContractEnrollments.length, "horario vinculado", "horarios vinculados"),
                   selectedDraftClass?.monthlyFeeCents ? `${formatMoneyFromCents(selectedDraftClass.monthlyFeeCents)} / mes` : "Valor a combinar",
                   selectedEnrollment.userId ? "Login vinculado" : "Sem login vinculado",
                   selectedEnrollment.source === "online" ? "Origem online" : selectedEnrollment.source === "linked" ? "Origem vinculada" : "Criado pela equipe",
                   `Criado em ${formatDateValue(selectedEnrollment.createdAt)}`,
                 ]}
               />
+              {selectedContract ? (
+                <div className="academy-contract-linked-classes">
+                  <strong>Horarios do contrato</strong>
+                  {selectedContractEnrollments.map((contractEnrollment) => {
+                    const contractClass = classes.find((item) => item.id === contractEnrollment.classId);
+                    return (
+                      <small key={`student-contract-enrollment:${contractEnrollment.id}`}>
+                        {contractClass?.title || "Turma"} | {contractClass?.startsAt.slice(0, 5) || "--:--"} | {statusLabel(contractEnrollment.status)}
+                      </small>
+                    );
+                  })}
+                </div>
+              ) : null}
               <div className="academy-student-inline-actions">
                 {selectedEnrollment.status === "pending" ? (
                   <button type="button" onClick={() => onUpdateEnrollment(selectedEnrollment.id, "active")} disabled={busy}>
@@ -493,7 +555,7 @@ export function PlaceAcademyStudentsModule({
               <div className="academy-student-history">
                 {selectedMakeups.map((credit) => (
                   <article key={`student-makeup:${credit.id}`}>
-                    <strong>Reposicao aberta</strong>
+                    <strong>{credit.sourceAbsenceId ? "Reposicao por ausencia avisada" : credit.sourceAttendanceId ? "Reposicao por falta marcada" : "Reposicao aberta"}</strong>
                     <span>{credit.notes || "Credito disponivel para encaixe."}</span>
                     <small>{formatDateValue(credit.createdAt)}</small>
                   </article>

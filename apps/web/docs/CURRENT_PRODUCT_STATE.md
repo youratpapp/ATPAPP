@@ -221,12 +221,20 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - `Academia v2 - Backend` agora tambem tem RPC `app_admin_schedule_academy_makeup_credit(...)`: secretaria pode agendar um credito de reposicao de aluno especifico sem depender do login do aluno.
 - `Academia v2 - Configuracao` agora trata `place_academy_slots` explicitamente como escala semanal recorrente: a data e apenas referencia para escolher o dia da semana, e as acoes comunicam `Janela semanal`/`Bloqueio semanal`.
 - `Academia v2 - Professores` agora tem schema avancado real em `place_coaches` para especialidades, niveis atendidos, bio publica, observacoes internas e perfil publico ativo, sem poluir o cadastro rapido.
+- Lacuna critica anterior resolvida: `Aluno` agora tem contrato/plano semanal canonico em `place_academy_student_contracts`, enquanto `place_academy_enrollments` fica como vinculo operacional por turma/horario.
+- Lacuna anterior resolvida: ausencia avisada agora valida antecedencia minima da academia e gera credito de reposicao automatico quando a regra permitir.
+- `Academia Student Contracts` iniciou a base real em `0079_academy_student_contracts_v1.sql`: contrato/plano semanal, `contract_id` nas matriculas, configuracao de antecedencia de reposicao, `source_absence_id` para creditos e target financeiro `academy_student_contract`.
+- `Academia Student Contracts` ja entrou na UI de `Grade > Turma > Novo aluno`: secretaria cria contrato com email/login, plano semanal, mensalidade, inicio e horarios selecionados; `Alunos` agrega por contrato/usuario quando existe `contract_id`.
+- `Academia Student Contracts` tambem virou alvo financeiro canonico: mensalidade, lembrete, recebiveis e receita usam `academy_student_contract` quando existe contrato, com fallback para `academy_enrollment` apenas em matriculas legadas.
+- `Academia Reposicao Automatica` foi implementada em `0080_academy_absence_notice_credit_v1.sql`: ausencia avisada valida dia/antecedencia, gera credito por `source_absence_id` quando permitido e a regra fica editavel em `Configuracao > Quadras e horarios`.
+- `Academia Seed QA` foi atualizado em `web/supabase/seeds/qa_demo`: o passo `04_academy.sql` cria contratos reais de aluno com planos 1x/2x/3x por semana, matriculas vinculadas, configuracao de reposicao e creditos por ausencia dentro/fora do prazo; o passo `05_bookings.sql` cria mensalidades por `academy_student_contract` com pagas, pendentes e atrasadas.
 
 ### Ainda fraco
 
 - `PlacesPage` ainda concentra muita orquestracao e ainda influencia a sensacao de admin template.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
 - Academia v2 fechou os gaps backend imediatos da fila BE-01 a BE-04. Vigencia/bloqueio pontual por data para disponibilidade semanal permanece como gap futuro se QA real exigir.
+- O seed split `qa_demo` agora cobre contratos, pagamentos e ausencias realistas; o arquivo monolitico `qa_full_demo_seed.sql` permanece legado e nao deve ser o caminho principal de QA da Academia v2.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
 - Sistema ja iniciou visibilidade por perfil/plano na navegacao global e guardrail real para criar local, mas ainda precisa aplicar permissoes reais em mais hubs internos.
 - Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; entradas internas agora tambem mudam prioridade por papel, mas ainda falta calibrar fluxos internos especificos por massa real.

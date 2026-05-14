@@ -612,6 +612,329 @@ Validacao:
 - `npm.cmd run lint`;
 - `npm.cmd run build`.
 
+### [x] ACADEMY-STUDENT-01 - Modelo de contrato/plano do aluno
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Evoluir a entidade `Aluno` de matricula solta em turma para contrato/plano semanal vinculado a um usuario.
+- Permitir planos como 1x, 2x ou mais aulas por semana, com mensalidade unica e horarios/turmas selecionados.
+
+Criterios:
+
+- definir contrato/plano do aluno por academia;
+- contrato deve ter usuario vinculado ou convite pendente, aulas por semana, mensalidade, status e inicio;
+- manter `place_academy_enrollments` como vinculo operacional por turma para presenca/chamada/historico;
+- permitir selecionar uma ou mais ocorrencias semanais, inclusive ocorrencias agrupadas da mesma turma em dias diferentes;
+- validar quando a quantidade de horarios selecionados nao bate com o plano contratado;
+- documentar estrategia de convite/criacao de usuario sem inserir `auth.users` de forma insegura pelo client;
+- definir como `app_payments` passa a cobrar mensalidade por contrato/plano, nao por cada turma isolada;
+- definir impacto em seed/reset do ambiente de teste.
+
+Telas/componentes afetados:
+
+- `PlaceAcademyStudentsModule`;
+- `PlaceAcademyClassesModule`;
+- `StudentDrawer`;
+- `ClassDrawer`;
+- services de academia em `places.ts`;
+- migrations Supabase;
+- seed demo de academia.
+
+Ganhos esperados:
+
+- uma secretaria cadastra o aluno uma vez, define plano e encaixa horarios semanais sem duplicar pessoas;
+- aluno recebe notificacoes e fica ligado ao perfil;
+- financeiro passa a refletir o contrato real do aluno;
+- base fica pronta para reposicao automatica por ausencia avisada.
+
+Dependencias:
+
+- `place_academy_enrollments`;
+- `app_payments`;
+- `profiles`/`auth.users`;
+- modelo atual de turmas recorrentes por `weekday`;
+- decisao sobre convite de usuario quando o email ainda nao existe.
+
+Risco de regressao:
+
+- quebrar fluxos atuais que esperam uma matricula por turma;
+- criar contrato sem persistencia real;
+- duplicar cobranca se contrato e enrollment cobrarem o mesmo aluno;
+- transformar cadastro rapido em ERP burocratico.
+
+Criterios de conclusao:
+
+- plano tecnico documentado;
+- migration minima definida ou implementada;
+- estrategia de compatibilidade com matriculas existentes definida;
+- queue dos itens seguintes ajustada.
+
+Implementado:
+
+- criada migration `0079_academy_student_contracts_v1.sql`;
+- nova tabela `place_academy_student_contracts` para contrato/plano semanal do aluno;
+- contrato guarda academia, usuario vinculado ou convite por email, nome, telefone, status, aulas por semana, mensalidade, inicio/fim e observacoes;
+- `place_academy_enrollments` ganhou `contract_id`, mantendo matriculas por turma para chamada/presenca/historico;
+- nova tabela `place_academy_settings` guarda `makeup_notice_hours` e `auto_create_makeup_credit_on_notice`;
+- `place_academy_makeup_credits` ganhou `source_absence_id`, preparando credito originado de ausencia avisada;
+- criada RPC `app_create_academy_student_contract(...)`, que resolve usuario por email, cria convite pendente se nao existir, cria contrato e gera matriculas operacionais nas turmas escolhidas;
+- pagamento manual e lembrete passaram a aceitar `academy_student_contract` como target financeiro;
+- RLS/policies criadas para contrato, settings e leitura financeira do target novo;
+- `types.ts` e `places.ts` ganharam tipos/services para contratos e `contractId` nas matriculas.
+
+Decisoes:
+
+- nao inserir diretamente em `auth.users` por SQL client-side; email inexistente vira `invite_email`/convite pendente ate suporte seguro de convite/criacao de usuario;
+- `place_academy_enrollments` continua existindo e nao foi removida;
+- cobranca canonica nova sera `target_type = academy_student_contract`, preservando leitura antiga por `academy_enrollment` ate a migracao visual/financeira.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- a UI ainda precisa usar o novo fluxo; enquanto isso, telas existentes continuam operando por enrollment;
+- credito automatico por ausencia avisada ainda sera implementado em `ACADEMY-STUDENT-04`;
+- seed/reset completo fica em `ACADEMY-STUDENT-05`.
+
+### [x] ACADEMY-STUDENT-02 - Cadastro de aluno por usuario, plano e horarios
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Substituir o cadastro solto por um fluxo operacional: usuario aluno -> plano -> horarios semanais -> matriculas operacionais.
+
+Criterios:
+
+- `Novo aluno` abre drawer/flow curto;
+- busca usuario existente por email/telefone e mostra resultado claro;
+- se usuario nao existir, cria convite pendente ou aciona suporte seguro de convite;
+- campos essenciais: aluno, telefone/email, plano/aulas por semana, mensalidade, data de inicio;
+- selecao de turmas/horarios deve agrupar ocorrencias equivalentes e permitir escolher uma, outra ou ambas;
+- criar as matriculas operacionais necessarias sem duplicar aluno na tela principal;
+- aluno novo entra sem creditos de reposicao;
+- inputs sem label visivel devem ter placeholder e `aria-label`.
+
+Telas/componentes afetados:
+
+- `Alunos > Novo aluno`;
+- `Grade > ClassDrawer > Matricular aluno`;
+- `StudentDrawer`;
+- `ClassDrawer`.
+
+Risco de regressao:
+
+- perder suporte a aluno sem login usado pela secretaria;
+- criar duas fontes de verdade para aluno;
+- esconder campos obrigatorios de plano.
+
+Criterios de conclusao:
+
+- fluxo cria aluno/contrato e vinculos reais;
+- lista de alunos agrega por contrato/usuario;
+- class drawer continua permitindo matricular, mas usa o mesmo fluxo canonico.
+
+Implementado:
+
+- `Grade > Turma > Novo aluno` usa `app_create_academy_student_contract(...)`;
+- formulario curto coleta nome, email/login, telefone, aulas por semana, mensalidade, inicio, horarios semanais e observacoes;
+- a turma aberta no drawer fica sempre selecionada, e outras turmas/horarios podem ser adicionadas ao contrato;
+- `fetchPlaceAdminResources` carrega `place_academy_student_contracts` junto dos demais recursos da academia;
+- `Academia > Alunos` agrega por contrato quando existe `contract_id`, mostrando plano, mensalidade e horarios vinculados;
+- caminho legado por matricula isolada permanece para registros antigos e excecoes administrativas.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- status financeiro visual ainda usa principalmente pagamento por `academy_enrollment`; a migracao para `academy_student_contract` fica no proximo item;
+- drawer detalhado ainda abre a matricula representativa do contrato para acoes antigas, preservando compatibilidade ate a etapa financeira/contratual completa.
+
+### [x] ACADEMY-STUDENT-03 - Cobranca mensal por contrato do aluno
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Fazer mensalidade da academia acompanhar o contrato/plano semanal, nao cada enrollment isolado.
+
+Criterios:
+
+- definir `target_type` canonico para pagamento do contrato, como `academy_student_contract`;
+- `Marcar pago`, `Enviar lembrete` e `Cobrar` usam o contrato como alvo;
+- alunos com duas aulas semanais geram uma mensalidade;
+- preservar leitura de pagamentos antigos por `academy_enrollment` durante transicao;
+- Pendencias e Financeiro mostram cobranca de aluno sem duplicidade.
+
+Risco de regressao:
+
+- pagamentos antigos sumirem;
+- lembrete apontar para target errado;
+- duplicar mensalidade no mesmo periodo.
+
+Criterios de conclusao:
+
+- pagamento mensal do contrato persiste;
+- UI mostra pago/pendente corretamente;
+- docs registram transicao entre enrollment e contrato.
+
+Implementado:
+
+- `Marcar pago` e `Enviar lembrete` usam `academy_student_contract` quando a matricula possui `contract_id`;
+- matriculas antigas sem contrato continuam usando `academy_enrollment`;
+- `Academia > Alunos`, `Grade > Turma`, Financeiro/Recebiveis e Clientes/Relacionamento passam a considerar pagamento do contrato;
+- alunos com dois horarios no mesmo contrato geram uma unica mensalidade em aberto;
+- recebiveis da academia agora sao montados primeiro por contrato ativo/pendente e depois por matriculas legadas sem contrato;
+- receita recorrente estimada da academia soma contratos ativos mais matriculas legadas sem contrato, sem duplicar alunos contratados;
+- leitura antiga por `academy_enrollment` foi preservada como fallback de transicao.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- pagamentos antigos por matricula ligada posteriormente a contrato podem exigir conciliacao manual se existirem em massa no ambiente;
+- o drawer ainda edita dados da matricula representativa, enquanto dados financeiros passam a ser do contrato.
+
+### [x] ACADEMY-STUDENT-04 - Ausencia avisada com antecedencia e credito automatico
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Quando aluno avisar ausencia com antecedencia configurada pela academia, gerar credito de reposicao automaticamente e liberar vaga.
+
+Criterios:
+
+- criar configuracao por academia: antecedencia minima para gerar reposicao;
+- ausencia avisada valida data/hora real da aula;
+- se dentro do prazo e turma permite reposicao, cria `planned_absence` e credito aberto;
+- se fora do prazo, UI explica sem gerar credito automatico ou exige aprovacao manual conforme decisao;
+- credito guarda origem por ausencia avisada, alem de origem por chamada/falta quando aplicavel;
+- impedir credito duplicado para mesma ausencia;
+- Pendencias diferencia `Reposicao aberta`, `Solicitacao de reposicao`, `Aula avulsa/drop-in` e `Ausencia avisada`.
+
+Telas/componentes afetados:
+
+- `Hoje > LessonDrawer`;
+- `Alunos > StudentDrawer`;
+- `Pendencias`;
+- `Configuracao` da academia.
+
+Risco de regressao:
+
+- gerar credito para falta fora do prazo;
+- quebrar creditos existentes baseados em `source_attendance_id`;
+- confundir ausencia avisada com reposicao solicitada.
+
+Criterios de conclusao:
+
+- fluxo aluno/admin cria ausencia e credito real;
+- regra de antecedencia fica editavel por gestor;
+- creditos aparecem no aluno e na fila sem duplicidade.
+
+Implementado:
+
+- criada migration `0080_academy_absence_notice_credit_v1.sql`;
+- `app_report_academy_absence(...)` agora valida turma ativa, dia real da turma e regra de antecedencia;
+- quando o aviso esta dentro do prazo e a regra esta ativa, cria `place_academy_makeup_credits` com `source_absence_id`;
+- `source_absence_id` impede credito duplicado para a mesma ausencia avisada;
+- se o aviso esta fora do prazo, a ausencia fica registrada, mas nao gera credito automatico;
+- `Configuracao > Quadras e horarios` ganhou regra editavel de antecedencia minima e toggle de credito automatico;
+- `Pendencias` diferencia credito por ausencia avisada, credito por falta marcada e credito manual;
+- `StudentDrawer` mostra a origem da reposicao no historico do aluno.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- a comparacao de antecedencia usa o horario da turma recorrente e o timezone configurado pelo ambiente do banco; se academias multi-timezone entrarem no produto, sera preciso adicionar timezone por local;
+- seed demo ainda precisa criar exemplos dentro e fora do prazo para QA visual.
+
+### [x] ACADEMY-STUDENT-05 - Seed/reset de academia com contratos reais
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Como o app esta em teste, permitir reset/populacao com dados coerentes para validar contratos, usuarios alunos, planos, turmas multi-horario, creditos e cobrancas.
+
+Criterios:
+
+- atualizar scripts SQL de seed para criar usuarios alunos/professores reais;
+- criar contratos com 1x, 2x e 3x por semana;
+- distribuir alunos em turmas e horarios variados;
+- gerar mensalidades pagas, pendentes e atrasadas;
+- gerar ausencias avisadas dentro e fora do prazo;
+- gerar creditos de reposicao abertos/usados/cancelados;
+- manter `escalao@gmail.com` como dono/admin dos locais demo;
+- evitar duplicidade em rerun ou documentar ordem de reset.
+
+Risco de regressao:
+
+- seed conflitar com triggers de horario/quadra;
+- duplicar usuarios se rerun nao limpar auth/public corretamente;
+- massa demo esconder bugs por dados irreais.
+
+Criterios de conclusao:
+
+- seed split `web/supabase/seeds/qa_demo` atualizado para o modelo canônico de contratos;
+- `04_academy.sql` cria `place_academy_student_contracts`, `seed_contracts`, `seed_contract_classes`, matriculas com `contract_id`, planos 1x/2x/3x, configuracao de antecedencia e creditos por ausencia;
+- `05_bookings.sql` cria mensalidades em `app_payments` com `target_type = 'academy_student_contract'`, pagas, pendentes atuais e pendentes atrasadas;
+- `08_leagues.sql`, `09_cleanup_helpers.sql`, `01_cleanup.sql` e `README.md` atualizados para os novos helpers/alvos financeiros;
+- `escalao@gmail.com` continua dono/admin dos locais demo;
+- usuarios alunos seguem vinculados a `auth.users`/`profiles`, permitindo contexto no Player App.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- o seed foi atualizado estaticamente e deve ser rodado no banco paralelo seguindo `01_cleanup.sql` a `08_leagues.sql`; se a instancia ainda nao tiver migrations `0079` e `0080`, o passo `04_academy.sql` falhara porque depende das tabelas/colunas novas;
+- `qa_full_demo_seed.sql` permanece legado; para QA da Academia v2, usar o seed split `qa_demo`.
+
+### [>] ACADEMY-FORM-01 - Placeholders e labels nos formularios da Academia
+
+Status: `[>]` proxima prioridade
+
+Objetivo:
+
+- Eliminar inputs e buscas sem informacao suficiente quando nao houver label/cabecalho visivel.
+
+Criterios:
+
+- todo input sem label visual deve ter placeholder util;
+- todo controle sem texto visivel deve ter `aria-label`;
+- buscas devem explicar o que pesquisam: aluno, telefone, turma, professor, quadra, cidade, data ou horario;
+- placeholders nao substituem label quando o campo for critico ou sensivel;
+- validar Academia primeiro e registrar padrao para Agenda/Financeiro/Competition OS.
+
+Risco de regressao:
+
+- placeholder virar texto longo demais em mobile;
+- duplicar label e placeholder de forma poluida.
+
+Criterios de conclusao:
+
+- sweep em `PlaceAcademy*Module`;
+- screenshots ou checklist visual;
+- lint/build passando quando houver alteracao de codigo.
+
 ### [x] SWEEP-ROLE-01 - Varredura por perfil Admin/Player/Professor
 
 Status: `[x]` concluido em 2026-05-14

@@ -265,6 +265,38 @@ Problema atual:
 
 Funcao: localizar alunos por turma/status, ver situacao de pagamento e chamada.
 
+### Lacuna de produto: aluno hoje e matricula, nao contrato
+
+Estado atual:
+- A entidade operacional exibida como aluno vem de `place_academy_enrollments`.
+- Cada linha representa um aluno dentro de uma turma especifica.
+- Se o mesmo usuario fizer duas aulas por semana em turmas/horarios diferentes, ele tende a aparecer como duas matriculas separadas.
+- A mensalidade atual pode ser cobrada por `academy_enrollment`, o que funciona para uma turma, mas fica fraco para planos semanais com dois ou mais horarios.
+- `createAcademyEnrollmentForStudent` aceita email e tenta vincular a `auth.users`, mas nao cria usuario/convite completo.
+
+Evolucao necessaria:
+- Criar ou vincular um usuario aluno como entidade principal.
+- Criar um contrato/plano do aluno por academia com `aulas por semana`, `mensalidade`, `status`, `inicio` e `turmas/horarios escolhidos`.
+- Manter `place_academy_enrollments` como vinculos por turma para chamada, presenca e historico.
+- Agregar o `StudentDrawer` pelo contrato/usuario, mostrando turmas vinculadas, pagamentos, presenca, creditos e evolucao em um unico lugar.
+- Permitir selecionar ocorrencias semanais agrupadas: se a mesma turma tiver segunda e quarta, o operador pode escolher segunda, quarta ou ambas.
+
+Suporte backend criado:
+- `place_academy_student_contracts` e a entidade canonica de contrato/plano semanal.
+- `place_academy_enrollments.contract_id` preserva as matriculas por turma ligadas ao contrato.
+- `app_create_academy_student_contract(...)` cria o contrato e as matriculas operacionais nas turmas selecionadas.
+- Pagamento/lembrete de mensalidade passam a ter alvo `academy_student_contract`.
+
+Impacto UX:
+- `Adicionar aluno` deixa de ser apenas nome/telefone dentro da turma.
+- O caminho principal vira `Alunos > Novo aluno` ou `Grade > Turma > Matricular aluno`, ambos abrindo o mesmo drawer/flow de contrato.
+- aluno sem login deve aparecer como excecao (`convite pendente` ou `sem login`), nao como padrao invisivel.
+- `Grade > Turma > Novo aluno` agora solicita email/login, plano semanal, mensalidade, data de inicio e horarios semanais no mesmo fluxo.
+- `Academia > Alunos` agora agrega por contrato quando existe `contract_id`, mostrando plano, mensalidade e horarios vinculados no drawer do aluno.
+- O caminho legado por matricula isolada continua preservado para registros antigos e excecoes administrativas.
+- `Marcar pago`, `Enviar lembrete`, Financeiro/Recebiveis e Clientes/Relacionamento usam `academy_student_contract` como alvo financeiro quando o aluno possui contrato.
+- `academy_enrollment` continua como fallback financeiro apenas para matriculas sem contrato.
+
 ### Filtros
 
 Inputs:
@@ -319,11 +351,25 @@ Acoes secundarias em `Acoes`:
 - `Falta`
 
 Logica basica:
-- Pagamento e calculado por `paymentMapKey("academy_enrollment", enrollmentId, billingPeriod)`.
+- Pagamento e calculado primeiro por `paymentMapKey("academy_student_contract", contractId, billingPeriod)` quando a matricula possui contrato.
+- Matriculas legadas sem contrato continuam usando `paymentMapKey("academy_enrollment", enrollmentId, billingPeriod)`.
 - Chamada usa `todayAttendance`.
 - Falta avisada chama `reportAcademyAbsence`.
 - Check-in/falta chama `markAcademyAttendance`.
 - Lembrete chama `onCreatePaymentReminder`.
+
+Gap atual para reposicao automatica:
+- `app_report_academy_absence` agora cria/atualiza `place_academy_planned_absences`, valida dia da turma e aplica antecedencia minima da academia.
+- Se a regra estiver ativa e o aviso estiver no prazo, a funcao cria credito de reposicao automaticamente com origem em `source_absence_id`.
+- `app_create_academy_makeup_credit` cria credito a partir de uma chamada marcada como `absent`, usando `source_attendance_id`.
+- Creditos por falta marcada continuam usando `source_attendance_id`; creditos por ausencia avisada usam `source_absence_id`.
+
+Suporte criado:
+- `place_academy_settings.makeup_notice_hours` guarda a antecedencia minima por academia.
+- `place_academy_makeup_credits.source_absence_id` permite rastrear credito originado por ausencia avisada.
+- `Configuracao > Quadras e horarios` permite editar antecedencia minima e o toggle de criacao automatica de credito.
+- `Pendencias` e `StudentDrawer` diferenciam credito por ausencia avisada, falta marcada e credito manual.
+- O seed split `web/supabase/seeds/qa_demo` agora popula esse fluxo: contratos reais, planos 1x/2x/3x, mensalidades por contrato, ausencias dentro/fora do prazo e creditos abertos/usados/cancelados.
 
 Estado atual no print:
 - `0 alunos encontrados`, porque o filtro padrao e `status: active` e os dados atuais da Arena nao possuem alunos ativos nas turmas exibidas.

@@ -18,7 +18,7 @@ drop table if exists
 cascade;
 
 delete from public.app_payment_reminders
-where target_type in ('league_registration', 'place_membership', 'academy_enrollment', 'court_booking', 'tournament_registration')
+where target_type in ('league_registration', 'place_membership', 'academy_enrollment', 'academy_student_contract', 'court_booking', 'tournament_registration')
   and user_id in (select id from public.seed_users);
 
 delete from public.app_payments

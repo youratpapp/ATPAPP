@@ -170,6 +170,79 @@ Comportamento:
 - drawer contem dados pessoais, matriculas, pagamentos, presenca, evolucao, observacoes, reposicoes e historico;
 - nao repetir formulario de matricula dentro de cada turma.
 
+### Aluno como contrato/plano semanal
+
+Decisao de evolucao:
+
+- `Aluno` nao deve ser apenas um nome solto matriculado em uma turma.
+- O cadastro profissional deve criar ou vincular um `usuario aluno`, para notificacoes, perfil, historico e recorrencia.
+- A academia deve definir um plano operacional do aluno: quantidade de aulas por semana, valor mensal, status e turmas/horarios vinculados.
+- A tela pode continuar usando `place_academy_enrollments` como vinculo com turmas, mas precisa de uma camada superior de contrato/plano para agrupar as matriculas do mesmo aluno.
+
+Fluxo alvo:
+
+1. secretaria busca ou convida o usuario por email/telefone;
+2. define plano do aluno: aulas por semana, mensalidade e inicio;
+3. seleciona uma ou mais ocorrencias semanais compativeis;
+4. se a mesma turma acontecer em mais de um dia/horario, a UI mostra as ocorrencias agrupadas e permite escolher uma, outra ou ambas;
+5. o aluno entra sem creditos de reposicao;
+6. ausencia avisada dentro da antecedencia configurada gera credito de reposicao e libera a vaga operacionalmente.
+
+Regras:
+
+- novo aluno deve priorizar usuario vinculado; aluno sem login e excecao administrativa e precisa aparecer como `convite pendente` ou `sem login`.
+- o plano semanal deve validar se a quantidade de horarios selecionados bate com a quantidade contratada, permitindo excecao consciente pelo gestor.
+- cobranca mensal deve ser por contrato/plano do aluno, nao por cada turma individual quando houver multiplos horarios semanais.
+- reposicao aberta e credito do aluno, nao de uma turma isolada; ainda assim deve guardar origem: turma, data, ausencia e matricula.
+- ausencia avisada precisa respeitar uma configuracao por academia, como `antecedencia minima para gerar reposicao`.
+- quando a ausencia for fora do prazo, a UI deve explicar claramente se nao gerou credito ou se exige aprovacao manual.
+
+Impacto no modelo atual:
+
+- `place_academy_enrollments` segue util para presenca, turma e historico por aula.
+- `place_academy_student_contracts` e a entidade canonica de contrato/plano para agrupar varias matriculas do mesmo usuario.
+- `app_payments` usa `academy_student_contract` como alvo canonico de mensalidade, mantendo `academy_enrollment` como fallback legado.
+- `place_academy_planned_absences` registra ausencia avisada e valida antecedencia pela regra da academia.
+- `place_academy_makeup_credits` nasce de `source_attendance_id` quando vem de falta marcada e de `source_absence_id` quando vem de ausencia avisada.
+
+Estado implementado em 2026-05-14:
+
+- migration `0079_academy_student_contracts_v1.sql` criou `place_academy_student_contracts`;
+- `place_academy_enrollments.contract_id` liga as matriculas operacionais ao contrato semanal;
+- `place_academy_settings` passou a guardar `makeup_notice_hours`;
+- `place_academy_makeup_credits.source_absence_id` prepara credito por ausencia avisada;
+- `app_create_academy_student_contract(...)` cria contrato e matriculas por turma em uma operacao de backend;
+- pagamentos/lembretes aceitam `academy_student_contract` como alvo canonico da mensalidade;
+- `Grade > Turma > Novo aluno` passou a usar o contrato canonico com email/login, plano semanal, mensalidade, inicio e selecao de horarios;
+- `Academia > Alunos` passou a agrupar linhas por contrato/usuario quando existir `contract_id`, evitando duplicar visualmente aluno com dois horarios semanais.
+
+Pendencia apos esta etapa:
+
+- `Marcar pago`, `Cobrar` e `Enviar lembrete` ja usam `academy_student_contract` quando a matricula esta ligada a contrato;
+- pagamentos antigos por `academy_enrollment` continuam sendo lidos como fallback para matriculas legadas;
+- Financeiro/Recebiveis passa a listar contratos como mensalidade canonica e inclui matriculas sem contrato apenas como legado.
+
+Proxima pendencia:
+
+- migration `0080_academy_absence_notice_credit_v1.sql` atualizou `app_report_academy_absence(...)`;
+- ausencia avisada agora valida dia real da turma e antecedencia minima configurada pela academia;
+- quando a regra permite, a ausencia cria credito de reposicao com `source_absence_id`;
+- quando esta fora do prazo, a ausencia fica registrada sem credito automatico e a UI explica o motivo;
+- `Configuracao > Quadras e horarios` permite editar antecedencia minima e ativar/desativar credito automatico.
+
+Seed/reset QA:
+
+- seed/reset de teste deve criar contratos, usuarios alunos, cobrancas e ausencias dentro/fora do prazo para validar massa real.
+- `web/supabase/seeds/qa_demo/04_academy.sql` agora cria:
+  - contratos reais em `place_academy_student_contracts`;
+  - planos 1x, 2x e 3x por semana;
+  - matriculas vinculadas por `contract_id`;
+  - configuracao de antecedencia em `place_academy_settings`;
+  - ausencias dentro e fora do prazo;
+  - creditos de reposicao abertos, usados e cancelados por `source_absence_id` e `source_attendance_id`.
+- `web/supabase/seeds/qa_demo/05_bookings.sql` agora cria mensalidades por `academy_student_contract`, com pagas, pendentes atuais e pendentes atrasadas.
+- `qa_demo/README.md` documenta pre-requisito das migrations `0079` e `0080`, ordem de execucao e natureza seed-only das tabelas auxiliares.
+
 ### Pendencias
 
 Responsabilidade:

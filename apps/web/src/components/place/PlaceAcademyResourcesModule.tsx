@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import type { AcademyClass, AcademyCoach, AcademySlot, PlaceCourt } from "../../lib/types";
+import { useEffect, useMemo, useState } from "react";
+import type { AcademyClass, AcademyCoach, AcademySettings, AcademySlot, PlaceCourt } from "../../lib/types";
 
 export type PlaceAcademyCoachDraft = {
   email: string;
@@ -51,7 +51,9 @@ type Props = {
   coaches: AcademyCoach[];
   onChangeAcademyDraftFromSlot: (patch: PlaceAcademyClassDraftPatch) => void;
   onCreateSlot: (draft: PlaceAcademySlotDraft, status: AcademySlot["status"]) => void;
+  onUpdateSettings: (draft: { autoCreateMakeupCreditOnNotice: boolean; makeupNoticeHours: string }) => void;
   onUpdateSlotStatus: (slot: AcademySlot, status: AcademySlot["status"]) => void;
+  settings: AcademySettings;
   slots: AcademySlot[];
   weekdayLabels: string[];
 };
@@ -102,7 +104,9 @@ export function PlaceAcademyResourcesModule({
   coaches,
   onChangeAcademyDraftFromSlot,
   onCreateSlot,
+  onUpdateSettings,
   onUpdateSlotStatus,
+  settings,
   slots,
   weekdayLabels,
 }: Props) {
@@ -111,6 +115,17 @@ export function PlaceAcademyResourcesModule({
   const [mode, setMode] = useState<ResourceMode>("court");
   const [resourceFilter, setResourceFilter] = useState("all");
   const [slotDraft, setSlotDraft] = useState<PlaceAcademySlotDraft>(() => createDefaultSlotDraft(selectedWeekday, coaches, activeCourts));
+  const [settingsDraft, setSettingsDraft] = useState({
+    autoCreateMakeupCreditOnNotice: settings.autoCreateMakeupCreditOnNotice,
+    makeupNoticeHours: String(settings.makeupNoticeHours),
+  });
+
+  useEffect(() => {
+    setSettingsDraft({
+      autoCreateMakeupCreditOnNotice: settings.autoCreateMakeupCreditOnNotice,
+      makeupNoticeHours: String(settings.makeupNoticeHours),
+    });
+  }, [settings.autoCreateMakeupCreditOnNotice, settings.makeupNoticeHours]);
 
   const resourceEvents = useMemo<ResourceEvent[]>(() => {
     const classEvents = classes
@@ -172,6 +187,38 @@ export function PlaceAcademyResourcesModule({
 
   return (
     <section className="academy-resource-workspace">
+      <div className="academy-resource-create academy-makeup-rule-card">
+        <header>
+          <div>
+            <strong>Regra de reposicao por ausencia avisada</strong>
+            <span>Define quando uma falta avisada libera credito automatico de reposicao.</span>
+          </div>
+        </header>
+        <label>
+          <span>Antecedencia minima</span>
+          <input
+            inputMode="numeric"
+            value={settingsDraft.makeupNoticeHours}
+            onChange={(event) => setSettingsDraft((prev) => ({ ...prev, makeupNoticeHours: event.target.value }))}
+            placeholder="Ex.: 12 horas"
+          />
+        </label>
+        <label className="academy-drawer-toggle">
+          <input
+            type="checkbox"
+            checked={settingsDraft.autoCreateMakeupCreditOnNotice}
+            onChange={(event) => setSettingsDraft((prev) => ({ ...prev, autoCreateMakeupCreditOnNotice: event.target.checked }))}
+          />
+          Gerar credito automaticamente quando o aviso estiver no prazo
+        </label>
+        <button type="button" onClick={() => onUpdateSettings(settingsDraft)} disabled={busy}>
+          Salvar regra
+        </button>
+        <small>
+          Regra atual: {settings.makeupNoticeHours}h de antecedencia. Fora do prazo, a ausencia fica registrada sem credito automatico.
+        </small>
+      </div>
+
       <div className="academy-resource-toolbar">
         <div>
           <span>Escala semanal</span>

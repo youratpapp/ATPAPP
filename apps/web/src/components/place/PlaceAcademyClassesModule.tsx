@@ -45,10 +45,14 @@ type ClassEditDraft = {
 };
 
 type StudentDraft = {
+  classIds: string[];
   email: string;
+  monthlyFee: string;
   name: string;
   notes: string;
   phone: string;
+  startsOn: string;
+  weeklyLessonsCount: string;
 };
 
 type Props = {
@@ -75,6 +79,23 @@ type Props = {
 };
 
 const DEFAULT_VISIBLE_LIMIT = 20;
+
+function todayInputValue(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function defaultStudentDraft(academyClass: AcademyClass): StudentDraft {
+  return {
+    classIds: [academyClass.id],
+    email: "",
+    monthlyFee: String(Math.round(academyClass.monthlyFeeCents / 100)),
+    name: "",
+    notes: "",
+    phone: "",
+    startsOn: todayInputValue(),
+    weeklyLessonsCount: "1",
+  };
+}
 
 function toClassEditDraft(academyClass: AcademyClass): ClassEditDraft {
   return {
@@ -196,7 +217,7 @@ export function PlaceAcademyClassesModule({
   const selectedEnrollments = selectedClass ? enrollments.filter((item) => item.classId === selectedClass.id) : [];
   const selectedActiveCount = selectedEnrollments.filter((item) => item.status === "active").length;
   const selectedPendingCount = selectedEnrollments.filter((item) => item.status === "pending").length;
-  const selectedStudentDraft = selectedClass ? studentDraftByClass[selectedClass.id] || { name: "", phone: "", email: "", notes: "" } : null;
+  const selectedStudentDraft = selectedClass ? studentDraftByClass[selectedClass.id] || defaultStudentDraft(selectedClass) : null;
 
   return (
     <>
@@ -490,20 +511,108 @@ export function PlaceAcademyClassesModule({
               </div>
               {canManagePlace && selectedStudentDraft ? (
                 <div className="academy-drawer-form compact">
+                  <header className="academy-contract-form-header">
+                    <strong>Novo aluno com plano</strong>
+                    <span>Usuario, mensalidade e horarios semanais no mesmo fluxo.</span>
+                  </header>
                   <label>
-                    <span>Novo aluno</span>
-                    <input value={selectedStudentDraft.name} onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, name: event.target.value })} placeholder="Nome" />
+                    <span>Nome do aluno</span>
+                    <input
+                      value={selectedStudentDraft.name}
+                      onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, name: event.target.value })}
+                      placeholder="Nome completo do aluno"
+                    />
                   </label>
                   <label>
-                    <span>Email/login opcional</span>
-                    <input value={selectedStudentDraft.email} onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, email: event.target.value })} placeholder="email@exemplo.com" />
+                    <span>Email/login</span>
+                    <input
+                      value={selectedStudentDraft.email}
+                      onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, email: event.target.value })}
+                      placeholder="email do usuario ou convite"
+                    />
                   </label>
                   <label>
                     <span>Telefone</span>
-                    <input value={selectedStudentDraft.phone} onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, phone: event.target.value })} placeholder="WhatsApp" />
+                    <input
+                      value={selectedStudentDraft.phone}
+                      onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, phone: event.target.value })}
+                      placeholder="WhatsApp do aluno/responsavel"
+                    />
                   </label>
-                  <button type="button" onClick={() => onCreateStudent(selectedClass)} disabled={busy || !selectedStudentDraft.name.trim()}>
-                    Matricular aluno
+                  <label>
+                    <span>Aulas por semana</span>
+                    <input
+                      type="number"
+                      min="1"
+                      max="14"
+                      value={selectedStudentDraft.weeklyLessonsCount}
+                      onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, weeklyLessonsCount: event.target.value })}
+                      placeholder="Ex: 2"
+                    />
+                  </label>
+                  <label>
+                    <span>Mensalidade R$</span>
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={selectedStudentDraft.monthlyFee}
+                      onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, monthlyFee: event.target.value })}
+                      placeholder="Valor mensal do plano"
+                    />
+                  </label>
+                  <label>
+                    <span>Inicio</span>
+                    <input
+                      type="date"
+                      value={selectedStudentDraft.startsOn}
+                      onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, startsOn: event.target.value })}
+                    />
+                  </label>
+                  <label className="wide">
+                    <span>Horarios semanais</span>
+                    <div className="academy-class-occurrence-list">
+                      {classes.map((classOption) => {
+                        const checked = selectedStudentDraft.classIds.includes(classOption.id) || classOption.id === selectedClass.id;
+                        const isSelectedBaseClass = classOption.id === selectedClass.id;
+                        return (
+                          <label key={`student-contract-class:${classOption.id}`}>
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              disabled={isSelectedBaseClass}
+                              onChange={(event) => {
+                                const current = new Set([selectedClass.id, ...selectedStudentDraft.classIds]);
+                                if (event.target.checked) {
+                                  current.add(classOption.id);
+                                } else {
+                                  current.delete(classOption.id);
+                                }
+                                onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, classIds: Array.from(current) });
+                              }}
+                            />
+                            <span>
+                              {classOption.title} | {weekdayLabels[classOption.weekday] || "Dia"} {classOption.startsAt.slice(0, 5)}-{classOption.endsAt.slice(0, 5)}
+                            </span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                    <small>
+                      Selecionados {new Set([selectedClass.id, ...selectedStudentDraft.classIds]).size} de {selectedStudentDraft.weeklyLessonsCount || "1"} contratados.
+                    </small>
+                  </label>
+                  <label className="wide">
+                    <span>Observacoes</span>
+                    <textarea
+                      value={selectedStudentDraft.notes}
+                      onChange={(event) => onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, notes: event.target.value })}
+                      placeholder="Restricoes, responsavel, combinados ou observacoes internas"
+                      rows={3}
+                    />
+                  </label>
+                  <button type="button" onClick={() => onCreateStudent(selectedClass)} disabled={busy || !selectedStudentDraft.name.trim() || !selectedStudentDraft.email.trim()}>
+                    Criar contrato e matricular
                   </button>
                 </div>
               ) : null}

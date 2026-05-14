@@ -293,6 +293,7 @@ export type AcademyEnrollment = {
   id: string;
   placeId: string;
   classId: string;
+  contractId: string | null;
   userId: string | null;
   playerName: string;
   phone: string;
@@ -384,9 +385,37 @@ export type AcademyMakeupCredit = {
   enrollmentId: string;
   userId: string | null;
   sourceAttendanceId: string;
+  sourceAbsenceId: string;
   status: "open" | "used" | "cancelled";
   notes: string;
   usedAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AcademyStudentContract = {
+  id: string;
+  placeId: string;
+  userId: string | null;
+  inviteEmail: string;
+  studentName: string;
+  phone: string;
+  status: "pending" | "active" | "cancelled";
+  weeklyLessonsCount: number;
+  monthlyFeeCents: number;
+  startsOn: string;
+  endsOn: string;
+  notes: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AcademySettings = {
+  placeId: string;
+  makeupNoticeHours: number;
+  autoCreateMakeupCreditOnNotice: boolean;
+  updatedBy: string | null;
   createdAt: string;
   updatedAt: string;
 };

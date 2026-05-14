@@ -8892,6 +8892,96 @@ button:disabled {
   font-weight: 900;
 }
 
+.academy-contract-form-header {
+  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  gap: 3px;
+  grid-column: 1 / -1;
+  padding-bottom: var(--space-2);
+}
+
+.academy-contract-form-header strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 900;
+}
+
+.academy-contract-form-header span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+}
+
+.academy-class-occurrence-list {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 6px;
+  max-height: 220px;
+  overflow: auto;
+  padding: var(--space-2);
+}
+
+.academy-class-occurrence-list label {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 9px;
+}
+
+.academy-class-occurrence-list input {
+  width: auto;
+}
+
+.academy-class-occurrence-list label:has(input:checked) {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary-soft);
+}
+
+.academy-class-occurrence-list label:has(input:disabled) {
+  opacity: 0.85;
+}
+
+.academy-contract-linked-classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: var(--space-2);
+}
+
+.academy-contract-linked-classes strong {
+  flex-basis: 100%;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+}
+
+.academy-contract-linked-classes small {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  padding: 6px 9px;
+}
+
+.academy-makeup-rule-card {
+  align-items: end;
+  grid-template-columns: minmax(240px, 1fr) minmax(160px, 0.35fr) minmax(220px, 0.65fr) auto;
+}
+
+.academy-makeup-rule-card small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  grid-column: 1 / -1;
+}
+
 .academy-level-checklist {
   display: grid;
   gap: 6px;

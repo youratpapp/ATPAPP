@@ -10,7 +10,9 @@ import type {
   AcademyMakeupCredit,
   AcademyPlannedAbsence,
   AcademyProgressNote,
+  AcademySettings,
   AcademySlot,
+  AcademyStudentContract,
   AvailableCourt,
   CourtBooking,
   CourtBookingWaitlistEntry,
@@ -53,6 +55,8 @@ const TABLE_ACADEMY_CLASSES = "place_academy_classes";
 const TABLE_ACADEMY_COACHES = "place_coaches";
 const TABLE_ACADEMY_SLOTS = "place_academy_slots";
 const TABLE_ACADEMY_ENROLLMENTS = "place_academy_enrollments";
+const TABLE_ACADEMY_STUDENT_CONTRACTS = "place_academy_student_contracts";
+const TABLE_ACADEMY_SETTINGS = "place_academy_settings";
 const TABLE_ACADEMY_ATTENDANCE = "place_academy_attendance";
 const TABLE_ACADEMY_ABSENCES = "place_academy_planned_absences";
 const TABLE_ACADEMY_LESSON_REQUESTS = "place_academy_lesson_requests";
@@ -67,6 +71,10 @@ const TABLE_PLACE_STAFF_INVITES = "place_staff_invites";
 
 const ACADEMY_COACH_SELECT =
   "id,place_id,user_id,name,email,phone,commission_percent,specialties,level_scopes,public_bio,internal_notes,public_profile_enabled,is_active";
+const ACADEMY_ENROLLMENT_SELECT = "id,place_id,class_id,contract_id,user_id,player_name,phone,status,notes,source,created_at";
+const ACADEMY_STUDENT_CONTRACT_SELECT =
+  "id,place_id,user_id,invite_email,student_name,phone,status,weekly_lessons_count,monthly_fee_cents,starts_on,ends_on,notes,created_by,created_at,updated_at";
+const ACADEMY_SETTINGS_SELECT = "place_id,makeup_notice_hours,auto_create_makeup_credit_on_notice,updated_by,created_at,updated_at";
 
 type PlaceRow = {
   id: string;
@@ -410,6 +418,7 @@ type AcademyEnrollmentRow = {
   id: string;
   place_id: string;
   class_id: string;
+  contract_id?: string | null;
   user_id: string | null;
   player_name: string;
   phone: string | null;
@@ -417,6 +426,33 @@ type AcademyEnrollmentRow = {
   notes: string | null;
   source?: "online" | "admin" | "linked" | null;
   created_at: string | null;
+};
+
+type AcademyStudentContractRow = {
+  id: string;
+  place_id: string;
+  user_id: string | null;
+  invite_email: string | null;
+  student_name: string;
+  phone: string | null;
+  status: "pending" | "active" | "cancelled";
+  weekly_lessons_count: number | null;
+  monthly_fee_cents: number | null;
+  starts_on: string;
+  ends_on: string | null;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+};
+
+type AcademySettingsRow = {
+  place_id: string;
+  makeup_notice_hours: number | null;
+  auto_create_makeup_credit_on_notice: boolean | null;
+  updated_by: string | null;
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 type AcademyAttendanceRow = {
@@ -501,6 +537,7 @@ type AcademyMakeupCreditRow = {
   enrollment_id: string;
   user_id: string | null;
   source_attendance_id: string | null;
+  source_absence_id?: string | null;
   status: "open" | "used" | "cancelled";
   notes: string | null;
   used_at: string | null;
@@ -899,6 +936,7 @@ function rowToAcademyEnrollment(row: AcademyEnrollmentRow): AcademyEnrollment {
     id: row.id,
     placeId: row.place_id,
     classId: row.class_id,
+    contractId: row.contract_id || null,
     userId: row.user_id,
     playerName: row.player_name,
     phone: row.phone || "",
@@ -906,6 +944,37 @@ function rowToAcademyEnrollment(row: AcademyEnrollmentRow): AcademyEnrollment {
     notes: row.notes || "",
     source: row.source || "online",
     createdAt: row.created_at || "",
+  };
+}
+
+function rowToAcademyStudentContract(row: AcademyStudentContractRow): AcademyStudentContract {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    userId: row.user_id,
+    inviteEmail: row.invite_email || "",
+    studentName: row.student_name,
+    phone: row.phone || "",
+    status: row.status,
+    weeklyLessonsCount: Number(row.weekly_lessons_count || 1),
+    monthlyFeeCents: Number(row.monthly_fee_cents || 0),
+    startsOn: row.starts_on,
+    endsOn: row.ends_on || "",
+    notes: row.notes || "",
+    createdBy: row.created_by || "",
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+function rowToAcademySettings(row: AcademySettingsRow): AcademySettings {
+  return {
+    placeId: row.place_id,
+    makeupNoticeHours: Number(row.makeup_notice_hours ?? 12),
+    autoCreateMakeupCreditOnNotice: row.auto_create_makeup_credit_on_notice !== false,
+    updatedBy: row.updated_by || null,
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
   };
 }
 
@@ -1000,6 +1069,7 @@ function rowToAcademyMakeupCredit(row: AcademyMakeupCreditRow): AcademyMakeupCre
     enrollmentId: row.enrollment_id,
     userId: row.user_id,
     sourceAttendanceId: row.source_attendance_id || "",
+    sourceAbsenceId: row.source_absence_id || "",
     status: row.status,
     notes: row.notes || "",
     usedAt: row.used_at || "",
@@ -2487,7 +2557,7 @@ export async function listPlaceAcademyEnrollments(placeId: string): Promise<Acad
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_ENROLLMENTS)
-    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
+    .select(ACADEMY_ENROLLMENT_SELECT)
     .eq("place_id", placeId)
     .neq("status", "cancelled")
     .order("created_at", { ascending: false })
@@ -2500,12 +2570,94 @@ export async function listMyAcademyEnrollments(): Promise<AcademyEnrollment[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_ENROLLMENTS)
-    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
+    .select(ACADEMY_ENROLLMENT_SELECT)
     .neq("status", "cancelled")
     .order("created_at", { ascending: false })
     .limit(80);
   if (error) throw new Error(error.message);
   return ((data ?? []) as AcademyEnrollmentRow[]).map(rowToAcademyEnrollment);
+}
+
+export async function listPlaceAcademyStudentContracts(placeId: string): Promise<AcademyStudentContract[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_STUDENT_CONTRACTS)
+    .select(ACADEMY_STUDENT_CONTRACT_SELECT)
+    .eq("place_id", placeId)
+    .neq("status", "cancelled")
+    .order("student_name", { ascending: true })
+    .limit(300);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyStudentContractRow[]).map(rowToAcademyStudentContract);
+}
+
+export async function getPlaceAcademySettings(placeId: string): Promise<AcademySettings> {
+  if (!supabase) {
+    return { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" };
+  }
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_SETTINGS)
+    .select(ACADEMY_SETTINGS_SELECT)
+    .eq("place_id", placeId)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) {
+    return { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" };
+  }
+  return rowToAcademySettings(data as AcademySettingsRow);
+}
+
+export async function updatePlaceAcademySettings(input: {
+  placeId: string;
+  makeupNoticeHours: number;
+  autoCreateMakeupCreditOnNotice: boolean;
+}): Promise<AcademySettings> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_SETTINGS)
+    .upsert(
+      {
+        place_id: input.placeId,
+        makeup_notice_hours: Math.max(0, Math.min(168, Math.floor(input.makeupNoticeHours || 0))),
+        auto_create_makeup_credit_on_notice: input.autoCreateMakeupCreditOnNotice !== false,
+      },
+      { onConflict: "place_id" }
+    )
+    .select(ACADEMY_SETTINGS_SELECT)
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToAcademySettings(data as AcademySettingsRow);
+}
+
+export async function createAcademyStudentContract(input: {
+  placeId: string;
+  studentName: string;
+  email: string;
+  phone?: string;
+  weeklyLessonsCount: number;
+  monthlyFeeCents: number;
+  startsOn: string;
+  notes?: string;
+  classIds: string[];
+  status?: AcademyStudentContract["status"];
+}): Promise<AcademyStudentContract> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_create_academy_student_contract", {
+    p_place_id: input.placeId,
+    p_student_name: input.studentName,
+    p_email: input.email,
+    p_phone: input.phone || null,
+    p_weekly_lessons_count: Math.max(1, Math.min(14, Math.floor(input.weeklyLessonsCount || 1))),
+    p_monthly_fee_cents: Math.max(0, Math.floor(input.monthlyFeeCents || 0)),
+    p_starts_on: input.startsOn,
+    p_notes: input.notes || null,
+    p_class_ids: input.classIds,
+    p_status: input.status || "active",
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyStudentContractRow[])[0];
+  if (!row) throw new Error("Contrato do aluno nao criado.");
+  return rowToAcademyStudentContract(row);
 }
 
 export async function createAcademyEnrollment(input: {
@@ -2527,7 +2679,7 @@ export async function createAcademyEnrollment(input: {
       phone: input.phone?.trim() || null,
       notes: input.notes?.trim() || null,
     })
-    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
+    .select(ACADEMY_ENROLLMENT_SELECT)
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyEnrollment(data as AcademyEnrollmentRow);
@@ -2587,7 +2739,7 @@ export async function updateAcademyEnrollment(input: {
       updated_at: new Date().toISOString(),
     })
     .eq("id", input.enrollmentId)
-    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
+    .select(ACADEMY_ENROLLMENT_SELECT)
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyEnrollment(data as AcademyEnrollmentRow);
@@ -2768,7 +2920,7 @@ export async function listPlaceAcademyMakeupCredits(placeId: string): Promise<Ac
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_MAKEUPS)
-    .select("id,place_id,class_id,enrollment_id,user_id,source_attendance_id,status,notes,used_at,created_at,updated_at")
+    .select("id,place_id,class_id,enrollment_id,user_id,source_attendance_id,source_absence_id,status,notes,used_at,created_at,updated_at")
     .eq("place_id", placeId)
     .neq("status", "cancelled")
     .order("created_at", { ascending: false })
@@ -2781,7 +2933,7 @@ export async function listMyAcademyMakeupCredits(): Promise<AcademyMakeupCredit[
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_MAKEUPS)
-    .select("id,place_id,class_id,enrollment_id,user_id,source_attendance_id,status,notes,used_at,created_at,updated_at")
+    .select("id,place_id,class_id,enrollment_id,user_id,source_attendance_id,source_absence_id,status,notes,used_at,created_at,updated_at")
     .eq("status", "open")
     .order("created_at", { ascending: false })
     .limit(80);

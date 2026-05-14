@@ -9,6 +9,8 @@ set search_path = public, auth, extensions;
 -- ---------------------------------------------------------------------
 
 drop table if exists
+  public.seed_contract_classes,
+  public.seed_contracts,
   public.seed_enrollments,
   public.seed_classes,
   public.seed_memberships,
@@ -24,6 +26,22 @@ where target_type = 'court_booking'
     select id
     from public.court_bookings
     where place_id in (select id from public.seed_places)
+  );
+
+delete from public.app_payment_reminders
+where target_type in ('academy_enrollment', 'academy_student_contract')
+  and (
+    place_id in (select id from public.seed_places)
+    or target_id in (select id from public.place_academy_enrollments where place_id in (select id from public.seed_places))
+    or target_id in (select id from public.place_academy_student_contracts where place_id in (select id from public.seed_places))
+  );
+
+delete from public.app_payments
+where target_type in ('academy_enrollment', 'academy_student_contract')
+  and (
+    target_id in (select id from public.place_academy_enrollments where place_id in (select id from public.seed_places))
+    or target_id in (select id from public.place_academy_student_contracts where place_id in (select id from public.seed_places))
+    or (metadata ? 'place_id' and (metadata->>'place_id')::uuid in (select id from public.seed_places))
   );
 
 delete from public.court_booking_waitlist
@@ -53,7 +71,13 @@ where place_id in (select id from public.seed_places);
 delete from public.place_academy_enrollments
 where place_id in (select id from public.seed_places);
 
+delete from public.place_academy_student_contracts
+where place_id in (select id from public.seed_places);
+
 delete from public.place_academy_classes
+where place_id in (select id from public.seed_places);
+
+delete from public.place_academy_settings
 where place_id in (select id from public.seed_places);
 
 delete from public.place_memberships
@@ -188,10 +212,109 @@ select
   gender_scope, age_group, min_age, max_age, true, monthly_fee_cents, now() - interval '5 months', now()
 from public.seed_classes;
 
+insert into public.place_academy_settings (
+  place_id, makeup_notice_hours, auto_create_makeup_credit_on_notice, updated_by, created_at, updated_at
+)
+select
+  p.id,
+  case p.key when 'prime' then 18 when 'adt' then 12 else 10 end,
+  true,
+  (select id from public.seed_users where email = 'escalao@gmail.com'),
+  now() - interval '5 months',
+  now()
+from public.seed_places p;
+
+create table public.seed_contracts (
+  seq integer primary key,
+  id uuid not null default gen_random_uuid(),
+  place_id uuid not null,
+  place_key text not null,
+  user_id uuid not null,
+  student_name text not null,
+  phone text,
+  status text not null,
+  weekly_lessons_count integer not null,
+  monthly_fee_cents integer not null,
+  starts_on date not null,
+  notes text
+);
+
+insert into public.seed_contracts (
+  seq, place_id, place_key, user_id, student_name, phone, status, weekly_lessons_count, monthly_fee_cents, starts_on, notes
+)
+select
+  row_number() over (order by p.key, n) as seq,
+  p.id,
+  p.key,
+  u.id,
+  u.display_name,
+  u.phone,
+  case when n % 29 = 0 then 'cancelled' when n % 17 = 0 then 'pending' else 'active' end,
+  case when n % 10 in (0, 1) then 3 when n % 10 in (2, 3, 4, 5) then 2 else 1 end,
+  (
+    case p.key when 'prime' then 18500 when 'adt' then 15500 else 14500 end
+    * case when n % 10 in (0, 1) then 3 when n % 10 in (2, 3, 4, 5) then 2 else 1 end
+  ),
+  (current_date - ((28 + n * 3) || ' days')::interval)::date,
+  case
+    when n % 29 = 0 then 'Contrato cancelado no ciclo demo para validar historico.'
+    when n % 17 = 0 then 'Contrato pendente aguardando confirmacao da secretaria.'
+    else 'Contrato ativo com plano semanal e turmas vinculadas.'
+  end
+from public.seed_places p
+cross join lateral generate_series(1, case p.key when 'prime' then 62 when 'adt' then 54 else 46 end) as gs(n)
+join public.seed_users u on u.seq = 1000 + (((case p.key when 'adt' then 0 when 'pantanal' then 80 else 155 end) + n - 1) % 240) + 1;
+
+insert into public.place_academy_student_contracts (
+  id, place_id, user_id, invite_email, student_name, phone, status, weekly_lessons_count, monthly_fee_cents,
+  starts_on, ends_on, notes, created_by, created_at, updated_at
+)
+select
+  id,
+  place_id,
+  user_id,
+  null,
+  student_name,
+  phone,
+  status,
+  weekly_lessons_count,
+  monthly_fee_cents,
+  starts_on,
+  case when status = 'cancelled' then current_date - interval '12 days' else null end,
+  notes,
+  (select id from public.seed_users where email = 'escalao@gmail.com'),
+  starts_on::timestamptz,
+  now()
+from public.seed_contracts;
+
+create table public.seed_contract_classes (
+  contract_id uuid not null,
+  class_id uuid not null,
+  slot_no integer not null,
+  primary key (contract_id, class_id)
+);
+
+insert into public.seed_contract_classes (contract_id, class_id, slot_no)
+select
+  sc.id,
+  selected.id,
+  selected.slot_no
+from public.seed_contracts sc
+join lateral (
+  select
+    c.id,
+    row_number() over (order by ((c.class_no + sc.seq * 3) % 97), c.class_no) as slot_no
+  from public.seed_classes c
+  where c.place_id = sc.place_id
+  order by ((c.class_no + sc.seq * 3) % 97), c.class_no
+  limit sc.weekly_lessons_count
+) selected on true;
+
 create table public.seed_enrollments (
   id uuid primary key default gen_random_uuid(),
   place_id uuid not null,
   class_id uuid not null,
+  contract_id uuid not null,
   user_id uuid not null,
   player_name text not null,
   phone text,
@@ -200,25 +323,25 @@ create table public.seed_enrollments (
   created_at timestamptz not null
 );
 
-insert into public.seed_enrollments (place_id, class_id, user_id, player_name, phone, status, source, created_at)
+insert into public.seed_enrollments (place_id, class_id, contract_id, user_id, player_name, phone, status, source, created_at)
 select
-  c.place_id,
-  c.id,
-  u.id,
-  u.display_name,
-  u.phone,
-  case when seat > c.capacity - 1 and (c.class_no + seat) % 2 = 0 then 'pending' else 'active' end,
-  case when seat % 5 = 0 then 'online' else 'admin' end,
-  now() - ((20 + ((c.class_no * 3 + seat) % 145)) || ' days')::interval
-from public.seed_classes c
-cross join lateral generate_series(1, c.capacity) as seats(seat)
-join public.seed_users u on u.seq = 1000 + (((c.class_no * 13 + seat * 7) % 240) + 1);
+  sc.place_id,
+  cc.class_id,
+  sc.id,
+  sc.user_id,
+  sc.student_name,
+  sc.phone,
+  sc.status,
+  'linked',
+  sc.starts_on::timestamptz + ((cc.slot_no - 1) || ' days')::interval
+from public.seed_contracts sc
+join public.seed_contract_classes cc on cc.contract_id = sc.id;
 
 insert into public.place_academy_enrollments (
-  id, place_id, class_id, user_id, player_name, phone, status, notes, source, created_at, updated_at
+  id, place_id, class_id, contract_id, user_id, player_name, phone, status, notes, source, created_at, updated_at
 )
 select
-  id, place_id, class_id, user_id, player_name, phone, status,
+  id, place_id, class_id, contract_id, user_id, player_name, phone, status,
   case when status = 'pending' then 'Pendente de confirmacao da secretaria.' else 'Matricula ativa do seed demo.' end,
   source,
   created_at,
@@ -296,7 +419,13 @@ select
   e.class_id,
   e.id,
   e.user_id,
-  current_date + (((extract(dow from current_date)::integer - c.weekday + 7) % 7) + 7)::integer,
+  current_date
+    + (
+      case
+        when ((c.weekday - extract(dow from current_date)::integer + 7) % 7) = 0 then 7
+        else ((c.weekday - extract(dow from current_date)::integer + 7) % 7)
+      end
+    )::integer,
   'open',
   'Aluno avisou ausencia para gerar reposicao.',
   e.user_id,
@@ -307,6 +436,61 @@ join public.seed_classes c on c.id = e.class_id
 where e.status = 'active'
   and (abs(('x' || substr(md5(e.id::text || 'absence'), 1, 6))::bit(24)::int) % 19) = 0
 limit 30;
+
+insert into public.place_academy_planned_absences (
+  place_id, class_id, enrollment_id, user_id, absence_on, status, notes, created_by, created_at, updated_at
+)
+select
+  e.place_id,
+  e.class_id,
+  e.id,
+  e.user_id,
+  current_date
+    + (
+      case
+        when ((c.weekday - extract(dow from current_date)::integer + 7) % 7) = 0 then 7
+        else ((c.weekday - extract(dow from current_date)::integer + 7) % 7)
+      end
+    )::integer,
+  'open',
+  'Aviso fora do prazo: ausencia registrada sem credito automatico.',
+  e.user_id,
+  now() - interval '1 hour',
+  now()
+from public.seed_enrollments e
+join public.seed_classes c on c.id = e.class_id
+where e.status = 'active'
+  and (abs(('x' || substr(md5(e.id::text || 'late_absence'), 1, 6))::bit(24)::int) % 31) = 0
+limit 18;
+
+insert into public.place_academy_makeup_credits (
+  place_id, class_id, enrollment_id, user_id, source_absence_id, status, notes, used_at, created_at, updated_at
+)
+select
+  a.place_id,
+  a.class_id,
+  a.enrollment_id,
+  a.user_id,
+  a.id,
+  case
+    when row_number() over (order by a.created_at, a.id) % 9 = 0 then 'cancelled'
+    when row_number() over (order by a.created_at, a.id) % 4 = 0 then 'used'
+    else 'open'
+  end,
+  'Credito gerado por ausencia avisada dentro da antecedencia configurada.',
+  case when row_number() over (order by a.created_at, a.id) % 4 = 0 then now() - interval '3 days' else null end,
+  a.created_at,
+  now()
+from public.place_academy_planned_absences a
+where a.place_id in (select id from public.seed_places)
+  and a.notes like 'Aluno avisou ausencia%'
+limit 30
+on conflict (source_absence_id) where source_absence_id is not null do update
+set
+  status = excluded.status,
+  notes = excluded.notes,
+  used_at = excluded.used_at,
+  updated_at = now();
 
 insert into public.place_academy_lesson_requests (
   place_id, class_id, requested_by, requested_on, request_type, player_name, phone, email, age, level_label, notes,
