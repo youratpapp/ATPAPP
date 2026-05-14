@@ -33,6 +33,36 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] SWEEP-ROLE-01 - Varredura por perfil Admin/Player/Professor
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Auditar telas principais e subfluxos usando perfis com permissoes diferentes, nao apenas o usuario admin multi-papel.
+
+Criterios:
+
+- validar Admin/PRO, Player puro e Professor/Staff;
+- capturar Home, Locais, Eventos, Ranking, Perfil e Gestao em mobile e desktop;
+- detectar vazamento de Management OS para Player App;
+- validar buscas por intencao em Locais;
+- registrar achados em documento vivo.
+
+Entregue:
+
+- screenshots/textos gerados em `web/docs/screenshots/page-sweep-2026-05-14-roles/`;
+- `HomePage` deixou compromissos passivos fora da fila de pendencia;
+- `PlacesPage` reforcou resultado direto de quadra com CTA e superficie formatada;
+- `PlacesPage` corrigiu falso vazio na busca de aulas quando a RPC retorna zero mas ha turmas locais;
+- `BottomNav` deixou de expor contexto Management OS para Player puro que acessa `/gestao` manualmente;
+- `PAGE_SWEEP_UX_AUDIT_2026_05_14.md` criado/atualizado como checklist de regressao por perfil.
+
+Risco residual:
+
+- erros 500 em `place_academy_enrollments` e `app_payments` continuam aparecendo no browser e podem afetar carregamento/estados vazios;
+- `PlacesPage` segue grande e deve ser tratada com cuidado em futuras mudancas.
+
 ### [x] EXPERIENCE-01 - Separar descoberta publica e filas profissionais
 
 Status: `[x]` concluido
@@ -217,9 +247,9 @@ Entregue em 2026-05-13:
 - `PlaceAdminShell` passou a renderizar 5 abas primarias e mover excedentes para `Mais`;
 - screenshots gerados em `web/docs/screenshots/`, mas bloqueados por falta de configuracao local do Supabase.
 
-### [!] VISUAL-03 - Validar e calibrar telas premium com dados reais
+### [x] VISUAL-03 - Validar e calibrar telas premium com dados reais
 
-Status: `[!]` bloqueado parcialmente
+Status: `[x]` concluido com risco residual de API/dados
 
 Objetivo:
 
@@ -267,13 +297,33 @@ Bloqueio em 2026-05-13:
 - screenshots gerados nao validam telas autenticadas;
 - manter bloqueado ate existir staging, env local ou seed/demo navegavel.
 
+Rechecagem em 2026-05-14:
+
+- `web/.env` e `web/.env.local` continuam ausentes;
+- `web/.env.example` possui apenas placeholders de Supabase;
+- `React/ Vite` continua bloqueando a UI autenticada com `Configuracao necessaria` quando nao ha variaveis reais;
+- `playwright`/`@playwright/test` nao estao instalados localmente para captura autenticada automatizada;
+- lint/build continuam sendo validacao tecnica, mas nao substituem screenshot real de Home, Gestao, Competition OS e paginas publicas com dados cheios.
+
 Enquanto bloqueado:
 
 - seguir tarefas executaveis de UX premium e registrar validacao limitada quando necessario.
 
-### [>] COMP-VISUAL-01 - Aplicar refinamento premium no Competition OS
+Entregue em 2026-05-14:
 
-Status: `[>]` prioridade atual
+- Playwright foi usado de forma temporaria fora do repo para capturar screenshots autenticados sem adicionar dependencia ao projeto;
+- screenshots do app publicado foram gerados em `web/docs/screenshots/visual-03-2026-05-14/`;
+- a validacao mostrou que o app publicado ainda estava atras do codigo local em pontos de Competition OS/Home, entao a calibragem final foi feita contra o build local atual usando a anon key publica do bundle apenas como variavel de ambiente da sessao;
+- screenshots do build local atual foram gerados em `web/docs/screenshots/visual-03-2026-05-14-local-current/`;
+- screenshots finais apos ajuste foram gerados em `web/docs/screenshots/visual-03-2026-05-14-local-final/`;
+- `HomePage` separou avisos de jogador e avisos operacionais, impedindo que comunicados de competicoes organizadas contem como pendencia principal do Player App;
+- `HomePage` reduziu densidade abaixo da central do jogador: prioridades ficam em recorte curto com `Ver todas`, atualizacoes recentes foram limitadas e eventos publicos continuam como suporte;
+- validacao real apontou erros `500` recorrentes em `place_academy_enrollments` e `app_payments`; isso permanece como risco de API/dados, nao como bloqueio visual da fase;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] COMP-VISUAL-01 - Aplicar refinamento premium no Competition OS
+
+Status: `[x]` concluido
 
 Objetivo:
 
@@ -316,6 +366,74 @@ Criterios de conclusao:
 - pelo menos uma tela critica de Competition OS refinada;
 - lint/build passando;
 - docs vivos atualizados.
+
+Entregue em 2026-05-13:
+
+- `/eventos` deixou de tratar `Organizando agora` como lista passiva;
+- torneios e ligas organizados passaram a aparecer como rows operacionais com tipo, status, proximo passo e CTA primario;
+- status de torneio define destino semantico: setup, inscricoes, preparacao de jogos, operacao ao vivo ou resumo;
+- status de liga define destino semantico: configurar, operar rodada, revisar pausa ou historico;
+- atalhos `Torneios organizados` e `Ligas organizadas` ficaram como suporte, nao cards principais;
+- mobile passou a empilhar cada row com botao full-width;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] COMP-VISUAL-02 - Refinar operacao interna de torneio/liga sem aumentar escopo
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Levar o mesmo padrao de row operacional do hub para a primeira viewport interna de torneio/liga, reforcando proxima acao sem mexer em confirmacao/resultado.
+
+Criterios:
+
+- tela interna deve abrir com escopo ativo, pendencias e acao primaria clara;
+- jogador e organizador devem perceber papeis diferentes sem trocar de produto mentalmente;
+- publicacao/configuracao deve ficar secundaria quando houver pendencia de partida/inscricao;
+- mobile deve manter a proxima acao visivel sem grid comprimido;
+- nao alterar regras de placar, confirmacao, disponibilidade ou resultado.
+
+Telas/componentes afetados:
+
+- `TournamentPage`;
+- `LeagueDetailsPage`;
+- `CompetitionOperationalQueue`;
+- `App.css`;
+- docs vivos.
+
+Ganhos esperados:
+
+- Competition OS passa a ser operacional tambem dentro da competicao;
+- menos leitura antes da acao;
+- menos sensacao de pagina longa de admin;
+- maior continuidade entre hub e detalhe.
+
+Dependencias:
+
+- `COMPONENT_GRAMMAR.md`;
+- `PREMIUM_UX_VISUAL_LANGUAGE.md`;
+- estado atual de partidas/inscricoes.
+
+Risco de regressao:
+
+- esconder detalhes importantes de classe/fase;
+- afetar fluxos sensiveis de resultado/confirmacao.
+
+Criterios de conclusao:
+
+- uma tela interna de competicao refinada;
+- lint/build passando;
+- docs atualizados.
+
+Entregue em 2026-05-14:
+
+- `LeagueDetailsPage` ganhou painel de foco operacional antes das tabs, com proxima acao, escopo ativo, pendencias e CTA `Resolver agora`;
+- a fila operacional da liga ficou na primeira viewport do organizador, sem depender da aba `Organizacao`;
+- resumo duplicado da aba `Visao` foi reduzido para suporte/publicacao/fechamento, evitando repetir as mesmas metricas e fila;
+- `CompetitionOperationalQueue` passou a aceitar `actionLabel`, deixando rows internas com chamada explicita como `Resolver`, `Agendar`, `Confirmar` e `Intervir`;
+- `TournamentPage` passou a exibir `Resolver`/`Ver` na fila operacional sem alterar regras de placar, confirmacao ou resultado;
+- mobile empilha o painel de foco e transforma a acao da fila em largura total;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
 
 ### [x] ACCESS-01 - Aplicar navegacao global por perfil e plano
 
@@ -1958,6 +2076,30 @@ Ganho:
 - remove a contradicao entre UX e banco;
 - impede ferramenta profissional exposta para Free Player;
 - torna o fluxo de criacao de local coerente com perfil, plano e permissao.
+
+### [x] SWEEP-ROLE-02 - Corrigir entrada neutra por perfil em Locais/Gestao
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Reduzir confusao de contexto descoberta/gestao detectada na varredura por Admin, Player puro e Professor.
+
+Entregue em 2026-05-14:
+
+- `/locais` agora abre em estado neutro de intencao, sem assumir reserva de quadra como padrao;
+- o usuario escolhe primeiro entre `Encontrar jogadores`, `Reservar quadra` e `Entrar em aula`;
+- tabs/listas de locais so aparecem depois da intencao correta, evitando academia generica em busca de quadra/aula;
+- `Reservar quadra` e `Entrar em aula` nao listam academias genericas antes da busca; orientam o filtro e depois devolvem quadras livres ou turmas com vaga;
+- `/gestao` acessado por Player puro agora mostra ausencia de permissao e volta para Inicio/Locais publicos;
+- operador com entitlement mas sem local continua vendo setup profissional.
+
+Ganho:
+
+- menos mistura entre descoberta publica e operacao;
+- menos friccao para Player puro;
+- menos risco de achar que `/locais` e uma busca generica sem finalidade;
+- melhor aderencia ao modelo de perfil/plano sem criar nova arquitetura.
 
 ## Concluidos recentes
 

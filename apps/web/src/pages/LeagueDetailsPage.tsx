@@ -1383,6 +1383,77 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </section>
           </ResponsiveFilterSheet>
 
+          {isOwner ? (
+            <section className="competition-focus-panel league-operation-panel">
+              <div className="competition-focus-main">
+                <span>Competition OS</span>
+                <strong>{leagueOverview.nextAction}</strong>
+                <small>
+                  {selectedSeason?.name || "Temporada"} | {selectedClassId ? classes.find((item) => item.id === selectedClassId)?.className || "Classe" : "Todas as classes"}
+                </small>
+              </div>
+              <div className="competition-focus-metrics">
+                <span>
+                  <strong>{leagueOverview.pending}</strong>
+                  partidas pendentes
+                </span>
+                <span>
+                  <strong>{registrationStats.pending}</strong>
+                  inscricoes pendentes
+                </span>
+                <span>
+                  <strong>{leagueOverview.attention}</strong>
+                  em analise
+                </span>
+              </div>
+              <button className="primary" type="button" onClick={() => goToTab(leagueOverview.nextTab)}>
+                Resolver agora
+              </button>
+              <CompetitionOperationalQueue
+                title="Pendencias da rodada"
+                onOpenAll={() => goToTab("partidas")}
+                items={[
+                  {
+                    id: "schedule",
+                    count: leagueOverview.scheduling,
+                    label: "Agendar",
+                    detail: "Partidas aguardando organizacao",
+                    actionLabel: leagueOverview.scheduling > 0 ? "Agendar" : "Ver",
+                    tone: leagueOverview.scheduling > 0 ? "attention" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                  {
+                    id: "result",
+                    count: leagueOverview.result,
+                    label: "Resultado",
+                    detail: "Jogos esperando placar",
+                    actionLabel: leagueOverview.result > 0 ? "Resolver" : "Ver",
+                    tone: leagueOverview.result > 0 ? "attention" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                  {
+                    id: "confirmation",
+                    count: leagueOverview.confirmation,
+                    label: "Confirmar",
+                    detail: "Resultados aguardando aceite",
+                    actionLabel: leagueOverview.confirmation > 0 ? "Confirmar" : "Ver",
+                    tone: leagueOverview.confirmation > 0 ? "attention" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                  {
+                    id: "attention",
+                    count: leagueOverview.attention,
+                    label: "Intervir",
+                    detail: "Disputa ou analise admin",
+                    actionLabel: leagueOverview.attention > 0 ? "Intervir" : "Ver",
+                    tone: leagueOverview.attention > 0 ? "danger" : "neutral",
+                    onClick: () => goToTab("partidas"),
+                  },
+                ]}
+              />
+            </section>
+          ) : null}
+
           <CompetitionTabs
             activeValue={activeTab}
             ariaLabel="Visoes da liga"
@@ -1412,90 +1483,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           />
 
           {isOwner && activeTab === "visao" ? (
-            <div className="events-kpi-grid">
-              <article className="events-kpi-card">
-                <p className="events-kpi-label">Tipo</p>
-                <p className="events-kpi-value" style={{ fontSize: "var(--font-size-md)" }}>
-                  {typeLabel(league.leagueType)}
-                </p>
-              </article>
-              <article className="events-kpi-card">
-                <p className="events-kpi-label">Status</p>
-                <p className="events-kpi-value" style={{ fontSize: "var(--font-size-md)" }}>
-                  {statusLabel(league.status)}
-                </p>
-              </article>
-              <article className="events-kpi-card">
-                <p className="events-kpi-label">Temporadas</p>
-                <p className="events-kpi-value">{league.seasons.length}</p>
-              </article>
-            </div>
-          ) : null}
-
-          {isOwner && activeTab === "visao" ? (
-          <section className="league-overview-card">
-            <div className="tournament-overview-grid">
-              <div className="tournament-overview-kpi">
-                <strong>{leagueOverview.rounds}</strong>
-                <span>Rodadas carregadas</span>
-              </div>
-              <div className="tournament-overview-kpi">
-                <strong>{leagueOverview.finished}/{leagueOverview.matches}</strong>
-                <span>Partidas encerradas</span>
-              </div>
-              <div className="tournament-overview-kpi">
-                <strong>{leagueOverview.pending}</strong>
-                <span>Partidas pendentes</span>
-              </div>
-              <div className="tournament-overview-kpi">
-                <strong>{isOwner ? registrationStats.pending : leagueOverview.attention}</strong>
-                <span>{isOwner ? "Inscricoes pendentes" : "Em analise"}</span>
-              </div>
-            </div>
-            <button className="tournament-next-action" onClick={() => goToTab(leagueOverview.nextTab)}>
-              <span>Proxima acao</span>
-              <strong>{leagueOverview.nextAction}</strong>
-            </button>
-            {isOwner ? (
-              <CompetitionOperationalQueue
-                title="Pendencias da rodada"
-                onOpenAll={() => goToTab("partidas")}
-                items={[
-                  {
-                    id: "schedule",
-                    count: leagueOverview.scheduling,
-                    label: "Agendar",
-                    detail: "Partidas aguardando organizacao",
-                    tone: leagueOverview.scheduling > 0 ? "attention" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                  {
-                    id: "result",
-                    count: leagueOverview.result,
-                    label: "Resultado",
-                    detail: "Jogos esperando placar",
-                    tone: leagueOverview.result > 0 ? "attention" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                  {
-                    id: "confirmation",
-                    count: leagueOverview.confirmation,
-                    label: "Confirmar",
-                    detail: "Resultados aguardando aceite",
-                    tone: leagueOverview.confirmation > 0 ? "attention" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                  {
-                    id: "attention",
-                    count: leagueOverview.attention,
-                    label: "Intervir",
-                    detail: "Disputa ou analise admin",
-                    tone: leagueOverview.attention > 0 ? "danger" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                ]}
-              />
-            ) : null}
+          <section className="league-overview-card league-support-panel">
             {isOwner ? (
               <div className={`league-season-guard ${leagueSeasonGuard.ready ? "ready" : ""}`}>
                 <div>

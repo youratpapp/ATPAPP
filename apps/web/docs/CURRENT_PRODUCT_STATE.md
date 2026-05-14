@@ -201,6 +201,11 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Cards de `Meus locais` em `/locais` priorizam a pagina publica; `Abrir gestao` existe como acao secundaria/discreta para manter descoberta separada de operacao.
 - `/inicio` agora separa prioridades de jogador e prioridades profissionais: pendencias de reserva/aula/partida do jogador alimentam a Home e notificacoes, enquanto tarefas de academia/organizador aparecem em bloco `Area profissional`.
 - Acoes operacionais da Home direcionam para destinos canonicos de gestao (`/gestao/:placeId/:module?visao=...`) em vez de voltar para `/locais`.
+- `/eventos` agora trata `Organizando agora` como fila operacional: torneios e ligas mostram tipo, status, proximo passo e CTA primario por item.
+- Competition OS no hub ja direciona organizador para destino semantico por status: setup, inscricoes, preparacao de jogos, operacao ao vivo, rodada da liga ou historico.
+- `/eventos/ligas/:leagueId` ja abre a experiencia do organizador com painel de foco operacional antes das tabs, mostrando proxima acao, escopo ativo, pendencias e CTA `Resolver agora`.
+- `CompetitionOperationalQueue` ja suporta `actionLabel`, entao filas internas deixam claro se a tarefa e `Resolver`, `Agendar`, `Confirmar`, `Intervir` ou apenas `Ver`.
+- `TournamentPage` ja usa chamadas explicitas `Resolver`/`Ver` na fila operacional sem mudar regras sensiveis de placar, confirmacao ou resultado.
 
 ### Ainda fraco
 
@@ -210,7 +215,7 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Sistema ja iniciou visibilidade por perfil/plano na navegacao global e guardrail real para criar local, mas ainda precisa aplicar permissoes reais em mais hubs internos.
 - Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; entradas internas agora tambem mudam prioridade por papel, mas ainda falta calibrar fluxos internos especificos por massa real.
 - Acoes de setup de local ja comecaram a ficar semanticamente descobriveis; criacao de torneio/liga ja fica concentrada no contexto de organizacao do Competition OS.
-- Competition OS ja esta mais consistente visualmente; torneio, lista de partidas da liga e sala da liga ja usam mais hierarchy operacional.
+- Competition OS ja esta mais consistente visualmente; hub, torneio, tela interna da liga, lista de partidas da liga e sala da liga ja usam mais hierarchy operacional.
 - Mobile ainda pode parecer desktop empilhado em varias telas, mas filtros de liga ja usam sheet responsivo como primeiro padrao.
 - Home do jogador ja reforca proxima acao na primeira viewport, mas ainda pode evoluir feed, estados vazios e detalhe mobile.
 - Paginas publicas ja ganharam primeira rodada de conversao premium, mas ainda podem evoluir imagem, prova social e fluxo de pagamento.
@@ -344,6 +349,20 @@ Bloco visual executado em 2026-05-13:
 Bloco de discoverability executado em 2026-05-13:
 
 - `VISUAL-03` ficou bloqueado para screenshots reais porque o ambiente local nao tem `.env`/Supabase; a queue agora registra esse bloqueio explicitamente.
+- `VISUAL-03` foi desbloqueado em 2026-05-14 com Playwright temporario fora do repo e variaveis de ambiente de sessao, sem criar `.env` nem adicionar dependencia ao projeto.
+- Screenshots autenticados com dados reais foram gerados em `web/docs/screenshots/visual-03-2026-05-14/`, `web/docs/screenshots/visual-03-2026-05-14-local-current/` e `web/docs/screenshots/visual-03-2026-05-14-local-final/`.
+- A validacao real mostrou que Home ainda misturava comunicados de organizador na fila principal do Player App; `HomePage` agora separa `playerNotices` e `operationalNotices`.
+- A Home tambem passou a limitar listas secundarias abaixo da central do jogador, reduzindo scroll e repeticao sem remover acesso pelo painel de notificacoes.
+- Em 2026-05-14, a varredura passou a usar perfis diferentes do seed: Admin/PRO (`escalao@gmail.com`), Player puro (`jogador001@demo.atp.local`) e Professor (`prof.renato@demo.atp.local`).
+- A varredura por papel gerou screenshots/textos em `web/docs/screenshots/page-sweep-2026-05-14-roles/` e criou `PAGE_SWEEP_UX_AUDIT_2026_05_14.md`.
+- `HomePage` tambem deixou reservas confirmadas e espera passiva fora da fila de pendencia; compromisso confirmado e informacao passiva pertencem a Agenda/feed.
+- `PlacesPage` confirmou resultado direto por quadra ao buscar cidade/data/hora e agora exibe CTA explicito de solicitacao no card de quadra.
+- `PlacesPage` corrigiu falso vazio de `Entrar em aula`: quando a RPC otimizada retorna zero, o fallback local tambem tenta turmas ativas compativeis.
+- `PlacesPage` passou a abrir `/locais` em estado neutro de escolha de intencao, evitando assumir reserva de quadra como fluxo padrao e reduzindo confusao entre procurar jogador, reservar quadra e entrar em aula.
+- `Reservar quadra` e `Entrar em aula` em `/locais` nao devem listar academias genericas antes da busca. A primeira resposta publica desses fluxos deve ser quadra livre ou turma com vaga.
+- `BottomNav` deixou de mostrar `Management OS` para Player puro que acessa `/gestao` diretamente sem permissao.
+- `ManagementHubPage` passou a diferenciar Player sem permissao de operador sem local; acesso direto a `/gestao` por jogador puro volta para Inicio/Locais publicos em vez de sugerir setup profissional.
+- Restam riscos de API/dados detectados por screenshots, especialmente `500` em `place_academy_enrollments` e `app_payments`.
 - `ROUTINE-02`: rows de local em Gestao passaram a sugerir acoes rapidas por intencao quando a base ja esta pronta.
 - Agenda pode sugerir `Confirmar reservas`, `Chamar espera`, `Ver agenda` e `Criar reserva`, sempre abrindo a subvisao executavel.
 - Academia pode sugerir `Resolver aulas` e `Fazer chamada` quando ha pendencias/aulas do dia.

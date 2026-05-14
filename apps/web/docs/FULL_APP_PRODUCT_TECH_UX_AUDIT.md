@@ -14,6 +14,15 @@
 - O vazamento do cockpit administrativo em `/locais` foi bloqueado: a gestao completa agora renderiza apenas em rota administrativa.
 - A Home foi ajustada para separar prioridades de jogador e prioridades profissionais; pendencias administrativas deixam de alimentar a fila principal do Player App.
 - As acoes profissionais da Home agora apontam para rotas canonicas de Gestao, reforcando a fronteira entre descoberta/player e operacao.
+- O hub `/eventos` ganhou rows operacionais em `Organizando agora`, com proximo passo e CTA por torneio/liga, reduzindo o problema de cards passivos apontado na auditoria.
+- A tela interna da liga ganhou painel de foco operacional antes das tabs, com proxima acao, escopo ativo, pendencias e CTA `Resolver agora`.
+- A fila operacional compartilhada de competicoes passou a mostrar labels de acao explicitos, reduzindo a sensacao de KPI clicavel generico.
+- VISUAL-03 foi desbloqueado em 2026-05-14 com automacao temporaria de browser fora do repo e validacao autenticada contra dados reais.
+- A validacao revelou que a Home ainda misturava avisos de competicoes organizadas na fila principal do Player App; isso foi corrigido com separacao entre avisos de jogador e avisos operacionais.
+- A Home tambem teve listas secundarias encurtadas para reduzir scroll e duplicidade depois da central do jogador.
+- A validacao real encontrou erros `500` recorrentes em `place_academy_enrollments` e `app_payments`; eles devem ser tratados como risco de API/dados, nao como refinamento visual.
+- A varredura por papel foi iniciada em 2026-05-14 com Admin/PRO, Player puro e Professor. Ela confirmou que reserva confirmada nao deve virar pendencia, que busca de quadra completa deve devolver cards diretos de quadra e que Player puro nao deve receber contexto visual de Management OS ao acessar `/gestao` manualmente.
+- `PlacesPage` ganhou fallback de aula quando a RPC otimizada retorna vazia, evitando falso estado vazio em `Entrar em aula`.
 - O risco tecnico de `PlacesPage.tsx` continuar concentrando muita orquestracao permanece; a correcao atual resolveu o vazamento de experiencia, nao a decomposicao estrutural completa.
 
 O ATP é um produto com arquitetura conceitual bem pensada e documentação de produto excepcionalmente detalhada. Os MDs demonstram uma visão clara, madura e alinhada com o que um SaaS esportivo premium precisa ser. Porém, há uma distância significativa entre o que os MDs descrevem como "pronto" e o que o código e o app real entregam.
@@ -24,7 +33,7 @@ O produto tem valor real e fundamentos sólidos. A separação de contextos (Pla
 
 2. **O painel de administração completo vaza para dentro da descoberta pública.** Quando o usuário tem acesso admin a um local, o card na tela `/locais` renderiza inline o cockpit completo de gestão — incluindo dados financeiros, exportação CSV, seletor de plano e métricas operacionais. Isso é um bug funcional, não só visual.
 
-3. **A Home Page mistura conteúdo de papéis diferentes sem separação clara.** As "8 pendências" mostradas no topo da Home incluem ações de organizador de torneio (aprovar inscrições), ações de dono de local (solicitações de sócio, lista de espera) e ações de jogador — tudo misturado num único contador urgente.
+3. **A Home Page ja corrigiu a mistura principal de papéis, mas precisa de varredura contínua.** Em 2026-05-14, avisos e tarefas operacionais foram separados da fila principal do Player App. A varredura seguinte detectou e corrigiu outro vazamento: reserva confirmada/lista de espera passiva não pode aparecer como "pendência" do jogador.
 
 4. **TournamentPage.tsx com 5.919 linhas** repete o mesmo padrão god-component de PlacesPage.
 
@@ -68,9 +77,9 @@ O produto está a 2–3 ciclos de execução focados de ser genuinamente vendáv
 | `/gestao` com quick actions semânticas | [x] concluído | Funcionando. Setup checklist com progresso visível e ações nomeadas. |
 | Locais separa descoberta por intenção | [x] concluído | Funcionando — Encontrar jogadores / Reservar quadra / Entrar em aula está correto. |
 | Admin vaza para descoberta pública | Nunca documentado como problema | **Bug crítico ativo**: `isManagementCockpit = Boolean(staffRole)` faz o card de local em `/locais` renderizar todo o admin inline quando usuário tem acesso. |
-| Home Page como Player App task-first | [x] concluído | Parcialmente. O painel superior está task-first, mas "Prioridades de hoje" mistura papéis: organizer actions + owner actions + player actions num único bloco urgente. |
-| Competition OS visual refinado | [>] prioridade atual | Estrutura melhorou (separação Jogando/Organizando/Descobrir), mas os cards de torneio em "Organizando agora" são apenas artigos sem ação por item. |
-| VISUAL-03 validação com dados reais | [!] bloqueado | Confirmado bloqueado — o ambiente de produção tem dados seed completos, o ambiente local não tem `.env`. A validação no ambiente real é possível agora e deve ser feita. |
+| Home Page como Player App task-first | [x] concluído | Revalidado em 2026-05-14: avisos de jogador e avisos operacionais foram separados, e listas secundarias ficaram em recorte curto. |
+| Competition OS visual refinado | [x] concluído | Hub e liga interna ja usam fila operacional, proximo passo e CTA semantico por item; detalhes sensiveis seguem preservados. |
+| VISUAL-03 validação com dados reais | [x] concluído | Screenshots autenticados foram gerados contra app publicado e build local atual com dados reais; restam erros 500 de API/dados como risco separado. |
 
 ### Divergências críticas entre MDs e realidade
 
@@ -90,7 +99,7 @@ O produto está a 2–3 ciclos de execução focados de ser genuinamente vendáv
 ### 4.1 Jogador comum
 
 **Como entro no app e sei o que fazer?**  
-A Home abre com "8 pendências para resolver" e "Resolve agora" como CTA primário. Para um jogador puro (sem papel de organizador ou dono), isso seria potencialmente limpo. Mas com o usuário demo (Escalao Admin), as "pendências" são mistura de tarefas administrativas, o que quebra completamente a proposta de Player App.
+A Home foi revalidada em 2026-05-14. O usuário multi-papel agora tem avisos e prioridades operacionais deslocados para área profissional. A varredura página a página reforçou uma regra adicional: compromisso confirmado deve entrar como agenda, não como pendência. `HomePage` passou a priorizar apenas reserva pendente, convite de espera e ações realmente acionáveis.
 
 **Como vejo minha próxima partida?**  
 A seção "Central do jogador > Competição > Minhas partidas" existe mas mostra estado vazio ("Entre em torneios e ligas para jogar"), porque o usuário demo é organizador, não jogador. Isso não é bug — é dado, mas demonstra que o produto não tem dados de jogador puro no seed demo, o que dificulta validação real da experiência.
@@ -101,7 +110,7 @@ A seção "Central do jogador > Competição > Minhas partidas" existe mas mostr
 **Gestão aparece indevidamente?**  
 Sim e não. O item "Gestão" no nav aparece porque o usuário demo tem acesso a locais. Para um jogador puro sem acesso admin, o item não deveria aparecer — e a lógica de `hasManagement` no `workspace-access.ts` está correta. O problema é que o demo user tem múltiplos papéis simultâneos.
 
-**Avaliação**: Para um jogador puro, a experiência funcionaria razoavelmente. O risco real é um usuário com qualquer papel admin ver uma Home que parece dashboard de gestão, não Player App.
+**Avaliação**: Para um jogador puro, a experiência ficou mais coerente. O risco residual está em manter o seed/demo saudável e impedir que novas fontes de dados voltem a alimentar o contador principal com tarefas passivas ou administrativas.
 
 ---
 
@@ -225,21 +234,16 @@ Não existe uma página separada de admin. A mesma PlacesPage que serve `/locais
 ### 5.4 Fluxo: Home Page como Player App
 
 **O que aparece**:
-- Hero: "8 pendências para resolver" (inclui ações de organizador e dono de local)
+- Painel Player App: próxima ação, agenda e atalhos de jogar
 - "Próximas ações do jogador": Pendência / Agenda / Clube
 - "Atalhos rápidos": Competir / Jogar / Perfil
 - "Central do jogador": Quadras reservadas, Competição (vazia), Academia (vazia), Financeiro (vazio)
-- **"Prioridades de hoje"**: 2 inscrições pendentes (Open ADT), 4 inscrições pendentes (Prime Cup), 3 solicitações de sócio (ADT), 2 solicitações de sócio (Arena), 3 solicitações de sócio (Clube Racket), 2/1 itens de lista de espera
+- **"Prioridades de hoje"**: deve conter apenas ação que o jogador precisa resolver. Reservas confirmadas e lista de espera passiva ficam em Agenda/atividade, não em pendência.
 - "Atualizações recentes": avisos de torneios
 - "Organização": cards de torneios/ligas organizados
 - "Próximos eventos públicos": eventos visíveis
 
-**Problema crítico**: A seção "Prioridades de hoje" e o contador de "8 pendências" no hero são compostos de:
-- Ações de **organizador de torneio**: aprovar/rejeitar inscrições de torneios
-- Ações de **dono de local**: ativar planos de sócio, gerenciar lista de espera
-- Essas ações NÃO são "pendências do jogador" — são tarefas operacionais
-
-Um usuário que é dono de 3 academias e organiza 5 torneios vê uma Home com dezenas de "pendências urgentes" que são tarefas de gestão, não de jogador. A proposta de "Player App task-first" é diretamente contradita pela mistura de papéis no acumulador de urgências.
+**Correção aplicada**: Ações de organizador/dono de local não compõem mais a fila principal do Player App. Em 2026-05-14, a varredura também removeu compromissos passivos da fila de prioridade: reserva confirmada deixa de gerar "pendência"; lista de espera só vira prioridade para o jogador quando houver convite liberado.
 
 ---
 
@@ -249,8 +253,8 @@ Um usuário que é dono de 3 academias e organiza 5 torneios vê uma Home com de
 
 | Critério | Avaliação |
 |---|---|
-| Primeira viewport responde "o que faço agora?" | Parcialmente — mas o "agora" mistura papéis |
-| Gestão não aparece como tarefa do jogador | ❌ "Prioridades de hoje" inclui tarefas de gestão |
+| Primeira viewport responde "o que faço agora?" | Melhorado — tarefas acionáveis do jogador comandam a primeira viewport |
+| Gestão não aparece como tarefa do jogador | ✅ Operação foi deslocada para área profissional; compromissos passivos não viram pendência |
 | Seção Organização separada | ✅ Existe abaixo do fold, separada |
 | Empty states calmos | ✅ Competição, Academia, Financeiro mostram mensagens claras |
 | Mobile-first | Não testado em viewport móvel real |
@@ -382,11 +386,11 @@ Isso significa que toda vez que qualquer parte da gestão é tocada, há risco d
 - Não há guard de plano granular em cada módulo interno — se o URL de admin é conhecido, o acesso pode ser tentado diretamente
 - A detecção de `staffRole` em PlacesPage acontece no frontend, não como RLS server-side
 
-### 8.2 Dependência de Dados Mockados
+### 8.2 Dependência de Dados Reais
 
-O ambiente de produção parece ter dados seed reais (Escalao Admin com 3 locais, vários torneios, ligas). O ambiente local não tem `.env`/Supabase (VISUAL-03 bloqueado). Isso significa que todo refinamento visual desde 2026-05-13 foi feito sem validação em dados reais variados — estado vazio, estado cheio, estado com erro.
+O ambiente de produção tem dados seed reais (Escalao Admin com 3 locais, vários torneios, ligas). Em 2026-05-14, VISUAL-03 foi validado com screenshots autenticados do app publicado e do build local atual usando variaveis de ambiente de sessao. A validacao deixou de ser apenas estado vazio, mas ainda depende de manter dados demo saudaveis e compativeis com o schema atual.
 
-O `DEMO_STATE_QA_CHECKLIST.md` documenta os estados necessários mas eles não foram sistematicamente validados.
+O `DEMO_STATE_QA_CHECKLIST.md` continua sendo referencia para ampliar os cenarios, especialmente jogador puro, professor autonomo e gestor financeiro.
 
 ### 8.3 Multitenant
 
@@ -440,13 +444,14 @@ O bottom nav (`is-management` class em `/gestao`) implementa:
 
 ---
 
-### P0-02: Home Page mistura papéis — "pendências urgentes" são tarefas administrativas
+### P0-02: Home Page misturava papéis — corrigido e mantido em observação
 
-**Severidade:** Alta — viola o princípio central de Player App  
+**Status:** corrigido em 2026-05-14, com regra adicional aplicada na varredura página a página  
+**Severidade original:** Alta — viola o princípio central de Player App  
 **Local no código:** `HomePage.tsx`, `buildOrganizerPriorityItems` e `loadOperationalActions`  
-**Sintoma:** "8 pendências para resolver" inclui inscrições de torneio para aprovar, solicitações de sócio para ativar, itens de lista de espera de local — nenhuma dessas é uma ação de jogador  
-**Causa raiz:** `buildPriorityItems` agrega ações de todos os papéis do usuário sem separação de contexto  
-**Impacto:** Um dono de academia com 3 locais e 5 torneios vê uma Home completamente dominada por tarefas de gestão  
+**Sintoma original:** "pendências" incluíam inscrições de torneio para aprovar, solicitações de sócio e lista de espera de local.  
+**Correção:** prioridades de jogador e operação foram separadas; reservas confirmadas e espera passiva não alimentam mais pendência principal.  
+**Risco residual:** novas fontes de ação precisam declarar se são `jogar`, `organizar` ou `operar` antes de entrar na Home.  
 
 ---
 
@@ -473,6 +478,8 @@ O bottom nav (`is-management` class em `/gestao`) implementa:
 
 ### P0-06: Cards de "Organizando agora" são passivos — sem ação por item
 
+**Status:** resolvido em 2026-05-13 no hub `/eventos`; manter apenas como historico da auditoria.
+
 **Severidade:** Média — bloqueia proposta de valor do Competition OS  
 **Local:** `EventsHubPage.tsx`, seção "Organizando agora"  
 **Sintoma:** Torneios e ligas aparecem como artigos informativos sem CTA primário por item (ex: "Ver inscrições", "Lançar resultado")  
@@ -492,6 +499,8 @@ No `PlacesPage`, adicionar condição: `const isManagementCockpit = Boolean(staf
 
 ### QW-02: Separar acumulador de urgências da Home por papel
 
+**Status:** concluido em 2026-05-14, reforçado pela varredura página a página.
+
 Na função `buildPriorityItems`, filtrar ações de organizador e dono de local para uma seção separada ("Prioridades de gestão") em vez de misturá-las com o contador urgente do Player App.
 
 **Impacto:** Resolve P0-02. A Home para um usuário multi-papel passa a fazer sentido.
@@ -499,6 +508,8 @@ Na função `buildPriorityItems`, filtrar ações de organizador e dono de local
 ---
 
 ### QW-03: Adicionar CTA primário nos cards de "Organizando agora"
+
+**Status:** concluido em 2026-05-13 com rows operacionais e destino semantico por status.
 
 Em `EventsHubPage.tsx`, os artigos de torneio/liga em "Organizando agora" devem ter pelo menos um botão "Abrir" ou "Ver pendências" que navegue para a página do evento.
 
@@ -663,9 +674,9 @@ PlacesPage tem tantos handlers e estados interdependentes que uma extração mal
 
 `bookingViewByPlace[placeId]`, `academyViewByPlace[placeId]` etc. são armazenados por place ID. Se o estado não for limpo corretamente ao trocar de local, pode haver leak de estado (ex: visualização de "turmas" do local A persistindo ao abrir o local B).
 
-### R4 — Validação visual apenas em estado vazio (MÉDIO)
+### R4 — Validação visual precisa virar rotina recorrente (MÉDIO)
 
-VISUAL-03 está bloqueado localmente. Refinamentos foram feitos sem validação em dados cheios. O ambiente de produção tem dados mas as telas não foram capturadas sistematicamente.
+VISUAL-03 foi executado em 2026-05-14 com screenshots autenticados. O risco restante e operacional: cada nova rodada visual precisa repetir captura em dados reais e acompanhar erros de API/dados detectados no browser.
 
 ### R5 — Posicionamento de produto não é visível para o usuário (MÉDIO)
 

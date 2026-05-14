@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ManagementShell } from "../components/management/ManagementShell";
 import { fetchPlacesWorkspaceData, type PlaceAdminResourceEntry } from "../lib/place-admin-data";
+import { canCreatePlace } from "../lib/places";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import {
   PLACE_MANAGEMENT_MODULE_LABELS,
@@ -310,6 +311,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const [places, setPlaces] = useState<Place[]>([]);
   const [entries, setEntries] = useState<PlaceAdminResourceEntry[]>([]);
+  const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -319,10 +321,14 @@ export function ManagementHubPage({ user, profile }: Props) {
       setLoading(true);
       setError("");
       try {
-        const data = await fetchPlacesWorkspaceData({ isAdminRoute: true, tab: "mine", user });
+        const [data, createPlaceAccess] = await Promise.all([
+          fetchPlacesWorkspaceData({ isAdminRoute: true, tab: "mine", user }),
+          canCreatePlace().catch(() => false),
+        ]);
         if (cancelled) return;
         setPlaces(data.places);
         setEntries(data.entries);
+        setCanCreatePlaceAccess(createPlaceAccess);
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar gestao.");
       } finally {
@@ -419,12 +425,23 @@ export function ManagementHubPage({ user, profile }: Props) {
 
         {!loading && !places.length ? (
           <section className="management-empty-state">
-            <span>Operacao ainda nao configurada</span>
-            <h2>Crie ou acesse um local para ativar a gestao profissional.</h2>
-            <p>A area de gestao aparece para donos e equipe de academias. O cadastro inicial continua em Locais; a rotina diaria fica aqui.</p>
-            <button className="primary" onClick={() => navigate("/locais")}>
-              Ir para locais
-            </button>
+            <span>{canCreatePlaceAccess ? "Operacao ainda nao configurada" : "Player App"}</span>
+            <h2>{canCreatePlaceAccess ? "Crie ou acesse um local para ativar a gestao profissional." : "Gestao nao disponivel para este perfil."}</h2>
+            <p>
+              {canCreatePlaceAccess
+                ? "A area de gestao aparece para donos e equipe de academias. O cadastro inicial continua em Locais; a rotina diaria fica aqui."
+                : "Sua conta esta no modo jogador. Para operar academia, clube ou professor, entre com um perfil de gestao, aceite um convite da equipe ou habilite um plano profissional."}
+            </p>
+            <div className="management-empty-actions">
+              <button className="primary" onClick={() => navigate(canCreatePlaceAccess ? "/locais" : "/inicio")}>
+                {canCreatePlaceAccess ? "Ir para locais" : "Voltar ao inicio"}
+              </button>
+              {!canCreatePlaceAccess ? (
+                <button className="quiet" onClick={() => navigate("/locais")}>
+                  Explorar locais
+                </button>
+              ) : null}
+            </div>
           </section>
         ) : null}
 

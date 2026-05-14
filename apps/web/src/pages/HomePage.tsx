@@ -1380,22 +1380,21 @@ function buildPriorityItems(
     order: action.tone === "urgent" ? 5 : 35,
   }));
 
-  const courtItems = courtBookingActions.map((action): HomePriorityItem => {
-    const startsTime = new Date(action.startsAt).getTime();
-    const startsSoon = !Number.isNaN(startsTime) && startsTime <= Date.now() + 24 * 60 * 60 * 1000;
-    const ownerPending = action.role === "owner" && action.status === "pending";
-    const urgent = ownerPending || startsSoon;
-    return {
-      id: `court-booking:${action.id}`,
-      targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "reservations") : "/locais",
-      sourceName: action.placeName,
-      title: action.role === "owner" ? `Reserva de ${action.playerName}` : action.courtName,
-      detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${courtBookingStatusLabel(action.status)}`,
-      label: ownerPending ? "Confirmar reserva" : "Reserva de quadra",
-      tone: urgent ? "urgent" : "neutral",
-      order: ownerPending ? 8 : startsSoon ? 30 : 50,
-    };
-  });
+  const courtItems = courtBookingActions
+    .filter((action) => action.status === "pending")
+    .map((action): HomePriorityItem => {
+      const ownerPending = action.role === "owner";
+      return {
+        id: `court-booking:${action.id}`,
+        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "reservations") : "/locais",
+        sourceName: action.placeName,
+        title: action.role === "owner" ? `Reserva de ${action.playerName}` : action.courtName,
+        detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${courtBookingStatusLabel(action.status)}`,
+        label: ownerPending ? "Confirmar reserva" : "Aguardando reserva",
+        tone: ownerPending ? "urgent" : "neutral",
+        order: ownerPending ? 8 : 32,
+      };
+    });
 
   const noticeItems = notices.map((notice): HomePriorityItem => ({
     id: `notice:${notice.id}`,
@@ -1419,19 +1418,21 @@ function buildPriorityItems(
     order: action.order,
   }));
 
-  const waitlistItems = courtWaitlistActions.map((action): HomePriorityItem => {
-    const ownerWaiting = action.role === "owner" && action.status === "waiting";
-    return {
-      id: `court-waitlist:${action.id}`,
-      targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "waitlist") : "/locais",
-      sourceName: action.placeName,
-      title: action.role === "owner" ? `Espera de ${action.playerName}` : "Lista de espera de quadra",
-      detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${action.status === "invited" ? "convidado" : "aguardando"}`,
-      label: ownerWaiting ? "Gerenciar espera" : "Espera de quadra",
-      tone: ownerWaiting ? "urgent" : "neutral",
-      order: ownerWaiting ? 10 : 42,
-    };
-  });
+  const waitlistItems = courtWaitlistActions
+    .filter((action) => (action.role === "owner" ? action.status === "waiting" : action.status === "invited"))
+    .map((action): HomePriorityItem => {
+      const ownerWaiting = action.role === "owner";
+      return {
+        id: `court-waitlist:${action.id}`,
+        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "waitlist") : "/locais",
+        sourceName: action.placeName,
+        title: action.role === "owner" ? `Espera de ${action.playerName}` : "Convite de lista de espera",
+        detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${action.status === "invited" ? "convite liberado" : "aguardando"}`,
+        label: ownerWaiting ? "Gerenciar espera" : "Responder convite",
+        tone: ownerWaiting ? "urgent" : "urgent",
+        order: ownerWaiting ? 10 : 22,
+      };
+    });
 
   return [...organizerItems, ...courtItems, ...waitlistItems, ...academyItems, ...leagueItems, ...tournamentItems, ...noticeItems]
     .sort((a, b) => {
@@ -1463,7 +1464,8 @@ export function HomePage({ user, profile }: Props) {
   const [courtBookingActions, setCourtBookingActions] = useState<HomeCourtBookingAction[]>([]);
   const [courtWaitlistActions, setCourtWaitlistActions] = useState<HomeCourtWaitlistAction[]>([]);
   const [academyActions, setAcademyActions] = useState<HomeAcademyAction[]>([]);
-  const [notices, setNotices] = useState<HomeNotice[]>([]);
+  const [playerNotices, setPlayerNotices] = useState<HomeNotice[]>([]);
+  const [operationalNotices, setOperationalNotices] = useState<HomeNotice[]>([]);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -1482,7 +1484,8 @@ export function HomePage({ user, profile }: Props) {
           bookingActions,
           waitlistActions,
           academyDailyActions,
-          homeNotices,
+          playerHomeNotices,
+          operationalHomeNotices,
         ] = await Promise.all([
           loadLeagueActions(user.id, leagues),
           loadTournamentPlayerActions(user, dashboard.participating),
@@ -1491,7 +1494,14 @@ export function HomePage({ user, profile }: Props) {
           loadCourtBookingActions(user),
           loadCourtWaitlistActions(user),
           loadAcademyActions(user),
-          loadHomeNotices([...dashboard.participating, ...dashboard.organizing], leagues),
+          loadHomeNotices(
+            dashboard.participating,
+            leagues.filter((league) => league.role !== "owner")
+          ),
+          loadHomeNotices(
+            dashboard.organizing,
+            leagues.filter((league) => league.role === "owner")
+          ),
         ]);
         if (!alive) return;
         setUpcoming(publicRows);
@@ -1505,7 +1515,8 @@ export function HomePage({ user, profile }: Props) {
         setCourtBookingActions(bookingActions);
         setCourtWaitlistActions(waitlistActions);
         setAcademyActions(academyDailyActions);
-        setNotices(homeNotices);
+        setPlayerNotices(playerHomeNotices);
+        setOperationalNotices(operationalHomeNotices);
         setError("");
       })
       .catch((err: unknown) => {
@@ -1536,7 +1547,7 @@ export function HomePage({ user, profile }: Props) {
     playerCourtBookingActions,
     playerCourtWaitlistActions,
     playerAcademyActions,
-    notices
+    playerNotices
   );
   const operationalPriorityItems = buildPriorityItems(
     [],
@@ -1545,20 +1556,23 @@ export function HomePage({ user, profile }: Props) {
     operationalCourtBookingActions,
     operationalCourtWaitlistActions,
     operationalAcademyActions,
-    []
+    operationalNotices
   );
   const activityFeedItems = buildActivityFeed(
     playingTournaments,
     [],
     playingLeagues,
     [],
-    notices,
+    playerNotices.filter((notice) => notice.tone !== "urgent"),
     upcoming
   );
   const urgentPriorityItems = priorityItems.filter((item) => item.tone === "urgent");
   const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
   const urgentOperationalPriorityItems = operationalPriorityItems.filter((item) => item.tone === "urgent");
   const urgentActionCount = urgentPriorityItems.length;
+  const visiblePriorityItems = priorityItems.slice(0, 4);
+  const visibleActivityFeedItems = activityFeedItems.slice(0, 3);
+  const visibleUpcoming = upcoming.slice(0, 3);
   const nextPlayerAgenda = agendaItems[0] || null;
   const nextPlayerPriority = urgentPriorityItems[0] || priorityItems[0] || null;
   const nextPlayerLearning = playerAcademyActions[0] || null;
@@ -1977,8 +1991,13 @@ export function HomePage({ user, profile }: Props) {
             <section className="home-section">
               <div className="section-title">
                 <h2>Prioridades de hoje</h2>
+                {priorityItems.length > visiblePriorityItems.length ? (
+                  <button className="link" type="button" onClick={() => setNotificationsOpen(true)}>
+                    Ver todas
+                  </button>
+                ) : null}
               </div>
-              {priorityItems.map((item) => (
+              {visiblePriorityItems.map((item) => (
                 <PriorityCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
               ))}
             </section>
@@ -1989,7 +2008,7 @@ export function HomePage({ user, profile }: Props) {
               <div className="section-title">
                 <h2>Atualizacoes recentes</h2>
               </div>
-              {activityFeedItems.map((item) => (
+              {visibleActivityFeedItems.map((item) => (
                 <ActivityFeedCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
               ))}
             </section>
@@ -2047,7 +2066,7 @@ export function HomePage({ user, profile }: Props) {
         <p className="subtle">Nenhum evento publico em breve.</p>
       ) : null}
 
-      {upcoming.map((t) => (
+      {visibleUpcoming.map((t) => (
         <EventCard key={t.id} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
       ))}
     </AppShell>

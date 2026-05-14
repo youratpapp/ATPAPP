@@ -1,0 +1,135 @@
+CENTRAL OPERACIONAL
+Gestao
+
+Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.
+
+3
+3 locais acessiveis
+112
+pendencias operacionais
+42
+reservas hoje
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Lista de espera
+Abrir primeiro local com acao pendente
+4
+Academia
+Abrir primeiro local com acao pendente
+48
+Clientes/CRM
+Abrir primeiro local com acao pendente
+54
+Financeiro
+Abrir primeiro local com acao pendente
+6
+IMPLANTACAO GUIADA
+Complete a base de Arena Pantanal Tennis
+57% pronto
+Concluido
+Cadastrar quadra
+Libera agenda, reservas e bloqueios.
+Proximo passo
+Definir regras
+Define duracao, antecedencia e regras.
+Concluido
+Cadastrar professor
+Libera grade, aulas e chamada.
+Concluido
+Criar turma
+Crie horarios fixos para alunos.
+Proximo passo
+Cadastrar cliente
+Tenha base para contato, cobranca e recorrencia.
+Proximo passo
+Configurar plano
+Prepare planos e cobrancas recorrentes.
+Concluido
+Publicar pagina
+Deixe a pagina pronta para reservas e divulgacao.
+WORKSPACES
+Locais sob sua gestao
+
+3 locais com acesso operacional
+
+ADMINISTRADOR | OPERACAO COMPLETA
+ADT Dourados
+
+Dourados - MS
+
+50 pendencia(s)
+18 reserva(s) hoje
+4
+Lista de espera
+16
+Academia
+27
+Clientes/CRM
+ACOES RAPIDAS
+Chamar espera | Ver agenda
+Chamar espera
+Ver agenda
+Criar reserva
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+Clientes
+Financeiro
+Cantina
+ADMINISTRADOR | ACADEMIA
+Arena Pantanal Tennis
+
+Campo Grande - MS
+
+16 pendencia(s)
+Configure a base operacional
+16
+Academia
+BASE INCOMPLETA
+Definir regras | Cadastrar cliente
+Definir regras
+Cadastrar cliente
+Configurar plano
+Abrir operacao
+Pagina publica
+Academia
+ADMINISTRADOR | OPERACAO COMPLETA
+Clube Racket Prime
+
+Cuiaba - MT
+
+46 pendencia(s)
+24 reserva(s) hoje
+16
+Academia
+27
+Clientes/CRM
+3
+Financeiro
+ACOES RAPIDAS
+Ver agenda | Criar reserva
+Ver agenda
+Criar reserva
+Resolver aulas
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+Clientes
+Financeiro
+Cantina
+Gestao esportiva
+Management OS
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+ORGANIZAR
+Organizar
+OPERAR
+Gestao
+CONTA
+Perfil

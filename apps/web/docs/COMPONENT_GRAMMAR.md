@@ -48,11 +48,13 @@ Visual:
 - CTA abaixo ou full-width no mobile quando necessario.
 - em competicoes, pendencias devem parecer rows, nao cards de KPI.
 - detalhe/status deve ficar a direita no desktop e abaixo no mobile.
+- quando a fila for clicavel, a acao deve ter label explicito (`Resolver`, `Agendar`, `Confirmar`, `Intervir`, `Ver`) em vez de CTA generico.
 
 Correto:
 
 ```text
 3 reservas pendentes | Hoje, quadras 1 e 2 | Revisar
+2 resultados pendentes | Rodada 4, Classe B | Resolver
 ```
 
 Incorreto:
@@ -112,11 +114,14 @@ Uso atual no produto:
 - Competition OS: partidas de grupos/mata-mata do torneio com numero, jogadores, status, horario, confirmacoes e placar em leitura row-like.
 - Competition OS: partidas da liga com rodada/jogadores, horario, status, estado operacional e acao `Abrir sala` em row compacta.
 - Competition OS: sala de partida da liga com estado/disponibilidade/resultado como zonas principais e participantes/chat em disclosures.
+- Competition OS: hub de eventos organizados com row operacional por torneio/liga, exibindo tipo, status, proximo passo e CTA unico por item.
+- Competition OS: detalhe interno da liga com painel de foco operacional antes das tabs, mostrando proxima acao, escopo ativo e fila com labels explicitos.
 
 Variacao importante:
 
 - status pode aparecer como badge discreto junto do titulo quando a linha precisa preservar densidade;
 - follow-up vencido pode elevar borda/status, mas nao deve transformar a linha em card de alerta grande.
+- em Competition OS, a row deve apontar para o destino semantico da tarefa, nao apenas para a pagina generica do evento.
 
 ## Sidebar
 

@@ -136,6 +136,8 @@ Quando uma tela cresce demais:
 - 2026-05-13: `Academia > Turmas` passou a conter tambem o wizard de criacao de turma, evitando mandar `Criar turma` para uma area generica de recursos.
 - 2026-05-13: `Ajustes > Estrutura` passou a conter edicao direta dos dados publicos do local, para que `Publicar pagina` nao termine em uma tela apenas informativa.
 - 2026-05-13: `/locais` passou a tratar filtros como parte da intencao: reservar quadra exige cidade/data/hora para disponibilidade real, entrar em aula filtra por perfil/dia/periodo/vaga e encontrar jogadores filtra chamadas sem misturar quadras.
+- 2026-05-14: `/locais` passou a iniciar em estado neutro de escolha de intencao; a pagina nao deve abrir mostrando ficha de academia, formulario de reserva ou turmas antes do usuario escolher o fluxo.
+- 2026-05-14: em `/locais`, `Reservar quadra` e `Entrar em aula` tambem nao devem listar academias genericas antes da busca. Sem filtro executado, mostram orientacao; com filtro executado, mostram cards de quadra/turma acionaveis.
 - 2026-05-13: `/locais/:placeId` passou a resolver a decisao dentro do local com agenda visual de quadras por horario e filtro de turmas compativeis antes do formulario.
 - 2026-05-13: resultado de `Reservar quadra` em `/locais` passou a ser lista direta de quadras livres no horario pesquisado; ficha completa, planos e aulas ficam fora desse fluxo.
 - 2026-05-13: resultado de `Entrar em aula` em `/locais` passou a ser lista direta de turmas com vaga; nome da academia, UF, dia, periodo e nivel levam a uma turma acionavel, nao a uma ficha generica.
@@ -146,3 +148,14 @@ Quando uma tela cresce demais:
 - 2026-05-13: `/locais` deixou de renderizar cockpit administrativo inline para usuarios staff; mesmo admin ve descoberta/player, com `Abrir gestao` como acao secundaria.
 - 2026-05-13: `/inicio` separou fila de jogador e fila profissional; notificacoes e primeira viewport deixam de misturar aprovar socio/lista de espera/admin com proxima partida/reserva/aula.
 - 2026-05-13: pendencias profissionais da Home passaram a navegar para `/gestao/:placeId/:module?visao=...`, reforcando que operacao pertence ao Management OS.
+- 2026-05-14: `/gestao` acessado diretamente por Player puro deve explicar ausencia de permissao e retornar para Inicio/Locais; nao deve sugerir que o jogador precisa configurar uma operacao.
+- 2026-05-13: `/eventos` refinou `Organizando agora` para rows operacionais com proximo passo e CTA por torneio/liga, deixando os atalhos de lista como suporte.
+- 2026-05-13: Competition OS no hub passou a escolher destino por status do evento, evitando que todo item organizado abra genericamente sem dizer a tarefa.
+- 2026-05-14: `/eventos/ligas/:leagueId` passou a iniciar a experiencia do organizador com foco operacional antes das tabs, deixando proxima acao, escopo ativo e pendencias visiveis sem depender da aba `Visao`.
+- 2026-05-14: a aba `Visao` da liga deixou de repetir a fila/KPIs principais e ficou como suporte de publicacao/configuracao, reduzindo duplicidade visual.
+- 2026-05-14: `CompetitionOperationalQueue` passou a expor label de acao por item, reforcando que fila operacional nao e KPI clicavel generico.
+- 2026-05-14: `/inicio` passou a separar avisos de jogador e avisos operacionais, evitando que comunicados de competicoes organizadas contem como pendencia principal do Player App.
+- 2026-05-14: `/inicio` reduziu listas secundarias depois da central do jogador, mantendo recorte curto de prioridades/atualizacoes e acesso completo pelo painel de notificacoes.
+- 2026-05-14: `/inicio` passou a tratar reserva confirmada e espera passiva como agenda/feed, nao como pendencia; somente reserva pendente ou convite liberado entram em prioridade do jogador.
+- 2026-05-14: `/locais` foi revalidada por perfil. Busca completa de quadra deve retornar cards de quadra livre acionaveis; busca de aula deve retornar turmas com vaga e usar fallback local quando a RPC otimizada vier vazia.
+- 2026-05-14: `/gestao` digitado por Player puro nao deve alterar a navegacao para `Management OS`; o contexto de gestao depende de permissao real, nao apenas da URL.

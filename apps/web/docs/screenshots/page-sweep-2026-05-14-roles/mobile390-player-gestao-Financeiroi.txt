@@ -1,0 +1,20 @@
+CENTRAL OPERACIONAL
+Gestao
+0
+0 locais acessiveis
+0
+pendencias operacionais
+0
+reservas hoje
+OPERACAO AINDA NAO CONFIGURADA
+Crie ou acesse um local para ativar a gestao profissional.
+
+A area de gestao aparece para donos e equipe de academias. O cadastro inicial continua em Locais; a rotina diaria fica aqui.
+
+Ir para locais
+Inicio
+Competir
+Locais
+Ranking
+Gestao
+Perfil

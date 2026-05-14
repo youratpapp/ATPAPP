@@ -91,7 +91,7 @@ const GROUPS: Array<{ id: NavItem["group"]; label: string }> = [
 function buildNavItems(access: WorkspaceAccessSummary, pathname: string, search: string): NavItem[] {
   const items = [...BASE_ITEMS];
   const shouldShowCompetitionManagement = access.hasCompetitionManagement || (pathname.startsWith("/eventos") && search.includes("organizing"));
-  const shouldShowManagement = access.hasManagement || pathname.startsWith("/gestao");
+  const shouldShowManagement = access.hasManagement;
 
   if (shouldShowCompetitionManagement) {
     items.push({
@@ -130,14 +130,15 @@ export function BottomNav({ user }: { user: User }) {
   }, [user]);
 
   const items = useMemo(() => buildNavItems(access, pathname, search), [access, pathname, search]);
-  const contextLabel = pathname.startsWith("/gestao")
+  const hasManagementContext = pathname.startsWith("/gestao") && access.hasManagement;
+  const contextLabel = hasManagementContext
     ? "Management OS"
     : pathname.startsWith("/eventos")
       ? "Competition OS"
       : "Player App";
 
   return (
-    <nav className={`bottom-nav${pathname.startsWith("/gestao") ? " is-management" : ""}`} aria-label="Navegacao principal">
+    <nav className={`bottom-nav${hasManagementContext ? " is-management" : ""}`} aria-label="Navegacao principal">
       <div className="bottom-nav-brand" aria-hidden>
         <img src={logoMark} alt="" />
         <span>Gestao esportiva</span>

@@ -1,0 +1,52 @@
+CENTRAL OPERACIONAL
+Gestao
+1
+1 local acessivel
+16
+pendencias operacionais
+0
+reservas hoje
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Academia
+Abrir primeiro local com acao pendente
+16
+PROFESSOR
+Minha operacao de aulas
+1 local vinculado
+ADT Dourados
+Sem aulas hoje
+2 turma(s) ativa(s) | 0 aluno(s)
+Revise suas turmas
+Acesse chamada, alunos e reposicoes sem abrir a gestao completa.
+Aulas hoje
+Turmas
+Alunos
+WORKSPACES
+Locais sob sua gestao
+
+1 local com acesso operacional
+
+PROFESSOR | ROTINA DE PROFESSOR
+ADT Dourados
+
+Dourados - MS
+
+16 pendencia(s)
+Configure a base operacional
+16
+Academia
+BASE INCOMPLETA
+Definir regras | Cadastrar cliente
+Definir regras
+Cadastrar cliente
+Abrir aulas
+Alunos
+Academia
+Inicio
+Competir
+Locais
+Ranking
+Gestao
+Perfil

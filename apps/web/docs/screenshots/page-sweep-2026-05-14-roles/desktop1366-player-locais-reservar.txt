@@ -1,0 +1,98 @@
+Locais
+CENTRAL DE DESCOBERTA
+O que voce esta procurando?
+
+Sao buscas diferentes: encontrar pessoas para jogar, reservar uma quadra ou entrar em uma aula.
+
+Encontrar jogadores
+Chamadas de pessoas procurando adversario ou parceiro. Nao mostra quadra livre.
+27 chamadas abertas
+Reservar quadra
+Informe cidade, data e hora para receber quadras livres e solicitar direto.
+18 quadras ativas
+Entrar em aula
+Procure turmas e professores. Separado de reserva avulsa e chamada de jogo.
+24 turmas ativas
+Todos
+Seguindo
+Meus locais
+RESERVAR QUADRA
+Encontre quadras livres no horario
+Use cidade, data e hora para receber quadras disponiveis, sem misturar aulas ou planos.
+Busca por horario
+NOME DO LOCAL
+CIDADE
+UF
+DATA
+HORA
+06:00
+06:30
+07:00
+07:30
+08:00
+08:30
+09:00
+09:30
+10:00
+10:30
+11:00
+11:30
+12:00
+12:30
+13:00
+13:30
+14:00
+14:30
+15:00
+15:30
+16:00
+16:30
+17:00
+17:30
+18:00
+18:30
+19:00
+19:30
+20:00
+20:30
+21:00
+21:30
+22:00
+22:30
+23:00
+DURACAO
+1h
+1h30
+2h
+Buscar quadras livres
+QUADRAS
+Reservar quadra
+
+Use cidade, data e hora para ver apenas quadras livres no horario desejado.
+
+1 resultado
+
+ADT Dourados
+
+Dourados - MS
+81 seguidores
+Reservas
+
+Use a busca por cidade, data e hora para ver disponibilidade real.
+
+6
+quadras ativas
+buscar
+livres agora
+Ver horarios
+Seguindo
+Mais
+Gestao esportiva
+Player App
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+CONTA
+Perfil

@@ -1,0 +1,24 @@
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_enrollments?select=id%2Cplace_id%2Cclass_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstatus%2Cnotes%2Csource%2Ccreated_at&status=neq.cancelled&order=created_at.desc&limit=80
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_enrollments?select=id%2Cplace_id%2Cclass_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstatus%2Cnotes%2Csource%2Ccreated_at&place_id=eq.e42526d9-27b6-4777-b519-9a7b579def30&status=neq.cancelled&order=created_at.desc&limit=80
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_enrollments?select=id%2Cplace_id%2Cclass_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstatus%2Cnotes%2Csource%2Ccreated_at&place_id=eq.5badd363-4ac5-4f5c-893c-a24803bc6284&status=neq.cancelled&order=created_at.desc&limit=80
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_enrollments?select=id%2Cplace_id%2Cclass_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstatus%2Cnotes%2Csource%2Ccreated_at&place_id=eq.575d3e2f-23ee-40b5-89ec-fc5826f2dfc3&status=neq.cancelled&order=created_at.desc&limit=80
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.place_membership
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.academy_enrollment
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.academy_lesson_request
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.academy_lesson_request
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.academy_enrollment
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking
+[error] Failed to load resource: the server responded with a status of 500 ()
+[http 500] https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.place_membership
+[error] Failed to load resource: the server responded with a status of 500 ()

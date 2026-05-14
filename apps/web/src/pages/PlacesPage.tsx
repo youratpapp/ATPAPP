@@ -178,7 +178,7 @@ type Props = {
 };
 
 type TabKey = "all" | "following" | "mine";
-type PlaceDiscoveryIntent = "matches" | "places" | "classes";
+type PlaceDiscoveryIntent = "overview" | "matches" | "places" | "classes";
 type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
 type CourtDiscoveryFilter = { query: string; city: string; state: string; date: string; time: string; durationMinutes: string };
 type ClassDiscoveryFilter = {
@@ -312,6 +312,16 @@ function normalizeText(value: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .trim()
     .toLowerCase();
+}
+
+function courtSurfaceLabel(value: string): string {
+  const normalized = normalizeText(value);
+  if (!normalized) return "Quadra";
+  if (normalized.includes("saibro")) return "Saibro";
+  if (normalized.includes("sintet")) return "Sintetica";
+  if (normalized.includes("hard") || normalized.includes("rapida")) return "Rapida";
+  if (normalized.includes("grama")) return "Grama";
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function combineDateAndTime(date: string, time: string): string {
@@ -512,7 +522,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const navigate = useNavigate();
   const isAdminRoute = Boolean(adminPlaceId);
   const [tab, setTab] = useState<TabKey>(isAdminRoute ? "mine" : "all");
-  const [discoveryIntent, setDiscoveryIntent] = useState<PlaceDiscoveryIntent>("places");
+  const [discoveryIntent, setDiscoveryIntent] = useState<PlaceDiscoveryIntent>("overview");
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [managementModuleByPlace, setManagementModuleByPlace] = useState<Record<string, PlaceManagementModule>>({});
   const [academyViewByPlace, setAcademyViewByPlace] = useState<Record<string, AcademyManagementView>>({});
@@ -2354,45 +2364,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
   const runClassDiscoverySearch = async () => {
-    setClassDiscoveryBusy(true);
-    setFeedback(null);
-    try {
-      const rows = await searchAcademyClassesForDiscovery({
-        city: classDiscoveryFilter.city,
-        state: classDiscoveryFilter.state,
-        query: classDiscoveryFilter.query,
-        weekday: classDiscoveryFilter.weekday ? Number(classDiscoveryFilter.weekday) : null,
-        period: classDiscoveryFilter.period,
-        level: classDiscoveryFilter.level,
-        ageGroup: classDiscoveryFilter.ageGroup,
-        genderScope: classDiscoveryFilter.genderScope,
-      });
-      const classesByPlace = rows.reduce<Record<string, DiscoveryAcademyClass[]>>((acc, academyClass) => {
-        const list = acc[academyClass.placeId] || [];
-        list.push(academyClass);
-        acc[academyClass.placeId] = list;
-        return acc;
-      }, {});
-      setClassDiscoveryClassesByPlace(classesByPlace);
-      setClassDiscoveryResultsByPlace(
-        Object.fromEntries(
-          Object.entries(classesByPlace).map(([placeId, classes]) => [
-            placeId,
-            {
-              placeId,
-              matchingClasses: classes.length,
-              availableSpots: classes.reduce((sum, item) => sum + item.availableSpots, 0),
-              minMonthlyFeeCents: Math.min(...classes.map((item) => item.monthlyFeeCents || 0)),
-            } satisfies PlaceAcademyDiscoverySummary,
-          ])
-        )
-      );
-      setClassDiscoverySearchKey(classDiscoveryKey);
-      if (!rows.length) {
-        setFeedback({ kind: "info", text: "Nenhuma turma com vaga para este perfil. Ajuste dia, periodo ou nivel." });
-      }
-    } catch (err) {
-      const fallbackRows = visiblePlaces
+    const buildLocalClassDiscoveryRows = () =>
+      visiblePlaces
         .filter((place) => placeMatchesDiscoveryLocation(place, classDiscoveryFilter))
         .map((place) => {
           const query = normalizeText(classDiscoveryFilter.query);
@@ -2423,9 +2396,61 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           };
         })
         .filter(Boolean) as Array<{ summary: PlaceAcademyDiscoverySummary; classes: DiscoveryAcademyClass[] }>;
+
+    const applyLocalClassDiscoveryRows = (fallbackRows: Array<{ summary: PlaceAcademyDiscoverySummary; classes: DiscoveryAcademyClass[] }>) => {
       setClassDiscoveryClassesByPlace(Object.fromEntries(fallbackRows.map((row) => [row.summary.placeId, row.classes])));
       setClassDiscoveryResultsByPlace(Object.fromEntries(fallbackRows.map((row) => [row.summary.placeId, row.summary])));
       setClassDiscoverySearchKey(classDiscoveryKey);
+    };
+
+    setClassDiscoveryBusy(true);
+    setFeedback(null);
+    try {
+      const rows = await searchAcademyClassesForDiscovery({
+        city: classDiscoveryFilter.city,
+        state: classDiscoveryFilter.state,
+        query: classDiscoveryFilter.query,
+        weekday: classDiscoveryFilter.weekday ? Number(classDiscoveryFilter.weekday) : null,
+        period: classDiscoveryFilter.period,
+        level: classDiscoveryFilter.level,
+        ageGroup: classDiscoveryFilter.ageGroup,
+        genderScope: classDiscoveryFilter.genderScope,
+      });
+      if (!rows.length) {
+        const fallbackRows = buildLocalClassDiscoveryRows();
+        applyLocalClassDiscoveryRows(fallbackRows);
+        setFeedback({
+          kind: "info",
+          text: fallbackRows.length
+            ? "Filtro aplicado com turmas disponiveis deste local."
+            : "Nenhuma turma com vaga para este perfil. Ajuste dia, periodo ou nivel.",
+        });
+        return;
+      }
+      const classesByPlace = rows.reduce<Record<string, DiscoveryAcademyClass[]>>((acc, academyClass) => {
+        const list = acc[academyClass.placeId] || [];
+        list.push(academyClass);
+        acc[academyClass.placeId] = list;
+        return acc;
+      }, {});
+      setClassDiscoveryClassesByPlace(classesByPlace);
+      setClassDiscoveryResultsByPlace(
+        Object.fromEntries(
+          Object.entries(classesByPlace).map(([placeId, classes]) => [
+            placeId,
+            {
+              placeId,
+              matchingClasses: classes.length,
+              availableSpots: classes.reduce((sum, item) => sum + item.availableSpots, 0),
+              minMonthlyFeeCents: Math.min(...classes.map((item) => item.monthlyFeeCents || 0)),
+            } satisfies PlaceAcademyDiscoverySummary,
+          ])
+        )
+      );
+      setClassDiscoverySearchKey(classDiscoveryKey);
+    } catch (err) {
+      const fallbackRows = buildLocalClassDiscoveryRows();
+      applyLocalClassDiscoveryRows(fallbackRows);
       if (!fallbackRows.length) {
         setFeedback({ kind: "info", text: "Nenhuma turma encontrada para este perfil." });
       } else if (err instanceof Error && err.message.toLowerCase().includes("app_search_academy_classes_for_discovery")) {
@@ -2458,8 +2483,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       })
     : visiblePlaces;
   const showOpenMatchesPanel = !loading && !isAdminRoute && discoveryIntent === "matches" && tab !== "mine";
-  const showPlaceDirectory = isAdminRoute || discoveryIntent !== "matches";
-  const showCreatePlaceAction = !isAdminRoute && canCreatePlaceAccess && discoveryIntent !== "matches" && tab === "mine";
+  const showPlaceDirectory = isAdminRoute || (discoveryIntent !== "overview" && discoveryIntent !== "matches");
+  const showCreatePlaceAction = !isAdminRoute && canCreatePlaceAccess && discoveryIntent !== "matches" && discoveryIntent !== "overview" && tab === "mine";
   const showCourtDiscoveryResults =
     showPlaceDirectory &&
     !loading &&
@@ -2474,6 +2499,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     discoveryIntent === "classes" &&
     tab !== "mine" &&
     classDiscoveryHasSpotSearch;
+  const discoverySearchIsRequired = !isAdminRoute && tab === "all" && (discoveryIntent === "places" || discoveryIntent === "classes");
+  const discoverySearchIsDone =
+    discoveryIntent === "places" ? courtDiscoveryHasAvailability : discoveryIntent === "classes" ? classDiscoveryHasSpotSearch : true;
+  const showDiscoveryWaitingState = !loading && discoverySearchIsRequired && !discoverySearchIsDone;
+  const showGenericPlaceDirectory = showPlaceDirectory && !showCourtDiscoveryResults && !showClassDiscoveryResults && !showDiscoveryWaitingState;
   const courtDiscoveryAvailableRows = showCourtDiscoveryResults
     ? directoryPlaces.flatMap((place) => (courtDiscoveryCourtsByPlace[place.id] || []).map((court) => ({ court, place })))
     : [];
@@ -2568,7 +2598,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
-      {!isAdminRoute && discoveryIntent !== "matches" ? (
+      {!isAdminRoute && discoveryIntent === "overview" ? (
+        <section className="places-start-state" aria-label="Como usar a busca de locais">
+          <div>
+            <span>Comece pela intencao</span>
+            <strong>Escolha uma busca acima para ver somente o que importa.</strong>
+            <p>Reserva mostra quadras livres por horario. Aula mostra turmas com vaga. Jogadores mostra chamadas de pessoas procurando jogo.</p>
+          </div>
+          <button className="quiet" onClick={() => setDiscoveryIntent("places")}>
+            Buscar quadra agora
+          </button>
+        </section>
+      ) : null}
+
+      {!isAdminRoute && discoveryIntent !== "overview" && discoveryIntent !== "matches" ? (
         <div className="tabs places-scope-tabs" aria-label="Filtrar locais">
           <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
             Todos
@@ -2738,6 +2781,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
+      {showDiscoveryWaitingState ? (
+        <section className="places-start-state" aria-label="Orientacao da busca selecionada">
+          <div>
+            <span>{discoveryIntent === "classes" ? "Filtro de aula" : "Filtro de quadra"}</span>
+            <strong>
+              {discoveryIntent === "classes"
+                ? "Defina cidade, dia, periodo ou nivel para ver turmas com vaga."
+                : "Defina cidade, data e horario para ver quadras livres acionaveis."}
+            </strong>
+            <p>
+              {discoveryIntent === "classes"
+                ? "Nao mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher."
+                : "Nao mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario."}
+            </p>
+          </div>
+          <button className="quiet" onClick={() => (discoveryIntent === "classes" ? void runClassDiscoverySearch() : void runCourtDiscoverySearch())}>
+            {discoveryIntent === "classes" ? "Buscar turmas" : "Buscar quadras"}
+          </button>
+        </section>
+      ) : null}
+
       {feedback ? (
         <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
           {feedback.text}
@@ -2746,7 +2810,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
       {loading ? <p className="subtle">Carregando...</p> : null}
 
-      {!loading && showPlaceDirectory && !showCourtDiscoveryResults && !showClassDiscoveryResults && directoryPlaces.length === 0 ? (
+      {!loading && showGenericPlaceDirectory && directoryPlaces.length === 0 ? (
         <div className="empty-state">
           <span className="empty-emoji" aria-hidden>ðŸ“</span>
           <p>
@@ -3005,7 +3069,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
-      {showPlaceDirectory && !showCourtDiscoveryResults && !showClassDiscoveryResults && !loading && directoryPlaces.length > 0 ? (
+      {showGenericPlaceDirectory && !loading && directoryPlaces.length > 0 ? (
         <div className="places-section-head">
           <div>
             <span>{discoveryIntent === "classes" ? "Academia" : "Quadras"}</span>
@@ -3041,10 +3105,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <strong>{court.name}</strong>
                   <small>{place.name}</small>
                   <div>
-                    <span>{court.surface || "Quadra"}</span>
+                    <span>{courtSurfaceLabel(court.surface)}</span>
                     <b>{formatMoneyFromCents(court.effectiveFeeCents || court.bookingFeeCents || 0)}</b>
                   </div>
-                  <em>{court.requiresApproval ? "Solicitacao sujeita a confirmacao" : "Confirmacao imediata disponivel"}</em>
+                  <em>{court.requiresApproval ? "Sujeita a confirmacao" : "Confirmacao imediata"}</em>
+                  <span className="court-discovery-cta">Solicitar esta quadra</span>
                 </button>
               ))}
             </div>
@@ -3090,6 +3155,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       .filter(Boolean)
                       .join(" | ")}
                   </em>
+                  <span className="court-discovery-cta">Ver turma e enviar interesse</span>
                 </button>
               ))}
             </div>
@@ -3102,7 +3168,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
-      {showPlaceDirectory && !showCourtDiscoveryResults && !showClassDiscoveryResults ? directoryPlaces.map((p) => {
+      {showGenericPlaceDirectory ? directoryPlaces.map((p) => {
         const initials = (p.name || "L")
           .split(/\s+/)
           .filter(Boolean)

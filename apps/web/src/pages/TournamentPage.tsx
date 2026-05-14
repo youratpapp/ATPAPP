@@ -4125,6 +4125,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   count: item.count,
                   label: item.label,
                   detail: item.detail,
+                  actionLabel: item.count > 0 ? "Resolver" : "Ver",
                   tone: item.count > 0 ? "attention" : "neutral",
                   onClick: () => {
                     if (item.filter) setRegistrationFilter(item.filter);

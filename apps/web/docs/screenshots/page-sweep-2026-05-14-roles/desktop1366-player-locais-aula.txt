@@ -1,0 +1,83 @@
+Locais
+CENTRAL DE DESCOBERTA
+O que voce esta procurando?
+
+Sao buscas diferentes: encontrar pessoas para jogar, reservar uma quadra ou entrar em uma aula.
+
+Encontrar jogadores
+Chamadas de pessoas procurando adversario ou parceiro. Nao mostra quadra livre.
+27 chamadas abertas
+Reservar quadra
+Informe cidade, data e hora para receber quadras livres e solicitar direto.
+18 quadras ativas
+Entrar em aula
+Procure turmas e professores. Separado de reserva avulsa e chamada de jogo.
+24 turmas ativas
+Todos
+Seguindo
+Meus locais
+ENTRAR EM AULA
+Filtre por perfil de turma
+Procure por cidade, dia, periodo e nivel para ver locais com vaga compatível.
+Busca por perfil
+ACADEMIA OU PROFESSOR
+CIDADE
+UF
+DIA
+Qualquer dia
+Dom
+Seg
+Ter
+Qua
+Qui
+Sex
+Sab
+PERIODO
+Qualquer horario
+Manha
+Tarde
+Noite
+NIVEL
+Qualquer nivel
+Iniciante
+Intermediario
+Avancado
+Primeira Classe
+Profissional
+PERFIL
+Adulto ou kids
+Adulto
+Kids
+Buscar turmas com vaga
+ACADEMIA
+Aulas e turmas
+
+Aqui voce procura turmas, professores e aulas. Nao e busca de quadra avulsa.
+
+1 resultado
+
+ADT Dourados
+
+Dourados - MS
+81 seguidores
+Proxima turma: Seg 18/05, 07:00 | Kids
+Aulas
+
+Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais.
+
+8
+turmas com vaga
+ver
+vagas
+Ver aulas
+Seguindo
+Mais
+Gestao esportiva
+Player App
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+CONTA
+Perfil

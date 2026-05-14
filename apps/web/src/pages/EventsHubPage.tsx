@@ -58,6 +58,80 @@ function statusLabel(status: TournamentSummary["status"] | LeagueSummary["status
   return "Rascunho";
 }
 
+function tournamentOperationInfo(tournament: TournamentSummary): { action: string; detail: string; targetPath: string; tone: "urgent" | "neutral" } {
+  if (tournament.status === "draft") {
+    return {
+      action: "Finalizar setup",
+      detail: "Configure dados, classes e publicacao antes de abrir inscricoes.",
+      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
+      tone: "urgent",
+    };
+  }
+  if (tournament.status === "registration_open") {
+    return {
+      action: "Ver inscricoes",
+      detail: tournament.registrationCloseAt ? `Inscricoes ate ${new Date(tournament.registrationCloseAt).toLocaleDateString("pt-BR")}.` : "Aprove inscritos e acompanhe a lista.",
+      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/jogadores`,
+      tone: "urgent",
+    };
+  }
+  if (tournament.status === "registration_closed") {
+    return {
+      action: "Preparar jogos",
+      detail: "Inscricoes encerradas. Revise classes, sorteio e primeira rodada.",
+      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
+      tone: "urgent",
+    };
+  }
+  if (tournament.status === "live") {
+    return {
+      action: "Operar jogos",
+      detail: "Resultados, confirmacoes e andamento ficam na fila de jogos.",
+      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/jogos`,
+      tone: "urgent",
+    };
+  }
+  return {
+    action: "Ver resumo",
+    detail: "Competicao encerrada. Consulte classificacao, historico e mensagens.",
+    targetPath: `/eventos/${encodeURIComponent(tournament.id)}/classificacao`,
+    tone: "neutral",
+  };
+}
+
+function leagueOperationInfo(league: LeagueSummary): { action: string; detail: string; targetPath: string; tone: "urgent" | "neutral" } {
+  if (league.status === "draft") {
+    return {
+      action: "Configurar liga",
+      detail: "Finalize temporada, classes e regras antes de ativar.",
+      targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+      tone: "urgent",
+    };
+  }
+  if (league.status === "active") {
+    return {
+      action: "Operar rodada",
+      detail: "Acompanhe partidas, disponibilidade, resultados e ranking.",
+      targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+      tone: "urgent",
+    };
+  }
+  if (league.status === "paused") {
+    return {
+      action: "Revisar pausa",
+      detail: "Liga pausada. Abra a operacao para ajustar rodada ou comunicados.",
+      targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+      tone: "neutral",
+    };
+  }
+  return {
+    action: "Ver historico",
+    detail: "Liga encerrada. Consulte ranking e partidas finalizadas.",
+    targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+    tone: "neutral",
+  };
+}
+
 function isActiveTournament(item: TournamentSummary): boolean {
   return item.status === "registration_open" || item.status === "registration_closed" || item.status === "live";
 }
@@ -115,6 +189,43 @@ function HubItemCard({ title, meta, status, onOpen }: { title: string; meta: str
         <p className="home-compact-meta">{meta}</p>
       </div>
       <span className="home-league-chip member">{status}</span>
+    </article>
+  );
+}
+
+function CompetitionOperationRow({
+  kind,
+  title,
+  meta,
+  status,
+  action,
+  detail,
+  tone,
+  onOpen,
+}: {
+  kind: "Torneio" | "Liga";
+  title: string;
+  meta: string;
+  status: string;
+  action: string;
+  detail: string;
+  tone: "urgent" | "neutral";
+  onOpen: () => void;
+}) {
+  return (
+    <article className={`competition-operation-row ${tone}`}>
+      <div className="competition-operation-main">
+        <span>{kind}</span>
+        <strong>{title}</strong>
+        <small>{meta}</small>
+      </div>
+      <div className="competition-operation-state">
+        <span>{status}</span>
+        <small>{detail}</small>
+      </div>
+      <button className={tone === "urgent" ? "primary" : "secondary"} type="button" onClick={onOpen}>
+        {action}
+      </button>
     </article>
   );
 }
@@ -226,36 +337,48 @@ export function EventsHubPage({ user, profile }: Props) {
       {hasOrganizerContext ? (
         <section id="competitions-organizing" className="section-card flow-card primary-flow">
           <FlowHeader title="Organizando agora" detail="Fila operacional das competicoes que dependem de voce." />
-          <div className="quick-grid">
-            <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-              <span className="qa-icon"><SettingsIcon /></span>
-              <span>Gerir torneios</span>
-              <CountBadge value={organizingTournaments.length} />
+          <div className="competition-operation-toolbar" aria-label="Acessos de organizador">
+            <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+              Torneios organizados <CountBadge value={organizingTournaments.length} />
             </button>
-            <button className="quick-action" onClick={() => navigate("/eventos/ligas?view=organizing")}>
-              <span className="qa-icon"><SettingsIcon /></span>
-              <span>Gerir ligas</span>
-              <CountBadge value={organizingLeagues.length} />
+            <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
+              Ligas organizadas <CountBadge value={organizingLeagues.length} />
             </button>
           </div>
-          {activeOrganizingTournaments.map((tournament) => (
-            <HubItemCard
-              key={`organizer-tournament:${tournament.id}`}
-              title={tournament.name}
-              meta={[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio"}
-              status={statusLabel(tournament.status)}
-              onOpen={() => navigate(buildTournamentUrl(tournament.id))}
-            />
-          ))}
-          {activeOrganizingLeagues.map((league) => (
-            <HubItemCard
-              key={`organizer-league:${league.id}`}
-              title={league.name}
-              meta={[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
-              status={statusLabel(league.status)}
-              onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
-            />
-          ))}
+          <div className="competition-operation-list">
+            {activeOrganizingTournaments.map((tournament) => {
+              const operation = tournamentOperationInfo(tournament);
+              return (
+                <CompetitionOperationRow
+                  key={`organizer-tournament:${tournament.id}`}
+                  kind="Torneio"
+                  title={tournament.name}
+                  meta={[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio"}
+                  status={statusLabel(tournament.status)}
+                  action={operation.action}
+                  detail={operation.detail}
+                  tone={operation.tone}
+                  onOpen={() => navigate(operation.targetPath)}
+                />
+              );
+            })}
+            {activeOrganizingLeagues.map((league) => {
+              const operation = leagueOperationInfo(league);
+              return (
+                <CompetitionOperationRow
+                  key={`organizer-league:${league.id}`}
+                  kind="Liga"
+                  title={league.name}
+                  meta={[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
+                  status={statusLabel(league.status)}
+                  action={operation.action}
+                  detail={operation.detail}
+                  tone={operation.tone}
+                  onOpen={() => navigate(operation.targetPath)}
+                />
+              );
+            })}
+          </div>
           {activeOrganizerCount === 0 ? (
             <div className="home-empty-panel">
               <strong>Nenhuma operacao ativa agora</strong>

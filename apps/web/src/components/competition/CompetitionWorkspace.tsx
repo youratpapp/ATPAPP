@@ -8,6 +8,7 @@ export type CompetitionScopeOption = {
 };
 
 export type CompetitionQueueItem = {
+  actionLabel?: ReactNode;
   count: ReactNode;
   detail: ReactNode;
   id: string;
@@ -119,6 +120,7 @@ export function CompetitionOperationalQueue({ items, onOpenAll, title }: Competi
             <strong>{item.count}</strong>
             <span>{item.label}</span>
             <small>{item.detail}</small>
+            <em>{item.actionLabel ?? "Abrir"}</em>
           </button>
         ))}
       </div>

@@ -1,0 +1,23 @@
+OPERACAO DO LOCAL
+Gestao do local
+
+Rotina diaria, configuracao, equipe e publicacao ficam separadas por modulo para reduzir ruido operacional.
+
+Central de gestao
+Pagina publica
+
+Carregando...
+
+Gestao esportiva
+Management OS
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+ORGANIZAR
+Organizar
+OPERAR
+Gestao
+CONTA
+Perfil
