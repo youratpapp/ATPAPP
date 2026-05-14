@@ -2070,7 +2070,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     statusOverride?: TournamentStatus,
     feedbackKind: Feedback["kind"] = "success"
   ) => {
-    if (!tournament) return;
+    if (!tournament) return false;
     setSaving(true);
     try {
       const currentStatus = tournament.status as TournamentStatus;
@@ -2088,8 +2088,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       });
 
       await applyUpdatedTournamentState(updated, successText, nextActiveKey, feedbackKind);
+      return true;
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar alteracoes." });
+      return false;
     } finally {
       setSaving(false);
     }
@@ -2921,7 +2923,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setAgendaDirty(false);
   };
 
-  const resetOnlyDraw = () => {
+  const resetOnlyDraw = async () => {
+    if (!tournament) return;
     if (
       !requireDoubleConfirmation(
         "Resetar apenas sorteio/partidas? Isso vai limpar jogos, chaves e agenda, mantendo categorias e participantes.",
@@ -2936,10 +2939,26 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       classes: cat.classes.map((cls) => ({ ...cls, data: resetClassDrawData(cls.data) })),
     }));
     setDraftCategories(nextDraft);
-    setDraftDirty(true);
-    setAgenda(normalizeAgenda(null));
-    setAgendaDirty(true);
-    setFeedback({ kind: "success", text: "Sorteio/partidas resetados no fluxo novo. Salve para persistir." });
+    const emptyAgenda = normalizeAgenda(null);
+    setAgenda(emptyAgenda);
+
+    const baseData = (tournament.data ?? {}) as Record<string, unknown>;
+    const withCategories = buildTournamentDataWithDraftCategories(baseData, nextDraft);
+    withCategories.linkGrupo = groupLink.trim();
+    withCategories.agendaConfig = agendaConfig as unknown as Record<string, unknown>;
+    withCategories.agenda = emptyAgenda as unknown as Record<string, unknown>;
+    const nextStatus =
+      tournament.status === "live" || tournament.status === "finished"
+        ? "registration_closed"
+        : undefined;
+    const ok = await persistTournamentData(
+      withCategories,
+      "Sorteio, partidas e agenda resetados. Categorias e participantes foram mantidos.",
+      "",
+      nextStatus
+    );
+    setDraftDirty(!ok);
+    setAgendaDirty(!ok);
   };
 
   const resetAllTournament = () => {
@@ -4629,7 +4648,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <button onClick={saveAllChanges} disabled={saving}>
                       Salvar tudo
                     </button>
-                    <button onClick={resetOnlyDraw} disabled={saving}>
+                    <button onClick={() => void resetOnlyDraw()} disabled={saving}>
                       Resetar sorteio/partidas
                     </button>
                     <button className="danger" onClick={resetAllTournament} disabled={saving}>
@@ -4673,7 +4692,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     </label>
                   </div>
                   <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
-                    Use "Salvar tudo" para persistir categorias, jogos e agenda no Supabase.
+                    Use "Salvar tudo" para persistir edicoes manuais. Resetar sorteio/partidas salva imediatamente.
                   </p>
                 </div>
               ) : null}
