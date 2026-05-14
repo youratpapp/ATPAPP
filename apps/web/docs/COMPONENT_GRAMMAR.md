@@ -249,6 +249,7 @@ Uso:
 - historico;
 - edicao curta;
 - acoes secundarias.
+- rotina operacional que precisa de foco curto, como chamada de aula, turma, aluno ou professor.
 
 Desktop:
 
@@ -268,6 +269,27 @@ Anti-pattern:
 
 - modal central grande com formulario longo;
 - drawer para tarefa que deveria ser pagina/wizard.
+- abrir wizard dentro de uma lista operacional.
+- repetir formulario de edicao dentro de cada card/row quando um drawer resolveria melhor.
+
+Variacoes obrigatorias para Academia v2:
+
+- `LessonDrawer`: chamada da aula, presenca, falta, ausencia avisada, alunos e observacao curta.
+- `ClassDrawer`: dados da turma, alunos, financeiro e presenca/historico.
+- `StudentDrawer`: dados, matriculas, pagamentos, presenca, evolucao, reposicoes e historico.
+- `CoachDrawer`: dados, agenda, turmas, comissao e login/convite.
+- `FitDrawer`: busca de encaixe para aula avulsa ou reposicao, acionada a partir de `Pendencias`.
+
+Implementado em 2026-05-14:
+
+- `StudentDrawer` foi aplicado em `Academia > Alunos` com secoes curtas para matricula, financeiro, presenca/faltas, evolucao e reposicoes/historico.
+- A regra de drawer substituiu acoes soltas por aluno e impediu que presenca/evolucao ficassem escondidas em formularios repetidos.
+
+Regra:
+
+```text
+Se a acao e recorrente e precisa preservar contexto, use drawer/sheet. Se exige decisao em etapas raras, use wizard.
+```
 
 ## BottomSheets
 

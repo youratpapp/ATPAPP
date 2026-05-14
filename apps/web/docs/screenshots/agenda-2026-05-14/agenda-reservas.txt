@@ -1,0 +1,110 @@
+MANAGEMENT OS
+Arena Pantanal Tennis
+
+Workspace operacional do local. A pagina publica e a descoberta ficam fora desta tela.
+
+Voltar para central
+Ver pagina publica
+ADMIN | PRO: COMPLETO
+Arena Pantanal Tennis
+Campo Grande - MS
+37
+pendencias
+100%
+implantado
+Painel
+81
+Agenda
+23
+Academia
+28
+Clientes
+20
+Financeiro
+62
+Cantina
+Equipe
+Ajustes
+Modulo ativo
+Agenda
+Reservas, bloqueios, calendario das quadras e lista de espera.
+23 itens para acompanhar
+Reservas
+Academia
+Socios
+CRM
+Financeiro
+Base operacional pronta
+8
+Reservas hoje
+19
+Pendentes
+4
+Na espera
+14%
+Ocupacao do dia
+Reservas aguardando confirmacao
+Quadra 3Camila Uchida - 14/05/2026, 03:30:00ConfirmarCancelar
+Quadra 2Quiteria Silva - 14/05/2026, 08:00:00ConfirmarCancelar
+Quadra 2Isabela Xavier - 15/05/2026, 03:00:00ConfirmarCancelar
+Quadra 1Yasmin Uchida - 15/05/2026, 08:30:00ConfirmarCancelar
+Quadra 1Olivia Zanetti - 16/05/2026, 03:30:00ConfirmarCancelar
+Quadra 4Quiteria Ishikawa - 16/05/2026, 08:00:00ConfirmarCancelar
+Lista de espera
+Karina BorgesQuadra 1 - 16/05/2026, 15:00:00 - 1d na espera - horario livreCriar reservaConvidarRemover
+Bruno DuarteQuadra 2 - 16/05/2026, 15:00:00 - 1d na espera - horario livreCriar reservaConvidarRemover
+Guilherme JardimQuadra 1 - 17/05/2026, 16:00:00 - 2d na espera - horario livreCriar reservaConvidarRemover
+Valentina QueirozQuadra 2 - 17/05/2026, 16:00:00 - 2d na espera - horario livreCriar reservaConvidarRemover
+Central de agenda
+Reservas recentes, confirmacao, pagamento e cancelamento.
+Hoje
+Reservas
+Calendario
+Nova reserva
+Espera
+Quadras
+Quadra 1
+Quiteria Ishikawa | 13/05/2026, 08:30:00 | Confirmada
+Cancelar
+Quadra 3
+Karina Queiroz | 13/05/2026, 08:30:00 | Confirmada
+Cancelar
+Quadra 2
+Felipe Barbosa | 14/05/2026, 03:00:00 | Confirmada
+Cancelar
+Quadra 4
+Vinicius Jardim | 14/05/2026, 03:00:00 | Confirmada
+Cancelar
+Quadra 1
+Isabela Mendes | 14/05/2026, 03:30:00 | Confirmada
+Cancelar
+Quadra 3
+Camila Uchida | 14/05/2026, 03:30:00 | Pendente
+Confirmar
+Cancelar
+Quadra 2
+Quiteria Silva | 14/05/2026, 08:00:00 | Pendente
+Confirmar
+Cancelar
+Quadra 4
+Karina Borges | 14/05/2026, 08:00:00 | Confirmada
+Cancelar
+Quadra 1
+Thiago Farias | 14/05/2026, 08:30:00 | Confirmada
+Cancelar
+Quadra 3
+Nicolas Henrique | 14/05/2026, 08:30:00 | Confirmada
+Cancelar
+Gestao esportiva
+Management OS
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+ORGANIZAR
+Organizar
+OPERAR
+Gestao
+CONTA
+Perfil

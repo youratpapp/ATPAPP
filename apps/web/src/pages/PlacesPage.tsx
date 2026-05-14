@@ -9,7 +9,7 @@ import { CanteenWorkspaceShell, type CanteenManagementView } from "../components
 import { ClientsWorkspaceShell, type ClientsManagementView } from "../components/place/ClientsWorkspaceShell";
 import { FinanceWorkspaceShell, type FinanceManagementView } from "../components/place/FinanceWorkspaceShell";
 import { PlaceAcademyClassSetupModule } from "../components/place/PlaceAcademyClassSetupModule";
-import { PlaceAcademyClassesModule } from "../components/place/PlaceAcademyClassesModule";
+import { PlaceAcademyClassesModule, type AcademyClassEditPatch } from "../components/place/PlaceAcademyClassesModule";
 import { PlaceAcademyCoachesModule } from "../components/place/PlaceAcademyCoachesModule";
 import { PlaceAcademyFitModule } from "../components/place/PlaceAcademyFitModule";
 import { PlaceAcademyOperationalQueues } from "../components/place/PlaceAcademyOperationalQueues";
@@ -88,6 +88,7 @@ import {
   searchAvailableCourts,
   searchAvailableCourtsForDiscovery,
   unfollowPlace,
+  updateAcademyEnrollment,
   updateAcademyEnrollmentStatus,
   updateAcademyLessonRequestStatus,
   updateAcademyMakeupCreditStatus,
@@ -101,6 +102,7 @@ import {
   updateCourtBookingStatus,
   updateCourtBookingWaitlistStatus,
   updatePlaceBookingRuleStatus,
+  updatePlaceAcademyClass,
   updatePlaceCrmContactFollowUp,
   updatePlaceCrmContactOwner,
   updatePlaceCourtPricing,
@@ -200,7 +202,13 @@ type OpenMatchDiscoveryFilter = {
   level: string;
   status: "" | OpenMatch["status"];
 };
-type AcademyStudentFilter = { query: string; classId: string; status: "" | AcademyEnrollment["status"] };
+type AcademyStudentFilter = {
+  attendance: "" | "present_today" | "absent_today" | "pending_today" | "has_absence" | "has_makeup";
+  classId: string;
+  payment: "" | "paid" | "pending";
+  query: string;
+  status: "" | AcademyEnrollment["status"];
+};
 type CrmInteractionDraft = { interactionType: PlaceCrmInteraction["interactionType"]; body: string; nextContactOn: string };
 type PlaceProfileDraft = { city: string; description: string; logoUrl: string; name: string; state: string };
 type BookingRuleDraft = {
@@ -2000,6 +2008,26 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
 
+  const onUpdateAcademyClass = async (placeId: string, academyClass: AcademyClass, patch: AcademyClassEditPatch) => {
+    if (!patch.title.trim()) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updatePlaceAcademyClass({
+        classId: academyClass.id,
+        ...patch,
+        level: normalizeAcademyLevel(patch.level) || patch.level,
+      });
+      setAcademyClassPriceDraftByClass((prev) => ({ ...prev, [academyClass.id]: String(Math.round(patch.monthlyFeeCents / 100)) }));
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: patch.isActive ? "Turma atualizada." : "Turma desativada." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao salvar turma.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const onUpdateAcademyEnrollment = async (
     placeId: string,
     enrollmentId: string,
@@ -2013,6 +2041,38 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setFeedback({ kind: "success", text: status === "active" ? "Matricula ativada." : "Matricula cancelada." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar matricula.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onUpdateAcademyEnrollmentDetails = async (
+    placeId: string,
+    enrollmentId: string,
+    patch: {
+      classId: string;
+      notes?: string;
+      phone?: string;
+      playerName: string;
+      status: AcademyEnrollment["status"];
+    }
+  ) => {
+    if (!patch.playerName.trim() || !patch.classId) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updateAcademyEnrollment({
+        enrollmentId,
+        classId: patch.classId,
+        notes: patch.notes,
+        phone: patch.phone,
+        playerName: patch.playerName,
+        status: patch.status,
+      });
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Matricula do aluno atualizada." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar aluno.") });
     } finally {
       setBusy(false);
     }
@@ -3225,7 +3285,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const academyProgress = academyProgressByPlace[p.id] || [];
         const pendingAcademyEnrollments = academyEnrollments.filter((item) => item.status === "pending");
         const openAcademyMakeups = academyMakeups.filter((item) => item.status === "open");
-        const academyStudentFilter = academyStudentFilterByPlace[p.id] || { query: "", classId: "", status: "active" as const };
+        const storedAcademyStudentFilter = academyStudentFilterByPlace[p.id];
+        const academyStudentFilter: AcademyStudentFilter = {
+          query: storedAcademyStudentFilter?.query || "",
+          classId: storedAcademyStudentFilter?.classId || "",
+          status: storedAcademyStudentFilter?.status ?? "active",
+          payment: storedAcademyStudentFilter?.payment || "",
+          attendance: storedAcademyStudentFilter?.attendance || "",
+        };
         const academyBillingPeriod = currentBillingPeriod();
         const todayAttendance = academyAttendance.filter((item) => item.attendedOn === todayDateInputValue());
         const academyDraft = academyClassDraftByPlace[p.id] || {
@@ -3790,19 +3857,30 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showCanteenProducts = !showCanteenWorkspace || canteenView === "products";
         const academyView = (academyViewByPlace[p.id] || "today") as AcademyManagementView;
         const showAcademyWorkspace = isManagementCockpit && showAcademyTools;
-        const showAcademyResources = !showAcademyWorkspace || academyView === "resources";
-        const showAcademyRequests = !showAcademyWorkspace || academyView === "requests";
-        const showAcademyClasses = !showAcademyWorkspace || academyView === "classes";
+        const showAcademyResources = !showAcademyWorkspace;
+        const showAcademyRequests = !showAcademyWorkspace;
+        const showAcademyClasses = !showAcademyWorkspace;
         const normalizedAcademyStudentQuery = academyStudentFilter.query.trim().toLowerCase();
         const visibleAcademyStudentEnrollments = academyEnrollments.filter((enrollment) => {
           const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
-          const searchText = [enrollment.playerName, enrollment.phone, academyClass?.title, academyClass?.coachName, academyClass?.level]
+          const paid = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)]?.status === "paid";
+          const todayEnrollmentAttendance = todayAttendance.find((item) => item.enrollmentId === enrollment.id);
+          const hasOpenAbsence = academyAbsences.some((item) => item.enrollmentId === enrollment.id && item.status === "open");
+          const hasOpenMakeup = openAcademyMakeups.some((item) => item.enrollmentId === enrollment.id);
+          const searchText = [enrollment.playerName, enrollment.phone, enrollment.notes, academyClass?.title, academyClass?.coachName, academyClass?.level]
             .filter(Boolean)
             .join(" ")
             .toLowerCase();
           return (
             (!academyStudentFilter.status || enrollment.status === academyStudentFilter.status) &&
             (!academyStudentFilter.classId || enrollment.classId === academyStudentFilter.classId) &&
+            (!academyStudentFilter.payment || (academyStudentFilter.payment === "paid" ? paid : !paid)) &&
+            (!academyStudentFilter.attendance ||
+              (academyStudentFilter.attendance === "present_today" && todayEnrollmentAttendance?.status === "present") ||
+              (academyStudentFilter.attendance === "absent_today" && todayEnrollmentAttendance?.status === "absent") ||
+              (academyStudentFilter.attendance === "pending_today" && enrollment.status === "active" && !todayEnrollmentAttendance) ||
+              (academyStudentFilter.attendance === "has_absence" && hasOpenAbsence) ||
+              (academyStudentFilter.attendance === "has_makeup" && hasOpenMakeup)) &&
             (!normalizedAcademyStudentQuery || searchText.includes(normalizedAcademyStudentQuery))
           );
         });
@@ -5300,23 +5378,49 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <>
                       <PlaceAcademyClassesModule
                         activeCourts={activeCourts}
+                        billingPeriod={academyBillingPeriod}
+                        busy={busy}
+                        canManageFinance={canManageFinance}
+                        canManagePlace={canManagePlace}
+                        classPriceDraftByClass={academyClassPriceDraftByClass}
                         classes={visibleAcademyClasses}
+                        coaches={academyCoaches}
                         enrollments={academyEnrollments}
+                        isEnrollmentPaid={(enrollmentId) => paymentsByTarget[paymentMapKey("academy_enrollment", enrollmentId, academyBillingPeriod)]?.status === "paid"}
+                        onChangeClassPriceDraft={(classId, value) => setAcademyClassPriceDraftByClass((prev) => ({ ...prev, [classId]: value }))}
+                        onChangeStudentDraft={(classId, draft) => setAcademyStudentDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
+                        onCreatePaymentReminder={(enrollment, academyClass) =>
+                          void onCreatePaymentReminder(
+                            "academy_enrollment",
+                            enrollment.id,
+                            academyBillingPeriod,
+                            `${enrollment.playerName}, sua mensalidade da turma ${academyClass.title} esta pendente.`
+                          )
+                        }
+                        onCreateStudent={(academyClass) => void onCreateAcademyStudentByAdmin(p, academyClass)}
+                        onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment)}
+                        onSaveClassPrice={(academyClass) => void onSaveAcademyClassPrice(p.id, academyClass)}
+                        onUpdateClass={(academyClass, patch) => void onUpdateAcademyClass(p.id, academyClass, patch)}
+                        onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
+                        studentDraftByClass={academyStudentDraftByClass}
                         weekdayLabels={WEEKDAY_LABELS}
                       />
                       {canManagePlace ? (
-                        <PlaceAcademyClassSetupModule
-                          activeCourts={activeCourts}
-                          busy={busy}
-                          coachConflict={draftCoachConflict}
-                          coaches={academyCoaches}
-                          courtConflict={draftCourtConflict}
-                          draft={academyDraft}
-                          onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
-                          onCreateClass={() => void onCreateAcademyClass(p)}
-                          onCreateSlot={() => void onCreateAcademySlot(p)}
-                          weekdayLabels={WEEKDAY_LABELS}
-                        />
+                        <details className="workspace-disclosure">
+                          <summary>Criar nova turma ou abrir horario</summary>
+                          <PlaceAcademyClassSetupModule
+                            activeCourts={activeCourts}
+                            busy={busy}
+                            coachConflict={draftCoachConflict}
+                            coaches={academyCoaches}
+                            courtConflict={draftCourtConflict}
+                            draft={academyDraft}
+                            onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                            onCreateClass={() => void onCreateAcademyClass(p)}
+                            onCreateSlot={() => void onCreateAcademySlot(p)}
+                            weekdayLabels={WEEKDAY_LABELS}
+                          />
+                        </details>
                       ) : null}
                     </>
                   ) : null}
@@ -5324,15 +5428,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <PlaceAcademyStudentsModule
                       absences={academyAbsences}
                       attendance={academyAttendance}
+                      absenceDraftByEnrollment={academyAbsenceDraftByEnrollment}
                       billingPeriod={academyBillingPeriod}
                       busy={busy}
                       canManageFinance={canManageFinance}
+                      canManagePlace={canManagePlace}
                       classes={academyClasses}
                       enrollments={academyEnrollments}
                       filter={academyStudentFilter}
                       isEnrollmentPaid={(enrollmentId) => paymentsByTarget[paymentMapKey("academy_enrollment", enrollmentId, academyBillingPeriod)]?.status === "paid"}
                       makeups={openAcademyMakeups}
+                      onChangeAbsenceDraft={(enrollmentId, draft) => setAcademyAbsenceDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: draft }))}
                       onChangeFilter={(filter) => setAcademyStudentFilterByPlace((prev) => ({ ...prev, [p.id]: filter }))}
+                      onChangeProgressDraft={(enrollmentId, draft) => setAcademyProgressDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: draft }))}
+                      onCreateProgressNote={(enrollmentId) => void onCreateProgressNote(p.id, enrollmentId)}
                       onCreatePaymentReminder={(enrollment, academyClass) =>
                         void onCreatePaymentReminder(
                           "academy_enrollment",
@@ -5345,27 +5454,60 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment)}
                       onReportAbsence={(enrollmentId) => void onReportAcademyAbsence(p.id, enrollmentId)}
                       onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
+                      onUpdateEnrollmentDetails={(enrollmentId, patch) => void onUpdateAcademyEnrollmentDetails(p.id, enrollmentId, patch)}
                       progress={academyProgress}
+                      progressDraftByEnrollment={academyProgressDraftByEnrollment}
                       todayAttendance={todayAttendance}
                       visibleClasses={visibleAcademyClasses}
                       visibleEnrollments={visibleAcademyStudentEnrollments}
                     />
                   ) : null}
                   {academyView === "requests" ? (
-                    <PlaceAcademyRequestsModule
-                      busy={busy}
-                      classes={academyClasses}
-                      enrollments={academyEnrollments}
-                      lessonRequests={actionableLessonRequests}
-                      makeups={openAcademyMakeups}
-                      onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
-                      onOpenFit={() => void onSearchAcademyFitSlots(p.id)}
-                      onShareContact={shareAcademyContact}
-                      onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
-                      onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
-                      onUseMakeup={(creditId) => void onUpdateMakeupCredit(p.id, creditId, "used")}
-                      pendingEnrollments={pendingAcademyEnrollments}
-                    />
+                    <>
+                      <PlaceAcademyRequestsModule
+                        busy={busy}
+                        classes={academyClasses}
+                        enrollments={academyEnrollments}
+                        lessonRequests={actionableLessonRequests}
+                        makeups={openAcademyMakeups}
+                        onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                        onOpenFit={() => void onSearchAcademyFitSlots(p.id)}
+                        onShareContact={shareAcademyContact}
+                        onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
+                        onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
+                        onUseMakeup={(creditId) => void onUpdateMakeupCredit(p.id, creditId, "used")}
+                        pendingEnrollments={pendingAcademyEnrollments}
+                      />
+                      <details className="workspace-disclosure">
+                        <summary>Buscar encaixe para aula avulsa ou reposicao</summary>
+                        <PlaceAcademyFitModule
+                          activeCourts={activeCourts}
+                          actionableLessonRequests={actionableLessonRequests}
+                          busy={busy}
+                          canManageAcademy={canManageAcademy}
+                          canManageFinance={canManageFinance}
+                          classes={academyClasses}
+                          coaches={displayedCoaches}
+                          fitSearch={fitSearch}
+                          fitSlots={fitSlots}
+                          isLessonRequestPaid={(request) =>
+                            paymentsByTarget[paymentMapKey("academy_lesson_request", request.id)]?.status === "paid" || request.paymentStatus === "paid"
+                          }
+                          lessonRequestDraftByClass={academyLessonRequestDraftByClass}
+                          makeups={academyMakeups}
+                          onChangeFitSearch={(search) => setAcademyFitSearchByPlace((prev) => ({ ...prev, [p.id]: search }))}
+                          onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
+                          onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                          onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
+                          onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
+                          onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
+                          profile={profile}
+                          userEmail={user.email || ""}
+                          userId={user.id}
+                          weekdayLabels={WEEKDAY_LABELS}
+                        />
+                      </details>
+                    </>
                   ) : null}
                   {academyView === "coaches" ? (
                     <PlaceAcademyCoachesModule
@@ -5391,23 +5533,45 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     />
                   ) : null}
                   {academyView === "resources" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard
-                        title="Professores"
-                        subtitle={countLabel(displayedCoaches.length, "professor", "professores")}
-                        detail={displayedCoaches.map((coach) => coach.name).join(", ") || "Cadastre o primeiro professor"}
-                      />
-                      <WorkspaceCard
-                        title="Quadras"
-                        subtitle={countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}
-                        detail={activeCourts.map((court) => court.name).join(", ") || "Cadastre quadras para montar turmas"}
-                      />
-                      <WorkspaceCard
-                        title="Horarios abertos"
-                        subtitle={countLabel(resourceDaySlots.length, "horario", "horarios")}
-                        detail="Use os horarios livres abaixo para criar turmas sem conflito."
-                      />
-                    </WorkspaceGrid>
+                    <>
+                      <WorkspaceGrid>
+                        <WorkspaceCard
+                          title="Quadras"
+                          subtitle={countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}
+                          detail={activeCourts.map((court) => court.name).join(", ") || "Cadastre quadras para montar turmas"}
+                        />
+                        <WorkspaceCard
+                          title="Horarios abertos"
+                          subtitle={countLabel(resourceDaySlots.length, "horario", "horarios")}
+                          detail="Use os horarios livres abaixo para criar turmas sem conflito."
+                        />
+                        <WorkspaceCard
+                          title="Professores vinculados"
+                          subtitle={countLabel(displayedCoaches.length, "professor", "professores")}
+                          detail="Cadastro e comissao ficam na aba Professores."
+                        />
+                      </WorkspaceGrid>
+                      {canManageAcademy ? (
+                        <PlaceAcademyResourcesModule
+                          activeCourts={activeCourts}
+                          busy={busy}
+                          coaches={displayedCoaches}
+                          onChangeAcademyDraftFromSlot={(patch) => {
+                            setAcademyClassDraftByPlace((prev) => ({
+                              ...prev,
+                              [p.id]: {
+                                ...academyDraft,
+                                ...patch,
+                                coachName: patch.coachName || academyDraft.coachName,
+                              },
+                            }));
+                            setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
+                          }}
+                          resourceDayClasses={resourceDayClasses}
+                          resourceDaySlots={resourceDaySlots}
+                        />
+                      ) : null}
+                    </>
                   ) : null}
                 </AcademyWorkspaceShell>
               ) : null}

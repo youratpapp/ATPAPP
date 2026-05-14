@@ -1,0 +1,190 @@
+MANAGEMENT OS
+Arena Pantanal Tennis
+
+Workspace operacional do local. A pagina publica e a descoberta ficam fora desta tela.
+
+Voltar para central
+Ver pagina publica
+ADMIN | PRO: COMPLETO
+Arena Pantanal Tennis
+Campo Grande - MS
+37
+pendencias
+100%
+implantado
+Painel
+81
+Agenda
+23
+Academia
+28
+Clientes
+20
+Financeiro
+62
+Cantina
+Equipe
+Ajustes
+Modulo ativo
+Academia
+Turmas, professores, matriculas, chamadas, reposicoes e evolucao.
+28 itens para acompanhar
+Reservas
+Academia
+Socios
+CRM
+Financeiro
+Base operacional pronta
+1
+Aulas hoje
+0
+Matriculas pendentes
+16
+Encaixes pendentes
+12
+Reposicoes abertas
+Aulas do dia
+18:00Intermediario Noite - Priscila Araujo - Intermediario
+Pendencias da academia
+Beatriz OliveiraAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Henrique AraujoAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Helena GomesAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Nicolas RochaAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Central da academia
+Novas matriculas, encaixes, avulsas e reposicoes.
+Hoje
+Turmas
+Alunos
+Pendencias
+Professores
+Recursos
+Matriculas
+Aprove ou cancele novos interessados em turmas.
+0
+Aulas avulsas
+Pedidos de reposicao e drop-in que precisam de retorno.
+16
+Reposicoes
+Creditos abertos que precisam virar aula marcada.
+12
+Beatriz Oliveira
+Aula avulsa | Kids Iniciacao | 2026-05-16 | +55 65 990030825
+WhatsApp
+Aprovar
+Recusar
+Henrique Araujo
+Aula avulsa | Adulto Iniciante | 2026-05-16 | +55 67 990001096
+WhatsApp
+Aprovar
+Recusar
+Helena Gomes
+Aula avulsa | Intermediario Manha | 2026-05-16 | +55 67 990004247
+WhatsApp
+Aprovar
+Recusar
+Nicolas Rocha
+Aula avulsa | Intermediario Noite | 2026-05-16 | +55 65 990007398
+WhatsApp
+Aprovar
+Recusar
+Patricia Dias
+Aula avulsa | Feminino Performance | 2026-05-16 | +55 67 990010549
+WhatsApp
+Aprovar
+Recusar
+Thiago Jardim
+Aula avulsa | Duplas Competitivo | 2026-05-16 | +55 67 990013700
+WhatsApp
+Aprovar
+Recusar
+Camila Uchida
+Aula avulsa | Avancado Ranking | 2026-05-16 | +55 65 990016851
+WhatsApp
+Aprovar
+Recusar
+Caue Barbosa
+Aula avulsa | Kids Performance | 2026-05-16 | +55 67 990020002
+WhatsApp
+Aprovar
+Recusar
+Aluno
+Reposicao aberta | Intermediario Manha | gerada em 2026-03-25
+Usar reposicao
+Aluno
+Reposicao aberta | Intermediario Manha | gerada em 2026-03-25
+Usar reposicao
+Aluno
+Reposicao aberta | Kids Performance | gerada em 2026-03-18
+Usar reposicao
+Aluno
+Reposicao aberta | Avancado Ranking | gerada em 2026-03-18
+Usar reposicao
+Aluno
+Reposicao aberta | Intermediario Manha | gerada em 2026-03-18
+Usar reposicao
+Aluno
+Reposicao aberta | Intermediario Manha | gerada em 2026-03-18
+Usar reposicao
+Aluno
+Reposicao aberta | Adulto Iniciante | gerada em 2026-03-18
+Usar reposicao
+Aluno
+Reposicao aberta | Kids Iniciacao | gerada em 2026-03-11
+Usar reposicao
+Academia e aulas
+8 turmas
+Buscar encaixe
+Encontre horario real para aula avulsa ou reposicao.
+Use poucos filtros e deixe o sistema retornar as turmas com vaga ou ausencia avisada.
+Qualquer nivel
+Iniciante
+Intermediario
+Avancado
+Primeira Classe
+Profissional
+Qualquer periodo
+Manha
+Tarde
+Noite
+Qualquer professor
+Gustavo Amaral
+Priscila Araujo
+M/F/Mista
+Masculina
+Feminina
+Mista
+Buscar
+Pedidos para resolver
+16 pedidos abertos
+Beatriz Oliveira
+Avulsa | Kids Iniciacao | 16/05/2026 | R$ 80,00
+Aprovar
+Recusar
+Henrique Araujo
+Avulsa | Adulto Iniciante | 16/05/2026 | R$ 80,00
+Aprovar
+Recusar
+Helena Gomes
+Avulsa | Intermediario Manha | 16/05/2026 | R$ 80,00
+Aprovar
+Recusar
+Nicolas Rocha
+Avulsa | Intermediario Noite | 16/05/2026 | R$ 80,00
+Aprovar
+Recusar
+Nenhum encaixe listado
+Defina data e filtros para encontrar turmas com vaga, ausencia avisada ou capacidade disponivel.
+Buscar encaixes
+Gestao esportiva
+Management OS
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+ORGANIZAR
+Organizar
+OPERAR
+Gestao
+CONTA
+Perfil

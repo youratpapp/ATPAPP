@@ -33,6 +33,255 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] ACADEMY-V2-00 - Plano operacional e suporte reutilizavel
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Transformar o prompt de Academia v2 em plano executavel antes de alterar a tela.
+- Criar suporte para repetir o mesmo processo area por area do app.
+
+Criterios:
+
+- mapear nova arquitetura de `Gestao > Academia`;
+- preservar todas as funcoes atuais;
+- definir onde cada funcao mora na v2;
+- separar rotina diaria, configuracao, fila e financeiro;
+- definir drawers, acoes inline, setup/wizard e possiveis gaps de backend;
+- criar playbook reutilizavel para Agenda, Clientes, Financeiro, Competition OS e demais areas.
+
+Entregue:
+
+- `ACADEMY_V2_UX_PLAN.md`;
+- `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md`;
+- queue atualizada com tarefas de implementacao incremental.
+
+Risco residual:
+
+- a implementacao ainda precisa validar quais acoes ja persistem de verdade e quais exigem suporte backend minimo.
+
+### [x] ACADEMY-V2-01 - Remover duplicidade e reorganizar abas da Academia
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Fazer `Gestao > Academia` deixar de parecer uma pagina empilhada e virar workspace operacional com responsabilidades claras.
+
+Criterios:
+
+- trocar `Turmas` por `Grade`;
+- trocar `Recursos` por `Configuracao` ou `Quadras e horarios`;
+- remover/fundir o bloco legado `Academia e aulas`;
+- eliminar duplicidade entre central e conteudo legado;
+- garantir que tabs nao fiquem presas em scroll interno dentro do bloco;
+- manter link direto por `?visao=` sem quebrar rotas existentes.
+
+Telas/componentes afetados:
+
+- `PlaceAcademyTodayModule`;
+- `PlaceAcademyClassesModule`;
+- `PlaceAcademyStudentsModule`;
+- `PlaceAcademyRequestsModule`;
+- `PlaceAcademyCoachesModule`;
+- `PlaceAcademyResourcesModule`;
+- `PlaceAcademyClassSetupModule`;
+- `PlaceAcademyFitModule`;
+- `PlaceAdminShell`;
+- navegacao de subvisoes de Academia.
+
+Ganhos esperados:
+
+- secretaria encontra `Hoje`, `Grade`, `Alunos`, `Pendencias`, `Professores` e `Configuracao` sem caca visual;
+- reducao imediata de scroll e duplicidade;
+- base limpa para drawers v2.
+
+Dependencias:
+
+- `ACADEMY_V2_UX_PLAN.md`;
+- `ACADEMY_MODULE_FUNCTION_MAP.md`;
+- rotas/subvisoes canonicas de Gestao.
+
+Risco de regressao:
+
+- fluxos legados podem depender do bloco `Academia e aulas`;
+- deep links antigos para `?visao=turmas` ou `?visao=recursos` devem ser canonizados.
+
+Criterios de conclusao:
+
+- lint e build passando;
+- screenshots desktop/mobile da Academia no ciclo de QA visual;
+- docs atualizados com o novo estado.
+
+Entregue:
+
+- tabs v2 aplicadas: `Turmas` virou `Grade` e `Recursos` virou `Configuracao`;
+- URLs canonicas passaram para `?visao=grade` e `?visao=configuracao`, mantendo aliases antigos `turmas` e `recursos`;
+- bloco legado `Academia e aulas` deixou de renderizar dentro do workspace de Gestao;
+- `Configuracao` passou a hospedar o modulo de recursos/horarios;
+- `Pendencias` passou a recolher `Buscar encaixe` em disclosure, removendo o bloco permanente da primeira leitura;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Risco residual:
+
+- `Buscar encaixe` ainda precisa virar drawer/sheet real em `ACADEMY-V2-04`;
+- `Configuracao` ainda precisa evoluir data/dia e visao professor/quadra em `ACADEMY-V2-07`;
+- screenshots autenticados ficam para o ciclo de QA quando a sessao local estiver disponivel.
+
+### [x] ACADEMY-V2-02 - Grade com drawer de turma
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Transformar turmas em lista operacional densa com `ClassDrawer`, removendo formularios repetidos de matricula/mensalidade do corpo.
+
+Criterios:
+
+- busca e filtros visiveis;
+- rows com professor, quadra, dia, horario, vagas, mensalidade, nivel e status;
+- `Nova turma` em drawer curto;
+- edicao, mensalidade, alunos e historico dentro do drawer;
+- sem limite silencioso de turmas.
+
+Entregue:
+
+- Grade ganhou busca por turma, professor, quadra, nivel ou aluno;
+- filtros por dia e status operacional (`Todas`, `Com vagas`, `Lotadas`, `Com pendencias`);
+- remocao de `slice(0, 12)` silencioso: a tela informa `Exibindo X de Y` e usa `Ver mais turmas`;
+- row de turma manteve foco operacional com horario, professor, quadra, nivel, vagas, mensalidade e pendencias;
+- `ClassDrawer` foi criado usando `EntityDrawer`;
+- drawer permite editar dados da turma, professor, quadra, dia, horario, vagas, nivel, perfil e reposicao;
+- suporte backend minimo criado em `updatePlaceAcademyClass(...)` para salvar edicao real da turma;
+- mensalidade continua com acao explicita `Salvar mensalidade`;
+- alunos da turma aparecem no drawer com ativar, cancelar, marcar pago e lembrete conforme permissao;
+- matricula manual de aluno foi preservada dentro do drawer da turma;
+- historico curto de matriculas aparece no drawer;
+- setup de criacao de turma deixou de ficar aberto por padrao e passou para disclosure `Criar nova turma ou abrir horario`;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Risco residual:
+
+- criacao de nova turma ainda usa o `SetupWizard` existente dentro de disclosure; a migracao para drawer curto pode ser feita em refinamento futuro sem bloquear a rotina de Grade;
+- historico profundo de presenca/evolucao fica para `ACADEMY-V2-03`/`ACADEMY-V2-05`, pois esta rodada nao deveria avancar para Alunos/Hoje.
+
+### [x] ACADEMY-V2-03 - Alunos com drawer e busca forte
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Fazer `Alunos` virar local unico para localizar aluno e resolver situacao de matricula, pagamento, presenca, evolucao e reposicao.
+
+Criterios:
+
+- busca por nome/telefone/email;
+- filtros por status, turma, pagamento e presenca;
+- `StudentDrawer`;
+- acoes financeiras respeitam permissao;
+- estados vazios explicam filtro e proxima acao;
+- sem `slice` silencioso.
+
+Implementado:
+
+- `Alunos` ganhou filtros por busca, turma, status, pagamento e presenca/reposicao;
+- lista deixou de usar limite silencioso: agora exibe `Exibindo X de Y` e oferece `Ver mais alunos`;
+- cada aluno abre `StudentDrawer` com `Dados e matricula`, `Financeiro`, `Presenca e faltas`, `Evolucao` e `Reposicoes e historico`;
+- edicao de matricula ganhou suporte real em `updateAcademyEnrollment(...)`, sem simular persistencia local;
+- pagamento, lembrete, check-in, falta, ausencia avisada e registro de evolucao foram preservados dentro do contexto do aluno;
+- acoes financeiras continuam condicionadas a permissao;
+- estados vazios orientam quando a operacao nao tem alunos ou quando filtros esconderam resultados;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Risco residual:
+
+- `Alunos` agora mostra creditos de reposicao no drawer, mas usar/agendar/baixar credito fica para a fila de `Pendencias`, onde a decisao operacional e o encaixe acontecem;
+- busca por email depende de haver email persistido/vinculado na matricula/perfil; o modelo atual de `place_academy_enrollments` nao expõe email direto na listagem.
+
+### [>] ACADEMY-V2-04 - Pendencias como fila e encaixe em drawer
+
+Status: `[>]` prioridade atual
+
+Objetivo:
+
+- Separar fila operacional de ferramenta de busca de encaixe.
+
+Criterios:
+
+- pendencias em rows por matricula, aula avulsa, solicitacao de reposicao, credito aberto e pagamento;
+- `Buscar encaixe` abre drawer/sheet;
+- WhatsApp fica secundario;
+- aprovar, recusar, agendar, usar reposicao e marcar pago sao acoes reais.
+
+### [ ] ACADEMY-V2-05 - Hoje com chamada rapida
+
+Status: `[ ]` pendente
+
+Objetivo:
+
+- Transformar `Hoje` em tela de operacao diaria de aulas.
+
+Criterios:
+
+- rows de aulas do dia;
+- `LessonDrawer` para chamada;
+- presenca, falta, ausencia avisada e observacao curta;
+- alunos e reposicoes do horario visiveis no contexto;
+- sem wizard.
+
+### [ ] ACADEMY-V2-06 - Professores com drawer, agenda e login
+
+Status: `[ ]` pendente
+
+Objetivo:
+
+- Fazer professores virarem entidade operacional clara, sem comissao/input espalhado.
+
+Criterios:
+
+- row por professor;
+- `CoachDrawer`;
+- cadastro rapido com nome, telefone e email;
+- comissao, especialidades, disponibilidade e login em secoes;
+- convite/vinculo de login preservado;
+- professor/staff ve apenas o que seu papel permite.
+
+### [ ] ACADEMY-V2-07 - Configuracao de quadras e horarios
+
+Status: `[ ]` pendente
+
+Objetivo:
+
+- Tornar quadras, horarios abertos, disponibilidade e bloqueios compreensiveis e acionaveis.
+
+Criterios:
+
+- data/dia explicitos;
+- alternancia por professor/quadra;
+- criar horario aberto;
+- criar turma neste horario;
+- bloquear horario;
+- ver conflitos de professor/quadra;
+- recursos nao dependem de draft invisivel de turma.
+
+### [ ] ACADEMY-V2-08 - Backend gaps, permissoes e QA
+
+Status: `[ ]` pendente
+
+Objetivo:
+
+- Garantir que a v2 nao tenha acoes falsas e funcione por perfil/plano.
+
+Criterios:
+
+- validar persistencia de editar turma, professor, aluno, pagamento, reposicao, aula avulsa e horario aberto;
+- criar RPC/service minimo apenas quando necessario;
+- validar admin, professor/staff e player;
+- rodar lint/build;
+- gerar screenshots before/after;
+- atualizar MDs.
+
 ### [x] SWEEP-ROLE-01 - Varredura por perfil Admin/Player/Professor
 
 Status: `[x]` concluido em 2026-05-14

@@ -2340,6 +2340,53 @@ export async function updatePlaceAcademyClassPricing(classId: string, monthlyFee
   if (error) throw new Error(error.message);
 }
 
+export async function updatePlaceAcademyClass(input: {
+  ageGroup: AcademyClass["ageGroup"];
+  allowMakeup: boolean;
+  capacity: number;
+  classId: string;
+  coachId?: string | null;
+  coachName?: string;
+  courtId?: string | null;
+  endsAt: string;
+  genderScope: AcademyClass["genderScope"];
+  isActive: boolean;
+  level?: string;
+  maxAge?: number | null;
+  minAge?: number | null;
+  monthlyFeeCents: number;
+  startsAt: string;
+  title: string;
+  weekday: number;
+}): Promise<AcademyClass> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_CLASSES)
+    .update({
+      age_group: input.ageGroup,
+      allow_makeup: input.allowMakeup,
+      capacity: Math.max(1, Number(input.capacity) || 1),
+      coach_id: input.coachId || null,
+      coach_name: input.coachName?.trim() || null,
+      court_id: input.courtId || null,
+      ends_at: input.endsAt,
+      gender_scope: input.genderScope,
+      is_active: input.isActive,
+      level: input.level?.trim() || null,
+      max_age: typeof input.maxAge === "number" ? Math.max(0, Math.floor(input.maxAge)) : null,
+      min_age: typeof input.minAge === "number" ? Math.max(0, Math.floor(input.minAge)) : null,
+      monthly_fee_cents: Math.max(0, Math.floor(input.monthlyFeeCents || 0)),
+      starts_at: input.startsAt,
+      title: input.title.trim(),
+      weekday: Math.max(0, Math.min(6, Number(input.weekday) || 0)),
+    })
+    .eq("id", input.classId)
+    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToAcademyClass(data as AcademyClassRow);
+}
+
 export async function listPlaceAcademyEnrollments(placeId: string): Promise<AcademyEnrollment[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
@@ -2422,6 +2469,32 @@ export async function updateAcademyEnrollmentStatus(
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { error } = await supabase.from(TABLE_ACADEMY_ENROLLMENTS).update({ status }).eq("id", enrollmentId);
   if (error) throw new Error(error.message);
+}
+
+export async function updateAcademyEnrollment(input: {
+  classId: string;
+  enrollmentId: string;
+  notes?: string;
+  phone?: string;
+  playerName: string;
+  status: AcademyEnrollment["status"];
+}): Promise<AcademyEnrollment> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_ENROLLMENTS)
+    .update({
+      class_id: input.classId,
+      notes: input.notes?.trim() || null,
+      phone: input.phone?.trim() || null,
+      player_name: input.playerName.trim(),
+      status: input.status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", input.enrollmentId)
+    .select("id,place_id,class_id,user_id,player_name,phone,status,notes,source,created_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToAcademyEnrollment(data as AcademyEnrollmentRow);
 }
 
 export async function listPlaceAcademyAttendance(placeId: string): Promise<AcademyAttendance[]> {

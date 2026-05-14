@@ -1,0 +1,102 @@
+MANAGEMENT OS
+Arena Pantanal Tennis
+
+Workspace operacional do local. A pagina publica e a descoberta ficam fora desta tela.
+
+Voltar para central
+Ver pagina publica
+ADMIN | PRO: COMPLETO
+Arena Pantanal Tennis
+Campo Grande - MS
+37
+pendencias
+100%
+implantado
+Painel
+81
+Agenda
+23
+Academia
+28
+Clientes
+20
+Financeiro
+62
+Cantina
+Equipe
+Ajustes
+Modulo ativo
+Academia
+Turmas, professores, matriculas, chamadas, reposicoes e evolucao.
+28 itens para acompanhar
+Reservas
+Academia
+Socios
+CRM
+Financeiro
+Base operacional pronta
+1
+Aulas hoje
+0
+Matriculas pendentes
+16
+Encaixes pendentes
+12
+Reposicoes abertas
+Aulas do dia
+18:00Intermediario Noite - Priscila Araujo - Intermediario
+Pendencias da academia
+Beatriz OliveiraAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Henrique AraujoAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Helena GomesAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Nicolas RochaAula avulsa - 2026-05-16 - pendingAprovarRecusar
+Central da academia
+Agenda, alunos, contato e comissao por professor.
+Hoje
+Turmas
+Alunos
+Pendencias
+Professores
+Recursos
+Cadastrar professor
+Gustavo Amaral
+prof.gustavo@demo.atp.local | +55 67 99920-0023 | Login vinculado
+Salvar comissao
+Login vinculado
+Proxima turma na grade: Seg 07:00 - Kids Iniciacao
+4 turmas
+0 alunos ativos
+0 aulas hoje
+0 janelas abertas
+Receita R$ 0,00
+Comissao R$ 0,00
+WhatsApp
+Ajustar agenda
+Priscila Araujo
+prof.priscila@demo.atp.local | +55 67 99920-0024 | Login vinculado
+Salvar comissao
+Login vinculado
+Proxima turma na grade: Ter 08:00 - Adulto Iniciante
+4 turmas
+0 alunos ativos
+1 aula hoje
+0 janelas abertas
+Receita R$ 0,00
+Comissao R$ 0,00
+WhatsApp
+Ajustar agenda
+Academia e aulas
+8 turmas
+Gestao esportiva
+Management OS
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+ORGANIZAR
+Organizar
+OPERAR
+Gestao
+CONTA
+Perfil

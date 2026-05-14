@@ -76,16 +76,17 @@ export const BOOKING_ADMIN_SEGMENT_TO_VIEW: Record<string, BookingManagementView
 
 export const ACADEMY_ADMIN_VIEW_SEGMENTS: Record<AcademyManagementView, string> = {
   today: "hoje",
-  classes: "turmas",
+  classes: "grade",
   students: "alunos",
   requests: "pendencias",
   coaches: "professores",
-  resources: "recursos",
+  resources: "configuracao",
 };
 
 export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView> = {
   hoje: "today",
   today: "today",
+  grade: "classes",
   turmas: "classes",
   classes: "classes",
   alunos: "students",
@@ -94,6 +95,7 @@ export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView
   requests: "requests",
   professores: "coaches",
   coaches: "coaches",
+  configuracao: "resources",
   recursos: "resources",
   resources: "resources",
 };

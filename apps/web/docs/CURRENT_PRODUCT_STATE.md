@@ -12,6 +12,8 @@ Fonte principal:
 - `REFACTOR_ROADMAP.md`
 - `PROFILE_PLAN_ACCESS_MODEL.md`
 - `TASK_DISCOVERY_ONBOARDING.md`
+- `ACADEMY_V2_UX_PLAN.md`
+- `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md`
 
 Data: 2026-05-13
 
@@ -71,16 +73,17 @@ Gestao nao e uma variacao de Locais. Gestao e um sistema proprio.
 
 Ordem de foco:
 
-1. Gestao.
-2. Sidebar e navegacao contextual.
-3. Competition OS.
-4. Mobile UX.
-5. Hierarchy visual.
-6. Typography.
-7. Operational rows.
-8. Reducao de dashboard feeling.
-9. Reducao de admin-template feeling.
-10. Paginas publicas com percepcao premium.
+1. Academia v2 dentro de Gestao.
+2. Gestao.
+3. Sidebar e navegacao contextual.
+4. Competition OS.
+5. Mobile UX.
+6. Hierarchy visual.
+7. Typography.
+8. Operational rows.
+9. Reducao de dashboard feeling.
+10. Reducao de admin-template feeling.
+11. Paginas publicas com percepcao premium.
 
 ## Visual language consolidada
 
@@ -206,11 +209,17 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - `/eventos/ligas/:leagueId` ja abre a experiencia do organizador com painel de foco operacional antes das tabs, mostrando proxima acao, escopo ativo, pendencias e CTA `Resolver agora`.
 - `CompetitionOperationalQueue` ja suporta `actionLabel`, entao filas internas deixam claro se a tarefa e `Resolver`, `Agendar`, `Confirmar`, `Intervir` ou apenas `Ver`.
 - `TournamentPage` ja usa chamadas explicitas `Resolver`/`Ver` na fila operacional sem mudar regras sensiveis de placar, confirmacao ou resultado.
+- `Academia v2` foi planejada em `ACADEMY_V2_UX_PLAN.md`: `Hoje`, `Grade`, `Alunos`, `Pendencias`, `Professores` e `Configuracao` passam a ser a estrutura alvo do modulo, preservando funcoes e reposicionando rotina diaria em rows/drawers.
+- `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md` foi criado para repetir o mesmo processo de auditoria, plano v2, queue, implementacao e validacao area por area.
+- Primeiro corte de `Academia v2` foi aplicado: tabs renomeadas para `Grade` e `Configuracao`, aliases antigos preservados, bloco legado `Academia e aulas` desligado dentro do workspace de Gestao, recursos movidos para `Configuracao` e busca de encaixe recolhida em `Pendencias`.
+- `Academia v2 - Grade` ja possui busca/filtros, contador sem limite silencioso, row operacional e `ClassDrawer` para editar turma, salvar mensalidade, ver/matricular alunos e consultar historico curto.
+- Suporte backend minimo para edicao real da turma foi criado em `updatePlaceAcademyClass(...)`, evitando acao falsa de frontend.
 
 ### Ainda fraco
 
 - `PlacesPage` ainda concentra muita orquestracao e ainda influencia a sensacao de admin template.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
+- Academia ainda precisa completar a v2 operacional: transformar Alunos/Hoje/Professores em drawers, transformar encaixe em drawer/sheet real, migrar criacao de turma para drawer curto e revisar Configuracao com data/dia explicitos.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
 - Sistema ja iniciou visibilidade por perfil/plano na navegacao global e guardrail real para criar local, mas ainda precisa aplicar permissoes reais em mais hubs internos.
 - Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; entradas internas agora tambem mudam prioridade por papel, mas ainda falta calibrar fluxos internos especificos por massa real.
@@ -316,11 +325,12 @@ Antes de mexer em qualquer tela:
 
 ## Prioridades de frontend
 
-1. Expandir quick actions semanticas para outras rotinas recorrentes alem de cobranca.
-2. Reorganizar/refinar rotinas internas por operador conforme massa real de uso.
-3. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
-4. Reduzir dashboards informativos remanescentes.
-5. Aplicar mobile sheets e sticky actions onde ainda houver detalhe pesado no corpo da tela.
+1. Executar `Academia v2` conforme `ACADEMY_V2_UX_PLAN.md`.
+2. Expandir quick actions semanticas para outras rotinas recorrentes alem de cobranca.
+3. Reorganizar/refinar rotinas internas por operador conforme massa real de uso.
+4. Expandir rows operacionais para os fluxos internos que ainda usam lista/card alto.
+5. Reduzir dashboards informativos remanescentes.
+6. Aplicar mobile sheets e sticky actions onde ainda houver detalhe pesado no corpo da tela.
 
 Bloco executado em 2026-05-13:
 
@@ -368,6 +378,7 @@ Bloco de discoverability executado em 2026-05-13:
 - `ROUTINE-02`: rows de local em Gestao passaram a sugerir acoes rapidas por intencao quando a base ja esta pronta.
 - Agenda pode sugerir `Confirmar reservas`, `Chamar espera`, `Ver agenda` e `Criar reserva`, sempre abrindo a subvisao executavel.
 - Academia pode sugerir `Resolver aulas` e `Fazer chamada` quando ha pendencias/aulas do dia.
+- Academia v2 avancou para `Alunos`: busca/filtros fortes, `StudentDrawer`, edicao real de matricula, financeiro/presenca/evolucao/reposicoes no contexto do aluno e sem lista limitada silenciosamente.
 - Clientes, Financeiro e Cantina ganharam atalhos contextuais para `Fazer follow-up`, `Cobrar pendentes`, `Repor estoque` e `Registrar venda`.
 - Regra reforcada: quick action que nao abre a subvisao onde a tarefa termina nao esta pronta.
 - Proximo foco executavel: `COMP-VISUAL-01`, refinando Competition OS sem mexer nos fluxos sensiveis de confirmacao/resultado.

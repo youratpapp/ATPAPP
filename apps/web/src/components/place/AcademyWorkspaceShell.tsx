@@ -5,20 +5,20 @@ export type AcademyManagementView = "today" | "classes" | "students" | "requests
 
 const ACADEMY_MANAGEMENT_VIEW_LABELS: Record<AcademyManagementView, string> = {
   today: "Hoje",
-  classes: "Turmas",
+  classes: "Grade",
   students: "Alunos",
   requests: "Pendencias",
   coaches: "Professores",
-  resources: "Recursos",
+  resources: "Configuracao",
 };
 
 const ACADEMY_MANAGEMENT_VIEW_DESCRIPTIONS: Record<AcademyManagementView, string> = {
   today: "Aulas do dia, presenca, faltas e reposicoes imediatas.",
   classes: "Grade semanal, vagas, mensalidade e matricula manual.",
   students: "Aluno por aluno: status, pagamento, falta e evolucao.",
-  requests: "Novas matriculas, encaixes, avulsas e reposicoes.",
+  requests: "Fila para resolver matriculas, avulsas, reposicoes e pagamentos.",
   coaches: "Agenda, alunos, contato e comissao por professor.",
-  resources: "Professores, quadras, horarios livres e criacao de turmas.",
+  resources: "Quadras, horarios abertos, disponibilidade e bloqueios.",
 };
 
 type AcademyWorkspaceShellProps = {

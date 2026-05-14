@@ -20,6 +20,7 @@ Cada tela deve ter uma responsabilidade primaria. Se uma tela precisa resolver o
 | `/eventos/ligas/:leagueId` | operar liga | rodada, partidas, ranking, jogadores, chat | modelo mental diferente de torneio | alinhar a CompetitionShell |
 | `/gestao` | orientar operador pelo perfil correto | academia, professor solo ou competicoes organizadas conforme permissao | ferramentas sem plano/papel ou descoberta publica | ser entrada contextual de operacao |
 | `/gestao/:placeId/:module` | operar local | fila do dia, modulo ativo, resumo e acoes | descoberta publica | manter contexto operacional e subvisoes |
+| `/gestao/:placeId/academia` | operar aulas, turmas, alunos e professores | Hoje, Grade, Alunos, Pendencias, Professores e Configuracao | bloco legado duplicado, formularios repetidos por turma, busca de encaixe permanente | evoluir para Academia v2 com rows e drawers |
 | `/locais` | descobrir locais e iniciar cadastro | cards publicos, filtros, entrada para pagina publica | cockpit administrativo completo por padrao | deixar gestao em `/gestao` |
 | `/locais/:placeId` | converter jogador/publico | marca, ofertas, reserva, turma, jogos, widget | configuracao interna | manter publica e limpa |
 | `/locais/:placeId/admin` | compatibilidade de rota | redirecionar/normalizar para gestao | ser destino principal novo | manter legado temporario |
@@ -51,6 +52,11 @@ Quando uma tela cresce demais:
 
 ## Evolucoes registradas
 
+- 2026-05-14: Academia v2 foi definida em `ACADEMY_V2_UX_PLAN.md`; a tela `/gestao/:placeId/academia` deve separar rotina diaria, grade, alunos, pendencias, professores e configuracao, preservando funcoes sem manter blocos legados duplicados.
+- 2026-05-14: `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md` foi criado como processo padrao para mapear, planejar e corrigir cada modulo antes de implementar refactors profundos.
+- 2026-05-14: primeiro corte de Academia v2 aplicado: `Grade` e `Configuracao` substituem labels antigos, bloco legado `Academia e aulas` nao renderiza no workspace de Gestao, recursos entram em `Configuracao` e encaixe fica recolhido em `Pendencias`.
+- 2026-05-14: `Grade` da Academia passou a ser lista operacional com busca, filtros, contador, `ClassDrawer`, edicao real da turma, mensalidade, matricula manual e acoes financeiras no contexto da turma.
+- 2026-05-14: `Alunos` da Academia passou a ser lista operacional com busca/filtros por status, turma, pagamento e presenca/reposicao, sem limite silencioso, e `StudentDrawer` para matricula, financeiro, chamada, ausencia avisada, evolucao, reposicoes e historico.
 - 2026-05-13: criada tela `/gestao` como central operacional de academia/clube, reduzindo a mistura entre descoberta publica de locais e trabalho diario de equipe.
 - 2026-05-13: responsabilidade principal de operar local migrou para `/gestao/:placeId/:module`, mantendo `/locais/:placeId/admin` apenas como rota legada de compatibilidade.
 - 2026-05-13: `ManagementShell` passou a envolver `/gestao` e admin de local, dando cabecalho operacional proprio para contexto, acoes e indicadores sem depender do layout de `Locais`.
