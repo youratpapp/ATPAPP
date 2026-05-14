@@ -8982,6 +8982,95 @@ button:disabled {
   font-weight: 950;
 }
 
+.places-discovery-filter {
+  background: var(--color-surface);
+  border: 1px solid rgba(10, 85, 68, 0.16);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+}
+
+.places-discovery-filter.compact {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  margin-bottom: var(--space-2);
+}
+
+.places-filter-head {
+  align-items: end;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.places-filter-head > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.places-filter-head span {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.places-filter-head strong {
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  line-height: var(--line-tight);
+}
+
+.places-filter-head small,
+.places-filter-head b {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+}
+
+.places-filter-head b {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  flex: 0 0 auto;
+  padding: 6px 10px;
+}
+
+.places-filter-grid {
+  align-items: end;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.places-filter-grid.court {
+  grid-template-columns: minmax(180px, 1.3fr) minmax(140px, 0.9fr) 72px minmax(130px, 0.8fr) 104px 104px auto;
+}
+
+.places-filter-grid.classes {
+  grid-template-columns: minmax(180px, 1.3fr) minmax(140px, 0.9fr) 126px 136px minmax(130px, 0.8fr) 130px auto;
+}
+
+.places-filter-grid.matches {
+  grid-template-columns: minmax(180px, 1.4fr) minmax(140px, 0.8fr) 72px 130px 136px minmax(120px, 0.7fr) 126px;
+}
+
+.places-filter-grid label {
+  color: var(--color-text-subtle);
+  display: grid;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  gap: 5px;
+  min-width: 0;
+}
+
+.places-filter-grid button {
+  min-height: 44px;
+  white-space: nowrap;
+}
+
 .open-matches-panel {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -9176,7 +9265,8 @@ button:disabled {
   }
 
   .places-section-head,
-  .open-match-create-intro {
+  .open-match-create-intro,
+  .places-filter-head {
     align-items: start;
     flex-direction: column;
   }
@@ -9199,6 +9289,16 @@ button:disabled {
 
   .open-match-filter {
     grid-template-columns: 1fr;
+  }
+
+  .places-filter-grid.court,
+  .places-filter-grid.classes,
+  .places-filter-grid.matches {
+    grid-template-columns: 1fr;
+  }
+
+  .places-discovery-filter {
+    padding: var(--space-2);
   }
 
   .place-public-highlights {
@@ -10297,6 +10397,131 @@ button:disabled {
   border-radius: var(--radius-lg);
 }
 
+.place-public-availability-controls,
+.place-public-class-filter {
+  align-items: end;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(140px, 1fr) minmax(110px, 0.6fr) auto;
+  margin: var(--space-2) 0;
+}
+
+.place-public-class-filter {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.place-public-availability-controls label,
+.place-public-class-filter label {
+  color: var(--color-text-subtle);
+  display: grid;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  gap: 5px;
+  min-width: 0;
+}
+
+.place-public-availability-board {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  margin: var(--space-2) 0 var(--space-3);
+  overflow: hidden;
+}
+
+.place-public-availability-board > div {
+  align-items: center;
+  background: #fff;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: 68px minmax(0, 1fr);
+  padding: 9px 10px;
+}
+
+.place-public-availability-board > div + div {
+  border-top: 1px solid var(--color-border);
+}
+
+.place-public-availability-board strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.place-public-availability-board > div > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.place-public-availability-board button {
+  align-items: center;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-pill);
+  color: #047857;
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  gap: 6px;
+  min-height: 30px;
+  padding: 4px 9px;
+}
+
+.place-public-availability-board button small {
+  color: inherit;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.place-public-availability-board .full span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+}
+
+.place-public-class-board {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+.place-public-class-board button {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 2px;
+  grid-template-columns: minmax(80px, 0.45fr) minmax(130px, 0.8fr) minmax(160px, 1fr);
+  justify-items: start;
+  min-height: 54px;
+  padding: 9px 10px;
+  text-align: left;
+}
+
+.place-public-class-board button.selected {
+  background: #ecfdf5;
+  border-color: #86efac;
+}
+
+.place-public-class-board strong,
+.place-public-class-board span {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+}
+
+.place-public-class-board small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+}
+
+.place-public-form-title {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  margin: var(--space-2) 0;
+}
+
 .place-public-row {
   padding-block: var(--space-3);
 }
@@ -10793,6 +11018,17 @@ button,
   .place-public-booking-form.compact {
     align-items: stretch;
     grid-template-columns: 1fr;
+  }
+
+  .place-public-availability-controls,
+  .place-public-class-filter,
+  .place-public-class-board button {
+    grid-template-columns: 1fr;
+  }
+
+  .place-public-availability-board > div {
+    align-items: start;
+    grid-template-columns: 52px minmax(0, 1fr);
   }
 
   .place-booking-flow,

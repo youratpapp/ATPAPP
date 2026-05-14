@@ -135,3 +135,5 @@ Quando uma tela cresce demais:
 - 2026-05-13: `Academia > Professores` passou a conter tambem o cadastro de professor, corrigindo o fluxo em que `Cadastrar professor` caia em uma listagem sem acao executavel.
 - 2026-05-13: `Academia > Turmas` passou a conter tambem o wizard de criacao de turma, evitando mandar `Criar turma` para uma area generica de recursos.
 - 2026-05-13: `Ajustes > Estrutura` passou a conter edicao direta dos dados publicos do local, para que `Publicar pagina` nao termine em uma tela apenas informativa.
+- 2026-05-13: `/locais` passou a tratar filtros como parte da intencao: reservar quadra exige cidade/data/hora para disponibilidade real, entrar em aula filtra por perfil/dia/periodo/vaga e encontrar jogadores filtra chamadas sem misturar quadras.
+- 2026-05-13: `/locais/:placeId` passou a resolver a decisao dentro do local com agenda visual de quadras por horario e filtro de turmas compativeis antes do formulario.

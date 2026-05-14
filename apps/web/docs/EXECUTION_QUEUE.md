@@ -1734,6 +1734,32 @@ Ganho:
 - menos duvida entre procurar jogador, reservar quadra e entrar em aula;
 - mais aderencia a perfil/contexto e `EntityActionRow`.
 
+### [x] LOCAIS-03 - Filtros inteligentes por intencao e escolha visual no local
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Impedir listas abertas demais em cidades grandes e transformar `/locais` em busca por tarefa real.
+
+Entregue em 2026-05-13:
+
+- `Reservar quadra` ganhou filtros de nome, cidade, UF, data, hora e duracao;
+- busca de quadra passa a consultar disponibilidade real por local e mostra apenas locais com quadra livre para o horario;
+- criada migration `0074_place_discovery_filters_v1.sql` com RPCs de descoberta em escala para quadras e aulas;
+- `Entrar em aula` ganhou filtros de academia/professor, cidade, dia, periodo, nivel e perfil;
+- busca de aula passa a considerar turmas com vaga real quando a migration 0074 esta aplicada;
+- `Encontrar jogadores` ganhou filtros proprios por local/mensagem, cidade, UF, data, periodo, nivel e status;
+- pagina publica do local ganhou agenda visual de quadras por horario/quadra;
+- pagina publica do local ganhou filtro de turmas compativeis por perfil antes de enviar interesse.
+
+Ganho:
+
+- menos resultado irrelevante em cidades com muitas academias;
+- menos mistura entre chamada de jogo, reserva e aula;
+- decisao mais rapida dentro do local;
+- UX mais coerente com task-first e mobile-first.
+
 ### [x] ACCESS-02 - Criar guardrail real para criacao profissional de local
 
 Status: `[x]` concluido

@@ -470,6 +470,7 @@ Uso:
 - modulo;
 - classe/categoria;
 - pagamento.
+- descoberta publica por intencao.
 
 Regras:
 
@@ -477,6 +478,14 @@ Regras:
 - filtros raros em drawer/sheet;
 - chips de filtro ativo precisam ser removiveis;
 - default deve ser a rotina mais comum.
+- filtros mudam conforme a tarefa: quadra usa cidade/data/hora/duracao, aula usa dia/periodo/nivel/vaga e chamada usa cidade/data/nivel.
+- quando o dominio pode ter alto volume, nao exibir lista aberta sem contexto operacional.
+
+Anti-pattern:
+
+- reaproveitar o mesmo filtro generico para tarefas semanticamente diferentes;
+- listar 200 locais e obrigar o usuario a abrir um por um para descobrir disponibilidade;
+- esconder a diferenca entre procurar jogador, reservar quadra e entrar em aula.
 
 ## Mobile Rows
 

@@ -11,10 +11,12 @@ import {
   getPlaceById,
   joinOpenMatch,
   listOpenMatches,
+  listPublicAcademyClassSpots,
   listPlaceAcademyClasses,
   listPlaceCourts,
   listPlaceMembershipPlans,
   searchAvailableCourts,
+  type AcademyClassSpot,
 } from "../lib/places";
 import type { AcademyClass, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
 
@@ -24,6 +26,7 @@ type Props = {
 };
 
 const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
+type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
 
 function formatMoneyFromCents(cents: number): string {
   return new Intl.NumberFormat("pt-BR", { currency: "BRL", style: "currency" }).format(Math.max(0, cents) / 100);
@@ -58,6 +61,35 @@ function defaultBookingEnd(startsAt: string): string {
   return datetimeLocalValue(d);
 }
 
+function todayDateInputValue(): string {
+  return datetimeLocalValue(new Date()).slice(0, 10);
+}
+
+function combineDateAndTime(date: string, time: string): string {
+  if (!date || !time) return "";
+  return `${date}T${time.length === 5 ? time : time.slice(0, 5)}`;
+}
+
+function addMinutesToDateTimeLocal(value: string, minutes: number): string {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  d.setMinutes(d.getMinutes() + minutes);
+  return datetimeLocalValue(d);
+}
+
+function periodMatchesTime(time: string, period: DiscoveryPeriod): boolean {
+  if (!period) return true;
+  const hour = Number((time || "").slice(0, 2));
+  if (!Number.isFinite(hour)) return true;
+  if (period === "morning") return hour < 12;
+  if (period === "afternoon") return hour >= 12 && hour < 18;
+  return hour >= 18;
+}
+
+function buildAvailabilityTimes(): string[] {
+  return Array.from({ length: 17 }, (_, index) => `${String(index + 6).padStart(2, "0")}:00`);
+}
+
 export function PlacePublicPage({ user, profile }: Props) {
   const { placeId } = useParams();
   const navigate = useNavigate();
@@ -72,8 +104,19 @@ export function PlacePublicPage({ user, profile }: Props) {
   const [bookingFeedback, setBookingFeedback] = useState("");
   const [availableCourts, setAvailableCourts] = useState<AvailableCourt[]>([]);
   const [availabilityBusy, setAvailabilityBusy] = useState(false);
+  const [availabilityDate, setAvailabilityDate] = useState(() => defaultBookingStart().slice(0, 10));
+  const [availabilityDurationMinutes, setAvailabilityDurationMinutes] = useState("60");
+  const [availabilityRows, setAvailabilityRows] = useState<Array<{ time: string; courts: AvailableCourt[] }>>([]);
   const [academyBusy, setAcademyBusy] = useState(false);
   const [academyFeedback, setAcademyFeedback] = useState("");
+  const [academySpotsByClass, setAcademySpotsByClass] = useState<Record<string, AcademyClassSpot>>({});
+  const [academyFitFilter, setAcademyFitFilter] = useState<{
+    level: string;
+    weekday: string;
+    period: DiscoveryPeriod;
+    ageGroup: "" | AcademyClass["ageGroup"];
+    genderScope: "" | AcademyClass["genderScope"];
+  }>({ level: "", weekday: "", period: "", ageGroup: "", genderScope: "" });
   const [matchBusyId, setMatchBusyId] = useState("");
   const [matchFeedback, setMatchFeedback] = useState("");
   const [channelFeedback, setChannelFeedback] = useState("");
@@ -115,18 +158,20 @@ export function PlacePublicPage({ user, profile }: Props) {
           }
           return;
         }
-        const [loadedCourts, loadedClasses, loadedPlans, loadedMatches] = await Promise.all([
+        const [loadedCourts, loadedClasses, loadedPlans, loadedMatches, loadedSpots] = await Promise.all([
           listPlaceCourts(id).catch(() => [] as PlaceCourt[]),
           listPlaceAcademyClasses(id).catch(() => [] as AcademyClass[]),
           listPlaceMembershipPlans(id).catch(() => [] as PlaceMembershipPlan[]),
           listOpenMatches(user, [id]).catch(() => [] as OpenMatch[]),
+          listPublicAcademyClassSpots(id).catch(() => [] as AcademyClassSpot[]),
         ]);
         if (cancelled) return;
         setPlace(loadedPlace);
         setCourts(loadedCourts);
         setClasses(loadedClasses);
         setPlans(loadedPlans);
-        setMatches(loadedMatches);
+        setMatches(loadedMatches.filter((match) => match.status === "open"));
+        setAcademySpotsByClass(Object.fromEntries(loadedSpots.map((row) => [row.classId, row])));
         setBookingDraft((prev) => ({ ...prev, courtId: prev.courtId || loadedCourts.find((court) => court.isActive)?.id || "" }));
         setAcademyDraft((prev) => ({ ...prev, classId: prev.classId || loadedClasses.find((academyClass) => academyClass.isActive)?.id || "" }));
       } catch (err) {
@@ -144,6 +189,20 @@ export function PlacePublicPage({ user, profile }: Props) {
   const activeCourts = courts.filter((court) => court.isActive);
   const activeClasses = classes.filter((academyClass) => academyClass.isActive);
   const activePlans = plans.filter((plan) => plan.isActive);
+  const classLevelOptions = Array.from(new Set(activeClasses.map((academyClass) => academyClass.level).filter(Boolean))).slice(0, 8);
+  const filteredAcademyClasses = activeClasses
+    .filter((academyClass) => {
+      const weekday = academyFitFilter.weekday ? Number(academyFitFilter.weekday) : null;
+      const level = academyFitFilter.level.trim().toLowerCase();
+      const spot = academySpotsByClass[academyClass.id];
+      if (weekday !== null && academyClass.weekday !== weekday) return false;
+      if (!periodMatchesTime(academyClass.startsAt, academyFitFilter.period)) return false;
+      if (level && !academyClass.level.toLowerCase().includes(level) && !academyClass.title.toLowerCase().includes(level)) return false;
+      if (academyFitFilter.ageGroup && academyClass.ageGroup !== academyFitFilter.ageGroup) return false;
+      if (academyFitFilter.genderScope && academyClass.genderScope !== "mixed" && academyClass.genderScope !== academyFitFilter.genderScope) return false;
+      return !spot || spot.availableSpots > 0;
+    })
+    .sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt));
   const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(String(placeId || ""))}`;
   const location = [place?.city, place?.state].filter(Boolean).join(" - ");
   const canOpenAdmin = Boolean(place && place.ownerId === user.id);
@@ -214,6 +273,55 @@ export function PlacePublicPage({ user, profile }: Props) {
     }
   };
 
+  const loadDayAvailability = async () => {
+    if (!place || !availabilityDate) return;
+    const duration = Math.max(30, Math.min(240, Number(availabilityDurationMinutes) || 60));
+    setAvailabilityBusy(true);
+    setBookingFeedback("");
+    try {
+      const rows = await Promise.all(
+        buildAvailabilityTimes().map(async (time) => {
+          const startsAt = combineDateAndTime(availabilityDate, time);
+          const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
+          const courts = await searchAvailableCourts({
+            placeId: place.id,
+            startsAt: new Date(startsAt).toISOString(),
+            endsAt: new Date(endsAt).toISOString(),
+          }).catch(() => [] as AvailableCourt[]);
+          return { time, courts };
+        })
+      );
+      setAvailabilityRows(rows);
+      const firstOpen = rows.find((row) => row.courts.length);
+      if (firstOpen?.courts[0]) {
+        const startsAt = combineDateAndTime(availabilityDate, firstOpen.time);
+        setBookingDraft((prev) => ({
+          ...prev,
+          courtId: firstOpen.courts[0]!.id,
+          startsAt,
+          endsAt: addMinutesToDateTimeLocal(startsAt, duration),
+        }));
+        setAvailableCourts(firstOpen.courts);
+      }
+      setBookingFeedback(firstOpen ? "Escolha um horario livre na agenda abaixo." : "Nenhuma quadra livre neste dia para a duracao escolhida.");
+    } finally {
+      setAvailabilityBusy(false);
+    }
+  };
+
+  const selectAvailabilitySlot = (time: string, court: AvailableCourt) => {
+    const duration = Math.max(30, Math.min(240, Number(availabilityDurationMinutes) || 60));
+    const startsAt = combineDateAndTime(availabilityDate, time);
+    setBookingDraft((prev) => ({
+      ...prev,
+      courtId: court.id,
+      startsAt,
+      endsAt: addMinutesToDateTimeLocal(startsAt, duration),
+    }));
+    setAvailableCourts([court]);
+    setBookingFeedback(`${court.name} selecionada para ${time}. Complete seus dados para solicitar.`);
+  };
+
   const requestBooking = async () => {
     if (!place || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt) return;
     setBookingBusy(true);
@@ -267,7 +375,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     try {
       await joinOpenMatch(user, match, profile?.displayName || user.email || "Jogador", profile?.phone || "");
       const updatedMatches = await listOpenMatches(user, [match.placeId || String(placeId || "")]).catch(() => [] as OpenMatch[]);
-      setMatches(updatedMatches);
+      setMatches(updatedMatches.filter((item) => item.status === "open"));
       setMatchFeedback("Voce entrou no jogo aberto.");
     } catch (err) {
       setMatchFeedback(err instanceof Error ? err.message : "Nao foi possivel entrar no jogo.");
@@ -340,7 +448,61 @@ export function PlacePublicPage({ user, profile }: Props) {
             <section className="place-public-grid">
               <article id="place-public-booking" className="place-public-booking-card">
                 <span>Reserva</span>
-                <h3>Escolha um horario</h3>
+                <h3>Agenda visual de quadras</h3>
+                <p className="subtle">Escolha o dia para ver horarios livres. Toque em uma quadra livre para preencher a solicitacao.</p>
+                <div className="place-public-availability-controls">
+                  <label>
+                    Dia
+                    <input
+                      type="date"
+                      value={availabilityDate}
+                      min={todayDateInputValue()}
+                      onChange={(event) => {
+                        setAvailabilityDate(event.target.value);
+                        setAvailabilityRows([]);
+                      }}
+                    />
+                  </label>
+                  <label>
+                    Duracao
+                    <select
+                      value={availabilityDurationMinutes}
+                      onChange={(event) => {
+                        setAvailabilityDurationMinutes(event.target.value);
+                        setAvailabilityRows([]);
+                      }}
+                    >
+                      <option value="60">1h</option>
+                      <option value="90">1h30</option>
+                      <option value="120">2h</option>
+                    </select>
+                  </label>
+                  <button className="secondary" onClick={() => void loadDayAvailability()} disabled={availabilityBusy || !activeCourts.length}>
+                    {availabilityBusy ? "Carregando..." : "Ver agenda do dia"}
+                  </button>
+                </div>
+                {availabilityRows.length ? (
+                  <div className="place-public-availability-board" aria-label="Horarios livres por quadra">
+                    {availabilityRows.map((row) => (
+                      <div key={`slot:${row.time}`} className={row.courts.length ? "available" : "full"}>
+                        <strong>{row.time}</strong>
+                        <div>
+                          {row.courts.length ? (
+                            row.courts.map((court) => (
+                              <button key={`${row.time}:${court.id}`} onClick={() => selectAvailabilitySlot(row.time, court)}>
+                                {court.name}
+                                {court.effectiveFeeCents ? <small>{formatMoneyFromCents(court.effectiveFeeCents)}</small> : null}
+                              </button>
+                            ))
+                          ) : (
+                            <span>Sem quadra livre</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+                <h4 className="place-public-form-title">Solicitar horario selecionado</h4>
                 <div className="place-public-booking-form">
                   <label>
                     Quadra
@@ -410,7 +572,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                 </div>
                 <div className="place-public-hero-actions">
                   <button className="secondary" onClick={() => void checkAvailability()} disabled={availabilityBusy || !bookingDraft.startsAt || !bookingDraft.endsAt}>
-                    Verificar disponibilidade
+                    Verificar horario manual
                   </button>
                   <button
                     className="primary"
@@ -439,7 +601,79 @@ export function PlacePublicPage({ user, profile }: Props) {
 
               <article id="place-public-academy">
                 <span>Academia</span>
-                <h3>Turmas e professores</h3>
+                <h3>Encontre uma turma para o seu perfil</h3>
+                <p className="subtle">Filtre por nivel, dia e periodo. Mostramos apenas turmas ativas e, quando disponivel, com vaga real.</p>
+                <div className="place-public-class-filter">
+                  <label>
+                    Meu nivel
+                    {classLevelOptions.length ? (
+                      <select value={academyFitFilter.level} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}>
+                        <option value="">Qualquer nivel</option>
+                        {classLevelOptions.map((level) => (
+                          <option key={`public-level:${level}`} value={level}>
+                            {level}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        value={academyFitFilter.level}
+                        onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}
+                        placeholder="Iniciante, B, avancado"
+                      />
+                    )}
+                  </label>
+                  <label>
+                    Dia
+                    <select value={academyFitFilter.weekday} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, weekday: event.target.value }))}>
+                      <option value="">Qualquer dia</option>
+                      {WEEKDAY_LABELS.map((label, index) => (
+                        <option key={`public-class-day:${label}`} value={index}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Periodo
+                    <select value={academyFitFilter.period} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
+                      <option value="">Qualquer horario</option>
+                      <option value="morning">Manha</option>
+                      <option value="afternoon">Tarde</option>
+                      <option value="night">Noite</option>
+                    </select>
+                  </label>
+                  <label>
+                    Perfil
+                    <select value={academyFitFilter.ageGroup} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, ageGroup: event.target.value as "" | AcademyClass["ageGroup"] }))}>
+                      <option value="">Adulto ou kids</option>
+                      <option value="adult">Adulto</option>
+                      <option value="kids">Kids</option>
+                    </select>
+                  </label>
+                </div>
+                <div className="place-public-class-board" aria-label="Turmas compativeis">
+                  {filteredAcademyClasses.slice(0, 8).map((academyClass) => {
+                    const spot = academySpotsByClass[academyClass.id];
+                    return (
+                      <button
+                        key={`class-fit:${academyClass.id}`}
+                        className={academyDraft.classId === academyClass.id ? "selected" : ""}
+                        onClick={() => setAcademyDraft((prev) => ({ ...prev, classId: academyClass.id, notes: prev.notes || academyFitFilter.level }))}
+                      >
+                        <strong>{nextClassLabel(academyClass)}</strong>
+                        <span>{academyClass.title}</span>
+                        <small>
+                          {[academyClass.coachName || "Professor a definir", academyClass.level || "nivel livre", spot ? `${spot.availableSpots} vaga(s)` : `ate ${academyClass.capacity} alunos`]
+                            .filter(Boolean)
+                            .join(" | ")}
+                        </small>
+                      </button>
+                    );
+                  })}
+                  {!filteredAcademyClasses.length ? <p className="subtle">Nenhuma turma encaixa nesses filtros. Ajuste dia, periodo ou nivel.</p> : null}
+                </div>
+                <h4 className="place-public-form-title">Enviar interesse na turma</h4>
                 <div className="place-public-booking-form compact">
                   <label>
                     Turma
@@ -448,7 +682,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                       onChange={(event) => setAcademyDraft((prev) => ({ ...prev, classId: event.target.value }))}
                     >
                       <option value="">Selecione</option>
-                      {activeClasses.map((academyClass) => (
+                      {filteredAcademyClasses.map((academyClass) => (
                         <option key={academyClass.id} value={academyClass.id}>
                           {academyClass.title}
                         </option>
@@ -490,7 +724,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                   </button>
                 </div>
                 {academyFeedback ? <p className="subtle">{academyFeedback}</p> : null}
-                {activeClasses.slice(0, 6).map((academyClass) => (
+                {filteredAcademyClasses.slice(0, 6).map((academyClass) => (
                   <div key={academyClass.id} className="place-public-row">
                     <strong>{academyClass.title}</strong>
                     <small>

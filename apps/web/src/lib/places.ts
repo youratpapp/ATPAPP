@@ -112,6 +112,46 @@ type AvailableCourtRow = CourtRow & {
   requires_approval?: boolean | null;
 };
 
+type PlaceCourtAvailabilitySummaryRow = {
+  place_id: string;
+  available_courts: number | null;
+  min_effective_fee_cents: number | null;
+  requires_approval: boolean | null;
+};
+
+export type PlaceCourtAvailabilitySummary = {
+  placeId: string;
+  availableCourts: number;
+  minEffectiveFeeCents: number;
+  requiresApproval: boolean;
+};
+
+type PlaceAcademyDiscoverySummaryRow = {
+  place_id: string;
+  matching_classes: number | null;
+  available_spots: number | null;
+  min_monthly_fee_cents: number | null;
+};
+
+export type PlaceAcademyDiscoverySummary = {
+  placeId: string;
+  matchingClasses: number;
+  availableSpots: number;
+  minMonthlyFeeCents: number;
+};
+
+type AcademyClassSpotRow = {
+  class_id: string;
+  occupied_spots: number | null;
+  available_spots: number | null;
+};
+
+export type AcademyClassSpot = {
+  classId: string;
+  occupiedSpots: number;
+  availableSpots: number;
+};
+
 type BookingRuleRow = {
   id: string;
   place_id: string;
@@ -513,6 +553,32 @@ function rowToAvailableCourt(row: AvailableCourtRow): AvailableCourt {
     ruleId: row.rule_id || "",
     ruleName: row.rule_name || "",
     requiresApproval: row.requires_approval !== false,
+  };
+}
+
+function rowToPlaceCourtAvailabilitySummary(row: PlaceCourtAvailabilitySummaryRow): PlaceCourtAvailabilitySummary {
+  return {
+    placeId: row.place_id,
+    availableCourts: Number(row.available_courts || 0),
+    minEffectiveFeeCents: Number(row.min_effective_fee_cents || 0),
+    requiresApproval: row.requires_approval !== false,
+  };
+}
+
+function rowToPlaceAcademyDiscoverySummary(row: PlaceAcademyDiscoverySummaryRow): PlaceAcademyDiscoverySummary {
+  return {
+    placeId: row.place_id,
+    matchingClasses: Number(row.matching_classes || 0),
+    availableSpots: Number(row.available_spots || 0),
+    minMonthlyFeeCents: Number(row.min_monthly_fee_cents || 0),
+  };
+}
+
+function rowToAcademyClassSpot(row: AcademyClassSpotRow): AcademyClassSpot {
+  return {
+    classId: row.class_id,
+    occupiedSpots: Number(row.occupied_spots || 0),
+    availableSpots: Number(row.available_spots || 0),
   };
 }
 
@@ -1832,6 +1898,59 @@ export async function searchAvailableCourts(input: {
   return ((data ?? []) as AvailableCourtRow[]).map(rowToAvailableCourt);
 }
 
+export async function searchPlacesWithAvailableCourts(input: {
+  city?: string;
+  state?: string;
+  query?: string;
+  startsAt: string;
+  endsAt: string;
+}): Promise<PlaceCourtAvailabilitySummary[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_search_places_with_available_courts", {
+    p_city: input.city?.trim() || null,
+    p_state: input.state?.trim() || null,
+    p_query: input.query?.trim() || null,
+    p_starts_at: input.startsAt,
+    p_ends_at: input.endsAt,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PlaceCourtAvailabilitySummaryRow[]).map(rowToPlaceCourtAvailabilitySummary);
+}
+
+export async function searchPlacesWithAcademyClasses(input: {
+  city?: string;
+  state?: string;
+  query?: string;
+  weekday?: number | null;
+  period?: "" | "morning" | "afternoon" | "night";
+  level?: string;
+  ageGroup?: "" | AcademyClass["ageGroup"];
+  genderScope?: "" | AcademyClass["genderScope"];
+}): Promise<PlaceAcademyDiscoverySummary[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_search_places_with_academy_classes", {
+    p_city: input.city?.trim() || null,
+    p_state: input.state?.trim() || null,
+    p_query: input.query?.trim() || null,
+    p_weekday: Number.isInteger(input.weekday) ? input.weekday : null,
+    p_period: input.period || null,
+    p_level: input.level?.trim() || null,
+    p_age_group: input.ageGroup || null,
+    p_gender_scope: input.genderScope || null,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PlaceAcademyDiscoverySummaryRow[]).map(rowToPlaceAcademyDiscoverySummary);
+}
+
+export async function listPublicAcademyClassSpots(placeId: string): Promise<AcademyClassSpot[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_public_academy_class_spots", {
+    p_place_id: placeId,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyClassSpotRow[]).map(rowToAcademyClassSpot);
+}
+
 export async function createRecurringCourtBookings(input: {
   placeId: string;
   courtId: string;
@@ -2462,7 +2581,6 @@ export async function listOpenMatches(user: User, placeIds: string[] = []): Prom
   let query = supabase
     .from(TABLE_OPEN_MATCHES)
     .select("id,creator_id,place_id,city,state,starts_at,level,notes,status,created_at")
-    .eq("status", "open")
     .order("starts_at", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: false })
     .limit(60);

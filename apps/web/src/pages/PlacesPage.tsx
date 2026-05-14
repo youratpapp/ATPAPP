@@ -85,6 +85,8 @@ import {
   requestAcademyLessonFit,
   searchAcademyLessonFitSlots,
   searchAvailableCourts,
+  searchPlacesWithAcademyClasses,
+  searchPlacesWithAvailableCourts,
   unfollowPlace,
   updateAcademyEnrollmentStatus,
   updateAcademyLessonRequestStatus,
@@ -112,6 +114,8 @@ import {
   updatePlaceAcademySlotStatus,
   linkPlaceCoachByEmail,
   uploadPlaceLogo,
+  type PlaceAcademyDiscoverySummary,
+  type PlaceCourtAvailabilitySummary,
 } from "../lib/places";
 import {
   featureList,
@@ -172,6 +176,27 @@ type Props = {
 
 type TabKey = "all" | "following" | "mine";
 type PlaceDiscoveryIntent = "matches" | "places" | "classes";
+type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
+type CourtDiscoveryFilter = { query: string; city: string; state: string; date: string; time: string; durationMinutes: string };
+type ClassDiscoveryFilter = {
+  query: string;
+  city: string;
+  state: string;
+  weekday: string;
+  period: DiscoveryPeriod;
+  level: string;
+  ageGroup: "" | AcademyClass["ageGroup"];
+  genderScope: "" | AcademyClass["genderScope"];
+};
+type OpenMatchDiscoveryFilter = {
+  query: string;
+  city: string;
+  state: string;
+  date: string;
+  period: DiscoveryPeriod;
+  level: string;
+  status: "" | OpenMatch["status"];
+};
 type AcademyStudentFilter = { query: string; classId: string; status: "" | AcademyEnrollment["status"] };
 type CrmInteractionDraft = { interactionType: PlaceCrmInteraction["interactionType"]; body: string; nextContactOn: string };
 type PlaceProfileDraft = { city: string; description: string; logoUrl: string; name: string; state: string };
@@ -269,6 +294,64 @@ function dateInputValue(value: string): string {
   if (Number.isNaN(d.getTime())) return "";
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function normalizeText(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function combineDateAndTime(date: string, time: string): string {
+  if (!date || !time) return "";
+  return `${date}T${time.length === 5 ? time : time.slice(0, 5)}`;
+}
+
+function addMinutesToDateTimeLocal(value: string, minutes: number): string {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  d.setMinutes(d.getMinutes() + minutes);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function periodMatchesTime(time: string, period: DiscoveryPeriod): boolean {
+  if (!period) return true;
+  const hour = Number((time || "").slice(0, 2));
+  if (!Number.isFinite(hour)) return true;
+  if (period === "morning") return hour < 12;
+  if (period === "afternoon") return hour >= 12 && hour < 18;
+  return hour >= 18;
+}
+
+function placeMatchesDiscoveryText(place: Place, filter: { query: string; city: string; state: string }): boolean {
+  const query = normalizeText(filter.query);
+  const city = normalizeText(filter.city);
+  const state = normalizeStateUf(filter.state);
+  const placeText = [place.name, place.city, place.state, place.description].filter(Boolean).join(" ").toLowerCase();
+  if (city && normalizeText(place.city) !== city) return false;
+  if (state && normalizeStateUf(place.state) !== state) return false;
+  return !query || placeText.includes(query);
+}
+
+function placeMatchesDiscoveryLocation(place: Place, filter: { city: string; state: string }): boolean {
+  const city = normalizeText(filter.city);
+  const state = normalizeStateUf(filter.state);
+  if (city && normalizeText(place.city) !== city) return false;
+  if (state && normalizeStateUf(place.state) !== state) return false;
+  return true;
+}
+
+function academyClassMatchesDiscovery(academyClass: AcademyClass, filter: ClassDiscoveryFilter): boolean {
+  const query = normalizeText(filter.query);
+  const weekday = filter.weekday ? Number(filter.weekday) : null;
+  const level = normalizeText(filter.level);
+  const classText = [academyClass.title, academyClass.coachName, academyClass.level].filter(Boolean).join(" ").toLowerCase();
+  if (query && !classText.includes(query)) return false;
+  if (weekday !== null && academyClass.weekday !== weekday) return false;
+  if (!periodMatchesTime(academyClass.startsAt, filter.period)) return false;
+  if (level && !normalizeText(academyClass.level).includes(level) && !normalizeText(academyClass.title).includes(level)) return false;
+  if (filter.ageGroup && academyClass.ageGroup !== filter.ageGroup) return false;
+  if (filter.genderScope && academyClass.genderScope !== "mixed" && academyClass.genderScope !== filter.genderScope) return false;
+  return true;
 }
 
 function nextWeekdayLabel(weekday: number, startsAt: string): string {
@@ -521,7 +604,39 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [academyEnrollmentNoteByClass, setAcademyEnrollmentNoteByClass] = useState<Record<string, string>>({});
   const [academyProgressDraftByEnrollment, setAcademyProgressDraftByEnrollment] = useState<Record<string, { level: string; focus: string; notes: string }>>({});
   const [openMatchDraft, setOpenMatchDraft] = useState({ placeId: "", startsAt: "", level: "", notes: "" });
-  const [openMatchFilter, setOpenMatchFilter] = useState<{ query: string; status: "" | OpenMatch["status"] }>({ query: "", status: "open" });
+  const [courtDiscoveryFilter, setCourtDiscoveryFilter] = useState<CourtDiscoveryFilter>(() => ({
+    query: "",
+    city: profile?.city || "",
+    state: normalizeStateUf(profile?.state || ""),
+    date: todayDateInputValue(),
+    time: "18:00",
+    durationMinutes: "60",
+  }));
+  const [courtDiscoveryResultsByPlace, setCourtDiscoveryResultsByPlace] = useState<Record<string, PlaceCourtAvailabilitySummary>>({});
+  const [courtDiscoverySearchKey, setCourtDiscoverySearchKey] = useState("");
+  const [courtDiscoveryBusy, setCourtDiscoveryBusy] = useState(false);
+  const [classDiscoveryFilter, setClassDiscoveryFilter] = useState<ClassDiscoveryFilter>(() => ({
+    query: "",
+    city: profile?.city || "",
+    state: normalizeStateUf(profile?.state || ""),
+    weekday: "",
+    period: "",
+    level: "",
+    ageGroup: "",
+    genderScope: "",
+  }));
+  const [classDiscoveryResultsByPlace, setClassDiscoveryResultsByPlace] = useState<Record<string, PlaceAcademyDiscoverySummary>>({});
+  const [classDiscoverySearchKey, setClassDiscoverySearchKey] = useState("");
+  const [classDiscoveryBusy, setClassDiscoveryBusy] = useState(false);
+  const [openMatchFilter, setOpenMatchFilter] = useState<OpenMatchDiscoveryFilter>(() => ({
+    query: "",
+    city: profile?.city || "",
+    state: normalizeStateUf(profile?.state || ""),
+    date: "",
+    period: "",
+    level: "",
+    status: "open",
+  }));
   const [openMatchCommentsById, setOpenMatchCommentsById] = useState<Record<string, OpenMatchComment[]>>({});
   const [openMatchCommentDraftById, setOpenMatchCommentDraftById] = useState<Record<string, string>>({});
   const [staffDraftByPlace, setStaffDraftByPlace] = useState<Record<string, { email: string; role: PlaceStaffMember["role"] }>>({});
@@ -2048,16 +2163,30 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
   const openMatchCommunityStats = {
     open: openMatches.filter((match) => match.status === "open").length,
-    participants: openMatches.reduce((sum, match) => sum + match.participantCount, 0),
-    comments: openMatches.reduce((sum, match) => sum + match.commentCount, 0),
+    participants: openMatches.filter((match) => match.status === "open").reduce((sum, match) => sum + match.participantCount, 0),
+    comments: openMatches.filter((match) => match.status === "open").reduce((sum, match) => sum + match.commentCount, 0),
   };
+  const placesById = new Map(places.map((place) => [place.id, place]));
   const visibleOpenMatches = openMatches.filter((match) => {
     const query = openMatchFilter.query.trim().toLowerCase();
-    const text = [match.placeName, match.city, match.state, match.level, match.notes]
+    const relatedPlace = match.placeId ? placesById.get(match.placeId) : null;
+    const matchCity = match.city || relatedPlace?.city || "";
+    const matchState = match.state || relatedPlace?.state || "";
+    const matchDate = dateInputValue(match.startsAt);
+    const matchTime = match.startsAt ? new Date(match.startsAt).toTimeString().slice(0, 5) : "";
+    const text = [match.placeName, matchCity, matchState, match.level, match.notes]
       .filter(Boolean)
       .join(" ")
       .toLowerCase();
-    return (!openMatchFilter.status || match.status === openMatchFilter.status) && (!query || text.includes(query));
+    return (
+      (!openMatchFilter.status || match.status === openMatchFilter.status) &&
+      (!query || text.includes(query)) &&
+      (!openMatchFilter.city.trim() || normalizeText(matchCity) === normalizeText(openMatchFilter.city)) &&
+      (!openMatchFilter.state.trim() || normalizeStateUf(matchState) === normalizeStateUf(openMatchFilter.state)) &&
+      (!openMatchFilter.date || matchDate === openMatchFilter.date) &&
+      periodMatchesTime(matchTime, openMatchFilter.period) &&
+      (!openMatchFilter.level.trim() || normalizeText(match.level).includes(normalizeText(openMatchFilter.level)))
+    );
   });
   const sharePlace = (place: Place) => {
     const location = [place.city, place.state].filter(Boolean).join(" - ");
@@ -2096,12 +2225,147 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     0
   );
   const placeHasActiveCourt = (place: Place) => (courtsByPlace[place.id] || []).some((court) => court.isActive);
-  const placeHasActiveClass = (place: Place) => (academyClassesByPlace[place.id] || []).some((academyClass) => academyClass.isActive);
+  const courtDiscoveryKey = [
+    courtDiscoveryFilter.query.trim(),
+    courtDiscoveryFilter.city.trim(),
+    normalizeStateUf(courtDiscoveryFilter.state),
+    courtDiscoveryFilter.date,
+    courtDiscoveryFilter.time,
+    courtDiscoveryFilter.durationMinutes,
+  ].join("|");
+  const classDiscoveryKey = [
+    classDiscoveryFilter.query.trim(),
+    classDiscoveryFilter.city.trim(),
+    normalizeStateUf(classDiscoveryFilter.state),
+    classDiscoveryFilter.weekday,
+    classDiscoveryFilter.period,
+    classDiscoveryFilter.level.trim(),
+    classDiscoveryFilter.ageGroup,
+    classDiscoveryFilter.genderScope,
+  ].join("|");
+  const courtDiscoveryHasAvailability = Boolean(courtDiscoverySearchKey && courtDiscoverySearchKey === courtDiscoveryKey);
+  const classDiscoveryHasSpotSearch = Boolean(classDiscoverySearchKey && classDiscoverySearchKey === classDiscoveryKey);
+  const updateCourtDiscoveryFilter = (patch: Partial<CourtDiscoveryFilter>) => {
+    setCourtDiscoveryFilter((prev) => ({ ...prev, ...patch }));
+    setCourtDiscoveryResultsByPlace({});
+    setCourtDiscoverySearchKey("");
+  };
+  const updateClassDiscoveryFilter = (patch: Partial<ClassDiscoveryFilter>) => {
+    setClassDiscoveryFilter((prev) => ({ ...prev, ...patch }));
+    setClassDiscoveryResultsByPlace({});
+    setClassDiscoverySearchKey("");
+  };
+  const runCourtDiscoverySearch = async () => {
+    const startsAt = combineDateAndTime(courtDiscoveryFilter.date, courtDiscoveryFilter.time);
+    const duration = Math.max(30, Math.min(240, Number(courtDiscoveryFilter.durationMinutes) || 60));
+    const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
+    if (!startsAt || !endsAt) {
+      setFeedback({ kind: "error", text: "Escolha data e horario para buscar quadras livres." });
+      return;
+    }
+    setCourtDiscoveryBusy(true);
+    setFeedback(null);
+    try {
+      const rows = await searchPlacesWithAvailableCourts({
+        city: courtDiscoveryFilter.city,
+        state: courtDiscoveryFilter.state,
+        query: courtDiscoveryFilter.query,
+        startsAt: new Date(startsAt).toISOString(),
+        endsAt: new Date(endsAt).toISOString(),
+      });
+      setCourtDiscoveryResultsByPlace(Object.fromEntries(rows.map((row) => [row.placeId, row])));
+      setCourtDiscoverySearchKey(courtDiscoveryKey);
+      if (!rows.length) {
+        setFeedback({ kind: "info", text: "Nenhuma quadra livre para este filtro. Ajuste cidade, data ou horario." });
+      }
+    } catch (err) {
+      const candidatePlaces = visiblePlaces.filter((place) => placeMatchesDiscoveryText(place, courtDiscoveryFilter) && placeHasActiveCourt(place));
+      const fallbackRows = (
+        await Promise.all(
+          candidatePlaces.map(async (place) => {
+            const rows = await searchAvailableCourts({
+              placeId: place.id,
+              startsAt: new Date(startsAt).toISOString(),
+              endsAt: new Date(endsAt).toISOString(),
+            }).catch(() => [] as AvailableCourt[]);
+            if (!rows.length) return null;
+            return {
+              placeId: place.id,
+              availableCourts: rows.length,
+              minEffectiveFeeCents: Math.min(...rows.map((court) => court.effectiveFeeCents || court.bookingFeeCents || 0)),
+              requiresApproval: rows.some((court) => court.requiresApproval),
+            } satisfies PlaceCourtAvailabilitySummary;
+          })
+        )
+      ).filter(Boolean) as PlaceCourtAvailabilitySummary[];
+      setCourtDiscoveryResultsByPlace(Object.fromEntries(fallbackRows.map((row) => [row.placeId, row])));
+      setCourtDiscoverySearchKey(courtDiscoveryKey);
+      if (!fallbackRows.length) {
+        setFeedback({ kind: "info", text: "Nenhuma quadra livre para este filtro. Ajuste cidade, data ou horario." });
+      } else if (err instanceof Error && err.message.toLowerCase().includes("app_search_places_with_available_courts")) {
+        setFeedback({ kind: "info", text: "Busca aplicada. Rode a migration 0074 para ativar a busca otimizada em escala." });
+      }
+    } finally {
+      setCourtDiscoveryBusy(false);
+    }
+  };
+  const runClassDiscoverySearch = async () => {
+    setClassDiscoveryBusy(true);
+    setFeedback(null);
+    try {
+      const rows = await searchPlacesWithAcademyClasses({
+        city: classDiscoveryFilter.city,
+        state: classDiscoveryFilter.state,
+        query: classDiscoveryFilter.query,
+        weekday: classDiscoveryFilter.weekday ? Number(classDiscoveryFilter.weekday) : null,
+        period: classDiscoveryFilter.period,
+        level: classDiscoveryFilter.level,
+        ageGroup: classDiscoveryFilter.ageGroup,
+        genderScope: classDiscoveryFilter.genderScope,
+      });
+      setClassDiscoveryResultsByPlace(Object.fromEntries(rows.map((row) => [row.placeId, row])));
+      setClassDiscoverySearchKey(classDiscoveryKey);
+      if (!rows.length) {
+        setFeedback({ kind: "info", text: "Nenhuma turma com vaga para este perfil. Ajuste dia, periodo ou nivel." });
+      }
+    } catch (err) {
+      const fallbackRows = visiblePlaces
+        .filter((place) => placeMatchesDiscoveryLocation(place, classDiscoveryFilter))
+        .map((place) => {
+          const matchingClasses = (academyClassesByPlace[place.id] || []).filter((item) => item.isActive && academyClassMatchesDiscovery(item, classDiscoveryFilter));
+          if (!matchingClasses.length) return null;
+          return {
+            placeId: place.id,
+            matchingClasses: matchingClasses.length,
+            availableSpots: matchingClasses.reduce((sum, item) => sum + item.capacity, 0),
+            minMonthlyFeeCents: Math.min(...matchingClasses.map((item) => item.monthlyFeeCents || 0)),
+          } satisfies PlaceAcademyDiscoverySummary;
+        })
+        .filter(Boolean) as PlaceAcademyDiscoverySummary[];
+      setClassDiscoveryResultsByPlace(Object.fromEntries(fallbackRows.map((row) => [row.placeId, row])));
+      setClassDiscoverySearchKey(classDiscoveryKey);
+      if (!fallbackRows.length) {
+        setFeedback({ kind: "info", text: "Nenhuma turma encontrada para este perfil." });
+      } else if (err instanceof Error && err.message.toLowerCase().includes("app_search_places_with_academy_classes")) {
+        setFeedback({ kind: "info", text: "Filtro aplicado. Rode a migration 0074 para exibir vagas reais por turma." });
+      }
+    } finally {
+      setClassDiscoveryBusy(false);
+    }
+  };
   const directoryPlaces = !isAdminRoute
     ? visiblePlaces.filter((place) => {
         if (tab === "mine") return true;
-        if (discoveryIntent === "classes") return placeHasActiveClass(place);
-        if (discoveryIntent === "places") return placeHasActiveCourt(place);
+        if (discoveryIntent === "classes") {
+          if (!placeMatchesDiscoveryLocation(place, classDiscoveryFilter)) return false;
+          if (classDiscoveryHasSpotSearch) return Boolean(classDiscoveryResultsByPlace[place.id]);
+          return (academyClassesByPlace[place.id] || []).some((academyClass) => academyClass.isActive && academyClassMatchesDiscovery(academyClass, classDiscoveryFilter));
+        }
+        if (discoveryIntent === "places") {
+          if (!placeMatchesDiscoveryText(place, courtDiscoveryFilter)) return false;
+          if (courtDiscoveryHasAvailability) return Boolean(courtDiscoveryResultsByPlace[place.id]);
+          return placeHasActiveCourt(place);
+        }
         return true;
       })
     : visiblePlaces;
@@ -2188,6 +2452,145 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </div>
       ) : null}
 
+      {!isAdminRoute && discoveryIntent === "places" && tab !== "mine" ? (
+        <section className="places-discovery-filter" aria-label="Filtros para reservar quadra">
+          <div className="places-filter-head">
+            <div>
+              <span>Reservar quadra</span>
+              <strong>Encontre local com horario livre</strong>
+              <small>Use cidade, data e hora para ver apenas academias com quadra disponivel.</small>
+            </div>
+            <b>{courtDiscoveryHasAvailability ? countLabel(directoryPlaces.length, "local livre", "locais livres") : "Busca por horario"}</b>
+          </div>
+          <div className="places-filter-grid court">
+            <label>
+              Nome do local
+              <input
+                value={courtDiscoveryFilter.query}
+                onChange={(event) => updateCourtDiscoveryFilter({ query: event.target.value })}
+                placeholder="Ex.: clube, bairro ou estrutura"
+              />
+            </label>
+            <label>
+              Cidade
+              <input
+                value={courtDiscoveryFilter.city}
+                onChange={(event) => updateCourtDiscoveryFilter({ city: event.target.value })}
+                placeholder="Ex.: Sao Paulo"
+              />
+            </label>
+            <label>
+              UF
+              <input
+                value={courtDiscoveryFilter.state}
+                onChange={(event) => updateCourtDiscoveryFilter({ state: event.target.value.toUpperCase().slice(0, 2) })}
+                placeholder="SP"
+              />
+            </label>
+            <label>
+              Data
+              <input
+                type="date"
+                value={courtDiscoveryFilter.date}
+                onChange={(event) => updateCourtDiscoveryFilter({ date: event.target.value })}
+              />
+            </label>
+            <label>
+              Hora
+              <input
+                type="time"
+                value={courtDiscoveryFilter.time}
+                onChange={(event) => updateCourtDiscoveryFilter({ time: event.target.value })}
+              />
+            </label>
+            <label>
+              Duracao
+              <select
+                value={courtDiscoveryFilter.durationMinutes}
+                onChange={(event) => updateCourtDiscoveryFilter({ durationMinutes: event.target.value })}
+              >
+                <option value="60">1h</option>
+                <option value="90">1h30</option>
+                <option value="120">2h</option>
+              </select>
+            </label>
+            <button className="primary" onClick={() => void runCourtDiscoverySearch()} disabled={courtDiscoveryBusy}>
+              {courtDiscoveryBusy ? "Buscando..." : "Buscar quadras livres"}
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {!isAdminRoute && discoveryIntent === "classes" && tab !== "mine" ? (
+        <section className="places-discovery-filter" aria-label="Filtros para entrar em aula">
+          <div className="places-filter-head">
+            <div>
+              <span>Entrar em aula</span>
+              <strong>Filtre por perfil de turma</strong>
+              <small>Procure por cidade, dia, periodo e nivel para ver locais com vaga compatível.</small>
+            </div>
+            <b>{classDiscoveryHasSpotSearch ? countLabel(directoryPlaces.length, "local com vaga", "locais com vaga") : "Busca por perfil"}</b>
+          </div>
+          <div className="places-filter-grid classes">
+            <label>
+              Academia ou professor
+              <input
+                value={classDiscoveryFilter.query}
+                onChange={(event) => updateClassDiscoveryFilter({ query: event.target.value })}
+                placeholder="Nome, professor ou nivel"
+              />
+            </label>
+            <label>
+              Cidade
+              <input
+                value={classDiscoveryFilter.city}
+                onChange={(event) => updateClassDiscoveryFilter({ city: event.target.value })}
+                placeholder="Ex.: Sao Paulo"
+              />
+            </label>
+            <label>
+              Dia
+              <select value={classDiscoveryFilter.weekday} onChange={(event) => updateClassDiscoveryFilter({ weekday: event.target.value })}>
+                <option value="">Qualquer dia</option>
+                {WEEKDAY_LABELS.map((label, index) => (
+                  <option key={`class-day:${label}`} value={index}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Periodo
+              <select value={classDiscoveryFilter.period} onChange={(event) => updateClassDiscoveryFilter({ period: event.target.value as DiscoveryPeriod })}>
+                <option value="">Qualquer horario</option>
+                <option value="morning">Manha</option>
+                <option value="afternoon">Tarde</option>
+                <option value="night">Noite</option>
+              </select>
+            </label>
+            <label>
+              Nivel
+              <input
+                value={classDiscoveryFilter.level}
+                onChange={(event) => updateClassDiscoveryFilter({ level: event.target.value })}
+                placeholder="Iniciante, B, avancado"
+              />
+            </label>
+            <label>
+              Perfil
+              <select value={classDiscoveryFilter.ageGroup} onChange={(event) => updateClassDiscoveryFilter({ ageGroup: event.target.value as ClassDiscoveryFilter["ageGroup"] })}>
+                <option value="">Adulto ou kids</option>
+                <option value="adult">Adulto</option>
+                <option value="kids">Kids</option>
+              </select>
+            </label>
+            <button className="primary" onClick={() => void runClassDiscoverySearch()} disabled={classDiscoveryBusy}>
+              {classDiscoveryBusy ? "Buscando..." : "Buscar turmas com vaga"}
+            </button>
+          </div>
+        </section>
+      ) : null}
+
       {feedback ? (
         <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
           {feedback.text}
@@ -2247,22 +2650,78 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               <span>Conversas</span>
             </div>
           </div>
-          <div className="open-match-filter">
-            <input
-              value={openMatchFilter.query}
-              onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, query: event.target.value }))}
-              placeholder="Filtrar por local, cidade, nivel ou mensagem"
-            />
-            <select
-              value={openMatchFilter.status}
-              onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, status: event.target.value as "" | OpenMatch["status"] }))}
-            >
-              <option value="">Todos os status</option>
-              <option value="open">Abertas</option>
-              <option value="closed">Fechadas</option>
-              <option value="cancelled">Canceladas</option>
-            </select>
-            <span>{countLabel(visibleOpenMatches.length, "partida encontrada", "partidas encontradas")}</span>
+          <div className="places-discovery-filter compact" aria-label="Filtros para encontrar jogadores">
+            <div className="places-filter-head">
+              <div>
+                <span>Encontrar jogadores</span>
+                <strong>Filtre chamadas por contexto de jogo</strong>
+                <small>Use cidade, data, periodo e nivel. Esta busca nao mostra quadras livres.</small>
+              </div>
+              <b>{countLabel(visibleOpenMatches.length, "chamada encontrada", "chamadas encontradas")}</b>
+            </div>
+            <div className="places-filter-grid matches">
+              <label>
+                Local ou mensagem
+                <input
+                  value={openMatchFilter.query}
+                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, query: event.target.value }))}
+                  placeholder="Clube, bairro ou texto da chamada"
+                />
+              </label>
+              <label>
+                Cidade
+                <input
+                  value={openMatchFilter.city}
+                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, city: event.target.value }))}
+                  placeholder="Ex.: Sao Paulo"
+                />
+              </label>
+              <label>
+                UF
+                <input
+                  value={openMatchFilter.state}
+                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, state: event.target.value.toUpperCase().slice(0, 2) }))}
+                  placeholder="SP"
+                />
+              </label>
+              <label>
+                Data
+                <input
+                  type="date"
+                  value={openMatchFilter.date}
+                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, date: event.target.value }))}
+                />
+              </label>
+              <label>
+                Periodo
+                <select value={openMatchFilter.period} onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
+                  <option value="">Qualquer horario</option>
+                  <option value="morning">Manha</option>
+                  <option value="afternoon">Tarde</option>
+                  <option value="night">Noite</option>
+                </select>
+              </label>
+              <label>
+                Nivel
+                <input
+                  value={openMatchFilter.level}
+                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, level: event.target.value }))}
+                  placeholder="Ex.: intermediario"
+                />
+              </label>
+              <label>
+                Status
+                <select
+                  value={openMatchFilter.status}
+                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, status: event.target.value as "" | OpenMatch["status"] }))}
+                >
+                  <option value="">Todos</option>
+                  <option value="open">Abertas</option>
+                  <option value="closed">Fechadas</option>
+                  <option value="cancelled">Canceladas</option>
+                </select>
+              </label>
+            </div>
           </div>
           <div className="open-match-create-intro">
             <strong>Criar chamada para jogar</strong>
@@ -2554,7 +3013,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             request.status === "pending" ||
             (request.status === "approved" && request.requestType === "drop_in" && request.paymentStatus !== "paid")
         );
-        const placeOpenMatches = openMatches.filter((match) => match.placeId === p.id);
+        const placeOpenMatches = openMatches.filter((match) => match.placeId === p.id && match.status === "open");
         const resourceDayClasses = visibleAcademyClasses.filter((item) => item.weekday === academyDraft.weekday);
         const resourceDaySlots = academySlots.filter((item) => item.weekday === academyDraft.weekday && item.status === "open");
         const draftCoachConflict = academyDraft.coachId
@@ -3048,6 +3507,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           );
         });
         const isMyManagedPlaceCard = !isAdminRoute && tab === "mine" && canManagePlace;
+        const courtDiscoverySummary = courtDiscoveryResultsByPlace[p.id];
+        const classDiscoverySummary = classDiscoveryResultsByPlace[p.id];
+        const matchingDiscoveryClasses = activeAcademyClasses.filter((item) => academyClassMatchesDiscovery(item, classDiscoveryFilter));
+        const nextDiscoveryClass = matchingDiscoveryClasses
+          .slice()
+          .sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt))[0];
         const placePublicPrimaryLabel = discoveryIntent === "classes" ? "Ver aulas" : "Ver horarios";
         const placePublicPrimaryHint =
           discoveryIntent === "classes"
@@ -3072,6 +3537,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 {canManagePlace || isAdminRoute ? (
                   <span className="pc-meta-row">
                     {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} Â· {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
+                  </span>
+                ) : null}
+                {discoveryIntent === "places" && courtDiscoverySummary ? (
+                  <span className="pc-meta-row">
+                    {courtDiscoverySummary.availableCourts} quadra(s) livre(s) no horario buscado
+                    {courtDiscoverySummary.minEffectiveFeeCents ? ` | a partir de ${formatMoneyFromCents(courtDiscoverySummary.minEffectiveFeeCents)}` : ""}
+                  </span>
+                ) : null}
+                {discoveryIntent === "classes" && classDiscoverySummary ? (
+                  <span className="pc-meta-row">
+                    {classDiscoverySummary.availableSpots} vaga(s) em {classDiscoverySummary.matchingClasses} turma(s)
+                    {classDiscoverySummary.minMonthlyFeeCents ? ` | a partir de ${formatMoneyFromCents(classDiscoverySummary.minMonthlyFeeCents)}` : ""}
+                  </span>
+                ) : null}
+                {discoveryIntent === "classes" && !classDiscoverySummary && nextDiscoveryClass ? (
+                  <span className="pc-meta-row">
+                    Proxima turma: {nextWeekdayLabel(nextDiscoveryClass.weekday, nextDiscoveryClass.startsAt)} | {nextDiscoveryClass.level || "nivel livre"}
                   </span>
                 ) : null}
               </div>
