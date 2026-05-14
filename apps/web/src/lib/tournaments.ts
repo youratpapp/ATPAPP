@@ -8,6 +8,8 @@ import type {
   TournamentRegistration,
   TournamentRole,
   TournamentSummary,
+  TournamentStaffCandidate,
+  TournamentStaffInvite,
   TournamentStaffMember,
   TournamentStaffRole,
 } from "./types";
@@ -128,6 +130,21 @@ type TournamentStaffRpcRow = {
   role: string | null;
   created_at: string | null;
   status?: string | null;
+};
+
+type TournamentStaffCandidateRow = {
+  user_id: string;
+  email: string | null;
+  display_name: string | null;
+};
+
+type TournamentStaffInviteActionRow = {
+  invite_id: string;
+  tournament_id: string;
+  tournament_name: string | null;
+  email: string | null;
+  role: string | null;
+  created_at: string | null;
 };
 
 const TOURNAMENT_STAFF_ROLES = ["organizer", "scorekeeper", "checkin", "media"] as const;
@@ -555,6 +572,27 @@ function staffInviteRowToModel(row: TournamentStaffInviteRow): TournamentStaffMe
   };
 }
 
+function staffCandidateRowToModel(row: TournamentStaffCandidateRow): TournamentStaffCandidate {
+  return {
+    userId: row.user_id,
+    email: row.email ?? "",
+    displayName: row.display_name ?? row.email ?? "Usuario encontrado",
+  };
+}
+
+function staffInviteActionRowToModel(row: TournamentStaffInviteActionRow): TournamentStaffInvite | null {
+  const role = normalizeTournamentRole(row.role);
+  if (!isTournamentStaffRole(role)) return null;
+  return {
+    id: row.invite_id,
+    tournamentId: row.tournament_id,
+    tournamentName: row.tournament_name || "Torneio",
+    email: row.email || "",
+    role,
+    createdAt: row.created_at || "",
+  };
+}
+
 export async function listTournamentStaff(tournamentId: string): Promise<TournamentStaffMember[]> {
   if (!supabase) throw new Error("Supabase nao configurado.");
 
@@ -598,6 +636,50 @@ export async function listTournamentStaff(tournamentId: string): Promise<Tournam
     .map(staffInviteRowToModel)
     .filter((row): row is TournamentStaffMember => Boolean(row));
   return [...pending, ...active];
+}
+
+export async function searchTournamentStaffCandidates(
+  tournamentId: string,
+  query: string
+): Promise<TournamentStaffCandidate[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const term = query.trim();
+  if (term.length < 3) return [];
+  const { data, error } = await supabase.rpc("app_search_tournament_staff_candidates", {
+    p_tournament_id: tournamentId,
+    p_query: term,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentStaffCandidateRow[]).map(staffCandidateRowToModel);
+}
+
+export async function listMyTournamentStaffInvites(): Promise<TournamentStaffInvite[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_list_my_tournament_staff_invites");
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentStaffInviteActionRow[])
+    .map(staffInviteActionRowToModel)
+    .filter((row): row is TournamentStaffInvite => Boolean(row));
+}
+
+export async function acceptTournamentStaffInvite(inviteId: string): Promise<TournamentStaffMember> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_accept_tournament_staff_invite", {
+    p_invite_id: inviteId,
+  });
+  if (error) throw new Error(error.message);
+  const rowRaw = Array.isArray(data) ? data[0] : data;
+  const row = rowRaw ? staffRpcRowToModel(rowRaw as TournamentStaffRpcRow) : null;
+  if (!row) throw new Error("Nao foi possivel aceitar o convite.");
+  return row;
+}
+
+export async function declineTournamentStaffInvite(inviteId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_decline_tournament_staff_invite", {
+    p_invite_id: inviteId,
+  });
+  if (error) throw new Error(error.message);
 }
 
 export async function addTournamentStaff(

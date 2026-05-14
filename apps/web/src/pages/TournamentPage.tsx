@@ -20,6 +20,7 @@ import {
   markTournamentMatchResultSubmissionApplied,
   postTournamentAnnouncement,
   removeTournamentStaff,
+  searchTournamentStaffCandidates,
   sendTournamentChatMessage,
   setTournamentPinnedMessage,
   confirmTournamentMatch,
@@ -36,6 +37,7 @@ import type {
   TournamentMatchResultSubmission,
   TournamentRegistration,
   TournamentRole,
+  TournamentStaffCandidate,
   TournamentStaffMember,
   TournamentStaffRole,
 } from "../lib/types";
@@ -1041,6 +1043,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [staffEmail, setStaffEmail] = useState("");
   const [staffRole, setStaffRole] = useState<TournamentStaffRole>("scorekeeper");
   const [staffBusy, setStaffBusy] = useState(false);
+  const [staffCandidates, setStaffCandidates] = useState<TournamentStaffCandidate[]>([]);
+  const [staffCandidateBusy, setStaffCandidateBusy] = useState(false);
+  const [selectedStaffCandidate, setSelectedStaffCandidate] = useState<TournamentStaffCandidate | null>(null);
 
   const activeClass = useMemo(
     () => classes.find((c) => c.key === activeClassKey) ?? classes[0] ?? null,
@@ -1138,6 +1143,37 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     canManageMatches,
     canManageComms,
   } = roleCaps;
+
+  useEffect(() => {
+    const tournamentId = tournament?.id;
+    const term = staffEmail.trim();
+    if (!tournamentId || !isOwner || term.length < 3) {
+      setStaffCandidates([]);
+      setStaffCandidateBusy(false);
+      return;
+    }
+
+    let cancelled = false;
+    setStaffCandidateBusy(true);
+    const handle = window.setTimeout(() => {
+      searchTournamentStaffCandidates(tournamentId, term)
+        .then((rows) => {
+          if (!cancelled) setStaffCandidates(rows);
+        })
+        .catch(() => {
+          if (!cancelled) setStaffCandidates([]);
+        })
+        .finally(() => {
+          if (!cancelled) setStaffCandidateBusy(false);
+        });
+    }, 250);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(handle);
+    };
+  }, [isOwner, staffEmail, tournament?.id]);
+
   const hasGroupClasses = useMemo(
     () =>
       classes.some((c) => {
@@ -1743,7 +1779,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   const addTournamentStaffNow = async () => {
     if (!tournament || !isOwner) return;
-    const email = staffEmail.trim();
+    if (staffCandidates.length > 0 && !selectedStaffCandidate) {
+      setFeedback({ kind: "error", text: "Selecione o usuario encontrado ou ajuste o email para criar convite pendente." });
+      return;
+    }
+    const email = (selectedStaffCandidate?.email || staffEmail).trim();
     if (!email) {
       setFeedback({ kind: "error", text: "Informe o email do usuario." });
       return;
@@ -1760,6 +1800,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         ),
       ]);
       setStaffEmail("");
+      setStaffCandidates([]);
+      setSelectedStaffCandidate(null);
       setFeedback({
         kind: "success",
         text: row.status === "pending"
@@ -4926,14 +4968,47 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
                 <div className="cluster" style={{ alignItems: "flex-end" }}>
                   <div style={{ flex: 1, minWidth: 220 }}>
-                    <label>Email do usuario</label>
+                    <label>Buscar usuario por email</label>
                     <input
-                      type="email"
+                      type="text"
                       value={staffEmail}
-                      onChange={(event) => setStaffEmail(event.target.value)}
-                      placeholder="email@exemplo.com"
+                      onChange={(event) => {
+                        setStaffEmail(event.target.value);
+                        setSelectedStaffCandidate(null);
+                      }}
+                      placeholder="Digite ao menos 3 caracteres"
                       disabled={staffBusy}
                     />
+                    {staffEmail.trim().length >= 3 ? (
+                      <div className="staff-candidate-picker">
+                        {staffCandidateBusy ? (
+                          <small className="subtle">Buscando usuario...</small>
+                        ) : staffCandidates.length > 0 ? (
+                          staffCandidates.map((candidate) => {
+                            const selected = selectedStaffCandidate?.userId === candidate.userId;
+                            return (
+                              <button
+                                key={candidate.userId}
+                                type="button"
+                                className={selected ? "staff-candidate-option selected" : "staff-candidate-option"}
+                                onClick={() => {
+                                  setSelectedStaffCandidate(candidate);
+                                  setStaffEmail(candidate.email);
+                                }}
+                                disabled={staffBusy}
+                              >
+                                <strong>{candidate.displayName}</strong>
+                                <span>{candidate.email}</span>
+                              </button>
+                            );
+                          })
+                        ) : (
+                          <small className="subtle">
+                            Nenhum usuario encontrado. Ao salvar, o acesso ficara como convite pendente para este email.
+                          </small>
+                        )}
+                      </div>
+                    ) : null}
                   </div>
                   <div style={{ width: 210 }}>
                     <label>Funcao</label>
@@ -4949,8 +5024,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       ))}
                     </select>
                   </div>
-                  <button className="primary" onClick={() => void addTournamentStaffNow()} disabled={staffBusy || !staffEmail.trim()}>
-                    Vincular
+                  <button
+                    className="primary"
+                    onClick={() => void addTournamentStaffNow()}
+                    disabled={staffBusy || !staffEmail.trim() || (staffCandidates.length > 0 && !selectedStaffCandidate)}
+                  >
+                    {staffBusy ? "Salvando..." : selectedStaffCandidate ? "Convidar selecionado" : "Criar convite"}
                   </button>
                 </div>
                 <p className="subtle" style={{ margin: "8px 0 10px 0" }}>

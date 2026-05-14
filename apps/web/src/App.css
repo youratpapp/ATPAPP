@@ -1186,6 +1186,45 @@
   font-size: var(--font-size-xs);
 }
 
+.staff-candidate-picker {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 6px;
+}
+
+.staff-candidate-option {
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid transparent;
+  color: var(--color-text);
+  display: grid;
+  gap: 2px;
+  min-height: 48px;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.staff-candidate-option:hover,
+.staff-candidate-option.selected {
+  background: #f8fafc;
+  border-color: var(--color-border-strong);
+}
+
+.staff-candidate-option strong {
+  font-size: var(--font-size-sm);
+  line-height: 1.2;
+}
+
+.staff-candidate-option span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
 .tournament-completion-guard {
   background: #fff7ed;
   border-color: #fed7aa;
@@ -4276,6 +4315,23 @@ button:disabled {
   letter-spacing: 0;
   margin: 0 0 var(--space-2);
   text-transform: uppercase;
+}
+
+.staff-invite-action-card {
+  cursor: default;
+}
+
+.staff-invite-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.staff-invite-actions button {
+  min-height: 34px;
+  padding: 6px 12px;
 }
 
 .home-section .event-card {

@@ -535,6 +535,21 @@ export type TournamentStaffMember = {
   status?: "active" | "pending";
 };
 
+export type TournamentStaffCandidate = {
+  userId: string;
+  email: string;
+  displayName: string;
+};
+
+export type TournamentStaffInvite = {
+  id: string;
+  tournamentId: string;
+  tournamentName: string;
+  email: string;
+  role: TournamentStaffRole;
+  createdAt: string;
+};
+
 export type TournamentRegistration = {
   id: string;
   tournamentId: string;
