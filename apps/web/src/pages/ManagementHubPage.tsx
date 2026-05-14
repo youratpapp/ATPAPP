@@ -18,12 +18,20 @@ type Props = {
   profile: Profile | null;
 };
 
+type PlaceRoutineAction = {
+  detail: string;
+  label: string;
+  module: PlaceManagementModule;
+  viewSegment?: string;
+};
+
 type PlaceOperationSummary = {
   contactsDue: number;
   lowStock: number;
   pendingAcademy: number;
   pendingBookings: number;
   pendingFinance: number;
+  routineActions: PlaceRoutineAction[];
   setupActions: Array<{
     detail: string;
     label: string;
@@ -88,6 +96,8 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place): PlaceOpe
   const pendingBookings = entry.bookings.filter((booking) => booking.status === "pending").length;
   const todayBookings = entry.bookings.filter((booking) => booking.status !== "cancelled" && isToday(booking.startsAt)).length;
   const waitlist = entry.bookingWaitlist.filter((item) => item.status === "waiting" || item.status === "invited").length;
+  const todayWeekday = new Date().getDay();
+  const todayClasses = entry.academyClasses.filter((academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday);
   const pendingAcademy =
     entry.academyEnrollments.filter((enrollment) => enrollment.status === "pending").length +
     entry.academyLessonRequests.filter((request) => request.status === "pending").length;
@@ -155,6 +165,39 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place): PlaceOpe
   const setupActions = setupChecklist
     .filter((step) => !step.done)
     .map(({ detail, label, module, viewSegment }) => ({ detail, label, module, viewSegment }));
+  const routineActionCandidates: Array<PlaceRoutineAction | null> = [
+    pendingBookings > 0
+      ? { detail: "Confirmar ou revisar reservas pendentes.", label: "Confirmar reservas", module: "bookings" as PlaceManagementModule, viewSegment: "reservas" }
+      : null,
+    waitlist > 0
+      ? { detail: "Converter lista de espera em horario real.", label: "Chamar espera", module: "bookings" as PlaceManagementModule, viewSegment: "espera" }
+      : null,
+    todayBookings > 0
+      ? { detail: "Ver ocupacao e proximos horarios.", label: "Ver agenda", module: "bookings" as PlaceManagementModule, viewSegment: "hoje" }
+      : null,
+    entry.courts.length > 0
+      ? { detail: "Buscar horario e criar uma reserva.", label: "Criar reserva", module: "bookings" as PlaceManagementModule, viewSegment: "nova-reserva" }
+      : null,
+    pendingAcademy > 0
+      ? { detail: "Resolver matriculas, encaixes ou reposicoes.", label: "Resolver aulas", module: "academy" as PlaceManagementModule, viewSegment: "pendencias" }
+      : null,
+    todayClasses.length > 0
+      ? { detail: "Abrir chamada e aulas do dia.", label: "Fazer chamada", module: "academy" as PlaceManagementModule, viewSegment: "hoje" }
+      : null,
+    contactsDue > 0
+      ? { detail: "Fazer retornos e acompanhar leads.", label: "Fazer follow-up", module: "clients" as PlaceManagementModule, viewSegment: "rotina" }
+      : null,
+    pendingFinance > 0
+      ? { detail: "Enviar lembretes e acompanhar recebiveis.", label: "Cobrar pendentes", module: "finance" as PlaceManagementModule, viewSegment: "recebiveis" }
+      : null,
+    lowStock > 0
+      ? { detail: "Revisar itens com estoque baixo.", label: "Repor estoque", module: "canteen" as PlaceManagementModule, viewSegment: "estoque" }
+      : null,
+    entry.posProducts.some((product) => product.isActive)
+      ? { detail: "Registrar venda rapida da cantina.", label: "Registrar venda", module: "canteen" as PlaceManagementModule, viewSegment: "vender" }
+      : null,
+  ];
+  const routineActions = routineActionCandidates.filter((action): action is PlaceRoutineAction => action !== null);
   const setupGaps = setupActions.map((action) => action.label);
   const setupProgress = Math.round((setupChecklist.filter((step) => step.done).length / Math.max(1, setupChecklist.length)) * 100);
   return {
@@ -163,6 +206,7 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place): PlaceOpe
     pendingAcademy,
     pendingBookings,
     pendingFinance,
+    routineActions,
     setupActions,
     setupChecklist,
     setupGaps,
@@ -180,6 +224,7 @@ function totalSummaries(summaries: PlaceOperationSummary[]): PlaceOperationSumma
       pendingAcademy: acc.pendingAcademy + item.pendingAcademy,
       pendingBookings: acc.pendingBookings + item.pendingBookings,
       pendingFinance: acc.pendingFinance + item.pendingFinance,
+      routineActions: acc.routineActions,
       setupActions: acc.setupActions,
       setupChecklist: acc.setupChecklist,
       setupGaps: acc.setupGaps,
@@ -193,6 +238,7 @@ function totalSummaries(summaries: PlaceOperationSummary[]): PlaceOperationSumma
       pendingAcademy: 0,
       pendingBookings: 0,
       pendingFinance: 0,
+      routineActions: [],
       setupActions: [],
       setupChecklist: [],
       setupGaps: [],
@@ -640,6 +686,26 @@ export function ManagementHubPage({ user, profile }: Props) {
                                 {action.label}
                               </button>
                             ))}
+                          </div>
+                        </div>
+                      ) : summary.routineActions.length ? (
+                        <div className="management-row-setup routine">
+                          <span>Acoes rapidas</span>
+                          <strong>{summary.routineActions.slice(0, 2).map((action) => action.label).join(" | ")}</strong>
+                          <div className="management-semantic-actions">
+                            {summary.routineActions
+                              .filter((action) => modules.includes(action.module))
+                              .slice(0, 3)
+                              .map((action) => (
+                                <button
+                                  key={`${place.id}:routine:${action.label}`}
+                                  type="button"
+                                  title={action.detail}
+                                  onClick={() => navigate(buildPlaceAdminPath(place.id, action.module, action.viewSegment))}
+                                >
+                                  {action.label}
+                                </button>
+                              ))}
                           </div>
                         </div>
                       ) : null}

@@ -307,6 +307,16 @@ Bloco visual executado em 2026-05-13:
 - Verificacao: lint e build passaram; screenshots foram tentados em 390px, 430px e 1366px, mas o ambiente local exibiu somente `Configuracao necessaria` por falta de env/Supabase.
 - Proximo foco visual: calibrar as mesmas telas com seed/sessao real e aplicar o mesmo ritmo em Competition OS e pagina publica.
 
+Bloco de discoverability executado em 2026-05-13:
+
+- `VISUAL-03` ficou bloqueado para screenshots reais porque o ambiente local nao tem `.env`/Supabase; a queue agora registra esse bloqueio explicitamente.
+- `ROUTINE-02`: rows de local em Gestao passaram a sugerir acoes rapidas por intencao quando a base ja esta pronta.
+- Agenda pode sugerir `Confirmar reservas`, `Chamar espera`, `Ver agenda` e `Criar reserva`, sempre abrindo a subvisao executavel.
+- Academia pode sugerir `Resolver aulas` e `Fazer chamada` quando ha pendencias/aulas do dia.
+- Clientes, Financeiro e Cantina ganharam atalhos contextuais para `Fazer follow-up`, `Cobrar pendentes`, `Repor estoque` e `Registrar venda`.
+- Regra reforcada: quick action que nao abre a subvisao onde a tarefa termina nao esta pronta.
+- Proximo foco executavel: `COMP-VISUAL-01`, refinando Competition OS sem mexer nos fluxos sensiveis de confirmacao/resultado.
+
 ## Prioridades mobile
 
 - Menos secoes por tela.

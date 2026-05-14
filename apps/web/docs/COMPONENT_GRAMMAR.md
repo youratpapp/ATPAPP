@@ -309,6 +309,13 @@ Regra de destino:
 - `Criar turma` precisa cair em Turmas com wizard de turma;
 - se a tela de destino nao permite executar a tarefa, a quick action esta errada mesmo que o modulo esteja correto.
 
+Regra de rotina aplicada em 2026-05-13:
+
+- acoes como `Criar reserva`, `Fazer chamada`, `Cobrar pendentes`, `Fazer follow-up` e `Registrar venda` devem aparecer por contexto real, nao como painel fixo;
+- se a base do local ainda esta incompleta, setup vem antes de rotina;
+- se a base esta pronta, a row do local pode mostrar ate 3 acoes rapidas executaveis;
+- cada acao deve abrir modulo + subvisao correta via rota semantica.
+
 Anatomia:
 
 ```text

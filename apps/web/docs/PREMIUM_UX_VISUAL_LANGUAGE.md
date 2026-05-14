@@ -606,3 +606,12 @@ Decisao aplicada em 2026-05-13:
 - Command panel existe para tarefa e setup, nao para mosaico de modulo.
 - Abas primarias ficam limitadas a 5; o restante vai para overflow contextual.
 - Sombra, borda e caixa devem ser usadas como suporte, nao como estrutura dominante.
+
+### Discoverability operacional
+
+Decisao aplicada em 2026-05-13:
+
+- depois que a base esta pronta, a row do local deve oferecer acoes por intencao real, nao apenas nomes de modulo;
+- `Criar reserva`, `Fazer chamada`, `Cobrar pendentes`, `Fazer follow-up` e `Registrar venda` sao exemplos de linguagem correta;
+- setup incompleto tem prioridade sobre rotina, para evitar atalhos que dependem de base inexistente;
+- atalhos de rotina devem ser poucos, contextuais e executaveis.

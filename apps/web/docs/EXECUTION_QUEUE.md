@@ -94,9 +94,9 @@ Entregue em 2026-05-13:
 - `PlaceAdminShell` passou a renderizar 5 abas primarias e mover excedentes para `Mais`;
 - screenshots gerados em `web/docs/screenshots/`, mas bloqueados por falta de configuracao local do Supabase.
 
-### [>] VISUAL-03 - Validar e calibrar telas premium com dados reais
+### [!] VISUAL-03 - Validar e calibrar telas premium com dados reais
 
-Status: `[>]` prioridade atual
+Status: `[!]` bloqueado parcialmente
 
 Objetivo:
 
@@ -137,6 +137,62 @@ Criterios de conclusao:
 - screenshots validos anexados;
 - ajustes visuais aplicados nos problemas encontrados;
 - docs atualizados com achados.
+
+Bloqueio em 2026-05-13:
+
+- ambiente local sem `.env`/Supabase exibe apenas `Configuracao necessaria`;
+- screenshots gerados nao validam telas autenticadas;
+- manter bloqueado ate existir staging, env local ou seed/demo navegavel.
+
+Enquanto bloqueado:
+
+- seguir tarefas executaveis de UX premium e registrar validacao limitada quando necessario.
+
+### [>] COMP-VISUAL-01 - Aplicar refinamento premium no Competition OS
+
+Status: `[>]` prioridade atual
+
+Objetivo:
+
+- Levar o mesmo ganho de hierarchy, menos cards e task-first UX para torneios/ligas, sem mexer na arquitetura de competicoes.
+
+Criterios:
+
+- separar melhor `jogar` e `organizar` na composicao visual;
+- primeira viewport deve mostrar proxima acao, escopo ativo e pendencias;
+- reduzir cards equivalentes e blocos informativos;
+- manter confirmacao, desfazer confirmacao e resultado como fluxos intocaveis;
+- mobile 390-430px sem abas/filtros comprimidos.
+
+Telas/componentes afetados:
+
+- `EventsHubPage`;
+- `TournamentPage`;
+- `LeagueDetailsPage`;
+- componentes de partidas/filas de competicao.
+
+Ganhos esperados:
+
+- Competition OS parecer produto proprio;
+- menos mistura entre jogador e organizador;
+- mais clareza operacional em partida e resultado.
+
+Dependencias:
+
+- estado atual dos fluxos de competicao;
+- `COMPONENT_GRAMMAR.md`;
+- `PREMIUM_UX_VISUAL_LANGUAGE.md`.
+
+Risco de regressao:
+
+- quebrar fluxos sensiveis de confirmacao/resultado;
+- esconder informacao importante de classe/fase.
+
+Criterios de conclusao:
+
+- pelo menos uma tela critica de Competition OS refinada;
+- lint/build passando;
+- docs vivos atualizados.
 
 ### [x] ACCESS-01 - Aplicar navegacao global por perfil e plano
 
@@ -871,9 +927,9 @@ Entregue em 2026-05-13:
 - `EventsHubPage` deixou de mostrar roteiro grande de organizador para todo jogador comum; organizar evento segue disponivel como opcao contextual em `Descobrir`;
 - `npm run lint` e `npm run build` passaram.
 
-### [>] ROUTINE-02 - Expandir quick actions semanticas para rotinas recorrentes
+### [x] ROUTINE-02 - Expandir quick actions semanticas para rotinas recorrentes
 
-Status: `[ ]` pendente
+Status: `[x]` concluido
 
 Atualizacao 2026-05-13:
 
@@ -922,6 +978,18 @@ Criterios de conclusao:
 - toda quick action nova ou alterada tem destino executavel;
 - docs vivos atualizados;
 - `npm run lint` e `npm run build` passando se houver alteracao de codigo.
+
+Entregue em 2026-05-13:
+
+- `ManagementHubPage` passou a calcular acoes rapidas de rotina por local, com destino executavel por subvisao;
+- Agenda ganhou entradas semanticas como `Confirmar reservas`, `Chamar espera`, `Ver agenda` e `Criar reserva`;
+- Academia ganhou `Resolver aulas` e `Fazer chamada` quando ha pendencias ou aulas do dia;
+- Clientes/CRM ganhou `Fazer follow-up` quando ha contato vencido/lead ativo;
+- Financeiro ganhou `Cobrar pendentes` quando ha recebivel ou credito pendente;
+- Cantina ganhou `Repor estoque` e `Registrar venda` quando ha estoque baixo/produto ativo;
+- as acoes aparecem na row do local somente quando nao ha setup bloqueando a base, evitando painel permanente de atalhos;
+- `npm run lint` e `npm run build` passaram;
+- screenshots foram gerados em 390px e 1366px, mas seguem bloqueados pela tela `Configuracao necessaria` sem `.env`/Supabase.
 
 ### [x] GESTAO-01 - Refinar mobile real da tela `/gestao`
 
