@@ -217,12 +217,16 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - `Academia v2 - Configuracao` ja possui data/dia explicitos, alternancia por quadra/professor, criacao de horario aberto, bloqueio/reabertura, acao `Criar turma` a partir de horario aberto e conflito visivel por recurso.
 - Suporte backend minimo para Configuracao foi ajustado em `createPlaceAcademySlot(...)`, permitindo `coachId` opcional e `status` para janelas abertas ou bloqueios reais.
 - `Academia v2 - QA` removeu o cabeçalho legado remanescente dentro do workspace, validou lint/build e ajustou o feedback do fluxo `horario aberto -> turma` para nao esconder sucesso parcial.
+- `Academia v2 - Backend` agora tem RPC transacional `app_create_academy_class_from_slot(...)`: quando a turma nasce de horario aberto, o slot vira `assigned` e a turma e criada na mesma transacao, sem sucesso parcial.
+- `Academia v2 - Backend` agora tambem tem RPC `app_admin_schedule_academy_makeup_credit(...)`: secretaria pode agendar um credito de reposicao de aluno especifico sem depender do login do aluno.
+- `Academia v2 - Configuracao` agora trata `place_academy_slots` explicitamente como escala semanal recorrente: a data e apenas referencia para escolher o dia da semana, e as acoes comunicam `Janela semanal`/`Bloqueio semanal`.
+- `Academia v2 - Professores` agora tem schema avancado real em `place_coaches` para especialidades, niveis atendidos, bio publica, observacoes internas e perfil publico ativo, sem poluir o cadastro rapido.
 
 ### Ainda fraco
 
 - `PlacesPage` ainda concentra muita orquestracao e ainda influencia a sensacao de admin template.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
-- Academia v2 ainda tem gap transacional conhecido: transformar horario aberto em turma ainda nao e uma RPC unica `slot -> class -> assigned`; implementar apenas se QA real mostrar inconsistencia ou se o fluxo virar critico.
+- Academia v2 fechou os gaps backend imediatos da fila BE-01 a BE-04. Vigencia/bloqueio pontual por data para disponibilidade semanal permanece como gap futuro se QA real exigir.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
 - Sistema ja iniciou visibilidade por perfil/plano na navegacao global e guardrail real para criar local, mas ainda precisa aplicar permissoes reais em mais hubs internos.
 - Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; entradas internas agora tambem mudam prioridade por papel, mas ainda falta calibrar fluxos internos especificos por massa real.

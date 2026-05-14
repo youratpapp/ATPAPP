@@ -583,9 +583,9 @@ Entregue:
   - `PlaceAcademyResourcesModule` virou workspace operacional de `Quadras e horarios`;
   - filtro explicito por data/dia substituiu dependencia invisivel do draft de turma;
   - alternancia `Por quadra` / `Por professor` com filtro por recurso;
-  - rows mostram turmas, horarios abertos, horarios convertidos e bloqueios do dia;
+  - rows mostram turmas, janelas semanais abertas, janelas convertidas e bloqueios semanais do dia de referencia;
   - conflitos de horario aparecem por recurso;
-  - `Criar horario aberto` e `Bloquear horario` persistem em `place_academy_slots`;
+  - `Criar janela semanal` e `Bloqueio semanal` persistem em `place_academy_slots`;
   - `Criar turma` a partir de horario aberto leva para `Grade` com setup aberto e draft preenchido;
   - `createPlaceAcademySlot(...)` agora aceita `status` e `coachId` opcional para permitir bloqueio de quadra/professor.
 
@@ -599,9 +599,52 @@ Entregue:
   - acoes financeiras da Academia v2 permanecem condicionadas a `canManageFinance`;
   - acoes operacionais de turma, aluno, professor, chamada, aula avulsa, reposicao e horario aberto usam services reais existentes;
   - removido o cabeçalho legado `Academia e aulas` de dentro do workspace de Gestao;
-  - fluxo `horario aberto -> criar turma` agora informa sucesso parcial quando a turma persiste mas o slot nao e marcado como `assigned`;
-  - gap transacional registrado: conversao `slot -> class -> assigned` ainda nao e RPC unica;
+  - fluxo `horario aberto -> criar turma` foi coberto posteriormente pela RPC transacional `app_create_academy_class_from_slot(...)`;
+  - disponibilidade recorrente foi coberta posteriormente por decisao de usar `place_academy_slots` como escala semanal minima, sem schema paralelo;
   - `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### ACADEMY-BE-01 - RPC transacional horario aberto -> turma
+
+Status: concluido em 2026-05-14.
+
+- criada migration `0076_academy_create_class_from_slot_v1.sql`;
+- criada RPC `app_create_academy_class_from_slot(...)` para converter `place_academy_slots.open` em `place_academy_classes` + `slot.assigned` na mesma transacao;
+- a RPC valida permissao de gestor, local, status `open` e correspondencia entre slot selecionado e dados da turma;
+- conflitos continuam protegidos pelos triggers existentes de professor, quadra e reserva;
+- frontend usa RPC apenas quando houver `slotId`;
+- fluxo normal de criar turma sem slot permanece separado;
+- feedback de sucesso parcial foi removido desse fluxo: ou converte tudo, ou nada parcial persiste.
+
+### ACADEMY-BE-02 - Reposicao especifica por secretaria
+
+Status: concluido em 2026-05-14.
+
+- criada migration `0077_academy_admin_schedule_makeup_v1.sql`;
+- criada RPC `app_admin_schedule_academy_makeup_credit(...)` para vincular credito de reposicao de um aluno especifico a turma/data;
+- o fluxo nao depende mais do usuario logado como dono do credito;
+- `Pendencias` abre o `FitDrawer` com o credito selecionado e o drawer mostra contexto do aluno;
+- a acao primaria vira `Agendar reposicao`, nao `Solicitar`;
+- a RPC cria uma solicitacao aprovada `request_type = makeup`, pagamento `waived`, usa o credito e, quando houver ausencia aberta, marca a ausencia como usada;
+- preservada a diferenca entre `reposicao aberta`, `solicitacao de reposicao` e `aula avulsa/drop-in`.
+
+### ACADEMY-BE-03 - Disponibilidade recorrente
+
+- concluido em 2026-05-14;
+- decisao: nao criar tabela nova nesta rodada, porque `place_academy_slots` ja cobre a escala semanal recorrente minima com `weekday`, professor, quadra, inicio, fim, status e observacao;
+- `PlaceAcademyResourcesModule` deixou de comunicar o fluxo como data pontual e passou a usar `Escala semanal`, `Data de referencia`, `Janela semanal aberta`, `Janela convertida` e `Bloqueio semanal`;
+- bloqueios criados neste modelo sao semanais. Bloqueio pontual por data/vigencia permanece como gap futuro, caso QA real mostre necessidade;
+- busca de encaixe e criacao de turma continuam usando o modelo existente, sem duplicar disponibilidade em tabela paralela.
+
+### ACADEMY-BE-04 - Professor avancado
+
+- concluido em 2026-05-14;
+- criada migration `0078_academy_coach_profile_fields_v1.sql`;
+- `place_coaches` recebeu `specialties`, `level_scopes`, `public_bio`, `internal_notes` e `public_profile_enabled`;
+- leitura completa de `place_coaches` foi restringida ao contexto de gestao da academia para proteger observacoes internas;
+- `CoachDrawer` agora edita os campos avancados reais em `Perfil operacional`;
+- cadastro rapido de professor continua simples: nome, telefone e email;
+- comissao continua separada e condicionada a permissao financeira;
+- disponibilidade continua representada por `place_academy_slots`/escala semanal, sem duplicar modelo dentro do professor.
 
 ## Checklist de validacao
 

@@ -360,6 +360,258 @@ Gaps documentados:
 - screenshots autenticados nao foram gerados nesta rodada por falta de sessao local autenticada confiavel no ambiente atual;
 - regras recorrentes avancadas de disponibilidade por professor/quadra continuam fora do modelo atual e devem ser produto/backend separado se forem priorizadas.
 
+### [x] ACADEMY-BE-01 - RPC transacional para horario aberto virar turma
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Tornar o fluxo `Criar turma` a partir de `horario aberto` atomico e robusto.
+
+Criterios:
+
+- criar RPC pequena e especifica, sem backend paralelo;
+- entrada recebe `slot_id`, dados essenciais/avancados da turma e `place_id`;
+- validar permissao de operador do local antes de criar;
+- validar que o slot pertence ao local e esta `open`;
+- criar turma em `place_academy_classes`;
+- marcar slot como `assigned` na mesma transacao;
+- se qualquer etapa falhar, nada parcial deve persistir;
+- frontend deve usar a RPC somente quando houver `slotId`;
+- fluxo sem `slotId` continua usando criacao normal de turma;
+- manter feedback claro para erro de conflito/permissao;
+- validar lint/build.
+
+Telas/componentes afetados:
+
+- `PlacesPage`;
+- `PlaceAcademyClassSetupModule`;
+- `places.ts`;
+- nova migration/RPC Supabase.
+
+Ganhos esperados:
+
+- elimina inconsistencia `turma criada + horario ainda aberto`;
+- reduz necessidade de revisao manual em Configuracao;
+- deixa o fluxo de secretaria mais confiavel.
+
+Dependencias:
+
+- `place_academy_slots`;
+- `place_academy_classes`;
+- permissoes/RLS existentes de local.
+
+Risco de regressao:
+
+- RPC pode duplicar regra de validacao ja existente em triggers; testar conflito de professor/quadra.
+
+Criterios de conclusao:
+
+- criar turma a partir de horario aberto persiste turma e slot `assigned` juntos;
+- falha de validacao nao cria turma parcial;
+- docs atualizados.
+
+Implementado:
+
+- nova migration `0076_academy_create_class_from_slot_v1.sql` com RPC `app_create_academy_class_from_slot(...)`;
+- RPC valida permissao de gestor do local, slot pertencente ao local, status `open` e correspondencia dos dados de horario/recurso antes de criar;
+- slot e marcado como `assigned` e a turma e criada na mesma transacao;
+- frontend usa a RPC somente quando `draft.slotId` existe;
+- criacao normal de turma sem slot permanece em `createPlaceAcademyClass(...)`;
+- feedback deixa de aceitar sucesso parcial nesse fluxo.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+### [x] ACADEMY-BE-02 - Fluxo admin de reposicao especifica do aluno
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Permitir que secretaria vincule um credito de reposicao de um aluno especifico a uma turma/data sem depender do usuario logado.
+
+Criterios:
+
+- criar RPC/service minimo para `credito -> turma/data -> uso/agendamento`;
+- validar que o credito pertence ao aluno/matricula/local;
+- validar que credito esta `open`;
+- validar turma ativa, vaga operacional e compatibilidade basica;
+- registrar solicitacao/aprovacao ou marcar credito como usado conforme modelo atual;
+- nao misturar aula avulsa, credito aberto e solicitacao de reposicao;
+- expor acao em `Pendencias`/`FitDrawer` de forma task-first;
+- respeitar permissao operacional do local;
+- validar lint/build.
+
+Telas/componentes afetados:
+
+- `PlaceAcademyRequestsModule`;
+- `PlaceAcademyFitModule`;
+- `places.ts`;
+- nova migration/RPC Supabase se necessario.
+
+Ganhos esperados:
+
+- secretaria consegue resolver reposicao real sem depender do login do aluno;
+- reduz WhatsApp/manual workaround;
+- fortalece a fila de Pendencias como central de limpeza operacional.
+
+Dependencias:
+
+- `place_academy_makeup_credits`;
+- `place_academy_lesson_requests`;
+- `place_academy_enrollments`;
+- `place_academy_classes`.
+
+Risco de regressao:
+
+- confundir `reposicao aberta`, `solicitacao de reposicao` e `aula avulsa`; nomenclatura deve seguir `ACADEMY_V2_UX_PLAN.md`.
+
+Criterios de conclusao:
+
+- credito aberto de um aluno pode ser agendado/usado por admin com persistencia real;
+- credito nao pode ser usado duas vezes;
+- estados vazios e erros explicam o motivo.
+
+Implementado:
+
+- nova migration `0077_academy_admin_schedule_makeup_v1.sql` com RPC `app_admin_schedule_academy_makeup_credit(...)`;
+- service `scheduleAcademyMakeupCredit(...)` em `places.ts`;
+- fila de Pendencias agora abre o `FitDrawer` com o credito de reposicao selecionado;
+- `FitDrawer` mostra contexto do aluno/credito e acao primaria `Agendar reposicao`;
+- ao agendar, a RPC cria uma `place_academy_lesson_requests` aprovada, `request_type = makeup`, pagamento `waived`, vincula o credito e marca o credito como `used` na mesma transacao;
+- a RPC impede reuso de credito aberto que ja tenha solicitacao ativa e valida vaga da turma/data via busca de encaixe existente.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+### [x] ACADEMY-BE-03 - Disponibilidade recorrente de professor/quadra
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Avaliar e implementar, se aprovado, modelo real para escala recorrente de disponibilidade, separado de turmas e slots pontuais.
+
+Criterios:
+
+- nao criar tabela nova antes de validar necessidade contra `place_academy_slots`;
+- decidir se disponibilidade recorrente pertence a professor, quadra ou ambos;
+- suportar dia da semana, inicio/fim, vigencia, status e observacao;
+- Configuracao deve mostrar recorrencia sem confundir com horario aberto pontual;
+- bloqueio pontual continua sendo `place_academy_slots.status = blocked` ou modelo equivalente;
+- validar impacto em busca de encaixe e criacao de turma.
+
+Telas/componentes afetados:
+
+- `PlaceAcademyResourcesModule`;
+- `PlaceAcademyCoachesModule`;
+- busca de encaixe;
+- migrations Supabase.
+
+Ganhos esperados:
+
+- professor consegue ter agenda semanal clara;
+- secretaria entende quando um professor/quadra costuma estar disponivel;
+- reduz cadastro repetitivo de janelas abertas.
+
+Dependencias:
+
+- decisao de produto sobre recorrencia vs slots pontuais.
+
+Risco de regressao:
+
+- overengineering; se o ganho operacional nao for claro, manter como gap documentado.
+
+Criterios de conclusao:
+
+- decisao documentada;
+- se implementado, disponibilidade recorrente nao duplica nem conflita visualmente com turmas, slots e bloqueios.
+
+Decisao:
+
+- nao criar tabela nova nesta rodada;
+- `place_academy_slots` ja representa a escala semanal recorrente minima: `weekday`, `starts_at`, `ends_at`, `coach_id`, `court_id`, `status` e `notes`;
+- vigencia por data continua fora do modelo atual e deve virar task propria apenas se QA real mostrar necessidade;
+- bloqueios em `place_academy_slots.status = blocked` devem ser tratados como bloqueios semanais, nao como bloqueios pontuais por data.
+
+Implementado:
+
+- `PlaceAcademyResourcesModule` passou a comunicar a area como `Escala semanal`, com `Data de referencia` apenas para escolher o dia da semana;
+- criacao mudou de `Horario operacional` para `Janela semanal`;
+- labels de eventos diferenciam `Janela semanal aberta`, `Janela convertida` e `Bloqueio semanal`;
+- estados vazios agora explicam que a ausencia e por dia da semana recorrente;
+- nao houve schema novo nem RPC nova, evitando overengineering e mantendo busca de encaixe/criacao de turma sobre o modelo existente.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+### [x] ACADEMY-BE-04 - Schema avancado de professor
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Completar professor como entidade operacional sem criar inputs falsos.
+
+Criterios:
+
+- validar campos realmente necessarios: especialidades, niveis atendidos, observacoes, perfil publico e disponibilidade;
+- criar migration minima se houver decisao;
+- atualizar `CoachDrawer` para editar apenas campos reais;
+- manter nome, telefone, email, status, login e comissao como base;
+- respeitar permissao financeira para comissao;
+- validar lint/build.
+
+Telas/componentes afetados:
+
+- `PlaceAcademyCoachesModule`;
+- `places.ts`;
+- migrations Supabase.
+
+Ganhos esperados:
+
+- cadastro de professor fica mais profissional;
+- agenda/aulas podem filtrar por nivel/especialidade no futuro;
+- evita campos decorativos sem persistencia.
+
+Dependencias:
+
+- `place_coaches`;
+- decisao de produto sobre perfil publico do professor.
+
+Risco de regressao:
+
+- transformar cadastro rapido em ERP burocratico. Campos avancados devem ficar recolhidos/drawer.
+
+Criterios de conclusao:
+
+- campos avancados persistem;
+- cadastro rapido continua simples;
+- professor sem permissao completa nao ganha acesso indevido.
+
+Implementado:
+
+- nova migration `0078_academy_coach_profile_fields_v1.sql`;
+- `place_coaches` ganhou campos reais: `specialties`, `level_scopes`, `public_bio`, `internal_notes` e `public_profile_enabled`;
+- policy `place_coaches_read` foi restringida ao contexto de gestao da academia para proteger observacoes internas;
+- `places.ts` passou a listar, criar retorno e atualizar professores com esses campos;
+- `CoachDrawer` ganhou secao `Perfil operacional` com especialidades, niveis atendidos, bio publica, perfil publico ativo e observacoes internas;
+- cadastro rapido continua apenas com nome, telefone e email;
+- comissao continua condicionada a `canManageFinance`;
+- campos avancados ficam no drawer e nao viram inputs permanentes nas rows.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
 ### [x] SWEEP-ROLE-01 - Varredura por perfil Admin/Player/Professor
 
 Status: `[x]` concluido em 2026-05-14

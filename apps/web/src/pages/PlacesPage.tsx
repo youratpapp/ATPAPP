@@ -65,6 +65,7 @@ import {
   canCreatePlace,
   createPlace,
   createPlaceAcademyClass,
+  createPlaceAcademyClassFromSlot,
   createPlaceAcademySlot,
   createPlaceCoach,
   createPlaceCourt,
@@ -87,6 +88,7 @@ import {
   searchAcademyClassesForDiscovery,
   searchAvailableCourts,
   searchAvailableCourtsForDiscovery,
+  scheduleAcademyMakeupCredit,
   unfollowPlace,
   updateAcademyEnrollment,
   updateAcademyEnrollmentStatus,
@@ -630,6 +632,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     Record<string, { requestedOn: string; level: string; period: "" | "morning" | "afternoon" | "night"; coachId: string; age: string; genderScope: "" | AcademyClass["genderScope"] }>
   >({});
   const [academyFitSlotsByPlace, setAcademyFitSlotsByPlace] = useState<Record<string, AcademyLessonFitSlot[]>>({});
+  const [academySelectedMakeupCreditByPlace, setAcademySelectedMakeupCreditByPlace] = useState<Record<string, string>>({});
   const [academyLessonRequestDraftByClass, setAcademyLessonRequestDraftByClass] = useState<
     Record<string, { requestType: AcademyLessonRequest["requestType"]; playerName: string; phone: string; email: string; age: string; level: string; notes: string }>
   >({});
@@ -1649,7 +1652,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setBusy(true);
     setFeedback(null);
     try {
-      await createPlaceAcademyClass({
+      const classPayload = {
         placeId: place.id,
         coachId: draft.coachId || null,
         courtId: draft.courtId || null,
@@ -1666,24 +1669,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         allowMakeup: draft.allowMakeup,
         capacity: Number(draft.capacity) || 8,
         monthlyFeeCents: Math.max(0, Math.round(Number(draft.monthlyFee || 0) * 100)),
-      });
-      let slotAssigned = true;
+      };
       if (draft.slotId) {
-        try {
-          await updatePlaceAcademySlotStatus(draft.slotId, "assigned");
-        } catch {
-          slotAssigned = false;
-        }
+        await createPlaceAcademyClassFromSlot({ ...classPayload, slotId: draft.slotId });
+      } else {
+        await createPlaceAcademyClass(classPayload);
       }
       setAcademyClassDraftByPlace((prev) => ({
         ...prev,
         [place.id]: { ...draft, slotId: "", title: "", coachName: "", level: "" },
       }));
       await refreshPlaceResources(place.id);
-      setFeedback({
-        kind: slotAssigned ? "success" : "error",
-        text: slotAssigned ? "Turma criada." : "Turma criada, mas o horario aberto nao foi marcado como convertido. Revise Configuracao.",
-      });
+      setFeedback({ kind: "success", text: draft.slotId ? "Horario convertido em turma." : "Turma criada." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar turma.") });
     } finally {
@@ -1731,13 +1728,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const onUpdateCoachDetails = async (
     placeId: string,
     coachId: string,
-    patch: {
-      commissionPercent: number;
-      email?: string;
-      isActive: boolean;
-      name: string;
-      phone?: string;
-    }
+      patch: {
+        commissionPercent: number;
+        email?: string;
+        internalNotes?: string;
+        isActive: boolean;
+        levelScopes?: string[];
+        name: string;
+        phone?: string;
+        publicBio?: string;
+        publicProfileEnabled?: boolean;
+        specialties?: string[];
+      }
   ) => {
     if (!patch.name.trim()) return;
     setBusy(true);
@@ -1745,12 +1747,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     try {
       await updatePlaceCoach({
         coachId,
-        commissionPercent: patch.commissionPercent,
-        email: patch.email,
-        isActive: patch.isActive,
-        name: patch.name,
-        phone: patch.phone,
-      });
+          commissionPercent: patch.commissionPercent,
+          email: patch.email,
+          internalNotes: patch.internalNotes,
+          isActive: patch.isActive,
+          levelScopes: patch.levelScopes,
+          name: patch.name,
+          phone: patch.phone,
+          publicBio: patch.publicBio,
+          publicProfileEnabled: patch.publicProfileEnabled,
+          specialties: patch.specialties,
+        });
       setCoachCommissionDraftByCoach((prev) => ({ ...prev, [coachId]: String(patch.commissionPercent) }));
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: "Professor atualizado." });
@@ -2030,6 +2037,40 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao solicitar encaixe.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onScheduleAcademyMakeupCredit = async (placeId: string, creditId: string, slot: AcademyLessonFitSlot) => {
+    const search = academyFitSearchByPlace[placeId] || { requestedOn: todayDateInputValue(), level: "", period: "", coachId: "", age: "", genderScope: "" };
+    const draft = academyLessonRequestDraftByClass[slot.classId] || {
+      requestType: "makeup" as const,
+      playerName: "",
+      phone: "",
+      email: "",
+      age: "",
+      level: search.level || slot.level,
+      notes: "",
+    };
+    if (!search.requestedOn) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await scheduleAcademyMakeupCredit({
+        placeId,
+        creditId,
+        classId: slot.classId,
+        requestedOn: search.requestedOn,
+        notes: draft.notes,
+      });
+      setAcademySelectedMakeupCreditByPlace((prev) => ({ ...prev, [placeId]: "" }));
+      setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [slot.classId]: { ...draft, requestType: "makeup", notes: "" } }));
+      await refreshPlaceResources(placeId);
+      await onSearchAcademyFitSlots(placeId);
+      setFeedback({ kind: "success", text: "Reposicao agendada e credito marcado como usado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao agendar reposicao.") });
     } finally {
       setBusy(false);
     }
@@ -3456,6 +3497,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           genderScope: "" as const,
         };
         const fitSlots = academyFitSlotsByPlace[p.id] || [];
+        const selectedMakeupCreditId = academySelectedMakeupCreditByPlace[p.id] || "";
         const actionableLessonRequests = academyLessonRequests.filter(
           (request) =>
             request.status === "pending" ||
@@ -5564,6 +5606,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             canManageFinance={canManageFinance}
                             classes={academyClasses}
                             coaches={displayedCoaches}
+                            enrollments={academyEnrollments}
                             fitSearch={fitSearch}
                             fitSlots={fitSlots}
                             isLessonRequestPaid={(request) =>
@@ -5575,16 +5618,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
                             onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
                             onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
+                            onScheduleMakeupCredit={(creditId, slot) => void onScheduleAcademyMakeupCredit(p.id, creditId, slot)}
                             onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
                             onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
                             profile={profile}
+                            selectedMakeupCreditId={selectedMakeupCreditId}
                             userEmail={user.email || ""}
                             userId={user.id}
                             weekdayLabels={WEEKDAY_LABELS}
                           />
                         }
                         onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
-                        onOpenFit={() => void onSearchAcademyFitSlots(p.id)}
+                        onOpenFit={(creditId) => {
+                          setAcademySelectedMakeupCreditByPlace((prev) => ({ ...prev, [p.id]: creditId || "" }));
+                          void onSearchAcademyFitSlots(p.id);
+                        }}
                         onShareContact={shareAcademyContact}
                         onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
                         onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
@@ -5703,6 +5751,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   canManageFinance={canManageFinance}
                   classes={academyClasses}
                   coaches={displayedCoaches}
+                  enrollments={academyEnrollments}
                   fitSearch={fitSearch}
                   fitSlots={fitSlots}
                   isLessonRequestPaid={(request) =>
@@ -5714,9 +5763,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
                   onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
                   onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
+                  onScheduleMakeupCredit={(creditId, slot) => void onScheduleAcademyMakeupCredit(p.id, creditId, slot)}
                   onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
                   onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
                   profile={profile}
+                  selectedMakeupCreditId={selectedMakeupCreditId}
                   userEmail={user.email || ""}
                   userId={user.id}
                   weekdayLabels={WEEKDAY_LABELS}

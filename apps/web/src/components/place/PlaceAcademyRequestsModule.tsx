@@ -15,7 +15,7 @@ type Props = {
   lessonRequests: AcademyLessonRequest[];
   makeups: AcademyMakeupCredit[];
   onMarkLessonRequestPaid: (request: AcademyLessonRequest) => void;
-  onOpenFit?: () => void;
+  onOpenFit?: (creditId?: string) => void;
   onShareContact: (message: string) => void;
   onUpdateEnrollment: (enrollmentId: string, status: AcademyEnrollment["status"]) => void;
   onUpdateLessonRequest: (request: AcademyLessonRequest, status: AcademyLessonRequest["status"]) => void;
@@ -135,9 +135,9 @@ export function PlaceAcademyRequestsModule({
     return (!queryText || row.searchText.includes(queryText)) && (!kindFilter || row.kind === kindFilter) && (!statusFilter || rowStatus === statusFilter);
   });
 
-  const openFitDrawer = () => {
+  const openFitDrawer = (creditId?: string) => {
     setFitDrawerOpen(true);
-    onOpenFit?.();
+    onOpenFit?.(creditId);
   };
 
   const clearFilters = () => {
@@ -184,7 +184,7 @@ export function PlaceAcademyRequestsModule({
             <option value="approved_unpaid">Aprovado sem pagamento</option>
             <option value="open_credit">Credito aberto</option>
           </select>
-          <button type="button" onClick={openFitDrawer}>
+          <button type="button" onClick={() => openFitDrawer()}>
             Buscar encaixe
           </button>
           <span>
@@ -296,8 +296,8 @@ export function PlaceAcademyRequestsModule({
               context="Credito de reposicao"
               detail={`${row.academyClass?.title || "Turma"} | gerada em ${dateInputValue(row.credit.createdAt)}${enrollment?.phone ? ` | ${enrollment.phone}` : ""}`}
               primaryAction={
-                <button type="button" onClick={openFitDrawer}>
-                  Buscar encaixe
+                <button type="button" onClick={() => openFitDrawer(row.credit.id)}>
+                  Agendar reposicao
                 </button>
               }
               status="Credito aberto"
@@ -329,7 +329,7 @@ export function PlaceAcademyRequestsModule({
           <WorkspaceEmptyState
             title="Sem pendencias abertas"
             detail="Quando houver matricula, aula avulsa, solicitacao de reposicao ou credito para resolver, a fila aparece aqui."
-            action={fitTool ? <button onClick={openFitDrawer}>Buscar encaixes</button> : null}
+            action={fitTool ? <button onClick={() => openFitDrawer()}>Buscar encaixes</button> : null}
           />
         ) : null}
 

@@ -268,6 +268,11 @@ export type AcademyCoach = {
   email: string;
   phone: string;
   commissionPercent: number;
+  specialties: string[];
+  levelScopes: string[];
+  publicBio: string;
+  internalNotes: string;
+  publicProfileEnabled: boolean;
   isActive: boolean;
 };
 

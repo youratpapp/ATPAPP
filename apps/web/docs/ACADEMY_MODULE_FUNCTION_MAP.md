@@ -539,11 +539,11 @@ Elementos:
 - contador do dia: turmas, horarios abertos e bloqueios.
 
 Logica basica:
-- `weekdayFromDate(data)` define o dia operacional.
+- `weekdayFromDate(data)` define o dia da escala semanal a partir de uma data de referencia.
 - Turmas ativas e `place_academy_slots` sao filtrados pelo weekday derivado.
 - A tela nao usa mais o `weekday` do draft de criacao de turma.
 
-### Criar horario operacional
+### Criar janela semanal
 
 Conteudo:
 - professor opcional;
@@ -554,10 +554,10 @@ Conteudo:
 - nota.
 
 Acoes:
-- `Criar horario aberto`
+- `Criar janela semanal`
   - cria `place_academy_slots.status = open`;
   - exige ao menos professor ou quadra.
-- `Bloquear horario`
+- `Bloqueio semanal`
   - cria `place_academy_slots.status = blocked`;
   - permite bloquear professor, quadra ou ambos.
 
@@ -569,8 +569,8 @@ Logica basica:
 
 Conteudo:
 - grupos por quadra ou por professor;
-- rows com turmas, horarios abertos, horarios convertidos e bloqueios;
-- estado vazio orienta criar horario aberto ou bloqueio;
+- rows com turmas, janelas semanais abertas, janelas convertidas e bloqueios semanais;
+- estado vazio orienta criar janela semanal ou bloqueio semanal;
 - conflito aparece quando duas rows do mesmo recurso se sobrepoem.
 
 Logica basica:
@@ -610,9 +610,8 @@ Acao:
   - altera `status` para `open`.
 
 Risco residual:
-- transformar slot em turma ainda usa draft + fluxo de criacao existente; a UI informa sucesso parcial se a turma persistir mas o slot nao virar `assigned`.
-- uma RPC transacional slot+class pode ser criada se QA mostrar inconsistencia frequente.
-- disponibilidade recorrente avancada ainda e representada por slots/turmas, sem tabela especifica de escala semanal.
+- conversao de slot em turma foi coberta posteriormente pela RPC `app_create_academy_class_from_slot(...)`.
+- disponibilidade recorrente minima foi mantida em `place_academy_slots`; vigencia por data e bloqueio pontual continuam gap futuro se QA real exigir.
 
 ## 9. Regras de acesso e variacoes por perfil
 
@@ -873,5 +872,99 @@ Mudancas aplicadas em Professores:
 
 Risco residual:
 
-- especialidades e niveis atendidos ainda nao existem no schema de `place_coaches`; nao foram criados inputs falsos.
-- disponibilidade detalhada ainda depende de `place_academy_slots`; regras recorrentes avancadas ficam como gap de QA/backend.
+- especialidades, niveis atendidos, bio publica e observacoes internas foram cobertos posteriormente pelo schema avancado de professor.
+- disponibilidade detalhada continua em `place_academy_slots`; vigencia por data permanece gap futuro se QA real exigir.
+
+## 17. Evolucao aplicada em ACADEMY-BE-01
+
+Data: 2026-05-14
+
+Mudanca aplicada:
+
+- O fluxo `Configuracao > horario aberto > Criar turma` agora usa a RPC `app_create_academy_class_from_slot(...)`.
+- A RPC recebe `place_id`, `slot_id` e os dados essenciais/avancados da turma.
+- Antes de criar, valida:
+  - permissao de gestor do local;
+  - slot pertencente ao local;
+  - slot com status `open`;
+  - dia, horario, professor e quadra iguais ao horario aberto selecionado.
+- A transacao marca o slot como `assigned` e cria a turma em `place_academy_classes`.
+- Se permissao, conflito, reserva ou validacao falhar, a turma nao fica criada parcialmente.
+- Criacao de turma sem `slotId` continua no fluxo normal `createPlaceAcademyClass(...)`.
+
+Impacto operacional:
+
+- Secretaria nao precisa revisar `Configuracao` para corrigir slot que ficou aberto apos criar turma.
+- A acao `Criar turma neste horario` passa a ser confiavel como uma unica operacao.
+- Triggers existentes seguem responsaveis por conflitos de professor, quadra e reservas.
+
+## 18. Evolucao aplicada em ACADEMY-BE-02
+
+Data: 2026-05-14
+
+Mudanca aplicada:
+
+- `Pendencias > Reposicao aberta > Agendar reposicao` agora seleciona um credito especifico e abre o `FitDrawer`.
+- O drawer mostra contexto do aluno, turma de origem e credito aberto.
+- A acao primaria muda para `Agendar reposicao`.
+- Criada RPC `app_admin_schedule_academy_makeup_credit(...)` para vincular `credito -> turma/data` em transacao unica.
+- A RPC valida permissao, local, credito `open`, turma ativa, dia compativel, vaga operacional e duplicidade de solicitacao ativa.
+- Ao agendar, cria `place_academy_lesson_requests` aprovada com `request_type = makeup`, pagamento `waived`, marca o credito como `used` e usa ausencia aberta quando houver.
+
+Impacto operacional:
+
+- Secretaria nao depende mais do login do aluno para usar um credito de reposicao.
+- `Reposicao aberta`, `solicitacao de reposicao` e `aula avulsa/drop-in` ficam separados por acao e persistencia.
+
+## 19. Evolucao aplicada em ACADEMY-BE-03
+
+Data: 2026-05-14
+
+Decisao aplicada:
+
+- Nao foi criada tabela nova de disponibilidade recorrente nesta rodada.
+- `place_academy_slots` ja representa a escala semanal recorrente minima por `weekday`, professor, quadra, inicio, fim, status e observacao.
+- A tela de `Configuracao` passou a comunicar esse modelo explicitamente:
+  - `Escala semanal`;
+  - `Data de referencia`;
+  - `Janela semanal aberta`;
+  - `Janela convertida`;
+  - `Bloqueio semanal`.
+
+Impacto operacional:
+
+- Gestor entende que esta configurando uma rotina semanal, nao uma reserva pontual.
+- Criacao de turma e busca de encaixe continuam usando o mesmo modelo, sem duplicar disponibilidade.
+- Vigencia por data e bloqueio pontual permanecem gap futuro se QA real exigir esse nivel de agenda.
+
+## 20. Evolucao aplicada em ACADEMY-BE-04
+
+Data: 2026-05-14
+
+Mudanca aplicada:
+
+- Criada migration `0078_academy_coach_profile_fields_v1.sql`.
+- `place_coaches` recebeu:
+  - `specialties text[]`;
+  - `level_scopes text[]`;
+  - `public_bio text`;
+  - `internal_notes text`;
+  - `public_profile_enabled boolean`.
+- Policy `place_coaches_read` foi restringida ao contexto de gestao da academia para proteger observacoes internas.
+- `places.ts` lista e salva esses campos em `AcademyCoach`.
+- `CoachDrawer` recebeu a secao `Perfil operacional`.
+
+Funcao de cada campo:
+
+- `specialties`: especialidades praticas do professor, como kids, iniciantes, duplas ou preparacao para torneio.
+- `level_scopes`: niveis que o professor atende usando o padrao da academia: Iniciante, Intermediario, Avancado, Primeira Classe e Profissional.
+- `public_bio`: resumo curto para uso em pagina publica quando habilitado.
+- `internal_notes`: combinados e restricoes visiveis apenas para operacao.
+- `public_profile_enabled`: controla se o perfil pode ser exibido publicamente quando a pagina do local usar essa informacao.
+
+Impacto operacional:
+
+- Cadastro rapido continua nome, telefone e email.
+- Campos avancados ficam no drawer, sem poluir a row.
+- Nao ha campo falso: tudo que aparece em `Perfil operacional` persiste em banco.
+- Comissao continua separada e condicionada a permissao financeira.

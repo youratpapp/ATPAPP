@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { EntityDrawer } from "../EntityDrawer";
 import type { AcademyClass, AcademyCoach, AcademyEnrollment, AcademySlot } from "../../lib/types";
+import { ACADEMY_LEVEL_OPTIONS } from "../../lib/academy-levels";
 import { countLabel } from "../../lib/place-management";
 import { formatMoneyFromCents } from "../../lib/payments";
 import { EntityActionRow, WorkspaceEmptyState, WorkspaceList, WorkspaceMetrics } from "./PlaceWorkspaceUi";
@@ -9,17 +10,27 @@ import type { PlaceAcademyCoachDraft } from "./PlaceAcademyResourcesModule";
 type CoachEditDraft = {
   commissionPercent: string;
   email: string;
+  internalNotes: string;
   isActive: boolean;
+  levelScopes: string[];
   name: string;
   phone: string;
+  publicBio: string;
+  publicProfileEnabled: boolean;
+  specialtiesText: string;
 };
 
 type CoachPatch = {
   commissionPercent: number;
   email?: string;
+  internalNotes?: string;
   isActive: boolean;
+  levelScopes?: string[];
   name: string;
   phone?: string;
+  publicBio?: string;
+  publicProfileEnabled?: boolean;
+  specialties?: string[];
 };
 
 type Props = {
@@ -55,10 +66,23 @@ function toCoachEditDraft(coach: AcademyCoach): CoachEditDraft {
   return {
     commissionPercent: String(coach.commissionPercent),
     email: coach.email || "",
+    internalNotes: coach.internalNotes || "",
     isActive: coach.isActive,
+    levelScopes: coach.levelScopes || [],
     name: coach.name,
     phone: coach.phone || "",
+    publicBio: coach.publicBio || "",
+    publicProfileEnabled: coach.publicProfileEnabled,
+    specialtiesText: (coach.specialties || []).join(", "),
   };
+}
+
+function parseListInput(value: string): string[] {
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .filter((item, index, items) => items.findIndex((candidate) => candidate.toLowerCase() === item.toLowerCase()) === index);
 }
 
 function draftToPatch(draft: CoachEditDraft): CoachPatch {
@@ -66,9 +90,14 @@ function draftToPatch(draft: CoachEditDraft): CoachPatch {
   return {
     commissionPercent: Math.max(0, Math.min(100, Number.isFinite(commissionPercent) ? commissionPercent : 0)),
     email: draft.email,
+    internalNotes: draft.internalNotes,
     isActive: draft.isActive,
+    levelScopes: draft.levelScopes,
     name: draft.name.trim(),
     phone: draft.phone,
+    publicBio: draft.publicBio,
+    publicProfileEnabled: draft.publicProfileEnabled,
+    specialties: parseListInput(draft.specialtiesText),
   };
 }
 
@@ -124,7 +153,17 @@ export function PlaceAcademyCoachesModule({
         }, 0);
         const estimatedCommission = Math.round((coachMonthlyRevenue * coach.commissionPercent) / 100);
         const nextCoachClass = [...coachClasses].sort((a, b) => `${a.weekday}:${a.startsAt}`.localeCompare(`${b.weekday}:${b.startsAt}`))[0];
-        const searchText = [coach.name, coach.email, coach.phone, coachClasses.map((item) => item.title).join(" "), coachClasses.map((item) => item.level).join(" ")]
+        const searchText = [
+          coach.name,
+          coach.email,
+          coach.phone,
+          coach.specialties.join(" "),
+          coach.levelScopes.join(" "),
+          coach.publicBio,
+          coach.internalNotes,
+          coachClasses.map((item) => item.title).join(" "),
+          coachClasses.map((item) => item.level).join(" "),
+        ]
           .filter(Boolean)
           .join(" ")
           .toLowerCase();
@@ -199,6 +238,8 @@ export function PlaceAcademyCoachesModule({
                 countLabel(coachEnrollments.length, "aluno ativo", "alunos ativos"),
                 countLabel(coachTodayClasses.length, "aula hoje", "aulas hoje"),
                 countLabel(coachOpenSlots.length, "janela aberta", "janelas abertas"),
+                coach.levelScopes.length ? `${coach.levelScopes.length} niveis` : "Sem niveis",
+                coach.specialties.length ? `${coach.specialties.length} especialidades` : "Sem especialidades",
                 `Receita ${formatMoneyFromCents(coachMonthlyRevenue)}`,
                 `Comissao ${formatMoneyFromCents(estimatedCommission)}`,
               ]}
@@ -293,6 +334,77 @@ export function PlaceAcademyCoachesModule({
                 <button type="button" className="secondary" onClick={onAdjustAgenda}>
                   Ajustar agenda
                 </button>
+              </div>
+            </section>
+
+            <section>
+              <header>
+                <strong>Perfil operacional</strong>
+                <span>{editDraft.publicProfileEnabled ? "Perfil publico ativo" : "Uso interno"}</span>
+              </header>
+              <div className="academy-drawer-form">
+                <label className="wide">
+                  <span>Especialidades</span>
+                  <input
+                    value={editDraft.specialtiesText}
+                    onChange={(event) => setEditDraft({ ...editDraft, specialtiesText: event.target.value })}
+                    placeholder="Ex.: iniciantes, kids, duplas, preparacao para torneio"
+                    disabled={!canManagePlace}
+                  />
+                </label>
+                <div className="academy-level-checklist wide">
+                  <span>Niveis que atende</span>
+                  <div>
+                    {ACADEMY_LEVEL_OPTIONS.map((level) => {
+                      const checked = editDraft.levelScopes.includes(level.value);
+                      return (
+                        <label key={`coach-level:${level.value}`} className={checked ? "active" : ""}>
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={(event) => {
+                              const nextLevels = event.target.checked
+                                ? [...editDraft.levelScopes, level.value]
+                                : editDraft.levelScopes.filter((item) => item !== level.value);
+                              setEditDraft({ ...editDraft, levelScopes: nextLevels });
+                            }}
+                            disabled={!canManagePlace}
+                          />
+                          {level.label}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+                <label className="wide">
+                  <span>Bio publica</span>
+                  <textarea
+                    value={editDraft.publicBio}
+                    onChange={(event) => setEditDraft({ ...editDraft, publicBio: event.target.value })}
+                    placeholder="Resumo curto para pagina publica, quando habilitado."
+                    disabled={!canManagePlace}
+                    rows={3}
+                  />
+                </label>
+                <label className="academy-drawer-toggle wide">
+                  <input
+                    type="checkbox"
+                    checked={editDraft.publicProfileEnabled}
+                    onChange={(event) => setEditDraft({ ...editDraft, publicProfileEnabled: event.target.checked })}
+                    disabled={!canManagePlace}
+                  />
+                  Exibir perfil do professor publicamente quando a pagina do local usar essa informacao
+                </label>
+                <label className="wide">
+                  <span>Observacoes internas</span>
+                  <textarea
+                    value={editDraft.internalNotes}
+                    onChange={(event) => setEditDraft({ ...editDraft, internalNotes: event.target.value })}
+                    placeholder="Notas da operacao: preferencias, restricoes, combinados de agenda."
+                    disabled={!canManagePlace}
+                    rows={3}
+                  />
+                </label>
               </div>
             </section>
 

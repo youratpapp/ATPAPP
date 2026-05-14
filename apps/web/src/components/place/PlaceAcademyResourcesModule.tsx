@@ -142,7 +142,7 @@ export function PlaceAcademyResourcesModule({
         subtitle: [coaches.find((coach) => coach.id === item.coachId)?.name, activeCourts.find((court) => court.id === item.courtId)?.name, `${item.capacity} vagas`]
           .filter(Boolean)
           .join(" / "),
-        title: item.status === "blocked" ? "Horario bloqueado" : item.status === "assigned" ? "Horario convertido" : "Horario aberto",
+        title: item.status === "blocked" ? "Bloqueio semanal" : item.status === "assigned" ? "Janela convertida" : "Janela semanal aberta",
         type: "slot",
         source: item,
       }));
@@ -174,11 +174,12 @@ export function PlaceAcademyResourcesModule({
     <section className="academy-resource-workspace">
       <div className="academy-resource-toolbar">
         <div>
-          <span>Dia operacional</span>
+          <span>Escala semanal</span>
           <strong>{weekdayLabels[selectedWeekday] || "Dia"}</strong>
+          <small>Janelas recorrentes por dia da semana</small>
         </div>
         <label>
-          <span>Data</span>
+          <span>Data de referencia</span>
           <input type="date" value={selectedDate} onChange={(event) => handleDateChange(event.target.value)} />
         </label>
         <label>
@@ -200,15 +201,15 @@ export function PlaceAcademyResourcesModule({
           </select>
         </label>
         <span>
-          {classCount} turmas | {openSlots} abertos | {blockedSlots} bloqueios
+          Semana: {classCount} turmas | {openSlots} janelas | {blockedSlots} bloqueios
         </span>
       </div>
 
       <div className="academy-resource-create">
         <header>
           <div>
-            <strong>Criar horario operacional</strong>
-            <span>Abra uma janela para futura turma ou bloqueie professor/quadra com persistencia real.</span>
+            <strong>Criar janela semanal</strong>
+            <span>Defina disponibilidade recorrente para professor ou quadra. Para reserva pontual, use Agenda.</span>
           </div>
         </header>
         <label>
@@ -250,10 +251,10 @@ export function PlaceAcademyResourcesModule({
           <input value={slotDraft.notes} onChange={(event) => setSlotDraft((prev) => ({ ...prev, notes: event.target.value }))} placeholder="Ex.: janela para novas turmas" />
         </label>
         <button type="button" onClick={() => handleCreateSlot("open")} disabled={busy || (!slotDraft.coachId && !slotDraft.courtId)}>
-          Criar horario aberto
+          Criar janela semanal
         </button>
         <button type="button" className="secondary" onClick={() => handleCreateSlot("blocked")} disabled={busy || (!slotDraft.coachId && !slotDraft.courtId)}>
-          Bloquear horario
+          Bloqueio semanal
         </button>
       </div>
 
@@ -275,7 +276,7 @@ export function PlaceAcademyResourcesModule({
                 <header>
                   <div>
                     <strong>{group.label}</strong>
-                    <span>{groupEvents.length ? `${groupEvents.length} horarios no dia` : "Livre no dia selecionado"}</span>
+                    <span>{groupEvents.length ? `${groupEvents.length} itens na escala semanal` : "Sem janela neste dia da semana"}</span>
                   </div>
                   {conflictIds.size ? <b>{conflictIds.size} conflitos</b> : <span>Sem conflito</span>}
                 </header>
@@ -326,8 +327,8 @@ export function PlaceAcademyResourcesModule({
                   })
                 ) : (
                   <div className="workspace-empty-state academy-workspace-card">
-                    <strong>Nenhum horario nesta data.</strong>
-                    <span>Crie um horario aberto ou bloqueio para deixar a disponibilidade visivel.</span>
+                    <strong>Nenhuma janela semanal neste dia.</strong>
+                    <span>Crie uma janela recorrente ou um bloqueio semanal para deixar a disponibilidade visivel.</span>
                   </div>
                 )}
               </article>

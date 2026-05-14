@@ -65,6 +65,9 @@ const TABLE_OPEN_MATCH_REACTIONS = "open_match_reactions";
 const TABLE_PLACE_STAFF = "place_staff";
 const TABLE_PLACE_STAFF_INVITES = "place_staff_invites";
 
+const ACADEMY_COACH_SELECT =
+  "id,place_id,user_id,name,email,phone,commission_percent,specialties,level_scopes,public_bio,internal_notes,public_profile_enabled,is_active";
+
 type PlaceRow = {
   id: string;
   owner_id: string;
@@ -382,6 +385,11 @@ type AcademyCoachRow = {
   email: string | null;
   phone: string | null;
   commission_percent?: number | null;
+  specialties?: string[] | null;
+  level_scopes?: string[] | null;
+  public_bio?: string | null;
+  internal_notes?: string | null;
+  public_profile_enabled?: boolean | null;
   is_active: boolean | null;
 };
 
@@ -862,6 +870,11 @@ function rowToAcademyCoach(row: AcademyCoachRow): AcademyCoach {
     email: row.email || "",
     phone: row.phone || "",
     commissionPercent: Number(row.commission_percent || 0),
+    specialties: Array.isArray(row.specialties) ? row.specialties.filter(Boolean) : [],
+    levelScopes: Array.isArray(row.level_scopes) ? row.level_scopes.filter(Boolean) : [],
+    publicBio: row.public_bio || "",
+    internalNotes: row.internal_notes || "",
+    publicProfileEnabled: row.public_profile_enabled === true,
     isActive: row.is_active !== false,
   };
 }
@@ -2187,7 +2200,7 @@ export async function listPlaceCoaches(placeId: string): Promise<AcademyCoach[]>
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_COACHES)
-    .select("id,place_id,user_id,name,email,phone,commission_percent,is_active")
+    .select(ACADEMY_COACH_SELECT)
     .eq("place_id", placeId)
     .order("name", { ascending: true });
   if (error) throw new Error(error.message);
@@ -2209,7 +2222,7 @@ export async function createPlaceCoach(input: {
       email: input.email?.trim() || null,
       phone: input.phone?.trim() || null,
     })
-    .select("id,place_id,user_id,name,email,phone,commission_percent,is_active")
+    .select(ACADEMY_COACH_SELECT)
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyCoach(data as AcademyCoachRow);
@@ -2243,6 +2256,11 @@ export async function updatePlaceCoach(input: {
   isActive: boolean;
   name: string;
   phone?: string;
+  specialties?: string[];
+  levelScopes?: string[];
+  publicBio?: string;
+  internalNotes?: string;
+  publicProfileEnabled?: boolean;
 }): Promise<AcademyCoach> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { data, error } = await supabase
@@ -2250,13 +2268,18 @@ export async function updatePlaceCoach(input: {
     .update({
       commission_percent: Math.max(0, Math.min(100, Math.floor(input.commissionPercent || 0))),
       email: input.email?.trim() || null,
+      internal_notes: input.internalNotes?.trim() || "",
       is_active: input.isActive,
+      level_scopes: input.levelScopes || [],
       name: input.name.trim(),
       phone: input.phone?.trim() || null,
+      public_bio: input.publicBio?.trim() || "",
+      public_profile_enabled: input.publicProfileEnabled === true,
+      specialties: input.specialties || [],
       updated_at: new Date().toISOString(),
     })
     .eq("id", input.coachId)
-    .select("id,place_id,user_id,name,email,phone,commission_percent,is_active")
+    .select(ACADEMY_COACH_SELECT)
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyCoach(data as AcademyCoachRow);
@@ -2354,6 +2377,51 @@ export async function createPlaceAcademyClass(input: {
       monthly_fee_cents: Math.max(0, Math.floor(input.monthlyFeeCents || 0)),
     })
     .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToAcademyClass(data as AcademyClassRow);
+}
+
+export async function createPlaceAcademyClassFromSlot(input: {
+  slotId: string;
+  placeId: string;
+  coachId?: string | null;
+  courtId?: string | null;
+  title: string;
+  coachName?: string;
+  weekday: number;
+  startsAt: string;
+  endsAt: string;
+  level?: string;
+  genderScope?: AcademyClass["genderScope"];
+  ageGroup?: AcademyClass["ageGroup"];
+  minAge?: number | null;
+  maxAge?: number | null;
+  allowMakeup?: boolean;
+  capacity?: number;
+  monthlyFeeCents?: number;
+}): Promise<AcademyClass> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .rpc("app_create_academy_class_from_slot", {
+      p_place_id: input.placeId,
+      p_slot_id: input.slotId,
+      p_title: input.title.trim(),
+      p_coach_id: input.coachId || null,
+      p_court_id: input.courtId || null,
+      p_coach_name: input.coachName?.trim() || null,
+      p_weekday: Math.max(0, Math.min(6, Number(input.weekday) || 1)),
+      p_starts_at: input.startsAt,
+      p_ends_at: input.endsAt,
+      p_level: input.level?.trim() || null,
+      p_gender_scope: input.genderScope || "mixed",
+      p_age_group: input.ageGroup || "adult",
+      p_min_age: typeof input.minAge === "number" ? Math.max(0, Math.floor(input.minAge)) : null,
+      p_max_age: typeof input.maxAge === "number" ? Math.max(0, Math.floor(input.maxAge)) : null,
+      p_allow_makeup: input.allowMakeup !== false,
+      p_capacity: Math.max(1, Number(input.capacity) || 8),
+      p_monthly_fee_cents: Math.max(0, Math.floor(input.monthlyFeeCents || 0)),
+    })
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyClass(data as AcademyClassRow);
@@ -2636,6 +2704,27 @@ export async function requestAcademyLessonFit(input: {
   if (error) throw new Error(error.message);
   const row = ((data ?? []) as AcademyLessonRequestRow[])[0];
   if (!row) throw new Error("Solicitacao nao registrada.");
+  return rowToAcademyLessonRequest(row);
+}
+
+export async function scheduleAcademyMakeupCredit(input: {
+  placeId: string;
+  creditId: string;
+  classId: string;
+  requestedOn: string;
+  notes?: string;
+}): Promise<AcademyLessonRequest> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_admin_schedule_academy_makeup_credit", {
+    p_place_id: input.placeId,
+    p_credit_id: input.creditId,
+    p_class_id: input.classId,
+    p_requested_on: input.requestedOn,
+    p_notes: input.notes || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as AcademyLessonRequestRow[])[0];
+  if (!row) throw new Error("Reposicao nao agendada.");
   return rowToAcademyLessonRequest(row);
 }
 

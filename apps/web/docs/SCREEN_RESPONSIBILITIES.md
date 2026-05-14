@@ -62,6 +62,10 @@ Quando uma tela cresce demais:
 - 2026-05-14: `Pendencias` da Academia passou a ser fila unica com filtros e rows acionaveis; `Buscar encaixe` saiu do corpo da tela e passou a abrir `FitDrawer`.
 - 2026-05-14: `Hoje` da Academia passou a ser lista operacional de aulas do dia com `LessonDrawer` para chamada rapida, presenca, falta, ausencia avisada e observacao curta.
 - 2026-05-14: `Professores` da Academia passou a ser lista operacional com busca/filtros e `CoachDrawer` para dados, comissao, login, turmas e agenda.
+- 2026-05-14: `Criar turma` a partir de horario aberto na Academia passou a usar RPC transacional `app_create_academy_class_from_slot(...)`, eliminando o caso de turma criada com slot ainda `open`.
+- 2026-05-14: `Pendencias > Reposicao aberta > Agendar reposicao` passou a abrir `FitDrawer` com credito selecionado e usar RPC transacional `app_admin_schedule_academy_makeup_credit(...)`.
+- 2026-05-14: `Configuracao` da Academia passou a comunicar `place_academy_slots` como escala semanal recorrente, com data apenas de referencia, janela semanal, janela convertida e bloqueio semanal.
+- 2026-05-14: `Professores > CoachDrawer` ganhou perfil operacional persistido com especialidades, niveis atendidos, bio publica, observacoes internas e controle de perfil publico, mantendo cadastro rapido simples.
 - 2026-05-13: criada tela `/gestao` como central operacional de academia/clube, reduzindo a mistura entre descoberta publica de locais e trabalho diario de equipe.
 - 2026-05-13: responsabilidade principal de operar local migrou para `/gestao/:placeId/:module`, mantendo `/locais/:placeId/admin` apenas como rota legada de compatibilidade.
 - 2026-05-13: `ManagementShell` passou a envolver `/gestao` e admin de local, dando cabecalho operacional proprio para contexto, acoes e indicadores sem depender do layout de `Locais`.

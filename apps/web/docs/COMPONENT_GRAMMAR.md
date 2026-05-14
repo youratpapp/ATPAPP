@@ -288,6 +288,9 @@ Implementado em 2026-05-14:
 - `FitDrawer` foi aplicado em `Academia > Pendencias`, substituindo disclosure permanente por ferramenta acionada por intencao.
 - `LessonDrawer` foi aplicado em `Academia > Hoje`, mantendo chamada, presenca, falta e ausencia avisada em foco curto sem wizard.
 - `CoachDrawer` foi aplicado em `Academia > Professores`, removendo inputs permanentes de comissao/login da row e concentrando edicao, turmas e agenda no detalhe.
+- `FitDrawer` tambem recebeu contexto de `Reposicao aberta`, travando aluno/tipo quando a secretaria agenda um credito especifico.
+- `Configuracao` da Academia passou a usar gramatica de `Escala semanal`: data de referencia escolhe o dia da semana, e janelas/bloqueios deixam claro que sao recorrentes.
+- `CoachDrawer` passou a editar campos avancados reais de professor em `Perfil operacional`; especialidades, niveis, bio publica e observacoes internas nao aparecem no cadastro rapido nem como inputs permanentes.
 
 Regra:
 

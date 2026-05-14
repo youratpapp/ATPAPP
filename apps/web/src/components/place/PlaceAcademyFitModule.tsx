@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { AcademyClass, AcademyCoach, AcademyLessonFitSlot, AcademyLessonRequest, AcademyMakeupCredit, PlaceCourt, Profile } from "../../lib/types";
+import type { AcademyClass, AcademyCoach, AcademyEnrollment, AcademyLessonFitSlot, AcademyLessonRequest, AcademyMakeupCredit, PlaceCourt, Profile } from "../../lib/types";
 import { ACADEMY_LEVEL_OPTIONS } from "../../lib/academy-levels";
 import { countLabel } from "../../lib/place-management";
 import { formatMoneyFromCents } from "../../lib/payments";
@@ -32,6 +32,7 @@ type Props = {
   canManageFinance: boolean;
   classes: AcademyClass[];
   coaches: AcademyCoach[];
+  enrollments: AcademyEnrollment[];
   fitSearch: PlaceAcademyFitSearch;
   fitSlots: AcademyLessonFitSlot[];
   isLessonRequestPaid: (request: AcademyLessonRequest) => boolean;
@@ -41,9 +42,11 @@ type Props = {
   onChangeLessonRequestDraft: (classId: string, draft: PlaceAcademyLessonRequestDraft) => void;
   onMarkLessonRequestPaid: (request: AcademyLessonRequest) => void;
   onRequestFit: (slot: AcademyLessonFitSlot) => void;
+  onScheduleMakeupCredit: (creditId: string, slot: AcademyLessonFitSlot) => void;
   onSearchFitSlots: () => void;
   onUpdateLessonRequest: (request: AcademyLessonRequest, status: AcademyLessonRequest["status"]) => void;
   profile: Profile | null;
+  selectedMakeupCreditId?: string;
   userEmail: string;
   userId: string;
   weekdayLabels: string[];
@@ -76,6 +79,7 @@ export function PlaceAcademyFitModule({
   canManageFinance,
   classes,
   coaches,
+  enrollments,
   fitSearch,
   fitSlots,
   isLessonRequestPaid,
@@ -85,15 +89,20 @@ export function PlaceAcademyFitModule({
   onChangeLessonRequestDraft,
   onMarkLessonRequestPaid,
   onRequestFit,
+  onScheduleMakeupCredit,
   onSearchFitSlots,
   onUpdateLessonRequest,
   profile,
+  selectedMakeupCreditId,
   userEmail,
   userId,
   weekdayLabels,
 }: Props) {
   const [visibleRequestsLimit, setVisibleRequestsLimit] = useState(DEFAULT_VISIBLE_LIMIT);
   const [visibleSlotsLimit, setVisibleSlotsLimit] = useState(DEFAULT_VISIBLE_LIMIT);
+  const selectedMakeupCredit = selectedMakeupCreditId ? makeups.find((credit) => credit.id === selectedMakeupCreditId && credit.status === "open") : null;
+  const selectedEnrollment = selectedMakeupCredit ? enrollments.find((enrollment) => enrollment.id === selectedMakeupCredit.enrollmentId) : null;
+  const selectedSourceClass = selectedMakeupCredit ? classes.find((academyClass) => academyClass.id === selectedMakeupCredit.classId) : null;
 
   useEffect(() => {
     setVisibleSlotsLimit(DEFAULT_VISIBLE_LIMIT);
@@ -102,6 +111,14 @@ export function PlaceAcademyFitModule({
   return (
     <WorkspaceList>
       <WorkspaceCard title="Buscar encaixe" subtitle="Encontre horario real para aula avulsa ou reposicao." detail="Use poucos filtros e deixe o sistema retornar as turmas com vaga ou ausencia avisada.">
+        {selectedMakeupCredit ? (
+          <div className="academy-fit-context">
+            <strong>Reposicao selecionada</strong>
+            <span>
+              {selectedEnrollment?.playerName || "Aluno"} | origem: {selectedSourceClass?.title || "turma"} | criada em {selectedMakeupCredit.createdAt.slice(0, 10)}
+            </span>
+          </div>
+        ) : null}
         <div className="cluster" style={{ marginTop: 6 }}>
           <input type="date" value={fitSearch.requestedOn} onChange={(event) => onChangeFitSearch({ ...fitSearch, requestedOn: event.target.value })} />
           <select value={fitSearch.level} onChange={(event) => onChangeFitSearch({ ...fitSearch, level: event.target.value })}>
@@ -187,7 +204,16 @@ export function PlaceAcademyFitModule({
           {fitSlots.slice(0, visibleSlotsLimit).map((slot) => {
           const classCourt = activeCourts.find((court) => court.id === slot.courtId);
           const openMakeupCredits = makeups.filter((credit) => credit.status === "open" && credit.userId === userId);
-          const requestDraft = lessonRequestDraftByClass[slot.classId] || defaultRequestDraft({ fitSearch, profile, slot, userEmail });
+          const baseRequestDraft = lessonRequestDraftByClass[slot.classId] || defaultRequestDraft({ fitSearch, profile, slot, userEmail });
+          const requestDraft = selectedMakeupCredit
+            ? {
+                ...baseRequestDraft,
+                requestType: "makeup" as const,
+                playerName: selectedEnrollment?.playerName || baseRequestDraft.playerName || "Aluno",
+                phone: selectedEnrollment?.phone || baseRequestDraft.phone,
+                email: baseRequestDraft.email || "",
+              }
+            : baseRequestDraft;
           return (
             <WorkspaceRow
               key={`fit-slot:${slot.classId}`}
@@ -202,21 +228,29 @@ export function PlaceAcademyFitModule({
                     {slot.coachName || "Professor"} | {slot.level || "nivel livre"} | {countLabel(slot.availableSpots, "vaga", "vagas")} |{" "}
                     {slot.openAbsences ? countLabel(slot.openAbsences, "ausencia avisada", "ausencias avisadas") : "capacidade disponivel"} | avulsa estimada{" "}
                     {formatMoneyFromCents(Math.round(slot.monthlyFeeCents / 4))}
-                    {requestDraft.requestType === "makeup" ? ` | reposicoes abertas: ${openMakeupCredits.length}` : ""}
+                    {requestDraft.requestType === "makeup" ? ` | reposicoes abertas: ${selectedMakeupCredit ? 1 : openMakeupCredits.length}` : ""}
                   </span>
                 </>
               }
               actions={
                 <>
-                  <select value={requestDraft.requestType} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, requestType: event.target.value as AcademyLessonRequest["requestType"] })}>
-                    <option value="drop_in">Aula avulsa</option>
-                    <option value="makeup">Reposicao</option>
-                  </select>
-                  <input value={requestDraft.playerName} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, playerName: event.target.value })} placeholder="Aluno" />
-                  <input value={requestDraft.phone} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, phone: event.target.value })} placeholder="Telefone" />
+                  {selectedMakeupCredit ? (
+                    <span>Reposicao</span>
+                  ) : (
+                    <select value={requestDraft.requestType} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, requestType: event.target.value as AcademyLessonRequest["requestType"] })}>
+                      <option value="drop_in">Aula avulsa</option>
+                      <option value="makeup">Reposicao</option>
+                    </select>
+                  )}
+                  <input value={requestDraft.playerName} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, playerName: event.target.value })} placeholder="Aluno" disabled={Boolean(selectedMakeupCredit)} />
+                  <input value={requestDraft.phone} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, phone: event.target.value })} placeholder="Telefone" disabled={Boolean(selectedMakeupCredit)} />
                   <input value={requestDraft.notes} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, notes: event.target.value })} placeholder="Observacao" />
-                  <button className="primary" onClick={() => onRequestFit(slot)} disabled={busy || !requestDraft.playerName.trim() || (requestDraft.requestType === "makeup" && openMakeupCredits.length === 0)}>
-                    Solicitar
+                  <button
+                    className="primary"
+                    onClick={() => (selectedMakeupCredit ? onScheduleMakeupCredit(selectedMakeupCredit.id, slot) : onRequestFit(slot))}
+                    disabled={busy || !requestDraft.playerName.trim() || (!selectedMakeupCredit && requestDraft.requestType === "makeup" && openMakeupCredits.length === 0)}
+                  >
+                    {selectedMakeupCredit ? "Agendar reposicao" : "Solicitar"}
                   </button>
                 </>
               }
