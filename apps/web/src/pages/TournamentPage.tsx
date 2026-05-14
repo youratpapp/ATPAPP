@@ -2035,7 +2035,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const applyUpdatedTournamentState = async (
     updated: TournamentDetails,
     successText: string,
-    nextActiveKey = activeClassKey
+    nextActiveKey = activeClassKey,
+    feedbackKind: Feedback["kind"] = "success"
   ) => {
     setTournament(updated);
     const cls = listLegacyClassesFromTournamentData(updated.data);
@@ -2059,14 +2060,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
     const regs = await loadTournamentRegistrations(user, updated.id, updated.role);
     setRegistrations(regs);
-    setFeedback({ kind: "success", text: successText });
+    setFeedback({ kind: feedbackKind, text: successText });
   };
 
   const persistTournamentData = async (
     nextData: Record<string, unknown>,
     successText: string,
     nextActiveKey = activeClassKey,
-    statusOverride?: TournamentStatus
+    statusOverride?: TournamentStatus,
+    feedbackKind: Feedback["kind"] = "success"
   ) => {
     if (!tournament) return;
     setSaving(true);
@@ -2085,7 +2087,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         data: nextData,
       });
 
-      await applyUpdatedTournamentState(updated, successText, nextActiveKey);
+      await applyUpdatedTournamentState(updated, successText, nextActiveKey, feedbackKind);
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar alteracoes." });
     } finally {
@@ -2869,23 +2871,18 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       }))
     );
 
-    let generatedAgenda: Agenda;
+    let generatedAgenda: Agenda = normalizeAgenda(null);
+    let agendaWarning = "";
     try {
       generatedAgenda = normalizeAgenda(generateScheduleAssignments(scheduleForGeneration, agendaConfig));
     } catch (err) {
-      setFeedback({
-        kind: "error",
-        text: err instanceof Error ? err.message : "Falha ao gerar agenda com as classes geradas.",
-      });
-      return;
+      agendaWarning = `chaves geradas sem agenda automatica: ${
+        err instanceof Error ? err.message : "revise dias, horarios e quadras."
+      }`;
     }
 
     if (generatedAgenda.unassigned > 0) {
-      setFeedback({
-        kind: "error",
-        text: `Agenda insuficiente: ${generatedAgenda.assignments.length}/${generatedAgenda.total} partidas encaixadas.`,
-      });
-      return;
+      agendaWarning = `agenda parcial: ${generatedAgenda.assignments.length}/${generatedAgenda.total} partidas encaixadas. Ajuste dias, horarios ou quadras para completar.`;
     }
 
     setDraftCategories(nextDraft);
@@ -2906,14 +2903,19 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     withCategories.linkGrupo = groupLink.trim();
     withCategories.agendaConfig = agendaConfig as unknown as Record<string, unknown>;
     withCategories.agenda = generatedAgenda as unknown as Record<string, unknown>;
+    const successText =
+      `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}.` +
+      (merged.stats.added > 0
+        ? ` | inscricoes por link integradas: ${merged.stats.added} (duplicadas ${merged.stats.duplicated}, sem classe ${merged.stats.missingClass}, incompativeis ${merged.stats.incompatible}, invalidas ${merged.stats.invalid})`
+        : "") +
+      (agendaWarning ? ` | ${agendaWarning}` : "");
+
     await persistTournamentData(
       withCategories,
-      `Geracao concluida: classes ${total}, geradas ${generated}, ignoradas ${ignored}.` +
-        (merged.stats.added > 0
-          ? ` | inscricoes por link integradas: ${merged.stats.added} (duplicadas ${merged.stats.duplicated}, sem classe ${merged.stats.missingClass}, incompativeis ${merged.stats.incompatible}, invalidas ${merged.stats.invalid})`
-          : ""),
+      successText,
       activeClassKey,
-      "live"
+      "live",
+      agendaWarning ? "info" : "success"
     );
     setDraftDirty(false);
     setAgendaDirty(false);
@@ -5042,7 +5044,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     {staffMembers.map((member) => (
                       <div key={member.userId || `${member.email}:${member.role}`} className="organizer-pending-card">
                         <strong>{TOURNAMENT_STAFF_ROLE_LABELS[member.role]}</strong>
-                        <span>{member.email || "Usuario vinculado"}</span>
+                        <span>{member.displayName || member.email || "Usuario vinculado"}</span>
                         {member.status === "pending" ? <small>Convite pendente</small> : null}
                         <small>{TOURNAMENT_STAFF_ROLE_HINTS[member.role]}</small>
                         <button className="danger" onClick={() => void removeTournamentStaffNow(member)} disabled={staffBusy}>

@@ -530,6 +530,7 @@ export type TournamentStaffMember = {
   tournamentId: string;
   userId: string | null;
   email: string;
+  displayName?: string;
   role: TournamentStaffRole;
   createdAt: string;
   status?: "active" | "pending";

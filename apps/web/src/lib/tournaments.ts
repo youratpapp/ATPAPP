@@ -635,7 +635,14 @@ export async function listTournamentStaff(tournamentId: string): Promise<Tournam
   const pending = ((inviteRows.data ?? []) as TournamentStaffInviteRow[])
     .map(staffInviteRowToModel)
     .filter((row): row is TournamentStaffMember => Boolean(row));
-  return [...pending, ...active];
+  const pendingWithNames = await Promise.all(
+    pending.map(async (invite) => {
+      const candidates = await searchTournamentStaffCandidates(tournamentId, invite.email).catch(() => []);
+      const match = candidates.find((candidate) => candidate.email.toLowerCase() === invite.email.toLowerCase());
+      return match ? { ...invite, displayName: match.displayName } : invite;
+    })
+  );
+  return [...pendingWithNames, ...active];
 }
 
 export async function searchTournamentStaffCandidates(
