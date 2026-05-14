@@ -74,6 +74,12 @@ type MatchScheduleItem = {
   order: number;
 };
 
+function isSchedulableMatch(p1: string, p2: string): boolean {
+  const a = String(p1 || "").trim();
+  const b = String(p2 || "").trim();
+  return Boolean(a && b && a !== "BYE" && b !== "BYE");
+}
+
 function clampInt(v: unknown, min: number, max: number, fallback: number): number {
   const n = Number.parseInt(String(v ?? ""), 10);
   if (Number.isNaN(n)) return fallback;
@@ -211,6 +217,9 @@ function collectClassScheduleMatches(input: ScheduleClassInput): MatchScheduleIt
   if (cfg.formato === "grupos") {
     (data.grupos || []).forEach((g, gi) => {
       (g.matches || []).forEach((m, mi) => {
+        const p1 = m.a === "BYE" ? "BYE" : m.a || "A definir";
+        const p2 = m.b === "BYE" ? "BYE" : m.b || "A definir";
+        if (!isSchedulableMatch(p1, p2)) return;
         list.push({
           classKey,
           categoria: categoryName,
@@ -220,8 +229,8 @@ function collectClassScheduleMatches(input: ScheduleClassInput): MatchScheduleIt
           matchLabel: `${g.name} #${mi + 1}`,
           matchKey: buildMatchKey(categoryName, className, g.name, mi),
           done: !!m.done,
-          p1: m.a === "BYE" ? "BYE" : m.a || "A definir",
-          p2: m.b === "BYE" ? "BYE" : m.b || "A definir",
+          p1,
+          p2,
           isFinal: false,
           isSemifinal: false,
           order: 100 + gi,
@@ -233,6 +242,9 @@ function collectClassScheduleMatches(input: ScheduleClassInput): MatchScheduleIt
     if (ko && Array.isArray(ko.rounds)) {
       ko.rounds.forEach((r, ri) => {
         (r.matches || []).forEach((m, mi) => {
+          const p1 = m.a === "BYE" ? "BYE" : m.a || "A definir";
+          const p2 = m.b === "BYE" ? "BYE" : m.b || "A definir";
+          if (!isSchedulableMatch(p1, p2)) return;
           list.push({
             classKey,
             categoria: categoryName,
@@ -242,8 +254,8 @@ function collectClassScheduleMatches(input: ScheduleClassInput): MatchScheduleIt
             matchLabel: `${r.name} #${mi + 1}`,
             matchKey: buildMatchKey(categoryName, className, r.name, mi),
             done: !!m.done,
-            p1: m.a === "BYE" ? "BYE" : m.a || "A definir",
-            p2: m.b === "BYE" ? "BYE" : m.b || "A definir",
+            p1,
+            p2,
             isFinal: ri === ko.rounds.length - 1,
             isSemifinal: ri === ko.rounds.length - 2,
             order: 900 + ri,
@@ -255,18 +267,21 @@ function collectClassScheduleMatches(input: ScheduleClassInput): MatchScheduleIt
     const ko = data.knockout;
     if (ko && Array.isArray(ko.rounds)) {
       ko.rounds.forEach((r, ri) => {
-        (r.matches || []).forEach((m, mi) => {
-          list.push({
-            classKey,
-            categoria: categoryName,
-            classe: className,
+      (r.matches || []).forEach((m, mi) => {
+        const p1 = m.a === "BYE" ? "BYE" : m.a || "A definir";
+        const p2 = m.b === "BYE" ? "BYE" : m.b || "A definir";
+        if (!isSchedulableMatch(p1, p2)) return;
+        list.push({
+          classKey,
+          categoria: categoryName,
+          classe: className,
             stage: "Mata-mata",
             round: r.name,
             matchLabel: `${r.name} #${mi + 1}`,
             matchKey: buildMatchKey(categoryName, className, r.name, mi),
             done: !!m.done,
-            p1: m.a === "BYE" ? "BYE" : m.a || "A definir",
-            p2: m.b === "BYE" ? "BYE" : m.b || "A definir",
+          p1,
+          p2,
             isFinal: ri === ko.rounds.length - 1,
             isSemifinal: ri === ko.rounds.length - 2,
             order: 300 + ri,

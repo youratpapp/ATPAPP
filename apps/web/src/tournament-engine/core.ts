@@ -449,6 +449,7 @@ export function recomputeKnockout(knockout: Knockout, config?: TournamentConfig)
       if (!m) continue;
       if (m.a === "BYE" || m.b === "BYE") {
         m.done = true;
+        m.winner = winnerFromMatch(m, config);
       } else if (!m.a || !m.b) {
         m.done = false;
         m.winner = null;

@@ -655,6 +655,11 @@ function downloadBlob(blob: Blob, filename: string): void {
   URL.revokeObjectURL(url);
 }
 
+function formatKnockoutScore(match: KnockoutMatch, config: ClassData["config"]): string {
+  if (match.a === "BYE" || match.b === "BYE") return "Avanca";
+  return formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, match.done, config);
+}
+
 async function downloadSvgAsPng(svg: string, width: number, height: number, filename: string): Promise<void> {
   const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
   const svgUrl = URL.createObjectURL(svgBlob);
@@ -890,7 +895,7 @@ function buildClassVisualSvg(
         out.push(`<text x="${x + 10}" y="${boxY + 18}" font-family="Arial, sans-serif" font-size="12" fill="${aFill}">${escXml(aName)}</text>`);
         out.push(`<text x="${x + 10}" y="${boxY + 36}" font-family="Arial, sans-serif" font-size="12" fill="${bFill}">${escXml(bName)}</text>`);
         const when = scheduleInfo(round.name, mi, ['Finais', 'Mata-mata']);
-        out.push(`<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(formatMatchScoreValues(m.s1, m.s2, m.scoreLabel, m.done, data.config))}</text>`);
+        out.push(`<text x="${x + boxW - 58}" y="${boxY + 28}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#334155">${escXml(formatKnockoutScore(m, data.config))}</text>`);
         out.push(`<text x="${x + 10}" y="${boxY + 54}" font-family="Arial, sans-serif" font-size="11" fill="#64748b">${escXml(when || 'Horario/quadra: a definir')}</text>`);
       });
     });
@@ -3064,6 +3069,74 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     });
   };
 
+  const exportAgendaByCourtPng = async () => {
+    if (!tournament) return;
+    if (!agenda.assignments.length) {
+      setFeedback({ kind: "error", text: "A agenda ainda nao foi gerada." });
+      return;
+    }
+
+    const sorted = [...agenda.assignments].sort((a, b) => {
+      if (a.quadra !== b.quadra) return a.quadra.localeCompare(b.quadra);
+      if (a.data !== b.data) return a.data.localeCompare(b.data);
+      if (a.hora !== b.hora) return a.hora.localeCompare(b.hora);
+      return a.classe.localeCompare(b.classe);
+    });
+    const byCourt = new Map<string, AgendaAssignment[]>();
+    sorted.forEach((assignment) => {
+      const list = byCourt.get(assignment.quadra);
+      if (list) list.push(assignment);
+      else byCourt.set(assignment.quadra, [assignment]);
+    });
+
+    const width = 1400;
+    const pad = 44;
+    const courtRows = Array.from(byCourt.entries());
+    const rowH = 34;
+    const headerH = 160;
+    const courtGap = 24;
+    const courtHeights = courtRows.map(([, rows]) => 58 + Math.max(1, rows.length) * rowH + 18);
+    const height = Math.max(760, headerH + courtHeights.reduce((sum, item) => sum + item + courtGap, 0) + pad);
+    let y = 44;
+    const out: string[] = [];
+
+    out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`);
+    out.push(`<rect width="${width}" height="${height}" fill="#f5f7f6"/>`);
+    out.push(`<rect x="24" y="24" width="${width - 48}" height="${height - 48}" rx="24" fill="#ffffff" stroke="#dbe5ee"/>`);
+    out.push(`<text x="${pad}" y="${y}" font-family="Inter, Arial, sans-serif" font-size="20" fill="#16804e" font-weight="900">AGENDA POR QUADRA</text>`);
+    y += 42;
+    out.push(`<text x="${pad}" y="${y}" font-family="Inter, Arial, sans-serif" font-size="42" fill="#081225" font-weight="900">${escXml(tournament.name)}</text>`);
+    y += 34;
+    out.push(`<text x="${pad}" y="${y}" font-family="Inter, Arial, sans-serif" font-size="18" fill="#66758c">${escXml(`Partidas alocadas: ${agenda.assignments.length}/${agenda.total}${agenda.unassigned > 0 ? ` | sem encaixe: ${agenda.unassigned}` : ""}`)}</text>`);
+    y += 48;
+
+    courtRows.forEach(([court, rows]) => {
+      const blockH = 58 + Math.max(1, rows.length) * rowH + 18;
+      out.push(`<rect x="${pad}" y="${y}" width="${width - pad * 2}" height="${blockH}" rx="16" fill="#f8fafc" stroke="#dbe5ee"/>`);
+      out.push(`<text x="${pad + 20}" y="${y + 34}" font-family="Inter, Arial, sans-serif" font-size="22" fill="#081225" font-weight="900">${escXml(court)}</text>`);
+      out.push(`<text x="${width - pad - 20}" y="${y + 34}" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="16" fill="#66758c" font-weight="800">${rows.length} ${rows.length === 1 ? "jogo" : "jogos"}</text>`);
+      let rowY = y + 58;
+      rows.forEach((row, index) => {
+        const bg = index % 2 === 0 ? "#ffffff" : "#eef2f7";
+        const stage = `${row.round}${row.isFinal ? " (Final)" : row.isSemifinal ? " (Semi)" : ""}`;
+        out.push(`<rect x="${pad + 12}" y="${rowY - 24}" width="${width - pad * 2 - 24}" height="${rowH}" rx="8" fill="${bg}"/>`);
+        out.push(`<text x="${pad + 28}" y="${rowY}" font-family="Inter, Arial, sans-serif" font-size="15" fill="#081225" font-weight="850">${escXml(`${row.data} ${row.hora}-${row.horaFim}`)}</text>`);
+        out.push(`<text x="${pad + 220}" y="${rowY}" font-family="Inter, Arial, sans-serif" font-size="15" fill="#40506a">${escXml(`${row.categoria}/${row.classe} | ${stage}`)}</text>`);
+        out.push(`<text x="${width - pad - 28}" y="${rowY}" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="15" fill="#081225">${escXml(`${row.p1} x ${row.p2}`)}</text>`);
+        rowY += rowH;
+      });
+      y += blockH + courtGap;
+    });
+
+    out.push("</svg>");
+    const safeName = String(tournament.name || "torneio")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    await downloadSvgAsPng(out.join(""), width, height, `${safeName || "torneio"}-agenda-quadras.png`);
+    setFeedback({ kind: "success", text: "Agenda por quadra exportada em PNG." });
+  };
+
   const copyTournamentPodiumSummary = async () => {
     if (!tournamentPodiumRows.length) {
       setFeedback({ kind: "error", text: "Nenhuma classe encontrada para montar o podio." });
@@ -4396,9 +4469,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       <span>Agenda do torneio</span>
                       <h3>Por quadra</h3>
                     </div>
-                    <button onClick={() => void copyAgendaByCourtSummary()} disabled={saving}>
-                      Copiar agenda
-                    </button>
+                    <div className="cluster">
+                      <button onClick={() => void exportAgendaByCourtPng()} disabled={saving}>
+                        Exportar PNG
+                      </button>
+                      <button onClick={() => void copyAgendaByCourtSummary()} disabled={saving}>
+                        Copiar agenda
+                      </button>
+                    </div>
                   </div>
                   <div className="tournament-court-agenda-grid">
                     {agendaByCourt.map(({ court, rows }) => (
@@ -4659,6 +4737,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     </button>
                   </div>
                   <div className="cluster">
+                    <button onClick={() => void exportAgendaByCourtPng()} disabled={saving}>
+                      Exportar agenda por quadra PNG
+                    </button>
                     <button onClick={() => void copyAgendaByCourtSummary()} disabled={saving}>
                       Copiar agenda por quadra
                     </button>
