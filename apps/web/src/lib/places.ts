@@ -69,6 +69,8 @@ const TABLE_OPEN_MATCH_REACTIONS = "open_match_reactions";
 const TABLE_PLACE_STAFF = "place_staff";
 const TABLE_PLACE_STAFF_INVITES = "place_staff_invites";
 
+const ADMIN_RESOURCE_PAGE_SIZE = 1000;
+
 const ACADEMY_COACH_SELECT =
   "id,place_id,user_id,name,email,phone,commission_percent,specialties,level_scopes,public_bio,internal_notes,public_profile_enabled,is_active";
 const ACADEMY_ENROLLMENT_SELECT = "id,place_id,class_id,contract_id,user_id,player_name,phone,status,notes,source,created_at";
@@ -2555,15 +2557,27 @@ export async function updatePlaceAcademyClass(input: {
 
 export async function listPlaceAcademyEnrollments(placeId: string): Promise<AcademyEnrollment[]> {
   if (!supabase) return [];
-  const { data, error } = await supabase
-    .from(TABLE_ACADEMY_ENROLLMENTS)
-    .select(ACADEMY_ENROLLMENT_SELECT)
-    .eq("place_id", placeId)
-    .neq("status", "cancelled")
-    .order("created_at", { ascending: false })
-    .limit(80);
-  if (error) throw new Error(error.message);
-  return ((data ?? []) as AcademyEnrollmentRow[]).map(rowToAcademyEnrollment);
+  const rows: AcademyEnrollmentRow[] = [];
+  let from = 0;
+
+  while (true) {
+    const to = from + ADMIN_RESOURCE_PAGE_SIZE - 1;
+    const { data, error } = await supabase
+      .from(TABLE_ACADEMY_ENROLLMENTS)
+      .select(ACADEMY_ENROLLMENT_SELECT)
+      .eq("place_id", placeId)
+      .neq("status", "cancelled")
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    if (error) throw new Error(error.message);
+
+    const page = (data ?? []) as AcademyEnrollmentRow[];
+    rows.push(...page);
+    if (page.length < ADMIN_RESOURCE_PAGE_SIZE) break;
+    from += ADMIN_RESOURCE_PAGE_SIZE;
+  }
+
+  return rows.map(rowToAcademyEnrollment);
 }
 
 export async function listMyAcademyEnrollments(): Promise<AcademyEnrollment[]> {
