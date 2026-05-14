@@ -21,6 +21,7 @@ where tournament_id in (
     'Open ADT Dourados - Maio',
     'Prime Cup Noturna',
     'Festival Feminino Pantanal',
+    'Prime Open Inscricoes Encerradas',
     'Torneio Ranking Outono',
     'Desafio Interno Prime Kids'
   )
@@ -33,6 +34,7 @@ where tournament_id in (
     'Open ADT Dourados - Maio',
     'Prime Cup Noturna',
     'Festival Feminino Pantanal',
+    'Prime Open Inscricoes Encerradas',
     'Torneio Ranking Outono',
     'Desafio Interno Prime Kids'
   )
@@ -45,6 +47,7 @@ where tournament_id in (
     'Open ADT Dourados - Maio',
     'Prime Cup Noturna',
     'Festival Feminino Pantanal',
+    'Prime Open Inscricoes Encerradas',
     'Torneio Ranking Outono',
     'Desafio Interno Prime Kids'
   )
@@ -57,6 +60,7 @@ where tournament_id in (
     'Open ADT Dourados - Maio',
     'Prime Cup Noturna',
     'Festival Feminino Pantanal',
+    'Prime Open Inscricoes Encerradas',
     'Torneio Ranking Outono',
     'Desafio Interno Prime Kids'
   )
@@ -69,6 +73,7 @@ where tournament_id in (
     'Open ADT Dourados - Maio',
     'Prime Cup Noturna',
     'Festival Feminino Pantanal',
+    'Prime Open Inscricoes Encerradas',
     'Torneio Ranking Outono',
     'Desafio Interno Prime Kids'
   )
@@ -79,6 +84,7 @@ where name in (
   'Open ADT Dourados - Maio',
   'Prime Cup Noturna',
   'Festival Feminino Pantanal',
+  'Prime Open Inscricoes Encerradas',
   'Torneio Ranking Outono',
   'Desafio Interno Prime Kids'
 );
@@ -103,6 +109,7 @@ values
   ('open-adt', 'adt', 'Open ADT Dourados - Maio', 'registration_open', 'public', now() + interval '28 days', now() + interval '20 days', 9000, 1, 42, false),
   ('prime-live', 'prime', 'Prime Cup Noturna', 'live', 'public', now() - interval '2 days', now() - interval '12 days', 12000, 55, 64, true),
   ('pantanal-fem', 'pantanal', 'Festival Feminino Pantanal', 'registration_open', 'public', now() + interval '45 days', now() + interval '34 days', 7000, 120, 28, false),
+  ('prime-closed', 'prime', 'Prime Open Inscricoes Encerradas', 'registration_closed', 'public', now() + interval '9 days', now() - interval '1 day', 11000, 25, 40, false),
   ('ranking-finished', 'adt', 'Torneio Ranking Outono', 'finished', 'public', now() - interval '95 days', now() - interval '115 days', 8000, 80, 48, true),
   ('prime-draft', 'prime', 'Desafio Interno Prime Kids', 'draft', 'private', now() + interval '60 days', now() + interval '50 days', 0, 160, 20, false);
 
@@ -251,7 +258,9 @@ cross join (
   values
     ('gerente.dourados@demo.atp.local', 'organizer'),
     ('recepcao.dourados@demo.atp.local', 'checkin'),
-    ('prof.vitor@demo.atp.local', 'scorekeeper')
+    ('prof.vitor@demo.atp.local', 'scorekeeper'),
+    ('media.eventos@demo.atp.local', 'media'),
+    ('organizador.circuito@demo.atp.local', 'organizer')
 ) as x(email, role)
 join public.seed_users u on u.email = x.email
 where t.status <> 'draft'
@@ -274,7 +283,7 @@ select
   now() - interval '1 day',
   now() - interval '1 day'
 from public.seed_tournaments t
-where t.status in ('live', 'finished', 'registration_open');
+where t.status in ('live', 'finished', 'registration_open', 'registration_closed');
 
 with ranked as (
   select
@@ -393,7 +402,12 @@ select
   r.id,
   t.registration_fee_cents,
   'BRL',
-  case when r.status = 'approved' then 'paid' else 'pending' end,
+  case
+    when r.status = 'approved' and t.status = 'finished' and (abs(('x' || substr(md5(r.id::text), 1, 6))::bit(24)::int) % 37) = 0 then 'refunded'
+    when r.status = 'approved' then 'paid'
+    when (abs(('x' || substr(md5(r.id::text), 1, 6))::bit(24)::int) % 19) = 0 then 'failed'
+    else 'pending'
+  end,
   'stub',
   'Inscricao em torneio',
   jsonb_build_object('seed', true, 'tournament_id', r.tournament_id),

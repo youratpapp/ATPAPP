@@ -196,9 +196,9 @@ export function PlaceAcademyCoachesModule({
       <WorkspaceList>
         {canManagePlace ? (
           <div className="academy-coach-create">
-            <input value={coachDraft.name} onChange={(event) => onChangeCoachDraft({ ...coachDraft, name: event.target.value })} placeholder="Nome do professor" />
-            <input value={coachDraft.phone} onChange={(event) => onChangeCoachDraft({ ...coachDraft, phone: event.target.value })} placeholder="Telefone" />
-            <input value={coachDraft.email} onChange={(event) => onChangeCoachDraft({ ...coachDraft, email: event.target.value })} placeholder="Email" />
+            <input value={coachDraft.name} onChange={(event) => onChangeCoachDraft({ ...coachDraft, name: event.target.value })} placeholder="Nome do professor" aria-label="Nome do professor" />
+            <input value={coachDraft.phone} onChange={(event) => onChangeCoachDraft({ ...coachDraft, phone: event.target.value })} placeholder="Telefone" aria-label="Telefone do professor" />
+            <input value={coachDraft.email} onChange={(event) => onChangeCoachDraft({ ...coachDraft, email: event.target.value })} placeholder="Email" aria-label="Email do professor" />
             <button onClick={onCreateCoach} disabled={busy || !coachDraft.name.trim()}>
               Cadastrar professor
             </button>
@@ -206,8 +206,8 @@ export function PlaceAcademyCoachesModule({
         ) : null}
 
         <div className="academy-coach-toolbar">
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar professor, telefone, email, turma ou nivel" />
-          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar professor, telefone, email, turma ou nivel" aria-label="Buscar professores" />
+          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)} aria-label="Filtrar professores por status">
             <option value="">Todos os professores</option>
             <option value="active">Ativos</option>
             <option value="inactive">Inativos</option>

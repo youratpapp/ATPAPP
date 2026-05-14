@@ -18,6 +18,7 @@ drop table if exists
   public.seed_contract_classes,
   public.seed_contracts,
   public.seed_enrollments,
+  public.seed_slots,
   public.seed_classes,
   public.seed_memberships,
   public.seed_membership_plans,

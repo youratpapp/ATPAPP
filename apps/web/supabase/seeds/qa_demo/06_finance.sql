@@ -13,6 +13,21 @@ drop table if exists
   public.seed_crm_contacts
 cascade;
 
+delete from public.app_payment_reminders
+where target_type in ('academy_lesson_request', 'academy_student_contract', 'place_membership', 'court_booking')
+  and (
+    user_id in (select id from public.seed_users)
+    or place_id in (select id from public.seed_places)
+  );
+
+delete from public.app_payments
+where target_type = 'academy_lesson_request'
+  and target_id in (
+    select id
+    from public.place_academy_lesson_requests
+    where place_id in (select id from public.seed_places)
+  );
+
 delete from public.place_credit_purchases
 where place_id in (select id from public.seed_places);
 
@@ -234,5 +249,75 @@ from public.place_credit_packages p
 join public.seed_places sp on sp.id = p.place_id
 cross join generate_series(1, 18) as gs(n)
 join public.seed_users u on u.seq = 1000 + (((case sp.key when 'adt' then 30 when 'pantanal' then 100 else 170 end) + n * 9) % 240) + 1;
+
+
+-- ---------------------------------------------------------------------
+-- 6c) Lesson request payments and payment reminders
+-- ---------------------------------------------------------------------
+
+insert into public.app_payments (
+  user_id, target_type, target_id, amount_cents, currency, status, provider, description, metadata, billing_period, paid_at, created_at, updated_at
+)
+select
+  r.requested_by,
+  'academy_lesson_request',
+  r.id,
+  r.amount_cents,
+  'BRL',
+  case
+    when r.payment_status = 'paid' then 'paid'
+    when (abs(('x' || substr(md5(r.id::text), 1, 6))::bit(24)::int) % 23) = 0 then 'failed'
+    else 'pending'
+  end,
+  'stub',
+  case when r.request_type = 'drop_in' then 'Aula avulsa/drop-in' else 'Reposicao de aula' end,
+  jsonb_build_object(
+    'seed', true,
+    'place_id', r.place_id,
+    'class_id', r.class_id,
+    'payment_kind', 'academy_lesson_request',
+    'request_type', r.request_type
+  ),
+  '',
+  case when r.payment_status = 'paid' then coalesce(r.approved_at, r.created_at + interval '1 hour') else null end,
+  r.created_at,
+  now()
+from public.place_academy_lesson_requests r
+where r.place_id in (select id from public.seed_places)
+  and r.request_type = 'drop_in'
+  and r.amount_cents > 0
+  and r.status <> 'rejected'
+  and r.requested_by is not null;
+
+insert into public.app_payment_reminders (
+  place_id, user_id, target_type, target_id, billing_period, channel, status, message, created_by, created_at, updated_at
+)
+select
+  case
+    when p.metadata ? 'place_id' then (p.metadata->>'place_id')::uuid
+    else null
+  end,
+  p.user_id,
+  p.target_type,
+  p.target_id,
+  p.billing_period,
+  (array['manual','whatsapp','email'])[(((row_number() over (order by p.created_at, p.id) - 1) % 3) + 1)::integer],
+  case
+    when row_number() over (order by p.created_at, p.id) % 11 = 0 then 'cancelled'
+    when row_number() over (order by p.created_at, p.id) % 4 = 0 then 'sent'
+    else 'queued'
+  end,
+  'Lembrete demo de pagamento pendente: ' || coalesce(p.description, p.target_type),
+  (select id from public.seed_users where email = 'escalao@gmail.com'),
+  now() - (((row_number() over (order by p.created_at, p.id) % 9)::text || ' days')::interval),
+  now()
+from public.app_payments p
+where p.status = 'pending'
+  and p.target_type in ('academy_student_contract', 'place_membership', 'court_booking', 'academy_lesson_request')
+  and (
+    p.user_id in (select id from public.seed_users)
+    or (p.metadata ? 'place_id' and (p.metadata->>'place_id')::uuid in (select id from public.seed_places))
+  )
+limit 160;
 
 

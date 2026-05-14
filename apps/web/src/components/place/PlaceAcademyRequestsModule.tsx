@@ -165,6 +165,7 @@ export function PlaceAcademyRequestsModule({
               setVisibleLimit(DEFAULT_VISIBLE_LIMIT);
             }}
             placeholder="Buscar aluno, telefone, turma, professor ou observacao"
+            aria-label="Buscar pendencias da academia"
           />
           <select
             value={kindFilter}
@@ -172,6 +173,7 @@ export function PlaceAcademyRequestsModule({
               setKindFilter(event.target.value as PendingKind);
               setVisibleLimit(DEFAULT_VISIBLE_LIMIT);
             }}
+            aria-label="Filtrar pendencias por tipo"
           >
             <option value="">Todos os tipos</option>
             <option value="enrollment">Matriculas</option>
@@ -184,6 +186,7 @@ export function PlaceAcademyRequestsModule({
               setStatusFilter(event.target.value as PendingStatus);
               setVisibleLimit(DEFAULT_VISIBLE_LIMIT);
             }}
+            aria-label="Filtrar pendencias por status"
           >
             <option value="">Todos os status</option>
             <option value="pending">Aguardando decisao</option>

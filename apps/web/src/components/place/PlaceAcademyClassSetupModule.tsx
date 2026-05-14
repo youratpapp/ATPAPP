@@ -77,8 +77,9 @@ export function PlaceAcademyClassSetupModule({
             canContinue: Boolean(draft.title.trim() && draft.coachId),
             content: (
               <div className="place-academy-form">
-                <input value={draft.title} onChange={(event) => onChangeDraft({ ...draft, title: event.target.value })} placeholder="Nome da turma" />
+                <input value={draft.title} onChange={(event) => onChangeDraft({ ...draft, title: event.target.value })} placeholder="Nome da turma" aria-label="Nome da turma" />
                 <select
+                  aria-label="Professor da turma"
                   value={draft.coachId}
                   onChange={(event) => {
                     const coach = coaches.find((item) => item.id === event.target.value);
@@ -92,7 +93,12 @@ export function PlaceAcademyClassSetupModule({
                     </option>
                   ))}
                 </select>
-                <input value={draft.coachName} onChange={(event) => onChangeDraft({ ...draft, coachName: event.target.value })} placeholder="Nome exibido do professor" />
+                <input
+                  value={draft.coachName}
+                  onChange={(event) => onChangeDraft({ ...draft, coachName: event.target.value })}
+                  placeholder="Nome exibido do professor"
+                  aria-label="Nome exibido do professor"
+                />
               </div>
             ),
           },
@@ -103,7 +109,7 @@ export function PlaceAcademyClassSetupModule({
             canContinue: Boolean(draft.coachId && draft.startsAt && draft.endsAt && !coachConflict && !courtConflict),
             content: (
               <div className="place-academy-form">
-                <select value={draft.courtId} onChange={(event) => onChangeDraft({ ...draft, courtId: event.target.value })}>
+                <select value={draft.courtId} onChange={(event) => onChangeDraft({ ...draft, courtId: event.target.value })} aria-label="Quadra da turma">
                   <option value="">Quadra</option>
                   {activeCourts.map((court) => (
                     <option key={court.id} value={court.id}>
@@ -111,15 +117,15 @@ export function PlaceAcademyClassSetupModule({
                     </option>
                   ))}
                 </select>
-                <select value={draft.weekday} onChange={(event) => onChangeDraft({ ...draft, weekday: Number(event.target.value) })}>
+                <select value={draft.weekday} onChange={(event) => onChangeDraft({ ...draft, weekday: Number(event.target.value) })} aria-label="Dia da semana da turma">
                   {weekdayLabels.map((label, index) => (
                     <option key={`academy-day:${index}`} value={index}>
                       {label}
                     </option>
                   ))}
                 </select>
-                <input type="time" value={draft.startsAt} onChange={(event) => onChangeDraft({ ...draft, startsAt: event.target.value })} />
-                <input type="time" value={draft.endsAt} onChange={(event) => onChangeDraft({ ...draft, endsAt: event.target.value })} />
+                <input type="time" value={draft.startsAt} onChange={(event) => onChangeDraft({ ...draft, startsAt: event.target.value })} aria-label="Horario de inicio da turma" />
+                <input type="time" value={draft.endsAt} onChange={(event) => onChangeDraft({ ...draft, endsAt: event.target.value })} aria-label="Horario de fim da turma" />
                 {coachConflict || courtConflict ? (
                   <p className="feedback error academy-conflict-note">
                     {coachConflict ? "Professor ocupado neste horario. " : ""}
@@ -136,7 +142,7 @@ export function PlaceAcademyClassSetupModule({
             canContinue: canCreateClass,
             content: (
               <div className="place-academy-form">
-                <select value={draft.level} onChange={(event) => onChangeDraft({ ...draft, level: event.target.value })}>
+                <select value={draft.level} onChange={(event) => onChangeDraft({ ...draft, level: event.target.value })} aria-label="Nivel da turma">
                   <option value="">Nivel</option>
                   {ACADEMY_LEVEL_OPTIONS.map((level) => (
                     <option key={`academy-class-level:${level.value}`} value={level.value}>
@@ -144,19 +150,27 @@ export function PlaceAcademyClassSetupModule({
                     </option>
                   ))}
                 </select>
-                <select value={draft.genderScope} onChange={(event) => onChangeDraft({ ...draft, genderScope: event.target.value as AcademyClass["genderScope"] })}>
+                <select value={draft.genderScope} onChange={(event) => onChangeDraft({ ...draft, genderScope: event.target.value as AcademyClass["genderScope"] })} aria-label="Genero da turma">
                   <option value="mixed">Mista</option>
                   <option value="male">Masculina</option>
                   <option value="female">Feminina</option>
                 </select>
-                <select value={draft.ageGroup} onChange={(event) => onChangeDraft({ ...draft, ageGroup: event.target.value as AcademyClass["ageGroup"] })}>
+                <select value={draft.ageGroup} onChange={(event) => onChangeDraft({ ...draft, ageGroup: event.target.value as AcademyClass["ageGroup"] })} aria-label="Faixa etaria da turma">
                   <option value="adult">Adulto</option>
                   <option value="kids">Infantil</option>
                 </select>
-                <input type="number" min="0" value={draft.minAge} onChange={(event) => onChangeDraft({ ...draft, minAge: event.target.value })} placeholder="Idade min." />
-                <input type="number" min="0" value={draft.maxAge} onChange={(event) => onChangeDraft({ ...draft, maxAge: event.target.value })} placeholder="Idade max." />
-                <input type="number" min="1" value={draft.capacity} onChange={(event) => onChangeDraft({ ...draft, capacity: event.target.value })} placeholder="Vagas" />
-                <input type="number" min="0" step="1" value={draft.monthlyFee || "0"} onChange={(event) => onChangeDraft({ ...draft, monthlyFee: event.target.value })} placeholder="Mensalidade R$" />
+                <input type="number" min="0" value={draft.minAge} onChange={(event) => onChangeDraft({ ...draft, minAge: event.target.value })} placeholder="Idade min." aria-label="Idade minima" />
+                <input type="number" min="0" value={draft.maxAge} onChange={(event) => onChangeDraft({ ...draft, maxAge: event.target.value })} placeholder="Idade max." aria-label="Idade maxima" />
+                <input type="number" min="1" value={draft.capacity} onChange={(event) => onChangeDraft({ ...draft, capacity: event.target.value })} placeholder="Vagas" aria-label="Capacidade de alunos" />
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={draft.monthlyFee || "0"}
+                  onChange={(event) => onChangeDraft({ ...draft, monthlyFee: event.target.value })}
+                  placeholder="Mensalidade R$"
+                  aria-label="Mensalidade da turma em reais"
+                />
               </div>
             ),
           },

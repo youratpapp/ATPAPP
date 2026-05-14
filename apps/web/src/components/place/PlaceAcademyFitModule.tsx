@@ -120,8 +120,8 @@ export function PlaceAcademyFitModule({
           </div>
         ) : null}
         <div className="cluster" style={{ marginTop: 6 }}>
-          <input type="date" value={fitSearch.requestedOn} onChange={(event) => onChangeFitSearch({ ...fitSearch, requestedOn: event.target.value })} />
-          <select value={fitSearch.level} onChange={(event) => onChangeFitSearch({ ...fitSearch, level: event.target.value })}>
+          <input type="date" value={fitSearch.requestedOn} onChange={(event) => onChangeFitSearch({ ...fitSearch, requestedOn: event.target.value })} aria-label="Data para buscar encaixe" />
+          <select value={fitSearch.level} onChange={(event) => onChangeFitSearch({ ...fitSearch, level: event.target.value })} aria-label="Nivel do aluno para encaixe">
             <option value="">Qualquer nivel</option>
             {ACADEMY_LEVEL_OPTIONS.map((level) => (
               <option key={`fit-level:${level.value}`} value={level.value}>
@@ -129,13 +129,17 @@ export function PlaceAcademyFitModule({
               </option>
             ))}
           </select>
-          <select value={fitSearch.period} onChange={(event) => onChangeFitSearch({ ...fitSearch, period: event.target.value as PlaceAcademyFitSearch["period"] })}>
+          <select
+            value={fitSearch.period}
+            onChange={(event) => onChangeFitSearch({ ...fitSearch, period: event.target.value as PlaceAcademyFitSearch["period"] })}
+            aria-label="Periodo do encaixe"
+          >
             <option value="">Qualquer periodo</option>
             <option value="morning">Manha</option>
             <option value="afternoon">Tarde</option>
             <option value="night">Noite</option>
           </select>
-          <select value={fitSearch.coachId} onChange={(event) => onChangeFitSearch({ ...fitSearch, coachId: event.target.value })}>
+          <select value={fitSearch.coachId} onChange={(event) => onChangeFitSearch({ ...fitSearch, coachId: event.target.value })} aria-label="Professor para encaixe">
             <option value="">Qualquer professor</option>
             {coaches.map((coach) => (
               <option key={`fit-coach:${coach.id}`} value={coach.id}>
@@ -143,8 +147,12 @@ export function PlaceAcademyFitModule({
               </option>
             ))}
           </select>
-          <input type="number" min="0" value={fitSearch.age} onChange={(event) => onChangeFitSearch({ ...fitSearch, age: event.target.value })} placeholder="Idade" />
-          <select value={fitSearch.genderScope} onChange={(event) => onChangeFitSearch({ ...fitSearch, genderScope: event.target.value as PlaceAcademyFitSearch["genderScope"] })}>
+          <input type="number" min="0" value={fitSearch.age} onChange={(event) => onChangeFitSearch({ ...fitSearch, age: event.target.value })} placeholder="Idade" aria-label="Idade do aluno para encaixe" />
+          <select
+            value={fitSearch.genderScope}
+            onChange={(event) => onChangeFitSearch({ ...fitSearch, genderScope: event.target.value as PlaceAcademyFitSearch["genderScope"] })}
+            aria-label="Genero da turma para encaixe"
+          >
             <option value="">M/F/Mista</option>
             <option value="male">Masculina</option>
             <option value="female">Feminina</option>
@@ -237,14 +245,35 @@ export function PlaceAcademyFitModule({
                   {selectedMakeupCredit ? (
                     <span>Reposicao</span>
                   ) : (
-                    <select value={requestDraft.requestType} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, requestType: event.target.value as AcademyLessonRequest["requestType"] })}>
+                    <select
+                      value={requestDraft.requestType}
+                      onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, requestType: event.target.value as AcademyLessonRequest["requestType"] })}
+                      aria-label={`Tipo de pedido para ${slot.title}`}
+                    >
                       <option value="drop_in">Aula avulsa</option>
                       <option value="makeup">Reposicao</option>
                     </select>
                   )}
-                  <input value={requestDraft.playerName} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, playerName: event.target.value })} placeholder="Aluno" disabled={Boolean(selectedMakeupCredit)} />
-                  <input value={requestDraft.phone} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, phone: event.target.value })} placeholder="Telefone" disabled={Boolean(selectedMakeupCredit)} />
-                  <input value={requestDraft.notes} onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, notes: event.target.value })} placeholder="Observacao" />
+                  <input
+                    value={requestDraft.playerName}
+                    onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, playerName: event.target.value })}
+                    placeholder="Aluno"
+                    aria-label={`Aluno para ${slot.title}`}
+                    disabled={Boolean(selectedMakeupCredit)}
+                  />
+                  <input
+                    value={requestDraft.phone}
+                    onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, phone: event.target.value })}
+                    placeholder="Telefone"
+                    aria-label={`Telefone do aluno para ${slot.title}`}
+                    disabled={Boolean(selectedMakeupCredit)}
+                  />
+                  <input
+                    value={requestDraft.notes}
+                    onChange={(event) => onChangeLessonRequestDraft(slot.classId, { ...requestDraft, notes: event.target.value })}
+                    placeholder="Observacao"
+                    aria-label={`Observacao do pedido para ${slot.title}`}
+                  />
                   <button
                     className="primary"
                     onClick={() => (selectedMakeupCredit ? onScheduleMakeupCredit(selectedMakeupCredit.id, slot) : onRequestFit(slot))}

@@ -193,8 +193,13 @@ export function PlaceAcademyStudentsModule({
     <>
       <WorkspaceList>
         <div className="academy-student-toolbar">
-          <input value={filter.query} onChange={(event) => onChangeFilter({ ...filter, query: event.target.value })} placeholder="Buscar aluno, telefone, turma, observacao ou professor" />
-          <select value={filter.classId} onChange={(event) => onChangeFilter({ ...filter, classId: event.target.value })}>
+          <input
+            value={filter.query}
+            onChange={(event) => onChangeFilter({ ...filter, query: event.target.value })}
+            placeholder="Buscar aluno, telefone, turma, observacao ou professor"
+            aria-label="Buscar alunos"
+          />
+          <select value={filter.classId} onChange={(event) => onChangeFilter({ ...filter, classId: event.target.value })} aria-label="Filtrar alunos por turma">
             <option value="">Todas as turmas</option>
             {visibleClasses.map((academyClass) => (
               <option key={`student-filter-class:${academyClass.id}`} value={academyClass.id}>
@@ -202,18 +207,22 @@ export function PlaceAcademyStudentsModule({
               </option>
             ))}
           </select>
-          <select value={filter.status} onChange={(event) => onChangeFilter({ ...filter, status: event.target.value as PlaceAcademyStudentFilter["status"] })}>
+          <select value={filter.status} onChange={(event) => onChangeFilter({ ...filter, status: event.target.value as PlaceAcademyStudentFilter["status"] })} aria-label="Filtrar alunos por status">
             <option value="">Todos os status</option>
             <option value="active">Ativos</option>
             <option value="pending">Pendentes</option>
             <option value="cancelled">Cancelados</option>
           </select>
-          <select value={filter.payment} onChange={(event) => onChangeFilter({ ...filter, payment: event.target.value as PlaceAcademyStudentFilter["payment"] })}>
+          <select value={filter.payment} onChange={(event) => onChangeFilter({ ...filter, payment: event.target.value as PlaceAcademyStudentFilter["payment"] })} aria-label="Filtrar alunos por pagamento">
             <option value="">Pagamento</option>
             <option value="pending">Mensalidade pendente</option>
             <option value="paid">Mensalidade paga</option>
           </select>
-          <select value={filter.attendance} onChange={(event) => onChangeFilter({ ...filter, attendance: event.target.value as PlaceAcademyStudentFilter["attendance"] })}>
+          <select
+            value={filter.attendance}
+            onChange={(event) => onChangeFilter({ ...filter, attendance: event.target.value as PlaceAcademyStudentFilter["attendance"] })}
+            aria-label="Filtrar alunos por presenca e reposicao"
+          >
             <option value="">Presenca/reposicao</option>
             <option value="pending_today">Chamada pendente hoje</option>
             <option value="present_today">Presente hoje</option>

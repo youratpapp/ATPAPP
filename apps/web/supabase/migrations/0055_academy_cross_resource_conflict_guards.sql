@@ -66,7 +66,11 @@ begin
     end if;
   end if;
 
-  if tg_table_name = 'place_academy_classes' and new.is_active = true then
+  if tg_table_name = 'place_academy_classes' then
+    if coalesce(new.is_active, false) = false then
+      return new;
+    end if;
+
     if new.coach_id is not null and exists (
       select 1
       from public.place_academy_classes c

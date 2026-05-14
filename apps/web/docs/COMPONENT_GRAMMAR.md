@@ -424,6 +424,8 @@ Desktop:
 - acao primaria fica visivel e unica;
 - acoes alternativas ficam `secondary` ou `quiet`;
 - detalhes raros usam disclosure (`Opcoes avancadas`) ou drawer.
+- campo sem label visual em toolbar, row ou composer compacto precisa ter placeholder curto e `aria-label` claro;
+- campo critico ou sensivel deve manter label visual; placeholder nao substitui rotulo estrutural.
 
 Mobile:
 
@@ -451,6 +453,7 @@ Uso atual no produto:
 - CRM do local: contatos/leads aparecem antes da captura; novo contato expande apenas quando necessario.
 - Cantina: venda rapida fica como rotina principal; cadastro de produto fica progressivo e auxiliar ao catalogo.
 - Torneio: envio/compartilhamento de resultado em `Minhas partidas` fica em disclosure `Informar resultado`, preservando a row principal para status e confirmacao.
+- Academia v2: buscas/filtros compactos e ferramentas de encaixe usam placeholder objetivo e `aria-label`; drawers mantem labels visuais para campos de edicao.
 - Torneio: edicao de placar, WO e limpeza nas partidas da chave ficam em disclosure `Lancar/Editar placar`, preservando a row principal para leitura da partida.
 
 ## PublicHero

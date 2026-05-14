@@ -222,8 +222,8 @@ export function PlaceAcademyClassesModule({
   return (
     <>
       <div className="academy-grade-toolbar">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar turma, professor, quadra, nivel ou aluno" />
-        <select value={weekdayFilter} onChange={(event) => setWeekdayFilter(event.target.value)}>
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar turma, professor, quadra, nivel ou aluno" aria-label="Buscar turmas" />
+        <select value={weekdayFilter} onChange={(event) => setWeekdayFilter(event.target.value)} aria-label="Filtrar turmas por dia da semana">
           <option value="">Todos os dias</option>
           {weekdayLabels.map((label, index) => (
             <option key={`academy-grade-day:${index}`} value={index}>
@@ -231,7 +231,7 @@ export function PlaceAcademyClassesModule({
             </option>
           ))}
         </select>
-        <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}>
+        <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)} aria-label="Filtrar turmas por status">
           <option value="all">Todas</option>
           <option value="with_spots">Com vagas</option>
           <option value="full">Lotadas</option>
@@ -337,7 +337,12 @@ export function PlaceAcademyClassesModule({
               <div className="academy-drawer-form">
                 <label>
                   <span>Nome da turma</span>
-                  <input value={editDraft.title} onChange={(event) => setEditDraft({ ...editDraft, title: event.target.value })} disabled={!canManagePlace} />
+                  <input
+                    value={editDraft.title}
+                    onChange={(event) => setEditDraft({ ...editDraft, title: event.target.value })}
+                    disabled={!canManagePlace}
+                    placeholder="Nome da turma"
+                  />
                 </label>
                 <label>
                   <span>Professor</span>
@@ -359,7 +364,12 @@ export function PlaceAcademyClassesModule({
                 </label>
                 <label>
                   <span>Nome exibido do professor</span>
-                  <input value={editDraft.coachName} onChange={(event) => setEditDraft({ ...editDraft, coachName: event.target.value })} disabled={!canManagePlace} />
+                  <input
+                    value={editDraft.coachName}
+                    onChange={(event) => setEditDraft({ ...editDraft, coachName: event.target.value })}
+                    disabled={!canManagePlace}
+                    placeholder="Nome exibido na agenda"
+                  />
                 </label>
                 <label>
                   <span>Quadra</span>
@@ -384,15 +394,15 @@ export function PlaceAcademyClassesModule({
                 </label>
                 <label>
                   <span>Inicio</span>
-                  <input type="time" value={editDraft.startsAt} onChange={(event) => setEditDraft({ ...editDraft, startsAt: event.target.value })} disabled={!canManagePlace} />
+                  <input type="time" value={editDraft.startsAt} onChange={(event) => setEditDraft({ ...editDraft, startsAt: event.target.value })} disabled={!canManagePlace} aria-label="Horario de inicio da turma" />
                 </label>
                 <label>
                   <span>Fim</span>
-                  <input type="time" value={editDraft.endsAt} onChange={(event) => setEditDraft({ ...editDraft, endsAt: event.target.value })} disabled={!canManagePlace} />
+                  <input type="time" value={editDraft.endsAt} onChange={(event) => setEditDraft({ ...editDraft, endsAt: event.target.value })} disabled={!canManagePlace} aria-label="Horario de fim da turma" />
                 </label>
                 <label>
                   <span>Vagas</span>
-                  <input type="number" min="1" value={editDraft.capacity} onChange={(event) => setEditDraft({ ...editDraft, capacity: event.target.value })} disabled={!canManagePlace} />
+                  <input type="number" min="1" value={editDraft.capacity} onChange={(event) => setEditDraft({ ...editDraft, capacity: event.target.value })} disabled={!canManagePlace} placeholder="Vagas" />
                 </label>
                 <label>
                   <span>Nivel</span>
@@ -422,11 +432,11 @@ export function PlaceAcademyClassesModule({
                 </label>
                 <label>
                   <span>Idade min.</span>
-                  <input type="number" min="0" value={editDraft.minAge} onChange={(event) => setEditDraft({ ...editDraft, minAge: event.target.value })} disabled={!canManagePlace} />
+                  <input type="number" min="0" value={editDraft.minAge} onChange={(event) => setEditDraft({ ...editDraft, minAge: event.target.value })} disabled={!canManagePlace} placeholder="Idade min." />
                 </label>
                 <label>
                   <span>Idade max.</span>
-                  <input type="number" min="0" value={editDraft.maxAge} onChange={(event) => setEditDraft({ ...editDraft, maxAge: event.target.value })} disabled={!canManagePlace} />
+                  <input type="number" min="0" value={editDraft.maxAge} onChange={(event) => setEditDraft({ ...editDraft, maxAge: event.target.value })} disabled={!canManagePlace} placeholder="Idade max." />
                 </label>
               </div>
               <label className="academy-drawer-toggle">
@@ -591,9 +601,9 @@ export function PlaceAcademyClassesModule({
                                 onChangeStudentDraft(selectedClass.id, { ...selectedStudentDraft, classIds: Array.from(current) });
                               }}
                             />
-                            <span>
-                              {classOption.title} | {weekdayLabels[classOption.weekday] || "Dia"} {classOption.startsAt.slice(0, 5)}-{classOption.endsAt.slice(0, 5)}
-                            </span>
+                        <span>
+                          {classOption.title} | {weekdayLabels[classOption.weekday] || "Dia"} {classOption.startsAt.slice(0, 5)}-{classOption.endsAt.slice(0, 5)}
+                        </span>
                           </label>
                         );
                       })}

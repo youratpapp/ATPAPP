@@ -18,7 +18,7 @@ drop table if exists
 cascade;
 
 delete from public.app_payment_reminders
-where target_type in ('league_registration', 'place_membership', 'academy_enrollment', 'academy_student_contract', 'court_booking', 'tournament_registration')
+where target_type in ('league_registration', 'place_membership', 'academy_enrollment', 'academy_student_contract', 'academy_lesson_request', 'court_booking', 'tournament_registration')
   and user_id in (select id from public.seed_users);
 
 delete from public.app_payments
@@ -45,6 +45,12 @@ where round_id in (
   where l.name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
 );
 
+delete from public.league_admin_decisions
+where league_id in (
+  select id from public.leagues
+  where name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
+);
+
 delete from public.league_match_result_submissions
 where match_id in (
   select m.id
@@ -61,6 +67,14 @@ where match_id in (
   where l.name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
 );
 
+delete from public.league_match_availability
+where match_id in (
+  select m.id
+  from public.league_matches m
+  join public.leagues l on l.id = m.league_id
+  where l.name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
+);
+
 delete from public.league_match_players
 where match_id in (
   select m.id
@@ -69,7 +83,21 @@ where match_id in (
   where l.name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
 );
 
+delete from public.league_pair_history
+where season_id in (
+  select s.id
+  from public.league_seasons s
+  join public.leagues l on l.id = s.league_id
+  where l.name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
+);
+
 delete from public.league_matches
+where league_id in (
+  select id from public.leagues
+  where name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
+);
+
+delete from public.league_join_links
 where league_id in (
   select id from public.leagues
   where name in ('Liga ADT Simples 2026', 'Prime Duplas Fixas', 'Ranking Pantanal Intermediario')
@@ -150,7 +178,11 @@ select
   l.registration_fee_cents,
   true,
   true,
-  jsonb_build_object('placeKey', l.place_key, 'seed', true),
+  jsonb_build_object(
+    'placeKey', l.place_key,
+    'operationModel', case when l.key = 'pantanal-ranking' then 'ranking_ladder' else 'league_rounds' end,
+    'seed', true
+  ),
   now() - (l.start_offset || ' days')::interval,
   now()
 from public.seed_leagues l;
@@ -271,6 +303,25 @@ select
   now()
 from public.seed_league_players;
 
+insert into public.league_registrations (
+  league_id, season_id, class_id, user_id, player_name, phone, status, source, created_at, updated_at
+)
+select
+  c.league_id,
+  c.season_id,
+  c.id,
+  u.id,
+  u.display_name,
+  u.phone,
+  case when c.class_idx = 2 then 'rejected' else 'pending' end,
+  'public',
+  now() - ((22 + c.class_idx) || ' days')::interval,
+  now()
+from public.seed_league_classes c
+join public.seed_users u on u.seq = 1000 + ((220 + c.class_idx + (
+  case c.league_key when 'adt-singles' then 0 when 'prime-doubles' then 12 else 24 end
+) - 1) % 240) + 1;
+
 create table public.seed_league_rounds (
   id uuid primary key default gen_random_uuid(),
   league_id uuid not null,
@@ -328,12 +379,33 @@ select
   r.class_id,
   p1.id,
   p2.id,
-  case when r.round_number <= 4 then 'encerrada' when r.round_number = 5 and pair_no % 3 = 0 then 'aguardando_confirmacao' when r.round_number = 5 then 'aguardando_resultado' else 'aguardando_organizacao' end,
+  case
+    when r.round_number <= 3 then 'encerrada'
+    when r.round_number = 4 and pair_no % 5 = 0 then 'wo'
+    when r.round_number = 4 and pair_no % 4 = 0 then 'em_analise_adm'
+    when r.round_number = 4 then 'encerrada'
+    when r.round_number = 5 and pair_no % 6 = 0 then 'em_disputa'
+    when r.round_number = 5 and pair_no % 3 = 0 then 'aguardando_confirmacao'
+    when r.round_number = 5 then 'aguardando_resultado'
+    else 'aguardando_organizacao'
+  end,
   r.starts_at + make_interval(days => pair_no % 10, hours => 18 + (pair_no % 3)),
   sp.name || ' - Quadra ' || ((pair_no % sp.courts_count) + 1),
   sp.id,
-  case when r.round_number <= 4 then case when pair_no % 2 = 0 then 1 else 2 end else null end,
-  case when r.round_number <= 4 then jsonb_build_object('sets', jsonb_build_array(jsonb_build_array(6,4), jsonb_build_array(6,3)), 'summary', '6/4 6/3') else '{}'::jsonb end
+  case
+    when r.round_number <= 3 then case when pair_no % 2 = 0 then 1 else 2 end
+    when r.round_number = 4 and pair_no % 5 = 0 then 1
+    when r.round_number = 4 and pair_no % 4 = 0 then null
+    when r.round_number = 4 then case when pair_no % 2 = 0 then 1 else 2 end
+    else null
+  end,
+  case
+    when r.round_number <= 3 then jsonb_build_object('sets', jsonb_build_array(jsonb_build_array(6,4), jsonb_build_array(6,3)), 'summary', '6/4 6/3')
+    when r.round_number = 4 and pair_no % 5 = 0 then jsonb_build_object('wo', true, 'summary', 'WO aplicado')
+    when r.round_number = 4 and pair_no % 4 = 0 then jsonb_build_object('sets', jsonb_build_array(jsonb_build_array(7,6), jsonb_build_array(4,6), jsonb_build_array(10,8)), 'summary', 'Resultado em analise')
+    when r.round_number = 4 then jsonb_build_object('sets', jsonb_build_array(jsonb_build_array(6,4), jsonb_build_array(6,3)), 'summary', '6/4 6/3')
+    else '{}'::jsonb
+  end
 from public.seed_league_rounds r
 join public.seed_places sp on sp.key = case r.league_key when 'adt-singles' then 'adt' when 'prime-doubles' then 'prime' else 'pantanal' end
 cross join generate_series(1, 6) as pairs(pair_no)
@@ -345,25 +417,26 @@ insert into public.league_matches (
   format_snapshot, result_payload, winner_side, is_wo, needs_admin_review, source, created_at, updated_at
 )
 select
-  id,
-  league_id,
-  season_id,
-  class_id,
-  round_id,
-  'simples',
-  status,
-  scheduled_at,
-  location_text,
-  location_place_id,
+  m.id,
+  m.league_id,
+  m.season_id,
+  m.class_id,
+  m.round_id,
+  case when sl.league_type = 'dupla_fixa' then 'dupla_fixa' else 'simples' end,
+  m.status,
+  m.scheduled_at,
+  m.location_text,
+  m.location_place_id,
   jsonb_build_object('seed', true, 'format', 'melhor_de_3_super_tb'),
-  result_payload,
-  winner_side,
-  false,
-  false,
+  m.result_payload,
+  m.winner_side,
+  m.status = 'wo',
+  m.status = 'em_analise_adm',
   'automatic',
-  scheduled_at - interval '10 days',
+  m.scheduled_at - interval '10 days',
   now()
-from public.seed_league_matches;
+from public.seed_league_matches m
+join public.seed_leagues sl on sl.id = m.league_id;
 
 insert into public.league_match_players (match_id, league_player_id, side, slot, is_wildcard, created_at)
 select id, side1_player_id, 1, 1, false, now() - interval '4 months'
@@ -371,6 +444,53 @@ from public.seed_league_matches
 union all
 select id, side2_player_id, 2, 1, false, now() - interval '4 months'
 from public.seed_league_matches;
+
+insert into public.league_match_players (match_id, league_player_id, side, slot, is_wildcard, wildcard_name, created_at)
+select
+  m.id,
+  p_partner.id,
+  side_data.side,
+  2,
+  false,
+  null,
+  now() - interval '4 months'
+from public.seed_league_matches m
+join public.seed_leagues sl on sl.id = m.league_id and sl.league_type = 'dupla_fixa'
+cross join lateral (
+  values
+    (1, m.side1_player_id),
+    (2, m.side2_player_id)
+) as side_data(side, base_player_id)
+join public.seed_league_players p_base on p_base.id = side_data.base_player_id
+join public.seed_league_players p_partner on p_partner.class_id = m.class_id and p_partner.slot = p_base.slot + 3;
+
+update public.league_match_players lmp
+set league_player_id = null,
+    is_wildcard = true,
+    wildcard_name = 'Convidado wildcard',
+    created_at = now() - interval '12 days'
+from public.seed_league_matches m
+join public.seed_leagues sl on sl.id = m.league_id
+where lmp.match_id = m.id
+  and sl.league_type = 'dupla_fixa'
+  and m.status = 'aguardando_organizacao'
+  and lmp.side = 2
+  and lmp.slot = 2
+  and extract(day from m.scheduled_at)::integer % 2 = 0;
+
+insert into public.league_match_availability (match_id, league_player_id, option_no, available_at, created_at)
+select
+  m.id,
+  players.league_player_id,
+  option_no,
+  date_trunc('hour', m.scheduled_at + ((option_no - 2) || ' days')::interval + ((option_no % 2) || ' hours')::interval),
+  now() - interval '6 days'
+from public.seed_league_matches m
+cross join lateral (
+  values (m.side1_player_id), (m.side2_player_id)
+) as players(league_player_id)
+cross join generate_series(1, 3) as options(option_no)
+where m.status in ('aguardando_organizacao', 'em_disputa');
 
 insert into public.league_match_messages (match_id, sender_player_id, sender_user_id, body, created_at)
 select
@@ -383,6 +503,22 @@ from public.seed_league_matches m
 join public.league_players p on p.id = m.side1_player_id
 where m.status in ('aguardando_resultado', 'aguardando_confirmacao')
 limit 60;
+
+insert into public.league_match_messages (match_id, sender_player_id, sender_user_id, body, created_at)
+select
+  m.id,
+  m.side2_player_id,
+  p.user_id,
+  case
+    when m.status = 'aguardando_organizacao' then 'Mensagem demo: mandei tres opcoes de horario para a rodada.'
+    when m.status = 'em_analise_adm' then 'Mensagem demo: precisamos de revisao do resultado informado.'
+    else 'Mensagem demo: resultado lancado, aguardando confirmacao.'
+  end,
+  m.scheduled_at - interval '1 day'
+from public.seed_league_matches m
+join public.league_players p on p.id = m.side2_player_id
+where m.status in ('aguardando_organizacao', 'aguardando_confirmacao', 'em_analise_adm')
+limit 90;
 
 insert into public.league_match_result_submissions (
   match_id, submitted_by_player_id, submitted_by_user_id, payload, status, created_at, updated_at
@@ -399,10 +535,58 @@ from public.seed_league_matches m
 join public.league_players p on p.id = m.side1_player_id
 where m.status = 'aguardando_confirmacao';
 
+insert into public.league_match_result_submissions (
+  match_id, submitted_by_player_id, submitted_by_user_id, payload, status, created_at, updated_at
+)
+select
+  m.id,
+  m.side2_player_id,
+  p.user_id,
+  m.result_payload,
+  case when m.status = 'em_analise_adm' then 'rejected' else 'confirmed' end,
+  m.scheduled_at + interval '2 hours',
+  now()
+from public.seed_league_matches m
+join public.league_players p on p.id = m.side2_player_id
+where m.status in ('encerrada', 'em_analise_adm');
+
 insert into public.league_round_results (round_id, match_id, result_summary, published_at)
 select round_id, id, coalesce(result_payload->>'summary', '6/4 6/3'), scheduled_at + interval '2 hours'
 from public.seed_league_matches
-where status = 'encerrada';
+where status in ('encerrada', 'wo');
+
+insert into public.league_admin_decisions (
+  league_id, season_id, match_id, action, reason, payload, created_by, created_at
+)
+select
+  m.league_id,
+  m.season_id,
+  m.id,
+  case when m.status = 'wo' then 'wo_aplicado' else 'revisao_resultado' end,
+  case when m.status = 'wo' then 'Um lado nao confirmou disponibilidade dentro do prazo.' else 'Placar divergente entre os jogadores.' end,
+  jsonb_build_object('seed', true, 'status', m.status, 'result', m.result_payload),
+  (select id from public.seed_users where email = 'escalao@gmail.com'),
+  m.scheduled_at + interval '3 hours'
+from public.seed_league_matches m
+where m.status in ('wo', 'em_analise_adm');
+
+insert into public.league_pair_history (
+  season_id, class_id, player_a_id, player_b_id, relation_type, last_round_number, times_count, created_at, updated_at
+)
+select
+  m.season_id,
+  m.class_id,
+  m.side1_player_id,
+  m.side2_player_id,
+  'opponent',
+  max(r.round_number),
+  sum(1 + (r.round_number % 2))::integer,
+  max(r.ends_at),
+  now()
+from public.seed_league_matches m
+join public.seed_league_rounds r on r.id = m.round_id
+where r.round_number <= 4
+group by m.season_id, m.class_id, m.side1_player_id, m.side2_player_id;
 
 insert into public.league_ranking_snapshots (league_id, season_id, class_id, round_id, computed_at, ranking)
 select
@@ -423,6 +607,22 @@ select
   )
 from public.seed_league_classes c;
 
+insert into public.league_join_links (
+  league_id, season_id, class_id, token, active, max_uses, used_count, expires_at, created_by, created_at
+)
+select
+  c.league_id,
+  c.season_id,
+  c.id,
+  'qa-' || c.league_key || '-classe-' || c.class_idx,
+  true,
+  60,
+  8 + c.class_idx,
+  now() + interval '45 days',
+  (select id from public.seed_users where email = 'escalao@gmail.com'),
+  now() - interval '45 days'
+from public.seed_league_classes c;
+
 insert into public.app_payments (
   user_id, target_type, target_id, amount_cents, currency, status, provider, description, metadata, billing_period, paid_at, created_at, updated_at
 )
@@ -432,12 +632,20 @@ select
   r.id,
   l.registration_fee_cents,
   'BRL',
-  'paid',
+  case
+    when r.status = 'pending' then 'pending'
+    when r.status = 'rejected' then 'refunded'
+    when (abs(('x' || substr(md5(r.id::text), 1, 6))::bit(24)::int) % 31) = 0 then 'failed'
+    else 'paid'
+  end,
   'stub',
   'Inscricao em liga',
   jsonb_build_object('seed', true, 'league_id', r.league_id),
   '',
-  r.created_at + interval '2 hours',
+  case
+    when r.status = 'pending' or (abs(('x' || substr(md5(r.id::text), 1, 6))::bit(24)::int) % 31) = 0 then null
+    else r.created_at + interval '2 hours'
+  end,
   r.created_at,
   now()
 from public.league_registrations r
@@ -486,8 +694,12 @@ select
   p.target_type,
   p.target_id,
   p.billing_period,
-  case when row_number() over (order by p.created_at, p.id) % 3 = 0 then 'whatsapp' else 'manual' end,
-  case when row_number() over (order by p.created_at, p.id) % 5 = 0 then 'sent' else 'queued' end,
+  (array['manual','whatsapp','email'])[(((row_number() over (order by p.created_at, p.id) - 1) % 3) + 1)::integer],
+  case
+    when row_number() over (order by p.created_at, p.id) % 13 = 0 then 'cancelled'
+    when row_number() over (order by p.created_at, p.id) % 5 = 0 then 'sent'
+    else 'queued'
+  end,
   'Lembrete demo de pagamento pendente: ' || coalesce(p.description, p.target_type),
   (select id from public.seed_users where email = 'escalao@gmail.com'),
   now() - interval '2 days',

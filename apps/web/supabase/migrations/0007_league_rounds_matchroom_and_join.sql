@@ -134,6 +134,8 @@ $$;
 
 grant execute on function public.app_create_league_join_link(uuid, uuid, uuid, integer, timestamptz) to authenticated;
 
+drop function if exists public.app_get_league_join_context(text);
+
 create or replace function public.app_get_league_join_context(p_token text)
 returns table(
   league_id uuid,

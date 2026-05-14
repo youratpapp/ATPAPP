@@ -187,6 +187,7 @@ export function PlaceAcademyTodayModule({
                         value={note}
                         onChange={(event) => setAttendanceNotes((prev) => ({ ...prev, [enrollment.id]: event.target.value }))}
                         placeholder="Observacao curta"
+                        aria-label={`Observacao da chamada de ${enrollment.playerName}`}
                       />
                       <div>
                         <button type="button" onClick={() => onMarkAttendance(enrollment.id, "present", note)} disabled={busy || studentAttendance?.status === "present"}>

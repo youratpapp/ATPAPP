@@ -90,9 +90,12 @@ from (
     ('pantanal', 'prof.priscila@demo.atp.local', 'coach'),
     ('prime', 'gerente.prime@demo.atp.local', 'manager'),
     ('prime', 'recepcao.prime@demo.atp.local', 'frontdesk'),
+    ('prime', 'financeiro.prime@demo.atp.local', 'frontdesk'),
     ('prime', 'prof.julia@demo.atp.local', 'coach'),
     ('prime', 'prof.vitor@demo.atp.local', 'coach'),
-    ('prime', 'prof.talita@demo.atp.local', 'coach')
+    ('prime', 'prof.talita@demo.atp.local', 'coach'),
+    ('adt', 'organizador.circuito@demo.atp.local', 'manager'),
+    ('pantanal', 'media.eventos@demo.atp.local', 'frontdesk')
 ) as x(place_key, email, role)
 join public.seed_places p on p.key = x.place_key
 join public.seed_users u on u.email = x.email;
@@ -175,9 +178,46 @@ join (
 join public.seed_users u on u.email = x.email;
 
 insert into public.place_coaches (
-  id, place_id, user_id, name, email, phone, commission_percent, is_active, created_at, updated_at
+  id,
+  place_id,
+  user_id,
+  name,
+  email,
+  phone,
+  commission_percent,
+  specialties,
+  level_scopes,
+  public_bio,
+  internal_notes,
+  public_profile_enabled,
+  is_active,
+  created_at,
+  updated_at
 )
-select id, place_id, user_id, name, email, phone, commission_percent, true, now() - interval '5 months', now()
+select
+  id,
+  place_id,
+  user_id,
+  name,
+  email,
+  phone,
+  commission_percent,
+  case
+    when email like '%lais%' or email like '%priscila%' or email like '%talita%' then array['kids', 'iniciante', 'feminino']::text[]
+    when email like '%julia%' or email like '%vitor%' or email like '%caio%' then array['performance', 'ranking', 'competitivo']::text[]
+    else array['iniciante', 'intermediario', 'duplas']::text[]
+  end,
+  case
+    when email like '%julia%' or email like '%vitor%' then array['avancado', 'primeira_classe', 'profissional']::text[]
+    when email like '%lais%' or email like '%priscila%' then array['iniciante', 'intermediario']::text[]
+    else array['iniciante', 'intermediario', 'avancado']::text[]
+  end,
+  'Perfil publico demo para validar escolha de professor, aulas e agenda.',
+  'Notas internas demo: disponibilidade e comissao devem ser revisadas pela gestao.',
+  true,
+  true,
+  now() - interval '5 months',
+  now()
 from public.seed_coaches;
 
 

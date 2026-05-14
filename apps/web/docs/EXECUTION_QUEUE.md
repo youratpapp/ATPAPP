@@ -908,9 +908,597 @@ Risco residual:
 - o seed foi atualizado estaticamente e deve ser rodado no banco paralelo seguindo `01_cleanup.sql` a `08_leagues.sql`; se a instancia ainda nao tiver migrations `0079` e `0080`, o passo `04_academy.sql` falhara porque depende das tabelas/colunas novas;
 - `qa_full_demo_seed.sql` permanece legado; para QA da Academia v2, usar o seed split `qa_demo`.
 
-### [>] ACADEMY-FORM-01 - Placeholders e labels nos formularios da Academia
+### [x] SEED-QA-02 - Blueprint de populate realista ponta a ponta
 
-Status: `[>]` proxima prioridade
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Transformar o seed `qa_demo` em uma massa operacional realista, nao apenas preenchimento de tabelas.
+- Garantir que cada entidade importante esteja ligada ao fluxo real: usuario -> perfil -> papel/plano -> academia/professor/turma/aluno/contrato/pagamento/presenca/reposicao, e jogador -> torneio/liga/partida/pagamento/resultado.
+
+Criterios:
+
+- definir volumes-alvo por perfil e por modulo antes de popular;
+- definir regras de integridade funcional, nao apenas FK:
+  - nenhuma turma ativa sem professor, quadra e alunos;
+  - nenhum professor ativo sem usuario, staff/coach role e ao menos uma agenda/turma;
+  - nenhum aluno ativo sem usuario, profile, contrato e matricula vinculada;
+  - nenhum contrato ativo sem matriculas coerentes com `weekly_lessons_count`;
+  - nenhum pagamento de academia sem contrato/aluno real;
+  - nenhum torneio publico sem inscricoes, membros, pagamentos e operacao;
+  - nenhuma liga ativa sem temporada, classes, jogadores, rodadas, partidas e rankings;
+- criar checklist de validacao SQL no proprio seed ou em arquivo `10_verify_and_relink_owner.sql` ampliado;
+- documentar volumes esperados e senhas/perfis no README.
+
+Telas/fluxos afetados:
+
+- `qa_demo/README.md`;
+- `01_cleanup.sql`;
+- `02_users.sql`;
+- `03_places.sql`;
+- `04_academy.sql`;
+- `05_bookings.sql`;
+- `06_finance.sql`;
+- `07_tournaments.sql`;
+- `08_leagues.sql`;
+- `10_verify_and_relink_owner.sql`.
+
+Ganhos esperados:
+
+- QA deixa de ser visualizacao de dados artificiais;
+- screenshots passam a revelar gargalos reais de densidade, filtros, permissao e UX;
+- Player App, Management OS e Competition OS ficam testaveis por perfil.
+
+Risco de regressao:
+
+- volume grande pode mascarar erro se nao houver verificacao;
+- seed pode ficar lento se gerar historico demais sem criterio;
+- triggers de conflito podem bloquear turmas/reservas se horarios nao forem coordenados.
+
+Criterios de conclusao:
+
+- criado `SEED_QA_REALISTIC_POPULATE_PLAN.md` com perfis, volumes-alvo, invariantes, ordem de execucao e validacao esperada;
+- queue detalhada de `SEED-QA-03` a `SEED-QA-12` criada para evoluir o populate em blocos;
+- invariantes passam a exigir vinculo real ponta a ponta, nao apenas FK.
+
+### [x] SEED-QA-03 - Usuarios, perfis e papeis demo completos
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Criar personas completas para testar todos os contextos sem depender apenas do admin multi-papel.
+
+Criterios:
+
+- manter `escalao@gmail.com` como owner/admin de todos os locais, torneios e ligas demo;
+- criar usuarios reais com `auth.users` e `profiles` para:
+  - owner/admin;
+  - gerentes;
+  - recepcao/frontdesk;
+  - professores;
+  - alunos de academia;
+  - socios;
+  - jogadores puros;
+  - organizadores de competicao;
+  - scorekeepers/check-in/media;
+- preencher `app_user_product_entitlements` para testar:
+  - `free_player`;
+  - `competition_organizer`;
+  - `coach_solo`;
+  - `academy_pro`;
+  - `platform_admin`;
+- garantir senha documentada por grupo;
+- garantir que jogadores/alunos/professores tenham cidade, UF, telefone, bio e perfil minimamente completo.
+
+Risco de regressao:
+
+- criar usuario sem `auth.identities` e quebrar login;
+- duplicar emails em rerun;
+- misturar papel profissional com Player App sem intencao.
+
+Criterios de conclusao:
+
+- `02_users.sql` cria personas adicionais para `platform_admin`, `competition_organizer`, `coach_solo`, financeiro e media/eventos;
+- `profiles` seguem sendo gerados para 100% dos `seed_users`;
+- `app_user_product_entitlements` agora cobre `academy_pro`, `platform_admin`, `competition_organizer`, `coach_solo` e staff operacional via vinculo de local;
+- README documenta credenciais e significado de cada perfil.
+
+### [x] SEED-QA-04 - Locais, quadras, staff e professores realistas
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Popular academias/clubes como operacoes reais, com staff, quadras, regras, professores e disponibilidade coerente.
+
+Criterios:
+
+- manter 3 locais principais, mas com perfis diferentes:
+  - academia media;
+  - clube maior/multiquadra;
+  - centro premium com operacao mais complexa;
+- cada local deve ter:
+  - owner correto;
+  - staff manager/frontdesk/coach em `place_staff`;
+  - professores em `place_coaches` vinculados a usuarios;
+  - quadras com precos, superficies e valores de socio;
+  - regras de reserva por perfil/weekday;
+  - planos de socio;
+  - configuracao de academia em `place_academy_settings`;
+- professores devem ter especialidades, niveis, bio, notas internas e comissao.
+
+Risco de regressao:
+
+- professor existir em `place_coaches` sem usuario e sem staff;
+- quadra sem regra de reserva;
+- local com produto/plano incoerente com modulos visiveis.
+
+Criterios de conclusao:
+
+- `03_places.sql` continua criando 3 locais com perfis diferentes, quadras, regras, staff, owner e planos coerentes;
+- staff adicional foi vinculado a locais sem quebrar o check constraint de roles (`manager`, `frontdesk`, `coach`);
+- professores em `place_coaches` agora recebem usuario, staff coach, especialidades, niveis atendidos, bio publica, notas internas, comissao e perfil publico ativo.
+
+Risco residual:
+
+- `place_academy_slots` e volume real de turmas/alunos ainda entram no proximo item (`SEED-QA-05`).
+
+### [x] SEED-QA-05 - Academia completa: grade, contratos, alunos e capacidade
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Fazer o modulo Academia refletir uma operacao real de secretaria/professor/financeiro.
+
+Criterios:
+
+- aumentar volume para algo proximo de realidade:
+  - academia media: 20-30 turmas/horarios semanais;
+  - clube grande: 35-60 turmas/horarios semanais;
+  - centro premium: 25-45 turmas/horarios semanais;
+- criar `place_academy_slots` como escala semanal real:
+  - horarios abertos;
+  - horarios assigned;
+  - bloqueios;
+  - disponibilidade por professor e quadra;
+- criar turmas sempre com:
+  - professor;
+  - quadra;
+  - dia/horario;
+  - nivel;
+  - capacidade;
+  - mensalidade;
+- criar contratos de alunos sempre com:
+  - usuario real;
+  - profile;
+  - plano 1x/2x/3x;
+  - matriculas com `contract_id`;
+  - quantidade de turmas coerente com `weekly_lessons_count`;
+- distribuir alunos respeitando capacidade:
+  - turmas cheias;
+  - turmas com vagas;
+  - turmas quase vazias;
+  - turmas kids/adulto/feminino/performance;
+- criar alguns contratos pendentes/cancelados, mas sem quebrar a leitura principal.
+
+Risco de regressao:
+
+- conflito de professor/quadra no mesmo horario;
+- aluno duplicado em varias turmas sem contrato;
+- turma ativa sem aluno ou sem professor;
+- capacidade irreal que esconde problemas de vaga.
+
+Criterios de conclusao:
+
+- consultas de verificacao retornam zero para orfaos: turma sem professor, turma sem quadra, professor sem usuario, aluno ativo sem usuario, enrollment ativo sem contrato;
+- contratos ativos batem com numero de aulas semanais;
+- `Academia > Hoje`, `Grade`, `Alunos`, `Pendencias`, `Professores` e `Configuracao` mostram massa real.
+
+Implementado:
+
+- `04_academy.sql` agora cria 24 turmas para ADT, 30 para Arena Pantanal e 42 para Clube Racket Prime, sempre com professor, quadra, dia, horario, nivel, capacidade e mensalidade.
+- `place_academy_slots` passou a ser populado com janelas `assigned`, horarios `open` e bloqueios `blocked`; bloqueios tambem recebem professor para respeitar `app_validate_academy_resource_scope`.
+- turmas adultas foram calibradas para capacidade 4 e infantis para capacidade 8, refletindo operacao real de tenis.
+- contratos foram calibrados para 60/82/115 alunos por local, com usuario real, profile existente, plano semanal 1x/2x/3x, `contract_id` e matriculas coerentes com `weekly_lessons_count`.
+- matriculas ativas agora sao distribuidas por assentos de turma, sem concentrar todos os alunos nas primeiras turmas e sem ultrapassar capacidade.
+- helpers `seed_slots` foram incluidos no cleanup inicial e no cleanup opcional.
+
+Risco residual:
+
+- historico de 6 meses, reposicoes e aula avulsa em volume maior ficam no proximo item (`SEED-QA-06`).
+
+### [x] SEED-QA-06 - Historico de 6 meses: presenca, faltas, reposicoes e aulas avulsas
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Criar historico suficiente para validar rotinas de chamada, ausencias, reposicao, drop-in e evolucao.
+
+Criterios:
+
+- gerar 20-26 semanas de `place_academy_attendance` para turmas ativas;
+- variar presencas, faltas, faltas avisadas e observacoes;
+- criar `place_academy_planned_absences` dentro e fora do prazo;
+- criar creditos de reposicao:
+  - abertos;
+  - usados;
+  - cancelados;
+  - originados por falta marcada;
+  - originados por ausencia avisada;
+- criar `place_academy_lesson_requests` para:
+  - aula avulsa/drop-in pendente;
+  - aula avulsa aprovada/paga;
+  - reposicao solicitada;
+  - reposicao recusada/cancelada;
+- criar `place_academy_progress_notes` com foco, nivel e evolucao por aluno.
+
+Risco de regressao:
+
+- credito duplicado por mesma ausencia;
+- reposicao sem matricula/aluno real;
+- historico muito pesado sem necessidade.
+
+Criterios de conclusao:
+
+- Pendencias mostra fila real;
+- StudentDrawer mostra presenca, evolucao, pagamentos e reposicoes;
+- Hoje permite testar chamada com alunos suficientes.
+
+Implementado:
+
+- `04_academy.sql` agora gera 24 semanas de `place_academy_attendance` para matriculas ativas, com presenca, falta registrada, ausencia avisada e observacao tecnica curta.
+- creditos por `source_attendance_id` aumentaram para massa maior e agora variam entre `open`, `used` e `cancelled`.
+- ausencias planejadas dentro e fora do prazo foram ampliadas, preservando datas diferentes para evitar conflito por `(enrollment_id, absence_on)`.
+- creditos por `source_absence_id` foram ampliados e continuam diferenciando ausencia avisada dentro do prazo.
+- `place_academy_lesson_requests` agora inclui reposicoes vinculadas a `makeup_credit_id` real, com status `pending`, `approved` e `rejected`; aprovacoes atualizam credito e ausencia para `used`.
+- drop-ins/aulas avulsas continuam existindo como pedidos independentes para validar fila, pagamento e encaixe.
+
+Risco residual:
+
+- validadores automaticos de contagem/status ainda entram em `SEED-QA-12`;
+- agenda de quadras com reservas reais e waitlist ainda depende do proximo item.
+
+### [x] SEED-QA-07 - Agenda e reservas com ocupacao realista
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Popular agenda de quadras com reservas, aulas, bloqueios e espera sem conflitar com turmas.
+
+Criterios:
+
+- gerar reservas em 6 meses com padrao real:
+  - manha;
+  - horario de almoco;
+  - pico noturno;
+  - fim de semana;
+- criar ocupacao por local:
+  - 45-60% academia media;
+  - 60-75% clube grande;
+  - 55-70% premium;
+- criar `court_bookings` confirmadas, pendentes, canceladas e blocked;
+- criar `court_booking_waitlist` em horarios cheios;
+- deixar pendente apenas solicitacoes recentes de abertura, nao backlog antigo;
+- nao sobrepor reservas com turmas/aulas fixas na mesma quadra;
+- pagamentos de reserva devem apontar para reservas reais.
+
+Risco de regressao:
+
+- trigger bloquear seed por conflito de quadra;
+- calendario parecer lotado artificialmente;
+- reservas futuras impedirem recriar turmas em rerun parcial.
+
+Criterios de conclusao:
+
+- Agenda mostra ocupacao real por quadra/dia;
+- busca de quadra livre retorna resultados variados;
+- lista de espera aparece apenas em horarios plausiveis.
+
+Implementado:
+
+- `05_bookings.sql` agora gera candidatos de reserva dos ultimos 180 dias ate 45 dias futuros, com padroes de manha, almoco, pico noturno e fim de semana.
+- antes de inserir, a massa filtra conflito com `place_academy_classes` e `place_academy_slots` na mesma quadra/dia/horario.
+- reservas variam entre `confirmed`, `pending`, `cancelled` e `blocked`.
+- reservas `pending` agora representam triagem recente de abertura: somente hoje/proximos 2 dias, criadas desde a ultima tarde/noite; o restante do backlog aparece resolvido como confirmado/cancelado/bloqueado.
+- pagamentos de reserva ignoram `cancelled` e `blocked`, mantendo target real para toda reserva paga/pendente.
+- `court_booking_waitlist` agora nasce de reservas futuras confirmadas em horario ocupado, evitando fila solta sem contexto operacional.
+
+Risco residual:
+
+- ocupacao percentual exata ainda deve ser medida pelo futuro verificador `SEED-QA-12`;
+- financeiro amplo por origem, lembretes e POS entram no proximo item.
+
+### [x] SEED-QA-08 - Financeiro completo e coerente por origem
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Fazer financeiro refletir operacao real por contrato, socio, reserva, aula avulsa, torneio e liga.
+
+Criterios:
+
+- criar pagamentos para:
+  - `academy_student_contract`;
+  - `place_membership`;
+  - `court_booking`;
+  - `tournament_registration`;
+  - `league_registration`;
+  - aula avulsa/drop-in quando aplicavel;
+- variar status:
+  - paid;
+  - pending atual;
+  - pending vencido;
+  - refunded/failed quando util para UI;
+- criar lembretes em `app_payment_reminders` com channel/status variados;
+- criar despesas, POS, pacotes/creditos e compras;
+- garantir que pagamento pendente sempre tenha usuario e target real.
+
+Risco de regressao:
+
+- pagamento sem target real;
+- duplicidade de mensalidade por aluno com contrato 2x/3x;
+- pendencia financeira sem contexto na UI.
+
+Criterios de conclusao:
+
+- Financeiro, Clientes/CRM, Academia/Alunos e Pendencias mostram valores coerentes;
+- nenhum pagamento aponta para target inexistente;
+- alunos com duas ou tres aulas possuem uma mensalidade unica.
+
+Implementado:
+
+- `05_bookings.sql` ja mantem mensalidade de academia por `academy_student_contract`, uma cobranca por contrato/plano, mesmo para alunos 2x/3x.
+- `06_finance.sql` agora cria pagamentos reais para `academy_lesson_request` quando a aula avulsa/drop-in tem valor e target real.
+- reposicoes com credito continuam sem nova cobranca (`waived`), evitando duplicidade entre credito e aula avulsa.
+- `06_finance.sql` cria lembretes para pendencias de `academy_student_contract`, `place_membership`, `court_booking` e `academy_lesson_request`.
+- `08_leagues.sql` recalcula lembretes finais depois de torneios/ligas e inclui `academy_lesson_request`.
+- lembretes variam canal (`manual`, `whatsapp`, `email`) e status (`queued`, `sent`, `cancelled`).
+- pagamentos de liga agora variam entre `paid`, `pending` e `failed`, sem perder target real.
+
+Risco residual:
+
+- pagamentos de torneio foram refinados em `SEED-QA-09`; validacao automatica de targets ainda fica para o verificador final;
+- validadores automaticos de alvo inexistente entram em `SEED-QA-12`.
+
+### [x] SEED-QA-09 - Torneios com operacao completa
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Popular Competition OS de torneios com estados reais de organizador e jogador.
+
+Criterios:
+
+- criar torneios em estados:
+  - draft;
+  - registration_open;
+  - registration_closed;
+  - live;
+  - finished;
+- cada torneio publico deve ter:
+  - owner `escalao@gmail.com`;
+  - place real quando aplicavel;
+  - staff em `tournament_members`;
+  - inscrições com `auth.users`;
+  - participantes aprovados em `tournament_members`;
+  - pagamentos coerentes;
+  - chat/announcement;
+  - confirmacoes de partida;
+  - resultado enviado/aplicado/conflito quando o status permitir;
+- dados em `tournaments.data` devem estar coerentes com `tournament_registrations`;
+- criar variação: aberto com vagas, aberto quase cheio, live com pendencias, finalizado com resultados.
+
+Risco de regressao:
+
+- participante em JSON sem usuario/registration;
+- registration aprovada sem tournament_member;
+- pagamento de inscricao sem registration real.
+
+Criterios de conclusao:
+
+- Organizador enxerga pendencias reais;
+- jogador inscrito enxerga torneios e partidas;
+- torneio publico mostra vagas/inscricoes coerentes.
+
+Implementado:
+
+- `07_tournaments.sql` agora cobre os estados `draft`, `registration_open`, `registration_closed`, `live` e `finished`.
+- adicionado torneio publico `Prime Open Inscricoes Encerradas`, com inscrições já encerradas e evento futuro.
+- staff de torneio ficou mais completo, incluindo `organizer`, `checkin`, `scorekeeper` e `media`, alem do owner principal.
+- anuncios/chat passam a cobrir tambem torneios `registration_closed`.
+- pagamentos de torneio agora variam entre `paid`, `pending`, `failed` e `refunded` quando aplicavel, mantendo target real por `tournament_registration`.
+
+Risco residual:
+
+- a coerencia fina entre `tournaments.data` JSON e `tournament_registrations` ainda deve ser validada por `SEED-QA-12`;
+- resultados/chaves continuam sinteticos e podem ser aprofundados se o Competition OS pedir cenarios mais pesados.
+
+### [x] SEED-QA-10 - Ligas com rodada, partida e matchroom realistas
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Popular ligas com operacao relacional completa, simulando varias rodadas de uso.
+
+Criterios:
+
+- criar ligas simples, dupla fixa e ranking;
+- cada liga ativa deve ter:
+  - season ativa;
+  - classes;
+  - league_players com usuarios;
+  - league_registrations;
+  - rounds abertas/finalizadas;
+  - matches aguardando organizacao, resultado, confirmacao, encerradas, WO e analise admin;
+  - league_match_players;
+  - league_match_messages;
+  - league_match_result_submissions;
+  - league_match_availability;
+  - ranking_snapshots;
+  - pagamentos e lembretes;
+- criar jogadores em recesso, wildcard e casos de conflito.
+
+Risco de regressao:
+
+- partida sem players;
+- rodada sem partida;
+- ranking sem players reais;
+- status de match incompatível com resultados/submissions.
+
+Criterios de conclusao:
+
+- jogador consegue abrir liga e ver proxima partida;
+- organizador consegue ver pendencias reais;
+- ranking e rodadas refletem 6 meses de atividade.
+
+Implementado:
+
+- `08_leagues.sql` agora popula ligas simples, dupla fixa e ranking com `operationModel` explicito para a liga de ranking;
+- cada liga ativa tem season, classes, jogadores com usuarios, inscricoes aprovadas, pendentes e rejeitadas;
+- rodadas cobrem historico e rodada atual com partidas `encerrada`, `wo`, `em_analise_adm`, `em_disputa`, `aguardando_confirmacao`, `aguardando_resultado` e `aguardando_organizacao`;
+- liga de dupla fixa passou a criar dois jogadores por lado em `league_match_players`;
+- partidas futuras de dupla fixa incluem caso de wildcard real em `league_match_players`;
+- matchroom ganhou mensagens dos dois lados, disponibilidade por opcoes em `league_match_availability` e submissions coerentes com status;
+- WO e analise administrativa geram `league_admin_decisions`;
+- partidas finalizadas/WO geram `league_round_results`;
+- historico de confrontos passa a alimentar `league_pair_history`;
+- ligas possuem `league_join_links` por classe;
+- pagamentos de inscricao de liga variam entre `paid`, `pending`, `failed` e `refunded`, com lembretes finais recalculados.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- a chave/ranking exibida pela UI ainda depende das regras sinteticas atuais de `ranking_points`;
+- validadores automaticos de match sem players, rodada sem match e pagamento sem target entram em `SEED-QA-12`.
+
+### [x] SEED-QA-11 - Player App: descoberta, social e perfis coerentes
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Garantir que jogadores puros tenham dados suficientes para testar Home, Locais, Ranking, Perfil e descoberta sem ruido de gestao.
+
+Criterios:
+
+- criar jogadores que:
+  - so jogam partidas abertas;
+  - so reservam quadra;
+  - fazem aula;
+  - jogam torneio;
+  - jogam liga;
+  - sao socios de local;
+  - seguem locais;
+  - seguem outros usuarios;
+- popular `open_matches`, participantes, comentarios e reacoes;
+- criar notification preferences;
+- garantir rankings/perfis com foto/bio/cidade/nivel suficiente para UI.
+
+Risco de regressao:
+
+- Player App parecer vazio para usuario puro;
+- dados profissionais vazarem para jogador comum;
+- perfis ficarem incompletos e esconderem problemas de UI.
+
+Criterios de conclusao:
+
+- login de player puro mostra Home com proximas acoes reais;
+- Locais mostra reservas/aulas/partidas sem depender do admin;
+- Perfil tem historico e contexto.
+
+Implementado:
+
+- `02_users.sql` agora cria entitlement explicito para todos os usuarios demo, incluindo jogadores puros como `free_player`;
+- jogadores continuam sem permissao de criar local/competicao, exceto personas PRO/admin previstas;
+- `05_bookings.sql` padronizou niveis de partidas abertas para `Iniciante`, `Intermediario`, `Avancado`, `Primeira Classe` e `Profissional`;
+- partidas abertas agora cobrem dois contextos: chamadas vinculadas a locais e chamadas por cidade sem academia/quadra definida;
+- chamadas sem local testam o fluxo real de encontrar parceiro/adversario antes de escolher quadra;
+- grafo social foi ampliado com multiplos `user_follows` por jogador, alem de seguidores de locais;
+- `notification_preferences` continua sendo criada para todos os usuarios demo;
+- massa existente ja cobre player que reserva quadra, faz aula, joga torneio, joga liga, e e socio de local por meio de `04_academy.sql`, `05_bookings.sql`, `07_tournaments.sql` e `08_leagues.sql`.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- validacao automatica dos perfis/seguidores/matches ainda fica para `SEED-QA-12`;
+- `listOpenMatches` segue com limite de 60 registros na UI; a massa agora excede esse volume para testar ordenacao/limite, mas o verificador precisa provar que o banco esta completo.
+
+### [x] SEED-QA-12 - Validadores SQL e checklist de integridade do seed
+
+Status: `[x]` concluido em 2026-05-14
+
+Objetivo:
+
+- Encerrar o populate com verificacoes automaticas que provem que os dados estao linkados e completos.
+
+Criterios:
+
+- ampliar `10_verify_and_relink_owner.sql` ou criar `10_verify_seed_integrity.sql`;
+- incluir contadores e asserts para:
+  - usuarios por perfil;
+  - profiles faltantes;
+  - staff sem user;
+  - professor sem user;
+  - turma sem professor/quadra/aluno;
+  - contrato ativo sem enrollment;
+  - enrollment ativo sem contract/user;
+  - pagamento sem target;
+  - reserva conflitando com turma;
+  - torneio com registration aprovada sem member;
+  - liga com match sem players;
+  - rodada sem match;
+- retornar resumo final por modulo.
+
+Risco de regressao:
+
+- validadores virarem apenas contadores e nao pegarem orfaos;
+- asserts duros demais bloquearem ajustes pequenos.
+
+Criterios de conclusao:
+
+- rodar `01_cleanup.sql` a `08_leagues.sql` e depois verificador sem erro;
+- README documenta ordem, volumes e perfis de login;
+- fila de seed realista fica fechada.
+
+Implementado:
+
+- criado `web/supabase/seeds/qa_demo/10_verify_seed_integrity.sql`;
+- verificador e nao destrutivo e deve rodar depois de `01_cleanup.sql` a `08_leagues.sql`;
+- checks cobrem usuarios sem profile/entitlement, player com permissao indevida, professor sem user/staff, turma sem professor/quadra/aluno, contrato sem enrollment, enrollment ativo sem contrato/user, contrato com `weekly_lessons_count` divergente, pagamento sem target, reserva conflitando com aula/slot, torneio aprovado sem member, rodada de liga sem match, match de liga sem players, partida aberta sem participante, ausencia de partidas abertas por cidade, grafo social fraco e preferencias de notificacao ausentes;
+- checks tambem cobrem reserva pendente velha: `pending` nao pode estar no passado, longe demais no futuro ou criada antes da ultima abertura operacional;
+- checks tambem cobrem setup completo da academia: local sem configuracao/planos/regras, professor sem turma, turma adulta acima de 4, turma infantil acima de 8 e turma acima da capacidade;
+- o SQL levanta erro com os nomes dos checks quebrados e retorna `qa_seed_integrity_ok` quando passa;
+- README e `SEED_QA_REALISTIC_POPULATE_PLAN.md` foram atualizados com a nova etapa.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- o verificador ainda e estatico e deve evoluir quando novos modulos entrarem no seed;
+- a execucao completa do SQL depende do banco paralelo estar com migrations recentes aplicadas.
+
+### [x] ACADEMY-FORM-01 - Placeholders e labels nos formularios da Academia
+
+Status: `[x]` concluido em 2026-05-14
 
 Objetivo:
 
@@ -934,6 +1522,14 @@ Criterios de conclusao:
 - sweep em `PlaceAcademy*Module`;
 - screenshots ou checklist visual;
 - lint/build passando quando houver alteracao de codigo.
+
+Entregue:
+
+- buscas e filtros de `Grade`, `Alunos`, `Pendencias` e `Professores` receberam nomes acessiveis sem aumentar ruido visual;
+- composer de professor, ferramenta de encaixe e pedido de aula/reposicao receberam `aria-label` contextual;
+- chamada rapida recebeu `aria-label` por aluno para observacao curta;
+- campos criticos em drawers continuam com label visual; placeholders foram usados apenas como ajuda curta, nao como substituto estrutural;
+- checklist estatico aplicado em `PlaceAcademy*Module`.
 
 ### [x] SWEEP-ROLE-01 - Varredura por perfil Admin/Player/Professor
 
