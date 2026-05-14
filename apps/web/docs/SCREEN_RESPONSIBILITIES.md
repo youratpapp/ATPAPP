@@ -55,6 +55,8 @@ Quando uma tela cresce demais:
 - 2026-05-14: Academia v2 foi definida em `ACADEMY_V2_UX_PLAN.md`; a tela `/gestao/:placeId/academia` deve separar rotina diaria, grade, alunos, pendencias, professores e configuracao, preservando funcoes sem manter blocos legados duplicados.
 - 2026-05-14: `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md` foi criado como processo padrao para mapear, planejar e corrigir cada modulo antes de implementar refactors profundos.
 - 2026-05-14: primeiro corte de Academia v2 aplicado: `Grade` e `Configuracao` substituem labels antigos, bloco legado `Academia e aulas` nao renderiza no workspace de Gestao, recursos entram em `Configuracao` e encaixe fica recolhido em `Pendencias`.
+- 2026-05-14: `Configuracao` da Academia v2 ganhou data/dia explicitos, visao por quadra/professor, criacao de horario aberto, bloqueio/reabertura e conflito visivel por recurso.
+- 2026-05-14: QA da Academia v2 removeu o cabeçalho legado remanescente dentro da Gestao e passou a tratar conversao parcial de horario aberto em turma com feedback explicito.
 - 2026-05-14: `Grade` da Academia passou a ser lista operacional com busca, filtros, contador, `ClassDrawer`, edicao real da turma, mensalidade, matricula manual e acoes financeiras no contexto da turma.
 - 2026-05-14: `Alunos` da Academia passou a ser lista operacional com busca/filtros por status, turma, pagamento e presenca/reposicao, sem limite silencioso, e `StudentDrawer` para matricula, financeiro, chamada, ausencia avisada, evolucao, reposicoes e historico.
 - 2026-05-14: `Pendencias` da Academia passou a ser fila unica com filtros e rows acionaveis; `Buscar encaixe` saiu do corpo da tela e passou a abrir `FitDrawer`.

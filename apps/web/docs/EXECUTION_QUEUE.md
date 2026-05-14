@@ -126,7 +126,7 @@ Entregue:
 Risco residual:
 
 - `Buscar encaixe` ainda precisa virar drawer/sheet real em `ACADEMY-V2-04`;
-- `Configuracao` ainda precisa evoluir data/dia e visao professor/quadra em `ACADEMY-V2-07`;
+- `Configuracao` ja evoluiu data/dia e visao professor/quadra em `ACADEMY-V2-07`;
 - screenshots autenticados ficam para o ciclo de QA quando a sessao local estiver disponivel.
 
 ### [x] ACADEMY-V2-02 - Grade com drawer de turma
@@ -290,11 +290,11 @@ Implementado:
 Risco residual:
 
 - especialidades e niveis atendidos ainda nao existem no schema de `place_coaches`; por isso ficaram como gap documentado, nao como input falso.
-- disponibilidade detalhada continua representada por horarios abertos (`place_academy_slots`) e turmas; edicao avancada fica para `ACADEMY-V2-07`.
+- disponibilidade detalhada continua representada por horarios abertos (`place_academy_slots`) e turmas; regras recorrentes avancadas ficam como gap para QA/backend.
 
-### [>] ACADEMY-V2-07 - Configuracao de quadras e horarios
+### [x] ACADEMY-V2-07 - Configuracao de quadras e horarios
 
-Status: `[>]` prioridade atual
+Status: `[x]` concluido em 2026-05-14
 
 Objetivo:
 
@@ -310,9 +310,27 @@ Criterios:
 - ver conflitos de professor/quadra;
 - recursos nao dependem de draft invisivel de turma.
 
-### [ ] ACADEMY-V2-08 - Backend gaps, permissoes e QA
+Implementado:
 
-Status: `[ ]` pendente
+- `Configuracao` deixou de depender do weekday invisivel do draft de turma e ganhou filtro explicito por data/dia;
+- alternancia `Por quadra` / `Por professor` com filtro por recurso;
+- grade operacional mostra turmas, horarios abertos, horarios convertidos e bloqueios no mesmo dia;
+- criacao de horario aberto e bloqueio agora nasce da propria Configuracao com persistencia em `place_academy_slots`;
+- `createPlaceAcademySlot(...)` passou a aceitar `coachId` opcional e `status`, permitindo bloqueio de quadra/professor sem gambiarra de frontend;
+- horarios abertos preservam a acao `Criar turma`, levando para `Grade` com o setup aberto e dados pre-preenchidos;
+- horarios abertos podem ser bloqueados e bloqueios podem ser reabertos;
+- conflitos por recurso aparecem na propria row/grupo quando ha sobreposicao;
+- layout mobile passa a empilhar toolbar, criacao e grupos sem esconder dados;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Risco residual:
+
+- transformar horario aberto em turma ainda usa o fluxo existente de criar turma com draft pre-preenchido, nao uma RPC transacional unica slot+class;
+- regras avancadas de disponibilidade por professor/quadra ainda dependem de janelas em `place_academy_slots`, sem modelo proprio de recorrencia semanal.
+
+### [x] ACADEMY-V2-08 - Backend gaps, permissoes e QA
+
+Status: `[x]` concluido em 2026-05-14
 
 Objetivo:
 
@@ -326,6 +344,21 @@ Criterios:
 - rodar lint/build;
 - gerar screenshots before/after;
 - atualizar MDs.
+
+Implementado/validado:
+
+- varredura de permissoes e acoes da Academia v2 confirmou que acoes financeiras seguem condicionadas a `canManageFinance`;
+- edicao de turma, aluno, professor, mensalidade, chamada, aula avulsa, reposicao e horario aberto usam services reais existentes;
+- cabeçalho legado `Academia e aulas` deixou de aparecer dentro do workspace de Gestao, evitando duplicidade depois da v2;
+- fluxo `Criar turma` a partir de horario aberto deixou de reportar falha total quando a turma foi criada mas a marcacao do slot como `assigned` falhou;
+- nesse caso, a UI informa explicitamente que a turma foi criada e que o horario precisa ser revisado em `Configuracao`;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Gaps documentados:
+
+- transformar horario aberto em turma ainda nao e uma transacao unica `slot -> class -> assigned`; criar RPC transacional fica recomendado se QA real mostrar inconsistencia frequente;
+- screenshots autenticados nao foram gerados nesta rodada por falta de sessao local autenticada confiavel no ambiente atual;
+- regras recorrentes avancadas de disponibilidade por professor/quadra continuam fora do modelo atual e devem ser produto/backend separado se forem priorizadas.
 
 ### [x] SWEEP-ROLE-01 - Varredura por perfil Admin/Player/Professor
 

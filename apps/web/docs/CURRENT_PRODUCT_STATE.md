@@ -214,12 +214,15 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Primeiro corte de `Academia v2` foi aplicado: tabs renomeadas para `Grade` e `Configuracao`, aliases antigos preservados, bloco legado `Academia e aulas` desligado dentro do workspace de Gestao, recursos movidos para `Configuracao` e busca de encaixe recolhida em `Pendencias`.
 - `Academia v2 - Grade` ja possui busca/filtros, contador sem limite silencioso, row operacional e `ClassDrawer` para editar turma, salvar mensalidade, ver/matricular alunos e consultar historico curto.
 - Suporte backend minimo para edicao real da turma foi criado em `updatePlaceAcademyClass(...)`, evitando acao falsa de frontend.
+- `Academia v2 - Configuracao` ja possui data/dia explicitos, alternancia por quadra/professor, criacao de horario aberto, bloqueio/reabertura, acao `Criar turma` a partir de horario aberto e conflito visivel por recurso.
+- Suporte backend minimo para Configuracao foi ajustado em `createPlaceAcademySlot(...)`, permitindo `coachId` opcional e `status` para janelas abertas ou bloqueios reais.
+- `Academia v2 - QA` removeu o cabeçalho legado remanescente dentro do workspace, validou lint/build e ajustou o feedback do fluxo `horario aberto -> turma` para nao esconder sucesso parcial.
 
 ### Ainda fraco
 
 - `PlacesPage` ainda concentra muita orquestracao e ainda influencia a sensacao de admin template.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
-- Academia ainda precisa completar a v2 operacional: transformar Alunos/Hoje/Professores em drawers, transformar encaixe em drawer/sheet real, migrar criacao de turma para drawer curto e revisar Configuracao com data/dia explicitos.
+- Academia v2 ainda tem gap transacional conhecido: transformar horario aberto em turma ainda nao e uma RPC unica `slot -> class -> assigned`; implementar apenas se QA real mostrar inconsistencia ou se o fluxo virar critico.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
 - Sistema ja iniciou visibilidade por perfil/plano na navegacao global e guardrail real para criar local, mas ainda precisa aplicar permissoes reais em mais hubs internos.
 - Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; entradas internas agora tambem mudam prioridade por papel, mas ainda falta calibrar fluxos internos especificos por massa real.

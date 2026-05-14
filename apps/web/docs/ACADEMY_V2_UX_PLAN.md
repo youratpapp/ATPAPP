@@ -579,6 +579,15 @@ Entregue:
 - filtro de data/dia;
 - visao por professor/quadra;
 - horario aberto, turma neste horario e bloqueio.
+- executado em 2026-05-14:
+  - `PlaceAcademyResourcesModule` virou workspace operacional de `Quadras e horarios`;
+  - filtro explicito por data/dia substituiu dependencia invisivel do draft de turma;
+  - alternancia `Por quadra` / `Por professor` com filtro por recurso;
+  - rows mostram turmas, horarios abertos, horarios convertidos e bloqueios do dia;
+  - conflitos de horario aparecem por recurso;
+  - `Criar horario aberto` e `Bloquear horario` persistem em `place_academy_slots`;
+  - `Criar turma` a partir de horario aberto leva para `Grade` com setup aberto e draft preenchido;
+  - `createPlaceAcademySlot(...)` agora aceita `status` e `coachId` opcional para permitir bloqueio de quadra/professor.
 
 ### ACADEMY-V2-08 - QA, permissoes e backend gaps
 
@@ -586,6 +595,13 @@ Entregue:
 - criar suporte minimo se faltar;
 - screenshots desktop/mobile;
 - atualizar docs.
+- executado em 2026-05-14:
+  - acoes financeiras da Academia v2 permanecem condicionadas a `canManageFinance`;
+  - acoes operacionais de turma, aluno, professor, chamada, aula avulsa, reposicao e horario aberto usam services reais existentes;
+  - removido o cabeçalho legado `Academia e aulas` de dentro do workspace de Gestao;
+  - fluxo `horario aberto -> criar turma` agora informa sucesso parcial quando a turma persiste mas o slot nao e marcado como `assigned`;
+  - gap transacional registrado: conversao `slot -> class -> assigned` ainda nao e RPC unica;
+  - `npm.cmd run lint` e `npm.cmd run build` passaram.
 
 ## Checklist de validacao
 

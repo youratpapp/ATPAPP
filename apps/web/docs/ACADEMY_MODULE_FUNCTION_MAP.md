@@ -526,44 +526,65 @@ Logica basica:
 Ponto de evolucao:
 - `Ajustar agenda` leva para `Recursos`, mas o usuario espera talvez uma agenda do professor filtrada. Isso precisa ficar mais explicito.
 
-## 8. Aba Recursos
+## 8. Aba Configuracao
 
-Funcao: ver professores, quadras e horarios livres usados para criar turmas sem conflito.
+Funcao: gerir quadras, professores e janelas operacionais para aulas sem depender de estado invisivel.
 
-### Cards de resumo
+### Filtro de dia e visao
 
 Elementos:
-- `Professores`: quantidade e nomes.
-- `Quadras`: quantidade e nomes.
-- `Horarios abertos`: quantidade.
-
-### Disponibilidade por professor
-
-Conteudo:
-- Para cada professor, mostra horarios ocupados no dia selecionado pelo draft de turma.
-- Se nao ha turma naquele dia, mostra `livre`.
+- `Data`: input explicito; o sistema deriva o dia da semana.
+- `Visao`: alterna entre `Por quadra` e `Por professor`.
+- `Quadra/Professor`: filtro por recurso ou todos.
+- contador do dia: turmas, horarios abertos e bloqueios.
 
 Logica basica:
-- Usa `academyDraft.weekday`.
-- Filtra `resourceDayClasses` por `coachId`.
+- `weekdayFromDate(data)` define o dia operacional.
+- Turmas ativas e `place_academy_slots` sao filtrados pelo weekday derivado.
+- A tela nao usa mais o `weekday` do draft de criacao de turma.
 
-### Disponibilidade por quadra
+### Criar horario operacional
 
 Conteudo:
-- Para cada quadra, mostra horarios ocupados no dia selecionado pelo draft.
-- Se nao ha turma naquele dia, mostra `livre`.
+- professor opcional;
+- quadra opcional;
+- inicio;
+- fim;
+- vagas;
+- nota.
+
+Acoes:
+- `Criar horario aberto`
+  - cria `place_academy_slots.status = open`;
+  - exige ao menos professor ou quadra.
+- `Bloquear horario`
+  - cria `place_academy_slots.status = blocked`;
+  - permite bloquear professor, quadra ou ambos.
 
 Logica basica:
-- Usa `academyDraft.weekday`.
-- Filtra `resourceDayClasses` por `courtId`.
+- `createPlaceAcademySlot(...)` aceita `coachId` opcional e `status`.
+- O retorno recarrega recursos do local e mostra feedback de sucesso/erro.
+
+### Disponibilidade por professor/quadra
+
+Conteudo:
+- grupos por quadra ou por professor;
+- rows com turmas, horarios abertos, horarios convertidos e bloqueios;
+- estado vazio orienta criar horario aberto ou bloqueio;
+- conflito aparece quando duas rows do mesmo recurso se sobrepoem.
+
+Logica basica:
+- eventos sao montados a partir de `AcademyClass` e `AcademySlot`;
+- `timeRangesOverlap` detecta conflito por grupo;
+- nao ha `slice` silencioso.
 
 ### Horarios abertos
 
 Conteudo:
-- Lista `academySlots` com `status === "open"` no mesmo dia do draft.
-- Mostra horario, professor, quadra e capacidade.
+- rows de `place_academy_slots.status = open` no dia selecionado;
+- mostram horario, professor, quadra e capacidade.
 
-Acao:
+Acoes:
 - `Criar turma`
   - copia dados do slot para o draft de criacao de turma:
     - slotId;
@@ -574,11 +595,24 @@ Acao:
     - startsAt;
     - endsAt;
     - capacity.
-  - troca a aba para `Turmas`.
+  - troca para `Grade` e abre o setup com dados preenchidos.
+- `Bloquear`
+  - altera `status` do slot aberto para `blocked`.
 
-Ponto de evolucao:
-- Hoje a aba depende indiretamente do dia escolhido no draft de turma. Isso nao e obvio.
-- Precisa de filtro visivel de dia/data e talvez modo `Professor`/`Quadra`.
+### Bloqueios
+
+Conteudo:
+- rows de `place_academy_slots.status = blocked`;
+- mostram qual professor/quadra foi bloqueado e em qual faixa.
+
+Acao:
+- `Reabrir`
+  - altera `status` para `open`.
+
+Risco residual:
+- transformar slot em turma ainda usa draft + fluxo de criacao existente; a UI informa sucesso parcial se a turma persistir mas o slot nao virar `assigned`.
+- uma RPC transacional slot+class pode ser criada se QA mostrar inconsistencia frequente.
+- disponibilidade recorrente avancada ainda e representada por slots/turmas, sem tabela especifica de escala semanal.
 
 ## 9. Regras de acesso e variacoes por perfil
 
@@ -840,4 +874,4 @@ Mudancas aplicadas em Professores:
 Risco residual:
 
 - especialidades e niveis atendidos ainda nao existem no schema de `place_coaches`; nao foram criados inputs falsos.
-- disponibilidade detalhada ainda depende de `place_academy_slots` e sera refinada em `ACADEMY-V2-07`.
+- disponibilidade detalhada ainda depende de `place_academy_slots`; regras recorrentes avancadas ficam como gap de QA/backend.

@@ -14,7 +14,7 @@ import { PlaceAcademyCoachesModule } from "../components/place/PlaceAcademyCoach
 import { PlaceAcademyFitModule } from "../components/place/PlaceAcademyFitModule";
 import { PlaceAcademyOperationalQueues } from "../components/place/PlaceAcademyOperationalQueues";
 import { PlaceAcademyRequestsModule } from "../components/place/PlaceAcademyRequestsModule";
-import { PlaceAcademyResourcesModule } from "../components/place/PlaceAcademyResourcesModule";
+import { PlaceAcademyResourcesModule, type PlaceAcademySlotDraft } from "../components/place/PlaceAcademyResourcesModule";
 import { PlaceAcademyStudentsModule } from "../components/place/PlaceAcademyStudentsModule";
 import { PlaceAcademyTodayModule } from "../components/place/PlaceAcademyTodayModule";
 import { PlaceCanteenProductsModule } from "../components/place/PlaceCanteenProductsModule";
@@ -152,6 +152,7 @@ import type {
   AcademyLessonFitSlot,
   AcademyLessonRequest,
   AcademyMakeupCredit,
+  AcademySlot,
   AvailableCourt,
   AppPayment,
   CourtBooking,
@@ -1666,15 +1667,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         capacity: Number(draft.capacity) || 8,
         monthlyFeeCents: Math.max(0, Math.round(Number(draft.monthlyFee || 0) * 100)),
       });
+      let slotAssigned = true;
       if (draft.slotId) {
-        await updatePlaceAcademySlotStatus(draft.slotId, "assigned");
+        try {
+          await updatePlaceAcademySlotStatus(draft.slotId, "assigned");
+        } catch {
+          slotAssigned = false;
+        }
       }
       setAcademyClassDraftByPlace((prev) => ({
         ...prev,
         [place.id]: { ...draft, slotId: "", title: "", coachName: "", level: "" },
       }));
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Turma criada." });
+      setFeedback({
+        kind: slotAssigned ? "success" : "error",
+        text: slotAssigned ? "Turma criada." : "Turma criada, mas o horario aberto nao foi marcado como convertido. Revise Configuracao.",
+      });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar turma.") });
     } finally {
@@ -1810,6 +1819,45 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setFeedback({ kind: "success", text: "Horario aberto para o professor." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao abrir horario.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onCreateAcademyResourceSlot = async (place: Place, draft: PlaceAcademySlotDraft, status: AcademySlot["status"]) => {
+    if ((!draft.coachId && !draft.courtId) || !draft.startsAt || !draft.endsAt) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await createPlaceAcademySlot({
+        placeId: place.id,
+        coachId: draft.coachId || null,
+        courtId: draft.courtId || null,
+        weekday: draft.weekday,
+        startsAt: draft.startsAt,
+        endsAt: draft.endsAt,
+        capacity: Number(draft.capacity) || 8,
+        notes: draft.notes,
+        status,
+      });
+      await refreshPlaceResources(place.id);
+      setFeedback({ kind: "success", text: status === "blocked" ? "Horario bloqueado." : "Horario aberto criado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, status === "blocked" ? "Falha ao bloquear horario." : "Falha ao abrir horario.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onUpdateAcademyResourceSlotStatus = async (placeId: string, slot: AcademySlot, status: AcademySlot["status"]) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updatePlaceAcademySlotStatus(slot.id, status);
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: status === "blocked" ? "Horario bloqueado." : "Horario reaberto." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar horario.") });
     } finally {
       setBusy(false);
     }
@@ -5443,7 +5491,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         weekdayLabels={WEEKDAY_LABELS}
                       />
                       {canManagePlace ? (
-                        <details className="workspace-disclosure">
+                        <details className="workspace-disclosure" open={Boolean(academyDraft.slotId)}>
                           <summary>Criar nova turma ou abrir horario</summary>
                           <PlaceAcademyClassSetupModule
                             activeCourts={activeCourts}
@@ -5579,8 +5627,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         />
                         <WorkspaceCard
                           title="Horarios abertos"
-                          subtitle={countLabel(resourceDaySlots.length, "horario", "horarios")}
-                          detail="Use os horarios livres abaixo para criar turmas sem conflito."
+                          subtitle={countLabel(academySlots.filter((slot) => slot.status === "open").length, "horario aberto", "horarios abertos")}
+                          detail="Use data, professor ou quadra para localizar disponibilidade sem depender do draft da turma."
                         />
                         <WorkspaceCard
                           title="Professores vinculados"
@@ -5592,6 +5640,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <PlaceAcademyResourcesModule
                           activeCourts={activeCourts}
                           busy={busy}
+                          classes={visibleAcademyClasses}
                           coaches={displayedCoaches}
                           onChangeAcademyDraftFromSlot={(patch) => {
                             setAcademyClassDraftByPlace((prev) => ({
@@ -5604,23 +5653,28 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             }));
                             setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
                           }}
-                          resourceDayClasses={resourceDayClasses}
-                          resourceDaySlots={resourceDaySlots}
+                          onCreateSlot={(draft, status) => void onCreateAcademyResourceSlot(p, draft, status)}
+                          onUpdateSlotStatus={(slot, status) => void onUpdateAcademyResourceSlotStatus(p.id, slot, status)}
+                          slots={academySlots}
+                          weekdayLabels={WEEKDAY_LABELS}
                         />
                       ) : null}
                     </>
                   ) : null}
                 </AcademyWorkspaceShell>
               ) : null}
-              <div className="place-booking-head">
-                <strong>Academia e aulas</strong>
-                <span>{countLabel(activeAcademyClasses.length, "turma", "turmas")}</span>
-              </div>
+              {!showAcademyWorkspace ? (
+                <div className="place-booking-head">
+                  <strong>Academia e aulas</strong>
+                  <span>{countLabel(activeAcademyClasses.length, "turma", "turmas")}</span>
+                </div>
+              ) : null}
               {showAcademyResources && canManageAcademy ? (
                 <>
                   <PlaceAcademyResourcesModule
                     activeCourts={activeCourts}
                     busy={busy}
+                    classes={visibleAcademyClasses}
                     coaches={displayedCoaches}
                     onChangeAcademyDraftFromSlot={(patch) => {
                       setAcademyClassDraftByPlace((prev) => ({
@@ -5633,8 +5687,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       }));
                       setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
                     }}
-                    resourceDayClasses={resourceDayClasses}
-                    resourceDaySlots={resourceDaySlots}
+                    onCreateSlot={(draft, status) => void onCreateAcademyResourceSlot(p, draft, status)}
+                    onUpdateSlotStatus={(slot, status) => void onUpdateAcademyResourceSlotStatus(p.id, slot, status)}
+                    slots={academySlots}
+                    weekdayLabels={WEEKDAY_LABELS}
                   />
                 </>
               ) : null}

@@ -2276,25 +2276,27 @@ export async function listPlaceAcademySlots(placeId: string): Promise<AcademySlo
 
 export async function createPlaceAcademySlot(input: {
   placeId: string;
-  coachId: string;
+  coachId?: string | null;
   courtId?: string | null;
   weekday: number;
   startsAt: string;
   endsAt: string;
   capacity: number;
   notes?: string;
+  status?: AcademySlot["status"];
 }): Promise<AcademySlot> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_SLOTS)
     .insert({
       place_id: input.placeId,
-      coach_id: input.coachId,
+      coach_id: input.coachId || null,
       court_id: input.courtId || null,
       weekday: Math.max(0, Math.min(6, Number(input.weekday) || 1)),
       starts_at: input.startsAt,
       ends_at: input.endsAt,
       capacity: Math.max(1, Number(input.capacity) || 8),
+      status: input.status || "open",
       notes: input.notes?.trim() || null,
     })
     .select("id,place_id,coach_id,court_id,weekday,starts_at,ends_at,capacity,status,notes")

@@ -110,6 +110,7 @@ Uso atual no produto:
 - Cantina: produto com categoria, preco, estoque e status de estoque.
 - Academia: turma com horario, professor/quadra/nivel, ocupacao, pendencias e metricas de suporte.
 - Academia: aluno com turma, telefone, pagamento, presenca e uma acao primaria contextual; acoes secundarias ficam em disclosure.
+- Academia Configuracao: recurso por quadra/professor com horario, tipo (`turma`, `horario aberto`, `bloqueio`), conflito e acao primaria (`Criar turma`, `Bloquear`, `Reabrir`).
 - Competition OS: `Minhas partidas` do torneio com partida, classe/fase, horario, estado operacional, presenca e acao primaria em zonas separadas.
 - Competition OS: partidas de grupos/mata-mata do torneio com numero, jogadores, status, horario, confirmacoes e placar em leitura row-like.
 - Competition OS: partidas da liga com rodada/jogadores, horario, status, estado operacional e acao `Abrir sala` em row compacta.
