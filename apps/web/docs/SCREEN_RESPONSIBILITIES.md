@@ -137,3 +137,5 @@ Quando uma tela cresce demais:
 - 2026-05-13: `Ajustes > Estrutura` passou a conter edicao direta dos dados publicos do local, para que `Publicar pagina` nao termine em uma tela apenas informativa.
 - 2026-05-13: `/locais` passou a tratar filtros como parte da intencao: reservar quadra exige cidade/data/hora para disponibilidade real, entrar em aula filtra por perfil/dia/periodo/vaga e encontrar jogadores filtra chamadas sem misturar quadras.
 - 2026-05-13: `/locais/:placeId` passou a resolver a decisao dentro do local com agenda visual de quadras por horario e filtro de turmas compativeis antes do formulario.
+- 2026-05-13: resultado de `Reservar quadra` em `/locais` passou a ser lista direta de quadras livres no horario pesquisado; ficha completa, planos e aulas ficam fora desse fluxo.
+- 2026-05-13: resultado de `Entrar em aula` em `/locais` passou a ser lista direta de turmas com vaga; nome da academia, UF, dia, periodo e nivel levam a uma turma acionavel, nao a uma ficha generica.

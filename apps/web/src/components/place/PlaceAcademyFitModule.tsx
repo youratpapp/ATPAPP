@@ -1,4 +1,5 @@
 import type { AcademyClass, AcademyCoach, AcademyLessonFitSlot, AcademyLessonRequest, AcademyMakeupCredit, PlaceCourt, Profile } from "../../lib/types";
+import { ACADEMY_LEVEL_OPTIONS } from "../../lib/academy-levels";
 import { countLabel } from "../../lib/place-management";
 import { formatMoneyFromCents } from "../../lib/payments";
 import { WorkspaceCard, WorkspaceEmptyState, WorkspaceList, WorkspaceRow } from "./PlaceWorkspaceUi";
@@ -93,7 +94,14 @@ export function PlaceAcademyFitModule({
       <WorkspaceCard title="Buscar encaixe" subtitle="Encontre horario real para aula avulsa ou reposicao." detail="Use poucos filtros e deixe o sistema retornar as turmas com vaga ou ausencia avisada.">
         <div className="cluster" style={{ marginTop: 6 }}>
           <input type="date" value={fitSearch.requestedOn} onChange={(event) => onChangeFitSearch({ ...fitSearch, requestedOn: event.target.value })} />
-          <input value={fitSearch.level} onChange={(event) => onChangeFitSearch({ ...fitSearch, level: event.target.value })} placeholder="Nivel/classe" />
+          <select value={fitSearch.level} onChange={(event) => onChangeFitSearch({ ...fitSearch, level: event.target.value })}>
+            <option value="">Qualquer nivel</option>
+            {ACADEMY_LEVEL_OPTIONS.map((level) => (
+              <option key={`fit-level:${level.value}`} value={level.value}>
+                {level.label}
+              </option>
+            ))}
+          </select>
           <select value={fitSearch.period} onChange={(event) => onChangeFitSearch({ ...fitSearch, period: event.target.value as PlaceAcademyFitSearch["period"] })}>
             <option value="">Qualquer periodo</option>
             <option value="morning">Manha</option>

@@ -188,6 +188,9 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - `/gestao` ja recebeu refinamento mobile-first para header compacto, stats em trilho e atalhos de modulos sem empilhamento longo.
 - `/locais` ja separa descoberta por intencao: encontrar jogadores, reservar quadra e entrar em aula; cards usam acao primaria contextual e secundarias em `Mais`.
 - `/locais` ja iniciou filtros inteligentes por intencao: quadra filtra por cidade/data/hora/duracao e disponibilidade real, aulas filtram por cidade/dia/periodo/nivel/vagas, e jogadores filtram chamadas por cidade/data/periodo/nivel.
+- `/locais` ja devolve quadras livres como resultado direto da busca de reserva, evitando abrir uma ficha completa de academia com planos/aulas quando a intencao e apenas reservar horario.
+- `/locais` ja devolve turmas com vaga como resultado direto da busca de aula, evitando abrir uma ficha completa de academia quando a intencao e entrar em uma turma.
+- Niveis de aula ja possuem taxonomia padrao: `Iniciante`, `Intermediario`, `Avancado`, `Primeira Classe` e `Profissional`.
 - Pagina publica do local ja iniciou escolha visual: reserva mostra agenda do dia por horario/quadra livre, e aulas mostram turmas compativeis por perfil antes do formulario.
 - Criacao profissional de local ja exige entitlement no backend (`app_user_product_entitlements`, `app_user_can_create_place()` e `app_create_place(...)`); Free Player nao deve ver nem conseguir inserir local direto.
 

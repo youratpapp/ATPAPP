@@ -480,12 +480,18 @@ Regras:
 - default deve ser a rotina mais comum.
 - filtros mudam conforme a tarefa: quadra usa cidade/data/hora/duracao, aula usa dia/periodo/nivel/vaga e chamada usa cidade/data/nivel.
 - quando o dominio pode ter alto volume, nao exibir lista aberta sem contexto operacional.
+- busca de disponibilidade deve devolver a entidade acionavel, nao apenas o container: reserva devolve quadras livres; aula devolve turmas com vaga; chamada devolve jogadores/partidas abertas.
+- resultado de reserva deve esconder planos, aulas, CRM, financeiro e dados institucionais que nao ajudam a concluir a tarefa.
+- resultado de aula deve esconder reserva, planos, CRM, financeiro e dados institucionais; deve priorizar turma, horario, professor, nivel, vagas e CTA para enviar interesse.
+- filtros de nivel de aula usam taxonomia fechada: Iniciante, Intermediario, Avancado, Primeira Classe e Profissional.
 
 Anti-pattern:
 
 - reaproveitar o mesmo filtro generico para tarefas semanticamente diferentes;
 - listar 200 locais e obrigar o usuario a abrir um por um para descobrir disponibilidade;
 - esconder a diferenca entre procurar jogador, reservar quadra e entrar em aula.
+- retornar academia completa quando o usuario pesquisou uma quadra livre em data/hora especifica.
+- retornar academia completa quando o usuario pesquisou uma turma com vaga por perfil/nivel.
 
 ## Mobile Rows
 

@@ -112,6 +112,18 @@ type AvailableCourtRow = CourtRow & {
   requires_approval?: boolean | null;
 };
 
+type DiscoveryAvailableCourtRow = AvailableCourtRow & {
+  place_name: string | null;
+  place_city: string | null;
+  place_state: string | null;
+};
+
+export type DiscoveryAvailableCourt = AvailableCourt & {
+  placeName: string;
+  placeCity: string;
+  placeState: string;
+};
+
 type PlaceCourtAvailabilitySummaryRow = {
   place_id: string;
   available_courts: number | null;
@@ -138,6 +150,22 @@ export type PlaceAcademyDiscoverySummary = {
   matchingClasses: number;
   availableSpots: number;
   minMonthlyFeeCents: number;
+};
+
+type DiscoveryAcademyClassRow = AcademyClassRow & {
+  place_name: string | null;
+  place_city: string | null;
+  place_state: string | null;
+  occupied_spots: number | null;
+  available_spots: number | null;
+};
+
+export type DiscoveryAcademyClass = AcademyClass & {
+  placeName: string;
+  placeCity: string;
+  placeState: string;
+  occupiedSpots: number;
+  availableSpots: number;
 };
 
 type AcademyClassSpotRow = {
@@ -556,6 +584,15 @@ function rowToAvailableCourt(row: AvailableCourtRow): AvailableCourt {
   };
 }
 
+function rowToDiscoveryAvailableCourt(row: DiscoveryAvailableCourtRow): DiscoveryAvailableCourt {
+  return {
+    ...rowToAvailableCourt(row),
+    placeName: row.place_name || "",
+    placeCity: row.place_city || "",
+    placeState: row.place_state || "",
+  };
+}
+
 function rowToPlaceCourtAvailabilitySummary(row: PlaceCourtAvailabilitySummaryRow): PlaceCourtAvailabilitySummary {
   return {
     placeId: row.place_id,
@@ -571,6 +608,17 @@ function rowToPlaceAcademyDiscoverySummary(row: PlaceAcademyDiscoverySummaryRow)
     matchingClasses: Number(row.matching_classes || 0),
     availableSpots: Number(row.available_spots || 0),
     minMonthlyFeeCents: Number(row.min_monthly_fee_cents || 0),
+  };
+}
+
+function rowToDiscoveryAcademyClass(row: DiscoveryAcademyClassRow): DiscoveryAcademyClass {
+  return {
+    ...rowToAcademyClass(row),
+    placeName: row.place_name || "",
+    placeCity: row.place_city || "",
+    placeState: row.place_state || "",
+    occupiedSpots: Number(row.occupied_spots || 0),
+    availableSpots: Number(row.available_spots || 0),
   };
 }
 
@@ -1917,6 +1965,25 @@ export async function searchPlacesWithAvailableCourts(input: {
   return ((data ?? []) as PlaceCourtAvailabilitySummaryRow[]).map(rowToPlaceCourtAvailabilitySummary);
 }
 
+export async function searchAvailableCourtsForDiscovery(input: {
+  city?: string;
+  state?: string;
+  query?: string;
+  startsAt: string;
+  endsAt: string;
+}): Promise<DiscoveryAvailableCourt[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_search_available_courts_for_discovery", {
+    p_city: input.city?.trim() || null,
+    p_state: input.state?.trim() || null,
+    p_query: input.query?.trim() || null,
+    p_starts_at: input.startsAt,
+    p_ends_at: input.endsAt,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as DiscoveryAvailableCourtRow[]).map(rowToDiscoveryAvailableCourt);
+}
+
 export async function searchPlacesWithAcademyClasses(input: {
   city?: string;
   state?: string;
@@ -1940,6 +2007,31 @@ export async function searchPlacesWithAcademyClasses(input: {
   });
   if (error) throw new Error(error.message);
   return ((data ?? []) as PlaceAcademyDiscoverySummaryRow[]).map(rowToPlaceAcademyDiscoverySummary);
+}
+
+export async function searchAcademyClassesForDiscovery(input: {
+  city?: string;
+  state?: string;
+  query?: string;
+  weekday?: number | null;
+  period?: "" | "morning" | "afternoon" | "night";
+  level?: string;
+  ageGroup?: "" | AcademyClass["ageGroup"];
+  genderScope?: "" | AcademyClass["genderScope"];
+}): Promise<DiscoveryAcademyClass[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_search_academy_classes_for_discovery", {
+    p_city: input.city?.trim() || null,
+    p_state: input.state?.trim() || null,
+    p_query: input.query?.trim() || null,
+    p_weekday: Number.isInteger(input.weekday) ? input.weekday : null,
+    p_period: input.period || null,
+    p_level: input.level?.trim() || null,
+    p_age_group: input.ageGroup || null,
+    p_gender_scope: input.genderScope || null,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as DiscoveryAcademyClassRow[]).map(rowToDiscoveryAcademyClass);
 }
 
 export async function listPublicAcademyClassSpots(placeId: string): Promise<AcademyClassSpot[]> {

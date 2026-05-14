@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
@@ -18,6 +18,7 @@ import {
   searchAvailableCourts,
   type AcademyClassSpot,
 } from "../lib/places";
+import { ACADEMY_LEVEL_OPTIONS, academyLevelMatches } from "../lib/academy-levels";
 import type { AcademyClass, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
 
 type Props = {
@@ -46,6 +47,13 @@ function nextClassLabel(academyClass: AcademyClass): string {
 function datetimeLocalValue(date: Date): string {
   const pad = (value: number) => String(value).padStart(2, "0");
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function datetimeLocalFromParam(value: string | null): string {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return datetimeLocalValue(d);
 }
 
 function defaultBookingStart(): string {
@@ -86,6 +94,14 @@ function periodMatchesTime(time: string, period: DiscoveryPeriod): boolean {
   return hour >= 18;
 }
 
+function normalizeSearchText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
 function buildAvailabilityTimes(): string[] {
   return Array.from({ length: 17 }, (_, index) => `${String(index + 6).padStart(2, "0")}:00`);
 }
@@ -93,6 +109,7 @@ function buildAvailabilityTimes(): string[] {
 export function PlacePublicPage({ user, profile }: Props) {
   const { placeId } = useParams();
   const navigate = useNavigate();
+  const routeLocation = useLocation();
   const [place, setPlace] = useState<Place | null>(null);
   const [courts, setCourts] = useState<PlaceCourt[]>([]);
   const [classes, setClasses] = useState<AcademyClass[]>([]);
@@ -150,6 +167,13 @@ export function PlacePublicPage({ user, profile }: Props) {
       setLoading(true);
       setError("");
       try {
+        const query = new URLSearchParams(routeLocation.search);
+        const intent = query.get("intent") || "";
+        const requestedCourtId = query.get("courtId") || "";
+        const requestedClassId = query.get("classId") || "";
+        const requestedLevel = query.get("level") || "";
+        const requestedStartsAt = datetimeLocalFromParam(query.get("startsAt"));
+        const requestedEndsAt = datetimeLocalFromParam(query.get("endsAt"));
         const loadedPlace = await getPlaceById(user, id);
         if (!loadedPlace) {
           if (!cancelled) {
@@ -165,6 +189,14 @@ export function PlacePublicPage({ user, profile }: Props) {
           listOpenMatches(user, [id]).catch(() => [] as OpenMatch[]),
           listPublicAcademyClassSpots(id).catch(() => [] as AcademyClassSpot[]),
         ]);
+        const linkedAvailableCourts =
+          requestedStartsAt && requestedEndsAt
+            ? await searchAvailableCourts({
+                placeId: id,
+                startsAt: new Date(requestedStartsAt).toISOString(),
+                endsAt: new Date(requestedEndsAt).toISOString(),
+              }).catch(() => [] as AvailableCourt[])
+            : [];
         if (cancelled) return;
         setPlace(loadedPlace);
         setCourts(loadedCourts);
@@ -172,8 +204,41 @@ export function PlacePublicPage({ user, profile }: Props) {
         setPlans(loadedPlans);
         setMatches(loadedMatches.filter((match) => match.status === "open"));
         setAcademySpotsByClass(Object.fromEntries(loadedSpots.map((row) => [row.classId, row])));
-        setBookingDraft((prev) => ({ ...prev, courtId: prev.courtId || loadedCourts.find((court) => court.isActive)?.id || "" }));
-        setAcademyDraft((prev) => ({ ...prev, classId: prev.classId || loadedClasses.find((academyClass) => academyClass.isActive)?.id || "" }));
+        if (linkedAvailableCourts.length) setAvailableCourts(linkedAvailableCourts);
+        if (requestedStartsAt) setAvailabilityDate(requestedStartsAt.slice(0, 10));
+        setBookingDraft((prev) => {
+          const activeDefaultCourt = loadedCourts.find((court) => court.isActive)?.id || "";
+          const requestedCourtIsActive = loadedCourts.some((court) => court.id === requestedCourtId && court.isActive);
+          const linkedCourtId = linkedAvailableCourts.find((court) => court.id === requestedCourtId)?.id || linkedAvailableCourts[0]?.id || "";
+          return {
+            ...prev,
+            courtId: linkedCourtId || (requestedCourtIsActive ? requestedCourtId : "") || prev.courtId || activeDefaultCourt,
+            startsAt: requestedStartsAt || prev.startsAt,
+            endsAt: requestedEndsAt || prev.endsAt,
+          };
+        });
+        if (intent === "booking") {
+          setBookingFeedback(
+            linkedAvailableCourts.length
+              ? "Quadra e horario vieram da busca. Complete seus dados para solicitar."
+              : "Confira a disponibilidade do horario antes de solicitar."
+          );
+          window.setTimeout(() => document.getElementById("place-public-booking")?.scrollIntoView({ block: "start", behavior: "smooth" }), 80);
+        }
+        if (intent === "academy") {
+          setAcademyFitFilter((prev) => ({ ...prev, level: requestedLevel || prev.level }));
+          setAcademyDraft((prev) => ({
+            ...prev,
+            classId: loadedClasses.some((academyClass) => academyClass.id === requestedClassId && academyClass.isActive)
+              ? requestedClassId
+              : prev.classId || loadedClasses.find((academyClass) => academyClass.isActive)?.id || "",
+            notes: prev.notes || requestedLevel,
+          }));
+          setAcademyFeedback("Turma selecionada pela busca. Complete seus dados para enviar interesse.");
+          window.setTimeout(() => document.getElementById("place-public-academy")?.scrollIntoView({ block: "start", behavior: "smooth" }), 80);
+        } else {
+          setAcademyDraft((prev) => ({ ...prev, classId: prev.classId || loadedClasses.find((academyClass) => academyClass.isActive)?.id || "" }));
+        }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar local.");
       } finally {
@@ -184,20 +249,25 @@ export function PlacePublicPage({ user, profile }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [placeId, user]);
+  }, [placeId, routeLocation.search, user]);
 
   const activeCourts = courts.filter((court) => court.isActive);
   const activeClasses = classes.filter((academyClass) => academyClass.isActive);
   const activePlans = plans.filter((plan) => plan.isActive);
-  const classLevelOptions = Array.from(new Set(activeClasses.map((academyClass) => academyClass.level).filter(Boolean))).slice(0, 8);
   const filteredAcademyClasses = activeClasses
     .filter((academyClass) => {
       const weekday = academyFitFilter.weekday ? Number(academyFitFilter.weekday) : null;
-      const level = academyFitFilter.level.trim().toLowerCase();
+      const level = academyFitFilter.level.trim();
       const spot = academySpotsByClass[academyClass.id];
       if (weekday !== null && academyClass.weekday !== weekday) return false;
       if (!periodMatchesTime(academyClass.startsAt, academyFitFilter.period)) return false;
-      if (level && !academyClass.level.toLowerCase().includes(level) && !academyClass.title.toLowerCase().includes(level)) return false;
+      if (
+        level &&
+        !academyLevelMatches(academyClass.level, level) &&
+        !normalizeSearchText(academyClass.title).includes(normalizeSearchText(level))
+      ) {
+        return false;
+      }
       if (academyFitFilter.ageGroup && academyClass.ageGroup !== academyFitFilter.ageGroup) return false;
       if (academyFitFilter.genderScope && academyClass.genderScope !== "mixed" && academyClass.genderScope !== academyFitFilter.genderScope) return false;
       return !spot || spot.availableSpots > 0;
@@ -606,22 +676,14 @@ export function PlacePublicPage({ user, profile }: Props) {
                 <div className="place-public-class-filter">
                   <label>
                     Meu nivel
-                    {classLevelOptions.length ? (
-                      <select value={academyFitFilter.level} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}>
-                        <option value="">Qualquer nivel</option>
-                        {classLevelOptions.map((level) => (
-                          <option key={`public-level:${level}`} value={level}>
-                            {level}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <input
-                        value={academyFitFilter.level}
-                        onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}
-                        placeholder="Iniciante, B, avancado"
-                      />
-                    )}
+                    <select value={academyFitFilter.level} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}>
+                      <option value="">Qualquer nivel</option>
+                      {ACADEMY_LEVEL_OPTIONS.map((level) => (
+                        <option key={`public-level:${level.value}`} value={level.value}>
+                          {level.label}
+                        </option>
+                      ))}
+                    </select>
                   </label>
                   <label>
                     Dia

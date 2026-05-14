@@ -1745,7 +1745,7 @@ Objetivo:
 Entregue em 2026-05-13:
 
 - `Reservar quadra` ganhou filtros de nome, cidade, UF, data, hora e duracao;
-- busca de quadra passa a consultar disponibilidade real por local e mostra apenas locais com quadra livre para o horario;
+- busca de quadra passa a consultar disponibilidade real e devolve as quadras livres diretamente, sem forcar abertura de ficha completa da academia;
 - criada migration `0074_place_discovery_filters_v1.sql` com RPCs de descoberta em escala para quadras e aulas;
 - `Entrar em aula` ganhou filtros de academia/professor, cidade, dia, periodo, nivel e perfil;
 - busca de aula passa a considerar turmas com vaga real quando a migration 0074 esta aplicada;
@@ -1759,6 +1759,52 @@ Ganho:
 - menos mistura entre chamada de jogo, reserva e aula;
 - decisao mais rapida dentro do local;
 - UX mais coerente com task-first e mobile-first.
+
+### [x] LOCAIS-04 - Resultado direto de quadra livre sem ficha completa da academia
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Corrigir o fluxo em que uma busca de reserva retornava a academia inteira, com planos, aulas e modulos irrelevantes para quem queria apenas reservar uma quadra.
+
+Entregue em 2026-05-13:
+
+- criada RPC `app_search_available_courts_for_discovery(...)` na migration `0074`, retornando quadras livres por cidade/nome/data/hora/duracao;
+- `/locais` passou a renderizar cards clicaveis de quadra livre apos a busca, com local, horario, superficie, preco e status de confirmacao;
+- clique na quadra leva para `/locais/:placeId?intent=booking...` com quadra, inicio e fim ja preenchidos;
+- cards publicos de descoberta deixaram de renderizar planos, aulas, CRM, financeiro e secoes internas quando a intencao e apenas descobrir/reservar;
+- pagina publica do local reconhece parametros de reserva e posiciona o usuario direto no formulario/agenda.
+
+Ganho:
+
+- menos friccao em cidades com muitos locais;
+- menor mistura entre reserva, aula, plano e pagina institucional;
+- fluxo de reserva fica orientado a tarefa: buscar horario, escolher quadra, solicitar.
+
+### [x] LOCAIS-05 - Resultado direto de turma com vaga em Entrar em aula
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Corrigir a busca de `Entrar em aula`, que podia parecer quebrada por filtrar turmas mas devolver apenas o container da academia.
+
+Entregue em 2026-05-13:
+
+- criada RPC `app_search_academy_classes_for_discovery(...)` na migration incremental `0075`, retornando turmas ativas com vaga por cidade, UF, nome da academia, professor, dia, periodo, nivel, idade e genero;
+- `/locais` passou a renderizar cards clicaveis de turma com vaga, mostrando local, horario, professor, nivel, vagas e valor;
+- clique na turma leva para `/locais/:placeId?intent=academy...` com a turma/nivel ja selecionados no formulario publico;
+- filtro de `Entrar em aula` agora exibe UF e permite buscar por nome da academia, resolvendo o caso de pesquisar `ADT` e nao receber resultado acionavel;
+- niveis de aula foram padronizados em `Iniciante`, `Intermediario`, `Avancado`, `Primeira Classe` e `Profissional`;
+- cadastro de turma, busca de encaixe e pagina publica passaram a usar a mesma taxonomia de nivel.
+
+Ganho:
+
+- aluno encontra diretamente a turma compativel, sem abrir varias academias;
+- menos friccao em cidades com muitas academias;
+- menos mistura entre aulas, reservas, planos e ficha institucional;
+- maior consistencia entre cadastro interno, descoberta publica e formulario do aluno.
 
 ### [x] ACCESS-02 - Criar guardrail real para criacao profissional de local
 

@@ -1,4 +1,5 @@
 import type { AcademyClass, AcademyCoach, PlaceCourt } from "../../lib/types";
+import { ACADEMY_LEVEL_OPTIONS } from "../../lib/academy-levels";
 import { SetupWizard } from "../SetupWizard";
 import { WorkspaceCard } from "./PlaceWorkspaceUi";
 
@@ -135,7 +136,14 @@ export function PlaceAcademyClassSetupModule({
             canContinue: canCreateClass,
             content: (
               <div className="place-academy-form">
-                <input value={draft.level} onChange={(event) => onChangeDraft({ ...draft, level: event.target.value })} placeholder="Nivel" />
+                <select value={draft.level} onChange={(event) => onChangeDraft({ ...draft, level: event.target.value })}>
+                  <option value="">Nivel</option>
+                  {ACADEMY_LEVEL_OPTIONS.map((level) => (
+                    <option key={`academy-class-level:${level.value}`} value={level.value}>
+                      {level.label}
+                    </option>
+                  ))}
+                </select>
                 <select value={draft.genderScope} onChange={(event) => onChangeDraft({ ...draft, genderScope: event.target.value as AcademyClass["genderScope"] })}>
                   <option value="mixed">Mista</option>
                   <option value="male">Masculina</option>

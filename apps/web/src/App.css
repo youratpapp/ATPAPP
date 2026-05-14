@@ -6223,6 +6223,142 @@ button:disabled {
   line-height: 1;
 }
 
+.court-discovery-results {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.court-discovery-results-head {
+  align-items: end;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  padding-bottom: var(--space-3);
+}
+
+.court-discovery-results-head span,
+.court-discovery-kicker {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.court-discovery-results-head h2 {
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
+  line-height: var(--line-title);
+  margin: 2px 0 0;
+}
+
+.court-discovery-results-head p {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: 750;
+  margin: 4px 0 0;
+}
+
+.court-discovery-results-head strong {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  padding: 7px 11px;
+  white-space: nowrap;
+}
+
+.court-discovery-grid {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.court-discovery-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  color: inherit;
+  display: grid;
+  gap: 6px;
+  min-height: 154px;
+  padding: var(--space-4);
+  text-align: left;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+}
+
+.court-discovery-card:hover {
+  border-color: var(--color-green-200);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.court-discovery-card strong {
+  color: var(--color-navy-900);
+  font-size: var(--font-size-lg);
+  font-weight: 950;
+  line-height: var(--line-title);
+}
+
+.court-discovery-card small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: 850;
+}
+
+.court-discovery-card div {
+  align-items: center;
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+  margin-top: var(--space-2);
+}
+
+.court-discovery-card div span {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  padding: 4px 8px;
+}
+
+.court-discovery-card b {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-md);
+  font-weight: 950;
+}
+
+.court-discovery-card em {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-style: normal;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+@media (max-width: 520px) {
+  .court-discovery-results-head {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .court-discovery-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .court-discovery-card {
+    min-height: 132px;
+  }
+}
+
 .place-public-page {
   display: grid;
   gap: var(--space-3);
