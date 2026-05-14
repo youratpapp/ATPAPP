@@ -255,6 +255,13 @@ const BOOKING_PROFILE_SCOPE_LABELS: Record<PlaceBookingRule["profileScope"], str
   member: "Socio",
 };
 
+const BOOKING_TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
+  const minutes = 6 * 60 + index * 30;
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+});
+
 const STAFF_ROLE_LABELS: Record<"owner" | PlaceStaffMember["role"], string> = {
   owner: "Admin",
   manager: "Gerente",
@@ -2620,11 +2627,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </label>
             <label>
               Hora
-              <input
-                type="time"
-                value={courtDiscoveryFilter.time}
-                onChange={(event) => updateCourtDiscoveryFilter({ time: event.target.value })}
-              />
+              <select value={courtDiscoveryFilter.time} onChange={(event) => updateCourtDiscoveryFilter({ time: event.target.value })}>
+                {BOOKING_TIME_OPTIONS.map((time) => (
+                  <option key={`court-discovery-time:${time}`} value={time}>
+                    {time}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
               Duracao
@@ -3679,8 +3688,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           team: staff.filter((member) => member.status === "pending").length,
           settings: setupChecklist.length - setupDoneCount,
         };
-        const isManagementCockpit = Boolean(staffRole);
-        const isPublicDiscoveryCard = !isAdminRoute && !isManagementCockpit && tab !== "mine";
+        const isManagementCockpit = isAdminRoute && Boolean(staffRole);
+        const isPublicDiscoveryCard = !isAdminRoute;
         const showManagementModule = (module: PlaceManagementModule) => !isPublicDiscoveryCard && (!isManagementCockpit || currentManagementModule === module);
         const clientsView = (clientsViewByPlace[p.id] || "overview") as ClientsManagementView;
         const showClientsWorkspace = isManagementCockpit && (showMembershipTools || (canUseCrm && canManagePlace));
@@ -3746,6 +3755,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const discoveryFeatureLabels = isPublicDiscoveryCard
           ? discoveryIntent === "classes"
             ? ["Aulas"]
+            : discoveryIntent === "matches"
+            ? ["Jogadores"]
             : ["Reservas"]
           : enabledFeatures;
         const discoveryHighlights = isPublicDiscoveryCard
@@ -3753,6 +3764,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             ? [
                 { label: "turmas com vaga", value: classDiscoverySummary?.matchingClasses ?? activeAcademyClasses.length },
                 { label: "vagas", value: classDiscoverySummary?.availableSpots ?? "ver" },
+              ]
+            : discoveryIntent === "matches"
+            ? [
+                { label: "chamadas abertas", value: placeOpenMatches.length },
+                { label: "seguidores", value: p.followerCount },
               ]
             : [
                 { label: "quadras ativas", value: activeCourts.length },
@@ -3786,7 +3802,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   {p.followerCount} {p.followerCount === 1 ? "seguidor" : "seguidores"}
                 </span>
                 {organization ? <span className="pc-meta-row">Unidade de {organization.name}</span> : null}
-                {canManagePlace || isAdminRoute ? (
+                {isAdminRoute ? (
                   <span className="pc-meta-row">
                     {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} Â· {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
                   </span>
@@ -3840,15 +3856,16 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 </>
               ) : isMyManagedPlaceCard ? (
                 <>
-                  <button className="primary" onClick={() => navigate(buildPlaceAdminPath(p.id, "dashboard"))}>
-                    Abrir gestao
-                  </button>
-                  <button onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
+                  <button className="primary" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
                     Pagina publica
+                  </button>
+                  <button onClick={() => navigate(buildPlaceAdminPath(p.id, "dashboard"))}>
+                    Abrir gestao
                   </button>
                   <details className="place-card-more">
                     <summary>Mais</summary>
                     <div>
+                      <small>Voce gerencia este local. A operacao fica separada em Gestao.</small>
                       <button onClick={() => sharePlace(p)}>WhatsApp</button>
                       <button onClick={() => void copyPlaceLink(p)}>Copiar link</button>
                     </div>
@@ -4991,7 +5008,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                   onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
                   pendingBookings={pendingBookings}
-                  todayBookings={todayBookings}
                   waitingSinceLabel={waitingSinceLabel}
                   waitlistEntries={waitingCourtEntries}
                 />
@@ -5016,31 +5032,39 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     />
                   ) : null}
                   {bookingView === "calendar" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard
-                        title="Ocupacao do dia"
-                        subtitle={courtCalendarDay}
-                        value={`${calendarOccupancyPct}%`}
-                        metrics={[
-                          countLabel(calendarBookings.filter((booking) => booking.status !== "blocked").length, "reserva", "reservas"),
-                          `${(calendarReservedMinutes / 60).toFixed(1)}h reservadas`,
-                          `${(calendarBlockedMinutes / 60).toFixed(1)}h bloqueadas`,
-                        ]}
-                      />
-                    </WorkspaceGrid>
+                    <PlaceBookingCalendarModule
+                      academyClasses={academyClasses}
+                      academyEnrollments={academyEnrollments}
+                      academyPlannedAbsences={academyAbsences}
+                      activeCourts={activeCourts}
+                      blockedMinutes={calendarBlockedMinutes}
+                      bookings={calendarBookings}
+                      canManageBookings={canManageBookings}
+                      day={courtCalendarDay}
+                      lessonRequests={academyLessonRequests}
+                      occupancyPct={calendarOccupancyPct}
+                      onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
+                      reservedMinutes={calendarReservedMinutes}
+                    />
                   ) : null}
                   {bookingView === "new" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard
-                        title="Criar reserva ou bloqueio"
-                        subtitle="Use o formulario abaixo para buscar disponibilidade e confirmar o horario."
-                        metrics={[
-                          countLabel(availableCourts.length, "quadra disponivel", "quadras disponiveis"),
-                          selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : "Sem valor selecionado",
-                          availableCourts.find((court) => court.id === bookingDraft.courtId)?.ruleName || "Regra padrao",
-                        ]}
+                    activeCourts.length ? (
+                      <PlaceBookingCreateModule
+                        activeCourts={activeCourts}
+                        availableCourts={availableCourts}
+                        busy={busy}
+                        canManageBookings={canManageBookings}
+                        draft={bookingDraft}
+                        onBlock={() => void onCreateCourtBlock(p)}
+                        onChangeDraft={(draft) => setBookingDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                        onJoinWaitlist={() => void onJoinBookingWaitlist(p)}
+                        onReserve={() => void onCreateBooking(p)}
+                        onSearch={() => void onSearchAvailableCourts(p)}
+                        selectedCourtPrice={selectedCourtPrice}
                       />
-                    </WorkspaceGrid>
+                    ) : (
+                      <p className="subtle">Cadastre uma quadra antes de criar reservas.</p>
+                    )
                   ) : null}
                   {bookingView === "waitlist" ? (
                     <PlaceBookingWaitlistModule
@@ -5055,17 +5079,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     />
                   ) : null}
                   {bookingView === "resources" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard
-                        title="Quadras cadastradas"
-                        subtitle={countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}
-                        detail={activeCourts.map((court) => court.name).join(", ") || "Cadastre a primeira quadra"}
+                    <PlaceBookingResourcesModule
+                      activeCourts={activeCourts}
+                      bookingRuleDraft={bookingRuleDraft}
+                      bookingRules={bookingRules}
+                      busy={busy}
+                      canManageBookings={canManageBookings}
+                      canManageFinance={canManageFinance}
+                      courtDraft={courtDraftByPlace[p.id] || ""}
+                      courtPriceDraftByCourt={courtPriceDraftByCourt}
+                      membershipPlans={membershipPlans}
+                      myMembership={myMembership}
+                      onChangeCourtDraft={(value) => setCourtDraftByPlace((prev) => ({ ...prev, [p.id]: value }))}
+                      onChangeCourtPriceDraft={(courtId, draft) => setCourtPriceDraftByCourt((prev) => ({ ...prev, [courtId]: draft }))}
+                      onChangeRuleDraft={(draft) => setBookingRuleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                      onCreateCourt={() => void onCreateCourt(p)}
+                      onCreateRule={() => void onCreateBookingRule(p)}
+                      onSaveCourtPrice={(court) => void onSaveCourtPrice(p.id, court)}
+                      onToggleRule={(rule) => void onToggleBookingRule(p.id, rule)}
+                      ruleProfileScopeLabels={BOOKING_PROFILE_SCOPE_LABELS}
+                      ruleWeekdaysLabel={bookingRuleWeekdaysLabel}
                       />
-                    </WorkspaceGrid>
                   ) : null}
                 </BookingWorkspaceShell>
               ) : null}
-              {showBookingResources ? (
+              {showBookingResources && !showBookingWorkspace ? (
                 <PlaceBookingResourcesModule
                   activeCourts={activeCourts}
                   bookingRuleDraft={bookingRuleDraft}
@@ -5088,7 +5126,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ruleWeekdaysLabel={bookingRuleWeekdaysLabel}
                 />
               ) : null}
-              {showBookingCreate && activeCourts.length ? (
+              {showBookingCreate && !showBookingWorkspace && activeCourts.length ? (
                 <PlaceBookingCreateModule
                   activeCourts={activeCourts}
                   availableCourts={availableCourts}
@@ -5103,18 +5141,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   selectedCourtPrice={selectedCourtPrice}
                 />
               ) : null}
-              {showBookingCalendar && activeCourts.length ? (
+              {showBookingCalendar && !showBookingWorkspace && activeCourts.length ? (
                 <PlaceBookingCalendarModule
+                  academyClasses={academyClasses}
+                  academyEnrollments={academyEnrollments}
+                  academyPlannedAbsences={academyAbsences}
                   activeCourts={activeCourts}
                   blockedMinutes={calendarBlockedMinutes}
                   bookings={calendarBookings}
                   canManageBookings={canManageBookings}
                   day={courtCalendarDay}
+                  lessonRequests={academyLessonRequests}
                   occupancyPct={calendarOccupancyPct}
                   onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
                   reservedMinutes={calendarReservedMinutes}
                 />
               ) : null}
+              {!showBookingWorkspace ? (
               <PlaceBookingDetailedListModule
                 bookings={bookings}
                 busy={busy}
@@ -5132,6 +5175,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 waitingSinceLabel={waitingSinceLabel}
                 waitlistEntries={bookingWaitlist}
               />
+              ) : null}
             </div>
             ) : null}
             {showManagementModule("academy") && showAcademyTools ? (

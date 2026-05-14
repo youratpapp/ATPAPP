@@ -139,3 +139,10 @@ Quando uma tela cresce demais:
 - 2026-05-13: `/locais/:placeId` passou a resolver a decisao dentro do local com agenda visual de quadras por horario e filtro de turmas compativeis antes do formulario.
 - 2026-05-13: resultado de `Reservar quadra` em `/locais` passou a ser lista direta de quadras livres no horario pesquisado; ficha completa, planos e aulas ficam fora desse fluxo.
 - 2026-05-13: resultado de `Entrar em aula` em `/locais` passou a ser lista direta de turmas com vaga; nome da academia, UF, dia, periodo e nivel levam a uma turma acionavel, nao a uma ficha generica.
+- 2026-05-13: `Agenda > Calendario` passou a ser mapa operacional unico de ocupacao, combinando reservas, bloqueios, turmas, aulas avulsas/reposicoes e faltas avisadas com filtros por tipo, quadra, professor, turma e aluno.
+- 2026-05-13: `Agenda` deixou de renderizar subvisoes duplicadas dentro e fora da `Central de agenda`; a central agora hospeda a visao ativa e o detalhe historico fica fora apenas quando nao ha workspace ativo.
+- 2026-05-13: `Agenda > Nova reserva` e a reserva da pagina publica passaram a usar data, horario e duracao em seletores guiados, evitando horarios quebrados e explicitando a disponibilidade antes da acao de reservar.
+- 2026-05-13: `Agenda > Quadras` passou a separar cadastro/preco de quadra e regras de horario com dias da semana visuais, reduzindo entrada numerica crua e overflow de layout.
+- 2026-05-13: `/locais` deixou de renderizar cockpit administrativo inline para usuarios staff; mesmo admin ve descoberta/player, com `Abrir gestao` como acao secundaria.
+- 2026-05-13: `/inicio` separou fila de jogador e fila profissional; notificacoes e primeira viewport deixam de misturar aprovar socio/lista de espera/admin com proxima partida/reserva/aula.
+- 2026-05-13: pendencias profissionais da Home passaram a navegar para `/gestao/:placeId/:module?visao=...`, reforcando que operacao pertence ao Management OS.

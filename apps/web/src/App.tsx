@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigured } from "./lib/supabase";
@@ -9,6 +9,7 @@ import "./App.css";
 
 const BOOT_TIMEOUT_MS = 8000;
 const LAST_HASH_ROUTE_KEY = "atp:last-hash-route";
+const CHUNK_RECOVERY_KEY = "atp:chunk-recovery-attempt";
 
 const AuthPage = lazy(() => import("./pages/AuthPage").then((module) => ({ default: module.AuthPage })));
 const CompleteProfilePage = lazy(() => import("./pages/CompleteProfilePage").then((module) => ({ default: module.CompleteProfilePage })));
@@ -55,6 +56,57 @@ function AppLoadingState() {
   );
 }
 
+function isLazyChunkError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error || "");
+  return /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed|ChunkLoadError|Unable to preload CSS/i.test(message);
+}
+
+function recoverFromLazyChunkError(): boolean {
+  try {
+    const previousAttempt = Number(window.sessionStorage.getItem(CHUNK_RECOVERY_KEY) || "0");
+    const now = Date.now();
+    if (previousAttempt && now - previousAttempt < 30000) return false;
+    window.sessionStorage.setItem(CHUNK_RECOVERY_KEY, String(now));
+    const url = new URL(window.location.href);
+    url.searchParams.set("app_reload", String(now));
+    window.location.replace(url.toString());
+    return true;
+  } catch {
+    window.location.reload();
+    return true;
+  }
+}
+
+function useLazyChunkRecovery() {
+  useEffect(() => {
+    const onPreloadError = (event: Event) => {
+      event.preventDefault();
+      recoverFromLazyChunkError();
+    };
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () => window.removeEventListener("vite:preloadError", onPreloadError);
+  }, []);
+}
+
+class LazyChunkBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+
+  static getDerivedStateFromError(error: unknown) {
+    if (isLazyChunkError(error)) return { failed: true };
+    return { failed: false };
+  }
+
+  componentDidCatch(error: unknown) {
+    if (isLazyChunkError(error) && recoverFromLazyChunkError()) return;
+    throw error;
+  }
+
+  render() {
+    if (this.state.failed) return <AppLoadingState />;
+    return this.props.children;
+  }
+}
+
 async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     const timer = window.setTimeout(() => reject(new Error(`${label} timeout`)), timeoutMs);
@@ -77,6 +129,16 @@ function AppInner() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileResolved, setProfileResolved] = useState(false);
+  const authUserIdRef = useRef<string | null>(null);
+  const profileUserIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    authUserIdRef.current = authUser?.id ?? null;
+  }, [authUser?.id]);
+
+  useEffect(() => {
+    profileUserIdRef.current = profile?.userId ?? null;
+  }, [profile?.userId]);
 
   useEffect(() => {
     let mounted = true;
@@ -88,16 +150,29 @@ function AppInner() {
 
     let receivedAuthEvent = false;
     const applyAuthUser = (nextUser: User | null) => {
-      setAuthUser(nextUser);
       if (!nextUser) {
+        authUserIdRef.current = null;
+        profileUserIdRef.current = null;
+        setAuthUser(null);
         setProfile(null);
         setProfileLoading(false);
         setProfileResolved(true);
         return;
       }
+      const sameUser = authUserIdRef.current === nextUser.id;
+      const profileAlreadyLoaded = profileUserIdRef.current === nextUser.id;
+      authUserIdRef.current = nextUser.id;
+      setAuthUser((prev) => (prev?.id === nextUser.id && prev.email === nextUser.email ? prev : nextUser));
+      if (sameUser && profileAlreadyLoaded) {
+        setProfileLoading(false);
+        setProfileResolved(true);
+        return;
+      }
       setProfile((prev) => (prev?.userId === nextUser.id ? prev : null));
-      setProfileLoading(true);
-      setProfileResolved(false);
+      if (!profileAlreadyLoaded) {
+        setProfileLoading(true);
+        setProfileResolved(false);
+      }
     };
 
     const { data } = client.auth.onAuthStateChange((_event, session) => {
@@ -538,6 +613,8 @@ function tryRestoreLastHashRoute(): boolean {
 }
 
 export default function App() {
+  useLazyChunkRecovery();
+
   if (tryRedirectRegistrationFallback() || tryRestoreLastHashRoute()) {
     return (
       <main className="auth-page">
@@ -550,7 +627,9 @@ export default function App() {
   }
   return (
     <HashRouter>
-      <AppInner />
+      <LazyChunkBoundary>
+        <AppInner />
+      </LazyChunkBoundary>
     </HashRouter>
   );
 }

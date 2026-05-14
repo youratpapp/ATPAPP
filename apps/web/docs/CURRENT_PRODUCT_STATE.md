@@ -193,6 +193,14 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Niveis de aula ja possuem taxonomia padrao: `Iniciante`, `Intermediario`, `Avancado`, `Primeira Classe` e `Profissional`.
 - Pagina publica do local ja iniciou escolha visual: reserva mostra agenda do dia por horario/quadra livre, e aulas mostram turmas compativeis por perfil antes do formulario.
 - Criacao profissional de local ja exige entitlement no backend (`app_user_product_entitlements`, `app_user_can_create_place()` e `app_create_place(...)`); Free Player nao deve ver nem conseguir inserir local direto.
+- Agenda do local ja iniciou visao operacional unificada: `Central de agenda` renderiza a subvisao ativa sem duplicar listas abaixo, e o calendario combina reservas, bloqueios, turmas fixas, aulas avulsas/reposicoes e faltas avisadas.
+- Calendario de quadras ja possui filtros por tipo, quadra, professor, turma e aluno/jogador, com slots clicaveis de 30 minutos e detalhe de participantes.
+- Criacao de reserva no admin e na pagina publica passou a usar data, horario e duracao em opcoes guiadas, evitando horarios quebrados e deixando a disponibilidade explicita antes da reserva.
+- Regras de reserva passaram a usar selecao visual de dias da semana, horarios em lista e duracoes padronizadas, evitando entrada numerica crua como `1,2,3,4,5`.
+- `/locais` agora e camada publica/player mesmo quando o usuario administra o local: o cockpit completo so renderiza em `/gestao/:placeId/:module`.
+- Cards de `Meus locais` em `/locais` priorizam a pagina publica; `Abrir gestao` existe como acao secundaria/discreta para manter descoberta separada de operacao.
+- `/inicio` agora separa prioridades de jogador e prioridades profissionais: pendencias de reserva/aula/partida do jogador alimentam a Home e notificacoes, enquanto tarefas de academia/organizador aparecem em bloco `Area profissional`.
+- Acoes operacionais da Home direcionam para destinos canonicos de gestao (`/gestao/:placeId/:module?visao=...`) em vez de voltar para `/locais`.
 
 ### Ainda fraco
 
@@ -226,6 +234,7 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 10. Estados vazios e setup nem sempre guiam a proxima acao.
 11. Funcoes importantes ainda podem ficar escondidas por modulo tecnico em vez de aparecer por intencao em rotinas recorrentes alem de cobranca/setup.
 12. Onboarding por perfil ainda precisa conduzir melhor academia, professor solo e organizador no primeiro uso.
+13. `PlacesPage` ainda precisa ser desmontada tecnicamente em pagina publica + admin shell real, apesar de o vazamento visual para `/locais` estar bloqueado.
 
 ## Objetivos UX atuais
 
@@ -255,6 +264,8 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Torneios que jogo e torneios que organizo misturados sem contexto.
 - Funcao essencial escondida apenas em "Recursos" ou "Ajustes".
 - Quick action que abre modulo certo mas subvisao errada.
+- Agenda que duplica `Hoje`, `Reservas`, `Espera` ou `Calendario` em dois blocos proximos.
+- Formulario de horario recorrente com entrada livre que induz 08:20, 09:35 ou dias numericos sem semantica.
 - Tabela larga sem alternativa mobile.
 - Modal central enorme para tarefa recorrente.
 - Criar componente novo sem ganho perceptivel de UX.

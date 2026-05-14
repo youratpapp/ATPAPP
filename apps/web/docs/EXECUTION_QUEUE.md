@@ -33,6 +33,129 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] EXPERIENCE-01 - Separar descoberta publica e filas profissionais
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Fazer `/locais` voltar a ser experiencia publica/player e impedir que pendencias administrativas disputem a primeira viewport da Home do jogador.
+
+Criterios:
+
+- `/locais` nao deve renderizar cockpit, modulos, filas, financeiro ou CRM inline, mesmo para admin do local;
+- `Abrir gestao` deve existir apenas como acao secundaria/discreta;
+- Home deve usar prioridades de jogador para notificacoes, resumo e primeira acao;
+- tarefas de academia/organizador devem aparecer em bloco profissional separado;
+- tarefas profissionais devem navegar para `/gestao` ou Competition OS, nao para `/locais`.
+
+Telas/componentes afetados:
+
+- `PlacesPage`;
+- `HomePage`;
+- `App.css`;
+- `CURRENT_PRODUCT_STATE.md`;
+- `SCREEN_RESPONSIBILITIES.md`;
+- `FULL_APP_PRODUCT_TECH_UX_AUDIT.md`.
+
+Ganhos esperados:
+
+- menos mistura de jogador, academia e organizador;
+- `/locais` fica limpo para descoberta, reserva e aulas;
+- admin entende que operacao acontece na Gestao;
+- Home deixa de parecer dashboard generico com pendencias de tudo;
+- produto fica mais coerente com Player App, Management OS e Competition OS.
+
+Dependencias:
+
+- `buildPlaceAdminPath`;
+- regras de perfil/plano ja documentadas;
+- rotas canonicas de gestao.
+
+Risco de regressao:
+
+- usuarios administradores podem precisar reaprender que o card em `/locais` prioriza pagina publica;
+- algum fluxo legado que dependia de admin inline em `/locais` deve migrar para `/gestao`.
+
+Criterios de conclusao:
+
+- lint e build passando;
+- `/locais` sem cockpit administrativo inline;
+- Home com filas de jogador e profissional separadas;
+- docs vivos atualizados.
+
+Entregue em 2026-05-13:
+
+- `isManagementCockpit` passou a depender de rota administrativa, bloqueando vazamento do admin para `/locais`;
+- card de `Meus locais` em `/locais` passou a priorizar `Pagina publica`, com `Abrir gestao` secundario;
+- prioridades de jogador e operacao foram separadas na Home;
+- pendencias de socio/aula/reserva operacional agora apontam para subvisoes de Gestao;
+- Home ganhou bloco `Area profissional` para operacao separada do Player App;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] AGENDA-02 - Unificar agenda operacional e corrigir duplicidades
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Transformar Agenda em uma visao unica de ocupacao real, sem duplicar reservas/hoje/espera e sem exigir que o operador deduza o que esta vendo.
+
+Criterios:
+
+- `Central de agenda` deve renderizar a subvisao ativa, nao um resumo duplicado mais a lista abaixo;
+- calendario deve mostrar reservas, bloqueios, turmas fixas, aulas avulsas/reposicoes e faltas avisadas;
+- cada horario deve ser clicavel e mostrar detalhe operacional;
+- filtros devem existir por tipo, quadra, professor, turma e aluno/jogador;
+- nova reserva deve usar data, horario e duracao em slots praticos, com disponibilidade explicita;
+- regras de reserva nao podem usar dias numericos como entrada principal;
+- tela de quadras nao pode estourar largura.
+
+Telas/componentes afetados:
+
+- `PlacesPage`;
+- `PlaceBookingCalendarModule`;
+- `PlaceBookingCreateModule`;
+- `PlaceBookingResourcesModule`;
+- `PlaceBookingOperationalQueues`;
+- `PlacePublicPage`;
+- `App.css`.
+
+Ganhos esperados:
+
+- operador entende ocupacao real do dia em uma unica leitura;
+- professor consegue filtrar sua agenda e ver alunos/faltas no horario;
+- menos duplicidade visual;
+- menos horarios quebrados;
+- configuracao de regras fica compreensivel para usuario exigente.
+
+Dependencias:
+
+- dados de reservas, turmas, aulas avulsas/reposicoes e faltas avisadas;
+- gramatica de `OperationalCalendar`.
+
+Risco de regressao:
+
+- calendario com muitas quadras pode exigir scroll horizontal em mobile;
+- aula avulsa depende de turma possuir quadra vinculada para aparecer no mapa.
+
+Criterios de conclusao:
+
+- lint e build passando;
+- docs vivos atualizados;
+- sem renderizacao duplicada das subvisoes de Agenda.
+
+Entregue em 2026-05-13:
+
+- `Central de agenda` passou a hospedar a subvisao real ativa no workspace;
+- `Reservas`, `Calendario`, `Nova reserva`, `Espera` e `Quadras` deixaram de aparecer duplicadas abaixo do shell;
+- calendario passou a combinar reservas, bloqueios, turmas, aulas avulsas/reposicoes e faltas avisadas;
+- slots de 30 minutos ficaram clicaveis com detalhe e participantes;
+- filtros por tipo, quadra, professor, turma e aluno/jogador foram aplicados;
+- formulario de reserva no admin e pagina publica passou para data + horario + duracao;
+- regras de reserva passaram a usar dias da semana como selecao visual;
+- layout de precos de quadras foi reorganizado para nao vazar da pagina.
+
 ### [x] VISUAL-02 - Refinar sidebar, Home e Gestao para reduzir admin-template feeling
 
 Status: `[x]` concluido

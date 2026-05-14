@@ -43,6 +43,23 @@ type Props = {
   ruleWeekdaysLabel: (weekdays: number[]) => string;
 };
 
+const WEEKDAY_OPTIONS = [
+  { label: "Dom", value: 0 },
+  { label: "Seg", value: 1 },
+  { label: "Ter", value: 2 },
+  { label: "Qua", value: 3 },
+  { label: "Qui", value: 4 },
+  { label: "Sex", value: 5 },
+  { label: "Sab", value: 6 },
+];
+
+const TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
+  const minutes = 6 * 60 + index * 30;
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+});
+
 function defaultPriceDraft(court: PlaceCourt): CourtPriceDraft {
   return {
     publicPrice: String(Math.round(court.bookingFeeCents / 100)),
@@ -71,6 +88,22 @@ export function PlaceBookingResourcesModule({
   ruleProfileScopeLabels,
   ruleWeekdaysLabel,
 }: Props) {
+  const selectedWeekdays = bookingRuleDraft.weekdays
+    .split(",")
+    .map((item) => Number(item.trim()))
+    .filter((item) => Number.isInteger(item) && item >= 0 && item <= 6);
+  const updateWeekday = (weekday: number, checked: boolean) => {
+    const next = new Set(selectedWeekdays);
+    if (checked) next.add(weekday);
+    else next.delete(weekday);
+    onChangeRuleDraft({
+      ...bookingRuleDraft,
+      weekdays: Array.from(next)
+        .sort((a, b) => a - b)
+        .join(","),
+    });
+  };
+
   return (
     <>
       <div className="place-booking-head">
@@ -86,7 +119,7 @@ export function PlaceBookingResourcesModule({
         </div>
       ) : null}
       {activeCourts.length ? (
-        <div className="place-court-list">
+        <div className="place-court-price-list">
           {activeCourts.map((court) => {
             const priceDraft = courtPriceDraftByCourt[court.id] || defaultPriceDraft(court);
             const plan = myMembership?.status === "active" ? membershipPlans.find((item) => item.id === myMembership.planId) : undefined;
@@ -95,12 +128,17 @@ export function PlaceBookingResourcesModule({
                 ? court.memberBookingFeeCents ?? (plan ? Math.round((court.bookingFeeCents * (100 - plan.courtDiscountPercent)) / 100) : court.bookingFeeCents)
                 : null;
             return (
-              <span key={court.id}>
-                {court.name} - {formatMoneyFromCents(court.bookingFeeCents)}
-                {court.memberBookingFeeCents !== null ? ` | mensalista ${formatMoneyFromCents(court.memberBookingFeeCents)}` : ""}
-                {memberPrice !== null ? ` | seu valor ${formatMoneyFromCents(memberPrice)}` : ""}
+              <article key={court.id} className="place-court-price-row">
+                <div>
+                  <strong>{court.name}</strong>
+                  <small>
+                    Publico {formatMoneyFromCents(court.bookingFeeCents)}
+                    {court.memberBookingFeeCents !== null ? ` | mensalista ${formatMoneyFromCents(court.memberBookingFeeCents)}` : ""}
+                    {memberPrice !== null ? ` | seu valor ${formatMoneyFromCents(memberPrice)}` : ""}
+                  </small>
+                </div>
                 {canManageFinance ? (
-                  <>
+                  <div className="place-court-price-fields">
                     <input
                       type="number"
                       min={0}
@@ -122,9 +160,9 @@ export function PlaceBookingResourcesModule({
                     <button onClick={() => onSaveCourtPrice(court)} disabled={busy}>
                       Salvar
                     </button>
-                  </>
+                  </div>
                 ) : null}
-              </span>
+              </article>
             );
           })}
         </div>
@@ -138,35 +176,89 @@ export function PlaceBookingResourcesModule({
             <span>{countLabel(bookingRules.filter((rule) => rule.isActive).length, "regra ativa", "regras ativas")}</span>
           </div>
           <div className="booking-rule-form">
-            <input value={bookingRuleDraft.name} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, name: event.target.value })} placeholder="Nome da regra" />
-            <select
-              value={bookingRuleDraft.profileScope}
-              onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, profileScope: event.target.value as PlaceBookingRule["profileScope"] })}
-            >
-              <option value="all">Todos</option>
-              <option value="public">Avulso</option>
-              <option value="member">Socio</option>
-            </select>
-            <input value={bookingRuleDraft.weekdays} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, weekdays: event.target.value })} placeholder="Dias 1,2,3,4,5" />
-            <input type="time" value={bookingRuleDraft.startsAt} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, startsAt: event.target.value })} />
-            <input type="time" value={bookingRuleDraft.endsAt} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, endsAt: event.target.value })} />
-            <input type="number" min={0} value={bookingRuleDraft.price} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, price: event.target.value })} placeholder="Avulso R$" />
-            <input
-              type="number"
-              min={0}
-              value={bookingRuleDraft.memberPrice}
-              onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, memberPrice: event.target.value })}
-              placeholder="Socio R$"
-            />
-            <input type="number" min={1} value={bookingRuleDraft.minMinutes} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, minMinutes: event.target.value })} placeholder="Min min" />
-            <input type="number" min={1} value={bookingRuleDraft.maxMinutes} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, maxMinutes: event.target.value })} placeholder="Max min" />
-            <input
-              type="number"
-              min={0}
-              value={bookingRuleDraft.advanceDays}
-              onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, advanceDays: event.target.value })}
-              placeholder="Antecedencia"
-            />
+            <label>
+              Nome
+              <input value={bookingRuleDraft.name} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, name: event.target.value })} placeholder="Ex.: Horario comercial" />
+            </label>
+            <label>
+              Publico
+              <select
+                value={bookingRuleDraft.profileScope}
+                onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, profileScope: event.target.value as PlaceBookingRule["profileScope"] })}
+              >
+                <option value="all">Todos</option>
+                <option value="public">Avulso</option>
+                <option value="member">Socio</option>
+              </select>
+            </label>
+            <div className="booking-rule-weekdays" aria-label="Dias da semana">
+              {WEEKDAY_OPTIONS.map((weekday) => (
+                <label key={`booking-rule-weekday:${weekday.value}`} className={selectedWeekdays.includes(weekday.value) ? "active" : ""}>
+                  <input type="checkbox" checked={selectedWeekdays.includes(weekday.value)} onChange={(event) => updateWeekday(weekday.value, event.target.checked)} />
+                  {weekday.label}
+                </label>
+              ))}
+            </div>
+            <label>
+              Inicio
+              <select value={bookingRuleDraft.startsAt} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, startsAt: event.target.value })}>
+                {TIME_OPTIONS.map((time) => (
+                  <option key={`rule-start:${time}`} value={time}>
+                    {time}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Fim
+              <select value={bookingRuleDraft.endsAt} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, endsAt: event.target.value })}>
+                {TIME_OPTIONS.map((time) => (
+                  <option key={`rule-end:${time}`} value={time}>
+                    {time}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Avulso R$
+              <input type="number" min={0} value={bookingRuleDraft.price} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, price: event.target.value })} placeholder="90" />
+            </label>
+            <label>
+              Socio R$
+              <input
+                type="number"
+                min={0}
+                value={bookingRuleDraft.memberPrice}
+                onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, memberPrice: event.target.value })}
+                placeholder="65"
+              />
+            </label>
+            <label>
+              Duracao minima
+              <select value={bookingRuleDraft.minMinutes} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, minMinutes: event.target.value })}>
+                <option value="30">30 min</option>
+                <option value="60">1h</option>
+                <option value="90">1h30</option>
+              </select>
+            </label>
+            <label>
+              Duracao maxima
+              <select value={bookingRuleDraft.maxMinutes} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, maxMinutes: event.target.value })}>
+                <option value="60">1h</option>
+                <option value="90">1h30</option>
+                <option value="120">2h</option>
+                <option value="180">3h</option>
+              </select>
+            </label>
+            <label>
+              Antecedencia
+              <select value={bookingRuleDraft.advanceDays} onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, advanceDays: event.target.value })}>
+                <option value="0">Mesmo dia</option>
+                <option value="7">7 dias</option>
+                <option value="14">14 dias</option>
+                <option value="30">30 dias</option>
+              </select>
+            </label>
             <label className="inline-check">
               <input
                 type="checkbox"
@@ -175,7 +267,7 @@ export function PlaceBookingResourcesModule({
               />
               Exigir aprovacao
             </label>
-            <button className="primary" onClick={onCreateRule} disabled={busy || !bookingRuleDraft.name.trim()}>
+            <button className="primary" onClick={onCreateRule} disabled={busy || !bookingRuleDraft.name.trim() || !selectedWeekdays.length}>
               Criar regra
             </button>
           </div>

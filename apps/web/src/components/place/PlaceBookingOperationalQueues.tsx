@@ -9,14 +9,9 @@ type Props = {
   onUpdateBooking: (bookingId: string, status: CourtBooking["status"]) => void;
   onUpdateWaitlistEntry: (entryId: string, status: CourtBookingWaitlistEntry["status"]) => void;
   pendingBookings: CourtBooking[];
-  todayBookings: CourtBooking[];
   waitingSinceLabel: (createdAt: string) => string;
   waitlistEntries: CourtBookingWaitlistEntry[];
 };
-
-function shortTime(value: string): string {
-  return new Date(value).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-}
 
 function dateTime(value: string): string {
   return new Date(value).toLocaleString("pt-BR");
@@ -30,22 +25,11 @@ export function PlaceBookingOperationalQueues({
   onUpdateBooking,
   onUpdateWaitlistEntry,
   pendingBookings,
-  todayBookings,
   waitingSinceLabel,
   waitlistEntries,
 }: Props) {
   return (
     <>
-      <OperationalQueue title="Agenda de hoje" compact emptyLabel="Nenhuma reserva para hoje.">
-        {todayBookings.length
-          ? todayBookings.slice(0, 6).map((booking) => (
-              <span key={`today-booking:${booking.id}`}>
-                <strong>{shortTime(booking.startsAt)}</strong>
-                {booking.courtName || "Quadra"} - {booking.status === "blocked" ? "Bloqueio" : booking.playerName}
-              </span>
-            ))
-          : null}
-      </OperationalQueue>
       {canManageBookings && pendingBookings.length ? (
         <OperationalQueue title="Reservas aguardando confirmacao" compact>
           {pendingBookings.slice(0, 6).map((booking) => (

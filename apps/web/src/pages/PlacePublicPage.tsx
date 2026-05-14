@@ -29,6 +29,20 @@ type Props = {
 const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
 
+const BOOKING_TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
+  const minutes = 6 * 60 + index * 30;
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+});
+
+const BOOKING_DURATION_OPTIONS = [
+  { label: "30 min", value: 30 },
+  { label: "1h", value: 60 },
+  { label: "1h30", value: 90 },
+  { label: "2h", value: 120 },
+];
+
 function formatMoneyFromCents(cents: number): string {
   return new Intl.NumberFormat("pt-BR", { currency: "BRL", style: "currency" }).format(Math.max(0, cents) / 100);
 }
@@ -69,6 +83,22 @@ function defaultBookingEnd(startsAt: string): string {
   return datetimeLocalValue(d);
 }
 
+function datePart(value: string): string {
+  return value ? value.slice(0, 10) : "";
+}
+
+function timePart(value: string): string {
+  return value ? value.slice(11, 16) : "18:00";
+}
+
+function durationFromRange(startsAt: string, endsAt: string): number {
+  const start = new Date(startsAt).getTime();
+  const end = new Date(endsAt).getTime();
+  if (!startsAt || !endsAt || Number.isNaN(start) || Number.isNaN(end) || end <= start) return 60;
+  const minutes = Math.round((end - start) / 60000);
+  return BOOKING_DURATION_OPTIONS.some((option) => option.value === minutes) ? minutes : 60;
+}
+
 function todayDateInputValue(): string {
   return datetimeLocalValue(new Date()).slice(0, 10);
 }
@@ -103,7 +133,7 @@ function normalizeSearchText(value: string): string {
 }
 
 function buildAvailabilityTimes(): string[] {
-  return Array.from({ length: 17 }, (_, index) => `${String(index + 6).padStart(2, "0")}:00`);
+  return BOOKING_TIME_OPTIONS;
 }
 
 export function PlacePublicPage({ user, profile }: Props) {
@@ -295,6 +325,16 @@ export function PlacePublicPage({ user, profile }: Props) {
         ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
         : "Turmas abertas para novos alunos"
       : "Clube esportivo aberto para comunidade";
+  const bookingDate = datePart(bookingDraft.startsAt) || availabilityDate || todayDateInputValue();
+  const bookingTime = timePart(bookingDraft.startsAt);
+  const bookingDuration = durationFromRange(bookingDraft.startsAt, bookingDraft.endsAt);
+
+  const updateBookingRange = (date: string, time: string, duration = bookingDuration) => {
+    const startsAt = combineDateAndTime(date, time);
+    const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
+    setBookingDraft((prev) => ({ ...prev, startsAt, endsAt }));
+    setAvailableCourts([]);
+  };
 
   const sharePlace = () => {
     if (!place) return;
@@ -593,27 +633,36 @@ export function PlacePublicPage({ user, profile }: Props) {
                     </select>
                   </label>
                   <label>
-                    Inicio
+                    Data
                     <input
-                      type="datetime-local"
-                      value={bookingDraft.startsAt}
-                      onChange={(event) => {
-                        const startsAt = event.target.value;
-                        setBookingDraft((prev) => ({ ...prev, startsAt, endsAt: defaultBookingEnd(startsAt) }));
-                        setAvailableCourts([]);
-                      }}
+                      type="date"
+                      value={bookingDate}
+                      min={todayDateInputValue()}
+                      onChange={(event) => updateBookingRange(event.target.value, bookingTime)}
                     />
                   </label>
                   <label>
-                    Fim
-                    <input
-                      type="datetime-local"
-                      value={bookingDraft.endsAt}
-                      onChange={(event) => {
-                        setBookingDraft((prev) => ({ ...prev, endsAt: event.target.value }));
-                        setAvailableCourts([]);
-                      }}
-                    />
+                    Horario
+                    <select value={bookingTime} onChange={(event) => updateBookingRange(bookingDate, event.target.value)}>
+                      {BOOKING_TIME_OPTIONS.map((time) => (
+                        <option key={`booking-time:${time}`} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Duracao
+                    <select
+                      value={bookingDuration}
+                      onChange={(event) => updateBookingRange(bookingDate, bookingTime, Number(event.target.value))}
+                    >
+                      {BOOKING_DURATION_OPTIONS.map((option) => (
+                        <option key={`booking-duration:${option.value}`} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
                   </label>
                   <label>
                     Nome

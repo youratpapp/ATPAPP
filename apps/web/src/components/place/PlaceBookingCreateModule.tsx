@@ -23,8 +23,51 @@ type Props = {
   selectedCourtPrice: number | null;
 };
 
+const TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
+  const minutes = 6 * 60 + index * 30;
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+});
+
+const DURATION_OPTIONS = [
+  { label: "30 min", value: 30 },
+  { label: "1h", value: 60 },
+  { label: "1h30", value: 90 },
+  { label: "2h", value: 120 },
+];
+
 function isAvailableCourt(court: PlaceCourt | AvailableCourt): court is AvailableCourt {
   return "effectiveFeeCents" in court;
+}
+
+function datePart(value: string): string {
+  return value ? value.slice(0, 10) : "";
+}
+
+function timePart(value: string): string {
+  return value ? value.slice(11, 16) : "18:00";
+}
+
+function combineDateAndTime(date: string, time: string): string {
+  if (!date || !time) return "";
+  return `${date}T${time}`;
+}
+
+function addMinutes(value: string, minutes: number): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  date.setMinutes(date.getMinutes() + minutes);
+  const pad = (part: number) => String(part).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function durationFromDraft(startsAt: string, endsAt: string): number {
+  const start = new Date(startsAt).getTime();
+  const end = new Date(endsAt).getTime();
+  if (!startsAt || !endsAt || Number.isNaN(start) || Number.isNaN(end) || end <= start) return 60;
+  const minutes = Math.round((end - start) / 60000);
+  return DURATION_OPTIONS.some((option) => option.value === minutes) ? minutes : 60;
 }
 
 export function PlaceBookingCreateModule({
@@ -42,6 +85,16 @@ export function PlaceBookingCreateModule({
 }: Props) {
   const hasRequiredFields = Boolean(draft.courtId && draft.startsAt && draft.endsAt);
   const courts = availableCourts.length ? availableCourts : activeCourts;
+  const selectedCourtIsAvailable = availableCourts.some((court) => court.id === draft.courtId);
+  const canReserve = hasRequiredFields && selectedCourtIsAvailable;
+  const selectedDate = datePart(draft.startsAt);
+  const selectedTime = timePart(draft.startsAt);
+  const selectedDuration = durationFromDraft(draft.startsAt, draft.endsAt);
+
+  const updateStart = (date: string, time: string, duration = selectedDuration) => {
+    const nextStart = combineDateAndTime(date, time);
+    onChangeDraft({ ...draft, startsAt: nextStart, endsAt: nextStart ? addMinutes(nextStart, duration) : "" });
+  };
 
   return (
     <>
@@ -60,21 +113,56 @@ export function PlaceBookingCreateModule({
               </select>
             </label>
             <label>
-              Inicio
-              <input type="datetime-local" value={draft.startsAt} onChange={(event) => onChangeDraft({ ...draft, startsAt: event.target.value })} />
+              Data
+              <input type="date" value={selectedDate} onChange={(event) => updateStart(event.target.value, selectedTime)} />
             </label>
             <label>
-              Fim
-              <input type="datetime-local" value={draft.endsAt} onChange={(event) => onChangeDraft({ ...draft, endsAt: event.target.value })} />
+              Horario
+              <select value={selectedTime} onChange={(event) => updateStart(selectedDate, event.target.value)}>
+                {TIME_OPTIONS.map((time) => (
+                  <option key={`booking-time:${time}`} value={time}>
+                    {time}
+                  </option>
+                ))}
+              </select>
             </label>
+            <label>
+              Duracao
+              <select
+                value={selectedDuration}
+                onChange={(event) => {
+                  const duration = Number(event.target.value) || 60;
+                  const nextStart = draft.startsAt || combineDateAndTime(selectedDate, selectedTime);
+                  onChangeDraft({ ...draft, startsAt: nextStart, endsAt: nextStart ? addMinutes(nextStart, duration) : "" });
+                }}
+              >
+                {DURATION_OPTIONS.map((option) => (
+                  <option key={`booking-duration:${option.value}`} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div className={availableCourts.length ? "booking-availability-status success" : "booking-availability-status"}>
+            {availableCourts.length ? (
+              <span>
+                {availableCourts.length} quadra(s) livre(s) para o horario. Escolha uma delas e confirme a reserva.
+              </span>
+            ) : hasRequiredFields ? (
+              <span>Busque disponibilidade antes de reservar. Se estiver cheio, use a espera ou ajuste horario/duracao.</span>
+            ) : (
+              <span>Escolha quadra, data, horario e duracao para buscar disponibilidade real.</span>
+            )}
           </div>
 
           <div className="place-booking-main-actions">
             <button className="secondary" onClick={onSearch} disabled={busy || !draft.startsAt || !draft.endsAt}>
               Buscar
             </button>
-            <button className="primary" onClick={onReserve} disabled={busy || !hasRequiredFields}>
-              Reservar {selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : ""}
+            <button className="primary" onClick={onReserve} disabled={busy || !canReserve}>
+              {canReserve ? `Reservar ${selectedCourtPrice ? formatMoneyFromCents(selectedCourtPrice) : ""}` : "Reservar apos buscar"}
             </button>
           </div>
 
@@ -104,7 +192,7 @@ export function PlaceBookingCreateModule({
                   Bloquear horario
                 </button>
               ) : null}
-              <button className="quiet" onClick={onJoinWaitlist} disabled={busy || !hasRequiredFields}>
+              <button className="quiet" onClick={onJoinWaitlist} disabled={busy || !hasRequiredFields || Boolean(availableCourts.length)}>
                 Entrar na espera
               </button>
             </div>
@@ -112,7 +200,7 @@ export function PlaceBookingCreateModule({
         </div>
       ) : null}
       {availableCourts.length ? (
-        <div className="place-court-list">
+        <div className="available-court-choice-list">
           {availableCourts.map((court) => (
             <button
               key={`available-court:${court.id}`}

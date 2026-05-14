@@ -52,6 +52,7 @@ import {
   listPlacesIAccess,
   listPlaceStaff,
 } from "../lib/places";
+import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
 import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
 
@@ -858,7 +859,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
         if ((role === "owner" || role === "manager") && pendingMemberships > 0) {
           actions.push({
             id: `membership-owner:${place.id}:pending`,
-            targetPath: "/locais",
+            targetPath: buildPlaceAdminPath(place.id, "clients", "members"),
             sourceName: place.name,
             title: `${pendingMemberships} solicitacao${pendingMemberships === 1 ? "" : "es"} de socio`,
             detail: "Ative planos e acompanhe mensalidades do clube.",
@@ -870,7 +871,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
         if (role !== "frontdesk" && pending > 0) {
           actions.push({
             id: `academy-owner:${place.id}:pending`,
-            targetPath: "/locais",
+            targetPath: buildPlaceAdminPath(place.id, "academy", "requests"),
             sourceName: place.name,
             title: `${pending} interesse${pending === 1 ? "" : "s"} em aula`,
             detail: "Revise matriculas pendentes da academia.",
@@ -882,7 +883,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
         if (openMakeups > 0) {
           actions.push({
             id: `academy-owner:${place.id}:makeups`,
-            targetPath: "/locais",
+            targetPath: buildPlaceAdminPath(place.id, "academy", "requests"),
             sourceName: place.name,
             title: `${openMakeups} reposicao${openMakeups === 1 ? "" : "es"} aberta${openMakeups === 1 ? "" : "s"}`,
             detail: "Acompanhe creditos de reposicao dos alunos.",
@@ -1386,7 +1387,7 @@ function buildPriorityItems(
     const urgent = ownerPending || startsSoon;
     return {
       id: `court-booking:${action.id}`,
-      targetPath: "/locais",
+      targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "reservations") : "/locais",
       sourceName: action.placeName,
       title: action.role === "owner" ? `Reserva de ${action.playerName}` : action.courtName,
       detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${courtBookingStatusLabel(action.status)}`,
@@ -1422,7 +1423,7 @@ function buildPriorityItems(
     const ownerWaiting = action.role === "owner" && action.status === "waiting";
     return {
       id: `court-waitlist:${action.id}`,
-      targetPath: "/locais",
+      targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "waitlist") : "/locais",
       sourceName: action.placeName,
       title: action.role === "owner" ? `Espera de ${action.playerName}` : "Lista de espera de quadra",
       detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${action.status === "invited" ? "convidado" : "aguardando"}`,
@@ -1439,6 +1440,14 @@ function buildPriorityItems(
       return a.sourceName.localeCompare(b.sourceName);
     })
     .slice(0, 8);
+}
+
+function isPlayerAcademyAction(action: HomeAcademyAction): boolean {
+  return (
+    action.id.startsWith("academy-player") ||
+    action.id.startsWith("academy-makeup") ||
+    action.id.startsWith("membership-player")
+  );
 }
 
 export function HomePage({ user, profile }: Props) {
@@ -1513,22 +1522,46 @@ export function HomePage({ user, profile }: Props) {
 
   const activePlayingCount = playingTournaments.length + playingLeagues.length;
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
-  const agendaItems = buildAgendaItems(leagueActions, tournamentActions, courtBookingActions);
-  const priorityItems = buildPriorityItems(leagueActions, tournamentActions, organizerActions, courtBookingActions, courtWaitlistActions, academyActions, notices);
+  const playerCourtBookingActions = courtBookingActions.filter((item) => item.role === "player");
+  const operationalCourtBookingActions = courtBookingActions.filter((item) => item.role === "owner");
+  const playerCourtWaitlistActions = courtWaitlistActions.filter((item) => item.role === "player");
+  const operationalCourtWaitlistActions = courtWaitlistActions.filter((item) => item.role === "owner");
+  const playerAcademyActions = academyActions.filter(isPlayerAcademyAction);
+  const operationalAcademyActions = academyActions.filter((item) => !isPlayerAcademyAction(item));
+  const agendaItems = buildAgendaItems(leagueActions, tournamentActions, playerCourtBookingActions);
+  const priorityItems = buildPriorityItems(
+    leagueActions,
+    tournamentActions,
+    [],
+    playerCourtBookingActions,
+    playerCourtWaitlistActions,
+    playerAcademyActions,
+    notices
+  );
+  const operationalPriorityItems = buildPriorityItems(
+    [],
+    [],
+    organizerActions,
+    operationalCourtBookingActions,
+    operationalCourtWaitlistActions,
+    operationalAcademyActions,
+    []
+  );
   const activityFeedItems = buildActivityFeed(
     playingTournaments,
-    organizingTournaments,
+    [],
     playingLeagues,
-    organizingLeagues,
+    [],
     notices,
     upcoming
   );
   const urgentPriorityItems = priorityItems.filter((item) => item.tone === "urgent");
   const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
+  const urgentOperationalPriorityItems = operationalPriorityItems.filter((item) => item.tone === "urgent");
   const urgentActionCount = urgentPriorityItems.length;
   const nextPlayerAgenda = agendaItems[0] || null;
   const nextPlayerPriority = urgentPriorityItems[0] || priorityItems[0] || null;
-  const nextPlayerLearning = academyActions.find((item) => item.id.startsWith("academy-player") || item.id.startsWith("academy-makeup") || item.id.startsWith("membership-player")) || null;
+  const nextPlayerLearning = playerAcademyActions[0] || null;
   const playerReservationItems = [
     ...courtBookingActions
       .filter((item) => item.role === "player" && item.status !== "cancelled")
@@ -1565,7 +1598,7 @@ export function HomePage({ user, profile }: Props) {
       tone: (item.kind === "confirm_result" || item.kind === "send_result" || item.needsAvailability ? "urgent" : "neutral") as "urgent" | "neutral",
     })),
   ];
-  const playerLessonItems = academyActions
+  const playerLessonItems = playerAcademyActions
     .filter((item) => item.id.startsWith("academy-player") || item.id.startsWith("academy-makeup"))
     .map((item) => ({
       id: `lesson:${item.id}`,
@@ -1574,7 +1607,7 @@ export function HomePage({ user, profile }: Props) {
       meta: item.detail,
       tone: item.tone,
     }));
-  const playerPaymentItems = academyActions
+  const playerPaymentItems = playerAcademyActions
     .filter((item) => item.id.startsWith("membership-player") || item.detail.toLowerCase().includes("pagamento"))
     .map((item) => ({
       id: `payment:${item.id}`,
@@ -1871,6 +1904,51 @@ export function HomePage({ user, profile }: Props) {
             </div>
           </section>
 
+          {operationalPriorityItems.length > 0 || activeOrganizingCount > 0 ? (
+            <section className="home-section home-pro-workspace">
+              <div className="section-title">
+                <div>
+                  <p className="home-context-eyebrow">Area profissional</p>
+                  <h2>Gestao e organizacao ficam em outro contexto</h2>
+                </div>
+                <button className="link" type="button" onClick={() => navigate("/gestao")}>
+                  Abrir Gestao
+                </button>
+              </div>
+              <div className="home-pro-overview">
+                <span>
+                  <strong>{urgentOperationalPriorityItems.length}</strong>
+                  pendencias operacionais
+                </span>
+                <span>
+                  <strong>{activeOrganizingCount}</strong>
+                  competicoes organizadas
+                </span>
+                <span>
+                  <strong>{operationalPriorityItems.length}</strong>
+                  acoes profissionais
+                </span>
+              </div>
+              {operationalPriorityItems.length > 0 ? (
+                <div className="home-pro-list">
+                  {operationalPriorityItems.slice(0, 4).map((item) => (
+                    <PriorityCard key={`op:${item.id}`} item={item} onOpen={() => navigate(item.targetPath)} />
+                  ))}
+                </div>
+              ) : (
+                <p className="subtle">Sem pendencias profissionais urgentes agora.</p>
+              )}
+              <ActionBar className="home-pro-actions" label="Acessos profissionais">
+                <button type="button" className="primary" onClick={() => navigate("/gestao")}>
+                  Operar academia
+                </button>
+                <button type="button" className="secondary" onClick={() => navigate("/eventos")}>
+                  Competition OS
+                </button>
+              </ActionBar>
+            </section>
+          ) : null}
+
           {agendaItems.length === 0 && priorityItems.length === 0 && activityFeedItems.length === 0 ? (
             <section className="home-empty-panel home-ok-panel">
               <strong>Tudo em dia</strong>
@@ -1955,23 +2033,6 @@ export function HomePage({ user, profile }: Props) {
             </section>
           )}
 
-          {activeOrganizingCount > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Organizacao</h2>
-              </div>
-              {organizingTournaments.map((t) => (
-                <EventCard key={`org-t:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
-              ))}
-              {organizingLeagues.map((league) => (
-                <LeagueCard
-                  key={`org-l:${league.id}`}
-                  league={league}
-                  onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
-                />
-              ))}
-            </section>
-          ) : null}
         </>
       ) : null}
 

@@ -3997,6 +3997,76 @@ button:disabled {
   margin-bottom: var(--space-5);
 }
 
+.home-context-eyebrow {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  letter-spacing: 0;
+  margin: 0 0 var(--space-1);
+  text-transform: uppercase;
+}
+
+.home-pro-workspace {
+  background: linear-gradient(135deg, rgba(4, 47, 46, 0.98), rgba(6, 78, 59, 0.94));
+  border: 1px solid rgba(167, 243, 208, 0.2);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  color: #ffffff;
+  padding: var(--space-4);
+}
+
+.home-pro-workspace .section-title {
+  align-items: flex-start;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.home-pro-workspace .section-title h2,
+.home-pro-workspace .home-context-eyebrow {
+  color: #ffffff;
+}
+
+.home-pro-workspace .section-title .link {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.home-pro-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.home-pro-overview span {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-xs);
+  color: rgba(255, 255, 255, 0.72);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  gap: var(--space-1);
+  padding: var(--space-2);
+}
+
+.home-pro-overview strong {
+  color: #ffffff;
+  font-size: var(--font-size-xl);
+  line-height: 1;
+}
+
+.home-pro-list .home-action-card {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.home-pro-actions {
+  margin-top: var(--space-2);
+}
+
 .home-notification-panel {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -8114,7 +8184,7 @@ button:disabled {
 .place-booking-primary-fields {
   display: grid;
   gap: var(--space-2);
-  grid-template-columns: minmax(140px, 1fr) minmax(168px, 0.75fr) minmax(168px, 0.75fr);
+  grid-template-columns: minmax(140px, 1fr) minmax(132px, 0.7fr) minmax(112px, 0.55fr) minmax(112px, 0.55fr);
 }
 
 .place-booking-primary-fields label,
@@ -8130,6 +8200,24 @@ button:disabled {
   align-items: end;
   display: flex;
   gap: var(--space-2);
+}
+
+.booking-availability-status {
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-subtle);
+  display: flex;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  padding: 8px 10px;
+}
+
+.booking-availability-status.success {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
 }
 
 .place-booking-advanced {
@@ -8675,13 +8763,15 @@ button:disabled {
   margin-top: 3px;
 }
 
-.place-court-list {
+.place-court-list,
+.available-court-choice-list {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
 }
 
-.place-court-list span {
+.place-court-list span,
+.available-court-choice-list button {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
@@ -8689,6 +8779,48 @@ button:disabled {
   font-size: var(--font-size-xs);
   font-weight: 800;
   padding: 4px 9px;
+}
+
+.place-court-price-list {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.place-court-price-row {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+  min-width: 0;
+  padding: var(--space-2);
+}
+
+.place-court-price-row > div:first-child {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.place-court-price-row strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.place-court-price-row small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+}
+
+.place-court-price-fields {
+  align-items: center;
+  display: grid;
+  gap: var(--space-1);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
 }
 
 .place-booking-list {
@@ -8709,12 +8841,21 @@ button:disabled {
   max-width: 170px;
 }
 
-.court-calendar-grid {
+.court-calendar-filters {
   display: grid;
   gap: var(--space-2);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 140px 160px 180px 180px minmax(180px, 1fr);
 }
 
+.court-calendar-board {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: 56px repeat(auto-fit, minmax(190px, 1fr));
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.court-calendar-time-rail,
 .court-calendar-column {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -8725,28 +8866,106 @@ button:disabled {
   padding: var(--space-2);
 }
 
+.court-calendar-time-rail {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  justify-items: end;
+  min-width: 56px;
+}
+
 .court-calendar-column strong {
   color: var(--color-text);
   font-size: var(--font-size-sm);
 }
 
-.court-calendar-column span,
+.court-calendar-slot {
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  min-height: 34px;
+  padding: 0;
+}
+
+.court-calendar-slot.occupied {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.court-calendar-slot summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-1);
+  justify-content: space-between;
+  list-style: none;
+  min-height: 34px;
+  padding: 5px 7px;
+}
+
+.court-calendar-slot summary::-webkit-details-marker {
+  display: none;
+}
+
+.court-calendar-slot summary span,
+.court-calendar-slot summary b,
+.court-calendar-slot p,
 .court-calendar-column small {
   border-radius: var(--radius-sm);
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 800;
-  padding: 4px 6px;
 }
 
-.court-calendar-column span {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+.court-calendar-slot p {
+  margin: 0;
+  padding: 0 7px 7px;
 }
 
-.court-calendar-column span.blocked {
+.court-agenda-event {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: 4px;
+  margin: 0 6px 6px;
+  padding: var(--space-2);
+}
+
+.court-agenda-event.block {
   background: #fffbeb;
   border-color: #fcd34d;
+}
+
+.court-agenda-event.class,
+.court-agenda-event.drop_in {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.court-agenda-event header {
+  align-items: start;
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.court-agenda-event header strong {
+  font-size: var(--font-size-xs);
+}
+
+.court-agenda-event header span,
+.court-agenda-event small,
+.court-agenda-students summary,
+.court-agenda-students span {
+  color: var(--color-text-subtle);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.court-agenda-students {
+  border-top: 1px solid var(--color-border);
+  padding-top: 4px;
 }
 
 .place-booking-row {
@@ -8815,22 +9034,50 @@ button:disabled {
 }
 
 .booking-rule-form {
-  align-items: end;
+  align-items: start;
   display: grid;
   gap: var(--space-2);
-  grid-template-columns:
-    minmax(160px, 1.1fr)
-    minmax(110px, 0.7fr)
-    minmax(110px, 0.8fr)
-    92px
-    92px
-    100px
-    100px
-    86px
-    86px
-    100px
-    minmax(128px, 0.8fr)
-    auto;
+  grid-template-columns: repeat(6, minmax(120px, 1fr));
+}
+
+.booking-rule-form > label,
+.booking-rule-weekdays {
+  color: var(--color-text-subtle);
+  display: grid;
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+  gap: 4px;
+}
+
+.booking-rule-weekdays {
+  grid-column: span 2;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.booking-rule-weekdays label {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 900;
+  gap: 3px;
+  justify-content: center;
+  min-height: 40px;
+  padding: 4px;
+}
+
+.booking-rule-weekdays label.active {
+  background: #ecfdf5;
+  border-color: #86efac;
+  color: #047857;
+}
+
+.booking-rule-weekdays input {
+  display: none;
 }
 
 .inline-check {
@@ -11170,9 +11417,26 @@ button,
   .place-booking-flow,
   .place-booking-primary-fields,
   .place-booking-advanced-grid,
+  .court-calendar-filters,
+  .place-court-price-list,
+  .place-court-price-row,
+  .place-court-price-fields,
   .progressive-form-primary,
   .progressive-form-secondary {
     grid-template-columns: 1fr;
+  }
+
+  .court-calendar-board {
+    grid-template-columns: 44px repeat(2, minmax(180px, 1fr));
+  }
+
+  .booking-rule-form,
+  .booking-rule-weekdays {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-rule-weekdays {
+    grid-column: auto;
   }
 
   .place-booking-main-actions,

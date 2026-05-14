@@ -493,6 +493,56 @@ Anti-pattern:
 - retornar academia completa quando o usuario pesquisou uma quadra livre em data/hora especifica.
 - retornar academia completa quando o usuario pesquisou uma turma com vaga por perfil/nivel.
 
+## OperationalCalendar
+
+Uso:
+
+- agenda de quadras;
+- ocupacao de professor;
+- turmas fixas;
+- aulas avulsas/reposicoes;
+- bloqueios e manutencoes.
+
+Anatomia:
+
+```text
+[data] [tipo] [quadra] [professor] [turma] [aluno]
+
+horario | quadra 1 | quadra 2 | quadra 3
+08:00   | livre    | turma    | reserva
+08:30   | livre    | turma    | reserva
+```
+
+Regras:
+
+- deve mostrar ocupacao real, nao apenas reservas;
+- reservas, bloqueios, turmas, aulas avulsas/reposicoes e faltas avisadas pertencem ao mesmo mapa;
+- cada slot deve ser clicavel e revelar detalhe operacional;
+- slots padrao devem ser praticos, preferencialmente de 30 minutos;
+- filtro por professor e aluno e obrigatorio quando ha aulas/turmas;
+- detalhes de turma devem mostrar alunos ativos e quem avisou falta no dia;
+- KPI de ocupacao e suporte, nao substitui o mapa.
+
+Desktop:
+
+- grade por quadra com trilho de horario;
+- scroll horizontal e aceitavel quando ha muitas quadras;
+- filtros ficam acima, em uma linha densa.
+
+Mobile:
+
+- manter data e filtros frequentes visiveis;
+- grade pode rolar horizontalmente;
+- detalhe do slot pode virar disclosure/bottom sheet;
+- evitar empilhar um card por reserva antes do calendario.
+
+Anti-pattern:
+
+- mostrar `Hoje`, `Reservas` ou `Espera` duplicados dentro e fora da central;
+- calendario que ignora turmas e aulas avulsas;
+- dias de regra como `1,2,3,4,5` para usuario final;
+- horario livre digitavel sem grade, gerando 08:20 ou 09:35.
+
 ## Mobile Rows
 
 Anatomia:
