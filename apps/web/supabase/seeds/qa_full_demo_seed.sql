@@ -322,6 +322,46 @@ select
   now()
 from public.seed_users;
 
+do $$
+begin
+  if to_regclass('public.app_user_product_entitlements') is not null then
+    execute $seed_entitlements$
+      insert into public.app_user_product_entitlements (
+        user_id,
+        account_type,
+        can_create_places,
+        can_create_competitions,
+        notes
+      )
+      select
+        id,
+        case
+          when email = 'escalao@gmail.com' then 'academy_pro'
+          when kind = 'coach' then 'coach_solo'
+          else 'free_player'
+        end,
+        email = 'escalao@gmail.com',
+        email = 'escalao@gmail.com',
+        case
+          when email = 'escalao@gmail.com' then 'Demo owner with Management OS access.'
+          when kind = 'coach' then 'Demo coach account without place creation entitlement.'
+          else 'Demo player account.'
+        end
+      from public.seed_users
+      where email = 'escalao@gmail.com'
+         or kind = 'coach'
+      on conflict (user_id) do update
+      set
+        account_type = excluded.account_type,
+        can_create_places = excluded.can_create_places,
+        can_create_competitions = excluded.can_create_competitions,
+        notes = excluded.notes,
+        updated_at = now()
+    $seed_entitlements$;
+  end if;
+end;
+$$;
+
 -- ---------------------------------------------------------------------
 -- 3) Places, staff, courts and booking rules
 -- ---------------------------------------------------------------------

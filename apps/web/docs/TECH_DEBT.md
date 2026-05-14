@@ -176,6 +176,20 @@ Acao:
 
 - drawers, accordions, action sheets e sticky actions.
 
+### Criacao de local ainda precisa tela de entitlement comercial
+
+Impacto:
+
+- o guardrail tecnico ja existe (`app_user_product_entitlements`, `app_user_can_create_place()` e `app_create_place(...)`);
+- Free Player nao deve mais conseguir criar local direto;
+- ainda falta interface/processo comercial para conceder, remover e auditar entitlements fora do seed/demo.
+
+Acao:
+
+- criar rotina administrativa/comercial para conceder plano;
+- registrar origem da assinatura/pagamento;
+- manter `Cadastrar local` em contexto de gestao/onboarding, nao no Player App generico.
+
 ## Regra para nao criar nova divida
 
 - Nao adicionar nova funcionalidade grande em `PlacesPage.tsx` sem avaliar extracao.
@@ -198,6 +212,7 @@ Acao:
 - 2026-05-13: criado `PlaceMembershipModule` para remover planos/socios/mensalidades do corpo inline da `PlacesPage`. Lint e build passaram; chunk grande permanece como divida estrutural.
 - 2026-05-13: criado `PlaceClientActionQueue` para retirar a fila de atendimento/relacionamento do corpo inline da `PlacesPage`. Lint e build passaram; chunk grande permanece como divida estrutural.
 - 2026-05-13: `PlaceClientActionQueue` passou a atender tambem a subvisao de solicitacoes, reduzindo duplicidade de listas operacionais. Lint e build passaram; chunk grande permanece como divida estrutural.
+- 2026-05-13: criado guardrail real para criacao profissional de local com entitlement, RPC e policy; a divida restante virou tela/processo comercial para gerenciar acesso.
 - 2026-05-13: criado `PlaceClientRelationshipModule` e tipado `PlaceClientReceivable` para separar rotina de relacionamento/cobranca do corpo inline da `PlacesPage`. Lint e build passaram; chunk grande permanece como divida estrutural.
 - 2026-05-13: criado `PlaceFinanceReceivablesModule` para retirar a subvisao de recebiveis financeiros do corpo inline da `PlacesPage`. Lint e build passaram; chunk grande permanece como divida estrutural.
 - 2026-05-13: criado `PlaceFinanceOverviewModule` para retirar KPIs financeiros do corpo inline da `PlacesPage`. Lint e build passaram; chunk grande permanece como divida estrutural.

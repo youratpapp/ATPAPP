@@ -1682,6 +1682,88 @@ Entregue em 2026-05-13:
 - reposicao e total de matriculas ficaram como metricas de suporte;
 - fluxo de turmas ficou mais consistente com CRM, Financeiro e Cantina.
 
+### [x] LOCAIS-01 - Separar descoberta de partidas, quadras e aulas
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Corrigir a confusao em `/locais`, onde partidas abertas, locais/quadras e aulas apareciam no mesmo fluxo sem intencao clara.
+
+Entregue em 2026-05-13:
+
+- `/locais` ganhou seletor inicial por intencao: `Encontrar jogadores`, `Reservar quadra`, `Entrar em aula`;
+- partidas abertas deixaram de aparecer por padrao na descoberta de locais;
+- lista de locais ganhou cabecalho contextual para quadras ou aulas;
+- `+` ambiguo virou `Cadastrar local` e ficou restrito ao contexto `Meus locais`;
+- mobile usa escolhas empilhadas e linguagem mais clara.
+
+Ganho:
+
+- menor carga cognitiva;
+- mais discoverability;
+- melhor alinhamento com task-first UX;
+- separacao mais clara entre jogar, procurar quadra/local e procurar aulas.
+
+### [x] LOCAIS-02 - Reduzir acoes secundarias dos cards de local
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Levar os cards de local ao padrao de ate uma acao primaria visivel e secundarias em overflow/sheet, especialmente no mobile.
+
+Criterios:
+
+- card de local nao deve expor 3-4 botoes equivalentes no mobile;
+- `Ver pagina`/`Ver aulas` deve ser a acao primaria por intencao;
+- `WhatsApp`, `Copiar link` e acoes raras devem ir para menu ou sheet;
+- validar 390px e 430px.
+
+Entregue em 2026-05-13:
+
+- `Reservar quadra` agora lista apenas locais com quadras ativas fora de `Meus locais`;
+- `Entrar em aula` agora lista apenas locais com turmas ativas fora de `Meus locais`;
+- card de local passou a ter acao primaria por intencao: `Ver horarios`, `Ver aulas` ou `Abrir gestao`;
+- `WhatsApp`, `Copiar link` e `Abrir gestao` secundario foram movidos para `Mais`;
+- chamadas de jogo tambem passaram a priorizar `Quero jogar` ou `Fechar chamada`, deixando curtir/comentarios/cancelar em `Mais`.
+
+Ganho:
+
+- menos botoes equivalentes;
+- menos duvida entre procurar jogador, reservar quadra e entrar em aula;
+- mais aderencia a perfil/contexto e `EntityActionRow`.
+
+### [x] ACCESS-02 - Criar guardrail real para criacao profissional de local
+
+Status: `[x]` concluido
+
+Objetivo:
+
+- Impedir que jogador comum crie local profissional apenas por estar autenticado.
+
+Criterios:
+
+- definir fonte real de plano/assinatura por usuario ou workspace;
+- criar RPC/policy para autorizar criacao de local por plano/permissao;
+- UI deve chamar esse guardrail antes de mostrar formulario de criacao;
+- preservar seed/demo para donos e professores autorizados.
+
+Entregue em 2026-05-13:
+
+- criada migration `0073_place_creation_entitlements_v1.sql` com `app_user_product_entitlements`;
+- criada RPC `app_user_can_create_place()` para a UI consultar permissao real;
+- criada RPC `app_create_place(...)` para centralizar validacao de plano, dono e organizacao;
+- policy `places_owner_insert` passou a exigir `app_user_can_create_place()`, bloqueando insert direto de jogador comum;
+- `/locais` agora so exibe `Cadastrar local` quando o backend confirma entitlement;
+- seed demo concede entitlement ao `escalao@gmail.com` e registra professores como `coach_solo` sem criacao de local.
+
+Ganho:
+
+- remove a contradicao entre UX e banco;
+- impede ferramenta profissional exposta para Free Player;
+- torna o fluxo de criacao de local coerente com perfil, plano e permissao.
+
 ## Concluidos recentes
 
 ### [x] DOCS-01 - Criar sistema visual de referencia

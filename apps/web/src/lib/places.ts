@@ -1047,6 +1047,13 @@ export async function claimPlaceStaffInvites(): Promise<number> {
   return Number(data || 0);
 }
 
+export async function canCreatePlace(): Promise<boolean> {
+  if (!supabase) return false;
+  const { data, error } = await supabase.rpc("app_user_can_create_place");
+  if (error) throw new Error(error.message);
+  return Boolean(data);
+}
+
 export async function listPlacesIFollow(user: User): Promise<Place[]> {
   if (!supabase) return [];
   const { data: follows, error: fErr } = await supabase
@@ -1070,24 +1077,21 @@ export async function createPlace(
   user: User,
   input: { name: string; city?: string; state?: string; description?: string; logoUrl?: string; organizationId?: string; productPlan?: PlaceProductPlan }
 ): Promise<Place> {
-  if (!supabase) throw new Error("Supabase não configurado.");
-  const payload = {
-    owner_id: user.id,
-    organization_id: input.organizationId || null,
-    name: input.name.trim(),
-    city: input.city?.trim() || null,
-    state: (input.state?.trim() || "").toUpperCase().slice(0, 2) || null,
-    description: input.description?.trim() || null,
-    logo_url: input.logoUrl || null,
-    product_plan: input.productPlan || "club_pro",
-  };
-  const { data, error } = await supabase
-    .from(TABLE_PLACES)
-    .insert(payload)
-    .select(PLACE_SELECT_FIELDS)
-    .single();
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  if (!user.id) throw new Error("Usuario nao autenticado.");
+  const { data, error } = await supabase.rpc("app_create_place", {
+    p_name: input.name.trim(),
+    p_city: input.city?.trim() || null,
+    p_state: (input.state?.trim() || "").toUpperCase().slice(0, 2) || null,
+    p_description: input.description?.trim() || null,
+    p_logo_url: input.logoUrl || null,
+    p_organization_id: input.organizationId || null,
+    p_product_plan: input.productPlan || "club_pro",
+  });
   if (error) throw new Error(error.message);
-  return rowToPlace(data as PlaceRow);
+  const row = ((data ?? []) as PlaceRow[])[0];
+  if (!row) throw new Error("Local nao criado.");
+  return rowToPlace(row);
 }
 
 export async function updatePlaceProfile(

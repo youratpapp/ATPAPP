@@ -25,6 +25,30 @@ O produto deve separar:
 - publicar;
 - analisar.
 
+## Regra de exposicao de ferramentas
+
+Antes de mostrar qualquer botao, menu, atalho ou formulario, validar:
+
+- `Free Player`: pode consumir/participar, mas nao deve criar operacao profissional de local.
+- `Competition Organizer`: pode criar e operar competicoes, mas nao deve receber ferramentas de academia/clube por padrao.
+- `Coach Solo`: pode operar aulas, alunos, agenda e mensalidades simples.
+- `Academy/Club`: pode criar e operar local conforme plano e permissao.
+- `Staff`: ve apenas rotinas permitidas pelo papel no local.
+
+Regra pratica:
+
+```text
+Se a acao cria ou configura uma operacao profissional, ela nao pertence ao Player App generico. Ela deve viver em contexto de gestao/onboarding e exigir plano/permissao.
+```
+
+Guardrail atual:
+
+- Criacao profissional de local usa `app_user_product_entitlements`.
+- A UI consulta `app_user_can_create_place()` antes de mostrar `Cadastrar local`.
+- A criacao deve passar por `app_create_place(...)`, que valida plano, usuario e organizacao.
+- A policy `places_owner_insert` tambem exige `app_user_can_create_place()`, bloqueando insert direto de Free Player.
+- Ainda falta uma tela comercial/admin para conceder e auditar entitlements; por enquanto seed/demo concede acesso ao owner demo.
+
 ## Contextos do produto
 
 ### Player App

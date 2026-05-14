@@ -62,6 +62,7 @@ import {
   createRecurringCourtBookings,
   joinCourtBookingWaitlist,
   createOpenMatch,
+  canCreatePlace,
   createPlace,
   createPlaceAcademyClass,
   createPlaceAcademySlot,
@@ -170,6 +171,7 @@ type Props = {
 };
 
 type TabKey = "all" | "following" | "mine";
+type PlaceDiscoveryIntent = "matches" | "places" | "classes";
 type AcademyStudentFilter = { query: string; classId: string; status: "" | AcademyEnrollment["status"] };
 type CrmInteractionDraft = { interactionType: PlaceCrmInteraction["interactionType"]; body: string; nextContactOn: string };
 type PlaceProfileDraft = { city: string; description: string; logoUrl: string; name: string; state: string };
@@ -414,6 +416,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const navigate = useNavigate();
   const isAdminRoute = Boolean(adminPlaceId);
   const [tab, setTab] = useState<TabKey>(isAdminRoute ? "mine" : "all");
+  const [discoveryIntent, setDiscoveryIntent] = useState<PlaceDiscoveryIntent>("places");
+  const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [managementModuleByPlace, setManagementModuleByPlace] = useState<Record<string, PlaceManagementModule>>({});
   const [academyViewByPlace, setAcademyViewByPlace] = useState<Record<string, AcademyManagementView>>({});
   const [bookingViewByPlace, setBookingViewByPlace] = useState<Record<string, BookingManagementView>>({});
@@ -573,13 +577,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetchPlacesWorkspaceData({ isAdminRoute, tab, user });
+      const [data, createPlaceAccess] = await Promise.all([
+        fetchPlacesWorkspaceData({ isAdminRoute, tab, user }),
+        canCreatePlace().catch(() => false),
+      ]);
       const maps = entriesToPlaceAdminResourceMaps(data.entries);
       setOrganizations(data.organizations);
       setPlaces(data.places);
       replaceAllPlaceAdminResources(maps);
       setPaymentsByTarget(data.paymentsByTarget);
       setOpenMatches(data.openMatches);
+      setCanCreatePlaceAccess(createPlaceAccess);
       setFeedback(null);
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao carregar.") });
@@ -651,6 +659,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   };
 
   const onCreate = async () => {
+    if (!canCreatePlaceAccess) {
+      setFeedback({ kind: "error", text: "Cadastrar local exige plano de gestao ativo." });
+      return;
+    }
     setBusy(true);
     setFeedback(null);
     try {
@@ -2075,6 +2087,32 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
   const visiblePlaces = adminPlaceId ? places.filter((place) => place.id === adminPlaceId) : places;
   const adminRoutePlace = visiblePlaces[0] || null;
+  const activeCourtsCount = visiblePlaces.reduce(
+    (sum, place) => sum + (courtsByPlace[place.id] || []).filter((court) => court.isActive).length,
+    0
+  );
+  const activeAcademyClassesCount = visiblePlaces.reduce(
+    (sum, place) => sum + (academyClassesByPlace[place.id] || []).filter((academyClass) => academyClass.isActive).length,
+    0
+  );
+  const placeHasActiveCourt = (place: Place) => (courtsByPlace[place.id] || []).some((court) => court.isActive);
+  const placeHasActiveClass = (place: Place) => (academyClassesByPlace[place.id] || []).some((academyClass) => academyClass.isActive);
+  const directoryPlaces = !isAdminRoute
+    ? visiblePlaces.filter((place) => {
+        if (tab === "mine") return true;
+        if (discoveryIntent === "classes") return placeHasActiveClass(place);
+        if (discoveryIntent === "places") return placeHasActiveCourt(place);
+        return true;
+      })
+    : visiblePlaces;
+  const showOpenMatchesPanel = !loading && !isAdminRoute && discoveryIntent === "matches" && tab !== "mine";
+  const showPlaceDirectory = isAdminRoute || discoveryIntent !== "matches";
+  const showCreatePlaceAction = !isAdminRoute && canCreatePlaceAccess && discoveryIntent !== "matches" && tab === "mine";
+  const placeDirectoryTitle = discoveryIntent === "classes" ? "Aulas e turmas" : "Reservar quadra";
+  const placeDirectoryDescription =
+    discoveryIntent === "classes"
+      ? "Aqui voce procura turmas, professores e aulas. Nao e busca de quadra avulsa."
+      : "Aqui voce escolhe um clube ou academia para ver quadras, regras e solicitar horario.";
 
   const pageContent = (
     <>
@@ -2082,23 +2120,70 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         <div className="page-header">
           <h1>Locais</h1>
           <div className="ph-actions">
-            <button className="ph-add-btn" onClick={() => setShowCreate(true)} aria-label="Adicionar local">
-              +
-            </button>
+            {showCreatePlaceAction ? (
+              <button className="ph-create-local-btn" onClick={() => setShowCreate(true)}>
+                Cadastrar local
+              </button>
+            ) : null}
           </div>
         </div>
       ) : null}
 
       {!isAdminRoute ? (
-        <div className="tabs">
+        <section className="places-intent-panel" aria-label="Escolha o que voce quer encontrar">
+          <div className="places-intent-copy">
+            <span>Central de descoberta</span>
+            <h2>O que voce esta procurando?</h2>
+            <p>Sao buscas diferentes: encontrar pessoas para jogar, reservar uma quadra ou entrar em uma aula.</p>
+          </div>
+          <div className="places-intent-actions">
+            <button
+              className={discoveryIntent === "matches" ? "places-intent-card active" : "places-intent-card"}
+              onClick={() => {
+                setDiscoveryIntent("matches");
+                setTab("all");
+              }}
+            >
+              <strong>Encontrar jogadores</strong>
+              <span>Chamadas de pessoas procurando adversario ou parceiro. Nao mostra quadra livre.</span>
+              <small>{countLabel(openMatchCommunityStats.open, "chamada aberta", "chamadas abertas")}</small>
+            </button>
+            <button
+              className={discoveryIntent === "places" ? "places-intent-card active" : "places-intent-card"}
+              onClick={() => {
+                setDiscoveryIntent("places");
+                setTab("all");
+              }}
+            >
+              <strong>Reservar quadra</strong>
+              <span>Escolha um local para ver quadras, regras, valores e pedir horario.</span>
+              <small>{countLabel(activeCourtsCount, "quadra ativa", "quadras ativas")}</small>
+            </button>
+            <button
+              className={discoveryIntent === "classes" ? "places-intent-card active" : "places-intent-card"}
+              onClick={() => {
+                setDiscoveryIntent("classes");
+                setTab("all");
+              }}
+            >
+              <strong>Entrar em aula</strong>
+              <span>Procure turmas e professores. Separado de reserva avulsa e chamada de jogo.</span>
+              <small>{countLabel(activeAcademyClassesCount, "turma ativa", "turmas ativas")}</small>
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {!isAdminRoute && discoveryIntent !== "matches" ? (
+        <div className="tabs places-scope-tabs" aria-label="Filtrar locais">
           <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
-            Proximos
+            Todos
           </button>
           <button className={tab === "following" ? "active" : ""} onClick={() => setTab("following")}>
             Seguindo
           </button>
           <button className={tab === "mine" ? "active" : ""} onClick={() => setTab("mine")}>
-            Meus Locais
+            Meus locais
           </button>
         </div>
       ) : null}
@@ -2111,7 +2196,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
       {loading ? <p className="subtle">Carregando...</p> : null}
 
-      {!loading && visiblePlaces.length === 0 ? (
+      {!loading && showPlaceDirectory && directoryPlaces.length === 0 ? (
         <div className="empty-state">
           <span className="empty-emoji" aria-hidden>ðŸ“</span>
           <p>
@@ -2120,27 +2205,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               : tab === "following"
               ? "VocÃª ainda nÃ£o segue nenhum local."
               : tab === "mine"
-              ? "VocÃª ainda nÃ£o criou nenhum local."
-              : "Nenhum local cadastrado."}
+              ? canCreatePlaceAccess
+                ? "VocÃª ainda nÃ£o criou nenhum local."
+                : "Seu perfil atual nao tem plano de gestao para cadastrar local."
+              : discoveryIntent === "classes"
+              ? "Nenhuma academia com aulas ativas encontrada."
+              : "Nenhum local com quadras ativas encontrado."}
           </p>
           {isAdminRoute ? (
             <button className="empty-action" onClick={() => navigate("/gestao")}>
               Voltar para gestao
             </button>
-          ) : (
+          ) : showCreatePlaceAction ? (
             <button className="empty-action" onClick={() => setShowCreate(true)}>
               Adicionar local
             </button>
-          )}
+          ) : null}
         </div>
       ) : null}
 
-      {!loading && !isAdminRoute && tab !== "mine" ? (
+      {showOpenMatchesPanel ? (
         <section className="open-matches-panel">
           <div className="place-booking-head">
             <div>
-              <strong>Partidas abertas</strong>
-              <small>Chame jogadores da comunidade para completar a quadra.</small>
+              <strong>Jogadores procurando jogo</strong>
+              <small>Esta area e para achar adversario ou parceiro. Quadra livre e aulas ficam nas outras opcoes.</small>
             </div>
             <span>{countLabel(openMatchCommunityStats.open, "chamada aberta", "chamadas abertas")}</span>
           </div>
@@ -2175,6 +2264,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </select>
             <span>{countLabel(visibleOpenMatches.length, "partida encontrada", "partidas encontradas")}</span>
           </div>
+          <div className="open-match-create-intro">
+            <strong>Criar chamada para jogar</strong>
+            <small>Use quando voce quer encontrar pessoas. Nao substitui a reserva da quadra.</small>
+          </div>
           <div className="open-match-form">
             <select
               value={openMatchDraft.placeId}
@@ -2203,7 +2296,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               placeholder="Mensagem"
             />
             <button className="primary" onClick={() => void onCreateOpenMatch()} disabled={busy}>
-              Abrir partida
+              Criar chamada
             </button>
           </div>
           <div className="open-match-list">
@@ -2225,27 +2318,58 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     </small>
                   </div>
                   <div className="open-match-actions">
-                    <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
-                      {match.reactedByMe ? "Curtido" : "Curtir"}
-                    </button>
-                    <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
-                      Comentarios
-                    </button>
                     {match.creatorId === user.id ? (
                       <>
-                        <button onClick={() => void onCloseOpenMatch(match.id, "closed")} disabled={busy}>
-                          Fechar
+                        <button className="primary" onClick={() => void onCloseOpenMatch(match.id, "closed")} disabled={busy}>
+                          Fechar chamada
                         </button>
-                        <button className="danger" onClick={() => void onCloseOpenMatch(match.id, "cancelled")} disabled={busy}>
-                          Cancelar
-                        </button>
+                        <details className="place-card-more open-match-more">
+                          <summary>Mais</summary>
+                          <div>
+                            <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
+                              Comentarios
+                            </button>
+                            <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
+                              {match.reactedByMe ? "Curtido" : "Curtir"}
+                            </button>
+                            <button className="danger" onClick={() => void onCloseOpenMatch(match.id, "cancelled")} disabled={busy}>
+                              Cancelar
+                            </button>
+                          </div>
+                        </details>
                       </>
                     ) : match.joinedByMe ? (
-                      <button disabled>Estou dentro</button>
+                      <>
+                        <button disabled>Estou dentro</button>
+                        <details className="place-card-more open-match-more">
+                          <summary>Mais</summary>
+                          <div>
+                            <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
+                              Comentarios
+                            </button>
+                            <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
+                              {match.reactedByMe ? "Curtido" : "Curtir"}
+                            </button>
+                          </div>
+                        </details>
+                      </>
                     ) : (
-                      <button className="primary" onClick={() => void onJoinOpenMatch(match)} disabled={busy}>
-                        Quero jogar
-                      </button>
+                      <>
+                        <button className="primary" onClick={() => void onJoinOpenMatch(match)} disabled={busy}>
+                          Quero jogar
+                        </button>
+                        <details className="place-card-more open-match-more">
+                          <summary>Mais</summary>
+                          <div>
+                            <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
+                              Comentarios
+                            </button>
+                            <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
+                              {match.reactedByMe ? "Curtido" : "Curtir"}
+                            </button>
+                          </div>
+                        </details>
+                      </>
                     )}
                   </div>
                 </div>
@@ -2275,7 +2399,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
-      {visiblePlaces.map((p) => {
+      {showPlaceDirectory && !loading && directoryPlaces.length > 0 ? (
+        <div className="places-section-head">
+          <div>
+            <span>{discoveryIntent === "classes" ? "Academia" : "Quadras"}</span>
+            <h2>{placeDirectoryTitle}</h2>
+            <p>{placeDirectoryDescription}</p>
+          </div>
+          <strong>{countLabel(directoryPlaces.length, "resultado", "resultados")}</strong>
+        </div>
+      ) : null}
+
+      {showPlaceDirectory ? directoryPlaces.map((p) => {
         const initials = (p.name || "L")
           .split(/\s+/)
           .filter(Boolean)
@@ -2912,6 +3047,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             (!normalizedAcademyStudentQuery || searchText.includes(normalizedAcademyStudentQuery))
           );
         });
+        const isMyManagedPlaceCard = !isAdminRoute && tab === "mine" && canManagePlace;
+        const placePublicPrimaryLabel = discoveryIntent === "classes" ? "Ver aulas" : "Ver horarios";
+        const placePublicPrimaryHint =
+          discoveryIntent === "classes"
+            ? "Turmas, professores e interesse em aula."
+            : "Quadras, regras e pedido de reserva.";
         return (
           <article key={p.id} className="place-card">
             <div>
@@ -2928,9 +3069,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   {p.followerCount} {p.followerCount === 1 ? "seguidor" : "seguidores"}
                 </span>
                 {organization ? <span className="pc-meta-row">Unidade de {organization.name}</span> : null}
-                <span className="pc-meta-row">
-                  {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} Â· {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
-                </span>
+                {canManagePlace || isAdminRoute ? (
+                  <span className="pc-meta-row">
+                    {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} Â· {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
+                  </span>
+                ) : null}
               </div>
               <div className="place-feature-strip">
                 {enabledFeatures.map((feature) => (
@@ -2971,30 +3114,43 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     Central de gestao
                   </button>
                 </>
-              ) : canManagePlace ? (
-                <button className="primary" onClick={() => navigate(buildPlaceAdminPath(p.id, "dashboard"))}>
-                  Gestao
-                </button>
-              ) : !isOwner ? (
-                <button
-                  className={p.isFollowing ? "" : "primary"}
-                  disabled={busy}
-                  onClick={() => onToggleFollow(p)}
-                >
-                  {p.isFollowing ? "âœ“ Seguindo" : "Seguir"}
-                </button>
-              ) : null}
-              {!isAdminRoute ? (
+              ) : isMyManagedPlaceCard ? (
                 <>
-                  <button onClick={() => sharePlace(p)}>
-                    WhatsApp
-                  </button>
-                  <button onClick={() => void copyPlaceLink(p)}>
-                    Copiar link
+                  <button className="primary" onClick={() => navigate(buildPlaceAdminPath(p.id, "dashboard"))}>
+                    Abrir gestao
                   </button>
                   <button onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
-                    Ver pagina
+                    Pagina publica
                   </button>
+                  <details className="place-card-more">
+                    <summary>Mais</summary>
+                    <div>
+                      <button onClick={() => sharePlace(p)}>WhatsApp</button>
+                      <button onClick={() => void copyPlaceLink(p)}>Copiar link</button>
+                    </div>
+                  </details>
+                </>
+              ) : !isAdminRoute ? (
+                <>
+                  <button className="primary" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
+                    {placePublicPrimaryLabel}
+                  </button>
+                  {!isOwner ? (
+                    <button disabled={busy} onClick={() => onToggleFollow(p)}>
+                      {p.isFollowing ? "Seguindo" : "Seguir"}
+                    </button>
+                  ) : null}
+                  <details className="place-card-more">
+                    <summary>Mais</summary>
+                    <div>
+                      <small>{placePublicPrimaryHint}</small>
+                      <button onClick={() => sharePlace(p)}>WhatsApp</button>
+                      <button onClick={() => void copyPlaceLink(p)}>Copiar link</button>
+                      {canManagePlace ? (
+                        <button onClick={() => navigate(buildPlaceAdminPath(p.id, "dashboard"))}>Abrir gestao</button>
+                      ) : null}
+                    </div>
+                  </details>
                 </>
               ) : null}
             </div>
@@ -4770,7 +4926,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             ) : null}
           </article>
         );
-      })}
+      }) : null}
 
       {showCreate ? (
         <div className="modal-backdrop" onClick={() => !busy && setShowCreate(false)}>

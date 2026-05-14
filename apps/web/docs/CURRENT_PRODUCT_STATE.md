@@ -129,6 +129,22 @@ Regra:
 Card e excecao em operacao diaria. Row e padrao.
 ```
 
+## Regra permanente de perfil, plano e permissao
+
+Toda mudanca de UI deve responder antes de implementar:
+
+- qual tipo de usuario ve esta acao;
+- qual plano habilita esta acao;
+- qual permissao operacional permite executar;
+- se a acao pertence a Player App, Management OS ou Competition OS;
+- se existe risco de mostrar ferramenta profissional para jogador comum.
+
+Regra:
+
+```text
+Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer porque o perfil, plano e contexto tornam aquela tarefa obvia e executavel.
+```
+
 ## Estado atual real
 
 ### Ja consolidado
@@ -170,13 +186,15 @@ Card e excecao em operacao diaria. Row e padrao.
 - `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` foram criados.
 - `/gestao` ja foi refinada para ocultar cards zerados e usar rows operacionais de local.
 - `/gestao` ja recebeu refinamento mobile-first para header compacto, stats em trilho e atalhos de modulos sem empilhamento longo.
+- `/locais` ja separa descoberta por intencao: encontrar jogadores, reservar quadra e entrar em aula; cards usam acao primaria contextual e secundarias em `Mais`.
+- Criacao profissional de local ja exige entitlement no backend (`app_user_product_entitlements`, `app_user_can_create_place()` e `app_create_place(...)`); Free Player nao deve ver nem conseguir inserir local direto.
 
 ### Ainda fraco
 
 - `PlacesPage` ainda concentra muita orquestracao e ainda influencia a sensacao de admin template.
 - Admin de local ainda precisa evoluir nos modulos internos, mas o shell ja reduziu cockpit de cards.
 - Sidebar/global navigation ja iniciou diferenciacao por contexto, mas ainda pode evoluir com permissoes reais e atalhos contextuais.
-- Sistema ja iniciou visibilidade por perfil/plano na navegacao global, mas ainda precisa aplicar isso nos hubs internos e entradas de setup.
+- Sistema ja iniciou visibilidade por perfil/plano na navegacao global e guardrail real para criar local, mas ainda precisa aplicar permissoes reais em mais hubs internos.
 - Gestao ja iniciou onboarding guiado para academia/clube, Competition OS ja iniciou onboarding de organizador e professor `coach` ja tem entrada leve; entradas internas agora tambem mudam prioridade por papel, mas ainda falta calibrar fluxos internos especificos por massa real.
 - Acoes de setup de local ja comecaram a ficar semanticamente descobriveis; criacao de torneio/liga ja fica concentrada no contexto de organizacao do Competition OS.
 - Competition OS ja esta mais consistente visualmente; torneio, lista de partidas da liga e sala da liga ja usam mais hierarchy operacional.
