@@ -37,6 +37,7 @@ Regra: nenhuma varredura esta completa se apenas o Admin/PRO foi testado. O Admi
 | Local publico | `/locais/:id` | Conforme com risco mobile | Pagina publica deve vender o local e permitir reserva/aula sem expor gestao. | Validar mobile em 360/390/430 quando dados/API estiverem estaveis. |
 | Gestao Hub | `/gestao` | Conforme | Entrada propria de Management OS existe e nao depende mais da pagina publica como cockpit. | Sem mudanca nesta rodada. |
 | Gestao Hub | `/gestao` digitado por Player puro | Corrigido | Player puro acessando URL direta ganhava contexto visual `Management OS` no nav e texto de setup operacional. | `BottomNav` so mostra `Gestao`/contexto Management quando `access.hasManagement` e verdadeiro; `ManagementHubPage` agora diferencia Player sem permissao de operador sem local. |
+| Gestao Local | `/gestao/:placeId/:module` topo e primeira dobra | Corrigido | A rota administrativa ainda renderizava cabecalho/listagem publica de `Locais`, incluindo titulo `Reservar quadra` e card completo do local antes do workspace. | Gestao local agora oculta a camada publica nessa rota, mantem apenas o workspace operacional e usa topo `Management OS` com acoes discretas para central/pagina publica. |
 | Gestao Local | Agenda | Conforme recente | Duplicidades de Hoje/Reservas/Calendario/Nova reserva/Espera/Quadras foram corrigidas no sprint anterior. | Manter como referencia: subvisao ativa renderiza dentro da Central de agenda. |
 | Gestao Local | Agenda > Calendario | Monitorar | Deve mostrar reserva, bloqueio, turma fixa, aula avulsa/reposicao e falta avisada com filtros por tipo, professor, turma, aluno e quadra. | Revalidar com screenshots quando erros 500 de dados forem resolvidos. |
 | Gestao Local | Agenda > Quadras/Regras | Monitorar | Regras com dias numericos eram falha grave; interface deve usar dias semanticos e horarios em slots praticos. | Ja ajustado; manter como criterio de regressao visual. |
@@ -62,6 +63,7 @@ Regra: nenhuma varredura esta completa se apenas o Admin/PRO foi testado. O Admi
 - `PlacesPage` deixou de listar academias genericas em `Reservar quadra`/`Entrar em aula` antes da busca; esses fluxos agora aguardam filtro e devolvem quadra/turma acionavel.
 - `BottomNav` deixou de revelar Management OS para Player puro que acessa `/gestao` manualmente.
 - `ManagementHubPage` passou a mostrar mensagem de acesso correta para Player puro, com retorno ao inicio e exploracao publica como acoes, em vez de setup profissional.
+- `PlacesPage` removeu a camada publica de descoberta dentro de `/gestao/:placeId/:module`; a gestao local nao deve mais exibir `Reservar quadra`, card publico, ficha de academia ou CTA duplicado antes do workspace.
 - `FULL_APP_PRODUCT_TECH_UX_AUDIT.md` foi atualizado para nao manter diagnostico antigo como se ainda estivesse ativo.
 
 ## Riscos Que Continuam

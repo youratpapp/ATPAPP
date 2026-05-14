@@ -7746,6 +7746,20 @@ button:disabled {
   padding: 6px 12px;
 }
 
+.management-cockpit-card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  display: block;
+  padding: 0;
+}
+
+.management-cockpit-card > div:first-child,
+.management-cockpit-card > .pc-logo,
+.management-cockpit-card > .pc-actions {
+  display: none;
+}
+
 .place-card-more {
   flex: 0 0 auto;
   position: relative;

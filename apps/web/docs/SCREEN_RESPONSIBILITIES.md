@@ -149,6 +149,7 @@ Quando uma tela cresce demais:
 - 2026-05-13: `/inicio` separou fila de jogador e fila profissional; notificacoes e primeira viewport deixam de misturar aprovar socio/lista de espera/admin com proxima partida/reserva/aula.
 - 2026-05-13: pendencias profissionais da Home passaram a navegar para `/gestao/:placeId/:module?visao=...`, reforcando que operacao pertence ao Management OS.
 - 2026-05-14: `/gestao` acessado diretamente por Player puro deve explicar ausencia de permissao e retornar para Inicio/Locais; nao deve sugerir que o jogador precisa configurar uma operacao.
+- 2026-05-14: `/gestao/:placeId/:module` nao deve reutilizar visual de descoberta publica. O topo deve ser do Management OS e a pagina publica deve aparecer apenas como acao secundaria.
 - 2026-05-13: `/eventos` refinou `Organizando agora` para rows operacionais com proximo passo e CTA por torneio/liga, deixando os atalhos de lista como suporte.
 - 2026-05-13: Competition OS no hub passou a escolher destino por status do evento, evitando que todo item organizado abra genericamente sem dizer a tarefa.
 - 2026-05-14: `/eventos/ligas/:leagueId` passou a iniciar a experiencia do organizador com foco operacional antes das tabs, deixando proxima acao, escopo ativo e pendencias visiveis sem depender da aba `Visao`.

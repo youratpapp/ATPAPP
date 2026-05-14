@@ -2092,6 +2092,7 @@ Entregue em 2026-05-14:
 - tabs/listas de locais so aparecem depois da intencao correta, evitando academia generica em busca de quadra/aula;
 - `Reservar quadra` e `Entrar em aula` nao listam academias genericas antes da busca; orientam o filtro e depois devolvem quadras livres ou turmas com vaga;
 - `/gestao` acessado por Player puro agora mostra ausencia de permissao e volta para Inicio/Locais publicos;
+- `/gestao/:placeId/:module` deixou de renderizar a camada publica de `Locais` no topo; o usuario entra direto no workspace operacional do local;
 - operador com entitlement mas sem local continua vendo setup profissional.
 
 Ganho:

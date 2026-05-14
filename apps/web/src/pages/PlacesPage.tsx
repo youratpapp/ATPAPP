@@ -3069,7 +3069,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
-      {showGenericPlaceDirectory && !loading && directoryPlaces.length > 0 ? (
+      {!isAdminRoute && showGenericPlaceDirectory && !loading && directoryPlaces.length > 0 ? (
         <div className="places-section-head">
           <div>
             <span>{discoveryIntent === "classes" ? "Academia" : "Quadras"}</span>
@@ -3853,7 +3853,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               : "Use a busca por cidade, data e hora para ver disponibilidade real."
             : p.description;
         return (
-          <article key={p.id} className="place-card">
+          <article key={p.id} className={isManagementCockpit ? "place-card management-cockpit-card" : "place-card"}>
             <div>
               <p className="pc-name">{p.name}</p>
               <div className="pc-meta">
@@ -5804,14 +5804,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       <ManagementShell
         user={user}
         profile={profile}
-        eyebrow="Operacao do local"
+        eyebrow="Management OS"
         title={adminRoutePlace?.name || "Gestao do local"}
-        description="Rotina diaria, configuracao, equipe e publicacao ficam separadas por modulo para reduzir ruido operacional."
+        description="Workspace operacional do local. A pagina publica e a descoberta ficam fora desta tela."
         actions={
           adminPlaceId ? (
             <>
-              <button onClick={() => navigate("/gestao")}>Central de gestao</button>
-              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Pagina publica</button>
+              <button onClick={() => navigate("/gestao")}>Voltar para central</button>
+              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Ver pagina publica</button>
             </>
           ) : null
         }
