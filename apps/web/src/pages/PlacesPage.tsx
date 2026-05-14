@@ -101,6 +101,7 @@ import {
   toggleOpenMatchReaction,
   updateCourtBookingStatus,
   updateCourtBookingWaitlistStatus,
+  updatePlaceCoach,
   updatePlaceBookingRuleStatus,
   updatePlaceAcademyClass,
   updatePlaceCrmContactFollowUp,
@@ -1713,6 +1714,39 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setFeedback({ kind: "success", text: "Comissao do professor salva." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao salvar comissao.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onUpdateCoachDetails = async (
+    placeId: string,
+    coachId: string,
+    patch: {
+      commissionPercent: number;
+      email?: string;
+      isActive: boolean;
+      name: string;
+      phone?: string;
+    }
+  ) => {
+    if (!patch.name.trim()) return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updatePlaceCoach({
+        coachId,
+        commissionPercent: patch.commissionPercent,
+        email: patch.email,
+        isActive: patch.isActive,
+        name: patch.name,
+        phone: patch.phone,
+      });
+      setCoachCommissionDraftByCoach((prev) => ({ ...prev, [coachId]: String(patch.commissionPercent) }));
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Professor atualizado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar professor.") });
     } finally {
       setBusy(false);
     }
@@ -5367,11 +5401,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       activeCourts={activeCourts}
                       absences={academyAbsences}
                       attendanceToday={todayAttendance}
+                      busy={busy}
                       classes={todayClasses}
                       enrollments={academyEnrollments}
                       makeups={openAcademyMakeups}
+                      onMarkAttendance={(enrollmentId, status, notes) => void onMarkAcademyAttendance(p.id, enrollmentId, status, notes)}
                       onOpenClasses={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
                       onOpenSetup={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
+                      onReportAbsence={(enrollmentId) => void onReportAcademyAbsence(p.id, enrollmentId)}
                     />
                   ) : null}
                   {academyView === "classes" ? (
@@ -5470,6 +5507,34 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         enrollments={academyEnrollments}
                         lessonRequests={actionableLessonRequests}
                         makeups={openAcademyMakeups}
+                        fitTool={
+                          <PlaceAcademyFitModule
+                            activeCourts={activeCourts}
+                            actionableLessonRequests={actionableLessonRequests}
+                            busy={busy}
+                            canManageAcademy={canManageAcademy}
+                            canManageFinance={canManageFinance}
+                            classes={academyClasses}
+                            coaches={displayedCoaches}
+                            fitSearch={fitSearch}
+                            fitSlots={fitSlots}
+                            isLessonRequestPaid={(request) =>
+                              paymentsByTarget[paymentMapKey("academy_lesson_request", request.id)]?.status === "paid" || request.paymentStatus === "paid"
+                            }
+                            lessonRequestDraftByClass={academyLessonRequestDraftByClass}
+                            makeups={academyMakeups}
+                            onChangeFitSearch={(search) => setAcademyFitSearchByPlace((prev) => ({ ...prev, [p.id]: search }))}
+                            onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
+                            onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                            onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
+                            onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
+                            onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
+                            profile={profile}
+                            userEmail={user.email || ""}
+                            userId={user.id}
+                            weekdayLabels={WEEKDAY_LABELS}
+                          />
+                        }
                         onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
                         onOpenFit={() => void onSearchAcademyFitSlots(p.id)}
                         onShareContact={shareAcademyContact}
@@ -5478,35 +5543,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         onUseMakeup={(creditId) => void onUpdateMakeupCredit(p.id, creditId, "used")}
                         pendingEnrollments={pendingAcademyEnrollments}
                       />
-                      <details className="workspace-disclosure">
-                        <summary>Buscar encaixe para aula avulsa ou reposicao</summary>
-                        <PlaceAcademyFitModule
-                          activeCourts={activeCourts}
-                          actionableLessonRequests={actionableLessonRequests}
-                          busy={busy}
-                          canManageAcademy={canManageAcademy}
-                          canManageFinance={canManageFinance}
-                          classes={academyClasses}
-                          coaches={displayedCoaches}
-                          fitSearch={fitSearch}
-                          fitSlots={fitSlots}
-                          isLessonRequestPaid={(request) =>
-                            paymentsByTarget[paymentMapKey("academy_lesson_request", request.id)]?.status === "paid" || request.paymentStatus === "paid"
-                          }
-                          lessonRequestDraftByClass={academyLessonRequestDraftByClass}
-                          makeups={academyMakeups}
-                          onChangeFitSearch={(search) => setAcademyFitSearchByPlace((prev) => ({ ...prev, [p.id]: search }))}
-                          onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
-                          onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
-                          onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
-                          onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
-                          onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
-                          profile={profile}
-                          userEmail={user.email || ""}
-                          userId={user.id}
-                          weekdayLabels={WEEKDAY_LABELS}
-                        />
-                      </details>
                     </>
                   ) : null}
                   {academyView === "coaches" ? (
@@ -5527,6 +5563,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onCreateCoach={() => void onCreateCoach(p)}
                       onLinkCoachLogin={(coach) => void onLinkCoachLogin(p.id, coach)}
                       onSaveCoachCommission={(coach) => void onSaveCoachCommission(p.id, coach)}
+                      onUpdateCoach={(coach, patch) => void onUpdateCoachDetails(p.id, coach.id, patch)}
                       slots={academySlots}
                       todayClasses={todayClasses}
                       weekdayLabels={WEEKDAY_LABELS}

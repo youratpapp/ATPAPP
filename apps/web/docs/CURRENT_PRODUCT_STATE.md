@@ -379,6 +379,9 @@ Bloco de discoverability executado em 2026-05-13:
 - Agenda pode sugerir `Confirmar reservas`, `Chamar espera`, `Ver agenda` e `Criar reserva`, sempre abrindo a subvisao executavel.
 - Academia pode sugerir `Resolver aulas` e `Fazer chamada` quando ha pendencias/aulas do dia.
 - Academia v2 avancou para `Alunos`: busca/filtros fortes, `StudentDrawer`, edicao real de matricula, financeiro/presenca/evolucao/reposicoes no contexto do aluno e sem lista limitada silenciosamente.
+- Academia v2 avancou para `Pendencias`: fila unica filtravel, WhatsApp secundario, CTA operacional por tipo e `FitDrawer` para busca de encaixe.
+- Academia v2 avancou para `Hoje`: aulas do dia em rows e `LessonDrawer` para chamada rapida com presenca, falta, ausencia avisada e observacao curta.
+- Academia v2 avancou para `Professores`: busca/filtros, `CoachDrawer`, edicao real de dados/status/comissao e login/turmas/agenda no contexto do professor.
 - Clientes, Financeiro e Cantina ganharam atalhos contextuais para `Fazer follow-up`, `Cobrar pendentes`, `Repor estoque` e `Registrar venda`.
 - Regra reforcada: quick action que nao abre a subvisao onde a tarefa termina nao esta pronta.
 - Proximo foco executavel: `COMP-VISUAL-01`, refinando Competition OS sem mexer nos fluxos sensiveis de confirmacao/resultado.

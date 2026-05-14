@@ -199,9 +199,9 @@ Risco residual:
 - `Alunos` agora mostra creditos de reposicao no drawer, mas usar/agendar/baixar credito fica para a fila de `Pendencias`, onde a decisao operacional e o encaixe acontecem;
 - busca por email depende de haver email persistido/vinculado na matricula/perfil; o modelo atual de `place_academy_enrollments` nao expõe email direto na listagem.
 
-### [>] ACADEMY-V2-04 - Pendencias como fila e encaixe em drawer
+### [x] ACADEMY-V2-04 - Pendencias como fila e encaixe em drawer
 
-Status: `[>]` prioridade atual
+Status: `[x]` concluido em 2026-05-14
 
 Objetivo:
 
@@ -214,9 +214,25 @@ Criterios:
 - WhatsApp fica secundario;
 - aprovar, recusar, agendar, usar reposicao e marcar pago sao acoes reais.
 
-### [ ] ACADEMY-V2-05 - Hoje com chamada rapida
+Implementado:
 
-Status: `[ ]` pendente
+- `Pendencias` virou fila unica com rows para matriculas pendentes, aulas avulsas/reposicoes solicitadas e creditos de reposicao abertos;
+- adicionados busca, filtro por tipo e filtro por status operacional;
+- remocao de `slice(0, 8)` silencioso: a tela informa `Exibindo X de Y` e oferece `Ver mais pendencias`;
+- WhatsApp foi movido para `Mais`, deixando `Ativar`, `Aprovar`, `Marcar pago` e `Buscar encaixe` como acoes prioritarias;
+- `Buscar encaixe` deixou de ficar em disclosure no corpo e agora abre `FitDrawer` via `EntityDrawer`;
+- o modulo de encaixe deixou de esconder pedidos/slots silenciosamente e ganhou `Ver mais pedidos` e `Ver mais encaixes`;
+- estados vazios diferenciam fila em dia de filtro que escondeu resultados;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Risco residual:
+
+- agendar uma reposicao de um aluno especifico ainda depende da ferramenta de encaixe global; o backend atual de `requestAcademyLessonFit` prioriza credito do usuario logado. Uma associacao transacional admin -> credito -> turma/data deve ser tratada em gap futuro se for exigida como fluxo direto por secretaria.
+- `Marcar como usada` preserva a acao existente para credito de reposicao, mas nao substitui um fluxo completo de agendamento com vinculo de aula.
+
+### [x] ACADEMY-V2-05 - Hoje com chamada rapida
+
+Status: `[x]` concluido em 2026-05-14
 
 Objetivo:
 
@@ -230,9 +246,23 @@ Criterios:
 - alunos e reposicoes do horario visiveis no contexto;
 - sem wizard.
 
-### [ ] ACADEMY-V2-06 - Professores com drawer, agenda e login
+Implementado:
 
-Status: `[ ]` pendente
+- `Hoje` deixou de usar cards com `slice(0, 8)` e passou para rows operacionais de aulas do dia;
+- cada aula abre `LessonDrawer` com resumo, alunos ativos, faltas avisadas e reposicoes abertas;
+- chamada permite marcar `Presente`, `Falta` e `Avisou falta` por aluno;
+- observacao curta da chamada pode ser enviada junto com presenca/falta;
+- aula sem alunos orienta a abrir `Grade`;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Risco residual:
+
+- evolucao tecnica do aluno continua no `StudentDrawer`; `Hoje` ficou focado em chamada rapida para nao misturar rotina diaria com historico profundo.
+- ausencia avisada usa o fluxo existente de `reportAcademyAbsence` com data padrao quando disparada pela chamada; data/nota detalhada seguem no drawer do aluno.
+
+### [x] ACADEMY-V2-06 - Professores com drawer, agenda e login
+
+Status: `[x]` concluido em 2026-05-14
 
 Objetivo:
 
@@ -247,9 +277,24 @@ Criterios:
 - convite/vinculo de login preservado;
 - professor/staff ve apenas o que seu papel permite.
 
-### [ ] ACADEMY-V2-07 - Configuracao de quadras e horarios
+Implementado:
 
-Status: `[ ]` pendente
+- `Professores` ganhou cadastro rapido, busca e filtro por status/login/turmas;
+- lista virou row operacional com `Abrir professor`, turmas, alunos ativos, aulas hoje, janelas abertas, receita e comissao estimada;
+- inputs permanentes de comissao e login sairam da row e foram para `CoachDrawer`;
+- `CoachDrawer` concentra dados do professor, comissao, login, turmas, alunos e agenda/disponibilidade;
+- criado suporte real `updatePlaceCoach(...)` para salvar nome, telefone, email, status e comissao;
+- WhatsApp e ajuste de agenda ficam como acoes secundarias no drawer;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Risco residual:
+
+- especialidades e niveis atendidos ainda nao existem no schema de `place_coaches`; por isso ficaram como gap documentado, nao como input falso.
+- disponibilidade detalhada continua representada por horarios abertos (`place_academy_slots`) e turmas; edicao avancada fica para `ACADEMY-V2-07`.
+
+### [>] ACADEMY-V2-07 - Configuracao de quadras e horarios
+
+Status: `[>]` prioridade atual
 
 Objetivo:
 

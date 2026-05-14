@@ -57,6 +57,9 @@ Quando uma tela cresce demais:
 - 2026-05-14: primeiro corte de Academia v2 aplicado: `Grade` e `Configuracao` substituem labels antigos, bloco legado `Academia e aulas` nao renderiza no workspace de Gestao, recursos entram em `Configuracao` e encaixe fica recolhido em `Pendencias`.
 - 2026-05-14: `Grade` da Academia passou a ser lista operacional com busca, filtros, contador, `ClassDrawer`, edicao real da turma, mensalidade, matricula manual e acoes financeiras no contexto da turma.
 - 2026-05-14: `Alunos` da Academia passou a ser lista operacional com busca/filtros por status, turma, pagamento e presenca/reposicao, sem limite silencioso, e `StudentDrawer` para matricula, financeiro, chamada, ausencia avisada, evolucao, reposicoes e historico.
+- 2026-05-14: `Pendencias` da Academia passou a ser fila unica com filtros e rows acionaveis; `Buscar encaixe` saiu do corpo da tela e passou a abrir `FitDrawer`.
+- 2026-05-14: `Hoje` da Academia passou a ser lista operacional de aulas do dia com `LessonDrawer` para chamada rapida, presenca, falta, ausencia avisada e observacao curta.
+- 2026-05-14: `Professores` da Academia passou a ser lista operacional com busca/filtros e `CoachDrawer` para dados, comissao, login, turmas e agenda.
 - 2026-05-13: criada tela `/gestao` como central operacional de academia/clube, reduzindo a mistura entre descoberta publica de locais e trabalho diario de equipe.
 - 2026-05-13: responsabilidade principal de operar local migrou para `/gestao/:placeId/:module`, mantendo `/locais/:placeId/admin` apenas como rota legada de compatibilidade.
 - 2026-05-13: `ManagementShell` passou a envolver `/gestao` e admin de local, dando cabecalho operacional proprio para contexto, acoes e indicadores sem depender do layout de `Locais`.

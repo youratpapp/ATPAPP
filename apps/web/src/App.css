@@ -8696,6 +8696,24 @@ button:disabled {
   text-align: right;
 }
 
+.academy-requests-toolbar {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(220px, 1.4fr) minmax(150px, 0.7fr) minmax(170px, 0.8fr) auto auto;
+  padding: var(--space-2);
+}
+
+.academy-requests-toolbar span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-align: right;
+}
+
 .academy-grade-toolbar {
   align-items: center;
   background: var(--color-surface);
@@ -8725,6 +8743,16 @@ button:disabled {
   gap: var(--space-4);
 }
 
+.academy-lesson-drawer {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.academy-coach-drawer {
+  display: grid;
+  gap: var(--space-4);
+}
+
 .academy-class-drawer section {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -8734,6 +8762,22 @@ button:disabled {
 }
 
 .academy-student-drawer section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.academy-lesson-drawer section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.academy-coach-drawer section {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   display: grid;
@@ -8759,6 +8803,24 @@ button:disabled {
   padding-bottom: var(--space-2);
 }
 
+.academy-lesson-drawer section > header {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+  padding-bottom: var(--space-2);
+}
+
+.academy-coach-drawer section > header {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+  padding-bottom: var(--space-2);
+}
+
 .academy-class-drawer section > header span {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
@@ -8770,6 +8832,26 @@ button:disabled {
 }
 
 .academy-student-drawer section > header span {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  padding: 5px 8px;
+}
+
+.academy-lesson-drawer section > header span {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  padding: 5px 8px;
+}
+
+.academy-coach-drawer section > header span {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
@@ -8879,6 +8961,99 @@ button:disabled {
   gap: var(--space-2);
 }
 
+.academy-lesson-student-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.academy-lesson-student-list article {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.8fr) auto;
+  padding: var(--space-2);
+}
+
+.academy-lesson-student-list article > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.academy-lesson-student-list article > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.academy-lesson-notices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.academy-lesson-notices span,
+.academy-lesson-notices small {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+  padding: 6px 9px;
+}
+
+.academy-coach-toolbar,
+.academy-coach-create {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-2);
+}
+
+.academy-coach-toolbar {
+  grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 0.7fr) auto;
+}
+
+.academy-coach-create {
+  grid-template-columns: minmax(180px, 1fr) minmax(140px, 0.7fr) minmax(160px, 0.8fr) auto;
+}
+
+.academy-coach-toolbar span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-align: right;
+}
+
+.academy-coach-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.academy-coach-list article {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 3px;
+  padding: var(--space-2);
+}
+
+.academy-coach-list article span,
+.academy-coach-list small,
+.academy-coach-drawer small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+}
+
 .quiet-danger {
   justify-self: start;
 }
@@ -8952,6 +9127,56 @@ button:disabled {
 .academy-student-actions button {
   justify-content: center;
   width: 100%;
+}
+
+.academy-pending-actions {
+  align-self: center;
+  position: relative;
+}
+
+.academy-pending-actions summary {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-subtle);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  list-style: none;
+  min-height: 30px;
+  padding: 5px 8px;
+}
+
+.academy-pending-actions summary::-webkit-details-marker {
+  display: none;
+}
+
+.academy-pending-actions summary:hover {
+  background: var(--color-surface-muted);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.academy-pending-actions[open] {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: var(--space-1);
+  min-width: 170px;
+  padding: var(--space-1);
+}
+
+.academy-pending-actions button {
+  justify-content: center;
+  width: 100%;
+}
+
+.academy-fit-drawer .academy-workspace-card:first-child {
+  border-color: var(--color-primary-soft);
 }
 
 .crm-contact-row {
@@ -10232,12 +10457,38 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
+  .academy-requests-toolbar {
+    grid-template-columns: 1fr;
+  }
+
   .academy-student-toolbar span {
+    text-align: left;
+  }
+
+  .academy-requests-toolbar span {
     text-align: left;
   }
 
   .academy-workspace-row > span {
     justify-content: flex-start;
+  }
+
+  .academy-lesson-student-list article {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .academy-lesson-student-list article > div:last-child {
+    justify-content: flex-start;
+  }
+
+  .academy-coach-toolbar,
+  .academy-coach-create {
+    grid-template-columns: 1fr;
+  }
+
+  .academy-coach-toolbar span {
+    text-align: left;
   }
 
   .place-management-intro small {

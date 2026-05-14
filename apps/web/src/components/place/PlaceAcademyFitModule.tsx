@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { AcademyClass, AcademyCoach, AcademyLessonFitSlot, AcademyLessonRequest, AcademyMakeupCredit, PlaceCourt, Profile } from "../../lib/types";
 import { ACADEMY_LEVEL_OPTIONS } from "../../lib/academy-levels";
 import { countLabel } from "../../lib/place-management";
@@ -48,6 +49,8 @@ type Props = {
   weekdayLabels: string[];
 };
 
+const DEFAULT_VISIBLE_LIMIT = 8;
+
 function defaultRequestDraft(input: {
   fitSearch: PlaceAcademyFitSearch;
   profile: Profile | null;
@@ -89,6 +92,13 @@ export function PlaceAcademyFitModule({
   userId,
   weekdayLabels,
 }: Props) {
+  const [visibleRequestsLimit, setVisibleRequestsLimit] = useState(DEFAULT_VISIBLE_LIMIT);
+  const [visibleSlotsLimit, setVisibleSlotsLimit] = useState(DEFAULT_VISIBLE_LIMIT);
+
+  useEffect(() => {
+    setVisibleSlotsLimit(DEFAULT_VISIBLE_LIMIT);
+  }, [fitSlots]);
+
   return (
     <WorkspaceList>
       <WorkspaceCard title="Buscar encaixe" subtitle="Encontre horario real para aula avulsa ou reposicao." detail="Use poucos filtros e deixe o sistema retornar as turmas com vaga ou ausencia avisada.">
@@ -132,7 +142,7 @@ export function PlaceAcademyFitModule({
       {canManageAcademy && actionableLessonRequests.length ? (
         <WorkspaceCard title="Pedidos para resolver" subtitle={countLabel(actionableLessonRequests.length, "pedido aberto", "pedidos abertos")}>
           <WorkspaceList>
-            {actionableLessonRequests.slice(0, 4).map((request) => {
+            {actionableLessonRequests.slice(0, visibleRequestsLimit).map((request) => {
               const requestClass = classes.find((item) => item.id === request.classId);
               const paid = isLessonRequestPaid(request);
               return (
@@ -163,12 +173,18 @@ export function PlaceAcademyFitModule({
                 />
               );
             })}
+            {actionableLessonRequests.length > visibleRequestsLimit ? (
+              <button type="button" className="secondary" onClick={() => setVisibleRequestsLimit((current) => current + DEFAULT_VISIBLE_LIMIT)}>
+                Ver mais pedidos
+              </button>
+            ) : null}
           </WorkspaceList>
         </WorkspaceCard>
       ) : null}
 
       {fitSlots.length ? (
-        fitSlots.slice(0, 6).map((slot) => {
+        <>
+          {fitSlots.slice(0, visibleSlotsLimit).map((slot) => {
           const classCourt = activeCourts.find((court) => court.id === slot.courtId);
           const openMakeupCredits = makeups.filter((credit) => credit.status === "open" && credit.userId === userId);
           const requestDraft = lessonRequestDraftByClass[slot.classId] || defaultRequestDraft({ fitSearch, profile, slot, userEmail });
@@ -206,7 +222,13 @@ export function PlaceAcademyFitModule({
               }
             />
           );
-        })
+        })}
+          {fitSlots.length > visibleSlotsLimit ? (
+            <button type="button" className="secondary" onClick={() => setVisibleSlotsLimit((current) => current + DEFAULT_VISIBLE_LIMIT)}>
+              Ver mais encaixes
+            </button>
+          ) : null}
+        </>
       ) : (
         <WorkspaceEmptyState
           title="Nenhum encaixe listado"

@@ -284,6 +284,9 @@ Implementado em 2026-05-14:
 
 - `StudentDrawer` foi aplicado em `Academia > Alunos` com secoes curtas para matricula, financeiro, presenca/faltas, evolucao e reposicoes/historico.
 - A regra de drawer substituiu acoes soltas por aluno e impediu que presenca/evolucao ficassem escondidas em formularios repetidos.
+- `FitDrawer` foi aplicado em `Academia > Pendencias`, substituindo disclosure permanente por ferramenta acionada por intencao.
+- `LessonDrawer` foi aplicado em `Academia > Hoje`, mantendo chamada, presenca, falta e ausencia avisada em foco curto sem wizard.
+- `CoachDrawer` foi aplicado em `Academia > Professores`, removendo inputs permanentes de comissao/login da row e concentrando edicao, turmas e agenda no detalhe.
 
 Regra:
 

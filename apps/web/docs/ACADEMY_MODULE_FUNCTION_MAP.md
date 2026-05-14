@@ -740,3 +740,104 @@ Risco residual:
 
 - email de aluno nao aparece como busca direta porque a tabela de matricula atual nao expoe email na listagem; quando o login/perfil do aluno for agregado ao drawer, a busca deve incluir email real.
 - usar/agendar/baixar credito de reposicao fica para `Pendencias`, pois ali existe a fila operacional e a ferramenta de encaixe.
+
+## 14. Evolucao aplicada em ACADEMY-V2-04
+
+Data: 2026-05-14
+
+Mudancas aplicadas em Pendencias:
+
+- `Pendencias` deixou de ser tres blocos/cards e virou fila operacional unica.
+- A fila agora aceita busca textual, filtro por tipo e filtro por status.
+- Tipos cobertos:
+  - matricula pendente;
+  - aula avulsa/reposicao solicitada;
+  - credito de reposicao aberto.
+- Acoes principais por row:
+  - `Ativar` matricula;
+  - `Aprovar` solicitacao;
+  - `Marcar pago` aula avulsa aprovada sem pagamento;
+  - `Buscar encaixe` para credito de reposicao.
+- WhatsApp saiu da prioridade visual e foi para `Mais`.
+- A lista deixou de usar `slice(0, 8)` silencioso e agora mostra `Exibindo X de Y` com `Ver mais pendencias`.
+- `Buscar encaixe` deixou de ser disclosure permanente no corpo da pagina e passou a abrir `FitDrawer`.
+- `PlaceAcademyFitModule` tambem deixou de esconder resultados de pedidos/encaixes com limites silenciosos.
+
+Risco residual:
+
+- o fluxo de agendar reposicao para um aluno especifico ainda usa a busca de encaixe global. O backend atual usa `requestAcademyLessonFit` e seleciona credito de reposicao pelo usuario logado; para secretaria vincular diretamente `credito -> turma/data`, sera necessario suporte transacional especifico.
+- `Marcar como usada` continua preservado como acao existente, mas nao deve ser confundido com agendamento completo.
+
+## 15. Evolucao aplicada em ACADEMY-V2-05
+
+Data: 2026-05-14
+
+Mudancas aplicadas em Hoje:
+
+- `Hoje` deixou de usar grid de cards com limite silencioso e virou lista operacional de aulas do dia.
+- Cada aula exibe:
+  - horario;
+  - turma;
+  - professor;
+  - quadra;
+  - quantidade de alunos;
+  - presentes;
+  - faltas;
+  - faltas avisadas;
+  - reposicoes abertas.
+- `Fazer chamada` abre `LessonDrawer`.
+- `LessonDrawer` contem:
+  - resumo da aula;
+  - avisos de falta relacionados;
+  - lista de alunos ativos;
+  - status individual de chamada;
+  - observacao curta;
+  - acoes `Presente`, `Falta` e `Avisou falta`;
+  - reposicoes abertas relacionadas a turma.
+- A rotina de chamada nao usa wizard.
+- Turma sem alunos orienta a abrir `Grade`.
+
+Risco residual:
+
+- registrar evolucao tecnica continua no `StudentDrawer`, nao no `LessonDrawer`, para manter `Hoje` focado em chamada e rotina diaria.
+- `Avisou falta` disparado pela chamada usa a data padrao do fluxo existente; ajuste fino de data/nota fica em `Alunos`.
+
+## 16. Evolucao aplicada em ACADEMY-V2-06
+
+Data: 2026-05-14
+
+Mudancas aplicadas em Professores:
+
+- `Professores` passou a ter cadastro rapido separado da lista.
+- A lista ganhou busca e filtros por:
+  - todos;
+  - ativos;
+  - inativos;
+  - sem login;
+  - com turmas.
+- Cada professor virou row operacional com:
+  - proxima turma;
+  - contato;
+  - status de login;
+  - turmas;
+  - alunos ativos;
+  - aulas hoje;
+  - janelas abertas;
+  - receita;
+  - comissao estimada.
+- Comissao e login deixaram de ser inputs permanentes em cada row.
+- `CoachDrawer` concentra:
+  - dados do professor;
+  - status ativo/inativo;
+  - WhatsApp;
+  - ajuste de agenda;
+  - comissao;
+  - login/vinculo/convite;
+  - turmas e alunos;
+  - agenda e disponibilidade.
+- Criado suporte real `updatePlaceCoach(...)` para persistir nome, telefone, email, status e comissao.
+
+Risco residual:
+
+- especialidades e niveis atendidos ainda nao existem no schema de `place_coaches`; nao foram criados inputs falsos.
+- disponibilidade detalhada ainda depende de `place_academy_slots` e sera refinada em `ACADEMY-V2-07`.

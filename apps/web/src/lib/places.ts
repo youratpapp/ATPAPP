@@ -2236,6 +2236,32 @@ export async function updatePlaceCoachCommission(coachId: string, commissionPerc
   if (error) throw new Error(error.message);
 }
 
+export async function updatePlaceCoach(input: {
+  coachId: string;
+  commissionPercent: number;
+  email?: string;
+  isActive: boolean;
+  name: string;
+  phone?: string;
+}): Promise<AcademyCoach> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_COACHES)
+    .update({
+      commission_percent: Math.max(0, Math.min(100, Math.floor(input.commissionPercent || 0))),
+      email: input.email?.trim() || null,
+      is_active: input.isActive,
+      name: input.name.trim(),
+      phone: input.phone?.trim() || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", input.coachId)
+    .select("id,place_id,user_id,name,email,phone,commission_percent,is_active")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToAcademyCoach(data as AcademyCoachRow);
+}
+
 export async function listPlaceAcademySlots(placeId: string): Promise<AcademySlot[]> {
   if (!supabase) return [];
   const { data, error } = await supabase

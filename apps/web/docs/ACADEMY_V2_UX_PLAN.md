@@ -541,18 +541,37 @@ Entregue:
 - filas de matricula, drop-in, reposicao e creditos;
 - `FitDrawer`;
 - WhatsApp secundario.
+- executado em 2026-05-14:
+  - `Pendencias` virou fila unica com busca, filtro por tipo e filtro por status;
+  - rows cobrem matricula pendente, aula avulsa/reposicao solicitada e credito de reposicao aberto;
+  - `Buscar encaixe` passou a abrir drawer lateral em vez de disclosure permanente;
+  - WhatsApp foi rebaixado para acao secundaria em `Mais`;
+  - `PlaceAcademyFitModule` deixou de limitar pedidos e encaixes silenciosamente;
+  - gap registrado: agendar reposicao de um aluno especifico ainda precisa de suporte transacional mais direto caso a secretaria precise vincular credito -> aula em um unico fluxo.
 
 ### ACADEMY-V2-05 - Hoje e chamada rapida
 
 - rows de aula do dia;
 - `LessonDrawer`;
 - presenca/falta/ausencia avisada.
+- executado em 2026-05-14:
+  - `Hoje` passou de cards para rows operacionais sem limite silencioso;
+  - cada aula abre `LessonDrawer` com resumo da aula, alunos, chamada, ausencias avisadas e reposicoes relacionadas;
+  - presenca, falta e ausencia avisada ficam no contexto da aula;
+  - observacao curta acompanha presenca/falta;
+  - evolucao tecnica permanece em `StudentDrawer` para nao misturar chamada diaria com historico profundo.
 
 ### ACADEMY-V2-06 - Professores
 
 - rows + `CoachDrawer`;
 - comissao, login, convite e agenda;
 - permissao de professor.
+- executado em 2026-05-14:
+  - lista de professores virou rows com busca/filtro;
+  - `CoachDrawer` concentra dados, comissao, login, turmas, alunos e agenda/disponibilidade;
+  - inputs permanentes de comissao/login foram removidos da row;
+  - suporte real `updatePlaceCoach(...)` salva dados basicos, status e comissao;
+  - especialidades/niveis ficam como gap de schema, nao como campo falso.
 
 ### ACADEMY-V2-07 - Configuracao
 
