@@ -398,7 +398,7 @@ export function ManagementHubPage({ user, profile }: Props) {
       setError("");
       try {
         const [data, createPlaceAccess] = await Promise.all([
-          fetchPlacesWorkspaceData({ isAdminRoute: true, tab: "mine", user }),
+          fetchPlacesWorkspaceData({ includeSupportData: false, isAdminRoute: true, tab: "mine", user }),
           canCreatePlace().catch(() => false),
         ]);
         if (cancelled) return;
@@ -457,6 +457,12 @@ export function ManagementHubPage({ user, profile }: Props) {
     places.every((place) => {
       const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, []);
       return access.staffRole === "finance" && !access.canManagePlace;
+    });
+  const isCashierOnlyHub =
+    places.length > 0 &&
+    places.every((place) => {
+      const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, []);
+      return access.staffRole === "cashier" && !access.canManagePlace;
     });
   const activeAggregateQueueRows = useMemo(
     () =>
@@ -523,6 +529,9 @@ export function ManagementHubPage({ user, profile }: Props) {
     if (access.staffRole === "finance" && !access.canManagePlace) {
       return summary.pendingFinance ? "Cobrancas para revisar" : "Recebiveis e despesas";
     }
+    if (access.staffRole === "cashier" && !access.canManagePlace) {
+      return summary.lowStock ? "Estoque para revisar" : "Caixa e cantina";
+    }
     if (summary.todayBookings) return `${summary.todayBookings} reserva(s) hoje`;
     if (summary.setupGaps.length) return "Configure a base operacional";
     return access.staffRole === "frontdesk" && !access.canManagePlace ? "Atendimento em dia" : "Sem reservas para hoje";
@@ -535,6 +544,9 @@ export function ManagementHubPage({ user, profile }: Props) {
     if (access.staffRole === "finance" && !access.canManagePlace) {
       return "Use Recebiveis e Despesas para revisar cobrancas, lembretes e baixas.";
     }
+    if (access.staffRole === "cashier" && !access.canManagePlace) {
+      return "Use Registrar venda e Estoque para operar a cantina sem abrir a gestao completa.";
+    }
     if (summary.todayBookings) return `${summary.todayBookings} reserva(s) programada(s) hoje`;
     if (summary.setupGaps.length) return "Complete a base para liberar a rotina operacional";
     return access.staffRole === "frontdesk" && !access.canManagePlace ? "Sem pendencias de atendimento agora" : "Agenda livre para hoje";
@@ -544,6 +556,7 @@ export function ManagementHubPage({ user, profile }: Props) {
     if (isCoachOnlyHub) return "Nenhuma aula pendente agora. Use Aulas, Turmas e Alunos para revisar sua rotina.";
     if (isFrontdeskOnlyHub) return "Nenhuma pendencia critica agora. Use Agenda e Aulas para revisar o atendimento do dia.";
     if (isFinanceOnlyHub) return "Nenhuma cobranca critica agora. Use Recebiveis e Despesas para revisar o caixa.";
+    if (isCashierOnlyHub) return "Nenhuma pendencia critica agora. Use Registrar venda e Estoque para revisar a cantina.";
     return "Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar agenda, setup ou pagina publica.";
   }
 
@@ -646,8 +659,8 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <small>pendencias operacionais</small>
                 </article>
                 <article>
-                  <strong>{isFinanceOnlyHub ? aggregate.pendingFinance : aggregate.todayBookings}</strong>
-                  <small>{isFinanceOnlyHub ? "recebiveis pendentes" : "reservas hoje"}</small>
+                  <strong>{isFinanceOnlyHub ? aggregate.pendingFinance : isCashierOnlyHub ? aggregate.lowStock : aggregate.todayBookings}</strong>
+                  <small>{isFinanceOnlyHub ? "recebiveis pendentes" : isCashierOnlyHub ? "itens com estoque baixo" : "reservas hoje"}</small>
                 </article>
               </div>
             </section>

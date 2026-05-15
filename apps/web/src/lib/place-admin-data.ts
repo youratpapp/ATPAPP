@@ -338,6 +338,7 @@ export async function fetchPlaceAdminResources(input: {
 }
 
 export async function fetchPlacesWorkspaceData(input: {
+  includeSupportData?: boolean;
   isAdminRoute: boolean;
   tab: PlacesTabKey;
   user: User;
@@ -360,9 +361,12 @@ export async function fetchPlacesWorkspaceData(input: {
       )
     )
   );
-  const [paymentsByTarget, openMatches] = await Promise.all([
-    withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", 4000),
-    withWorkspaceFallback(listOpenMatches(input.user, places.map((place) => place.id)), [] as OpenMatch[], "open matches", 6000),
-  ]);
+  const includeSupportData = input.includeSupportData ?? true;
+  const [paymentsByTarget, openMatches] = includeSupportData
+    ? await Promise.all([
+        withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", 4000),
+        withWorkspaceFallback(listOpenMatches(input.user, places.map((place) => place.id)), [] as OpenMatch[], "open matches", 6000),
+      ])
+    : [{} as Record<string, AppPayment>, [] as OpenMatch[]];
   return { entries, openMatches, organizations, paymentsByTarget, places };
 }

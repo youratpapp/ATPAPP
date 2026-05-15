@@ -1,0 +1,48 @@
+CENTRAL OPERACIONAL
+Gestao
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Reservas pendentes
+Abrir primeiro local com acao pendente
+10
+Lista de espera
+Abrir primeiro local com acao pendente
+80
+SINAIS DE SUPORTE
+1
+1 local acessivel
+90
+pendencias operacionais
+18
+reservas hoje
+WORKSPACES
+Locais sob sua gestao
+
+1 local com acesso operacional
+
+EQUIPE | OPERACAO COMPLETA
+ADT Dourados
+
+Dourados - MS
+
+90 pendencia(s)
+18 reserva(s) hoje
+10
+Reservas pendentes
+80
+Lista de espera
+ACOES RAPIDAS
+Confirmar reservas | Chamar espera
+Confirmar reservas
+Chamar espera
+Ver agenda
+Abrir operacao
+Agenda
+Academia
+Inicio
+Competir
+Locais
+Ranking
+Gestao
+Perfil

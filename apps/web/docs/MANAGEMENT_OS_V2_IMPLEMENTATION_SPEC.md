@@ -139,6 +139,7 @@ Implementado em `MGMT-UX-01`:
 - `Sinais de suporte` substitui KPIs de header na primeira leitura;
 - `placeManagementModules(...)` passa a retornar modulos por papel: professor cai direto em Academia; recepcao nao herda dashboard empresarial; financeiro/cantina continuam restritos a gestor;
 - filas do dashboard local devem ser montadas apenas com modulos presentes na navegacao do papel atual.
+- `QA-CURRENT-P1-03` separou dados opcionais da primeira dobra: `/gestao` usa `fetchPlacesWorkspaceData({ includeSupportData: false })`, evitando consultas de suporte a pagamentos/jogos abertos que nao sao usadas pela Central e que geravam timeout no console.
 
 Implementado em `MGMT-UX-02`:
 

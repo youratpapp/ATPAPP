@@ -278,6 +278,15 @@ Status implementado em 2026-05-15:
 - a solicitacao persiste via `createAcademyEnrollment`;
 - erro tecnico nao e exibido cru para jogador.
 
+Complemento implementado em 2026-05-15:
+
+- filtro de descoberta de aulas deve usar grid responsivo de sete campos no desktop e quebra segura no mobile, sempre com CTA dentro do container;
+- resultados de aulas devem agrupar encontros que representam a mesma turma recorrente: mesmo local, titulo, professor, horario, nivel, perfil adulto/kids/genero e mensalidade;
+- se o grupo tiver mais de um dia, a pagina publica deve exibir chips de dias selecionaveis;
+- selecionar o grupo inteiro marca todos os dias; tocar em um chip alterna apenas aquele dia, mantendo pelo menos um dia selecionado;
+- o envio publico cria uma solicitacao pendente por dia/turma selecionado via backend existente, sem inventar contrato publico ainda;
+- `intent=academy` em `/locais/:placeId` deve esconder secoes de reserva, jogos e planos da leitura principal, mantendo apenas aula e contato.
+
 ### Ao Selecionar Encontrar Jogo
 
 Mostrar:

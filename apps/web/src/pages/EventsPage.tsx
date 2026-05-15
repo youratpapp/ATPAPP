@@ -122,6 +122,40 @@ function formatVisibilityLabel(visibility: string): string {
   return visibility === "public" ? "Publico" : "Privado";
 }
 
+function buildTournamentOperationUrl(t: TournamentSummary): string {
+  if (t.status === "draft") return `/eventos/${encodeURIComponent(t.id)}/organizacao`;
+  if (t.status === "registration_open") return `/eventos/${encodeURIComponent(t.id)}/jogadores`;
+  if (t.status === "finished") return `/eventos/${encodeURIComponent(t.id)}/classificacao`;
+  return buildTournamentUrl(t.id);
+}
+
+function operationActionLabel(t: TournamentSummary): string {
+  if (t.status === "draft") return "Continuar setup";
+  if (t.status === "registration_open") return "Gerir inscritos";
+  if (t.status === "registration_closed") return "Gerar jogos";
+  if (t.status === "live") return "Operar jogos";
+  if (t.status === "finished") return "Ver resumo";
+  return "Abrir torneio";
+}
+
+function operationHint(t: TournamentSummary): string {
+  if (t.status === "draft") return "Complete configuracao, categorias e publicacao.";
+  if (t.status === "registration_open") return "Acompanhe inscritos, pagamentos e lista de espera.";
+  if (t.status === "registration_closed") return "Revise inscritos e gere partidas quando estiver pronto.";
+  if (t.status === "live") return "Organize jogos, resultados e comunicacao.";
+  if (t.status === "finished") return "Consulte classificacao, historico e publicacao final.";
+  return "Abra a operacao do torneio.";
+}
+
+function operationPriority(status: TournamentSummary["status"]): number {
+  if (status === "registration_closed") return 1;
+  if (status === "registration_open") return 2;
+  if (status === "draft") return 3;
+  if (status === "live") return 4;
+  if (status === "finished") return 5;
+  return 6;
+}
+
 function normalizeSearch(value: string): string {
   return value
     .normalize("NFD")
@@ -179,6 +213,58 @@ function BackIcon() {
       <path d="M19 12H5" />
       <path d="M12 19l-7-7 7-7" />
     </svg>
+  );
+}
+
+function OrganizerTournamentRow({
+  t,
+  onOpen,
+  onCopyLink,
+}: {
+  t: TournamentSummary;
+  onOpen: () => void;
+  onCopyLink: () => void;
+}) {
+  const location = [t.city, t.state].filter(Boolean).join(" - ");
+  const date = formatDateRange(t.startsAt || "");
+
+  return (
+    <article className="organizer-tournament-row" onClick={onOpen}>
+      <div className="organizer-tournament-main">
+        <span>{formatStatusLabel(t.status)}</span>
+        <strong>{t.name}</strong>
+        <small>{[date, location, formatVisibilityLabel(t.visibility)].filter(Boolean).join(" | ")}</small>
+        <small>{operationHint(t)}</small>
+      </div>
+      <div className="organizer-tournament-meta">
+        <StatusBadge status={t.status} />
+        <small>{formatUpdatedAt(t.updatedAt)}</small>
+      </div>
+      <div className="organizer-tournament-actions">
+        <button
+          type="button"
+          className="primary"
+          onClick={(event) => {
+            event.stopPropagation();
+            onOpen();
+          }}
+        >
+          {operationActionLabel(t)}
+        </button>
+        {t.visibility === "public" ? (
+          <button
+            type="button"
+            className="quiet"
+            onClick={(event) => {
+              event.stopPropagation();
+              onCopyLink();
+            }}
+          >
+            Copiar link
+          </button>
+        ) : null}
+      </div>
+    </article>
   );
 }
 
@@ -588,6 +674,33 @@ export function EventsPage({ user, profile }: Props) {
       live,
     };
   }, [mode, organizing, participating]);
+  const kpiCards = useMemo(() => {
+    const primary = mode === "organizing"
+      ? { label: "Organizando", value: kpis.organizing }
+      : { label: "Jogando", value: kpis.participating };
+    return [
+      primary,
+      { label: "Inscricoes abertas", value: kpis.open },
+      { label: "Em andamento", value: kpis.live },
+    ].filter((item) => item.value > 0);
+  }, [kpis.live, kpis.open, kpis.organizing, kpis.participating, mode]);
+  const organizingPriorityRows = useMemo(() => {
+    return [...organizing]
+      .filter((t) => t.status !== "finished")
+      .sort((a, b) => operationPriority(a.status) - operationPriority(b.status) || b.updatedAt.localeCompare(a.updatedAt))
+      .slice(0, 4);
+  }, [organizing]);
+  const organizingStatusChips = useMemo(() => {
+    if (mode !== "organizing") return [];
+    const chips = [
+      { label: "Rascunhos", value: organizing.filter((t) => t.status === "draft").length },
+      { label: "Inscricoes abertas", value: organizing.filter((t) => t.status === "registration_open").length },
+      { label: "Aguardando jogos", value: organizing.filter((t) => t.status === "registration_closed").length },
+      { label: "Em andamento", value: organizing.filter((t) => t.status === "live").length },
+    ];
+    return chips.filter((item) => item.value > 0);
+  }, [mode, organizing]);
+  const showResultList = mode !== "organizing" || hasActiveFilters || list.length > organizingPriorityRows.length || organizingPriorityRows.length === 0;
 
   const copyInvite = (id: string) => {
     const link = `${window.location.origin}${window.location.pathname}#/join/${id}`;
@@ -627,100 +740,148 @@ export function EventsPage({ user, profile }: Props) {
         </div>
       </div>
 
-      <section className="events-kpi-grid">
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">{mode === "organizing" ? "Organizando" : "Jogando"}</p>
-          <p className="events-kpi-value">{mode === "organizing" ? kpis.organizing : kpis.participating}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Inscricoes abertas</p>
-          <p className="events-kpi-value">{kpis.open}</p>
-        </article>
-        <article className="events-kpi-card">
-          <p className="events-kpi-label">Em andamento</p>
-          <p className="events-kpi-value">{kpis.live}</p>
-        </article>
-      </section>
+      {kpiCards.length ? (
+        <section className={`events-kpi-grid compact ${mode === "organizing" ? "organizing-summary" : ""}`}>
+          {kpiCards.map((card) => (
+            <article key={card.label} className="events-kpi-card">
+              <p className="events-kpi-label">{card.label}</p>
+              <p className="events-kpi-value">{card.value}</p>
+            </article>
+          ))}
+        </section>
+      ) : null}
 
-      <section className="events-filter-card">
-        <div className="events-filter-grid">
-          <div>
-            <label>Busca</label>
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Nome do torneio, cidade ou estado"
-            />
+      {!loading && mode === "organizing" && organizingPriorityRows.length > 0 ? (
+        <section className="organizer-tournament-command">
+          <div className="organizer-tournament-command-head">
+            <div>
+              <span>Proximas acoes</span>
+              <h2>Organizacao de torneios</h2>
+              <p>Abra o torneio pelo que precisa ser feito agora. Filtros e historico ficam como suporte.</p>
+            </div>
+            <button type="button" className="primary" onClick={() => setShowCreate(true)}>
+              Criar torneio
+            </button>
           </div>
-          <div>
-            <label>Estado (UF)</label>
-            <select
-              value={searchState}
-              onChange={(e) => {
-                const nextUf = normalizeStateUf(e.target.value);
-                setSearchState(nextUf);
-              }}
-            >
-              <option value="">Todos</option>
-              {BRAZILIAN_STATES.map((state) => (
-                <option key={`event-filter-state:${state.uf}`} value={state.uf}>
-                  {state.uf} - {state.name}
-                </option>
+          {organizingStatusChips.length ? (
+            <div className="organizer-tournament-chip-row">
+              {organizingStatusChips.map((chip) => (
+                <span key={chip.label}>
+                  <strong>{chip.value}</strong>
+                  {chip.label}
+                </span>
               ))}
-            </select>
+            </div>
+          ) : null}
+          <div className="organizer-tournament-list">
+            {organizingPriorityRows.map((t) => (
+              <OrganizerTournamentRow
+                key={`priority:${t.id}`}
+                t={t}
+                onOpen={() => navigate(buildTournamentOperationUrl(t))}
+                onCopyLink={() => copyInvite(t.id)}
+              />
+            ))}
           </div>
-          <div>
-            <label>Municipio</label>
-            <select
-              value={searchCity}
-              onChange={(e) => setSearchCity(e.target.value)}
-              disabled={!normalizedSearchUf || searchCityLoading}
-            >
-              <option value="">
-                {!normalizedSearchUf
-                  ? "Todos"
-                  : searchCityLoading
-                  ? "Carregando municipios..."
-                  : "Todos"}
-              </option>
-              {searchCityOptions.map((cityName) => (
-                <option key={`event-filter-city:${cityName}`} value={cityName}>
-                  {cityName}
+        </section>
+      ) : null}
+
+      {!loading && listByTab.length > 0 ? (
+        <details className="events-filter-card events-filter-disclosure" open={hasActiveFilters}>
+          <summary>
+            <span>{hasActiveFilters ? "Filtros ativos" : "Filtrar torneios"}</span>
+            <small>
+              {hasActiveFilters
+                ? `${list.length} de ${listByTab.length} torneio${listByTab.length === 1 ? "" : "s"}`
+                : "Busca, status, local e ordenacao"}
+            </small>
+          </summary>
+          <div className="events-filter-grid">
+            <div>
+              <label>Busca</label>
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Nome do torneio, cidade ou estado"
+              />
+            </div>
+            <div>
+              <label>Estado (UF)</label>
+              <select
+                value={searchState}
+                onChange={(e) => {
+                  const nextUf = normalizeStateUf(e.target.value);
+                  setSearchState(nextUf);
+                }}
+              >
+                <option value="">Todos</option>
+                {BRAZILIAN_STATES.map((state) => (
+                  <option key={`event-filter-state:${state.uf}`} value={state.uf}>
+                    {state.uf} - {state.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Municipio</label>
+              <select
+                value={searchCity}
+                onChange={(e) => setSearchCity(e.target.value)}
+                disabled={!normalizedSearchUf || searchCityLoading}
+              >
+                <option value="">
+                  {!normalizedSearchUf
+                    ? "Todos"
+                    : searchCityLoading
+                    ? "Carregando municipios..."
+                    : "Todos"}
                 </option>
-              ))}
-            </select>
+                {searchCityOptions.map((cityName) => (
+                  <option key={`event-filter-city:${cityName}`} value={cityName}>
+                    {cityName}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label>Status</label>
+              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}>
+                <option value="all">Todos</option>
+                <option value="draft">Rascunho</option>
+                <option value="registration_open">Inscricoes abertas</option>
+                <option value="registration_closed">Inscricoes encerradas</option>
+                <option value="live">Em andamento</option>
+                <option value="finished">Concluido</option>
+              </select>
+            </div>
+            <div>
+              <label>Visibilidade</label>
+              <select value={visibilityFilter} onChange={(e) => setVisibilityFilter(e.target.value as VisibilityFilter)}>
+                <option value="all">Todas</option>
+                <option value="public">Publico</option>
+                <option value="private">Privado</option>
+              </select>
+            </div>
+            <div>
+              <label>Ordenacao</label>
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortKey)}>
+                <option value="updated_desc">Mais recentes</option>
+                <option value="updated_asc">Mais antigos</option>
+                <option value="starts_asc">Data de inicio (crescente)</option>
+                <option value="starts_desc">Data de inicio (decrescente)</option>
+                <option value="name_asc">Nome (A-Z)</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label>Status</label>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}>
-              <option value="all">Todos</option>
-              <option value="draft">Rascunho</option>
-              <option value="registration_open">Inscricoes abertas</option>
-              <option value="registration_closed">Inscricoes encerradas</option>
-              <option value="live">Em andamento</option>
-              <option value="finished">Concluido</option>
-            </select>
-          </div>
-          <div>
-            <label>Visibilidade</label>
-            <select value={visibilityFilter} onChange={(e) => setVisibilityFilter(e.target.value as VisibilityFilter)}>
-              <option value="all">Todas</option>
-              <option value="public">Publico</option>
-              <option value="private">Privado</option>
-            </select>
-          </div>
-          <div>
-            <label>Ordenacao</label>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortKey)}>
-              <option value="updated_desc">Mais recentes</option>
-              <option value="updated_asc">Mais antigos</option>
-              <option value="starts_asc">Data de inicio (crescente)</option>
-              <option value="starts_desc">Data de inicio (decrescente)</option>
-              <option value="name_asc">Nome (A-Z)</option>
-            </select>
-          </div>
-        </div>
-      </section>
+          {hasActiveFilters ? (
+            <div className="events-filter-actions">
+              <button type="button" className="quiet" onClick={clearFilters}>
+                Limpar filtros
+              </button>
+            </div>
+          ) : null}
+        </details>
+      ) : null}
 
       {feedback ? (
         <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
@@ -768,15 +929,36 @@ export function EventsPage({ user, profile }: Props) {
         />
       ) : null}
 
-      {list.map((t) => (
-        <EventCard
-          key={t.id}
-          t={t}
-          isOwner={t.ownerId === user.id}
-          onOpen={() => navigate(buildTournamentUrl(t.id))}
-          onCopyLink={() => copyInvite(t.id)}
-        />
-      ))}
+      {!loading && list.length > 0 && showResultList ? (
+        mode === "organizing" ? (
+          <details className="events-result-list organizing events-all-disclosure" open={hasActiveFilters}>
+            <summary>
+              <span>Todos os torneios</span>
+              <small>{list.length} em exibicao</small>
+            </summary>
+            {list.map((t) => (
+              <OrganizerTournamentRow
+                key={t.id}
+                t={t}
+                onOpen={() => navigate(buildTournamentOperationUrl(t))}
+                onCopyLink={() => copyInvite(t.id)}
+              />
+            ))}
+          </details>
+        ) : (
+          <section className="events-result-list">
+            {list.map((t) => (
+              <EventCard
+                key={t.id}
+                t={t}
+                isOwner={t.ownerId === user.id}
+                onOpen={() => navigate(buildTournamentUrl(t.id))}
+                onCopyLink={() => copyInvite(t.id)}
+              />
+            ))}
+          </section>
+        )
+      ) : null}
 
       {showCreate ? (
         <div className="modal-backdrop" onClick={closeCreateModal}>

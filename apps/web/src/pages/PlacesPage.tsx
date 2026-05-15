@@ -205,6 +205,13 @@ type ClassDiscoveryFilter = {
   ageGroup: "" | AcademyClass["ageGroup"];
   genderScope: "" | AcademyClass["genderScope"];
 };
+type DiscoveryAcademyClassGroup = {
+  availableSpots: number;
+  classes: DiscoveryAcademyClass[];
+  key: string;
+  place: Place;
+  primary: DiscoveryAcademyClass;
+};
 type OpenMatchDiscoveryFilter = {
   query: string;
   city: string;
@@ -550,6 +557,47 @@ function nextWeekdayLabel(weekday: number, startsAt: string): string {
   next.setDate(today.getDate() + diff);
   const date = next.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
   return `${WEEKDAY_LABELS[target] || "Dia"} ${date}, ${startsAt.slice(0, 5)}`;
+}
+
+function discoveryAcademyClassGroupKey(academyClass: DiscoveryAcademyClass): string {
+  return [
+    academyClass.placeId,
+    normalizeText(academyClass.title),
+    academyClass.coachId || normalizeText(academyClass.coachName || ""),
+    academyClass.startsAt.slice(0, 5),
+    academyClass.endsAt.slice(0, 5),
+    normalizeText(academyClass.level || ""),
+    academyClass.ageGroup,
+    academyClass.genderScope,
+    academyClass.monthlyFeeCents,
+  ].join("|");
+}
+
+function groupDiscoveryAcademyClasses(rows: Array<{ academyClass: DiscoveryAcademyClass; place: Place }>): DiscoveryAcademyClassGroup[] {
+  const groups = new Map<string, DiscoveryAcademyClassGroup>();
+  rows.forEach(({ academyClass, place }) => {
+    const key = discoveryAcademyClassGroupKey(academyClass);
+    const existing = groups.get(key);
+    if (existing) {
+      existing.classes.push(academyClass);
+      existing.availableSpots += academyClass.availableSpots;
+      existing.classes.sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt));
+      return;
+    }
+    groups.set(key, {
+      availableSpots: academyClass.availableSpots,
+      classes: [academyClass],
+      key,
+      place,
+      primary: academyClass,
+    });
+  });
+  return Array.from(groups.values()).sort((a, b) => a.primary.weekday - b.primary.weekday || a.primary.startsAt.localeCompare(b.primary.startsAt));
+}
+
+function discoveryAcademyClassGroupLabel(group: DiscoveryAcademyClassGroup): string {
+  const days = group.classes.map((academyClass) => WEEKDAY_LABELS[academyClass.weekday] || "Dia").join(", ");
+  return `${days} ${group.primary.startsAt.slice(0, 5)}-${group.primary.endsAt.slice(0, 5)}`;
 }
 
 function isDateInReportPeriod(value: string, period: AnalyticsReportPeriod): boolean {
@@ -3054,6 +3102,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const classDiscoveryAvailableRows = showClassDiscoveryResults
     ? directoryPlaces.flatMap((place) => (classDiscoveryClassesByPlace[place.id] || []).map((academyClass) => ({ academyClass, place })))
     : [];
+  const classDiscoveryAvailableGroups = groupDiscoveryAcademyClasses(classDiscoveryAvailableRows);
   const courtDiscoveryStartsAt = combineDateAndTime(courtDiscoveryFilter.date, courtDiscoveryFilter.time);
   const courtDiscoveryDuration = Math.max(30, Math.min(240, Number(courtDiscoveryFilter.durationMinutes) || 60));
   const courtDiscoveryEndsAt = addMinutesToDateTimeLocal(courtDiscoveryStartsAt, courtDiscoveryDuration);
@@ -3293,7 +3342,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               <strong>Escolha o perfil da aula</strong>
               <small>Procure por local, dia, periodo e nivel para ver turmas com vaga.</small>
             </div>
-            <b>{classDiscoveryHasSpotSearch ? countLabel(classDiscoveryAvailableRows.length, "turma com vaga", "turmas com vaga") : "Busca por perfil"}</b>
+            <b>{classDiscoveryHasSpotSearch ? countLabel(classDiscoveryAvailableGroups.length, "turma com vaga", "turmas com vaga") : "Busca por perfil"}</b>
           </div>
           <div className="places-filter-grid classes">
             <label>
@@ -3733,16 +3782,19 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               <h2>Escolha a turma</h2>
               <p>
                 Resultado filtrado por perfil.
-                {classDiscoveryAvailableRows.length ? ` ${countLabel(classDiscoveryAvailableRows.length, "turma encontrada", "turmas encontradas")}.` : ""}
+                {classDiscoveryAvailableGroups.length ? ` ${countLabel(classDiscoveryAvailableGroups.length, "turma encontrada", "turmas encontradas")}.` : ""}
               </p>
             </div>
             <strong>{countLabel(directoryPlaces.length, "local", "locais")}</strong>
           </div>
-          {classDiscoveryAvailableRows.length ? (
+          {classDiscoveryAvailableGroups.length ? (
             <div className="court-discovery-grid">
-              {classDiscoveryAvailableRows.map(({ academyClass, place }) => (
+              {classDiscoveryAvailableGroups.map((group) => {
+                const academyClass = group.primary;
+                const place = group.place;
+                return (
                 <button
-                  key={`${place.id}:${academyClass.id}`}
+                  key={`${place.id}:${group.key}`}
                   className="court-discovery-card class-discovery-card"
                   onClick={() => goToAcademyClass(place.id, academyClass.id)}
                 >
@@ -3750,8 +3802,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <strong>{academyClass.title}</strong>
                   <small>{place.name}</small>
                   <div>
-                    <span>{nextWeekdayLabel(academyClass.weekday, academyClass.startsAt)}</span>
-                    <b>{academyClass.availableSpots} vaga(s)</b>
+                    <span>{group.classes.length > 1 ? discoveryAcademyClassGroupLabel(group) : nextWeekdayLabel(academyClass.weekday, academyClass.startsAt)}</span>
+                    <b>{group.availableSpots} vaga(s)</b>
                   </div>
                   <em>
                     {[academyClass.coachName || "Professor a definir", academyClass.level || "Nivel livre", academyClass.monthlyFeeCents ? formatMoneyFromCents(academyClass.monthlyFeeCents) : "valor a combinar"]
@@ -3760,7 +3812,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </em>
                   <span className="court-discovery-cta">Ver turma</span>
                 </button>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="empty-state">

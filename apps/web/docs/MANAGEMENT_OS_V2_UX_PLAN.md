@@ -76,6 +76,7 @@ Status 2026-05-15:
 - professor nao recebe `Painel`, Clientes, Financeiro ou Cantina por heranca de plano;
 - dashboard local filtra a fila pelo modulo permitido antes de renderizar acoes.
 - `MGMT-UX-02` aplicado: professor sem gestao completa entra em Academia com abas `Aulas`, `Turmas` e `Alunos`; dados sao filtrados pelo professor vinculado e pendencias de secretaria ficam fora da rotina do professor.
+- `QA-CURRENT-P1-03` aplicado: a entrada `/gestao` nao carrega dados opcionais de pagamentos/jogos abertos na primeira dobra, reduzindo timeouts e removendo 500 silenciosos do console sem alterar os workspaces completos.
 - `QA-DESIGN-01` adicionou fallback para dados opcionais do workspace: pagamentos e partidas abertas nao podem bloquear a primeira dobra da Gestao. A otimizacao ideal futura e um agregador leve de resumo, sem carregar todos os modulos antes de mostrar a fila.
 
 ## Agenda

@@ -1,0 +1,370 @@
+[
+  {
+    "scenarioKey": "desktop1366-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-coach-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 727,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "",
+      "Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.",
+      "",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Academia",
+      "Abrir primeiro local com acao pendente",
+      "76",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel",
+      "76",
+      "pendencias operacionais",
+      "0",
+      "reservas hoje",
+      "WORKSPACES",
+      "Locais sob sua gestao"
+    ]
+  },
+  {
+    "scenarioKey": "desktop1366-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-frontdesk-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 826,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "",
+      "Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.",
+      "",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Reservas pendentes",
+      "Abrir primeiro local com acao pendente",
+      "10",
+      "Lista de espera",
+      "Abrir primeiro local com acao pendente",
+      "80",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel",
+      "90",
+      "pendencias operacionais",
+      "18"
+    ]
+  },
+  {
+    "scenarioKey": "desktop1366-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-manager-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 891,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "",
+      "Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.",
+      "",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Reservas pendentes",
+      "Abrir primeiro local com acao pendente",
+      "10",
+      "Lista de espera",
+      "Abrir primeiro local com acao pendente",
+      "80",
+      "Academia",
+      "Abrir primeiro local com acao pendente",
+      "76",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel"
+    ]
+  },
+  {
+    "scenarioKey": "desktop1366-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "desktop1366-finance-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 830,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "",
+      "Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.",
+      "",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Reservas pendentes",
+      "Abrir primeiro local com acao pendente",
+      "11",
+      "Lista de espera",
+      "Abrir primeiro local com acao pendente",
+      "80",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel",
+      "91",
+      "pendencias operacionais",
+      "24"
+    ]
+  },
+  {
+    "scenarioKey": "mobile390-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-coach-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-coach-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 558,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Academia",
+      "Abrir primeiro local com acao pendente",
+      "76",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel",
+      "76",
+      "pendencias operacionais",
+      "0",
+      "reservas hoje",
+      "WORKSPACES",
+      "Locais sob sua gestao",
+      "",
+      "1 local com acesso operacional",
+      ""
+    ]
+  },
+  {
+    "scenarioKey": "mobile390-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-frontdesk-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-frontdesk-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 657,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Reservas pendentes",
+      "Abrir primeiro local com acao pendente",
+      "10",
+      "Lista de espera",
+      "Abrir primeiro local com acao pendente",
+      "80",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel",
+      "90",
+      "pendencias operacionais",
+      "18",
+      "reservas hoje",
+      "WORKSPACES",
+      "Locais sob sua gestao"
+    ]
+  },
+  {
+    "scenarioKey": "mobile390-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-manager-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-manager-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 722,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Reservas pendentes",
+      "Abrir primeiro local com acao pendente",
+      "10",
+      "Lista de espera",
+      "Abrir primeiro local com acao pendente",
+      "80",
+      "Academia",
+      "Abrir primeiro local com acao pendente",
+      "76",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel",
+      "166",
+      "pendencias operacionais",
+      "18"
+    ]
+  },
+  {
+    "scenarioKey": "mobile390-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 404 ()"
+  },
+  {
+    "scenarioKey": "mobile390-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-finance-gestao",
+    "consoleError": "Failed to load resource: the server responded with a status of 500 ()"
+  },
+  {
+    "scenarioKey": "mobile390-finance-gestao",
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "chars": 661,
+    "stillLoading": false,
+    "hasManagementContent": true,
+    "hasPlayerModeOnly": false,
+    "firstLines": [
+      "CENTRAL OPERACIONAL",
+      "Gestao",
+      "FILA DO DIA",
+      "O que precisa de atencao agora",
+      "Ver locais publicos",
+      "Reservas pendentes",
+      "Abrir primeiro local com acao pendente",
+      "11",
+      "Lista de espera",
+      "Abrir primeiro local com acao pendente",
+      "80",
+      "SINAIS DE SUPORTE",
+      "1",
+      "1 local acessivel",
+      "91",
+      "pendencias operacionais",
+      "24",
+      "reservas hoje",
+      "WORKSPACES",
+      "Locais sob sua gestao"
+    ]
+  }
+]

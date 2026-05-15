@@ -1,0 +1,12 @@
+login failed for purePlayer/mobile390: page.waitForURL: Timeout 18000ms exceeded.
+=========================== logs ===========================
+waiting for navigation until "load"
+============================================================
+login failed for cashier/desktop1366: page.waitForURL: Timeout 18000ms exceeded.
+=========================== logs ===========================
+waiting for navigation until "load"
+============================================================
+login failed for cashier/mobile390: page.waitForURL: Timeout 18000ms exceeded.
+=========================== logs ===========================
+waiting for navigation until "load"
+============================================================

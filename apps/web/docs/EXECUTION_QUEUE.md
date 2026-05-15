@@ -44,6 +44,202 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] QA-CURRENT-P0-01 - Alinhar Supabase alvo com migrations/seeds da reestruturacao
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_CURRENT_VISUAL_EVOLUTION_REPORT_2026_05_15.md`
+- `QA_CURRENT_P0_01_REPORT_2026_05_15.md`
+- `QA_DESIGN_01_VISUAL_CONSISTENCY_REPORT_2026_05_15.md`
+- `ROLE_CASHIER_01_REPORT_2026_05_15.md`
+- `QA_SEED_ROLE_01_REPORT_2026_05_15.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- A auditoria visual atual refez prints em desktop 1366px e mobile 390px depois das ultimas mudancas.
+- A UI evoluiu, mas o Supabase alvo usado pelo app local nao esta coerente com os seeds/migrations documentados.
+- `qa.jogador.puro@demo.atp.local` e `caixa.prime@demo.atp.local` falham com `Invalid login credentials`.
+- A Home do jogador renderiza erro tecnico cru: `Could not find the function public.app_list_my_place_staff_invites without parameters in the schema cache`.
+
+Objetivo:
+
+- Garantir que o ambiente alvo de QA suporta os perfis e RPCs usados pela reestruturacao.
+- Remover erro tecnico cru da primeira dobra do Player App.
+- Permitir validar jogador puro e caixa/POS com login real.
+
+Escopo:
+
+- aplicar/validar migrations pendentes de roles, convites e seeds no Supabase alvo;
+- confirmar existencia/assinatura de `app_list_my_place_staff_invites(...)`;
+- validar usuarios demo documentados:
+  - `qa.jogador.puro@demo.atp.local`;
+  - `caixa.prime@demo.atp.local`;
+  - `financeiro.prime@demo.atp.local`;
+  - `organizador.circuito@demo.atp.local`;
+- ajustar frontend apenas se o erro de convite opcional ainda puder aparecer cru no corpo da Home;
+- reexecutar screenshots de Home, Gestao e Cantina/POS.
+
+Fora de escopo:
+
+- redesenhar telas;
+- alterar regras de permissao sem nova especificacao;
+- continuar polish de Ranking/Competition antes de estabilizar ambiente.
+
+Criterios de aceite:
+
+- Home do jogador nao exibe erro tecnico de RPC;
+- jogador puro autentica e nao ve Gestao/Organizacao como caminho primario;
+- caixa/POS autentica e ve apenas Cantina/POS quando o plano permitir;
+- `app_list_my_place_staff_invites(...)` funciona ou falha de forma silenciosa/amigavel;
+- prints atualizados comprovam os estados;
+- lint/build passam se houver alteracao de codigo.
+
+Validacao obrigatoria:
+
+- login com `qa.jogador.puro@demo.atp.local`;
+- login com `caixa.prime@demo.atp.local`;
+- abrir `/#/inicio` mobile 390px;
+- abrir `/#/gestao` mobile 390px para caixa/POS;
+- verificar console sem 400/404/500 relacionados a convites/roles na primeira dobra.
+
+Resultado:
+
+- migrations `0086`, `0087`, `0088` e `0089` aplicadas no Supabase alvo de QA;
+- usuarios demo essenciais recriados/atualizados e autenticando;
+- `app_list_my_place_staff_invites()` existe no alvo e nao vaza erro cru na Home;
+- `app_list_place_staff(...)` agora permite que staff resolva o proprio papel sem expor equipe completa para nao gestores;
+- caixa/POS em `/gestao` ve apenas superficie de Cantina/POS e copy operacional coerente;
+- evidencias em `web/docs/screenshots/qa-current-p0-01-2026-05-15/`.
+
+### [x] QA-CURRENT-P1-01 - Simplificar Ranking do Player App
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_CURRENT_VISUAL_EVOLUTION_REPORT_2026_05_15.md`
+- `PLAYER_APP_V2_UX_PLAN.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+
+Contexto:
+
+- A rodada atual mostrou `Ranking` como a tela mais distante do DNA leve do Player App.
+- Desktop tem 6.46 screenfuls e 81 rows; mobile mostrou `0 jogadores encontrados`/`Carregando ranking`, divergente do desktop com 162 jogadores.
+
+Objetivo:
+
+- Transformar Ranking em experiencia de jogador: minha posicao, meu recorte, progresso e acesso ao ranking completo.
+- Reduzir densidade inicial e corrigir divergencia mobile/desktop.
+
+Escopo:
+
+- primeira dobra centrada em `Minha posicao` e filtros essenciais;
+- lista progressiva ou `Ver ranking completo`;
+- corrigir estado mobile com dados inconsistentes;
+- remover a sensacao de relatorio administrativo.
+
+Criterios de aceite:
+
+- mobile 390px abre com contexto pessoal e sem lista gigante;
+- desktop nao despeja 81 rows antes de intencao clara;
+- desktop e mobile retornam o mesmo recorte de dados;
+- nenhum console error/warning no carregamento padrao.
+
+Resultado:
+
+- `/ranking` agora carrega com `Minha posicao`, `Recorte atual` e filtros essenciais antes da lista.
+- A lista passou a ser progressiva: mostra 12 jogadores e oferece `Ver mais jogadores`, sem despejar 81 rows/relatorio administrativo.
+- O carregamento limpa dados antigos, evita divergencia mobile/desktop e mostra estado amigavel se a API falhar.
+- Mobile 390px usa chips horizontais, rows compactas sem overflow e acao `Seguir` sem transformar cada row em card gigante.
+- Evidencias em `web/docs/screenshots/qa-current-p1-01-2026-05-15/` e relatorio em `QA_CURRENT_P1_01_RANKING_REPORT_2026_05_15.md`.
+
+### [x] QA-CURRENT-P1-02 - Simplificar lista de torneios organizados
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_CURRENT_VISUAL_EVOLUTION_REPORT_2026_05_15.md`
+- `COMPETITION_OS_V2_UX_PLAN.md`
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
+
+Contexto:
+
+- `/#/eventos/torneios?view=organizing` ficou menos densa, mas ainda mostra zeros, filtros longos e loading antes da tarefa.
+
+Objetivo:
+
+- Tornar a tela de torneios organizados operacional, com rows e proximas acoes antes de filtros.
+
+Escopo:
+
+- ocultar contadores zerados;
+- mover filtros extensos para sheet/drawer no mobile;
+- mostrar primeiro rascunhos, inscricoes abertas, pendencias ou estado vazio acionavel;
+- preservar criar torneio e filtros avancados.
+
+Criterios de aceite:
+
+- mobile 390px nao abre como formulario de filtros;
+- se nao houver torneios, estado vazio explica proximo passo;
+- se houver torneios, rows exibem status e acao primaria;
+- sem zero badges sem valor operacional.
+
+Resultado:
+
+- `/#/eventos/torneios?view=organizing` agora abre por uma fila operacional de torneios organizados, com proximas acoes em rows antes dos filtros.
+- Contadores zerados foram removidos; os indicadores restantes viraram resumo compacto, especialmente no mobile.
+- Filtros extensos ficam em disclosure fechado por padrao e abrem automaticamente apenas quando ha filtro ativo.
+- A lista completa/historico fica em disclosure de suporte; a primeira dobra prioriza torneios que exigem acao.
+- Cada row mostra status, contexto, proximo passo e acao primaria (`Gerir inscritos`, `Gerar jogos`, `Operar jogos`, `Ver resumo`), preservando `Criar torneio` e `Copiar link`.
+- Validado em desktop 1366px e mobile 390px sem erro bruto, sem resposta HTTP >= 400, sem badges zero e sem overflow.
+- Evidencias em `web/docs/screenshots/qa-current-p1-02-2026-05-15/` e relatorio em `QA_CURRENT_P1_02_ORGANIZER_TOURNAMENTS_REPORT_2026_05_15.md`.
+
+### [x] QA-CURRENT-P1-03 - Auditar 404/500 da Central de Gestao
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_CURRENT_VISUAL_EVOLUTION_REPORT_2026_05_15.md`
+- `MANAGEMENT_OS_V2_UX_PLAN.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+
+Contexto:
+
+- Recaptura com 30s confirmou que `/gestao` carrega para professor, recepcao, gestor e financeiro.
+- Mesmo assim, todos os perfis geraram 2 erros 404 e 2 erros 500 no console.
+
+Objetivo:
+
+- Identificar chamadas quebradas/opcionais no carregamento da Central de Gestao e impedir falhas silenciosas.
+
+Escopo:
+
+- rastrear endpoints/RPCs responsaveis pelos 404/500;
+- separar dados obrigatorios da primeira dobra de dados opcionais;
+- manter UI sem erro tecnico cru;
+- documentar se algum erro depende apenas de seed/migration pendente.
+
+Criterios de aceite:
+
+- `/gestao` carrega sem 404/500 no console em fluxo feliz;
+- falha opcional nao bloqueia fila/workspaces;
+- mensagens tecnicas ficam fora da UI;
+- comportamento validado em desktop e mobile.
+
+Resultado:
+
+- A causa atual dos 500 era a consulta opcional de `app_payments` para `court_booking`, executada pela Central de Gestao mesmo sem ser usada na primeira dobra. O Supabase retornava `57014 statement timeout`.
+- `fetchPlacesWorkspaceData(...)` ganhou `includeSupportData`; telas completas continuam carregando pagamentos/jogos abertos, enquanto `/gestao` chama a workspace com `includeSupportData: false`.
+- A Central de Gestao agora carrega apenas dados necessarios para fila/workspaces iniciais e evita chamadas opcionais lentas.
+- Validado em mobile 390px com `gerente.dourados`, `prof.renato`, `recepcao.dourados` e `financeiro.prime`: 0 respostas HTTP >= 400, sem erro bruto na UI e com conteudo de gestao carregado.
+- Evidencias em `web/docs/screenshots/qa-current-p1-03-2026-05-15/` e relatorio em `QA_CURRENT_P1_03_MANAGEMENT_CONSOLE_REPORT_2026_05_15.md`.
+
 ### [x] COMP-UX-03 - Inscricao em torneio/liga
 
 Status: `[x]` concluido em 2026-05-15
@@ -416,6 +612,45 @@ Validacao:
 - mobile responsivo por CSS em 390px;
 - `npm run lint`;
 - `npm run build`.
+
+### [x] PLAYER-UX-04A - Corrigir filtro de aulas e turmas recorrentes
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `PLAYER_APP_V2_UX_PLAN.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- feedback visual em `/locais?intent=classes` e `/locais/:placeId?intent=academy`
+
+Contexto:
+
+- O filtro de `Entrar em aula` ficava quebrado no desktop: campos apertados, texto cortado e CTA saindo do box.
+- O clique em uma turma levava para a pagina publica do local, mas ainda misturava reserva, aulas, jogos, planos e dados secundarios, recriando a sensacao de ficha empilhada.
+- A busca tratava cada linha semanal como uma turma separada; quando uma mesma turma se repete em mais de um dia, o aluno precisa escolher exatamente quais dias quer frequentar.
+
+Entregue:
+
+- filtro de `Entrar em aula` ganhou grid responsivo proprio: os campos ficam legiveis e o CTA passa para uma linha segura no desktop, sem sair do container;
+- resultados de busca de aula agora agrupam turmas equivalentes por local, titulo, professor, horario, nivel, perfil e mensalidade, somando vagas e exibindo dias juntos quando houver recorrencia real;
+- pagina publica em `intent=academy` virou experiencia focada em aulas: rail, hero e corpo mostram somente o caminho de aula + contato, sem carregar reserva, jogos abertos, planos e quadras como secoes concorrentes;
+- dentro do fluxo publico de aulas, turmas recorrentes aparecem como um grupo com chips de dias; o aluno pode selecionar um dia, outro ou varios dias da mesma turma;
+- envio de interesse preserva backend existente criando uma solicitacao pendente por turma/dia selecionado via `createAcademyEnrollment`, com observacao consolidando os dias escolhidos;
+- hero contextual de aula passou a falar de turmas e valor de aula, nao de quadras.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`;
+- screenshots em `web/docs/screenshots/player-classes-2026-05-15/`:
+  - `desktop-classes-discovery-final.png`;
+  - `desktop-place-academy-focused-auth2.png`;
+  - `mobile-place-academy-focused-auth2.png`.
+
+Riscos restantes:
+
+- os seeds atuais ainda parecem modelar muitas turmas como encontros semanais isolados. O agrupamento ja suporta turmas recorrentes, mas a validacao visual dos chips depende de dados com mesma turma, mesmo horario e dois ou mais weekdays.
+- o fluxo publico ainda envia `interesse/matricula pendente`; contrato mensal com plano semanal completo continua pertencendo ao fluxo administrativo de matricula/Academia.
 
 ### [x] PLAYER-UX-03 - Reserva mobile fluida
 

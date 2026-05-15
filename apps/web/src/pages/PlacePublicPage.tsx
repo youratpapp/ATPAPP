@@ -44,6 +44,15 @@ const BOOKING_DURATION_OPTIONS = [
   { label: "2h", value: 120 },
 ];
 
+type PublicPlaceIntent = "overview" | "booking" | "academy" | "matches" | "plans";
+
+type AcademyClassGroup = {
+  key: string;
+  classes: AcademyClass[];
+  primary: AcademyClass;
+  availableSpots: number;
+};
+
 function formatMoneyFromCents(cents: number): string {
   return new Intl.NumberFormat("pt-BR", { currency: "BRL", style: "currency" }).format(Math.max(0, cents) / 100);
 }
@@ -145,6 +154,47 @@ function scrollToPublicSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function academyClassGroupKey(academyClass: AcademyClass): string {
+  return [
+    academyClass.placeId,
+    normalizeSearchText(academyClass.title),
+    academyClass.coachId || normalizeSearchText(academyClass.coachName || ""),
+    academyClass.startsAt.slice(0, 5),
+    academyClass.endsAt.slice(0, 5),
+    normalizeSearchText(academyClass.level || ""),
+    academyClass.ageGroup,
+    academyClass.genderScope,
+    academyClass.monthlyFeeCents,
+  ].join("|");
+}
+
+function groupAcademyClasses(classes: AcademyClass[], spotsByClass: Record<string, AcademyClassSpot>): AcademyClassGroup[] {
+  const groups = new Map<string, AcademyClassGroup>();
+  classes.forEach((academyClass) => {
+    const key = academyClassGroupKey(academyClass);
+    const spot = spotsByClass[academyClass.id];
+    const existing = groups.get(key);
+    if (existing) {
+      existing.classes.push(academyClass);
+      existing.availableSpots += spot ? spot.availableSpots : academyClass.capacity;
+      existing.classes.sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt));
+      return;
+    }
+    groups.set(key, {
+      key,
+      classes: [academyClass],
+      primary: academyClass,
+      availableSpots: spot ? spot.availableSpots : academyClass.capacity,
+    });
+  });
+  return Array.from(groups.values()).sort((a, b) => a.primary.weekday - b.primary.weekday || a.primary.startsAt.localeCompare(b.primary.startsAt));
+}
+
+function academyClassGroupDayLabel(group: AcademyClassGroup): string {
+  const days = group.classes.map((item) => WEEKDAY_LABELS[item.weekday] || "Dia").join(", ");
+  return `${days} ${group.primary.startsAt.slice(0, 5)}-${group.primary.endsAt.slice(0, 5)}`;
+}
+
 export function PlacePublicPage({ user, profile }: Props) {
   const { placeId } = useParams();
   const navigate = useNavigate();
@@ -190,7 +240,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     };
   });
   const [academyDraft, setAcademyDraft] = useState(() => ({
-    classId: "",
+    classIds: [] as string[],
     playerName: profile?.displayName || user.email || "",
     phone: profile?.phone || "",
     notes: "",
@@ -270,15 +320,26 @@ export function PlacePublicPage({ user, profile }: Props) {
           setAcademyFitFilter((prev) => ({ ...prev, level: requestedLevel || prev.level }));
           setAcademyDraft((prev) => ({
             ...prev,
-            classId: loadedClasses.some((academyClass) => academyClass.id === requestedClassId && academyClass.isActive)
-              ? requestedClassId
-              : prev.classId || loadedClasses.find((academyClass) => academyClass.isActive)?.id || "",
+            classIds: loadedClasses.some((academyClass) => academyClass.id === requestedClassId && academyClass.isActive)
+              ? [requestedClassId]
+              : prev.classIds.length
+                ? prev.classIds
+                : loadedClasses.find((academyClass) => academyClass.isActive)?.id
+                  ? [loadedClasses.find((academyClass) => academyClass.isActive)!.id]
+                  : [],
             notes: prev.notes || requestedLevel,
           }));
           setAcademyFeedback("Turma selecionada pela busca. Complete seus dados para enviar interesse.");
           window.setTimeout(() => document.getElementById("place-public-academy")?.scrollIntoView({ block: "start", behavior: "smooth" }), 80);
         } else {
-          setAcademyDraft((prev) => ({ ...prev, classId: prev.classId || loadedClasses.find((academyClass) => academyClass.isActive)?.id || "" }));
+          setAcademyDraft((prev) => ({
+            ...prev,
+            classIds: prev.classIds.length
+              ? prev.classIds
+              : loadedClasses.find((academyClass) => academyClass.isActive)?.id
+                ? [loadedClasses.find((academyClass) => academyClass.isActive)!.id]
+                : [],
+          }));
         }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar local.");
@@ -295,6 +356,10 @@ export function PlacePublicPage({ user, profile }: Props) {
   const activeCourts = courts.filter((court) => court.isActive);
   const activeClasses = classes.filter((academyClass) => academyClass.isActive);
   const activePlans = plans.filter((plan) => plan.isActive);
+  const pageIntent = (() => {
+    const raw = new URLSearchParams(routeLocation.search).get("intent");
+    return raw === "booking" || raw === "academy" || raw === "matches" || raw === "plans" ? raw : "overview";
+  })() as PublicPlaceIntent;
   const filteredAcademyClasses = activeClasses
     .filter((academyClass) => {
       const weekday = academyFitFilter.weekday ? Number(academyFitFilter.weekday) : null;
@@ -314,6 +379,7 @@ export function PlacePublicPage({ user, profile }: Props) {
       return !spot || spot.availableSpots > 0;
     })
     .sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt));
+  const filteredAcademyClassGroups = groupAcademyClasses(filteredAcademyClasses, academySpotsByClass);
   const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(String(placeId || ""))}`;
   const location = [place?.city, place?.state].filter(Boolean).join(" - ");
   const canOpenAdmin = Boolean(place && place.ownerId === user.id);
@@ -329,16 +395,49 @@ export function PlacePublicPage({ user, profile }: Props) {
   const hasAcademyOffer = activeClasses.length > 0;
   const hasOpenMatches = matches.length > 0;
   const hasMembershipOffer = activePlans.length > 0;
-  const heroOffer = hasBookableOffer
-    ? cheapestCourt
-      ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
-      : "Quadras disponiveis para reserva"
+  const isFocusedIntent = pageIntent !== "overview";
+  const showBookingSection = hasBookableOffer && (!isFocusedIntent || pageIntent === "booking");
+  const showAcademySection = hasAcademyOffer && (!isFocusedIntent || pageIntent === "academy");
+  const showMatchesSection = hasOpenMatches && (!isFocusedIntent || pageIntent === "matches");
+  const showPlansSection = hasMembershipOffer && (!isFocusedIntent || pageIntent === "plans");
+  const heroOffer =
+    pageIntent === "academy" && hasAcademyOffer
+      ? cheapestClass
+        ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
+        : "Turmas abertas para novos alunos"
+    : pageIntent === "booking" && hasBookableOffer
+      ? cheapestCourt
+        ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
+        : "Quadras disponiveis para reserva"
+    : pageIntent === "matches" && hasOpenMatches
+      ? countLabel(matches.length, "jogo aberto", "jogos abertos")
+    : pageIntent === "plans" && hasMembershipOffer
+      ? countLabel(activePlans.length, "plano publicado", "planos publicados")
+    : hasBookableOffer
+      ? cheapestCourt
+        ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
+        : "Quadras disponiveis para reserva"
     : hasAcademyOffer
       ? cheapestClass
         ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
         : "Turmas abertas para novos alunos"
-      : "Clube esportivo aberto para comunidade";
-  const primaryCta = hasBookableOffer
+    : "Clube esportivo aberto para comunidade";
+  const heroOfferDetails = [
+    showBookingSection ? countLabel(activeCourts.length, "quadra", "quadras") : "",
+    showAcademySection ? countLabel(activeClasses.length, "turma", "turmas") : "",
+    showMatchesSection ? countLabel(matches.length, "jogo aberto", "jogos abertos") : "",
+    showPlansSection ? countLabel(activePlans.length, "plano", "planos") : "",
+  ].filter(Boolean).join(" | ") || "Informacoes publicas do local";
+  const primaryCta =
+    pageIntent === "academy" && hasAcademyOffer
+      ? { label: "Entrar em aula", sectionId: "place-public-academy" }
+    : pageIntent === "booking" && hasBookableOffer
+      ? { label: "Reservar quadra", sectionId: "place-public-booking" }
+    : pageIntent === "matches" && hasOpenMatches
+      ? { label: "Ver jogos", sectionId: "place-public-matches" }
+    : pageIntent === "plans" && hasMembershipOffer
+      ? { label: "Ver beneficios", sectionId: "place-public-plans" }
+    : hasBookableOffer
     ? { label: "Reservar quadra", sectionId: "place-public-booking" }
     : hasAcademyOffer
       ? { label: "Entrar em aula", sectionId: "place-public-academy" }
@@ -349,11 +448,20 @@ export function PlacePublicPage({ user, profile }: Props) {
   const bookingTime = timePart(bookingDraft.startsAt);
   const bookingDuration = durationFromRange(bookingDraft.startsAt, bookingDraft.endsAt);
   const availableAvailabilityRows = availabilityRows.filter((row) => row.courts.length);
+  const selectedAcademyClasses = academyDraft.classIds
+    .map((classId) => activeClasses.find((academyClass) => academyClass.id === classId))
+    .filter(Boolean) as AcademyClass[];
   const selectedAcademyClass =
-    filteredAcademyClasses.find((academyClass) => academyClass.id === academyDraft.classId) ||
-    activeClasses.find((academyClass) => academyClass.id === academyDraft.classId) ||
+    filteredAcademyClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
+    activeClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
     null;
   const selectedAcademySpot = selectedAcademyClass ? academySpotsByClass[selectedAcademyClass.id] : null;
+  const selectedAcademyGroup =
+    selectedAcademyClass
+      ? filteredAcademyClassGroups.find((group) => group.classes.some((academyClass) => academyClass.id === selectedAcademyClass.id)) ||
+        groupAcademyClasses(activeClasses, academySpotsByClass).find((group) => group.classes.some((academyClass) => academyClass.id === selectedAcademyClass.id)) ||
+        null
+      : null;
   const academyFiltersActive = Boolean(
     academyFitFilter.level ||
       academyFitFilter.weekday ||
@@ -399,12 +507,26 @@ export function PlacePublicPage({ user, profile }: Props) {
     setAcademyFitFilter({ level: "", weekday: "", period: "", ageGroup: "", genderScope: "" });
   };
 
-  const selectAcademyClass = (academyClass: AcademyClass) => {
+  const selectAcademyGroup = (group: AcademyClassGroup) => {
     setAcademyDraft((prev) => ({
       ...prev,
-      classId: academyClass.id,
+      classIds: group.classes.map((academyClass) => academyClass.id),
       notes: prev.notes || academyFitFilter.level,
     }));
+  };
+
+  const toggleAcademyClassDay = (academyClass: AcademyClass) => {
+    setAcademyDraft((prev) => {
+      const hasClass = prev.classIds.includes(academyClass.id);
+      const nextClassIds = hasClass
+        ? prev.classIds.filter((classId) => classId !== academyClass.id)
+        : [...prev.classIds, academyClass.id];
+      return {
+        ...prev,
+        classIds: nextClassIds.length ? nextClassIds : [academyClass.id],
+        notes: prev.notes || academyFitFilter.level,
+      };
+    });
   };
 
   const sharePlace = () => {
@@ -560,19 +682,30 @@ export function PlacePublicPage({ user, profile }: Props) {
   };
 
   const requestAcademyEnrollment = async () => {
-    if (!place || !academyDraft.classId || !academyDraft.playerName.trim()) return;
+    if (!place || !academyDraft.classIds.length || !academyDraft.playerName.trim()) return;
     setAcademyBusy(true);
     setAcademyFeedback("");
     try {
-      await createAcademyEnrollment({
-        placeId: place.id,
-        classId: academyDraft.classId,
-        userId: user.id,
-        playerName: academyDraft.playerName || profile?.displayName || user.email || "Aluno",
-        phone: academyDraft.phone || profile?.phone || "",
-        notes: academyDraft.notes,
-      });
-      setAcademyFeedback("Interesse enviado. O local pode aprovar sua matricula pela Academia.");
+      const selectedLabels = selectedAcademyClasses
+        .map((academyClass) => nextClassLabel(academyClass))
+        .join(", ");
+      await Promise.all(
+        academyDraft.classIds.map((classId) =>
+          createAcademyEnrollment({
+            placeId: place.id,
+            classId,
+            userId: user.id,
+            playerName: academyDraft.playerName || profile?.displayName || user.email || "Aluno",
+            phone: academyDraft.phone || profile?.phone || "",
+            notes: [academyDraft.notes, selectedLabels ? `Dias escolhidos: ${selectedLabels}` : ""].filter(Boolean).join(" | "),
+          })
+        )
+      );
+      setAcademyFeedback(
+        academyDraft.classIds.length > 1
+          ? "Interesse enviado para os dias escolhidos. O local pode aprovar sua matricula pela Academia."
+          : "Interesse enviado. O local pode aprovar sua matricula pela Academia."
+      );
       setAcademyDraft((prev) => ({ ...prev, notes: "" }));
     } catch (err) {
       console.error("Failed to request academy enrollment", err);
@@ -624,7 +757,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                 <p>{place.description || "Reserve quadra, entre em aula ou encontre uma atividade aberta neste local."}</p>
                 <div className="place-public-offer-strip" aria-label="Ofertas do local">
                   <strong>{heroOffer}</strong>
-                  <small>{[activeCourts.length ? countLabel(activeCourts.length, "quadra", "quadras") : "", activeClasses.length ? countLabel(activeClasses.length, "turma", "turmas") : "", matches.length ? countLabel(matches.length, "jogo aberto", "jogos abertos") : ""].filter(Boolean).join(" | ") || "Informacoes publicas do local"}</small>
+                  <small>{heroOfferDetails}</small>
                 </div>
                 <ActionBar className="place-public-hero-actions" label="Acoes publicas do local">
                   <button
@@ -633,10 +766,10 @@ export function PlacePublicPage({ user, profile }: Props) {
                   >
                     {primaryCta.label}
                   </button>
-                  {hasBookableOffer && primaryCta.sectionId !== "place-public-booking" ? (
+                  {!isFocusedIntent && hasBookableOffer && primaryCta.sectionId !== "place-public-booking" ? (
                     <button className="secondary" onClick={() => scrollToPublicSection("place-public-booking")}>Reservar quadra</button>
                   ) : null}
-                  {hasAcademyOffer && primaryCta.sectionId !== "place-public-academy" ? (
+                  {!isFocusedIntent && hasAcademyOffer && primaryCta.sectionId !== "place-public-academy" ? (
                     <button className="secondary" onClick={() => scrollToPublicSection("place-public-academy")}>Ver aulas</button>
                   ) : null}
                   {canOpenAdmin ? (
@@ -654,28 +787,28 @@ export function PlacePublicPage({ user, profile }: Props) {
             </section>
 
             <section className="place-public-action-rail" aria-label="O que fazer neste local">
-              {hasBookableOffer ? (
+              {showBookingSection ? (
                 <button onClick={() => scrollToPublicSection("place-public-booking")}>
                   <span>Reservar</span>
                   <strong>Quadra</strong>
                   <small>{cheapestCourt ? `A partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}` : countLabel(activeCourts.length, "quadra", "quadras")}</small>
                 </button>
               ) : null}
-              {hasAcademyOffer ? (
+              {showAcademySection ? (
                 <button onClick={() => scrollToPublicSection("place-public-academy")}>
                   <span>Aulas</span>
                   <strong>Entrar em turma</strong>
                   <small>{cheapestClass ? `A partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}` : countLabel(activeClasses.length, "turma", "turmas")}</small>
                 </button>
               ) : null}
-              {hasOpenMatches ? (
+              {showMatchesSection ? (
                 <button onClick={() => scrollToPublicSection("place-public-matches")}>
                   <span>Jogos</span>
                   <strong>Jogo aberto</strong>
                   <small>{countLabel(matches.length, "opcao", "opcoes")}</small>
                 </button>
               ) : null}
-              {hasMembershipOffer ? (
+              {showPlansSection ? (
                 <button onClick={() => scrollToPublicSection("place-public-plans")}>
                   <span>Planos</span>
                   <strong>Beneficios</strong>
@@ -690,7 +823,7 @@ export function PlacePublicPage({ user, profile }: Props) {
             </section>
 
             <section className="place-public-grid place-public-main-flow">
-              {hasBookableOffer ? (
+              {showBookingSection ? (
               <article id="place-public-booking" className="place-public-booking-card place-public-booking-flow-card">
                 <div className="place-public-booking-header">
                   <div>
@@ -885,7 +1018,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               </article>
               ) : null}
 
-              {hasAcademyOffer ? (
+              {showAcademySection ? (
               <article id="place-public-academy" className="place-public-booking-card">
                 <span>Aulas</span>
                 <h3>Escolha uma turma e envie interesse</h3>
@@ -950,27 +1083,46 @@ export function PlacePublicPage({ user, profile }: Props) {
                         <span>2</span>
                         <strong>Turmas com vaga</strong>
                       </div>
-                      <small>{countLabel(filteredAcademyClasses.length, "opcao", "opcoes")}</small>
+                      <small>{countLabel(filteredAcademyClassGroups.length, "turma", "turmas")}</small>
                     </div>
                     {activeClasses.length ? (
-                      filteredAcademyClasses.length ? (
+                      filteredAcademyClassGroups.length ? (
                         <div className="place-public-class-board public-class-options" aria-label="Turmas compativeis">
-                          {filteredAcademyClasses.map((academyClass) => {
-                            const spot = academySpotsByClass[academyClass.id];
+                          {filteredAcademyClassGroups.map((group) => {
+                            const academyClass = group.primary;
+                            const selectedInGroup = group.classes.filter((item) => academyDraft.classIds.includes(item.id));
                             return (
-                              <button
-                                key={`class-fit:${academyClass.id}`}
-                                className={academyDraft.classId === academyClass.id ? "place-public-class-option selected" : "place-public-class-option"}
-                                onClick={() => selectAcademyClass(academyClass)}
+                              <article
+                                key={`class-fit:${group.key}`}
+                                className={selectedInGroup.length ? "place-public-class-option selected" : "place-public-class-option"}
                               >
-                                <span>{nextClassLabel(academyClass)}</span>
-                                <strong>{academyClass.title}</strong>
-                                <small>
-                                  {[academyClass.coachName || "Professor a definir", academyClass.level || "Nivel livre"].filter(Boolean).join(" | ")}
-                                </small>
-                                <em>{academyClass.monthlyFeeCents ? formatMoneyFromCents(academyClass.monthlyFeeCents) : "Valor a combinar"}</em>
-                                <b>{spot ? `${spot.availableSpots} vaga(s)` : `ate ${academyClass.capacity} alunos`}</b>
-                              </button>
+                                <button type="button" className="place-public-class-option-main" onClick={() => selectAcademyGroup(group)}>
+                                  <span>{academyClassGroupDayLabel(group)}</span>
+                                  <strong>{academyClass.title}</strong>
+                                  <small>
+                                    {[academyClass.coachName || "Professor a definir", academyClass.level || "Nivel livre"].filter(Boolean).join(" | ")}
+                                  </small>
+                                  <em>{academyClass.monthlyFeeCents ? formatMoneyFromCents(academyClass.monthlyFeeCents) : "Valor a combinar"}</em>
+                                  <b>{group.availableSpots} vaga(s)</b>
+                                </button>
+                                {group.classes.length > 1 ? (
+                                  <div className="place-public-class-days" aria-label="Dias da turma">
+                                    {group.classes.map((classDay) => {
+                                      const checked = academyDraft.classIds.includes(classDay.id);
+                                      return (
+                                        <button
+                                          key={`class-day:${classDay.id}`}
+                                          type="button"
+                                          className={checked ? "selected" : ""}
+                                          onClick={() => toggleAcademyClassDay(classDay)}
+                                        >
+                                          {WEEKDAY_LABELS[classDay.weekday]} {classDay.startsAt.slice(0, 5)}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                ) : null}
+                              </article>
                             );
                           })}
                         </div>
@@ -1002,10 +1154,15 @@ export function PlacePublicPage({ user, profile }: Props) {
                         <strong>{selectedAcademyClass.title}</strong>
                         <small>
                           {[
-                            nextClassLabel(selectedAcademyClass),
+                            selectedAcademyClasses.length
+                              ? selectedAcademyClasses.map((academyClass) => nextClassLabel(academyClass)).join(", ")
+                              : selectedAcademyGroup
+                                ? academyClassGroupDayLabel(selectedAcademyGroup)
+                                : nextClassLabel(selectedAcademyClass),
                             selectedAcademyClass.coachName || "Professor a definir",
                             selectedAcademyClass.level || "Nivel livre",
                             selectedAcademyClass.monthlyFeeCents ? formatMoneyFromCents(selectedAcademyClass.monthlyFeeCents) : "Valor a combinar",
+                            selectedAcademyClasses.length > 1 ? `${selectedAcademyClasses.length} dias selecionados` : null,
                             selectedAcademySpot ? `${selectedAcademySpot.availableSpots} vaga(s)` : null,
                           ]
                             .filter(Boolean)
@@ -1045,7 +1202,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <button
                         className="primary"
                         onClick={() => void requestAcademyEnrollment()}
-                        disabled={academyBusy || !selectedAcademyClass || !academyDraft.playerName.trim()}
+                        disabled={academyBusy || !academyDraft.classIds.length || !academyDraft.playerName.trim()}
                       >
                         {academyBusy ? "Enviando..." : "Enviar interesse"}
                       </button>
@@ -1056,7 +1213,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               </article>
               ) : null}
 
-              {hasOpenMatches ? (
+              {showMatchesSection ? (
               <article id="place-public-matches">
                 <span>Comunidade</span>
                 <h3>Jogos abertos</h3>
@@ -1078,7 +1235,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               </article>
               ) : null}
 
-              {hasMembershipOffer ? (
+              {showPlansSection ? (
               <article id="place-public-plans">
                 <span>Planos</span>
                 <h3>Recorrencia e beneficios</h3>
@@ -1100,7 +1257,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               </article>
               ) : null}
 
-              {!hasBookableOffer && !hasAcademyOffer && !hasOpenMatches && !hasMembershipOffer ? (
+              {!showBookingSection && !showAcademySection && !showMatchesSection && !showPlansSection ? (
                 <article className="place-public-empty-offer">
                   <span>Local</span>
                   <h3>Informacoes em preparacao</h3>
@@ -1114,7 +1271,7 @@ export function PlacePublicPage({ user, profile }: Props) {
             </section>
 
             <section className="place-public-secondary-info" aria-label="Informacoes adicionais do local">
-              {activeCourts.length ? (
+              {!isFocusedIntent && activeCourts.length ? (
                 <details>
                   <summary>Quadras e valores</summary>
                   {activeCourts.slice(0, 8).map((court) => (

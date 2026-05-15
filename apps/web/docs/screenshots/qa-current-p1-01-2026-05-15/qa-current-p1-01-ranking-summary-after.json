@@ -1,0 +1,186 @@
+[
+  {
+    "key": "desktop1366-ranking-p1-after",
+    "viewport": {
+      "width": 1366,
+      "height": 768
+    },
+    "rows": 12,
+    "headRows": 1,
+    "hasLoadMore": true,
+    "bodyHeight": 1462,
+    "viewportHeight": 768,
+    "bodyWidth": 1351,
+    "viewportWidth": 1366,
+    "hasRawError": false,
+    "rowWidths": [
+      {
+        "clientWidth": 990,
+        "scrollWidth": 990,
+        "minWidth": "760px"
+      },
+      {
+        "clientWidth": 990,
+        "scrollWidth": 990,
+        "minWidth": "760px"
+      },
+      {
+        "clientWidth": 990,
+        "scrollWidth": 990,
+        "minWidth": "760px"
+      }
+    ],
+    "scopeTabs": {
+      "clientWidth": 964,
+      "scrollWidth": 964,
+      "display": "grid"
+    },
+    "firstLines": [
+      "Ranking",
+      "MINHA POSICAO",
+      "-",
+      "Voce ainda nao aparece neste recorte",
+      "Use filtros de liga, cidade ou classe para encontrar rankings onde voce participa.",
+      "RECORTE ATUAL",
+      "Ranking geral",
+      "162 jogadores encontrados",
+      "Lider: Guilherme Teixeira (141 pts)",
+      "Geral",
+      "Minha cidade",
+      "Liga / clube",
+      "Todas as classes",
+      "Adulto / Classe A",
+      "Adulto / Classe B",
+      "Adulto / Classe C",
+      "162 de 162 jogadores neste recorte",
+      "RANKING DO RECORTE",
+      "Top jogadores",
+      "Mostrando 12 de 162",
+      "#",
+      "JOGADOR",
+      "LIGA",
+      "V-D",
+      "PTS",
+      "1",
+      "Guilherme Teixeira",
+      "Campo Grande - MS",
+      "Prime Duplas Fixas",
+      "Temporada 2026.1 - Adulto / Classe C",
+      "7-1",
+      "88%",
+      "141",
+      "Seguir",
+      "1",
+      "Rodrigo Araujo",
+      "Campo Grande - MS",
+      "Liga ADT Simples 2026",
+      "Temporada 2026.1 - Adulto / Classe C",
+      "7-1",
+      "88%",
+      "141"
+    ],
+    "consoleMessages": [
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      }
+    ],
+    "failedResponses": []
+  },
+  {
+    "key": "mobile390-ranking-p1-after",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "rows": 12,
+    "headRows": 1,
+    "hasLoadMore": true,
+    "bodyHeight": 3133,
+    "viewportHeight": 844,
+    "bodyWidth": 390,
+    "viewportWidth": 390,
+    "hasRawError": false,
+    "rowWidths": [
+      {
+        "clientWidth": 368,
+        "scrollWidth": 368,
+        "minWidth": "0px"
+      },
+      {
+        "clientWidth": 368,
+        "scrollWidth": 368,
+        "minWidth": "0px"
+      },
+      {
+        "clientWidth": 368,
+        "scrollWidth": 368,
+        "minWidth": "0px"
+      }
+    ],
+    "scopeTabs": {
+      "clientWidth": 342,
+      "scrollWidth": 356,
+      "display": "flex"
+    },
+    "firstLines": [
+      "Ranking",
+      "MINHA POSICAO",
+      "-",
+      "Voce ainda nao aparece neste recorte",
+      "Use filtros de liga, cidade ou classe para encontrar rankings onde voce participa.",
+      "RECORTE ATUAL",
+      "Ranking geral",
+      "162 jogadores encontrados",
+      "Lider: Guilherme Teixeira (141 pts)",
+      "Geral",
+      "Minha cidade",
+      "Liga / clube",
+      "Todas as classes",
+      "Adulto / Classe A",
+      "Adulto / Classe B",
+      "Adulto / Classe C",
+      "162 de 162 jogadores neste recorte",
+      "RANKING DO RECORTE",
+      "Top jogadores",
+      "Mostrando 12 de 162",
+      "1",
+      "Guilherme Teixeira",
+      "Campo Grande - MS",
+      "Prime Duplas Fixas",
+      "Temporada 2026.1 - Adulto / Classe C",
+      "7-1",
+      "88%",
+      "141",
+      "Seguir",
+      "1",
+      "Rodrigo Araujo",
+      "Campo Grande - MS",
+      "Liga ADT Simples 2026",
+      "Temporada 2026.1 - Adulto / Classe C",
+      "7-1",
+      "88%",
+      "141",
+      "Seguir",
+      "1",
+      "Wagner Nascimento",
+      "Campo Grande - MS",
+      "Ranking Pantanal Intermediario"
+    ],
+    "consoleMessages": [
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      }
+    ],
+    "failedResponses": []
+  }
+]

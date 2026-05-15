@@ -1,0 +1,1838 @@
+[
+  {
+    "scenario": {
+      "scenario": "player-inicio",
+      "user": "player",
+      "viewport": "desktop1366",
+      "hashPath": "#/inicio",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-inicio-final.png",
+      "baselineHeadings": [
+        "O que voce quer fazer hoje?",
+        "Proximos eventos publicos"
+      ],
+      "baselineButtons": [
+        "Notificacoes",
+        "Reservar quadra",
+        "Competir",
+        "Reservar\nQuadra\nEncontrar horario",
+        "Jogar\nEncontrar jogo\nChamada ou parceiro",
+        "Aulas\nEntrar em turma\nTurmas com vaga",
+        "Competir\nTorneios e ligas\nInscricoes abertas",
+        "Ver todos",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/inicio",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "O que voce quer fazer hoje?",
+      "Proximos eventos publicos"
+    ],
+    "buttons": [
+      "Notificacoes",
+      "Reservar quadra",
+      "Competir",
+      "Reservar\nQuadra\nEncontrar horario",
+      "Jogar\nEncontrar jogo\nChamada ou parceiro",
+      "Aulas\nEntrar em turma\nTurmas com vaga",
+      "Competir\nTorneios e ligas\nInscricoes abertas",
+      "Ver todos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 1,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Bem-vindo\nAna Gomes\nHOJE PARA VOCE\nO que voce quer fazer hoje?\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra\nEncontrar horario\nJogar\nEncontrar jogo\nChamada ou parceiro\nAulas\nEntrar em turma\nTurmas com vaga\nCompetir\nTorneios e ligas\nInscricoes abertas\nCould not find the function public.app_list_my_place_staff_invites without parameters in the schema cache\nProximos eventos publicos\nVer todos\nATP\nModo jogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 638,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-inicio-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-inicio-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-inicio-final.png",
+    "baselineHeadings": [
+      "O que voce quer fazer hoje?",
+      "Proximos eventos publicos"
+    ],
+    "baselineButtons": [
+      "Notificacoes",
+      "Reservar quadra",
+      "Competir",
+      "Reservar\nQuadra\nEncontrar horario",
+      "Jogar\nEncontrar jogo\nChamada ou parceiro",
+      "Aulas\nEntrar em turma\nTurmas com vaga",
+      "Competir\nTorneios e ligas\nInscricoes abertas",
+      "Ver todos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-locais",
+      "user": "player",
+      "viewport": "desktop1366",
+      "hashPath": "#/locais",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-locais-final.png",
+      "baselineHeadings": [
+        "Locais",
+        "O que voce quer encontrar?"
+      ],
+      "baselineButtons": [
+        "Encontrar jogo\nChamadas abertas",
+        "Reservar quadra\nHorarios livres",
+        "Entrar em aula\nTurmas com vaga",
+        "Ver locais\nProximos e seguindo",
+        "Buscar quadra agora",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/locais",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Locais",
+      "O que voce quer encontrar?"
+    ],
+    "buttons": [
+      "Encontrar jogo\nChamadas abertas",
+      "Reservar quadra\nHorarios livres",
+      "Entrar em aula\nTurmas com vaga",
+      "Ver locais\nProximos e seguindo",
+      "Buscar quadra agora",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 5,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Locais\nDESCOBERTA\nO que voce quer encontrar?\nEscolha a intencao e veja somente o caminho necessario.\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nCOMECE PELA INTENCAO\nEscolha uma busca acima para ver somente o que importa.\nQuadra, aula, jogo e lista de locais ficam separados para nao misturar informacoes.\nBuscar quadra agora\nCarregando...\nATP\nModo jogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 494,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-locais-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-locais-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-locais-final.png",
+    "baselineHeadings": [
+      "Locais",
+      "O que voce quer encontrar?"
+    ],
+    "baselineButtons": [
+      "Encontrar jogo\nChamadas abertas",
+      "Reservar quadra\nHorarios livres",
+      "Entrar em aula\nTurmas com vaga",
+      "Ver locais\nProximos e seguindo",
+      "Buscar quadra agora",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-eventos",
+      "user": "player",
+      "viewport": "desktop1366",
+      "hashPath": "#/eventos",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-eventos-final.png",
+      "baselineHeadings": [
+        "Competicoes",
+        "Descobrir"
+      ],
+      "baselineButtons": [
+        "Jogando\npartidas e inscricoes\n0",
+        "Organizando\noperacao e publicacao\n0",
+        "Descobrir\nconvites e entrada",
+        "Torneios\nVeja torneios em que voce joga ou entre por codigo.",
+        "Ligas\nAcesse ligas em que voce participa.",
+        "Encontrar locais\nVeja clubes e academias publicas.",
+        "Modo organizador\nCrie torneios e ligas em uma area separada.",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/eventos",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Competicoes",
+      "Jogando"
+    ],
+    "buttons": [
+      "Torneios que jogo",
+      "Ligas que jogo",
+      "Meus torneios",
+      "Minhas ligas",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 2,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Competicoes\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\nCarregando...\nJogando\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\nTorneios que jogo\nLigas que jogo\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas\nATP\nCompeticoes\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 415,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-eventos-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-eventos-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-eventos-final.png",
+    "baselineHeadings": [
+      "Competicoes",
+      "Descobrir"
+    ],
+    "baselineButtons": [
+      "Jogando\npartidas e inscricoes\n0",
+      "Organizando\noperacao e publicacao\n0",
+      "Descobrir\nconvites e entrada",
+      "Torneios\nVeja torneios em que voce joga ou entre por codigo.",
+      "Ligas\nAcesse ligas em que voce participa.",
+      "Encontrar locais\nVeja clubes e academias publicas.",
+      "Modo organizador\nCrie torneios e ligas em uma area separada.",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-ranking",
+      "user": "player",
+      "viewport": "desktop1366",
+      "hashPath": "#/ranking",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-ranking-final.png",
+      "baselineHeadings": [
+        "Ranking",
+        "Ranking geral",
+        "Ranking geral",
+        "Disputa pelo topo",
+        "Onde a liga esta viva"
+      ],
+      "baselineButtons": [
+        "Geral",
+        "Minha cidade",
+        "Liga / clube",
+        "Copiar top 10",
+        "Exportar CSV",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguindo",
+        "Seguindo",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/ranking",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Ranking",
+      "Voce ainda nao aparece neste recorte"
+    ],
+    "buttons": [
+      "Geral",
+      "Minha cidade",
+      "Liga / clube",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir"
+    ],
+    "cardish": 8,
+    "rowish": 81,
+    "height": 5816,
+    "viewportHeight": 900,
+    "screenfuls": 6.46,
+    "overflowX": false,
+    "text": "Ranking\nMINHA POSICAO\n-\nVoce ainda nao aparece neste recorte\nUse filtros de liga, cidade ou classe para encontrar rankings onde voce participa.\nRECORTE ATUAL\nRanking geral\n162 jogadores encontrados\nLider: Guilherme Teixeira (141 pts)\nGeral\nMinha cidade\nLiga / clube\nTodas as classes\nAdulto / Classe A\nAdulto / Classe B\nAdulto / Classe C\n162 de 162 jogadores neste recorte\n#\nJOGADOR\nLIGA\nV-D\nPTS\n1\nGuilherme Teixeira\nCampo Grande - MS\nPrime Duplas Fixas\nTemporada 2026.1 - Adulto / Classe C\n7-1\n88%\n141\nSeguir\n1\nRodrigo Araujo\nCampo Grande - MS\nLiga ADT Simples 2026\nTemporada 2026.1 - Adulto / Classe C\n7-1\n88%\n141\nSeguir\n1\nWagner Nascimento\nCampo Grande - MS\nRanking Pantanal Intermediario\nTemporada 2026.1 - Adulto / Classe C\n7-1\n88%\n141\nSeguir\n2\nHelena Borges\nCuiaba - MT\nPrime Duplas Fixas\nTemporada 2026.1 - Adulto / Classe C\n6-2\n75%\n138\nSeguir\n2\nTatiane Cardoso\nCuiaba - MT\nLiga ADT Simples 2026\nTemporada 2026.1 - Adulto / Classe C\n6-2\n75%\n138\nSeguir\n2\nYasmin Uchida\nCuiaba - MT\nRanking Pantanal Intermediario\nTemporada 2026.1 - Adulto / Classe C\n6-2\n75%\n138\nSeguir\n3\nAndre Castro\nRondonopolis - MT\nRanking Pantanal Intermediario",
+    "bodyLength": 9537,
+    "mainClass": "app-content",
+    "consoleMessages": [
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()"
+    ],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-ranking-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-ranking-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-ranking-final.png",
+    "baselineHeadings": [
+      "Ranking",
+      "Ranking geral",
+      "Ranking geral",
+      "Disputa pelo topo",
+      "Onde a liga esta viva"
+    ],
+    "baselineButtons": [
+      "Geral",
+      "Minha cidade",
+      "Liga / clube",
+      "Copiar top 10",
+      "Exportar CSV",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguindo",
+      "Seguindo",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir"
+    ],
+    "regressionFlags": [
+      "console-warning-or-error"
+    ]
+  },
+  {
+    "scenario": {
+      "scenario": "player-perfil",
+      "user": "player",
+      "viewport": "desktop1366",
+      "hashPath": "#/perfil",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-perfil-final.png",
+      "baselineHeadings": [
+        "Perfil",
+        "Minha atividade",
+        "Lembretes"
+      ],
+      "baselineButtons": [
+        "Editar perfil",
+        "WhatsApp",
+        "Ver eventos",
+        "Sair da conta",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/perfil",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Perfil"
+    ],
+    "buttons": [
+      "Editar perfil",
+      "Perfil",
+      "Historico",
+      "Preferencias",
+      "Conta",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 1,
+    "rowish": 3,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Perfil\nAna Gomes\nDourados - MS\nPerfil completo\nSem competicao ativa\nLembretes ativos\nPerfil\nHistorico\nPreferencias\nConta\nTelefone\n+55 67 990000137\nE-mail\njogador001@demo.atp.local\nData de Nascimento\n25/03/1975\nATP\nModo jogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 286,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-perfil-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-player-player-perfil-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-player-perfil-final.png",
+    "baselineHeadings": [
+      "Perfil",
+      "Minha atividade",
+      "Lembretes"
+    ],
+    "baselineButtons": [
+      "Editar perfil",
+      "WhatsApp",
+      "Ver eventos",
+      "Sair da conta",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-inicio",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/inicio",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-inicio-final.png",
+      "baselineHeadings": [
+        "O que voce quer fazer hoje?",
+        "Proximos eventos publicos"
+      ],
+      "baselineButtons": [
+        "Notificacoes",
+        "Reservar quadra",
+        "Competir",
+        "Reservar\nQuadra\nEncontrar horario",
+        "Jogar\nEncontrar jogo\nChamada ou parceiro",
+        "Aulas\nEntrar em turma\nTurmas com vaga",
+        "Competir\nTorneios e ligas\nInscricoes abertas",
+        "Ver todos",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/inicio",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "O que voce quer fazer hoje?",
+      "Proximos eventos publicos"
+    ],
+    "buttons": [
+      "Notificacoes",
+      "Reservar quadra",
+      "Competir",
+      "Reservar\nQuadra\nEncontrar horario",
+      "Jogar\nEncontrar jogo\nChamada ou parceiro",
+      "Aulas\nEntrar em turma\nTurmas com vaga",
+      "Competir\nTorneios e ligas\nInscricoes abertas",
+      "Ver todos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 1,
+    "rowish": 0,
+    "height": 994,
+    "viewportHeight": 844,
+    "screenfuls": 1.18,
+    "overflowX": false,
+    "text": "Bem-vindo\nAna Gomes\nHOJE PARA VOCE\nO que voce quer fazer hoje?\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra\nEncontrar horario\nJogar\nEncontrar jogo\nChamada ou parceiro\nAulas\nEntrar em turma\nTurmas com vaga\nCompetir\nTorneios e ligas\nInscricoes abertas\nCould not find the function public.app_list_my_place_staff_invites without parameters in the schema cache\nProximos eventos publicos\nVer todos\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 609,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-inicio-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-inicio-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-inicio-final.png",
+    "baselineHeadings": [
+      "O que voce quer fazer hoje?",
+      "Proximos eventos publicos"
+    ],
+    "baselineButtons": [
+      "Notificacoes",
+      "Reservar quadra",
+      "Competir",
+      "Reservar\nQuadra\nEncontrar horario",
+      "Jogar\nEncontrar jogo\nChamada ou parceiro",
+      "Aulas\nEntrar em turma\nTurmas com vaga",
+      "Competir\nTorneios e ligas\nInscricoes abertas",
+      "Ver todos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-locais",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/locais",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-locais-final.png",
+      "baselineHeadings": [
+        "Locais",
+        "O que voce quer encontrar?"
+      ],
+      "baselineButtons": [
+        "Encontrar jogo\nChamadas abertas",
+        "Reservar quadra\nHorarios livres",
+        "Entrar em aula\nTurmas com vaga",
+        "Ver locais\nProximos e seguindo",
+        "Buscar quadra agora",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/locais",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Locais",
+      "O que voce quer encontrar?"
+    ],
+    "buttons": [
+      "Encontrar jogo\nChamadas abertas",
+      "Reservar quadra\nHorarios livres",
+      "Entrar em aula\nTurmas com vaga",
+      "Ver locais\nProximos e seguindo",
+      "Buscar quadra agora",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 5,
+    "rowish": 0,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Locais\nDESCOBERTA\nO que voce quer encontrar?\nEscolha a intencao e veja somente o caminho necessario.\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nCOMECE PELA INTENCAO\nEscolha uma busca acima para ver somente o que importa.\nQuadra, aula, jogo e lista de locais ficam separados para nao misturar informacoes.\nBuscar quadra agora\nCarregando...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 465,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-locais-final.png",
+    "baselineHeadings": [
+      "Locais",
+      "O que voce quer encontrar?"
+    ],
+    "baselineButtons": [
+      "Encontrar jogo\nChamadas abertas",
+      "Reservar quadra\nHorarios livres",
+      "Entrar em aula\nTurmas com vaga",
+      "Ver locais\nProximos e seguindo",
+      "Buscar quadra agora",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-eventos",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/eventos",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-eventos-final.png",
+      "baselineHeadings": [
+        "Competicoes",
+        "Jogando"
+      ],
+      "baselineButtons": [
+        "Torneios que jogo\n0",
+        "Ligas que jogo\n0",
+        "Meus torneios",
+        "Minhas ligas",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/eventos",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Competicoes",
+      "Jogando"
+    ],
+    "buttons": [
+      "Torneios que jogo",
+      "Ligas que jogo",
+      "Meus torneios",
+      "Minhas ligas",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 2,
+    "rowish": 0,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Competicoes\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\nCarregando...\nJogando\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\nTorneios que jogo\nLigas que jogo\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 387,
+    "mainClass": "app-content",
+    "consoleMessages": [
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()"
+    ],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-eventos-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-eventos-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-eventos-final.png",
+    "baselineHeadings": [
+      "Competicoes",
+      "Jogando"
+    ],
+    "baselineButtons": [
+      "Torneios que jogo\n0",
+      "Ligas que jogo\n0",
+      "Meus torneios",
+      "Minhas ligas",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": [
+      "console-warning-or-error"
+    ]
+  },
+  {
+    "scenario": {
+      "scenario": "player-ranking",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/ranking",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-ranking-final.png",
+      "baselineHeadings": [
+        "Ranking",
+        "Ranking geral",
+        "Ranking geral",
+        "Disputa pelo topo",
+        "Onde a liga esta viva"
+      ],
+      "baselineButtons": [
+        "Geral",
+        "Minha cidade",
+        "Liga / clube",
+        "Copiar top 10",
+        "Exportar CSV",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguindo",
+        "Seguindo",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir",
+        "Seguir"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/ranking",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Ranking",
+      "Voce ainda nao aparece neste recorte"
+    ],
+    "buttons": [
+      "Geral",
+      "Minha cidade",
+      "Liga / clube",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 1,
+    "rowish": 0,
+    "height": 863,
+    "viewportHeight": 844,
+    "screenfuls": 1.02,
+    "overflowX": false,
+    "text": "Ranking\nMINHA POSICAO\n-\nVoce ainda nao aparece neste recorte\nUse filtros de liga, cidade ou classe para encontrar rankings onde voce participa.\nRECORTE ATUAL\nRanking geral\n0 jogadores encontrados\nGeral\nMinha cidade\nLiga / clube\nTodas as classes\n0 de 0 jogadores neste recorte\nRANKING\nCarregando ranking\nBuscando jogadores, ligas e recortes disponiveis.\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 396,
+    "mainClass": "app-content",
+    "consoleMessages": [
+      "error: Failed to load resource: the server responded with a status of 404 ()"
+    ],
+    "zeroLike": [
+      "0",
+      "0",
+      "0"
+    ],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-ranking-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-ranking-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-ranking-final.png",
+    "baselineHeadings": [
+      "Ranking",
+      "Ranking geral",
+      "Ranking geral",
+      "Disputa pelo topo",
+      "Onde a liga esta viva"
+    ],
+    "baselineButtons": [
+      "Geral",
+      "Minha cidade",
+      "Liga / clube",
+      "Copiar top 10",
+      "Exportar CSV",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguindo",
+      "Seguindo",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir",
+      "Seguir"
+    ],
+    "regressionFlags": [
+      "console-warning-or-error"
+    ]
+  },
+  {
+    "scenario": {
+      "scenario": "player-perfil",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/perfil",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-perfil-final.png",
+      "baselineHeadings": [
+        "Perfil",
+        "Minha atividade",
+        "Lembretes"
+      ],
+      "baselineButtons": [
+        "Editar perfil",
+        "WhatsApp",
+        "Ver eventos",
+        "0\nJogando",
+        "0\nOrganizando",
+        "Sair da conta",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/perfil",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Perfil"
+    ],
+    "buttons": [
+      "Editar perfil",
+      "Perfil",
+      "Historico",
+      "Preferencias",
+      "Conta",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 1,
+    "rowish": 3,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Perfil\nAna Gomes\nDourados - MS\nPerfil completo\nSem competicao ativa\nLembretes pausados\nPerfil\nHistorico\nPreferencias\nConta\nTelefone\n+55 67 990000137\nE-mail\njogador001@demo.atp.local\nData de Nascimento\n25/03/1975\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 259,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-perfil-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-perfil-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-player-perfil-final.png",
+    "baselineHeadings": [
+      "Perfil",
+      "Minha atividade",
+      "Lembretes"
+    ],
+    "baselineButtons": [
+      "Editar perfil",
+      "WhatsApp",
+      "Ver eventos",
+      "0\nJogando",
+      "0\nOrganizando",
+      "Sair da conta",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-locais-reserva",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/locais?intent=booking"
+    },
+    "url": "http://127.0.0.1:5181/#/locais?intent=booking",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Locais",
+      "O que voce quer encontrar?"
+    ],
+    "buttons": [
+      "Encontrar jogo\nChamadas abertas",
+      "Reservar quadra\nHorarios livres",
+      "Entrar em aula\nTurmas com vaga",
+      "Ver locais\nProximos e seguindo",
+      "Todos",
+      "Seguindo",
+      "Meus locais",
+      "Buscar quadras livres",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 5,
+    "rowish": 0,
+    "height": 1283,
+    "viewportHeight": 844,
+    "screenfuls": 1.52,
+    "overflowX": false,
+    "text": "Locais\nDESCOBERTA\nO que voce quer encontrar?\nEscolha a intencao e veja somente o caminho necessario.\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nTodos\nSeguindo\nMeus locais\nRESERVAR QUADRA\nEncontre quadras livres no horario\nUse cidade, data e hora para receber quadras disponiveis, sem misturar aulas ou planos.\nBusca por horario\nNOME DO LOCAL\nCIDADE\nUF\nDATA\nHORA\n06:00\n06:30\n07:00\n07:30\n08:00\n08:30\n09:00\n09:30\n10:00\n10:30\n11:00\n11:30\n12:00\n12:30\n13:00\n13:30\n14:00\n14:30\n15:00\n15:30\n16:00\n16:30\n17:00\n17:30\n18:00\n18:30\n19:00\n19:30\n20:00\n20:30\n21:00\n21:30\n22:00\n22:30\n23:00\nDURACAO\n1h\n1h30\n2h\nBuscar quadras livres\nCarregando...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 751,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-reserva-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-reserva-current.txt",
+    "baselinePng": null,
+    "baselineHeadings": [],
+    "baselineButtons": [],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "player-locais-aula",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/locais?intent=classes"
+    },
+    "url": "http://127.0.0.1:5181/#/locais?intent=classes",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Locais",
+      "O que voce quer encontrar?"
+    ],
+    "buttons": [
+      "Encontrar jogo\nChamadas abertas",
+      "Reservar quadra\nHorarios livres",
+      "Entrar em aula\nTurmas com vaga",
+      "Ver locais\nProximos e seguindo",
+      "Todos",
+      "Seguindo",
+      "Meus locais",
+      "Buscar quadras livres",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 5,
+    "rowish": 0,
+    "height": 1283,
+    "viewportHeight": 844,
+    "screenfuls": 1.52,
+    "overflowX": false,
+    "text": "Locais\nDESCOBERTA\nO que voce quer encontrar?\nEscolha a intencao e veja somente o caminho necessario.\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nTodos\nSeguindo\nMeus locais\nRESERVAR QUADRA\nEncontre quadras livres no horario\nUse cidade, data e hora para receber quadras disponiveis, sem misturar aulas ou planos.\nBusca por horario\nNOME DO LOCAL\nCIDADE\nUF\nDATA\nHORA\n06:00\n06:30\n07:00\n07:30\n08:00\n08:30\n09:00\n09:30\n10:00\n10:30\n11:00\n11:30\n12:00\n12:30\n13:00\n13:30\n14:00\n14:30\n15:00\n15:30\n16:00\n16:30\n17:00\n17:30\n18:00\n18:30\n19:00\n19:30\n20:00\n20:30\n21:00\n21:30\n22:00\n22:30\n23:00\nDURACAO\n1h\n1h30\n2h\nBuscar quadras livres\nCarregando...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 751,
+    "mainClass": "app-content",
+    "consoleMessages": [
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()"
+    ],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-aula-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-aula-current.txt",
+    "baselinePng": null,
+    "baselineHeadings": [],
+    "baselineButtons": [],
+    "regressionFlags": [
+      "console-warning-or-error"
+    ]
+  },
+  {
+    "scenario": {
+      "scenario": "player-locais-jogo",
+      "user": "player",
+      "viewport": "mobile390",
+      "hashPath": "#/locais?intent=play"
+    },
+    "url": "http://127.0.0.1:5181/#/locais?intent=play",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Locais",
+      "O que voce quer encontrar?"
+    ],
+    "buttons": [
+      "Encontrar jogo\nChamadas abertas",
+      "Reservar quadra\nHorarios livres",
+      "Entrar em aula\nTurmas com vaga",
+      "Ver locais\nProximos e seguindo",
+      "Todos",
+      "Seguindo",
+      "Meus locais",
+      "Buscar quadras livres",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 5,
+    "rowish": 0,
+    "height": 1283,
+    "viewportHeight": 844,
+    "screenfuls": 1.52,
+    "overflowX": false,
+    "text": "Locais\nDESCOBERTA\nO que voce quer encontrar?\nEscolha a intencao e veja somente o caminho necessario.\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nTodos\nSeguindo\nMeus locais\nRESERVAR QUADRA\nEncontre quadras livres no horario\nUse cidade, data e hora para receber quadras disponiveis, sem misturar aulas ou planos.\nBusca por horario\nNOME DO LOCAL\nCIDADE\nUF\nDATA\nHORA\n06:00\n06:30\n07:00\n07:30\n08:00\n08:30\n09:00\n09:30\n10:00\n10:30\n11:00\n11:30\n12:00\n12:30\n13:00\n13:30\n14:00\n14:30\n15:00\n15:30\n16:00\n16:30\n17:00\n17:30\n18:00\n18:30\n19:00\n19:30\n20:00\n20:30\n21:00\n21:30\n22:00\n22:30\n23:00\nDURACAO\n1h\n1h30\n2h\nBuscar quadras livres\nCarregando...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 751,
+    "mainClass": "app-content",
+    "consoleMessages": [
+      "error: Failed to load resource: the server responded with a status of 404 ()",
+      "error: Failed to load resource: the server responded with a status of 404 ()"
+    ],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-jogo-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-player-player-locais-jogo-current.txt",
+    "baselinePng": null,
+    "baselineHeadings": [],
+    "baselineButtons": [],
+    "regressionFlags": [
+      "console-warning-or-error"
+    ]
+  },
+  {
+    "scenario": {
+      "scenario": "organizer-eventos",
+      "user": "organizer",
+      "viewport": "desktop1366",
+      "hashPath": "#/eventos?modo=organizing",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-organizer-eventos-final.png",
+      "baselineHeadings": [
+        "Competicoes",
+        "Organizando agora"
+      ],
+      "baselineButtons": [
+        "Torneios organizados\n0",
+        "Ligas organizadas\n0",
+        "Torneios",
+        "Ligas",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/eventos?modo=organizing",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Competicoes",
+      "Organizando agora"
+    ],
+    "buttons": [
+      "Torneios organizados",
+      "Ligas organizadas",
+      "Torneios",
+      "Ligas",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 2,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Competicoes\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\nCarregando...\nOrganizando agora\nFila operacional, publicacao e criacao ficam aqui. Nada disso disputa espaco com a visao de jogador.\nTorneios organizados\nLigas organizadas\nComece pelo tipo de competicao\nCrie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro de cada fluxo.\nTorneios\nLigas\nATP\nCompeticoes\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 487,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-organizer-organizer-eventos-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-organizer-organizer-eventos-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-organizer-eventos-final.png",
+    "baselineHeadings": [
+      "Competicoes",
+      "Organizando agora"
+    ],
+    "baselineButtons": [
+      "Torneios organizados\n0",
+      "Ligas organizadas\n0",
+      "Torneios",
+      "Ligas",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "organizer-torneios",
+      "user": "organizer",
+      "viewport": "desktop1366",
+      "hashPath": "#/eventos/torneios?view=organizing",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-organizer-torneios-final.png",
+      "baselineHeadings": [
+        "Torneios que organizo"
+      ],
+      "baselineButtons": [
+        "Voltar",
+        "+\nCriar",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/eventos/torneios?view=organizing",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Torneios que organizo"
+    ],
+    "buttons": [
+      "Voltar",
+      "+\nCriar",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 4,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Torneios que organizo\nCrie torneios, acompanhe inscricoes e ajuste a organizacao.\nVoltar\n+\nCriar\nOrganizando\n0\nInscricoes abertas\n0\nEm andamento\n0\nBUSCA\nESTADO (UF)\nTodos\nAC - Acre\nAL - Alagoas\nAP - Amapa\nAM - Amazonas\nBA - Bahia\nCE - Ceara\nDF - Distrito Federal\nES - Espirito Santo\nGO - Goias\nMA - Maranhao\nMT - Mato Grosso\nMS - Mato Grosso do Sul\nMG - Minas Gerais\nPA - Para\nPB - Paraiba\nPR - Parana\nPE - Pernambuco\nPI - Piaui\nRJ - Rio de Janeiro\nRN - Rio Grande do Norte\nRS - Rio Grande do Sul\nRO - Rondonia\nRR - Roraima\nSC - Santa Catarina\nSP - Sao Paulo\nSE - Sergipe\nTO - Tocantins\nMUNICIPIO\nTodos\nSTATUS\nTodos\nRascunho\nInscricoes abertas\nInscricoes encerradas\nEm andamento\nConcluido\nVISIBILIDADE\nTodas\nPublico\nPrivado\nORDENACAO\nMais recentes\nMais antigos\nData de inicio (crescente)\nData de inicio (decrescente)\nNome (A-Z)\nTORNEIOS\nCarregando torneios\nBuscando seus eventos, filtros e convites disponiveis.\nATP\nCompeticoes\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 988,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [
+      "0",
+      "0",
+      "0"
+    ],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-organizer-organizer-torneios-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-organizer-organizer-torneios-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-organizer-torneios-final.png",
+    "baselineHeadings": [
+      "Torneios que organizo"
+    ],
+    "baselineButtons": [
+      "Voltar",
+      "+\nCriar",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "organizer-eventos",
+      "user": "organizer",
+      "viewport": "mobile390",
+      "hashPath": "#/eventos?modo=organizing",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-organizer-eventos-final.png",
+      "baselineHeadings": [
+        "Competicoes",
+        "Organizando agora"
+      ],
+      "baselineButtons": [
+        "Torneios organizados\n0",
+        "Ligas organizadas\n0",
+        "Torneios",
+        "Ligas",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/eventos?modo=organizing",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Competicoes",
+      "Organizando agora"
+    ],
+    "buttons": [
+      "Torneios organizados",
+      "Ligas organizadas",
+      "Torneios",
+      "Ligas",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 2,
+    "rowish": 0,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "Competicoes\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\nCarregando...\nOrganizando agora\nFila operacional, publicacao e criacao ficam aqui. Nada disso disputa espaco com a visao de jogador.\nTorneios organizados\nLigas organizadas\nComece pelo tipo de competicao\nCrie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro de cada fluxo.\nTorneios\nLigas\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 459,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-organizer-organizer-eventos-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-organizer-organizer-eventos-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-organizer-eventos-final.png",
+    "baselineHeadings": [
+      "Competicoes",
+      "Organizando agora"
+    ],
+    "baselineButtons": [
+      "Torneios organizados\n0",
+      "Ligas organizadas\n0",
+      "Torneios",
+      "Ligas",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "organizer-torneios",
+      "user": "organizer",
+      "viewport": "mobile390",
+      "hashPath": "#/eventos/torneios?view=organizing",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-organizer-torneios-final.png",
+      "baselineHeadings": [
+        "Torneios que organizo"
+      ],
+      "baselineButtons": [
+        "Voltar para competicoes",
+        "+",
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/eventos/torneios?view=organizing",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Torneios que organizo"
+    ],
+    "buttons": [
+      "Voltar para competicoes",
+      "+",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 4,
+    "rowish": 0,
+    "height": 1166,
+    "viewportHeight": 844,
+    "screenfuls": 1.38,
+    "overflowX": false,
+    "text": "Torneios que organizo\nCrie torneios, acompanhe inscricoes e ajuste a organizacao.\n+\nOrganizando\n0\nInscricoes abertas\n0\nEm andamento\n0\nBUSCA\nESTADO (UF)\nTodos\nAC - Acre\nAL - Alagoas\nAP - Amapa\nAM - Amazonas\nBA - Bahia\nCE - Ceara\nDF - Distrito Federal\nES - Espirito Santo\nGO - Goias\nMA - Maranhao\nMT - Mato Grosso\nMS - Mato Grosso do Sul\nMG - Minas Gerais\nPA - Para\nPB - Paraiba\nPR - Parana\nPE - Pernambuco\nPI - Piaui\nRJ - Rio de Janeiro\nRN - Rio Grande do Norte\nRS - Rio Grande do Sul\nRO - Rondonia\nRR - Roraima\nSC - Santa Catarina\nSP - Sao Paulo\nSE - Sergipe\nTO - Tocantins\nMUNICIPIO\nTodos\nSTATUS\nTodos\nRascunho\nInscricoes abertas\nInscricoes encerradas\nEm andamento\nConcluido\nVISIBILIDADE\nTodas\nPublico\nPrivado\nORDENACAO\nMais recentes\nMais antigos\nData de inicio (crescente)\nData de inicio (decrescente)\nNome (A-Z)\nTORNEIOS\nCarregando torneios\nBuscando seus eventos, filtros e convites disponiveis.\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 947,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [
+      "0",
+      "0",
+      "0"
+    ],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-organizer-organizer-torneios-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-organizer-organizer-torneios-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-organizer-torneios-final.png",
+    "baselineHeadings": [
+      "Torneios que organizo"
+    ],
+    "baselineButtons": [
+      "Voltar para competicoes",
+      "+",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "coach-gestao",
+      "user": "coach",
+      "viewport": "desktop1366",
+      "hashPath": "#/gestao",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-coach-gestao-final.png",
+      "baselineHeadings": [
+        "Gestao"
+      ],
+      "baselineButtons": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Gestao",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\nCarregando central de gestao...\nATP\nModo jogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 248,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-coach-coach-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-coach-coach-gestao-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-coach-gestao-final.png",
+    "baselineHeadings": [
+      "Gestao"
+    ],
+    "baselineButtons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Gestao",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "coach-gestao",
+      "user": "coach",
+      "viewport": "mobile390",
+      "hashPath": "#/gestao",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-coach-gestao-final.png",
+      "baselineHeadings": [
+        "Gestao"
+      ],
+      "baselineButtons": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Gestao",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nCarregando central de gestao...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 98,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-coach-coach-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-coach-coach-gestao-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-coach-gestao-final.png",
+    "baselineHeadings": [
+      "Gestao"
+    ],
+    "baselineButtons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Gestao",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "frontdesk-gestao",
+      "user": "frontdesk",
+      "viewport": "desktop1366",
+      "hashPath": "#/gestao",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-frontdesk-gestao-final.png",
+      "baselineHeadings": [
+        "Gestao"
+      ],
+      "baselineButtons": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Gestao",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\nCarregando central de gestao...\nATP\nModo jogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 248,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-frontdesk-frontdesk-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-frontdesk-frontdesk-gestao-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-frontdesk-gestao-final.png",
+    "baselineHeadings": [
+      "Gestao"
+    ],
+    "baselineButtons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Gestao",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "frontdesk-gestao",
+      "user": "frontdesk",
+      "viewport": "mobile390",
+      "hashPath": "#/gestao",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-frontdesk-gestao-final.png",
+      "baselineHeadings": [
+        "Gestao"
+      ],
+      "baselineButtons": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Gestao",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nCarregando central de gestao...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 98,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-frontdesk-frontdesk-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-frontdesk-frontdesk-gestao-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-frontdesk-gestao-final.png",
+    "baselineHeadings": [
+      "Gestao"
+    ],
+    "baselineButtons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Gestao",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "manager-gestao",
+      "user": "manager",
+      "viewport": "desktop1366",
+      "hashPath": "#/gestao",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-manager-gestao-final.png",
+      "baselineHeadings": [
+        "Gestao"
+      ],
+      "baselineButtons": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Gestao",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\nCarregando central de gestao...\nATP\nModo jogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 248,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-manager-manager-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-manager-manager-gestao-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/desktop1366-manager-gestao-final.png",
+    "baselineHeadings": [
+      "Gestao"
+    ],
+    "baselineButtons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Gestao",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "manager-gestao",
+      "user": "manager",
+      "viewport": "mobile390",
+      "hashPath": "#/gestao",
+      "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-manager-gestao-final.png",
+      "baselineHeadings": [
+        "Gestao"
+      ],
+      "baselineButtons": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Gestao",
+        "Perfil"
+      ],
+      "baselineForbiddenHits": [],
+      "baselineZeroLike": []
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nCarregando central de gestao...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 98,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-manager-manager-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-manager-manager-gestao-current.txt",
+    "baselinePng": "web/docs/screenshots/qa-design-01-2026-05-15/mobile390-manager-gestao-final.png",
+    "baselineHeadings": [
+      "Gestao"
+    ],
+    "baselineButtons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Gestao",
+      "Perfil"
+    ],
+    "regressionFlags": []
+  },
+  {
+    "user": "purePlayer",
+    "viewport": "mobile390",
+    "login": {
+      "ok": false,
+      "url": "http://127.0.0.1:5181/#/auth?next=/inicio",
+      "text": "Entrar na ATP\n\nTorneios, ligas e ranking para tenistas amadores.\n\nContinuar com Google\nOU ENTRE COM E-MAIL\nE-MAIL\nSENHA\nEntrar\nCriar conta\n\nInvalid login credentials",
+      "screenshot": "mobile390-purePlayer-auth-failed.png"
+    },
+    "scenarios": [
+      "pure-player-inicio",
+      "pure-player-gestao"
+    ]
+  },
+  {
+    "scenario": {
+      "scenario": "finance-gestao",
+      "user": "finance",
+      "viewport": "desktop1366",
+      "hashPath": "#/gestao"
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 900,
+    "viewportHeight": 900,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\nCarregando central de gestao...\nATP\nModo jogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "bodyLength": 248,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-finance-finance-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/desktop1366-finance-finance-gestao-current.txt",
+    "baselinePng": null,
+    "baselineHeadings": [],
+    "baselineButtons": [],
+    "regressionFlags": []
+  },
+  {
+    "scenario": {
+      "scenario": "finance-gestao",
+      "user": "finance",
+      "viewport": "mobile390",
+      "hashPath": "#/gestao"
+    },
+    "url": "http://127.0.0.1:5181/#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "headings": [
+      "Gestao"
+    ],
+    "buttons": [
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "cardish": 0,
+    "rowish": 0,
+    "height": 844,
+    "viewportHeight": 844,
+    "screenfuls": 1,
+    "overflowX": false,
+    "text": "CENTRAL OPERACIONAL\nGestao\nCarregando central de gestao...\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "bodyLength": 98,
+    "mainClass": "app-content",
+    "consoleMessages": [],
+    "zeroLike": [],
+    "forbiddenHits": [],
+    "png": "web/docs/screenshots/qa-current-2026-05-15/mobile390-finance-finance-gestao-current.png",
+    "txt": "web/docs/screenshots/qa-current-2026-05-15/mobile390-finance-finance-gestao-current.txt",
+    "baselinePng": null,
+    "baselineHeadings": [],
+    "baselineButtons": [],
+    "regressionFlags": []
+  },
+  {
+    "user": "cashier",
+    "viewport": "desktop1366",
+    "login": {
+      "ok": false,
+      "url": "http://127.0.0.1:5181/#/auth?next=/inicio",
+      "text": "Entrar na ATP\n\nTorneios, ligas e ranking para tenistas amadores.\n\nContinuar com Google\nOU ENTRE COM E-MAIL\nE-MAIL\nSENHA\nEntrar\nCriar conta\n\nInvalid login credentials",
+      "screenshot": "desktop1366-cashier-auth-failed.png"
+    },
+    "scenarios": [
+      "cashier-gestao"
+    ]
+  },
+  {
+    "user": "cashier",
+    "viewport": "mobile390",
+    "login": {
+      "ok": false,
+      "url": "http://127.0.0.1:5181/#/auth?next=/inicio",
+      "text": "Entrar na ATP\n\nTorneios, ligas e ranking para tenistas amadores.\n\nContinuar com Google\nOU ENTRE COM E-MAIL\nE-MAIL\nSENHA\nEntrar\nCriar conta\n\nInvalid login credentials",
+      "screenshot": "mobile390-cashier-auth-failed.png"
+    },
+    "scenarios": [
+      "cashier-gestao"
+    ]
+  }
+]

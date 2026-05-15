@@ -180,6 +180,13 @@ Status atual:
 - turma escolhida aparece como resumo antes do formulario, sem duplicar lista/select;
 - `createAcademyEnrollment` continua sendo o caminho real de solicitacao.
 
+Refinamento 2026-05-15:
+
+- `PLAYER-UX-04A` corrigiu o filtro de `Entrar em aula` para nao cortar campos nem empurrar o CTA para fora do box;
+- quando a mesma turma existe em dois ou mais dias com o mesmo horario/professor/perfil, a experiencia deve agrupar a turma e deixar o aluno escolher um ou varios dias especificos;
+- a pagina publica aberta por `intent=academy` deve ser focada em aulas, sem misturar reserva de quadra, jogos abertos, planos ou quadras e valores no corpo principal;
+- o envio publico continua sendo interesse/matricula pendente. Contrato mensal, plano semanal, cobranca e aprovacao formal continuam no Management OS/Academia.
+
 ## Encontrar Jogo
 
 Fluxo alvo:
@@ -267,10 +274,11 @@ Nao abrir com dashboard geral grande.
 Status 2026-05-15:
 
 - implementado em `PLAYER-UX-06`;
+- refinado em `QA-CURRENT-P1-01` apos auditoria visual corrente;
 - primeira dobra de `/ranking` agora prioriza minha posicao, recorte atual e filtros;
-- lista do ranking vem antes de regras, mapa de classes, corrida e ferramentas;
+- lista do ranking e progressiva, com limite inicial e acao explicita para carregar mais;
 - KPIs globais e explicacoes ficam em area secundaria recolhida;
-- mobile usa rows compactas para ranking, reduzindo dependencia de tabela horizontal.
+- mobile usa chips/rows compactas para ranking, sem dependencia de tabela horizontal.
 
 ## Perfil
 

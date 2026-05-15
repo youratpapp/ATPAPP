@@ -1,0 +1,14 @@
+[
+  {
+    "status": 500,
+    "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+    "mime": "application/json",
+    "body": "{\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+  },
+  {
+    "status": 500,
+    "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+    "mime": "application/json",
+    "body": "{\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+  }
+]

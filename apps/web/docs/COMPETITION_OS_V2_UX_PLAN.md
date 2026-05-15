@@ -44,6 +44,7 @@ Status 2026-05-15:
 - `Organizando` concentra fila operacional e entrada para criar/gerir torneio/liga;
 - `Descobrir` fica leve, sem fila administrativa;
 - mobile usa segmentos horizontais para evitar empilhamento das tres superficies.
+- `QA-CURRENT-P1-02` refinou `/eventos/torneios?view=organizing`: a lista de torneios organizados inicia por proximas acoes em rows, oculta zeros, compacta indicadores e deixa filtros/historico em disclosure para nao abrir como formulario no mobile.
 
 Para jogador:
 

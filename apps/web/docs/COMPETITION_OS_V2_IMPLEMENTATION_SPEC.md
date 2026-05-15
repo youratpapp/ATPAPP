@@ -84,6 +84,7 @@ Status 2026-05-15:
 - fila operacional e criacao de torneio/liga ficam no modo `Organizando`;
 - previews avisam quando existem mais itens e levam para listas completas;
 - CSS mobile preserva segmentos acessiveis por rolagem horizontal.
+- `QA-CURRENT-P1-02`: a subrota/lista `/#/eventos/torneios?view=organizing` usa rows operacionais para torneios com proxima acao antes dos filtros, compacta contadores nao zerados e mantem filtros/lista completa como suporte em disclosure.
 - `QA-DESIGN-01` reforcou que jogador puro nao deve ver `Organizando` nem badges zerados; o modo organizador aparece quando ha contexto real ou acesso explicito.
 
 Mobile alvo:

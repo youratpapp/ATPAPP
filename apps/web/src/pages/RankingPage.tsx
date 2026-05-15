@@ -15,6 +15,9 @@ type Props = {
 
 type RankingScope = "general" | "city" | "league";
 
+const INITIAL_RANKING_LIMIT = 12;
+const RANKING_PAGE_INCREMENT = 24;
+
 function classLabel(row: PublicRankingRow): string {
   return [row.categoryName, row.className].filter(Boolean).join(" / ") || "Classe geral";
 }
@@ -63,6 +66,7 @@ export function RankingPage({ user, profile }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [feedback, setFeedback] = useState("");
+  const [visibleLimit, setVisibleLimit] = useState(INITIAL_RANKING_LIMIT);
 
   useEffect(() => {
     let alive = true;
@@ -124,6 +128,7 @@ export function RankingPage({ user, profile }: Props) {
     let alive = true;
     setLoading(true);
     setError("");
+    setRows([]);
     loadPublicRankings({
       state: scope === "city" ? profile?.state || "" : "",
       city: scope === "city" ? profile?.city || "" : "",
@@ -134,7 +139,10 @@ export function RankingPage({ user, profile }: Props) {
         if (alive) setRows(items);
       })
       .catch((err) => {
-        if (alive) setError(err instanceof Error ? err.message : "Falha ao carregar ranking.");
+        if (alive) {
+          console.warn("Ranking load failed", err);
+          setError("Nao conseguimos carregar o ranking agora. Tente novamente em instantes.");
+        }
       })
       .finally(() => {
         if (alive) setLoading(false);
@@ -143,6 +151,10 @@ export function RankingPage({ user, profile }: Props) {
       alive = false;
     };
   }, [leagueId, profile?.city, profile?.state, scope, seasonId]);
+
+  useEffect(() => {
+    setVisibleLimit(INITIAL_RANKING_LIMIT);
+  }, [classFilter, leagueId, scope, searchQuery, seasonId]);
 
   useEffect(() => {
     let alive = true;
@@ -179,7 +191,7 @@ export function RankingPage({ user, profile }: Props) {
     }
   }, [classFilter, classOptions]);
 
-  const visibleRows = filteredRows.slice(0, 80);
+  const visibleRows = filteredRows.slice(0, visibleLimit);
   const myRows = filteredRows.filter((row) => row.userId === user.id).slice(0, 3);
   const leader = filteredRows[0] || null;
   const myPrimaryRow = myRows[0] || null;
@@ -196,6 +208,19 @@ export function RankingPage({ user, profile }: Props) {
     : scope === "league"
     ? selectedLeague?.name || "Liga / clube"
     : "Ranking geral";
+  const isInitialLoading = loading && rows.length === 0;
+  const hasActiveFilters = Boolean(searchQuery.trim() || classFilter || scope !== "general");
+  const hasMoreRows = filteredRows.length > visibleRows.length;
+  const clearFilters = () => {
+    setScope("general");
+    setSearchQuery("");
+    setClassFilter("");
+    setLeagueId("");
+    setSeasonId("");
+  };
+  const recorteCountLabel = isInitialLoading
+    ? "Carregando recorte..."
+    : `${filteredRows.length} jogador${filteredRows.length === 1 ? "" : "es"} encontrado${filteredRows.length === 1 ? "" : "s"}`;
   const activeSeason = useMemo(
     () => availableSeasons.find((season) => season.id === seasonId) || availableSeasons[0] || null,
     [availableSeasons, seasonId]
@@ -321,7 +346,13 @@ export function RankingPage({ user, profile }: Props) {
       <section className="ranking-player-overview">
         <div className="ranking-player-position">
           <span>Minha posicao</span>
-          {myPrimaryRow ? (
+          {isInitialLoading ? (
+            <>
+              <strong>...</strong>
+              <h2>Buscando seu recorte</h2>
+              <p>Estamos carregando ligas, classes e jogadores para montar a leitura correta.</p>
+            </>
+          ) : myPrimaryRow ? (
             <>
               <strong>#{myPrimaryRow.position || myPrimaryIndex + 1}</strong>
               <h2>{classLabel(myPrimaryRow)}</h2>
@@ -341,9 +372,9 @@ export function RankingPage({ user, profile }: Props) {
         <div className="ranking-player-context">
           <span>Recorte atual</span>
           <strong>{scopeLabel}</strong>
-          <small>{filteredRows.length} jogador{filteredRows.length === 1 ? "" : "es"} encontrado{filteredRows.length === 1 ? "" : "s"}</small>
-          {playerAboveMe ? <small>Acima de voce: {playerAboveMe.displayName} ({playerAboveMe.rankingPoints} pts)</small> : null}
-          {leader && !myPrimaryRow ? <small>Lider: {leader.displayName} ({leader.rankingPoints} pts)</small> : null}
+          <small>{recorteCountLabel}</small>
+          {!isInitialLoading && playerAboveMe ? <small>Acima de voce: {playerAboveMe.displayName} ({playerAboveMe.rankingPoints} pts)</small> : null}
+          {!isInitialLoading && leader && !myPrimaryRow ? <small>Lider: {leader.displayName} ({leader.rankingPoints} pts)</small> : null}
         </div>
       </section>
 
@@ -394,9 +425,18 @@ export function RankingPage({ user, profile }: Props) {
           </select>
         </div>
         <p className="ranking-filter-summary">
-          {filteredRows.length} de {rows.length} jogador{rows.length === 1 ? "" : "es"} neste recorte
-          {classFilter ? ` · ${classFilter}` : ""}
+          {isInitialLoading
+            ? "Carregando jogadores..."
+            : `${filteredRows.length} de ${rows.length} jogador${rows.length === 1 ? "" : "es"} neste recorte`}
+          {classFilter ? ` | ${classFilter}` : ""}
         </p>
+        {hasActiveFilters ? (
+          <div className="ranking-filter-actions">
+            <button type="button" className="quiet" onClick={clearFilters}>
+              Limpar filtros
+            </button>
+          </div>
+        ) : null}
       </section>
 
       {scope === "city" && (!profile?.city || !profile?.state) ? (
@@ -409,7 +449,7 @@ export function RankingPage({ user, profile }: Props) {
       ) : null}
       {error ? <ScreenState kind="error" title="Nao foi possivel carregar o ranking" detail={error} /> : null}
       {feedback ? <p className="feedback success">{feedback}</p> : null}
-      {loading ? <ScreenState kind="loading" icon="Ranking" title="Carregando ranking" detail="Buscando jogadores, ligas e recortes disponiveis." /> : null}
+      {isInitialLoading ? <ScreenState kind="loading" icon="Ranking" title="Carregando ranking" detail="Buscando jogadores, ligas e recortes disponiveis." /> : null}
 
       {!loading && !visibleRows.length ? (
         <ScreenState
@@ -430,47 +470,69 @@ export function RankingPage({ user, profile }: Props) {
         />
       ) : null}
 
-      {visibleRows.length ? (
-        <section className="ranking-table">
-          <div className="ranking-row head">
-            <span>#</span>
-            <span>Jogador</span>
-            <span>Liga</span>
-            <span>V-D</span>
-            <span>Pts</span>
-            <span></span>
-          </div>
-          {visibleRows.map((row, index) => (
-            <div key={`${row.leaguePlayerId}:${index}`} className={row.userId === user.id ? "ranking-row mine" : "ranking-row"}>
-              <span>{row.position || index + 1}</span>
-              <span>
-                <strong>{row.displayName}</strong>
-                <small>{locationLabel(row)}</small>
-              </span>
-              <span>
-                <strong>{row.leagueName}</strong>
-                <small>
-                  {row.seasonName} - {classLabel(row)}
-                </small>
-              </span>
-              <span>
-                <strong>{row.wins}-{row.losses}</strong>
-                <small>{winRate(row)}%</small>
-              </span>
-              <span>{row.rankingPoints}</span>
-              <span>
-                {row.userId && row.userId !== user.id ? (
-                  <button
-                    className={followingIds.has(row.userId) ? "" : "primary"}
-                    onClick={() => void onToggleFollow(row.userId!)}
-                    disabled={busyFollowId === row.userId}
-                  >
-                    {followingIds.has(row.userId) ? "Seguindo" : "Seguir"}
-                  </button>
-                ) : null}
-              </span>
+      {!loading && visibleRows.length ? (
+        <section className="ranking-list-shell">
+          <div className="ranking-list-head">
+            <div>
+              <span>Ranking do recorte</span>
+              <h2>{myPrimaryRow ? "Top jogadores e sua posicao" : "Top jogadores"}</h2>
             </div>
-          ))}
+            <small>
+              Mostrando {visibleRows.length} de {filteredRows.length}
+            </small>
+          </div>
+          <div className="ranking-table">
+            <div className="ranking-row head">
+              <span>#</span>
+              <span>Jogador</span>
+              <span>Liga</span>
+              <span>V-D</span>
+              <span>Pts</span>
+              <span></span>
+            </div>
+            {visibleRows.map((row, index) => (
+              <div key={`${row.leaguePlayerId}:${index}`} className={row.userId === user.id ? "ranking-row mine" : "ranking-row"}>
+                <span>{row.position || index + 1}</span>
+                <span>
+                  <strong>{row.displayName}</strong>
+                  <small>{locationLabel(row)}</small>
+                </span>
+                <span>
+                  <strong>{row.leagueName}</strong>
+                  <small>
+                    {row.seasonName} - {classLabel(row)}
+                  </small>
+                </span>
+                <span>
+                  <strong>{row.wins}-{row.losses}</strong>
+                  <small>{winRate(row)}%</small>
+                </span>
+                <span>{row.rankingPoints}</span>
+                <span>
+                  {row.userId && row.userId !== user.id ? (
+                    <button
+                      className={followingIds.has(row.userId) ? "" : "primary"}
+                      onClick={() => void onToggleFollow(row.userId!)}
+                      disabled={busyFollowId === row.userId}
+                    >
+                      {followingIds.has(row.userId) ? "Seguindo" : "Seguir"}
+                    </button>
+                  ) : null}
+                </span>
+              </div>
+            ))}
+          </div>
+          {hasMoreRows ? (
+            <div className="ranking-load-more">
+              <button
+                type="button"
+                className="secondary"
+                onClick={() => setVisibleLimit((current) => Math.min(filteredRows.length, current + RANKING_PAGE_INCREMENT))}
+              >
+                Ver mais jogadores
+              </button>
+            </div>
+          ) : null}
         </section>
       ) : null}
 
