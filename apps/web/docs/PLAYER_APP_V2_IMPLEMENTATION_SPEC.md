@@ -54,6 +54,31 @@ Pode aparecer:
 - ranking publico;
 - pagamentos proprios.
 
+### Reserva Publica De Quadra
+
+O fluxo de reserva para jogador deve ser uma jornada curta, nao uma ficha de gestao do local.
+
+Ordem alvo do filtro em `/locais?intent=booking`:
+
+1. UF.
+2. Cidade.
+3. Local.
+4. Piso.
+5. Data.
+6. Hora.
+7. Duracao.
+
+Regras:
+
+- UF e cidade devem ser guiados por dados reais de locais com quadras ativas.
+- Local deve aceitar autocomplete por nome.
+- Se local nao for escolhido, a busca pode retornar qualquer local compativel com UF/cidade/data/hora.
+- Piso e dado de quadra, nao so texto visual; deve existir no cadastro da quadra e no filtro publico.
+- Resultados devem mostrar somente quadras livres acionaveis para o horario pesquisado.
+- A confirmacao deve usar o perfil logado como identidade da reserva.
+- Nome e telefone nao devem parecer novo cadastro duplicado; telefone so deve ser pedido se o perfil nao tiver contato.
+- Apos solicitar, feedback deve explicar que a reserva fica pendente para aprovacao na agenda do local.
+
 Nao pode aparecer:
 
 - recebiveis de outros usuarios;

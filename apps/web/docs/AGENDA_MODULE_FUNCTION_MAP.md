@@ -7,6 +7,7 @@ Objetivo: mapear funcoes, inputs, acoes, logica basica e pontos de evolucao das 
 Atualizacao 2026-05-15:
 - `QA-R2-GAP-03` completou o lado do jogador da lista de espera: `listMyCourtBookingWaitlist()` carrega `placeName`, a Home deixa de mostrar `Local` generico e abre a espera/reserva diretamente em `/locais/:placeId?intent=booking`.
 - A promocao/conversao de espera continua responsabilidade operacional do Management OS; aceitacao ativa pelo jogador deve ser tratada como regra futura se o produto decidir que convite de espera exige aceite formal.
+- `PLAYER-UX-03B` ajustou o lado publico da reserva: filtro por UF/cidade/local/piso/data/hora/duracao, cadastro de piso da quadra e confirmacao vinculada ao perfil. A solicitacao publica continua entrando como reserva pendente em `court_bookings` e deve ser aprovada em `Gestao > Agenda > Reservas pendentes`.
 
 ## 1. Screenshots capturados
 

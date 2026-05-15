@@ -62,6 +62,14 @@ Existe ainda uma camada publica:
 - inscricao publica de torneios;
 - descoberta de locais/competicoes.
 
+Atualizacao 2026-05-15:
+
+- o fluxo Player de reservar quadra em `/locais?intent=booking` agora usa filtro guiado por UF, cidade, local, piso, data, hora e duracao;
+- UF/cidade/local sao derivados de locais com quadras ativas, reduzindo escolhas que nao levam a reserva real;
+- o piso da quadra passou a ser dado operacional tambem no cadastro de quadra da gestao;
+- a reserva publica fica vinculada ao perfil logado; nome/contato deixam de parecer cadastro duplicado e telefone so aparece como complemento quando o perfil nao tem contato;
+- solicitacoes publicas de reserva continuam entrando como pendentes em `court_bookings` via `createCourtBooking`/RPC e devem ser aprovadas pela gestao em `Gestao > Agenda > Reservas pendentes`.
+
 A proxima evolucao consolidada e tornar essas experiencias visiveis por perfil, plano e intencao:
 
 - jogador comum entra apenas no Player App;

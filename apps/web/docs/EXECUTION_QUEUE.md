@@ -44,6 +44,44 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] PLAYER-UX-03B - Reserva publica guiada por disponibilidade e perfil
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- feedback visual do fluxo `/locais?intent=booking`
+- `AGENDA_MODULE_FUNCTION_MAP.md`
+
+Contexto:
+
+- O filtro de reservar quadra quebrava em desktop com campos encavalados.
+- A busca permitia digitar cidade/UF/local livremente, criando resultados pouco guiados.
+- O fluxo publico de reserva pedia nome e contato como se fosse um cadastro avulso, mesmo com usuario logado.
+- Gestor tinha dificuldade de entender onde a solicitacao pendente aparecia.
+
+Resultado:
+
+- filtro de reserva reorganizado em ordem operacional: UF, cidade, local, piso, data, hora e duracao;
+- UF/cidade/local passam a ser guiados por dados cadastrados de locais com quadras ativas;
+- local usa autocomplete por nome do local;
+- filtro de piso adicionado ao discovery e aplicado aos resultados;
+- cadastro de nova quadra na gestao passou a capturar piso;
+- confirmacao publica mostra que a reserva esta vinculada ao perfil logado e pede telefone apenas se o perfil nao tiver contato;
+- mensagem de sucesso orienta que o gestor encontra a solicitacao em `Gestao > Agenda > Reservas pendentes`;
+- layout do bloco publico de reserva recebeu ajustes de grid para evitar desalinhamento em desktop.
+
+Validacao:
+
+- `npm run lint`;
+- `npm run build`.
+
+Risco restante:
+
+- a lista de horas ainda usa opcoes padrao de operacao; a disponibilidade real e validada na busca/RPC no momento da pesquisa.
+- validacao visual por Playwright ficou limitada porque o ambiente local redirecionou para login sem sessao QA ativa.
+
 ### [x] QA-CURRENT-P0-01 - Alinhar Supabase alvo com migrations/seeds da reestruturacao
 
 Status: `[x]` concluido em 2026-05-15

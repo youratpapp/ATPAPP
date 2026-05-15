@@ -193,7 +193,7 @@ type Props = {
 type TabKey = "all" | "following" | "mine";
 type PlaceDiscoveryIntent = "overview" | "matches" | "places" | "classes" | "directory";
 type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
-type CourtDiscoveryFilter = { query: string; city: string; state: string; date: string; time: string; durationMinutes: string };
+type CourtDiscoveryFilter = { query: string; city: string; state: string; surface: string; date: string; time: string; durationMinutes: string };
 type DirectoryDiscoveryFilter = { query: string; city: string; state: string };
 type ClassDiscoveryFilter = {
   query: string;
@@ -297,6 +297,14 @@ const BOOKING_PROFILE_SCOPE_LABELS: Record<PlaceBookingRule["profileScope"], str
   public: "Avulso",
   member: "Socio",
 };
+
+const COURT_SURFACE_OPTIONS = [
+  { label: "Qualquer piso", value: "" },
+  { label: "Saibro", value: "saibro" },
+  { label: "Sintetica", value: "sintetica" },
+  { label: "Rapida", value: "rapida" },
+  { label: "Grama", value: "grama" },
+];
 
 const BOOKING_TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
   const minutes = 6 * 60 + index * 30;
@@ -494,6 +502,12 @@ function courtSurfaceLabel(value: string): string {
   if (normalized.includes("hard") || normalized.includes("rapida")) return "Rapida";
   if (normalized.includes("grama")) return "Grama";
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function courtSurfaceMatches(court: { surface: string }, surface: string): boolean {
+  const expected = normalizeText(surface);
+  if (!expected) return true;
+  return normalizeText(court.surface || "").includes(expected);
 }
 
 function combineDateAndTime(date: string, time: string): string {
@@ -789,6 +803,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     staffByPlace,
   } = usePlaceAdminResourceState();
   const [courtDraftByPlace, setCourtDraftByPlace] = useState<Record<string, string>>({});
+  const [courtSurfaceDraftByPlace, setCourtSurfaceDraftByPlace] = useState<Record<string, string>>({});
   const [membershipPlanDraftByPlace, setMembershipPlanDraftByPlace] = useState<Record<string, PlaceMembershipPlanDraft>>({});
   const [creditPackageDraftByPlace, setCreditPackageDraftByPlace] = useState<Record<string, PlaceCreditPackageDraft>>({});
   const [creditPurchaseDraftByPlace, setCreditPurchaseDraftByPlace] = useState<Record<string, PlaceCreditPurchaseDraft>>({});
@@ -854,6 +869,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     query: "",
     city: profile?.city || "",
     state: normalizeStateUf(profile?.state || ""),
+    surface: "",
     date: todayDateInputValue(),
     time: "18:00",
     durationMinutes: "60",
@@ -1146,11 +1162,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const onCreateCourt = async (place: Place) => {
     const courtName = (courtDraftByPlace[place.id] || "").trim();
     if (!courtName) return;
+    const surface = courtSurfaceDraftByPlace[place.id] || "";
     setBusy(true);
     setFeedback(null);
     try {
-      await createPlaceCourt({ placeId: place.id, name: courtName });
+      await createPlaceCourt({ placeId: place.id, name: courtName, surface });
       setCourtDraftByPlace((prev) => ({ ...prev, [place.id]: "" }));
+      setCourtSurfaceDraftByPlace((prev) => ({ ...prev, [place.id]: "" }));
       await refreshPlaceResources(place.id);
       setFeedback({ kind: "success", text: "Quadra criada." });
     } catch (err) {
@@ -2833,11 +2851,34 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     (sum, place) => sum + (academyClassesByPlace[place.id] || []).filter((academyClass) => academyClass.isActive).length,
     0
   );
-  const placeHasActiveCourt = (place: Place) => (courtsByPlace[place.id] || []).some((court) => court.isActive);
+  const placeHasDiscoveryCourt = (place: Place, surface = courtDiscoveryFilter.surface) =>
+    (courtsByPlace[place.id] || []).some((court) => court.isActive && courtSurfaceMatches(court, surface));
+  const courtDiscoveryPlaces = visiblePlaces.filter((place) => placeHasDiscoveryCourt(place));
+  const courtDiscoveryStateOptions = Array.from(
+    new Set(courtDiscoveryPlaces.map((place) => normalizeStateUf(place.state)).filter(Boolean))
+  ).sort();
+  const courtDiscoveryCityOptions = Array.from(
+    new Set(
+      courtDiscoveryPlaces
+        .filter((place) => !courtDiscoveryFilter.state || normalizeStateUf(place.state) === normalizeStateUf(courtDiscoveryFilter.state))
+        .map((place) => place.city)
+        .filter(Boolean)
+    )
+  ).sort((a, b) => a.localeCompare(b));
+  const courtDiscoveryPlaceOptions = courtDiscoveryPlaces
+    .filter((place) => placeMatchesDiscoveryLocation(place, courtDiscoveryFilter))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const courtDiscoverySurfaceOptions = COURT_SURFACE_OPTIONS.filter((option) => {
+    if (!option.value) return true;
+    return visiblePlaces
+      .filter((place) => placeMatchesDiscoveryLocation(place, courtDiscoveryFilter))
+      .some((place) => (courtsByPlace[place.id] || []).some((court) => court.isActive && courtSurfaceMatches(court, option.value)));
+  });
   const courtDiscoveryKey = [
     courtDiscoveryFilter.query.trim(),
     courtDiscoveryFilter.city.trim(),
     normalizeStateUf(courtDiscoveryFilter.state),
+    courtDiscoveryFilter.surface,
     courtDiscoveryFilter.date,
     courtDiscoveryFilter.time,
     courtDiscoveryFilter.durationMinutes,
@@ -2877,13 +2918,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setCourtDiscoveryBusy(true);
     setFeedback(null);
     try {
-      const rows = await searchAvailableCourtsForDiscovery({
-        city: courtDiscoveryFilter.city,
-        state: courtDiscoveryFilter.state,
-        query: courtDiscoveryFilter.query,
-        startsAt: new Date(startsAt).toISOString(),
-        endsAt: new Date(endsAt).toISOString(),
-      });
+      const rows = (
+        await searchAvailableCourtsForDiscovery({
+          city: courtDiscoveryFilter.city,
+          state: courtDiscoveryFilter.state,
+          query: courtDiscoveryFilter.query,
+          startsAt: new Date(startsAt).toISOString(),
+          endsAt: new Date(endsAt).toISOString(),
+        })
+      ).filter((court) => courtSurfaceMatches(court, courtDiscoveryFilter.surface));
       const courtsByPlace = rows.reduce<Record<string, DiscoveryAvailableCourt[]>>((acc, court) => {
         const list = acc[court.placeId] || [];
         list.push(court);
@@ -2908,7 +2951,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         setFeedback({ kind: "info", text: "Nenhuma quadra livre para este filtro. Ajuste cidade, data ou horario." });
       }
     } catch (err) {
-      const candidatePlaces = visiblePlaces.filter((place) => placeMatchesDiscoveryText(place, courtDiscoveryFilter) && placeHasActiveCourt(place));
+      const candidatePlaces = visiblePlaces.filter((place) => placeMatchesDiscoveryText(place, courtDiscoveryFilter) && placeHasDiscoveryCourt(place));
       const fallbackRows = (
         await Promise.all(
           candidatePlaces.map(async (place) => {
@@ -2917,15 +2960,16 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               startsAt: new Date(startsAt).toISOString(),
               endsAt: new Date(endsAt).toISOString(),
             }).catch(() => [] as AvailableCourt[]);
-            if (!rows.length) return null;
+            const matchingRows = rows.filter((court) => courtSurfaceMatches(court, courtDiscoveryFilter.surface));
+            if (!matchingRows.length) return null;
             return {
               summary: {
                 placeId: place.id,
-                availableCourts: rows.length,
-                minEffectiveFeeCents: Math.min(...rows.map((court) => court.effectiveFeeCents || court.bookingFeeCents || 0)),
-                requiresApproval: rows.some((court) => court.requiresApproval),
+                availableCourts: matchingRows.length,
+                minEffectiveFeeCents: Math.min(...matchingRows.map((court) => court.effectiveFeeCents || court.bookingFeeCents || 0)),
+                requiresApproval: matchingRows.some((court) => court.requiresApproval),
               } satisfies PlaceCourtAvailabilitySummary,
-              courts: rows.map((court) => ({
+              courts: matchingRows.map((court) => ({
                 ...court,
                 placeName: place.name,
                 placeCity: place.city,
@@ -3069,7 +3113,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         if (discoveryIntent === "places") {
           if (!placeMatchesDiscoveryText(place, courtDiscoveryFilter)) return false;
           if (courtDiscoveryHasAvailability) return Boolean(courtDiscoveryResultsByPlace[place.id]);
-          return placeHasActiveCourt(place);
+          return placeHasDiscoveryCourt(place);
         }
         return true;
       })
@@ -3275,28 +3319,56 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           </div>
           <div className="places-filter-grid court">
             <label>
-              Nome do local
-              <input
-                value={courtDiscoveryFilter.query}
-                onChange={(event) => updateCourtDiscoveryFilter({ query: event.target.value })}
-                placeholder="Ex.: clube, bairro ou estrutura"
-              />
+              UF
+              <select
+                value={courtDiscoveryFilter.state}
+                onChange={(event) => updateCourtDiscoveryFilter({ state: event.target.value, city: "", query: "" })}
+              >
+                <option value="">Todas</option>
+                {courtDiscoveryStateOptions.map((state) => (
+                  <option key={`court-discovery-state:${state}`} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
               Cidade
-              <input
+              <select
                 value={courtDiscoveryFilter.city}
-                onChange={(event) => updateCourtDiscoveryFilter({ city: event.target.value })}
-                placeholder="Ex.: Sao Paulo"
-              />
+                onChange={(event) => updateCourtDiscoveryFilter({ city: event.target.value, query: "" })}
+              >
+                <option value="">Todas</option>
+                {courtDiscoveryCityOptions.map((city) => (
+                  <option key={`court-discovery-city:${city}`} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
-              UF
+              Local
               <input
-                value={courtDiscoveryFilter.state}
-                onChange={(event) => updateCourtDiscoveryFilter({ state: event.target.value.toUpperCase().slice(0, 2) })}
-                placeholder="SP"
+                value={courtDiscoveryFilter.query}
+                onChange={(event) => updateCourtDiscoveryFilter({ query: event.target.value })}
+                placeholder="Digite para buscar"
+                list="court-discovery-place-options"
               />
+              <datalist id="court-discovery-place-options">
+                {courtDiscoveryPlaceOptions.map((place) => (
+                  <option key={`court-discovery-place:${place.id}`} value={place.name} />
+                ))}
+              </datalist>
+            </label>
+            <label>
+              Piso
+              <select value={courtDiscoveryFilter.surface} onChange={(event) => updateCourtDiscoveryFilter({ surface: event.target.value })}>
+                {courtDiscoverySurfaceOptions.map((option) => (
+                  <option key={`court-discovery-surface:${option.value || "all"}`} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
               Data
@@ -6345,10 +6417,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       canManageBookings={canManageBookings}
                       canManageFinance={canManageFinance}
                       courtDraft={courtDraftByPlace[p.id] || ""}
+                      courtSurfaceDraft={courtSurfaceDraftByPlace[p.id] || ""}
                       courtPriceDraftByCourt={courtPriceDraftByCourt}
                       membershipPlans={membershipPlans}
                       myMembership={myMembership}
                       onChangeCourtDraft={(value) => setCourtDraftByPlace((prev) => ({ ...prev, [p.id]: value }))}
+                      onChangeCourtSurfaceDraft={(value) => setCourtSurfaceDraftByPlace((prev) => ({ ...prev, [p.id]: value }))}
                       onChangeCourtPriceDraft={(courtId, draft) => setCourtPriceDraftByCourt((prev) => ({ ...prev, [courtId]: draft }))}
                       onChangeRuleDraft={(draft) => setBookingRuleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
                       onCreateCourt={() => void onCreateCourt(p)}
@@ -6405,10 +6479,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   canManageBookings={canManageBookings}
                   canManageFinance={canManageFinance}
                   courtDraft={courtDraftByPlace[p.id] || ""}
+                  courtSurfaceDraft={courtSurfaceDraftByPlace[p.id] || ""}
                   courtPriceDraftByCourt={courtPriceDraftByCourt}
                   membershipPlans={membershipPlans}
                   myMembership={myMembership}
                   onChangeCourtDraft={(value) => setCourtDraftByPlace((prev) => ({ ...prev, [p.id]: value }))}
+                  onChangeCourtSurfaceDraft={(value) => setCourtSurfaceDraftByPlace((prev) => ({ ...prev, [p.id]: value }))}
                   onChangeCourtPriceDraft={(courtId, draft) => setCourtPriceDraftByCourt((prev) => ({ ...prev, [courtId]: draft }))}
                   onChangeRuleDraft={(draft) => setBookingRuleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
                   onCreateCourt={() => void onCreateCourt(p)}

@@ -29,10 +29,12 @@ type Props = {
   canManageBookings: boolean;
   canManageFinance: boolean;
   courtDraft: string;
+  courtSurfaceDraft: string;
   courtPriceDraftByCourt: Record<string, CourtPriceDraft>;
   membershipPlans: PlaceMembershipPlan[];
   myMembership?: PlaceMembership;
   onChangeCourtDraft: (value: string) => void;
+  onChangeCourtSurfaceDraft: (value: string) => void;
   onChangeCourtPriceDraft: (courtId: string, draft: CourtPriceDraft) => void;
   onChangeRuleDraft: (draft: PlaceBookingRuleDraft) => void;
   onCreateCourt: () => void;
@@ -75,10 +77,12 @@ export function PlaceBookingResourcesModule({
   canManageBookings,
   canManageFinance,
   courtDraft,
+  courtSurfaceDraft,
   courtPriceDraftByCourt,
   membershipPlans,
   myMembership,
   onChangeCourtDraft,
+  onChangeCourtSurfaceDraft,
   onChangeCourtPriceDraft,
   onChangeRuleDraft,
   onCreateCourt,
@@ -113,6 +117,13 @@ export function PlaceBookingResourcesModule({
       {canManageBookings ? (
         <div className="place-court-create">
           <input value={courtDraft} onChange={(event) => onChangeCourtDraft(event.target.value)} placeholder="Nova quadra" />
+          <select value={courtSurfaceDraft} onChange={(event) => onChangeCourtSurfaceDraft(event.target.value)} aria-label="Piso da quadra">
+            <option value="">Piso</option>
+            <option value="Saibro">Saibro</option>
+            <option value="Sintetica">Sintetica</option>
+            <option value="Rapida">Rapida</option>
+            <option value="Grama">Grama</option>
+          </select>
           <button onClick={onCreateCourt} disabled={busy || !courtDraft.trim()}>
             Adicionar
           </button>
@@ -132,6 +143,7 @@ export function PlaceBookingResourcesModule({
                 <div>
                   <strong>{court.name}</strong>
                   <small>
+                    {court.surface ? `${court.surface} | ` : ""}
                     Publico {formatMoneyFromCents(court.bookingFeeCents)}
                     {court.memberBookingFeeCents !== null ? ` | mensalista ${formatMoneyFromCents(court.memberBookingFeeCents)}` : ""}
                     {memberPrice !== null ? ` | seu valor ${formatMoneyFromCents(memberPrice)}` : ""}

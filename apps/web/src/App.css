@@ -7911,7 +7911,7 @@ button:disabled {
 .place-public-booking-steps {
   display: grid;
   gap: var(--space-3);
-  grid-template-columns: minmax(190px, 0.8fr) minmax(260px, 1.2fr) minmax(240px, 1fr);
+  grid-template-columns: minmax(210px, 0.85fr) minmax(300px, 1.2fr) minmax(270px, 1fr);
 }
 
 .place-public-booking-step {
@@ -7919,6 +7919,7 @@ button:disabled {
   border-top: 1px solid var(--color-border);
   display: grid;
   gap: var(--space-2);
+  min-width: 0;
   padding-top: var(--space-3);
 }
 
@@ -8008,7 +8009,8 @@ button:disabled {
 
 .place-public-booking-empty,
 .place-public-selected-slot,
-.place-public-booking-feedback {
+.place-public-booking-feedback,
+.place-public-profile-link {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -8022,14 +8024,17 @@ button:disabled {
 }
 
 .place-public-booking-empty strong,
-.place-public-selected-slot strong {
+.place-public-selected-slot strong,
+.place-public-profile-link strong {
   color: var(--color-text);
   font-size: var(--font-size-sm);
 }
 
 .place-public-booking-empty span,
 .place-public-selected-slot span,
-.place-public-booking-feedback {
+.place-public-booking-feedback,
+.place-public-profile-link span,
+.place-public-profile-link small {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 800;
@@ -10174,6 +10179,10 @@ button:disabled {
   display: grid;
   gap: var(--space-2);
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.place-court-create {
+  grid-template-columns: minmax(160px, 1fr) minmax(120px, 0.45fr) auto;
 }
 
 .place-booking-form {
@@ -12658,7 +12667,7 @@ button:disabled {
 }
 
 .places-filter-grid.court {
-  grid-template-columns: minmax(180px, 1.3fr) minmax(140px, 0.9fr) 72px minmax(130px, 0.8fr) 104px 104px auto;
+  grid-template-columns: 76px minmax(132px, 0.9fr) minmax(180px, 1.25fr) minmax(118px, 0.8fr);
 }
 
 .places-filter-grid.classes {
@@ -12681,6 +12690,10 @@ button:disabled {
 .places-filter-grid button {
   min-height: 44px;
   white-space: nowrap;
+}
+
+.places-filter-grid.court button {
+  width: 100%;
 }
 
 .places-filter-grid.classes button {

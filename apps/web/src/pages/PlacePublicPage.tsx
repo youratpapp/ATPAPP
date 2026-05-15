@@ -480,6 +480,9 @@ export function PlacePublicPage({ user, profile }: Props) {
     : 0;
   const selectedDurationLabel = BOOKING_DURATION_OPTIONS.find((option) => option.value === bookingDuration)?.label || `${bookingDuration} min`;
   const selectedSlotKey = `${bookingTime}:${bookingDraft.courtId}`;
+  const bookingProfileName = profile?.displayName || bookingDraft.playerName || user.email || "Jogador";
+  const bookingProfilePhone = profile?.phone || bookingDraft.phone || "";
+  const bookingNeedsContactCompletion = !bookingProfilePhone.trim();
 
   const updateBookingRange = (date: string, time: string, duration = bookingDuration) => {
     const startsAt = combineDateAndTime(date, time);
@@ -641,11 +644,11 @@ export function PlacePublicPage({ user, profile }: Props) {
         courtId: bookingDraft.courtId,
         startsAt: new Date(bookingDraft.startsAt).toISOString(),
         endsAt: new Date(bookingDraft.endsAt).toISOString(),
-        playerName: bookingDraft.playerName || profile?.displayName || user.email || "Jogador",
-        phone: bookingDraft.phone || profile?.phone || "",
+        playerName: bookingProfileName,
+        phone: bookingProfilePhone,
         notes: bookingDraft.notes,
       });
-      setBookingFeedback("Reserva solicitada. O local pode confirmar o horario pela agenda.");
+      setBookingFeedback("Reserva solicitada e vinculada ao seu perfil. O gestor encontra em Gestao > Agenda > Reservas pendentes.");
       const startsAt = defaultBookingStart();
       setBookingDraft((prev) => ({ ...prev, startsAt, endsAt: defaultBookingEnd(startsAt), notes: "" }));
       setAvailableCourts([]);
@@ -669,8 +672,8 @@ export function PlacePublicPage({ user, profile }: Props) {
         courtId: bookingDraft.courtId,
         startsAt: new Date(bookingDraft.startsAt).toISOString(),
         endsAt: new Date(bookingDraft.endsAt).toISOString(),
-        playerName: bookingDraft.playerName || profile?.displayName || user.email || "Jogador",
-        phone: bookingDraft.phone || profile?.phone || "",
+        playerName: bookingProfileName,
+        phone: bookingProfilePhone,
         notes: bookingDraft.notes || "Entrada criada pela pagina publica do local.",
       });
       setBookingFeedback("Voce entrou na lista de espera. O local pode avisar se liberar horario.");
@@ -907,7 +910,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <div className="place-public-booking-empty">
                         <strong>Nenhum horario livre para essa busca.</strong>
                         <span>Tente outro dia, ajuste o horario manualmente ou entre na lista de espera.</span>
-                        <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || !bookingDraft.courtId || !bookingDraft.playerName.trim()}>
+                        <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || !bookingDraft.courtId || !bookingProfileName.trim()}>
                           {waitlistBusy ? "Entrando..." : "Entrar na lista de espera"}
                         </button>
                       </div>
@@ -971,23 +974,23 @@ export function PlacePublicPage({ user, profile }: Props) {
                       </span>
                     </div>
 
+                    <div className="place-public-profile-link">
+                      <span>Reserva vinculada ao perfil</span>
+                      <strong>{bookingProfileName}</strong>
+                      <small>{bookingProfilePhone || "Complete um telefone para o local retornar."}</small>
+                    </div>
+
                     <div className="place-public-booking-form compact">
-                      <label>
-                        Nome
-                        <input
-                          value={bookingDraft.playerName}
-                          onChange={(event) => setBookingDraft((prev) => ({ ...prev, playerName: event.target.value }))}
-                          placeholder="Seu nome"
-                        />
-                      </label>
-                      <label>
-                        WhatsApp
-                        <input
-                          value={bookingDraft.phone}
-                          onChange={(event) => setBookingDraft((prev) => ({ ...prev, phone: event.target.value }))}
-                          placeholder="Telefone para retorno"
-                        />
-                      </label>
+                      {bookingNeedsContactCompletion ? (
+                        <label>
+                          WhatsApp
+                          <input
+                            value={bookingDraft.phone}
+                            onChange={(event) => setBookingDraft((prev) => ({ ...prev, phone: event.target.value }))}
+                            placeholder="Telefone para retorno"
+                          />
+                        </label>
+                      ) : null}
                       <label className="wide">
                         Observacao
                         <input
@@ -1002,11 +1005,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <button
                         className="primary"
                         onClick={() => void requestBooking()}
-                        disabled={bookingBusy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt || !bookingDraft.playerName.trim()}
+                        disabled={bookingBusy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt || !bookingProfileName.trim()}
                       >
                         {bookingBusy ? "Solicitando..." : "Solicitar reserva"}
                       </button>
-                      <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || !bookingDraft.courtId || !bookingDraft.playerName.trim()}>
+                      <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || !bookingDraft.courtId || !bookingProfileName.trim()}>
                         {waitlistBusy ? "Entrando..." : "Lista de espera"}
                       </button>
                       <button className="quiet" onClick={() => navigate("/locais?intent=booking")}>Ver outros locais</button>
