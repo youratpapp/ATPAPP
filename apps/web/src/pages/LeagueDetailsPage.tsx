@@ -61,17 +61,18 @@ type Props = {
   profile: Profile | null;
 };
 
-type PageTab = "visao" | "classes" | "jogadores" | "classificacao" | "partidas" | "chat";
+type PageTab = "visao" | "jogadores" | "classificacao" | "partidas" | "chat";
 
-const PAGE_TABS: PageTab[] = ["visao", "classes", "jogadores", "classificacao", "partidas", "chat"];
+const PAGE_TABS: PageTab[] = ["visao", "jogadores", "classificacao", "partidas", "chat"];
 
 function parsePageTab(value: string | null): PageTab {
+  if (value === "classes") return "classificacao";
   return value && PAGE_TABS.includes(value as PageTab) ? (value as PageTab) : "visao";
 }
 
 function normalizePageTab(tab: PageTab, isOwner: boolean): PageTab {
   if (!isOwner) return tab;
-  return tab === "classes" || tab === "classificacao" ? "visao" : tab;
+  return tab === "classificacao" ? "visao" : tab;
 }
 
 function leagueRegistrationStatusLabel(status: LeagueRegistration["status"]): string {
@@ -750,6 +751,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           const cls = player.classId ? classById[player.classId] : null;
           return {
             id: player.id,
+            classId: player.classId,
             classLabel: cls ? classLabel(cls) : "Classe a definir",
             matchesPlayed: player.matchesPlayed,
             name: player.displayName,
@@ -758,6 +760,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         })
         .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")),
     [classById, standings]
+  );
+  const visiblePublicLeaguePlayers = useMemo(
+    () => publicLeaguePlayers.filter((player) => !selectedClassId || player.classId === selectedClassId),
+    [publicLeaguePlayers, selectedClassId]
   );
 
   const filteredRegistrations = useMemo(() => {
@@ -1997,6 +2003,44 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
     goToTab("partidas");
   };
+  const renderPublicClassFilter = (title: string, detail: string) => {
+    if (isOwner || classes.length < 2) return null;
+    return (
+      <section className="league-public-class-filter" aria-label="Filtro de classe da liga">
+        <div>
+          <span>Classe</span>
+          <strong>{title}</strong>
+          <small>{detail}</small>
+        </div>
+        <label>
+          <span>Filtrar classe</span>
+          <select value={selectedClassId} onChange={(event) => setSelectedClassId(event.target.value)}>
+            <option value="">Todas as classes</option>
+            {classes.map((item) => (
+              <option key={`league-class-select:${item.id}`} value={item.id}>
+                {classLabel(item)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="league-public-class-chip-rail" aria-label="Classes disponiveis">
+          <button type="button" className={!selectedClassId ? "active" : ""} onClick={() => setSelectedClassId("")}>
+            Todas
+          </button>
+          {classes.map((item) => (
+            <button
+              key={`league-class-chip:${item.id}`}
+              type="button"
+              className={selectedClassId === item.id ? "active" : ""}
+              onClick={() => setSelectedClassId(item.id)}
+            >
+              {item.className}
+            </button>
+          ))}
+        </div>
+      </section>
+    );
+  };
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
@@ -2040,9 +2084,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 <button type="button" className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
                   Liga
                 </button>
-                <button type="button" className={activeTab === "classes" ? "active" : ""} onClick={() => goToTab("classes")}>
-                  Classes
-                </button>
                 <button type="button" className={activeTab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
                   Jogadores
                 </button>
@@ -2074,10 +2115,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         <span>{selectedSeason?.name || "Temporada a definir"}</span>
                       </div>
                       <div className="competition-public-action-rail" aria-label="Resumo publico da liga">
-                        <button type="button" onClick={() => goToTab("classes")}>
+                        <button type="button" onClick={() => goToTab("classificacao")}>
                           <span>Classes</span>
                           <strong>{classes.length || "A definir"}</strong>
-                          <small>Grupos e niveis da temporada.</small>
+                          <small>Use como filtro em jogadores, classificacao e partidas.</small>
                         </button>
                         <button type="button" onClick={() => goToTab("jogadores")}>
                           <span>Jogadores</span>
@@ -2090,6 +2131,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                           <small>{leagueOverview.matches ? `${leagueOverview.rounds} rodadas` : "Rodada ainda nao publicada."}</small>
                         </button>
                       </div>
+                      {myLeagueRegistration ? (
+                        <div className={`league-public-member-status ${myLeagueRegistration.status}`}>
+                          <span>{leagueRegistrationStatusLabel(myLeagueRegistration.status)}</span>
+                          <strong>
+                            {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
+                              ? classLabel(classById[myLeagueRegistration.classId])
+                              : "Classe a confirmar"}
+                          </strong>
+                        </div>
+                      ) : null}
                       <div className="tournament-public-actions">
                         <button className="primary tournament-public-main-cta" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
                           <span>{publicLeagueCta.label}</span>
@@ -2113,48 +2164,18 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </>
               ) : null}
 
-              {activeTab === "classes" ? (
-                <section id="league-public-classes" className="tournament-public-categories">
-                  <div className="section-title">
-                    <h2>Classes</h2>
-                    <span>{classes.length} {classes.length === 1 ? "classe" : "classes"}</span>
-                  </div>
-                  {!classes.length ? (
-                    <p className="subtle">Nenhuma classe publicada ainda.</p>
-                  ) : (
-                    <div className="tournament-public-category-rail">
-                      {classes.map((item) => (
-                        <button
-                          key={`league-public-class:${item.id}`}
-                          type="button"
-                          className={selectedClassId === item.id ? "active" : ""}
-                          onClick={() => {
-                            setSelectedClassId(item.id);
-                            goToTab("classificacao");
-                          }}
-                        >
-                          <span>{item.categoryName}</span>
-                          <strong>{item.className}</strong>
-                          <small>{typeLabel(league.leagueType)}</small>
-                          <em>{standings.filter((player) => player.classId === item.id && player.status !== "inactive").length} jogadores</em>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </section>
-              ) : null}
-
               {activeTab === "jogadores" ? (
                 <section id="league-public-players" className="competition-public-list-section">
+                  {renderPublicClassFilter("Jogadores por classe", "Filtre sem sair desta aba.")}
                   <div className="section-title">
                     <h2>Jogadores</h2>
-                    <span>{publicLeaguePlayers.length} {publicLeaguePlayers.length === 1 ? "jogador" : "jogadores"}</span>
+                    <span>{visiblePublicLeaguePlayers.length} {visiblePublicLeaguePlayers.length === 1 ? "jogador" : "jogadores"}</span>
                   </div>
-                  {!publicLeaguePlayers.length ? (
+                  {!visiblePublicLeaguePlayers.length ? (
                     <p className="subtle">Nenhum jogador ativo publicado ainda.</p>
                   ) : (
                     <div className="competition-public-person-list">
-                      {publicLeaguePlayers.map((player) => (
+                      {visiblePublicLeaguePlayers.map((player) => (
                         <article key={`league-public-player:${player.id}`} className="competition-public-person-row">
                           <div>
                             <strong>{player.name}</strong>
@@ -2170,41 +2191,19 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </section>
           ) : null}
 
-          {!isOwner && activeTab === "visao" && league.visibility === "public" && league.publicJoinEnabled ? (
+          {!isOwner && activeTab === "visao" && league.visibility === "public" && league.publicJoinEnabled && !myLeagueRegistration ? (
             <section id="league-public-join" className="section-card competition-registration-panel">
               <div className="section-title" style={{ marginBottom: 10 }}>
                 <div>
-                  <h3 style={{ margin: 0 }}>
-                    {myLeagueRegistration ? leagueRegistrationStatusLabel(myLeagueRegistration.status) : "Inscricao publica"}
-                  </h3>
+                  <h3 style={{ margin: 0 }}>Inscricao publica</h3>
                   <p className="subtle" style={{ margin: "4px 0 0" }}>
-                    {myLeagueRegistration
-                      ? leagueRegistrationStatusDetail(myLeagueRegistration.status)
-                      : "Escolha a classe, revise valor e confirme seus dados."}
+                    Escolha a classe, revise valor e confirme seus dados.
                   </p>
                 </div>
                 <span className="home-league-chip member">
                   {league.joinRequiresApproval ? "Com aprovacao" : "Entrada direta"}
                 </span>
               </div>
-              {myLeagueRegistration ? (
-                <div className={`invite-confirmation ${myLeagueRegistration.status === "rejected" ? "rejected" : ""}`}>
-                  <strong>{leagueRegistrationStatusLabel(myLeagueRegistration.status)}</strong>
-                  <span>
-                    {myLeagueRegistration.playerName}
-                    {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
-                      ? ` - ${classLabel(classById[myLeagueRegistration.classId])}`
-                      : ""}. {leagueRegistrationStatusDetail(myLeagueRegistration.status)}
-                  </span>
-                  <div className="cluster">
-                    <button onClick={() => goToTab(myLeagueRegistration.status === "approved" ? "partidas" : "visao")}>
-                      {myLeagueRegistration.status === "approved" ? "Ver partidas" : "Acompanhar liga"}
-                    </button>
-                    <button onClick={() => navigate("/eventos?modo=playing")}>Meus eventos</button>
-                  </div>
-                </div>
-              ) : null}
-
               <div className="registration-flow">
                 <div className="registration-step-heading">
                   <span>1</span>
@@ -2226,7 +2225,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                           className={`registration-option ${active ? "active" : ""}`}
                           type="button"
                           onClick={() => setSelectedClassId(item.id)}
-                          disabled={Boolean(myLeagueRegistration)}
                         >
                           <strong>{item.className}</strong>
                           <span>{item.categoryName}</span>
@@ -2254,7 +2252,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       value={joinPlayerName}
                       onChange={(event) => setJoinPlayerName(event.target.value)}
                       placeholder="Seu nome"
-                      disabled={Boolean(myLeagueRegistration)}
                     />
                   </label>
                   <label>
@@ -2263,7 +2260,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       value={joinPhone}
                       onChange={(event) => setJoinPhone(event.target.value)}
                       placeholder="(67) 99999-9999"
-                      disabled={Boolean(myLeagueRegistration)}
                     />
                   </label>
                 </div>
@@ -2293,13 +2289,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   <button
                     className="primary"
                     onClick={onPublicJoin}
-                    disabled={busy || Boolean(myLeagueRegistration) || !joinPlayerName.trim() || (classes.length > 0 && !selectedJoinClass)}
+                    disabled={busy || !joinPlayerName.trim() || (classes.length > 0 && !selectedJoinClass)}
                   >
                     {busy
                       ? "Enviando..."
-                      : myLeagueRegistration
-                        ? leagueRegistrationStatusLabel(myLeagueRegistration.status)
-                        : league.joinRequiresApproval
+                      : league.joinRequiresApproval
                           ? "Solicitar inscricao"
                           : "Entrar na liga"}
                   </button>
@@ -2476,6 +2470,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           {(isOwner && activeTab === "visao") || (!isOwner && activeTab === "classificacao") ? (
             <>
           <section className="section-card">
+            {!isOwner ? renderPublicClassFilter("Classificacao por classe", "Troque o recorte sem sair da classificacao.") : null}
             <div className="section-title" style={{ marginBottom: 10 }}>
               <div>
                 <h3 style={{ margin: 0 }}>Classificacao da temporada</h3>
@@ -2947,6 +2942,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
           {activeTab === "partidas" ? (
             <section className="section-card">
+              {!isOwner ? renderPublicClassFilter("Partidas por classe", "Veja rodadas e jogos do recorte selecionado.") : null}
               <h3 style={{ marginTop: 0, marginBottom: 10 }}>Partidas por rodada</h3>
               {!isOwner && myLeagueMatches.length > 0 ? (
                 <div className="my-matches-panel">

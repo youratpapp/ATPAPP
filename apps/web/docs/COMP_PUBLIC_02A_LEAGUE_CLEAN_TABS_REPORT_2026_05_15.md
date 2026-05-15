@@ -8,11 +8,14 @@ A experiencia publica de liga misturava duas arquiteturas: um topo publico com b
 
 ## Correcao
 
-- `Liga` passou a renderizar apenas resumo publico, CTA e inscricao publica.
-- `Classes` passou a renderizar apenas classes.
-- `Jogadores` passou a renderizar apenas jogadores publicados.
-- `Classificacao` passou a renderizar a tabela da temporada.
+- `Liga` passou a renderizar apenas resumo publico, CTA e inscricao publica quando ainda aplicavel.
+- Inscricao aprovada/pendente/rejeitada passou a aparecer como status compacto no hero, nao como formulario inteiro.
+- `Classes` deixou de ser uma aba propria.
+- `Jogadores`, `Classificacao` e `Partidas` receberam filtro contextual de classe no topo.
+- `Jogadores` passou a renderizar apenas jogadores publicados do recorte selecionado.
+- `Classificacao` passou a renderizar a tabela da temporada ou da classe selecionada.
 - `Partidas` e `Chat` ficaram livres de blocos publicos fixos.
+- A navegacao publica mantem cinco menus clicaveis e arrastaveis no mobile.
 - A navegacao do owner foi preservada e continua separada da experiencia publica.
 
 ## Arquivos alterados

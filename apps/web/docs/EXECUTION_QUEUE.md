@@ -63,11 +63,14 @@ Contexto:
 
 Resultado:
 
-- a navegacao publica da liga agora tem abas reais: `Liga`, `Classes`, `Jogadores`, `Classificacao`, `Partidas` e `Chat`;
-- `Liga` mostra somente resumo publico, CTA e inscricao publica;
-- `Classes` mostra somente classes;
-- `Jogadores` mostra somente jogadores publicados;
-- `Classificacao` mostra somente tabela/ranking da temporada;
+- a navegacao publica da liga agora tem abas reais: `Liga`, `Jogadores`, `Classificacao`, `Partidas` e `Chat`;
+- no mobile, essa navegacao fica clicavel e arrastavel horizontalmente, sem quebrar linha;
+- `Liga` mostra somente resumo publico, CTA e inscricao publica quando o usuario ainda nao esta inscrito;
+- inscricao aprovada/pendente/rejeitada aparece como status compacto no resumo, nao como formulario gigante;
+- `Jogadores`, `Classificacao` e `Partidas` receberam filtro contextual de classe no topo;
+- `Classes` deixou de ser uma pagina propria para evitar que clicar em classe troque conteudo de outro menu;
+- `Jogadores` mostra somente jogadores publicados do recorte selecionado;
+- `Classificacao` mostra somente tabela/ranking da temporada ou classe selecionada;
 - `Partidas` e `Chat` nao recebem mais lista fixa de jogadores ou blocos publicos anteriores;
 - a navegacao operacional do owner continua separada em `Organizacao`, `Jogadores`, `Partidas` e `Chat`.
 
