@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
+import { useLocation } from "react-router-dom";
 import type { Profile } from "../lib/types";
 import { BottomNav } from "./BottomNav";
 import logoSymbol from "../assets/logo-atp-symbol.svg";
+import { getRouteSurfaceMode, type AppSurfaceMode } from "../lib/role-visibility";
 
 type Props = {
   user: User;
@@ -11,6 +13,7 @@ type Props = {
   showHeader?: boolean;
   onBellClick?: () => void;
   bellCount?: number;
+  mode?: AppSurfaceMode;
 };
 
 function initialsFromName(name: string, fallback: string): string {
@@ -30,13 +33,15 @@ function BellIcon() {
   );
 }
 
-export function AppShell({ user, profile, children, showHeader = true, onBellClick, bellCount = 0 }: Props) {
+export function AppShell({ user, profile, children, showHeader = true, onBellClick, bellCount = 0, mode }: Props) {
+  const { pathname } = useLocation();
+  const surfaceMode = mode ?? getRouteSurfaceMode(pathname);
   const displayName = profile?.displayName || user.email?.split("@")[0] || "Atleta";
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell app-shell--${surfaceMode}`} data-surface={surfaceMode}>
       {showHeader ? (
         <header className="app-header">
           <div className="app-header-inner">

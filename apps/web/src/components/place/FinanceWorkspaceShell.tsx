@@ -1,20 +1,22 @@
 import type { ReactNode } from "react";
 import { PlaceWorkspaceShell } from "./PlaceWorkspaceShell";
 
-export type FinanceManagementView = "overview" | "receivables" | "packages" | "expenses";
+export type FinanceManagementView = "receivables" | "paid" | "expenses" | "packages" | "overview";
 
 const FINANCE_VIEW_LABELS: Record<FinanceManagementView, string> = {
-  overview: "Resumo",
   receivables: "Recebiveis",
-  packages: "Planos",
+  paid: "Pagos",
   expenses: "Despesas",
+  packages: "Planos",
+  overview: "Resumo",
 };
 
 const FINANCE_VIEW_DESCRIPTIONS: Record<FinanceManagementView, string> = {
-  overview: "Saldo operacional, receitas e alertas do periodo.",
-  receivables: "Mensalidades, pagamentos pendentes e lembretes de cobranca.",
-  packages: "Planos, pacotes recorrentes e ofertas vendaveis.",
+  receivables: "Quem cobrar agora, vencidos, lembretes e baixas manuais.",
+  paid: "Pagamentos registrados no periodo e comprovacao operacional.",
   expenses: "Lancamentos, despesas recentes e cancelamentos.",
+  packages: "Planos, pacotes recorrentes e ofertas vendaveis.",
+  overview: "Resumo e relatorio secundario do periodo.",
 };
 
 type FinanceWorkspaceShellProps = {

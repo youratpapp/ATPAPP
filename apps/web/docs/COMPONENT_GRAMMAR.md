@@ -2,7 +2,7 @@
 
 Fonte principal: `PREMIUM_UX_VISUAL_LANGUAGE.md` e `VISUAL_REFERENCE_SYSTEM.md`.
 
-Data: 2026-05-13
+Data: 2026-05-15
 
 ## Objetivo
 
@@ -17,6 +17,165 @@ Definir como componentes devem parecer e se comportar no app. Este documento e p
 5. Mobile usa rows e sheets; desktop usa rows, paines e tabelas.
 6. Card e excecao em operacao diaria; row e padrao.
 7. `primary` e reservado para a proxima acao; `secondary` e alternativa com borda; `quiet` e suporte sem competir.
+
+## Modos De Interface
+
+A reestruturacao por papel define tres modos principais. Componentes devem respeitar o modo antes de decidir densidade, texto e hierarquia.
+
+### Player App
+
+Uso:
+
+- jogador comum;
+- aluno/socio vendo informacoes proprias;
+- experiencia publica de local/evento.
+
+Padrao:
+
+- pouca informacao por dobra;
+- uma pergunta principal;
+- tiles de intencao;
+- cards apenas para entidade reconhecivel, como evento, local, compromisso ou slot;
+- bottom sheets para filtros;
+- CTA sticky em reserva/inscricao/confirmacao.
+- badges/contadores so aparecem quando ajudam a decidir; `0` em descoberta deve virar silencio ou estado vazio.
+
+Anti-pattern:
+
+- KPIs globais;
+- cockpit;
+- fila profissional;
+- texto longo explicando o sistema;
+- cards administrativos.
+- card ou segmento profissional para jogador puro.
+
+### Competition OS
+
+Uso:
+
+- jogador acompanhando competicao;
+- organizador operando competicao;
+- setup de torneio/liga.
+
+Padrao:
+
+- evento publico leve;
+- setup em wizard;
+- operacao em rows;
+- tabs antes de resumo;
+- fila operacional apenas para organizador.
+
+### Management OS
+
+Uso:
+
+- academia/clube;
+- recepcao;
+- professor;
+- financeiro;
+- gestor.
+
+Padrao:
+
+- subnav/fila antes de metricas;
+- rows/tabelas para operacao;
+- drawer para detalhe;
+- configuracao em subvisao;
+- metricas como suporte.
+- indicadores agregados podem existir, mas devem aparecer como `Sinais de suporte` depois da fila quando ha pendencia acionavel.
+- subabas devem respeitar papel: professor sem gestao completa ve apenas rotina propria, nao todas as subvisoes do modulo.
+
+Anti-pattern:
+
+- hero grande em gestao;
+- KPIs antes de pendencia;
+- modulos sem plano/permissao;
+- professor vendo operacao empresarial inteira.
+- subnav com abas que o papel nao pode usar.
+
+## Densidade Por Modo
+
+Os modos compartilham cor, tipografia e linguagem ATP. O que muda e a quantidade de informacao simultanea, o tipo de container e a proximidade da acao principal.
+
+| Decisao | Player | Competition | Management |
+| --- | --- | --- | --- |
+| Primeira dobra | uma acao ou uma escolha | contexto do evento + CTA ou fila | fila/subnav antes de metrica |
+| Container padrao | tile/card leve | card publico ou row operacional | row/tabela/drawer |
+| Metricas | raras e pessoais | status do evento/rodada | suporte, nunca protagonista |
+| CTA | claro e grande | depende de papel | curto, contextual e repetivel |
+| Filtros | bottom sheet | tabs/sheet conforme papel | visiveis se rotina |
+| Detalhe | sheet | pagina/sheet/drawer | drawer |
+
+### Player
+
+Use quando o usuario quer jogar, reservar, se inscrever, acompanhar algo dele ou descobrir local/evento.
+
+Padrao:
+
+- blocos curtos;
+- poucos metadados;
+- uma decisao por tela;
+- CTA sticky em fluxos de reserva/inscricao;
+- imagens reais quando o objeto publico depende de reconhecimento.
+
+Nao usar:
+
+- KPI de gestao;
+- resumo financeiro amplo;
+- multiplos cards de suporte;
+- label tecnico de superficie.
+
+### Competition
+
+Use como ponte entre experiencia publica e operacao do organizador.
+
+Padrao:
+
+- evento publico: poster, data/local, status, categorias e CTA;
+- organizador: fila de inscricoes/jogos/resultados;
+- setup: wizard progressivo;
+- operacao: rows e drawers.
+
+Nao usar:
+
+- wizard para registrar resultado ou confirmar presenca;
+- resumo interno antes das tabs publicas;
+- card de organizador para jogador comum.
+
+### Management
+
+Use para rotina de secretaria, professor, recepcao, financeiro e gestor.
+
+Padrao:
+
+- rows densas;
+- dados secundarios recolhidos;
+- acao primaria por linha;
+- filtros frequentes visiveis;
+- drawer curto para edicao;
+- metricas apenas como contexto.
+- para professor, tabs curtas como `Aulas`, `Turmas` e `Alunos`, com pendencias/configuracao fora da superficie.
+
+Nao usar:
+
+- landing page interna;
+- cards grandes para cada item;
+- formularios inline repetidos;
+- mosaico de indicadores sem tarefa.
+
+## Matriz Card / Row / Sheet / Wizard
+
+| Situacao | Componente correto | Observacao |
+| --- | --- | --- |
+| Jogador escolhe intencao | tile/card compacto | maximo 3-5 opcoes principais |
+| Jogador confirma reserva/inscricao | page + CTA sticky | feedback inline, sem banner global persistente |
+| Evento publico de competicao | public event header + rail | poster/contexto/CTA antes de jogos, ranking ou operacao |
+| Lista operacional com muitos itens | `EntityActionRow` | acao primaria explicita |
+| Pendencia do dia | `OperationalQueue` | row com prioridade e destino real |
+| Edicao curta recorrente | drawer/sheet | manter contexto |
+| Setup raro e validado em etapas | wizard | torneio, liga, configuracao complexa |
+| Filtro mobile | bottom sheet | resumo do filtro no botao |
+| Filtro desktop recorrente | inline | nao esconder rotina em sheet |
 
 ## OperationalQueue
 
@@ -63,6 +222,70 @@ Incorreto:
 Card grande com titulo, KPI, texto longo, 3 botoes e grafico.
 ```
 
+## Public Event Header
+
+Uso:
+
+- torneio publico;
+- liga publica;
+- evento que jogador precisa entender antes de agir.
+
+Anatomia:
+
+```text
+[status/tipo]
+Nome do evento
+local/data/temporada
+fatos essenciais
+[CTA principal] [compartilhar]
+[poster/placeholder]
+[tabs/anchors publicos]
+[rail de categorias/classes]
+```
+
+Regras:
+
+- aparece antes de filtros, KPIs e conteudo pesado;
+- CTA muda por estado (`Inscrever-se`, `Solicitar inscricao`, `Ver meus jogos`, `Acompanhar`);
+- mobile usa CTA sticky;
+- categorias/classes podem usar rail horizontal, sem slice silencioso;
+- fila, aprovacao, publicacao e configuracao nao entram na leitura publica.
+
+## Competition Registration Flow
+
+Uso:
+
+- inscricao publica de torneio;
+- entrada publica em liga;
+- link de convite de liga.
+
+Anatomia:
+
+```text
+[status/escopo]
+1. escolher categoria/classe ou revisar classe do convite
+2. confirmar dados do jogador
+3. revisar valor/prazo/tipo de entrada
+[CTA principal] [acao secundaria]
+[status existente quando houver]
+```
+
+Regras:
+
+- uma decisao por bloco;
+- cards de categoria/classe podem ser usados porque o jogador esta escolhendo uma opcao publica, nao operando uma lista profissional;
+- se o usuario ja esta inscrito, bloquear reenvio e mostrar status real;
+- erro tecnico vira mensagem amigavel;
+- CTA sticky no mobile;
+- nao criar input para dado que o backend nao persiste.
+
+Nao usar:
+
+- select unico escondendo todas as classes quando ha contexto suficiente para cards;
+- formulario administrativo longo;
+- banner global persistente para resultado normal;
+- promessa de pagamento/restricao persistidos se a acao ainda for apenas acompanhamento manual.
+
 ## EntityActionRow
 
 Uso:
@@ -105,7 +328,7 @@ Anti-pattern:
 Uso atual no produto:
 
 - CRM do local: lead/cliente com interesse, origem, responsavel, follow-up e acao primaria contextual.
-- Financeiro do local: recebivel com cliente/turma, valor, status e lembrete como acao primaria.
+- Financeiro do local: recebivel com origem, pagador, periodo/vencimento, valor, status e `Marcar pago` como acao primaria; `Enviar lembrete` e lote sao secundarios.
 - Clientes/CRM do local: cobranca pendente usa row com cliente, origem, valor e `Enviar lembrete` como acao primaria, evitando tratar inadimplencia como painel separado.
 - Cantina: produto com categoria, preco, estoque e status de estoque.
 - Academia: turma com horario, professor/quadra/nivel, ocupacao, pendencias e metricas de suporte.
@@ -148,8 +371,8 @@ Visual:
 - fundo branco ou navy muito discreto;
 - item ativo com barra lateral ou capsule suave;
 - sem bordas pesadas em cada item.
-- desktop pode agrupar entradas globais em Jogar, Operar e Conta.
-- contexto atual pode aparecer como chip curto: Player App, Competition OS ou Management OS.
+- desktop pode agrupar entradas globais em Jogar, Trabalho e Conta.
+- contexto atual pode aparecer como chip curto em linguagem natural, como `Modo jogador`, `Competicoes` ou `Operacao`.
 
 Mobile:
 
@@ -208,6 +431,8 @@ Regra:
 - 2 a 4 metricas;
 - esconder ou colapsar zeros sem valor operacional;
 - nao usar como primeira coisa se ha pendencia.
+- em Player App, contador zero em tile de intencao ou CTA deve ser omitido;
+- em Management OS, zero pode aparecer apenas se confirma "operacao em dia" para aquele papel.
 
 Formato:
 
@@ -353,6 +578,13 @@ Regra de rotina aplicada em 2026-05-13:
 - se a base do local ainda esta incompleta, setup vem antes de rotina;
 - se a base esta pronta, a row do local pode mostrar ate 3 acoes rapidas executaveis;
 - cada acao deve abrir modulo + subvisao correta via rota semantica.
+
+Regra de papel aplicada em 2026-05-15:
+
+- setup estrutural so aparece para quem pode configurar o local (`owner`/`manager`);
+- professor nao recebe quick actions de setup como `Definir regras`, `Cadastrar cliente`, `Cadastrar professor` ou `Configurar plano`;
+- recepcao nao recebe configuracao profunda como `Definir regras` ou `Cadastrar professor`;
+- se uma acao de cadastro for permitida para recepcao, ela deve aparecer como rotina de atendimento, nao como `Base incompleta`.
 
 Anatomia:
 

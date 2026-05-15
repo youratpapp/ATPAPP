@@ -1,5 +1,5 @@
 ﻿import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { ManagementShell } from "../components/management/ManagementShell";
@@ -39,6 +39,7 @@ import { PlaceCrmModule } from "../components/place/PlaceCrmModule";
 import { PlaceFinanceExpensesModule, type PlaceExpenseDraft } from "../components/place/PlaceFinanceExpensesModule";
 import { PlaceFinanceOverviewModule } from "../components/place/PlaceFinanceOverviewModule";
 import { PlaceFinancePackagesModule, type PlaceCreditPackageDraft, type PlaceCreditPurchaseDraft } from "../components/place/PlaceFinancePackagesModule";
+import { PlaceFinancePaidModule } from "../components/place/PlaceFinancePaidModule";
 import { PlaceFinanceReceivablesModule } from "../components/place/PlaceFinanceReceivablesModule";
 import { PlaceAdminShell } from "../components/place/PlaceAdminShell";
 import { PlaceMembershipModule, type PlaceMembershipPlanDraft } from "../components/place/PlaceMembershipModule";
@@ -187,9 +188,10 @@ type Props = {
 };
 
 type TabKey = "all" | "following" | "mine";
-type PlaceDiscoveryIntent = "overview" | "matches" | "places" | "classes";
+type PlaceDiscoveryIntent = "overview" | "matches" | "places" | "classes" | "directory";
 type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
 type CourtDiscoveryFilter = { query: string; city: string; state: string; date: string; time: string; durationMinutes: string };
+type DirectoryDiscoveryFilter = { query: string; city: string; state: string };
 type ClassDiscoveryFilter = {
   query: string;
   city: string;
@@ -292,7 +294,25 @@ const STAFF_ROLE_LABELS: Record<"owner" | PlaceStaffMember["role"], string> = {
   manager: "Gerente",
   coach: "Professor",
   frontdesk: "Recepcao",
+  finance: "Financeiro",
 };
+
+function discoveryIntentFromParam(value: string | null): PlaceDiscoveryIntent {
+  const normalized = normalizeText(value || "");
+  if (["booking", "bookings", "reserva", "reservar", "quadra", "quadras", "courts"].includes(normalized)) return "places";
+  if (["aula", "aulas", "academy", "academia", "turma", "turmas", "classes"].includes(normalized)) return "classes";
+  if (["jogo", "jogos", "match", "matches", "players", "jogadores"].includes(normalized)) return "matches";
+  if (["local", "locais", "venue", "venues", "directory", "clubes"].includes(normalized)) return "directory";
+  return "overview";
+}
+
+function discoveryIntentToParam(intent: PlaceDiscoveryIntent): string {
+  if (intent === "places") return "booking";
+  if (intent === "classes") return "classes";
+  if (intent === "matches") return "matches";
+  if (intent === "directory") return "venues";
+  return "";
+}
 
 function friendlyError(err: unknown, fallback: string): string {
   const text = err instanceof Error ? err.message : "";
@@ -334,6 +354,32 @@ function todayDateInputValue(): string {
 
 function currentBillingPeriod(): string {
   return todayDateInputValue().slice(0, 7);
+}
+
+function financeReceivableDueDate(billingPeriod: string, origin?: PlaceClientReceivable["origin"], fallbackDate?: string): string {
+  if (billingPeriod && /^\d{4}-\d{2}$/.test(billingPeriod)) {
+    const dueDay = origin === "membership" ? "05" : origin === "academy" ? "06" : "01";
+    return `${billingPeriod}-${dueDay}`;
+  }
+  return fallbackDate ? fallbackDate.slice(0, 10) : "";
+}
+
+function financeReceivableDueStatus(dueDate: string): PlaceClientReceivable["dueStatus"] {
+  if (!dueDate) return "none";
+  const today = todayDateInputValue();
+  if (dueDate < today) return "overdue";
+  if (dueDate === today) return "today";
+  return "upcoming";
+}
+
+function financeReceivableDueLabel(dueDate: string): string {
+  if (!dueDate) return "";
+  const [, month, day] = dueDate.split("-");
+  const status = financeReceivableDueStatus(dueDate);
+  const date = `${day}/${month}`;
+  if (status === "overdue") return `Vencido em ${date}`;
+  if (status === "today") return "Vence hoje";
+  return `Vence em ${date}`;
 }
 
 function findAcademyStudentContract(enrollment: AcademyEnrollment, contracts: AcademyStudentContract[]): AcademyStudentContract | null {
@@ -622,9 +668,12 @@ export function PlaceAdminPage({ user, profile }: Props) {
 
 export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const isAdminRoute = Boolean(adminPlaceId);
   const [tab, setTab] = useState<TabKey>(isAdminRoute ? "mine" : "all");
-  const [discoveryIntent, setDiscoveryIntent] = useState<PlaceDiscoveryIntent>("overview");
+  const [discoveryIntent, setDiscoveryIntent] = useState<PlaceDiscoveryIntent>(() =>
+    isAdminRoute ? "overview" : discoveryIntentFromParam(searchParams.get("intent"))
+  );
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [managementModuleByPlace, setManagementModuleByPlace] = useState<Record<string, PlaceManagementModule>>({});
   const [academyViewByPlace, setAcademyViewByPlace] = useState<Record<string, AcademyManagementView>>({});
@@ -735,6 +784,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [academyEnrollmentNoteByClass, setAcademyEnrollmentNoteByClass] = useState<Record<string, string>>({});
   const [academyProgressDraftByEnrollment, setAcademyProgressDraftByEnrollment] = useState<Record<string, { level: string; focus: string; notes: string }>>({});
   const [openMatchDraft, setOpenMatchDraft] = useState({ placeId: "", startsAt: "", level: "", notes: "" });
+  const [showOpenMatchCreate, setShowOpenMatchCreate] = useState(false);
   const [courtDiscoveryFilter, setCourtDiscoveryFilter] = useState<CourtDiscoveryFilter>(() => ({
     query: "",
     city: profile?.city || "",
@@ -742,6 +792,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     date: todayDateInputValue(),
     time: "18:00",
     durationMinutes: "60",
+  }));
+  const [directoryFilter, setDirectoryFilter] = useState<DirectoryDiscoveryFilter>(() => ({
+    query: "",
+    city: profile?.city || "",
+    state: normalizeStateUf(profile?.state || ""),
   }));
   const [courtDiscoveryResultsByPlace, setCourtDiscoveryResultsByPlace] = useState<Record<string, PlaceCourtAvailabilitySummary>>({});
   const [courtDiscoveryCourtsByPlace, setCourtDiscoveryCourtsByPlace] = useState<Record<string, DiscoveryAvailableCourt[]>>({});
@@ -2486,6 +2541,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         notes: openMatchDraft.notes,
       });
       setOpenMatchDraft({ placeId: selectedPlace?.id || "", startsAt: "", level: "", notes: "" });
+      setShowOpenMatchCreate(false);
       await refreshOpenMatches();
       setFeedback({ kind: "success", text: "Partida aberta publicada." });
     } catch (err) {
@@ -2599,11 +2655,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
 
-  const openMatchCommunityStats = {
-    open: openMatches.filter((match) => match.status === "open").length,
-    participants: openMatches.filter((match) => match.status === "open").reduce((sum, match) => sum + match.participantCount, 0),
-    comments: openMatches.filter((match) => match.status === "open").reduce((sum, match) => sum + match.commentCount, 0),
-  };
   const placesById = new Map(places.map((place) => [place.id, place]));
   const visibleOpenMatches = openMatches.filter((match) => {
     const query = openMatchFilter.query.trim().toLowerCase();
@@ -2626,6 +2677,30 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       (!openMatchFilter.level.trim() || normalizeText(match.level).includes(normalizeText(openMatchFilter.level)))
     );
   });
+  const openMatchOpenCount = openMatches.filter((match) => match.status === "open").length;
+  const hasOpenMatchDraft = Boolean(
+    openMatchDraft.placeId || openMatchDraft.startsAt || openMatchDraft.level.trim() || openMatchDraft.notes.trim()
+  );
+  const openMatchActiveFilterCount = [
+    openMatchFilter.query.trim(),
+    openMatchFilter.city.trim(),
+    openMatchFilter.state.trim(),
+    openMatchFilter.date,
+    openMatchFilter.period,
+    openMatchFilter.level.trim(),
+    openMatchFilter.status !== "open" ? openMatchFilter.status : "",
+  ].filter(Boolean).length;
+  const resetOpenMatchFilters = () => {
+    setOpenMatchFilter({
+      query: "",
+      city: profile?.city || "",
+      state: normalizeStateUf(profile?.state || ""),
+      date: "",
+      period: "",
+      level: "",
+      status: "open",
+    });
+  };
   const sharePlace = (place: Place) => {
     const location = [place.city, place.state].filter(Boolean).join(" - ");
     const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(place.id)}`;
@@ -2873,9 +2948,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setClassDiscoveryBusy(false);
     }
   };
+  const directoryFilterActive = Boolean(directoryFilter.query.trim() || directoryFilter.city.trim() || directoryFilter.state.trim());
+  const isMyPlace = (place: Place) =>
+    place.ownerId === user.id || (staffByPlace[place.id] || []).some((member) => member.userId === user.id && member.status !== "pending");
   const directoryPlaces = !isAdminRoute
     ? visiblePlaces.filter((place) => {
+        if (tab === "following" && !place.isFollowing) return false;
+        if (tab === "mine" && !isMyPlace(place)) return false;
         if (tab === "mine") return true;
+        if (discoveryIntent === "directory") {
+          return placeMatchesDiscoveryText(place, directoryFilter);
+        }
         if (discoveryIntent === "classes") {
           if (!placeMatchesDiscoveryLocation(place, classDiscoveryFilter)) return false;
           if (classDiscoveryHasSpotSearch) return Boolean(classDiscoveryResultsByPlace[place.id]);
@@ -2943,10 +3026,19 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     if (classDiscoveryFilter.level) params.set("level", classDiscoveryFilter.level);
     navigate(`/locais/${encodeURIComponent(placeId)}?${params.toString()}`);
   };
-  const placeDirectoryTitle = discoveryIntent === "classes" ? "Aulas e turmas" : "Reservar quadra";
+  const selectDiscoveryIntent = (intent: PlaceDiscoveryIntent) => {
+    setDiscoveryIntent(intent);
+    setTab("all");
+    const param = discoveryIntentToParam(intent);
+    navigate(param ? `/locais?intent=${encodeURIComponent(param)}` : "/locais", { replace: true });
+  };
+  const placeDirectoryTitle =
+    discoveryIntent === "classes" ? "Entrar em aula" : discoveryIntent === "directory" ? "Locais" : "Reservar quadra";
   const placeDirectoryDescription =
     discoveryIntent === "classes"
-      ? "Aqui voce procura turmas, professores e aulas. Nao e busca de quadra avulsa."
+      ? "Encontre uma turma compativel por local, dia, horario e nivel."
+      : discoveryIntent === "directory"
+        ? "Locais proximos, seguindo ou gerenciados por voce. Use a ficha publica para ver detalhes."
       : courtDiscoveryHasAvailability
         ? "Escolha diretamente uma quadra livre no horario pesquisado. Planos, aulas e outros dados ficam fora deste fluxo."
         : "Use cidade, data e hora para ver apenas quadras livres no horario desejado.";
@@ -2969,43 +3061,42 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       {!isAdminRoute ? (
         <section className="places-intent-panel" aria-label="Escolha o que voce quer encontrar">
           <div className="places-intent-copy">
-            <span>Central de descoberta</span>
-            <h2>O que voce esta procurando?</h2>
-            <p>Sao buscas diferentes: encontrar pessoas para jogar, reservar uma quadra ou entrar em uma aula.</p>
+            <span>Descoberta</span>
+            <h2>O que voce quer encontrar?</h2>
+            <p>Escolha a intencao e veja somente o caminho necessario.</p>
           </div>
           <div className="places-intent-actions">
             <button
               className={discoveryIntent === "matches" ? "places-intent-card active" : "places-intent-card"}
-              onClick={() => {
-                setDiscoveryIntent("matches");
-                setTab("all");
-              }}
+              onClick={() => selectDiscoveryIntent("matches")}
             >
-              <strong>Encontrar jogadores</strong>
-              <span>Chamadas de pessoas procurando adversario ou parceiro. Nao mostra quadra livre.</span>
-              <small>{countLabel(openMatchCommunityStats.open, "chamada aberta", "chamadas abertas")}</small>
+              <strong>Encontrar jogo</strong>
+              <span>Chamadas abertas</span>
+              {openMatchOpenCount > 0 ? <small>{countLabel(openMatchOpenCount, "chamada aberta", "chamadas abertas")}</small> : null}
             </button>
             <button
               className={discoveryIntent === "places" ? "places-intent-card active" : "places-intent-card"}
-              onClick={() => {
-                setDiscoveryIntent("places");
-                setTab("all");
-              }}
+              onClick={() => selectDiscoveryIntent("places")}
             >
               <strong>Reservar quadra</strong>
-              <span>Informe cidade, data e hora para receber quadras livres e solicitar direto.</span>
-              <small>{countLabel(activeCourtsCount, "quadra ativa", "quadras ativas")}</small>
+              <span>Horarios livres</span>
+              {activeCourtsCount > 0 ? <small>{countLabel(activeCourtsCount, "quadra ativa", "quadras ativas")}</small> : null}
             </button>
             <button
               className={discoveryIntent === "classes" ? "places-intent-card active" : "places-intent-card"}
-              onClick={() => {
-                setDiscoveryIntent("classes");
-                setTab("all");
-              }}
+              onClick={() => selectDiscoveryIntent("classes")}
             >
               <strong>Entrar em aula</strong>
-              <span>Procure turmas e professores. Separado de reserva avulsa e chamada de jogo.</span>
-              <small>{countLabel(activeAcademyClassesCount, "turma ativa", "turmas ativas")}</small>
+              <span>Turmas com vaga</span>
+              {activeAcademyClassesCount > 0 ? <small>{countLabel(activeAcademyClassesCount, "turma ativa", "turmas ativas")}</small> : null}
+            </button>
+            <button
+              className={discoveryIntent === "directory" ? "places-intent-card active" : "places-intent-card"}
+              onClick={() => selectDiscoveryIntent("directory")}
+            >
+              <strong>Ver locais</strong>
+              <span>Proximos e seguindo</span>
+              {visiblePlaces.length > 0 ? <small>{countLabel(visiblePlaces.length, "local", "locais")}</small> : null}
             </button>
           </div>
         </section>
@@ -3016,9 +3107,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           <div>
             <span>Comece pela intencao</span>
             <strong>Escolha uma busca acima para ver somente o que importa.</strong>
-            <p>Reserva mostra quadras livres por horario. Aula mostra turmas com vaga. Jogadores mostra chamadas de pessoas procurando jogo.</p>
+            <p>Quadra, aula, jogo e lista de locais ficam separados para nao misturar informacoes.</p>
           </div>
-          <button className="quiet" onClick={() => setDiscoveryIntent("places")}>
+          <button className="quiet" onClick={() => selectDiscoveryIntent("places")}>
             Buscar quadra agora
           </button>
         </section>
@@ -3036,6 +3127,43 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             Meus locais
           </button>
         </div>
+      ) : null}
+
+      {!isAdminRoute && discoveryIntent === "directory" && tab !== "mine" ? (
+        <section className="places-directory-toolbar" aria-label="Buscar locais">
+          <label className="places-directory-search">
+            Buscar local
+            <input
+              value={directoryFilter.query}
+              onChange={(event) => setDirectoryFilter((prev) => ({ ...prev, query: event.target.value }))}
+              placeholder="Nome, bairro ou estrutura"
+            />
+          </label>
+          <label>
+            Cidade
+            <input
+              value={directoryFilter.city}
+              onChange={(event) => setDirectoryFilter((prev) => ({ ...prev, city: event.target.value }))}
+              placeholder="Cidade"
+            />
+          </label>
+          <label>
+            UF
+            <input
+              value={directoryFilter.state}
+              onChange={(event) => setDirectoryFilter((prev) => ({ ...prev, state: normalizeStateUf(event.target.value) }))}
+              placeholder="UF"
+              maxLength={2}
+            />
+          </label>
+          <button
+            className="quiet"
+            disabled={!directoryFilterActive}
+            onClick={() => setDirectoryFilter({ query: "", city: "", state: "" })}
+          >
+            Limpar
+          </button>
+        </section>
       ) : null}
 
       {!isAdminRoute && discoveryIntent === "places" && tab !== "mine" ? (
@@ -3114,8 +3242,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           <div className="places-filter-head">
             <div>
               <span>Entrar em aula</span>
-              <strong>Filtre por perfil de turma</strong>
-              <small>Procure por cidade, dia, periodo e nivel para ver locais com vaga compatível.</small>
+              <strong>Escolha o perfil da aula</strong>
+              <small>Procure por local, dia, periodo e nivel para ver turmas com vaga.</small>
             </div>
             <b>{classDiscoveryHasSpotSearch ? countLabel(classDiscoveryAvailableRows.length, "turma com vaga", "turmas com vaga") : "Busca por perfil"}</b>
           </div>
@@ -3225,16 +3353,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
       {!loading && showGenericPlaceDirectory && directoryPlaces.length === 0 ? (
         <div className="empty-state">
-          <span className="empty-emoji" aria-hidden>ðŸ“</span>
+          <span className="empty-emoji" aria-hidden>Local</span>
           <p>
             {isAdminRoute
               ? "Voce nao tem acesso administrativo a este local."
               : tab === "following"
-              ? "VocÃª ainda nÃ£o segue nenhum local."
+              ? "Voce ainda nao segue nenhum local."
               : tab === "mine"
               ? canCreatePlaceAccess
-                ? "VocÃª ainda nÃ£o criou nenhum local."
+                ? "Voce ainda nao criou nenhum local."
                 : "Seu perfil atual nao tem plano de gestao para cadastrar local."
+              : discoveryIntent === "directory"
+              ? directoryFilterActive
+                ? "Nenhum local encontrado para este filtro."
+                : "Nenhum local publico encontrado."
               : discoveryIntent === "classes"
               ? "Nenhuma academia com aulas ativas encontrada."
               : "Nenhum local com quadras ativas encontrado."}
@@ -3247,6 +3379,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             <button className="empty-action" onClick={() => setShowCreate(true)}>
               Adicionar local
             </button>
+          ) : discoveryIntent === "directory" && directoryFilterActive ? (
+            <button className="empty-action" onClick={() => setDirectoryFilter({ query: "", city: "", state: "" })}>
+              Limpar filtros
+            </button>
           ) : null}
         </div>
       ) : null}
@@ -3255,135 +3391,141 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         <section className="open-matches-panel">
           <div className="place-booking-head">
             <div>
-              <strong>Jogadores procurando jogo</strong>
-              <small>Esta area e para achar adversario ou parceiro. Quadra livre e aulas ficam nas outras opcoes.</small>
+              <strong>Encontrar jogo</strong>
+              <small>Entre em uma chamada aberta ou crie uma combinacao simples para jogar.</small>
             </div>
-            <span>{countLabel(openMatchCommunityStats.open, "chamada aberta", "chamadas abertas")}</span>
-          </div>
-          <div className="open-match-community-grid">
-            <div>
-              <strong>{openMatchCommunityStats.open}</strong>
-              <span>Jogos abertos</span>
-            </div>
-            <div>
-              <strong>{openMatchCommunityStats.participants}</strong>
-              <span>Interessados</span>
-            </div>
-            <div>
-              <strong>{openMatchCommunityStats.comments}</strong>
-              <span>Conversas</span>
-            </div>
+            <span>{countLabel(openMatchOpenCount, "jogo aberto", "jogos abertos")}</span>
           </div>
           <div className="places-discovery-filter compact" aria-label="Filtros para encontrar jogadores">
             <div className="places-filter-head">
               <div>
-                <span>Encontrar jogadores</span>
-                <strong>Filtre chamadas por contexto de jogo</strong>
-                <small>Use cidade, data, periodo e nivel. Esta busca nao mostra quadras livres.</small>
+                <span>Busca rapida</span>
+                <strong>Mostre jogos que combinam com voce</strong>
+                <small>Use poucos filtros e entre direto na chamada quando fizer sentido.</small>
               </div>
               <b>{countLabel(visibleOpenMatches.length, "chamada encontrada", "chamadas encontradas")}</b>
             </div>
-            <div className="places-filter-grid matches">
-              <label>
-                Local ou mensagem
-                <input
-                  value={openMatchFilter.query}
-                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, query: event.target.value }))}
-                  placeholder="Clube, bairro ou texto da chamada"
-                />
-              </label>
-              <label>
-                Cidade
-                <input
-                  value={openMatchFilter.city}
-                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, city: event.target.value }))}
-                  placeholder="Ex.: Sao Paulo"
-                />
-              </label>
-              <label>
-                UF
-                <input
-                  value={openMatchFilter.state}
-                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, state: event.target.value.toUpperCase().slice(0, 2) }))}
-                  placeholder="SP"
-                />
-              </label>
-              <label>
-                Data
-                <input
-                  type="date"
-                  value={openMatchFilter.date}
-                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, date: event.target.value }))}
-                />
-              </label>
-              <label>
-                Periodo
-                <select value={openMatchFilter.period} onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
-                  <option value="">Qualquer horario</option>
-                  <option value="morning">Manha</option>
-                  <option value="afternoon">Tarde</option>
-                  <option value="night">Noite</option>
-                </select>
-              </label>
-              <label>
-                Nivel
-                <input
-                  value={openMatchFilter.level}
-                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, level: event.target.value }))}
-                  placeholder="Ex.: intermediario"
-                />
-              </label>
-              <label>
-                Status
-                <select
-                  value={openMatchFilter.status}
-                  onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, status: event.target.value as "" | OpenMatch["status"] }))}
-                >
-                  <option value="">Todos</option>
-                  <option value="open">Abertas</option>
-                  <option value="closed">Fechadas</option>
-                  <option value="cancelled">Canceladas</option>
-                </select>
-              </label>
-            </div>
+            <details className="open-match-filter-panel" open={!visibleOpenMatches.length || openMatchActiveFilterCount === 0}>
+              <summary>
+                Ajustar filtros
+                {openMatchActiveFilterCount ? <span>{openMatchActiveFilterCount}</span> : null}
+              </summary>
+              <div className="places-filter-grid matches">
+                <label>
+                  Local ou mensagem
+                  <input
+                    value={openMatchFilter.query}
+                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, query: event.target.value }))}
+                    placeholder="Clube, bairro ou texto da chamada"
+                  />
+                </label>
+                <label>
+                  Cidade
+                  <input
+                    value={openMatchFilter.city}
+                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, city: event.target.value }))}
+                    placeholder="Ex.: Sao Paulo"
+                  />
+                </label>
+                <label>
+                  UF
+                  <input
+                    value={openMatchFilter.state}
+                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, state: event.target.value.toUpperCase().slice(0, 2) }))}
+                    placeholder="SP"
+                  />
+                </label>
+                <label>
+                  Data
+                  <input
+                    type="date"
+                    value={openMatchFilter.date}
+                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, date: event.target.value }))}
+                  />
+                </label>
+                <label>
+                  Periodo
+                  <select value={openMatchFilter.period} onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
+                    <option value="">Qualquer horario</option>
+                    <option value="morning">Manha</option>
+                    <option value="afternoon">Tarde</option>
+                    <option value="night">Noite</option>
+                  </select>
+                </label>
+                <label>
+                  Nivel
+                  <input
+                    value={openMatchFilter.level}
+                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, level: event.target.value }))}
+                    placeholder="Ex.: intermediario"
+                  />
+                </label>
+                <label>
+                  Status
+                  <select
+                    value={openMatchFilter.status}
+                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, status: event.target.value as "" | OpenMatch["status"] }))}
+                  >
+                    <option value="">Todos</option>
+                    <option value="open">Abertas</option>
+                    <option value="closed">Fechadas</option>
+                    <option value="cancelled">Canceladas</option>
+                  </select>
+                </label>
+              </div>
+              <button type="button" onClick={resetOpenMatchFilters}>
+                Limpar filtros
+              </button>
+            </details>
           </div>
           <div className="open-match-create-intro">
-            <strong>Criar chamada para jogar</strong>
-            <small>Use quando voce quer encontrar pessoas. Nao substitui a reserva da quadra.</small>
-          </div>
-          <div className="open-match-form">
-            <select
-              value={openMatchDraft.placeId}
-              onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, placeId: event.target.value }))}
-            >
-              <option value="">Sem local definido</option>
-              {places.map((place) => (
-                <option key={`open-match-place:${place.id}`} value={place.id}>
-                  {place.name}
-                </option>
-              ))}
-            </select>
-            <input
-              type="datetime-local"
-              value={openMatchDraft.startsAt}
-              onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, startsAt: event.target.value }))}
-            />
-            <input
-              value={openMatchDraft.level}
-              onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, level: event.target.value }))}
-              placeholder="Nivel"
-            />
-            <input
-              value={openMatchDraft.notes}
-              onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, notes: event.target.value }))}
-              placeholder="Mensagem"
-            />
-            <button className="primary" onClick={() => void onCreateOpenMatch()} disabled={busy}>
-              Criar chamada
+            <div>
+              <strong>Nao encontrou um jogo bom?</strong>
+              <small>Crie uma chamada. A reserva da quadra continua no fluxo de quadras.</small>
+            </div>
+            <button type="button" className="primary" onClick={() => setShowOpenMatchCreate((prev) => !prev)}>
+              {showOpenMatchCreate || hasOpenMatchDraft ? "Fechar criacao" : "Criar chamada"}
             </button>
           </div>
+          {showOpenMatchCreate || hasOpenMatchDraft ? (
+            <div className="open-match-form">
+              <select
+                value={openMatchDraft.placeId}
+                onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, placeId: event.target.value }))}
+                aria-label="Local da chamada"
+              >
+                <option value="">Sem local definido</option>
+                {places.map((place) => (
+                  <option key={`open-match-place:${place.id}`} value={place.id}>
+                    {place.name}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="datetime-local"
+                value={openMatchDraft.startsAt}
+                onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, startsAt: event.target.value }))}
+                aria-label="Data e horario da chamada"
+              />
+              <input
+                value={openMatchDraft.level}
+                onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, level: event.target.value }))}
+                placeholder="Nivel"
+                aria-label="Nivel do jogo"
+              />
+              <input
+                value={openMatchDraft.notes}
+                onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, notes: event.target.value }))}
+                placeholder="Mensagem curta"
+                aria-label="Mensagem da chamada"
+              />
+              <button className="primary" onClick={() => void onCreateOpenMatch()} disabled={busy}>
+                Publicar chamada
+              </button>
+            </div>
+          ) : null}
           <div className="open-match-list">
-            {visibleOpenMatches.slice(0, 6).map((match) => (
+            {visibleOpenMatches.map((match) => (
               <div key={match.id} className="open-match-row">
                 <div className="open-match-main">
                   <div>
@@ -3396,7 +3538,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       {match.level ? ` | ${match.level}` : ""}
                     </span>
                     <small>
-                      {countLabel(match.participantCount, "interessado", "interessados")} | {countLabel(match.reactionCount, "curtida", "curtidas")} | {countLabel(match.commentCount, "comentario", "comentarios")}
+                      {countLabel(match.participantCount, "jogador interessado", "jogadores interessados")}
                       {match.notes ? ` | ${match.notes}` : ""}
                     </small>
                   </div>
@@ -3407,13 +3549,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           Fechar chamada
                         </button>
                         <details className="place-card-more open-match-more">
-                          <summary>Mais</summary>
+                          <summary>Detalhes</summary>
                           <div>
                             <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
-                              Comentarios
+                              Ver mensagens
                             </button>
                             <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
-                              {match.reactedByMe ? "Curtido" : "Curtir"}
+                              {match.reactedByMe ? "Interesse salvo" : "Salvar interesse"}
                             </button>
                             <button className="danger" onClick={() => void onCloseOpenMatch(match.id, "cancelled")} disabled={busy}>
                               Cancelar
@@ -3425,13 +3567,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       <>
                         <button disabled>Estou dentro</button>
                         <details className="place-card-more open-match-more">
-                          <summary>Mais</summary>
+                          <summary>Detalhes</summary>
                           <div>
                             <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
-                              Comentarios
+                              Ver mensagens
                             </button>
                             <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
-                              {match.reactedByMe ? "Curtido" : "Curtir"}
+                              {match.reactedByMe ? "Interesse salvo" : "Salvar interesse"}
                             </button>
                           </div>
                         </details>
@@ -3442,13 +3584,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           Quero jogar
                         </button>
                         <details className="place-card-more open-match-more">
-                          <summary>Mais</summary>
+                          <summary>Detalhes</summary>
                           <div>
                             <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
-                              Comentarios
+                              Ver mensagens
                             </button>
                             <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
-                              {match.reactedByMe ? "Curtido" : "Curtir"}
+                              {match.reactedByMe ? "Interesse salvo" : "Salvar interesse"}
                             </button>
                           </div>
                         </details>
@@ -3540,7 +3682,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           <div className="court-discovery-results-head">
             <div>
               <span>Turmas com vaga</span>
-              <h2>Escolha uma turma para enviar interesse</h2>
+              <h2>Escolha a turma</h2>
               <p>
                 Resultado filtrado por perfil.
                 {classDiscoveryAvailableRows.length ? ` ${countLabel(classDiscoveryAvailableRows.length, "turma encontrada", "turmas encontradas")}.` : ""}
@@ -3568,7 +3710,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       .filter(Boolean)
                       .join(" | ")}
                   </em>
-                  <span className="court-discovery-cta">Ver turma e enviar interesse</span>
+                  <span className="court-discovery-cta">Ver turma</span>
                 </button>
               ))}
             </div>
@@ -3627,15 +3769,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showAcademyTools = canUseAcademy;
         const activeAcademyClasses = academyClasses.filter((item) => item.isActive);
         const currentCoach = academyCoaches.find((coach) => coach.userId === user.id) || null;
-        const coachWithoutAcademyProfile = staffRole === "coach" && !canManagePlace && !currentCoach;
-        const displayedCoaches = coachWithoutAcademyProfile ? [] : staffRole === "coach" && currentCoach ? [currentCoach] : academyCoaches;
+        const isCoachMode = staffRole === "coach" && !canManagePlace;
+        const coachWithoutAcademyProfile = isCoachMode && !currentCoach;
+        const displayedCoaches = coachWithoutAcademyProfile ? [] : isCoachMode && currentCoach ? [currentCoach] : academyCoaches;
         const visibleAcademyClasses =
           coachWithoutAcademyProfile
             ? []
-          : staffRole === "coach" && currentCoach
+          : isCoachMode && currentCoach
             ? activeAcademyClasses.filter((item) => item.coachId === currentCoach.id)
             : activeAcademyClasses;
+        const visibleAcademyClassIds = new Set(visibleAcademyClasses.map((item) => item.id));
         const academyEnrollments = academyEnrollmentsByPlace[p.id] || [];
+        const visibleAcademyEnrollments = isCoachMode
+          ? academyEnrollments.filter((item) => visibleAcademyClassIds.has(item.classId))
+          : academyEnrollments;
         const academyAttendance = academyAttendanceByPlace[p.id] || [];
         const academyAbsences = academyAbsencesByPlace[p.id] || [];
         const academyLessonRequests = academyLessonRequestsByPlace[p.id] || [];
@@ -3650,8 +3797,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           updatedAt: "",
         };
         const academyStudentContracts = academyStudentContractsByPlace[p.id] || [];
-        const pendingAcademyEnrollments = academyEnrollments.filter((item) => item.status === "pending");
-        const openAcademyMakeups = academyMakeups.filter((item) => item.status === "open");
+        const pendingAcademyEnrollments = visibleAcademyEnrollments.filter((item) => item.status === "pending");
+        const openAcademyMakeups = academyMakeups.filter((item) => item.status === "open" && (!isCoachMode || visibleAcademyClassIds.has(item.classId)));
         const storedAcademyStudentFilter = academyStudentFilterByPlace[p.id];
         const academyStudentFilter: AcademyStudentFilter = {
           query: storedAcademyStudentFilter?.query || "",
@@ -3698,6 +3845,22 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           setBookingDraftByPlace((prev) => ({ ...prev, [p.id]: draft }));
           setAvailableCourtsByPlace((prev) => ({ ...prev, [p.id]: [] }));
           setBookingAvailabilityFeedbackByPlace((prev) => ({ ...prev, [p.id]: null }));
+        };
+        const openNewBookingFromCalendarSlot = (slot: { courtId: string; startsAt: string; endsAt: string }) => {
+          updateBookingDraft({
+            ...bookingDraft,
+            courtId: slot.courtId,
+            startsAt: slot.startsAt,
+            endsAt: slot.endsAt,
+          });
+          setBookingAvailabilityFeedbackByPlace((prev) => ({
+            ...prev,
+            [p.id]: {
+              kind: "info",
+              text: "Horario vindo do calendario. Clique em Buscar para confirmar disponibilidade.",
+            },
+          }));
+          selectBookingView(p.id, "new");
         };
         const selectedCourt = activeCourts.find((court) => court.id === bookingDraft.courtId) || availableCourts.find((court) => court.id === bookingDraft.courtId);
         const selectedCourtPrice = availableCourts.find((court) => court.id === bookingDraft.courtId)?.effectiveFeeCents ?? (() => {
@@ -3753,11 +3916,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         };
         const fitSlots = academyFitSlotsByPlace[p.id] || [];
         const selectedMakeupCreditId = academySelectedMakeupCreditByPlace[p.id] || "";
-        const actionableLessonRequests = academyLessonRequests.filter(
-          (request) =>
-            request.status === "pending" ||
-            (request.status === "approved" && request.requestType === "drop_in" && request.paymentStatus !== "paid")
-        );
+        const actionableLessonRequests = academyLessonRequests.filter((request) => {
+          const belongsToCoachClass = !isCoachMode || visibleAcademyClassIds.has(request.classId);
+          return (
+            belongsToCoachClass &&
+            (request.status === "pending" ||
+              (request.status === "approved" && request.requestType === "drop_in" && request.paymentStatus !== "paid"))
+          );
+        });
         const placeOpenMatches = openMatches.filter((match) => match.placeId === p.id && match.status === "open");
         const resourceDayClasses = visibleAcademyClasses.filter((item) => item.weekday === academyDraft.weekday);
         const resourceDaySlots = academySlots.filter((item) => item.weekday === academyDraft.weekday && item.status === "open");
@@ -3830,14 +3996,37 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 100
             )
           : 0;
-        const financeReceivables: PlaceClientReceivable[] = [
+        const financeReceivableOriginLabel: Record<NonNullable<PlaceClientReceivable["origin"]>, string> = {
+          academy: "Mensalidade de academia",
+          booking: "Reserva de quadra",
+          lesson: "Aula avulsa/reposicao",
+          membership: "Plano de socio",
+          other: "Cobranca",
+        };
+        const enrichFinanceReceivable = (
+          receivable: PlaceClientReceivable,
+          origin: NonNullable<PlaceClientReceivable["origin"]>,
+          fallbackDate?: string
+        ): PlaceClientReceivable => {
+          const dueDate = financeReceivableDueDate(receivable.billingPeriod, origin, fallbackDate);
+          return {
+            ...receivable,
+            dueDate,
+            dueLabel: financeReceivableDueLabel(dueDate),
+            dueStatus: financeReceivableDueStatus(dueDate),
+            origin,
+            originLabel: financeReceivableOriginLabel[origin],
+          };
+        };
+        const currentFinanceReceivables: PlaceClientReceivable[] = [
           ...memberships
             .filter((membership) => membership.status === "active" || membership.status === "pending")
             .map((membership) => {
               const plan = membershipPlans.find((item) => item.id === membership.planId);
-              const payment = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())];
-              return {
-                id: `membership:${membership.id}`,
+              const billingPeriod = currentBillingPeriod();
+              const payment = paymentsByTarget[paymentMapKey("place_membership", membership.id, billingPeriod)];
+              return enrichFinanceReceivable({
+                id: `membership:${membership.id}:${billingPeriod}`,
                 title: membership.memberName,
                 subtitle: plan?.name || "Plano de socio",
                 amountCents: plan?.monthlyFeeCents || 0,
@@ -3845,8 +4034,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 reminder: `${membership.memberName}, sua mensalidade de socio esta pendente.`,
                 targetType: "place_membership",
                 targetId: membership.id,
-                billingPeriod: currentBillingPeriod(),
-              };
+                billingPeriod,
+              }, "membership", membership.startsOn);
             }),
           ...academyStudentContracts
             .filter((contract) => contract.status === "active" || contract.status === "pending")
@@ -3854,8 +4043,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               const contractEnrollments = academyEnrollments.filter((enrollment) => enrollment.contractId === contract.id);
               const primaryClass = academyClasses.find((item) => item.id === contractEnrollments[0]?.classId);
               const payment = paymentsByTarget[paymentMapKey("academy_student_contract", contract.id, academyBillingPeriod)];
-              return {
-                id: `academy-contract:${contract.id}`,
+              return enrichFinanceReceivable({
+                id: `academy-contract:${contract.id}:${academyBillingPeriod}`,
                 title: contract.studentName,
                 subtitle: [`Plano ${contract.weeklyLessonsCount}x/semana`, primaryClass?.title].filter(Boolean).join(" | "),
                 amountCents: contract.monthlyFeeCents,
@@ -3864,15 +4053,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 targetType: "academy_student_contract",
                 targetId: contract.id,
                 billingPeriod: academyBillingPeriod,
-              };
+              }, "academy", contract.startsOn);
             }),
           ...academyEnrollments
             .filter((enrollment) => (enrollment.status === "active" || enrollment.status === "pending") && !enrollment.contractId)
             .map((enrollment) => {
               const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
               const payment = paymentsByTarget[paymentMapKey("academy_enrollment", enrollment.id, academyBillingPeriod)];
-              return {
-                id: `academy:${enrollment.id}`,
+              return enrichFinanceReceivable({
+                id: `academy:${enrollment.id}:${academyBillingPeriod}`,
                 title: enrollment.playerName,
                 subtitle: academyClass?.title || "Turma",
                 amountCents: academyClass?.monthlyFeeCents || 0,
@@ -3881,12 +4070,133 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 targetType: "academy_enrollment",
                 targetId: enrollment.id,
                 billingPeriod: academyBillingPeriod,
-              };
+              }, "academy", enrollment.createdAt);
+            }),
+          ...academyLessonRequests
+            .filter((request) => request.status === "approved" && request.paymentStatus !== "waived")
+            .map((request) => {
+              const billingPeriod = request.requestedOn.slice(0, 7);
+              const payment = paymentsByTarget[paymentMapKey("academy_lesson_request", request.id, billingPeriod)];
+              const academyClass = academyClasses.find((item) => item.id === request.classId);
+              return enrichFinanceReceivable({
+                id: `lesson:${request.id}:${billingPeriod}`,
+                title: request.playerName,
+                subtitle: [request.requestType === "drop_in" ? "Aula avulsa" : "Reposicao", academyClass?.title].filter(Boolean).join(" | "),
+                amountCents: request.amountCents,
+                status: (payment?.status === "paid" || request.paymentStatus === "paid" ? "paid" : "open") as PlaceClientReceivable["status"],
+                reminder: `${request.playerName}, sua ${request.requestType === "drop_in" ? "aula avulsa" : "reposicao"} esta com pagamento pendente.`,
+                targetType: "academy_lesson_request",
+                targetId: request.id,
+                billingPeriod,
+              }, "lesson", request.requestedOn);
             }),
         ];
+        const paymentDerivedReceivables = Object.values(paymentsByTarget)
+          .map((payment): PlaceClientReceivable | null => {
+            const paymentPlaceId = typeof payment.metadata?.place_id === "string" ? payment.metadata.place_id : "";
+            if (paymentPlaceId && paymentPlaceId !== p.id) return null;
+            if (payment.targetType === "place_membership") {
+              const membership = memberships.find((item) => item.id === payment.targetId);
+              if (!membership) return null;
+              const plan = membershipPlans.find((item) => item.id === membership.planId);
+              return enrichFinanceReceivable({
+                id: `membership:${membership.id}:${payment.billingPeriod || ""}`,
+                title: membership.memberName,
+                subtitle: plan?.name || payment.description || "Plano de socio",
+                amountCents: payment.amountCents || plan?.monthlyFeeCents || 0,
+                status: payment.status === "paid" ? "paid" : "open",
+                reminder: `${membership.memberName}, sua mensalidade de socio esta pendente.`,
+                targetType: payment.targetType,
+                targetId: payment.targetId,
+                billingPeriod: payment.billingPeriod,
+              }, "membership", payment.createdAt);
+            }
+            if (payment.targetType === "academy_student_contract") {
+              const contract = academyStudentContracts.find((item) => item.id === payment.targetId);
+              if (!contract) return null;
+              const enrollment = academyEnrollments.find((item) => item.contractId === contract.id);
+              const academyClass = academyClasses.find((item) => item.id === enrollment?.classId);
+              return enrichFinanceReceivable({
+                id: `academy-contract:${contract.id}:${payment.billingPeriod || ""}`,
+                title: contract.studentName,
+                subtitle: [`Plano ${contract.weeklyLessonsCount}x/semana`, academyClass?.title || payment.description].filter(Boolean).join(" | "),
+                amountCents: payment.amountCents || contract.monthlyFeeCents,
+                status: payment.status === "paid" ? "paid" : "open",
+                reminder: `${contract.studentName}, sua mensalidade da academia esta pendente.`,
+                targetType: payment.targetType,
+                targetId: payment.targetId,
+                billingPeriod: payment.billingPeriod,
+              }, "academy", payment.createdAt);
+            }
+            if (payment.targetType === "academy_enrollment") {
+              const enrollment = academyEnrollments.find((item) => item.id === payment.targetId);
+              if (!enrollment) return null;
+              const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
+              return enrichFinanceReceivable({
+                id: `academy:${enrollment.id}:${payment.billingPeriod || ""}`,
+                title: enrollment.playerName,
+                subtitle: academyClass?.title || payment.description || "Turma",
+                amountCents: payment.amountCents || academyClass?.monthlyFeeCents || 0,
+                status: payment.status === "paid" ? "paid" : "open",
+                reminder: `${enrollment.playerName}, sua mensalidade da turma ${academyClass?.title || "da academia"} esta pendente.`,
+                targetType: payment.targetType,
+                targetId: payment.targetId,
+                billingPeriod: payment.billingPeriod,
+              }, "academy", payment.createdAt);
+            }
+            if (payment.targetType === "academy_lesson_request") {
+              const request = academyLessonRequests.find((item) => item.id === payment.targetId);
+              if (!request) return null;
+              const academyClass = academyClasses.find((item) => item.id === request.classId);
+              return enrichFinanceReceivable({
+                id: `lesson:${request.id}:${payment.billingPeriod || request.requestedOn.slice(0, 7)}`,
+                title: request.playerName,
+                subtitle: [request.requestType === "drop_in" ? "Aula avulsa" : "Reposicao", academyClass?.title || payment.description].filter(Boolean).join(" | "),
+                amountCents: payment.amountCents || request.amountCents,
+                status: payment.status === "paid" ? "paid" : "open",
+                reminder: `${request.playerName}, sua ${request.requestType === "drop_in" ? "aula avulsa" : "reposicao"} esta com pagamento pendente.`,
+                targetType: payment.targetType,
+                targetId: payment.targetId,
+                billingPeriod: payment.billingPeriod || request.requestedOn.slice(0, 7),
+              }, "lesson", request.requestedOn);
+            }
+            if (payment.targetType === "court_booking") {
+              const booking = bookings.find((item) => item.id === payment.targetId);
+              if (!booking || booking.status === "cancelled" || booking.status === "blocked") return null;
+              const court = courts.find((item) => item.id === booking.courtId);
+              return enrichFinanceReceivable({
+                id: `booking:${booking.id}`,
+                title: booking.playerName,
+                subtitle: [booking.courtName || court?.name || "Quadra", dateInputValue(booking.startsAt), booking.startsAt.slice(11, 16)].filter(Boolean).join(" | "),
+                amountCents: payment.amountCents || court?.bookingFeeCents || 0,
+                status: payment.status === "paid" ? "paid" : "open",
+                reminder: `${booking.playerName}, sua reserva de quadra esta com pagamento pendente.`,
+                targetType: payment.targetType,
+                targetId: payment.targetId,
+                billingPeriod: payment.billingPeriod,
+              }, "booking", booking.startsAt);
+            }
+            return null;
+          })
+          .filter((receivable): receivable is PlaceClientReceivable => Boolean(receivable));
+        const financeReceivableMap = new Map<string, PlaceClientReceivable>();
+        [...currentFinanceReceivables, ...paymentDerivedReceivables].forEach((receivable) => {
+          const key = `${receivable.targetType}:${receivable.targetId}:${receivable.billingPeriod}`;
+          if (!financeReceivableMap.has(key)) financeReceivableMap.set(key, receivable);
+        });
+        const financeReceivables: PlaceClientReceivable[] = Array.from(financeReceivableMap.values()).sort((a, b) => {
+          const paidDelta = Number(a.status === "paid") - Number(b.status === "paid");
+          if (paidDelta) return paidDelta;
+          const priority = { overdue: 0, today: 1, upcoming: 2, none: 3 } as Record<NonNullable<PlaceClientReceivable["dueStatus"]>, number>;
+          const priorityDelta = priority[a.dueStatus || "none"] - priority[b.dueStatus || "none"];
+          if (priorityDelta) return priorityDelta;
+          return (a.dueDate || "").localeCompare(b.dueDate || "") || a.title.localeCompare(b.title);
+        });
         const openReceivables = financeReceivables.filter((item) => item.status !== "paid");
         const openMembershipReceivables = openReceivables.filter((item) => item.targetType === "place_membership");
-        const openAcademyReceivables = openReceivables.filter((item) => item.targetType === "academy_enrollment" || item.targetType === "academy_student_contract");
+        const openAcademyReceivables = openReceivables.filter(
+          (item) => item.targetType === "academy_enrollment" || item.targetType === "academy_student_contract" || item.targetType === "academy_lesson_request"
+        );
         const openReceivablesAmountCents = openReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
         const activeAcademyRevenueCents =
           academyStudentContracts
@@ -4247,25 +4557,41 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showBookingCalendar = !showBookingWorkspace || bookingView === "calendar";
         const showBookingReservations = !showBookingWorkspace || bookingView === "reservations";
         const showBookingWaitlist = !showBookingWorkspace || bookingView === "waitlist";
-        const financeView = (financeViewByPlace[p.id] || "overview") as FinanceManagementView;
+        const financeView = (financeViewByPlace[p.id] || "receivables") as FinanceManagementView;
         const showFinanceWorkspace = isManagementCockpit && canManageFinance;
-        const showFinanceOverview = !showFinanceWorkspace || financeView === "overview";
-        const showFinanceReceivables = !showFinanceWorkspace || financeView === "receivables";
-        const showFinancePackages = !showFinanceWorkspace || financeView === "packages";
-        const showFinanceExpenses = !showFinanceWorkspace || financeView === "expenses";
+        const showFinanceOverview = !showFinanceWorkspace;
+        const showFinanceReceivables = !showFinanceWorkspace;
+        const showFinancePackages = !showFinanceWorkspace;
+        const showFinanceExpenses = !showFinanceWorkspace;
         const canteenView = (canteenViewByPlace[p.id] || "today") as CanteenManagementView;
         const showCanteenWorkspace = isManagementCockpit && canManageFinance;
         const showCanteenSummary = !showCanteenWorkspace || canteenView === "today";
         const showCanteenSale = !showCanteenWorkspace || canteenView === "sell";
         const showCanteenStock = !showCanteenWorkspace || canteenView === "stock";
         const showCanteenProducts = !showCanteenWorkspace || canteenView === "products";
-        const academyView = (academyViewByPlace[p.id] || "today") as AcademyManagementView;
+        const coachAcademyViews: AcademyManagementView[] = ["today", "classes", "students"];
+        const academyViews: AcademyManagementView[] = isCoachMode
+          ? coachAcademyViews
+          : ["today", "classes", "students", "requests", "coaches", "resources"];
+        const requestedAcademyView = (academyViewByPlace[p.id] || "today") as AcademyManagementView;
+        const academyView = academyViews.includes(requestedAcademyView) ? requestedAcademyView : academyViews[0];
+        const coachAgendaPreview = isCoachMode
+          ? visibleAcademyClasses
+              .slice()
+              .sort((a, b) => {
+                const todayWeekday = new Date().getDay();
+                const aDistance = (a.weekday - todayWeekday + 7) % 7;
+                const bDistance = (b.weekday - todayWeekday + 7) % 7;
+                return aDistance - bDistance || a.startsAt.localeCompare(b.startsAt);
+              })
+              .slice(0, 4)
+          : [];
         const showAcademyWorkspace = isManagementCockpit && showAcademyTools;
         const showAcademyResources = !showAcademyWorkspace;
         const showAcademyRequests = !showAcademyWorkspace;
         const showAcademyClasses = !showAcademyWorkspace;
         const normalizedAcademyStudentQuery = academyStudentFilter.query.trim().toLowerCase();
-        const visibleAcademyStudentEnrollments = academyEnrollments.filter((enrollment) => {
+        const visibleAcademyStudentEnrollments = visibleAcademyEnrollments.filter((enrollment) => {
           const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
           const contract = getAcademyStudentContract(enrollment);
           const paid = isAcademyStudentPaid(enrollment);
@@ -4296,16 +4622,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const nextDiscoveryClass = matchingDiscoveryClasses
           .slice()
           .sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt))[0];
-        const placePublicPrimaryLabel = discoveryIntent === "classes" ? "Ver aulas" : "Ver horarios";
+        const placePublicPrimaryLabel =
+          discoveryIntent === "classes" ? "Ver aulas" : discoveryIntent === "directory" ? "Ver local" : "Ver horarios";
         const placePublicPrimaryHint =
           discoveryIntent === "classes"
             ? "Turmas, professores e interesse em aula."
+            : discoveryIntent === "directory"
+            ? "Pagina publica, estrutura, horarios e contatos."
             : "Quadras, regras e pedido de reserva.";
         const discoveryFeatureLabels = isPublicDiscoveryCard
           ? discoveryIntent === "classes"
             ? ["Aulas"]
             : discoveryIntent === "matches"
             ? ["Jogadores"]
+            : discoveryIntent === "directory"
+            ? enabledFeatures.length
+              ? enabledFeatures.slice(0, 3)
+              : ["Local"]
             : ["Reservas"]
           : enabledFeatures;
         const discoveryHighlights = isPublicDiscoveryCard
@@ -4317,6 +4650,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             : discoveryIntent === "matches"
             ? [
                 { label: "chamadas abertas", value: placeOpenMatches.length },
+                { label: "seguidores", value: p.followerCount },
+              ]
+            : discoveryIntent === "directory"
+            ? [
+                { label: "quadras", value: activeCourts.length },
+                { label: "turmas", value: activeAcademyClasses.length },
                 { label: "seguidores", value: p.followerCount },
               ]
             : [
@@ -4334,6 +4673,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             ? courtDiscoverySummary
               ? "Resultado filtrado para reserva avulsa. Escolha uma quadra livre no horario buscado."
               : "Use a busca por cidade, data e hora para ver disponibilidade real."
+            : isPublicDiscoveryCard && discoveryIntent === "directory"
+            ? p.description
             : p.description;
         return (
           <article key={p.id} className={isManagementCockpit ? "place-card management-cockpit-card" : "place-card"}>
@@ -4494,22 +4835,28 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     : []),
                 ]}
                 queueItems={[
-                  ...bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => ({
-                    id: `queue-booking:${booking.id}`,
-                    label: `Reserva pendente | ${booking.courtName || "Quadra"} | ${new Date(booking.startsAt).toLocaleString("pt-BR")}`,
-                    module: "bookings" as PlaceManagementModule,
-                  })),
-                  ...actionableLessonRequests.slice(0, 3).map((request) => ({
-                    id: `queue-lesson:${request.id}`,
-                    label: `Encaixe pendente | ${request.playerName} | ${request.requestedOn}`,
-                    module: "academy" as PlaceManagementModule,
-                  })),
-                  ...openReceivables.slice(0, 3).map((receivable) => ({
-                    id: `queue-receivable:${receivable.id}`,
-                    label: `Recebimento pendente | ${receivable.title} | ${formatMoneyFromCents(receivable.amountCents)}`,
-                    module: "finance" as PlaceManagementModule,
-                    viewSegment: "recebiveis",
-                  })),
+                  ...(managementModules.includes("bookings")
+                    ? bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => ({
+                        id: `queue-booking:${booking.id}`,
+                        label: `Reserva pendente | ${booking.courtName || "Quadra"} | ${new Date(booking.startsAt).toLocaleString("pt-BR")}`,
+                        module: "bookings" as PlaceManagementModule,
+                      }))
+                    : []),
+                  ...(managementModules.includes("academy")
+                    ? actionableLessonRequests.slice(0, 3).map((request) => ({
+                        id: `queue-lesson:${request.id}`,
+                        label: `Encaixe pendente | ${request.playerName} | ${request.requestedOn}`,
+                        module: "academy" as PlaceManagementModule,
+                      }))
+                    : []),
+                  ...(managementModules.includes("finance")
+                    ? openReceivables.slice(0, 3).map((receivable) => ({
+                        id: `queue-receivable:${receivable.id}`,
+                        label: `Recebimento pendente | ${receivable.title} | ${formatMoneyFromCents(receivable.amountCents)}`,
+                        module: "finance" as PlaceManagementModule,
+                        viewSegment: "recebiveis",
+                      }))
+                    : []),
                 ]}
                 onModuleChange={(module, viewSegment) => selectManagementModule(p.id, module, viewSegment)}
               />
@@ -4690,6 +5037,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           countLabel(staff.filter((member) => member.role === "manager").length, "gerente", "gerentes"),
                           countLabel(staff.filter((member) => member.role === "frontdesk").length, "recepcao", "recepcao"),
                           countLabel(staff.filter((member) => member.role === "coach").length, "professor", "professores"),
+                          countLabel(staff.filter((member) => member.role === "finance").length, "financeiro", "financeiro"),
                         ]}
                       />
                       <WorkspaceCard
@@ -4701,7 +5049,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           {staff.filter((member) => member.status === "pending").slice(0, 4).map((member) => (
                             <span key={`team-pending:${member.email}:${member.role}`}>
                               <strong>{member.email || "Convite pendente"}</strong>
-                              <small>{member.role}</small>
+                              <small>{STAFF_ROLE_LABELS[member.role]}</small>
                             </span>
                           ))}
                           {!staff.some((member) => member.status === "pending") ? <span>Nenhum convite pendente.</span> : null}
@@ -4715,7 +5063,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <WorkspaceRow
                           key={`team-invite:${member.email}:${member.role}`}
                           title={member.email || "Convite pendente"}
-                          detail={`${member.role} aguardando aceite`}
+                          detail={`${STAFF_ROLE_LABELS[member.role]} aguardando aceite`}
                           actions={
                             <button className="danger" onClick={() => void onRemoveStaff(p, member)} disabled={busy}>
                               Cancelar convite
@@ -4737,6 +5085,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       <WorkspaceCard title="Gerente" subtitle="Administra operacao, clientes, agenda, financeiro e configuracoes do local." />
                       <WorkspaceCard title="Recepcao" subtitle="Cuida de reservas, check-in, fila de espera e atendimento diario." />
                       <WorkspaceCard title="Professor" subtitle="Acessa turmas, chamada, faltas, reposicoes e evolucao dos alunos." />
+                      <WorkspaceCard title="Financeiro" subtitle="Acessa recebiveis, lembretes, baixas e despesas sem operar agenda, academia ou equipe." />
                     </WorkspaceGrid>
                   ) : null}
                 </TeamWorkspaceShell>
@@ -4768,6 +5117,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <option value="manager">Gerente</option>
                     <option value="coach">Professor</option>
                     <option value="frontdesk">Recepcao</option>
+                    <option value="finance">Financeiro</option>
                   </select>
                   <button onClick={() => void onAddStaff(p)} disabled={busy || !staffDraft.email.trim()}>
                     Adicionar
@@ -4779,7 +5129,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       const activeUserId = member.userId;
                       return (
                         <span key={activeUserId || `${member.email}:${member.role}`}>
-                          {member.email || activeUserId?.slice(0, 8) || "Convite pendente"} ({member.role})
+                          {member.email || activeUserId?.slice(0, 8) || "Convite pendente"} ({STAFF_ROLE_LABELS[member.role]})
                           {member.status === "pending" ? <small> convite pendente</small> : null}
                           <button className="danger" onClick={() => void onRemoveStaff(p, member)} disabled={busy}>
                             {activeUserId ? "Remover" : "Cancelar convite"}
@@ -4795,6 +5145,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <span><strong>Gerente</strong> administra operacao, clientes, agenda e financeiro.</span>
                   <span><strong>Recepcao</strong> cuida de reservas, check-in e rotina de atendimento.</span>
                   <span><strong>Professor</strong> acessa turmas, chamada, faltas e evolucao de alunos.</span>
+                  <span><strong>Financeiro</strong> acessa recebiveis, lembretes, baixas e despesas sem virar gerente.</span>
                 </div>
               </div>
             ) : null}
@@ -5204,8 +5555,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         openReceivables={openReceivables}
                         paidBookingAmountCents={operationalStats.paidBookingAmountCents}
                         packageRevenueCents={creditPackageRevenueCents}
-                        posRevenueCents={operationalStats.posRevenueCents}
+                        posRevenueCents={canUseCanteenModule ? operationalStats.posRevenueCents : 0}
                         recurringRevenueCents={activeMembershipRevenueCents + activeAcademyRevenueCents}
+                        showPosRevenue={canUseCanteenModule}
                         countLabel={countLabel}
                       />
                     ) : null}
@@ -5218,6 +5570,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         receivables={openReceivables}
                         onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
                         onCreatePaymentReminderBatch={(receivables) => void onCreatePaymentReminderBatch(receivables)}
+                        onMarkReceivablePaid={(receivable) => void onMarkReceivablePaid(receivable)}
+                      />
+                    ) : null}
+                    {financeView === "paid" ? (
+                      <PlaceFinancePaidModule
+                        formatMoneyFromCents={formatMoneyFromCents}
+                        receivables={financeReceivables}
                       />
                     ) : null}
                     {financeView === "packages" ? (
@@ -5532,39 +5891,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             ) : null}
             {showManagementModule("bookings") && showBookingTools ? (
             <div className="place-booking-panel">
-              {isManagementCockpit ? (
-                <div className="place-module-summary">
-                  <div>
-                    <strong>{todayBookings.length}</strong>
-                    <span>Reservas hoje</span>
-                  </div>
-                  <div>
-                    <strong>{pendingBookings.length}</strong>
-                    <span>Pendentes</span>
-                  </div>
-                  <div>
-                    <strong>{waitingCourtEntries.length}</strong>
-                    <span>Na espera</span>
-                  </div>
-                  <div>
-                    <strong>{calendarOccupancyPct}%</strong>
-                    <span>Ocupacao do dia</span>
-                  </div>
-                </div>
-              ) : null}
-              {isManagementCockpit ? (
-                <PlaceBookingOperationalQueues
-                  busy={busy}
-                  canManageBookings={canManageBookings}
-                  isWaitlistPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
-                  onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
-                  onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
-                  onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
-                  pendingBookings={pendingBookings}
-                  waitingSinceLabel={waitingSinceLabel}
-                  waitlistEntries={waitingCourtEntries}
-                />
-              ) : null}
               {showBookingWorkspace ? (
                 <BookingWorkspaceShell
                   activeView={bookingView}
@@ -5575,10 +5901,28 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     selectBookingView(p.id, view);
                   }}
                 >
+                  {isManagementCockpit ? (
+                    <PlaceBookingOperationalQueues
+                      busy={busy}
+                      canManageBookings={canManageBookings}
+                      isWaitlistPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
+                      onOpenReservations={() => selectBookingView(p.id, "reservations")}
+                      onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
+                      onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                      onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                      onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
+                      pendingBookings={pendingBookings}
+                      waitingSinceLabel={waitingSinceLabel}
+                      waitlistEntries={waitingCourtEntries}
+                    />
+                  ) : null}
                     {bookingView === "today" ? (
                     <PlaceBookingTodayModule
                       bookings={todayBookings}
+                      busy={busy}
+                      canManageBookings={canManageBookings}
                       getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                      onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                     />
                   ) : null}
                   {bookingView === "reservations" ? (
@@ -5586,6 +5930,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       bookings={bookings}
                       busy={busy}
                       canManageBookings={canManageBookings}
+                      getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
                       onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                     />
                   ) : null}
@@ -5602,6 +5947,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       lessonRequests={academyLessonRequests}
                       occupancyPct={calendarOccupancyPct}
                       onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
+                      onCreateFromSlot={openNewBookingFromCalendarSlot}
+                      onOpenReservations={() => selectBookingView(p.id, "reservations")}
                       reservedMinutes={calendarReservedMinutes}
                     />
                   ) : null}
@@ -5662,6 +6009,41 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                 </BookingWorkspaceShell>
               ) : null}
+              {isManagementCockpit ? (
+                <div className="place-module-summary">
+                  <div>
+                    <strong>{todayBookings.length}</strong>
+                    <span>Reservas hoje</span>
+                  </div>
+                  <div>
+                    <strong>{pendingBookings.length}</strong>
+                    <span>Pendentes</span>
+                  </div>
+                  <div>
+                    <strong>{waitingCourtEntries.length}</strong>
+                    <span>Na espera</span>
+                  </div>
+                  <div>
+                    <strong>{calendarOccupancyPct}%</strong>
+                    <span>Ocupacao do dia</span>
+                  </div>
+                </div>
+              ) : null}
+              {isManagementCockpit && !showBookingWorkspace ? (
+                <PlaceBookingOperationalQueues
+                  busy={busy}
+                  canManageBookings={canManageBookings}
+                  isWaitlistPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
+                  onOpenReservations={() => selectBookingView(p.id, "reservations")}
+                  onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
+                  onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                  onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                  onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
+                  pendingBookings={pendingBookings}
+                  waitingSinceLabel={waitingSinceLabel}
+                  waitlistEntries={waitingCourtEntries}
+                />
+              ) : null}
               {showBookingResources && !showBookingWorkspace ? (
                 <PlaceBookingResourcesModule
                   activeCourts={activeCourts}
@@ -5714,6 +6096,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   lessonRequests={academyLessonRequests}
                   occupancyPct={calendarOccupancyPct}
                   onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
+                  onCreateFromSlot={openNewBookingFromCalendarSlot}
+                  onOpenReservations={() => selectBookingView(p.id, "reservations")}
                   reservedMinutes={calendarReservedMinutes}
                 />
               ) : null}
@@ -5740,46 +6124,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             ) : null}
             {showManagementModule("academy") && showAcademyTools ? (
             <div className="place-booking-panel academy-panel">
-              {isManagementCockpit ? (
-                <div className="place-module-summary">
-                  <div>
-                    <strong>{todayClasses.length}</strong>
-                    <span>Aulas hoje</span>
-                  </div>
-                  <div>
-                    <strong>{operationalStats.pendingEnrollments}</strong>
-                    <span>Matriculas pendentes</span>
-                  </div>
-                  <div>
-                    <strong>{operationalStats.pendingLessonRequests}</strong>
-                    <span>Encaixes pendentes</span>
-                  </div>
-                  <div>
-                    <strong>{operationalStats.openMakeups}</strong>
-                    <span>Reposicoes abertas</span>
-                  </div>
-                </div>
-              ) : null}
-              {isManagementCockpit ? (
-                <PlaceAcademyOperationalQueues
-                  actionableLessonRequests={actionableLessonRequests}
-                  academyClasses={academyClasses}
-                  busy={busy}
-                  canManageAcademy={canManageAcademy}
-                  onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
-                  onOpenTodayClass={(academyClassId) => {
-                    setAcademyTodayClassByPlace((prev) => ({ ...prev, [p.id]: academyClassId }));
-                    setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }));
-                  }}
-                  onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
-                  onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
-                  pendingEnrollments={academyEnrollments.filter((enrollment) => enrollment.status === "pending")}
-                  todayClasses={todayClasses}
-                />
-              ) : null}
               {showAcademyWorkspace ? (
                 <AcademyWorkspaceShell
                   activeView={academyView}
+                  title={isCoachMode ? "Modo professor" : "Central da academia"}
+                  viewDescriptions={
+                    isCoachMode
+                      ? {
+                          today: "Suas aulas de hoje, chamada, faltas e observacoes rapidas.",
+                          classes: "Sua grade semanal, ocupacao e alunos por turma.",
+                          students: "Alunos das suas turmas, presenca, faltas e evolucao.",
+                        }
+                      : undefined
+                  }
+                  viewLabels={isCoachMode ? { today: "Aulas", classes: "Turmas", students: "Alunos" } : undefined}
+                  views={academyViews}
                   onViewChange={(view) => selectAcademyView(p.id, view)}
                 >
                   {coachWithoutAcademyProfile ? (
@@ -5788,23 +6147,62 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       detail="Seu usuario esta na equipe como professor, mas ainda nao foi vinculado a um cadastro de professor da academia. Peça ao gestor para vincular seu login pelo email do professor."
                     />
                   ) : null}
-                  {academyView === "today" ? (
+                  {isCoachMode && currentCoach ? (
+                    <div className="coach-academy-routine">
+                      <div>
+                        <span>Professor</span>
+                        <strong>{currentCoach.name}</strong>
+                        <small>
+                          {countLabel(todayClasses.length, "aula hoje", "aulas hoje")} | {countLabel(visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length, "aluno ativo", "alunos ativos")}
+                        </small>
+                      </div>
+                      <div className="coach-academy-agenda">
+                        {coachAgendaPreview.map((academyClass) => (
+                          <span key={`coach-agenda:${academyClass.id}`}>
+                            <strong>{WEEKDAY_LABELS[academyClass.weekday] || "Dia"}</strong>
+                            {academyClass.startsAt.slice(0, 5)} | {academyClass.title}
+                          </span>
+                        ))}
+                        {!coachAgendaPreview.length ? <span>Nenhuma turma ativa vinculada ao seu login.</span> : null}
+                      </div>
+                    </div>
+                  ) : null}
+                  {isManagementCockpit && academyView !== "today" && academyView !== "requests" ? (
+                    <PlaceAcademyOperationalQueues
+                      actionableLessonRequests={actionableLessonRequests}
+                      academyClasses={visibleAcademyClasses}
+                      busy={busy}
+                      canManageAcademy={!isCoachMode && canManageAcademy}
+                      onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                      onOpenRequests={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "requests" }))}
+                      onOpenToday={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }))}
+                      onOpenTodayClass={(academyClassId) => {
+                        setAcademyTodayClassByPlace((prev) => ({ ...prev, [p.id]: academyClassId }));
+                        setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }));
+                      }}
+                      onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
+                      onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
+                      pendingEnrollments={pendingAcademyEnrollments}
+                      todayClasses={todayClasses}
+                    />
+                  ) : null}
+                  {!coachWithoutAcademyProfile && academyView === "today" ? (
                     <PlaceAcademyTodayModule
                       activeCourts={activeCourts}
                       absences={academyAbsences}
                       attendanceToday={todayAttendance}
                       busy={busy}
                       classes={todayClasses}
-                      enrollments={academyEnrollments}
+                      enrollments={visibleAcademyEnrollments}
                       initialSelectedClassId={academyTodayClassByPlace[p.id]}
                       makeups={openAcademyMakeups}
                       onMarkAttendance={(enrollmentId, status, notes) => void onMarkAcademyAttendance(p.id, enrollmentId, status, notes)}
                       onOpenClasses={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
-                      onOpenSetup={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
+                      onOpenSetup={!isCoachMode ? () => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" })) : undefined}
                       onReportAbsence={(enrollmentId) => void onReportAcademyAbsence(p.id, enrollmentId)}
                     />
                   ) : null}
-                  {academyView === "classes" ? (
+                  {!coachWithoutAcademyProfile && academyView === "classes" ? (
                     <>
                       {canManagePlace ? (
                         <details className="workspace-disclosure academy-create-class-disclosure" open={Boolean(academyDraft.slotId)}>
@@ -5831,10 +6229,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         canManagePlace={canManagePlace}
                         classPriceDraftByClass={academyClassPriceDraftByClass}
                         classes={visibleAcademyClasses}
-                        coaches={academyCoaches}
-                        enrollments={academyEnrollments}
+                        coaches={displayedCoaches}
+                        enrollments={visibleAcademyEnrollments}
                         isEnrollmentPaid={(enrollmentId) => {
-                          const enrollment = academyEnrollments.find((item) => item.id === enrollmentId);
+                          const enrollment = visibleAcademyEnrollments.find((item) => item.id === enrollmentId);
                           return enrollment ? isAcademyStudentPaid(enrollment) : false;
                         }}
                         onChangeClassPriceDraft={(classId, value) => setAcademyClassPriceDraftByClass((prev) => ({ ...prev, [classId]: value }))}
@@ -5853,7 +6251,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       />
                     </>
                   ) : null}
-                  {academyView === "students" ? (
+                  {!coachWithoutAcademyProfile && academyView === "students" ? (
                     <PlaceAcademyStudentsModule
                       absences={academyAbsences}
                       attendance={academyAttendance}
@@ -5862,12 +6260,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       busy={busy}
                       canManageFinance={canManageFinance}
                       canManagePlace={canManagePlace}
-                      classes={academyClasses}
+                      classes={isCoachMode ? visibleAcademyClasses : academyClasses}
                       contracts={academyStudentContracts}
-                      enrollments={academyEnrollments}
+                      enrollments={visibleAcademyEnrollments}
                       filter={academyStudentFilter}
                       isEnrollmentPaid={(enrollmentId) => {
-                        const enrollment = academyEnrollments.find((item) => item.id === enrollmentId);
+                        const enrollment = visibleAcademyEnrollments.find((item) => item.id === enrollmentId);
                         return enrollment ? isAcademyStudentPaid(enrollment) : false;
                       }}
                       makeups={openAcademyMakeups}
@@ -5895,7 +6293,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       weekdayLabels={WEEKDAY_LABELS}
                     />
                   ) : null}
-                  {academyView === "requests" ? (
+                  {!coachWithoutAcademyProfile && academyView === "requests" ? (
                     <>
                       <PlaceAcademyRequestsModule
                         busy={busy}
@@ -5947,7 +6345,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       />
                     </>
                   ) : null}
-                  {academyView === "coaches" ? (
+                  {!coachWithoutAcademyProfile && academyView === "coaches" ? (
                     <PlaceAcademyCoachesModule
                       busy={busy}
                       canManageFinance={canManageFinance}
@@ -5971,7 +6369,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       weekdayLabels={WEEKDAY_LABELS}
                     />
                   ) : null}
-                  {academyView === "resources" ? (
+                  {!coachWithoutAcademyProfile && academyView === "resources" ? (
                     <>
                       <WorkspaceGrid>
                         <WorkspaceCard
@@ -6028,6 +6426,26 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     </>
                   ) : null}
                 </AcademyWorkspaceShell>
+              ) : null}
+              {isManagementCockpit ? (
+                <div className="place-module-summary">
+                  <div>
+                    <strong>{todayClasses.length}</strong>
+                    <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
+                  </div>
+                  <div>
+                    <strong>{isCoachMode ? visibleAcademyClasses.length : operationalStats.pendingEnrollments}</strong>
+                    <span>{isCoachMode ? "Minhas turmas" : "Matriculas pendentes"}</span>
+                  </div>
+                  <div>
+                    <strong>{isCoachMode ? visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length : operationalStats.pendingLessonRequests}</strong>
+                    <span>{isCoachMode ? "Meus alunos" : "Encaixes pendentes"}</span>
+                  </div>
+                  <div>
+                    <strong>{isCoachMode ? openAcademyMakeups.length : operationalStats.openMakeups}</strong>
+                    <span>Reposicoes abertas</span>
+                  </div>
+                </div>
               ) : null}
               {!showAcademyWorkspace ? (
                 <div className="place-booking-head">
@@ -6434,7 +6852,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       <ManagementShell
         user={user}
         profile={profile}
-        eyebrow="Management OS"
+        eyebrow="Gestao do local"
         title={adminRoutePlace?.name || "Gestao do local"}
         description="Workspace operacional do local. A pagina publica e a descoberta ficam fora desta tela."
         actions={

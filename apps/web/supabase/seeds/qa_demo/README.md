@@ -25,6 +25,7 @@ Credenciais principais:
 - Admin plataforma: `admin.platform@demo.atp.local` / `Staff@2026!`
 - Organizador: `organizador.circuito@demo.atp.local` / `Staff@2026!`
 - Coach solo: `coach.solo@demo.atp.local` / `Staff@2026!`
+- Jogador puro para QA: `qa.jogador.puro@demo.atp.local` / `Jogador@2026!`
 - Staff/professores: senha `Staff@2026!`
 - Jogadores: `jogador001@demo.atp.local` ate `jogador240@demo.atp.local` / `Jogador@2026!`
 
@@ -32,10 +33,24 @@ Perfis de permissao populados:
 
 - `escalao@gmail.com`: `academy_pro`, pode criar locais e competicoes.
 - `admin.platform@demo.atp.local`: `platform_admin`, pode criar locais e competicoes para QA global.
-- `organizador.circuito@demo.atp.local`: `competition_organizer`, pode criar competicoes sem virar gestor de academia.
+- `organizador.circuito@demo.atp.local`: `competition_organizer`, pode criar competicoes e operar torneios/ligas sem `place_staff` e sem Management OS de local.
 - Professores: `coach_solo`, sem direito de criar local.
 - Staff/recepcao/financeiro/media: entram como `free_player` no entitlement global e ganham acesso operacional somente pelo vinculo `place_staff`.
+- `qa.jogador.puro@demo.atp.local`: `free_player` puro, sem staff, matricula, reserva, inscricao, liga ou partida aberta. Use para validar Player App limpo e bloqueios de `/gestao`.
 - Jogadores `jogador001@demo.atp.local` ate `jogador240@demo.atp.local`: `free_player`, sem direito de criar local/competicao.
+
+Matriz de perfis puros para QA:
+
+| Perfil | Login | Vínculo intencional | O que validar |
+|---|---|---|---|
+| Jogador puro | `qa.jogador.puro@demo.atp.local` | Sem vinculos operacionais | Player App leve, descoberta, bloqueio de Gestao/Organizar. |
+| Aluno mensalista ativo | `jogador001@demo.atp.local` | Contrato ativo de academia e matriculas | Aulas, reposicao, historico e contexto de aluno. |
+| Professor vinculado | `prof.renato@demo.atp.local` | `place_staff.coach` + `place_coaches` + turmas | Modo professor com aulas, turmas, alunos e chamada. |
+| Professor sem local | `coach.solo@demo.atp.local` | Entitlement `coach_solo`, sem `place_staff` | Estado vazio profissional sem vazar workspace de local. |
+| Recepcao | `recepcao.prime@demo.atp.local` | `place_staff.frontdesk` | Agenda, check-in, fila operacional sem financeiro amplo/setup. |
+| Financeiro | `financeiro.prime@demo.atp.local` | `place_staff.finance` | Recebiveis, despesas, lembretes e baixa sem Agenda/Academia/Cantina. |
+| Organizador puro | `organizador.circuito@demo.atp.local` | `competition_organizer` + staff de torneio/liga, sem local | Competition OS sem Management OS. |
+| Gestor completo | `escalao@gmail.com` | Owner dos locais e competicoes | Operacao completa, ajustes e setup. |
 
 Nao use `Analyze/Explain` para rodar o pacote completo. Execute cada arquivo com `Run`.
 

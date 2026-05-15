@@ -90,11 +90,10 @@ from (
     ('pantanal', 'prof.priscila@demo.atp.local', 'coach'),
     ('prime', 'gerente.prime@demo.atp.local', 'manager'),
     ('prime', 'recepcao.prime@demo.atp.local', 'frontdesk'),
-    ('prime', 'financeiro.prime@demo.atp.local', 'frontdesk'),
+    ('prime', 'financeiro.prime@demo.atp.local', 'finance'),
     ('prime', 'prof.julia@demo.atp.local', 'coach'),
     ('prime', 'prof.vitor@demo.atp.local', 'coach'),
     ('prime', 'prof.talita@demo.atp.local', 'coach'),
-    ('adt', 'organizador.circuito@demo.atp.local', 'manager'),
     ('pantanal', 'media.eventos@demo.atp.local', 'frontdesk')
 ) as x(place_key, email, role)
 join public.seed_places p on p.key = x.place_key

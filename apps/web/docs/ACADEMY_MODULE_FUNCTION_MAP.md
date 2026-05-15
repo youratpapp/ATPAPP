@@ -2,7 +2,7 @@
 
 Status: levantamento funcional baseado nos prints locais de 2026-05-14 e no codigo atual.
 Escopo: `Gestao > Academia` do local `Arena Pantanal Tennis`, usuario `escalao@gmail.com`.
-Objetivo: servir como mapa de funcoes, inputs, regras basicas e pontos de evolucao das telas `Hoje`, `Turmas`, `Alunos`, `Pendencias`, `Professores` e `Recursos`.
+Objetivo: servir como mapa de funcoes, inputs, regras basicas e pontos de evolucao das telas `Hoje`, `Grade`, `Alunos`, `Pendencias`, `Professores` e `Configuracao`.
 
 ## 1. Contexto comum da tela
 
@@ -11,7 +11,7 @@ Objetivo: servir como mapa de funcoes, inputs, regras basicas e pontos de evoluc
 Funcao: confirmar que o usuario esta em um contexto operacional, separado da descoberta publica.
 
 Elementos:
-- Eyebrow: `Management OS`.
+- Eyebrow: `Gestao do local`.
 - Nome do local.
 - Texto contextual: workspace operacional, pagina publica e descoberta ficam fora da tela.
 - Acoes:
@@ -51,7 +51,7 @@ Logica basica:
 
 ### Resumo do modulo Academia
 
-Funcao: mostrar saude operacional da academia antes das subvisoes.
+Funcao: mostrar saude operacional da academia como leitura de suporte, depois da Central da academia.
 
 Elementos:
 - Modulo ativo: `Academia`.
@@ -71,8 +71,11 @@ Logica basica:
 - `Encaixes pendentes`: lesson requests pendentes ou aprovadas sem pagamento.
 - `Reposicoes abertas`: makeup credits com `status === "open"`.
 
-Ponto de atencao:
-- A tela ainda mostra uma fila superior de `Aulas do dia` e `Pendencias da academia` antes da `Central da academia`. Isso pode duplicar conteudo da aba `Hoje` e `Pendencias`.
+Estado atual:
+- A `Central da academia` aparece antes dos indicadores agregados.
+- A fila rapida `Aulas do dia`/`Pendencias da academia` fica dentro da workspace apenas como apoio contextual.
+- A fila rapida nao aparece nas abas `Hoje` e `Pendencias`, evitando duplicar a rotina ativa.
+- Quando houver mais itens que o resumo, a UI exibe o restante e permite expandir ou abrir a fila completa.
 
 ## 2. Navegacao interna da Central da academia
 
@@ -80,23 +83,21 @@ Componente: `AcademyWorkspaceShell`.
 
 Abas:
 - `Hoje` -> `today`
-- `Turmas` -> `classes`
+- `Grade` -> `classes`
 - `Alunos` -> `students`
 - `Pendencias` -> `requests`
 - `Professores` -> `coaches`
-- `Recursos` -> `resources`
+- `Configuracao` -> `resources`
 
 Logica basica:
 - O estado vem de `academyViewByPlace[p.id]`.
 - A troca de aba chama `selectAcademyView(p.id, view)` e atualiza a query `visao`.
 - Cada aba tem descricao contextual propria.
 
-Problema atual:
-- A area abaixo da `Central da academia` ainda renderiza blocos legados conforme flags:
-  - `showAcademyResources`
-  - `showAcademyRequests`
-  - `showAcademyClasses`
-- Por isso `Academia e aulas` aparece abaixo das abas e pode duplicar funcoes da propria aba ativa.
+Estado atual:
+- Dentro da rota de Gestao com workspace ativa, `Academia e aulas` nao aparece como bloco paralelo.
+- Flags legadas permanecem apenas para superficies fora do workspace de Gestao, principalmente leitura publica/compatibilidade.
+- A rotina interna deve continuar usando `AcademyWorkspaceShell` e os modulos `PlaceAcademy*Module`.
 
 ## 3. Aba Hoje
 
@@ -113,12 +114,12 @@ Conteudo no print:
   - Metricas: `0 presentes`, `2 faltas avisadas`, `1 reposicao`
 
 Inputs:
-- Nao ha input direto nesta aba no estado atual.
+- Observacao curta por aluno dentro do drawer de chamada.
 
 Acoes:
-- Se nao houver aulas, aparecem acoes:
-  - `Ver turmas`
-  - `Criar turma`
+- `Fazer chamada`/`Revisar chamada` abre `LessonDrawer`.
+- Por aluno: `Presente`, `Falta`, `Avisou falta` e observacao curta.
+- Se nao houver aulas, aparecem acoes para `Ver grade` e, quando permitido, `Criar turma`.
 
 Logica basica:
 - Recebe `todayClasses`, `academyEnrollments`, `todayAttendance`, `academyAbsences`, `openAcademyMakeups`, `activeCourts`.
@@ -129,11 +130,10 @@ Logica basica:
   - calcula reposicoes abertas;
   - mostra quadra e professor.
 
-Pontos de evolucao:
-- Falta acao direta por aula: abrir chamada, ver alunos, marcar presenca/falta.
-- Hoje esta mais informativa do que operacional.
+Estado atual:
+- Hoje e operacional: cada aula e row acionavel, com drawer compacto para chamada e reposicoes relacionadas.
 
-## 4. Aba Turmas
+## 4. Aba Grade
 
 Funcao: gerenciar grade semanal, vagas, mensalidade e criacao de turmas.
 
@@ -158,10 +158,12 @@ Exemplos do print:
 - `Intermediario Noite`: Qui 18:00-19:00, Priscila Araujo, Quadra 4, Intermediario, 0/10.
 
 Inputs:
-- Nao ha inputs diretos nessa lista.
+- Busca por turma, professor, quadra, nivel ou aluno.
+- Filtro por dia.
+- Filtro por status: todas, com vagas, lotadas ou com pendencias.
 
 Logica basica:
-- Renderiza ate 12 turmas ativas.
+- Nao usa limite silencioso: mostra contador `Exibindo X de Y` e `Ver mais turmas` quando necessario.
 - Conta matriculas ativas e pendentes.
 - Busca a quadra pelo `courtId`.
 - Status vira `Em dia` se nao ha matriculas pendentes.
@@ -233,7 +235,9 @@ Logica basica de persistencia:
 
 ### Bloco legado `Academia e aulas`
 
-Funcao atual: lista ate 5 turmas com operacoes administrativas e/ou de aluno.
+Status atual: nao deve renderizar dentro do workspace de Gestao. Permanece apenas como superficie publica/compatibilidade ate `PUBLIC-PLACE-01` reorganizar a leitura do jogador.
+
+Funcao preservada historicamente: lista ate 5 turmas com operacoes administrativas e/ou de aluno.
 
 Inputs por turma para admin:
 - Mensalidade.
@@ -257,9 +261,10 @@ Acoes por turma:
   - falta;
   - registrar evolucao.
 
-Problema atual:
-- Este bloco duplica funcoes de `Turmas`, `Alunos` e `Pendencias`.
-- A mistura de formulario dentro de cada turma deixa a tela longa e pesada.
+Regra atual:
+- Na Gestao, essas funcoes moram em `Grade`, `Alunos` e `Pendencias`.
+- Nao reintroduzir formulario repetido por turma no corpo da workspace.
+- Se a superficie publica ainda precisar mostrar aulas, deve ser tratada como descoberta leve do jogador, nao como operacao interna.
 
 ## 5. Aba Alunos
 
@@ -505,8 +510,9 @@ Logica basica:
 - Cria `academy_lesson_request`.
 - Depois atualiza recursos e refaz a busca.
 
-Problema atual:
-- A aba `Pendencias` renderiza a fila nova e tambem o bloco legado `Buscar encaixe`, criando duas regioes com pedidos/acoes parecidas.
+Estado atual:
+- A aba `Pendencias` renderiza a fila operacional unica.
+- `Buscar encaixe` abre em drawer/sheet, nao como bloco permanente competindo com a fila.
 
 ## 7. Aba Professores
 
@@ -562,15 +568,16 @@ Acoes:
 - `WhatsApp`
   - abre mensagem para alinhar agenda.
 - `Ajustar agenda`
-  - troca para aba `Recursos`.
+  - troca para aba `Configuracao`.
 
 Logica basica:
 - Receita estimada = soma de mensalidade das turmas do professor multiplicada por alunos ativos.
 - Comissao estimada = receita * percentual de comissao.
 - Professores com `userId` aparecem como `Login vinculado`.
 
-Ponto de evolucao:
-- `Ajustar agenda` leva para `Recursos`, mas o usuario espera talvez uma agenda do professor filtrada. Isso precisa ficar mais explicito.
+Estado atual:
+- `Ajustar agenda` leva para `Configuracao`, onde ficam horarios abertos e disponibilidade.
+- Uma agenda filtrada por professor ainda pode virar refinamento futuro, mas nao e bloqueador do fluxo atual.
 
 ## 8. Aba Configuracao
 
@@ -690,7 +697,11 @@ Pode:
 Logica atual:
 - `displayedCoaches` vira apenas o professor vinculado ao login.
 - `visibleAcademyClasses` mostra apenas turmas desse professor.
-- Tende a ocultar partes financeiras dependendo de permissao.
+- Em modo professor sem gestao completa, a superficie da Academia fica limitada a `Aulas`, `Turmas` e `Alunos`.
+- `visibleAcademyEnrollments`, reposicoes abertas e fila operacional sao filtrados pelas turmas desse professor.
+- `Pendencias`, `Professores` e `Configuracao` nao aparecem para professor sem permissao de gestao.
+- Professor sem `place_coaches.user_id` vinculado recebe estado vazio claro e nao herda turmas por `coach_name`.
+- Partes financeiras continuam ocultas quando `canManageFinance` nao esta liberado.
 
 ### Jogador/aluno
 
@@ -702,75 +713,56 @@ No contexto publico/descoberta, pode:
 Ponto de atencao:
 - A rota de gestao nao deveria ser a experiencia principal do jogador comum.
 
-## 10. Principais inconsistencias atuais vistas nos prints/codigo
+## 10. Estado atual depois da v2
 
-1. Duplicacao estrutural
-   - `Central da academia` e `Academia e aulas` convivem na mesma tela.
-   - Isso duplica turmas, pedidos, encaixes e recursos.
+O workspace de Gestao da Academia ja segue a arquitetura alvo de `ACADEMY_V2_UX_PLAN.md`:
 
-2. Acoes escondidas ou espalhadas
-   - Matricular aluno aparece dentro do bloco legado de turma.
-   - Cadastro de professor esta em `Professores`, correto, mas ajuste de agenda leva para `Recursos`, nao para uma agenda clara.
+1. `Hoje`
+   - rows de aulas do dia;
+   - drawer de chamada;
+   - presenca, falta, ausencia avisada, observacao e reposicoes relacionadas.
 
-3. Falta de acao operacional na aba Hoje
-   - Mostra aula do dia, mas nao abre uma chamada completa por turma.
+2. `Grade`
+   - busca/filtros;
+   - lista sem limite silencioso;
+   - drawer de turma para dados, alunos, mensalidade e historico;
+   - criacao de turma/horario em disclosure de setup, nao como formulario repetido por turma.
 
-4. Recursos dependem de estado invisivel
-   - A disponibilidade de professores/quadras usa o dia do draft de turma, mas o usuario nao ve claramente esse controle.
+3. `Alunos`
+   - busca/filtros;
+   - agregacao por contrato quando existe `contract_id`;
+   - drawer do aluno com dados, matricula, financeiro, presenca, evolucao, reposicoes e historico;
+   - CTA `Nova matricula` visivel.
 
-5. Limites silenciosos
-   - Turmas na lista nova: ate 12.
-   - Turmas no bloco legado: ate 5.
-   - Alunos: ate 24.
-   - Pedidos/reposicoes: ate 8.
-   - Encaixes: ate 6.
-   - Isso pode ocultar informacao em academias grandes sem paginacao clara.
+4. `Pendencias`
+   - fila unica de matriculas, aulas avulsas/reposicoes e creditos abertos;
+   - `Buscar encaixe` em drawer;
+   - WhatsApp secundario;
+   - sem limite silencioso.
 
-6. Hierarquia visual ainda confusa
-   - Algumas linhas concatenam horario, nome e turma sem separacao visual suficiente.
-   - Muitos dados aparecem em texto corrido.
+5. `Professores`
+   - lista operacional;
+   - drawer para dados, login, comissao, turmas e agenda;
+   - modo professor filtrado pelo login vinculado.
 
-7. Estados vazios pouco orientados
-   - `0 alunos encontrados` nao explica que o filtro padrao e `Ativos`.
-   - Poderia sugerir `ver pendentes` ou `limpar filtros`.
+6. `Configuracao`
+   - quadras, horarios abertos, disponibilidade, bloqueios e regra de antecedencia de reposicao.
 
-8. Pendencias e encaixes misturados
-   - Resolver pedidos e buscar novos encaixes sao tarefas diferentes.
-   - Hoje aparecem juntas, aumentando carga cognitiva.
+7. Fila rapida da workspace
+   - aparece apenas como apoio contextual fora das abas `Hoje` e `Pendencias`;
+   - nao corta aulas ou pendencias silenciosamente;
+   - mostra restante, expande ou leva para a fila completa.
 
-## 11. Direcao recomendada para evolucao
+## 11. Direcao de continuidade
 
-Plano alvo:
+O foco daqui em diante nao e reabrir a v2 da Academia, mas manter a disciplina nas proximas areas:
 
-- A evolucao oficial agora esta em `ACADEMY_V2_UX_PLAN.md`.
-- Este mapa permanece como registro das funcoes v1 e deve ser usado para garantir que nenhuma funcao seja perdida na migracao.
-
-1. Remover ou transformar o bloco legado `Academia e aulas`.
-   - Cada funcao deve morar na aba natural:
-     - Turmas: criar/editar turma e grade.
-     - Alunos: matricula, status, pagamento, chamada por aluno.
-     - Pendencias: aprovacoes e fila operacional.
-     - Professores: cadastro, login, comissao, agenda.
-     - Recursos: quadras/professores/horarios livres.
-
-2. Fazer `Hoje` virar uma agenda operacional real.
-   - Clicar na aula abre alunos, presenca, falta, reposicao e observacoes.
-
-3. Separar `Pendencias` de `Buscar encaixe`.
-   - Pendencias = fila para resolver.
-   - Encaixe/reposicao = ferramenta de busca guiada, talvez em drawer/sheet.
-
-4. Dar controle explicito em `Recursos`.
-   - Filtro de dia/data.
-   - Alternancia por professor/quadra.
-   - Acoes diretas: criar horario, criar turma, bloquear horario.
-
-5. Melhorar estados vazios e filtros.
-   - Explicar o motivo do vazio.
-   - Oferecer proxima acao obvia.
-
-6. Reduzir formularios repetidos por turma.
-   - Matricula manual deve ser um fluxo contextual, nao um formulario repetido em cada card.
+1. Nao reintroduzir blocos duplicados dentro da Gestao.
+2. Nao voltar a formularios repetidos por row/card.
+3. Manter aluno como contrato/usuario quando houver plano semanal.
+4. Manter reposicao como credito rastreavel, separado de solicitacao e aula avulsa.
+5. Validar mobile com dados reais grandes, principalmente drawers e toolbars.
+6. Tratar a superficie publica de aulas em `PUBLIC-PLACE-01`, com linguagem de jogador e sem cockpit interno.
 
 ## 12. Evolucao aplicada em ACADEMY-V2-02
 

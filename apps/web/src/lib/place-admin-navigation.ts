@@ -121,21 +121,24 @@ export const CLIENTS_ADMIN_SEGMENT_TO_VIEW: Record<string, ClientsManagementView
 };
 
 export const FINANCE_ADMIN_VIEW_SEGMENTS: Record<FinanceManagementView, string> = {
-  overview: "resumo",
   receivables: "recebiveis",
-  packages: "planos",
+  paid: "pagos",
   expenses: "despesas",
+  packages: "planos",
+  overview: "resumo",
 };
 
 export const FINANCE_ADMIN_SEGMENT_TO_VIEW: Record<string, FinanceManagementView> = {
-  resumo: "overview",
-  overview: "overview",
   recebiveis: "receivables",
   receivables: "receivables",
-  planos: "packages",
-  packages: "packages",
+  pagos: "paid",
+  paid: "paid",
   despesas: "expenses",
   expenses: "expenses",
+  planos: "packages",
+  packages: "packages",
+  resumo: "overview",
+  overview: "overview",
 };
 
 export const CANTEEN_ADMIN_VIEW_SEGMENTS: Record<CanteenManagementView, string> = {

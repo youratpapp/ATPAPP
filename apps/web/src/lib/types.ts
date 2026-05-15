@@ -40,7 +40,7 @@ export type PlaceStaffMember = {
   placeId: string;
   userId: string | null;
   email: string;
-  role: "manager" | "coach" | "frontdesk";
+  role: "manager" | "coach" | "frontdesk" | "finance";
   createdAt: string;
   status?: "active" | "pending";
 };

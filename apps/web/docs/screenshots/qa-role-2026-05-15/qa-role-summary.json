@@ -1,0 +1,458 @@
+[
+  {
+    "viewport": "desktop",
+    "role": "jogador",
+    "email": "jogador001@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "desktop-jogador-inicio.png",
+        "text": "desktop-jogador-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nAna Gomes\n\nHOJE PARA VOCE\n\nVoce tem compromisso na agenda\n\nQuadra 1 - Reserva confirmada - 18 de mai. 06:00 ate 18 de mai. 07:00\n\nAbrir\nCompetir\nAcompanhar\nQuadra 1\nQuadra 1 - 18 de mai. 08:00 - Aguardando confirmacao\nAbrir\nAgenda\nQuadra 1 - Reserva confirmada"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "desktop-jogador-locais.png",
+        "text": "desktop-jogador-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "desktop-jogador-eventos.png",
+        "text": "desktop-jogador-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "desktop-jogador-gestao.png",
+        "text": "desktop-jogador-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\n\nCarregando central de gestao...\n\nGestao esportiva\nOperacao\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "desktop",
+    "role": "professor",
+    "email": "prof.renato@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "desktop-professor-inicio.png",
+        "text": "desktop-professor-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nRenato Siqueira\n\n1\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "desktop-professor-gestao.png",
+        "text": "desktop-professor-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\n\nCarregando central de gestao...\n\nGestao esportiva\nOperacao\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nTRABALHO\nGestao\nCONTA\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "desktop-professor-locais.png",
+        "text": "desktop-professor-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "desktop-professor-eventos.png",
+        "text": "desktop-professor-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "desktop",
+    "role": "recepcao",
+    "email": "recepcao.dourados@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "desktop-recepcao-inicio.png",
+        "text": "desktop-recepcao-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nPaula Nogueira\n\n8\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "desktop-recepcao-gestao.png",
+        "text": "desktop-recepcao-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\n\nCarregando central de gestao...\n\nGestao esportiva\nOperacao\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nTRABALHO\nGestao\nCONTA\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "desktop-recepcao-locais.png",
+        "text": "desktop-recepcao-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "desktop-recepcao-eventos.png",
+        "text": "desktop-recepcao-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "desktop",
+    "role": "financeiro",
+    "email": "financeiro.prime@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "desktop-financeiro-inicio.png",
+        "text": "desktop-financeiro-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nClara Financeiro\n\n2\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "desktop-financeiro-gestao.png",
+        "text": "desktop-financeiro-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\n\nCarregando central de gestao...\n\nGestao esportiva\nOperacao\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nTRABALHO\nGestao\nCONTA\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "desktop-financeiro-locais.png",
+        "text": "desktop-financeiro-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "desktop-financeiro-eventos.png",
+        "text": "desktop-financeiro-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nJogando\npartidas e inscricoes\n0\nOrganizando\noperacao e publicacao\n0\nDescobrir\nconvites e entrada\nDescobrir\n\nEntrada leve para encontrar competicoes e locais, sem fila administrativa.\n\nTorneios\nVeja torneios em que voce joga ou entre por codigo."
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "desktop",
+    "role": "organizador",
+    "email": "organizador.circuito@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "desktop-organizador-inicio.png",
+        "text": "desktop-organizador-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nOtavio Circuito\n\n8\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "desktop-organizador-eventos.png",
+        "text": "desktop-organizador-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nJogando\npartidas e inscricoes\n0\nOrganizando\noperacao e publicacao\n5\nDescobrir\nconvites e entrada\nOrganizando agora\n\nFila operacional, publicacao e criacao ficam aqui. Nada disso disputa espaco com a visao de jogador.\n\nTorneios organizados\n5"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "desktop-organizador-gestao.png",
+        "text": "desktop-organizador-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\n\nCarregando central de gestao...\n\nGestao esportiva\nOperacao\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nTRABALHO\nGestao\nCONTA\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "desktop-organizador-locais.png",
+        "text": "desktop-organizador-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "desktop",
+    "role": "gestor",
+    "email": "gerente.dourados@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "desktop-gestor-inicio.png",
+        "text": "desktop-gestor-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nMarina Albuquerque\n\n8\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "desktop-gestor-gestao.png",
+        "text": "desktop-gestor-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nUma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.\n\nCarregando central de gestao...\n\nGestao esportiva\nOperacao\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nTRABALHO\nGestao\nCONTA\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "desktop-gestor-locais.png",
+        "text": "desktop-gestor-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "desktop-gestor-eventos.png",
+        "text": "desktop-gestor-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "mobile",
+    "role": "jogador",
+    "email": "jogador001@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "mobile-jogador-inicio.png",
+        "text": "mobile-jogador-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nAna Gomes\n\nHOJE PARA VOCE\n\nVoce tem compromisso na agenda\n\nQuadra 1 - Reserva confirmada - 18 de mai. 06:00 ate 18 de mai. 07:00\n\nAbrir\nCompetir\nAcompanhar\nQuadra 1\nQuadra 1 - 18 de mai. 08:00 - Aguardando confirmacao\nAbrir\nAgenda\nQuadra 1 - Reserva confirmada"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "mobile-jogador-locais.png",
+        "text": "mobile-jogador-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "mobile-jogador-eventos.png",
+        "text": "mobile-jogador-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "mobile-jogador-gestao.png",
+        "text": "mobile-jogador-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nCarregando central de gestao...\n\nInicio\nCompetir\nLocais\nRanking\nPerfil"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "mobile",
+    "role": "professor",
+    "email": "prof.renato@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "mobile-professor-inicio.png",
+        "text": "mobile-professor-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nRenato Siqueira\n\n1\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "mobile-professor-gestao.png",
+        "text": "mobile-professor-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nCarregando central de gestao...\n\nInicio\nCompetir\nLocais\nRanking\nGestao\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "mobile-professor-locais.png",
+        "text": "mobile-professor-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "mobile-professor-eventos.png",
+        "text": "mobile-professor-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "mobile",
+    "role": "recepcao",
+    "email": "recepcao.dourados@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "mobile-recepcao-inicio.png",
+        "text": "mobile-recepcao-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nPaula Nogueira\n\n8\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "mobile-recepcao-gestao.png",
+        "text": "mobile-recepcao-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nCarregando central de gestao...\n\nInicio\nCompetir\nLocais\nRanking\nGestao\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "mobile-recepcao-locais.png",
+        "text": "mobile-recepcao-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "mobile-recepcao-eventos.png",
+        "text": "mobile-recepcao-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "mobile",
+    "role": "financeiro",
+    "email": "financeiro.prime@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "mobile-financeiro-inicio.png",
+        "text": "mobile-financeiro-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nClara Financeiro\n\n2\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "mobile-financeiro-gestao.png",
+        "text": "mobile-financeiro-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nCarregando central de gestao...\n\nInicio\nCompetir\nLocais\nRanking\nGestao\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "mobile-financeiro-locais.png",
+        "text": "mobile-financeiro-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "mobile-financeiro-eventos.png",
+        "text": "mobile-financeiro-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nJogando\npartidas e inscricoes\n0\nOrganizando\noperacao e publicacao\n0\nDescobrir\nconvites e entrada\nDescobrir\n\nEntrada leve para encontrar competicoes e locais, sem fila administrativa.\n\nTorneios\nVeja torneios em que voce joga ou entre por codigo."
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "mobile",
+    "role": "organizador",
+    "email": "organizador.circuito@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "mobile-organizador-inicio.png",
+        "text": "mobile-organizador-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nOtavio Circuito\n\n8\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "mobile-organizador-eventos.png",
+        "text": "mobile-organizador-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "mobile-organizador-gestao.png",
+        "text": "mobile-organizador-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nCarregando central de gestao...\n\nInicio\nCompetir\nLocais\nRanking\nGestao\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "mobile-organizador-locais.png",
+        "text": "mobile-organizador-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      }
+    ],
+    "console_findings": []
+  },
+  {
+    "viewport": "mobile",
+    "role": "gestor",
+    "email": "gerente.dourados@demo.atp.local",
+    "login_ok": true,
+    "login_note": "",
+    "routes": [
+      {
+        "route": "/inicio",
+        "screenshot": "mobile-gestor-inicio.png",
+        "text": "mobile-gestor-inicio.txt",
+        "ok": true,
+        "title_excerpt": "Bem-vindo\n\nMarina Albuquerque\n\n8\n\nHOJE PARA VOCE\n\nO que voce quer fazer hoje?\n\nEscolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.\n\nReservar quadra\nCompetir\nComece por uma intencao.\nEscolha a acao certa e o app mostra apenas o caminho necessario.\nReservar\nQuadra"
+      },
+      {
+        "route": "/gestao",
+        "screenshot": "mobile-gestor-gestao.png",
+        "text": "mobile-gestor-gestao.txt",
+        "ok": true,
+        "title_excerpt": "CENTRAL OPERACIONAL\nGestao\n\nCarregando central de gestao...\n\nInicio\nCompetir\nLocais\nRanking\nGestao\nPerfil"
+      },
+      {
+        "route": "/locais",
+        "screenshot": "mobile-gestor-locais.png",
+        "text": "mobile-gestor-locais.txt",
+        "ok": true,
+        "title_excerpt": "Locais\nDESCOBERTA\nO que voce quer encontrar?\n\nEscolha a intencao e veja somente o caminho necessario.\n\nEncontrar jogo\nChamadas abertas\n0 chamadas abertas\nReservar quadra\nHorarios livres\n0 quadras ativas\nEntrar em aula\nTurmas com vaga\n0 turmas ativas\nVer locais\nProximos e seguindo\n0 locais"
+      },
+      {
+        "route": "/eventos",
+        "screenshot": "mobile-gestor-eventos.png",
+        "text": "mobile-gestor-eventos.txt",
+        "ok": true,
+        "title_excerpt": "Competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando...\n\nJogando\n\nAcompanhe jogos, classificacao, mensagens e inscricoes em que voce participa.\n\nTorneios que jogo\n0\nLigas que jogo\n0\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que voce participar.\nMeus torneios\nMinhas ligas"
+      }
+    ],
+    "console_findings": []
+  }
+]

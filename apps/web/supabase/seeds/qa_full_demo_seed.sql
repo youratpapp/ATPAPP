@@ -19,7 +19,7 @@
 --   password for all players: Jogador@2026!
 --
 -- What this seed creates:
--- - 1 owner, 15 staff/teachers/frontdesk users, 240 player users.
+-- - 1 owner, pure QA-role users, staff/teachers/frontdesk/finance users, 240 player users.
 -- - 3 academies/clubs owned by escalao@gmail.com.
 -- - courts, booking rules, reservations, waitlist, memberships.
 -- - academy classes, coaches, enrollments, attendance, makeups, progress notes.
@@ -156,7 +156,13 @@ values
   (32, 'recepcao.prime@demo.atp.local', 'Staff@2026!', 'frontdesk', 'Mateus Reis', '+55 65 99930-0032', 'Cuiaba', 'MT', date '1996-09-02', '@mateus.recepcao', 'Recepcao e operacao diaria.'),
   (33, 'prof.julia@demo.atp.local', 'Staff@2026!', 'coach', 'Julia Campos', '+55 65 99930-0033', 'Cuiaba', 'MT', date '1991-03-11', '@juliacampos.tenis', 'Professora de alto rendimento.'),
   (34, 'prof.vitor@demo.atp.local', 'Staff@2026!', 'coach', 'Vitor Leal', '+55 65 99930-0034', 'Cuiaba', 'MT', date '1983-12-30', '@vitorlealcoach', 'Professor de ranking e liga.'),
-  (35, 'prof.talita@demo.atp.local', 'Staff@2026!', 'coach', 'Talita Moraes', '+55 65 99930-0035', 'Cuiaba', 'MT', date '1989-05-18', '@talitamoraes', 'Professora de iniciantes e kids.');
+  (35, 'prof.talita@demo.atp.local', 'Staff@2026!', 'coach', 'Talita Moraes', '+55 65 99930-0035', 'Cuiaba', 'MT', date '1989-05-18', '@talitamoraes', 'Professora de iniciantes e kids.'),
+  (36, 'financeiro.prime@demo.atp.local', 'Staff@2026!', 'finance', 'Clara Financeiro', '+55 65 99930-0036', 'Cuiaba', 'MT', date '1987-09-21', '@clara.financeiro', 'Operadora financeira do Clube Racket Prime.'),
+  (41, 'organizador.circuito@demo.atp.local', 'Staff@2026!', 'organizer', 'Otavio Circuito', '+55 67 99940-0041', 'Campo Grande', 'MS', date '1986-04-17', '@otavio.circuito', 'Organizador demo de torneios e ligas sem gestao completa de academia.'),
+  (42, 'coach.solo@demo.atp.local', 'Staff@2026!', 'coach_solo', 'Nathalia Coach Solo', '+55 67 99940-0042', 'Dourados', 'MS', date '1990-06-09', '@nathalia.coach', 'Professora autonoma demo para validar experiencia PRO leve.'),
+  (43, 'admin.platform@demo.atp.local', 'Staff@2026!', 'platform_admin', 'Admin Plataforma', '+55 67 99940-0043', 'Dourados', 'MS', date '1980-02-02', '@admin.platform', 'Administrador de plataforma para validar permissoes globais.'),
+  (45, 'media.eventos@demo.atp.local', 'Staff@2026!', 'media', 'Rafa Eventos', '+55 67 99940-0045', 'Campo Grande', 'MS', date '1992-01-28', '@rafa.eventos', 'Apoio de midia e comunicacao para eventos demo.'),
+  (46, 'qa.jogador.puro@demo.atp.local', 'Jogador@2026!', 'qa_player_pure', 'Livia Jogadora Pura', '+55 67 99940-0046', 'Dourados', 'MS', date '1998-10-06', '@livia.pura', 'Jogadora pura demo sem vinculos operacionais para validar Player App e bloqueios de acesso.');
 
 with first_names as (
   select array[
@@ -337,19 +343,23 @@ begin
         id,
         case
           when email = 'escalao@gmail.com' then 'academy_pro'
-          when kind = 'coach' then 'coach_solo'
+          when kind = 'platform_admin' then 'platform_admin'
+          when kind = 'organizer' then 'competition_organizer'
+          when kind in ('coach', 'coach_solo') then 'coach_solo'
           else 'free_player'
         end,
-        email = 'escalao@gmail.com',
-        email = 'escalao@gmail.com',
+        email = 'escalao@gmail.com' or kind = 'platform_admin',
+        email = 'escalao@gmail.com' or kind in ('platform_admin', 'organizer'),
         case
           when email = 'escalao@gmail.com' then 'Demo owner with Management OS access.'
-          when kind = 'coach' then 'Demo coach account without place creation entitlement.'
+          when kind = 'platform_admin' then 'Demo platform admin with global QA entitlement.'
+          when kind = 'organizer' then 'Demo competition organizer without academy modules.'
+          when kind in ('coach', 'coach_solo') then 'Demo coach account without place creation entitlement.'
+          when kind = 'finance' then 'Demo finance staff account without place creation entitlement.'
+          when kind = 'qa_player_pure' then 'Demo pure player account without operational links.'
           else 'Demo player account.'
         end
       from public.seed_users
-      where email = 'escalao@gmail.com'
-         or kind = 'coach'
       on conflict (user_id) do update
       set
         account_type = excluded.account_type,
@@ -441,6 +451,7 @@ from (
     ('pantanal', 'prof.priscila@demo.atp.local', 'coach'),
     ('prime', 'gerente.prime@demo.atp.local', 'manager'),
     ('prime', 'recepcao.prime@demo.atp.local', 'frontdesk'),
+    ('prime', 'financeiro.prime@demo.atp.local', 'finance'),
     ('prime', 'prof.julia@demo.atp.local', 'coach'),
     ('prime', 'prof.vitor@demo.atp.local', 'coach'),
     ('prime', 'prof.talita@demo.atp.local', 'coach')
@@ -1256,9 +1267,10 @@ select t.id, u.id, x.role, now() - interval '30 days'
 from public.seed_tournaments t
 cross join (
   values
-    ('gerente.dourados@demo.atp.local', 'organizer'),
+    ('organizador.circuito@demo.atp.local', 'organizer'),
     ('recepcao.dourados@demo.atp.local', 'checkin'),
-    ('prof.vitor@demo.atp.local', 'scorekeeper')
+    ('prof.vitor@demo.atp.local', 'scorekeeper'),
+    ('media.eventos@demo.atp.local', 'media')
 ) as x(email, role)
 join public.seed_users u on u.email = x.email
 where t.status <> 'draft'

@@ -94,8 +94,9 @@ Logica basica:
 - `Na espera`: waitlist com `status === "waiting"`.
 - `Ocupacao do dia`: minutos reservados / capacidade estimada do dia.
 
-Ponto de atencao:
-- Antes da `Central de agenda`, a tela mostra filas operacionais de reservas pendentes e lista de espera. Isso e util no painel, mas pode duplicar as abas `Reservas` e `Espera`.
+Estado apos `MGMT-AGENDA-01`:
+- A fila urgente de reservas pendentes/lista de espera fica dentro da `Central de agenda`, logo depois da subnav, para nao competir com a navegacao interna nem duplicar blocos antes do workspace.
+- KPIs de `Reservas hoje`, `Pendentes`, `Na espera` e `Ocupacao do dia` ficam depois da central operacional como suporte de leitura.
 
 ## 3. Navegacao interna da Central de agenda
 
@@ -123,16 +124,16 @@ Logica basica:
 - Em mobile, `Calendario` nao deve esconder quadras: quando ha mais de uma quadra visivel, a tela usa seletor de quadra e renderiza uma quadra por vez, mantendo slots acionaveis e evitando quatro colunas ilegives.
 - Em `Nova reserva`, o resultado de `Buscar` e feedback contextual do formulario. Nao deve acionar banner global persistente para caso normal de indisponibilidade.
 
-## 4. Fila operacional superior da Agenda
+## 4. Fila operacional urgente da Agenda
 
 Componente: `PlaceBookingOperationalQueues`.
 
-Funcao: mostrar pendencias urgentes independente da aba ativa.
+Funcao: mostrar pendencias urgentes dentro da `Central de agenda`, independente da aba ativa, sem virar lista completa duplicada.
 
 ### Reservas aguardando confirmacao
 
 Conteudo:
-- Quadra.
+- Quadra preferida.
 - Nome do jogador.
 - Data/hora.
 
@@ -143,7 +144,8 @@ Acoes:
   - chama `updateCourtBookingStatus(bookingId, "cancelled")`.
 
 Logica basica:
-- Mostra ate 6 reservas pendentes.
+- Mostra ate 6 reservas pendentes como recorte de urgencia.
+- Se houver mais itens, mostra acao `Ver todas as pendentes`, levando para `Reservas`.
 - So aparece para `canManageBookings`.
 
 ### Lista de espera
@@ -161,17 +163,16 @@ Acoes:
 - `Criar reserva`
   - chama `promoteCourtBookingWaitlist`.
   - fica desabilitado se o horario nao esta livre.
-- `Convidar`
+- `Marcar convidado`
   - chama `updateCourtBookingWaitlistStatus(entryId, "invited")`.
+  - nome explicita que a acao atual altera status interno e ainda nao envia notificacao real.
 - `Remover`
   - chama `updateCourtBookingWaitlistStatus(entryId, "cancelled")`.
 
 Logica basica:
-- Mostra ate 6 entradas.
+- Mostra ate 6 entradas como recorte de urgencia.
+- Se houver mais itens, mostra acao `Ver lista completa`, levando para `Espera`.
 - Usa `waitlistEntryIsPromotable(entry, bookings)` para checar conflito com reservas existentes.
-
-Ponto de evolucao:
-- Esta fila duplica parte da aba `Espera`, mas pode ser justificada como fila urgente. Precisa ficar visualmente menor e claramente "atalho de pendencias".
 
 ## 5. Aba Hoje
 
@@ -179,14 +180,15 @@ Componente: `PlaceBookingTodayModule`.
 
 Funcao: mostrar a agenda operacional do dia em formato compacto.
 
-Conteudo no print:
-- Cards por reserva do dia:
+Conteudo apos `MGMT-AGENDA-01`:
+- Rows por reserva/bloqueio do dia:
   - horario inicial;
   - quadra;
   - jogador;
   - status;
   - horario final;
   - status de pagamento;
+  - telefone;
   - serie recorrente, se existir.
 
 Exemplos:
@@ -198,11 +200,19 @@ Inputs:
 - Nenhum input direto.
 
 Acoes:
-- Nenhuma acao direta nos cards atuais.
+- `Confirmar`
+  - aparece para reserva pendente.
+  - chama `updateCourtBookingStatus(bookingId, "confirmed")`.
+- `Cancelar`
+  - aparece para reserva nao cancelada.
+  - chama `updateCourtBookingStatus(bookingId, "cancelled")`.
+- `Liberar`
+  - aparece para bloqueio.
+  - chama `updateCourtBookingStatus(bookingId, "cancelled")`.
 
 Logica basica:
 - Recebe `todayBookings`.
-- Mostra ate 8 reservas do dia.
+- Renderiza todas as reservas do dia recebidas, sem corte silencioso.
 - Status:
   - `blocked` -> Bloqueio.
   - `confirmed` -> Confirmada.
@@ -213,23 +223,25 @@ Logica basica:
   - payment `pending` -> Pagamento pendente.
   - sem payment -> Sem pagamento.
 
-Pontos de evolucao:
-- Hoje deveria ser operacional: clicar na reserva deveria abrir detalhe, confirmar/cancelar/cobrar.
-- Do jeito atual, a aba e mais resumo do que ferramenta de trabalho.
+Ponto de evolucao:
+- Drawer de reserva pode ser criado futuramente para editar jogador, telefone, pagamento e recorrencia sem sair da aba.
 
 ## 6. Aba Reservas
 
 Componente: `PlaceBookingReservationsModule`.
 
-Funcao: listar reservas recentes para confirmacao, cancelamento/liberacao.
+Funcao: localizar e operar reservas por jogador, quadra, data e status.
 
 Conteudo:
-- Ate 10 reservas.
+- Todas as reservas recebidas pelo modulo, sem corte silencioso.
 - Cada linha mostra:
   - quadra;
   - jogador;
   - data/hora;
-  - status.
+  - status;
+  - status de pagamento;
+  - telefone;
+  - serie recorrente e observacao quando existirem.
 
 Status:
 - `blocked` -> Bloqueio.
@@ -249,11 +261,18 @@ Acoes:
   - tambem chama `updateCourtBookingStatus(bookingId, "cancelled")`.
 
 Inputs:
-- Nenhum filtro visivel nesta aba.
+- Busca textual por jogador, telefone, quadra ou observacao.
+- Filtro por data.
+- Filtro por status:
+  - todos;
+  - pendentes;
+  - confirmadas;
+  - bloqueios;
+  - canceladas.
 
 Pontos de evolucao:
-- Falta filtro por status, quadra, data e jogador.
-- Pagamento nao aparece aqui de forma completa; parte disso esta no componente legado `PlaceBookingDetailedListModule`, que nao aparece quando o workspace novo esta ativo.
+- Drawer de reserva ainda pode centralizar edicao completa, pagamento e cancelamento de serie.
+- Marcacao de pagamento permanece no fluxo detalhado/financeiro existente; a aba mostra status para orientar a operacao.
 
 ## 7. Aba Calendario
 
@@ -302,6 +321,11 @@ Ao expandir slot ocupado:
   - detalhe;
   - metadata;
   - participantes.
+- para reserva/bloqueio, a acao `Ver reservas` leva para a aba `Reservas`.
+
+Ao expandir slot livre:
+- mostra `Horario livre nesta quadra`.
+- para gestor/recepcao com permissao, a acao `Reservar` abre `Nova reserva` com quadra, data, inicio e fim preenchidos.
 
 ### Tipos de evento
 
@@ -349,10 +373,9 @@ Logica basica:
 - Capacidade diaria estimada: `activeCourts.length * 14 * 60`.
 
 Pontos de evolucao:
-- A grade e poderosa, mas muito densa.
-- Falta acao direta no slot livre: criar reserva/bloqueio/turma.
-- Falta acao direta no slot ocupado: abrir reserva/turma/aluno.
-- Texto de `details` pode ficar pesado em mobile.
+- A grade ainda e densa para dias muito cheios.
+- Slot ocupado de turma/aula poderia abrir drawer especifico de turma/aluno em sprint futuro.
+- Slot ocupado de reserva hoje leva para lista filtravel de reservas; drawer direto de reserva fica como evolucao.
 
 ## 8. Aba Nova reserva
 
@@ -431,13 +454,7 @@ Logica:
   - preserva quadra e repeticao;
   - atualiza recursos.
 
-### Opcoes avancadas
-
-Inputs:
-- Observacao.
-- Repetir por semanas:
-  - minimo 1;
-  - maximo 26.
+### Acoes secundarias visiveis
 
 Acoes:
 - `Bloquear horario`
@@ -448,10 +465,17 @@ Acoes:
   - habilita quando ha campos obrigatorios e nao ha quadra livre.
   - chama `joinCourtBookingWaitlist`.
 
+### Observacao e repeticao
+
+Inputs:
+- Observacao.
+- Repetir por semanas:
+  - minimo 1;
+  - maximo 26.
+
 Pontos de evolucao:
-- A aba usa busca por uma quadra selecionada, mas retorna todas as quadras livres. Isso e correto, porem o label inicial ainda pode induzir o usuario a achar que esta buscando so uma quadra.
 - Deveria destacar mais os boxes das quadras livres e permitir reservar diretamente no card.
-- `Bloquear horario` e `Entrar na espera` ficam escondidos em `Opcoes avancadas`.
+- Futuramente pode haver drawer curto para completar nome/telefone quando a reserva for feita pela recepcao para outro jogador.
 
 ## 9. Aba Espera
 
@@ -460,7 +484,7 @@ Componente: `PlaceBookingWaitlistModule`.
 Funcao: converter lista de espera em reserva ou convite, e remover entradas.
 
 Conteudo:
-- Ate 10 entradas.
+- Todas as entradas recebidas pelo modulo, sem corte silencioso.
 - Cada linha mostra:
   - jogador;
   - quadra;
@@ -480,20 +504,22 @@ Acoes:
   - aparece para waiting/invited.
   - so habilita se `isPromotable`.
   - chama `promoteCourtBookingWaitlist`.
-- `Convidar`
+- `Marcar convidado`
   - aparece para `waiting`.
   - chama `updateCourtBookingWaitlistStatus(entryId, "invited")`.
+  - explicita que a acao atual altera status interno e nao envia notificacao real.
 - `Remover`
   - aparece se nao esta cancelado/booked.
   - chama `updateCourtBookingWaitlistStatus(entryId, "cancelled")`.
 
 Logica basica:
+- Possui busca por jogador, telefone, quadra ou observacao.
+- Possui filtro por data e status.
 - Promotavel = nao existe reserva conflitante no mesmo horario/quadra.
 - Ao promover, cria uma reserva a partir da entrada de espera via RPC.
 
 Pontos de evolucao:
-- Poderia ter filtro por data/quadra/status.
-- A acao `Convidar` muda status, mas nao deixa claro se envia mensagem ou apenas marca internamente.
+- Criar envio real de WhatsApp/push para transformar `Marcar convidado` em convite ativo.
 
 ## 10. Aba Quadras
 
@@ -616,7 +642,7 @@ Funcoes:
 - Marcar pagamento pendente como pago.
 - Cancelar serie.
 - Promover lista de espera.
-- Convidar/remover espera.
+- Marcar convidado/remover espera.
 
 Estado atual:
 - Na rota Management OS atual, esse componente nao aparece quando `showBookingWorkspace` esta ativo.
@@ -659,32 +685,34 @@ No Player App/publico:
 Na gestao:
 - nao deveria ser experiencia principal do jogador comum.
 
-## 13. Principais inconsistencias atuais
+## 13. Estado pos-MGMT-AGENDA-01 e inconsistencias restantes
 
-1. Duplicacao de filas
-   - A fila superior mostra reservas pendentes e espera.
-   - As abas `Reservas` e `Espera` mostram o mesmo dominio.
-   - Isso pode ser bom como resumo, mas precisa parecer atalho, nao conteudo duplicado.
+1. Fila urgente consolidada
+   - A fila de reservas pendentes/lista de espera agora fica dentro da `Central de agenda`.
+   - Quando ha mais de 6 itens, mostra atalho para lista completa.
+   - Nao deve voltar a aparecer como bloco solto antes da subnav.
 
-2. Aba Hoje pouco acionavel
-   - Mostra reservas do dia, mas nao permite confirmar, cancelar, cobrar ou abrir detalhe direto.
+2. Aba Hoje ja e acionavel
+   - Permite confirmar, cancelar ou liberar bloqueio.
+   - Ainda falta drawer de detalhe para edicao completa/cobranca contextual.
 
-3. Aba Reservas sem filtros
-   - Em uma academia real, 10 reservas recentes sem filtro nao resolve operacao.
-   - Falta data, status, quadra, jogador, pagamento.
+3. Aba Reservas filtravel
+   - Busca por jogador/telefone/quadra, data e status estao implementados.
+   - Pagamento aparece como leitura, mas `Marcar pago` e `Cancelar serie` ainda vivem no fluxo detalhado/legado.
 
 4. Calendario poderoso, mas pesado
    - Junta reservas, bloqueios, turmas e avulsas corretamente.
-   - Ainda falta acao direta em slot livre e slot ocupado.
+   - Slot livre ja inicia `Nova reserva`.
+   - Slot ocupado de reserva/bloqueio leva para `Reservas`; drawer contextual ainda e evolucao futura.
    - Em mobile, `details` por horario pode ficar cansativo.
 
-5. Nova reserva ainda exige fluxo em duas etapas
+5. Nova reserva ainda exige busca antes de reservar
    - Busca primeiro, depois seleciona quadra livre e reserva.
-   - Esta correto tecnicamente, mas visualmente deveria entregar cards de quadras livres mais diretos.
+   - Esta correto tecnicamente, mas cards de quadras livres podem ganhar CTA `Reservar` direto.
 
-6. Espera sem clareza de comunicacao
-   - `Convidar` parece enviar convite, mas atualmente apenas muda status.
-   - Precisa explicitar se notifica ou apenas marca.
+6. Espera com comunicacao clarificada
+   - `Convidar` foi renomeado para `Marcar convidado`.
+   - Ainda falta envio real de WhatsApp/push para convite ativo.
 
 7. Quadras/Regras ainda parecem configuracao tecnica
    - Melhor que antes, mas ainda exige entender perfil, regra, preco, janela e aprovacao.
@@ -693,11 +721,9 @@ Na gestao:
 8. Pagamento de reserva nao esta igualmente presente nas abas novas
    - A acao `Marcar pago` existe no componente legado, mas nao na aba nova `Reservas`.
 
-9. Limites silenciosos
-   - Hoje: ate 8 reservas.
-   - Reservas: ate 10.
-   - Espera: ate 10.
-   - Sem paginacao ou indicacao clara de que ha mais itens.
+9. Limites silenciosos removidos no workspace v2
+   - `Hoje`, `Reservas` e `Espera` renderizam a lista filtrada completa.
+   - A fila urgente ainda recorta em 6 itens, mas mostra atalho quando ha mais.
 
 10. Erros 500 no console
    - A captura local exibiu varias respostas 500.
@@ -705,18 +731,16 @@ Na gestao:
 
 ## 14. Direcao recomendada para evolucao
 
-1. Transformar `Hoje` em agenda de trabalho.
-   - Cada item deve abrir detalhes.
-   - Acoes rapidas: confirmar, cobrar, cancelar, abrir WhatsApp, remarcar.
+1. Completar detalhe da reserva.
+   - Criar drawer curto para reserva/bloqueio.
+   - Incluir pagamento, serie, remarcar, telefone/WhatsApp e observacao.
 
-2. Melhorar `Reservas`.
-   - Filtros essenciais: data, status, quadra, jogador, pagamento.
-   - Mostrar pagamento e recorrencia.
+2. Completar financeiro dentro de `Reservas`.
    - Trazer `Marcar pago` e `Cancelar serie` para a aba nova.
+   - Manter acoes financeiras condicionadas a permissao.
 
 3. Evoluir `Calendario`.
-   - Slot livre deve permitir criar reserva/bloqueio.
-   - Slot ocupado deve abrir detalhe contextual.
+   - Slot ocupado deve abrir drawer contextual, nao apenas redirecionar para lista.
    - Filtros devem ser compactos em mobile.
 
 4. Refinar `Nova reserva`.
@@ -726,7 +750,7 @@ Na gestao:
 
 5. Clarificar `Espera`.
    - Separar status `Aguardando`, `Convidado`, `Convertido`, `Cancelado`.
-   - `Convidar` deve indicar se envia WhatsApp/notificacao ou so muda status.
+   - Criar envio real de WhatsApp/notificacao para convite ativo.
 
 6. Reorganizar `Quadras`.
    - Separar em duas areas:

@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
-import { CompetitionHeader, CompetitionOperationalQueue, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
+import { CompetitionHeader, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
 import { ResponsiveFilterSheet } from "../components/ResponsiveFilterSheet";
 import {
   adminResolveLeagueMatchResult,
@@ -18,6 +18,7 @@ import {
   loadLeagueDetails,
   loadLeaguePlayerStandings,
   loadLeagueRankingSnapshots,
+  loadMyLeagueRegistration,
   loadLeagueRegistrations,
   loadLeagueSchedulerRuns,
   loadMatchAvailability,
@@ -71,6 +72,33 @@ function parsePageTab(value: string | null): PageTab {
 function normalizePageTab(tab: PageTab, isOwner: boolean): PageTab {
   if (isOwner) return tab;
   return tab === "jogadores" ? "partidas" : tab;
+}
+
+function leagueRegistrationStatusLabel(status: LeagueRegistration["status"]): string {
+  if (status === "approved") return "Inscricao aprovada";
+  if (status === "rejected") return "Inscricao recusada";
+  return "Inscricao em analise";
+}
+
+function leagueRegistrationStatusDetail(status: LeagueRegistration["status"]): string {
+  if (status === "approved") return "Voce ja pode acompanhar partidas, classificacao e comunicados da liga.";
+  if (status === "rejected") return "Sua solicitacao nao foi aprovada. Fale com a organizacao se precisar revisar a classe.";
+  return "A organizacao ainda precisa aprovar sua inscricao antes de voce aparecer nas rodadas.";
+}
+
+function friendlyLeagueJoinError(error: unknown): string {
+  const raw = error instanceof Error ? error.message : typeof error === "string" ? error : "";
+  const lower = raw.toLowerCase();
+  if (lower.includes("duplicate") || lower.includes("unique") || lower.includes("already") || lower.includes("ja existe")) {
+    return "Voce ja tem uma inscricao registrada nesta liga.";
+  }
+  if (lower.includes("permission denied") || lower.includes("row-level security") || lower.includes("not authorized")) {
+    return "Nao foi possivel solicitar entrada com este perfil. Entre novamente e tente de novo.";
+  }
+  if (lower.includes("not found") || lower.includes("invalido")) {
+    return "Nao encontramos esta liga ou classe. Atualize a pagina e tente novamente.";
+  }
+  return "Nao foi possivel solicitar entrada agora. Tente novamente em instantes.";
 }
 
 type MatchForm = {
@@ -152,6 +180,188 @@ type MyLeagueMatch = {
   scheduledAt: string;
   match: LeagueMatchSummary;
 };
+
+type LeagueOperationTaskAction = {
+  disabled?: boolean;
+  kind?: "primary" | "secondary" | "danger";
+  label: string;
+  onClick: () => void | Promise<void>;
+};
+
+type LeagueOperationTask = {
+  detail: string;
+  drawerContent: ReactNode;
+  eyebrow: string;
+  id: string;
+  impact: string;
+  meta: string;
+  primaryAction: LeagueOperationTaskAction;
+  secondaryActions?: LeagueOperationTaskAction[];
+  title: string;
+  tone: "attention" | "danger" | "neutral" | "ready";
+};
+
+function invokeLeagueOperationTaskAction(action: LeagueOperationTaskAction) {
+  if (action.disabled) return;
+  void Promise.resolve(action.onClick());
+}
+
+function LeagueOperationTaskRows({
+  ariaLabel,
+  emptyDetail,
+  emptyTitle,
+  heading,
+  onOpenAll,
+  onOpenTask,
+  tasks,
+  totalCount,
+}: {
+  ariaLabel: string;
+  emptyDetail: string;
+  emptyTitle: string;
+  heading: string;
+  onOpenAll: () => void;
+  onOpenTask: (task: LeagueOperationTask) => void;
+  tasks: LeagueOperationTask[];
+  totalCount: number;
+}) {
+  if (!tasks.length) {
+    return (
+      <section className="tournament-organizer-queue league-round-queue ready" aria-label={ariaLabel}>
+        <div className="tournament-organizer-queue-head">
+          <div>
+            <span>{heading}</span>
+            <strong>{emptyTitle}</strong>
+            <small>{emptyDetail}</small>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="tournament-organizer-queue league-round-queue" aria-label={ariaLabel}>
+      <div className="tournament-organizer-queue-head">
+        <div>
+          <span>{heading}</span>
+          <strong>{totalCount} {totalCount === 1 ? "tarefa para resolver" : "tarefas para resolver"}</strong>
+          <small>
+            {tasks.length < totalCount
+              ? `Mostrando ${tasks.length} primeiras. Abra a lista completa para ver tudo.`
+              : "Rows com acao primaria, contexto e detalhe rapido."}
+          </small>
+        </div>
+        <button className="quiet" type="button" onClick={onOpenAll}>
+          Abrir lista completa
+        </button>
+      </div>
+      <div className="tournament-organizer-task-list">
+        {tasks.map((task) => (
+          <div
+            key={task.id}
+            className={`tournament-organizer-task-row ${task.tone}`}
+            role="button"
+            tabIndex={0}
+            onClick={() => onOpenTask(task)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onOpenTask(task);
+              }
+            }}
+          >
+            <div className="tournament-organizer-task-status">
+              <span>{task.eyebrow}</span>
+            </div>
+            <div className="tournament-organizer-task-main">
+              <strong>{task.title}</strong>
+              <span>{task.meta}</span>
+              <small>{task.detail}</small>
+            </div>
+            <div className="tournament-organizer-task-impact">
+              <span>{task.impact}</span>
+            </div>
+            <div className="tournament-organizer-task-actions">
+              <button
+                className={task.primaryAction.kind === "danger" ? "danger" : "primary"}
+                type="button"
+                disabled={task.primaryAction.disabled}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  invokeLeagueOperationTaskAction(task.primaryAction);
+                }}
+              >
+                {task.primaryAction.label}
+              </button>
+              <button
+                className="quiet"
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onOpenTask(task);
+                }}
+              >
+                Detalhes
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function LeagueOperationTaskDrawer({
+  onClose,
+  task,
+}: {
+  onClose: () => void;
+  task: LeagueOperationTask | null;
+}) {
+  if (!task) return null;
+  return (
+    <div className="tournament-organizer-drawer-backdrop" onMouseDown={onClose}>
+      <aside
+        className="tournament-organizer-drawer"
+        aria-label="Detalhe da tarefa da liga"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <header>
+          <div>
+            <span>{task.eyebrow}</span>
+            <h2>{task.title}</h2>
+            <p>{task.detail}</p>
+          </div>
+          <button className="compact-action" type="button" onClick={onClose}>
+            Fechar
+          </button>
+        </header>
+        <div className="tournament-organizer-drawer-body">{task.drawerContent}</div>
+        <footer>
+          {task.secondaryActions?.map((action) => (
+            <button
+              key={action.label}
+              className={action.kind === "danger" ? "danger" : action.kind === "primary" ? "primary" : ""}
+              type="button"
+              disabled={action.disabled}
+              onClick={() => invokeLeagueOperationTaskAction(action)}
+            >
+              {action.label}
+            </button>
+          ))}
+          <button
+            className={task.primaryAction.kind === "danger" ? "danger" : "primary"}
+            type="button"
+            disabled={task.primaryAction.disabled}
+            onClick={() => invokeLeagueOperationTaskAction(task.primaryAction)}
+          >
+            {task.primaryAction.label}
+          </button>
+        </footer>
+      </aside>
+    </div>
+  );
+}
 
 function typeLabel(v: LeagueDetails["leagueType"]): string {
   if (v === "dupla_fixa") return "Dupla fixa";
@@ -470,6 +680,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [generatedJoinLink, setGeneratedJoinLink] = useState("");
   const [showFinishedMyLeagueMatches, setShowFinishedMyLeagueMatches] = useState(false);
   const [calendarSyncing, setCalendarSyncing] = useState(false);
+  const [selectedLeagueTaskId, setSelectedLeagueTaskId] = useState("");
 
   const isOwner = Boolean(league && league.ownerId === user.id);
   const leagueBackPath = isOwner ? "/eventos/ligas?view=organizing" : "/eventos/ligas?view=participating";
@@ -637,6 +848,72 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     return (source.length ? source : myLeagueMatches).slice(0, 6);
   }, [myLeagueMatches, myPendingLeagueMatches, showFinishedMyLeagueMatches]);
 
+  const myLeagueRegistration = useMemo(
+    () => registrations.find((registration) => registration.userId === user.id) ?? null,
+    [registrations, user.id]
+  );
+  const selectedJoinClass = useMemo(
+    () => (selectedClassId ? classById[selectedClassId] : null),
+    [classById, selectedClassId]
+  );
+
+  const publicLeagueCta = useMemo(() => {
+    if (!league) {
+      return {
+        action: "none" as const,
+        disabled: true,
+        detail: "Carregando liga.",
+        label: "Aguarde",
+      };
+    }
+    if (myPendingLeagueMatches.length > 0) {
+      return {
+        action: "matches" as const,
+        disabled: false,
+        detail: `${myPendingLeagueMatches.length} ${myPendingLeagueMatches.length === 1 ? "partida pendente" : "partidas pendentes"}.`,
+        label: "Ver minhas partidas",
+      };
+    }
+    if (myLeagueRegistration?.status === "approved") {
+      return {
+        action: "matches" as const,
+        disabled: false,
+        detail: myLeagueMatches.length > 0 ? "Acompanhe rodada, agenda e resultados." : "Rodada ainda nao gerada.",
+        label: myLeagueMatches.length > 0 ? "Ver minhas partidas" : "Acompanhar liga",
+      };
+    }
+    if (myLeagueRegistration?.status === "pending") {
+      return {
+        action: "none" as const,
+        disabled: true,
+        detail: "A organizacao ainda precisa aprovar sua inscricao.",
+        label: "Inscricao em analise",
+      };
+    }
+    if (myLeagueRegistration?.status === "rejected") {
+      return {
+        action: "none" as const,
+        disabled: true,
+        detail: "Sua inscricao nao foi aprovada pela organizacao.",
+        label: "Inscricao recusada",
+      };
+    }
+    if (league.visibility === "public" && league.publicJoinEnabled) {
+      return {
+        action: "join" as const,
+        disabled: false,
+        detail: league.registrationFeeCents > 0 ? formatMoneyFromCents(league.registrationFeeCents) : "Inscricao sem taxa cadastrada.",
+        label: league.joinRequiresApproval ? "Solicitar inscricao" : "Entrar na liga",
+      };
+    }
+    return {
+      action: "matches" as const,
+      disabled: false,
+      detail: league.status === "finished" ? "Consulte ranking e historico." : "Acompanhe partidas e classificacao.",
+      label: league.status === "finished" ? "Ver resultados" : "Ver partidas",
+    };
+  }, [league, myLeagueMatches.length, myLeagueRegistration, myPendingLeagueMatches.length]);
+
   const leagueSeasonGuard = useMemo(() => {
     const blockers: string[] = [];
     const seasonRoundNumber = Number(selectedSeason?.currentRoundNumber || 0);
@@ -758,7 +1035,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         setSchedulerRuns(schedulerRows);
         setPaymentsByTarget(Object.fromEntries(paymentRows.map((payment) => [`${payment.targetType}:${payment.targetId}`, payment])));
       } else {
-        setRegistrations([]);
+        const myRegistration = await loadMyLeagueRegistration(id, initialSeasonId || null).catch(() => null);
+        setRegistrations(myRegistration ? [myRegistration] : []);
         setSchedulerRuns([]);
         setPaymentsByTarget({});
       }
@@ -789,13 +1067,20 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   }, [selectedSeasonId, selectedClassId]);
 
   useEffect(() => {
+    if (!league || isOwner) return;
+    loadMyLeagueRegistration(league.id, selectedSeasonId || null)
+      .then((registration) => setRegistrations(registration ? [registration] : []))
+      .catch(() => setRegistrations([]));
+  }, [isOwner, league, selectedSeasonId]);
+
+  useEffect(() => {
     if (!selectedClassId) return;
     if (classes.some((c) => c.id === selectedClassId)) return;
     setSelectedClassId("");
   }, [classes, selectedClassId]);
 
-  async function openMatchRoom(match: LeagueMatchSummary) {
-    const nextId = expandedMatchId === match.id ? "" : match.id;
+  async function openMatchRoom(match: LeagueMatchSummary, forceOpen = false) {
+    const nextId = forceOpen ? match.id : expandedMatchId === match.id ? "" : match.id;
     setExpandedMatchId(nextId);
     if (!nextId) return;
     const [subs, avail, msgs] = await Promise.all([
@@ -831,6 +1116,22 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       }
       return params;
     });
+  }
+
+  function scrollToLeaguePublicSection(sectionId: string) {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function onPublicLeagueCta() {
+    if (publicLeagueCta.disabled) return;
+    if (publicLeagueCta.action === "join") {
+      goToTab("visao");
+      window.setTimeout(() => scrollToLeaguePublicSection("league-public-join"), 80);
+      return;
+    }
+    if (publicLeagueCta.action === "matches") {
+      goToTab("partidas");
+    }
   }
 
   async function onGenerateRound() {
@@ -933,26 +1234,35 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
   async function onPublicJoin() {
     if (!league) return;
+    if (myLeagueRegistration) {
+      setFeedback({ kind: "success", text: leagueRegistrationStatusDetail(myLeagueRegistration.status) });
+      return;
+    }
+    if (classes.length > 0 && !selectedJoinClass) {
+      setFeedback({ kind: "error", text: "Escolha uma classe para solicitar entrada na liga." });
+      return;
+    }
     setBusy(true);
     setFeedback(null);
     try {
       const status = await requestPublicLeagueJoin({
         leagueId: league.id,
         seasonId: selectedSeasonId || null,
-        classId: selectedClassId || null,
+        classId: selectedJoinClass?.id || null,
         playerName: joinPlayerName,
         phone: joinPhone,
       });
+      const myRegistration = await loadMyLeagueRegistration(league.id, selectedSeasonId || null).catch(() => null);
+      setRegistrations(myRegistration ? [myRegistration] : []);
       setFeedback({
         kind: "success",
         text:
           status === "approved"
-            ? "Inscricao aprovada automaticamente. O pagamento sera confirmado pela plataforma."
-            : "Solicitacao enviada para aprovacao. O pagamento sera confirmado pela plataforma.",
+            ? "Inscricao aprovada automaticamente. O pagamento sera acompanhado pela organizacao."
+            : "Solicitacao enviada para aprovacao. O pagamento sera acompanhado pela organizacao.",
       });
-      await loadAll();
     } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao solicitar inscricao." });
+      setFeedback({ kind: "error", text: friendlyLeagueJoinError(err) });
     } finally {
       setBusy(false);
     }
@@ -1338,6 +1648,339 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
   }
 
+  const allLeagueMatchItems = roundsData.flatMap(({ round, matches }) => matches.map((match) => ({ round, match })));
+  const unfinishedLeagueMatchItems = allLeagueMatchItems
+    .filter(({ match }) => match.status !== "encerrada" && match.status !== "wo")
+    .sort((a, b) => {
+      const priority: Record<LeagueMatchSummary["status"], number> = {
+        em_disputa: 1,
+        em_analise_adm: 1,
+        aguardando_confirmacao: 2,
+        aguardando_resultado: 3,
+        aguardando_organizacao: 4,
+        encerrada: 9,
+        wo: 9,
+      };
+      const byPriority = priority[a.match.status] - priority[b.match.status];
+      if (byPriority !== 0) return byPriority;
+      if (a.round.roundNumber !== b.round.roundNumber) return a.round.roundNumber - b.round.roundNumber;
+      return a.match.id.localeCompare(b.match.id);
+    });
+
+  function openLeagueMatchFromQueue(match: LeagueMatchSummary) {
+    goToTab("partidas");
+    void openMatchRoom(match, true);
+  }
+
+  const leagueOperationTasks: LeagueOperationTask[] = (() => {
+    if (!league || !isOwner) return [];
+    const tasks: LeagueOperationTask[] = [];
+
+    filteredRegistrations
+      .filter((registration) => registration.status === "pending")
+      .forEach((registration) => {
+        const cls = registration.classId ? classById[registration.classId] : null;
+        const payment = paymentsByTarget[`league_registration:${registration.id}`];
+        const paymentLabel =
+          league.registrationFeeCents > 0
+            ? payment?.status === "paid"
+              ? "Pagamento registrado"
+              : `Pagamento pendente: ${formatMoneyFromCents(league.registrationFeeCents)}`
+            : "Sem taxa de inscricao";
+        tasks.push({
+          id: `registration:${registration.id}`,
+          eyebrow: "Inscricao",
+          title: `Aprovar ${registration.playerName}`,
+          meta: `${cls ? classLabel(cls) : "Classe a definir"} | ${registration.phone || "sem telefone"}`,
+          detail: "Solicitacao aguardando decisao da organizacao.",
+          impact: paymentLabel,
+          tone: "attention",
+          primaryAction: {
+            label: "Aprovar",
+            disabled: busy,
+            onClick: () => onApproveRegistration(registration.id, "approved"),
+          },
+          secondaryActions: [
+            ...(payment?.status !== "paid" && league.registrationFeeCents > 0
+              ? [
+                  {
+                    label: "Marcar pago",
+                    disabled: busy,
+                    onClick: () => onMarkLeagueRegistrationPaid(registration),
+                  } satisfies LeagueOperationTaskAction,
+                ]
+              : []),
+            {
+              label: "Rejeitar",
+              kind: "danger",
+              disabled: busy,
+              onClick: () => onApproveRegistration(registration.id, "rejected"),
+            },
+          ],
+          drawerContent: (
+            <div className="tournament-organizer-task-detail">
+              <dl>
+                <div>
+                  <dt>Jogador</dt>
+                  <dd>{registration.playerName}</dd>
+                </div>
+                <div>
+                  <dt>Classe</dt>
+                  <dd>{cls ? classLabel(cls) : "A definir"}</dd>
+                </div>
+                <div>
+                  <dt>Origem</dt>
+                  <dd>{registration.source === "link" ? "Link de inscricao" : registration.source === "public" ? "Pagina publica" : "Admin"}</dd>
+                </div>
+                <div>
+                  <dt>Pagamento</dt>
+                  <dd>{paymentLabel}</dd>
+                </div>
+              </dl>
+              <ul>
+                <li>Aprovar cria o jogador ativo da liga e o coloca nas proximas rodadas geradas.</li>
+                <li>Rejeitar remove esta solicitacao da fila operacional sem apagar o historico.</li>
+              </ul>
+            </div>
+          ),
+        });
+      });
+
+    filteredRegistrations
+      .filter(
+        (registration) =>
+          registration.status === "approved" &&
+          league.registrationFeeCents > 0 &&
+          paymentsByTarget[`league_registration:${registration.id}`]?.status !== "paid"
+      )
+      .forEach((registration) => {
+        const cls = registration.classId ? classById[registration.classId] : null;
+        tasks.push({
+          id: `payment:${registration.id}`,
+          eyebrow: "Financeiro",
+          title: `Registrar pagamento de ${registration.playerName}`,
+          meta: `${formatMoneyFromCents(league.registrationFeeCents)} | ${cls ? classLabel(cls) : "Classe a definir"}`,
+          detail: "Inscricao aprovada sem pagamento registrado.",
+          impact: "Evita jogador confirmado com cobranca solta.",
+          tone: "attention",
+          primaryAction: {
+            label: "Marcar pago",
+            disabled: busy,
+            onClick: () => onMarkLeagueRegistrationPaid(registration),
+          },
+          secondaryActions: [
+            {
+              label: "Ver jogadores",
+              onClick: () => goToTab("jogadores"),
+            },
+          ],
+          drawerContent: (
+            <div className="tournament-organizer-task-detail">
+              <dl>
+                <div>
+                  <dt>Jogador</dt>
+                  <dd>{registration.playerName}</dd>
+                </div>
+                <div>
+                  <dt>Classe</dt>
+                  <dd>{cls ? classLabel(cls) : "A definir"}</dd>
+                </div>
+                <div>
+                  <dt>Valor</dt>
+                  <dd>{formatMoneyFromCents(league.registrationFeeCents)}</dd>
+                </div>
+              </dl>
+              <ul>
+                <li>O registro usa o fluxo de pagamento manual/stub ja existente.</li>
+                <li>Se o pagamento nao foi recebido, mantenha a pendencia visivel na lista de jogadores.</li>
+              </ul>
+            </div>
+          ),
+        });
+      });
+
+    unfinishedLeagueMatchItems.forEach(({ round, match }) => {
+      const availability = availabilityByMatch[match.id] || [];
+      const submissions = matchSubmissions[match.id] || [];
+      const opState = buildLeagueMatchOperationalState({ match, availability, submissions, isOwner: true });
+      const cls = match.classId ? classById[match.classId] : null;
+      const side1 = match.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ") || "A definir";
+      const side2 = match.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ") || "A definir";
+      const tone = opState.severity === "danger" ? "danger" : opState.severity === "warning" ? "attention" : "neutral";
+      const primaryLabel =
+        opState.key === "confirmation"
+          ? "Confirmar"
+          : opState.key === "admin_review" || opState.key === "dispute"
+            ? "Resolver"
+            : opState.key === "result"
+              ? "Resultado"
+              : "Abrir sala";
+      tasks.push({
+        id: `match:${match.id}`,
+        eyebrow: `Rodada ${round.roundNumber}`,
+        title: `${side1} x ${side2}`,
+        meta: `${cls ? classLabel(cls) : selectedClassLabel} | ${matchStatusLabel(match.status)}`,
+        detail: opState.detail,
+        impact: match.scheduledAt ? formatDateTime(match.scheduledAt) : `${match.participants.length} jogadores | sem horario definido`,
+        tone,
+        primaryAction: {
+          label: primaryLabel,
+          disabled: busy,
+          onClick: () => openLeagueMatchFromQueue(match),
+        },
+        secondaryActions: [
+          {
+            label: "Ver partidas",
+            onClick: () => goToTab("partidas"),
+          },
+        ],
+        drawerContent: (
+          <div className="tournament-organizer-task-detail">
+            <dl>
+              <div>
+                <dt>Rodada</dt>
+                <dd>Rodada {round.roundNumber}</dd>
+              </div>
+              <div>
+                <dt>Classe</dt>
+                <dd>{cls ? classLabel(cls) : selectedClassLabel}</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd>{matchStatusLabel(match.status)}</dd>
+              </div>
+              <div>
+                <dt>Proxima acao</dt>
+                <dd>{opState.ownerAction}</dd>
+              </div>
+            </dl>
+            <ul>
+              <li>{opState.detail}</li>
+              <li>A sala da partida concentra disponibilidade, resultado, WO, confirmacao e mensagens.</li>
+              <li>{match.scheduledAt ? `Horario atual: ${formatDateTime(match.scheduledAt)}.` : "Horario ainda nao definido para os jogadores."}</li>
+            </ul>
+          </div>
+        ),
+      });
+    });
+
+    const generationBlockers: string[] = [];
+    if (!selectedSeasonId) generationBlockers.push("Selecione uma temporada.");
+    if (!classes.length) generationBlockers.push("Crie ao menos uma classe.");
+    if (!standingsSummary.players) generationBlockers.push("Aprove jogadores ativos.");
+    if (registrationStats.pending > 0) generationBlockers.push("Resolva inscricoes pendentes antes de gerar a rodada.");
+    if (unfinishedLeagueMatchItems.length > 0) generationBlockers.push("Finalize a rodada pendente antes de gerar a proxima.");
+    if (selectedSeason?.status !== "finished" && !unfinishedLeagueMatchItems.length) {
+      tasks.push({
+        id: "generate-round",
+        eyebrow: "Proxima rodada",
+        title: generationBlockers.length ? "Rodada ainda nao esta pronta para gerar" : "Gerar proxima rodada",
+        meta: selectedSeason?.name || "Temporada selecionada",
+        detail: generationBlockers.length
+          ? "Ainda ha requisitos operacionais antes da proxima rodada."
+          : "Todas as pendencias da rodada atual estao limpas.",
+        impact: generationBlockers.length ? generationBlockers[0] : "Cria os confrontos da proxima rodada.",
+        tone: generationBlockers.length ? "neutral" : "ready",
+        primaryAction: {
+          label: "Gerar rodada",
+          disabled: busy || generationBlockers.length > 0,
+          onClick: onGenerateRound,
+        },
+        drawerContent: (
+          <div className="tournament-organizer-task-detail">
+            <dl>
+              <div>
+                <dt>Temporada</dt>
+                <dd>{selectedSeason?.name || "A definir"}</dd>
+              </div>
+              <div>
+                <dt>Classe</dt>
+                <dd>{selectedClassId ? selectedClassLabel : "Todas as classes"}</dd>
+              </div>
+              <div>
+                <dt>Jogadores ativos</dt>
+                <dd>{standingsSummary.players}</dd>
+              </div>
+            </dl>
+            {generationBlockers.length ? (
+              <ul>
+                {generationBlockers.map((blocker) => (
+                  <li key={blocker}>{blocker}</li>
+                ))}
+              </ul>
+            ) : (
+              <ul>
+                <li>A nova rodada sera criada com a regra de geracao da liga.</li>
+                <li>Depois de gerar, use a fila para organizar agenda, resultado e confirmacao.</li>
+              </ul>
+            )}
+          </div>
+        ),
+      });
+    }
+
+    return tasks;
+  })();
+
+  const playerLeagueTasks: LeagueOperationTask[] = (() => {
+    if (!league || isOwner) return [];
+    return myPendingLeagueMatches.map((item) => {
+      const availability = availabilityByMatch[item.id] || [];
+      const submissions = matchSubmissions[item.id] || [];
+      const myPlayer = item.match.participants.find((participant) => participant.userId === user.id);
+      const opState = buildLeagueMatchOperationalState({ match: item.match, availability, submissions, myPlayer, isOwner: false });
+      const tone = opState.severity === "danger" ? "danger" : opState.severity === "warning" ? "attention" : "neutral";
+      return {
+        id: `my-match:${item.id}`,
+        eyebrow: "Minha rodada",
+        title: item.title,
+        meta: `${item.classLabel} | ${item.roundLabel}`,
+        detail: opState.detail,
+        impact: item.scheduledAt ? formatDateTime(item.scheduledAt) : opState.playerAction,
+        tone,
+        primaryAction: {
+          label: "Abrir sala",
+          disabled: busy,
+          onClick: () => openLeagueMatchFromQueue(item.match),
+        },
+        drawerContent: (
+          <div className="tournament-organizer-task-detail">
+            <dl>
+              <div>
+                <dt>Partida</dt>
+                <dd>{item.title}</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd>{matchStatusLabel(item.status)}</dd>
+              </div>
+              <div>
+                <dt>Acao esperada</dt>
+                <dd>{opState.playerAction}</dd>
+              </div>
+            </dl>
+            <ul>
+              <li>{opState.detail}</li>
+              <li>A sala da partida permite enviar disponibilidade, lancar resultado e acompanhar mensagens.</li>
+            </ul>
+          </div>
+        ),
+      };
+    });
+  })();
+
+  const visibleLeagueOperationTasks = leagueOperationTasks.slice(0, 6);
+  const visiblePlayerLeagueTasks = playerLeagueTasks.slice(0, 4);
+  const selectedLeagueTask =
+    [...leagueOperationTasks, ...playerLeagueTasks].find((task) => task.id === selectedLeagueTaskId) ?? null;
+  const openOwnerLeagueTaskList = () => {
+    if (leagueOperationTasks.some((task) => task.id.startsWith("registration:") || task.id.startsWith("payment:"))) {
+      goToTab("jogadores");
+      return;
+    }
+    goToTab("partidas");
+  };
+
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       <CompetitionHeader
@@ -1354,6 +1997,109 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
       {!loading && !error && league ? (
         <>
+          {!isOwner ? (
+            <section id="league-public-event" className="tournament-public-event league-public-event">
+              <article className="tournament-public-hero league-public-hero">
+                <div className="tournament-public-copy">
+                  <div className="tournament-public-title-row">
+                    <span>Liga</span>
+                    <span className={`status-badge ${league.status === "active" ? "live" : league.status === "finished" ? "finished" : "draft"}`}>
+                      {statusLabel(league.status)}
+                    </span>
+                  </div>
+                  <h2>{league.name}</h2>
+                  <div className="tournament-public-meta">
+                    <span>{typeLabel(league.leagueType)}</span>
+                    <span>{[league.category, league.classScope].filter(Boolean).join(" / ") || "Classe a definir"}</span>
+                    <span>{selectedSeason?.name || "Temporada a definir"}</span>
+                  </div>
+                  <div className="tournament-public-facts">
+                    <span>
+                      <strong>{classes.length}</strong>
+                      classes
+                    </span>
+                    <span>
+                      <strong>{standingsSummary.players || registrationStats.approved}</strong>
+                      jogadores
+                    </span>
+                    <span>
+                      <strong>{leagueOverview.pending}</strong>
+                      jogos pendentes
+                    </span>
+                  </div>
+                  <div className="tournament-public-actions">
+                    <button className="primary tournament-public-main-cta" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
+                      <span>{publicLeagueCta.label}</span>
+                      <small>{publicLeagueCta.detail}</small>
+                    </button>
+                    <button className="quiet" type="button" onClick={() => void shareLeagueInviteWhatsApp()} disabled={busy}>
+                      Compartilhar
+                    </button>
+                  </div>
+                </div>
+                <div className="tournament-public-media league-public-media" aria-label="Resumo visual da liga">
+                  <div>
+                    <span>{league.name.slice(0, 2).toUpperCase()}</span>
+                    <small>{league.roundsTotal} rodadas previstas</small>
+                  </div>
+                </div>
+              </article>
+
+              <nav className="tournament-public-nav" aria-label="Navegacao publica da liga">
+                <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-event")}>
+                  Liga
+                </button>
+                <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-classes")}>
+                  Classes
+                </button>
+                <button type="button" className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
+                  Classificacao
+                </button>
+                <button type="button" className={activeTab === "partidas" ? "active" : ""} onClick={() => goToTab("partidas")}>
+                  Partidas
+                </button>
+                <button type="button" className={activeTab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
+                  Chat
+                </button>
+              </nav>
+
+              <section id="league-public-classes" className="tournament-public-categories">
+                <div className="section-title">
+                  <h2>Classes</h2>
+                  <span>{classes.length} {classes.length === 1 ? "classe" : "classes"}</span>
+                </div>
+                {!classes.length ? (
+                  <p className="subtle">Nenhuma classe publicada ainda.</p>
+                ) : (
+                  <div className="tournament-public-category-rail">
+                    {classes.map((item) => (
+                      <button
+                        key={`league-public-class:${item.id}`}
+                        type="button"
+                        className={selectedClassId === item.id ? "active" : ""}
+                        onClick={() => {
+                          setSelectedClassId(item.id);
+                          goToTab("visao");
+                        }}
+                      >
+                        <span>{item.categoryName}</span>
+                        <strong>{item.className}</strong>
+                        <small>{typeLabel(league.leagueType)}</small>
+                        <em>{standings.filter((player) => player.classId === item.id && player.status !== "inactive").length} jogadores</em>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              <div className="tournament-public-sticky-cta" aria-label="Acao principal da liga">
+                <button className="primary" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
+                  {publicLeagueCta.label}
+                </button>
+              </div>
+            </section>
+          ) : null}
+
           <ResponsiveFilterSheet
             buttonLabel="Escopo da liga"
             eyebrow="Filtros da liga"
@@ -1386,7 +2132,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           {isOwner ? (
             <section className="competition-focus-panel league-operation-panel">
               <div className="competition-focus-main">
-                <span>Competition OS</span>
+                <span>Operacao da liga</span>
                 <strong>{leagueOverview.nextAction}</strong>
                 <small>
                   {selectedSeason?.name || "Temporada"} | {selectedClassId ? classes.find((item) => item.id === selectedClassId)?.className || "Classe" : "Todas as classes"}
@@ -1409,49 +2155,30 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <button className="primary" type="button" onClick={() => goToTab(leagueOverview.nextTab)}>
                 Resolver agora
               </button>
-              <CompetitionOperationalQueue
-                title="Pendencias da rodada"
-                onOpenAll={() => goToTab("partidas")}
-                items={[
-                  {
-                    id: "schedule",
-                    count: leagueOverview.scheduling,
-                    label: "Agendar",
-                    detail: "Partidas aguardando organizacao",
-                    actionLabel: leagueOverview.scheduling > 0 ? "Agendar" : "Ver",
-                    tone: leagueOverview.scheduling > 0 ? "attention" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                  {
-                    id: "result",
-                    count: leagueOverview.result,
-                    label: "Resultado",
-                    detail: "Jogos esperando placar",
-                    actionLabel: leagueOverview.result > 0 ? "Resolver" : "Ver",
-                    tone: leagueOverview.result > 0 ? "attention" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                  {
-                    id: "confirmation",
-                    count: leagueOverview.confirmation,
-                    label: "Confirmar",
-                    detail: "Resultados aguardando aceite",
-                    actionLabel: leagueOverview.confirmation > 0 ? "Confirmar" : "Ver",
-                    tone: leagueOverview.confirmation > 0 ? "attention" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                  {
-                    id: "attention",
-                    count: leagueOverview.attention,
-                    label: "Intervir",
-                    detail: "Disputa ou analise admin",
-                    actionLabel: leagueOverview.attention > 0 ? "Intervir" : "Ver",
-                    tone: leagueOverview.attention > 0 ? "danger" : "neutral",
-                    onClick: () => goToTab("partidas"),
-                  },
-                ]}
+              <LeagueOperationTaskRows
+                ariaLabel="Fila operacional da liga"
+                emptyDetail="A liga nao tem inscricoes, partidas ou geracao de rodada aguardando acao nesta selecao."
+                emptyTitle="Nenhuma acao critica agora"
+                heading="Rodada atual"
+                onOpenAll={openOwnerLeagueTaskList}
+                onOpenTask={(task) => setSelectedLeagueTaskId(task.id)}
+                tasks={visibleLeagueOperationTasks}
+                totalCount={leagueOperationTasks.length}
               />
             </section>
+          ) : null}
+
+          {!isOwner && visiblePlayerLeagueTasks.length > 0 ? (
+            <LeagueOperationTaskRows
+              ariaLabel="Minhas tarefas na liga"
+              emptyDetail="Voce nao tem partida pendente nesta liga agora."
+              emptyTitle="Sem acao pendente"
+              heading="Minha rodada"
+              onOpenAll={() => goToTab("partidas")}
+              onOpenTask={(task) => setSelectedLeagueTaskId(task.id)}
+              tasks={visiblePlayerLeagueTasks}
+              totalCount={playerLeagueTasks.length}
+            />
           ) : null}
 
           <CompetitionTabs
@@ -1906,22 +2633,126 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               ) : null}
 
               {!isOwner && league.visibility === "public" && league.publicJoinEnabled ? (
-                <section className="section-card">
-                  <h3 style={{ marginTop: 0, marginBottom: 10 }}>Inscricao publica</h3>
-                  <div className="events-filter-grid">
-                    <label>
-                      Nome
-                      <input value={joinPlayerName} onChange={(e) => setJoinPlayerName(e.target.value)} />
-                    </label>
-                    <label>
-                      Telefone
-                      <input value={joinPhone} onChange={(e) => setJoinPhone(e.target.value)} />
-                    </label>
+                <section id="league-public-join" className="section-card competition-registration-panel">
+                  <div className="section-title" style={{ marginBottom: 10 }}>
+                    <div>
+                      <h3 style={{ margin: 0 }}>{myLeagueRegistration ? leagueRegistrationStatusLabel(myLeagueRegistration.status) : "Inscricao publica"}</h3>
+                      <p className="subtle" style={{ margin: "4px 0 0" }}>
+                        {myLeagueRegistration
+                          ? leagueRegistrationStatusDetail(myLeagueRegistration.status)
+                          : "Escolha a classe, revise valor e confirme seus dados."}
+                      </p>
+                    </div>
+                    <span className="home-league-chip member">
+                      {league.joinRequiresApproval ? "Com aprovacao" : "Entrada direta"}
+                    </span>
                   </div>
-                  <div className="modal-actions">
-                    <button onClick={onPublicJoin} disabled={busy || !joinPlayerName.trim()}>
-                      {league.joinRequiresApproval ? "Solicitar inscricao" : "Entrar na liga"} · {formatMoneyFromCents(league.registrationFeeCents)}
-                    </button>
+                  {myLeagueRegistration ? (
+                    <div className={`invite-confirmation ${myLeagueRegistration.status === "rejected" ? "rejected" : ""}`}>
+                      <strong>{leagueRegistrationStatusLabel(myLeagueRegistration.status)}</strong>
+                      <span>
+                        {myLeagueRegistration.playerName}
+                        {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
+                          ? ` - ${classLabel(classById[myLeagueRegistration.classId])}`
+                          : ""}. {leagueRegistrationStatusDetail(myLeagueRegistration.status)}
+                      </span>
+                      <div className="cluster">
+                        <button onClick={() => goToTab(myLeagueRegistration.status === "approved" ? "partidas" : "visao")}>
+                          {myLeagueRegistration.status === "approved" ? "Ver partidas" : "Acompanhar liga"}
+                        </button>
+                        <button onClick={() => navigate("/eventos?modo=playing")}>Meus eventos</button>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div className="registration-flow">
+                    <div className="registration-step-heading">
+                      <span>1</span>
+                      <div>
+                        <strong>Escolha a classe</strong>
+                        <small>A inscricao fica vinculada a esta temporada e classe.</small>
+                      </div>
+                    </div>
+                    {!classes.length ? (
+                      <p className="subtle">A liga ainda nao publicou classes especificas. A entrada sera enviada como classe aberta.</p>
+                    ) : (
+                      <div className="registration-option-grid">
+                        {classes.map((item) => {
+                          const active = selectedClassId === item.id;
+                          const playersInClass = standings.filter((player) => player.classId === item.id && player.status !== "inactive").length;
+                          return (
+                            <button
+                              key={`league-join-class:${item.id}`}
+                              className={`registration-option ${active ? "active" : ""}`}
+                              type="button"
+                              onClick={() => setSelectedClassId(item.id)}
+                              disabled={Boolean(myLeagueRegistration)}
+                            >
+                              <strong>{item.className}</strong>
+                              <span>{item.categoryName}</span>
+                              <small>{typeLabel(league.leagueType)}</small>
+                              <em>{playersInClass} {playersInClass === 1 ? "jogador" : "jogadores"}</em>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    <div className="registration-step-heading">
+                      <span>2</span>
+                      <div>
+                        <strong>Confirme seus dados</strong>
+                        <small>A organizacao usa esses dados para liberar a entrada e avisos da rodada.</small>
+                      </div>
+                    </div>
+                    <div className="registration-form-grid">
+                      <label>
+                        Nome
+                        <input value={joinPlayerName} onChange={(e) => setJoinPlayerName(e.target.value)} placeholder="Seu nome" disabled={Boolean(myLeagueRegistration)} />
+                      </label>
+                      <label>
+                        Telefone
+                        <input value={joinPhone} onChange={(e) => setJoinPhone(e.target.value)} placeholder="(67) 99999-9999" disabled={Boolean(myLeagueRegistration)} />
+                      </label>
+                    </div>
+
+                    <div className="registration-step-heading">
+                      <span>3</span>
+                      <div>
+                        <strong>Revise e confirme</strong>
+                        <small>Entrada, valor e proximo passo ficam claros antes do envio.</small>
+                      </div>
+                    </div>
+                    <div className="registration-review-card">
+                      <p>
+                        <span>Classe</span>
+                        <strong>{selectedJoinClass ? classLabel(selectedJoinClass) : classes.length ? "Escolha uma classe" : "Classe aberta"}</strong>
+                      </p>
+                      <p>
+                        <span>Valor</span>
+                        <strong>{formatMoneyFromCents(league.registrationFeeCents)}</strong>
+                      </p>
+                      <p>
+                        <span>Tipo de entrada</span>
+                        <strong>{league.joinRequiresApproval ? "A organizacao aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
+                      </p>
+                    </div>
+                    <div className="registration-sticky-cta">
+                      <button
+                        className="primary"
+                        onClick={onPublicJoin}
+                        disabled={busy || Boolean(myLeagueRegistration) || !joinPlayerName.trim() || (classes.length > 0 && !selectedJoinClass)}
+                      >
+                        {busy
+                          ? "Enviando..."
+                          : myLeagueRegistration
+                            ? leagueRegistrationStatusLabel(myLeagueRegistration.status)
+                            : league.joinRequiresApproval
+                              ? "Solicitar inscricao"
+                              : "Entrar na liga"}
+                      </button>
+                      <button onClick={() => goToTab("partidas")}>Ver partidas</button>
+                    </div>
                   </div>
                 </section>
               ) : null}
@@ -2411,6 +3242,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           ) : null}
         </>
       ) : null}
+      <LeagueOperationTaskDrawer
+        onClose={() => setSelectedLeagueTaskId("")}
+        task={selectedLeagueTask}
+      />
     </AppShell>
   );
 }

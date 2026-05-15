@@ -25,18 +25,34 @@ type AcademyWorkspaceShellProps = {
   activeView: AcademyManagementView;
   children: ReactNode;
   onViewChange: (view: AcademyManagementView) => void;
+  title?: string;
+  viewDescriptions?: Partial<Record<AcademyManagementView, string>>;
+  viewLabels?: Partial<Record<AcademyManagementView, string>>;
+  views?: AcademyManagementView[];
 };
 
-export function AcademyWorkspaceShell({ activeView, children, onViewChange }: AcademyWorkspaceShellProps) {
+export function AcademyWorkspaceShell({
+  activeView,
+  children,
+  onViewChange,
+  title = "Central da academia",
+  viewDescriptions,
+  viewLabels,
+  views,
+}: AcademyWorkspaceShellProps) {
+  const labels = { ...ACADEMY_MANAGEMENT_VIEW_LABELS, ...viewLabels };
+  const descriptions = { ...ACADEMY_MANAGEMENT_VIEW_DESCRIPTIONS, ...viewDescriptions };
+
   return (
     <PlaceWorkspaceShell
       activeView={activeView}
       ariaLabel="Visoes da academia"
       className="academy-workspace"
-      descriptions={ACADEMY_MANAGEMENT_VIEW_DESCRIPTIONS}
-      labels={ACADEMY_MANAGEMENT_VIEW_LABELS}
+      descriptions={descriptions}
+      labels={labels}
       onViewChange={onViewChange}
-      title="Central da academia"
+      title={title}
+      views={views}
     >
       {children}
     </PlaceWorkspaceShell>

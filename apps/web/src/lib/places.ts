@@ -586,7 +586,7 @@ type PlaceStaffRow = {
   place_id: string;
   user_id: string | null;
   email?: string | null;
-  role: "manager" | "coach" | "frontdesk" | string;
+  role: "manager" | "coach" | "frontdesk" | "finance" | string;
   created_at: string | null;
   status?: "active" | "pending" | string | null;
 };
@@ -1136,11 +1136,12 @@ function rowToOpenMatchComment(row: OpenMatchCommentRow): OpenMatchComment {
 }
 
 function rowToPlaceStaff(row: PlaceStaffRow): PlaceStaffMember {
+  const role = row.role === "coach" || row.role === "frontdesk" || row.role === "finance" ? row.role : "manager";
   return {
     placeId: row.place_id,
     userId: row.user_id,
     email: row.email || "",
-    role: row.role === "coach" || row.role === "frontdesk" ? row.role : "manager",
+    role,
     createdAt: row.created_at || "",
     status: row.status === "pending" ? "pending" : "active",
   };

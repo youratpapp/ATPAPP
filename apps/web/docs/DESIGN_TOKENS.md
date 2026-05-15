@@ -2,7 +2,7 @@
 
 Fonte principal: `PREMIUM_UX_VISUAL_LANGUAGE.md`, `VISUAL_REFERENCE_SYSTEM.md` e `web/src/styles/theme.css`.
 
-Data: 2026-05-13
+Data: 2026-05-15
 
 ## Objetivo
 
@@ -88,6 +88,125 @@ Regras:
 - Cards operacionais: `space-3` a `space-4`.
 - Shell/header: `space-4`.
 - Mobile: reduzir padding lateral, nao reduzir alvo de toque.
+
+## Densidade por modo
+
+Os tres modos usam o mesmo DNA visual, mas com densidade diferente. A decisao agora esta expressa em tokens no `web/src/styles/theme.css` e aplicada pelo `AppShell` via:
+
+- `.app-shell--player`
+- `.app-shell--competition`
+- `.app-shell--management`
+
+Regra principal:
+
+```text
+O modo muda densidade e hierarquia, nao muda o produto.
+```
+
+| Modo | Objetivo visual | Tokens centrais | Uso esperado |
+| --- | --- | --- | --- |
+| Player | leve, rapido, intencional | `--player-*` | proxima acao, descoberta, inscricao, reserva, perfil |
+| Competition | hibrido entre publico e operacao | `--competition-*` | evento publico, inscricao, jogos, organizacao |
+| Management | denso, operacional, profissional | `--management-*` | agenda, academia, financeiro, CRM, equipe, ajustes |
+
+### Player
+
+Tokens:
+
+- `--player-content-max-width`
+- `--player-page-padding`
+- `--player-section-gap`
+- `--player-card-padding`
+- `--player-row-min-height`
+- `--player-button-min-height`
+
+Uso:
+
+- primeira dobra deve caber uma decisao clara;
+- cards podem existir para entidades reconheciveis: evento, local, jogo, aula, reserva;
+- metricas entram apenas quando ajudam o jogador a decidir;
+- badges e contadores devem ser omitidos quando o valor e `0`;
+- CTA principal deve ser grande o suficiente para toque e leitura rapida;
+- filtros longos devem virar bottom sheet.
+
+Evitar:
+
+- dashboard;
+- KPIs administrativos;
+- cards de mensalidade para quem nao e aluno/socio;
+- contador zerado em tile de intencao;
+- muitos blocos antes da acao.
+
+### Competition
+
+Tokens:
+
+- `--competition-content-max-width`
+- `--competition-page-padding`
+- `--competition-section-gap`
+- `--competition-card-padding`
+- `--competition-row-min-height`
+
+Uso:
+
+- paginas publicas de evento podem ter poster/status/CTA;
+- area de organizador deve usar rows e fila operacional;
+- setup raro pode usar wizard;
+- resultado, presenca, chave e rodada devem ser acionaveis sem virar painel.
+
+Evitar:
+
+- misturar inscricao publica com operacao de organizador;
+- mostrar fila interna para jogador comum;
+- empurrar tabs abaixo de resumos longos.
+
+### Management
+
+Tokens:
+
+- `--management-content-max-width`
+- `--management-page-padding`
+- `--management-section-gap`
+- `--management-card-padding`
+- `--management-row-min-height`
+- `--management-button-min-height`
+
+Uso:
+
+- rows/tabelas primeiro;
+- drawers para detalhe;
+- metricas como suporte;
+- filtros frequentes visiveis;
+- configuracao separada da rotina.
+
+Evitar:
+
+- hero grande;
+- mosaico de cards;
+- formulario repetido em lista;
+- zeros operacionais sem utilidade;
+- professor vendo ferramentas empresariais fora do papel dele.
+
+### Alvo de toque
+
+`--density-touch-target` fica em `44px`. Em desktop Management pode ser mais denso, mas mobile nao deve reduzir alvo de toque essencial.
+
+### Como codar
+
+Use primeiro os tokens de modo:
+
+```css
+padding: var(--mode-card-padding);
+border-radius: var(--mode-card-radius);
+min-height: var(--mode-row-min-height);
+box-shadow: var(--mode-surface-shadow);
+```
+
+Crie token novo apenas quando:
+
+- o componente e compartilhado por mais de um modo;
+- a diferenca nao pode ser resolvida por `--mode-*`;
+- o token remove duplicacao real.
 
 ## Radius
 

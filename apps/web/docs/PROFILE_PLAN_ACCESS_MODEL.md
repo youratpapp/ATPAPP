@@ -1,8 +1,25 @@
 # Profile And Plan Access Model
 
-Fonte principal: `CURRENT_PRODUCT_STATE.md`, `FRONTEND_UX_REARCHITECTURE.md`, `SCREEN_RESPONSIBILITIES.md`.
+Fonte principal: `CURRENT_PRODUCT_STATE.md`, `FRONTEND_UX_REARCHITECTURE.md`, `SCREEN_RESPONSIBILITIES.md`, `ROLE_VISIBILITY_MATRIX.md`.
 
-Data: 2026-05-13
+Data: 2026-05-15
+
+## Estado ROLE-UX-00
+
+`ROLE-UX-00` consolidou a matriz executavel em `ROLE_VISIBILITY_MATRIX.md`.
+
+Este arquivo continua como modelo conceitual de perfil/plano. A matriz passa a ser a referencia operacional para menus, dados buscados, superficies, estados vazios e gaps.
+
+`ROLE-UX-01` aplicou essa matriz no primeiro nivel de shell: `AppShell` agora sabe o modo da rota e `BottomNav` mostra uma entrada profissional contextual sem expor labels tecnicos ao jogador.
+
+Anchors atuais:
+
+- `web/src/lib/workspace-access.ts`: resumo global de acesso.
+- `web/src/lib/role-visibility.ts`: helper central de visibilidade de navegacao global e classificacao de superficie.
+- `web/src/components/AppShell.tsx`: shell raiz com modo `player`, `competition` ou `management`.
+- `web/src/components/BottomNav.tsx`: navegacao global contextual por modo.
+- `web/src/lib/place-management.ts`: modulos e permissoes por plano/papel de local.
+- `web/src/lib/tournaments.ts`: papeis e convites de competicao.
 
 ## Objetivo
 
@@ -402,6 +419,15 @@ Nao precisa ver:
 - agenda detalhada;
 - chat;
 - configuracao esportiva.
+
+Status:
+
+- [feito] `ROLE-FINANCE-01` criou `place_staff.role = finance` para operar financeiro sem promover usuario a `manager`.
+- [feito] `/gestao` entra em modo financeiro isolado para esse papel, com atalho principal para recebiveis e atalho secundario para despesas.
+- [feito] O papel financeiro dedicado nao recebe Agenda, Academia, Clientes/CRM, Cantina/POS, Equipe ou Ajustes como modulos principais.
+- [feito] Seeds demo incluem `financeiro.prime@demo.atp.local` vinculado ao Clube Racket Prime como `finance`.
+- [feito] `QA-SEED-ROLE-01` adicionou perfis puros para validar financeiro, organizador, jogador, aluno mensalista e coach solo sem contaminacao de papeis.
+- [pendente] Operador de caixa/Cantina deve virar permissao propria antes de liberar POS para usuarios financeiros.
 
 ### Competition Staff
 

@@ -33,6 +33,15 @@ type ProfileRecentMatch = {
   updatedAt: string;
 };
 
+type ProfileSection = "public" | "history" | "preferences" | "account";
+
+const PROFILE_SECTIONS: Array<{ id: ProfileSection; label: string }> = [
+  { id: "public", label: "Perfil" },
+  { id: "history", label: "Historico" },
+  { id: "preferences", label: "Preferencias" },
+  { id: "account", label: "Conta" },
+];
+
 function EditIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -293,6 +302,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [editing, setEditing] = useState(false);
+  const [profileSection, setProfileSection] = useState<ProfileSection>("public");
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: "info" | "error" | "success"; text: string } | null>(null);
 
@@ -757,11 +767,25 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         <p className="profile-location">{locationLine || "Adicione cidade e estado"}</p>
         <div className="profile-identity-pills">
           <span>{profileComplete ? "Perfil completo" : "Perfil incompleto"}</span>
-          <span>Nivel {playerLevel}</span>
-          <span>{performanceLabel}</span>
           <span>{playingCount > 0 ? "Jogador ativo" : "Sem competicao ativa"}</span>
+          <span>{notificationPrefs.matchReminders || notificationPrefs.bookingReminders ? "Lembretes ativos" : "Lembretes pausados"}</span>
         </div>
       </div>
+
+      {!editing ? (
+        <nav className="profile-purpose-tabs" aria-label="Areas do perfil">
+          {PROFILE_SECTIONS.map((section) => (
+            <button
+              key={section.id}
+              type="button"
+              className={profileSection === section.id ? "active" : ""}
+              onClick={() => setProfileSection(section.id)}
+            >
+              {section.label}
+            </button>
+          ))}
+        </nav>
+      ) : null}
 
       {editing ? (
         <div className="card" style={{ marginBottom: 12 }}>
@@ -817,7 +841,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
             <button className="primary" onClick={onSave} disabled={busy}>Salvar</button>
           </div>
         </div>
-      ) : (
+      ) : profileSection === "public" ? (
         <div className="profile-rows-card">
           <div className="profile-row">
             <span className="pr-icon"><PhoneIcon /></span>
@@ -845,16 +869,16 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
-      {!editing ? (
+      {!editing && profileSection === "history" ? (
         <div className="profile-activity-card">
           <div className="section-title">
-            <h2>Minha atividade</h2>
+            <h2>Historico</h2>
             <div className="cluster">
               <button className="link" onClick={shareProfileSummaryWhatsApp} title="Compartilhar pelo WhatsApp" aria-label="Compartilhar pelo WhatsApp">
                 <WhatsAppAppIcon />
-                WhatsApp
+                Compartilhar
               </button>
               <button className="link" onClick={() => navigate("/eventos")}>
                 Ver eventos
@@ -870,13 +894,13 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                   <strong>{playingCount}</strong>
                   <span>Jogando</span>
                 </button>
-                <button className="profile-activity-kpi" onClick={() => navigate(organizerActivityPath)}>
-                  <strong>{organizingCount}</strong>
-                  <span>Organizando</span>
+                <button className="profile-activity-kpi" onClick={() => (recentMatches[0] ? navigate(recentMatches[0].targetPath) : navigate("/eventos"))}>
+                  <strong>{recentMatches.length}</strong>
+                  <span>Partidas recentes</span>
                 </button>
               </div>
 
-              {latestPlaying.length > 0 || latestOrganizing.length > 0 ? (
+              {latestPlaying.length > 0 ? (
                 <div className="profile-activity-list">
                   {latestPlaying.map((item) => (
                     <button key={`profile-play:${item.id}`} onClick={() => navigate(profileCompetitionPath(item))}>
@@ -884,85 +908,84 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                       <strong>{item.name}</strong>
                     </button>
                   ))}
-                  {latestOrganizing.map((item) => (
-                    <button key={`profile-org:${item.id}`} onClick={() => navigate(profileCompetitionPath(item))}>
-                      <span>Organizando</span>
-                      <strong>{item.name}</strong>
-                    </button>
-                  ))}
                 </div>
               ) : (
                 <p className="subtle" style={{ marginBottom: 0 }}>
-                  Quando voce entrar em torneios ou ligas, seu historico comeca a aparecer aqui.
+                  Quando voce entrar em torneios ou ligas como jogador, seu historico comeca a aparecer aqui.
                 </p>
               )}
 
-              <div className="profile-level-card">
-                <div className="profile-level-header">
-                  <div>
-                    <span>Nivel do jogador</span>
-                    <strong>Nivel {playerLevel}</strong>
-                  </div>
-                  <em>{playerXp} XP</em>
-                </div>
-                <div className="profile-level-bar" aria-label={`Progresso do nivel ${playerLevel}`}>
-                  <span style={{ width: `${levelProgress}%` }} />
-                </div>
-                <p>
-                  {levelProgress === 0 && playerXp > 0
-                    ? "Nivel recem alcancado. Continue jogando para avancar."
-                    : `${xpToNextLevel} XP para o proximo nivel.`}
-                </p>
-              </div>
-
-              <div className="profile-achievements">
-                <p className="profile-activity-heading">
-                  Conquistas ({unlockedAchievements}/{achievements.length})
-                </p>
-                <div className="profile-achievement-grid">
-                  {achievements.map((achievement) => (
-                    <div
-                      key={achievement.id}
-                      className={`profile-achievement ${achievement.unlocked ? "unlocked" : "locked"}`}
-                    >
-                      <strong>{achievement.title}</strong>
-                      <span>{achievement.detail}</span>
-                      <em>{achievement.unlocked ? "Liberada" : "Pendente"}</em>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="profile-trophy-history">
-                <p className="profile-activity-heading">Trofeus recentes</p>
-                {trophyHistory.length > 0 ? (
-                  <div className="profile-trophy-grid">
-                    {trophyHistory.map((trophy) => (
-                      <div key={trophy.id} className="profile-trophy">
-                        <strong>{trophy.title}</strong>
-                        <span>{trophy.detail}</span>
+              <details className="profile-secondary-details">
+                <summary>Estatisticas e conquistas</summary>
+                <div className="profile-secondary-content">
+                  <div className="profile-level-card">
+                    <div className="profile-level-header">
+                      <div>
+                        <span>Nivel do jogador</span>
+                        <strong>Nivel {playerLevel}</strong>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="subtle" style={{ marginBottom: 0 }}>
-                    Vitorias, sequencias e competicoes ativas vao aparecer como trofeus aqui.
-                  </p>
-                )}
-              </div>
-
-              <div className="profile-ranking-history">
-                <p className="profile-activity-heading">Evolucao recente</p>
-                <div className="profile-ranking-timeline">
-                  {rankingHistory.map((item) => (
-                    <div key={item.id} className="profile-ranking-item">
-                      <span>{item.label}</span>
-                      <strong>{item.value}</strong>
-                      <em>{item.detail}</em>
+                      <em>{playerXp} XP</em>
                     </div>
-                  ))}
+                    <div className="profile-level-bar" aria-label={`Progresso do nivel ${playerLevel}`}>
+                      <span style={{ width: `${levelProgress}%` }} />
+                    </div>
+                    <p>
+                      {levelProgress === 0 && playerXp > 0
+                        ? "Nivel recem alcancado. Continue jogando para avancar."
+                        : `${xpToNextLevel} XP para o proximo nivel.`}
+                    </p>
+                  </div>
+
+                  <div className="profile-achievements">
+                    <p className="profile-activity-heading">
+                      Conquistas ({unlockedAchievements}/{achievements.length})
+                    </p>
+                    <div className="profile-achievement-grid">
+                      {achievements.map((achievement) => (
+                        <div
+                          key={achievement.id}
+                          className={`profile-achievement ${achievement.unlocked ? "unlocked" : "locked"}`}
+                        >
+                          <strong>{achievement.title}</strong>
+                          <span>{achievement.detail}</span>
+                          <em>{achievement.unlocked ? "Liberada" : "Pendente"}</em>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="profile-trophy-history">
+                    <p className="profile-activity-heading">Trofeus recentes</p>
+                    {trophyHistory.length > 0 ? (
+                      <div className="profile-trophy-grid">
+                        {trophyHistory.map((trophy) => (
+                          <div key={trophy.id} className="profile-trophy">
+                            <strong>{trophy.title}</strong>
+                            <span>{trophy.detail}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="subtle" style={{ marginBottom: 0 }}>
+                        Vitorias, sequencias e competicoes ativas vao aparecer como trofeus aqui.
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="profile-ranking-history">
+                    <p className="profile-activity-heading">Evolucao recente</p>
+                    <div className="profile-ranking-timeline">
+                      {rankingHistory.map((item) => (
+                        <div key={item.id} className="profile-ranking-item">
+                          <span>{item.label}</span>
+                          <strong>{item.value}</strong>
+                          <em>{item.detail}</em>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </details>
 
               {recentMatches.length > 0 ? (
                 <div className="profile-match-history">
@@ -985,68 +1008,73 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                       <span>Aproveit.</span>
                     </div>
                   </div>
-                  <div className="profile-stat-breakdown">
-                    <div>
-                      <span>Torneios</span>
-                      <strong>{recentTournamentMatches}</strong>
-                    </div>
-                    <div>
-                      <span>Ligas</span>
-                      <strong>{recentLeagueMatches}</strong>
-                    </div>
-                    <div>
-                      <span>Eventos</span>
-                      <strong>{recentCompetitionCount}</strong>
-                    </div>
-                    <div>
-                      <span>Classe mais jogada</span>
-                      <strong>{favoriteClass}</strong>
-                    </div>
-                  </div>
-                  <p className="profile-performance-label">{performanceLabel}</p>
-                  {headToHeadRows.length > 0 ? (
-                    <div className="profile-head-to-head">
-                      <p className="profile-activity-heading">Head-to-head recente</p>
-                      {headToHeadRows.map((row) => (
-                        <div key={normalizePlayerName(row.opponent)} className="profile-head-to-head-row">
-                          <div>
-                            <strong>{row.opponent}</strong>
-                            <span>{row.lastSource}</span>
-                          </div>
-                          <em>
-                            {row.wins}V / {row.losses}D
-                          </em>
+                  <details className="profile-secondary-details profile-match-details">
+                    <summary>Leitura tecnica</summary>
+                    <div className="profile-secondary-content">
+                      <div className="profile-stat-breakdown">
+                        <div>
+                          <span>Torneios</span>
+                          <strong>{recentTournamentMatches}</strong>
                         </div>
-                      ))}
+                        <div>
+                          <span>Ligas</span>
+                          <strong>{recentLeagueMatches}</strong>
+                        </div>
+                        <div>
+                          <span>Eventos</span>
+                          <strong>{recentCompetitionCount}</strong>
+                        </div>
+                        <div>
+                          <span>Classe mais jogada</span>
+                          <strong>{favoriteClass}</strong>
+                        </div>
+                      </div>
+                      <p className="profile-performance-label">{performanceLabel}</p>
+                      {headToHeadRows.length > 0 ? (
+                        <div className="profile-head-to-head">
+                          <p className="profile-activity-heading">Head-to-head recente</p>
+                          {headToHeadRows.map((row) => (
+                            <div key={normalizePlayerName(row.opponent)} className="profile-head-to-head-row">
+                              <div>
+                                <strong>{row.opponent}</strong>
+                                <span>{row.lastSource}</span>
+                              </div>
+                              <em>
+                                {row.wins}V / {row.losses}D
+                              </em>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+                      <div className="profile-streak-panel">
+                        <div>
+                          <span>Sequencia atual</span>
+                          <strong>{currentWinStreak}</strong>
+                        </div>
+                        <p>
+                          {currentWinStreak > 0
+                            ? `Voce vem de ${currentWinStreak} vitoria${currentWinStreak === 1 ? "" : "s"} seguida${currentWinStreak === 1 ? "" : "s"}. Melhor sequencia recente: ${bestWinStreak}.`
+                            : bestWinStreak > 0
+                            ? `Melhor sequencia recente: ${bestWinStreak}.`
+                            : "Venca uma partida para iniciar sua sequencia."}
+                        </p>
+                      </div>
+                      <div className="profile-match-post">
+                        <p className="profile-match-post-label">Post da ultima partida</p>
+                        <strong>{recentMatches[0].title}</strong>
+                        <span>
+                          {recentMatches[0].sourceName} - {recentMatches[0].result} | {recentMatches[0].score}
+                        </span>
+                        <div className="profile-match-post-actions">
+                          <button onClick={() => copyRecentMatchPost(recentMatches[0])}>Copiar post</button>
+                          <button className="primary" onClick={() => shareRecentMatchWhatsApp(recentMatches[0])} title="Compartilhar pelo WhatsApp" aria-label="Compartilhar pelo WhatsApp">
+                            <WhatsAppAppIcon />
+                            WhatsApp
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  ) : null}
-                  <div className="profile-streak-panel">
-                    <div>
-                      <span>Sequencia atual</span>
-                      <strong>{currentWinStreak}</strong>
-                    </div>
-                    <p>
-                      {currentWinStreak > 0
-                        ? `Voce vem de ${currentWinStreak} vitoria${currentWinStreak === 1 ? "" : "s"} seguida${currentWinStreak === 1 ? "" : "s"}. Melhor sequencia recente: ${bestWinStreak}.`
-                        : bestWinStreak > 0
-                        ? `Melhor sequencia recente: ${bestWinStreak}.`
-                        : "Venca uma partida para iniciar sua sequencia."}
-                    </p>
-                  </div>
-                  <div className="profile-match-post">
-                    <p className="profile-match-post-label">Post da ultima partida</p>
-                    <strong>{recentMatches[0].title}</strong>
-                    <span>
-                      {recentMatches[0].sourceName} - {recentMatches[0].result} | {recentMatches[0].score}
-                    </span>
-                    <div className="profile-match-post-actions">
-                      <button onClick={() => copyRecentMatchPost(recentMatches[0])}>Copiar post</button>
-                      <button className="primary" onClick={() => shareRecentMatchWhatsApp(recentMatches[0])} title="Compartilhar pelo WhatsApp" aria-label="Compartilhar pelo WhatsApp">
-                        <WhatsAppAppIcon />
-                        WhatsApp
-                      </button>
-                    </div>
-                  </div>
+                  </details>
                   {recentMatches.map((match) => (
                     <article key={match.id} className="profile-match-history-row">
                       <button className="profile-match-main" onClick={() => navigate(match.targetPath)}>
@@ -1072,10 +1100,10 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         </div>
       ) : null}
 
-      {!editing && (
+      {!editing && profileSection === "preferences" && (
         <div className="profile-rows-card notification-pref-card">
           <div className="section-title">
-            <h2>Lembretes</h2>
+            <h2>Preferencias</h2>
           </div>
           <label>
             <input
@@ -1132,8 +1160,32 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         </div>
       )}
 
-      {!editing && (
+      {!editing && profileSection === "account" && (
         <div className="profile-rows-card">
+          {organizingCount > 0 ? (
+            <div className="profile-account-workspace">
+              <p className="profile-activity-heading">Area profissional</p>
+              <button className="profile-row tappable" onClick={() => navigate(organizerActivityPath)}>
+                <span className="pr-icon"><CalendarIcon /></span>
+                <div className="pr-content">
+                  <p className="pr-label">Eventos que organizo</p>
+                  <p className="pr-value" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-subtle)" }}>
+                    {organizingCount} competicao{organizingCount === 1 ? "" : "es"} ativa{organizingCount === 1 ? "" : "s"}.
+                  </p>
+                </div>
+                <span className="pr-chevron"><ChevronRight /></span>
+              </button>
+              {latestOrganizing.length > 0 ? (
+                <div className="profile-account-sublist">
+                  {latestOrganizing.map((item) => (
+                    <button key={`profile-account-org:${item.id}`} onClick={() => navigate(profileCompetitionPath(item))}>
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           <div
             className="profile-row tappable"
             onClick={() => window.location.assign("mailto:suporte@atp.tennis")}
@@ -1204,7 +1256,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         </div>
       )}
 
-      {!editing && (
+      {!editing && profileSection === "account" && (
         <div style={{ marginTop: 16 }}>
           <button
             style={{ width: "100%", color: "var(--color-text-subtle)" }}

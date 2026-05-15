@@ -48,7 +48,8 @@ values
   (42, 'coach.solo@demo.atp.local', 'Staff@2026!', 'coach_solo', 'Nathalia Coach Solo', '+55 67 99940-0042', 'Dourados', 'MS', date '1990-06-09', '@nathalia.coach', 'Professora autonoma demo para validar experiencia PRO leve.'),
   (43, 'admin.platform@demo.atp.local', 'Staff@2026!', 'platform_admin', 'Admin Plataforma', '+55 67 99940-0043', 'Dourados', 'MS', date '1980-02-02', '@admin.platform', 'Administrador de plataforma para validar permissoes globais.'),
   (44, 'financeiro.prime@demo.atp.local', 'Staff@2026!', 'finance', 'Clara Financeiro', '+55 65 99940-0044', 'Cuiaba', 'MT', date '1987-09-21', '@clara.financeiro', 'Operadora financeira demo do clube premium.'),
-  (45, 'media.eventos@demo.atp.local', 'Staff@2026!', 'media', 'Rafa Eventos', '+55 67 99940-0045', 'Campo Grande', 'MS', date '1992-01-28', '@rafa.eventos', 'Apoio de midia e comunicacao para eventos demo.');
+  (45, 'media.eventos@demo.atp.local', 'Staff@2026!', 'media', 'Rafa Eventos', '+55 67 99940-0045', 'Campo Grande', 'MS', date '1992-01-28', '@rafa.eventos', 'Apoio de midia e comunicacao para eventos demo.'),
+  (46, 'qa.jogador.puro@demo.atp.local', 'Jogador@2026!', 'qa_player_pure', 'Livia Jogadora Pura', '+55 67 99940-0046', 'Dourados', 'MS', date '1998-10-06', '@livia.pura', 'Jogadora pura demo sem vinculos operacionais para validar Player App e bloqueios de acesso.');
 
 with first_names as (
   select array[
@@ -284,6 +285,7 @@ begin
           when kind = 'platform_admin' then 'Demo platform admin with global QA entitlement.'
           when kind = 'organizer' then 'Demo competition organizer without academy modules.'
           when kind in ('coach', 'coach_solo') then 'Demo coach account without place creation entitlement.'
+          when kind = 'qa_player_pure' then 'Demo pure player account without operational links.'
           else 'Demo player account.'
         end
       from public.seed_users

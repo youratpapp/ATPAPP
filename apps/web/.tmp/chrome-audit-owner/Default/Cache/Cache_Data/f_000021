@@ -1,0 +1,668 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/place/PlaceBookingResourcesModule.tsx");const _jsxDEV = __vite__cjsImport2_react_jsxDevRuntime["jsxDEV"]; const _Fragment = __vite__cjsImport2_react_jsxDevRuntime["Fragment"];import { countLabel } from "/src/lib/place-management.ts";
+import { formatMoneyFromCents } from "/src/lib/payments.ts";
+var _jsxFileName = "C:/Users/User/Desktop/tenis/apps/web/src/components/place/PlaceBookingResourcesModule.tsx";
+import __vite__cjsImport2_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=5d525081";
+const WEEKDAY_OPTIONS = [
+	{
+		label: "Dom",
+		value: 0
+	},
+	{
+		label: "Seg",
+		value: 1
+	},
+	{
+		label: "Ter",
+		value: 2
+	},
+	{
+		label: "Qua",
+		value: 3
+	},
+	{
+		label: "Qui",
+		value: 4
+	},
+	{
+		label: "Sex",
+		value: 5
+	},
+	{
+		label: "Sab",
+		value: 6
+	}
+];
+const TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
+	const minutes = 6 * 60 + index * 30;
+	const hour = Math.floor(minutes / 60);
+	const minute = minutes % 60;
+	return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+});
+function defaultPriceDraft(court) {
+	return {
+		publicPrice: String(Math.round(court.bookingFeeCents / 100)),
+		memberPrice: court.memberBookingFeeCents === null ? "" : String(Math.round(court.memberBookingFeeCents / 100))
+	};
+}
+export function PlaceBookingResourcesModule({ activeCourts, bookingRuleDraft, bookingRules, busy, canManageBookings, canManageFinance, courtDraft, courtPriceDraftByCourt, membershipPlans, myMembership, onChangeCourtDraft, onChangeCourtPriceDraft, onChangeRuleDraft, onCreateCourt, onCreateRule, onSaveCourtPrice, onToggleRule, ruleProfileScopeLabels, ruleWeekdaysLabel }) {
+	const selectedWeekdays = bookingRuleDraft.weekdays.split(",").map((item) => Number(item.trim())).filter((item) => Number.isInteger(item) && item >= 0 && item <= 6);
+	const updateWeekday = (weekday, checked) => {
+		const next = new Set(selectedWeekdays);
+		if (checked) next.add(weekday);
+		else next.delete(weekday);
+		onChangeRuleDraft({
+			...bookingRuleDraft,
+			weekdays: Array.from(next).sort((a, b) => a - b).join(",")
+		});
+	};
+	return /* @__PURE__ */ _jsxDEV(_Fragment, { children: [
+		/* @__PURE__ */ _jsxDEV("div", {
+			className: "place-booking-head",
+			children: [/* @__PURE__ */ _jsxDEV("strong", { children: "Quadras e reservas" }, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 110,
+				columnNumber: 9
+			}, this), /* @__PURE__ */ _jsxDEV("span", { children: countLabel(activeCourts.length, "quadra", "quadras") }, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 111,
+				columnNumber: 9
+			}, this)]
+		}, void 0, true, {
+			fileName: _jsxFileName,
+			lineNumber: 109,
+			columnNumber: 7
+		}, this),
+		canManageBookings ? /* @__PURE__ */ _jsxDEV("div", {
+			className: "place-court-create",
+			children: [/* @__PURE__ */ _jsxDEV("input", {
+				value: courtDraft,
+				onChange: (event) => onChangeCourtDraft(event.target.value),
+				placeholder: "Nova quadra"
+			}, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 115,
+				columnNumber: 11
+			}, this), /* @__PURE__ */ _jsxDEV("button", {
+				onClick: onCreateCourt,
+				disabled: busy || !courtDraft.trim(),
+				children: "Adicionar"
+			}, void 0, false, {
+				fileName: _jsxFileName,
+				lineNumber: 116,
+				columnNumber: 11
+			}, this)]
+		}, void 0, true, {
+			fileName: _jsxFileName,
+			lineNumber: 114,
+			columnNumber: 9
+		}, this) : null,
+		activeCourts.length ? /* @__PURE__ */ _jsxDEV("div", {
+			className: "place-court-price-list",
+			children: activeCourts.map((court) => {
+				const priceDraft = courtPriceDraftByCourt[court.id] || defaultPriceDraft(court);
+				const plan = myMembership?.status === "active" ? membershipPlans.find((item) => item.id === myMembership.planId) : undefined;
+				const memberPrice = myMembership?.status === "active" ? court.memberBookingFeeCents ?? (plan ? Math.round(court.bookingFeeCents * (100 - plan.courtDiscountPercent) / 100) : court.bookingFeeCents) : null;
+				return /* @__PURE__ */ _jsxDEV("article", {
+					className: "place-court-price-row",
+					children: [/* @__PURE__ */ _jsxDEV("div", { children: [/* @__PURE__ */ _jsxDEV("strong", { children: court.name }, void 0, false, {
+						fileName: _jsxFileName,
+						lineNumber: 133,
+						columnNumber: 19
+					}, this), /* @__PURE__ */ _jsxDEV("small", { children: [
+						"Publico ",
+						formatMoneyFromCents(court.bookingFeeCents),
+						court.memberBookingFeeCents !== null ? ` | mensalista ${formatMoneyFromCents(court.memberBookingFeeCents)}` : "",
+						memberPrice !== null ? ` | seu valor ${formatMoneyFromCents(memberPrice)}` : ""
+					] }, void 0, true, {
+						fileName: _jsxFileName,
+						lineNumber: 134,
+						columnNumber: 19
+					}, this)] }, void 0, true, {
+						fileName: _jsxFileName,
+						lineNumber: 132,
+						columnNumber: 17
+					}, this), canManageFinance ? /* @__PURE__ */ _jsxDEV("div", {
+						className: "place-court-price-fields",
+						children: [
+							/* @__PURE__ */ _jsxDEV("input", {
+								type: "number",
+								min: 0,
+								step: "1",
+								value: priceDraft.publicPrice,
+								onChange: (event) => onChangeCourtPriceDraft(court.id, {
+									...priceDraft,
+									publicPrice: event.target.value
+								}),
+								"aria-label": `Valor publico da ${court.name}`,
+								placeholder: "Publico R$"
+							}, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 142,
+								columnNumber: 21
+							}, this),
+							/* @__PURE__ */ _jsxDEV("input", {
+								type: "number",
+								min: 0,
+								step: "1",
+								value: priceDraft.memberPrice,
+								onChange: (event) => onChangeCourtPriceDraft(court.id, {
+									...priceDraft,
+									memberPrice: event.target.value
+								}),
+								"aria-label": `Valor mensalista da ${court.name}`,
+								placeholder: "Mensalista R$"
+							}, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 151,
+								columnNumber: 21
+							}, this),
+							/* @__PURE__ */ _jsxDEV("button", {
+								onClick: () => onSaveCourtPrice(court),
+								disabled: busy,
+								children: "Salvar"
+							}, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 160,
+								columnNumber: 21
+							}, this)
+						]
+					}, void 0, true, {
+						fileName: _jsxFileName,
+						lineNumber: 141,
+						columnNumber: 19
+					}, this) : null]
+				}, court.id, true, {
+					fileName: _jsxFileName,
+					lineNumber: 131,
+					columnNumber: 15
+				}, this);
+			})
+		}, void 0, false, {
+			fileName: _jsxFileName,
+			lineNumber: 122,
+			columnNumber: 9
+		}, this) : /* @__PURE__ */ _jsxDEV("p", {
+			className: "subtle",
+			children: "Sem quadras cadastradas para reserva."
+		}, void 0, false, {
+			fileName: _jsxFileName,
+			lineNumber: 170,
+			columnNumber: 9
+		}, this),
+		canManageBookings ? /* @__PURE__ */ _jsxDEV("div", {
+			className: "place-booking-rules-panel",
+			children: [
+				/* @__PURE__ */ _jsxDEV("div", {
+					className: "place-booking-head",
+					children: [/* @__PURE__ */ _jsxDEV("strong", { children: "Regras por perfil e horario" }, void 0, false, {
+						fileName: _jsxFileName,
+						lineNumber: 175,
+						columnNumber: 13
+					}, this), /* @__PURE__ */ _jsxDEV("span", { children: countLabel(bookingRules.filter((rule) => rule.isActive).length, "regra ativa", "regras ativas") }, void 0, false, {
+						fileName: _jsxFileName,
+						lineNumber: 176,
+						columnNumber: 13
+					}, this)]
+				}, void 0, true, {
+					fileName: _jsxFileName,
+					lineNumber: 174,
+					columnNumber: 11
+				}, this),
+				/* @__PURE__ */ _jsxDEV("div", {
+					className: "booking-rule-form",
+					children: [
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Nome", /* @__PURE__ */ _jsxDEV("input", {
+							value: bookingRuleDraft.name,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								name: event.target.value
+							}),
+							placeholder: "Ex.: Horario comercial"
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 181,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 179,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Publico", /* @__PURE__ */ _jsxDEV("select", {
+							value: bookingRuleDraft.profileScope,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								profileScope: event.target.value
+							}),
+							children: [
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "all",
+									children: "Todos"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 189,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "public",
+									children: "Avulso"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 190,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "member",
+									children: "Socio"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 191,
+									columnNumber: 17
+								}, this)
+							]
+						}, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 185,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 183,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("div", {
+							className: "booking-rule-weekdays",
+							"aria-label": "Dias da semana",
+							children: WEEKDAY_OPTIONS.map((weekday) => /* @__PURE__ */ _jsxDEV("label", {
+								className: selectedWeekdays.includes(weekday.value) ? "active" : "",
+								children: [/* @__PURE__ */ _jsxDEV("input", {
+									type: "checkbox",
+									checked: selectedWeekdays.includes(weekday.value),
+									onChange: (event) => updateWeekday(weekday.value, event.target.checked)
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 197,
+									columnNumber: 19
+								}, this), weekday.label]
+							}, `booking-rule-weekday:${weekday.value}`, true, {
+								fileName: _jsxFileName,
+								lineNumber: 196,
+								columnNumber: 17
+							}, this))
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 194,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Inicio", /* @__PURE__ */ _jsxDEV("select", {
+							value: bookingRuleDraft.startsAt,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								startsAt: event.target.value
+							}),
+							children: TIME_OPTIONS.map((time) => /* @__PURE__ */ _jsxDEV("option", {
+								value: time,
+								children: time
+							}, `rule-start:${time}`, false, {
+								fileName: _jsxFileName,
+								lineNumber: 206,
+								columnNumber: 19
+							}, this))
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 204,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 202,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Fim", /* @__PURE__ */ _jsxDEV("select", {
+							value: bookingRuleDraft.endsAt,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								endsAt: event.target.value
+							}),
+							children: TIME_OPTIONS.map((time) => /* @__PURE__ */ _jsxDEV("option", {
+								value: time,
+								children: time
+							}, `rule-end:${time}`, false, {
+								fileName: _jsxFileName,
+								lineNumber: 216,
+								columnNumber: 19
+							}, this))
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 214,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 212,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Avulso R$", /* @__PURE__ */ _jsxDEV("input", {
+							type: "number",
+							min: 0,
+							value: bookingRuleDraft.price,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								price: event.target.value
+							}),
+							placeholder: "90"
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 224,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 222,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Socio R$", /* @__PURE__ */ _jsxDEV("input", {
+							type: "number",
+							min: 0,
+							value: bookingRuleDraft.memberPrice,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								memberPrice: event.target.value
+							}),
+							placeholder: "65"
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 228,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 226,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Duracao minima", /* @__PURE__ */ _jsxDEV("select", {
+							value: bookingRuleDraft.minMinutes,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								minMinutes: event.target.value
+							}),
+							children: [
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "30",
+									children: "30 min"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 239,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "60",
+									children: "1h"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 240,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "90",
+									children: "1h30"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 241,
+									columnNumber: 17
+								}, this)
+							]
+						}, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 238,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 236,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Duracao maxima", /* @__PURE__ */ _jsxDEV("select", {
+							value: bookingRuleDraft.maxMinutes,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								maxMinutes: event.target.value
+							}),
+							children: [
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "60",
+									children: "1h"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 247,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "90",
+									children: "1h30"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 248,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "120",
+									children: "2h"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 249,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "180",
+									children: "3h"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 250,
+									columnNumber: 17
+								}, this)
+							]
+						}, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 246,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 244,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", { children: ["Antecedencia", /* @__PURE__ */ _jsxDEV("select", {
+							value: bookingRuleDraft.advanceDays,
+							onChange: (event) => onChangeRuleDraft({
+								...bookingRuleDraft,
+								advanceDays: event.target.value
+							}),
+							children: [
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "0",
+									children: "Mesmo dia"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 256,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "7",
+									children: "7 dias"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 257,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "14",
+									children: "14 dias"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 258,
+									columnNumber: 17
+								}, this),
+								/* @__PURE__ */ _jsxDEV("option", {
+									value: "30",
+									children: "30 dias"
+								}, void 0, false, {
+									fileName: _jsxFileName,
+									lineNumber: 259,
+									columnNumber: 17
+								}, this)
+							]
+						}, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 255,
+							columnNumber: 15
+						}, this)] }, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 253,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("label", {
+							className: "inline-check",
+							children: [/* @__PURE__ */ _jsxDEV("input", {
+								type: "checkbox",
+								checked: bookingRuleDraft.requiresApproval,
+								onChange: (event) => onChangeRuleDraft({
+									...bookingRuleDraft,
+									requiresApproval: event.target.checked
+								})
+							}, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 263,
+								columnNumber: 15
+							}, this), "Exigir aprovacao"]
+						}, void 0, true, {
+							fileName: _jsxFileName,
+							lineNumber: 262,
+							columnNumber: 13
+						}, this),
+						/* @__PURE__ */ _jsxDEV("button", {
+							className: "primary",
+							onClick: onCreateRule,
+							disabled: busy || !bookingRuleDraft.name.trim() || !selectedWeekdays.length,
+							children: "Criar regra"
+						}, void 0, false, {
+							fileName: _jsxFileName,
+							lineNumber: 270,
+							columnNumber: 13
+						}, this)
+					]
+				}, void 0, true, {
+					fileName: _jsxFileName,
+					lineNumber: 178,
+					columnNumber: 11
+				}, this),
+				bookingRules.length ? /* @__PURE__ */ _jsxDEV("div", {
+					className: "booking-rule-list",
+					children: bookingRules.map((rule) => /* @__PURE__ */ _jsxDEV("article", {
+						className: rule.isActive ? "" : "muted",
+						children: [
+							/* @__PURE__ */ _jsxDEV("div", { children: [/* @__PURE__ */ _jsxDEV("strong", { children: rule.name }, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 279,
+								columnNumber: 21
+							}, this), /* @__PURE__ */ _jsxDEV("small", { children: [
+								ruleProfileScopeLabels[rule.profileScope],
+								" - ",
+								ruleWeekdaysLabel(rule.weekdays),
+								" - ",
+								rule.startsAt,
+								"-",
+								rule.endsAt
+							] }, void 0, true, {
+								fileName: _jsxFileName,
+								lineNumber: 280,
+								columnNumber: 21
+							}, this)] }, void 0, true, {
+								fileName: _jsxFileName,
+								lineNumber: 278,
+								columnNumber: 19
+							}, this),
+							/* @__PURE__ */ _jsxDEV("span", { children: rule.priceCents === null ? "preco da quadra" : formatMoneyFromCents(rule.priceCents) }, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 284,
+								columnNumber: 19
+							}, this),
+							/* @__PURE__ */ _jsxDEV("span", { children: rule.memberPriceCents === null ? "socio padrao" : formatMoneyFromCents(rule.memberPriceCents) }, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 285,
+								columnNumber: 19
+							}, this),
+							/* @__PURE__ */ _jsxDEV("span", { children: [
+								rule.minMinutes,
+								"-",
+								rule.maxMinutes,
+								" min"
+							] }, void 0, true, {
+								fileName: _jsxFileName,
+								lineNumber: 286,
+								columnNumber: 19
+							}, this),
+							/* @__PURE__ */ _jsxDEV("span", { children: [rule.advanceDays, "d"] }, void 0, true, {
+								fileName: _jsxFileName,
+								lineNumber: 289,
+								columnNumber: 19
+							}, this),
+							/* @__PURE__ */ _jsxDEV("span", { children: rule.requiresApproval ? "aprovar" : "auto" }, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 290,
+								columnNumber: 19
+							}, this),
+							/* @__PURE__ */ _jsxDEV("button", {
+								onClick: () => onToggleRule(rule),
+								disabled: busy,
+								children: rule.isActive ? "Pausar" : "Ativar"
+							}, void 0, false, {
+								fileName: _jsxFileName,
+								lineNumber: 291,
+								columnNumber: 19
+							}, this)
+						]
+					}, rule.id, true, {
+						fileName: _jsxFileName,
+						lineNumber: 277,
+						columnNumber: 17
+					}, this))
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 275,
+					columnNumber: 13
+				}, this) : /* @__PURE__ */ _jsxDEV("p", {
+					className: "subtle",
+					children: "Sem regras: o sistema usa os valores padrao da quadra."
+				}, void 0, false, {
+					fileName: _jsxFileName,
+					lineNumber: 298,
+					columnNumber: 13
+				}, this)
+			]
+		}, void 0, true, {
+			fileName: _jsxFileName,
+			lineNumber: 173,
+			columnNumber: 9
+		}, this) : null
+	] }, void 0, true);
+}
+_c = PlaceBookingResourcesModule;
+var _c;
+$RefreshReg$(_c, "PlaceBookingResourcesModule");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope;
+import * as __vite_react_currentExports from "/src/components/place/PlaceBookingResourcesModule.tsx";
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+
+  const currentExports = __vite_react_currentExports;
+  queueMicrotask(() => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/User/Desktop/tenis/apps/web/src/components/place/PlaceBookingResourcesModule.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/User/Desktop/tenis/apps/web/src/components/place/PlaceBookingResourcesModule.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) { return RefreshRuntime.register(type, "C:/Users/User/Desktop/tenis/apps/web/src/components/place/PlaceBookingResourcesModule.tsx" + ' ' + id); }
+function $RefreshSig$() { return RefreshRuntime.createSignatureFunctionForTransform(); }
+
+//# sourceMappingURL=data:application/json;base64,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QUFDLGlCQUFpQixLQUFLLE1BQU0sSUFBSSxDQUFDLGlCQUFpQjtpQkFBUTtPQUV2SDs7Ozs7TUFDTDs7Ozs7O0lBQ0wsYUFBYSxTQUNaLHdCQUFDLE9BQUQ7S0FBSyxXQUFVO2VBQ1osYUFBYSxLQUFLLFNBQ2pCLHdCQUFDLFdBQUQ7TUFBdUIsV0FBVyxLQUFLLFdBQVcsS0FBSztnQkFBdkQ7T0FDRSx3QkFBQyxPQUFELGFBQ0Usd0JBQUMsVUFBRCxZQUFTLEtBQUssTUFBYzs7OztpQkFDNUIsd0JBQUMsU0FBRDtRQUNHLHVCQUF1QixLQUFLO1FBQWM7UUFBSSxrQkFBa0IsS0FBSyxTQUFTO1FBQUM7UUFBSSxLQUFLO1FBQVM7UUFBRSxLQUFLO1FBQ25HOzs7O2dCQUNKOzs7OztPQUNOLHdCQUFDLFFBQUQsWUFBTyxLQUFLLGVBQWUsT0FBTyxvQkFBb0IscUJBQXFCLEtBQUssV0FBVyxFQUFROzs7OztPQUNuRyx3QkFBQyxRQUFELFlBQU8sS0FBSyxxQkFBcUIsT0FBTyxpQkFBaUIscUJBQXFCLEtBQUssaUJBQWlCLEVBQVE7Ozs7O09BQzVHLHdCQUFDLFFBQUQ7UUFDRyxLQUFLO1FBQVc7UUFBRSxLQUFLO1FBQVc7UUFDOUI7Ozs7O09BQ1Asd0JBQUMsUUFBRCxhQUFPLEtBQUssYUFBWSxJQUFROzs7OztPQUNoQyx3QkFBQyxRQUFELFlBQU8sS0FBSyxtQkFBbUIsWUFBWSxRQUFjOzs7OztPQUN6RCx3QkFBQyxVQUFEO1FBQVEsZUFBZSxhQUFhLEtBQUs7UUFBRSxVQUFVO2tCQUNsRCxLQUFLLFdBQVcsV0FBVztRQUNyQjs7Ozs7T0FDRDtRQWpCSSxLQUFLOzs7O2FBaUJULENBQ1Y7S0FDRTs7OztlQUVOLHdCQUFDLEtBQUQ7S0FBRyxXQUFVO2VBQVM7S0FBMEQ7Ozs7O0lBRTlFOzs7OzthQUNKO0VBQ0giLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiUGxhY2VCb29raW5nUmVzb3VyY2VzTW9kdWxlLnRzeCJdLCJ2ZXJzaW9uIjozLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgdHlwZSB7IFBsYWNlQm9va2luZ1J1bGUsIFBsYWNlQ291cnQsIFBsYWNlTWVtYmVyc2hpcCwgUGxhY2VNZW1iZXJzaGlwUGxhbiB9IGZyb20gXCIuLi8uLi9saWIvdHlwZXNcIjtcbmltcG9ydCB7IGNvdW50TGFiZWwgfSBmcm9tIFwiLi4vLi4vbGliL3BsYWNlLW1hbmFnZW1lbnRcIjtcbmltcG9ydCB7IGZvcm1hdE1vbmV5RnJvbUNlbnRzIH0gZnJvbSBcIi4uLy4uL2xpYi9wYXltZW50c1wiO1xuXG5leHBvcnQgdHlwZSBQbGFjZUJvb2tpbmdSdWxlRHJhZnQgPSB7XG4gIGFkdmFuY2VEYXlzOiBzdHJpbmc7XG4gIGVuZHNBdDogc3RyaW5nO1xuICBtYXhNaW51dGVzOiBzdHJpbmc7XG4gIG1lbWJlclByaWNlOiBzdHJpbmc7XG4gIG1pbk1pbnV0ZXM6IHN0cmluZztcbiAgbmFtZTogc3RyaW5nO1xuICBwcmljZTogc3RyaW5nO1xuICBwcm9maWxlU2NvcGU6IFBsYWNlQm9va2luZ1J1bGVbXCJwcm9maWxlU2NvcGVcIl07XG4gIHJlcXVpcmVzQXBwcm92YWw6IGJvb2xlYW47XG4gIHN0YXJ0c0F0OiBzdHJpbmc7XG4gIHdlZWtkYXlzOiBzdHJpbmc7XG59O1xuXG50eXBlIENvdXJ0UHJpY2VEcmFmdCA9IHtcbiAgbWVtYmVyUHJpY2U6IHN0cmluZztcbiAgcHVibGljUHJpY2U6IHN0cmluZztcbn07XG5cbnR5cGUgUHJvcHMgPSB7XG4gIGFjdGl2ZUNvdXJ0czogUGxhY2VDb3VydFtdO1xuICBib29raW5nUnVsZURyYWZ0OiBQbGFjZUJvb2tpbmdSdWxlRHJhZnQ7XG4gIGJvb2tpbmdSdWxlczogUGxhY2VCb29raW5nUnVsZVtdO1xuICBidXN5OiBib29sZWFuO1xuICBjYW5NYW5hZ2VCb29raW5nczogYm9vbGVhbjtcbiAgY2FuTWFuYWdlRmluYW5jZTogYm9vbGVhbjtcbiAgY291cnREcmFmdDogc3RyaW5nO1xuICBjb3VydFByaWNlRHJhZnRCeUNvdXJ0OiBSZWNvcmQ8c3RyaW5nLCBDb3VydFByaWNlRHJhZnQ+O1xuICBtZW1iZXJzaGlwUGxhbnM6IFBsYWNlTWVtYmVyc2hpcFBsYW5bXTtcbiAgbXlNZW1iZXJzaGlwPzogUGxhY2VNZW1iZXJzaGlwO1xuICBvbkNoYW5nZUNvdXJ0RHJhZnQ6ICh2YWx1ZTogc3RyaW5nKSA9PiB2b2lkO1xuICBvbkNoYW5nZUNvdXJ0UHJpY2VEcmFmdDogKGNvdXJ0SWQ6IHN0cmluZywgZHJhZnQ6IENvdXJ0UHJpY2VEcmFmdCkgPT4gdm9pZDtcbiAgb25DaGFuZ2VSdWxlRHJhZnQ6IChkcmFmdDogUGxhY2VCb29raW5nUnVsZURyYWZ0KSA9PiB2b2lkO1xuICBvbkNyZWF0ZUNvdXJ0OiAoKSA9PiB2b2lkO1xuICBvbkNyZWF0ZVJ1bGU6ICgpID0+IHZvaWQ7XG4gIG9uU2F2ZUNvdXJ0UHJpY2U6IChjb3VydDogUGxhY2VDb3VydCkgPT4gdm9pZDtcbiAgb25Ub2dnbGVSdWxlOiAocnVsZTogUGxhY2VCb29raW5nUnVsZSkgPT4gdm9pZDtcbiAgcnVsZVByb2ZpbGVTY29wZUxhYmVsczogUmVjb3JkPFBsYWNlQm9va2luZ1J1bGVbXCJwcm9maWxlU2NvcGVcIl0sIHN0cmluZz47XG4gIHJ1bGVXZWVrZGF5c0xhYmVsOiAod2Vla2RheXM6IG51bWJlcltdKSA9PiBzdHJpbmc7XG59O1xuXG5jb25zdCBXRUVLREFZX09QVElPTlMgPSBbXG4gIHsgbGFiZWw6IFwiRG9tXCIsIHZhbHVlOiAwIH0sXG4gIHsgbGFiZWw6IFwiU2VnXCIsIHZhbHVlOiAxIH0sXG4gIHsgbGFiZWw6IFwiVGVyXCIsIHZhbHVlOiAyIH0sXG4gIHsgbGFiZWw6IFwiUXVhXCIsIHZhbHVlOiAzIH0sXG4gIHsgbGFiZWw6IFwiUXVpXCIsIHZhbHVlOiA0IH0sXG4gIHsgbGFiZWw6IFwiU2V4XCIsIHZhbHVlOiA1IH0sXG4gIHsgbGFiZWw6IFwiU2FiXCIsIHZhbHVlOiA2IH0sXG5dO1xuXG5jb25zdCBUSU1FX09QVElPTlMgPSBBcnJheS5mcm9tKHsgbGVuZ3RoOiAzNSB9LCAoXywgaW5kZXgpID0+IHtcbiAgY29uc3QgbWludXRlcyA9IDYgKiA2MCArIGluZGV4ICogMzA7XG4gIGNvbnN0IGhvdXIgPSBNYXRoLmZsb29yKG1pbnV0ZXMgLyA2MCk7XG4gIGNvbnN0IG1pbnV0ZSA9IG1pbnV0ZXMgJSA2MDtcbiAgcmV0dXJuIGAke1N0cmluZyhob3VyKS5wYWRTdGFydCgyLCBcIjBcIil9OiR7U3RyaW5nKG1pbnV0ZSkucGFkU3RhcnQoMiwgXCIwXCIpfWA7XG59KTtcblxuZnVuY3Rpb24gZGVmYXVsdFByaWNlRHJhZnQoY291cnQ6IFBsYWNlQ291cnQpOiBDb3VydFByaWNlRHJhZnQge1xuICByZXR1cm4ge1xuICAgIHB1YmxpY1ByaWNlOiBTdHJpbmcoTWF0aC5yb3VuZChjb3VydC5ib29raW5nRmVlQ2VudHMgLyAxMDApKSxcbiAgICBtZW1iZXJQcmljZTogY291cnQubWVtYmVyQm9va2luZ0ZlZUNlbnRzID09PSBudWxsID8gXCJcIiA6IFN0cmluZyhNYXRoLnJvdW5kKGNvdXJ0Lm1lbWJlckJvb2tpbmdGZWVDZW50cyAvIDEwMCkpLFxuICB9O1xufVxuXG5leHBvcnQgZnVuY3Rpb24gUGxhY2VCb29raW5nUmVzb3VyY2VzTW9kdWxlKHtcbiAgYWN0aXZlQ291cnRzLFxuICBib29raW5nUnVsZURyYWZ0LFxuICBib29raW5nUnVsZXMsXG4gIGJ1c3ksXG4gIGNhbk1hbmFnZUJvb2tpbmdzLFxuICBjYW5NYW5hZ2VGaW5hbmNlLFxuICBjb3VydERyYWZ0LFxuICBjb3VydFByaWNlRHJhZnRCeUNvdXJ0LFxuICBtZW1iZXJzaGlwUGxhbnMsXG4gIG15TWVtYmVyc2hpcCxcbiAgb25DaGFuZ2VDb3VydERyYWZ0LFxuICBvbkNoYW5nZUNvdXJ0UHJpY2VEcmFmdCxcbiAgb25DaGFuZ2VSdWxlRHJhZnQsXG4gIG9uQ3JlYXRlQ291cnQsXG4gIG9uQ3JlYXRlUnVsZSxcbiAgb25TYXZlQ291cnRQcmljZSxcbiAgb25Ub2dnbGVSdWxlLFxuICBydWxlUHJvZmlsZVNjb3BlTGFiZWxzLFxuICBydWxlV2Vla2RheXNMYWJlbCxcbn06IFByb3BzKSB7XG4gIGNvbnN0IHNlbGVjdGVkV2Vla2RheXMgPSBib29raW5nUnVsZURyYWZ0LndlZWtkYXlzXG4gICAgLnNwbGl0KFwiLFwiKVxuICAgIC5tYXAoKGl0ZW0pID0+IE51bWJlcihpdGVtLnRyaW0oKSkpXG4gICAgLmZpbHRlcigoaXRlbSkgPT4gTnVtYmVyLmlzSW50ZWdlcihpdGVtKSAmJiBpdGVtID49IDAgJiYgaXRlbSA8PSA2KTtcbiAgY29uc3QgdXBkYXRlV2Vla2RheSA9ICh3ZWVrZGF5OiBudW1iZXIsIGNoZWNrZWQ6IGJvb2xlYW4pID0+IHtcbiAgICBjb25zdCBuZXh0ID0gbmV3IFNldChzZWxlY3RlZFdlZWtkYXlzKTtcbiAgICBpZiAoY2hlY2tlZCkgbmV4dC5hZGQod2Vla2RheSk7XG4gICAgZWxzZSBuZXh0LmRlbGV0ZSh3ZWVrZGF5KTtcbiAgICBvbkNoYW5nZVJ1bGVEcmFmdCh7XG4gICAgICAuLi5ib29raW5nUnVsZURyYWZ0LFxuICAgICAgd2Vla2RheXM6IEFycmF5LmZyb20obmV4dClcbiAgICAgICAgLnNvcnQoKGEsIGIpID0+IGEgLSBiKVxuICAgICAgICAuam9pbihcIixcIiksXG4gICAgfSk7XG4gIH07XG5cbiAgcmV0dXJuIChcbiAgICA8PlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJwbGFjZS1ib29raW5nLWhlYWRcIj5cbiAgICAgICAgPHN0cm9uZz5RdWFkcmFzIGUgcmVzZXJ2YXM8L3N0cm9uZz5cbiAgICAgICAgPHNwYW4+e2NvdW50TGFiZWwoYWN0aXZlQ291cnRzLmxlbmd0aCwgXCJxdWFkcmFcIiwgXCJxdWFkcmFzXCIpfTwvc3Bhbj5cbiAgICAgIDwvZGl2PlxuICAgICAge2Nhbk1hbmFnZUJvb2tpbmdzID8gKFxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInBsYWNlLWNvdXJ0LWNyZWF0ZVwiPlxuICAgICAgICAgIDxpbnB1dCB2YWx1ZT17Y291cnREcmFmdH0gb25DaGFuZ2U9eyhldmVudCkgPT4gb25DaGFuZ2VDb3VydERyYWZ0KGV2ZW50LnRhcmdldC52YWx1ZSl9IHBsYWNlaG9sZGVyPVwiTm92YSBxdWFkcmFcIiAvPlxuICAgICAgICAgIDxidXR0b24gb25DbGljaz17b25DcmVhdGVDb3VydH0gZGlzYWJsZWQ9e2J1c3kgfHwgIWNvdXJ0RHJhZnQudHJpbSgpfT5cbiAgICAgICAgICAgIEFkaWNpb25hclxuICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICkgOiBudWxsfVxuICAgICAge2FjdGl2ZUNvdXJ0cy5sZW5ndGggPyAoXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicGxhY2UtY291cnQtcHJpY2UtbGlzdFwiPlxuICAgICAgICAgIHthY3RpdmVDb3VydHMubWFwKChjb3VydCkgPT4ge1xuICAgICAgICAgICAgY29uc3QgcHJpY2VEcmFmdCA9IGNvdXJ0UHJpY2VEcmFmdEJ5Q291cnRbY291cnQuaWRdIHx8IGRlZmF1bHRQcmljZURyYWZ0KGNvdXJ0KTtcbiAgICAgICAgICAgIGNvbnN0IHBsYW4gPSBteU1lbWJlcnNoaXA/LnN0YXR1cyA9PT0gXCJhY3RpdmVcIiA/IG1lbWJlcnNoaXBQbGFucy5maW5kKChpdGVtKSA9PiBpdGVtLmlkID09PSBteU1lbWJlcnNoaXAucGxhbklkKSA6IHVuZGVmaW5lZDtcbiAgICAgICAgICAgIGNvbnN0IG1lbWJlclByaWNlID1cbiAgICAgICAgICAgICAgbXlNZW1iZXJzaGlwPy5zdGF0dXMgPT09IFwiYWN0aXZlXCJcbiAgICAgICAgICAgICAgICA/IGNvdXJ0Lm1lbWJlckJvb2tpbmdGZWVDZW50cyA/PyAocGxhbiA/IE1hdGgucm91bmQoKGNvdXJ0LmJvb2tpbmdGZWVDZW50cyAqICgxMDAgLSBwbGFuLmNvdXJ0RGlzY291bnRQZXJjZW50KSkgLyAxMDApIDogY291cnQuYm9va2luZ0ZlZUNlbnRzKVxuICAgICAgICAgICAgICAgIDogbnVsbDtcbiAgICAgICAgICAgIHJldHVybiAoXG4gICAgICAgICAgICAgIDxhcnRpY2xlIGtleT17Y291cnQuaWR9IGNsYXNzTmFtZT1cInBsYWNlLWNvdXJ0LXByaWNlLXJvd1wiPlxuICAgICAgICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICAgICAgICA8c3Ryb25nPntjb3VydC5uYW1lfTwvc3Ryb25nPlxuICAgICAgICAgICAgICAgICAgPHNtYWxsPlxuICAgICAgICAgICAgICAgICAgICBQdWJsaWNvIHtmb3JtYXRNb25leUZyb21DZW50cyhjb3VydC5ib29raW5nRmVlQ2VudHMpfVxuICAgICAgICAgICAgICAgICAgICB7Y291cnQubWVtYmVyQm9va2luZ0ZlZUNlbnRzICE9PSBudWxsID8gYCB8IG1lbnNhbGlzdGEgJHtmb3JtYXRNb25leUZyb21DZW50cyhjb3VydC5tZW1iZXJCb29raW5nRmVlQ2VudHMpfWAgOiBcIlwifVxuICAgICAgICAgICAgICAgICAgICB7bWVtYmVyUHJpY2UgIT09IG51bGwgPyBgIHwgc2V1IHZhbG9yICR7Zm9ybWF0TW9uZXlGcm9tQ2VudHMobWVtYmVyUHJpY2UpfWAgOiBcIlwifVxuICAgICAgICAgICAgICAgICAgPC9zbWFsbD5cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICB7Y2FuTWFuYWdlRmluYW5jZSA/IChcbiAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicGxhY2UtY291cnQtcHJpY2UtZmllbGRzXCI+XG4gICAgICAgICAgICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgICAgICAgICAgIHR5cGU9XCJudW1iZXJcIlxuICAgICAgICAgICAgICAgICAgICAgIG1pbj17MH1cbiAgICAgICAgICAgICAgICAgICAgICBzdGVwPVwiMVwiXG4gICAgICAgICAgICAgICAgICAgICAgdmFsdWU9e3ByaWNlRHJhZnQucHVibGljUHJpY2V9XG4gICAgICAgICAgICAgICAgICAgICAgb25DaGFuZ2U9eyhldmVudCkgPT4gb25DaGFuZ2VDb3VydFByaWNlRHJhZnQoY291cnQuaWQsIHsgLi4ucHJpY2VEcmFmdCwgcHVibGljUHJpY2U6IGV2ZW50LnRhcmdldC52YWx1ZSB9KX1cbiAgICAgICAgICAgICAgICAgICAgICBhcmlhLWxhYmVsPXtgVmFsb3IgcHVibGljbyBkYSAke2NvdXJ0Lm5hbWV9YH1cbiAgICAgICAgICAgICAgICAgICAgICBwbGFjZWhvbGRlcj1cIlB1YmxpY28gUiRcIlxuICAgICAgICAgICAgICAgICAgICAvPlxuICAgICAgICAgICAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgICAgICAgICAgICB0eXBlPVwibnVtYmVyXCJcbiAgICAgICAgICAgICAgICAgICAgICBtaW49ezB9XG4gICAgICAgICAgICAgICAgICAgICAgc3RlcD1cIjFcIlxuICAgICAgICAgICAgICAgICAgICAgIHZhbHVlPXtwcmljZURyYWZ0Lm1lbWJlclByaWNlfVxuICAgICAgICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZXZlbnQpID0+IG9uQ2hhbmdlQ291cnRQcmljZURyYWZ0KGNvdXJ0LmlkLCB7IC4uLnByaWNlRHJhZnQsIG1lbWJlclByaWNlOiBldmVudC50YXJnZXQudmFsdWUgfSl9XG4gICAgICAgICAgICAgICAgICAgICAgYXJpYS1sYWJlbD17YFZhbG9yIG1lbnNhbGlzdGEgZGEgJHtjb3VydC5uYW1lfWB9XG4gICAgICAgICAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCJNZW5zYWxpc3RhIFIkXCJcbiAgICAgICAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgICAgICAgICAgPGJ1dHRvbiBvbkNsaWNrPXsoKSA9PiBvblNhdmVDb3VydFByaWNlKGNvdXJ0KX0gZGlzYWJsZWQ9e2J1c3l9PlxuICAgICAgICAgICAgICAgICAgICAgIFNhbHZhclxuICAgICAgICAgICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICkgOiBudWxsfVxuICAgICAgICAgICAgICA8L2FydGljbGU+XG4gICAgICAgICAgICApO1xuICAgICAgICAgIH0pfVxuICAgICAgICA8L2Rpdj5cbiAgICAgICkgOiAoXG4gICAgICAgIDxwIGNsYXNzTmFtZT1cInN1YnRsZVwiPlNlbSBxdWFkcmFzIGNhZGFzdHJhZGFzIHBhcmEgcmVzZXJ2YS48L3A+XG4gICAgICApfVxuICAgICAge2Nhbk1hbmFnZUJvb2tpbmdzID8gKFxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInBsYWNlLWJvb2tpbmctcnVsZXMtcGFuZWxcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInBsYWNlLWJvb2tpbmctaGVhZFwiPlxuICAgICAgICAgICAgPHN0cm9uZz5SZWdyYXMgcG9yIHBlcmZpbCBlIGhvcmFyaW88L3N0cm9uZz5cbiAgICAgICAgICAgIDxzcGFuPntjb3VudExhYmVsKGJvb2tpbmdSdWxlcy5maWx0ZXIoKHJ1bGUpID0+IHJ1bGUuaXNBY3RpdmUpLmxlbmd0aCwgXCJyZWdyYSBhdGl2YVwiLCBcInJlZ3JhcyBhdGl2YXNcIil9PC9zcGFuPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYm9va2luZy1ydWxlLWZvcm1cIj5cbiAgICAgICAgICAgIDxsYWJlbD5cbiAgICAgICAgICAgICAgTm9tZVxuICAgICAgICAgICAgICA8aW5wdXQgdmFsdWU9e2Jvb2tpbmdSdWxlRHJhZnQubmFtZX0gb25DaGFuZ2U9eyhldmVudCkgPT4gb25DaGFuZ2VSdWxlRHJhZnQoeyAuLi5ib29raW5nUnVsZURyYWZ0LCBuYW1lOiBldmVudC50YXJnZXQudmFsdWUgfSl9IHBsYWNlaG9sZGVyPVwiRXguOiBIb3JhcmlvIGNvbWVyY2lhbFwiIC8+XG4gICAgICAgICAgICA8L2xhYmVsPlxuICAgICAgICAgICAgPGxhYmVsPlxuICAgICAgICAgICAgICBQdWJsaWNvXG4gICAgICAgICAgICAgIDxzZWxlY3RcbiAgICAgICAgICAgICAgICB2YWx1ZT17Ym9va2luZ1J1bGVEcmFmdC5wcm9maWxlU2NvcGV9XG4gICAgICAgICAgICAgICAgb25DaGFuZ2U9eyhldmVudCkgPT4gb25DaGFuZ2VSdWxlRHJhZnQoeyAuLi5ib29raW5nUnVsZURyYWZ0LCBwcm9maWxlU2NvcGU6IGV2ZW50LnRhcmdldC52YWx1ZSBhcyBQbGFjZUJvb2tpbmdSdWxlW1wicHJvZmlsZVNjb3BlXCJdIH0pfVxuICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cImFsbFwiPlRvZG9zPC9vcHRpb24+XG4gICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cInB1YmxpY1wiPkF2dWxzbzwvb3B0aW9uPlxuICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJtZW1iZXJcIj5Tb2Npbzwvb3B0aW9uPlxuICAgICAgICAgICAgICA8L3NlbGVjdD5cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJvb2tpbmctcnVsZS13ZWVrZGF5c1wiIGFyaWEtbGFiZWw9XCJEaWFzIGRhIHNlbWFuYVwiPlxuICAgICAgICAgICAgICB7V0VFS0RBWV9PUFRJT05TLm1hcCgod2Vla2RheSkgPT4gKFxuICAgICAgICAgICAgICAgIDxsYWJlbCBrZXk9e2Bib29raW5nLXJ1bGUtd2Vla2RheToke3dlZWtkYXkudmFsdWV9YH0gY2xhc3NOYW1lPXtzZWxlY3RlZFdlZWtkYXlzLmluY2x1ZGVzKHdlZWtkYXkudmFsdWUpID8gXCJhY3RpdmVcIiA6IFwiXCJ9PlxuICAgICAgICAgICAgICAgICAgPGlucHV0IHR5cGU9XCJjaGVja2JveFwiIGNoZWNrZWQ9e3NlbGVjdGVkV2Vla2RheXMuaW5jbHVkZXMod2Vla2RheS52YWx1ZSl9IG9uQ2hhbmdlPXsoZXZlbnQpID0+IHVwZGF0ZVdlZWtkYXkod2Vla2RheS52YWx1ZSwgZXZlbnQudGFyZ2V0LmNoZWNrZWQpfSAvPlxuICAgICAgICAgICAgICAgICAge3dlZWtkYXkubGFiZWx9XG4gICAgICAgICAgICAgICAgPC9sYWJlbD5cbiAgICAgICAgICAgICAgKSl9XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDxsYWJlbD5cbiAgICAgICAgICAgICAgSW5pY2lvXG4gICAgICAgICAgICAgIDxzZWxlY3QgdmFsdWU9e2Jvb2tpbmdSdWxlRHJhZnQuc3RhcnRzQXR9IG9uQ2hhbmdlPXsoZXZlbnQpID0+IG9uQ2hhbmdlUnVsZURyYWZ0KHsgLi4uYm9va2luZ1J1bGVEcmFmdCwgc3RhcnRzQXQ6IGV2ZW50LnRhcmdldC52YWx1ZSB9KX0+XG4gICAgICAgICAgICAgICAge1RJTUVfT1BUSU9OUy5tYXAoKHRpbWUpID0+IChcbiAgICAgICAgICAgICAgICAgIDxvcHRpb24ga2V5PXtgcnVsZS1zdGFydDoke3RpbWV9YH0gdmFsdWU9e3RpbWV9PlxuICAgICAgICAgICAgICAgICAgICB7dGltZX1cbiAgICAgICAgICAgICAgICAgIDwvb3B0aW9uPlxuICAgICAgICAgICAgICAgICkpfVxuICAgICAgICAgICAgICA8L3NlbGVjdD5cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8bGFiZWw+XG4gICAgICAgICAgICAgIEZpbVxuICAgICAgICAgICAgICA8c2VsZWN0IHZhbHVlPXtib29raW5nUnVsZURyYWZ0LmVuZHNBdH0gb25DaGFuZ2U9eyhldmVudCkgPT4gb25DaGFuZ2VSdWxlRHJhZnQoeyAuLi5ib29raW5nUnVsZURyYWZ0LCBlbmRzQXQ6IGV2ZW50LnRhcmdldC52YWx1ZSB9KX0+XG4gICAgICAgICAgICAgICAge1RJTUVfT1BUSU9OUy5tYXAoKHRpbWUpID0+IChcbiAgICAgICAgICAgICAgICAgIDxvcHRpb24ga2V5PXtgcnVsZS1lbmQ6JHt0aW1lfWB9IHZhbHVlPXt0aW1lfT5cbiAgICAgICAgICAgICAgICAgICAge3RpbWV9XG4gICAgICAgICAgICAgICAgICA8L29wdGlvbj5cbiAgICAgICAgICAgICAgICApKX1cbiAgICAgICAgICAgICAgPC9zZWxlY3Q+XG4gICAgICAgICAgICA8L2xhYmVsPlxuICAgICAgICAgICAgPGxhYmVsPlxuICAgICAgICAgICAgICBBdnVsc28gUiRcbiAgICAgICAgICAgICAgPGlucHV0IHR5cGU9XCJudW1iZXJcIiBtaW49ezB9IHZhbHVlPXtib29raW5nUnVsZURyYWZ0LnByaWNlfSBvbkNoYW5nZT17KGV2ZW50KSA9PiBvbkNoYW5nZVJ1bGVEcmFmdCh7IC4uLmJvb2tpbmdSdWxlRHJhZnQsIHByaWNlOiBldmVudC50YXJnZXQudmFsdWUgfSl9IHBsYWNlaG9sZGVyPVwiOTBcIiAvPlxuICAgICAgICAgICAgPC9sYWJlbD5cbiAgICAgICAgICAgIDxsYWJlbD5cbiAgICAgICAgICAgICAgU29jaW8gUiRcbiAgICAgICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICAgICAgdHlwZT1cIm51bWJlclwiXG4gICAgICAgICAgICAgICAgbWluPXswfVxuICAgICAgICAgICAgICAgIHZhbHVlPXtib29raW5nUnVsZURyYWZ0Lm1lbWJlclByaWNlfVxuICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZXZlbnQpID0+IG9uQ2hhbmdlUnVsZURyYWZ0KHsgLi4uYm9va2luZ1J1bGVEcmFmdCwgbWVtYmVyUHJpY2U6IGV2ZW50LnRhcmdldC52YWx1ZSB9KX1cbiAgICAgICAgICAgICAgICBwbGFjZWhvbGRlcj1cIjY1XCJcbiAgICAgICAgICAgICAgLz5cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8bGFiZWw+XG4gICAgICAgICAgICAgIER1cmFjYW8gbWluaW1hXG4gICAgICAgICAgICAgIDxzZWxlY3QgdmFsdWU9e2Jvb2tpbmdSdWxlRHJhZnQubWluTWludXRlc30gb25DaGFuZ2U9eyhldmVudCkgPT4gb25DaGFuZ2VSdWxlRHJhZnQoeyAuLi5ib29raW5nUnVsZURyYWZ0LCBtaW5NaW51dGVzOiBldmVudC50YXJnZXQudmFsdWUgfSl9PlxuICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCIzMFwiPjMwIG1pbjwvb3B0aW9uPlxuICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCI2MFwiPjFoPC9vcHRpb24+XG4gICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cIjkwXCI+MWgzMDwvb3B0aW9uPlxuICAgICAgICAgICAgICA8L3NlbGVjdD5cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8bGFiZWw+XG4gICAgICAgICAgICAgIER1cmFjYW8gbWF4aW1hXG4gICAgICAgICAgICAgIDxzZWxlY3QgdmFsdWU9e2Jvb2tpbmdSdWxlRHJhZnQubWF4TWludXRlc30gb25DaGFuZ2U9eyhldmVudCkgPT4gb25DaGFuZ2VSdWxlRHJhZnQoeyAuLi5ib29raW5nUnVsZURyYWZ0LCBtYXhNaW51dGVzOiBldmVudC50YXJnZXQudmFsdWUgfSl9PlxuICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCI2MFwiPjFoPC9vcHRpb24+XG4gICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cIjkwXCI+MWgzMDwvb3B0aW9uPlxuICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCIxMjBcIj4yaDwvb3B0aW9uPlxuICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCIxODBcIj4zaDwvb3B0aW9uPlxuICAgICAgICAgICAgICA8L3NlbGVjdD5cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8bGFiZWw+XG4gICAgICAgICAgICAgIEFudGVjZWRlbmNpYVxuICAgICAgICAgICAgICA8c2VsZWN0IHZhbHVlPXtib29raW5nUnVsZURyYWZ0LmFkdmFuY2VEYXlzfSBvbkNoYW5nZT17KGV2ZW50KSA9PiBvbkNoYW5nZVJ1bGVEcmFmdCh7IC4uLmJvb2tpbmdSdWxlRHJhZnQsIGFkdmFuY2VEYXlzOiBldmVudC50YXJnZXQudmFsdWUgfSl9PlxuICAgICAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCIwXCI+TWVzbW8gZGlhPC9vcHRpb24+XG4gICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cIjdcIj43IGRpYXM8L29wdGlvbj5cbiAgICAgICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiMTRcIj4xNCBkaWFzPC9vcHRpb24+XG4gICAgICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cIjMwXCI+MzAgZGlhczwvb3B0aW9uPlxuICAgICAgICAgICAgICA8L3NlbGVjdD5cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiaW5saW5lLWNoZWNrXCI+XG4gICAgICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgICAgIHR5cGU9XCJjaGVja2JveFwiXG4gICAgICAgICAgICAgICAgY2hlY2tlZD17Ym9va2luZ1J1bGVEcmFmdC5yZXF1aXJlc0FwcHJvdmFsfVxuICAgICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZXZlbnQpID0+IG9uQ2hhbmdlUnVsZURyYWZ0KHsgLi4uYm9va2luZ1J1bGVEcmFmdCwgcmVxdWlyZXNBcHByb3ZhbDogZXZlbnQudGFyZ2V0LmNoZWNrZWQgfSl9XG4gICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgIEV4aWdpciBhcHJvdmFjYW9cbiAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICA8YnV0dG9uIGNsYXNzTmFtZT1cInByaW1hcnlcIiBvbkNsaWNrPXtvbkNyZWF0ZVJ1bGV9IGRpc2FibGVkPXtidXN5IHx8ICFib29raW5nUnVsZURyYWZ0Lm5hbWUudHJpbSgpIHx8ICFzZWxlY3RlZFdlZWtkYXlzLmxlbmd0aH0+XG4gICAgICAgICAgICAgIENyaWFyIHJlZ3JhXG4gICAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICB7Ym9va2luZ1J1bGVzLmxlbmd0aCA/IChcbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYm9va2luZy1ydWxlLWxpc3RcIj5cbiAgICAgICAgICAgICAge2Jvb2tpbmdSdWxlcy5tYXAoKHJ1bGUpID0+IChcbiAgICAgICAgICAgICAgICA8YXJ0aWNsZSBrZXk9e3J1bGUuaWR9IGNsYXNzTmFtZT17cnVsZS5pc0FjdGl2ZSA/IFwiXCIgOiBcIm11dGVkXCJ9PlxuICAgICAgICAgICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgICAgICAgICAgPHN0cm9uZz57cnVsZS5uYW1lfTwvc3Ryb25nPlxuICAgICAgICAgICAgICAgICAgICA8c21hbGw+XG4gICAgICAgICAgICAgICAgICAgICAge3J1bGVQcm9maWxlU2NvcGVMYWJlbHNbcnVsZS5wcm9maWxlU2NvcGVdfSAtIHtydWxlV2Vla2RheXNMYWJlbChydWxlLndlZWtkYXlzKX0gLSB7cnVsZS5zdGFydHNBdH0te3J1bGUuZW5kc0F0fVxuICAgICAgICAgICAgICAgICAgICA8L3NtYWxsPlxuICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICA8c3Bhbj57cnVsZS5wcmljZUNlbnRzID09PSBudWxsID8gXCJwcmVjbyBkYSBxdWFkcmFcIiA6IGZvcm1hdE1vbmV5RnJvbUNlbnRzKHJ1bGUucHJpY2VDZW50cyl9PC9zcGFuPlxuICAgICAgICAgICAgICAgICAgPHNwYW4+e3J1bGUubWVtYmVyUHJpY2VDZW50cyA9PT0gbnVsbCA/IFwic29jaW8gcGFkcmFvXCIgOiBmb3JtYXRNb25leUZyb21DZW50cyhydWxlLm1lbWJlclByaWNlQ2VudHMpfTwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgIDxzcGFuPlxuICAgICAgICAgICAgICAgICAgICB7cnVsZS5taW5NaW51dGVzfS17cnVsZS5tYXhNaW51dGVzfSBtaW5cbiAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgIDxzcGFuPntydWxlLmFkdmFuY2VEYXlzfWQ8L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8c3Bhbj57cnVsZS5yZXF1aXJlc0FwcHJvdmFsID8gXCJhcHJvdmFyXCIgOiBcImF1dG9cIn08L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8YnV0dG9uIG9uQ2xpY2s9eygpID0+IG9uVG9nZ2xlUnVsZShydWxlKX0gZGlzYWJsZWQ9e2J1c3l9PlxuICAgICAgICAgICAgICAgICAgICB7cnVsZS5pc0FjdGl2ZSA/IFwiUGF1c2FyXCIgOiBcIkF0aXZhclwifVxuICAgICAgICAgICAgICAgICAgPC9idXR0b24+XG4gICAgICAgICAgICAgICAgPC9hcnRpY2xlPlxuICAgICAgICAgICAgICApKX1cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICkgOiAoXG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJzdWJ0bGVcIj5TZW0gcmVncmFzOiBvIHNpc3RlbWEgdXNhIG9zIHZhbG9yZXMgcGFkcmFvIGRhIHF1YWRyYS48L3A+XG4gICAgICAgICAgKX1cbiAgICAgICAgPC9kaXY+XG4gICAgICApIDogbnVsbH1cbiAgICA8Lz5cbiAgKTtcbn1cbiJdfQ==

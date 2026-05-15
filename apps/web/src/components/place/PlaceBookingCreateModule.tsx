@@ -104,7 +104,7 @@ export function PlaceBookingCreateModule({
         <div className="place-booking-form place-booking-flow">
           <div className="place-booking-primary-fields">
             <label>
-              Quadra
+              Quadra preferida
               <select value={draft.courtId || activeCourts[0]?.id || ""} onChange={(event) => onChangeDraft({ ...draft, courtId: event.target.value })}>
                 {courts.map((court) => (
                   <option key={court.id} value={court.id}>
@@ -177,8 +177,19 @@ export function PlaceBookingCreateModule({
             </button>
           </div>
 
+          <div className="place-booking-secondary-actions">
+            {canManageBookings ? (
+              <button className="quiet" onClick={onBlock} disabled={busy || !hasRequiredFields}>
+                Bloquear horario
+              </button>
+            ) : null}
+            <button className="quiet" onClick={onJoinWaitlist} disabled={busy || !hasRequiredFields || Boolean(availableCourts.length)}>
+              Entrar na espera
+            </button>
+          </div>
+
           <details className="place-booking-advanced">
-            <summary>Opcoes avancadas</summary>
+            <summary>Observacao e repeticao</summary>
             <div className="place-booking-advanced-grid">
               <label>
                 Observacao
@@ -196,16 +207,6 @@ export function PlaceBookingCreateModule({
                   aria-label="Repetir por semanas"
                 />
               </label>
-            </div>
-            <div className="place-booking-secondary-actions">
-              {canManageBookings ? (
-                <button className="quiet" onClick={onBlock} disabled={busy || !hasRequiredFields}>
-                  Bloquear horario
-                </button>
-              ) : null}
-              <button className="quiet" onClick={onJoinWaitlist} disabled={busy || !hasRequiredFields || Boolean(availableCourts.length)}>
-                Entrar na espera
-              </button>
             </div>
           </details>
         </div>

@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { useEffect, useMemo, useState } from "react";
 import logoMark from "../assets/logo-atp-mark.svg";
 import { EMPTY_WORKSPACE_ACCESS, loadWorkspaceAccessSummary, type WorkspaceAccessSummary } from "../lib/workspace-access";
+import { getGlobalNavigationVisibility } from "../lib/role-visibility";
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
@@ -67,7 +68,7 @@ function PersonIcon({ active }: { active: boolean }) {
 
 type NavItem = {
   activePath?: string;
-  group: "player" | "organize" | "operations" | "account";
+  group: "player" | "work" | "account";
   path: string;
   label: string;
   Icon: ComponentType<{ active: boolean }>;
@@ -83,28 +84,37 @@ const BASE_ITEMS: NavItem[] = [
 
 const GROUPS: Array<{ id: NavItem["group"]; label: string }> = [
   { id: "player", label: "Jogar" },
-  { id: "organize", label: "Organizar" },
-  { id: "operations", label: "Operar" },
+  { id: "work", label: "Trabalho" },
   { id: "account", label: "Conta" },
 ];
 
-function buildNavItems(access: WorkspaceAccessSummary, pathname: string, search: string): NavItem[] {
+function buildNavItems(access: WorkspaceAccessSummary, pathname: string): NavItem[] {
   const items = [...BASE_ITEMS];
-  const shouldShowCompetitionManagement = access.hasCompetitionManagement || (pathname.startsWith("/eventos") && search.includes("organizing"));
-  const shouldShowManagement = access.hasManagement;
+  const visibility = getGlobalNavigationVisibility(access, pathname);
+  const hasProfessionalEntry = visibility.showCompetitionManagement || visibility.showManagement;
 
-  if (shouldShowCompetitionManagement) {
+  if (visibility.activeSurface === "player" && hasProfessionalEntry) {
+    items.push({
+      activePath: visibility.showManagement ? "/gestao" : "/eventos/torneios",
+      group: "work",
+      path: visibility.showManagement ? "/gestao" : "/eventos/torneios?view=organizing",
+      label: "Trabalho",
+      Icon: ManagementIcon,
+    });
+  }
+
+  if (visibility.activeSurface === "competition" && visibility.showCompetitionManagement) {
     items.push({
       activePath: "/eventos/torneios",
-      group: "organize",
+      group: "work",
       path: "/eventos/torneios?view=organizing",
       label: "Organizar",
       Icon: TrophyIcon,
     });
   }
 
-  if (shouldShowManagement) {
-    items.push({ group: "operations", path: "/gestao", label: "Gestao", Icon: ManagementIcon });
+  if (visibility.activeSurface === "management" && visibility.showManagement) {
+    items.push({ activePath: pathname, group: "work", path: "/gestao", label: "Gestao", Icon: ManagementIcon });
   }
 
   return items;
@@ -112,7 +122,7 @@ function buildNavItems(access: WorkspaceAccessSummary, pathname: string, search:
 
 export function BottomNav({ user }: { user: User }) {
   const navigate = useNavigate();
-  const { pathname, search } = useLocation();
+  const { pathname } = useLocation();
   const [access, setAccess] = useState<WorkspaceAccessSummary>(EMPTY_WORKSPACE_ACCESS);
 
   useEffect(() => {
@@ -129,19 +139,16 @@ export function BottomNav({ user }: { user: User }) {
     };
   }, [user]);
 
-  const items = useMemo(() => buildNavItems(access, pathname, search), [access, pathname, search]);
-  const hasManagementContext = pathname.startsWith("/gestao") && access.hasManagement;
-  const contextLabel = hasManagementContext
-    ? "Management OS"
-    : pathname.startsWith("/eventos")
-      ? "Competition OS"
-      : "Player App";
+  const items = useMemo(() => buildNavItems(access, pathname), [access, pathname]);
+  const visibility = useMemo(() => getGlobalNavigationVisibility(access, pathname), [access, pathname]);
+  const contextLabel = visibility.contextLabel;
+  const navClassName = `bottom-nav is-${visibility.activeSurface}`;
 
   return (
-    <nav className={`bottom-nav${hasManagementContext ? " is-management" : ""}`} aria-label="Navegacao principal">
+    <nav className={navClassName} aria-label="Navegacao principal">
       <div className="bottom-nav-brand" aria-hidden>
         <img src={logoMark} alt="" />
-        <span>Gestao esportiva</span>
+        <span>{visibility.activeSurface === "management" ? "Gestao esportiva" : "ATP"}</span>
         <small className="bottom-nav-context">{contextLabel}</small>
       </div>
       {GROUPS.map((group) => {

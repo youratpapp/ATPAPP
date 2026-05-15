@@ -40,6 +40,114 @@ where u.kind = 'player'
 
 insert into qa_seed_integrity_checks
 select
+  'qa_pure_player_missing',
+  case
+    when exists (
+      select 1
+      from public.seed_users u
+      join public.app_user_product_entitlements e on e.user_id = u.id
+      where u.email = 'qa.jogador.puro@demo.atp.local'
+        and e.account_type = 'free_player'
+        and e.can_create_places = false
+        and e.can_create_competitions = false
+    ) then 0 else 1
+  end,
+  'qa.jogador.puro@demo.atp.local must exist as a pure free_player QA account.';
+
+insert into qa_seed_integrity_checks
+select
+  'qa_pure_player_has_operational_links',
+  coalesce((
+    select count(*)::integer
+    from public.seed_users u
+    cross join lateral (
+      select s.user_id from public.place_staff s where s.user_id = u.id
+      union all select m.user_id from public.place_memberships m where m.user_id = u.id
+      union all select c.user_id from public.place_academy_student_contracts c where c.user_id = u.id
+      union all select e.user_id from public.place_academy_enrollments e where e.user_id = u.id
+      union all select r.user_id from public.tournament_registrations r where r.user_id = u.id
+      union all select tm.user_id from public.tournament_members tm where tm.user_id = u.id
+      union all select lp.user_id from public.league_players lp where lp.user_id = u.id
+      union all select lr.user_id from public.league_registrations lr where lr.user_id = u.id
+      union all select cb.user_id from public.court_bookings cb where cb.user_id = u.id
+      union all select omp.user_id from public.open_match_participants omp where omp.user_id = u.id
+    ) links
+    where u.email = 'qa.jogador.puro@demo.atp.local'
+  ), 1),
+  'The pure player QA account must not be linked to staff, academy, booking, tournament, league or open match records.';
+
+insert into qa_seed_integrity_checks
+select
+  'qa_pure_organizer_has_place_staff',
+  count(*)::integer,
+  'organizador.circuito@demo.atp.local must not have place_staff; it validates Competition OS without Management OS.'
+from public.place_staff s
+join public.seed_users u on u.id = s.user_id
+where u.email = 'organizador.circuito@demo.atp.local';
+
+insert into qa_seed_integrity_checks
+select
+  'qa_pure_organizer_missing_entitlement',
+  case
+    when exists (
+      select 1
+      from public.seed_users u
+      join public.app_user_product_entitlements e on e.user_id = u.id
+      where u.email = 'organizador.circuito@demo.atp.local'
+        and e.account_type = 'competition_organizer'
+        and e.can_create_places = false
+        and e.can_create_competitions = true
+    ) then 0 else 1
+  end,
+  'organizador.circuito@demo.atp.local must be a pure competition organizer entitlement.';
+
+insert into qa_seed_integrity_checks
+select
+  'qa_finance_staff_missing',
+  case
+    when exists (
+      select 1
+      from public.seed_users u
+      join public.place_staff s on s.user_id = u.id
+      where u.email = 'financeiro.prime@demo.atp.local'
+        and s.role = 'finance'
+    ) then 0 else 1
+  end,
+  'financeiro.prime@demo.atp.local must be linked as place_staff.role = finance.';
+
+insert into qa_seed_integrity_checks
+select
+  'qa_coach_solo_has_place_links',
+  coalesce((
+    select count(*)::integer
+    from public.seed_users u
+    cross join lateral (
+      select s.user_id from public.place_staff s where s.user_id = u.id
+      union all select c.user_id from public.place_coaches c where c.user_id = u.id
+    ) links
+    where u.email = 'coach.solo@demo.atp.local'
+  ), 1),
+  'coach.solo@demo.atp.local must stay without place_staff/place_coaches links for empty-state QA.';
+
+insert into qa_seed_integrity_checks
+select
+  'qa_monthly_student_missing',
+  case
+    when exists (
+      select 1
+      from public.seed_users u
+      join public.place_academy_student_contracts c on c.user_id = u.id
+      join public.place_academy_enrollments e on e.contract_id = c.id
+      where u.email = 'jogador001@demo.atp.local'
+        and c.status = 'active'
+        and c.weekly_lessons_count >= 1
+        and e.status = 'active'
+    ) then 0 else 1
+  end,
+  'jogador001@demo.atp.local must remain an active monthly academy student with enrollment.';
+
+insert into qa_seed_integrity_checks
+select
   'active_coaches_without_user',
   count(*)::integer,
   'Active place coaches must be linked to auth users.'

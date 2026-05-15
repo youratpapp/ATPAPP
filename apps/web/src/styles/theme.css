@@ -100,4 +100,55 @@
   /* Layout */
   --bottom-nav-height: 68px;
   --content-max-width: 1180px;
+
+  /* Density by surface mode */
+  --player-content-max-width: 1040px;
+  --player-page-padding: var(--space-6);
+  --player-page-padding-mobile: var(--space-3);
+  --player-section-gap: var(--space-5);
+  --player-surface-padding: var(--space-4);
+  --player-card-padding: var(--space-5);
+  --player-card-radius: var(--radius-md);
+  --player-row-padding: var(--space-3) var(--space-4);
+  --player-row-radius: var(--radius-sm);
+  --player-row-min-height: 72px;
+  --player-button-min-height: 44px;
+  --player-compact-button-min-height: 38px;
+  --player-input-min-height: 44px;
+  --player-surface-shadow: var(--shadow-sm);
+  --player-row-shadow: var(--shadow-xs);
+
+  --competition-content-max-width: 1120px;
+  --competition-page-padding: var(--space-5);
+  --competition-page-padding-mobile: var(--space-3);
+  --competition-section-gap: var(--space-4);
+  --competition-surface-padding: var(--space-4);
+  --competition-card-padding: var(--space-4);
+  --competition-card-radius: var(--radius-md);
+  --competition-row-padding: var(--space-3);
+  --competition-row-radius: var(--radius-sm);
+  --competition-row-min-height: 64px;
+  --competition-button-min-height: 40px;
+  --competition-compact-button-min-height: 36px;
+  --competition-input-min-height: 44px;
+  --competition-surface-shadow: var(--shadow-sm);
+  --competition-row-shadow: var(--shadow-xs);
+
+  --management-content-max-width: 1280px;
+  --management-page-padding: var(--space-4);
+  --management-page-padding-mobile: var(--space-3);
+  --management-section-gap: var(--space-3);
+  --management-surface-padding: var(--space-3);
+  --management-card-padding: var(--space-3);
+  --management-card-radius: var(--radius-sm);
+  --management-row-padding: var(--space-2) var(--space-3);
+  --management-row-radius: var(--radius-sm);
+  --management-row-min-height: 56px;
+  --management-button-min-height: 36px;
+  --management-compact-button-min-height: 32px;
+  --management-input-min-height: 40px;
+  --management-surface-shadow: var(--shadow-xs);
+  --management-row-shadow: none;
+
+  --density-touch-target: 44px;
 }

@@ -169,6 +169,21 @@ function normalizeVisibility(value: string | undefined): "private" | "public" {
   return value === "public" ? "public" : "private";
 }
 
+function normalizeIsoDate(value: string | undefined, fallbackTime = "09:00"): string | null {
+  const raw = String(value || "").trim();
+  if (!raw) return null;
+  const valueWithTime = raw.includes("T") ? raw : `${raw}T${fallbackTime}:00`;
+  const parsed = new Date(valueWithTime);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toISOString();
+}
+
+function clampNumber(value: number | undefined, min: number, max: number, fallback: number): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, Math.floor(n)));
+}
+
 function normalizeStatus(value: string | undefined):
   | "draft"
   | "registration_open"
@@ -360,29 +375,172 @@ export async function loadUpcomingPublic(limit = 6): Promise<TournamentSummary[]
   return ((data ?? []) as TournamentRow[]).map(rowToSummary);
 }
 
-export async function createTournament(
-  user: User,
-  input: { name: string; city?: string; state?: string; visibility?: "public" | "private" }
-): Promise<{ id: string }> {
+export type CreateTournamentClassInput = {
+  categoryName: string;
+  className: string;
+  gender?: "open" | "male" | "female" | "mixed";
+  maxParticipants?: number;
+  minAge?: number;
+  maxAge?: number;
+};
+
+export type CreateTournamentInput = {
+  name: string;
+  city?: string;
+  state?: string;
+  visibility?: "public" | "private";
+  status?: "draft" | "registration_open";
+  startsAt?: string;
+  endsAt?: string;
+  registrationCloseAt?: string;
+  registrationFeeCents?: number;
+  registrationApproval?: "auto" | "manual";
+  playerResultSubmissionEnabled?: boolean;
+  posterUrl?: string;
+  classes?: CreateTournamentClassInput[];
+  format?: {
+    matchType?: "simples" | "duplas";
+    competitionModel?:
+      | "mata_mata_simples"
+      | "grupos_mata_mata"
+      | "round_robin"
+      | "liga_ranking"
+      | "dupla_eliminacao"
+      | "super_tiebreak";
+    scoring?:
+      | "melhor_de_3"
+      | "melhor_de_3_super_tb"
+      | "set_unico"
+      | "pro_set"
+      | "fast4"
+      | "super_tb_unico";
+    doublesMode?: "manual" | "sorteio";
+  };
+  agenda?: {
+    durationMin?: number;
+    courts?: string[];
+    days?: Array<{ date: string; start: string; end: string }>;
+  };
+};
+
+function buildInitialTournamentCategories(input: CreateTournamentInput): Record<string, unknown>[] {
+  const format = input.format ?? {};
+  const competitionModel = format.competitionModel || "grupos_mata_mata";
+  const scoring = format.scoring || "melhor_de_3";
+  const matchType = format.matchType === "duplas" ? "duplas" : "simples";
+  const baseFormat =
+    competitionModel === "mata_mata_simples" || competitionModel === "dupla_eliminacao"
+      ? "mata_mata"
+      : "grupos";
+  const numeroSets =
+    scoring === "set_unico" || scoring === "pro_set" || scoring === "super_tb_unico" ? 1 : 3;
+  const grouped = new Map<string, CreateTournamentClassInput[]>();
+
+  (input.classes || [])
+    .map((item) => ({
+      ...item,
+      categoryName: item.categoryName.trim(),
+      className: item.className.trim(),
+    }))
+    .filter((item) => item.categoryName && item.className)
+    .forEach((item) => {
+      const key = item.categoryName.toLowerCase();
+      grouped.set(key, [...(grouped.get(key) || []), item]);
+    });
+
+  return Array.from(grouped.values()).map((classes, categoryIndex) => {
+    const first = classes[0] as CreateTournamentClassInput;
+    return {
+      id: `cat-${Date.now()}-${categoryIndex + 1}`,
+      nome: first.categoryName,
+      classes: classes.map((item, classIndex) => ({
+        id: `cls-${Date.now()}-${categoryIndex + 1}-${classIndex + 1}`,
+        nome: item.className,
+        meta: {
+          gender: item.gender || "open",
+          maxParticipants: clampNumber(item.maxParticipants, 2, 256, 16),
+          minAge: item.minAge || null,
+          maxAge: item.maxAge || null,
+        },
+        data: {
+          config: {
+            tipo: matchType,
+            formato: baseFormat,
+            modeloCompeticao: competitionModel,
+            superTiebreakBase: baseFormat === "mata_mata" ? "mata_mata" : "grupos",
+            modoDuplas: format.doublesMode === "sorteio" ? "sorteio" : "manual",
+            sorteioDuplas: "todos",
+            tipoPontuacao: scoring,
+            numeroSets,
+            numGrupos: 2,
+            classificadosPorGrupo: competitionModel === "round_robin" || competitionModel === "liga_ranking" ? 0 : 2,
+          },
+          participantes: [],
+          entradas: [],
+          grupos: [],
+          knockout: null,
+          tabelaPorGrupo: {},
+          gerado: false,
+        },
+      })),
+    };
+  });
+}
+
+export async function createTournament(user: User, input: CreateTournamentInput): Promise<{ id: string }> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const name = (input.name || "").trim() || "Novo Torneio";
+  const visibility = normalizeVisibility(input.visibility);
+  const status = input.status === "registration_open" ? "registration_open" : "draft";
+  const startsAt = normalizeIsoDate(input.startsAt);
+  const registrationCloseAt = normalizeIsoDate(input.registrationCloseAt, "23:59");
+  const registrationFeeCents = Math.max(0, Math.floor(input.registrationFeeCents || 0));
+  const agendaConfig = {
+    duracaoMin: clampNumber(input.agenda?.durationMin, 10, 240, 45),
+    quadras: Array.from(new Set((input.agenda?.courts || []).map((court) => court.trim()).filter(Boolean))),
+    dias: (input.agenda?.days || [])
+      .map((day) => ({ data: day.date, inicio: day.start, fim: day.end }))
+      .filter((day) => day.data && day.inicio && day.fim),
+    travarSemifinalDia: false,
+    diaSemifinal: "",
+    travarFinalDia: false,
+    diaFinal: "",
+    quadrasSemifinal: Array.from(new Set((input.agenda?.courts || []).map((court) => court.trim()).filter(Boolean))),
+    quadrasFinal: Array.from(new Set((input.agenda?.courts || []).map((court) => court.trim()).filter(Boolean))),
+  };
   const payload = {
     owner_id: user.id,
     name,
     city: input.city?.trim() || null,
     state: normalizeState(input.state),
-    visibility: normalizeVisibility(input.visibility),
-    status: "draft",
+    visibility,
+    status,
+    poster_url: (input.posterUrl || "").trim() || null,
+    starts_at: startsAt,
+    registration_close_at: registrationCloseAt,
+    player_result_submission_enabled: Boolean(input.playerResultSubmissionEnabled),
+    registration_fee_cents: registrationFeeCents,
     data: {
       nomeTorneio: name,
-      registrationMode: "hybrid",
-      categorias: [],
+      registrationMode: input.registrationApproval === "auto" ? "open" : "approval",
+      categorias: buildInitialTournamentCategories(input),
+      agendaConfig,
+      agenda: { assignments: [], total: 0, unassigned: 0, generatedAt: "" },
+      setupDraft: {
+        createdFromWizard: true,
+        registrationApproval: input.registrationApproval === "auto" ? "auto" : "manual",
+        playerResultSubmissionEnabled: Boolean(input.playerResultSubmissionEnabled),
+      },
       tournamentMeta: {
         city: input.city?.trim() || "",
         state: normalizeState(input.state) || "",
-        visibility: normalizeVisibility(input.visibility),
+        visibility,
+        startsAt: startsAt || "",
+        endsAt: normalizeIsoDate(input.endsAt, "22:00") || "",
+        registrationCloseAt: registrationCloseAt || "",
+        registrationFeeCents,
       },
-      tournamentStatus: "draft",
+      tournamentStatus: status,
     },
     updated_at: new Date().toISOString(),
   };

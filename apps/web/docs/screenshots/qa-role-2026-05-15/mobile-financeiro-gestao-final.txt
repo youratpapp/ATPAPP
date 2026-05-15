@@ -1,0 +1,49 @@
+CENTRAL OPERACIONAL
+Gestao
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Reservas pendentes
+Abrir primeiro local com acao pendente
+11
+Lista de espera
+Abrir primeiro local com acao pendente
+80
+SINAIS DE SUPORTE
+1
+1 local acessivel
+91
+pendencias operacionais
+24
+reservas hoje
+WORKSPACES
+Locais sob sua gestao
+
+1 local com acesso operacional
+
+RECEPCAO | RECEPCAO E AGENDA
+Clube Racket Prime
+
+Cuiaba - MT
+
+91 pendencia(s)
+24 reserva(s) hoje
+11
+Reservas pendentes
+80
+Lista de espera
+BASE INCOMPLETA
+Definir regras | Cadastrar professor
+Definir regras
+Cadastrar professor
+Cadastrar cliente
+Abrir agenda
+Aulas
+Agenda
+Academia
+Inicio
+Competir
+Locais
+Ranking
+Gestao
+Perfil

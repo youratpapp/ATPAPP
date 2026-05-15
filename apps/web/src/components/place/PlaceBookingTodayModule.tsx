@@ -1,9 +1,12 @@
 import type { AppPayment, CourtBooking } from "../../lib/types";
-import { WorkspaceCard, WorkspaceGrid } from "./PlaceWorkspaceUi";
+import { WorkspaceList, WorkspaceMetrics, WorkspaceRow } from "./PlaceWorkspaceUi";
 
 type Props = {
   bookings: CourtBooking[];
+  busy: boolean;
+  canManageBookings: boolean;
   getPaymentForBooking: (bookingId: string) => AppPayment | undefined;
+  onUpdateBooking: (bookingId: string, status: CourtBooking["status"]) => void;
 };
 
 function shortTime(value: string): string {
@@ -23,26 +26,44 @@ function paymentStatusLabel(payment?: AppPayment): string {
   return "Sem pagamento";
 }
 
-export function PlaceBookingTodayModule({ bookings, getPaymentForBooking }: Props) {
+export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, getPaymentForBooking, onUpdateBooking }: Props) {
   return (
-    <WorkspaceGrid>
-      {bookings.slice(0, 8).map((booking) => {
+    <WorkspaceList>
+      {bookings.map((booking) => {
         const bookingPayment = getPaymentForBooking(booking.id);
         return (
-          <WorkspaceCard
+          <WorkspaceRow
             key={`booking-today:${booking.id}`}
             title={`${shortTime(booking.startsAt)} - ${booking.courtName || "Quadra"}`}
-            subtitle={booking.status === "blocked" ? "Bloqueio operacional" : booking.playerName}
-            value={bookingStatusLabel(booking.status)}
-            metrics={[
-              shortTime(booking.endsAt),
-              paymentStatusLabel(bookingPayment),
-              booking.recurrenceTotal > 1 ? `Serie ${booking.recurrenceIndex}/${booking.recurrenceTotal}` : "",
-            ].filter(Boolean)}
-          />
+            detail={`${booking.status === "blocked" ? "Bloqueio operacional" : booking.playerName} | ${bookingStatusLabel(booking.status)}`}
+            actions={
+              <>
+                {canManageBookings && booking.status === "pending" ? (
+                  <button className="primary" onClick={() => onUpdateBooking(booking.id, "confirmed")} disabled={busy}>
+                    Confirmar
+                  </button>
+                ) : null}
+                {canManageBookings && booking.status !== "cancelled" ? (
+                  <button className="danger" onClick={() => onUpdateBooking(booking.id, "cancelled")} disabled={busy}>
+                    {booking.status === "blocked" ? "Liberar" : "Cancelar"}
+                  </button>
+                ) : null}
+              </>
+            }
+          >
+            <WorkspaceMetrics
+              items={[
+                `Fim ${shortTime(booking.endsAt)}`,
+                paymentStatusLabel(bookingPayment),
+                booking.phone ? `Contato ${booking.phone}` : "Sem telefone",
+                booking.recurrenceTotal > 1 ? `Serie ${booking.recurrenceIndex}/${booking.recurrenceTotal}` : "",
+                booking.notes || "",
+              ].filter(Boolean)}
+            />
+          </WorkspaceRow>
         );
       })}
-      {!bookings.length ? <p className="subtle">Nenhuma reserva para hoje.</p> : null}
-    </WorkspaceGrid>
+      {!bookings.length ? <p className="subtle">Nenhuma reserva hoje. Use Nova reserva ou Calendario para operar o proximo horario.</p> : null}
+    </WorkspaceList>
   );
 }

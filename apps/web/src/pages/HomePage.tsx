@@ -182,7 +182,7 @@ type HomePriorityItem = {
   order: number;
 };
 
-type HomePlaceAccessRole = "owner" | "manager" | "coach" | "frontdesk" | "";
+type HomePlaceAccessRole = "owner" | "manager" | "coach" | "frontdesk" | "finance" | "";
 
 const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffInvite["role"], string> = {
   organizer: "Coordenador",
@@ -858,6 +858,9 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
   const ownerGroups = await Promise.all(
     placeEntries.map(async ({ place, role }) => {
       try {
+        const canSurfaceAcademyActions = role === "owner" || role === "manager" || role === "coach" || role === "frontdesk";
+        const canSurfaceAcademyApprovals = role === "owner" || role === "manager" || role === "coach";
+        if (!canSurfaceAcademyActions) return [];
         const [enrollments, makeups, memberships] = await Promise.all([
           listPlaceAcademyEnrollments(place.id).catch(() => [] as AcademyEnrollment[]),
           listPlaceAcademyMakeupCredits(place.id).catch(() => [] as AcademyMakeupCredit[]),
@@ -879,7 +882,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
             order: 7,
           });
         }
-        if (role !== "frontdesk" && pending > 0) {
+        if (canSurfaceAcademyApprovals && pending > 0) {
           actions.push({
             id: `academy-owner:${place.id}:pending`,
             targetPath: buildPlaceAdminPath(place.id, "academy", "requests"),
@@ -915,7 +918,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
     .slice(0, 3)
     .map((item): HomeAcademyAction => ({
       id: `academy-player:${item.id}`,
-      targetPath: "/locais",
+      targetPath: "/locais?intent=classes",
       sourceName: "Academia",
       title: item.status === "pending" ? "Matricula aguardando aprovacao" : "Matricula ativa",
       detail: item.status === "pending" ? "Aguarde a academia revisar seu interesse." : "Acompanhe sua turma e pagamentos.",
@@ -929,7 +932,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
     .slice(0, 3)
     .map((item): HomeAcademyAction => ({
       id: `academy-makeup:${item.id}`,
-      targetPath: "/locais",
+      targetPath: "/locais?intent=classes",
       sourceName: "Academia",
       title: "Reposicao disponivel",
       detail: "Voce possui credito de reposicao aberto.",
@@ -943,7 +946,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
     .slice(0, 3)
     .map((item): HomeAcademyAction => ({
       id: `membership-player:${item.id}`,
-      targetPath: "/locais",
+      targetPath: "/locais?intent=venues",
       sourceName: "Clube",
       title: item.status === "pending" ? "Plano de socio aguardando aprovacao" : "Plano de socio ativo",
       detail: item.status === "pending" ? "Aguarde o clube revisar sua solicitacao." : "Acompanhe mensalidades e beneficios do plano.",
@@ -1039,16 +1042,6 @@ function EventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () => void }) 
           </div>
         ) : null}
       </div>
-    </article>
-  );
-}
-
-function SummaryCard({ label, value, detail }: { label: string; value: number; detail: string }) {
-  return (
-    <article className="home-summary-card">
-      <p>{label}</p>
-      <strong>{value}</strong>
-      <span>{detail}</span>
     </article>
   );
 }
@@ -1281,7 +1274,7 @@ function buildAgendaItems(
     .filter((action) => action.status !== "cancelled")
     .map((action): HomeAgendaItem => ({
       id: `agenda-court:${action.id}`,
-      targetPath: "/locais",
+      targetPath: "/locais?intent=booking",
       sourceName: action.placeName,
       title: `${action.courtName} - ${courtBookingStatusLabel(action.status)}`,
       when: `${formatShortDateTime(action.startsAt)} ate ${formatShortDateTime(action.endsAt)}`,
@@ -1427,7 +1420,7 @@ function buildPriorityItems(
       const ownerPending = action.role === "owner";
       return {
         id: `court-booking:${action.id}`,
-        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "reservations") : "/locais",
+        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "reservations") : "/locais?intent=booking",
         sourceName: action.placeName,
         title: action.role === "owner" ? `Reserva de ${action.playerName}` : action.courtName,
         detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${courtBookingStatusLabel(action.status)}`,
@@ -1465,7 +1458,7 @@ function buildPriorityItems(
       const ownerWaiting = action.role === "owner";
       return {
         id: `court-waitlist:${action.id}`,
-        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "waitlist") : "/locais",
+        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "waitlist") : "/locais?intent=booking",
         sourceName: action.placeName,
         title: action.role === "owner" ? `Espera de ${action.playerName}` : "Convite de lista de espera",
         detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${action.status === "invited" ? "convite liberado" : "aguardando"}`,
@@ -1641,9 +1634,12 @@ export function HomePage({ user, profile }: Props) {
   const urgentPriorityItems = priorityItems.filter((item) => item.tone === "urgent");
   const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
   const urgentOperationalPriorityItems = operationalPriorityItems.filter((item) => item.tone === "urgent");
-  const urgentActionCount = urgentPriorityItems.length + tournamentStaffInvites.length;
+  const playerUrgentCount = urgentPriorityItems.length;
+  const professionalSignalCount = tournamentStaffInvites.length + urgentOperationalPriorityItems.length;
+  const notificationCount = playerUrgentCount + professionalSignalCount;
   const visibleStaffInvites = tournamentStaffInvites.slice(0, 4);
-  const visiblePriorityItems = priorityItems.slice(0, Math.max(0, 4 - visibleStaffInvites.length));
+  const visiblePriorityItems = priorityItems.slice(0, 4);
+  const visibleProfessionalPriorityItems = operationalPriorityItems.slice(0, Math.max(0, 4 - visibleStaffInvites.length));
   const visibleActivityFeedItems = activityFeedItems.slice(0, 3);
   const visibleUpcoming = upcoming.slice(0, 3);
   const nextPlayerAgenda = agendaItems[0] || null;
@@ -1738,65 +1734,132 @@ export function HomePage({ user, profile }: Props) {
     })),
   ];
   const showPlayerEmptyRecommendation = activePlayingCount === 0 && upcoming.length > 0;
-  const heroTitle = urgentActionCount > 0
-    ? `${urgentActionCount} pendencia${urgentActionCount > 1 ? "s" : ""} para resolver`
+  const hasPlayerFollowUp = Boolean(nextPlayerPriority && nextPlayerPriority.tone !== "urgent");
+  const heroTitle = playerUrgentCount > 0
+    ? `${playerUrgentCount} pendencia${playerUrgentCount > 1 ? "s" : ""} para resolver`
     : agendaItems.length > 0
       ? "Voce tem compromisso na agenda"
-      : "Seu dia esta livre";
-  const heroDetail = urgentActionCount > 0
+      : hasPlayerFollowUp
+        ? "Algo seu merece acompanhamento"
+        : "O que voce quer fazer hoje?";
+  const heroDetail = playerUrgentCount > 0
     ? "Resolva agora para manter seus jogos e atividades em movimento."
     : agendaItems.length > 0
       ? `${agendaItems[0]?.title || "Proximo compromisso"} - ${agendaItems[0]?.when || "em breve"}`
+      : hasPlayerFollowUp && nextPlayerPriority
+        ? `${nextPlayerPriority.title} - ${nextPlayerPriority.detail}`
       : activePlayingCount > 0
-        ? "Acompanhe suas competicoes e fique pronto para o proximo jogo."
-        : "Encontre competicoes, locais e oportunidades para jogar.";
-  const todayRows = [
-    {
-      label: urgentActionCount > 0 ? "Pendencia" : "Agora",
-      title: tournamentStaffInvites[0] ? "Convite de equipe" : nextPlayerPriority?.title || "Nada pendente",
-      detail: tournamentStaffInvites[0]
-        ? `${tournamentStaffInvites[0].tournamentName} aguarda seu aceite.`
-        : nextPlayerPriority?.detail || "Seu fluxo esta limpo no momento.",
-      action: urgentActionCount > 0 ? "Resolver" : "Ver avisos",
-      tone: urgentActionCount > 0 ? "urgent" : "neutral",
-      disabled: !nextPlayerPriority && urgentActionCount === 0,
-      onOpen: () => {
-        if (nextPlayerPriority) {
-          navigate(nextPlayerPriority.targetPath);
-          return;
-        }
-        setNotificationsOpen(true);
-      },
-    },
-    {
+        ? "Acompanhe suas competicoes ou escolha outra atividade para jogar."
+        : "Escolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.";
+  const todayRows: Array<{
+    label: string;
+    title: string;
+    detail: string;
+    action: string;
+    tone: "urgent" | "neutral";
+    onOpen: () => void;
+  }> = [];
+
+  if (nextPlayerPriority) {
+    todayRows.push({
+      label: nextPlayerPriority.tone === "urgent" ? "Pendencia" : "Acompanhar",
+      title: nextPlayerPriority.title,
+      detail: nextPlayerPriority.detail,
+      action: nextPlayerPriority.tone === "urgent" ? "Resolver" : "Abrir",
+      tone: nextPlayerPriority.tone,
+      onOpen: () => navigate(nextPlayerPriority.targetPath),
+    });
+  }
+
+  if (nextPlayerAgenda) {
+    todayRows.push({
       label: "Agenda",
-      title: nextPlayerAgenda?.title || "Sem compromisso",
-      detail: nextPlayerAgenda ? `${nextPlayerAgenda.when} - ${nextPlayerAgenda.sourceName}` : "Reserve quadra, entre em uma aula ou participe de um evento.",
-      action: nextPlayerAgenda ? "Abrir" : "Buscar",
+      title: nextPlayerAgenda.title,
+      detail: `${nextPlayerAgenda.when} - ${nextPlayerAgenda.sourceName}`,
+      action: "Abrir",
       tone: "neutral",
-      disabled: false,
-      onOpen: () => navigate(nextPlayerAgenda?.targetPath || "/locais"),
+      onOpen: () => navigate(nextPlayerAgenda.targetPath),
+    });
+  }
+
+  if (nextPlayerLearning && !nextPlayerPriority?.id.includes(nextPlayerLearning.id)) {
+    todayRows.push({
+      label: "Aulas",
+      title: nextPlayerLearning.title,
+      detail: nextPlayerLearning.detail,
+      action: "Ver",
+      tone: nextPlayerLearning.tone,
+      onOpen: () => navigate(nextPlayerLearning.targetPath),
+    });
+  }
+
+  const playerHubSections = [
+    {
+      key: "reservations",
+      label: "Quadras",
+      title: "Minhas reservas",
+      detail: "Reservas e lista de espera em um so lugar.",
+      action: "Abrir agenda de quadras",
+      items: playerReservationItems,
+      onOpen: () => navigate("/locais?intent=booking"),
     },
     {
-      label: "Clube",
-      title: nextPlayerLearning?.title || "Aulas e planos",
-      detail: nextPlayerLearning?.detail || "Turmas, reposicoes e planos aparecem quando houver vinculo.",
-      action: nextPlayerLearning ? "Ver" : "Explorar",
-      tone: "neutral",
-      disabled: false,
-      onOpen: () => navigate(nextPlayerLearning?.targetPath || "/locais"),
+      key: "matches",
+      label: "Competicao",
+      title: "Minhas partidas",
+      detail: "Confirmacoes, horarios e resultados pendentes.",
+      action: "Abrir eventos",
+      items: playerMatchItems,
+      onOpen: () => navigate("/eventos"),
     },
-  ];
+    {
+      key: "lessons",
+      label: "Academia",
+      title: "Minhas aulas",
+      detail: "Turmas, reposicoes e acompanhamento de aula.",
+      action: "Abrir aulas",
+      items: playerLessonItems,
+      onOpen: () => navigate("/locais?intent=classes"),
+    },
+    {
+      key: "payments",
+      label: "Financeiro",
+      title: "Meus pagamentos",
+      detail: "Planos e pendencias ligadas ao clube.",
+      action: "Ver financeiro",
+      items: playerPaymentItems,
+      onOpen: () => navigate("/locais?intent=venues"),
+    },
+    {
+      key: "invites",
+      label: "Convites",
+      title: "Oportunidades",
+      detail: "Convites, espera e eventos publicos relevantes.",
+      action: "Ver oportunidades",
+      items: playerInviteItems,
+      onOpen: () => navigate(playerInviteItems.some((item) => item.id.startsWith("invite-event")) ? "/eventos" : "/locais?intent=matches"),
+    },
+    {
+      key: "history",
+      label: "Historico",
+      title: "Evolucao esportiva",
+      detail: "Competicoes ativas e base para seu historico.",
+      action: "Abrir perfil",
+      items: playerHistoryItems,
+      onOpen: () => navigate("/perfil"),
+    },
+  ].filter((section) => section.items.length > 0);
+
   const handleHeroAction = () => {
-    if (urgentActionCount > 0) {
-      setNotificationsOpen(true);
+    if (nextPlayerPriority) {
+      navigate(nextPlayerPriority.targetPath);
       return;
     }
     if (agendaItems.length > 0 && agendaItems[0]) {
       navigate(agendaItems[0].targetPath);
       return;
     }
-    navigate("/eventos");
+    navigate("/locais?intent=booking");
   };
   const copyAgendaReminder = async (item: HomeAgendaItem) => {
     try {
@@ -1819,61 +1882,70 @@ export function HomePage({ user, profile }: Props) {
     <AppShell
       user={user}
       profile={profile}
-      bellCount={urgentActionCount}
+      bellCount={notificationCount}
       onBellClick={() => setNotificationsOpen((open) => !open)}
     >
       <section className="home-player-os" aria-label="Resumo do jogador">
         <div className="home-today-panel">
           <div className="home-today-copy">
-            <p className="home-hero-kicker">Player App</p>
+            <p className="home-hero-kicker">Hoje para voce</p>
             <h1>{heroTitle}</h1>
             <p>{heroDetail}</p>
           </div>
           <ActionBar className="home-hero-actions" label="Acoes principais do dia">
             <button className="primary" type="button" onClick={handleHeroAction}>
-              {urgentActionCount > 0 ? "Resolver agora" : agendaItems.length > 0 ? "Abrir compromisso" : "Explorar eventos"}
+              {nextPlayerPriority ? (nextPlayerPriority.tone === "urgent" ? "Resolver agora" : "Abrir") : agendaItems.length > 0 ? "Abrir compromisso" : "Reservar quadra"}
             </button>
-            <button className="quiet" type="button" onClick={() => navigate("/ranking")}>
-              Ranking
+            <button className="quiet" type="button" onClick={() => navigate("/eventos")}>
+              Competir
             </button>
           </ActionBar>
-          <div className="home-today-rows" aria-label="Proximas acoes do jogador">
-            {todayRows.map((row) => (
-              <button
-                key={row.label}
-                type="button"
-                className={row.tone === "urgent" ? "urgent" : ""}
-                onClick={row.onOpen}
-                disabled={row.disabled}
-              >
-                <span>{row.label}</span>
-                <strong>{row.title}</strong>
-                <small>{row.detail}</small>
-                <em>{row.action}</em>
-              </button>
-            ))}
-          </div>
+          {todayRows.length > 0 ? (
+            <div className="home-today-rows" aria-label="Proximas acoes do jogador">
+              {todayRows.map((row) => (
+                <button
+                  key={`${row.label}:${row.title}`}
+                  type="button"
+                  className={row.tone === "urgent" ? "urgent" : ""}
+                  onClick={row.onOpen}
+                >
+                  <span>{row.label}</span>
+                  <strong>{row.title}</strong>
+                  <small>{row.detail}</small>
+                  <em>{row.action}</em>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="home-today-empty">
+              <strong>Comece por uma intencao.</strong>
+              <span>Escolha a acao certa e o app mostra apenas o caminho necessario.</span>
+            </div>
+          )}
         </div>
 
-        <aside className="home-player-side" aria-label="Atalhos e sinais do jogador">
-          <div className="home-quick-strip" aria-label="Acoes rapidas">
+        <aside className="home-player-side" aria-label="Acoes principais do jogador">
+          <div className="home-intent-rail" aria-label="Escolha o que fazer">
+            <button type="button" onClick={() => navigate("/locais?intent=booking")}>
+              <span>Reservar</span>
+              <strong>Quadra</strong>
+              <small>Encontrar horario</small>
+            </button>
+            <button type="button" onClick={() => navigate("/locais?intent=matches")}>
+              <span>Jogar</span>
+              <strong>Encontrar jogo</strong>
+              <small>Chamada ou parceiro</small>
+            </button>
+            <button type="button" onClick={() => navigate("/locais?intent=classes")}>
+              <span>Aulas</span>
+              <strong>Entrar em turma</strong>
+              <small>Turmas com vaga</small>
+            </button>
             <button type="button" onClick={() => navigate("/eventos")}>
               <span>Competir</span>
               <strong>Torneios e ligas</strong>
+              <small>Inscricoes abertas</small>
             </button>
-            <button type="button" onClick={() => navigate("/locais")}>
-              <span>Jogar</span>
-              <strong>Locais e quadras</strong>
-            </button>
-            <button type="button" onClick={() => navigate("/perfil")}>
-              <span>Perfil</span>
-              <strong>Historico esportivo</strong>
-            </button>
-          </div>
-          <div className="home-summary-grid">
-            <SummaryCard label="Jogando" value={activePlayingCount} detail="ativas" />
-            <SummaryCard label="Agenda" value={agendaItems.length} detail="semana" />
-            <SummaryCard label="Pendencias" value={urgentActionCount} detail="abertas" />
           </div>
         </aside>
       </section>
@@ -1945,96 +2017,52 @@ export function HomePage({ user, profile }: Props) {
 
       {!loading && !error ? (
         <>
+          {playerHubSections.length > 0 ? (
           <section className="player-hub-panel">
             <div className="section-title">
-              <h2>Central do jogador</h2>
+              <h2>Meu contexto</h2>
             </div>
             <div className="player-hub-workspace">
-              <PlayerHubSection
-                label="Quadras"
-                title="Minhas reservas"
-                detail={playerReservationItems.length ? "Reservas e lista de espera em um so lugar." : "Reserve quadra ou entre na lista de espera de um clube."}
-                count={playerReservationItems.length}
-                action={playerReservationItems.length ? "Abrir agenda de quadras" : "Buscar quadras"}
-                items={playerReservationItems}
-                onOpen={() => navigate("/locais")}
-              />
-              <PlayerHubSection
-                label="Competicao"
-                title="Minhas partidas"
-                detail={playerMatchItems.length ? "Confirmacoes, horarios e resultados pendentes." : "Entre em torneios e ligas para jogar."}
-                count={playerMatchItems.length}
-                action={playerMatchItems.length ? "Abrir eventos" : "Encontrar competicoes"}
-                items={playerMatchItems}
-                onOpen={() => navigate("/eventos")}
-              />
-              <PlayerHubSection
-                label="Academia"
-                title="Minhas aulas"
-                detail={playerLessonItems.length ? "Turmas, reposicoes e acompanhamento de aula." : "Encontre turmas e professores dos clubes."}
-                count={playerLessonItems.length}
-                action={playerLessonItems.length ? "Abrir aulas" : "Buscar turmas"}
-                items={playerLessonItems}
-                onOpen={() => navigate("/locais")}
-              />
-              <PlayerHubSection
-                label="Financeiro"
-                title="Meus pagamentos"
-                detail={playerPaymentItems.length ? "Planos e pendencias ligadas ao clube." : "Pagamentos aparecem aqui quando houver fonte consolidada."}
-                count={playerPaymentItems.length}
-                action={playerPaymentItems.length ? "Ver financeiro" : "Explorar planos"}
-                items={playerPaymentItems}
-                onOpen={() => navigate("/locais")}
-              />
-              <PlayerHubSection
-                label="Convites"
-                title="Oportunidades"
-                detail={playerInviteItems.length ? "Convites, espera e eventos publicos relevantes." : "Quando houver convite ou evento publico, ele aparece aqui."}
-                count={playerInviteItems.length}
-                action={playerInviteItems.length ? "Ver oportunidades" : "Explorar eventos"}
-                items={playerInviteItems}
-                onOpen={() => navigate(playerInviteItems.some((item) => item.id.startsWith("invite-event")) ? "/eventos" : "/locais")}
-              />
-              <PlayerHubSection
-                label="Historico"
-                title="Evolucao esportiva"
-                detail={playerHistoryItems.length ? "Competicoes ativas e base para seu historico." : "Seu historico cresce conforme voce joga."}
-                count={playerHistoryItems.length}
-                action="Abrir perfil"
-                items={playerHistoryItems}
-                onOpen={() => navigate("/perfil")}
-              />
+              {playerHubSections.map((section) => (
+                <PlayerHubSection
+                  key={section.key}
+                  label={section.label}
+                  title={section.title}
+                  detail={section.detail}
+                  count={section.items.length}
+                  action={section.action}
+                  items={section.items}
+                  onOpen={section.onOpen}
+                />
+              ))}
             </div>
           </section>
+          ) : null}
 
-          {operationalPriorityItems.length > 0 || activeOrganizingCount > 0 ? (
+          {visibleStaffInvites.length > 0 || operationalPriorityItems.length > 0 || activeOrganizingCount > 0 ? (
             <section className="home-section home-pro-workspace">
               <div className="section-title">
                 <div>
-                  <p className="home-context-eyebrow">Area profissional</p>
-                  <h2>Gestao e organizacao ficam em outro contexto</h2>
+                  <p className="home-context-eyebrow">Trabalho</p>
+                  <h2>Acesso profissional</h2>
                 </div>
                 <button className="link" type="button" onClick={() => navigate("/gestao")}>
-                  Abrir Gestao
+                  Abrir
                 </button>
               </div>
-              <div className="home-pro-overview">
-                <span>
-                  <strong>{urgentOperationalPriorityItems.length}</strong>
-                  pendencias operacionais
-                </span>
-                <span>
-                  <strong>{activeOrganizingCount}</strong>
-                  competicoes organizadas
-                </span>
-                <span>
-                  <strong>{operationalPriorityItems.length}</strong>
-                  acoes profissionais
-                </span>
-              </div>
-              {operationalPriorityItems.length > 0 ? (
+              <p className="home-pro-note">Rotinas de gestao, equipe e organizacao ficam separadas da sua area de jogador.</p>
+              {visibleStaffInvites.length > 0 || visibleProfessionalPriorityItems.length > 0 ? (
                 <div className="home-pro-list">
-                  {operationalPriorityItems.slice(0, 4).map((item) => (
+                  {visibleStaffInvites.map((invite) => (
+                    <TournamentStaffInviteCard
+                      key={`pro-staff-invite:${invite.id}`}
+                      invite={invite}
+                      busy={staffInviteBusyId === invite.id}
+                      onAccept={() => void acceptStaffInvite(invite)}
+                      onDecline={() => void declineStaffInvite(invite)}
+                    />
+                  ))}
+                  {visibleProfessionalPriorityItems.map((item) => (
                     <PriorityCard key={`op:${item.id}`} item={item} onOpen={() => navigate(item.targetPath)} />
                   ))}
                 </div>
@@ -2046,13 +2074,13 @@ export function HomePage({ user, profile }: Props) {
                   Operar academia
                 </button>
                 <button type="button" className="secondary" onClick={() => navigate("/eventos")}>
-                  Competition OS
+                  Organizar competicoes
                 </button>
               </ActionBar>
             </section>
           ) : null}
 
-          {agendaItems.length === 0 && tournamentStaffInvites.length === 0 && priorityItems.length === 0 && activityFeedItems.length === 0 ? (
+          {agendaItems.length === 0 && priorityItems.length === 0 && activityFeedItems.length === 0 ? (
             <section className="home-empty-panel home-ok-panel">
               <strong>Tudo em dia</strong>
               <span>Sem pendencias ou compromissos proximos agora.</span>
@@ -2076,25 +2104,16 @@ export function HomePage({ user, profile }: Props) {
             </section>
           ) : null}
 
-          {tournamentStaffInvites.length > 0 || priorityItems.length > 0 ? (
+          {priorityItems.length > 0 ? (
             <section className="home-section">
               <div className="section-title">
                 <h2>Prioridades de hoje</h2>
-                {tournamentStaffInvites.length + priorityItems.length > visibleStaffInvites.length + visiblePriorityItems.length ? (
+                {priorityItems.length > visiblePriorityItems.length ? (
                   <button className="link" type="button" onClick={() => setNotificationsOpen(true)}>
                     Ver todas
                   </button>
                 ) : null}
               </div>
-              {visibleStaffInvites.map((invite) => (
-                <TournamentStaffInviteCard
-                  key={`priority-staff-invite:${invite.id}`}
-                  invite={invite}
-                  busy={staffInviteBusyId === invite.id}
-                  onAccept={() => void acceptStaffInvite(invite)}
-                  onDecline={() => void declineStaffInvite(invite)}
-                />
-              ))}
               {visiblePriorityItems.map((item) => (
                 <PriorityCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
               ))}
@@ -2143,7 +2162,7 @@ export function HomePage({ user, profile }: Props) {
                 <button className="secondary" type="button" onClick={() => navigate("/eventos/ligas")}>
                   Ver ligas
                 </button>
-                <button className="quiet" type="button" onClick={() => navigate("/locais")}>
+                <button className="quiet" type="button" onClick={() => navigate("/locais?intent=venues")}>
                   Buscar locais
                 </button>
               </ActionBar>

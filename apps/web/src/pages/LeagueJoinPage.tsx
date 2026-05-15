@@ -26,6 +26,31 @@ function leagueTypeLabel(value: LeagueJoinContext["leagueType"]): string {
   return "Simples";
 }
 
+function leagueJoinStatusLabel(status: "approved" | "pending"): string {
+  return status === "approved" ? "Entrada confirmada" : "Solicitacao recebida";
+}
+
+function leagueJoinStatusDetail(status: "approved" | "pending"): string {
+  return status === "approved"
+    ? "Voce ja pode acompanhar partidas, chat e proximas rodadas da liga."
+    : "O organizador precisa aprovar sua entrada antes de voce aparecer nas rodadas.";
+}
+
+function friendlyLeagueJoinLinkError(error: unknown): string {
+  const raw = error instanceof Error ? error.message : typeof error === "string" ? error : "";
+  const lower = raw.toLowerCase();
+  if (lower.includes("duplicate") || lower.includes("unique") || lower.includes("already") || lower.includes("ja existe")) {
+    return "Voce ja tem uma inscricao registrada nesta liga.";
+  }
+  if (lower.includes("expired") || lower.includes("expirado") || lower.includes("invalido")) {
+    return "Este link de inscricao nao esta mais disponivel.";
+  }
+  if (lower.includes("permission denied") || lower.includes("row-level security")) {
+    return "Nao foi possivel solicitar entrada com este perfil. Entre novamente e tente de novo.";
+  }
+  return "Nao foi possivel solicitar entrada agora. Tente novamente em instantes.";
+}
+
 export function LeagueJoinPage({ user, profile }: Props) {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -69,11 +94,11 @@ export function LeagueJoinPage({ user, profile }: Props) {
       setSubmittedStatus(normalized);
       setFeedback(
         normalized === "approved"
-          ? "Entrada aprovada. O pagamento sera confirmado pela plataforma."
-          : "Solicitacao enviada para aprovacao do organizador. O pagamento sera confirmado pela plataforma."
+          ? "Entrada aprovada. O pagamento sera acompanhado pela organizacao."
+          : "Solicitacao enviada para aprovacao. O pagamento sera acompanhado pela organizacao."
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Falha ao solicitar entrada.");
+      setError(friendlyLeagueJoinLinkError(err));
     } finally {
       setBusy(false);
     }
@@ -94,11 +119,16 @@ export function LeagueJoinPage({ user, profile }: Props) {
       {feedback ? <p className="feedback success">{feedback}</p> : null}
 
       {!loading && !error && ctx ? (
-        <section className="section-card invite-card">
-          <h3 style={{ marginTop: 0 }}>{ctx.leagueName}</h3>
-          <p className="subtle" style={{ marginTop: 0 }}>
-            {ctx.categoryName && ctx.className ? `${ctx.categoryName} / ${ctx.className}` : "Classe aberta"}
-          </p>
+        <section className="section-card invite-card competition-registration-panel">
+          <div className="section-title" style={{ marginBottom: 10 }}>
+            <div>
+              <h3 style={{ margin: 0 }}>{ctx.leagueName}</h3>
+              <p className="subtle" style={{ margin: "4px 0 0" }}>
+                {ctx.categoryName && ctx.className ? `${ctx.categoryName} / ${ctx.className}` : "Classe aberta"}
+              </p>
+            </div>
+            <span className="home-league-chip member">{ctx.joinRequiresApproval ? "Com aprovacao" : "Entrada direta"}</span>
+          </div>
 
           <div className="tournament-overview-grid invite-overview-grid">
             <div className="tournament-overview-kpi">
@@ -119,36 +149,65 @@ export function LeagueJoinPage({ user, profile }: Props) {
             </div>
           </div>
 
-          <div className="events-filter-grid">
-            <label>
-              Nome do jogador
-              <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} disabled={Boolean(submittedStatus)} />
-            </label>
-            <label>
-              Telefone
-              <input value={phone} onChange={(e) => setPhone(e.target.value)} disabled={Boolean(submittedStatus)} />
-            </label>
-          </div>
           {submittedStatus ? (
             <div className="invite-confirmation">
-              <strong>{submittedStatus === "approved" ? "Entrada confirmada" : "Solicitacao recebida"}</strong>
-              <span>
-                {submittedStatus === "approved"
-                  ? "Voce ja pode acompanhar as partidas, chat e proximas rodadas da liga."
-                  : "O organizador precisa aprovar sua entrada antes de voce aparecer nas rodadas."}
-              </span>
+              <strong>{leagueJoinStatusLabel(submittedStatus)}</strong>
+              <span>{leagueJoinStatusDetail(submittedStatus)}</span>
               <div className="cluster">
                 <button onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(ctx.leagueId)}`)}>Abrir liga</button>
                 <button onClick={() => navigate("/eventos/ligas?view=participating")}>Minhas ligas</button>
               </div>
             </div>
-          ) : (
-            <div className="modal-actions">
-              <button onClick={onJoin} disabled={busy || !playerName.trim()}>
-                {busy ? "Enviando..." : ctx.joinRequiresApproval ? "Solicitar entrada" : "Entrar na liga"}
-              </button>
+          ) : null}
+
+          <div className="registration-flow">
+            <div className="registration-step-heading">
+              <span>1</span>
+              <div>
+                <strong>Revise a entrada</strong>
+                <small>O link ja aponta para a liga e classe configuradas pela organizacao.</small>
+              </div>
             </div>
-          )}
+            <div className="registration-review-card">
+              <p>
+                <span>Classe</span>
+                <strong>{ctx.categoryName && ctx.className ? `${ctx.categoryName} / ${ctx.className}` : "Classe aberta"}</strong>
+              </p>
+              <p>
+                <span>Valor</span>
+                <strong>{formatMoneyFromCents(ctx.registrationFeeCents)}</strong>
+              </p>
+              <p>
+                <span>Tipo de entrada</span>
+                <strong>{ctx.joinRequiresApproval ? "A organizacao aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
+              </p>
+            </div>
+
+            <div className="registration-step-heading">
+              <span>2</span>
+              <div>
+                <strong>Confirme seus dados</strong>
+                <small>Esses dados aparecem para a organizacao validar sua entrada.</small>
+              </div>
+            </div>
+            <div className="registration-form-grid">
+              <label>
+                Nome do jogador
+                <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Seu nome" disabled={Boolean(submittedStatus)} />
+              </label>
+              <label>
+                Telefone
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(67) 99999-9999" disabled={Boolean(submittedStatus)} />
+              </label>
+            </div>
+
+            <div className="registration-sticky-cta">
+              <button className="primary" onClick={onJoin} disabled={busy || !playerName.trim() || Boolean(submittedStatus)}>
+                {busy ? "Enviando..." : submittedStatus ? leagueJoinStatusLabel(submittedStatus) : ctx.joinRequiresApproval ? "Solicitar entrada" : "Entrar na liga"}
+              </button>
+              <button onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(ctx.leagueId)}`)}>Abrir liga</button>
+            </div>
+          </div>
         </section>
       ) : null}
     </AppShell>

@@ -9,6 +9,7 @@ import {
   createAcademyEnrollment,
   createCourtBooking,
   getPlaceById,
+  joinCourtBookingWaitlist,
   joinOpenMatch,
   listOpenMatches,
   listPublicAcademyClassSpots,
@@ -45,6 +46,10 @@ const BOOKING_DURATION_OPTIONS = [
 
 function formatMoneyFromCents(cents: number): string {
   return new Intl.NumberFormat("pt-BR", { currency: "BRL", style: "currency" }).format(Math.max(0, cents) / 100);
+}
+
+function countLabel(count: number, singular: string, plural: string): string {
+  return `${count} ${count === 1 ? singular : plural}`;
 }
 
 function placeInitials(name: string): string {
@@ -148,9 +153,11 @@ export function PlacePublicPage({ user, profile }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [bookingBusy, setBookingBusy] = useState(false);
+  const [waitlistBusy, setWaitlistBusy] = useState(false);
   const [bookingFeedback, setBookingFeedback] = useState("");
   const [availableCourts, setAvailableCourts] = useState<AvailableCourt[]>([]);
   const [availabilityBusy, setAvailabilityBusy] = useState(false);
+  const [availabilityLoaded, setAvailabilityLoaded] = useState(false);
   const [availabilityDate, setAvailabilityDate] = useState(() => defaultBookingStart().slice(0, 10));
   const [availabilityDurationMinutes, setAvailabilityDurationMinutes] = useState("60");
   const [availabilityRows, setAvailabilityRows] = useState<Array<{ time: string; courts: AvailableCourt[] }>>([]);
@@ -328,12 +335,63 @@ export function PlacePublicPage({ user, profile }: Props) {
   const bookingDate = datePart(bookingDraft.startsAt) || availabilityDate || todayDateInputValue();
   const bookingTime = timePart(bookingDraft.startsAt);
   const bookingDuration = durationFromRange(bookingDraft.startsAt, bookingDraft.endsAt);
+  const availableAvailabilityRows = availabilityRows.filter((row) => row.courts.length);
+  const selectedAcademyClass =
+    filteredAcademyClasses.find((academyClass) => academyClass.id === academyDraft.classId) ||
+    activeClasses.find((academyClass) => academyClass.id === academyDraft.classId) ||
+    null;
+  const selectedAcademySpot = selectedAcademyClass ? academySpotsByClass[selectedAcademyClass.id] : null;
+  const academyFiltersActive = Boolean(
+    academyFitFilter.level ||
+      academyFitFilter.weekday ||
+      academyFitFilter.period ||
+      academyFitFilter.ageGroup ||
+      academyFitFilter.genderScope
+  );
+  const selectedCourt =
+    availableCourts.find((court) => court.id === bookingDraft.courtId) ||
+    activeCourts.find((court) => court.id === bookingDraft.courtId) ||
+    null;
+  const selectedCourtFeeCents = selectedCourt
+    ? "effectiveFeeCents" in selectedCourt
+      ? Number(selectedCourt.effectiveFeeCents) || 0
+      : Number(selectedCourt.bookingFeeCents) || 0
+    : 0;
+  const selectedDurationLabel = BOOKING_DURATION_OPTIONS.find((option) => option.value === bookingDuration)?.label || `${bookingDuration} min`;
+  const selectedSlotKey = `${bookingTime}:${bookingDraft.courtId}`;
 
   const updateBookingRange = (date: string, time: string, duration = bookingDuration) => {
     const startsAt = combineDateAndTime(date, time);
     const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
     setBookingDraft((prev) => ({ ...prev, startsAt, endsAt }));
     setAvailableCourts([]);
+  };
+
+  const updateAvailabilityDate = (date: string) => {
+    setAvailabilityDate(date);
+    setAvailabilityRows([]);
+    setAvailabilityLoaded(false);
+    updateBookingRange(date, bookingTime, Number(availabilityDurationMinutes) || bookingDuration);
+  };
+
+  const updateAvailabilityDuration = (duration: string) => {
+    const minutes = Math.max(30, Math.min(240, Number(duration) || 60));
+    setAvailabilityDurationMinutes(String(minutes));
+    setAvailabilityRows([]);
+    setAvailabilityLoaded(false);
+    updateBookingRange(bookingDate, bookingTime, minutes);
+  };
+
+  const resetAcademyFitFilter = () => {
+    setAcademyFitFilter({ level: "", weekday: "", period: "", ageGroup: "", genderScope: "" });
+  };
+
+  const selectAcademyClass = (academyClass: AcademyClass) => {
+    setAcademyDraft((prev) => ({
+      ...prev,
+      classId: academyClass.id,
+      notes: prev.notes || academyFitFilter.level,
+    }));
   };
 
   const sharePlace = () => {
@@ -375,7 +433,11 @@ export function PlacePublicPage({ user, profile }: Props) {
       if (rows[0]) {
         setBookingDraft((prev) => ({ ...prev, courtId: rows[0]!.id }));
       }
-      setBookingFeedback(rows.length ? `${rows.length} quadra(s) livre(s) neste horario.` : "Nenhuma quadra livre neste horario.");
+      setBookingFeedback(
+        rows.length
+          ? `${rows.length} quadra(s) livre(s) neste horario. Escolha uma quadra e confirme seus dados.`
+          : "Nenhuma quadra livre neste horario. Tente outro horario ou entre na lista de espera."
+      );
     } catch (err) {
       setBookingFeedback(err instanceof Error ? err.message : "Nao foi possivel verificar disponibilidade.");
     } finally {
@@ -387,6 +449,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     if (!place || !availabilityDate) return;
     const duration = Math.max(30, Math.min(240, Number(availabilityDurationMinutes) || 60));
     setAvailabilityBusy(true);
+    setAvailabilityLoaded(false);
     setBookingFeedback("");
     try {
       const rows = await Promise.all(
@@ -402,6 +465,7 @@ export function PlacePublicPage({ user, profile }: Props) {
         })
       );
       setAvailabilityRows(rows);
+      setAvailabilityLoaded(true);
       const firstOpen = rows.find((row) => row.courts.length);
       if (firstOpen?.courts[0]) {
         const startsAt = combineDateAndTime(availabilityDate, firstOpen.time);
@@ -413,7 +477,7 @@ export function PlacePublicPage({ user, profile }: Props) {
         }));
         setAvailableCourts(firstOpen.courts);
       }
-      setBookingFeedback(firstOpen ? "Escolha um horario livre na agenda abaixo." : "Nenhuma quadra livre neste dia para a duracao escolhida.");
+      setBookingFeedback(firstOpen ? "Escolha um horario livre abaixo." : "Nenhuma quadra livre neste dia para a duracao escolhida.");
     } finally {
       setAvailabilityBusy(false);
     }
@@ -457,6 +521,31 @@ export function PlacePublicPage({ user, profile }: Props) {
     }
   };
 
+  const requestBookingWaitlist = async () => {
+    if (!place || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt) {
+      setBookingFeedback("Escolha uma quadra e um horario para entrar na lista de espera.");
+      return;
+    }
+    setWaitlistBusy(true);
+    setBookingFeedback("");
+    try {
+      await joinCourtBookingWaitlist({
+        placeId: place.id,
+        courtId: bookingDraft.courtId,
+        startsAt: new Date(bookingDraft.startsAt).toISOString(),
+        endsAt: new Date(bookingDraft.endsAt).toISOString(),
+        playerName: bookingDraft.playerName || profile?.displayName || user.email || "Jogador",
+        phone: bookingDraft.phone || profile?.phone || "",
+        notes: bookingDraft.notes || "Entrada criada pela pagina publica do local.",
+      });
+      setBookingFeedback("Voce entrou na lista de espera. O local pode avisar se liberar horario.");
+    } catch (err) {
+      setBookingFeedback(err instanceof Error ? err.message : "Nao foi possivel entrar na lista de espera.");
+    } finally {
+      setWaitlistBusy(false);
+    }
+  };
+
   const requestAcademyEnrollment = async () => {
     if (!place || !academyDraft.classId || !academyDraft.playerName.trim()) return;
     setAcademyBusy(true);
@@ -473,7 +562,8 @@ export function PlacePublicPage({ user, profile }: Props) {
       setAcademyFeedback("Interesse enviado. O local pode aprovar sua matricula pela Academia.");
       setAcademyDraft((prev) => ({ ...prev, notes: "" }));
     } catch (err) {
-      setAcademyFeedback(err instanceof Error ? err.message : "Nao foi possivel enviar interesse na turma.");
+      console.error("Failed to request academy enrollment", err);
+      setAcademyFeedback("Nao foi possivel enviar seu interesse agora. Confira seus dados e tente novamente.");
     } finally {
       setAcademyBusy(false);
     }
@@ -556,153 +646,197 @@ export function PlacePublicPage({ user, profile }: Props) {
             </section>
 
             <section className="place-public-grid">
-              <article id="place-public-booking" className="place-public-booking-card">
-                <span>Reserva</span>
-                <h3>Agenda visual de quadras</h3>
-                <p className="subtle">Escolha o dia para ver horarios livres. Toque em uma quadra livre para preencher a solicitacao.</p>
-                <div className="place-public-availability-controls">
-                  <label>
-                    Dia
-                    <input
-                      type="date"
-                      value={availabilityDate}
-                      min={todayDateInputValue()}
-                      onChange={(event) => {
-                        setAvailabilityDate(event.target.value);
-                        setAvailabilityRows([]);
-                      }}
-                    />
-                  </label>
-                  <label>
-                    Duracao
-                    <select
-                      value={availabilityDurationMinutes}
-                      onChange={(event) => {
-                        setAvailabilityDurationMinutes(event.target.value);
-                        setAvailabilityRows([]);
-                      }}
-                    >
-                      <option value="60">1h</option>
-                      <option value="90">1h30</option>
-                      <option value="120">2h</option>
-                    </select>
-                  </label>
-                  <button className="secondary" onClick={() => void loadDayAvailability()} disabled={availabilityBusy || !activeCourts.length}>
-                    {availabilityBusy ? "Carregando..." : "Ver agenda do dia"}
-                  </button>
-                </div>
-                {availabilityRows.length ? (
-                  <div className="place-public-availability-board" aria-label="Horarios livres por quadra">
-                    {availabilityRows.map((row) => (
-                      <div key={`slot:${row.time}`} className={row.courts.length ? "available" : "full"}>
-                        <strong>{row.time}</strong>
-                        <div>
-                          {row.courts.length ? (
-                            row.courts.map((court) => (
-                              <button key={`${row.time}:${court.id}`} onClick={() => selectAvailabilitySlot(row.time, court)}>
-                                {court.name}
-                                {court.effectiveFeeCents ? <small>{formatMoneyFromCents(court.effectiveFeeCents)}</small> : null}
-                              </button>
-                            ))
-                          ) : (
-                            <span>Sem quadra livre</span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+              <article id="place-public-booking" className="place-public-booking-card place-public-booking-flow-card">
+                <div className="place-public-booking-header">
+                  <div>
+                    <span>Reserva</span>
+                    <h3>Reserve em poucos toques</h3>
+                    <p className="subtle">Escolha dia e duracao, toque em um horario livre e confirme seus dados.</p>
                   </div>
-                ) : null}
-                <h4 className="place-public-form-title">Solicitar horario selecionado</h4>
-                <div className="place-public-booking-form">
-                  <label>
-                    Quadra
-                    <select
-                      value={bookingDraft.courtId}
-                      onChange={(event) => setBookingDraft((prev) => ({ ...prev, courtId: event.target.value }))}
-                    >
-                      <option value="">Selecione</option>
-                      {(availableCourts.length ? availableCourts : activeCourts).map((court) => {
-                        const effectiveFee = "effectiveFeeCents" in court ? Number(court.effectiveFeeCents) : 0;
-                        return (
-                          <option key={court.id} value={court.id}>
-                            {court.name}
-                            {effectiveFee ? ` - ${formatMoneyFromCents(effectiveFee)}` : ""}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </label>
-                  <label>
-                    Data
-                    <input
-                      type="date"
-                      value={bookingDate}
-                      min={todayDateInputValue()}
-                      onChange={(event) => updateBookingRange(event.target.value, bookingTime)}
-                    />
-                  </label>
-                  <label>
-                    Horario
-                    <select value={bookingTime} onChange={(event) => updateBookingRange(bookingDate, event.target.value)}>
-                      {BOOKING_TIME_OPTIONS.map((time) => (
-                        <option key={`booking-time:${time}`} value={time}>
-                          {time}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Duracao
-                    <select
-                      value={bookingDuration}
-                      onChange={(event) => updateBookingRange(bookingDate, bookingTime, Number(event.target.value))}
-                    >
-                      {BOOKING_DURATION_OPTIONS.map((option) => (
-                        <option key={`booking-duration:${option.value}`} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Nome
-                    <input
-                      value={bookingDraft.playerName}
-                      onChange={(event) => setBookingDraft((prev) => ({ ...prev, playerName: event.target.value }))}
-                      placeholder="Seu nome"
-                    />
-                  </label>
-                  <label>
-                    WhatsApp
-                    <input
-                      value={bookingDraft.phone}
-                      onChange={(event) => setBookingDraft((prev) => ({ ...prev, phone: event.target.value }))}
-                      placeholder="Telefone"
-                    />
-                  </label>
-                  <label>
-                    Observacao
-                    <input
-                      value={bookingDraft.notes}
-                      onChange={(event) => setBookingDraft((prev) => ({ ...prev, notes: event.target.value }))}
-                      placeholder="Ex.: beach tennis, 4 jogadores"
-                    />
-                  </label>
+                  <div className="place-public-booking-mini">
+                    <strong>{activeCourts.length}</strong>
+                    <span>quadras</span>
+                  </div>
                 </div>
-                <div className="place-public-hero-actions">
-                  <button className="secondary" onClick={() => void checkAvailability()} disabled={availabilityBusy || !bookingDraft.startsAt || !bookingDraft.endsAt}>
-                    Verificar horario manual
-                  </button>
-                  <button
-                    className="primary"
-                    onClick={() => void requestBooking()}
-                    disabled={bookingBusy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt || !bookingDraft.playerName.trim()}
-                  >
-                    Solicitar reserva
-                  </button>
-                  <button className="quiet" onClick={() => navigate("/locais")}>Ver outros locais</button>
+
+                <div className="place-public-booking-steps">
+                  <section className="place-public-booking-step">
+                    <header>
+                      <b>1</b>
+                      <div>
+                        <strong>Quando?</strong>
+                        <small>Dia e duracao da reserva</small>
+                      </div>
+                    </header>
+                    <div className="place-public-availability-controls">
+                      <label>
+                        Dia
+                        <input type="date" value={availabilityDate} min={todayDateInputValue()} onChange={(event) => updateAvailabilityDate(event.target.value)} />
+                      </label>
+                      <label>
+                        Duracao
+                        <select value={availabilityDurationMinutes} onChange={(event) => updateAvailabilityDuration(event.target.value)}>
+                          <option value="60">1h</option>
+                          <option value="90">1h30</option>
+                          <option value="120">2h</option>
+                        </select>
+                      </label>
+                      <button className="secondary" onClick={() => void loadDayAvailability()} disabled={availabilityBusy || !activeCourts.length}>
+                        {availabilityBusy ? "Buscando..." : "Ver horarios livres"}
+                      </button>
+                    </div>
+                  </section>
+
+                  <section className="place-public-booking-step">
+                    <header>
+                      <b>2</b>
+                      <div>
+                        <strong>Qual horario?</strong>
+                        <small>Toque no slot desejado ou ajuste manualmente</small>
+                      </div>
+                    </header>
+
+                    {!activeCourts.length ? (
+                      <div className="place-public-booking-empty">
+                        <strong>Nenhuma quadra publicada.</strong>
+                        <span>Este local ainda nao disponibilizou reserva publica.</span>
+                      </div>
+                    ) : null}
+
+                    {availableAvailabilityRows.length ? (
+                      <div className="place-public-availability-board" aria-label="Horarios livres por quadra">
+                        {availableAvailabilityRows.map((row) => (
+                          <div key={`slot:${row.time}`} className="available">
+                            <strong>{row.time}</strong>
+                            <div>
+                              {row.courts.map((court) => (
+                                <button
+                                  key={`${row.time}:${court.id}`}
+                                  className={selectedSlotKey === `${row.time}:${court.id}` ? "selected" : undefined}
+                                  onClick={() => selectAvailabilitySlot(row.time, court)}
+                                >
+                                  {court.name}
+                                  <small>{court.effectiveFeeCents ? formatMoneyFromCents(court.effectiveFeeCents) : selectedDurationLabel}</small>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {!availabilityBusy && availabilityLoaded && activeCourts.length && !availableAvailabilityRows.length ? (
+                      <div className="place-public-booking-empty">
+                        <strong>Nenhum horario livre para essa busca.</strong>
+                        <span>Tente outro dia, ajuste o horario manualmente ou entre na lista de espera.</span>
+                        <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || !bookingDraft.courtId || !bookingDraft.playerName.trim()}>
+                          {waitlistBusy ? "Entrando..." : "Entrar na lista de espera"}
+                        </button>
+                      </div>
+                    ) : null}
+
+                    {!availabilityBusy && !availabilityLoaded && activeCourts.length ? (
+                      <div className="place-public-booking-empty compact">
+                        <span>Busque o dia para ver somente os horarios livres.</span>
+                      </div>
+                    ) : null}
+
+                    <div className="place-public-manual-slot">
+                      <label>
+                        Quadra
+                        <select
+                          value={bookingDraft.courtId}
+                          onChange={(event) => setBookingDraft((prev) => ({ ...prev, courtId: event.target.value }))}
+                        >
+                          <option value="">Selecione</option>
+                          {(availableCourts.length ? availableCourts : activeCourts).map((court) => {
+                            const effectiveFee = "effectiveFeeCents" in court ? Number(court.effectiveFeeCents) : Number(court.bookingFeeCents) || 0;
+                            return (
+                              <option key={court.id} value={court.id}>
+                                {court.name}
+                                {effectiveFee ? ` - ${formatMoneyFromCents(effectiveFee)}` : ""}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </label>
+                      <label>
+                        Horario
+                        <select value={bookingTime} onChange={(event) => updateBookingRange(bookingDate, event.target.value, Number(availabilityDurationMinutes) || bookingDuration)}>
+                          {BOOKING_TIME_OPTIONS.map((time) => (
+                            <option key={`booking-time:${time}`} value={time}>
+                              {time}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <button className="quiet" onClick={() => void checkAvailability()} disabled={availabilityBusy || !bookingDraft.startsAt || !bookingDraft.endsAt}>
+                        Verificar horario
+                      </button>
+                    </div>
+                  </section>
+
+                  <section className="place-public-booking-step">
+                    <header>
+                      <b>3</b>
+                      <div>
+                        <strong>Confirmar</strong>
+                        <small>Dados para o local retornar</small>
+                      </div>
+                    </header>
+
+                    <div className="place-public-selected-slot">
+                      <strong>{selectedCourt ? selectedCourt.name : "Escolha uma quadra"}</strong>
+                      <span>
+                        {bookingDate} as {bookingTime} | {selectedDurationLabel}
+                        {selectedCourtFeeCents ? ` | ${formatMoneyFromCents(selectedCourtFeeCents)}` : ""}
+                      </span>
+                    </div>
+
+                    <div className="place-public-booking-form compact">
+                      <label>
+                        Nome
+                        <input
+                          value={bookingDraft.playerName}
+                          onChange={(event) => setBookingDraft((prev) => ({ ...prev, playerName: event.target.value }))}
+                          placeholder="Seu nome"
+                        />
+                      </label>
+                      <label>
+                        WhatsApp
+                        <input
+                          value={bookingDraft.phone}
+                          onChange={(event) => setBookingDraft((prev) => ({ ...prev, phone: event.target.value }))}
+                          placeholder="Telefone para retorno"
+                        />
+                      </label>
+                      <label className="wide">
+                        Observacao
+                        <input
+                          value={bookingDraft.notes}
+                          onChange={(event) => setBookingDraft((prev) => ({ ...prev, notes: event.target.value }))}
+                          placeholder="Ex.: 4 jogadores, aula teste, preferencia de quadra"
+                        />
+                      </label>
+                    </div>
+
+                    <div className="place-public-hero-actions">
+                      <button
+                        className="primary"
+                        onClick={() => void requestBooking()}
+                        disabled={bookingBusy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt || !bookingDraft.playerName.trim()}
+                      >
+                        {bookingBusy ? "Solicitando..." : "Solicitar reserva"}
+                      </button>
+                      <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || !bookingDraft.courtId || !bookingDraft.playerName.trim()}>
+                        {waitlistBusy ? "Entrando..." : "Lista de espera"}
+                      </button>
+                      <button className="quiet" onClick={() => navigate("/locais?intent=booking")}>Ver outros locais</button>
+                    </div>
+                  </section>
                 </div>
-                {bookingFeedback ? <p className="subtle">{bookingFeedback}</p> : null}
+
+                {bookingFeedback ? <p className="place-public-booking-feedback">{bookingFeedback}</p> : null}
               </article>
 
               <article>
@@ -719,134 +853,172 @@ export function PlacePublicPage({ user, profile }: Props) {
               </article>
 
               <article id="place-public-academy">
-                <span>Academia</span>
-                <h3>Encontre uma turma para o seu perfil</h3>
-                <p className="subtle">Filtre por nivel, dia e periodo. Mostramos apenas turmas ativas e, quando disponivel, com vaga real.</p>
-                <div className="place-public-class-filter">
-                  <label>
-                    Meu nivel
-                    <select value={academyFitFilter.level} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}>
-                      <option value="">Qualquer nivel</option>
-                      {ACADEMY_LEVEL_OPTIONS.map((level) => (
-                        <option key={`public-level:${level.value}`} value={level.value}>
-                          {level.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Dia
-                    <select value={academyFitFilter.weekday} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, weekday: event.target.value }))}>
-                      <option value="">Qualquer dia</option>
-                      {WEEKDAY_LABELS.map((label, index) => (
-                        <option key={`public-class-day:${label}`} value={index}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Periodo
-                    <select value={academyFitFilter.period} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
-                      <option value="">Qualquer horario</option>
-                      <option value="morning">Manha</option>
-                      <option value="afternoon">Tarde</option>
-                      <option value="night">Noite</option>
-                    </select>
-                  </label>
-                  <label>
-                    Perfil
-                    <select value={academyFitFilter.ageGroup} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, ageGroup: event.target.value as "" | AcademyClass["ageGroup"] }))}>
-                      <option value="">Adulto ou kids</option>
-                      <option value="adult">Adulto</option>
-                      <option value="kids">Kids</option>
-                    </select>
-                  </label>
-                </div>
-                <div className="place-public-class-board" aria-label="Turmas compativeis">
-                  {filteredAcademyClasses.slice(0, 8).map((academyClass) => {
-                    const spot = academySpotsByClass[academyClass.id];
-                    return (
-                      <button
-                        key={`class-fit:${academyClass.id}`}
-                        className={academyDraft.classId === academyClass.id ? "selected" : ""}
-                        onClick={() => setAcademyDraft((prev) => ({ ...prev, classId: academyClass.id, notes: prev.notes || academyFitFilter.level }))}
-                      >
-                        <strong>{nextClassLabel(academyClass)}</strong>
-                        <span>{academyClass.title}</span>
+                <span>Aulas</span>
+                <h3>Escolha uma turma e envie interesse</h3>
+                <p className="subtle">O caminho aqui e para entrar em aula: filtre por perfil, escolha uma turma com vaga e mande seus dados ao local.</p>
+                <div className="place-public-class-flow">
+                  <section>
+                    <div className="place-public-booking-header">
+                      <div>
+                        <span>1</span>
+                        <strong>Qual perfil?</strong>
+                      </div>
+                      {academyFiltersActive ? (
+                        <button className="quiet" onClick={resetAcademyFitFilter}>Limpar filtros</button>
+                      ) : null}
+                    </div>
+                    <div className="place-public-class-filter">
+                      <label>
+                        Meu nivel
+                        <select value={academyFitFilter.level} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}>
+                          <option value="">Qualquer nivel</option>
+                          {ACADEMY_LEVEL_OPTIONS.map((level) => (
+                            <option key={`public-level:${level.value}`} value={level.value}>
+                              {level.label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label>
+                        Dia
+                        <select value={academyFitFilter.weekday} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, weekday: event.target.value }))}>
+                          <option value="">Qualquer dia</option>
+                          {WEEKDAY_LABELS.map((label, index) => (
+                            <option key={`public-class-day:${label}`} value={index}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label>
+                        Periodo
+                        <select value={academyFitFilter.period} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
+                          <option value="">Qualquer horario</option>
+                          <option value="morning">Manha</option>
+                          <option value="afternoon">Tarde</option>
+                          <option value="night">Noite</option>
+                        </select>
+                      </label>
+                      <label>
+                        Perfil
+                        <select value={academyFitFilter.ageGroup} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, ageGroup: event.target.value as "" | AcademyClass["ageGroup"] }))}>
+                          <option value="">Adulto ou kids</option>
+                          <option value="adult">Adulto</option>
+                          <option value="kids">Kids</option>
+                        </select>
+                      </label>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div className="place-public-booking-header">
+                      <div>
+                        <span>2</span>
+                        <strong>Turmas com vaga</strong>
+                      </div>
+                      <small>{countLabel(filteredAcademyClasses.length, "opcao", "opcoes")}</small>
+                    </div>
+                    {activeClasses.length ? (
+                      filteredAcademyClasses.length ? (
+                        <div className="place-public-class-board public-class-options" aria-label="Turmas compativeis">
+                          {filteredAcademyClasses.map((academyClass) => {
+                            const spot = academySpotsByClass[academyClass.id];
+                            return (
+                              <button
+                                key={`class-fit:${academyClass.id}`}
+                                className={academyDraft.classId === academyClass.id ? "place-public-class-option selected" : "place-public-class-option"}
+                                onClick={() => selectAcademyClass(academyClass)}
+                              >
+                                <span>{nextClassLabel(academyClass)}</span>
+                                <strong>{academyClass.title}</strong>
+                                <small>
+                                  {[academyClass.coachName || "Professor a definir", academyClass.level || "Nivel livre"].filter(Boolean).join(" | ")}
+                                </small>
+                                <em>{academyClass.monthlyFeeCents ? formatMoneyFromCents(academyClass.monthlyFeeCents) : "Valor a combinar"}</em>
+                                <b>{spot ? `${spot.availableSpots} vaga(s)` : `ate ${academyClass.capacity} alunos`}</b>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="place-public-booking-empty">
+                          <strong>Nenhuma turma compativel</strong>
+                          <p>Ajuste nivel, dia, periodo ou perfil para encontrar outra turma publicada.</p>
+                          {academyFiltersActive ? <button className="quiet" onClick={resetAcademyFitFilter}>Limpar filtros</button> : null}
+                        </div>
+                      )
+                    ) : (
+                      <div className="place-public-booking-empty">
+                        <strong>Turmas ainda nao publicadas</strong>
+                        <p>Este local ainda nao abriu turmas publicas para novos alunos.</p>
+                      </div>
+                    )}
+                  </section>
+
+                  <section>
+                    <div className="place-public-booking-header">
+                      <div>
+                        <span>3</span>
+                        <strong>Enviar interesse</strong>
+                      </div>
+                    </div>
+                    {selectedAcademyClass ? (
+                      <div className="place-public-selected-class">
+                        <span>Turma escolhida</span>
+                        <strong>{selectedAcademyClass.title}</strong>
                         <small>
-                          {[academyClass.coachName || "Professor a definir", academyClass.level || "nivel livre", spot ? `${spot.availableSpots} vaga(s)` : `ate ${academyClass.capacity} alunos`]
+                          {[
+                            nextClassLabel(selectedAcademyClass),
+                            selectedAcademyClass.coachName || "Professor a definir",
+                            selectedAcademyClass.level || "Nivel livre",
+                            selectedAcademyClass.monthlyFeeCents ? formatMoneyFromCents(selectedAcademyClass.monthlyFeeCents) : "Valor a combinar",
+                            selectedAcademySpot ? `${selectedAcademySpot.availableSpots} vaga(s)` : null,
+                          ]
                             .filter(Boolean)
                             .join(" | ")}
                         </small>
+                      </div>
+                    ) : (
+                      <p className="subtle">Selecione uma turma acima para enviar seu interesse.</p>
+                    )}
+                    <div className="place-public-booking-form compact academy-interest-form">
+                      <label>
+                        Nome
+                        <input
+                          value={academyDraft.playerName}
+                          onChange={(event) => setAcademyDraft((prev) => ({ ...prev, playerName: event.target.value }))}
+                          placeholder="Seu nome"
+                        />
+                      </label>
+                      <label>
+                        WhatsApp
+                        <input
+                          value={academyDraft.phone}
+                          onChange={(event) => setAcademyDraft((prev) => ({ ...prev, phone: event.target.value }))}
+                          placeholder="Telefone para contato"
+                        />
+                      </label>
+                      <label>
+                        Mensagem
+                        <input
+                          value={academyDraft.notes}
+                          onChange={(event) => setAcademyDraft((prev) => ({ ...prev, notes: event.target.value }))}
+                          placeholder="Nivel, objetivo ou disponibilidade"
+                        />
+                      </label>
+                    </div>
+                    <div className="place-public-hero-actions">
+                      <button
+                        className="primary"
+                        onClick={() => void requestAcademyEnrollment()}
+                        disabled={academyBusy || !selectedAcademyClass || !academyDraft.playerName.trim()}
+                      >
+                        {academyBusy ? "Enviando..." : "Enviar interesse"}
                       </button>
-                    );
-                  })}
-                  {!filteredAcademyClasses.length ? <p className="subtle">Nenhuma turma encaixa nesses filtros. Ajuste dia, periodo ou nivel.</p> : null}
+                    </div>
+                    {academyFeedback ? <p className="place-public-booking-feedback">{academyFeedback}</p> : null}
+                  </section>
                 </div>
-                <h4 className="place-public-form-title">Enviar interesse na turma</h4>
-                <div className="place-public-booking-form compact">
-                  <label>
-                    Turma
-                    <select
-                      value={academyDraft.classId}
-                      onChange={(event) => setAcademyDraft((prev) => ({ ...prev, classId: event.target.value }))}
-                    >
-                      <option value="">Selecione</option>
-                      {filteredAcademyClasses.map((academyClass) => (
-                        <option key={academyClass.id} value={academyClass.id}>
-                          {academyClass.title}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Nome
-                    <input
-                      value={academyDraft.playerName}
-                      onChange={(event) => setAcademyDraft((prev) => ({ ...prev, playerName: event.target.value }))}
-                      placeholder="Aluno"
-                    />
-                  </label>
-                  <label>
-                    WhatsApp
-                    <input
-                      value={academyDraft.phone}
-                      onChange={(event) => setAcademyDraft((prev) => ({ ...prev, phone: event.target.value }))}
-                      placeholder="Telefone"
-                    />
-                  </label>
-                  <label>
-                    Mensagem
-                    <input
-                      value={academyDraft.notes}
-                      onChange={(event) => setAcademyDraft((prev) => ({ ...prev, notes: event.target.value }))}
-                      placeholder="Nivel, objetivo ou disponibilidade"
-                    />
-                  </label>
-                </div>
-                <div className="place-public-hero-actions">
-                  <button
-                    className="primary"
-                    onClick={() => void requestAcademyEnrollment()}
-                    disabled={academyBusy || !academyDraft.classId || !academyDraft.playerName.trim()}
-                  >
-                    Tenho interesse
-                  </button>
-                </div>
-                {academyFeedback ? <p className="subtle">{academyFeedback}</p> : null}
-                {filteredAcademyClasses.slice(0, 6).map((academyClass) => (
-                  <div key={academyClass.id} className="place-public-row">
-                    <strong>{academyClass.title}</strong>
-                    <small>
-                      {[nextClassLabel(academyClass), academyClass.coachName || "Professor a definir", academyClass.level, formatMoneyFromCents(academyClass.monthlyFeeCents)]
-                        .filter(Boolean)
-                        .join(" | ")}
-                    </small>
-                  </div>
-                ))}
-                {!activeClasses.length ? <p className="subtle">Turmas ainda nao publicadas.</p> : null}
-                {cheapestClass ? <p className="subtle">Mensalidades a partir de {formatMoneyFromCents(cheapestClass.monthlyFeeCents)}.</p> : null}
               </article>
 
               <article>

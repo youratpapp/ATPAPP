@@ -182,6 +182,10 @@ export function RankingPage({ user, profile }: Props) {
   const visibleRows = filteredRows.slice(0, 80);
   const myRows = filteredRows.filter((row) => row.userId === user.id).slice(0, 3);
   const leader = filteredRows[0] || null;
+  const myPrimaryRow = myRows[0] || null;
+  const myPrimaryIndex = myPrimaryRow ? filteredRows.findIndex((row) => row.leaguePlayerId === myPrimaryRow.leaguePlayerId) : -1;
+  const playerAboveMe = myPrimaryIndex > 0 ? filteredRows[myPrimaryIndex - 1] : null;
+  const myGapToLeader = leader && myPrimaryRow ? Math.max(0, leader.rankingPoints - myPrimaryRow.rankingPoints) : 0;
   const totalPlayers = filteredRows.length;
   const totalMatches = filteredRows.reduce((acc, row) => acc + row.matchesPlayed, 0);
   const averagePoints = totalPlayers > 0
@@ -314,25 +318,32 @@ export function RankingPage({ user, profile }: Props) {
         <h1>Ranking</h1>
       </div>
 
-      <section className="ranking-hero-panel">
-        <div>
-          <span>Ranking competitivo</span>
-          <h2>{scopeLabel}</h2>
-          <p>Compare desempenho por cidade, liga e temporada. Pontos, vitorias e jogos alimentam a evolucao do jogador.</p>
+      <section className="ranking-player-overview">
+        <div className="ranking-player-position">
+          <span>Minha posicao</span>
+          {myPrimaryRow ? (
+            <>
+              <strong>#{myPrimaryRow.position || myPrimaryIndex + 1}</strong>
+              <h2>{classLabel(myPrimaryRow)}</h2>
+              <p>
+                {myPrimaryRow.rankingPoints} pts em {myPrimaryRow.leagueName}
+                {myGapToLeader > 0 ? ` | ${myGapToLeader} pts do lider` : " | voce lidera este recorte"}
+              </p>
+            </>
+          ) : (
+            <>
+              <strong>-</strong>
+              <h2>Voce ainda nao aparece neste recorte</h2>
+              <p>Use filtros de liga, cidade ou classe para encontrar rankings onde voce participa.</p>
+            </>
+          )}
         </div>
-        <div className="ranking-hero-kpis">
-          <article>
-            <strong>{totalPlayers}</strong>
-            <span>Jogadores</span>
-          </article>
-          <article>
-            <strong>{totalMatches}</strong>
-            <span>Partidas</span>
-          </article>
-          <article>
-            <strong>{averagePoints}</strong>
-            <span>Media pts</span>
-          </article>
+        <div className="ranking-player-context">
+          <span>Recorte atual</span>
+          <strong>{scopeLabel}</strong>
+          <small>{filteredRows.length} jogador{filteredRows.length === 1 ? "" : "es"} encontrado{filteredRows.length === 1 ? "" : "s"}</small>
+          {playerAboveMe ? <small>Acima de voce: {playerAboveMe.displayName} ({playerAboveMe.rankingPoints} pts)</small> : null}
+          {leader && !myPrimaryRow ? <small>Lider: {leader.displayName} ({leader.rankingPoints} pts)</small> : null}
         </div>
       </section>
 
@@ -400,120 +411,6 @@ export function RankingPage({ user, profile }: Props) {
       {feedback ? <p className="feedback success">{feedback}</p> : null}
       {loading ? <ScreenState kind="loading" icon="Ranking" title="Carregando ranking" detail="Buscando jogadores, ligas e recortes disponiveis." /> : null}
 
-      {!loading && myRows.length > 0 ? (
-        <section className="ranking-my-card">
-          <strong>Minha posicao</strong>
-          {myRows.map((row) => (
-            <span key={`mine:${row.leaguePlayerId}`}>
-              #{row.position} em {row.leagueName} - {classLabel(row)} ({row.rankingPoints} pts)
-            </span>
-          ))}
-        </section>
-      ) : null}
-
-      {!loading && leader ? (
-        <section className="ranking-feature-grid">
-          <article className="ranking-leader-card">
-            <span>Lider do recorte</span>
-            <strong>#{leader.position || 1} {leader.displayName}</strong>
-            <small>{leader.leagueName} - {classLabel(leader)}</small>
-            <div>
-              <b>{leader.rankingPoints} pts</b>
-              <b>{winRate(leader)}% aproveit.</b>
-              <b>{leader.matchesPlayed} jogos</b>
-            </div>
-          </article>
-          {myRows[0] ? (
-            <article className="ranking-player-card">
-              <span>Seu momento</span>
-              <strong>#{myRows[0].position || "-"} {myRows[0].displayName}</strong>
-              <small>{myRows[0].leagueName} - {classLabel(myRows[0])}</small>
-              <div>
-                <b>{myRows[0].rankingPoints} pts</b>
-                <b>{myRows[0].wins}-{myRows[0].losses}</b>
-                <b>{winRate(myRows[0])}% aproveit.</b>
-              </div>
-            </article>
-          ) : (
-            <article className="ranking-player-card">
-              <span>Seu momento</span>
-              <strong>Entre em uma liga</strong>
-              <small>Quando voce aparecer em uma temporada, sua posicao fica destacada aqui.</small>
-            </article>
-          )}
-        </section>
-      ) : null}
-
-      {!loading && filteredRows.length > 0 ? (
-        <section className="ranking-ops-grid">
-          <article className="ranking-rules-card">
-            <span>{selectedLeagueDetails ? "Regulamento da liga" : "Como ler este recorte"}</span>
-            <h3>{selectedLeagueDetails?.name || scopeLabel}</h3>
-            <div>
-              {selectedRules.map((rule) => (
-                <p key={rule.label}>
-                  <b>{rule.label}</b>
-                  <strong>{rule.value}</strong>
-                </p>
-              ))}
-            </div>
-            {activeSeason ? (
-              <small>
-                Temporada: {activeSeason.name} - rodada {activeSeason.currentRoundNumber || 0}
-              </small>
-            ) : (
-              <small>Use o filtro de liga para ver temporada, formato e regras de acesso.</small>
-            )}
-          </article>
-          <article className="ranking-race-card">
-            <span>Corrida do ranking</span>
-            <h3>Disputa pelo topo</h3>
-            <div>
-              {rankingRaceRows.map((row) => (
-                <p key={`race:${row.leaguePlayerId}`}>
-                  <b>#{row.effectivePosition}</b>
-                  <strong>{row.displayName}</strong>
-                  <em>{row.gapToLeader === 0 ? "lider" : `${row.gapToLeader} pts atras`}</em>
-                </p>
-              ))}
-            </div>
-            <small>{classFilter || "Todas as classes"} - {totalMatches} jogos no recorte</small>
-          </article>
-          <article className="ranking-class-map-card">
-            <span>Mapa de classes</span>
-            <h3>Onde a liga esta viva</h3>
-            <div>
-              {classBreakdownRows.map((row) => (
-                <p key={`class-map:${row.label}`}>
-                  <b>{row.label}</b>
-                  <strong>{row.players} jogadores - {row.matches} jogos</strong>
-                  <em>{row.leader} - {row.leaderPoints} pts</em>
-                </p>
-              ))}
-            </div>
-            <small>{rankingCompleteness}% dos jogadores ja possuem partida lancada neste recorte.</small>
-          </article>
-          <article className="ranking-tools-card">
-            <PublishingKit
-              eyebrow="Ferramentas"
-              title="Publicacao e gestao"
-              hint="Copie o top 10 para WhatsApp ou exporte CSV para conferencia interna do clube."
-              actions={
-                <>
-                  <button onClick={() => void copyRankingSnapshot()} disabled={!visibleRows.length}>
-                    Copiar top 10
-                  </button>
-                  <button className="primary" onClick={exportRankingCsv} disabled={!visibleRows.length}>
-                    Exportar CSV
-                  </button>
-                </>
-              }
-            />
-            <small>Use junto dos filtros de liga, temporada, classe e busca.</small>
-          </article>
-        </section>
-      ) : null}
-
       {!loading && !visibleRows.length ? (
         <ScreenState
           icon="Sem resultado"
@@ -575,6 +472,111 @@ export function RankingPage({ user, profile }: Props) {
             </div>
           ))}
         </section>
+      ) : null}
+
+      {!loading && filteredRows.length > 0 ? (
+        <details className="ranking-secondary-panel">
+          <summary>Ver regras, resumo e ferramentas</summary>
+          {leader ? (
+            <section className="ranking-feature-grid">
+              <article className="ranking-leader-card">
+                <span>Lider do recorte</span>
+                <strong>#{leader.position || 1} {leader.displayName}</strong>
+                <small>{leader.leagueName} - {classLabel(leader)}</small>
+                <div>
+                  <b>{leader.rankingPoints} pts</b>
+                  <b>{winRate(leader)}% aproveit.</b>
+                  <b>{leader.matchesPlayed} jogos</b>
+                </div>
+              </article>
+              {myPrimaryRow ? (
+                <article className="ranking-player-card">
+                  <span>Seu momento</span>
+                  <strong>#{myPrimaryRow.position || "-"} {myPrimaryRow.displayName}</strong>
+                  <small>{myPrimaryRow.leagueName} - {classLabel(myPrimaryRow)}</small>
+                  <div>
+                    <b>{myPrimaryRow.rankingPoints} pts</b>
+                    <b>{myPrimaryRow.wins}-{myPrimaryRow.losses}</b>
+                    <b>{winRate(myPrimaryRow)}% aproveit.</b>
+                  </div>
+                </article>
+              ) : (
+                <article className="ranking-player-card">
+                  <span>Seu momento</span>
+                  <strong>Entre em uma liga</strong>
+                  <small>Quando voce aparecer em uma temporada, sua posicao fica destacada aqui.</small>
+                </article>
+              )}
+            </section>
+          ) : null}
+          <section className="ranking-ops-grid">
+            <article className="ranking-rules-card">
+              <span>{selectedLeagueDetails ? "Regulamento da liga" : "Como ler este recorte"}</span>
+              <h3>{selectedLeagueDetails?.name || scopeLabel}</h3>
+              <div>
+                {selectedRules.map((rule) => (
+                  <p key={rule.label}>
+                    <b>{rule.label}</b>
+                    <strong>{rule.value}</strong>
+                  </p>
+                ))}
+              </div>
+              {activeSeason ? (
+                <small>
+                  Temporada: {activeSeason.name} - rodada {activeSeason.currentRoundNumber || 0}
+                </small>
+              ) : (
+                <small>Use o filtro de liga para ver temporada, formato e regras de acesso.</small>
+              )}
+            </article>
+            <article className="ranking-race-card">
+              <span>Corrida do ranking</span>
+              <h3>Disputa pelo topo</h3>
+              <div>
+                {rankingRaceRows.map((row) => (
+                  <p key={`race:${row.leaguePlayerId}`}>
+                    <b>#{row.effectivePosition}</b>
+                    <strong>{row.displayName}</strong>
+                    <em>{row.gapToLeader === 0 ? "lider" : `${row.gapToLeader} pts atras`}</em>
+                  </p>
+                ))}
+              </div>
+              <small>{classFilter || "Todas as classes"} - {totalMatches} jogos no recorte</small>
+            </article>
+            <article className="ranking-class-map-card">
+              <span>Mapa de classes</span>
+              <h3>Onde a liga esta viva</h3>
+              <div>
+                {classBreakdownRows.map((row) => (
+                  <p key={`class-map:${row.label}`}>
+                    <b>{row.label}</b>
+                    <strong>{row.players} jogadores - {row.matches} jogos</strong>
+                    <em>{row.leader} - {row.leaderPoints} pts</em>
+                  </p>
+                ))}
+              </div>
+              <small>{rankingCompleteness}% dos jogadores ja possuem partida lancada neste recorte.</small>
+            </article>
+            <article className="ranking-tools-card">
+              <PublishingKit
+                eyebrow="Ferramentas"
+                title="Publicacao e gestao"
+                hint="Copie o top 10 para WhatsApp ou exporte CSV para conferencia interna do clube."
+                actions={
+                  <>
+                    <button onClick={() => void copyRankingSnapshot()} disabled={!visibleRows.length}>
+                      Copiar top 10
+                    </button>
+                    <button className="primary" onClick={exportRankingCsv} disabled={!visibleRows.length}>
+                      Exportar CSV
+                    </button>
+                  </>
+                }
+              />
+              <small>Use junto dos filtros de liga, temporada, classe e busca.</small>
+            </article>
+          </section>
+        </details>
       ) : null}
     </AppShell>
   );

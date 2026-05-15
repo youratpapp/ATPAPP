@@ -20,13 +20,14 @@ Cada tela deve ter uma responsabilidade primaria. Se uma tela precisa resolver o
 | `/eventos/ligas/:leagueId` | operar liga | rodada, partidas, ranking, jogadores, chat | modelo mental diferente de torneio | alinhar a CompetitionShell |
 | `/gestao` | orientar operador pelo perfil correto | academia, professor solo ou competicoes organizadas conforme permissao | ferramentas sem plano/papel ou descoberta publica | ser entrada contextual de operacao |
 | `/gestao/:placeId/:module` | operar local | fila do dia, modulo ativo, resumo e acoes | descoberta publica | manter contexto operacional e subvisoes |
-| `/gestao/:placeId/academia` | operar aulas, turmas, alunos e professores | Hoje, Grade, Alunos, Pendencias, Professores e Configuracao | bloco legado duplicado, formularios repetidos por turma, busca de encaixe permanente | evoluir para Academia v2 com rows e drawers |
+| `/gestao/:placeId/academia` | operar aulas, turmas, alunos e professores | Hoje, Grade, Alunos, Pendencias, Professores e Configuracao | bloco legado duplicado, formularios repetidos por turma, busca de encaixe permanente | manter Academia v2 com rows, drawers, fila contextual e indicadores de suporte |
 | `/locais` | descobrir locais e iniciar cadastro | cards publicos, filtros, entrada para pagina publica | cockpit administrativo completo por padrao | deixar gestao em `/gestao` |
 | `/locais/:placeId` | converter jogador/publico | marca, ofertas, reserva, turma, jogos, widget | configuracao interna | manter publica e limpa |
 | `/locais/:placeId/admin` | compatibilidade de rota | redirecionar/normalizar para gestao | ser destino principal novo | manter legado temporario |
 | `/ranking` | comparar desempenho | ranking, filtros, regras, exportacao | configuracao de liga completa | manter como leitura competitiva |
 | `/perfil` | identidade e historico | dados, preferencia, atividade | gestao operacional | manter pessoal |
-| `/inscricao/:tournamentId` | converter inscricao | informacoes essenciais, classe, CTA | operacao do torneio | landing mobile-first |
+| `/inscricao/:tournamentId` | converter inscricao | escolha de categoria/classe, dados do jogador, revisao, status e CTA | operacao do torneio, configuracao, pagamento falso | fluxo mobile-first em etapas |
+| `/eventos/ligas/inscricao/:token` | converter convite de liga | liga/classe do convite, dados do jogador, revisao, status e CTA | operacao da liga, ranking completo, configuracao | fluxo curto por link |
 
 ## Sinais de tela sobrecarregada
 
@@ -52,6 +53,18 @@ Quando uma tela cresce demais:
 
 ## Evolucoes registradas
 
+- 2026-05-15: `MGMT-FINANCE-01` refinou `/gestao/:placeId/financeiro`: a tela abre em `Recebiveis`, prioriza quem cobrar agora, mostra vencimento/origem/periodo por row, usa `Marcar pago` como acao primaria e move `Resumo` para leitura secundaria.
+- 2026-05-15: `MGMT-ACADEMY-01` refinou `/gestao/:placeId/academia`: a `Central da academia` fica antes dos indicadores, a fila rapida so aparece como apoio em abas que nao duplicam `Hoje`/`Pendencias`, e a fila nao usa corte silencioso sem expansao/atalho para a fila completa.
+- 2026-05-15: `MGMT-AGENDA-01` refinou `/gestao/:placeId/agenda`: fila urgente de reservas/espera fica dentro da `Central de agenda`, `Hoje` virou rows acionaveis, `Reservas`/`Espera` ganharam filtros sem limite silencioso, calendario permite iniciar reserva em slot livre e KPIs ficam depois da rotina.
+- 2026-05-15: `ROLE-FINANCE-01` refinou `/gestao` e `/gestao/:placeId/financeiro` para o papel `finance`: operador financeiro entra em superficie isolada de recebiveis/despesas e nao herda Agenda, Academia, CRM, Cantina, Equipe ou Ajustes como responsabilidade primaria.
+- 2026-05-15: `MGMT-ROLE-QA-01` corrigiu `/gestao` por papel: setup estrutural (`Base incompleta`, `Definir regras`, `Cadastrar professor`, `Configurar plano`) fica restrito a gestor, professor recebe apenas rotina de aulas/turmas/alunos e recepcao recebe atendimento/agenda sem configuracao profunda.
+- 2026-05-15: `MGMT-UX-02` refinou o modo professor da Academia: professor sem gestao completa ve somente `Aulas`, `Turmas` e `Alunos`, com dados filtrados pelo login vinculado em `place_coaches` e estado vazio quando o vinculo nao existe.
+- 2026-05-15: `MGMT-UX-01` refinou `/gestao` e `/gestao/:placeId/:module`: fila do dia vem antes dos indicadores, `Sinais de suporte` substitui KPIs como primeira leitura e modulos de professor/recepcao passaram a respeitar papel antes de plano.
+- 2026-05-15: `COMP-UX-03` refinou `/inscricao/:tournamentId`, `/eventos/ligas/:leagueId` e `/eventos/ligas/inscricao/:token`: inscricao em torneio/liga agora e fluxo curto de jogador com escolha/revisao/status, sem formulario administrativo longo e sem reenvio duplicado.
+- 2026-05-15: `COMP-OPS-02` refinou `/eventos/ligas/:leagueId`: owner entra por fila operacional de rodada atual com rows e drawer para inscricao, pagamento, partida, resultado/WO, confirmacao e proxima rodada; jogador participante ve apenas `Minha rodada` quando ha partida pendente.
+- 2026-05-15: `COMP-UX-02` refinou `/eventos/:tournamentId/:tab` e `/eventos/ligas/:leagueId` para leitura publica de jogador: primeira dobra de evento, CTA contextual, categorias/classes antes de detalhe pesado e cockpit operacional apenas para owner/staff.
+- 2026-05-15: a reestruturacao por papel/intencao foi consolidada em `ROLE_BASED_RESTRUCTURE_PLAYBOOK.md`, `PLAYER_APP_V2_UX_PLAN.md`, `COMPETITION_OS_V2_UX_PLAN.md`, `MANAGEMENT_OS_V2_UX_PLAN.md`, `ROLE_BASED_RESTRUCTURE_QUEUE.md`, `ROLE_BASED_RESTRUCTURE_SPRINT_GUIDE.md` e `ROLE_BASED_RESTRUCTURE_SPRINT_BACKLOG.md`. A regra passa a ser: cada tela deve responder primeiro ao papel e intencao atuais antes de exibir capacidades internas do sistema.
+- 2026-05-15: `/inicio`, `/locais`, `/eventos`, `/ranking`, `/perfil`, `/gestao` e paginas publicas devem ser reavaliadas pela Role Based Restructure Queue para reduzir empilhamento mobile, cards/KPIs indevidos e vazamento entre Player App, Competition OS e Management OS.
 - 2026-05-14: Rodada 2 de QA refinou `/gestao/:placeId/agenda` e Painel sem mudar responsabilidade primaria: calendario mobile usa seletor para nao ocultar quadras, busca de nova reserva mostra feedback inline, recebiveis pendentes da fila navegam para Financeiro > Recebiveis e Cantina nao aparece como KPI operacional quando o plano nao habilita o modulo.
 - 2026-05-14: Academia v2 foi definida em `ACADEMY_V2_UX_PLAN.md`; a tela `/gestao/:placeId/academia` deve separar rotina diaria, grade, alunos, pendencias, professores e configuracao, preservando funcoes sem manter blocos legados duplicados.
 - 2026-05-14: `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md` foi criado como processo padrao para mapear, planejar e corrigir cada modulo antes de implementar refactors profundos.

@@ -20,6 +20,7 @@ import type {
 
 const TABLE_LEAGUES = "leagues";
 const TABLE_LEAGUE_SEASONS = "league_seasons";
+const TABLE_LEAGUE_CLASSES = "league_classes";
 const TABLE_LEAGUE_CHAT = "league_chat_messages";
 
 type LeagueRpcRow = {
@@ -221,6 +222,51 @@ type GenerateRoundRow = {
   matches_created: number;
 };
 
+type CreateLeagueClassInput = {
+  categoryName: string;
+  className: string;
+  levelOrder?: number;
+  promotedSlots?: number;
+  relegatedSlots?: number;
+  playersLimit?: number;
+};
+
+export type CreateLeagueInput = {
+  name: string;
+  leagueType: LeagueSummary["leagueType"];
+  category?: string;
+  classScope?: string;
+  visibility?: LeagueSummary["visibility"];
+  initialStatus?: "draft" | "active";
+  locationText?: string;
+  startsOn?: string;
+  endsOn?: string;
+  classes?: CreateLeagueClassInput[];
+  matchFormat?: string;
+  roundsTotal?: number;
+  roundInterval?: string;
+  roundIntervalDays?: number;
+  resultDeadlineDays?: number;
+  toleranceDays?: number;
+  promotedCount?: number;
+  relegatedCount?: number;
+  maxRecesses?: number;
+  wildcardEnabled?: boolean;
+  noAdEnabled?: boolean;
+  tieBreakRule?: string;
+  woRule?: string;
+  publicJoinEnabled?: boolean;
+  joinRequiresApproval?: boolean;
+  autoRoundGenerationEnabled?: boolean;
+  autoRoundGenerationHour?: number;
+  autoRoundGenerationTimezone?: string;
+  registrationFeeCents?: number;
+  playersPerGroup?: number;
+  playWeekdays?: number[];
+  playStartTime?: string;
+  playEndTime?: string;
+};
+
 function normalizeLeagueType(v: string | null | undefined): LeagueSummary["leagueType"] {
   if (v === "dupla_fixa" || v === "dupla_rotativa" || v === "simples") return v;
   return "simples";
@@ -239,9 +285,76 @@ function normalizeLeagueRole(v: string | null | undefined): LeagueSummary["role"
   return v === "owner" ? "owner" : "participant";
 }
 
+function normalizeMatchFormat(v: string | null | undefined): string {
+  if (
+    v === "melhor_de_3" ||
+    v === "melhor_de_3_super_tb" ||
+    v === "set_unico" ||
+    v === "pro_set" ||
+    v === "fast4" ||
+    v === "super_tb_unico"
+  ) {
+    return v;
+  }
+  return "melhor_de_3_super_tb";
+}
+
+function normalizeRoundInterval(v: string | null | undefined): string {
+  if (v === "semanal" || v === "quinzenal" || v === "mensal" || v === "personalizado") return v;
+  return "quinzenal";
+}
+
+function normalizeTieBreakRule(v: string | null | undefined): string {
+  return v === "super_tb_10" ? "super_tb_10" : "tradicional";
+}
+
+function normalizeWoRule(v: string | null | undefined): string {
+  return v === "admin_review" ? "admin_review" : "victory_min_score";
+}
+
 function normalizeSeasonStatus(v: string | null | undefined): LeagueSeasonSummary["status"] {
   if (v === "active" || v === "finished" || v === "archived" || v === "draft") return v;
   return "draft";
+}
+
+function clampInteger(value: number | undefined, min: number, max: number, fallback: number): number {
+  const n = Math.floor(Number(value));
+  if (Number.isNaN(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
+function dateOnlyToIso(value: string | undefined, endOfDay = false): string | null {
+  if (!value) return null;
+  const time = endOfDay ? "23:59:59" : "00:00:00";
+  const date = new Date(`${value}T${time}`);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toISOString();
+}
+
+function normalizeLeagueClasses(input: CreateLeagueInput): CreateLeagueClassInput[] {
+  const fallbackCategory = (input.category || "").trim() || "GERAL";
+  const fallbackClass = (input.classScope || "").trim() || "CLASSE UNICA";
+  const source = input.classes?.length ? input.classes : [{ categoryName: fallbackCategory, className: fallbackClass }];
+  const seen = new Set<string>();
+  const out: CreateLeagueClassInput[] = [];
+
+  for (const item of source) {
+    const categoryName = item.categoryName.trim() || fallbackCategory;
+    const className = item.className.trim() || fallbackClass;
+    const key = `${categoryName.toLocaleLowerCase("pt-BR")}::${className.toLocaleLowerCase("pt-BR")}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({
+      ...item,
+      categoryName,
+      className,
+      promotedSlots: clampInteger(item.promotedSlots, 0, 32, clampInteger(input.promotedCount, 0, 32, 1)),
+      relegatedSlots: clampInteger(item.relegatedSlots, 0, 32, clampInteger(input.relegatedCount, 0, 32, 1)),
+      playersLimit: clampInteger(item.playersLimit, 2, 64, clampInteger(input.playersPerGroup, 2, 64, 12)),
+    });
+  }
+
+  return out.length ? out.map((item, index) => ({ ...item, levelOrder: index + 1 })) : [{ categoryName: fallbackCategory, className: fallbackClass, levelOrder: 1 }];
 }
 
 function rpcRowToSummary(row: LeagueRpcRow): LeagueSummary {
@@ -280,25 +393,81 @@ export async function loadMyLeagues(): Promise<LeagueSummary[]> {
 
 export async function createLeague(
   user: User,
-  input: {
-    name: string;
-    leagueType: LeagueSummary["leagueType"];
-    category?: string;
-    classScope?: string;
-    visibility?: LeagueSummary["visibility"];
-  }
+  input: CreateLeagueInput
 ): Promise<{ id: string }> {
   if (!supabase) throw new Error("Supabase nao configurado.");
   const category = (input.category || "").trim() || null;
   const classScope = (input.classScope || "").trim() || null;
+  const initialStatus = input.initialStatus === "active" ? "active" : "draft";
+  const roundInterval = normalizeRoundInterval(input.roundInterval);
+  const defaultIntervalDays = roundInterval === "semanal" ? 7 : roundInterval === "mensal" ? 30 : 14;
+  const roundIntervalDays = clampInteger(input.roundIntervalDays, 1, 120, defaultIntervalDays);
+  const resultDeadlineDays = clampInteger(input.resultDeadlineDays, 1, 120, roundIntervalDays);
+  const toleranceDays = clampInteger(input.toleranceDays, 0, 60, 7);
+  const promotedCount = clampInteger(input.promotedCount, 0, 32, 1);
+  const relegatedCount = clampInteger(input.relegatedCount, 0, 32, 1);
+  const maxRecesses = clampInteger(input.maxRecesses, 0, 20, 2);
+  const playersPerGroup = clampInteger(input.playersPerGroup, 2, 64, 12);
+  const classes = normalizeLeagueClasses({ ...input, promotedCount, relegatedCount, playersPerGroup });
+  const startsAtIso = dateOnlyToIso(input.startsOn) || new Date().toISOString();
+  const endsAtIso = dateOnlyToIso(input.endsOn, true);
+  const playWeekdays = Array.from(
+    new Set((input.playWeekdays?.length ? input.playWeekdays : [1, 2, 3, 4, 5]).map((day) => clampInteger(day, 0, 6, 1)))
+  ).sort((a, b) => a - b);
+  const registrationFeeCents = clampInteger(input.registrationFeeCents, 0, 99999900, 0);
+  const publicJoinEnabled = input.publicJoinEnabled !== false;
+  const settings = {
+    setup: {
+      source: "league_create_wizard_v2",
+      locationText: (input.locationText || "").trim(),
+      playersPerGroup,
+      playWeekdays,
+      playStartTime: input.playStartTime || "08:00",
+      playEndTime: input.playEndTime || "21:00",
+      createdBy: "COMP-SETUP-02",
+    },
+    classes: classes.map((item) => ({
+      categoryName: item.categoryName,
+      className: item.className,
+      levelOrder: item.levelOrder || 1,
+      playersLimit: item.playersLimit || playersPerGroup,
+    })),
+    points: {
+      win: 3,
+      loss: 0,
+      noShow: -1,
+      doubleNoShow: -2,
+      draw: 1,
+    },
+  };
   const payload = {
     owner_id: user.id,
     name: input.name.trim() || "Nova Liga",
-    league_type: input.leagueType,
+    league_type: normalizeLeagueType(input.leagueType),
     category,
     class_scope: classScope,
+    match_format: normalizeMatchFormat(input.matchFormat),
+    rounds_total: clampInteger(input.roundsTotal, 1, 200, 10),
+    round_interval: roundInterval,
+    round_interval_days: roundIntervalDays,
+    result_deadline_days: resultDeadlineDays,
+    tolerance_days: toleranceDays,
+    promoted_count: promotedCount,
+    relegated_count: relegatedCount,
+    max_recesses: maxRecesses,
+    wildcard_enabled: Boolean(input.wildcardEnabled),
+    no_ad_enabled: Boolean(input.noAdEnabled),
+    tie_break_rule: normalizeTieBreakRule(input.tieBreakRule),
+    wo_rule: normalizeWoRule(input.woRule),
+    settings,
     visibility: input.visibility === "public" ? "public" : "private",
-    status: "draft",
+    status: initialStatus,
+    public_join_enabled: publicJoinEnabled,
+    join_requires_approval: input.joinRequiresApproval !== false,
+    auto_round_generation_enabled: input.autoRoundGenerationEnabled !== false,
+    auto_round_generation_hour: clampInteger(input.autoRoundGenerationHour, 0, 23, 2),
+    auto_round_generation_timezone: input.autoRoundGenerationTimezone || "America/Cuiaba",
+    registration_fee_cents: registrationFeeCents,
     updated_at: new Date().toISOString(),
   };
 
@@ -312,20 +481,28 @@ export async function createLeague(
       league_id: leagueId,
       name: "Temporada 1",
       season_number: 1,
-      status: "active",
-      starts_at: new Date().toISOString(),
+      status: initialStatus === "active" ? "active" : "draft",
+      starts_at: startsAtIso,
+      ends_at: endsAtIso,
+      settings_override: {
+        schedule: settings.setup,
+      },
     })
     .select("id")
     .single();
 
-  if (!seasonInsert.error && seasonInsert.data?.id) {
-    await supabase.from("league_classes").insert({
-      season_id: seasonInsert.data.id as string,
-      category_name: category || "GERAL",
-      class_name: classScope || "CLASSE UNICA",
-      level_order: 1,
-    });
-  }
+  if (seasonInsert.error || !seasonInsert.data?.id) throw new Error(seasonInsert.error?.message || "Falha ao criar temporada da liga.");
+
+  const classPayload = classes.map((item) => ({
+    season_id: seasonInsert.data.id as string,
+    category_name: item.categoryName,
+    class_name: item.className,
+    level_order: item.levelOrder || 1,
+    promoted_slots: item.promotedSlots ?? promotedCount,
+    relegated_slots: item.relegatedSlots ?? relegatedCount,
+  }));
+  const classInsert = await supabase.from(TABLE_LEAGUE_CLASSES).insert(classPayload);
+  if (classInsert.error) throw new Error(classInsert.error.message);
 
   return { id: leagueId };
 }

@@ -48,7 +48,7 @@ export function placeResourceAccess(place: Place, userId: string, staff: PlaceSt
     canUseMemberships: features.memberships,
     canManageBookings: features.bookings && (canManagePlace || staffRole === "frontdesk"),
     canManageAcademy: features.academy && (canManagePlace || staffRole === "coach"),
-    canManageFinance: features.finance && canManagePlace,
+    canManageFinance: features.finance && (canManagePlace || staffRole === "finance"),
   };
 }
 
@@ -63,10 +63,13 @@ export function featureList(access: ReturnType<typeof placeResourceAccess>): str
 }
 
 export function placeManagementModules(access: ReturnType<typeof placeResourceAccess>): PlaceManagementModule[] {
-  const modules: PlaceManagementModule[] = ["dashboard"];
+  if (access.staffRole === "finance" && !access.canManagePlace) {
+    return access.canManageFinance ? ["finance"] : [];
+  }
+  const modules: PlaceManagementModule[] = access.canManagePlace ? ["dashboard"] : [];
   if (access.canUseBookings && access.staffRole !== "coach") modules.push("bookings");
   if (access.canUseAcademy) modules.push("academy");
-  if (access.canUseMemberships || access.canUseCrm) modules.push("clients");
+  if ((access.canUseMemberships || access.canUseCrm) && (access.canManagePlace || access.staffRole === "frontdesk")) modules.push("clients");
   if (access.canUseFinance && access.canManagePlace) modules.push("finance", "canteen");
   if (access.canManagePlace) modules.push("team", "settings");
   return modules;

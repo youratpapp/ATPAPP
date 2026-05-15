@@ -196,6 +196,56 @@ export async function fetchPlacePaymentsByTarget(): Promise<Record<string, AppPa
   return Object.fromEntries(paymentRows.map((payment) => [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod), payment]));
 }
 
+function emptyPlaceAdminResourceEntry(placeId: string): PlaceAdminResourceEntry {
+  return {
+    academyAbsences: [],
+    academyAttendance: [],
+    academyClasses: [],
+    academyCoaches: [],
+    academyEnrollments: [],
+    academyLessonRequests: [],
+    academyMakeups: [],
+    academyProgress: [],
+    academySettings: { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" },
+    academySlots: [],
+    academyStudentContracts: [],
+    bookingRules: [],
+    bookingWaitlist: [],
+    bookings: [],
+    courts: [],
+    creditPackages: [],
+    creditPurchases: [],
+    crmContacts: [],
+    crmInteractions: [],
+    expenses: [],
+    membershipPlans: [],
+    memberships: [],
+    placeId,
+    posProducts: [],
+    posSales: [],
+    staff: [],
+  };
+}
+
+function withWorkspaceFallback<T>(promise: Promise<T>, fallback: T, label: string, timeoutMs = 12000): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<T>((resolve) => {
+    timer = setTimeout(() => {
+      console.warn(`Workspace data timeout: ${label}`);
+      resolve(fallback);
+    }, timeoutMs);
+  });
+  return Promise.race([
+    promise.catch((err) => {
+      console.warn(`Workspace data fallback: ${label}`, err);
+      return fallback;
+    }),
+    timeout,
+  ]).finally(() => {
+    if (timer) clearTimeout(timer);
+  });
+}
+
 export async function fetchPlaceAdminResources(input: {
   place?: Place;
   placeId: string;
@@ -203,6 +253,7 @@ export async function fetchPlaceAdminResources(input: {
 }): Promise<PlaceAdminResourceEntry> {
   const staff = await listPlaceStaff(input.placeId).catch(() => [] as PlaceStaffMember[]);
   const access = input.place ? placeResourceAccess(input.place, input.userId, staff) : FULL_PLACE_ACCESS;
+  const canUsePointOfSale = access.canManagePlace && access.canManageFinance;
   const [
     courts,
     bookingRules,
@@ -237,8 +288,8 @@ export async function fetchPlaceAdminResources(input: {
     access.canManageFinance ? listPlaceCreditPurchases(input.placeId).catch(() => [] as PlaceCreditPurchase[]) : Promise.resolve([] as PlaceCreditPurchase[]),
     access.canUseCrm && access.canManagePlace ? listPlaceCrmContacts(input.placeId).catch(() => [] as PlaceCrmContact[]) : Promise.resolve([] as PlaceCrmContact[]),
     access.canUseCrm && access.canManagePlace ? listPlaceCrmInteractions(input.placeId).catch(() => [] as PlaceCrmInteraction[]) : Promise.resolve([] as PlaceCrmInteraction[]),
-    access.canManageFinance ? listPlacePosProducts(input.placeId).catch(() => [] as PlacePosProduct[]) : Promise.resolve([] as PlacePosProduct[]),
-    access.canManageFinance ? listPlacePosSales(input.placeId).catch(() => [] as PlacePosSale[]) : Promise.resolve([] as PlacePosSale[]),
+    canUsePointOfSale ? listPlacePosProducts(input.placeId).catch(() => [] as PlacePosProduct[]) : Promise.resolve([] as PlacePosProduct[]),
+    canUsePointOfSale ? listPlacePosSales(input.placeId).catch(() => [] as PlacePosSale[]) : Promise.resolve([] as PlacePosSale[]),
     access.canManageFinance ? listPlaceExpenses(input.placeId).catch(() => [] as PlaceExpense[]) : Promise.resolve([] as PlaceExpense[]),
     access.canUseBookings ? listPlaceBookings(input.placeId).catch(() => [] as CourtBooking[]) : Promise.resolve([] as CourtBooking[]),
     access.canUseBookings ? listPlaceBookingWaitlist(input.placeId).catch(() => [] as CourtBookingWaitlistEntry[]) : Promise.resolve([] as CourtBookingWaitlistEntry[]),
@@ -298,10 +349,18 @@ export async function fetchPlacesWorkspaceData(input: {
         ? listPlacesIFollow
         : listPlacesIAccess;
   const places = await fetcher(input.user);
-  const entries = await Promise.all(places.map((place) => fetchPlaceAdminResources({ place, placeId: place.id, userId: input.user.id })));
+  const entries = await Promise.all(
+    places.map((place) =>
+      withWorkspaceFallback(
+        fetchPlaceAdminResources({ place, placeId: place.id, userId: input.user.id }),
+        emptyPlaceAdminResourceEntry(place.id),
+        `place resources ${place.id}`
+      )
+    )
+  );
   const [paymentsByTarget, openMatches] = await Promise.all([
-    fetchPlacePaymentsByTarget(),
-    listOpenMatches(input.user, places.map((place) => place.id)).catch(() => [] as OpenMatch[]),
+    withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", 4000),
+    withWorkspaceFallback(listOpenMatches(input.user, places.map((place) => place.id)), [] as OpenMatch[], "open matches", 6000),
   ]);
   return { entries, openMatches, organizations, paymentsByTarget, places };
 }

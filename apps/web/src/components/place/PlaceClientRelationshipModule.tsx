@@ -4,7 +4,12 @@ import { EntityActionRow, WorkspaceCard, WorkspaceGrid, WorkspaceList } from "./
 export type PlaceClientReceivable = {
   amountCents: number;
   billingPeriod: string;
+  dueDate?: string;
+  dueLabel?: string;
+  dueStatus?: "overdue" | "today" | "upcoming" | "none";
   id: string;
+  origin?: "academy" | "booking" | "lesson" | "membership" | "other";
+  originLabel?: string;
   reminder: string;
   status: "open" | "paid" | "pending_approval";
   subtitle: string;

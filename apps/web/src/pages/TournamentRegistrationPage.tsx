@@ -7,10 +7,11 @@ import {
   joinTournament,
   loadTournamentByRegistrationLink,
   loadTournamentDetails,
+  loadTournamentRegistrations,
   requestTournamentRegistration,
 } from "../lib/tournaments";
 import { formatMoneyFromCents } from "../lib/payments";
-import type { Profile, TournamentDetails } from "../lib/types";
+import type { Profile, TournamentDetails, TournamentRegistration } from "../lib/types";
 
 type Props = {
   user: User;
@@ -22,6 +23,10 @@ type ClassOption = {
   categoryName: string;
   classId: string;
   className: string;
+  generated: boolean;
+  matchFormat: string;
+  playersCount: number;
+  scoreFormat: string;
 };
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -37,6 +42,61 @@ function asText(value: unknown): string {
   return typeof value === "string" ? value : "";
 }
 
+function asBoolean(value: unknown): boolean {
+  return value === true;
+}
+
+function competitionModelLabel(value: unknown): string {
+  if (value === "mata_mata_simples") return "Mata-mata";
+  if (value === "grupos_mata_mata") return "Grupos + mata-mata";
+  if (value === "round_robin") return "Todos contra todos";
+  if (value === "liga_ranking") return "Liga/ranking";
+  if (value === "dupla_eliminacao") return "Dupla eliminacao";
+  if (value === "super_tiebreak") return "Super tie-break";
+  return "Formato a definir";
+}
+
+function scoreFormatLabel(value: unknown): string {
+  if (value === "melhor_de_3_super_tb") return "2 sets + super tie-break";
+  if (value === "set_unico") return "Set unico";
+  if (value === "pro_set") return "Pro set";
+  if (value === "fast4") return "Fast4";
+  if (value === "super_tb_unico") return "Super tie-break unico";
+  return "Melhor de 3 sets";
+}
+
+function registrationStatusLabel(status: TournamentRegistration["status"]): string {
+  if (status === "approved") return "Inscricao aprovada";
+  if (status === "waitlist") return "Lista de espera";
+  if (status === "rejected") return "Inscricao recusada";
+  return "Inscricao em analise";
+}
+
+function registrationStatusDetail(status: TournamentRegistration["status"]): string {
+  if (status === "approved") return "Voce ja pode acompanhar jogos, agenda e comunicados do torneio.";
+  if (status === "waitlist") return "A organizacao colocou sua inscricao na lista de espera desta categoria.";
+  if (status === "rejected") return "Sua solicitacao nao foi aprovada. Fale com a organizacao se precisar revisar a categoria.";
+  return "A organizacao ainda precisa aprovar sua inscricao antes de voce aparecer na chave.";
+}
+
+function friendlyRegistrationError(error: unknown): string {
+  const raw = error instanceof Error ? error.message : typeof error === "string" ? error : "";
+  const lower = raw.toLowerCase();
+  if (lower.includes("duplicate") || lower.includes("unique") || lower.includes("already") || lower.includes("ja existe")) {
+    return "Voce ja tem uma inscricao registrada neste torneio.";
+  }
+  if (lower.includes("permission denied") || lower.includes("row-level security") || lower.includes("not authorized")) {
+    return "Nao foi possivel enviar a inscricao com este perfil. Entre novamente e tente de novo.";
+  }
+  if (lower.includes("registration") && lower.includes("closed")) {
+    return "As inscricoes deste torneio nao estao abertas agora.";
+  }
+  if (lower.includes("tournament") && lower.includes("not found")) {
+    return "Nao encontramos este torneio. Verifique o link e tente novamente.";
+  }
+  return "Nao foi possivel enviar sua inscricao agora. Tente novamente em instantes.";
+}
+
 function extractClassOptions(dataRaw: Record<string, unknown>): ClassOption[] {
   const data = asRecord(dataRaw) ?? {};
   const categories = asArray(data.categorias);
@@ -50,7 +110,20 @@ function extractClassOptions(dataRaw: Record<string, unknown>): ClassOption[] {
       const cls = asRecord(clsRaw) ?? {};
       const classId = asText(cls.id).trim() || `cls-${ki + 1}`;
       const className = asText(cls.nome).trim() || "Classe";
-      out.push({ categoryId, categoryName, classId, className });
+      const classData = asRecord(cls.data) ?? {};
+      const config = asRecord(classData.config) ?? {};
+      const participants = asArray(classData.participantes).filter(Boolean);
+      const entries = asArray(classData.entradas).filter(Boolean);
+      out.push({
+        categoryId,
+        categoryName,
+        classId,
+        className,
+        generated: asBoolean(classData.gerado),
+        matchFormat: competitionModelLabel(config.modeloCompeticao),
+        playersCount: participants.length || entries.length,
+        scoreFormat: scoreFormatLabel(config.tipoPontuacao),
+      });
     });
   });
   return out;
@@ -85,7 +158,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
   const [selectedClassId, setSelectedClassId] = useState("");
   const [playerName, setPlayerName] = useState("");
   const [phone, setPhone] = useState("");
-  const [submittedClass, setSubmittedClass] = useState<ClassOption | null>(null);
+  const [existingRegistration, setExistingRegistration] = useState<TournamentRegistration | null>(null);
 
   const selected = useMemo(
     () => options.find((o) => o.classId === selectedClassId) ?? options[0] ?? null,
@@ -133,18 +206,20 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
         setTournament(details);
         const opts = extractClassOptions(details.data);
         setOptions(opts);
+        const myRegistrations = await loadTournamentRegistrations(user, details.id, details.role).catch(() => [] as TournamentRegistration[]);
+        const mine = myRegistrations.find((registration) => registration.userId === user.id) ?? null;
+        setExistingRegistration(mine);
 
         const search = new URLSearchParams(location.search);
         const classId = search.get("classId") || "";
         const queryClass = opts.find((o) => o.classId === classId);
-        setSelectedClassId(queryClass?.classId || opts[0]?.classId || "");
+        setSelectedClassId(mine?.classId || queryClass?.classId || opts[0]?.classId || "");
         setPlayerName(profile?.displayName || user.email?.split("@")[0] || "");
         setPhone(profile?.phone || "");
-        setSubmittedClass(null);
         setFeedback(null);
-      } catch (err) {
+      } catch {
         if (!alive) return;
-        setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao abrir inscricao." });
+        setFeedback({ kind: "error", text: "Nao foi possivel abrir a inscricao deste torneio. Verifique o link e tente novamente." });
       } finally {
         if (alive) setLoading(false);
       }
@@ -159,6 +234,10 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
     if (!tournament || !selected) return;
     if (registrationClosedReason) {
       setFeedback({ kind: "error", text: registrationClosedReason });
+      return;
+    }
+    if (existingRegistration) {
+      setFeedback({ kind: "info", text: "Voce ja tem uma inscricao registrada neste torneio." });
       return;
     }
     setSubmitting(true);
@@ -176,10 +255,18 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
       } catch {
         // Non-blocking for registration.
       }
-      setSubmittedClass(selected);
-      setFeedback({ kind: "success", text: "Solicitacao enviada com sucesso. O pagamento sera confirmado pela plataforma." });
+      const myRegistrations = await loadTournamentRegistrations(user, tournament.id, tournament.role).catch(() => [] as TournamentRegistration[]);
+      const mine = myRegistrations.find((registration) => registration.userId === user.id) ?? null;
+      setExistingRegistration(mine);
+      setFeedback({
+        kind: "success",
+        text:
+          mine?.status === "approved"
+            ? "Inscricao confirmada. O pagamento sera acompanhado pela organizacao."
+            : "Solicitacao enviada. A organizacao vai revisar sua categoria e pagamento.",
+      });
     } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao enviar solicitacao." });
+      setFeedback({ kind: "error", text: friendlyRegistrationError(err) });
     } finally {
       setSubmitting(false);
     }
@@ -202,6 +289,9 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
     ];
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(lines.join("\n"))}`, "_blank", "noopener,noreferrer");
   };
+
+  const selectedLabel = selected ? `${selected.categoryName} / ${selected.className}` : "Escolha uma classe";
+  const canSubmit = Boolean(!submitting && !existingRegistration && !registrationClosedReason && selected && playerName.trim() && options.length > 0);
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
@@ -247,9 +337,21 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
             <article className="card invite-card">
               <div className="section-title" style={{ marginBottom: 8 }}>
                 <h2>Solicitar inscricao</h2>
-                <span className="home-league-chip member">{selected ? `${selected.categoryName} / ${selected.className}` : "Escolha uma classe"}</span>
+                <span className="home-league-chip member">{existingRegistration ? registrationStatusLabel(existingRegistration.status) : selectedLabel}</span>
               </div>
               {registrationClosedReason ? <p className="feedback error">{registrationClosedReason}</p> : null}
+              {existingRegistration ? (
+                <div className={`invite-confirmation ${existingRegistration.status === "rejected" ? "rejected" : ""}`}>
+                  <strong>{registrationStatusLabel(existingRegistration.status)}</strong>
+                  <span>
+                    {existingRegistration.categoryName} / {existingRegistration.className}. {registrationStatusDetail(existingRegistration.status)}
+                  </span>
+                  <div className="cluster">
+                    <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
+                    <button onClick={() => navigate("/eventos?modo=playing")}>Meus eventos</button>
+                  </div>
+                </div>
+              ) : null}
 
               <div className="tournament-overview-grid invite-overview-grid">
                 <div className="tournament-overview-kpi">
@@ -266,71 +368,109 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
                 </div>
               </div>
 
-              <label>Classe</label>
-              <select
-                value={selected?.classId ?? ""}
-                onChange={(e) => {
-                  setSelectedClassId(e.target.value);
-                  setSubmittedClass(null);
-                }}
-              >
-                {options.length === 0 ? <option value="">Sem classes disponiveis</option> : null}
-                {options.map((o) => (
-                  <option key={`${o.categoryId}:${o.classId}`} value={o.classId}>
-                    {o.categoryName} / {o.className}
-                  </option>
-                ))}
-              </select>
-
-              <label>Nome do atleta</label>
-              <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Seu nome" />
-
-              <label>Telefone</label>
-              <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(67) 99999-9999" />
-
-              {submittedClass ? (
-                <div className="invite-confirmation">
-                  <strong>Solicitacao recebida</strong>
-                  <span>
-                    Voce pediu inscricao em {submittedClass.categoryName} / {submittedClass.className}. O organizador deve aprovar antes de voce aparecer na chave.
-                  </span>
-                  <div className="cluster">
-                    <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
-                    <button onClick={shareRegistrationWhatsApp}>Compartilhar convite</button>
+              <div className="registration-flow">
+                <div className="registration-step-heading">
+                  <span>1</span>
+                  <div>
+                    <strong>Escolha a categoria</strong>
+                    <small>Selecione onde voce quer entrar. A organizacao pode revisar antes de aprovar.</small>
                   </div>
                 </div>
-              ) : (
-                <div className="cluster" style={{ marginTop: 12 }}>
-                  <button
-                    className="primary"
-                    onClick={submit}
-                    disabled={submitting || !!registrationClosedReason || !selected || !playerName.trim() || options.length === 0}
-                  >
-                    {submitting ? "Enviando..." : registrationClosedReason ? "Inscricoes fechadas" : "Solicitar inscricao"}
+                {options.length === 0 ? (
+                  <p className="subtle">Este torneio ainda nao publicou categorias para inscricao.</p>
+                ) : (
+                  <div className="registration-option-grid">
+                    {options.map((option) => {
+                      const active = selected?.classId === option.classId;
+                      return (
+                        <button
+                          key={`${option.categoryId}:${option.classId}`}
+                          className={`registration-option ${active ? "active" : ""}`}
+                          type="button"
+                          onClick={() => setSelectedClassId(option.classId)}
+                          disabled={Boolean(existingRegistration)}
+                        >
+                          <strong>{option.className}</strong>
+                          <span>{option.categoryName}</span>
+                          <small>{option.matchFormat} - {option.scoreFormat}</small>
+                          <em>{option.playersCount} {option.playersCount === 1 ? "inscrito" : "inscritos"}</em>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                <div className="registration-step-heading">
+                  <span>2</span>
+                  <div>
+                    <strong>Confirme seus dados</strong>
+                    <small>Esses dados ajudam a organizacao a validar comunicados, pagamento e chamada.</small>
+                  </div>
+                </div>
+                <div className="registration-form-grid">
+                  <label>
+                    Nome do atleta
+                    <input value={playerName} onChange={(e) => setPlayerName(e.target.value)} placeholder="Seu nome" disabled={Boolean(existingRegistration)} />
+                  </label>
+                  <label>
+                    Telefone
+                    <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="(67) 99999-9999" disabled={Boolean(existingRegistration)} />
+                  </label>
+                </div>
+
+                <div className="registration-step-heading">
+                  <span>3</span>
+                  <div>
+                    <strong>Revise antes de enviar</strong>
+                    <small>Confira valor, prazo e a categoria selecionada.</small>
+                  </div>
+                </div>
+                <div className="registration-review-card">
+                  <p>
+                    <span>Categoria</span>
+                    <strong>{selectedLabel}</strong>
+                  </p>
+                  <p>
+                    <span>Valor</span>
+                    <strong>{formatMoneyFromCents(tournament.registrationFeeCents)}</strong>
+                  </p>
+                  <p>
+                    <span>Prazo</span>
+                    <strong>{registrationCloseLabel}</strong>
+                  </p>
+                  <p>
+                    <span>Restricao de horario</span>
+                    <strong>Avise a organizacao se precisar combinar horario.</strong>
+                  </p>
+                </div>
+
+                <div className="registration-sticky-cta">
+                  <button className="primary" onClick={submit} disabled={!canSubmit}>
+                    {submitting ? "Enviando..." : registrationClosedReason ? "Inscricoes fechadas" : existingRegistration ? registrationStatusLabel(existingRegistration.status) : "Confirmar inscricao"}
                   </button>
                   <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
                   <button onClick={shareRegistrationWhatsApp} disabled={!selected}>
-                    Compartilhar convite
+                    Compartilhar
                   </button>
                 </div>
-              )}
+              </div>
             </article>
 
             <aside className="tournament-registration-side">
               <div>
                 <span>Como funciona</span>
-                <strong>Pedido com aprovacao</strong>
-                <p>Depois de solicitar a inscricao, o organizador confere a classe e libera sua entrada na chave.</p>
+                <strong>{tournament.status === "registration_open" ? "Pedido com aprovacao" : "Inscricoes indisponiveis"}</strong>
+                <p>Depois de solicitar, o organizador confere categoria, pagamento e libera sua entrada na chave.</p>
               </div>
               <div>
-                <span>Compartilhamento</span>
-                <strong>Link pronto para WhatsApp</strong>
-                <p>Compartilhe o convite ja apontando para a classe selecionada.</p>
+                <span>Status</span>
+                <strong>{existingRegistration ? registrationStatusLabel(existingRegistration.status) : "Ainda nao enviado"}</strong>
+                <p>{existingRegistration ? registrationStatusDetail(existingRegistration.status) : "Ao confirmar, voce vera aqui se a solicitacao ficou em analise ou foi aprovada."}</p>
               </div>
               <div>
-                <span>Organizacao</span>
-                <strong>Dados para o torneio</strong>
-                <p>Seu nome e telefone ajudam a validar pagamento, chamada e comunicados do evento.</p>
+                <span>Contato</span>
+                <strong>Restricoes e duvidas</strong>
+                <p>Restricoes de horario ainda devem ser combinadas com a organizacao do torneio.</p>
               </div>
             </aside>
           </div>

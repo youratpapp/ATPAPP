@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCallback } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
-import { CompetitionHeader, CompetitionOperationalQueue, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
+import { CompetitionHeader, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
 import { StatusBadge } from "../components/StatusBadge";
 import {
   addTournamentStaff,
@@ -112,6 +112,181 @@ type Props = {
 type TabKey = TournamentTabKey;
 
 type Feedback = { kind: "success" | "error" | "info"; text: string };
+
+type TournamentOrganizerTaskAction = {
+  disabled?: boolean;
+  kind?: "primary" | "secondary" | "danger";
+  label: string;
+  onClick: () => void | Promise<void>;
+};
+
+type TournamentOrganizerTask = {
+  detail: string;
+  drawerContent: ReactNode;
+  eyebrow: string;
+  id: string;
+  impact: string;
+  meta: string;
+  primaryAction: TournamentOrganizerTaskAction;
+  secondaryActions?: TournamentOrganizerTaskAction[];
+  title: string;
+  tone: "attention" | "danger" | "neutral" | "ready";
+};
+
+function invokeOrganizerTaskAction(action: TournamentOrganizerTaskAction) {
+  if (action.disabled) return;
+  void Promise.resolve(action.onClick());
+}
+
+function TournamentOrganizerTaskRows({
+  onOpenAll,
+  onOpenTask,
+  tasks,
+  totalCount,
+}: {
+  onOpenAll: () => void;
+  onOpenTask: (task: TournamentOrganizerTask) => void;
+  tasks: TournamentOrganizerTask[];
+  totalCount: number;
+}) {
+  if (!tasks.length) {
+    return (
+      <section className="tournament-organizer-queue ready" aria-label="Fila operacional do torneio">
+        <div className="tournament-organizer-queue-head">
+          <div>
+            <span>Fila operacional</span>
+            <strong>Nenhuma acao critica agora</strong>
+            <small>O torneio nao tem inscricoes, resultados ou agenda pendente nesta etapa.</small>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="tournament-organizer-queue" aria-label="Fila operacional do torneio">
+      <div className="tournament-organizer-queue-head">
+        <div>
+          <span>Fila operacional</span>
+          <strong>{totalCount} {totalCount === 1 ? "tarefa para resolver" : "tarefas para resolver"}</strong>
+          <small>
+            {tasks.length < totalCount
+              ? `Mostrando ${tasks.length} primeiras. Abra a lista completa para ver todas.`
+              : "Rows com acao primaria, contexto e detalhe rapido."}
+          </small>
+        </div>
+        <button className="quiet" type="button" onClick={onOpenAll}>
+          Abrir lista completa
+        </button>
+      </div>
+      <div className="tournament-organizer-task-list">
+        {tasks.map((task) => (
+          <div
+            key={task.id}
+            className={`tournament-organizer-task-row ${task.tone}`}
+            role="button"
+            tabIndex={0}
+            onClick={() => onOpenTask(task)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onOpenTask(task);
+              }
+            }}
+          >
+            <div className="tournament-organizer-task-status">
+              <span>{task.eyebrow}</span>
+            </div>
+            <div className="tournament-organizer-task-main">
+              <strong>{task.title}</strong>
+              <span>{task.meta}</span>
+              <small>{task.detail}</small>
+            </div>
+            <div className="tournament-organizer-task-impact">
+              <span>{task.impact}</span>
+            </div>
+            <div className="tournament-organizer-task-actions">
+              <button
+                className={task.primaryAction.kind === "danger" ? "danger" : "primary"}
+                type="button"
+                disabled={task.primaryAction.disabled}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  invokeOrganizerTaskAction(task.primaryAction);
+                }}
+              >
+                {task.primaryAction.label}
+              </button>
+              <button
+                className="quiet"
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onOpenTask(task);
+                }}
+              >
+                Detalhes
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TournamentOrganizerTaskDrawer({
+  onClose,
+  task,
+}: {
+  onClose: () => void;
+  task: TournamentOrganizerTask | null;
+}) {
+  if (!task) return null;
+  return (
+    <div className="tournament-organizer-drawer-backdrop" onMouseDown={onClose}>
+      <aside
+        className="tournament-organizer-drawer"
+        aria-label="Detalhe da tarefa operacional"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <header>
+          <div>
+            <span>{task.eyebrow}</span>
+            <h2>{task.title}</h2>
+            <p>{task.detail}</p>
+          </div>
+          <button className="compact-action" type="button" onClick={onClose}>
+            Fechar
+          </button>
+        </header>
+        <div className="tournament-organizer-drawer-body">{task.drawerContent}</div>
+        <footer>
+          {task.secondaryActions?.map((action) => (
+            <button
+              key={action.label}
+              className={action.kind === "danger" ? "danger" : action.kind === "primary" ? "primary" : ""}
+              type="button"
+              disabled={action.disabled}
+              onClick={() => invokeOrganizerTaskAction(action)}
+            >
+              {action.label}
+            </button>
+          ))}
+          <button
+            className={task.primaryAction.kind === "danger" ? "danger" : "primary"}
+            type="button"
+            disabled={task.primaryAction.disabled}
+            onClick={() => invokeOrganizerTaskAction(task.primaryAction)}
+          >
+            {task.primaryAction.label}
+          </button>
+        </footer>
+      </aside>
+    </div>
+  );
+}
+
 const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffRole, string> = {
   organizer: "Coordenador",
   scorekeeper: "Placar",
@@ -322,6 +497,24 @@ function uid(prefix: string): string {
 
 function normalizePhone(value: string): string {
   return String(value || "").replace(/[^\d+]/g, "").trim();
+}
+
+function formatTournamentDate(value: string): string {
+  if (!value) return "Data a definir";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Data a definir";
+  return date
+    .toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })
+    .replace(".", "");
+}
+
+function formatTournamentDateTime(value: string): string {
+  if (!value) return "A definir";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "A definir";
+  return date
+    .toLocaleDateString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })
+    .replace(".", "");
 }
 
 function isFixedDoublesConfig(config: ClassData["config"]): boolean {
@@ -1043,6 +1236,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
   const [matchConfirming, setMatchConfirming] = useState(false);
+  const [selectedOrganizerTaskId, setSelectedOrganizerTaskId] = useState("");
   const [calendarSyncing, setCalendarSyncing] = useState(false);
   const [staffMembers, setStaffMembers] = useState<TournamentStaffMember[]>([]);
   const [staffEmail, setStaffEmail] = useState("");
@@ -1214,6 +1408,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const canEditScores = canManageMatches;
   const showFloatingSave = canManageTournament && (tab === "organizacao" || tab === "jogadores");
   const tournamentBackPath = isOwner || isTournamentStaff ? "/eventos/torneios?view=organizing" : "/eventos/torneios?view=participating";
+  const isPublicTournamentReader = !isOwner && !isTournamentStaff;
   const filteredRegistrations = useMemo(() => {
     if (registrationFilter === "all") return registrations;
     return registrations.filter((r) => r.status === registrationFilter);
@@ -1522,6 +1717,92 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     const source = showFinishedMyMatches ? myTournamentMatches : myPendingMatches;
     return (source.length ? source : myTournamentMatches).slice(0, 6);
   }, [myPendingMatches, myTournamentMatches, showFinishedMyMatches]);
+  const myTournamentRegistration = useMemo(
+    () => registrations.find((registration) => registration.userId === user.id) ?? null,
+    [registrations, user.id]
+  );
+  const publicClassCards = useMemo(
+    () =>
+      playerClassesSummary.map((item) => {
+        const key = scopeClassKey(item.categoryId, item.classId);
+        const ref = classes.find((cls) => cls.key === key);
+        return {
+          key,
+          label: `${item.categoryName} / ${item.className}`,
+          categoryName: item.categoryName,
+          className: item.className,
+          players: item.participantes.length,
+          generated: Boolean(ref?.data.gerado),
+          model: ref ? competitionModelLabel(ref.data.config) : "Formato a definir",
+          active: activeClass?.key === key,
+        };
+      }),
+    [activeClass?.key, classes, playerClassesSummary]
+  );
+  const publicTournamentCta = useMemo(() => {
+    if (!tournament) {
+      return {
+        action: "none" as const,
+        disabled: true,
+        detail: "Carregando torneio.",
+        label: "Aguarde",
+      };
+    }
+    if (myPendingMatches.length > 0) {
+      return {
+        action: "games" as const,
+        disabled: false,
+        detail: `${myPendingMatches.length} ${myPendingMatches.length === 1 ? "partida pendente" : "partidas pendentes"}.`,
+        label: "Ver meus jogos",
+      };
+    }
+    if (myTournamentRegistration?.status === "approved") {
+      return {
+        action: "games" as const,
+        disabled: false,
+        detail: myTournamentMatches.length > 0 ? "Acompanhe partidas, agenda e resultados." : "Jogos ainda nao gerados.",
+        label: myTournamentMatches.length > 0 ? "Ver meus jogos" : "Acompanhar torneio",
+      };
+    }
+    if (myTournamentRegistration?.status === "pending") {
+      return {
+        action: "none" as const,
+        disabled: true,
+        detail: "A organizacao ainda precisa aprovar sua inscricao.",
+        label: "Inscricao em analise",
+      };
+    }
+    if (myTournamentRegistration?.status === "waitlist") {
+      return {
+        action: "none" as const,
+        disabled: true,
+        detail: "Voce esta na lista de espera desta categoria.",
+        label: "Na lista de espera",
+      };
+    }
+    if (myTournamentRegistration?.status === "rejected") {
+      return {
+        action: "none" as const,
+        disabled: true,
+        detail: "Sua inscricao nao foi aprovada pela organizacao.",
+        label: "Inscricao recusada",
+      };
+    }
+    if (tournament.status === "registration_open") {
+      return {
+        action: "register" as const,
+        disabled: false,
+        detail: tournament.registrationFeeCents > 0 ? formatMoneyFromCents(tournament.registrationFeeCents) : "Inscricao sem taxa cadastrada.",
+        label: "Inscrever-se",
+      };
+    }
+    return {
+      action: "games" as const,
+      disabled: false,
+      detail: tournament.status === "finished" ? "Consulte resultados e historico." : "Inscricoes nao estao abertas agora.",
+      label: tournament.status === "finished" ? "Ver resultados" : "Ver jogos",
+    };
+  }, [myPendingMatches.length, myTournamentMatches.length, myTournamentRegistration, tournament]);
   const unavailableConfirmationGroups = useMemo(() => {
     return Array.from(confirmationByMatch.values())
       .map((rows) => rows.filter((confirmation) => confirmation.status === "unavailable"))
@@ -1545,90 +1826,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const classCompletionRows = useMemo(() => {
     return buildTournamentClassCompletionRows(classes, pendingResultReviewGroups, unavailableConfirmationGroups);
   }, [classes, pendingResultReviewGroups, unavailableConfirmationGroups]);
-  const tournamentPendingCenter = useMemo(() => {
-    const waitlistRegistrations = registrations.filter((r) => r.status === "waitlist").length;
-    const incompleteClasses = Math.max(0, tournamentOverview.totalClasses - tournamentOverview.generatedClasses);
-    const items = [
-      {
-        key: "registrations",
-        label: "Inscricoes",
-        detail: "Solicitacoes aguardando decisao",
-        count: tournamentOverview.pendingRegistrations,
-        tab: "jogadores" as TabKey,
-        filter: "pending" as const,
-      },
-      {
-        key: "waitlist",
-        label: "Lista de espera",
-        detail: "Atletas aguardando vaga",
-        count: waitlistRegistrations,
-        tab: "jogadores" as TabKey,
-        filter: "waitlist" as const,
-      },
-      {
-        key: "results",
-        label: "Resultados",
-        detail: "Envios de jogadores para revisar",
-        count: pendingResultReviewCount,
-        tab: "jogos" as TabKey,
-        filter: null,
-      },
-      {
-        key: "availability",
-        label: "Disponibilidade",
-        detail: "Avisos de atletas em jogos pendentes",
-        count: unavailableConfirmationCount,
-        tab: "jogos" as TabKey,
-        filter: null,
-      },
-      {
-        key: "classes",
-        label: "Classes",
-        detail: "Classes ainda nao geradas",
-        count: incompleteClasses,
-        tab: "organizacao" as TabKey,
-        filter: null,
-      },
-      {
-        key: "matches",
-        label: "Jogos",
-        detail: "Partidas sem resultado oficial",
-        count: tournamentOverview.pendingMatches,
-        tab: "jogos" as TabKey,
-        filter: null,
-      },
-    ];
-    const visibleByPhase: Record<TournamentAdminPhaseKey, string[]> = {
-      setup: ["classes"],
-      registration: ["registrations", "waitlist"],
-      draw: ["registrations", "waitlist", "classes"],
-      live: ["results", "availability", "matches"],
-      finished: ["results"],
-    };
-    const visibleKeys = new Set(visibleByPhase[tournamentAdminPhase.key]);
-    const visibleItems = items.filter((item) => {
-      if (["registrations", "waitlist"].includes(item.key) && !canManagePlayers) return false;
-      if (["results", "availability", "matches"].includes(item.key) && !canManageMatches) return false;
-      if (item.key === "classes" && !canManageTournament) return false;
-      return visibleKeys.has(item.key) || item.count > 0;
-    });
-    return {
-      total: visibleItems.reduce((acc, item) => acc + item.count, 0),
-      items: visibleItems,
-    };
-  }, [
-    pendingResultReviewCount,
-    canManageMatches,
-    canManagePlayers,
-    canManageTournament,
-    registrations,
-    tournamentAdminPhase.key,
-    tournamentOverview.generatedClasses,
-    tournamentOverview.pendingMatches,
-    tournamentOverview.pendingRegistrations,
-    tournamentOverview.totalClasses,
-    unavailableConfirmationCount,
-  ]);
   const tournamentCompletionBlockers = useMemo(() => {
     const blockers: string[] = [];
     if (tournamentOverview.totalClasses === 0) blockers.push("Cadastre ao menos uma classe.");
@@ -1669,6 +1866,21 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
       { replace: false }
     );
+  };
+
+  const scrollToPublicSection = (sectionId: string) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handlePublicTournamentCta = () => {
+    if (!tournament || publicTournamentCta.disabled) return;
+    if (publicTournamentCta.action === "register") {
+      navigate(`/inscricao/${encodeURIComponent(tournament.id)}`);
+      return;
+    }
+    if (publicTournamentCta.action === "games") {
+      goToTab("jogos");
+    }
   };
 
   useEffect(() => {
@@ -4130,6 +4342,408 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     return <>{setRows}</>;
   };
 
+  const organizerTasks: TournamentOrganizerTask[] = (() => {
+    if (!tournament || isPublicTournamentReader) return [];
+
+    const openSetupSection = (sectionId: "setup-agenda" | "setup-classes") => {
+      goToTab("organizacao");
+      window.setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+    };
+    const showRegistrationList = (filter: typeof registrationFilter) => {
+      setRegistrationFilter(filter);
+      goToTab("jogadores");
+    };
+    const showMatchList = (classKey?: string) => {
+      if (classKey) setActiveClassKey(classKey);
+      goToTab("jogos");
+    };
+    const formatDate = (value: string) => {
+      if (!value) return "Sem data";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "Sem data";
+      return date.toLocaleString("pt-BR", { day: "2-digit", hour: "2-digit", minute: "2-digit", month: "2-digit" });
+    };
+    const tasks: TournamentOrganizerTask[] = [];
+
+    if (canManagePlayers) {
+      registrations
+        .filter((registration) => registration.status === "pending")
+        .sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""))
+        .forEach((registration) => {
+          const payment = paymentsByTarget[`tournament_registration:${registration.id}`];
+          tasks.push({
+            detail: `${registration.categoryName} / ${registration.className}`,
+            drawerContent: (
+              <div className="tournament-organizer-task-detail">
+                <dl>
+                  <div>
+                    <dt>Atleta</dt>
+                    <dd>{registration.playerName || "Sem nome"}</dd>
+                  </div>
+                  <div>
+                    <dt>Contato</dt>
+                    <dd>{registration.phone || "Sem telefone"}</dd>
+                  </div>
+                  <div>
+                    <dt>Classe</dt>
+                    <dd>{registration.categoryName} / {registration.className}</dd>
+                  </div>
+                  <div>
+                    <dt>Entrada</dt>
+                    <dd>{formatDate(registration.createdAt)}</dd>
+                  </div>
+                  <div>
+                    <dt>Pagamento</dt>
+                    <dd>{payment?.status === "paid" ? "Registrado" : tournament.registrationFeeCents > 0 ? "Pendente" : "Sem taxa"}</dd>
+                  </div>
+                </dl>
+              </div>
+            ),
+            eyebrow: "Inscricao",
+            id: `registration:${registration.id}`,
+            impact: "Bloqueia confirmacao da chave",
+            meta: `${registration.playerName || "Sem nome"} - ${formatDate(registration.createdAt)}`,
+            primaryAction: {
+              disabled: saving || registrationBusy,
+              kind: "primary",
+              label: "Aprovar",
+              onClick: () => updateRegistration(registration.id, "approved"),
+            },
+            secondaryActions: [
+              {
+                disabled: saving || registrationBusy,
+                label: "Mover para espera",
+                onClick: () => updateRegistration(registration.id, "waitlist"),
+              },
+              {
+                disabled: saving || registrationBusy,
+                kind: "danger",
+                label: "Rejeitar",
+                onClick: () => updateRegistration(registration.id, "rejected"),
+              },
+              {
+                label: "Ver jogadores",
+                onClick: () => showRegistrationList("pending"),
+              },
+            ],
+            title: "Aprovar inscricao pendente",
+            tone: "attention",
+          });
+        });
+
+      registrations
+        .filter((registration) => registration.status === "waitlist")
+        .sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""))
+        .forEach((registration) => {
+          tasks.push({
+            detail: `${registration.categoryName} / ${registration.className}`,
+            drawerContent: (
+              <div className="tournament-organizer-task-detail">
+                <p>Atleta em lista de espera. Aprove se houver vaga ou mantenha como reserva operacional da classe.</p>
+                <dl>
+                  <div>
+                    <dt>Atleta</dt>
+                    <dd>{registration.playerName || "Sem nome"}</dd>
+                  </div>
+                  <div>
+                    <dt>Contato</dt>
+                    <dd>{registration.phone || "Sem telefone"}</dd>
+                  </div>
+                  <div>
+                    <dt>Classe</dt>
+                    <dd>{registration.categoryName} / {registration.className}</dd>
+                  </div>
+                </dl>
+              </div>
+            ),
+            eyebrow: "Espera",
+            id: `waitlist:${registration.id}`,
+            impact: "Pode ocupar vaga aberta",
+            meta: `${registration.playerName || "Sem nome"} - ${formatDate(registration.createdAt)}`,
+            primaryAction: {
+              disabled: saving || registrationBusy,
+              kind: "primary",
+              label: "Aprovar da espera",
+              onClick: () => updateRegistration(registration.id, "approved"),
+            },
+            secondaryActions: [
+              {
+                disabled: saving || registrationBusy,
+                kind: "danger",
+                label: "Rejeitar",
+                onClick: () => updateRegistration(registration.id, "rejected"),
+              },
+              {
+                label: "Ver espera",
+                onClick: () => showRegistrationList("waitlist"),
+              },
+            ],
+            title: "Lista de espera da classe",
+            tone: "neutral",
+          });
+        });
+    }
+
+    if (isOwner && tournament.registrationFeeCents > 0) {
+      registrations
+        .filter((registration) => registration.status === "approved")
+        .filter((registration) => paymentsByTarget[`tournament_registration:${registration.id}`]?.status !== "paid")
+        .sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""))
+        .forEach((registration) => {
+          tasks.push({
+            detail: `${formatMoneyFromCents(tournament.registrationFeeCents)} - ${registration.categoryName} / ${registration.className}`,
+            drawerContent: (
+              <div className="tournament-organizer-task-detail">
+                <p>Inscricao aprovada sem pagamento registrado no sistema.</p>
+                <dl>
+                  <div>
+                    <dt>Atleta</dt>
+                    <dd>{registration.playerName || "Sem nome"}</dd>
+                  </div>
+                  <div>
+                    <dt>Valor</dt>
+                    <dd>{formatMoneyFromCents(tournament.registrationFeeCents)}</dd>
+                  </div>
+                  <div>
+                    <dt>Classe</dt>
+                    <dd>{registration.categoryName} / {registration.className}</dd>
+                  </div>
+                </dl>
+              </div>
+            ),
+            eyebrow: "Pagamento",
+            id: `payment:${registration.id}`,
+            impact: "Financeiro pendente",
+            meta: registration.playerName || "Sem nome",
+            primaryAction: {
+              disabled: saving || registrationBusy,
+              kind: "primary",
+              label: "Marcar pago",
+              onClick: () => markTournamentRegistrationPaid(registration),
+            },
+            secondaryActions: [
+              {
+                label: "Ver aprovados",
+                onClick: () => showRegistrationList("approved"),
+              },
+            ],
+            title: "Recebimento de inscricao",
+            tone: "attention",
+          });
+        });
+    }
+
+    if (canManageTournament && tournamentOverview.totalClasses > 0 && tournamentOverview.generatedClasses < tournamentOverview.totalClasses) {
+      const missingClasses = classes.filter((cls) => !cls.data.gerado);
+      tasks.push({
+        detail: `${tournamentOverview.generatedClasses}/${tournamentOverview.totalClasses} classes geradas`,
+        drawerContent: (
+          <div className="tournament-organizer-task-detail">
+            <p>Gere os jogos depois de conferir categorias, jogadores aprovados e agenda do torneio.</p>
+            <dl>
+              <div>
+                <dt>Classes pendentes</dt>
+                <dd>{missingClasses.length}</dd>
+              </div>
+              <div>
+                <dt>Agenda</dt>
+                <dd>{organizationProgress.agendaReady ? "Configurada" : "Incompleta"}</dd>
+              </div>
+              <div>
+                <dt>Jogadores</dt>
+                <dd>{organizationProgress.totalPlayers}</dd>
+              </div>
+            </dl>
+            {missingClasses.length > 0 ? (
+              <ul>
+                {missingClasses.slice(0, 6).map((cls) => (
+                  <li key={cls.key}>{cls.categoryName} / {cls.className}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ),
+        eyebrow: "Chaves",
+        id: "draw:generation",
+        impact: organizationProgress.canGenerate ? "Pronto para gerar" : "Setup incompleto",
+        meta: organizationProgress.canGenerate ? "Categorias e agenda prontas" : "Revise dados antes de gerar",
+        primaryAction: {
+          disabled: saving,
+          kind: "primary",
+          label: organizationProgress.canGenerate ? "Gerar jogos" : "Completar setup",
+          onClick: () => {
+            if (organizationProgress.canGenerate) {
+              void generateAllClasses();
+              return;
+            }
+            openSetupSection(organizationProgress.agendaReady ? "setup-classes" : "setup-agenda");
+          },
+        },
+        secondaryActions: [
+          {
+            label: "Ver categorias",
+            onClick: () => openSetupSection("setup-classes"),
+          },
+          {
+            label: "Ver agenda",
+            onClick: () => openSetupSection("setup-agenda"),
+          },
+        ],
+        title: "Gerar partidas do torneio",
+        tone: organizationProgress.canGenerate ? "attention" : "danger",
+      });
+    }
+
+    if (canManageTournament && tournamentOverview.totalMatches > 0 && (agenda.unassigned > 0 || agenda.assignments.length < agenda.total)) {
+      tasks.push({
+        detail: `${agenda.assignments.length}/${agenda.total || tournamentOverview.totalMatches} partidas alocadas`,
+        drawerContent: (
+          <div className="tournament-organizer-task-detail">
+            <p>Ha partidas sem horario/quadra. Ajuste dias, duracao ou quadras e gere novamente a agenda.</p>
+            <dl>
+              <div>
+                <dt>Sem encaixe</dt>
+                <dd>{agenda.unassigned}</dd>
+              </div>
+              <div>
+                <dt>Quadras configuradas</dt>
+                <dd>{agendaConfig.quadras.length}</dd>
+              </div>
+              <div>
+                <dt>Dias configurados</dt>
+                <dd>{agendaConfig.dias.length}</dd>
+              </div>
+            </dl>
+          </div>
+        ),
+        eyebrow: "Agenda",
+        id: "agenda:unassigned",
+        impact: "Jogador ainda nao ve onde jogar",
+        meta: "Partidas sem horario ou quadra",
+        primaryAction: {
+          disabled: saving,
+          kind: "primary",
+          label: "Ajustar agenda",
+          onClick: () => openSetupSection("setup-agenda"),
+        },
+        secondaryActions: [
+          {
+            label: "Ver jogos",
+            onClick: () => showMatchList(),
+          },
+        ],
+        title: "Completar agenda de partidas",
+        tone: "attention",
+      });
+    }
+
+    if (canManageMatches) {
+      pendingResultReviewGroups.forEach((rows) => {
+        const first = rows[0];
+        if (!first) return;
+        const hasConflict = rows.some((submission) => submission.status === "conflict");
+        tasks.push({
+          detail: `${first.classLabel} - ${first.phaseLabel}`,
+          drawerContent: (
+            <div className="tournament-organizer-task-detail">
+              <p>Escolha qual placar enviado deve virar resultado oficial da partida.</p>
+              <dl>
+                <div>
+                  <dt>Partida</dt>
+                  <dd>{first.matchTitle}</dd>
+                </div>
+                <div>
+                  <dt>Status</dt>
+                  <dd>{hasConflict ? "Divergente" : "Pendente"}</dd>
+                </div>
+              </dl>
+              <div className="result-review-actions">
+                {rows.map((submission) => (
+                  <button
+                    key={submission.id}
+                    type="button"
+                    disabled={saving}
+                    onClick={() => void applySubmittedResultAsOfficial(submission)}
+                  >
+                    Aplicar {submission.side.toUpperCase()} {submission.scoreText}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ),
+          eyebrow: "Resultado",
+          id: `result:${first.classKey}:${first.phaseKey}:${first.matchIndex}`,
+          impact: hasConflict ? "Conflito de placar" : "Aguardando oficializacao",
+          meta: first.matchTitle,
+          primaryAction: {
+            disabled: saving,
+            kind: "primary",
+            label: "Revisar",
+            onClick: () => {
+              setSelectedOrganizerTaskId(`result:${first.classKey}:${first.phaseKey}:${first.matchIndex}`);
+              showMatchList(first.classKey);
+            },
+          },
+          secondaryActions: rows.map((submission) => ({
+            disabled: saving,
+            kind: "primary" as const,
+            label: `Aplicar ${submission.side.toUpperCase()} ${submission.scoreText}`,
+            onClick: () => applySubmittedResultAsOfficial(submission),
+          })),
+          title: "Resultado enviado por jogador",
+          tone: hasConflict ? "danger" : "attention",
+        });
+      });
+
+      unavailableConfirmationGroups.forEach((rows) => {
+        const first = rows[0];
+        if (!first) return;
+        tasks.push({
+          detail: `${first.classLabel} - ${first.phaseLabel}`,
+          drawerContent: (
+            <div className="tournament-organizer-task-detail">
+              <p>Um ou mais jogadores avisaram indisponibilidade nesta partida. Reorganize a comunicacao antes do horario.</p>
+              <dl>
+                <div>
+                  <dt>Partida</dt>
+                  <dd>{first.matchTitle}</dd>
+                </div>
+                <div>
+                  <dt>Lados avisados</dt>
+                  <dd>{rows.map((confirmation) => confirmation.side.toUpperCase()).join(", ")}</dd>
+                </div>
+              </dl>
+            </div>
+          ),
+          eyebrow: "Disponibilidade",
+          id: `availability:${first.classKey}:${first.phaseKey}:${first.matchIndex}`,
+          impact: "Pode exigir remarcacao",
+          meta: first.matchTitle,
+          primaryAction: {
+            disabled: saving,
+            kind: "primary",
+            label: "WhatsApp",
+            onClick: () => shareUnavailableAlertWhatsApp(rows),
+          },
+          secondaryActions: [
+            {
+              label: "Ver partida",
+              onClick: () => showMatchList(first.classKey),
+            },
+          ],
+          title: "Aviso de indisponibilidade",
+          tone: "attention",
+        });
+      });
+    }
+
+    return tasks;
+  })();
+  const visibleOrganizerTasks = organizerTasks.slice(0, 8);
+  const selectedOrganizerTask = organizerTasks.find((task) => task.id === selectedOrganizerTaskId) ?? null;
+
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       <CompetitionHeader
@@ -4150,6 +4764,124 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
       {!loading && tournament ? (
         <>
+          {isPublicTournamentReader ? (
+            <section id="tournament-public-event" className="tournament-public-event">
+              <article className="tournament-public-hero">
+                <div className="tournament-public-copy">
+                  <div className="tournament-public-title-row">
+                    <span>Torneio</span>
+                    <StatusBadge status={tournament.status} />
+                  </div>
+                  <h2>{tournament.name}</h2>
+                  <div className="tournament-public-meta">
+                    <span>{[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}</span>
+                    <span>{formatTournamentDate(tournament.startsAt)}</span>
+                    {tournament.registrationCloseAt ? <span>Inscricoes ate {formatTournamentDateTime(tournament.registrationCloseAt)}</span> : null}
+                  </div>
+                  <div className="tournament-public-facts">
+                    <span>
+                      <strong>{publicClassCards.length}</strong>
+                      categorias
+                    </span>
+                    <span>
+                      <strong>{playersOverview.approved}</strong>
+                      inscritos
+                    </span>
+                    <span>
+                      <strong>{tournamentOverview.totalMatches}</strong>
+                      jogos
+                    </span>
+                  </div>
+                  <div className="tournament-public-actions">
+                    <button className="primary tournament-public-main-cta" type="button" onClick={handlePublicTournamentCta} disabled={publicTournamentCta.disabled}>
+                      <span>{publicTournamentCta.label}</span>
+                      <small>{publicTournamentCta.detail}</small>
+                    </button>
+                    <button
+                      className="quiet"
+                      type="button"
+                      onClick={shareTournamentInviteWhatsApp}
+                      disabled={saving}
+                    >
+                      Compartilhar
+                    </button>
+                  </div>
+                </div>
+                <div className="tournament-public-media" aria-label="Imagem do torneio">
+                  {tournament.posterUrl ? (
+                    <img src={tournament.posterUrl} alt={`Poster de ${tournament.name}`} />
+                  ) : (
+                    <div>
+                      <span>{tournament.name.slice(0, 2).toUpperCase()}</span>
+                      <small>Poster nao cadastrado</small>
+                    </div>
+                  )}
+                </div>
+              </article>
+
+              <nav className="tournament-public-nav" aria-label="Navegacao publica do torneio">
+                <button type="button" onClick={() => scrollToPublicSection("tournament-public-event")}>
+                  Evento
+                </button>
+                <button type="button" onClick={() => scrollToPublicSection("tournament-public-categories")}>
+                  Categorias
+                </button>
+                <button type="button" className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
+                  Jogos
+                </button>
+                {canSeeClassificationTab ? (
+                  <button type="button" className={tab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
+                    Classificacao
+                  </button>
+                ) : null}
+                {canUseChatTab ? (
+                  <button type="button" className={tab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
+                    Chat
+                  </button>
+                ) : null}
+              </nav>
+
+              <section id="tournament-public-categories" className="tournament-public-categories">
+                <div className="section-title">
+                  <h2>Categorias</h2>
+                  <span>{publicClassCards.length} {publicClassCards.length === 1 ? "categoria" : "categorias"}</span>
+                </div>
+                {publicClassCards.length === 0 ? (
+                  <p className="subtle">Nenhuma categoria publicada ainda.</p>
+                ) : (
+                  <div className="tournament-public-category-rail">
+                    {publicClassCards.map((item) => (
+                      <button
+                        key={`public-class:${item.key}`}
+                        type="button"
+                        className={item.active ? "active" : ""}
+                        onClick={() => {
+                          setActiveClassKey(item.key);
+                          goToTab("jogos");
+                        }}
+                      >
+                        <span>{item.categoryName}</span>
+                        <strong>{item.className}</strong>
+                        <small>{item.model}</small>
+                        <em>
+                          {item.players} {item.players === 1 ? "inscrito" : "inscritos"}
+                        </em>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              <div className="tournament-public-sticky-cta" aria-label="Acao principal do torneio">
+                <button className="primary" type="button" onClick={handlePublicTournamentCta} disabled={publicTournamentCta.disabled}>
+                  {publicTournamentCta.label}
+                </button>
+              </div>
+            </section>
+          ) : null}
+
+          {!isPublicTournamentReader ? (
+            <>
           {classes.length > 0 ? (
             <CompetitionScopeSelector
               eyebrow="Resumo por classe"
@@ -4249,26 +4981,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 ))}
               </div>
             ) : null}
-            {(canManageTournament || canManagePlayers || canManageMatches) && tournamentPendingCenter.items.length > 0 ? (
-              <CompetitionOperationalQueue
-                title={
-                  tournamentPendingCenter.total > 0
-                    ? `${tournamentAdminPhase.label}: ${tournamentPendingCenter.total} ${tournamentPendingCenter.total === 1 ? "ponto" : "pontos"} para acompanhar`
-                    : `${tournamentAdminPhase.label}: sem pendencias nesta etapa`
-                }
+            {(canManageTournament || canManagePlayers || canManageMatches) ? (
+              <TournamentOrganizerTaskRows
+                tasks={visibleOrganizerTasks}
+                totalCount={organizerTasks.length}
                 onOpenAll={() => goToTab(tournamentAdminPhase.primaryTab)}
-                items={tournamentPendingCenter.items.map((item) => ({
-                  id: item.key,
-                  count: item.count,
-                  label: item.label,
-                  detail: item.detail,
-                  actionLabel: item.count > 0 ? "Resolver" : "Ver",
-                  tone: item.count > 0 ? "attention" : "neutral",
-                  onClick: () => {
-                    if (item.filter) setRegistrationFilter(item.filter);
-                    goToTab(item.tab);
-                  },
-                }))}
+                onOpenTask={(task) => setSelectedOrganizerTaskId(task.id)}
               />
             ) : null}
             {canManageTournament && tournamentAdminPhase.showCompletion ? (
@@ -4311,34 +5029,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     ))}
                   </div>
                 ) : null}
-              </div>
-            ) : null}
-            {canManageMatches && unavailableConfirmationCount > 0 ? (
-              <div className="organizer-alert-card">
-                <span>Indisponibilidade avisada</span>
-                <strong>{unavailableConfirmationCount} {unavailableConfirmationCount === 1 ? "aviso" : "avisos"} em partidas pendentes</strong>
-                {unavailableConfirmationGroups.slice(0, 3).map((rows) => {
-                  const first = rows[0];
-                  if (!first) return null;
-                  return (
-                    <div key={`${first.classKey}:${first.phaseKey}:${first.matchIndex}`} className="organizer-alert-item">
-                      <small>
-                        {first.matchTitle} - {first.classLabel} / {first.phaseLabel}:{" "}
-                        {rows.map((confirmation) => confirmation.side.toUpperCase()).join(", ")}
-                      </small>
-                      <button
-                        className="brand-icon-btn"
-                        onClick={() => shareUnavailableAlertWhatsApp(rows)}
-                        title="Avisar pelo WhatsApp"
-                        aria-label="Avisar pelo WhatsApp"
-                      >
-                        <WhatsAppAppIcon />
-                        <span>WhatsApp</span>
-                      </button>
-                    </div>
-                  );
-                })}
-                <button onClick={() => goToTab("jogos")}>Ver partidas</button>
               </div>
             ) : null}
             <CompetitionPublishingPanel
@@ -4391,7 +5081,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               }
             />
           </article>
+            </>
+          ) : null}
 
+          {!isPublicTournamentReader ? (
           <CompetitionTabs
             activeValue={tab}
             ariaLabel="Visoes do torneio"
@@ -4426,6 +5119,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               },
             ]}
           />
+          ) : null}
 
           {tab === "jogos" ? (
             <section className="card tournament-games-card">
@@ -6082,6 +6776,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           ) : null}
         </>
       ) : null}
+      <TournamentOrganizerTaskDrawer
+        task={selectedOrganizerTask}
+        onClose={() => setSelectedOrganizerTaskId("")}
+      />
       {showFloatingSave ? (
         <button
           className="fab-save"

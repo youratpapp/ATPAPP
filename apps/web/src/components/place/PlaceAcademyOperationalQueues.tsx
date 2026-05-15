@@ -1,4 +1,6 @@
+import { useState } from "react";
 import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest } from "../../lib/types";
+import { countLabel } from "../../lib/place-management";
 import { OperationalQueue } from "./PlaceWorkspaceUi";
 
 type Props = {
@@ -7,6 +9,8 @@ type Props = {
   busy: boolean;
   canManageAcademy: boolean;
   onMarkLessonRequestPaid: (request: AcademyLessonRequest) => void;
+  onOpenRequests?: () => void;
+  onOpenToday?: () => void;
   onOpenTodayClass: (academyClassId: string) => void;
   onUpdateEnrollment: (enrollmentId: string, status: AcademyEnrollment["status"]) => void;
   onUpdateLessonRequest: (request: AcademyLessonRequest, status: AcademyLessonRequest["status"]) => void;
@@ -20,19 +24,32 @@ export function PlaceAcademyOperationalQueues({
   busy,
   canManageAcademy,
   onMarkLessonRequestPaid,
+  onOpenRequests,
+  onOpenToday,
   onOpenTodayClass,
   onUpdateEnrollment,
   onUpdateLessonRequest,
   pendingEnrollments,
   todayClasses,
 }: Props) {
+  const [showAllToday, setShowAllToday] = useState(false);
+  const [showAllPending, setShowAllPending] = useState(false);
+  const visibleTodayClasses = showAllToday ? todayClasses : todayClasses.slice(0, 6);
+  const visiblePendingEnrollments = showAllPending ? pendingEnrollments : pendingEnrollments.slice(0, 4);
+  const remainingPendingSlots = Math.max(0, 4 - visiblePendingEnrollments.length);
+  const visibleLessonRequests = showAllPending ? actionableLessonRequests : actionableLessonRequests.slice(0, remainingPendingSlots);
   const hasPendingWork = pendingEnrollments.length > 0 || actionableLessonRequests.length > 0;
+  const hiddenTodayCount = Math.max(0, todayClasses.length - visibleTodayClasses.length);
+  const hiddenPendingCount = Math.max(
+    0,
+    pendingEnrollments.length + actionableLessonRequests.length - visiblePendingEnrollments.length - visibleLessonRequests.length
+  );
 
   return (
     <>
       <OperationalQueue title="Aulas do dia" compact emptyLabel="Nenhuma turma programada para hoje.">
         {todayClasses.length
-          ? todayClasses.slice(0, 6).map((academyClass) => (
+          ? visibleTodayClasses.map((academyClass) => (
               <span key={`today-class:${academyClass.id}`}>
                 <strong>{academyClass.startsAt.slice(0, 5)}</strong>
                 {academyClass.title} - {academyClass.coachName || "Professor"} - {academyClass.level || "nivel livre"}
@@ -42,10 +59,19 @@ export function PlaceAcademyOperationalQueues({
               </span>
             ))
           : null}
+        {hiddenTodayCount > 0 ? (
+          <button type="button" className="secondary queue-more-action" onClick={() => setShowAllToday(true)}>
+            Ver {countLabel(hiddenTodayCount, "aula restante", "aulas restantes")}
+          </button>
+        ) : todayClasses.length > 6 && onOpenToday ? (
+          <button type="button" className="secondary queue-more-action" onClick={onOpenToday}>
+            Ver agenda de hoje
+          </button>
+        ) : null}
       </OperationalQueue>
       {canManageAcademy && hasPendingWork ? (
         <OperationalQueue title="Pendencias da academia" compact>
-          {pendingEnrollments.slice(0, 4).map((enrollment) => {
+          {visiblePendingEnrollments.map((enrollment) => {
             const academyClass = academyClasses.find((item) => item.id === enrollment.classId);
             return (
               <span key={`pending-enrollment:${enrollment.id}`}>
@@ -60,7 +86,7 @@ export function PlaceAcademyOperationalQueues({
               </span>
             );
           })}
-          {actionableLessonRequests.slice(0, 4).map((request) => (
+          {visibleLessonRequests.map((request) => (
             <span key={`pending-lesson:${request.id}`}>
               <strong>{request.playerName}</strong>
               {request.requestType === "makeup" ? "Reposicao" : "Aula avulsa"} - {request.requestedOn} - {request.status}
@@ -80,6 +106,15 @@ export function PlaceAcademyOperationalQueues({
               ) : null}
             </span>
           ))}
+          {hiddenPendingCount > 0 ? (
+            <button type="button" className="secondary queue-more-action" onClick={() => setShowAllPending(true)}>
+              Ver {countLabel(hiddenPendingCount, "pendencia restante", "pendencias restantes")}
+            </button>
+          ) : onOpenRequests ? (
+            <button type="button" className="secondary queue-more-action" onClick={onOpenRequests}>
+              Ver fila completa
+            </button>
+          ) : null}
         </OperationalQueue>
       ) : null}
     </>

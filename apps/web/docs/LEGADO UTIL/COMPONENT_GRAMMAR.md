@@ -1,0 +1,821 @@
+# Component Grammar
+
+Fonte principal: `PREMIUM_UX_VISUAL_LANGUAGE.md` e `VISUAL_REFERENCE_SYSTEM.md`.
+
+Data: 2026-05-15
+
+## Objetivo
+
+Definir como componentes devem parecer e se comportar no app. Este documento e pratico: ele orienta composicao, densidade, CTA, desktop/mobile e anti-patterns.
+
+## Regras globais
+
+1. Todo componente deve ter uma funcao operacional clara.
+2. Estado vazio nao deve ocupar o mesmo peso de pendencia real.
+3. Acao primaria aparece uma vez por contexto.
+4. Detalhes vao para drawer, bottom sheet ou subvisao.
+5. Mobile usa rows e sheets; desktop usa rows, paines e tabelas.
+6. Card e excecao em operacao diaria; row e padrao.
+7. `primary` e reservado para a proxima acao; `secondary` e alternativa com borda; `quiet` e suporte sem competir.
+
+## Modos De Interface
+
+A reestruturacao por papel define tres modos principais. Componentes devem respeitar o modo antes de decidir densidade, texto e hierarquia.
+
+### Player App
+
+Uso:
+
+- jogador comum;
+- aluno/socio vendo informacoes proprias;
+- experiencia publica de local/evento.
+
+Padrao:
+
+- pouca informacao por dobra;
+- uma pergunta principal;
+- tiles de intencao;
+- cards apenas para entidade reconhecivel, como evento, local, compromisso ou slot;
+- bottom sheets para filtros;
+- CTA sticky em reserva/inscricao/confirmacao.
+
+Anti-pattern:
+
+- KPIs globais;
+- cockpit;
+- fila profissional;
+- texto longo explicando o sistema;
+- cards administrativos.
+
+### Competition OS
+
+Uso:
+
+- jogador acompanhando competicao;
+- organizador operando competicao;
+- setup de torneio/liga.
+
+Padrao:
+
+- evento publico leve;
+- setup em wizard;
+- operacao em rows;
+- tabs antes de resumo;
+- fila operacional apenas para organizador.
+
+### Management OS
+
+Uso:
+
+- academia/clube;
+- recepcao;
+- professor;
+- financeiro;
+- gestor.
+
+Padrao:
+
+- subnav/fila antes de metricas;
+- rows/tabelas para operacao;
+- drawer para detalhe;
+- configuracao em subvisao;
+- metricas como suporte.
+
+Anti-pattern:
+
+- hero grande em gestao;
+- KPIs antes de pendencia;
+- modulos sem plano/permissao;
+- professor vendo operacao empresarial inteira.
+
+## Densidade Por Modo
+
+Os modos compartilham cor, tipografia e linguagem ATP. O que muda e a quantidade de informacao simultanea, o tipo de container e a proximidade da acao principal.
+
+| Decisao | Player | Competition | Management |
+| --- | --- | --- | --- |
+| Primeira dobra | uma acao ou uma escolha | contexto do evento + CTA ou fila | fila/subnav antes de metrica |
+| Container padrao | tile/card leve | card publico ou row operacional | row/tabela/drawer |
+| Metricas | raras e pessoais | status do evento/rodada | suporte, nunca protagonista |
+| CTA | claro e grande | depende de papel | curto, contextual e repetivel |
+| Filtros | bottom sheet | tabs/sheet conforme papel | visiveis se rotina |
+| Detalhe | sheet | pagina/sheet/drawer | drawer |
+
+### Player
+
+Use quando o usuario quer jogar, reservar, se inscrever, acompanhar algo dele ou descobrir local/evento.
+
+Padrao:
+
+- blocos curtos;
+- poucos metadados;
+- uma decisao por tela;
+- CTA sticky em fluxos de reserva/inscricao;
+- imagens reais quando o objeto publico depende de reconhecimento.
+
+Nao usar:
+
+- KPI de gestao;
+- resumo financeiro amplo;
+- multiplos cards de suporte;
+- label tecnico de superficie.
+
+### Competition
+
+Use como ponte entre experiencia publica e operacao do organizador.
+
+Padrao:
+
+- evento publico: poster, data/local, status, categorias e CTA;
+- organizador: fila de inscricoes/jogos/resultados;
+- setup: wizard progressivo;
+- operacao: rows e drawers.
+
+Nao usar:
+
+- wizard para registrar resultado ou confirmar presenca;
+- resumo interno antes das tabs publicas;
+- card de organizador para jogador comum.
+
+### Management
+
+Use para rotina de secretaria, professor, recepcao, financeiro e gestor.
+
+Padrao:
+
+- rows densas;
+- dados secundarios recolhidos;
+- acao primaria por linha;
+- filtros frequentes visiveis;
+- drawer curto para edicao;
+- metricas apenas como contexto.
+
+Nao usar:
+
+- landing page interna;
+- cards grandes para cada item;
+- formularios inline repetidos;
+- mosaico de indicadores sem tarefa.
+
+## Matriz Card / Row / Sheet / Wizard
+
+| Situacao | Componente correto | Observacao |
+| --- | --- | --- |
+| Jogador escolhe intencao | tile/card compacto | maximo 3-5 opcoes principais |
+| Jogador confirma reserva/inscricao | page + CTA sticky | feedback inline, sem banner global persistente |
+| Lista operacional com muitos itens | `EntityActionRow` | acao primaria explicita |
+| Pendencia do dia | `OperationalQueue` | row com prioridade e destino real |
+| Edicao curta recorrente | drawer/sheet | manter contexto |
+| Setup raro e validado em etapas | wizard | torneio, liga, configuracao complexa |
+| Filtro mobile | bottom sheet | resumo do filtro no botao |
+| Filtro desktop recorrente | inline | nao esconder rotina em sheet |
+
+## OperationalQueue
+
+Uso:
+
+- pendencias do dia;
+- confirmacoes;
+- resultados pendentes;
+- cobrancas;
+- leads para contato;
+- estoque baixo.
+
+Anatomia:
+
+```text
+[status/numero] [titulo da tarefa]
+                [contexto curto]
+                                  [acao primaria]
+```
+
+Visual:
+
+- altura desktop: 56-72px;
+- altura mobile: 64-84px;
+- fundo branco ou muted;
+- borda leve;
+- status a esquerda;
+- CTA a direita no desktop;
+- CTA abaixo ou full-width no mobile quando necessario.
+- em competicoes, pendencias devem parecer rows, nao cards de KPI.
+- detalhe/status deve ficar a direita no desktop e abaixo no mobile.
+- quando a fila for clicavel, a acao deve ter label explicito (`Resolver`, `Agendar`, `Confirmar`, `Intervir`, `Ver`) em vez de CTA generico.
+
+Correto:
+
+```text
+3 reservas pendentes | Hoje, quadras 1 e 2 | Revisar
+2 resultados pendentes | Rodada 4, Classe B | Resolver
+```
+
+Incorreto:
+
+```text
+Card grande com titulo, KPI, texto longo, 3 botoes e grafico.
+```
+
+## EntityActionRow
+
+Uso:
+
+- aluno;
+- cliente;
+- reserva;
+- turma;
+- professor;
+- produto;
+- partida;
+- local.
+- recebivel financeiro.
+
+Anatomia:
+
+```text
+[avatar/icone] [nome + contexto] [status chips] [metadados] [acao primaria]
+```
+
+Desktop:
+
+- grid com colunas fixas para status/acoes;
+- texto principal com truncamento;
+- botao principal pequeno e claro;
+- acoes raras em overflow/drawer.
+
+Mobile:
+
+- primeira linha: nome + status;
+- segunda linha: contexto;
+- terceira linha: acao principal full-width se for tarefa urgente.
+
+Anti-pattern:
+
+- transformar cada entidade em card alto;
+- repetir todos os metadados quando bastam 2;
+- deixar 4 botoes equivalentes.
+
+Uso atual no produto:
+
+- CRM do local: lead/cliente com interesse, origem, responsavel, follow-up e acao primaria contextual.
+- Financeiro do local: recebivel com cliente/turma, valor, status e lembrete como acao primaria.
+- Clientes/CRM do local: cobranca pendente usa row com cliente, origem, valor e `Enviar lembrete` como acao primaria, evitando tratar inadimplencia como painel separado.
+- Cantina: produto com categoria, preco, estoque e status de estoque.
+- Academia: turma com horario, professor/quadra/nivel, ocupacao, pendencias e metricas de suporte.
+- Academia: aluno com turma, telefone, pagamento, presenca e uma acao primaria contextual; acoes secundarias ficam em disclosure.
+- Academia Configuracao: recurso por quadra/professor com horario, tipo (`turma`, `horario aberto`, `bloqueio`), conflito e acao primaria (`Criar turma`, `Bloquear`, `Reabrir`).
+- Competition OS: `Minhas partidas` do torneio com partida, classe/fase, horario, estado operacional, presenca e acao primaria em zonas separadas.
+- Competition OS: partidas de grupos/mata-mata do torneio com numero, jogadores, status, horario, confirmacoes e placar em leitura row-like.
+- Competition OS: partidas da liga com rodada/jogadores, horario, status, estado operacional e acao `Abrir sala` em row compacta.
+- Competition OS: sala de partida da liga com estado/disponibilidade/resultado como zonas principais e participantes/chat em disclosures.
+- Competition OS: hub de eventos organizados com row operacional por torneio/liga, exibindo tipo, status, proximo passo e CTA unico por item.
+- Competition OS: detalhe interno da liga com painel de foco operacional antes das tabs, mostrando proxima acao, escopo ativo e fila com labels explicitos.
+
+Variacao importante:
+
+- status pode aparecer como badge discreto junto do titulo quando a linha precisa preservar densidade;
+- follow-up vencido pode elevar borda/status, mas nao deve transformar a linha em card de alerta grande.
+- em Competition OS, a row deve apontar para o destino semantico da tarefa, nao apenas para a pagina generica do evento.
+
+## Sidebar
+
+Uso:
+
+- desktop de Management OS;
+- admin de local;
+- Competition OS para organizador.
+
+Anatomia:
+
+```text
+Produto/Contexto
+Modulo ativo
+Grupo principal
+Grupo secundario/configuracao
+Conta/ajuda
+```
+
+Visual:
+
+- largura: 232-260px;
+- fundo branco ou navy muito discreto;
+- item ativo com barra lateral ou capsule suave;
+- sem bordas pesadas em cada item.
+- desktop pode agrupar entradas globais em Jogar, Trabalho e Conta.
+- contexto atual pode aparecer como chip curto em linguagem natural, como `Modo jogador`, `Competicoes` ou `Operacao`.
+
+Mobile:
+
+- nao comprimir sidebar;
+- usar bottom nav global + module switcher/bottom sheet.
+- esconder cabecalhos de grupo e manter apenas itens essenciais.
+
+Anti-pattern:
+
+- todos os modulos visiveis para todos;
+- icones decorativos sem funcao;
+- item ativo apenas por cor fraca.
+- atalhos de modulo com peso de botao primario.
+
+## Topbar / ContextHeader
+
+Uso:
+
+- explicar onde o usuario esta;
+- mostrar papel, local, escopo, data;
+- oferecer acao primaria contextual.
+
+Anatomia:
+
+```text
+[eyebrow] [titulo] [subtitulo curto]        [2-3 sinais compactos] [acao]
+```
+
+Desktop:
+
+- compacto;
+- uma superficie leve;
+- stats como chips, nao cards grandes.
+
+Mobile:
+
+- titulo curto;
+- stats podem virar linha scroll horizontal;
+- acao primaria pode ir para sticky action.
+
+Anti-pattern:
+
+- hero grande em area operacional;
+- descricao longa;
+- 6 KPIs antes da fila.
+
+## MetricStrip
+
+Uso:
+
+- sinais de suporte;
+- nao e dashboard principal.
+
+Regra:
+
+- 2 a 4 metricas;
+- esconder ou colapsar zeros sem valor operacional;
+- nao usar como primeira coisa se ha pendencia.
+
+Formato:
+
+```text
+[12 hoje] [3 pendentes] [R$ 820 aberto]
+```
+
+Anti-pattern:
+
+- grid de cards com 0, 0, 0, 0.
+
+## EmptyState
+
+Uso:
+
+- setup inicial;
+- tela sem pendencia;
+- lista sem resultado.
+
+Tipos:
+
+- Setup: explica primeira acao.
+- Calm: informa que esta tudo em dia.
+- Search: sugere ajustar filtro.
+- Permission: explica acesso/plano.
+
+Visual:
+
+- uma superficie leve;
+- titulo claro;
+- texto curto;
+- uma acao primaria;
+- sem ilustracao generica.
+
+## Drawers
+
+Uso:
+
+- detalhes de cliente/reserva;
+- historico;
+- edicao curta;
+- acoes secundarias.
+- rotina operacional que precisa de foco curto, como chamada de aula, turma, aluno ou professor.
+
+Desktop:
+
+- lateral direita;
+- largura 420-560px;
+- header fixo;
+- footer de acoes.
+
+Mobile:
+
+- bottom sheet;
+- altura maxima 82vh;
+- swipe/fechar claro;
+- acoes no rodape.
+
+Anti-pattern:
+
+- modal central grande com formulario longo;
+- drawer para tarefa que deveria ser pagina/wizard.
+- abrir wizard dentro de uma lista operacional.
+- repetir formulario de edicao dentro de cada card/row quando um drawer resolveria melhor.
+
+Variacoes obrigatorias para Academia v2:
+
+- `LessonDrawer`: chamada da aula, presenca, falta, ausencia avisada, alunos e observacao curta.
+- `ClassDrawer`: dados da turma, alunos, financeiro e presenca/historico.
+- `StudentDrawer`: dados, matriculas, pagamentos, presenca, evolucao, reposicoes e historico.
+- `CoachDrawer`: dados, agenda, turmas, comissao e login/convite.
+- `FitDrawer`: busca de encaixe para aula avulsa ou reposicao, acionada a partir de `Pendencias`.
+
+Implementado em 2026-05-14:
+
+- `StudentDrawer` foi aplicado em `Academia > Alunos` com secoes curtas para matricula, financeiro, presenca/faltas, evolucao e reposicoes/historico.
+- A regra de drawer substituiu acoes soltas por aluno e impediu que presenca/evolucao ficassem escondidas em formularios repetidos.
+- `FitDrawer` foi aplicado em `Academia > Pendencias`, substituindo disclosure permanente por ferramenta acionada por intencao.
+- `LessonDrawer` foi aplicado em `Academia > Hoje`, mantendo chamada, presenca, falta e ausencia avisada em foco curto sem wizard.
+- `CoachDrawer` foi aplicado em `Academia > Professores`, removendo inputs permanentes de comissao/login da row e concentrando edicao, turmas e agenda no detalhe.
+- `FitDrawer` tambem recebeu contexto de `Reposicao aberta`, travando aluno/tipo quando a secretaria agenda um credito especifico.
+- `Configuracao` da Academia passou a usar gramatica de `Escala semanal`: data de referencia escolhe o dia da semana, e janelas/bloqueios deixam claro que sao recorrentes.
+- `CoachDrawer` passou a editar campos avancados reais de professor em `Perfil operacional`; especialidades, niveis, bio publica e observacoes internas nao aparecem no cadastro rapido nem como inputs permanentes.
+- `ClassDrawer` passou a criar aluno pelo contrato semanal canonico: usuario/email, plano, mensalidade, inicio e horarios selecionados no mesmo foco curto, sem wizard nem formulario repetido na lista.
+- `StudentDrawer` passou a reconhecer contratos vinculados e mostrar plano/horarios do contrato antes dos detalhes de matricula isolada.
+- A area financeira de `ClassDrawer`/`StudentDrawer` deve acionar cobranca pelo contrato (`academy_student_contract`) quando existir, mantendo matricula (`academy_enrollment`) apenas como fallback legado.
+- `Configuracao > Quadras e horarios` passou a expor regra operacional curta para reposicao por ausencia avisada; `Pendencias` e `StudentDrawer` mostram a origem do credito sem transformar isso em wizard.
+
+Regra:
+
+```text
+Se a acao e recorrente e precisa preservar contexto, use drawer/sheet. Se exige decisao em etapas raras, use wizard.
+```
+
+## BottomSheets
+
+Uso mobile:
+
+- escolher modulo;
+- filtros;
+- quick actions;
+- editar detalhe curto.
+
+Regras:
+
+- abrir de baixo;
+- titulo curto;
+- acoes grandes;
+- maximo 5 escolhas principais;
+- listas longas precisam busca.
+- usar `ResponsiveFilterSheet` quando o filtro deve ficar inline no desktop e virar sheet no mobile.
+- o botao mobile deve resumir o escopo ativo, nao apenas dizer "Filtros".
+- desktop nao deve esconder filtro frequente em sheet quando a operacao depende dele.
+
+## QuickActions
+
+Uso:
+
+- reservar quadra;
+- cobrar cliente;
+- lancar resultado;
+- registrar venda;
+- confirmar presenca;
+- adicionar aluno.
+- cadastrar quadra;
+- cadastrar professor;
+- criar turma;
+- criar torneio;
+- enviar lembrete;
+- cobrar socio;
+- cobrar aluno;
+
+Regra de destino:
+
+- a quick action deve abrir a subvisao onde a tarefa e concluida, nao uma tela de resumo;
+- `Cadastrar professor` precisa cair em Professores com formulario de professor;
+- `Criar turma` precisa cair em Turmas com wizard de turma;
+- se a tela de destino nao permite executar a tarefa, a quick action esta errada mesmo que o modulo esteja correto.
+
+Regra de rotina aplicada em 2026-05-13:
+
+- acoes como `Criar reserva`, `Fazer chamada`, `Cobrar pendentes`, `Fazer follow-up` e `Registrar venda` devem aparecer por contexto real, nao como painel fixo;
+- se a base do local ainda esta incompleta, setup vem antes de rotina;
+- se a base esta pronta, a row do local pode mostrar ate 3 acoes rapidas executaveis;
+- cada acao deve abrir modulo + subvisao correta via rota semantica.
+
+Anatomia:
+
+```text
+[acao] [atalho opcional] [contexto minimo]
+```
+
+Desktop:
+
+- pode viver no header, command palette ou barra contextual.
+
+Mobile:
+
+- uma acao sticky quando for a tarefa principal;
+- sheet para grupo de acoes.
+
+Anti-pattern:
+
+- botao flutuante generico com muitas acoes sem prioridade.
+
+Variacao: SemanticQuickAction
+
+Uso:
+
+- setup inicial;
+- onboarding operacional;
+- entrada de perfil;
+- tarefas que o usuario procura por intencao.
+
+Regra:
+
+```text
+O texto deve ser a tarefa real: Cadastrar quadra, Cadastrar professor, Criar torneio.
+```
+
+Nao usar:
+
+- Recursos;
+- Configurar modulo;
+- Gerenciar itens;
+- Abrir ferramenta.
+
+Comportamento:
+
+- aparece apenas se o plano/papel permite;
+- se faltar dependencia, leva ao passo anterior;
+- se a tarefa ja estiver resolvida, vira secundaria ou some;
+- mobile pode abrir bottom sheet com no maximo 5 tarefas principais.
+
+## ProgressiveForms
+
+Uso:
+
+- reserva/bloqueio;
+- captura de lead;
+- cadastro de produto;
+- lancamento financeiro simples;
+- edicao curta de entidade.
+
+Regra principal:
+
+```text
+Campos frequentes no composer. Campos raros em avancado, drawer, sheet ou wizard.
+```
+
+Desktop:
+
+- primeira linha deve conter apenas o necessario para concluir a tarefa recorrente;
+- acao primaria fica visivel e unica;
+- acoes alternativas ficam `secondary` ou `quiet`;
+- detalhes raros usam disclosure (`Opcoes avancadas`) ou drawer.
+- campo sem label visual em toolbar, row ou composer compacto precisa ter placeholder curto e `aria-label` claro;
+- campo critico ou sensivel deve manter label visual; placeholder nao substitui rotulo estrutural.
+
+Mobile:
+
+- campos essenciais empilham em ordem de decisao;
+- CTA principal deve ter largura confortavel;
+- detalhes raros ficam abaixo de summary ou em bottom sheet;
+- formulario nao deve ocupar a primeira viewport antes da fila operacional.
+
+Correto:
+
+```text
+Quadra | Inicio | Fim | Buscar | Reservar
+Opcoes avancadas: observacao, repetir, bloquear, lista de espera
+```
+
+Incorreto:
+
+```text
+Formulario com 8 campos, 4 botoes equivalentes e lista de resultados todos no mesmo bloco.
+```
+
+Uso atual no produto:
+
+- criacao de reserva no admin do local: campos essenciais ficam no composer principal; observacao, repeticao, bloqueio e lista de espera ficam em `Opcoes avancadas`.
+- CRM do local: contatos/leads aparecem antes da captura; novo contato expande apenas quando necessario.
+- Cantina: venda rapida fica como rotina principal; cadastro de produto fica progressivo e auxiliar ao catalogo.
+- Torneio: envio/compartilhamento de resultado em `Minhas partidas` fica em disclosure `Informar resultado`, preservando a row principal para status e confirmacao.
+- Academia v2: buscas/filtros compactos e ferramentas de encaixe usam placeholder objetivo e `aria-label`; drawers mantem labels visuais para campos de edicao.
+- Torneio: edicao de placar, WO e limpeza nas partidas da chave ficam em disclosure `Lancar/Editar placar`, preservando a row principal para leitura da partida.
+
+## PublicHero
+
+Uso:
+
+- pagina publica do local;
+- inscricao publica;
+- descoberta de clube/competicao.
+
+Regras:
+
+- marca, localidade e oferta principal na primeira viewport;
+- uma CTA primaria de conversao;
+- acao secundaria apenas se ampliar conversao, como turmas;
+- acoes internas/gestao devem ser quiet;
+- divulgacao/widget fica depois da conversao;
+- mobile pode usar CTA sticky quando reserva/inscricao for objetivo principal.
+
+## Tables
+
+Uso:
+
+- financeiro;
+- CRM;
+- ranking;
+- historico operacional;
+- estoque.
+
+Desktop:
+
+- headers pequenos;
+- row height 44-56px;
+- filtros acima e discretos;
+- acoes de linha no fim;
+- overflow horizontal apenas quando inevitavel.
+
+Mobile:
+
+- tabela vira row/card compacto;
+- mostrar 3 informacoes essenciais;
+- detalhe em bottom sheet.
+
+Anti-pattern:
+
+- tabela com 10 colunas em mobile;
+- card por linha com todos os campos.
+
+## Filters
+
+Uso:
+
+- estado;
+- data;
+- modulo;
+- classe/categoria;
+- pagamento.
+- descoberta publica por intencao.
+
+Regras:
+
+- filtros frequentes visiveis;
+- filtros raros em drawer/sheet;
+- chips de filtro ativo precisam ser removiveis;
+- default deve ser a rotina mais comum.
+- filtros mudam conforme a tarefa: quadra usa cidade/data/hora/duracao, aula usa dia/periodo/nivel/vaga e chamada usa cidade/data/nivel.
+- quando o dominio pode ter alto volume, nao exibir lista aberta sem contexto operacional.
+- busca de disponibilidade deve devolver a entidade acionavel, nao apenas o container: reserva devolve quadras livres; aula devolve turmas com vaga; chamada devolve jogadores/partidas abertas.
+- resultado de reserva deve esconder planos, aulas, CRM, financeiro e dados institucionais que nao ajudam a concluir a tarefa.
+- resultado de aula deve esconder reserva, planos, CRM, financeiro e dados institucionais; deve priorizar turma, horario, professor, nivel, vagas e CTA para enviar interesse.
+- filtros de nivel de aula usam taxonomia fechada: Iniciante, Intermediario, Avancado, Primeira Classe e Profissional.
+
+Anti-pattern:
+
+- reaproveitar o mesmo filtro generico para tarefas semanticamente diferentes;
+- listar 200 locais e obrigar o usuario a abrir um por um para descobrir disponibilidade;
+- esconder a diferenca entre procurar jogador, reservar quadra e entrar em aula.
+- retornar academia completa quando o usuario pesquisou uma quadra livre em data/hora especifica.
+- retornar academia completa quando o usuario pesquisou uma turma com vaga por perfil/nivel.
+
+## OperationalCalendar
+
+Uso:
+
+- agenda de quadras;
+- ocupacao de professor;
+- turmas fixas;
+- aulas avulsas/reposicoes;
+- bloqueios e manutencoes.
+
+Anatomia:
+
+```text
+[data] [tipo] [quadra] [professor] [turma] [aluno]
+
+horario | quadra 1 | quadra 2 | quadra 3
+08:00   | livre    | turma    | reserva
+08:30   | livre    | turma    | reserva
+```
+
+Regras:
+
+- deve mostrar ocupacao real, nao apenas reservas;
+- reservas, bloqueios, turmas, aulas avulsas/reposicoes e faltas avisadas pertencem ao mesmo mapa;
+- cada slot deve ser clicavel e revelar detalhe operacional;
+- slots padrao devem ser praticos, preferencialmente de 30 minutos;
+- filtro por professor e aluno e obrigatorio quando ha aulas/turmas;
+- detalhes de turma devem mostrar alunos ativos e quem avisou falta no dia;
+- KPI de ocupacao e suporte, nao substitui o mapa.
+
+Desktop:
+
+- grade por quadra com trilho de horario;
+- scroll horizontal e aceitavel quando ha muitas quadras;
+- filtros ficam acima, em uma linha densa.
+
+Mobile:
+
+- manter data e filtros frequentes visiveis;
+- grade pode rolar horizontalmente;
+- detalhe do slot pode virar disclosure/bottom sheet;
+- evitar empilhar um card por reserva antes do calendario.
+
+Anti-pattern:
+
+- mostrar `Hoje`, `Reservas` ou `Espera` duplicados dentro e fora da central;
+- calendario que ignora turmas e aulas avulsas;
+- dias de regra como `1,2,3,4,5` para usuario final;
+- horario livre digitavel sem grade, gerando 08:20 ou 09:35.
+
+## Mobile Rows
+
+Anatomia:
+
+```text
+[titulo + status]
+[contexto curto]
+[acao primaria ou metadado]
+```
+
+Regras:
+
+- largura total;
+- toque minimo 44px;
+- sem grid de 4 colunas;
+- status textual + cor;
+- acoes secundarias ocultas.
+
+## Workspace Sidebar
+
+Uso:
+
+- Management OS;
+- Competition OS quando houver operacao;
+- contextos com permissoes/modulos.
+
+Desktop:
+
+- superficie quieta;
+- contexto atual acima dos itens;
+- item ativo com maior contraste que os inativos;
+- grupos devem existir por significado, nao por decoracao;
+- evitar bordas em todos os itens.
+
+Mobile:
+
+- bottom/trilho compacto;
+- toque minimo 44px;
+- labels curtos;
+- overflow horizontal ou sheet quando houver excesso;
+- nao comprimir 6+ itens em grid fixo.
+
+Anti-pattern:
+
+- mesma sidebar visual para jogador e gestor;
+- icones grandes competindo com texto;
+- modulo sem permissao aparecendo como entrada principal;
+- active state baseado apenas em um detalhe sutil.
+
+## Tab Overflow
+
+Uso:
+
+- telas internas com muitos submodulos;
+- Gestao do local;
+- configuracoes com acoes raras.
+
+Regras:
+
+- maximo 5 abas primarias visiveis;
+- abas mais frequentes primeiro;
+- modulo atual nunca deve desaparecer sem contexto;
+- excedentes entram em `Mais`/sheet;
+- mobile deve preferir linha rolavel curta ou bottom sheet.
+
+Anti-pattern:
+
+- 8+ abas lado a lado;
+- abas tecnicas com nomes que nao representam intencao do usuario;
+- colocar acao primaria dentro de aba rara sem quick action semantica.
+
+## Anti-patterns globais
+
+- Card dentro de card.
+- KPI zerado como protagonista.
+- Hero em area operacional.
+- Mais de 2 botoes equivalentes no mesmo bloco.
+- Modulo inteiro em uma pagina sem escopo.
+- Mobile como desktop empilhado.
+- Configuracao antes da rotina.
+- Publicacao misturada com tarefa interna.
+- Texto longo em botao.
+- Cor usada como decoracao sem significado.

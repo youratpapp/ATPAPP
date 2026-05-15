@@ -54,9 +54,12 @@ type SetupChecklistStep = {
   viewSegment?: string;
 };
 
+type PlaceAccess = ReturnType<typeof placeResourceAccess>;
+
 const PRIORITY_MODULES: PlaceManagementModule[] = ["bookings", "academy", "clients", "finance", "canteen"];
 const COACH_PRIORITY_MODULES: PlaceManagementModule[] = ["academy"];
 const FRONTDESK_PRIORITY_MODULES: PlaceManagementModule[] = ["bookings", "academy"];
+const FINANCE_PRIORITY_MODULES: PlaceManagementModule[] = ["finance"];
 
 const PLAN_LABELS: Record<Place["productPlan"], string> = {
   academy: "Academia",
@@ -67,6 +70,7 @@ const PLAN_LABELS: Record<Place["productPlan"], string> = {
 
 const ROLE_LABELS: Record<string, string> = {
   coach: "Professor",
+  finance: "Financeiro",
   frontdesk: "Recepcao",
   manager: "Gerente",
   owner: "Administrador",
@@ -93,20 +97,61 @@ function placeInitials(name: string): string {
   return `${parts[0]![0]}${parts[parts.length - 1]![0]}`.toUpperCase();
 }
 
-function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place): PlaceOperationSummary {
-  const pendingBookings = entry.bookings.filter((booking) => booking.status === "pending").length;
-  const todayBookings = entry.bookings.filter((booking) => booking.status !== "cancelled" && isToday(booking.startsAt)).length;
-  const waitlist = entry.bookingWaitlist.filter((item) => item.status === "waiting" || item.status === "invited").length;
+function coachScopedClasses(entry: PlaceAdminResourceEntry, userId: string) {
+  const coachIds = entry.academyCoaches.filter((coach) => coach.userId === userId).map((coach) => coach.id);
+  if (!coachIds.length) return [];
+  return entry.academyClasses.filter((academyClass) => coachIds.includes(String(academyClass.coachId || "")));
+}
+
+function visibleSetupActionsForRole(
+  setupChecklist: SetupChecklistStep[],
+  access?: PlaceAccess
+): PlaceOperationSummary["setupActions"] {
+  if (!access?.canManagePlace) return [];
+  return setupChecklist
+    .filter((step) => !step.done)
+    .map(({ detail, label, module, viewSegment }) => ({ detail, label, module, viewSegment }));
+}
+
+function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: PlaceAccess, userId = ""): PlaceOperationSummary {
+  const modules = access ? placeManagementModules(access) : PRIORITY_MODULES;
+  const isCoachOnly = access?.staffRole === "coach" && !access.canManagePlace;
+  const isFrontdeskOnly = access?.staffRole === "frontdesk" && !access.canManagePlace;
+  const isFinanceOnly = access?.staffRole === "finance" && !access.canManagePlace;
+  const activeCoachClasses = isCoachOnly ? coachScopedClasses(entry, userId).filter((academyClass) => academyClass.isActive) : [];
+  const coachClassIds = new Set(activeCoachClasses.map((academyClass) => academyClass.id));
+  const scopedAcademyEnrollments = isCoachOnly
+    ? entry.academyEnrollments.filter((enrollment) => coachClassIds.has(enrollment.classId))
+    : entry.academyEnrollments;
+  const scopedLessonRequests = isCoachOnly
+    ? entry.academyLessonRequests.filter((request) => coachClassIds.has(request.classId) && request.status === "approved")
+    : entry.academyLessonRequests;
+  const pendingBookings = isCoachOnly || isFinanceOnly ? 0 : entry.bookings.filter((booking) => booking.status === "pending").length;
+  const todayBookings = isCoachOnly || isFinanceOnly ? 0 : entry.bookings.filter((booking) => booking.status !== "cancelled" && isToday(booking.startsAt)).length;
+  const waitlist = isCoachOnly || isFinanceOnly ? 0 : entry.bookingWaitlist.filter((item) => item.status === "waiting" || item.status === "invited").length;
   const todayWeekday = new Date().getDay();
-  const todayClasses = entry.academyClasses.filter((academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday);
-  const pendingAcademy =
-    entry.academyEnrollments.filter((enrollment) => enrollment.status === "pending").length +
-    entry.academyLessonRequests.filter((request) => request.status === "pending").length;
-  const contactsDue = entry.crmContacts.filter((contact) => contact.status !== "archived" && (contact.status === "lead" || isDue(contact.nextContactOn))).length;
+  const todayClasses = (isCoachOnly ? activeCoachClasses : entry.academyClasses).filter(
+    (academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday
+  );
+  const pendingAcademy = isCoachOnly
+    ? 0
+    : scopedAcademyEnrollments.filter((enrollment) => enrollment.status === "pending").length +
+      scopedLessonRequests.filter((request) => request.status === "pending").length;
+  const contactsDue =
+    modules.includes("clients") && !isCoachOnly
+      ? entry.crmContacts.filter((contact) => contact.status !== "archived" && (contact.status === "lead" || isDue(contact.nextContactOn))).length
+      : 0;
   const pendingFinance =
-    entry.memberships.filter((membership) => membership.status === "pending").length +
-    entry.creditPurchases.filter((purchase) => purchase.status === "active" && purchase.remainingQuantity <= 0).length;
-  const lowStock = entry.posProducts.filter((product) => product.isActive && product.stockQuantity <= 3).length;
+    modules.includes("finance") && !isCoachOnly && !isFrontdeskOnly
+      ? entry.memberships.filter((membership) => membership.status === "pending").length +
+        entry.academyStudentContracts.filter((contract) => contract.status === "pending").length +
+        entry.academyLessonRequests.filter((request) => request.status === "approved" && request.paymentStatus === "pending").length +
+        entry.creditPurchases.filter((purchase) => purchase.status === "active" && purchase.remainingQuantity <= 0).length
+      : 0;
+  const lowStock =
+    modules.includes("canteen") && !isCoachOnly && !isFrontdeskOnly
+      ? entry.posProducts.filter((product) => product.isActive && product.stockQuantity <= 3).length
+      : 0;
   const isAcademyLike = !place || place.productPlan === "academy" || place.productPlan === "club_pro" || place.productPlan === "multi_unit";
   const setupChecklist: SetupChecklistStep[] = [
     {
@@ -163,38 +208,42 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place): PlaceOpe
       viewSegment: "estrutura",
     },
   ];
-  const setupActions = setupChecklist
-    .filter((step) => !step.done)
-    .map(({ detail, label, module, viewSegment }) => ({ detail, label, module, viewSegment }));
+  const setupActions = visibleSetupActionsForRole(setupChecklist, access);
   const routineActionCandidates: Array<PlaceRoutineAction | null> = [
-    pendingBookings > 0
+    modules.includes("bookings") && pendingBookings > 0
       ? { detail: "Confirmar ou revisar reservas pendentes.", label: "Confirmar reservas", module: "bookings" as PlaceManagementModule, viewSegment: "reservas" }
       : null,
-    waitlist > 0
+    modules.includes("bookings") && waitlist > 0
       ? { detail: "Converter lista de espera em horario real.", label: "Chamar espera", module: "bookings" as PlaceManagementModule, viewSegment: "espera" }
       : null,
-    todayBookings > 0
+    modules.includes("bookings") && todayBookings > 0
       ? { detail: "Ver ocupacao e proximos horarios.", label: "Ver agenda", module: "bookings" as PlaceManagementModule, viewSegment: "hoje" }
       : null,
-    entry.courts.length > 0
+    modules.includes("bookings") && entry.courts.length > 0
       ? { detail: "Buscar horario e criar uma reserva.", label: "Criar reserva", module: "bookings" as PlaceManagementModule, viewSegment: "nova-reserva" }
       : null,
-    pendingAcademy > 0
+    modules.includes("academy") && pendingAcademy > 0
       ? { detail: "Resolver matriculas, encaixes ou reposicoes.", label: "Resolver aulas", module: "academy" as PlaceManagementModule, viewSegment: "pendencias" }
       : null,
-    todayClasses.length > 0
+    modules.includes("academy") && todayClasses.length > 0
       ? { detail: "Abrir chamada e aulas do dia.", label: "Fazer chamada", module: "academy" as PlaceManagementModule, viewSegment: "hoje" }
       : null,
-    contactsDue > 0
+    modules.includes("clients") && contactsDue > 0
       ? { detail: "Fazer retornos e acompanhar leads.", label: "Fazer follow-up", module: "clients" as PlaceManagementModule, viewSegment: "rotina" }
       : null,
-    pendingFinance > 0
+    isFrontdeskOnly && modules.includes("clients")
+      ? { detail: "Adicionar ou localizar cliente durante o atendimento.", label: "Cadastrar cliente", module: "clients" as PlaceManagementModule, viewSegment: "leads" }
+      : null,
+    modules.includes("finance") && pendingFinance > 0
       ? { detail: "Enviar lembretes e acompanhar recebiveis.", label: "Cobrar pendentes", module: "finance" as PlaceManagementModule, viewSegment: "recebiveis" }
       : null,
-    lowStock > 0
+    modules.includes("finance") && isFinanceOnly && pendingFinance === 0
+      ? { detail: "Revisar recebiveis, despesas e lembretes sem abrir a gestao completa.", label: "Ver recebiveis", module: "finance" as PlaceManagementModule, viewSegment: "recebiveis" }
+      : null,
+    modules.includes("canteen") && lowStock > 0
       ? { detail: "Revisar itens com estoque baixo.", label: "Repor estoque", module: "canteen" as PlaceManagementModule, viewSegment: "estoque" }
       : null,
-    entry.posProducts.some((product) => product.isActive)
+    modules.includes("canteen") && entry.posProducts.some((product) => product.isActive)
       ? { detail: "Registrar venda rapida da cantina.", label: "Registrar venda", module: "canteen" as PlaceManagementModule, viewSegment: "vender" }
       : null,
   ];
@@ -294,6 +343,18 @@ function operatorProfileFor(access: ReturnType<typeof placeResourceAccess>, plac
       subtitle: "Recepcao e agenda",
     };
   }
+  if (access.staffRole === "finance" && !access.canManagePlace) {
+    return {
+      moduleShortcuts: FINANCE_PRIORITY_MODULES,
+      primaryLabel: "Abrir financeiro",
+      primaryModule: "finance" as PlaceManagementModule,
+      primaryView: "recebiveis",
+      secondaryLabel: "Despesas",
+      secondaryModule: "finance" as PlaceManagementModule,
+      secondaryView: "despesas",
+      subtitle: "Financeiro do local",
+    };
+  }
   const isCompleteOperation = place.productPlan === "club_pro" || place.productPlan === "multi_unit";
   return {
     moduleShortcuts: PRIORITY_MODULES,
@@ -353,10 +414,35 @@ export function ManagementHubPage({ user, profile }: Props) {
     [entriesByPlace, places, user.id]
   );
   const summariesByPlace = useMemo(
-    () => Object.fromEntries(entries.map((entry) => [entry.placeId, summarizePlace(entry, places.find((place) => place.id === entry.placeId))])),
-    [entries, places]
+    () =>
+      Object.fromEntries(
+        entries.map((entry) => {
+          const place = places.find((item) => item.id === entry.placeId);
+          const access = place ? accessByPlace[place.id] : undefined;
+          return [entry.placeId, summarizePlace(entry, place, access, user.id)];
+        })
+      ),
+    [accessByPlace, entries, places, user.id]
   );
   const aggregate = useMemo(() => totalSummaries(Object.values(summariesByPlace)), [summariesByPlace]);
+  const isCoachOnlyHub =
+    places.length > 0 &&
+    places.every((place) => {
+      const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, []);
+      return access.staffRole === "coach" && !access.canManagePlace;
+    });
+  const isFrontdeskOnlyHub =
+    places.length > 0 &&
+    places.every((place) => {
+      const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, []);
+      return access.staffRole === "frontdesk" && !access.canManagePlace;
+    });
+  const isFinanceOnlyHub =
+    places.length > 0 &&
+    places.every((place) => {
+      const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, []);
+      return access.staffRole === "finance" && !access.canManagePlace;
+    });
   const activeAggregateQueueRows = useMemo(
     () =>
       queueRows(aggregate).filter((row) => {
@@ -392,31 +478,74 @@ export function ManagementHubPage({ user, profile }: Props) {
           const coachIds = entry.academyCoaches.filter((coach) => coach.userId === user.id).map((coach) => coach.id);
           const classes = coachIds.length
             ? entry.academyClasses.filter((academyClass) => coachIds.includes(String(academyClass.coachId || "")))
-            : entry.academyClasses.filter((academyClass) => academyClass.coachName);
+            : [];
           const activeClasses = classes.filter((academyClass) => academyClass.isActive);
           const todayClasses = activeClasses.filter((academyClass) => academyClass.weekday === new Date().getDay());
           const classIds = new Set(activeClasses.map((academyClass) => academyClass.id));
           const activeStudents = entry.academyEnrollments.filter(
             (enrollment) => classIds.has(enrollment.classId) && enrollment.status === "active"
           ).length;
-          return { activeClasses, activeStudents, place, todayClasses };
+          return { activeClasses, activeStudents, hasCoachLink: coachIds.length > 0, place, todayClasses };
         })
-        .filter((item): item is { activeClasses: PlaceAdminResourceEntry["academyClasses"]; activeStudents: number; place: Place; todayClasses: PlaceAdminResourceEntry["academyClasses"] } => Boolean(item)),
+        .filter(
+          (
+            item
+          ): item is {
+            activeClasses: PlaceAdminResourceEntry["academyClasses"];
+            activeStudents: number;
+            hasCoachLink: boolean;
+            place: Place;
+            todayClasses: PlaceAdminResourceEntry["academyClasses"];
+          } => Boolean(item)
+        ),
     [accessByPlace, entriesByPlace, places, user.id]
   );
+
+  function rowPulseText(summary: PlaceOperationSummary, access: PlaceAccess): string {
+    if (access.staffRole === "coach" && !access.canManagePlace) {
+      return summary.routineActions.some((action) => action.label === "Fazer chamada") ? "Aulas para chamar hoje" : "Rotina de professor";
+    }
+    if (access.staffRole === "finance" && !access.canManagePlace) {
+      return summary.pendingFinance ? "Cobrancas para revisar" : "Recebiveis e despesas";
+    }
+    if (summary.todayBookings) return `${summary.todayBookings} reserva(s) hoje`;
+    if (summary.setupGaps.length) return "Configure a base operacional";
+    return access.staffRole === "frontdesk" && !access.canManagePlace ? "Atendimento em dia" : "Sem reservas para hoje";
+  }
+
+  function quietSummaryText(summary: PlaceOperationSummary, access: PlaceAccess): string {
+    if (access.staffRole === "coach" && !access.canManagePlace) {
+      return "Use os atalhos de aulas, turmas e alunos para revisar sua rotina.";
+    }
+    if (access.staffRole === "finance" && !access.canManagePlace) {
+      return "Use Recebiveis e Despesas para revisar cobrancas, lembretes e baixas.";
+    }
+    if (summary.todayBookings) return `${summary.todayBookings} reserva(s) programada(s) hoje`;
+    if (summary.setupGaps.length) return "Complete a base para liberar a rotina operacional";
+    return access.staffRole === "frontdesk" && !access.canManagePlace ? "Sem pendencias de atendimento agora" : "Agenda livre para hoje";
+  }
+
+  function aggregateGoodStateText(): string {
+    if (isCoachOnlyHub) return "Nenhuma aula pendente agora. Use Aulas, Turmas e Alunos para revisar sua rotina.";
+    if (isFrontdeskOnlyHub) return "Nenhuma pendencia critica agora. Use Agenda e Aulas para revisar o atendimento do dia.";
+    if (isFinanceOnlyHub) return "Nenhuma cobranca critica agora. Use Recebiveis e Despesas para revisar o caixa.";
+    return "Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar agenda, setup ou pagina publica.";
+  }
+
+  const noManagementAccess = !loading && !places.length && !canCreatePlaceAccess;
 
   return (
     <ManagementShell
       user={user}
       profile={profile}
-      eyebrow="Central operacional"
-      title="Gestao"
-      description="Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada."
-      stats={[
-        { label: countLabel(places.length, "local acessivel", "locais acessiveis"), value: places.length },
-        { label: "pendencias operacionais", value: pendingTotal(aggregate) },
-        { label: "reservas hoje", value: aggregate.todayBookings },
-      ]}
+      mode={noManagementAccess ? "player" : "management"}
+      eyebrow={noManagementAccess ? "Modo jogador" : "Central operacional"}
+      title={noManagementAccess ? "Area profissional indisponivel" : "Gestao"}
+      description={
+        noManagementAccess
+          ? "Sua conta nao esta vinculada a um local, equipe ou plano profissional. Continue pelo app de jogador ou aceite um convite de equipe."
+          : "Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada."
+      }
     >
       <div className="management-hub-page">
 
@@ -425,7 +554,7 @@ export function ManagementHubPage({ user, profile }: Props) {
 
         {!loading && !places.length ? (
           <section className="management-empty-state">
-            <span>{canCreatePlaceAccess ? "Operacao ainda nao configurada" : "Player App"}</span>
+            <span>{canCreatePlaceAccess ? "Operacao ainda nao configurada" : "Modo jogador"}</span>
             <h2>{canCreatePlaceAccess ? "Crie ou acesse um local para ativar a gestao profissional." : "Gestao nao disponivel para este perfil."}</h2>
             <p>
               {canCreatePlaceAccess
@@ -485,9 +614,27 @@ export function ManagementHubPage({ user, profile }: Props) {
               ) : (
                 <div className="management-good-state">
                   <strong>Operacao em dia</strong>
-                  <span>Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar agenda, setup ou pagina publica.</span>
+                  <span>{aggregateGoodStateText()}</span>
                 </div>
               )}
+            </section>
+
+            <section className="management-support-strip" aria-label="Resumo operacional">
+              <span>Sinais de suporte</span>
+              <div className="management-shell-stats">
+                <article>
+                  <strong>{places.length}</strong>
+                  <small>{countLabel(places.length, "local acessivel", "locais acessiveis")}</small>
+                </article>
+                <article>
+                  <strong>{pendingTotal(aggregate)}</strong>
+                  <small>pendencias operacionais</small>
+                </article>
+                <article>
+                  <strong>{isFinanceOnlyHub ? aggregate.pendingFinance : aggregate.todayBookings}</strong>
+                  <small>{isFinanceOnlyHub ? "recebiveis pendentes" : "reservas hoje"}</small>
+                </article>
+              </div>
             </section>
 
             {coachWorkspaces.length ? (
@@ -500,17 +647,22 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <strong>{countLabel(coachWorkspaces.length, "local vinculado", "locais vinculados")}</strong>
                 </div>
                 <div className="coach-operation-list">
-                  {coachWorkspaces.map(({ activeClasses, activeStudents, place, todayClasses }) => (
+                  {coachWorkspaces.map(({ activeClasses, activeStudents, hasCoachLink, place, todayClasses }) => (
                     <article key={`coach:${place.id}`} className="coach-operation-row">
                       <div>
                         <span>{place.name}</span>
-                        <strong>{todayClasses.length ? `${todayClasses.length} aula(s) hoje` : "Sem aulas hoje"}</strong>
+                        <strong>{hasCoachLink ? (todayClasses.length ? `${todayClasses.length} aula(s) hoje` : "Sem aulas hoje") : "Vinculo pendente"}</strong>
                         <small>
-                          {activeClasses.length} turma(s) ativa(s) | {activeStudents} aluno(s)
+                          {hasCoachLink ? `${activeClasses.length} turma(s) ativa(s) | ${activeStudents} aluno(s)` : "Peça ao gestor para vincular seu login ao cadastro de professor."}
                         </small>
                       </div>
                       <div className="coach-operation-next">
-                        {todayClasses[0] ? (
+                        {!hasCoachLink ? (
+                          <>
+                            <b>Agenda ainda nao liberada</b>
+                            <small>O local ja reconhece seu papel de professor, mas falta o vinculo com `place_coaches`.</small>
+                          </>
+                        ) : todayClasses[0] ? (
                           <>
                             <b>{todayClasses[0].title}</b>
                             <small>
@@ -600,35 +752,49 @@ export function ManagementHubPage({ user, profile }: Props) {
                   const primaryView = primaryModule === operatorProfile.primaryModule ? operatorProfile.primaryView : undefined;
                   const secondaryModule =
                     operatorProfile.secondaryModule && modules.includes(operatorProfile.secondaryModule) ? operatorProfile.secondaryModule : undefined;
-                  const summary = summariesByPlace[place.id] || summarizePlace({
-                    academyAbsences: [],
-                    academyAttendance: [],
-                    academyClasses: [],
-                    academyCoaches: [],
-                    academyEnrollments: [],
-                    academyLessonRequests: [],
-                    academyMakeups: [],
-                    academyProgress: [],
-                    academySettings: { placeId: place.id, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" },
-                    academySlots: [],
-                    academyStudentContracts: [],
-                    bookingRules: [],
-                    bookingWaitlist: [],
-                    bookings: [],
-                    courts: [],
-                    creditPackages: [],
-                    creditPurchases: [],
-                    crmContacts: [],
-                    crmInteractions: [],
-                    expenses: [],
-                    membershipPlans: [],
-                    memberships: [],
-                    placeId: place.id,
-                    posProducts: [],
-                    posSales: [],
-                    staff: [],
-                  }, place);
-                  const activePlaceQueueRows = queueRows(summary).filter((row) => row.value > 0);
+                  const summary =
+                    summariesByPlace[place.id] ||
+                    summarizePlace(
+                      {
+                        academyAbsences: [],
+                        academyAttendance: [],
+                        academyClasses: [],
+                        academyCoaches: [],
+                        academyEnrollments: [],
+                        academyLessonRequests: [],
+                        academyMakeups: [],
+                        academyProgress: [],
+                        academySettings: {
+                          placeId: place.id,
+                          makeupNoticeHours: 12,
+                          autoCreateMakeupCreditOnNotice: true,
+                          updatedBy: null,
+                          createdAt: "",
+                          updatedAt: "",
+                        },
+                        academySlots: [],
+                        academyStudentContracts: [],
+                        bookingRules: [],
+                        bookingWaitlist: [],
+                        bookings: [],
+                        courts: [],
+                        creditPackages: [],
+                        creditPurchases: [],
+                        crmContacts: [],
+                        crmInteractions: [],
+                        expenses: [],
+                        membershipPlans: [],
+                        memberships: [],
+                        placeId: place.id,
+                        posProducts: [],
+                        posSales: [],
+                        staff: [],
+                      },
+                      place,
+                      access,
+                      user.id
+                    );
+                  const activePlaceQueueRows = queueRows(summary).filter((row) => row.value > 0 && modules.includes(row.module));
                   const role = ROLE_LABELS[access.staffRole] || "Equipe";
                   const totalPending = pendingTotal(summary);
                   return (
@@ -649,11 +815,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                       <div className="management-row-pulse">
                         <strong>{totalPending ? `${totalPending} pendencia(s)` : "Em dia"}</strong>
                         <span>
-                          {summary.todayBookings
-                            ? `${summary.todayBookings} reserva(s) hoje`
-                            : summary.setupGaps.length
-                              ? "Configure a base operacional"
-                              : "Sem reservas para hoje"}
+                          {rowPulseText(summary, access)}
                         </span>
                       </div>
 
@@ -673,11 +835,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                           <div className="management-quiet-summary">
                             <strong>Sem pendencias criticas</strong>
                             <span>
-                              {summary.todayBookings
-                                ? `${summary.todayBookings} reserva(s) programada(s) hoje`
-                                : summary.setupGaps.length
-                                  ? "Complete a base para liberar a rotina operacional"
-                                  : "Agenda livre para hoje"}
+                              {quietSummaryText(summary, access)}
                             </span>
                           </div>
                         )}

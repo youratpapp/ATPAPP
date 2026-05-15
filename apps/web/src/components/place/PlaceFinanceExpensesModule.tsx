@@ -1,4 +1,5 @@
 import type { PlaceExpense } from "../../lib/types";
+import { useState } from "react";
 import { WorkspaceList, WorkspaceRow } from "./PlaceWorkspaceUi";
 
 export type PlaceExpenseDraft = {
@@ -29,7 +30,10 @@ export function PlaceFinanceExpensesModule({
   onCreateExpense,
   onDraftChange,
 }: PlaceFinanceExpensesModuleProps) {
+  const [showAll, setShowAll] = useState(false);
   const canCreate = Boolean(draft && onDraftChange && onCreateExpense);
+  const visibleExpenses = showAll ? expenses : expenses.slice(0, limit);
+  const hiddenCount = Math.max(0, expenses.length - visibleExpenses.length);
 
   return (
     <>
@@ -45,7 +49,7 @@ export function PlaceFinanceExpensesModule({
         </div>
       ) : null}
       <WorkspaceList>
-        {expenses.slice(0, limit).map((expense) => (
+        {visibleExpenses.map((expense) => (
           <WorkspaceRow
             key={`finance-expense:${expense.id}`}
             className={expense.status}
@@ -62,6 +66,11 @@ export function PlaceFinanceExpensesModule({
             <small>{expense.status}</small>
           </WorkspaceRow>
         ))}
+        {hiddenCount ? (
+          <button type="button" className="secondary" onClick={() => setShowAll(true)}>
+            Ver {hiddenCount} despesa{hiddenCount === 1 ? "" : "s"} restante{hiddenCount === 1 ? "" : "s"}
+          </button>
+        ) : null}
         {!expenses.length ? <p className="subtle">Sem despesas recentes.</p> : null}
       </WorkspaceList>
     </>

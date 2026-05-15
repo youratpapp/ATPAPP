@@ -18,6 +18,75 @@ type ViewMode = "participating" | "organizing";
 type StatusFilter = "all" | "draft" | "registration_open" | "registration_closed" | "live" | "finished";
 type VisibilityFilter = "all" | "public" | "private";
 type SortKey = "updated_desc" | "updated_asc" | "starts_asc" | "starts_desc" | "name_asc";
+type CreateClassDraft = {
+  categoryName: string;
+  className: string;
+  gender: "open" | "male" | "female";
+  maxParticipants: string;
+  minAge: string;
+  maxAge: string;
+};
+type CreateCompetitionModel = "grupos_mata_mata" | "mata_mata_simples" | "round_robin" | "dupla_eliminacao";
+type CreateScoring = "melhor_de_3" | "melhor_de_3_super_tb" | "set_unico" | "pro_set" | "fast4";
+
+const DEFAULT_CREATE_CLASS: CreateClassDraft = {
+  categoryName: "Tenis",
+  className: "Classe A",
+  gender: "open",
+  maxParticipants: "16",
+  minAge: "",
+  maxAge: "",
+};
+
+const EMPTY_CREATE_CLASS_DRAFT: CreateClassDraft = {
+  ...DEFAULT_CREATE_CLASS,
+  className: "",
+};
+
+function parseMoneyToCents(value: string): number {
+  const normalized = value.replace(/\./g, "").replace(",", ".").replace(/[^\d.]/g, "");
+  const amount = Number.parseFloat(normalized);
+  if (Number.isNaN(amount) || amount <= 0) return 0;
+  return Math.round(amount * 100);
+}
+
+function parseIntegerOrUndefined(value: string): number | undefined {
+  const n = Number.parseInt(value.replace(/[^\d]/g, ""), 10);
+  return Number.isNaN(n) ? undefined : n;
+}
+
+function splitCourtNames(value: string): string[] {
+  return Array.from(
+    new Set(
+      value
+        .split(/\r?\n|,/)
+        .map((item) => item.trim())
+        .filter(Boolean)
+    )
+  );
+}
+
+function buildAgendaDays(startDate: string, endDate: string, startTime: string, endTime: string) {
+  if (!startDate) return [];
+  const start = new Date(`${startDate}T00:00:00`);
+  const end = endDate ? new Date(`${endDate}T00:00:00`) : start;
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime()) || end < start) return [];
+  const out: Array<{ date: string; start: string; end: string }> = [];
+  const cursor = new Date(start);
+  while (cursor <= end && out.length < 14) {
+    const y = cursor.getFullYear();
+    const m = String(cursor.getMonth() + 1).padStart(2, "0");
+    const d = String(cursor.getDate()).padStart(2, "0");
+    out.push({ date: `${y}-${m}-${d}`, start: startTime || "08:00", end: endTime || "20:00" });
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return out;
+}
+
+function formatCurrencyPreview(value: string): string {
+  const cents = parseMoneyToCents(value);
+  return (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
 
 function formatDateRange(starts: string, ends?: string): string {
   if (!starts) return "Data a definir";
@@ -216,6 +285,24 @@ export function EventsPage({ user, profile }: Props) {
   const [newCityLoading, setNewCityLoading] = useState(false);
   const [newCityLoadError, setNewCityLoadError] = useState("");
   const [newVisibility, setNewVisibility] = useState<"private" | "public">("private");
+  const [newInitialStatus, setNewInitialStatus] = useState<"draft" | "registration_open">("draft");
+  const [newStartsOn, setNewStartsOn] = useState("");
+  const [newEndsOn, setNewEndsOn] = useState("");
+  const [newRegistrationCloseOn, setNewRegistrationCloseOn] = useState("");
+  const [newRegistrationFee, setNewRegistrationFee] = useState("");
+  const [newRegistrationApproval, setNewRegistrationApproval] = useState<"manual" | "auto">("manual");
+  const [newPlayerResultsEnabled, setNewPlayerResultsEnabled] = useState(false);
+  const [newPosterUrl, setNewPosterUrl] = useState("");
+  const [newCreateClasses, setNewCreateClasses] = useState<CreateClassDraft[]>([DEFAULT_CREATE_CLASS]);
+  const [newClassDraft, setNewClassDraft] = useState<CreateClassDraft>(EMPTY_CREATE_CLASS_DRAFT);
+  const [newMatchType, setNewMatchType] = useState<"simples" | "duplas">("simples");
+  const [newCompetitionModel, setNewCompetitionModel] = useState<CreateCompetitionModel>("grupos_mata_mata");
+  const [newScoring, setNewScoring] = useState<CreateScoring>("melhor_de_3_super_tb");
+  const [newDoublesMode, setNewDoublesMode] = useState<"manual" | "sorteio">("manual");
+  const [newMatchDuration, setNewMatchDuration] = useState("60");
+  const [newAgendaStartTime, setNewAgendaStartTime] = useState("08:00");
+  const [newAgendaEndTime, setNewAgendaEndTime] = useState("20:00");
+  const [newCourtNames, setNewCourtNames] = useState("Quadra 1\nQuadra 2");
 
   const [showJoin, setShowJoin] = useState(false);
   const [joinUuid, setJoinUuid] = useState("");
@@ -234,6 +321,76 @@ export function EventsPage({ user, profile }: Props) {
     () => newCityOptions.some((item) => item.toLowerCase() === newCity.trim().toLowerCase()),
     [newCity, newCityOptions]
   );
+  const createClasses = useMemo(
+    () =>
+      newCreateClasses
+        .map((item) => ({
+          ...item,
+          categoryName: item.categoryName.trim(),
+          className: item.className.trim(),
+        }))
+        .filter((item) => item.categoryName && item.className),
+    [newCreateClasses]
+  );
+  const createCourts = useMemo(() => splitCourtNames(newCourtNames), [newCourtNames]);
+  const createAgendaDays = useMemo(
+    () => buildAgendaDays(newStartsOn, newEndsOn, newAgendaStartTime, newAgendaEndTime),
+    [newAgendaEndTime, newAgendaStartTime, newEndsOn, newStartsOn]
+  );
+  const createBasicReady = Boolean(newName.trim() && normalizedNewUf && newCity.trim() && newStartsOn);
+  const createClassesReady = createClasses.length > 0;
+  const createAgendaReady = createCourts.length > 0 && createAgendaDays.length > 0;
+
+  const resetCreateDraft = () => {
+    setNewName("");
+    setNewCity("");
+    setNewState("");
+    setNewCityOptions([]);
+    setNewVisibility("private");
+    setNewInitialStatus("draft");
+    setNewStartsOn("");
+    setNewEndsOn("");
+    setNewRegistrationCloseOn("");
+    setNewRegistrationFee("");
+    setNewRegistrationApproval("manual");
+    setNewPlayerResultsEnabled(false);
+    setNewPosterUrl("");
+    setNewCreateClasses([DEFAULT_CREATE_CLASS]);
+    setNewClassDraft(EMPTY_CREATE_CLASS_DRAFT);
+    setNewMatchType("simples");
+    setNewCompetitionModel("grupos_mata_mata");
+    setNewScoring("melhor_de_3_super_tb");
+    setNewDoublesMode("manual");
+    setNewMatchDuration("60");
+    setNewAgendaStartTime("08:00");
+    setNewAgendaEndTime("20:00");
+    setNewCourtNames("Quadra 1\nQuadra 2");
+  };
+
+  const closeCreateModal = () => {
+    setShowCreate(false);
+  };
+
+  const addCreateClass = () => {
+    const next = {
+      ...newClassDraft,
+      categoryName: newClassDraft.categoryName.trim(),
+      className: newClassDraft.className.trim(),
+    };
+    if (!next.categoryName || !next.className) return;
+    const exists = createClasses.some(
+      (item) =>
+        item.categoryName.toLowerCase() === next.categoryName.toLowerCase() &&
+        item.className.toLowerCase() === next.className.toLowerCase()
+    );
+    if (exists) {
+      setFeedback({ kind: "error", text: "Esta categoria/classe ja esta na criacao do torneio." });
+      return;
+    }
+    setNewCreateClasses((prev) => [...prev, next]);
+    setNewClassDraft({ ...DEFAULT_CREATE_CLASS, categoryName: next.categoryName, className: "" });
+    setFeedback(null);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -321,13 +478,36 @@ export function EventsPage({ user, profile }: Props) {
         city: newCity,
         state: normalizedNewUf,
         visibility: newVisibility,
+        status: newInitialStatus,
+        startsAt: newStartsOn,
+        endsAt: newEndsOn,
+        registrationCloseAt: newRegistrationCloseOn,
+        registrationFeeCents: parseMoneyToCents(newRegistrationFee),
+        registrationApproval: newRegistrationApproval,
+        playerResultSubmissionEnabled: newPlayerResultsEnabled,
+        posterUrl: newPosterUrl,
+        classes: createClasses.map((item) => ({
+          categoryName: item.categoryName,
+          className: item.className,
+          gender: item.gender,
+          maxParticipants: parseIntegerOrUndefined(item.maxParticipants),
+          minAge: parseIntegerOrUndefined(item.minAge),
+          maxAge: parseIntegerOrUndefined(item.maxAge),
+        })),
+        format: {
+          matchType: newMatchType,
+          competitionModel: newCompetitionModel,
+          scoring: newScoring,
+          doublesMode: newDoublesMode,
+        },
+        agenda: {
+          durationMin: parseIntegerOrUndefined(newMatchDuration),
+          courts: createCourts,
+          days: createAgendaDays,
+        },
       });
       setShowCreate(false);
-      setNewName("");
-      setNewCity("");
-      setNewState("");
-      setNewCityOptions([]);
-      setNewVisibility("private");
+      resetCreateDraft();
       navigate(buildTournamentUrl(id));
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao criar." });
@@ -599,73 +779,348 @@ export function EventsPage({ user, profile }: Props) {
       ))}
 
       {showCreate ? (
-        <div className="modal-backdrop" onClick={() => setShowCreate(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-backdrop" onClick={closeCreateModal}>
+          <div className="modal competition-create-modal" onClick={(e) => e.stopPropagation()}>
             <SetupWizard
               title="Novo torneio"
-              subtitle="Crie a estrutura inicial. Categorias, classes e regras entram na organizacao do torneio."
+              subtitle="Monte o rascunho inicial em uma ordem operacional. Depois voce ajusta detalhes finos dentro do torneio."
               busy={busy}
-              finishLabel="Criar e abrir"
-              onCancel={() => setShowCreate(false)}
+              finishLabel={newInitialStatus === "registration_open" ? "Criar e abrir inscricoes" : "Criar rascunho"}
+              onCancel={closeCreateModal}
               onFinish={onCreate}
               steps={[
                 {
-                  id: "identity",
-                  label: "Identidade",
-                  detail: "Nome e acesso",
-                  canContinue: Boolean(newName.trim()),
+                  id: "basic",
+                  label: "Basico",
+                  detail: "Nome, local e data",
+                  canContinue: createBasicReady,
                   content: (
-                    <>
-                      <label>Nome</label>
-                      <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Ex.: Aberto de Primavera" />
-                      <label>Visibilidade</label>
-                      <select value={newVisibility} onChange={(e) => setNewVisibility(e.target.value as "private" | "public")}>
-                        <option value="private">Somente por link</option>
-                        <option value="public">Publico</option>
-                      </select>
-                    </>
+                    <div className="competition-setup-grid">
+                      <label>
+                        <span>Nome do torneio</span>
+                        <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Ex.: Aberto de Primavera" />
+                      </label>
+                      <label>
+                        <span>Data de inicio</span>
+                        <input type="date" value={newStartsOn} onChange={(e) => setNewStartsOn(e.target.value)} />
+                      </label>
+                      <label>
+                        <span>Data final</span>
+                        <input type="date" value={newEndsOn} onChange={(e) => setNewEndsOn(e.target.value)} />
+                      </label>
+                      <label>
+                        <span>Estado (UF)</span>
+                        <select
+                          value={newState}
+                          onChange={(e) => {
+                            const nextUf = normalizeStateUf(e.target.value);
+                            setNewState(nextUf);
+                            setNewCity("");
+                          }}
+                        >
+                          <option value="">Selecione</option>
+                          {BRAZILIAN_STATES.map((state) => (
+                            <option key={`event-state:${state.uf}`} value={state.uf}>
+                              {state.uf} - {state.name}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label>
+                        <span>Cidade</span>
+                        <select value={newCity} onChange={(e) => setNewCity(e.target.value)} disabled={!normalizedNewUf || newCityLoading}>
+                          <option value="">
+                            {!normalizedNewUf
+                              ? "Selecione o estado primeiro"
+                              : newCityLoading
+                              ? "Carregando municipios..."
+                              : "Selecione o municipio"}
+                          </option>
+                          {newCityValueInOptions ? null : newCity.trim() ? <option value={newCity}>{newCity}</option> : null}
+                          {newCityOptions.map((cityName) => (
+                            <option key={`event-city:${cityName}`} value={cityName}>
+                              {cityName}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label>
+                        <span>Visibilidade</span>
+                        <select value={newVisibility} onChange={(e) => setNewVisibility(e.target.value as "private" | "public")}>
+                          <option value="private">Privado / por link</option>
+                          <option value="public">Publico</option>
+                        </select>
+                      </label>
+                      <label className="wide">
+                        <span>Imagem do cartaz</span>
+                        <input value={newPosterUrl} onChange={(e) => setNewPosterUrl(e.target.value)} placeholder="URL da imagem do evento" />
+                      </label>
+                      {newCityLoadError ? <p className="feedback error wide">{newCityLoadError}</p> : null}
+                    </div>
                   ),
                 },
                 {
-                  id: "location",
-                  label: "Local",
-                  detail: "Estado e cidade",
+                  id: "registration",
+                  label: "Inscricoes",
+                  detail: "Prazo, taxa e aprovacao",
                   content: (
-                    <>
-                      <label>Estado (UF)</label>
-                      <select
-                        value={newState}
-                        onChange={(e) => {
-                          const nextUf = normalizeStateUf(e.target.value);
-                          setNewState(nextUf);
-                          setNewCity("");
-                        }}
-                      >
-                        <option value="">Selecione</option>
-                        {BRAZILIAN_STATES.map((state) => (
-                          <option key={`event-state:${state.uf}`} value={state.uf}>
-                            {state.uf} - {state.name}
-                          </option>
+                    <div className="competition-setup-grid">
+                      <label>
+                        <span>Inscricoes ate</span>
+                        <input type="date" value={newRegistrationCloseOn} onChange={(e) => setNewRegistrationCloseOn(e.target.value)} />
+                      </label>
+                      <label>
+                        <span>Taxa de inscricao</span>
+                        <input
+                          inputMode="decimal"
+                          value={newRegistrationFee}
+                          onChange={(e) => setNewRegistrationFee(e.target.value)}
+                          placeholder="Ex.: 130,00"
+                        />
+                      </label>
+                      <label>
+                        <span>Aprovacao</span>
+                        <select value={newRegistrationApproval} onChange={(e) => setNewRegistrationApproval(e.target.value as "manual" | "auto")}>
+                          <option value="manual">Manual pelo organizador</option>
+                          <option value="auto">Automatica</option>
+                        </select>
+                      </label>
+                      <label>
+                        <span>Resultado pelo jogador</span>
+                        <select value={newPlayerResultsEnabled ? "sim" : "nao"} onChange={(e) => setNewPlayerResultsEnabled(e.target.value === "sim")}>
+                          <option value="nao">Nao permitir agora</option>
+                          <option value="sim">Permitir envio</option>
+                        </select>
+                      </label>
+                      <article className="competition-setup-card wide">
+                        <strong>{newRegistrationApproval === "manual" ? "Fila controlada" : "Entrada rapida"}</strong>
+                        <span>
+                          {newRegistrationApproval === "manual"
+                            ? "Inscricoes entram pendentes para aprovacao e cobranca."
+                            : "Jogadores entram aprovados quando se inscrevem."}
+                        </span>
+                      </article>
+                    </div>
+                  ),
+                },
+                {
+                  id: "classes",
+                  label: "Categorias",
+                  detail: `${createClasses.length} criadas`,
+                  canContinue: createClassesReady,
+                  content: (
+                    <div className="competition-setup-stack">
+                      <div className="competition-setup-grid">
+                        <label>
+                          <span>Categoria</span>
+                          <input
+                            value={newClassDraft.categoryName}
+                            onChange={(e) => setNewClassDraft((prev) => ({ ...prev, categoryName: e.target.value }))}
+                            placeholder="Ex.: Tenis"
+                          />
+                        </label>
+                        <label>
+                          <span>Classe</span>
+                          <input
+                            value={newClassDraft.className}
+                            onChange={(e) => setNewClassDraft((prev) => ({ ...prev, className: e.target.value }))}
+                            placeholder="Ex.: 5a Classe Masculino"
+                          />
+                        </label>
+                        <label>
+                          <span>Genero</span>
+                          <select
+                            value={newClassDraft.gender}
+                            onChange={(e) => setNewClassDraft((prev) => ({ ...prev, gender: e.target.value as CreateClassDraft["gender"] }))}
+                          >
+                            <option value="open">Aberto</option>
+                            <option value="male">Masculino</option>
+                            <option value="female">Feminino</option>
+                          </select>
+                        </label>
+                        <label>
+                          <span>Vagas</span>
+                          <input
+                            inputMode="numeric"
+                            value={newClassDraft.maxParticipants}
+                            onChange={(e) => setNewClassDraft((prev) => ({ ...prev, maxParticipants: e.target.value.replace(/[^\d]/g, "") }))}
+                            placeholder="16"
+                          />
+                        </label>
+                        <label>
+                          <span>Idade minima</span>
+                          <input
+                            inputMode="numeric"
+                            value={newClassDraft.minAge}
+                            onChange={(e) => setNewClassDraft((prev) => ({ ...prev, minAge: e.target.value.replace(/[^\d]/g, "") }))}
+                            placeholder="Opcional"
+                          />
+                        </label>
+                        <label>
+                          <span>Idade maxima</span>
+                          <input
+                            inputMode="numeric"
+                            value={newClassDraft.maxAge}
+                            onChange={(e) => setNewClassDraft((prev) => ({ ...prev, maxAge: e.target.value.replace(/[^\d]/g, "") }))}
+                            placeholder="Opcional"
+                          />
+                        </label>
+                      </div>
+                      <button type="button" onClick={addCreateClass} disabled={!newClassDraft.categoryName.trim() || !newClassDraft.className.trim()}>
+                        Adicionar categoria/classe
+                      </button>
+                      <div className="competition-class-list">
+                        {createClasses.map((item, index) => (
+                          <article key={`${item.categoryName}:${item.className}:${index}`}>
+                            <div>
+                              <strong>{item.categoryName} - {item.className}</strong>
+                              <span>
+                                {item.gender === "male" ? "Masculino" : item.gender === "female" ? "Feminino" : "Aberto"} · {item.maxParticipants || "16"} vagas
+                              </span>
+                            </div>
+                            <button
+                              className="ghost"
+                              type="button"
+                              onClick={() => setNewCreateClasses((prev) => prev.filter((_, i) => i !== index))}
+                              disabled={createClasses.length <= 1}
+                            >
+                              Remover
+                            </button>
+                          </article>
                         ))}
-                      </select>
-                      <label>Cidade</label>
-                      <select value={newCity} onChange={(e) => setNewCity(e.target.value)} disabled={!normalizedNewUf || newCityLoading}>
-                        <option value="">
-                          {!normalizedNewUf
-                            ? "Selecione o estado primeiro"
-                            : newCityLoading
-                            ? "Carregando municipios..."
-                            : "Selecione o municipio"}
-                        </option>
-                        {newCityValueInOptions ? null : newCity.trim() ? <option value={newCity}>{newCity}</option> : null}
-                        {newCityOptions.map((cityName) => (
-                          <option key={`event-city:${cityName}`} value={cityName}>
-                            {cityName}
-                          </option>
-                        ))}
-                      </select>
-                      {newCityLoadError ? <p className="feedback error">{newCityLoadError}</p> : null}
-                    </>
+                      </div>
+                    </div>
+                  ),
+                },
+                {
+                  id: "format",
+                  label: "Formato",
+                  detail: "Modelo e pontuacao",
+                  content: (
+                    <div className="competition-setup-grid">
+                      <label>
+                        <span>Tipo de jogo</span>
+                        <select value={newMatchType} onChange={(e) => setNewMatchType(e.target.value as "simples" | "duplas")}>
+                          <option value="simples">Simples</option>
+                          <option value="duplas">Duplas</option>
+                        </select>
+                      </label>
+                      {newMatchType === "duplas" ? (
+                        <label>
+                          <span>Duplas</span>
+                          <select value={newDoublesMode} onChange={(e) => setNewDoublesMode(e.target.value as "manual" | "sorteio")}>
+                            <option value="manual">Duplas informadas</option>
+                            <option value="sorteio">Sorteio automatico</option>
+                          </select>
+                        </label>
+                      ) : null}
+                      <label>
+                        <span>Modelo</span>
+                        <select value={newCompetitionModel} onChange={(e) => setNewCompetitionModel(e.target.value as CreateCompetitionModel)}>
+                          <option value="grupos_mata_mata">Grupos + mata-mata</option>
+                          <option value="mata_mata_simples">Mata-mata simples</option>
+                          <option value="round_robin">Todos contra todos</option>
+                          <option value="dupla_eliminacao">Dupla eliminacao</option>
+                        </select>
+                      </label>
+                      <label>
+                        <span>Pontuacao</span>
+                        <select value={newScoring} onChange={(e) => setNewScoring(e.target.value as CreateScoring)}>
+                          <option value="melhor_de_3_super_tb">2 sets + super tie-break</option>
+                          <option value="melhor_de_3">Melhor de 3 sets</option>
+                          <option value="set_unico">Set unico</option>
+                          <option value="pro_set">Pro set</option>
+                          <option value="fast4">Fast4</option>
+                        </select>
+                      </label>
+                      <article className="competition-setup-card wide">
+                        <strong>Padrao aplicado em todas as classes</strong>
+                        <span>Depois da criacao, cada classe ainda pode receber ajuste individual no torneio.</span>
+                      </article>
+                    </div>
+                  ),
+                },
+                {
+                  id: "agenda",
+                  label: "Agenda",
+                  detail: `${createCourts.length} quadras`,
+                  canContinue: createAgendaReady,
+                  content: (
+                    <div className="competition-setup-grid">
+                      <label>
+                        <span>Duracao por jogo</span>
+                        <input
+                          inputMode="numeric"
+                          value={newMatchDuration}
+                          onChange={(e) => setNewMatchDuration(e.target.value.replace(/[^\d]/g, ""))}
+                          placeholder="60"
+                        />
+                      </label>
+                      <label>
+                        <span>Inicio diario</span>
+                        <input type="time" value={newAgendaStartTime} onChange={(e) => setNewAgendaStartTime(e.target.value)} />
+                      </label>
+                      <label>
+                        <span>Fim diario</span>
+                        <input type="time" value={newAgendaEndTime} onChange={(e) => setNewAgendaEndTime(e.target.value)} />
+                      </label>
+                      <label className="wide">
+                        <span>Quadras</span>
+                        <textarea
+                          rows={4}
+                          value={newCourtNames}
+                          onChange={(e) => setNewCourtNames(e.target.value)}
+                          placeholder={"Quadra 1\nQuadra 2\nQuadra 3"}
+                        />
+                      </label>
+                      <article className="competition-setup-card wide">
+                        <strong>{createAgendaDays.length} dia(s) de agenda</strong>
+                        <span>
+                          O gerador usa estes dias, horarios e quadras para distribuir partidas quando a chave for gerada.
+                        </span>
+                      </article>
+                    </div>
+                  ),
+                },
+                {
+                  id: "review",
+                  label: "Revisar",
+                  detail: "Criar rascunho",
+                  canContinue: createBasicReady && createClassesReady && createAgendaReady,
+                  content: (
+                    <div className="competition-setup-stack">
+                      <div className="competition-setup-grid">
+                        <label className="wide">
+                          <span>Status inicial</span>
+                          <select value={newInitialStatus} onChange={(e) => setNewInitialStatus(e.target.value as "draft" | "registration_open")}>
+                            <option value="draft">Criar como rascunho</option>
+                            <option value="registration_open">Criar com inscricoes abertas</option>
+                          </select>
+                        </label>
+                      </div>
+                      <div className="competition-review">
+                        <article>
+                          <span>Torneio</span>
+                          <strong>{newName || "Novo torneio"}</strong>
+                          <small>{[newCity, normalizedNewUf].filter(Boolean).join(" - ")} · {newVisibility === "public" ? "Publico" : "Privado"}</small>
+                        </article>
+                        <article>
+                          <span>Inscricoes</span>
+                          <strong>{newRegistrationCloseOn || "Prazo a definir"}</strong>
+                          <small>{formatCurrencyPreview(newRegistrationFee)} · {newRegistrationApproval === "manual" ? "aprovacao manual" : "aprovacao automatica"}</small>
+                        </article>
+                        <article>
+                          <span>Categorias</span>
+                          <strong>{createClasses.length} classe(s)</strong>
+                          <small>{newMatchType === "simples" ? "Simples" : "Duplas"} · {newCompetitionModel === "grupos_mata_mata" ? "grupos + mata-mata" : "formato escolhido"}</small>
+                        </article>
+                        <article>
+                          <span>Agenda</span>
+                          <strong>{createCourts.length} quadra(s), {createAgendaDays.length} dia(s)</strong>
+                          <small>{newMatchDuration || "60"} min por jogo · {newAgendaStartTime}-{newAgendaEndTime}</small>
+                        </article>
+                      </div>
+                    </div>
                   ),
                 },
               ]}

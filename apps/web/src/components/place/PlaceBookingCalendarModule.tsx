@@ -32,6 +32,8 @@ type Props = {
   lessonRequests: AcademyLessonRequest[];
   occupancyPct: number;
   onChangeDay: (day: string) => void;
+  onCreateFromSlot?: (slot: { courtId: string; endsAt: string; startsAt: string }) => void;
+  onOpenReservations?: () => void;
   reservedMinutes: number;
 };
 
@@ -58,6 +60,14 @@ function minutesToTime(total: number): string {
   const hour = Math.floor(total / 60);
   const minute = total % 60;
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
+function addMinutesToDateTime(day: string, time: string, minutes: number): string {
+  const date = new Date(`${day}T${time}`);
+  if (Number.isNaN(date.getTime())) return `${day}T${time}`;
+  date.setMinutes(date.getMinutes() + minutes);
+  const pad = (part: number) => String(part).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 function weekdayFromDate(date: string): number {
@@ -90,6 +100,8 @@ export function PlaceBookingCalendarModule({
   lessonRequests,
   occupancyPct,
   onChangeDay,
+  onCreateFromSlot,
+  onOpenReservations,
   reservedMinutes,
 }: Props) {
   const [typeFilter, setTypeFilter] = useState<AgendaItemType | "all">("all");
@@ -304,7 +316,7 @@ export function PlaceBookingCalendarModule({
                         <article key={item.id} className={`court-agenda-event ${item.type}`}>
                           <header>
                             <strong>
-                              {shortTime(item.startsAt)}-{shortTime(item.endsAt)} · {item.title}
+                              {shortTime(item.startsAt)}-{shortTime(item.endsAt)} | {item.title}
                             </strong>
                             <span>{item.status}</span>
                           </header>
@@ -316,10 +328,32 @@ export function PlaceBookingCalendarModule({
                               <span>{item.studentNames.join(", ")}</span>
                             </details>
                           ) : null}
+                          {canManageBookings && onOpenReservations && item.id.startsWith("booking:") ? (
+                            <button className="quiet court-calendar-slot-action" type="button" onClick={onOpenReservations}>
+                              Ver reservas
+                            </button>
+                          ) : null}
                         </article>
                       ))
                     ) : (
-                      <p>Horario livre nesta quadra.</p>
+                      <div className="court-calendar-empty-slot">
+                        <p>Horario livre nesta quadra.</p>
+                        {canManageBookings && onCreateFromSlot ? (
+                          <button
+                            className="quiet court-calendar-slot-action"
+                            type="button"
+                            onClick={() =>
+                              onCreateFromSlot({
+                                courtId: court.id,
+                                startsAt: `${day}T${slot}`,
+                                endsAt: addMinutesToDateTime(day, slot, 60),
+                              })
+                            }
+                          >
+                            Reservar
+                          </button>
+                        ) : null}
+                      </div>
                     )}
                   </details>
                 );

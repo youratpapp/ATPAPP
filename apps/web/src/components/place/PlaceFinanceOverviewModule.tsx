@@ -14,6 +14,7 @@ type PlaceFinanceOverviewModuleProps = {
   packageRevenueCents: number;
   posRevenueCents: number;
   recurringRevenueCents: number;
+  showPosRevenue?: boolean;
   countLabel: (count: number, singular: string, plural: string) => string;
 };
 
@@ -29,15 +30,20 @@ export function PlaceFinanceOverviewModule({
   packageRevenueCents,
   posRevenueCents,
   recurringRevenueCents,
+  showPosRevenue = true,
   countLabel,
 }: PlaceFinanceOverviewModuleProps) {
   return (
     <WorkspaceGrid>
       <WorkspaceCard
         title="Saldo operacional"
-        subtitle="Reservas, cantina e despesas lancadas"
+        subtitle={showPosRevenue ? "Reservas, cantina e despesas lancadas" : "Reservas e despesas lancadas"}
         value={formatMoneyFromCents(paidBookingAmountCents + posRevenueCents - expenseCents)}
-        metrics={[`${formatMoneyFromCents(paidBookingAmountCents)} reservas`, `${formatMoneyFromCents(posRevenueCents)} cantina`, `${formatMoneyFromCents(expenseCents)} despesas`]}
+        metrics={[
+          `${formatMoneyFromCents(paidBookingAmountCents)} reservas`,
+          ...(showPosRevenue ? [`${formatMoneyFromCents(posRevenueCents)} cantina`] : []),
+          `${formatMoneyFromCents(expenseCents)} despesas`,
+        ]}
       />
       <WorkspaceCard
         title="Recebiveis em aberto"

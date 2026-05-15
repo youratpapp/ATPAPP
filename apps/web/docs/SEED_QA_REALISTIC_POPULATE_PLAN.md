@@ -15,7 +15,8 @@ O seed de QA deve simular uso real, nao apenas preencher tabelas. Toda massa pre
 - Gestores e recepcao: usuarios staff ligados a locais por `place_staff`.
 - Professores de local: usuarios ligados a `place_coaches` e `place_staff`.
 - Alunos: usuarios reais com `profiles`, contratos e matriculas.
-- Jogadores puros: usuarios `free_player` sem gestao, participando de reservas, partidas, torneios e ligas.
+- Jogador puro de QA: usuario `free_player` sem gestao e sem qualquer vinculo operacional para validar Player App limpo e bloqueios de acesso.
+- Jogadores operacionais: usuarios `free_player` participando de reservas, partidas, torneios, ligas e academias para validar dados reais.
 
 ## Volumes-Alvo
 
@@ -28,6 +29,7 @@ O seed de QA deve simular uso real, nao apenas preencher tabelas. Toda massa pre
 - 10-20 staff/professores de locais.
 - 240+ jogadores/alunos com perfil completo.
 - Implementacao atual cria entitlement explicito para todos os usuarios demo; jogadores ficam como `free_player` sem direito de criar local/competicao.
+- Implementacao atual tambem cria `qa.jogador.puro@demo.atp.local`, sem staff, contrato, reserva, inscricao, liga ou partida aberta, para testar usuario jogador sem contaminacao.
 
 ### Locais
 
@@ -134,3 +136,16 @@ Depois do seed:
 - Agenda mostra reservas, aulas, bloqueios, waitlist e ocupacao coerente.
 - Gestão abre como uma operacao ja implantada, com pendencias do dia e nao com setup incompleto.
 - `10_verify_seed_integrity.sql` retorna `qa_seed_integrity_ok` ou levanta erro com o nome dos checks quebrados.
+
+## Matriz QA Por Papel
+
+| Papel | Usuario recomendado | Vínculo esperado | Checagem do seed |
+|---|---|---|---|
+| Jogador puro | `qa.jogador.puro@demo.atp.local` | Apenas perfil + entitlement `free_player` | `qa_pure_player_missing`, `qa_pure_player_has_operational_links` |
+| Aluno mensalista | `jogador001@demo.atp.local` | Contrato ativo + matriculas ativas | `qa_monthly_student_missing` |
+| Professor vinculado | `prof.renato@demo.atp.local` | `place_staff.coach` + `place_coaches` + turmas | checks gerais de professores/turmas |
+| Professor sem local | `coach.solo@demo.atp.local` | Sem `place_staff` e sem `place_coaches` | `qa_coach_solo_has_place_links` |
+| Recepcao | `recepcao.prime@demo.atp.local` | `place_staff.frontdesk` | checks gerais de staff |
+| Financeiro | `financeiro.prime@demo.atp.local` | `place_staff.finance` | `qa_finance_staff_missing` |
+| Organizador puro | `organizador.circuito@demo.atp.local` | `competition_organizer`, sem `place_staff` | `qa_pure_organizer_has_place_staff`, `qa_pure_organizer_missing_entitlement` |
+| Gestor completo | `escalao@gmail.com` | owner e `academy_pro` | checks gerais de owner/local |

@@ -2,7 +2,16 @@
 
 Fonte principal: `CURRENT_PRODUCT_STATE.md`.
 
-Data: 2026-05-13
+Fonte de reestruturacao v2:
+
+- `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
+- `ROLE_BASED_RESTRUCTURE_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+
+Data: 2026-05-15
 
 ## Para que este arquivo existe
 
@@ -30,8 +39,1510 @@ Continue para o proximo item da Execution Queue.
 - Toda task deve gerar ganho perceptivel de UX.
 - Se uma task virar refactor tecnico sem ganho visual, quebrar em tarefa menor.
 - Se surgir problema novo, registrar como item novo com prioridade.
+- MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
+- Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
 ## P0 - Prioridade atual
+
+### [x] COMP-UX-03 - Inscricao em torneio/liga
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `COMPETITION_OS_V2_UX_PLAN.md`
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `COMPONENT_GRAMMAR.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- `COMP-UX-02` separou a leitura publica de torneio/liga da operacao do organizador.
+- O jogador agora entende o evento antes de ver jogos/ranking, mas a conversao de inscricao ainda pode manter densidade e etapas pouco claras.
+
+Objetivo:
+
+- Transformar inscricao em torneio/liga em fluxo curto, mobile-first e confiavel.
+- Separar escolha de categoria/classe, revisao de valor/restricoes, confirmacao e status.
+- Garantir feedback claro para inscricao enviada, pendente, aprovada, recusada ou ja existente.
+
+Escopo:
+
+- revisar `TournamentRegistrationPage.tsx`;
+- revisar formulario publico de entrada em liga dentro de `LeagueDetailsPage.tsx` ou extrair componente se ficar simples;
+- preservar backend/RLS/RPCs existentes;
+- melhorar estados de erro sem mostrar mensagem tecnica crua;
+- manter CTA sticky quando fizer sentido.
+
+Fora de escopo:
+
+- refazer setup de torneio/liga;
+- alterar regras de aprovacao, ranking ou pagamento;
+- criar checkout real se o backend atual ainda for stub.
+
+Criterios de aceite:
+
+- jogador escolhe categoria/classe sem lista confusa;
+- revisa valor e restricoes antes de confirmar;
+- confirmacao mostra status e proximo passo;
+- usuario ja inscrito entende a situacao sem reenviar;
+- erro de permissao/API e amigavel;
+- mobile 390px nao vira formulario longo.
+
+Validacao:
+
+- jogador novo se inscreve em torneio;
+- jogador ja inscrito abre o link;
+- jogador solicita entrada em liga publica;
+- caso de erro exibe feedback amigavel;
+- rodar lint/build.
+
+Entregue:
+
+- `/inscricao/:tournamentId` virou fluxo em 3 etapas: escolher categoria/classe, confirmar dados e revisar valor/prazo/restricao antes de enviar;
+- jogador ja inscrito ve status real (`pendente`, `aprovada`, `recusada`, `lista de espera`) e nao reenvia solicitacao duplicada;
+- erros de inscricao foram convertidos para mensagens amigaveis;
+- entrada publica em liga dentro de `/eventos/ligas/:leagueId` agora carrega a inscricao do usuario, bloqueia reenvio e mostra status/proximo passo;
+- link direto de liga em `/eventos/ligas/inscricao/:token` ganhou revisao curta, dados do jogador, status e CTA contextual;
+- CSS compartilhado `registration-flow`, `registration-option`, `registration-review-card` e `registration-sticky-cta` foi criado para manter o padrao v2 sem virar formulario longo.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+Gap documentado:
+
+- restricao de horario de torneio ainda nao possui campo persistido em `tournament_registrations`; a UI comunica para combinar com a organizacao, mas nao finge salvar um dado que o backend ainda nao guarda.
+
+### [x] MGMT-UX-01 - Shell operacional mobile
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `MANAGEMENT_OS_V2_UX_PLAN.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `COMPONENT_GRAMMAR.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Objetivo:
+
+- Reorganizar `/gestao` e o workspace local para que mobile abra por contexto operacional, subnav e fila antes de KPI.
+- Reduzir cockpit vazio, loading gigante, modulos misturados e indicadores sem acao.
+
+Escopo:
+
+- revisar entrada `/gestao`;
+- revisar primeira dobra de `/gestao/:placeId/:module`;
+- manter permissoes/plano;
+- nao refazer Agenda ou Academia inteira nesta task.
+
+Resultado esperado:
+
+- gestor ve fila e modulo ativo antes de metricas;
+- professor/recepcao/financeiro nao recebem atalhos irrelevantes;
+- mobile deixa de parecer uma pilha de cards administrativos.
+
+Entregue:
+
+- `/gestao` deixou de usar KPIs no header como primeira leitura; a fila do dia abre antes e os numeros foram movidos para `Sinais de suporte`;
+- `placeManagementModules(...)` passou a separar modulos por papel real: professor cai direto em Academia e nao herda `Painel`, Clientes, Financeiro ou Cantina; recepcao mantem Agenda/Academia/Clientes basico quando o plano permite;
+- a fila do dashboard do local passou a filtrar itens pelo modulo permitido, evitando recebiveis/cantina/agenda para papeis sem acesso;
+- o cockpit de `/gestao/:placeId/:module` ficou mais enxuto: a ficha publica do local permanece oculta e o card operacional usa grid com espacamento controlado.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+### [x] MGMT-UX-02 - Modo Professor
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `MANAGEMENT_OS_V2_UX_PLAN.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ACADEMY_V2_UX_PLAN.md`
+
+Objetivo:
+
+- Criar experiencia leve para professor: aulas, turmas, alunos, chamada e agenda.
+- Professor nao deve herdar cantina, CRM pesado ou financeiro completo sem permissao.
+- Professor sem vinculo precisa receber estado vazio claro e acao de proximo passo.
+
+Resultado esperado:
+
+- professor encontra rotina dele rapidamente;
+- rota de gestao local abre direto no modulo util;
+- agenda/turmas/alunos aparecem com contexto proprio;
+- sem vazamento de operacao empresarial.
+
+Entregue:
+
+- `Academia` em modo professor agora renderiza somente `Aulas`, `Turmas` e `Alunos`;
+- abas de `Pendencias`, `Professores` e `Configuracao` ficam fora da superficie do professor sem gestao completa;
+- turmas, alunos, chamada, reposicoes e resumo operacional sao filtrados pelo `place_coaches.user_id` vinculado ao login;
+- professor sem cadastro vinculado ve estado vazio claro em vez de herdar turmas por nome do professor;
+- fila da Academia para professor mostra apenas aulas do dia, sem aprovacao/cobranca de pendencias empresariais.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+### [x] QA-ROLE-01 - Teste manual por papel
+
+Status: `[x]` concluido em 2026-05-15
+
+Objetivo:
+
+- Reexecutar testes por jogador, aluno, professor, recepcao, financeiro, organizador e gestor depois das separacoes por modo.
+- Confirmar no browser que cada papel ve apenas o que precisa e que nao houve regressao de caminhos principais.
+
+Entregue:
+
+- criado `QA_ROLE_01_ROLE_VISIBILITY_REPORT_2026_05_15.md`;
+- screenshots e textos por papel em `web/docs/screenshots/qa-role-2026-05-15/`;
+- nenhum P0 novo encontrado;
+- vazamento de setup por papel virou a proxima prioridade.
+
+### [x] MGMT-ROLE-QA-01 - Corrigir vazamento de setup por papel
+
+Status: `[x]` concluido em 2026-05-15
+
+Objetivo:
+
+- Remover tarefas de setup estrutural da visao de professor e recepcao.
+- Manter setup profundo apenas para `owner`/`manager`.
+- Preservar fila operacional real por papel.
+
+Entregue:
+
+- `summarizePlace(...)` passou a considerar papel/permissao;
+- professor recebe resumo filtrado por `place_coaches.user_id`;
+- professor nao soma setup, CRM, financeiro, estoque, reservas ou pendencias globais do local;
+- recepcao nao recebe setup estrutural nem financeiro/cantina;
+- setup estrutural fica restrito a `owner`/`manager`;
+- criado `MGMT_ROLE_QA_01_REPORT_2026_05_15.md`;
+- screenshots em `web/docs/screenshots/mgmt-role-qa-01-2026-05-15/`.
+
+Validacao executada:
+
+- Playwright desktop/mobile para professor, recepcao e gestor;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+### [x] QA-DESIGN-01 - Auditoria visual de consistencia
+
+Status: `[x]` concluido em 2026-05-15
+
+Objetivo:
+
+- Validar se as areas reestruturadas mantem o DNA visual ATP.
+- Garantir que Player App, Competition OS e Management OS nao voltem para card overload, duplicidade e hierarquia confusa.
+
+Entregue:
+
+- criado relatorio `QA_DESIGN_01_VISUAL_CONSISTENCY_REPORT_2026_05_15.md`;
+- screenshots desktop/mobile atualizados em `web/docs/screenshots/qa-design-01-2026-05-15/`;
+- `/locais` deixou de renderizar contadores zerados em tiles de intencao do Player App;
+- `/eventos` deixou de renderizar badges `0` e removeu a entrada `Organizando` da primeira leitura do jogador puro;
+- `/eventos` preserva o modo organizador quando ha competicoes organizadas ou acesso explicito ao modo;
+- `fetchPlacesWorkspaceData` ganhou fallback por recurso opcional para impedir que falha/timeout de pagamentos ou partidas abertas bloqueie a Central de Gestao inteira.
+
+Validacao executada:
+
+- Playwright autenticado em 390px e 1366px para jogador, organizador, professor, recepcao e gestor;
+- recaptura especifica de `/eventos?modo=discover` confirmou que jogador puro nao ve `Organizando`;
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+Achados reenfileirados:
+
+- Ranking do jogador foi simplificado em `PLAYER-UX-06`; perfil do jogador foi separado por finalidade em `PLAYER-UX-07`;
+- fila operacional de torneio foi enderecada em `COMP-OPS-01`; validacao visual mobile autenticada com muitos dados segue recomendada;
+- central de Gestao ainda carrega dados demais para a primeira dobra; risco registrado para futura otimizacao de resumo leve;
+- papel financeiro dedicado foi entregue em `ROLE-FINANCE-01`; operador de caixa/POS segue como backlog futuro.
+
+### [x] COMP-UX-02 - Evento publico mobile
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `COMPETITION_OS_V2_UX_PLAN.md`
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
+- `COMPONENT_GRAMMAR.md`
+- `DESIGN_TOKENS.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- `COMP-UX-01` separou o hub `/eventos` em `Jogando`, `Organizando` e `Descobrir`.
+- O proximo gargalo P0 esta dentro do evento/torneio publico: jogador ainda pode cair em uma pagina com densidade de cockpit e navegacao secundaria empurrada por resumos.
+
+Objetivo:
+
+- Fazer a pagina publica de torneio/liga parecer evento para jogador, nao painel administrativo.
+- Expor nome, local, data, status, poster, tabs e CTA principal antes de detalhe pesado.
+- Preservar acesso de organizador, mas sem misturar fila, configuracao e KPIs na leitura publica.
+
+Escopo:
+
+- revisar rota publica de torneio em `TournamentPage.tsx` e CSS relacionado;
+- revisar, quando seguro, a superficie publica de liga em `LeagueDetailsPage.tsx`;
+- garantir tabs visiveis cedo (`Evento`, `Categorias`, `Inscritos/Jogos`);
+- criar/ajustar CTA contextual para jogador (`Inscrever-se`, `Ver inscricao`, `Ver meus jogos`, `Inscricoes encerradas`);
+- manter regras atuais de inscricao, staff, jogos, resultados e permissoes.
+
+Fora de escopo:
+
+- refazer fluxo de inscricao completo (`COMP-UX-03`);
+- refazer setup completo de torneio/liga (`COMP-SETUP-01/02`);
+- alterar algoritmo de partidas, chaves, resultados ou ranking.
+
+Criterios de aceite:
+
+- jogador visitante/inscrito entende o evento na primeira dobra;
+- tabs nao ficam empurradas por resumo administrativo;
+- KPIs e filas de organizador nao aparecem na leitura publica;
+- CTA principal fica visivel e coerente com estado;
+- mobile 390px nao abre como cockpit empilhado.
+
+Validacao:
+
+- lint e typecheck passaram;
+- build passou;
+- validacao visual pendente de screenshot se o navegador local estiver disponivel.
+
+Entregue:
+
+- torneio publico ganhou bloco inicial de evento com nome, local, data, status, poster/placeholder, fatos essenciais e CTA contextual;
+- jogador publico/inscrito nao ve `CompetitionScopeSelector`, KPIs, fila operacional nem painel de publicacao antes do conteudo;
+- categorias do torneio aparecem em rail acionavel, sem slice silencioso, e selecionam a classe para jogos;
+- navegacao publica de torneio ficou leve (`Evento`, `Categorias`, `Jogos`, `Classificacao`, `Chat` quando disponivel);
+- CTA mobile sticky foi adicionado para inscricao, acompanhamento ou jogos;
+- liga publica recebeu bloco equivalente com status, temporada, classes, jogadores, CTA e rail de classes;
+- operacao de owner/organizador foi preservada com fila, filtros, publicacao, jogadores e partidas.
+
+### [x] COMP-UX-01 - Hub de eventos por modo
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `COMPETITION_OS_V2_UX_PLAN.md`
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
+- `COMPONENT_GRAMMAR.md`
+- `DESIGN_TOKENS.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- `PLAYER-UX-01` a `PLAYER-UX-04` reduziram empilhamento inicial de jogador em inicio, locais, reserva e aulas publicas.
+- O gargalo seguinte estava em `/eventos`, onde jogador, organizador e descoberta ainda disputavam a mesma tela.
+
+Entregue:
+
+- `/eventos` agora opera por modo ativo: `Jogando`, `Organizando` e `Descobrir`;
+- apenas o conteudo do modo selecionado e renderizado, evitando cockpit empilhado;
+- jogador abre em `Jogando` ou `Descobrir` quando nao tem competicoes ativas;
+- usuario apenas organizador pode iniciar em `Organizando`, sem poluir a visao do jogador;
+- fila operacional e criacao de torneio/liga ficaram no contexto `Organizando`;
+- `Descobrir` virou entrada leve para torneios, ligas e locais, com acesso separado ao modo organizador;
+- listas com preview indicam quando existem mais itens e oferecem `Ver todos`;
+- mobile usa segmentos horizontais em vez de empilhar as tres areas;
+- `lint` e `build` passaram.
+
+Validacao:
+
+- `/eventos`;
+- jogador puro;
+- organizador;
+- usuario multi-papel;
+- mobile 390px por CSS;
+- `npm run lint`;
+- `npm run build`.
+
+### [x] PLAYER-UX-04 - Entrar em aula como fluxo publico
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `PLAYER_APP_V2_UX_PLAN.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
+- `ACADEMY_MODULE_FUNCTION_MAP.md`
+- `COMPONENT_GRAMMAR.md`
+- `DESIGN_TOKENS.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- `PLAYER-UX-03` tornou a reserva publica do local um fluxo direto: dia/duracao, horarios livres, confirmacao e lista de espera.
+- O gargalo seguinte era aula/turma publica: a pagina do local ainda misturava lista, select e formulario como ficha de academia.
+
+Entregue:
+
+- `/locais?intent=classes` recebeu linguagem mais direta para jogador: `Entrar em aula`, escolher perfil e ver turma;
+- pagina publica do local passou a organizar aula em 3 passos: perfil, turma com vaga e envio de interesse;
+- a lista duplicada de turmas abaixo do formulario foi removida;
+- selecao de turma virou card acionavel com dia/hora, professor, nivel, vaga e valor publico quando existe;
+- `Enviar interesse` continua persistindo via `createAcademyEnrollment`;
+- erro tecnico de solicitacao de aula nao e exibido cru ao jogador;
+- filtros podem ser limpos e estados vazios orientam ajuste de perfil;
+- `lint` e `build` passaram.
+
+Validacao:
+
+- `/locais?intent=classes`;
+- pagina publica de local com turmas;
+- mobile responsivo por CSS em 390px;
+- `npm run lint`;
+- `npm run build`.
+
+### [x] PLAYER-UX-03 - Reserva mobile fluida
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `PLAYER_APP_V2_UX_PLAN.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
+- `AGENDA_MODULE_FUNCTION_MAP.md`
+- `COMPONENT_GRAMMAR.md`
+- `DESIGN_TOKENS.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- `PLAYER-UX-02` reorganizou `/locais` por intencao compacta e criou entrada direta para reserva, aulas, jogos e lista de locais.
+- O proximo gargalo e o fluxo de reserva: depois de escolher reservar, o jogador ainda precisa de um caminho mais fluido para onde/quando/disponibilidade/confirmar.
+
+Objetivo:
+
+- Tornar a reserva mobile direta e acionavel.
+- O jogador deve conseguir escolher local/data/hora, ver slots ou quadras disponiveis e solicitar reserva sem interpretar uma area de gestao.
+
+Escopo:
+
+- revisar `PlacesPage.tsx` e CSS relacionado;
+- revisar entrada publica de reserva em `PlacePublicPage.tsx`, se necessario;
+- transformar filtros de reserva em fluxo compacto, especialmente no mobile;
+- melhorar cards de disponibilidade com preco/status/duracao;
+- manter lista de espera como alternativa quando nao houver disponibilidade real;
+- manter criacao de reserva usando backend existente.
+
+Fora de escopo:
+
+- refazer aulas publicas (`PLAYER-UX-04`);
+- alterar backend estrutural;
+- mexer em Management OS de agenda, salvo reuso seguro;
+- criar pagamento real se o fluxo atual ainda usa stub/status.
+
+Criterios de aceite:
+
+- reserva inicia em poucos toques no mobile;
+- filtros essenciais nao ficam cortados;
+- disponibilidade, preco e status ficam claros;
+- sem disponibilidade aparece inline, com proxima acao;
+- nenhuma quadra some ou fica inacessivel no mobile;
+- solicitacao de reserva continua persistindo.
+
+Entregue:
+
+- pagina publica do local ganhou fluxo de reserva em 3 passos visiveis: dia/duracao, horario/quadra e confirmacao;
+- agenda publica passou a renderizar somente horarios livres, reduzindo ruido de linhas ocupadas;
+- slot livre mostra quadra, preco quando disponivel e duracao;
+- ajuste manual de quadra/horario continua possivel sem repetir formulario de data/duracao;
+- sem disponibilidade aparece inline e oferece lista de espera usando `joinCourtBookingWaitlist`;
+- CTA `Ver outros locais` volta para `/locais?intent=booking`;
+- `lint` e `build` passaram.
+
+Validacao:
+
+- validar `/locais?intent=booking` e pagina publica de local;
+- validar desktop e mobile 390px;
+- validar busca com disponibilidade e sem disponibilidade;
+- rodar lint/build.
+
+### [x] PLAYER-UX-02 - Locais por intencao compacta
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `PLAYER_APP_V2_UX_PLAN.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
+- `COMPONENT_GRAMMAR.md`
+- `DESIGN_TOKENS.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- `PLAYER-UX-01` transformou `/inicio` em uma entrada leve por proxima acao e separou `Trabalho` da primeira dobra do jogador.
+- `/locais` precisava servir descoberta publica, reserva, aulas e jogos sem parecer uma ficha/cockpit empilhado.
+
+Objetivo:
+
+- Transformar `/locais` em uma entrada compacta por intencao.
+- Jogador deve escolher rapidamente se quer reservar quadra, entrar em aula, encontrar jogo ou ver locais.
+- A lista/ficha completa deve vir depois da intencao, nao antes.
+
+Entregue:
+
+- `/locais` passou a ter quatro intencoes compactas: encontrar jogo, reservar quadra, entrar em aula e ver locais;
+- Home envia o jogador direto para a intencao correta por query string (`booking`, `matches`, `classes`, `venues`);
+- `Ver locais` ganhou fluxo proprio com busca por local/cidade/UF, tabs `Todos`, `Seguindo` e `Meus locais`;
+- `Seguindo` e `Meus locais` passaram a filtrar de fato os cards exibidos;
+- cards de locais em modo publico deixaram de destacar planos como informacao principal no fluxo de lista;
+- mobile usa grid 2x2 de intencoes, reduzindo empilhamento inicial;
+- `lint` e `build` passaram.
+
+### [x] PLAYER-UX-01 - Inicio por proxima acao
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- `PLAYER_APP_V2_UX_PLAN.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_BASED_RESTRUCTURE_PLAYBOOK.md`
+- `ROLE_BASED_RESTRUCTURE_QUEUE.md`
+- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
+- `ROLE_BASED_RESTRUCTURE_SPRINT_BACKLOG.md`
+- `COMPONENT_GRAMMAR.md`
+- `DESIGN_TOKENS.md`
+- `CURRENT_PRODUCT_STATE.md`
+
+Contexto:
+
+- `ROLE-UX-00` consolidou a matriz de visibilidade e o helper central de navegacao global.
+- `ROLE-UX-01` separou o primeiro nivel de shell por modo e reduziu linguagem tecnica exposta no frontend.
+- `DESIGN-UX-00` criou tokens reais de densidade por modo e documentou quando usar card, row, sheet, CTA, metric strip e wizard.
+- O proximo bloqueio e transformar `/inicio` em uma entrada leve por proxima acao, em vez de painel empilhado.
+
+Objetivo:
+
+- Redesenhar a Home do jogador para responder primeiro "o que eu preciso fazer agora?".
+- Jogador puro deve ver proxima acao, compromissos e intencoes simples.
+- Usuario multi-papel deve ter entrada profissional discreta, sem poluir a primeira dobra.
+
+Escopo:
+
+- revisar `HomePage.tsx` e CSS relacionado;
+- reduzir duplicidade entre blocos de agora, agenda, clube/local e entradas profissionais;
+- criar/ajustar zona de foco do dia com uma acao primaria clara;
+- organizar intencoes principais: reservar quadra, encontrar jogo, competir e ver compromisso;
+- manter dados de aluno/socio apenas quando a relacao existir;
+- manter acesso profissional como `Trabalho`, sem labels tecnicos ou cockpit.
+
+Fora de escopo:
+
+- alteracao de backend estrutural;
+- redesenho de `/locais`, reserva, eventos, ranking ou perfil;
+- mudar regras de permissoes alem do que a matriz ja define;
+- criar rede social/feed.
+
+Criterios de aceite:
+
+- mobile 390px mostra uma acao principal na primeira dobra;
+- jogador sem pendencias nao ve dashboard vazio;
+- jogador nao aluno nao ve card de mensalidade/plano como prioridade;
+- usuario multi-papel encontra `Trabalho` sem receber painel profissional no inicio;
+- cards duplicados ou passivos viram rows, disclosure ou somem quando nao ha dado util;
+- estados vazios orientam a proxima acao.
+
+Validacao:
+
+- validar `/inicio` em jogador puro, aluno/socio quando houver dado e usuario multi-papel;
+- validar desktop e mobile 390px;
+- rodar lint/build.
+
+Entregue:
+
+- `/inicio` passou a priorizar pendencias e agenda do jogador, sem convites profissionais na primeira dobra;
+- cards passivos de hoje foram removidos quando nao ha dado util;
+- intencoes principais ficaram explicitas: reservar quadra, encontrar jogo, entrar em aula e competir;
+- contexto profissional virou area `Trabalho` discreta, separada do fluxo de jogador;
+- `lint` e `build` passaram apos a alteracao.
+
+## Role Based Restructure - Prioridades E Descricoes
+
+Fonte detalhada:
+
+- `ROLE_BASED_RESTRUCTURE_QUEUE.md`
+- `ROLE_BASED_RESTRUCTURE_SPRINT_GUIDE.md`
+- `ROLE_BASED_RESTRUCTURE_SPRINT_BACKLOG.md`
+
+Regra:
+
+```text
+Executar a lista abaixo em ordem. Cada item deve ser concluido, validado e documentado antes de avancar.
+```
+
+### P0 - Fundacao e bloqueadores de clareza
+
+#### [x] ROLE-UX-00 - Matriz de visibilidade por relacao
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Definir exatamente o que jogador, aluno, socio, professor, recepcao, financeiro, organizador e gestor podem ver, buscar e executar.
+- Esta task impede que o app continue vazando ferramentas internas para o usuario errado.
+
+Resultado esperado:
+
+- Menus, dados e estados vazios documentados por relacao/permissao/plano.
+- Base pronta para reestruturar Player App, Competition OS e Management OS sem reabrir arquitetura a cada tela.
+
+Entregue:
+
+- criada `ROLE_VISIBILITY_MATRIX.md` com matriz por relacao, superficie, plano, papel, dados buscados e estados vazios;
+- criado helper `web/src/lib/role-visibility.ts` para centralizar visibilidade da navegacao global;
+- `BottomNav.tsx` passou a consumir o helper sem alterar o desenho da navegacao;
+- `PROFILE_PLAN_ACCESS_MODEL.md`, `README.md` e docs de reestruturacao passaram a apontar para a matriz;
+- gaps documentados: operador de cantina/POS e maior detalhamento futuro de `workspace-access.ts`; papel financeiro dedicado foi entregue depois em `ROLE-FINANCE-01`.
+
+#### [x] ROLE-UX-01 - Shells por modo
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Separar visual e navegacao de Player App, Competition OS e Management OS.
+- Jogador deve navegar como jogador; gestor deve operar em workspace; organizador deve entrar em modo de competicao.
+
+Resultado esperado:
+
+- `Gestao` e `Organizar` aparecem apenas quando fazem sentido.
+- Multi-papel nao polui a primeira tela do jogador.
+
+Entregue:
+
+- `AppShell` passou a receber/derivar modo (`player`, `competition`, `management`) e aplicar classes por superficie;
+- `ManagementShell` fixa explicitamente o modo `management`;
+- `role-visibility.ts` passou a classificar rotas de gestao, competicao e player;
+- `BottomNav` passou a usar entrada profissional contextual: no modo jogador mostra `Trabalho`; no modo competicao mostra `Organizar`; no modo gestao mostra `Gestao`;
+- labels tecnicos visiveis (`Player App`, `Competition OS`, `Management OS`) foram substituidos por linguagem natural;
+- `eslint.config.js` ignora `.tmp`, evitando que artefatos locais de auditoria bloqueiem lint do app.
+
+#### [x] DESIGN-UX-00 - Tokens de densidade por modo
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Definir como cards, rows, sheets, CTAs, bordas, headings, cores e espacos devem se comportar em Player, Competition e Management.
+- Evita que uma area nova pareca outro app ou volte ao excesso de cards.
+
+Resultado esperado:
+
+- Player mais leve.
+- Management mais denso e operacional.
+- Competition hibrido, com publico leve e operacao densa.
+
+Entregue:
+
+- `theme.css` recebeu tokens de densidade por modo (`--player-*`, `--competition-*`, `--management-*`);
+- `App.css` aplica tokens `--mode-*` em shell, conteudo, cards, rows, formularios, botoes e superficies compartilhadas;
+- `DESIGN_TOKENS.md` e `COMPONENT_GRAMMAR.md` foram atualizados com regras de densidade, card/row/sheet/wizard e alvo de toque;
+- a base preserva o DNA ATP e prepara as proximas telas sem criar paleta ou layout paralelo.
+
+#### [x] PLAYER-UX-01 - Inicio por proxima acao
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Transformar `/inicio` em uma tela de proxima acao, nao em painel.
+- Remover duplicidade visual entre `Agora`, `Agenda`, `Clube` e area profissional.
+
+Resultado esperado:
+
+- Primeira dobra mobile com uma acao primaria clara.
+- Jogador sem pendencia ve intencoes simples: reservar, jogar, competir.
+
+Entregue:
+
+- `HomePage.tsx` foi reorganizada por proxima acao e intencoes;
+- `Trabalho` ficou discreto para usuario multi-papel;
+- pendencias profissionais deixaram de disputar a abertura do jogador;
+- CSS da home usa a densidade de Player definida em `DESIGN-UX-00`.
+
+#### [x] PLAYER-UX-02 - Locais por intencao compacta
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Transformar `/locais` em entrada leve por intencao: reservar quadra, entrar em aula, encontrar jogo ou ver locais.
+
+Entregue:
+
+- quatro intencoes compactas em `/locais`;
+- query strings de intencao vindas da Home;
+- fluxo `Ver locais` com busca e filtros publicos;
+- tabs `Todos`, `Seguindo` e `Meus locais` filtrando corretamente.
+
+#### [x] PLAYER-UX-03 - Reserva mobile fluida
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Criar fluxo de reserva com etapas naturais: onde, quando, disponibilidade, confirmar.
+- Usar slots compactos, preco/status quando disponivel e lista de espera real.
+
+Entregue:
+
+- pagina publica do local ganhou fluxo de 3 passos;
+- horarios ocupados deixaram de poluir a lista publica;
+- sem disponibilidade aparece inline e pode acionar lista de espera;
+- solicitacao de reserva segue persistindo no backend.
+
+#### [x] PLAYER-UX-04 - Entrar em aula como fluxo publico
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Separar aulas publicas da gestao interna da academia.
+- Jogador ve turmas com vaga; aluno ve aulas/reposicoes proprias.
+
+Resultado esperado:
+
+- Encontrar turma por nivel/dia/local sem ver cockpit de academia.
+- Solicitar/matricular com feedback claro.
+
+Entregue:
+
+- `/locais?intent=classes` usa linguagem e CTA de aula para jogador;
+- pagina publica do local organiza o fluxo em perfil, turma e envio de interesse;
+- turmas nao sao mais repetidas como lista depois do formulario;
+- cards de turma mostram dia/hora, professor, nivel, vagas e valor publico;
+- solicitacao usa `createAcademyEnrollment` e feedback amigavel.
+
+#### [x] COMP-UX-01 - Hub de eventos por modo
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Separar `Jogando`, `Organizando` e `Descobrir` para que jogador nao veja fila de organizador e organizador nao precise cacar tarefa.
+
+Resultado esperado:
+
+- Jogador ve seus jogos/inscricoes e eventos abertos.
+- Organizador ve fila operacional.
+
+Entregue:
+
+- `/eventos` renderiza somente o modo ativo;
+- segmentos `Jogando`, `Organizando` e `Descobrir` nao empilham conteudo entre si;
+- fila de organizador e CTAs de criacao ficam no modo `Organizando`;
+- `Descobrir` ficou leve e separado da operacao;
+- preview de itens indica quando ha mais registros;
+- lint/build passaram.
+
+#### [x] COMP-UX-02 - Evento publico mobile
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Fazer torneio/liga publica parecer evento para jogador, com imagem/status/tabs/CTA, nao cockpit.
+
+Resultado esperado:
+
+- Evento publico tem leitura simples e CTA de inscricao/acompanhamento.
+- KPIs e tarefas de organizador ficam fora da visao publica.
+
+Entregue:
+
+- torneio e liga publicos ganharam primeira dobra de evento;
+- CTA contextual e sticky mobile;
+- categorias/classes aparecem antes de conteudo pesado;
+- cockpit de organizador continua apenas para owner/staff.
+
+#### [x] COMP-UX-03 - Inscricao em torneio/liga
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Reorganizar inscricao para categoria, valor/restricao, confirmar e feedback.
+- Garantir erro amigavel e sem erro tecnico cru.
+
+Resultado esperado:
+
+- Jogador entende status da inscricao.
+- Fluxo mobile curto e confiavel.
+
+Entregue:
+
+- torneio: escolha por cards, revisao de valor/prazo/restricao, confirmacao, status real da inscricao e erro amigavel;
+- liga publica: escolha de classe, revisao de valor/tipo de entrada, status do usuario e bloqueio de reenvio;
+- link de convite de liga: revisao curta, dados do jogador, CTA contextual e feedback claro;
+- mobile: CTA sticky e grid reduzido para uma coluna;
+- sem backend novo.
+
+Risco/gap:
+
+- restricao de horario de torneio ainda exige campo/backend proprio para persistir; manter como tarefa futura antes de prometer essa captura no fluxo.
+
+#### [x] MGMT-UX-01 - Shell operacional mobile
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Reorganizar `/gestao` e workspace local para subnav/fila antes de KPI.
+- Corrigir sensacao de cockpit vazio, loading gigante e modulos misturados.
+
+Resultado esperado:
+
+- Gestor ve fila e modulo ativo antes de metricas.
+- Sem KPI zerado inutil.
+- Mobile nao vira pagina infinita.
+
+Entregue:
+
+- `/gestao` abre com fila operacional antes de indicadores agregados;
+- indicadores de locais/pendencias/reservas passaram para bloco secundario `Sinais de suporte`;
+- professores deixam de receber `Painel`, Clientes, Financeiro e Cantina por heranca de plano;
+- recepcao mantem somente modulos operacionais compativeis com papel/plano;
+- fila do dashboard local agora respeita os modulos visiveis antes de montar acoes.
+
+#### [x] MGMT-UX-02 - Modo Professor
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Criar experiencia leve para professor: aulas, turmas, alunos, chamada e agenda.
+- Professor nao deve herdar cantina, CRM pesado ou financeiro completo sem permissao.
+
+Resultado esperado:
+
+- Professor encontra rotina dele rapidamente.
+- Professor sem local tem estado vazio claro.
+
+Entregue:
+
+- Academia em modo professor limitada a `Aulas`, `Turmas` e `Alunos`;
+- contexto de professor com agenda curta, total de aulas hoje, turmas e alunos;
+- turmas/alunos/chamadas filtrados pelo professor vinculado ao login;
+- professor sem vinculo recebe estado vazio claro e nao enxerga turmas de outros professores;
+- fila operacional nao mostra aprovacao/cobranca para professor sem gestao completa.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+#### [x] QA-ROLE-01 - Teste manual por papel
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Reexecutar testes por jogador, aluno, professor, recepcao, financeiro, organizador e gestor.
+
+Resultado esperado:
+
+- Relatorio por papel.
+- Screenshots mobile/desktop.
+- Bugs P0/P1 voltam para a queue.
+
+Entregue:
+
+- criado `QA_ROLE_01_ROLE_VISIBILITY_REPORT_2026_05_15.md`;
+- screenshots e textos por papel em `web/docs/screenshots/qa-role-2026-05-15/`;
+- validado jogador, aluno indireto, professor, recepcao, financeiro, organizador e gestor em desktop/mobile;
+- nenhum P0 novo encontrado;
+- bugs/gaps P1 e P2 reenfileirados.
+
+Validacao executada:
+
+- browser local com Playwright em desktop 1366px e mobile 390px;
+- rotas principais: `/inicio`, `/locais`, `/eventos`, `/gestao`.
+
+#### [x] MGMT-ROLE-QA-01 - Corrigir vazamento de setup por papel
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_ROLE_01_ROLE_VISIBILITY_REPORT_2026_05_15.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+
+Problema:
+
+- Professor e recepcao ainda recebem tarefas de setup/base incompleta no hub de gestao.
+- Professor ve `Definir regras`, `Cadastrar cliente` e mensagem `Base incompleta`.
+- Recepcao ve `Definir regras`, `Cadastrar professor` e mensagem `Base incompleta`.
+
+Objetivo:
+
+- Separar setup estrutural de gestor da rotina operacional de professor/recepcao.
+- Professor deve ver apenas aulas, turmas, alunos, chamada, faltas, observacoes e reposicoes ligadas ao seu login.
+- Recepcao deve ver agenda, espera, reservas, aulas do dia e clientes basicos permitidos, sem ajustes profundos.
+
+Criterios:
+
+- `owner`/`manager` continuam vendo gaps de setup estrutural.
+- `coach` nao ve `Definir regras`, `Cadastrar cliente`, `Cadastrar professor`, `Configurar plano` ou setup profundo.
+- `frontdesk` nao ve `Definir regras` nem `Cadastrar professor`; pode ver cadastro rapido de cliente quando permitido.
+- Fila operacional continua mostrando pendencias reais do papel.
+- Validar professor e recepcao em desktop/mobile.
+
+Entregue:
+
+- `summarizePlace(...)` passou a receber `access` e `userId`;
+- resumo de professor ficou filtrado pelo professor vinculado em `place_coaches.user_id`;
+- professor nao herda setup, financeiro, estoque, CRM, reservas ou pendencias globais de Academia;
+- recepcao deixa de ver setup estrutural e financeiro/cantina;
+- `setupActions`/`setupGaps` aparecem apenas para gestor (`owner`/`manager`);
+- estado "Operacao em dia" ganhou texto por papel;
+- criado `MGMT_ROLE_QA_01_REPORT_2026_05_15.md`;
+- screenshots/textos gerados em `web/docs/screenshots/mgmt-role-qa-01-2026-05-15/`.
+
+Validacao executada:
+
+- browser local com Playwright para professor, recepcao e gestor em desktop 1366px;
+- browser local com Playwright para professor, recepcao e gestor em mobile 390px;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+#### [x] QA-DESIGN-01 - Auditoria visual de consistencia
+
+Prioridade: P0
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Verificar se as areas reestruturadas mantem o DNA visual ATP e nao voltam para card overload.
+
+Resultado esperado:
+
+- Checklist visual aprovado contra `ROLE_BASED_RESTRUCTURE_PLAYBOOK.md`.
+
+Entregue:
+
+- auditoria visual desktop/mobile autenticada em Player App, Competition OS e Management OS;
+- relatorio `QA_DESIGN_01_VISUAL_CONSISTENCY_REPORT_2026_05_15.md`;
+- screenshots/textos em `web/docs/screenshots/qa-design-01-2026-05-15/`;
+- ocultacao de contadores zerados em Player App;
+- remocao de `Organizando` da leitura padrao de jogador puro em `/eventos`;
+- fallback seguro para dados opcionais do workspace de Gestao.
+
+Riscos restantes:
+
+- `COMP-OPS-01` entregou rows/drawers de operacao do torneio; validar screenshot mobile autenticado com muitos dados segue como risco visual;
+- futura otimizacao: `/gestao` deve usar agregador leve de resumo para reduzir dependencia de chamadas opcionais lentas.
+
+### P1 - Experiencias principais por area
+
+#### [x] ROLE-FINANCE-01 - Papel financeiro dedicado
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_ROLE_01_ROLE_VISIBILITY_REPORT_2026_05_15.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+
+Descricao:
+
+- Criar suporte real para usuario financeiro sem precisar promover a pessoa a `manager`.
+- Antes deste item, `place_staff.role` aceitava apenas `manager`, `coach` e `frontdesk`; o seed `financeiro.prime@demo.atp.local` caia como recepcao.
+
+Resultado esperado:
+
+- permissao financeira dedicada ou matriz granular;
+- usuario financeiro seedado com acesso a recebiveis, despesas, lembretes e baixa de pagamento;
+- sem Agenda/Academia como superficie principal, exceto links contextuais necessarios;
+- validacao desktop/mobile do papel financeiro.
+
+Entregue:
+
+- `place_staff.role` e `place_staff_invites.role` passam a aceitar `finance`;
+- `app_can_manage_place_finance(...)` reconhece owner, manager e finance;
+- `app_add_place_staff(...)` preserva convites/atribuicoes de financeiro sem converter para recepcao;
+- central `/gestao` mostra modo financeiro isolado com recebiveis, despesas e fila financeira;
+- Financeiro nao recebe Agenda, Academia, Clientes/CRM, Cantina/POS, Equipe ou Ajustes como modulos principais;
+- Equipe do local permite atribuir/convidar papel `Financeiro`;
+- seed demo inclui `financeiro.prime@demo.atp.local` como financeiro do Clube Racket Prime;
+- `ROLE_VISIBILITY_MATRIX.md`, `PROFILE_PLAN_ACCESS_MODEL.md` e `CURRENT_PRODUCT_STATE.md` atualizados.
+
+Relatorio:
+
+- `ROLE_FINANCE_01_REPORT_2026_05_15.md`.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- Cantina/POS ainda precisa de papel proprio de caixa antes de ser liberada para operador financeiro.
+- Validacao visual autenticada depende de seed/migration aplicados no Supabase alvo.
+
+#### [x] QA-SEED-ROLE-01 - Perfis seed puros para QA por papel
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_ROLE_01_ROLE_VISIBILITY_REPORT_2026_05_15.md`
+- `SEED_QA_REALISTIC_POPULATE_PLAN.md`
+
+Descricao:
+
+- Separar perfis seed puros de perfis multi-papel para QA manual.
+- O organizador atual tambem possui acesso operacional a local, o que valida bem usuario misto, mas nao valida organizador sem Management OS.
+
+Resultado esperado:
+
+- jogador puro;
+- aluno mensalista ativo;
+- professor vinculado;
+- professor sem local/vinculo;
+- recepcao;
+- financeiro dedicado com `place_staff.role = finance`;
+- organizador puro sem local;
+- gestor completo;
+- todos documentados com credenciais de teste e dados linkados.
+
+Entregue:
+
+- criado `qa.jogador.puro@demo.atp.local` como `free_player` puro, sem staff, matricula, reserva, torneio, liga ou partida aberta;
+- removido `organizador.circuito@demo.atp.local` de `place_staff`, mantendo entitlement `competition_organizer` e staff de competicao;
+- mantido `jogador001@demo.atp.local` como aluno mensalista ativo para QA de Player App com contexto de academia;
+- mantido `coach.solo@demo.atp.local` como professor sem local/vinculo para estado vazio profissional;
+- documentada matriz de perfis no README do seed;
+- `10_verify_seed_integrity.sql` agora valida jogador puro, organizador puro, financeiro dedicado, coach solo e aluno mensalista;
+- `qa_full_demo_seed.sql` foi sincronizado com os perfis puros para nao divergir do runner split.
+
+Relatorio:
+
+- `QA_SEED_ROLE_01_REPORT_2026_05_15.md`.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- Os seeds precisam ser reaplicados no Supabase alvo para que os novos perfis aparecam no browser.
+- O `qa_full_demo_seed.sql` foi mantido por compatibilidade, mas o runner recomendado continua sendo `web/supabase/seeds/qa_demo`.
+
+#### [x] MGMT-ROLE-QA-02 - Estado de `/gestao` sem acesso em shell neutro
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `QA_ROLE_01_ROLE_VISIBILITY_REPORT_2026_05_15.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+
+Descricao:
+
+- Jogador puro acessando `/gestao` por URL recebe bloqueio correto, mas no desktop ainda ve linguagem de shell operacional (`Gestao esportiva`, `Operacao`) ao redor do estado vazio.
+
+Resultado esperado:
+
+- usuario sem acesso ve estado vazio claro em superficie neutra/player;
+- sem item `Gestao`, sem linguagem de cockpit e sem sugestao visual de area profissional ativa;
+- seguranca atual preservada.
+
+Entregue:
+
+- `getGlobalNavigationVisibility(...)` trata rota de gestao sem `hasManagement` como superficie `player`;
+- `ManagementShell` aceita `mode`, preservando Management OS para quem tem acesso e visual neutro para quem nao tem;
+- `/gestao` sem acesso mostra `Modo jogador` e `Area profissional indisponivel`;
+- a navegacao global deixa de mostrar `Gestao esportiva`, `Operacao` e item `Gestao` para usuario sem acesso profissional.
+
+Relatorio:
+
+- `MGMT_ROLE_QA_02_REPORT_2026_05_15.md`.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- Validacao visual autenticada com screenshot deve ser refeita apos reaplicar os seeds, usando `qa.jogador.puro@demo.atp.local`.
+
+#### [x] PLAYER-UX-05 - Encontrar jogo sem rede social pesada
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Permitir encontrar/criar jogo com foco em jogar, sem transformar em feed social.
+
+Entregue:
+
+- `/locais` na intencao `Encontrar jogo` deixou de abrir com painel comunitario/KPIs sociais;
+- busca rapida ficou acima da lista, com filtros em disclosure e contagem clara de chamadas encontradas;
+- `Criar chamada` virou CTA explicito e abre formulario curto apenas quando necessario;
+- rows de chamadas priorizam local, horario, nivel, interessados e acao primaria `Quero jogar`/`Fechar chamada`;
+- comentarios e salvar interesse continuam existindo, mas dentro de `Detalhes`, como acao secundaria;
+- removido `slice(0, 6)` silencioso: chamadas filtradas nao ficam ocultas sem aviso.
+
+Relatorio:
+
+- `PLAYER_UX_05_REPORT_2026_05_15.md`.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- Ainda falta validar com screenshot autenticado em mobile com seeds reaplicados no Supabase alvo;
+- o fluxo ainda usa formulario inline curto, nao bottom sheet nativo; isso fica aceitavel ate a camada de componentes mobile dedicada.
+
+#### [x] PLAYER-UX-06 - Ranking centrado no jogador
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Abrir ranking com minha posicao, filtros e lista.
+- KPIs globais ficam secundarios.
+
+Entregue:
+
+- `/ranking` deixou de abrir com hero/KPIs globais como primeira leitura;
+- primeira dobra agora prioriza `Minha posicao`, recorte atual, filtros e lista;
+- quando o jogador nao aparece no recorte, o estado explica isso sem parecer erro;
+- lider, corrida, mapa de classes, regras e ferramentas foram movidos para `Ver regras, resumo e ferramentas`;
+- no mobile, a tabela vira rows compactas, evitando depender de scroll horizontal como experiencia primaria.
+
+Relatorio:
+
+- `PLAYER_UX_06_REPORT_2026_05_15.md`.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc --noEmit`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- `Seguir` ainda existe na row por compatibilidade, mas pode ser revisto em uma futura limpeza de descoberta/social minimo;
+- validacao visual autenticada em 390px/430px ainda deve ser refeita com seed aplicado.
+
+#### [x] PLAYER-UX-07 - Perfil simples por finalidade
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Separar perfil publico, preferencias, historico, conta e pagamentos proprios quando existirem.
+
+Entrega:
+
+- `/perfil` foi dividido em abas leves: `Perfil`, `Historico`, `Preferencias` e `Conta`;
+- primeira dobra deixou de misturar nivel, fase, organizacao, lembretes e conta em uma coluna unica;
+- `Historico` agora foca em competicoes/partidas do jogador, mantendo estatisticas e conquistas em disclosures secundarios;
+- atalhos de organizador foram movidos para `Conta > Area profissional` e so aparecem quando o usuario realmente organiza competicoes;
+- preferencias de lembrete ficam em aba propria, sem empurrar dados de identidade nem historico.
+
+Fora de escopo:
+
+- criar pagamentos proprios quando ainda nao houver fonte real;
+- alterar modelo de perfil esportivo, rating ou algoritmo de XP;
+- remover compatibilidades sociais existentes em outras telas.
+
+Relatorio:
+
+- `PLAYER_UX_07_REPORT_2026_05_15.md`.
+
+Validacao executada:
+
+- `npm.cmd run lint`;
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- validacao visual autenticada em 390px/430px ainda deve ser refeita com seed aplicado;
+- aba `Preferencias` ainda depende da futura engine real de notificacoes para disparos automaticos.
+
+#### [x] COMP-SETUP-01 - Wizard de criacao de torneio
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Reorganizar criar torneio em etapas: basico, inscricoes, categorias, formato, agenda/quadras, revisar/publicar.
+
+Entrega:
+
+- `Eventos > Organizando > Criar` deixou de ser formulario curto/raso e passou a usar wizard operacional em 6 etapas: `Basico`, `Inscricoes`, `Categorias`, `Formato`, `Agenda` e `Revisar`;
+- etapa `Basico` coleta nome, data inicial/final, UF, municipio, visibilidade e cartaz;
+- etapa `Inscricoes` coleta prazo, taxa, aprovacao manual/automatica e permissao de resultado pelo jogador;
+- etapa `Categorias` cria categorias/classes iniciais com genero, vagas e faixa etaria, sem empilhar configuracao tecnica na mesma dobra;
+- etapa `Formato` aplica modelo e pontuacao padrao para todas as classes, preservando ajuste individual posterior dentro do torneio;
+- etapa `Agenda` coleta duracao, janela diaria e quadras para alimentar `agendaConfig`;
+- etapa `Revisar` permite criar como rascunho ou ja abrir inscricoes;
+- `createTournament` agora persiste os dados estruturados no `data` do torneio, em `categorias`, `agendaConfig`, `setupDraft`, `tournamentMeta`, `status`, `poster_url`, `starts_at`, `registration_close_at`, `registration_fee_cents` e `player_result_submission_enabled`.
+
+Arquivos:
+
+- `web/src/pages/EventsPage.tsx`
+- `web/src/lib/tournaments.ts`
+- `web/src/App.css`
+- `COMP_SETUP_01_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npm.cmd run lint`
+- `npx.cmd tsc -b --pretty false`
+- `npm.cmd run build`
+
+Riscos restantes:
+
+- o wizard cria estrutura inicial; operacao fina de categorias, jogadores, sorteio, pagamento e agenda continua no workspace interno do torneio;
+- limite global do torneio permanece em `data`/classe, nao em fluxo financeiro dedicado;
+- operacao de torneio ainda precisa virar rows/filas no workspace interno.
+
+#### [x] COMP-SETUP-02 - Wizard de criacao de liga
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Reorganizar criar liga em etapas: basico, jogadores/classes, formato, pontuacao, agenda, revisar/publicar.
+
+Entrega:
+
+- `Ligas que organizo > Criar` deixou de ser formulario de duas etapas e passou a usar wizard em 6 etapas: `Basico`, `Jogadores`, `Formato`, `Pontuacao`, `Agenda` e `Revisar`;
+- etapa `Basico` coleta nome, local base, periodo, tipo de liga e visibilidade;
+- etapa `Jogadores` cria classes iniciais, jogadores por grupo, subida/descida, taxa de inscricao, entrada publica e aprovacao;
+- etapa `Formato` grava rodadas previstas, intervalo, prazo de resultado, tolerancia, recessos e movimentos de temporada;
+- etapa `Pontuacao` grava formato de partida, tie-break, WO, No-Ad e coringa;
+- etapa `Agenda` grava dias, janela de jogo e automacao de rodadas;
+- etapa `Revisar` permite criar rascunho ou liga ativa;
+- `createLeague` passou a persistir configuracao inicial real em `leagues`, `league_seasons`, `league_classes` e `settings`, sem depender de formulario posterior para o basico funcionar.
+
+Arquivos:
+
+- `web/src/pages/LeaguesPage.tsx`
+- `web/src/lib/leagues.ts`
+- `COMP_SETUP_02_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`
+- `npm.cmd run lint`
+- `npm.cmd run build`
+
+Riscos restantes:
+
+- agenda da liga fica persistida como configuracao inicial em `settings`/`settings_override`; a distribuicao automatica real continua dependente das rotinas ja existentes do workspace interno;
+- criacao adiciona temporada e classes iniciais, mas importacao/convite em lote de jogadores ainda pertence a operacao da liga;
+- nao foram adicionadas telas novas de pagamento real; taxa segue como valor de inscricao/configuracao.
+
+#### [x] COMP-OPS-01 - Operacao de torneio em rows
+
+Descricao:
+
+- Organizador resolve inscricoes, jogos, horarios, resultados e publicacao por fila/rows/drawers.
+
+Status: `[x]` concluido em 2026-05-15
+
+Entregue:
+
+- fila operacional do torneio deixou de ser apenas cards agregados e passou a exibir rows acionaveis para owner/staff;
+- rows cobrem inscricao pendente, lista de espera, pagamento de inscricao, geracao de jogos, agenda incompleta, resultado enviado por jogador e aviso de indisponibilidade;
+- cada row mostra tipo, contexto, impacto e acao primaria real;
+- detalhe abre drawer no desktop e bottom sheet no mobile;
+- a fila limita a primeira dobra sem esconder silenciosamente: informa quando mostra as primeiras 8 tarefas e oferece entrada para lista completa;
+- alerta separado de indisponibilidade foi fundido na fila para reduzir duplicidade.
+
+Arquivos principais:
+
+- `web/src/pages/TournamentPage.tsx`
+- `web/src/App.css`
+- `COMP_OPS_01_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`
+- `npm.cmd run lint`
+- `npm.cmd run build`
+
+Riscos restantes:
+
+- o drawer usa as mesmas acoes existentes; nao foi criado backend novo;
+- acao de agenda incompleta leva para a configuracao de agenda existente, sem editor granular de uma partida especifica;
+- recebimento de inscricao continua usando pagamento stub/manual existente.
+
+#### [x] COMP-OPS-02 - Operacao de liga em rodada atual
+
+Descricao:
+
+- Liga abre por rodada atual, partidas pendentes, resultado/WO, ranking e comunicacao.
+
+Status: `[x]` concluido em 2026-05-15
+
+Contexto:
+
+- Depois de `COMP-OPS-01`, torneio ja operava por rows acionaveis, mas liga ainda abria com contadores agregados.
+- O objetivo era aplicar a mesma disciplina sem redesenhar setup/publico: rodada atual, inscricoes, pagamentos, partidas, resultado/WO e comunicacao ficam como fila operacional.
+
+Entregue:
+
+- owner passa a ver fila de liga em rows antes das tabs, com detalhe em drawer/bottom sheet;
+- rows cobrem inscricoes pendentes, pagamentos de inscricao aprovados sem baixa, partidas aguardando organizacao, resultado, confirmacao, disputa/analise admin e geracao de proxima rodada;
+- cada row mostra tipo, contexto, impacto e acao primaria real;
+- detalhe usa a sala da partida existente para disponibilidade, resultado, WO, confirmacao e mensagens;
+- jogador participante passa a receber fila `Minha rodada` quando tem partida pendente, sem ver cockpit de organizador;
+- fila limitada na primeira dobra informa quando mostra apenas as primeiras tarefas e oferece entrada para lista completa;
+- backend novo nao foi necessario: acoes usam servicos existentes de inscricao, pagamento stub/manual, geracao de rodada, sala de partida, resultado e chat.
+
+Arquivos principais:
+
+- `web/src/pages/LeagueDetailsPage.tsx`
+- `web/src/App.css`
+- `COMP_OPS_02_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`
+- `npm.cmd run lint`
+- `npm.cmd run build`
+
+Riscos restantes:
+
+- agendamento granular de horario/quadra da partida ainda depende da sala/lista existente; nao foi criado editor dedicado de agenda da liga;
+- confirmacao/resolucao continua usando o formulario de resultado existente dentro da sala;
+- pagamento de inscricao continua como baixa manual/stub, coerente com o estado atual do produto.
+
+#### [x] MGMT-AGENDA-01 - Agenda v2 polish
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `MANAGEMENT_OS_V2_UX_PLAN.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+- `AGENDA_MODULE_FUNCTION_MAP.md`
+- `SCREEN_RESPONSIBILITIES.md`
+- `COMPONENT_GRAMMAR.md`
+
+Descricao:
+
+- Consolidar agenda como rotina de reservas, disponibilidade, espera, bloqueio e recursos/regras.
+
+Entregue:
+
+- `Central de agenda` passou a conter a fila urgente dentro do shell/subnav, evitando fila solta antes da navegacao interna.
+- Aba `Hoje` deixou de ser card passivo e virou lista operacional com rows de reserva/bloqueio, pagamento, telefone, serie e acoes `Confirmar`, `Cancelar` ou `Liberar`.
+- Aba `Reservas` ganhou busca por jogador/telefone/quadra, filtro por data, filtro por status e deixou de usar limite silencioso.
+- Aba `Espera` ganhou busca, filtro por data/status, deixou de usar limite silencioso e renomeou `Convidar` para `Marcar convidado`, porque a acao atual altera status interno e nao envia notificacao real.
+- `Calendario` manteve seletor mobile de quadra e agora permite iniciar `Nova reserva` a partir de slot livre; reservas/bloqueios ocupados levam para a lista de reservas.
+- `Nova reserva` deixou `Bloquear horario` e `Entrar na espera` visiveis como acoes secundarias do fluxo principal; `Observacao e repeticao` ficaram como detalhe progressivo.
+- KPIs da Agenda foram movidos para depois da central operacional, como suporte de leitura e nao primeira dobra.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`;
+- validacao visual/smoke em desktop e mobile quando possivel.
+
+Risco residual:
+
+- `Marcar convidado` ainda nao envia WhatsApp/push; quando existir notificacao real, pode voltar a ser `Convidar` com canal explicito.
+- Slot ocupado do calendario abre a lista filtravel de reservas, nao um drawer especifico de reserva. Drawer pode ser evolucao futura se a rotina pedir edicao mais profunda ali.
+
+#### [x] MGMT-ACADEMY-01 - Academia v2 continuidade
+
+Status: `[x]` concluido em 2026-05-15
+
+Descricao:
+
+- Revisar Academia v2 completa, contrato/usuario/aluno, reposicoes, chamada, mensalidade e mobile.
+
+Entregue:
+
+- `Central da academia` agora aparece antes dos indicadores agregados, mantendo a subnav visivel como primeira estrutura de trabalho.
+- A fila rapida `Aulas do dia`/`Pendencias da academia` deixou de competir com a aba `Hoje` e com a aba `Pendencias`; ela aparece apenas como apoio contextual nas demais abas.
+- A fila rapida deixou de cortar dados silenciosamente: quando existem mais aulas ou pendencias do que o resumo mostra, a UI exibe `Ver X restantes` e permite expandir ou ir para a fila completa.
+- Professor em modo leve continua vendo somente aulas/turmas/alunos, sem aprovacao/cobranca empresarial.
+- KPIs da Academia foram movidos para leitura de suporte depois da rotina, seguindo o mesmo padrao aplicado em Agenda.
+
+Arquivos principais:
+
+- `src/pages/PlacesPage.tsx`
+- `src/components/place/PlaceAcademyOperationalQueues.tsx`
+- `docs/MGMT_ACADEMY_01_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- O bloco publico/legado de aulas em `/locais` ainda preserva funcoes de descoberta/interesse do jogador e deve ser tratado em `PUBLIC-PLACE-01` ou task player/publica especifica, sem misturar com a rotina interna de Gestao.
+
+#### [x] MGMT-FINANCE-01 - Financeiro por cobranca
+
+Descricao:
+
+- Financeiro abre com quem cobrar agora: vencidos, vence hoje, lembrete, marcar pago, despesas e relatorio secundario.
+
+Status: `[x]` concluido em 2026-05-15
+
+Entregue:
+
+- `Financeiro` passou a abrir por padrao em `Recebiveis`, nao em resumo/relatorio.
+- A ordem da central financeira virou rotina operacional: `Recebiveis`, `Pagos`, `Despesas`, `Planos`, `Resumo`.
+- Recebiveis agora exibem origem, periodo, valor, vencimento semantico (`Vencido`, `Vence hoje`, `Em aberto`) e acao primaria real `Marcar pago`.
+- Lembretes continuam disponiveis como acao secundaria por row e como lote da lista atual, socios ou alunos.
+- Foram agregadas cobrancas por plano de socio, mensalidade de academia por contrato, matricula legada, aula avulsa/reposicao e reservas com pagamento pendente.
+- Pagamentos antigos pendentes em `app_payments` entram na fila se ainda pertencem ao local, evitando que atrasos de meses anteriores fiquem invisiveis.
+- Aba `Pagos` lista pagamentos registrados sem misturar com a fila de cobranca.
+- `Despesas` deixou de usar corte silencioso e mostra expansao quando ha mais lancamentos.
+- Dentro do Management OS, o Financeiro deixou de duplicar o bloco legado abaixo da central.
+- Resumo financeiro passou a ser secundario e respeita modulo Cantina desativado ao nao exibir metricas de POS/cantina.
+
+Arquivos alterados:
+
+- `web/src/pages/PlacesPage.tsx`
+- `web/src/components/place/FinanceWorkspaceShell.tsx`
+- `web/src/components/place/PlaceFinanceReceivablesModule.tsx`
+- `web/src/components/place/PlaceFinancePaidModule.tsx`
+- `web/src/components/place/PlaceFinanceExpensesModule.tsx`
+- `web/src/components/place/PlaceFinanceOverviewModule.tsx`
+- `web/src/components/place/PlaceClientRelationshipModule.tsx`
+- `web/src/lib/place-admin-navigation.ts`
+- `web/src/App.css`
+- `web/docs/MGMT_FINANCE_01_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- O modelo ainda nao tem campo canonico `due_date` em `app_payments`; a UI calcula vencimento por convencao de periodo mensal ou data da origem. Uma evolucao futura pode criar vencimento persistido por cobranca.
+- Torneio/liga seguem em financeiro de Competition OS; o sprint cobriu Financeiro do local.
+
+#### [>] MGMT-CRM-01 - Clientes/CRM como fila de relacionamento
+
+Descricao:
+
+- Leads, follow-up, contatos parados, drawer de contato e WhatsApp secundario.
+
+#### [ ] MGMT-TEAM-01 - Equipe/permissoes por convite aceito
+
+Descricao:
+
+- Buscar usuario, convidar, aceitar, aplicar papel e liberar acesso somente apos aceite.
+
+#### [ ] PUBLIC-PLACE-01 - Pagina publica do local
+
+Descricao:
+
+- Local publico com marca, reserva, aula, eventos, contato e CTA, sem cockpit.
+
+#### [ ] PUBLIC-COMP-01 - Pagina publica de competicao
+
+Descricao:
+
+- Competicao publica com poster, local/data, categorias, inscritos/jogos e CTA, sem fila de organizador.
+
+### P2 - Complementos e refinamentos internos
+
+#### [ ] MGMT-CANTEEN-01 - Cantina/POS por venda rapida
+
+Descricao:
+
+- Cantina abre em venda rapida, estoque baixo, vendas do dia e cadastro secundario.
+- Modulo desativado nao aparece como operacao.
+
+#### [ ] MGMT-SETTINGS-01 - Ajustes como configuracao estrutural
+
+Descricao:
+
+- Separar dados publicos, recursos, regras, planos, permissoes e publicacao da rotina diaria.
 
 ### [x] QA-R2-FIX-01 - Correcoes operacionais da Rodada 2 de QA
 
@@ -1105,7 +2616,7 @@ Risco de regressao:
 Criterios de conclusao:
 
 - `03_places.sql` continua criando 3 locais com perfis diferentes, quadras, regras, staff, owner e planos coerentes;
-- staff adicional foi vinculado a locais sem quebrar o check constraint de roles (`manager`, `frontdesk`, `coach`);
+- staff adicional foi vinculado a locais sem quebrar o check constraint de roles vigente naquele sprint (`manager`, `frontdesk`, `coach`); `finance` foi adicionado depois em `ROLE-FINANCE-01`;
 - professores em `place_coaches` agora recebem usuario, staff coach, especialidades, niveis atendidos, bio publica, notas internas, comissao e perfil publico ativo.
 
 Risco residual:
@@ -3399,7 +4910,7 @@ Entregue em 2026-05-13:
 
 - criacao de reserva/bloqueio/lista de espera deixou de abrir como formulario longo no corpo da Agenda;
 - campos frequentes ficaram em uma linha operacional: quadra, inicio, fim, buscar e reservar;
-- observacao, repeticao, bloqueio e lista de espera foram movidos para `Opcoes avancadas`;
+- observacao e repeticao foram movidas para detalhe progressivo; em `MGMT-AGENDA-01`, bloqueio e lista de espera voltaram a ficar visiveis como acoes secundarias do fluxo principal;
 - `Reservar` ficou como acao primaria unica do composer;
 - `Buscar`, `Bloquear horario` e `Entrar na espera` ficaram secundarios/quiet, sem competir visualmente;
 - mobile empilha os campos essenciais e deixa as acoes com largura confortavel.

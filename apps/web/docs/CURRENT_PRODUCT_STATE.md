@@ -14,8 +14,23 @@ Fonte principal:
 - `TASK_DISCOVERY_ONBOARDING.md`
 - `ACADEMY_V2_UX_PLAN.md`
 - `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md`
+- `WHOLE_APP_ROLE_DESIGN_AUDIT_2026_05_14.md`
+- `ROLE_BASED_RESTRUCTURE_PLAYBOOK.md`
+- `ROLE_BASED_RESTRUCTURE_QUEUE.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
+- `ROLE_BASED_RESTRUCTURE_IMPLEMENTATION_SPEC.md`
+- `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
+- `ROLE_BASED_RESTRUCTURE_SPRINT_GUIDE.md`
+- `ROLE_BASED_RESTRUCTURE_SPRINT_BACKLOG.md`
+- `PLAYER_APP_V2_UX_PLAN.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- `COMPETITION_OS_V2_UX_PLAN.md`
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
+- `MANAGEMENT_OS_V2_UX_PLAN.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
 
-Data: 2026-05-13
+Data: 2026-05-15
 
 ## Para que este arquivo existe
 
@@ -25,6 +40,12 @@ Regra:
 
 ```text
 Nao reanalisar a arquitetura do zero. Executar a fila com consistencia.
+```
+
+Regra adicional da reestruturacao v2:
+
+```text
+MDs antigos preservam inventario funcional. Specs v2 governam arquitetura, ordem de tela, densidade, visibilidade e comportamento mobile.
 ```
 
 ## Visao atual do produto
@@ -73,21 +94,43 @@ Gestao nao e uma variacao de Locais. Gestao e um sistema proprio.
 
 Ordem de foco:
 
-1. Academia v2 dentro de Gestao.
-2. Gestao.
-3. Sidebar e navegacao contextual.
-4. Competition OS.
-5. Mobile UX.
-6. Hierarchy visual.
-7. Typography.
-8. Operational rows.
-9. Reducao de dashboard feeling.
-10. Reducao de admin-template feeling.
-11. Paginas publicas com percepcao premium.
+1. Player App v2: home por proxima acao, locais, reserva, aulas, jogar, ranking e perfil.
+2. Competition OS v2: separar jogador, publico, setup e operacao.
+3. Management OS v2: gestao por papel, fila antes de KPI, professor leve.
+4. Agenda e Academia como rotinas operacionais maduras.
+5. Financeiro, CRM e Cantina como filas/acesso por permissao.
+6. Paginas publicas sem vazamento de cockpit.
+7. QA por papel e auditoria visual contra o playbook.
 
 ## Atualizacoes recentes de QA
 
 - 2026-05-14: Rodada 2 de QA operacional corrigiu bloqueios de confianca em Agenda/Painel: calendario mobile agora mantem todas as quadras acessiveis por seletor, busca de disponibilidade de nova reserva usa feedback inline em vez de banner global persistente, campo Duracao ficou responsivo, recebiveis pendentes da fila levam para `Financeiro > Recebiveis` e Cantina deixa de aparecer como KPI operacional quando o plano nao habilita o modulo.
+- 2026-05-15: auditoria autenticada por papel consolidou a necessidade de uma reestruturacao por relacao/intencao. Foram criados `WHOLE_APP_ROLE_DESIGN_AUDIT_2026_05_14.md`, `ROLE_BASED_RESTRUCTURE_PLAYBOOK.md`, `PLAYER_APP_V2_UX_PLAN.md`, `COMPETITION_OS_V2_UX_PLAN.md`, `MANAGEMENT_OS_V2_UX_PLAN.md`, `ROLE_BASED_RESTRUCTURE_QUEUE.md`, `ROLE_BASED_RESTRUCTURE_SPRINT_GUIDE.md` e `ROLE_BASED_RESTRUCTURE_SPRINT_BACKLOG.md`.
+- 2026-05-15: `ROLE-UX-00` concluido. A matriz operacional de visibilidade por relacao foi consolidada em `ROLE_VISIBILITY_MATRIX.md`, o helper `web/src/lib/role-visibility.ts` centralizou a decisao de superficie global e `BottomNav.tsx` passou a consumir essa politica. A queue agora segue para `ROLE-UX-01`, separando shells por modo sem reabrir a arquitetura.
+- 2026-05-15: `ROLE-UX-01` concluido. `AppShell` agora aplica modo por superficie, `BottomNav` usa entrada profissional contextual (`Trabalho`, `Organizar` ou `Gestao`) e labels tecnicos foram removidos do frontend visivel. A queue segue para `DESIGN-UX-00`, padronizando densidade visual por modo.
+- 2026-05-15: `DESIGN-UX-00` concluido. `theme.css` recebeu tokens de densidade por modo, `App.css` aplica `--mode-*` em base compartilhada e `DESIGN_TOKENS.md`/`COMPONENT_GRAMMAR.md` agora especificam Player leve, Competition hibrido e Management denso. A queue segue para `PLAYER-UX-01`, redesenhando `/inicio` por proxima acao.
+- 2026-05-15: `PLAYER-UX-01` concluido. `/inicio` agora prioriza proxima acao do jogador, remove cards passivos sem dado util e deixa `Trabalho` como area discreta para multi-papel. A queue segue para `PLAYER-UX-02`, reorganizando `/locais` por intencao compacta.
+- 2026-05-15: `PLAYER-UX-02` concluido. `/locais` agora inicia por intencao compacta, com entradas para jogo, reserva, aula e lista de locais; Home navega para a intencao correta; `Seguindo` e `Meus locais` filtram de fato. A queue segue para `PLAYER-UX-03`, reserva mobile fluida.
+- 2026-05-15: `PLAYER-UX-03` concluido. A pagina publica do local agora oferece reserva em 3 passos visiveis, mostra apenas horarios livres, preserva ajuste manual curto, solicita reserva via backend existente e oferece lista de espera real quando nao ha disponibilidade.
+- 2026-05-15: `PLAYER-UX-04` concluido. `/locais?intent=classes` e a pagina publica do local agora tratam aula como fluxo de jogador: perfil da aula, turma com vaga e envio de interesse via backend existente, sem lista/formulario duplicados.
+- 2026-05-15: `COMP-UX-01` concluido. `/eventos` agora usa modo ativo `Jogando`, `Organizando` ou `Descobrir`, renderizando apenas a superficie correspondente; fila e criacao de competicao ficam em `Organizando`, e jogador nao recebe cockpit administrativo na primeira dobra. A queue segue para `COMP-UX-02`, evento publico mobile.
+- 2026-05-15: `COMP-UX-02` concluido. Torneio e liga publicos agora iniciam como paginas de evento para jogador, com status, data/contexto, CTA contextual, categorias/classes em rail e CTA sticky mobile; KPIs, fila operacional e publicacao ficam fora da leitura publica e permanecem preservados para owner/staff. A queue segue para `COMP-UX-03`, inscricao em torneio/liga.
+- 2026-05-15: `COMP-UX-03` concluido. Inscricao em torneio e liga agora usa fluxo curto de jogador: escolha de categoria/classe, confirmacao de dados, revisao de valor/prazo/restricao, status real da inscricao e mensagens de erro amigaveis. Liga publica e link de convite carregam a inscricao do usuario para evitar reenvio. A queue segue para `MGMT-UX-01`, shell operacional mobile.
+- 2026-05-15: `COMP-SETUP-01` concluido. Criacao de torneio em `/eventos?view=organizing` agora usa wizard de 6 etapas (`Basico`, `Inscricoes`, `Categorias`, `Formato`, `Agenda`, `Revisar`) e salva rascunho estruturado com categorias/classes iniciais, agendaConfig, taxa/prazo de inscricao, cartaz, status inicial e permissao de resultado pelo jogador.
+- 2026-05-15: `COMP-SETUP-02` concluido. Criacao de liga em `Ligas que organizo > Criar` agora usa wizard de 6 etapas e salva registro da liga, temporada inicial, classes, formato, pontuacao, taxa, entrada publica/aprovacao, agenda e status inicial. A queue segue para `COMP-OPS-01`, operacao de torneio em rows.
+- 2026-05-15: `COMP-OPS-01` concluido. Torneio para owner/staff agora abre com fila operacional em rows e drawer/bottom sheet de detalhe para inscricoes, espera, pagamentos, geracao de jogos, agenda incompleta, resultados enviados e indisponibilidade. A leitura publica do jogador continua separada. A queue segue para `COMP-OPS-02`, operacao de liga em rodada atual.
+- 2026-05-15: `COMP-OPS-02` concluido. Liga para owner agora abre com fila operacional em rows para inscricoes, pagamentos, partidas a organizar, resultado/WO, confirmacao/disputa e geracao de proxima rodada; jogador participante recebe somente `Minha rodada` quando tem partida pendente. A queue segue para `MGMT-AGENDA-01`, Agenda v2 polish.
+- 2026-05-15: `MGMT-AGENDA-01` concluido. Agenda agora abre pela `Central de agenda` com fila urgente dentro do shell, `Hoje` em rows acionaveis, `Reservas` e `Espera` filtraveis sem limite silencioso, calendario com acao de criar reserva a partir de slot livre e nova reserva com bloqueio/espera visiveis no fluxo principal. A queue segue para `MGMT-ACADEMY-01`, continuidade da Academia v2.
+- 2026-05-15: `MGMT-ACADEMY-01` concluido. Academia agora prioriza a `Central da academia` antes de indicadores, a fila rapida nao aparece nas abas `Hoje`/`Pendencias` para evitar duplicidade, e `Aulas do dia`/`Pendencias da academia` nao cortam itens silenciosamente: exibem restante, expandem ou levam para a fila completa. A queue segue para `MGMT-FINANCE-01`.
+- 2026-05-15: `MGMT-FINANCE-01` concluido. Financeiro do local agora abre por `Recebiveis`, com vencidos/vence hoje, origem, periodo, valor, `Marcar pago` como acao primaria e `Enviar lembrete` como secundaria. A central ganhou aba `Pagos`, despesas sem corte silencioso e resumo como leitura secundaria. A queue segue para `MGMT-CRM-01`.
+- 2026-05-15: `MGMT-UX-01` concluido. `/gestao` agora abre com fila operacional antes dos indicadores agregados; os numeros viraram `Sinais de suporte`, a fila do dashboard local respeita modulos permitidos e professor/recepcao deixam de herdar superficies empresariais que nao pertencem ao papel. A queue segue para `MGMT-UX-02`, modo professor.
+- 2026-05-15: `MGMT-UX-02` concluido. Professor em Academia agora tem superficie propria com `Aulas`, `Turmas` e `Alunos`; turmas, alunos, chamada, reposicoes e resumo sao filtrados pelo `place_coaches.user_id` vinculado ao login; professor sem vinculo recebe estado vazio claro e nao herda turmas por nome. A queue segue para `QA-ROLE-01`, teste manual por papel.
+- 2026-05-15: `QA-ROLE-01` concluido. Foi criado `QA_ROLE_01_ROLE_VISIBILITY_REPORT_2026_05_15.md` com screenshots/textos em `web/docs/screenshots/qa-role-2026-05-15/`. A separacao principal por papel foi validada em desktop/mobile e nenhum P0 novo apareceu. A queue segue para `MGMT-ROLE-QA-01`, corrigindo vazamento de setup para professor/recepcao; tambem foram adicionados `ROLE-FINANCE-01`, `QA-SEED-ROLE-01` e `MGMT-ROLE-QA-02`.
+- 2026-05-15: `MGMT-ROLE-QA-01` concluido. A central `/gestao` agora calcula resumo e fila por papel: professor nao herda setup, financeiro, CRM, estoque, reservas ou pendencias globais do local; recepcao nao recebe setup estrutural nem financeiro/cantina; `Base incompleta` e setup profundo ficam restritos a gestor. Evidencias em `web/docs/screenshots/mgmt-role-qa-01-2026-05-15/` e relatorio em `MGMT_ROLE_QA_01_REPORT_2026_05_15.md`. A queue segue para `QA-DESIGN-01`.
+- 2026-05-15: `QA-DESIGN-01` concluido. A auditoria visual autenticada gerou `QA_DESIGN_01_VISUAL_CONSISTENCY_REPORT_2026_05_15.md` e screenshots em `web/docs/screenshots/qa-design-01-2026-05-15/`. Foram corrigidos contadores zerados no Player App, badges `0` em Competicoes, vazamento do segmento `Organizando` para jogador puro e loading fragil de Gestao por dados opcionais. A queue segue para `ROLE-FINANCE-01`.
+- 2026-05-15: `ROLE-FINANCE-01` concluido. Foi criado suporte real para `place_staff.role = finance`, com migration `0086_place_finance_staff_role_v1.sql`, seed `financeiro.prime@demo.atp.local`, central `/gestao` em modo financeiro isolado e equipe do local permitindo convidar/atribuir Financeiro. O papel acessa recebiveis, despesas, lembretes e baixas financeiras sem Agenda/Academia/CRM/Cantina/Equipe/Ajustes como superficies principais. Cantina/POS permanece fora desse papel ate existir operador de caixa dedicado. Relatorio em `ROLE_FINANCE_01_REPORT_2026_05_15.md`. A queue segue para `QA-SEED-ROLE-01`.
+- 2026-05-15: `QA-SEED-ROLE-01` concluido. O seed demo agora separa perfis puros de perfis operacionais: `qa.jogador.puro@demo.atp.local` foi criado sem vinculos, `organizador.circuito@demo.atp.local` deixou de ser `place_staff`, `financeiro.prime@demo.atp.local` permanece como `finance` e o verificador ganhou checks especificos para jogador puro, organizador puro, financeiro, aluno mensalista e coach solo. Relatorio em `QA_SEED_ROLE_01_REPORT_2026_05_15.md`. A queue segue para `MGMT-ROLE-QA-02`.
+- 2026-05-15: `MGMT-ROLE-QA-02` concluido. `/gestao` acessada por usuario sem Management OS agora usa superficie visual de jogador: a navegacao global nao mostra `Gestao esportiva`, `Operacao` nem item `Gestao`, e o estado vazio fala `Area profissional indisponivel` em vez de cockpit operacional. Relatorio em `MGMT_ROLE_QA_02_REPORT_2026_05_15.md`. A queue segue para `PLAYER-UX-05`.
 
 ## Visual language consolidada
 
@@ -162,7 +205,7 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - `ManagementShell` envolve gestao.
 - `PlaceAdminShell` iniciou separacao do cockpit administrativo do local.
 - `PlaceAdminShell` ja foi refinado para workspace compacto: modulo ativo em destaque, setup secundario e fila antes de metricas.
-- Navegacao desktop ja agrupa entradas globais em Jogar, Operar e Conta, com contexto visual para Management OS.
+- Navegacao desktop ja agrupa entradas globais em Jogar, Trabalho e Conta, com contexto visual por modo.
 - Muitos modulos de locais foram extraidos de `PlacesPage`.
 - Competition OS iniciou padroes comuns com selector, fila, publishing e header.
 - Competition OS ja recebeu base visual compartilhada: header compacto, escopo antes de numeros, fila em rows e publicacao secundaria.
@@ -172,7 +215,7 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Hierarquia de CTAs iniciou padrao real: `primary` para acao principal, `secondary` para acao alternativa com borda e `quiet` para suporte/atalhos.
 - Tipografia principal ja iniciou padrao por tokens fixos, sem `font-size` fluido por viewport nas areas auditadas.
 - Pagina publica do local ja iniciou conversao premium: oferta no hero, reserva como CTA principal, divulgacao no fim e CTA sticky mobile.
-- Criacao de reserva na Agenda ja iniciou formulario progressivo: campos essenciais no composer principal e observacao/repeticao/bloqueio/lista de espera em `Opcoes avancadas`.
+- Criacao de reserva na Agenda usa formulario progressivo: campos essenciais no composer principal, `Buscar`/`Reservar` como acao primaria, `Bloquear horario`/`Entrar na espera` como acoes secundarias visiveis e observacao/repeticao em detalhe progressivo.
 - CRM e Cantina ja iniciaram formularios progressivos: lista/fila e venda rapida aparecem antes de cadastro auxiliar.
 - Turmas da Academia ja iniciaram padrao de rows operacionais com ocupacao, horario, pendencias e mensalidade em leitura compacta.
 - Estados de demo/QA foram documentados em `DEMO_STATE_QA_CHECKLIST.md` para evitar calibragem visual apenas em telas vazias.
@@ -183,7 +226,7 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Hub de competicoes ja separa `Jogando`, `Organizando` e `Descobrir`, priorizando fila operacional quando o usuario organiza e evitando CTA administrativo como prioridade para jogador comum.
 - `/gestao` ja possui checklist de implantacao para academia/clube, com progresso, etapas concluidas e proximo passo acionavel; ele aparece apenas enquanto a base esta incompleta.
 - `/eventos` ja possui roteiro secundario para organizador novo, levando para criar torneio/liga e explicando classes, inscricoes, publicacao e operacao sem virar CTA principal para jogador comum.
-- `/gestao` ja possui entrada leve de professor para papel `coach`, priorizando aulas de hoje, turmas e alunos sem expor modulos empresariais.
+- `/gestao` e `/gestao/:placeId/academia` ja possuem entrada leve de professor para papel `coach`, priorizando aulas de hoje, turmas e alunos sem expor modulos empresariais ou pendencias de secretaria.
 - `Minhas partidas` do torneio ja iniciou gramatica de row operacional: status/contexto e acao primaria ficam separados, e envio de resultado abre em disclosure progressivo.
 - Partidas de grupos e mata-mata do torneio ja iniciaram estrutura row-like, com placar/WO/limpeza em disclosure progressivo.
 - Lista de partidas da liga ja iniciou estrutura row operacional, alinhando `Minhas partidas` e partidas por rodada ao padrao do torneio.
@@ -193,12 +236,15 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - `VISUAL_REFERENCE_SYSTEM.md`, `COMPONENT_GRAMMAR.md` e `DESIGN_TOKENS.md` foram criados.
 - `/gestao` ja foi refinada para ocultar cards zerados e usar rows operacionais de local.
 - `/gestao` ja recebeu refinamento mobile-first para header compacto, stats em trilho e atalhos de modulos sem empilhamento longo.
+- `/gestao` agora demove os stats agregados para suporte depois da fila do dia, preservando a primeira dobra como rotina operacional.
+- `placeManagementModules(...)` agora evita que professor herde `Painel`, Clientes, Financeiro ou Cantina; recepcao recebe apenas modulos operacionais compativeis com papel e plano.
+- Academia em modo professor limita abas a `Aulas`, `Turmas` e `Alunos`; `Pendencias`, `Professores` e `Configuracao` ficam fora da superficie quando o professor nao tem gestao completa.
 - `/locais` ja separa descoberta por intencao: encontrar jogadores, reservar quadra e entrar em aula; cards usam acao primaria contextual e secundarias em `Mais`.
 - `/locais` ja iniciou filtros inteligentes por intencao: quadra filtra por cidade/data/hora/duracao e disponibilidade real, aulas filtram por cidade/dia/periodo/nivel/vagas, e jogadores filtram chamadas por cidade/data/periodo/nivel.
 - `/locais` ja devolve quadras livres como resultado direto da busca de reserva, evitando abrir uma ficha completa de academia com planos/aulas quando a intencao e apenas reservar horario.
 - `/locais` ja devolve turmas com vaga como resultado direto da busca de aula, evitando abrir uma ficha completa de academia quando a intencao e entrar em uma turma.
 - Niveis de aula ja possuem taxonomia padrao: `Iniciante`, `Intermediario`, `Avancado`, `Primeira Classe` e `Profissional`.
-- Pagina publica do local ja iniciou escolha visual: reserva mostra agenda do dia por horario/quadra livre, e aulas mostram turmas compativeis por perfil antes do formulario.
+- Pagina publica do local ja separa reserva e aulas em fluxos publicos: reserva usa quando/horario/confirmacao com lista de espera real, e aulas usam perfil/turma/envio de interesse sem duplicar lista ou expor configuracao de academia.
 - Criacao profissional de local ja exige entitlement no backend (`app_user_product_entitlements`, `app_user_can_create_place()` e `app_create_place(...)`); Free Player nao deve ver nem conseguir inserir local direto.
 - Agenda do local ja iniciou visao operacional unificada: `Central de agenda` renderiza a subvisao ativa sem duplicar listas abaixo, e o calendario combina reservas, bloqueios, turmas fixas, aulas avulsas/reposicoes e faltas avisadas.
 - Calendario de quadras ja possui filtros por tipo, quadra, professor, turma e aluno/jogador, com slots clicaveis de 30 minutos e detalhe de participantes.
@@ -253,7 +299,7 @@ Nenhuma acao nova deve aparecer so porque o componente existe. Ela deve aparecer
 - Typography e spacing ja melhoraram nas telas prioritarias, mas ainda precisam segunda onda em telas antigas e formularios.
 - Muitos formularios ainda aparecem inline, mas Agenda, CRM e Cantina ja abriram a primeira onda de composer progressivo.
 - Algumas telas ainda exibem KPIs antes de tarefas.
-- Cobrancas recorrentes ja ganharam primeira camada task-first em Financeiro e Clientes/CRM, com `Enviar lembrete`, `Cobrar socios` e `Cobrar alunos` a partir de pendencia real.
+- Cobrancas recorrentes em Financeiro ja ganharam rotina task-first: `Recebiveis` e a primeira aba, rows mostram vencimento/origem/periodo, `Marcar pago` e a acao primaria, e lembrete fica como acao secundaria ou lote.
 - Auditoria de destino semantico foi iniciada em `SEMANTIC_FLOW_AUDIT.md`: quick action so conta como pronta quando abre a subvisao onde a tarefa pode ser concluida.
 - `ACADEMY-QA-01` fechou friccoes manuais da Academia: `Aulas do dia` abre chamada, chamada tem feedback otimista, `Alunos` ganhou drawer de nova matricula, criacao de turma subiu para o topo da Grade, `Horarios abertos` virou acao clicavel e professor sem vinculo recebe estado vazio claro.
 
@@ -342,6 +388,8 @@ Antes de mexer em qualquer tela:
 3. Remover cards/boxes que nao representam entidade, tarefa ou contexto.
 4. Converter listas operacionais em rows.
 5. Tratar zeros como estado calmo.
+   - Player App nao deve renderizar badge/contador `0` em tiles de intencao ou acoes de descoberta.
+   - Management OS pode mostrar zero apenas quando isso confirma estado operacional em dia; se nao ajuda a rotina, colapsar.
 6. Levar detalhes para drawer ou bottom sheet.
 7. Garantir comportamento mobile antes de considerar concluido.
 8. Atualizar `EXECUTION_QUEUE.md` e o MD vivo relevante.
@@ -395,7 +443,7 @@ Bloco de discoverability executado em 2026-05-13:
 - `Reservar quadra` e `Entrar em aula` em `/locais` nao devem listar academias genericas antes da busca. A primeira resposta publica desses fluxos deve ser quadra livre ou turma com vaga.
 - `/gestao/:placeId/:module` nao deve renderizar cabecalho/listagem publica de `Locais`. A primeira dobra da gestao local pertence ao workspace operacional; pagina publica fica apenas como acao secundaria.
 - Gestao local nao deve esconder modulos em `Mais` quando existe espaco. A navegacao principal do local usa barra horizontal adaptativa/rolavel, e o plano `academy` tambem tem `Agenda` porque aula, turma e quadra dependem de agenda operacional.
-- `BottomNav` deixou de mostrar `Management OS` para Player puro que acessa `/gestao` diretamente sem permissao.
+- `BottomNav` deixou de expor o label tecnico `Management OS` e agora usa entrada profissional contextual por modo.
 - `ManagementHubPage` passou a diferenciar Player sem permissao de operador sem local; acesso direto a `/gestao` por jogador puro volta para Inicio/Locais publicos em vez de sugerir setup profissional.
 - Restam riscos de API/dados detectados por screenshots, especialmente `500` em `place_academy_enrollments` e `app_payments`.
 - `ROUTINE-02`: rows de local em Gestao passaram a sugerir acoes rapidas por intencao quando a base ja esta pronta.
@@ -408,7 +456,27 @@ Bloco de discoverability executado em 2026-05-13:
 - Academia v2 fechou `ACADEMY-FORM-01`: buscas, filtros e mini-formularios compactos dos modulos `PlaceAcademy*` agora usam placeholder util e `aria-label` quando nao ha label visual, preservando labels nos campos criticos de drawers.
 - Clientes, Financeiro e Cantina ganharam atalhos contextuais para `Fazer follow-up`, `Cobrar pendentes`, `Repor estoque` e `Registrar venda`.
 - Regra reforcada: quick action que nao abre a subvisao onde a tarefa termina nao esta pronta.
-- Proximo foco executavel: `COMP-VISUAL-01`, refinando Competition OS sem mexer nos fluxos sensiveis de confirmacao/resultado.
+- `MGMT-ACADEMY-01`: Academia v2 agora coloca a central/subnav antes dos indicadores, restringe a fila rapida as abas onde ela serve como apoio e remove corte silencioso nessa fila com expansao/atalho para a fila completa.
+- `MGMT-FINANCE-01`: Financeiro agora inicia na fila de cobranca, agrega pendencias de meses anteriores, permite baixa manual por row e deixa relatorio/resumo como suporte secundario.
+- Proximo foco executavel: `MGMT-CRM-01`, Clientes/CRM como fila de relacionamento.
+
+Sprint Player App executado em 2026-05-15:
+
+- `PLAYER-UX-05`: `/locais` na intencao `Encontrar jogo` foi simplificada para busca e acao, sem painel de rede social.
+- O painel removeu KPIs de comunidade da primeira dobra e passou a destacar chamadas encontradas, CTA `Criar chamada` e rows acionaveis.
+- Comentarios e interesse foram preservados como detalhes secundarios, evitando perder funcao existente sem empurrar social para o fluxo principal.
+- A lista de chamadas deixou de usar `slice(0, 6)` silencioso; resultados filtrados agora aparecem sem ocultacao implicita.
+- `PLAYER-UX-06`: `/ranking` agora abre centrado na posicao do jogador, recorte atual, filtros e lista.
+- KPIs globais, lider, corrida, mapa de classes, regras e exportacao foram movidos para uma area secundaria recolhida.
+- No mobile, a lista do ranking vira rows compactas em vez de depender de tabela horizontal como experiencia primaria.
+- `PLAYER-UX-07`: `/perfil` agora separa identidade, historico, preferencias e conta em abas leves.
+- O perfil deixou de abrir como cockpit: historico do jogador aparece separado, estatisticas/conquistas ficam em disclosure e atalhos de organizador so aparecem em `Conta > Area profissional` quando existem.
+- `COMP-SETUP-01`: criacao de torneio agora usa wizard de setup e persiste estrutura inicial real.
+- `COMP-SETUP-02`: criacao de liga agora usa wizard de setup em 6 etapas e persiste temporada, classes, formato, pontuacao, agenda e status inicial.
+- `COMP-OPS-01`: operacao de torneio agora usa rows/filas/drawers para organizador, com acoes reais e sem duplicar alerta de indisponibilidade.
+- `COMP-OPS-02`: operacao de liga agora usa rows/filas/drawers para rodada atual, inscricoes, pagamentos, resultado/WO, confirmacao/disputa e proxima rodada.
+- `MGMT-FINANCE-01`: Financeiro por cobranca concluido; proxima etapa e CRM como rotina de relacionamento.
+- Proximo foco executavel: `MGMT-CRM-01`, Clientes/CRM como fila de relacionamento.
 
 ## Prioridades mobile
 

@@ -6,6 +6,8 @@ type Props = {
   canManageBookings: boolean;
   isWaitlistPromotable: (entry: CourtBookingWaitlistEntry) => boolean;
   onPromoteWaitlistEntry: (entryId: string) => void;
+  onOpenReservations?: () => void;
+  onOpenWaitlist?: () => void;
   onUpdateBooking: (bookingId: string, status: CourtBooking["status"]) => void;
   onUpdateWaitlistEntry: (entryId: string, status: CourtBookingWaitlistEntry["status"]) => void;
   pendingBookings: CourtBooking[];
@@ -22,6 +24,8 @@ export function PlaceBookingOperationalQueues({
   canManageBookings,
   isWaitlistPromotable,
   onPromoteWaitlistEntry,
+  onOpenReservations,
+  onOpenWaitlist,
   onUpdateBooking,
   onUpdateWaitlistEntry,
   pendingBookings,
@@ -44,6 +48,12 @@ export function PlaceBookingOperationalQueues({
               </button>
             </span>
           ))}
+          {pendingBookings.length > 6 ? (
+            <button type="button" onClick={onOpenReservations} disabled={!onOpenReservations}>
+              <strong>Ver todas as pendentes</strong>
+              <small>Mais {pendingBookings.length - 6} reserva(s) aguardando decisao.</small>
+            </button>
+          ) : null}
         </OperationalQueue>
       ) : null}
       {canManageBookings && waitlistEntries.length ? (
@@ -59,7 +69,7 @@ export function PlaceBookingOperationalQueues({
                   Criar reserva
                 </button>
                 <button onClick={() => onUpdateWaitlistEntry(entry.id, "invited")} disabled={busy}>
-                  Convidar
+                  Marcar convidado
                 </button>
                 <button className="danger" onClick={() => onUpdateWaitlistEntry(entry.id, "cancelled")} disabled={busy}>
                   Remover
@@ -67,6 +77,12 @@ export function PlaceBookingOperationalQueues({
               </span>
             );
           })}
+          {waitlistEntries.length > 6 ? (
+            <button type="button" onClick={onOpenWaitlist} disabled={!onOpenWaitlist}>
+              <strong>Ver lista completa</strong>
+              <small>Mais {waitlistEntries.length - 6} jogador(es) na espera.</small>
+            </button>
+          ) : null}
         </OperationalQueue>
       ) : null}
     </>
