@@ -85,6 +85,10 @@ Ordem de foco:
 10. Reducao de admin-template feeling.
 11. Paginas publicas com percepcao premium.
 
+## Atualizacoes recentes de QA
+
+- 2026-05-14: Rodada 2 de QA operacional corrigiu bloqueios de confianca em Agenda/Painel: calendario mobile agora mantem todas as quadras acessiveis por seletor, busca de disponibilidade de nova reserva usa feedback inline em vez de banner global persistente, campo Duracao ficou responsivo, recebiveis pendentes da fila levam para `Financeiro > Recebiveis` e Cantina deixa de aparecer como KPI operacional quando o plano nao habilita o modulo.
+
 ## Visual language consolidada
 
 O produto deve parecer:

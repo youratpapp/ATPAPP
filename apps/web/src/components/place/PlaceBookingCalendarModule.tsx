@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest, AcademyPlannedAbsence, CourtBooking, PlaceCourt } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 
@@ -97,6 +97,7 @@ export function PlaceBookingCalendarModule({
   const [coachFilter, setCoachFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [studentFilter, setStudentFilter] = useState("");
+  const [mobileCourtId, setMobileCourtId] = useState("");
   const selectedWeekday = weekdayFromDate(day);
   const activeEnrollmentsByClass = useMemo(() => {
     return academyEnrollments.reduce<Record<string, AcademyEnrollment[]>>((acc, enrollment) => {
@@ -200,8 +201,19 @@ export function PlaceBookingCalendarModule({
     if (normalizedStudentFilter && !item.studentNames.some((name) => name.toLowerCase().includes(normalizedStudentFilter))) return false;
     return true;
   });
-  const visibleCourts = activeCourts.filter((court) => !courtFilter || court.id === courtFilter);
+  const visibleCourts = useMemo(() => activeCourts.filter((court) => !courtFilter || court.id === courtFilter), [activeCourts, courtFilter]);
   const slotStarts = Array.from({ length: 35 }, (_, index) => minutesToTime(6 * 60 + index * 30));
+  const selectedMobileCourtId = mobileCourtId && visibleCourts.some((court) => court.id === mobileCourtId) ? mobileCourtId : visibleCourts[0]?.id || "";
+
+  useEffect(() => {
+    if (!visibleCourts.length) {
+      if (mobileCourtId) setMobileCourtId("");
+      return;
+    }
+    if (!mobileCourtId || !visibleCourts.some((court) => court.id === mobileCourtId)) {
+      setMobileCourtId(visibleCourts[0]?.id || "");
+    }
+  }, [mobileCourtId, visibleCourts]);
 
   return (
     <div className="court-calendar-panel">
@@ -248,6 +260,22 @@ export function PlaceBookingCalendarModule({
         <input value={studentFilter} onChange={(event) => setStudentFilter(event.target.value)} placeholder="Aluno ou jogador" />
       </div>
 
+      {visibleCourts.length > 1 ? (
+        <div className="court-calendar-mobile-picker">
+          <label>
+            Quadra no mobile
+            <select value={selectedMobileCourtId} onChange={(event) => setMobileCourtId(event.target.value)}>
+              {visibleCourts.map((court) => (
+                <option key={`agenda-mobile-court:${court.id}`} value={court.id}>
+                  {court.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <span>{countLabel(visibleCourts.length, "quadra acessivel", "quadras acessiveis")} neste filtro.</span>
+        </div>
+      ) : null}
+
       <div className="court-calendar-board">
         <div className="court-calendar-time-rail" aria-hidden>
           <span />
@@ -258,7 +286,10 @@ export function PlaceBookingCalendarModule({
         {visibleCourts.map((court) => {
           const courtItems = filteredItems.filter((item) => item.courtId === court.id);
           return (
-            <div key={`calendar:${court.id}`} className="court-calendar-column">
+            <div
+              key={`calendar:${court.id}`}
+              className={`court-calendar-column${selectedMobileCourtId && court.id !== selectedMobileCourtId ? " mobile-secondary-court" : ""}`}
+            >
               <strong>{court.name}</strong>
               {slotStarts.map((slot) => {
                 const slotItems = courtItems.filter((item) => eventMatchesSlot(item, slot));

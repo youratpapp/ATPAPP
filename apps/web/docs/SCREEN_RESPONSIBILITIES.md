@@ -52,6 +52,7 @@ Quando uma tela cresce demais:
 
 ## Evolucoes registradas
 
+- 2026-05-14: Rodada 2 de QA refinou `/gestao/:placeId/agenda` e Painel sem mudar responsabilidade primaria: calendario mobile usa seletor para nao ocultar quadras, busca de nova reserva mostra feedback inline, recebiveis pendentes da fila navegam para Financeiro > Recebiveis e Cantina nao aparece como KPI operacional quando o plano nao habilita o modulo.
 - 2026-05-14: Academia v2 foi definida em `ACADEMY_V2_UX_PLAN.md`; a tela `/gestao/:placeId/academia` deve separar rotina diaria, grade, alunos, pendencias, professores e configuracao, preservando funcoes sem manter blocos legados duplicados.
 - 2026-05-14: `OPERATIONAL_MODULE_REDESIGN_PLAYBOOK.md` foi criado como processo padrao para mapear, planejar e corrigir cada modulo antes de implementar refactors profundos.
 - 2026-05-14: primeiro corte de Academia v2 aplicado: `Grade` e `Configuracao` substituem labels antigos, bloco legado `Academia e aulas` nao renderiza no workspace de Gestao, recursos entram em `Configuracao` e encaixe fica recolhido em `Pendencias`.

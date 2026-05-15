@@ -690,6 +690,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [courtPriceDraftByCourt, setCourtPriceDraftByCourt] = useState<Record<string, { publicPrice: string; memberPrice: string }>>({});
   const [bookingRuleDraftByPlace, setBookingRuleDraftByPlace] = useState<Record<string, BookingRuleDraft>>({});
   const [availableCourtsByPlace, setAvailableCourtsByPlace] = useState<Record<string, AvailableCourt[]>>({});
+  const [bookingAvailabilityFeedbackByPlace, setBookingAvailabilityFeedbackByPlace] = useState<Record<string, { kind: "info" | "error" | "success"; text: string } | null>>({});
   const [academyClassPriceDraftByClass, setAcademyClassPriceDraftByClass] = useState<Record<string, string>>({});
   const [coachCommissionDraftByCoach, setCoachCommissionDraftByCoach] = useState<Record<string, string>>({});
   const [coachLinkDraftByCoach, setCoachLinkDraftByCoach] = useState<Record<string, string>>({});
@@ -1571,6 +1572,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     if (!draft?.startsAt || !draft.endsAt) return;
     setBusy(true);
     setFeedback(null);
+    setBookingAvailabilityFeedbackByPlace((prev) => ({ ...prev, [place.id]: null }));
     try {
       const rows = await searchAvailableCourts({
         placeId: place.id,
@@ -1581,9 +1583,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       if (rows[0]) {
         setBookingDraftByPlace((prev) => ({ ...prev, [place.id]: { ...draft, courtId: rows[0].id } }));
       }
-      setFeedback({ kind: rows.length ? "success" : "info", text: rows.length ? `${countLabel(rows.length, "quadra livre", "quadras livres")} neste horario.` : "Nenhuma quadra livre neste horario." });
+      setBookingAvailabilityFeedbackByPlace((prev) => ({
+        ...prev,
+        [place.id]: {
+          kind: rows.length ? "success" : "info",
+          text: rows.length
+            ? `${countLabel(rows.length, "quadra livre", "quadras livres")} neste horario. Escolha uma quadra e confirme a reserva.`
+            : "Nenhuma quadra livre neste horario. Tente outro horario ou coloque o jogador na lista de espera.",
+        },
+      }));
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao buscar quadras livres.") });
+      setAvailableCourtsByPlace((prev) => ({ ...prev, [place.id]: [] }));
+      setBookingAvailabilityFeedbackByPlace((prev) => ({
+        ...prev,
+        [place.id]: { kind: "error", text: friendlyError(err, "Falha ao buscar quadras livres.") },
+      }));
     } finally {
       setBusy(false);
     }
@@ -3605,6 +3619,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const staff = staffByPlace[p.id] || [];
         const access = placeResourceAccess(p, user.id, staff);
         const { staffRole, canManagePlace, canUseBookings, canUseAcademy, canUseCrm, canUseMemberships, canManageBookings, canManageAcademy, canManageFinance } = access;
+        const managementModules = placeManagementModules(access);
+        const canUseCanteenModule = managementModules.includes("canteen");
         const isPlayerView = !staffRole;
         const showMembershipTools = canUseMemberships && (canManageFinance || isPlayerView || Boolean(myMembership));
         const showBookingTools = canUseBookings && staffRole !== "coach";
@@ -3677,6 +3693,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         };
         const bookingRuleDraft = bookingRuleDraftByPlace[p.id] || DEFAULT_BOOKING_RULE_DRAFT;
         const availableCourts = availableCourtsByPlace[p.id] || [];
+        const bookingAvailabilityFeedback = bookingAvailabilityFeedbackByPlace[p.id] || null;
+        const updateBookingDraft = (draft: typeof bookingDraft) => {
+          setBookingDraftByPlace((prev) => ({ ...prev, [p.id]: draft }));
+          setAvailableCourtsByPlace((prev) => ({ ...prev, [p.id]: [] }));
+          setBookingAvailabilityFeedbackByPlace((prev) => ({ ...prev, [p.id]: null }));
+        };
         const selectedCourt = activeCourts.find((court) => court.id === bookingDraft.courtId) || availableCourts.find((court) => court.id === bookingDraft.courtId);
         const selectedCourtPrice = availableCourts.find((court) => court.id === bookingDraft.courtId)?.effectiveFeeCents ?? (() => {
           if (!selectedCourt) return 0;
@@ -3910,7 +3932,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           .filter((booking) => booking.status !== "cancelled" && isInReportPeriod(booking.startsAt))
           .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
         const reportBookingDates = reportBookings.map((booking) => dateInputValue(booking.startsAt));
-        const reportSales = posSales.filter((sale) => sale.status === "paid" && isInReportPeriod(sale.soldAt || sale.createdAt));
+        const reportSales = canUseCanteenModule ? posSales.filter((sale) => sale.status === "paid" && isInReportPeriod(sale.soldAt || sale.createdAt)) : [];
         const reportExpenses = expenses.filter((expense) => expense.status === "posted" && isInReportPeriod(expense.spentOn));
         const reportAttendance = academyAttendance.filter((attendance) => isInReportPeriod(attendance.attendedOn));
         const reportLessonRevenueCents = academyLessonRequests
@@ -3953,7 +3975,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         ).sort((a, b) => b[1] - a[1]);
         const reportRevenueByModule = [
           ["Reservas", reportPaidBookingAmountCents] as const,
-          ["Cantina", reportPosRevenueCents] as const,
+          ...(canUseCanteenModule ? [["Cantina", reportPosRevenueCents] as const] : []),
           ["Aulas avulsas", reportLessonRevenueCents] as const,
         ].sort((a, b) => b[1] - a[1]);
         const pendingClientActions = [
@@ -4059,11 +4081,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             value: `${crmConversionRate}%`,
             detail: `${crmStageCounts.lead} leads, origem principal ${crmSources[0]?.[0] || "sem origem"}`,
           },
-          {
-            title: "Cantina",
-            value: formatMoneyFromCents(reportPosRevenueCents),
-            detail: reportTopProduct ? `${reportTopProduct[0]} lidera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
-          },
+          ...(canUseCanteenModule
+            ? [
+                {
+                  title: "Cantina",
+                  value: formatMoneyFromCents(reportPosRevenueCents),
+                  detail: reportTopProduct ? `${reportTopProduct[0]} lidera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
+                },
+              ]
+            : []),
         ];
         const reportMetrics = [
           { label: "Quadras", value: operationalStats.courts },
@@ -4088,7 +4114,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           { label: "Receita mensal prevista", value: formatMoneyFromCents(activeMembershipRevenueCents + activeAcademyRevenueCents) },
           { label: "Recebiveis em aberto", value: formatMoneyFromCents(openReceivablesAmountCents) },
           { label: "Reservas pagas no periodo", value: formatMoneyFromCents(reportPaidBookingAmountCents) },
-          { label: "Receita POS no periodo", value: formatMoneyFromCents(reportPosRevenueCents) },
+          ...(canUseCanteenModule ? [{ label: "Receita POS no periodo", value: formatMoneyFromCents(reportPosRevenueCents) }] : []),
           { label: "Despesas no periodo", value: formatMoneyFromCents(reportExpenseCents) },
           { label: "Saldo do periodo", value: formatMoneyFromCents(reportNetCents) },
         ];
@@ -4184,7 +4210,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           },
         ];
         const setupDoneCount = setupChecklist.filter((item) => item.done).length;
-        const managementModules = placeManagementModules(access);
         const setupPercent = Math.round((setupDoneCount / setupChecklist.length) * 100);
         const nextSetupItem = setupChecklist.find((item) => !item.done && managementModules.includes(item.module)) || null;
         const currentManagementModule = managementModules.includes(managementModuleByPlace[p.id] || "dashboard")
@@ -4442,7 +4467,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             ) : null}
             {showManagementModule("dashboard") && isManagementCockpit ? (
               <PlaceOperationsDashboard
-                balanceText={formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)}
+                balanceText={formatMoneyFromCents(operationalStats.paidBookingAmountCents + (canUseCanteenModule ? operationalStats.posRevenueCents : 0) - operationalStats.expenseCents)}
                 metrics={[
                   { disabled: !managementModules.includes("bookings"), label: "Reservas para revisar", module: "bookings", value: operationalStats.pendingBookings },
                   {
@@ -4457,12 +4482,16 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     module: "clients",
                     value: operationalStats.pendingMemberships + operationalStats.crmLeads,
                   },
-                  {
-                    disabled: !managementModules.includes("canteen"),
-                    label: "Vendas da cantina",
-                    module: "canteen",
-                    value: formatMoneyFromCents(operationalStats.posRevenueCents),
-                  },
+                  ...(canUseCanteenModule
+                    ? [
+                        {
+                          disabled: false,
+                          label: "Vendas da cantina",
+                          module: "canteen" as PlaceManagementModule,
+                          value: formatMoneyFromCents(operationalStats.posRevenueCents),
+                        },
+                      ]
+                    : []),
                 ]}
                 queueItems={[
                   ...bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => ({
@@ -4479,16 +4508,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     id: `queue-receivable:${receivable.id}`,
                     label: `Recebimento pendente | ${receivable.title} | ${formatMoneyFromCents(receivable.amountCents)}`,
                     module: "finance" as PlaceManagementModule,
+                    viewSegment: "recebiveis",
                   })),
                 ]}
-                onModuleChange={(module) => selectManagementModule(p.id, module)}
+                onModuleChange={(module, viewSegment) => selectManagementModule(p.id, module, viewSegment)}
               />
             ) : null}
             {currentManagementModule === ("__legacy_dashboard__" as PlaceManagementModule) ? (
               <div className="place-booking-panel place-operations-board">
                 <div className="place-booking-head">
                   <strong>Hoje e prioridades</strong>
-                  <span>{formatMoneyFromCents(operationalStats.paidBookingAmountCents + operationalStats.posRevenueCents - operationalStats.expenseCents)} saldo</span>
+                  <span>{formatMoneyFromCents(operationalStats.paidBookingAmountCents + (canUseCanteenModule ? operationalStats.posRevenueCents : 0) - operationalStats.expenseCents)} saldo</span>
                 </div>
                 <div className="place-operations-grid">
                   <button type="button" onClick={() => selectManagementModule(p.id, "bookings")} disabled={!managementModules.includes("bookings")}>
@@ -4503,10 +4533,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <strong>{operationalStats.pendingMemberships + operationalStats.crmLeads}</strong>
                     <span>Clientes para acionar</span>
                   </button>
-                  <button type="button" onClick={() => selectManagementModule(p.id, "canteen")} disabled={!managementModules.includes("canteen")}>
-                    <strong>{formatMoneyFromCents(operationalStats.posRevenueCents)}</strong>
-                    <span>Vendas da cantina</span>
-                  </button>
+                  {canUseCanteenModule ? (
+                    <button type="button" onClick={() => selectManagementModule(p.id, "canteen")}>
+                      <strong>{formatMoneyFromCents(operationalStats.posRevenueCents)}</strong>
+                      <span>Vendas da cantina</span>
+                    </button>
+                  ) : null}
                 </div>
                 <OperationalQueue title="Fila de trabalho">
                     {bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => (
@@ -4520,7 +4552,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </button>
                     ))}
                     {openReceivables.slice(0, 3).map((receivable) => (
-                      <button key={`queue-receivable:${receivable.id}`} type="button" onClick={() => selectManagementModule(p.id, "finance")}>
+                      <button key={`queue-receivable:${receivable.id}`} type="button" onClick={() => selectManagementModule(p.id, "finance", "recebiveis")}>
                         Recebimento pendente Â· {receivable.title} Â· {formatMoneyFromCents(receivable.amountCents)}
                       </button>
                     ))}
@@ -5536,7 +5568,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               {showBookingWorkspace ? (
                 <BookingWorkspaceShell
                   activeView={bookingView}
-                  onViewChange={(view) => selectBookingView(p.id, view)}
+                  onViewChange={(view) => {
+                    if (view !== "new") {
+                      setBookingAvailabilityFeedbackByPlace((prev) => ({ ...prev, [p.id]: null }));
+                    }
+                    selectBookingView(p.id, view);
+                  }}
                 >
                     {bookingView === "today" ? (
                     <PlaceBookingTodayModule
@@ -5572,12 +5609,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     activeCourts.length ? (
                       <PlaceBookingCreateModule
                         activeCourts={activeCourts}
+                        availabilityFeedback={bookingAvailabilityFeedback}
                         availableCourts={availableCourts}
                         busy={busy}
                         canManageBookings={canManageBookings}
                         draft={bookingDraft}
                         onBlock={() => void onCreateCourtBlock(p)}
-                        onChangeDraft={(draft) => setBookingDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                        onChangeDraft={updateBookingDraft}
                         onJoinWaitlist={() => void onJoinBookingWaitlist(p)}
                         onReserve={() => void onCreateBooking(p)}
                         onSearch={() => void onSearchAvailableCourts(p)}
@@ -5650,12 +5688,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               {showBookingCreate && !showBookingWorkspace && activeCourts.length ? (
                 <PlaceBookingCreateModule
                   activeCourts={activeCourts}
+                  availabilityFeedback={bookingAvailabilityFeedback}
                   availableCourts={availableCourts}
                   busy={busy}
                   canManageBookings={canManageBookings}
                   draft={bookingDraft}
                   onBlock={() => void onCreateCourtBlock(p)}
-                  onChangeDraft={(draft) => setBookingDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                  onChangeDraft={updateBookingDraft}
                   onJoinWaitlist={() => void onJoinBookingWaitlist(p)}
                   onReserve={() => void onCreateBooking(p)}
                   onSearch={() => void onSearchAvailableCourts(p)}

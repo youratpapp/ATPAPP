@@ -33,6 +33,51 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] QA-R2-FIX-01 - Correcoes operacionais da Rodada 2 de QA
+
+Status: `[x]` concluido em 2026-05-14
+
+Contexto:
+
+- A segunda rodada de QA manual apontou bugs que afetavam confianca, mobile e operacao diaria de Agenda/Painel.
+- Escopo fechado: corrigir bugs operacionais sem redesenhar a arquitetura nem implementar gaps grandes de roadmap.
+
+Criterios entregues:
+
+- `Agenda > Calendario` no mobile passou a usar seletor explicito de quadra, mantendo todas as quadras acessiveis em 390px sem tentar comprimir quatro colunas ilegiveis.
+- `Agenda > Nova reserva` passou a exibir o resultado de busca de disponibilidade inline no formulario; resultado negativo nao vira banner global persistente e some ao alterar formulario ou trocar subvisao.
+- Campo `Duracao` do formulario de nova reserva deixou de ser cortado por grid rigido e passou a quebrar em colunas responsivas.
+- Item `Recebimento pendente` da Fila de Trabalho agora abre `Financeiro > Recebiveis` em vez de parecer clicavel sem acao.
+- KPI operacional de `Vendas da cantina` e receitas POS saem do Painel/relatorio quando o modulo Cantina nao esta habilitado no plano.
+
+Arquivos alterados:
+
+- `web/src/components/place/PlaceBookingCalendarModule.tsx`
+- `web/src/components/place/PlaceBookingCreateModule.tsx`
+- `web/src/components/place/PlaceOperationsDashboard.tsx`
+- `web/src/pages/PlacesPage.tsx`
+- `web/src/App.css`
+
+Validacao:
+
+- `npm.cmd run lint` em `web`: passou.
+- `npm.cmd run build` em `web`: passou.
+
+Risco residual:
+
+- A validacao visual fina em device real ainda deve confirmar conforto de toque do seletor de quadra em telas muito estreitas.
+
+### [ ] QA-R2-ROADMAP - Gaps de produto detectados na Rodada 2
+
+Status: `[ ]` backlog
+
+Itens:
+
+- GAP-R2-01: Financeiro dedicado/consolidado para leitura executiva e rotina de cobranca.
+- GAP-R2-02: lembrete em lote para cobrancas/pendencias.
+- GAP-R2-03: lista de espera player-side.
+- GAP-R2-04: governanca completa de Cantina/POS por plano alem do KPI operacional.
+
 ### [x] COMP-QA-01 - Convite de equipe de torneio por usuario selecionado
 
 Status: `[x]` concluido em 2026-05-14

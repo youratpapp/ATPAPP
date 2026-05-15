@@ -11,6 +11,7 @@ export type PlaceBookingDraft = {
 
 type Props = {
   activeCourts: PlaceCourt[];
+  availabilityFeedback?: { kind: "info" | "error" | "success"; text: string } | null;
   availableCourts: AvailableCourt[];
   busy: boolean;
   canManageBookings: boolean;
@@ -72,6 +73,7 @@ function durationFromDraft(startsAt: string, endsAt: string): number {
 
 export function PlaceBookingCreateModule({
   activeCourts,
+  availabilityFeedback,
   availableCourts,
   busy,
   canManageBookings,
@@ -145,8 +147,17 @@ export function PlaceBookingCreateModule({
             </label>
           </div>
 
-          <div className={availableCourts.length ? "booking-availability-status success" : "booking-availability-status"}>
-            {availableCourts.length ? (
+          <div
+            className={[
+              "booking-availability-status",
+              availabilityFeedback?.kind === "error" ? "error" : availableCourts.length || availabilityFeedback?.kind === "success" ? "success" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            {availabilityFeedback ? (
+              <span>{availabilityFeedback.text}</span>
+            ) : availableCourts.length ? (
               <span>
                 {availableCourts.length} quadra(s) livre(s) para o horario. Escolha uma delas e confirme a reserva.
               </span>

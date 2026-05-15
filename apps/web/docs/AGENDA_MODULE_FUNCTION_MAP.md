@@ -120,6 +120,8 @@ Descricoes:
 Logica basica:
 - Estado vem de `bookingViewByPlace[p.id]`.
 - A troca chama `selectBookingView(p.id, view)` e atualiza a query `visao`.
+- Em mobile, `Calendario` nao deve esconder quadras: quando ha mais de uma quadra visivel, a tela usa seletor de quadra e renderiza uma quadra por vez, mantendo slots acionaveis e evitando quatro colunas ilegives.
+- Em `Nova reserva`, o resultado de `Buscar` e feedback contextual do formulario. Nao deve acionar banner global persistente para caso normal de indisponibilidade.
 
 ## 4. Fila operacional superior da Agenda
 
@@ -735,4 +737,3 @@ Na gestao:
 7. Reduzir duplicacao visual.
    - Fila superior deve ser uma faixa compacta de pendencias.
    - Conteudo completo deve morar nas abas.
-

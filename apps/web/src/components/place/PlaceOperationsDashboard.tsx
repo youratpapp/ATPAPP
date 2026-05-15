@@ -13,13 +13,14 @@ type QueueItem = {
   id: string;
   label: string;
   module: PlaceManagementModule;
+  viewSegment?: string;
 };
 
 type PlaceOperationsDashboardProps = {
   balanceText: string;
   metrics: OperationMetric[];
   queueItems: QueueItem[];
-  onModuleChange: (module: PlaceManagementModule) => void;
+  onModuleChange: (module: PlaceManagementModule, viewSegment?: string) => void;
 };
 
 export function PlaceOperationsDashboard({ balanceText, metrics, queueItems, onModuleChange }: PlaceOperationsDashboardProps) {
@@ -30,7 +31,7 @@ export function PlaceOperationsDashboard({ balanceText, metrics, queueItems, onM
         <span>{balanceText} saldo</span>
       </div>
       <OperationalQueue title="Fila de trabalho">
-        {queueItems.length ? <OperationalQueueItems items={queueItems.map((item) => ({ ...item, action: () => onModuleChange(item.module) }))} /> : null}
+        {queueItems.length ? <OperationalQueueItems items={queueItems.map((item) => ({ ...item, action: () => onModuleChange(item.module, item.viewSegment) }))} /> : null}
       </OperationalQueue>
       <span className="place-support-label">Sinais de suporte</span>
       <MetricStrip
