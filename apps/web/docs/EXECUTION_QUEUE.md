@@ -44,6 +44,42 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] COMP-PUBLIC-02A - Liga publica com abas limpas por intencao
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback da rota `/eventos/ligas/:leagueId?tab=chat`;
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Contexto:
+
+- a pagina publica de liga renderizava hero, classes, jogadores e depois o conteudo da aba, mesmo quando o usuario escolhia `Chat` ou `Partidas`;
+- existia lista fixa de jogadores fora de contexto, enquanto a aba `Jogadores` tambem existia;
+- `Chat` e `Partidas` pareciam duplicados entre topo e submenu;
+- no publico, a experiencia parecia uma pagina longa com ancoras, nao areas limpas por intencao.
+
+Resultado:
+
+- a navegacao publica da liga agora tem abas reais: `Liga`, `Classes`, `Jogadores`, `Classificacao`, `Partidas` e `Chat`;
+- `Liga` mostra somente resumo publico, CTA e inscricao publica;
+- `Classes` mostra somente classes;
+- `Jogadores` mostra somente jogadores publicados;
+- `Classificacao` mostra somente tabela/ranking da temporada;
+- `Partidas` e `Chat` nao recebem mais lista fixa de jogadores ou blocos publicos anteriores;
+- a navegacao operacional do owner continua separada em `Organizacao`, `Jogadores`, `Partidas` e `Chat`.
+
+Validacao:
+
+- `npm run lint`;
+- `npm run build`.
+
+Risco restante:
+
+- o mesmo padrao de pagina publica longa ainda deve ser auditado em torneios, porque este sprint foi limitado a liga publica.
+
 ### [x] PLAYER-UX-03E - Notificacoes em popover/sheet nativo do shell
 
 Status: `[x]` concluido em 2026-05-15

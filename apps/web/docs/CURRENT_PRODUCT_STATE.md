@@ -64,6 +64,7 @@ Existe ainda uma camada publica:
 
 Atualizacao 2026-05-15:
 
+- a pagina publica de liga deixou de funcionar como pagina longa ancorada: `Liga`, `Classes`, `Jogadores`, `Classificacao`, `Partidas` e `Chat` agora renderizam apenas o conteudo da intencao selecionada;
 - o sino de notificacoes do Player App deixou de abrir uma secao inline na Home: agora usa popover ancorado ao sino no desktop e bottom sheet com backdrop no mobile;
 - o fluxo Player de reservar quadra em `/locais?intent=booking` agora usa filtro guiado por UF, cidade, local, piso, data, hora e duracao;
 - UF/cidade/local sao derivados de locais com quadras ativas, reduzindo escolhas que nao levam a reserva real;

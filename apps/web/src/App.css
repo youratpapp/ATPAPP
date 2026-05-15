@@ -1181,6 +1181,37 @@
   min-height: 38px;
 }
 
+.league-public-page-title {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.league-public-page-title div {
+  min-width: 0;
+}
+
+.league-public-page-title span:first-child {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.league-public-page-title h1 {
+  color: var(--color-text);
+  font-size: var(--font-size-2xl);
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: var(--line-tight);
+  margin: 2px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .tournament-public-hero {
   align-items: stretch;
   background: #ffffff;
@@ -15408,6 +15439,16 @@ button,
 
   .tournament-public-event {
     gap: var(--space-2);
+  }
+
+  .league-public-page-title {
+    align-items: flex-start;
+    display: grid;
+  }
+
+  .league-public-page-title h1 {
+    font-size: var(--font-size-xl);
+    white-space: normal;
   }
 
   .tournament-public-hero {

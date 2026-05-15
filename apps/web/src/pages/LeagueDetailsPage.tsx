@@ -61,17 +61,17 @@ type Props = {
   profile: Profile | null;
 };
 
-type PageTab = "visao" | "jogadores" | "partidas" | "chat";
+type PageTab = "visao" | "classes" | "jogadores" | "classificacao" | "partidas" | "chat";
 
-const PAGE_TABS: PageTab[] = ["visao", "jogadores", "partidas", "chat"];
+const PAGE_TABS: PageTab[] = ["visao", "classes", "jogadores", "classificacao", "partidas", "chat"];
 
 function parsePageTab(value: string | null): PageTab {
   return value && PAGE_TABS.includes(value as PageTab) ? (value as PageTab) : "visao";
 }
 
 function normalizePageTab(tab: PageTab, isOwner: boolean): PageTab {
-  if (isOwner) return tab;
-  return tab === "jogadores" ? "partidas" : tab;
+  if (!isOwner) return tab;
+  return tab === "classes" || tab === "classificacao" ? "visao" : tab;
 }
 
 function leagueRegistrationStatusLabel(status: LeagueRegistration["status"]): string {
@@ -1002,7 +1002,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       setLeague(details);
       setActiveTab((current) => {
         if (details.ownerId === user.id) return current;
-        return current === "visao" || current === "jogadores" ? "partidas" : current;
+        return current;
       });
       setSettingsDraft({
         matchFormat: details.matchFormat,
@@ -2017,7 +2017,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       {!loading && !error && league ? (
         <>
           {!isOwner ? (
-            <section id="league-public-event" className="tournament-public-event league-public-event">
+            <section className="tournament-public-event league-public-event league-public-page">
               <div className="competition-public-topbar" aria-label="Navegacao publica da liga">
                 <button className="quiet" type="button" onClick={() => navigate(leagueBackPath)}>
                   Voltar
@@ -2026,64 +2026,27 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   Compartilhar
                 </button>
               </div>
-
-              <article className="tournament-public-hero league-public-hero">
-                <div className="tournament-public-copy">
-                  <div className="tournament-public-title-row">
-                    <span>Liga</span>
-                    <span className={`status-badge ${league.status === "active" ? "live" : league.status === "finished" ? "finished" : "draft"}`}>
-                      {statusLabel(league.status)}
-                    </span>
-                  </div>
-                  <h2>{league.name}</h2>
-                  <div className="tournament-public-meta">
-                    <span>{typeLabel(league.leagueType)}</span>
-                    <span>{[league.category, league.classScope].filter(Boolean).join(" / ") || "Classe a definir"}</span>
-                    <span>{selectedSeason?.name || "Temporada a definir"}</span>
-                  </div>
-                  <div className="competition-public-action-rail" aria-label="Resumo publico da liga">
-                    <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-classes")}>
-                      <span>Classes</span>
-                      <strong>{classes.length || "A definir"}</strong>
-                      <small>Grupos e niveis da temporada.</small>
-                    </button>
-                    <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-players")}>
-                      <span>Jogadores</span>
-                      <strong>{publicLeaguePlayers.length || registrationStats.approved || "A definir"}</strong>
-                      <small>Inscritos ativos na liga.</small>
-                    </button>
-                    <button type="button" onClick={() => goToTab("partidas")}>
-                      <span>Partidas</span>
-                      <strong>{leagueOverview.matches || "A definir"}</strong>
-                      <small>{leagueOverview.matches ? `${leagueOverview.rounds} rodadas` : "Rodada ainda nao publicada."}</small>
-                    </button>
-                  </div>
-                  <div className="tournament-public-actions">
-                    <button className="primary tournament-public-main-cta" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
-                      <span>{publicLeagueCta.label}</span>
-                      <small>{publicLeagueCta.detail}</small>
-                    </button>
-                  </div>
+              <div className="league-public-page-title">
+                <div>
+                  <span>Liga</span>
+                  <h1>{league.name}</h1>
                 </div>
-                <div className="tournament-public-media league-public-media" aria-label="Resumo visual da liga">
-                  <div>
-                    <span>{league.name.slice(0, 2).toUpperCase()}</span>
-                    <small>{league.roundsTotal} rodadas previstas</small>
-                  </div>
-                </div>
-              </article>
+                <span className={`status-badge ${league.status === "active" ? "live" : league.status === "finished" ? "finished" : "draft"}`}>
+                  {statusLabel(league.status)}
+                </span>
+              </div>
 
-              <nav className="tournament-public-nav" aria-label="Navegacao publica da liga">
-                <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-event")}>
+              <nav className="tournament-public-nav league-public-nav" aria-label="Navegacao publica da liga">
+                <button type="button" className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
                   Liga
                 </button>
-                <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-classes")}>
+                <button type="button" className={activeTab === "classes" ? "active" : ""} onClick={() => goToTab("classes")}>
                   Classes
                 </button>
-                <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-players")}>
+                <button type="button" className={activeTab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
                   Jogadores
                 </button>
-                <button type="button" className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
+                <button type="button" className={activeTab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
                   Classificacao
                 </button>
                 <button type="button" className={activeTab === "partidas" ? "active" : ""} onClick={() => goToTab("partidas")}>
@@ -2094,61 +2057,254 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </button>
               </nav>
 
-              <section id="league-public-classes" className="tournament-public-categories">
-                <div className="section-title">
-                  <h2>Classes</h2>
-                  <span>{classes.length} {classes.length === 1 ? "classe" : "classes"}</span>
+              {activeTab === "visao" ? (
+                <>
+                  <article id="league-public-event" className="tournament-public-hero league-public-hero">
+                    <div className="tournament-public-copy">
+                      <div className="tournament-public-title-row">
+                        <span>Liga</span>
+                        <span className={`status-badge ${league.status === "active" ? "live" : league.status === "finished" ? "finished" : "draft"}`}>
+                          {statusLabel(league.status)}
+                        </span>
+                      </div>
+                      <h2>{league.name}</h2>
+                      <div className="tournament-public-meta">
+                        <span>{typeLabel(league.leagueType)}</span>
+                        <span>{[league.category, league.classScope].filter(Boolean).join(" / ") || "Classe a definir"}</span>
+                        <span>{selectedSeason?.name || "Temporada a definir"}</span>
+                      </div>
+                      <div className="competition-public-action-rail" aria-label="Resumo publico da liga">
+                        <button type="button" onClick={() => goToTab("classes")}>
+                          <span>Classes</span>
+                          <strong>{classes.length || "A definir"}</strong>
+                          <small>Grupos e niveis da temporada.</small>
+                        </button>
+                        <button type="button" onClick={() => goToTab("jogadores")}>
+                          <span>Jogadores</span>
+                          <strong>{publicLeaguePlayers.length || registrationStats.approved || "A definir"}</strong>
+                          <small>Inscritos ativos na liga.</small>
+                        </button>
+                        <button type="button" onClick={() => goToTab("partidas")}>
+                          <span>Partidas</span>
+                          <strong>{leagueOverview.matches || "A definir"}</strong>
+                          <small>{leagueOverview.matches ? `${leagueOverview.rounds} rodadas` : "Rodada ainda nao publicada."}</small>
+                        </button>
+                      </div>
+                      <div className="tournament-public-actions">
+                        <button className="primary tournament-public-main-cta" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
+                          <span>{publicLeagueCta.label}</span>
+                          <small>{publicLeagueCta.detail}</small>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="tournament-public-media league-public-media" aria-label="Resumo visual da liga">
+                      <div>
+                        <span>{league.name.slice(0, 2).toUpperCase()}</span>
+                        <small>{league.roundsTotal} rodadas previstas</small>
+                      </div>
+                    </div>
+                  </article>
+
+                  <div className="tournament-public-sticky-cta" aria-label="Acao principal da liga">
+                    <button className="primary" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
+                      {publicLeagueCta.label}
+                    </button>
+                  </div>
+                </>
+              ) : null}
+
+              {activeTab === "classes" ? (
+                <section id="league-public-classes" className="tournament-public-categories">
+                  <div className="section-title">
+                    <h2>Classes</h2>
+                    <span>{classes.length} {classes.length === 1 ? "classe" : "classes"}</span>
+                  </div>
+                  {!classes.length ? (
+                    <p className="subtle">Nenhuma classe publicada ainda.</p>
+                  ) : (
+                    <div className="tournament-public-category-rail">
+                      {classes.map((item) => (
+                        <button
+                          key={`league-public-class:${item.id}`}
+                          type="button"
+                          className={selectedClassId === item.id ? "active" : ""}
+                          onClick={() => {
+                            setSelectedClassId(item.id);
+                            goToTab("classificacao");
+                          }}
+                        >
+                          <span>{item.categoryName}</span>
+                          <strong>{item.className}</strong>
+                          <small>{typeLabel(league.leagueType)}</small>
+                          <em>{standings.filter((player) => player.classId === item.id && player.status !== "inactive").length} jogadores</em>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </section>
+              ) : null}
+
+              {activeTab === "jogadores" ? (
+                <section id="league-public-players" className="competition-public-list-section">
+                  <div className="section-title">
+                    <h2>Jogadores</h2>
+                    <span>{publicLeaguePlayers.length} {publicLeaguePlayers.length === 1 ? "jogador" : "jogadores"}</span>
+                  </div>
+                  {!publicLeaguePlayers.length ? (
+                    <p className="subtle">Nenhum jogador ativo publicado ainda.</p>
+                  ) : (
+                    <div className="competition-public-person-list">
+                      {publicLeaguePlayers.map((player) => (
+                        <article key={`league-public-player:${player.id}`} className="competition-public-person-row">
+                          <div>
+                            <strong>{player.name}</strong>
+                            <span>{player.classLabel}</span>
+                          </div>
+                          <small>{player.points} pts</small>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </section>
+              ) : null}
+            </section>
+          ) : null}
+
+          {!isOwner && activeTab === "visao" && league.visibility === "public" && league.publicJoinEnabled ? (
+            <section id="league-public-join" className="section-card competition-registration-panel">
+              <div className="section-title" style={{ marginBottom: 10 }}>
+                <div>
+                  <h3 style={{ margin: 0 }}>
+                    {myLeagueRegistration ? leagueRegistrationStatusLabel(myLeagueRegistration.status) : "Inscricao publica"}
+                  </h3>
+                  <p className="subtle" style={{ margin: "4px 0 0" }}>
+                    {myLeagueRegistration
+                      ? leagueRegistrationStatusDetail(myLeagueRegistration.status)
+                      : "Escolha a classe, revise valor e confirme seus dados."}
+                  </p>
+                </div>
+                <span className="home-league-chip member">
+                  {league.joinRequiresApproval ? "Com aprovacao" : "Entrada direta"}
+                </span>
+              </div>
+              {myLeagueRegistration ? (
+                <div className={`invite-confirmation ${myLeagueRegistration.status === "rejected" ? "rejected" : ""}`}>
+                  <strong>{leagueRegistrationStatusLabel(myLeagueRegistration.status)}</strong>
+                  <span>
+                    {myLeagueRegistration.playerName}
+                    {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
+                      ? ` - ${classLabel(classById[myLeagueRegistration.classId])}`
+                      : ""}. {leagueRegistrationStatusDetail(myLeagueRegistration.status)}
+                  </span>
+                  <div className="cluster">
+                    <button onClick={() => goToTab(myLeagueRegistration.status === "approved" ? "partidas" : "visao")}>
+                      {myLeagueRegistration.status === "approved" ? "Ver partidas" : "Acompanhar liga"}
+                    </button>
+                    <button onClick={() => navigate("/eventos?modo=playing")}>Meus eventos</button>
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="registration-flow">
+                <div className="registration-step-heading">
+                  <span>1</span>
+                  <div>
+                    <strong>Escolha a classe</strong>
+                    <small>A inscricao fica vinculada a esta temporada e classe.</small>
+                  </div>
                 </div>
                 {!classes.length ? (
-                  <p className="subtle">Nenhuma classe publicada ainda.</p>
+                  <p className="subtle">A liga ainda nao publicou classes especificas. A entrada sera enviada como classe aberta.</p>
                 ) : (
-                  <div className="tournament-public-category-rail">
-                    {classes.map((item) => (
-                      <button
-                        key={`league-public-class:${item.id}`}
-                        type="button"
-                        className={selectedClassId === item.id ? "active" : ""}
-                        onClick={() => {
-                          setSelectedClassId(item.id);
-                          goToTab("visao");
-                        }}
-                      >
-                        <span>{item.categoryName}</span>
-                        <strong>{item.className}</strong>
-                        <small>{typeLabel(league.leagueType)}</small>
-                        <em>{standings.filter((player) => player.classId === item.id && player.status !== "inactive").length} jogadores</em>
-                      </button>
-                    ))}
+                  <div className="registration-option-grid">
+                    {classes.map((item) => {
+                      const active = selectedClassId === item.id;
+                      const playersInClass = standings.filter((player) => player.classId === item.id && player.status !== "inactive").length;
+                      return (
+                        <button
+                          key={`league-join-class:${item.id}`}
+                          className={`registration-option ${active ? "active" : ""}`}
+                          type="button"
+                          onClick={() => setSelectedClassId(item.id)}
+                          disabled={Boolean(myLeagueRegistration)}
+                        >
+                          <strong>{item.className}</strong>
+                          <span>{item.categoryName}</span>
+                          <small>{typeLabel(league.leagueType)}</small>
+                          <em>
+                            {playersInClass} {playersInClass === 1 ? "jogador" : "jogadores"}
+                          </em>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
-              </section>
 
-              <section id="league-public-players" className="competition-public-list-section">
-                <div className="section-title">
-                  <h2>Jogadores</h2>
-                  <span>{publicLeaguePlayers.length} {publicLeaguePlayers.length === 1 ? "jogador" : "jogadores"}</span>
+                <div className="registration-step-heading">
+                  <span>2</span>
+                  <div>
+                    <strong>Confirme seus dados</strong>
+                    <small>A organizacao usa esses dados para liberar a entrada e avisos da rodada.</small>
+                  </div>
                 </div>
-                {!publicLeaguePlayers.length ? (
-                  <p className="subtle">Nenhum jogador ativo publicado ainda.</p>
-                ) : (
-                  <div className="competition-public-person-list">
-                    {publicLeaguePlayers.map((player) => (
-                      <article key={`league-public-player:${player.id}`} className="competition-public-person-row">
-                        <div>
-                          <strong>{player.name}</strong>
-                          <span>{player.classLabel}</span>
-                        </div>
-                        <small>{player.points} pts</small>
-                      </article>
-                    ))}
-                  </div>
-                )}
-              </section>
+                <div className="registration-form-grid">
+                  <label>
+                    Nome
+                    <input
+                      value={joinPlayerName}
+                      onChange={(event) => setJoinPlayerName(event.target.value)}
+                      placeholder="Seu nome"
+                      disabled={Boolean(myLeagueRegistration)}
+                    />
+                  </label>
+                  <label>
+                    Telefone
+                    <input
+                      value={joinPhone}
+                      onChange={(event) => setJoinPhone(event.target.value)}
+                      placeholder="(67) 99999-9999"
+                      disabled={Boolean(myLeagueRegistration)}
+                    />
+                  </label>
+                </div>
 
-              <div className="tournament-public-sticky-cta" aria-label="Acao principal da liga">
-                <button className="primary" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
-                  {publicLeagueCta.label}
-                </button>
+                <div className="registration-step-heading">
+                  <span>3</span>
+                  <div>
+                    <strong>Revise e confirme</strong>
+                    <small>Entrada, valor e proximo passo ficam claros antes do envio.</small>
+                  </div>
+                </div>
+                <div className="registration-review-card">
+                  <p>
+                    <span>Classe</span>
+                    <strong>{selectedJoinClass ? classLabel(selectedJoinClass) : classes.length ? "Escolha uma classe" : "Classe aberta"}</strong>
+                  </p>
+                  <p>
+                    <span>Valor</span>
+                    <strong>{formatMoneyFromCents(league.registrationFeeCents)}</strong>
+                  </p>
+                  <p>
+                    <span>Tipo de entrada</span>
+                    <strong>{league.joinRequiresApproval ? "A organizacao aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
+                  </p>
+                </div>
+                <div className="registration-sticky-cta">
+                  <button
+                    className="primary"
+                    onClick={onPublicJoin}
+                    disabled={busy || Boolean(myLeagueRegistration) || !joinPlayerName.trim() || (classes.length > 0 && !selectedJoinClass)}
+                  >
+                    {busy
+                      ? "Enviando..."
+                      : myLeagueRegistration
+                        ? leagueRegistrationStatusLabel(myLeagueRegistration.status)
+                        : league.joinRequiresApproval
+                          ? "Solicitar inscricao"
+                          : "Entrar na liga"}
+                  </button>
+                  <button onClick={() => goToTab("partidas")}>Ver partidas</button>
+                </div>
               </div>
             </section>
           ) : null}
@@ -2223,7 +2379,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </section>
           ) : null}
 
-          {!isOwner && visiblePlayerLeagueTasks.length > 0 ? (
+          {!isOwner && activeTab === "visao" && visiblePlayerLeagueTasks.length > 0 ? (
             <LeagueOperationTaskRows
               ariaLabel="Minhas tarefas na liga"
               emptyDetail="Voce nao tem partida pendente nesta liga agora."
@@ -2236,33 +2392,34 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             />
           ) : null}
 
-          <CompetitionTabs
-            activeValue={activeTab}
-            ariaLabel="Visoes da liga"
-            onChange={(value) => goToTab(value as PageTab)}
-            items={[
-              {
-                value: "visao",
-                label: isOwner ? "Organizacao" : "Classificacao",
-                badge: isOwner && registrationStats.pending > 0 ? registrationStats.pending : undefined,
-              },
-              {
-                value: "jogadores",
-                label: "Jogadores",
-                badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
-                hidden: !isOwner,
-              },
-              {
-                value: "partidas",
-                label: "Partidas",
-                badge: leagueOverview.pending > 0 ? leagueOverview.pending : undefined,
-              },
-              {
-                value: "chat",
-                label: "Chat",
-              },
-            ]}
-          />
+          {isOwner ? (
+            <CompetitionTabs
+              activeValue={activeTab}
+              ariaLabel="Visoes da liga"
+              onChange={(value) => goToTab(value as PageTab)}
+              items={[
+                {
+                  value: "visao",
+                  label: "Organizacao",
+                  badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
+                },
+                {
+                  value: "jogadores",
+                  label: "Jogadores",
+                  badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
+                },
+                {
+                  value: "partidas",
+                  label: "Partidas",
+                  badge: leagueOverview.pending > 0 ? leagueOverview.pending : undefined,
+                },
+                {
+                  value: "chat",
+                  label: "Chat",
+                },
+              ]}
+            />
+          ) : null}
 
           {isOwner && activeTab === "visao" ? (
           <section className="league-overview-card league-support-panel">
@@ -2316,7 +2473,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           </section>
           ) : null}
 
-          {activeTab === "visao" ? (
+          {(isOwner && activeTab === "visao") || (!isOwner && activeTab === "classificacao") ? (
             <>
           <section className="section-card">
             <div className="section-title" style={{ marginBottom: 10 }}>
@@ -2687,130 +2844,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </section>
               ) : null}
 
-              {!isOwner && league.visibility === "public" && league.publicJoinEnabled ? (
-                <section id="league-public-join" className="section-card competition-registration-panel">
-                  <div className="section-title" style={{ marginBottom: 10 }}>
-                    <div>
-                      <h3 style={{ margin: 0 }}>{myLeagueRegistration ? leagueRegistrationStatusLabel(myLeagueRegistration.status) : "Inscricao publica"}</h3>
-                      <p className="subtle" style={{ margin: "4px 0 0" }}>
-                        {myLeagueRegistration
-                          ? leagueRegistrationStatusDetail(myLeagueRegistration.status)
-                          : "Escolha a classe, revise valor e confirme seus dados."}
-                      </p>
-                    </div>
-                    <span className="home-league-chip member">
-                      {league.joinRequiresApproval ? "Com aprovacao" : "Entrada direta"}
-                    </span>
-                  </div>
-                  {myLeagueRegistration ? (
-                    <div className={`invite-confirmation ${myLeagueRegistration.status === "rejected" ? "rejected" : ""}`}>
-                      <strong>{leagueRegistrationStatusLabel(myLeagueRegistration.status)}</strong>
-                      <span>
-                        {myLeagueRegistration.playerName}
-                        {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
-                          ? ` - ${classLabel(classById[myLeagueRegistration.classId])}`
-                          : ""}. {leagueRegistrationStatusDetail(myLeagueRegistration.status)}
-                      </span>
-                      <div className="cluster">
-                        <button onClick={() => goToTab(myLeagueRegistration.status === "approved" ? "partidas" : "visao")}>
-                          {myLeagueRegistration.status === "approved" ? "Ver partidas" : "Acompanhar liga"}
-                        </button>
-                        <button onClick={() => navigate("/eventos?modo=playing")}>Meus eventos</button>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  <div className="registration-flow">
-                    <div className="registration-step-heading">
-                      <span>1</span>
-                      <div>
-                        <strong>Escolha a classe</strong>
-                        <small>A inscricao fica vinculada a esta temporada e classe.</small>
-                      </div>
-                    </div>
-                    {!classes.length ? (
-                      <p className="subtle">A liga ainda nao publicou classes especificas. A entrada sera enviada como classe aberta.</p>
-                    ) : (
-                      <div className="registration-option-grid">
-                        {classes.map((item) => {
-                          const active = selectedClassId === item.id;
-                          const playersInClass = standings.filter((player) => player.classId === item.id && player.status !== "inactive").length;
-                          return (
-                            <button
-                              key={`league-join-class:${item.id}`}
-                              className={`registration-option ${active ? "active" : ""}`}
-                              type="button"
-                              onClick={() => setSelectedClassId(item.id)}
-                              disabled={Boolean(myLeagueRegistration)}
-                            >
-                              <strong>{item.className}</strong>
-                              <span>{item.categoryName}</span>
-                              <small>{typeLabel(league.leagueType)}</small>
-                              <em>{playersInClass} {playersInClass === 1 ? "jogador" : "jogadores"}</em>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    <div className="registration-step-heading">
-                      <span>2</span>
-                      <div>
-                        <strong>Confirme seus dados</strong>
-                        <small>A organizacao usa esses dados para liberar a entrada e avisos da rodada.</small>
-                      </div>
-                    </div>
-                    <div className="registration-form-grid">
-                      <label>
-                        Nome
-                        <input value={joinPlayerName} onChange={(e) => setJoinPlayerName(e.target.value)} placeholder="Seu nome" disabled={Boolean(myLeagueRegistration)} />
-                      </label>
-                      <label>
-                        Telefone
-                        <input value={joinPhone} onChange={(e) => setJoinPhone(e.target.value)} placeholder="(67) 99999-9999" disabled={Boolean(myLeagueRegistration)} />
-                      </label>
-                    </div>
-
-                    <div className="registration-step-heading">
-                      <span>3</span>
-                      <div>
-                        <strong>Revise e confirme</strong>
-                        <small>Entrada, valor e proximo passo ficam claros antes do envio.</small>
-                      </div>
-                    </div>
-                    <div className="registration-review-card">
-                      <p>
-                        <span>Classe</span>
-                        <strong>{selectedJoinClass ? classLabel(selectedJoinClass) : classes.length ? "Escolha uma classe" : "Classe aberta"}</strong>
-                      </p>
-                      <p>
-                        <span>Valor</span>
-                        <strong>{formatMoneyFromCents(league.registrationFeeCents)}</strong>
-                      </p>
-                      <p>
-                        <span>Tipo de entrada</span>
-                        <strong>{league.joinRequiresApproval ? "A organizacao aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
-                      </p>
-                    </div>
-                    <div className="registration-sticky-cta">
-                      <button
-                        className="primary"
-                        onClick={onPublicJoin}
-                        disabled={busy || Boolean(myLeagueRegistration) || !joinPlayerName.trim() || (classes.length > 0 && !selectedJoinClass)}
-                      >
-                        {busy
-                          ? "Enviando..."
-                          : myLeagueRegistration
-                            ? leagueRegistrationStatusLabel(myLeagueRegistration.status)
-                            : league.joinRequiresApproval
-                              ? "Solicitar inscricao"
-                              : "Entrar na liga"}
-                      </button>
-                      <button onClick={() => goToTab("partidas")}>Ver partidas</button>
-                    </div>
-                  </div>
-                </section>
-              ) : null}
             </>
           ) : null}
 
