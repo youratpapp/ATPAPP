@@ -8589,6 +8589,22 @@ button:disabled {
   padding: var(--space-4);
 }
 
+.workspace-card-button {
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
+  width: 100%;
+}
+
+.workspace-card-button:hover {
+  border-color: var(--color-green-200);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
 .academy-workspace-card header,
 .academy-workspace-row {
   align-items: flex-start;

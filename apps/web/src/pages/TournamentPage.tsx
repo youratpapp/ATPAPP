@@ -1796,8 +1796,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     setStaffBusy(true);
     try {
       const row = await addTournamentStaff(tournament.id, email, staffRole);
+      const displayRow = selectedStaffCandidate ? { ...row, displayName: selectedStaffCandidate.displayName } : row;
       setStaffMembers((prev) => [
-        row,
+        displayRow,
         ...prev.filter((item) =>
           row.userId
             ? item.userId !== row.userId
@@ -1810,7 +1811,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       setFeedback({
         kind: "success",
         text: row.status === "pending"
-          ? "Convite pendente criado. Quando a pessoa criar login com esse email, o acesso entra automaticamente."
+          ? "Convite pendente criado. A pessoa vera o convite no app e so tera acesso depois de aceitar."
           : "Acesso da equipe atualizado.",
       });
     } catch (err) {

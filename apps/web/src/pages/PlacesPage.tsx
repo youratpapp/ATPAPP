@@ -43,7 +43,7 @@ import { PlaceFinanceReceivablesModule } from "../components/place/PlaceFinanceR
 import { PlaceAdminShell } from "../components/place/PlaceAdminShell";
 import { PlaceMembershipModule, type PlaceMembershipPlanDraft } from "../components/place/PlaceMembershipModule";
 import { PlaceOperationsDashboard } from "../components/place/PlaceOperationsDashboard";
-import { OperationalQueue, WorkspaceCard, WorkspaceGrid, WorkspaceList, WorkspaceRow } from "../components/place/PlaceWorkspaceUi";
+import { OperationalQueue, WorkspaceCard, WorkspaceEmptyState, WorkspaceGrid, WorkspaceList, WorkspaceRow } from "../components/place/PlaceWorkspaceUi";
 import { SettingsWorkspaceShell, type SettingsManagementView } from "../components/place/SettingsWorkspaceShell";
 import { TeamWorkspaceShell, type TeamManagementView } from "../components/place/TeamWorkspaceShell";
 import {
@@ -298,6 +298,19 @@ function friendlyError(err: unknown, fallback: string): string {
   const text = err instanceof Error ? err.message : "";
   const lower = text.toLowerCase();
   if (!text) return fallback;
+  if (
+    lower.includes("column reference") ||
+    lower.includes("ambiguous") ||
+    lower.includes("sql query") ||
+    lower.includes("syntax error") ||
+    lower.includes("postgrest") ||
+    lower.includes("failed to run sql") ||
+    lower.includes("function public.") ||
+    lower.includes("relation public.")
+  ) {
+    console.error(fallback, err);
+    return fallback;
+  }
   if (lower.includes("row-level security") || lower.includes("nao autorizado") || lower.includes("permission denied")) {
     return "Seu perfil nao tem permissao para executar esta acao.";
   }
@@ -615,6 +628,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [managementModuleByPlace, setManagementModuleByPlace] = useState<Record<string, PlaceManagementModule>>({});
   const [academyViewByPlace, setAcademyViewByPlace] = useState<Record<string, AcademyManagementView>>({});
+  const [academyTodayClassByPlace, setAcademyTodayClassByPlace] = useState<Record<string, string>>({});
   const [bookingViewByPlace, setBookingViewByPlace] = useState<Record<string, BookingManagementView>>({});
   const [canteenViewByPlace, setCanteenViewByPlace] = useState<Record<string, CanteenManagementView>>({});
   const [clientsViewByPlace, setClientsViewByPlace] = useState<Record<string, ClientsManagementView>>({});
@@ -656,6 +670,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     posSalesByPlace,
     replaceAllPlaceAdminResources,
     replaceOnePlaceAdminResource,
+    setAcademyAttendanceByPlace,
     setPaymentsByTarget,
     staffByPlace,
   } = usePlaceAdminResourceState();
@@ -2109,18 +2124,54 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     status: AcademyAttendance["status"],
     notes = ""
   ) => {
+    const currentRows = academyAttendanceByPlace[placeId] || [];
+    const enrollment = (academyEnrollmentsByPlace[placeId] || []).find((item) => item.id === enrollmentId);
+    const attendedOn = todayDateInputValue();
+    const previousRows = currentRows.slice();
+    if (enrollment) {
+      const now = new Date().toISOString();
+      const existing = currentRows.find((item) => item.enrollmentId === enrollmentId && item.attendedOn === attendedOn);
+      const optimisticAttendance: AcademyAttendance = existing
+        ? { ...existing, notes, status, updatedAt: now }
+        : {
+            id: `optimistic:${enrollmentId}:${attendedOn}`,
+            attendedOn,
+            classId: enrollment.classId,
+            createdAt: now,
+            enrollmentId,
+            markedBy: user.id,
+            notes,
+            placeId,
+            status,
+            updatedAt: now,
+            userId: enrollment.userId,
+          };
+      setAcademyAttendanceByPlace((prev) => ({
+        ...prev,
+        [placeId]: existing
+          ? currentRows.map((item) => (item.id === existing.id ? optimisticAttendance : item))
+          : [optimisticAttendance, ...currentRows],
+      }));
+    }
     setBusy(true);
     setFeedback(null);
     try {
-      await markAcademyAttendance({
+      const savedAttendance = await markAcademyAttendance({
         enrollmentId,
-        attendedOn: todayDateInputValue(),
+        attendedOn,
         status,
         notes,
       });
+      setAcademyAttendanceByPlace((prev) => ({
+        ...prev,
+        [placeId]: (prev[placeId] || []).map((item) =>
+          item.enrollmentId === enrollmentId && item.attendedOn === attendedOn ? savedAttendance : item
+        ),
+      }));
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: status === "present" ? "Presenca registrada." : "Falta registrada." });
     } catch (err) {
+      setAcademyAttendanceByPlace((prev) => ({ ...prev, [placeId]: previousRows }));
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar chamada.") });
     } finally {
       setBusy(false);
@@ -3560,9 +3611,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showAcademyTools = canUseAcademy;
         const activeAcademyClasses = academyClasses.filter((item) => item.isActive);
         const currentCoach = academyCoaches.find((coach) => coach.userId === user.id) || null;
-        const displayedCoaches = staffRole === "coach" && currentCoach ? [currentCoach] : academyCoaches;
+        const coachWithoutAcademyProfile = staffRole === "coach" && !canManagePlace && !currentCoach;
+        const displayedCoaches = coachWithoutAcademyProfile ? [] : staffRole === "coach" && currentCoach ? [currentCoach] : academyCoaches;
         const visibleAcademyClasses =
-          staffRole === "coach" && currentCoach
+          coachWithoutAcademyProfile
+            ? []
+          : staffRole === "coach" && currentCoach
             ? activeAcademyClasses.filter((item) => item.coachId === currentCoach.id)
             : activeAcademyClasses;
         const academyEnrollments = academyEnrollmentsByPlace[p.id] || [];
@@ -5674,6 +5728,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   busy={busy}
                   canManageAcademy={canManageAcademy}
                   onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                  onOpenTodayClass={(academyClassId) => {
+                    setAcademyTodayClassByPlace((prev) => ({ ...prev, [p.id]: academyClassId }));
+                    setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }));
+                  }}
                   onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
                   onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
                   pendingEnrollments={academyEnrollments.filter((enrollment) => enrollment.status === "pending")}
@@ -5685,6 +5743,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   activeView={academyView}
                   onViewChange={(view) => selectAcademyView(p.id, view)}
                 >
+                  {coachWithoutAcademyProfile ? (
+                    <WorkspaceEmptyState
+                      title="Professor sem agenda vinculada"
+                      detail="Seu usuario esta na equipe como professor, mas ainda nao foi vinculado a um cadastro de professor da academia. Peça ao gestor para vincular seu login pelo email do professor."
+                    />
+                  ) : null}
                   {academyView === "today" ? (
                     <PlaceAcademyTodayModule
                       activeCourts={activeCourts}
@@ -5693,6 +5757,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       busy={busy}
                       classes={todayClasses}
                       enrollments={academyEnrollments}
+                      initialSelectedClassId={academyTodayClassByPlace[p.id]}
                       makeups={openAcademyMakeups}
                       onMarkAttendance={(enrollmentId, status, notes) => void onMarkAcademyAttendance(p.id, enrollmentId, status, notes)}
                       onOpenClasses={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
@@ -5702,6 +5767,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                   {academyView === "classes" ? (
                     <>
+                      {canManagePlace ? (
+                        <details className="workspace-disclosure academy-create-class-disclosure" open={Boolean(academyDraft.slotId)}>
+                          <summary>Nova turma ou horario aberto</summary>
+                          <PlaceAcademyClassSetupModule
+                            activeCourts={activeCourts}
+                            busy={busy}
+                            coachConflict={draftCoachConflict}
+                            coaches={academyCoaches}
+                            courtConflict={draftCourtConflict}
+                            draft={academyDraft}
+                            onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                            onCreateClass={() => void onCreateAcademyClass(p)}
+                            onCreateSlot={() => void onCreateAcademySlot(p)}
+                            weekdayLabels={WEEKDAY_LABELS}
+                          />
+                        </details>
+                      ) : null}
                       <PlaceAcademyClassesModule
                         activeCourts={activeCourts}
                         billingPeriod={academyBillingPeriod}
@@ -5730,23 +5812,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         studentDraftByClass={academyStudentDraftByClass}
                         weekdayLabels={WEEKDAY_LABELS}
                       />
-                      {canManagePlace ? (
-                        <details className="workspace-disclosure" open={Boolean(academyDraft.slotId)}>
-                          <summary>Criar nova turma ou abrir horario</summary>
-                          <PlaceAcademyClassSetupModule
-                            activeCourts={activeCourts}
-                            busy={busy}
-                            coachConflict={draftCoachConflict}
-                            coaches={academyCoaches}
-                            courtConflict={draftCourtConflict}
-                            draft={academyDraft}
-                            onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
-                            onCreateClass={() => void onCreateAcademyClass(p)}
-                            onCreateSlot={() => void onCreateAcademySlot(p)}
-                            weekdayLabels={WEEKDAY_LABELS}
-                          />
-                        </details>
-                      ) : null}
                     </>
                   ) : null}
                   {academyView === "students" ? (
@@ -5770,7 +5835,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onChangeAbsenceDraft={(enrollmentId, draft) => setAcademyAbsenceDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: draft }))}
                       onChangeFilter={(filter) => setAcademyStudentFilterByPlace((prev) => ({ ...prev, [p.id]: filter }))}
                       onChangeProgressDraft={(enrollmentId, draft) => setAcademyProgressDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: draft }))}
+                      onChangeStudentDraft={(classId, draft) => setAcademyStudentDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
                       onCreateProgressNote={(enrollmentId) => void onCreateProgressNote(p.id, enrollmentId)}
+                      onCreateStudent={(academyClass) => void onCreateAcademyStudentByAdmin(p, academyClass)}
                       onCreatePaymentReminder={(enrollment, academyClass) => {
                         const target = getAcademyStudentTarget(academyClass, enrollment);
                         return void onCreatePaymentReminder(target.targetType, target.targetId, academyBillingPeriod, target.reminder);
@@ -5782,9 +5849,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onUpdateEnrollmentDetails={(enrollmentId, patch) => void onUpdateAcademyEnrollmentDetails(p.id, enrollmentId, patch)}
                       progress={academyProgress}
                       progressDraftByEnrollment={academyProgressDraftByEnrollment}
+                      studentDraftByClass={academyStudentDraftByClass}
                       todayAttendance={todayAttendance}
                       visibleClasses={visibleAcademyClasses}
                       visibleEnrollments={visibleAcademyStudentEnrollments}
+                      weekdayLabels={WEEKDAY_LABELS}
                     />
                   ) : null}
                   {academyView === "requests" ? (
@@ -5871,11 +5940,19 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           subtitle={countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}
                           detail={activeCourts.map((court) => court.name).join(", ") || "Cadastre quadras para montar turmas"}
                         />
-                        <WorkspaceCard
-                          title="Horarios abertos"
-                          subtitle={countLabel(academySlots.filter((slot) => slot.status === "open").length, "horario aberto", "horarios abertos")}
-                          detail="Use data, professor ou quadra para localizar disponibilidade sem depender do draft da turma."
-                        />
+                        <button
+                          type="button"
+                          className="academy-workspace-card workspace-card-button"
+                          onClick={() => document.getElementById(`academy-resources-board-${p.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                        >
+                          <header>
+                            <div>
+                              <strong>Horarios abertos</strong>
+                              <span>{countLabel(academySlots.filter((slot) => slot.status === "open").length, "horario aberto", "horarios abertos")}</span>
+                            </div>
+                          </header>
+                          <small>Ver disponibilidade por data, professor ou quadra.</small>
+                        </button>
                         <WorkspaceCard
                           title="Professores vinculados"
                           subtitle={countLabel(displayedCoaches.length, "professor", "professores")}
@@ -5883,29 +5960,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         />
                       </WorkspaceGrid>
                       {canManageAcademy ? (
-                        <PlaceAcademyResourcesModule
-                          activeCourts={activeCourts}
-                          busy={busy}
-                          classes={visibleAcademyClasses}
-                          coaches={displayedCoaches}
-                          onChangeAcademyDraftFromSlot={(patch) => {
-                            setAcademyClassDraftByPlace((prev) => ({
-                              ...prev,
-                              [p.id]: {
-                                ...academyDraft,
-                                ...patch,
-                                coachName: patch.coachName || academyDraft.coachName,
-                              },
-                            }));
-                            setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
-                          }}
-                          onCreateSlot={(draft, status) => void onCreateAcademyResourceSlot(p, draft, status)}
-                          onUpdateSettings={(draft) => void onUpdateAcademySettings(p.id, draft)}
-                          onUpdateSlotStatus={(slot, status) => void onUpdateAcademyResourceSlotStatus(p.id, slot, status)}
-                          settings={academySettings}
-                          slots={academySlots}
-                          weekdayLabels={WEEKDAY_LABELS}
-                        />
+                        <div id={`academy-resources-board-${p.id}`}>
+                          <PlaceAcademyResourcesModule
+                            activeCourts={activeCourts}
+                            busy={busy}
+                            classes={visibleAcademyClasses}
+                            coaches={displayedCoaches}
+                            onChangeAcademyDraftFromSlot={(patch) => {
+                              setAcademyClassDraftByPlace((prev) => ({
+                                ...prev,
+                                [p.id]: {
+                                  ...academyDraft,
+                                  ...patch,
+                                  coachName: patch.coachName || academyDraft.coachName,
+                                },
+                              }));
+                              setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
+                            }}
+                            onCreateSlot={(draft, status) => void onCreateAcademyResourceSlot(p, draft, status)}
+                            onUpdateSettings={(draft) => void onUpdateAcademySettings(p.id, draft)}
+                            onUpdateSlotStatus={(slot, status) => void onUpdateAcademyResourceSlotStatus(p.id, slot, status)}
+                            settings={academySettings}
+                            slots={academySlots}
+                            weekdayLabels={WEEKDAY_LABELS}
+                          />
+                        </div>
                       ) : null}
                     </>
                   ) : null}

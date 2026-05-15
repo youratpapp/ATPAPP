@@ -7,6 +7,7 @@ type Props = {
   busy: boolean;
   canManageAcademy: boolean;
   onMarkLessonRequestPaid: (request: AcademyLessonRequest) => void;
+  onOpenTodayClass: (academyClassId: string) => void;
   onUpdateEnrollment: (enrollmentId: string, status: AcademyEnrollment["status"]) => void;
   onUpdateLessonRequest: (request: AcademyLessonRequest, status: AcademyLessonRequest["status"]) => void;
   pendingEnrollments: AcademyEnrollment[];
@@ -19,6 +20,7 @@ export function PlaceAcademyOperationalQueues({
   busy,
   canManageAcademy,
   onMarkLessonRequestPaid,
+  onOpenTodayClass,
   onUpdateEnrollment,
   onUpdateLessonRequest,
   pendingEnrollments,
@@ -34,6 +36,9 @@ export function PlaceAcademyOperationalQueues({
               <span key={`today-class:${academyClass.id}`}>
                 <strong>{academyClass.startsAt.slice(0, 5)}</strong>
                 {academyClass.title} - {academyClass.coachName || "Professor"} - {academyClass.level || "nivel livre"}
+                <button type="button" onClick={() => onOpenTodayClass(academyClass.id)} disabled={busy}>
+                  Abrir chamada
+                </button>
               </span>
             ))
           : null}

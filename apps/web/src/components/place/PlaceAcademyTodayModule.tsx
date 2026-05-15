@@ -11,6 +11,7 @@ type Props = {
   busy: boolean;
   classes: AcademyClass[];
   enrollments: AcademyEnrollment[];
+  initialSelectedClassId?: string;
   makeups: AcademyMakeupCredit[];
   onMarkAttendance: (enrollmentId: string, status: AcademyAttendance["status"], notes?: string) => void;
   onOpenClasses?: () => void;
@@ -32,6 +33,7 @@ export function PlaceAcademyTodayModule({
   busy,
   classes,
   enrollments,
+  initialSelectedClassId,
   makeups,
   onMarkAttendance,
   onOpenClasses,
@@ -47,6 +49,12 @@ export function PlaceAcademyTodayModule({
       setSelectedClassId(null);
     }
   }, [classes, selectedClassId]);
+
+  useEffect(() => {
+    if (initialSelectedClassId && classes.some((item) => item.id === initialSelectedClassId)) {
+      setSelectedClassId(initialSelectedClassId);
+    }
+  }, [classes, initialSelectedClassId]);
 
   const classRows = useMemo(
     () =>

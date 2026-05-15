@@ -33,6 +33,28 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] COMP-QA-01 - Convite de equipe de torneio por usuario selecionado
+
+Status: `[x]` concluido em 2026-05-14
+
+Contexto:
+
+- QA/uso real apontou confusao no fluxo de equipe de torneio: o organizador busca usuario por email/nome, seleciona uma pessoa, mas o card podia cair para email e a mensagem sugeria acesso automatico.
+- Regra de produto: usuario convidado so deve ver/operar torneio ou liga depois de aceitar o convite.
+
+Criterios entregues:
+
+- membro ativo passou a preservar `displayName` separado de `email` no model de torneio;
+- convite criado a partir de candidato selecionado mostra nome da pessoa no card imediatamente;
+- feedback de sucesso passou a explicar que o convite aparece no app e o acesso so entra apos aceite;
+- backend existente de convite pendente/aceite (`app_add_tournament_staff`, `app_list_my_tournament_staff_invites`, `app_accept_tournament_staff_invite`) foi preservado, sem acesso automatico.
+
+Validacao esperada:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`;
+- teste manual posterior: buscar usuario, selecionar, criar convite, entrar com convidado e aceitar.
+
 ### [x] ACADEMY-V2-00 - Plano operacional e suporte reutilizavel
 
 Status: `[x]` concluido em 2026-05-14
@@ -1530,6 +1552,31 @@ Entregue:
 - chamada rapida recebeu `aria-label` por aluno para observacao curta;
 - campos criticos em drawers continuam com label visual; placeholders foram usados apenas como ajuda curta, nao como substituto estrutural;
 - checklist estatico aplicado em `PlaceAcademy*Module`.
+
+### [x] ACADEMY-QA-01 - Corrigir friccoes de Academia detectadas no QA manual
+
+Status: `[x]` concluido em 2026-05-14
+
+Contexto:
+
+- QA manual validou que os bloqueadores P0 foram tratados antes de retomar refinamentos: aprovacao/rejeicao de inscricao de torneio e erro SQL cru na UI da Academia.
+- Esta task concentra apenas friccoes de Academia; nao reabrir arquitetura geral nem avancar para redesign amplo.
+
+Criterios entregues:
+
+- BUG-004 / FRIC-002: fila `Aulas do dia` ganhou acao `Abrir chamada`, levando para `Hoje` e abrindo o drawer da aula.
+- BUG-005: chamada ganhou atualizacao otimista local; `Presente`/`Falta` mudam visual e contadores antes do refresh completo.
+- BUG-006: nenhum novo spacer/altura residual foi introduzido; a correcao desta rodada removeu dependencia de areas passivas para chegar nas acoes de Academia.
+- FRIC-001: subvisao `Alunos` ganhou CTA `Nova matricula`, abrindo drawer de matricula com usuario/email, plano, mensalidade e horarios semanais.
+- FRIC-003: `Nova turma ou horario aberto` foi movido para o topo da Grade, antes da lista de turmas.
+- FRIC-004: card `Horarios abertos` virou acao clicavel que leva para a lista/configuracao de disponibilidade.
+- FRIC-005: professor sem cadastro vinculado recebe estado vazio claro orientando o vinculo do login pelo gestor.
+
+Validacao esperada:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`;
+- nenhuma acao nova falsa: chamada, matricula, turma e horarios reutilizam os fluxos/backend existentes.
 
 ### [x] SWEEP-ROLE-01 - Varredura por perfil Admin/Player/Professor
 

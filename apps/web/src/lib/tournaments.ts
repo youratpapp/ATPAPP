@@ -533,13 +533,14 @@ export async function loadTournamentRegistrations(
   return ((data ?? []) as TournamentRegistrationRow[]).map(registrationRowToModel);
 }
 
-function staffRowToModel(row: TournamentMemberRow, email = ""): TournamentStaffMember | null {
+function staffRowToModel(row: TournamentMemberRow, displayName = "", email = ""): TournamentStaffMember | null {
   const role = normalizeTournamentRole(row.role);
   if (!isTournamentStaffRole(role)) return null;
   return {
     tournamentId: row.tournament_id,
     userId: row.user_id,
     email,
+    displayName: displayName || undefined,
     role,
     createdAt: row.created_at ?? "",
     status: "active",
@@ -591,6 +592,23 @@ function staffInviteActionRowToModel(row: TournamentStaffInviteActionRow): Tourn
     role,
     createdAt: row.created_at || "",
   };
+}
+
+function friendlyTournamentRegistrationStatusError(status: "approved" | "waitlist" | "rejected", error: unknown): string {
+  const raw = error instanceof Error ? error.message : typeof error === "string" ? error : "";
+  const lower = raw.toLowerCase();
+  if (lower.includes("nao autorizado") || lower.includes("permission denied") || lower.includes("row-level security")) {
+    return "Seu perfil nao tem permissao para alterar esta inscricao.";
+  }
+  if (lower.includes("inscricao nao encontrada") || lower.includes("not found")) {
+    return "Nao encontramos esta inscricao. Atualize a pagina e tente novamente.";
+  }
+  if (lower.includes("status invalido") || lower.includes("check constraint")) {
+    return "Status de inscricao invalido para esta acao.";
+  }
+  if (status === "approved") return "Nao foi possivel aprovar a inscricao. Tente novamente em instantes.";
+  if (status === "waitlist") return "Nao foi possivel mover a inscricao para lista de espera. Tente novamente em instantes.";
+  return "Nao foi possivel rejeitar a inscricao. Tente novamente em instantes.";
 }
 
 export async function listTournamentStaff(tournamentId: string): Promise<TournamentStaffMember[]> {
@@ -772,19 +790,15 @@ export async function updateTournamentRegistrationStatus(
   status: "approved" | "waitlist" | "rejected"
 ): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
-  const rpc = await supabase.rpc("app_set_tournament_registration_status", {
+  const { error } = await supabase.rpc("app_set_tournament_registration_status", {
     p_tournament_id: tournamentId,
     p_registration_id: registrationId,
     p_status: status,
   });
-  if (!rpc.error) return;
-
-  const { error } = await supabase
-    .from(TABLE_REGISTRATIONS)
-    .update({ status })
-    .eq("id", registrationId)
-    .eq("tournament_id", tournamentId);
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error("Tournament registration status update failed", error);
+    throw new Error(friendlyTournamentRegistrationStatusError(status, error));
+  }
 }
 
 export async function deleteTournament(user: User, tournamentId: string): Promise<void> {

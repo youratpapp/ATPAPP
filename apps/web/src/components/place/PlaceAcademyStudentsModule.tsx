@@ -43,6 +43,17 @@ type StudentEditDraft = {
 
 type StudentEditPatch = StudentEditDraft;
 
+type StudentDraft = {
+  classIds: string[];
+  email: string;
+  monthlyFee: string;
+  name: string;
+  notes: string;
+  phone: string;
+  startsOn: string;
+  weeklyLessonsCount: string;
+};
+
 type Props = {
   absenceDraftByEnrollment: Record<string, AbsenceDraft>;
   absences: AcademyPlannedAbsence[];
@@ -60,8 +71,10 @@ type Props = {
   onChangeAbsenceDraft: (enrollmentId: string, draft: AbsenceDraft) => void;
   onChangeFilter: (filter: PlaceAcademyStudentFilter) => void;
   onChangeProgressDraft: (enrollmentId: string, draft: ProgressDraft) => void;
+  onChangeStudentDraft: (classId: string, draft: StudentDraft) => void;
   onCreatePaymentReminder: (enrollment: AcademyEnrollment, academyClass: AcademyClass) => void;
   onCreateProgressNote: (enrollmentId: string) => void;
+  onCreateStudent: (academyClass: AcademyClass) => void;
   onMarkAttendance: (enrollmentId: string, status: AcademyAttendance["status"]) => void;
   onMarkPaid: (academyClass: AcademyClass, enrollment: AcademyEnrollment) => void;
   onReportAbsence: (enrollmentId: string) => void;
@@ -69,9 +82,11 @@ type Props = {
   onUpdateEnrollmentDetails: (enrollmentId: string, patch: StudentEditPatch) => void;
   progress: AcademyProgressNote[];
   progressDraftByEnrollment: Record<string, ProgressDraft>;
+  studentDraftByClass: Record<string, StudentDraft>;
   todayAttendance: AcademyAttendance[];
   visibleClasses: AcademyClass[];
   visibleEnrollments: AcademyEnrollment[];
+  weekdayLabels: string[];
 };
 
 const DEFAULT_VISIBLE_LIMIT = 24;
@@ -101,6 +116,19 @@ function toStudentEditDraft(enrollment: AcademyEnrollment): StudentEditDraft {
   };
 }
 
+function defaultStudentDraft(academyClass: AcademyClass): StudentDraft {
+  return {
+    classIds: [academyClass.id],
+    email: "",
+    monthlyFee: String(Math.round(academyClass.monthlyFeeCents / 100)),
+    name: "",
+    notes: "",
+    phone: "",
+    startsOn: todayInputValue(),
+    weeklyLessonsCount: "1",
+  };
+}
+
 export function PlaceAcademyStudentsModule({
   absenceDraftByEnrollment,
   absences,
@@ -118,8 +146,10 @@ export function PlaceAcademyStudentsModule({
   onChangeAbsenceDraft,
   onChangeFilter,
   onChangeProgressDraft,
+  onChangeStudentDraft,
   onCreatePaymentReminder,
   onCreateProgressNote,
+  onCreateStudent,
   onMarkAttendance,
   onMarkPaid,
   onReportAbsence,
@@ -127,13 +157,17 @@ export function PlaceAcademyStudentsModule({
   onUpdateEnrollmentDetails,
   progress,
   progressDraftByEnrollment,
+  studentDraftByClass,
   todayAttendance,
   visibleClasses,
   visibleEnrollments,
+  weekdayLabels,
 }: Props) {
   const [visibleLimit, setVisibleLimit] = useState(DEFAULT_VISIBLE_LIMIT);
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string | null>(null);
+  const [newStudentClassId, setNewStudentClassId] = useState<string | null>(null);
   const selectedEnrollment = enrollments.find((item) => item.id === selectedEnrollmentId) || null;
+  const selectedNewStudentClass = newStudentClassId ? classes.find((item) => item.id === newStudentClassId) || null : null;
   const [editDraft, setEditDraft] = useState<StudentEditDraft | null>(null);
 
   useEffect(() => {
@@ -188,6 +222,7 @@ export function PlaceAcademyStudentsModule({
     : { level: "", focus: "", notes: "" };
   const selectedPresentCount = selectedAttendance.filter((item) => item.status === "present").length;
   const selectedAbsentCount = selectedAttendance.filter((item) => item.status === "absent").length;
+  const newStudentDraft = selectedNewStudentClass ? studentDraftByClass[selectedNewStudentClass.id] || defaultStudentDraft(selectedNewStudentClass) : null;
 
   return (
     <>
@@ -233,6 +268,15 @@ export function PlaceAcademyStudentsModule({
           <span>
             Exibindo {Math.min(visibleLimit, studentGroups.length)} de {studentGroups.length}
           </span>
+          {canManagePlace ? (
+            <button
+              type="button"
+              onClick={() => setNewStudentClassId((visibleClasses[0] || classes[0])?.id || null)}
+              disabled={busy || !classes.length}
+            >
+              Nova matricula
+            </button>
+          ) : null}
         </div>
 
         {listedStudentGroups.map(({ contract, enrollments: groupEnrollments, key, representative: enrollment }) => {
@@ -319,6 +363,158 @@ export function PlaceAcademyStudentsModule({
           />
         ) : null}
       </WorkspaceList>
+
+      <EntityDrawer
+        open={Boolean(selectedNewStudentClass && newStudentDraft)}
+        eyebrow="Nova matricula"
+        title={selectedNewStudentClass?.title || "Matricular aluno"}
+        subtitle={
+          selectedNewStudentClass
+            ? `${weekdayLabels[selectedNewStudentClass.weekday] || "Dia"} ${selectedNewStudentClass.startsAt.slice(0, 5)}-${selectedNewStudentClass.endsAt.slice(0, 5)}`
+            : undefined
+        }
+        onClose={() => setNewStudentClassId(null)}
+        actions={
+          selectedNewStudentClass && newStudentDraft ? (
+            <>
+              <button type="button" className="secondary" onClick={() => setNewStudentClassId(null)}>
+                Fechar
+              </button>
+              <button
+                type="button"
+                onClick={() => onCreateStudent(selectedNewStudentClass)}
+                disabled={busy || !newStudentDraft.name.trim() || !newStudentDraft.email.trim()}
+              >
+                Matricular aluno
+              </button>
+            </>
+          ) : null
+        }
+      >
+        {selectedNewStudentClass && newStudentDraft ? (
+          <div className="academy-student-drawer">
+            <section>
+              <header>
+                <strong>Plano e usuario</strong>
+                <span>{countLabel(new Set([selectedNewStudentClass.id, ...newStudentDraft.classIds]).size, "horario", "horarios")}</span>
+              </header>
+              <div className="academy-drawer-form">
+                <label>
+                  <span>Turma base</span>
+                  <select
+                    value={selectedNewStudentClass.id}
+                    onChange={(event) => setNewStudentClassId(event.target.value)}
+                  >
+                    {classes.map((academyClass) => (
+                      <option key={`new-student-base-class:${academyClass.id}`} value={academyClass.id}>
+                        {academyClass.title} | {weekdayLabels[academyClass.weekday] || "Dia"} {academyClass.startsAt.slice(0, 5)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>Nome do aluno</span>
+                  <input
+                    value={newStudentDraft.name}
+                    onChange={(event) => onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, name: event.target.value })}
+                    placeholder="Nome completo do aluno"
+                  />
+                </label>
+                <label>
+                  <span>Email/login</span>
+                  <input
+                    value={newStudentDraft.email}
+                    onChange={(event) => onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, email: event.target.value })}
+                    placeholder="email do usuario ou convite"
+                  />
+                </label>
+                <label>
+                  <span>Telefone</span>
+                  <input
+                    value={newStudentDraft.phone}
+                    onChange={(event) => onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, phone: event.target.value })}
+                    placeholder="WhatsApp do aluno/responsavel"
+                  />
+                </label>
+                <label>
+                  <span>Aulas por semana</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="14"
+                    value={newStudentDraft.weeklyLessonsCount}
+                    onChange={(event) => onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, weeklyLessonsCount: event.target.value })}
+                    placeholder="Ex: 2"
+                  />
+                </label>
+                <label>
+                  <span>Mensalidade R$</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={newStudentDraft.monthlyFee}
+                    onChange={(event) => onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, monthlyFee: event.target.value })}
+                    placeholder="Valor mensal do plano"
+                  />
+                </label>
+                <label>
+                  <span>Inicio</span>
+                  <input
+                    type="date"
+                    value={newStudentDraft.startsOn}
+                    onChange={(event) => onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, startsOn: event.target.value })}
+                  />
+                </label>
+                <label className="wide">
+                  <span>Horarios semanais</span>
+                  <div className="academy-class-occurrence-list">
+                    {classes.map((classOption) => {
+                      const checked = newStudentDraft.classIds.includes(classOption.id) || classOption.id === selectedNewStudentClass.id;
+                      const isSelectedBaseClass = classOption.id === selectedNewStudentClass.id;
+                      return (
+                        <label key={`new-student-contract-class:${classOption.id}`}>
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            disabled={isSelectedBaseClass}
+                            onChange={(event) => {
+                              const current = new Set([selectedNewStudentClass.id, ...newStudentDraft.classIds]);
+                              if (event.target.checked) {
+                                current.add(classOption.id);
+                              } else {
+                                current.delete(classOption.id);
+                              }
+                              onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, classIds: Array.from(current) });
+                            }}
+                          />
+                          <span>
+                            {classOption.title} | {weekdayLabels[classOption.weekday] || "Dia"} {classOption.startsAt.slice(0, 5)}-{classOption.endsAt.slice(0, 5)}
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </label>
+                <label className="wide">
+                  <span>Observacoes</span>
+                  <textarea
+                    value={newStudentDraft.notes}
+                    onChange={(event) => onChangeStudentDraft(selectedNewStudentClass.id, { ...newStudentDraft, notes: event.target.value })}
+                    placeholder="Restricoes, responsavel, combinados ou observacoes internas"
+                    rows={3}
+                  />
+                </label>
+              </div>
+            </section>
+          </div>
+        ) : (
+          <WorkspaceEmptyState
+            title="Nenhuma turma disponivel"
+            detail="Crie uma turma na Grade antes de matricular alunos."
+          />
+        )}
+      </EntityDrawer>
 
       <EntityDrawer
         open={Boolean(selectedEnrollment && editDraft)}
