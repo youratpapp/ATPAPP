@@ -41,7 +41,7 @@ export type PlaceStaffMember = {
   userId: string | null;
   email: string;
   displayName?: string;
-  role: "manager" | "coach" | "frontdesk" | "finance";
+  role: "manager" | "coach" | "frontdesk" | "finance" | "cashier";
   createdAt: string;
   status?: "active" | "pending";
 };
@@ -243,6 +243,7 @@ export type CourtBooking = {
 export type CourtBookingWaitlistEntry = {
   id: string;
   placeId: string;
+  placeName: string;
   courtId: string;
   courtName: string;
   userId: string;

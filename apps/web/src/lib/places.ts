@@ -878,10 +878,11 @@ function rowToBooking(row: BookingRow, courtName = "", placeName = ""): CourtBoo
   };
 }
 
-function rowToBookingWaitlist(row: BookingWaitlistRow, courtName = ""): CourtBookingWaitlistEntry {
+function rowToBookingWaitlist(row: BookingWaitlistRow, courtName = "", placeName = ""): CourtBookingWaitlistEntry {
   return {
     id: row.id,
     placeId: row.place_id,
+    placeName,
     courtId: row.court_id,
     courtName,
     userId: row.user_id,
@@ -1154,7 +1155,7 @@ function rowToOpenMatchComment(row: OpenMatchCommentRow): OpenMatchComment {
 }
 
 function normalizePlaceStaffRole(value: string | null | undefined): PlaceStaffMember["role"] {
-  return value === "coach" || value === "frontdesk" || value === "finance" ? value : "manager";
+  return value === "coach" || value === "frontdesk" || value === "finance" || value === "cashier" ? value : "manager";
 }
 
 function rowToPlaceStaff(row: PlaceStaffRow): PlaceStaffMember {
@@ -1974,9 +1975,13 @@ export async function listPlaceBookingWaitlist(placeId: string): Promise<CourtBo
 
 export async function listMyCourtBookingWaitlist(): Promise<CourtBookingWaitlistEntry[]> {
   if (!supabase) return [];
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw new Error(userError.message);
+  if (!userData.user) return [];
   const { data, error } = await supabase
     .from(TABLE_BOOKING_WAITLIST)
     .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,created_at")
+    .eq("user_id", userData.user.id)
     .in("status", ["waiting", "invited"])
     .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
     .order("starts_at", { ascending: true })
@@ -1987,13 +1992,23 @@ export async function listMyCourtBookingWaitlist(): Promise<CourtBookingWaitlist
   if (!rows.length) return [];
 
   const courtIds = Array.from(new Set(rows.map((row) => row.court_id).filter(Boolean)));
-  const courtResult = courtIds.length
-    ? await supabase.from(TABLE_COURTS).select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active").in("id", courtIds)
-    : { data: [], error: null };
+  const placeIds = Array.from(new Set(rows.map((row) => row.place_id).filter(Boolean)));
+  const [courtResult, placeResult] = await Promise.all([
+    courtIds.length
+      ? supabase.from(TABLE_COURTS).select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active").in("id", courtIds)
+      : Promise.resolve({ data: [], error: null }),
+    placeIds.length
+      ? supabase.from(TABLE_PLACES).select("id,owner_id,name,city,state,description,logo_url,cover_url").in("id", placeIds)
+      : Promise.resolve({ data: [], error: null }),
+  ]);
   if (courtResult.error) throw new Error(courtResult.error.message);
+  if (placeResult.error) throw new Error(placeResult.error.message);
   const courtNameById = new Map(((courtResult.data ?? []) as CourtRow[]).map((court) => [court.id, court.name]));
+  const placeNameById = new Map(((placeResult.data ?? []) as PlaceRow[]).map((place) => [place.id, place.name]));
 
-  return rows.map((row) => rowToBookingWaitlist(row, courtNameById.get(row.court_id) || ""));
+  return rows.map((row) =>
+    rowToBookingWaitlist(row, courtNameById.get(row.court_id) || "", placeNameById.get(row.place_id) || "")
+  );
 }
 
 export async function listMyCourtBookings(): Promise<CourtBooking[]> {

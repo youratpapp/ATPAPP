@@ -15,6 +15,13 @@ type PlaceCanteenSummaryModuleProps = {
   onCancelSale?: (sale: PlacePosSale) => void;
 };
 
+function previewItems(items: string[], emptyLabel: string, limit = 4) {
+  if (!items.length) return emptyLabel;
+  const visible = items.slice(0, limit);
+  const hiddenCount = items.length - visible.length;
+  return `${visible.join(", ")}${hiddenCount > 0 ? ` +${hiddenCount}` : ""}`;
+}
+
 export function PlaceCanteenSummaryModule({
   balanceCents,
   busy,
@@ -30,26 +37,52 @@ export function PlaceCanteenSummaryModule({
 }: PlaceCanteenSummaryModuleProps) {
   if (variant === "cards") {
     return (
-      <WorkspaceGrid>
-        <WorkspaceCard
-          title="Caixa da cantina hoje"
-          subtitle={countLabel(todaySales.length, "venda paga", "vendas pagas")}
-          value={formatMoneyFromCents(todayRevenueCents)}
-          detail={todaySales.slice(0, 4).map((sale) => sale.productName).join(", ") || "Nenhuma venda hoje"}
-        />
-        <WorkspaceCard
-          title="Estoque baixo"
-          subtitle="Itens com ate 3 unidades"
-          value={lowStockProducts.length}
-          detail={lowStockProducts.map((product) => `${product.name} (${product.stockQuantity})`).join(", ") || "Estoque sem alerta"}
-        />
-        <WorkspaceCard
-          title="Produtos ativos"
-          subtitle="Tabela atual de venda"
-          value={products.length}
-          detail={products.slice(0, 5).map((product) => product.name).join(", ") || "Cadastre produtos para vender"}
-        />
-      </WorkspaceGrid>
+      <>
+        <WorkspaceGrid>
+          <WorkspaceCard
+            title="Caixa da cantina hoje"
+            subtitle={countLabel(todaySales.length, "venda paga", "vendas pagas")}
+            value={formatMoneyFromCents(todayRevenueCents)}
+            detail={previewItems(todaySales.map((sale) => sale.productName), "Nenhuma venda hoje")}
+          />
+          <WorkspaceCard
+            title="Estoque baixo"
+            subtitle="Itens com ate 3 unidades"
+            value={lowStockProducts.length}
+            detail={previewItems(lowStockProducts.map((product) => `${product.name} (${product.stockQuantity})`), "Estoque sem alerta")}
+          />
+          <WorkspaceCard
+            title="Produtos ativos"
+            subtitle="Tabela atual de venda"
+            value={products.length}
+            detail={previewItems(products.map((product) => product.name), "Cadastre produtos para vender", 5)}
+          />
+        </WorkspaceGrid>
+        <WorkspaceList>
+          <div className="place-booking-head">
+            <strong>Vendas do dia</strong>
+            <span>{countLabel(todaySales.length, "lancamento", "lancamentos")}</span>
+          </div>
+          {todaySales.map((sale) => (
+            <WorkspaceRow
+              key={sale.id}
+              className={sale.status}
+              title={sale.productName}
+              detail={`${sale.quantity} x ${formatMoneyFromCents(sale.unitAmountCents)} = ${formatMoneyFromCents(sale.totalAmountCents)}`}
+              actions={
+                sale.status === "paid" && onCancelSale ? (
+                  <button type="button" className="danger" onClick={() => onCancelSale(sale)} disabled={busy}>
+                    Cancelar
+                  </button>
+                ) : null
+              }
+            >
+              <small>{sale.buyerName || "Cliente avulso"} | {sale.status}</small>
+            </WorkspaceRow>
+          ))}
+          {!todaySales.length ? <p className="subtle">Sem vendas registradas hoje.</p> : null}
+        </WorkspaceList>
+      </>
     );
   }
 
@@ -78,7 +111,7 @@ export function PlaceCanteenSummaryModule({
         </div>
       </div>
       <WorkspaceList>
-        {sales.slice(0, 4).map((sale) => (
+        {sales.map((sale) => (
           <WorkspaceRow
             key={sale.id}
             className={sale.status}

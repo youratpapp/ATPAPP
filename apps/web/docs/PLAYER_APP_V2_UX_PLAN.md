@@ -153,6 +153,7 @@ Status 2026-05-15:
 - disponibilidade publica usa slots livres retornados por `searchAvailableCourts` e deixa horarios ocupados fora da lista;
 - `Solicitar reserva` persiste via `createCourtBooking`;
 - `Lista de espera` usa `joinCourtBookingWaitlist` como alternativa real quando o horario nao esta livre;
+- `PUBLIC-PLACE-01` refinou a pagina publica para usar CTA contextual e rail curto, sem KPIs/cockpit antes do fluxo de reserva;
 - `PLAYER-UX-04` tambem foi concluido; o proximo foco P0 passa para Competition OS.
 
 ## Entrar Em Aula

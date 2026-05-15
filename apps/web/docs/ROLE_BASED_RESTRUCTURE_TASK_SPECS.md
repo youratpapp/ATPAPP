@@ -49,12 +49,13 @@ Aceite:
 
 Gaps registrados para sprint posterior:
 
-- operador de caixa/Cantina/POS ainda nao existe como papel dedicado;
 - `workspace-access.ts` ainda deve evoluir de contadores booleanos para relacoes nomeadas por local/competicao.
 
 Atualizacao 2026-05-15:
 
 - `ROLE-FINANCE-01` entregou `place_staff.role = finance` para recebiveis, despesas, lembretes e baixas sem permissao de gestor.
+- `ROLE-CASHIER-01` entregou `place_staff.role = cashier` para Cantina/POS sem permissao de gestor ou financeiro.
+- `ROLE-CASHIER-01` tambem adicionou `caixa.prime@demo.atp.local` aos seeds demo e ao verificador de integridade.
 
 ## ROLE-UX-01 - Shells Por Modo
 

@@ -181,21 +181,37 @@ export const TEAM_ADMIN_SEGMENT_TO_VIEW: Record<string, TeamManagementView> = {
 };
 
 export const SETTINGS_ADMIN_VIEW_SEGMENTS: Record<SettingsManagementView, string> = {
-  overview: "resumo",
-  setup: "checklist",
-  plan: "plano",
-  structure: "estrutura",
+  overview: "checklist",
+  public: "dados-publicos",
+  resources: "recursos",
+  rules: "regras",
+  plans: "planos",
+  permissions: "permissoes",
+  publication: "publicacao",
 };
 
 export const SETTINGS_ADMIN_SEGMENT_TO_VIEW: Record<string, SettingsManagementView> = {
   resumo: "overview",
   overview: "overview",
-  checklist: "setup",
-  setup: "setup",
-  plano: "plan",
-  plan: "plan",
-  estrutura: "structure",
-  structure: "structure",
+  checklist: "overview",
+  setup: "overview",
+  "dados-publicos": "public",
+  publico: "public",
+  public: "public",
+  recursos: "resources",
+  resources: "resources",
+  estrutura: "resources",
+  structure: "resources",
+  regras: "rules",
+  rules: "rules",
+  plano: "plans",
+  planos: "plans",
+  plan: "plans",
+  plans: "plans",
+  permissoes: "permissions",
+  permissions: "permissions",
+  publicacao: "publication",
+  publication: "publication",
 };
 
 type PlaceAdminViewConfig = {
@@ -228,7 +244,7 @@ const PLACE_ADMIN_VIEW_CONFIGS: {
     viewSegments: FINANCE_ADMIN_VIEW_SEGMENTS,
   },
   canteen: {
-    defaultView: "today",
+    defaultView: "sell",
     segmentToView: CANTEEN_ADMIN_SEGMENT_TO_VIEW as Record<string, PlaceAdminRoutableView>,
     viewSegments: CANTEEN_ADMIN_VIEW_SEGMENTS,
   },

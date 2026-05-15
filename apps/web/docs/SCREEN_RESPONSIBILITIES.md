@@ -21,6 +21,8 @@ Cada tela deve ter uma responsabilidade primaria. Se uma tela precisa resolver o
 | `/gestao` | orientar operador pelo perfil correto | academia, professor solo ou competicoes organizadas conforme permissao | ferramentas sem plano/papel ou descoberta publica | ser entrada contextual de operacao |
 | `/gestao/:placeId/:module` | operar local | fila do dia, modulo ativo, resumo e acoes | descoberta publica | manter contexto operacional e subvisoes |
 | `/gestao/:placeId/academia` | operar aulas, turmas, alunos e professores | Hoje, Grade, Alunos, Pendencias, Professores e Configuracao | bloco legado duplicado, formularios repetidos por turma, busca de encaixe permanente | manter Academia v2 com rows, drawers, fila contextual e indicadores de suporte |
+| `/gestao/:placeId/cantina` | vender rapido e repor estoque | Venda rapida, Estoque baixo, Vendas do dia, Produtos | KPI como primeira leitura, modulo em plano sem cantina, cadastro antes de venda | abrir por venda rapida, deixar produto/cadastro secundario e respeitar plano |
+| `/gestao/:placeId/ajustes` | configurar estrutura do local | checklist, dados publicos, recursos, regras, planos, permissoes, publicacao | rotina diaria de agenda/academia/financeiro duplicada | ser central estrutural com atalhos para os modulos donos da operacao |
 | `/locais` | descobrir locais e iniciar cadastro | cards publicos, filtros, entrada para pagina publica | cockpit administrativo completo por padrao | deixar gestao em `/gestao` |
 | `/locais/:placeId` | converter jogador/publico | marca, ofertas, reserva, turma, jogos, widget | configuracao interna | manter publica e limpa |
 | `/locais/:placeId/admin` | compatibilidade de rota | redirecionar/normalizar para gestao | ser destino principal novo | manter legado temporario |
@@ -53,6 +55,11 @@ Quando uma tela cresce demais:
 
 ## Evolucoes registradas
 
+- 2026-05-15: `PUBLIC-PLACE-01` refinou `/locais/:placeId`: a tela publica removeu KPIs/cockpit, usa CTA contextual por oferta publicada, apresenta acoes em rail curto e preserva reserva, aula, jogos e planos como fluxos de jogador; divulgacao/widget fica apenas para o owner no fim da pagina.
+- 2026-05-15: `PUBLIC-COMP-01` refinou `/eventos/:tournamentId/:tab` e `/eventos/ligas/:leagueId` para leitor publico: torneio/liga deixam de duplicar o cabecalho operacional, usam topbar compacta, rail de acoes publicas, listas de inscritos/jogadores sem contatos e escondem filtros/controles internos de organizador.
+- 2026-05-15: `MGMT-CANTEEN-01` refinou `/gestao/:placeId/cantina`: Cantina/POS abre por `Venda rapida`, estoque baixo e vendas do dia viram rotinas separadas, catalogo nao usa corte silencioso e o modulo so aparece quando o plano habilita `canteen`.
+- 2026-05-15: `MGMT-SETTINGS-01` refinou `/gestao/:placeId/ajustes`: Ajustes virou central estrutural com Checklist, Dados publicos, Recursos, Regras, Planos, Permissoes e Publicacao, removendo duplicidade de checklist/plano fora do workspace.
+- 2026-05-15: `MGMT-TEAM-01` refinou `/gestao/:placeId/equipe`: a tela tem responsabilidade unica de pessoas, papeis e acesso; convite pendente nao libera rota/modulo, busca de usuario evita erro de email e aceite fica na Home do convidado.
 - 2026-05-15: `MGMT-FINANCE-01` refinou `/gestao/:placeId/financeiro`: a tela abre em `Recebiveis`, prioriza quem cobrar agora, mostra vencimento/origem/periodo por row, usa `Marcar pago` como acao primaria e move `Resumo` para leitura secundaria.
 - 2026-05-15: `MGMT-ACADEMY-01` refinou `/gestao/:placeId/academia`: a `Central da academia` fica antes dos indicadores, a fila rapida so aparece como apoio em abas que nao duplicam `Hoje`/`Pendencias`, e a fila nao usa corte silencioso sem expansao/atalho para a fila completa.
 - 2026-05-15: `MGMT-AGENDA-01` refinou `/gestao/:placeId/agenda`: fila urgente de reservas/espera fica dentro da `Central de agenda`, `Hoje` virou rows acionaveis, `Reservas`/`Espera` ganharam filtros sem limite silencioso, calendario permite iniciar reserva em slot livre e KPIs ficam depois da rotina.

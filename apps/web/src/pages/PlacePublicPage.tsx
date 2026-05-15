@@ -141,6 +141,10 @@ function buildAvailabilityTimes(): string[] {
   return BOOKING_TIME_OPTIONS;
 }
 
+function scrollToPublicSection(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export function PlacePublicPage({ user, profile }: Props) {
   const { placeId } = useParams();
   const navigate = useNavigate();
@@ -323,6 +327,8 @@ export function PlacePublicPage({ user, profile }: Props) {
   );
   const hasBookableOffer = activeCourts.length > 0;
   const hasAcademyOffer = activeClasses.length > 0;
+  const hasOpenMatches = matches.length > 0;
+  const hasMembershipOffer = activePlans.length > 0;
   const heroOffer = hasBookableOffer
     ? cheapestCourt
       ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
@@ -332,6 +338,13 @@ export function PlacePublicPage({ user, profile }: Props) {
         ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
         : "Turmas abertas para novos alunos"
       : "Clube esportivo aberto para comunidade";
+  const primaryCta = hasBookableOffer
+    ? { label: "Reservar quadra", sectionId: "place-public-booking" }
+    : hasAcademyOffer
+      ? { label: "Entrar em aula", sectionId: "place-public-academy" }
+      : hasOpenMatches
+        ? { label: "Ver jogos", sectionId: "place-public-matches" }
+        : { label: "Compartilhar local", sectionId: "" };
   const bookingDate = datePart(bookingDraft.startsAt) || availabilityDate || todayDateInputValue();
   const bookingTime = timePart(bookingDraft.startsAt);
   const bookingDuration = durationFromRange(bookingDraft.startsAt, bookingDraft.endsAt);
@@ -587,9 +600,13 @@ export function PlacePublicPage({ user, profile }: Props) {
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className="place-public-page">
-        <div className="page-header">
-          <h1>{place?.name || "Local"}</h1>
-          <button onClick={() => navigate("/locais")}>Voltar</button>
+        <div className="place-public-topbar">
+          <button className="quiet" onClick={() => navigate("/locais")}>Voltar</button>
+          <div>
+            <span>Local publico</span>
+            <strong>{place?.name || "Local"}</strong>
+          </div>
+          {place ? <button className="quiet" onClick={sharePlace}>Compartilhar</button> : null}
         </div>
 
         {loading ? <p className="subtle">Carregando local...</p> : null}
@@ -597,55 +614,83 @@ export function PlacePublicPage({ user, profile }: Props) {
 
         {place && !loading ? (
           <>
-            <section className="place-public-hero">
+            <section className={place.coverUrl ? "place-public-hero has-cover" : "place-public-hero"}>
               <div className="place-public-hero-logo" aria-hidden>
                 {place.logoUrl ? <img src={place.logoUrl} alt="" /> : placeInitials(place.name)}
               </div>
               <div>
                 <span>{location || "Clube de esportes de raquete"}</span>
                 <h2>{place.name}</h2>
-                <p>{place.description || "Reserve quadra, entre em turmas, encontre jogos abertos e veja os planos do local."}</p>
+                <p>{place.description || "Reserve quadra, entre em aula ou encontre uma atividade aberta neste local."}</p>
                 <div className="place-public-offer-strip" aria-label="Ofertas do local">
                   <strong>{heroOffer}</strong>
-                  <small>{activeCourts.length} quadra(s) | {activeClasses.length} turma(s) | {matches.length} jogo(s) aberto(s)</small>
+                  <small>{[activeCourts.length ? countLabel(activeCourts.length, "quadra", "quadras") : "", activeClasses.length ? countLabel(activeClasses.length, "turma", "turmas") : "", matches.length ? countLabel(matches.length, "jogo aberto", "jogos abertos") : ""].filter(Boolean).join(" | ") || "Informacoes publicas do local"}</small>
                 </div>
                 <ActionBar className="place-public-hero-actions" label="Acoes publicas do local">
-                  <button className="primary" onClick={() => document.getElementById("place-public-booking")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-                    Reservar quadra
+                  <button
+                    className="primary"
+                    onClick={() => (primaryCta.sectionId ? scrollToPublicSection(primaryCta.sectionId) : sharePlace())}
+                  >
+                    {primaryCta.label}
                   </button>
-                  <button className="secondary" onClick={() => document.getElementById("place-public-academy")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-                    Ver turmas
-                  </button>
+                  {hasBookableOffer && primaryCta.sectionId !== "place-public-booking" ? (
+                    <button className="secondary" onClick={() => scrollToPublicSection("place-public-booking")}>Reservar quadra</button>
+                  ) : null}
+                  {hasAcademyOffer && primaryCta.sectionId !== "place-public-academy" ? (
+                    <button className="secondary" onClick={() => scrollToPublicSection("place-public-academy")}>Ver aulas</button>
+                  ) : null}
                   {canOpenAdmin ? (
                     <button className="quiet" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
                       Gestao
                     </button>
                   ) : null}
-                  <button className="quiet" onClick={sharePlace}>WhatsApp</button>
                 </ActionBar>
               </div>
+              {place.coverUrl ? (
+                <div className="place-public-cover" aria-hidden>
+                  <img src={place.coverUrl} alt="" />
+                </div>
+              ) : null}
             </section>
 
-            <section className="place-public-kpis place-public-trust-strip">
-              <article>
-                <strong>{activeCourts.length}</strong>
-                <span>quadras ativas</span>
-              </article>
-              <article>
-                <strong>{activeClasses.length}</strong>
-                <span>turmas abertas</span>
-              </article>
-              <article>
-                <strong>{matches.length}</strong>
-                <span>jogos abertos</span>
-              </article>
-              <article>
-                <strong>{activePlans.length}</strong>
-                <span>planos ativos</span>
-              </article>
+            <section className="place-public-action-rail" aria-label="O que fazer neste local">
+              {hasBookableOffer ? (
+                <button onClick={() => scrollToPublicSection("place-public-booking")}>
+                  <span>Reservar</span>
+                  <strong>Quadra</strong>
+                  <small>{cheapestCourt ? `A partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}` : countLabel(activeCourts.length, "quadra", "quadras")}</small>
+                </button>
+              ) : null}
+              {hasAcademyOffer ? (
+                <button onClick={() => scrollToPublicSection("place-public-academy")}>
+                  <span>Aulas</span>
+                  <strong>Entrar em turma</strong>
+                  <small>{cheapestClass ? `A partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}` : countLabel(activeClasses.length, "turma", "turmas")}</small>
+                </button>
+              ) : null}
+              {hasOpenMatches ? (
+                <button onClick={() => scrollToPublicSection("place-public-matches")}>
+                  <span>Jogos</span>
+                  <strong>Jogo aberto</strong>
+                  <small>{countLabel(matches.length, "opcao", "opcoes")}</small>
+                </button>
+              ) : null}
+              {hasMembershipOffer ? (
+                <button onClick={() => scrollToPublicSection("place-public-plans")}>
+                  <span>Planos</span>
+                  <strong>Beneficios</strong>
+                  <small>{countLabel(activePlans.length, "plano", "planos")}</small>
+                </button>
+              ) : null}
+              <button onClick={sharePlace}>
+                <span>Contato</span>
+                <strong>Compartilhar</strong>
+                <small>Enviar link do local</small>
+              </button>
             </section>
 
-            <section className="place-public-grid">
+            <section className="place-public-grid place-public-main-flow">
+              {hasBookableOffer ? (
               <article id="place-public-booking" className="place-public-booking-card place-public-booking-flow-card">
                 <div className="place-public-booking-header">
                   <div>
@@ -838,21 +883,10 @@ export function PlacePublicPage({ user, profile }: Props) {
 
                 {bookingFeedback ? <p className="place-public-booking-feedback">{bookingFeedback}</p> : null}
               </article>
+              ) : null}
 
-              <article>
-                <span>Reservas</span>
-                <h3>Quadras e valores</h3>
-                {activeCourts.slice(0, 6).map((court) => (
-                  <div key={court.id} className="place-public-row">
-                    <strong>{court.name}</strong>
-                    <small>{[court.surface, court.bookingFeeCents ? formatMoneyFromCents(court.bookingFeeCents) : "valor a combinar"].filter(Boolean).join(" | ")}</small>
-                  </div>
-                ))}
-                {!activeCourts.length ? <p className="subtle">Quadras ainda nao publicadas.</p> : null}
-                {cheapestCourt ? <p className="subtle">A partir de {formatMoneyFromCents(cheapestCourt.bookingFeeCents)} por reserva.</p> : null}
-              </article>
-
-              <article id="place-public-academy">
+              {hasAcademyOffer ? (
+              <article id="place-public-academy" className="place-public-booking-card">
                 <span>Aulas</span>
                 <h3>Escolha uma turma e envie interesse</h3>
                 <p className="subtle">O caminho aqui e para entrar em aula: filtre por perfil, escolha uma turma com vaga e mande seus dados ao local.</p>
@@ -1020,8 +1054,10 @@ export function PlacePublicPage({ user, profile }: Props) {
                   </section>
                 </div>
               </article>
+              ) : null}
 
-              <article>
+              {hasOpenMatches ? (
+              <article id="place-public-matches">
                 <span>Comunidade</span>
                 <h3>Jogos abertos</h3>
                 {matches.slice(0, 4).map((match) => (
@@ -1040,8 +1076,10 @@ export function PlacePublicPage({ user, profile }: Props) {
                 {!matches.length ? <p className="subtle">Nenhum jogo aberto publicado agora.</p> : null}
                 {matchFeedback ? <p className="subtle">{matchFeedback}</p> : null}
               </article>
+              ) : null}
 
-              <article>
+              {hasMembershipOffer ? (
+              <article id="place-public-plans">
                 <span>Planos</span>
                 <h3>Recorrencia e beneficios</h3>
                 {activePlans.slice(0, 4).map((plan) => (
@@ -1060,8 +1098,36 @@ export function PlacePublicPage({ user, profile }: Props) {
                 ))}
                 {!activePlans.length ? <p className="subtle">Planos ainda nao publicados.</p> : null}
               </article>
+              ) : null}
 
-              <article className="place-public-channel-card">
+              {!hasBookableOffer && !hasAcademyOffer && !hasOpenMatches && !hasMembershipOffer ? (
+                <article className="place-public-empty-offer">
+                  <span>Local</span>
+                  <h3>Informacoes em preparacao</h3>
+                  <p className="subtle">Este local ainda nao publicou reservas, aulas ou jogos abertos. Compartilhe o link ou volte para descobrir outros locais.</p>
+                  <ActionBar label="Acoes do local">
+                    <button className="primary" onClick={() => navigate("/locais")}>Ver outros locais</button>
+                    <button className="secondary" onClick={sharePlace}>Compartilhar</button>
+                  </ActionBar>
+                </article>
+              ) : null}
+            </section>
+
+            <section className="place-public-secondary-info" aria-label="Informacoes adicionais do local">
+              {activeCourts.length ? (
+                <details>
+                  <summary>Quadras e valores</summary>
+                  {activeCourts.slice(0, 8).map((court) => (
+                    <div key={court.id} className="place-public-row">
+                      <strong>{court.name}</strong>
+                      <small>{[court.surface, court.bookingFeeCents ? formatMoneyFromCents(court.bookingFeeCents) : "valor a combinar"].filter(Boolean).join(" | ")}</small>
+                    </div>
+                  ))}
+                </details>
+              ) : null}
+
+              {canOpenAdmin ? (
+              <article className="place-public-channel-card" id="place-public-share">
                 <PublishingKit
                   eyebrow="Compartilhar"
                   title="Levar para WhatsApp ou site"
@@ -1077,11 +1143,15 @@ export function PlacePublicPage({ user, profile }: Props) {
                 <code>{publicLink}</code>
                 {channelFeedback ? <p className="subtle">{channelFeedback}</p> : null}
               </article>
+              ) : null}
             </section>
 
             <div className="place-public-sticky-cta" aria-label="Acao rapida de reserva">
-              <button className="primary" onClick={() => document.getElementById("place-public-booking")?.scrollIntoView({ behavior: "smooth", block: "start" })}>
-                Reservar quadra
+              <button
+                className="primary"
+                onClick={() => (primaryCta.sectionId ? scrollToPublicSection(primaryCta.sectionId) : sharePlace())}
+              >
+                {primaryCta.label}
               </button>
             </div>
           </>

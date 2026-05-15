@@ -19,7 +19,7 @@
 --   password for all players: Jogador@2026!
 --
 -- What this seed creates:
--- - 1 owner, pure QA-role users, staff/teachers/frontdesk/finance users, 240 player users.
+-- - 1 owner, pure QA-role users, staff/teachers/frontdesk/finance/cashier users, 240 player users.
 -- - 3 academies/clubs owned by escalao@gmail.com.
 -- - courts, booking rules, reservations, waitlist, memberships.
 -- - academy classes, coaches, enrollments, attendance, makeups, progress notes.
@@ -158,6 +158,7 @@ values
   (34, 'prof.vitor@demo.atp.local', 'Staff@2026!', 'coach', 'Vitor Leal', '+55 65 99930-0034', 'Cuiaba', 'MT', date '1983-12-30', '@vitorlealcoach', 'Professor de ranking e liga.'),
   (35, 'prof.talita@demo.atp.local', 'Staff@2026!', 'coach', 'Talita Moraes', '+55 65 99930-0035', 'Cuiaba', 'MT', date '1989-05-18', '@talitamoraes', 'Professora de iniciantes e kids.'),
   (36, 'financeiro.prime@demo.atp.local', 'Staff@2026!', 'finance', 'Clara Financeiro', '+55 65 99930-0036', 'Cuiaba', 'MT', date '1987-09-21', '@clara.financeiro', 'Operadora financeira do Clube Racket Prime.'),
+  (37, 'caixa.prime@demo.atp.local', 'Staff@2026!', 'cashier', 'Bruno Caixa', '+55 65 99930-0037', 'Cuiaba', 'MT', date '1995-03-16', '@bruno.caixa', 'Operador de caixa e cantina do Clube Racket Prime.'),
   (41, 'organizador.circuito@demo.atp.local', 'Staff@2026!', 'organizer', 'Otavio Circuito', '+55 67 99940-0041', 'Campo Grande', 'MS', date '1986-04-17', '@otavio.circuito', 'Organizador demo de torneios e ligas sem gestao completa de academia.'),
   (42, 'coach.solo@demo.atp.local', 'Staff@2026!', 'coach_solo', 'Nathalia Coach Solo', '+55 67 99940-0042', 'Dourados', 'MS', date '1990-06-09', '@nathalia.coach', 'Professora autonoma demo para validar experiencia PRO leve.'),
   (43, 'admin.platform@demo.atp.local', 'Staff@2026!', 'platform_admin', 'Admin Plataforma', '+55 67 99940-0043', 'Dourados', 'MS', date '1980-02-02', '@admin.platform', 'Administrador de plataforma para validar permissoes globais.'),
@@ -356,6 +357,7 @@ begin
           when kind = 'organizer' then 'Demo competition organizer without academy modules.'
           when kind in ('coach', 'coach_solo') then 'Demo coach account without place creation entitlement.'
           when kind = 'finance' then 'Demo finance staff account without place creation entitlement.'
+          when kind = 'cashier' then 'Demo POS/canteen staff account without place creation entitlement.'
           when kind = 'qa_player_pure' then 'Demo pure player account without operational links.'
           else 'Demo player account.'
         end
@@ -452,6 +454,7 @@ from (
     ('prime', 'gerente.prime@demo.atp.local', 'manager'),
     ('prime', 'recepcao.prime@demo.atp.local', 'frontdesk'),
     ('prime', 'financeiro.prime@demo.atp.local', 'finance'),
+    ('prime', 'caixa.prime@demo.atp.local', 'cashier'),
     ('prime', 'prof.julia@demo.atp.local', 'coach'),
     ('prime', 'prof.vitor@demo.atp.local', 'coach'),
     ('prime', 'prof.talita@demo.atp.local', 'coach')

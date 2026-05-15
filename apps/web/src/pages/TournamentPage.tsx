@@ -1739,6 +1739,22 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       }),
     [activeClass?.key, classes, playerClassesSummary]
   );
+  const publicParticipantRows = useMemo(
+    () =>
+      playerClassesSummary
+        .flatMap((item) =>
+          item.participantes.map((participant, index) => ({
+            id: `${item.categoryId}:${item.classId}:${participant.nome}:${index}`,
+            categoryName: item.categoryName,
+            className: item.className,
+            group: participant.grupo || "",
+            name: String(participant.nome || "").trim(),
+          }))
+        )
+        .filter((participant) => participant.name)
+        .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")),
+    [playerClassesSummary]
+  );
   const publicTournamentCta = useMemo(() => {
     if (!tournament) {
       return {
@@ -4746,13 +4762,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
-      <CompetitionHeader
-        title={tournament?.name || "Torneio"}
-        subtitle={tournament ? [tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir" : "Carregando competicao"}
-        status={tournament ? <StatusBadge status={tournament.status} /> : null}
-        backLabel="Voltar para torneios"
-        onBack={() => navigate(tournamentBackPath)}
-      />
+      {!isPublicTournamentReader ? (
+        <CompetitionHeader
+          title={tournament?.name || "Torneio"}
+          subtitle={tournament ? [tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir" : "Carregando competicao"}
+          status={tournament ? <StatusBadge status={tournament.status} /> : null}
+          backLabel="Voltar para torneios"
+          onBack={() => navigate(tournamentBackPath)}
+        />
+      ) : null}
 
       {feedback ? (
         <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
@@ -4766,6 +4784,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         <>
           {isPublicTournamentReader ? (
             <section id="tournament-public-event" className="tournament-public-event">
+              <div className="competition-public-topbar" aria-label="Navegacao publica do torneio">
+                <button className="quiet" type="button" onClick={() => navigate(tournamentBackPath)}>
+                  Voltar
+                </button>
+                <button className="quiet" type="button" onClick={shareTournamentInviteWhatsApp} disabled={saving}>
+                  Compartilhar
+                </button>
+              </div>
+
               <article className="tournament-public-hero">
                 <div className="tournament-public-copy">
                   <div className="tournament-public-title-row">
@@ -4778,32 +4805,27 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <span>{formatTournamentDate(tournament.startsAt)}</span>
                     {tournament.registrationCloseAt ? <span>Inscricoes ate {formatTournamentDateTime(tournament.registrationCloseAt)}</span> : null}
                   </div>
-                  <div className="tournament-public-facts">
-                    <span>
-                      <strong>{publicClassCards.length}</strong>
-                      categorias
-                    </span>
-                    <span>
-                      <strong>{playersOverview.approved}</strong>
-                      inscritos
-                    </span>
-                    <span>
-                      <strong>{tournamentOverview.totalMatches}</strong>
-                      jogos
-                    </span>
+                  <div className="competition-public-action-rail" aria-label="Resumo publico do torneio">
+                    <button type="button" onClick={() => scrollToPublicSection("tournament-public-categories")}>
+                      <span>Categorias</span>
+                      <strong>{publicClassCards.length || "A definir"}</strong>
+                      <small>Classes, formatos e vagas.</small>
+                    </button>
+                    <button type="button" onClick={() => scrollToPublicSection("tournament-public-participants")}>
+                      <span>Inscritos</span>
+                      <strong>{publicParticipantRows.length || playersOverview.approved || "A definir"}</strong>
+                      <small>Nomes confirmados, sem contatos.</small>
+                    </button>
+                    <button type="button" onClick={() => goToTab("jogos")}>
+                      <span>Jogos</span>
+                      <strong>{tournamentOverview.totalMatches || "A definir"}</strong>
+                      <small>{tournamentOverview.totalMatches ? "Agenda e resultados." : "Ainda nao publicados."}</small>
+                    </button>
                   </div>
                   <div className="tournament-public-actions">
                     <button className="primary tournament-public-main-cta" type="button" onClick={handlePublicTournamentCta} disabled={publicTournamentCta.disabled}>
                       <span>{publicTournamentCta.label}</span>
                       <small>{publicTournamentCta.detail}</small>
-                    </button>
-                    <button
-                      className="quiet"
-                      type="button"
-                      onClick={shareTournamentInviteWhatsApp}
-                      disabled={saving}
-                    >
-                      Compartilhar
                     </button>
                   </div>
                 </div>
@@ -4825,6 +4847,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </button>
                 <button type="button" onClick={() => scrollToPublicSection("tournament-public-categories")}>
                   Categorias
+                </button>
+                <button type="button" onClick={() => scrollToPublicSection("tournament-public-participants")}>
+                  Inscritos
                 </button>
                 <button type="button" className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
                   Jogos
@@ -4867,6 +4892,28 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                           {item.players} {item.players === 1 ? "inscrito" : "inscritos"}
                         </em>
                       </button>
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              <section id="tournament-public-participants" className="competition-public-list-section">
+                <div className="section-title">
+                  <h2>Inscritos</h2>
+                  <span>{publicParticipantRows.length} {publicParticipantRows.length === 1 ? "jogador" : "jogadores"}</span>
+                </div>
+                {publicParticipantRows.length === 0 ? (
+                  <p className="subtle">Nenhum inscrito confirmado para exibicao publica ainda.</p>
+                ) : (
+                  <div className="competition-public-person-list">
+                    {publicParticipantRows.map((participant) => (
+                      <article key={`public-participant:${participant.id}`} className="competition-public-person-row">
+                        <div>
+                          <strong>{participant.name}</strong>
+                          <span>{participant.categoryName} / {participant.className}</span>
+                        </div>
+                        {participant.group ? <small>Grupo {participant.group}</small> : null}
+                      </article>
                     ))}
                   </div>
                 )}
@@ -5164,14 +5211,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       <span>Agenda do torneio</span>
                       <h3>Por quadra</h3>
                     </div>
-                    <div className="cluster">
-                      <button onClick={() => void exportAgendaByCourtPng()} disabled={saving}>
-                        Exportar PNG
-                      </button>
-                      <button onClick={() => void copyAgendaByCourtSummary()} disabled={saving}>
-                        Copiar agenda
-                      </button>
-                    </div>
+                    {canManageMatches ? (
+                      <div className="cluster">
+                        <button onClick={() => void exportAgendaByCourtPng()} disabled={saving}>
+                          Exportar PNG
+                        </button>
+                        <button onClick={() => void copyAgendaByCourtSummary()} disabled={saving}>
+                          Copiar agenda
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="tournament-court-agenda-grid">
                     {agendaByCourt.map(({ court, rows }) => (

@@ -164,6 +164,15 @@ type HomeFeedItem = {
   tone: "urgent" | "neutral";
 };
 
+type PlayerHubItem = {
+  id: string;
+  targetPath?: string;
+  title: string;
+  detail: string;
+  meta: string;
+  tone?: "urgent" | "neutral";
+};
+
 type HomeAgendaItem = {
   id: string;
   targetPath: string;
@@ -186,7 +195,7 @@ type HomePriorityItem = {
   order: number;
 };
 
-type HomePlaceAccessRole = "owner" | "manager" | "coach" | "frontdesk" | "finance" | "";
+type HomePlaceAccessRole = "owner" | "manager" | "coach" | "frontdesk" | "finance" | "cashier" | "";
 
 const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffInvite["role"], string> = {
   organizer: "Coordenador",
@@ -200,6 +209,7 @@ const PLACE_STAFF_ROLE_LABELS: Record<PlaceStaffInvite["role"], string> = {
   coach: "Professor",
   frontdesk: "Recepcao",
   finance: "Financeiro",
+  cashier: "Caixa/POS",
 };
 
 function formatDateRange(starts: string): string {
@@ -246,6 +256,10 @@ function courtWaitlistStatusLabel(status: HomeCourtWaitlistAction["status"]): st
   if (status === "booked") return "Reserva criada";
   if (status === "cancelled") return "Cancelado";
   return "Na lista de espera";
+}
+
+function buildPublicPlaceBookingPath(placeId: string): string {
+  return placeId ? `/locais/${encodeURIComponent(placeId)}?intent=booking` : "/locais?intent=booking";
 }
 
 function actionKindFromMatch(status: LeagueMatchSummary["status"]): HomeLeagueAction["kind"] {
@@ -844,7 +858,7 @@ async function loadCourtWaitlistActions(user: User): Promise<HomeCourtWaitlistAc
   const playerItems = myWaitlist.map((entry): HomeCourtWaitlistAction => ({
     id: `player:${entry.id}`,
     placeId: entry.placeId,
-    placeName: "Local",
+    placeName: entry.placeName || "Local",
     courtName: entry.courtName || "Quadra",
     startsAt: entry.startsAt,
     endsAt: entry.endsAt,
@@ -1065,14 +1079,16 @@ function PlayerHubSection({
   action,
   items,
   onOpen,
+  onOpenItem,
 }: {
   label: string;
   title: string;
   detail: string;
   count: number;
   action: string;
-  items: Array<{ id: string; title: string; detail: string; meta: string; tone?: "urgent" | "neutral" }>;
+  items: PlayerHubItem[];
   onOpen: () => void;
+  onOpenItem?: (item: PlayerHubItem) => void;
 }) {
   return (
     <article className="player-hub-section">
@@ -1087,7 +1103,12 @@ function PlayerHubSection({
       {items.length > 0 ? (
         <div className="player-hub-section-list">
           {items.slice(0, 3).map((item) => (
-            <button key={item.id} type="button" className={item.tone === "urgent" ? "urgent" : ""} onClick={onOpen}>
+            <button
+              key={item.id}
+              type="button"
+              className={item.tone === "urgent" ? "urgent" : ""}
+              onClick={() => (onOpenItem ? onOpenItem(item) : onOpen())}
+            >
               <strong>{item.title}</strong>
               <span>{item.detail}</span>
               <small>{item.meta}</small>
@@ -1461,7 +1482,7 @@ function buildPriorityItems(
       const ownerPending = action.role === "owner";
       return {
         id: `court-booking:${action.id}`,
-        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "reservations") : "/locais?intent=booking",
+        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "reservations") : buildPublicPlaceBookingPath(action.placeId),
         sourceName: action.placeName,
         title: action.role === "owner" ? `Reserva de ${action.playerName}` : action.courtName,
         detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${courtBookingStatusLabel(action.status)}`,
@@ -1499,7 +1520,7 @@ function buildPriorityItems(
       const ownerWaiting = action.role === "owner";
       return {
         id: `court-waitlist:${action.id}`,
-        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "waitlist") : "/locais?intent=booking",
+        targetPath: action.role === "owner" ? buildPlaceAdminPath(action.placeId, "bookings", "waitlist") : buildPublicPlaceBookingPath(action.placeId),
         sourceName: action.placeName,
         title: action.role === "owner" ? `Espera de ${action.playerName}` : "Convite de lista de espera",
         detail: `${action.courtName} - ${formatShortDateTime(action.startsAt)} - ${action.status === "invited" ? "convite liberado" : "aguardando"}`,
@@ -1730,6 +1751,7 @@ export function HomePage({ user, profile }: Props) {
       .filter((item) => item.role === "player" && item.status !== "cancelled")
       .map((item) => ({
         id: `booking:${item.id}`,
+        targetPath: buildPublicPlaceBookingPath(item.placeId),
         title: item.courtName,
         detail: item.placeName,
         meta: `${formatShortDateTime(item.startsAt)} - ${courtBookingStatusLabel(item.status)}`,
@@ -1739,6 +1761,7 @@ export function HomePage({ user, profile }: Props) {
       .filter((item) => item.role === "player" && item.status !== "cancelled")
       .map((item) => ({
         id: `waitlist:${item.id}`,
+        targetPath: buildPublicPlaceBookingPath(item.placeId),
         title: item.courtName,
         detail: item.placeName,
         meta: `${formatShortDateTime(item.startsAt)} - ${courtWaitlistStatusLabel(item.status)}`,
@@ -1748,6 +1771,7 @@ export function HomePage({ user, profile }: Props) {
   const playerMatchItems = [
     ...tournamentActions.map((item) => ({
       id: `tournament:${item.id}`,
+      targetPath: buildTournamentUrl(item.tournamentId),
       title: item.title,
       detail: item.tournamentName,
       meta: item.detail,
@@ -1755,6 +1779,7 @@ export function HomePage({ user, profile }: Props) {
     })),
     ...leagueActions.map((item) => ({
       id: `league:${item.id}`,
+      targetPath: `/eventos/ligas/${encodeURIComponent(item.leagueId)}`,
       title: item.title,
       detail: `${item.leagueName} - Rodada ${item.roundNumber}`,
       meta: item.needsAvailability ? "Enviar disponibilidade" : matchStatusLabel(item.status),
@@ -1765,6 +1790,7 @@ export function HomePage({ user, profile }: Props) {
     .filter((item) => item.id.startsWith("academy-player") || item.id.startsWith("academy-makeup"))
     .map((item) => ({
       id: `lesson:${item.id}`,
+      targetPath: item.targetPath,
       title: item.title,
       detail: item.sourceName,
       meta: item.detail,
@@ -1774,6 +1800,7 @@ export function HomePage({ user, profile }: Props) {
     .filter((item) => item.id.startsWith("membership-player") || item.detail.toLowerCase().includes("pagamento"))
     .map((item) => ({
       id: `payment:${item.id}`,
+      targetPath: item.targetPath,
       title: item.title,
       detail: item.sourceName,
       meta: item.detail,
@@ -1784,6 +1811,7 @@ export function HomePage({ user, profile }: Props) {
       .filter((item) => item.role === "player" && (item.status === "invited" || item.status === "waiting"))
       .map((item) => ({
         id: `invite-waitlist:${item.id}`,
+        targetPath: buildPublicPlaceBookingPath(item.placeId),
         title: courtWaitlistStatusLabel(item.status),
         detail: `${item.courtName} - ${item.placeName}`,
         meta: formatShortDateTime(item.startsAt),
@@ -1791,6 +1819,7 @@ export function HomePage({ user, profile }: Props) {
       })),
     ...upcoming.slice(0, 2).map((item) => ({
       id: `invite-event:${item.id}`,
+      targetPath: buildTournamentUrl(item.id),
       title: item.name,
       detail: [item.city, item.state].filter(Boolean).join(" - ") || "Evento publico",
       meta: item.startsAt ? formatDateRange(item.startsAt) : "Data a definir",
@@ -1800,6 +1829,7 @@ export function HomePage({ user, profile }: Props) {
   const playerHistoryItems = [
     ...playingTournaments.map((item) => ({
       id: `history-tournament:${item.id}`,
+      targetPath: buildTournamentUrl(item.id),
       title: item.name,
       detail: "Torneio ativo",
       meta: item.updatedAt ? `Atualizado em ${formatDateRange(item.updatedAt)}` : "Em andamento",
@@ -1807,6 +1837,7 @@ export function HomePage({ user, profile }: Props) {
     })),
     ...playingLeagues.map((item) => ({
       id: `history-league:${item.id}`,
+      targetPath: `/eventos/ligas/${encodeURIComponent(item.id)}`,
       title: item.name,
       detail: "Liga ativa",
       meta: item.updatedAt ? `Atualizado em ${formatDateRange(item.updatedAt)}` : "Em andamento",
@@ -2122,6 +2153,7 @@ export function HomePage({ user, profile }: Props) {
                   action={section.action}
                   items={section.items}
                   onOpen={section.onOpen}
+                  onOpenItem={(item) => navigate(item.targetPath || "/inicio")}
                 />
               ))}
             </div>

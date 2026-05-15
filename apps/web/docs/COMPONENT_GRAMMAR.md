@@ -168,14 +168,56 @@ Nao usar:
 | Situacao | Componente correto | Observacao |
 | --- | --- | --- |
 | Jogador escolhe intencao | tile/card compacto | maximo 3-5 opcoes principais |
+| Pagina publica de local | hero publico + `PublicActionRail` | oferta principal, rail curto e fluxos reais sem KPI/cockpit |
 | Jogador confirma reserva/inscricao | page + CTA sticky | feedback inline, sem banner global persistente |
-| Evento publico de competicao | public event header + rail | poster/contexto/CTA antes de jogos, ranking ou operacao |
+| Evento publico de competicao | public event header + action rail | poster/contexto/CTA antes de jogos, ranking ou operacao; inscritos/jogadores em rows sem contato |
 | Lista operacional com muitos itens | `EntityActionRow` | acao primaria explicita |
 | Pendencia do dia | `OperationalQueue` | row com prioridade e destino real |
 | Edicao curta recorrente | drawer/sheet | manter contexto |
 | Setup raro e validado em etapas | wizard | torneio, liga, configuracao complexa |
 | Filtro mobile | bottom sheet | resumo do filtro no botao |
 | Filtro desktop recorrente | inline | nao esconder rotina em sheet |
+
+## PublicActionRail
+
+Uso:
+
+- paginas publicas do Player App;
+- local, evento, aula ou oferta publicada;
+- quando existem 2-5 caminhos publicos possiveis e o usuario precisa escolher rapidamente.
+
+Anatomia:
+
+```text
+[Rotulo curto]
+[Acao/objeto]
+[contexto minimo: preco, quantidade ou status]
+```
+
+Visual:
+
+- cards/tiles leves, sem cara de KPI;
+- no mobile, trilho horizontal com snap/overflow claro;
+- no desktop, grid curto abaixo do hero;
+- cada tile leva para uma secao real ou executa uma acao real;
+- nao exibir tile sem oferta, permissao ou destino.
+
+Correto:
+
+```text
+Reservar | Quadra | A partir de R$ 80,00
+Aulas    | Entrar em turma | 8 turmas
+Jogos    | Jogo aberto | 2 opcoes
+```
+
+Incorreto:
+
+```text
+0 quadras ativas
+0 turmas abertas
+Planos ativos sem relacao com a intencao do jogador
+Widget/publicacao para jogador comum
+```
 
 ## OperationalQueue
 
@@ -236,11 +278,12 @@ Anatomia:
 [status/tipo]
 Nome do evento
 local/data/temporada
-fatos essenciais
+action rail: categorias/classes, inscritos/jogadores, jogos/partidas
 [CTA principal] [compartilhar]
 [poster/placeholder]
 [tabs/anchors publicos]
 [rail de categorias/classes]
+[rows publicas de inscritos/jogadores quando houver]
 ```
 
 Regras:
@@ -249,6 +292,8 @@ Regras:
 - CTA muda por estado (`Inscrever-se`, `Solicitar inscricao`, `Ver meus jogos`, `Acompanhar`);
 - mobile usa CTA sticky;
 - categorias/classes podem usar rail horizontal, sem slice silencioso;
+- inscritos/jogadores publicos usam rows compactas e nao exibem telefone, email, aprovacao ou ferramenta de cobranca;
+- topbar publica pode conter apenas retorno e compartilhamento; `CompetitionHeader`/cockpit fica para owner/staff;
 - fila, aprovacao, publicacao e configuracao nao entram na leitura publica.
 
 ## Competition Registration Flow
@@ -330,7 +375,7 @@ Uso atual no produto:
 - CRM do local: lead/cliente com interesse, origem, responsavel, follow-up e acao primaria contextual.
 - Financeiro do local: recebivel com origem, pagador, periodo/vencimento, valor, status e `Marcar pago` como acao primaria; `Enviar lembrete` e lote sao secundarios.
 - Clientes/CRM do local: relacionamento usa row com contato, interesse, origem/responsavel, proxima acao e drawer; cobranca pendente pertence ao `Financeiro`, nao a fila de relacionamento.
-- Cantina: produto com categoria, preco, estoque e status de estoque.
+- Cantina: produto com categoria, preco, estoque e status de estoque; listas de produtos/estoque usam busca e filtro explicito, nunca corte silencioso.
 - Academia: turma com horario, professor/quadra/nivel, ocupacao, pendencias e metricas de suporte.
 - Academia: aluno com turma, telefone, pagamento, presenca e uma acao primaria contextual; acoes secundarias ficam em disclosure.
 - Academia Configuracao: recurso por quadra/professor com horario, tipo (`turma`, `horario aberto`, `bloqueio`), conflito e acao primaria (`Criar turma`, `Bloquear`, `Reabrir`).
@@ -506,6 +551,7 @@ Variacoes obrigatorias para Academia v2:
 - `CoachDrawer`: dados, agenda, turmas, comissao e login/convite.
 - `FitDrawer`: busca de encaixe para aula avulsa ou reposicao, acionada a partir de `Pendencias`.
 - `CrmContactDrawer`: contato, historico, responsavel, proximo contato, registro de interacao, WhatsApp secundario, converter e arquivar.
+- `UserInvitePicker`: busca por nome/email, selecao de usuario quando encontrado, papel e envio de convite pendente; acesso so nasce apos aceite.
 
 Implementado em 2026-05-14:
 
@@ -522,6 +568,7 @@ Implementado em 2026-05-14:
 - A area financeira de `ClassDrawer`/`StudentDrawer` deve acionar cobranca pelo contrato (`academy_student_contract`) quando existir, mantendo matricula (`academy_enrollment`) apenas como fallback legado.
 - `Configuracao > Quadras e horarios` passou a expor regra operacional curta para reposicao por ausencia avisada; `Pendencias` e `StudentDrawer` mostram a origem do credito sem transformar isso em wizard.
 - 2026-05-15: `CrmContactDrawer` foi aplicado em `Clientes > Rotina/Contatos`, removendo controles inline por contato e mantendo follow-up, historico, responsavel, conversao, arquivamento e WhatsApp em detalhe curto.
+- 2026-05-15: `UserInvitePicker` foi aplicado em `Gestao > Equipe`, alinhando equipe do local ao modelo de staff de torneio: usuario encontrado mostra nome, convite pendente nao libera acesso e aceite aparece na Home do convidado.
 
 Regra:
 
@@ -685,7 +732,7 @@ Uso atual no produto:
 
 - criacao de reserva no admin do local: campos essenciais ficam no composer principal; observacao, repeticao, bloqueio e lista de espera ficam em `Opcoes avancadas`.
 - CRM do local: contatos/leads aparecem antes da captura; novo contato expande apenas quando necessario.
-- Cantina: venda rapida fica como rotina principal; cadastro de produto fica progressivo e auxiliar ao catalogo.
+- Cantina: venda rapida fica como rotina principal; produto cadastrado vira botao acionavel com busca, venda avulsa fica disponivel, total estimado aparece antes de confirmar e cadastro de produto fica progressivo/auxiliar ao catalogo.
 - Torneio: envio/compartilhamento de resultado em `Minhas partidas` fica em disclosure `Informar resultado`, preservando a row principal para status e confirmacao.
 - Academia v2: buscas/filtros compactos e ferramentas de encaixe usam placeholder objetivo e `aria-label`; drawers mantem labels visuais para campos de edicao.
 - Torneio: edicao de placar, WO e limpeza nas partidas da chave ficam em disclosure `Lancar/Editar placar`, preservando a row principal para leitura da partida.
@@ -888,6 +935,43 @@ Anti-pattern:
 - 8+ abas lado a lado;
 - abas tecnicas com nomes que nao representam intencao do usuario;
 - colocar acao primaria dentro de aba rara sem quick action semantica.
+
+## Settings Workspace
+
+Uso:
+
+- Ajustes estruturais do local;
+- configuracao rara, nao rotina diaria;
+- indice de caminhos para Agenda, Academia, Clientes, Financeiro, Cantina e Equipe.
+
+Anatomia:
+
+```text
+[subvisoes estruturais]
+Checklist: prontidao + proximo ajuste + rows acionaveis
+Dados publicos: formulario curto + preview
+Recursos: rows para quadras, professores, turmas, produtos
+Regras: rows para reserva, reposicao, espera
+Planos: plano contratado + ofertas
+Permissoes: equipe ativa + convites + papeis
+Publicacao: conferencia antes de divulgar
+```
+
+Regras:
+
+- Ajustes nao duplica formulario operacional profundo quando o modulo dono ja existe.
+- Toda row deve apontar para um destino real quando a edicao pertence a Agenda, Academia, Cantina, Financeiro ou Equipe.
+- Dados publicos podem ser editados inline porque pertencem ao proprio local.
+- Checklist nao deve aparecer uma segunda vez abaixo do workspace.
+- Mobile pode usar trilho horizontal de tabs por ser setup raro; se a leitura ficar pesada, agrupar subvisoes antes de adicionar uma nova.
+
+Anti-pattern:
+
+- transformar Ajustes em dashboard de KPI;
+- misturar publicacao com fila operacional;
+- duplicar regras de reserva fora da Agenda;
+- duplicar permissoes fora de Equipe;
+- mostrar modulo desativado como tarefa ativa.
 
 ## Anti-patterns globais
 

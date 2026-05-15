@@ -60,6 +60,7 @@ const PRIORITY_MODULES: PlaceManagementModule[] = ["bookings", "academy", "clien
 const COACH_PRIORITY_MODULES: PlaceManagementModule[] = ["academy"];
 const FRONTDESK_PRIORITY_MODULES: PlaceManagementModule[] = ["bookings", "academy"];
 const FINANCE_PRIORITY_MODULES: PlaceManagementModule[] = ["finance"];
+const CASHIER_PRIORITY_MODULES: PlaceManagementModule[] = ["canteen"];
 
 const PLAN_LABELS: Record<Place["productPlan"], string> = {
   academy: "Academia",
@@ -70,6 +71,7 @@ const PLAN_LABELS: Record<Place["productPlan"], string> = {
 
 const ROLE_LABELS: Record<string, string> = {
   coach: "Professor",
+  cashier: "Caixa/POS",
   finance: "Financeiro",
   frontdesk: "Recepcao",
   manager: "Gerente",
@@ -118,6 +120,7 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: 
   const isCoachOnly = access?.staffRole === "coach" && !access.canManagePlace;
   const isFrontdeskOnly = access?.staffRole === "frontdesk" && !access.canManagePlace;
   const isFinanceOnly = access?.staffRole === "finance" && !access.canManagePlace;
+  const isCashierOnly = access?.staffRole === "cashier" && !access.canManagePlace;
   const activeCoachClasses = isCoachOnly ? coachScopedClasses(entry, userId).filter((academyClass) => academyClass.isActive) : [];
   const coachClassIds = new Set(activeCoachClasses.map((academyClass) => academyClass.id));
   const scopedAcademyEnrollments = isCoachOnly
@@ -126,9 +129,9 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: 
   const scopedLessonRequests = isCoachOnly
     ? entry.academyLessonRequests.filter((request) => coachClassIds.has(request.classId) && request.status === "approved")
     : entry.academyLessonRequests;
-  const pendingBookings = isCoachOnly || isFinanceOnly ? 0 : entry.bookings.filter((booking) => booking.status === "pending").length;
-  const todayBookings = isCoachOnly || isFinanceOnly ? 0 : entry.bookings.filter((booking) => booking.status !== "cancelled" && isToday(booking.startsAt)).length;
-  const waitlist = isCoachOnly || isFinanceOnly ? 0 : entry.bookingWaitlist.filter((item) => item.status === "waiting" || item.status === "invited").length;
+  const pendingBookings = isCoachOnly || isFinanceOnly || isCashierOnly ? 0 : entry.bookings.filter((booking) => booking.status === "pending").length;
+  const todayBookings = isCoachOnly || isFinanceOnly || isCashierOnly ? 0 : entry.bookings.filter((booking) => booking.status !== "cancelled" && isToday(booking.startsAt)).length;
+  const waitlist = isCoachOnly || isFinanceOnly || isCashierOnly ? 0 : entry.bookingWaitlist.filter((item) => item.status === "waiting" || item.status === "invited").length;
   const todayWeekday = new Date().getDay();
   const todayClasses = (isCoachOnly ? activeCoachClasses : entry.academyClasses).filter(
     (academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday
@@ -138,11 +141,11 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: 
     : scopedAcademyEnrollments.filter((enrollment) => enrollment.status === "pending").length +
       scopedLessonRequests.filter((request) => request.status === "pending").length;
   const contactsDue =
-    modules.includes("clients") && !isCoachOnly
+    modules.includes("clients") && !isCoachOnly && !isCashierOnly
       ? entry.crmContacts.filter((contact) => contact.status !== "archived" && (contact.status === "lead" || isDue(contact.nextContactOn))).length
       : 0;
   const pendingFinance =
-    modules.includes("finance") && !isCoachOnly && !isFrontdeskOnly
+    modules.includes("finance") && !isCoachOnly && !isFrontdeskOnly && !isCashierOnly
       ? entry.memberships.filter((membership) => membership.status === "pending").length +
         entry.academyStudentContracts.filter((contract) => contract.status === "pending").length +
         entry.academyLessonRequests.filter((request) => request.status === "approved" && request.paymentStatus === "pending").length +
@@ -353,6 +356,18 @@ function operatorProfileFor(access: ReturnType<typeof placeResourceAccess>, plac
       secondaryModule: "finance" as PlaceManagementModule,
       secondaryView: "despesas",
       subtitle: "Financeiro do local",
+    };
+  }
+  if (access.staffRole === "cashier" && !access.canManagePlace) {
+    return {
+      moduleShortcuts: CASHIER_PRIORITY_MODULES,
+      primaryLabel: "Registrar venda",
+      primaryModule: "canteen" as PlaceManagementModule,
+      primaryView: "vender",
+      secondaryLabel: "Estoque",
+      secondaryModule: "canteen" as PlaceManagementModule,
+      secondaryView: "estoque",
+      subtitle: "Caixa e cantina",
     };
   }
   const isCompleteOperation = place.productPlan === "club_pro" || place.productPlan === "multi_unit";

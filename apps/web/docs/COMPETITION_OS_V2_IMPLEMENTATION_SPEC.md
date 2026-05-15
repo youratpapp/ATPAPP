@@ -109,14 +109,22 @@ Estados:
 
 ### Evento Publico `/eventos/:id`
 
+Status 2026-05-15:
+
+- `PUBLIC-COMP-01` consolidou a leitura publica de `TournamentPage.tsx` e `LeagueDetailsPage.tsx`;
+- leitor publico nao recebe `CompetitionHeader`, filtro operacional de escopo da liga nem controles de exportar/copiar agenda;
+- o primeiro bloco publico usa topbar compacta, hero, action rail, categorias/classes e lista publica de inscritos/jogadores;
+- contatos, aprovacao, cobranca, publicacao, fila e configuracao permanecem fora da superficie publica.
+
 Ordem de conteudo:
 
 1. topo com voltar, compartilhar e menu;
 2. nome, local, data e status;
 3. poster/imagem;
-4. tabs visiveis: `Evento`, `Categorias`, `Inscritos` ou `Jogos`;
-5. conteudo da tab;
-6. CTA sticky.
+4. action rail com `Categorias/Classes`, `Inscritos/Jogadores` e `Jogos/Partidas`;
+5. tabs/anchors publicos visiveis: `Evento`, `Categorias`, `Inscritos/Jogadores`, `Jogos/Partidas`;
+6. conteudo publico da tab/secao;
+7. CTA sticky.
 
 Regras:
 
@@ -124,6 +132,8 @@ Regras:
 - resumo nao pode empurrar navegacao secundaria para longe;
 - jogador nao deve ver aprovar inscricao, gerar jogos ou configuracao;
 - CTA deve mudar por estado: `Inscrever-se`, `Ver minha inscricao`, `Ver meus jogos`, `Inscricoes encerradas`.
+- lista publica de inscritos/jogadores nao deve exibir telefone, email ou acoes internas.
+- owner/staff continua usando Competition OS operacional, com fila, filtros e ferramentas de publicacao em outra superficie.
 
 ### Categoria
 

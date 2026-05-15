@@ -130,20 +130,22 @@ Implementacao atual:
 | frontdesk | sim | aulas operacionais | cadastro rapido quando existir | pagamentos simples quando fluxo permitir | nao por padrao | nao | nao |
 | coach | nao como recepcao | minhas aulas/turmas/alunos | nao | comissao/mensalidades proprias se permitido | nao | nao | nao |
 | finance | nao por padrao | nao por padrao | nao por padrao | sim, se plano permitir | nao por padrao | nao | nao |
+| cashier | nao por padrao | nao por padrao | nao por padrao | nao por padrao | sim, se plano permitir | nao | nao |
 
 Regra aplicada em 2026-05-15:
 
 - `dashboard` de local e superficie de gestor; professor deve abrir direto em Academia e recepcao deve abrir direto nos modulos operacionais permitidos.
 - Clientes/CRM so entra para gestor ou recepcao quando o plano permitir; professor nao herda CRM por causa do plano do local.
 - Financeiro dedicado (`place_staff.role = finance`) acessa apenas o modulo Financeiro quando o plano permite. Cantina/POS continua fora do papel financeiro dedicado por padrao.
+- Caixa/POS dedicado (`place_staff.role = cashier`) acessa apenas Cantina/POS quando o plano permite. O papel nao herda Financeiro, Equipe, Ajustes ou operacao de Agenda/Academia.
 - Professor sem gestao completa ve apenas `Aulas`, `Turmas` e `Alunos` da Academia; `Pendencias`, `Professores` e `Configuracao` ficam reservados para gestor.
 - O vinculo operacional de professor depende de `place_coaches.user_id`; se nao existir, a UI mostra estado vazio e nao tenta inferir turmas por nome.
 
 Gap tecnico:
 
-- `place_staff.role` aceita `manager`, `coach`, `frontdesk` e `finance`.
+- `place_staff.role` aceita `manager`, `coach`, `frontdesk`, `finance` e `cashier`.
 - Papel financeiro dedicado existe para recebiveis, despesas, lembretes e baixas financeiras sem promover o usuario a `manager`.
-- Papel de caixa/Cantina/POS ainda nao existe; operadores de POS continuam fora do escopo do `finance` dedicado ate existir permissao propria.
+- Papel de caixa/Cantina/POS existe para venda rapida, vendas do dia, estoque e produtos sem promover o usuario a `manager` ou `finance`.
 
 QA 2026-05-15:
 
@@ -152,6 +154,7 @@ QA 2026-05-15:
 - `coach` nao ve `Definir regras`, `Cadastrar cliente`, `Cadastrar professor`, `Configurar plano` ou mensagem de setup profundo.
 - Recepcao opera fila, agenda, aulas e clientes basicos; `Definir regras` e `Cadastrar professor` continuam reservados a `owner`/`manager`.
 - `ROLE-FINANCE-01` criou o papel `finance`, ajustou a central `/gestao` para entrada financeira isolada e preservou Cantina/POS fora desse papel por padrao.
+- `ROLE-CASHIER-01` criou o papel `cashier`, ajustou a central `/gestao` para entrada isolada em Cantina/POS e liberou backend POS por `app_can_manage_place_canteen(...)`.
 
 ## Competition OS: Papel X Permissao
 

@@ -427,7 +427,9 @@ Status:
 - [feito] O papel financeiro dedicado nao recebe Agenda, Academia, Clientes/CRM, Cantina/POS, Equipe ou Ajustes como modulos principais.
 - [feito] Seeds demo incluem `financeiro.prime@demo.atp.local` vinculado ao Clube Racket Prime como `finance`.
 - [feito] `QA-SEED-ROLE-01` adicionou perfis puros para validar financeiro, organizador, jogador, aluno mensalista e coach solo sem contaminacao de papeis.
-- [pendente] Operador de caixa/Cantina deve virar permissao propria antes de liberar POS para usuarios financeiros.
+- [feito] `ROLE-CASHIER-01` criou `place_staff.role = cashier` para operar Cantina/POS sem promover usuario a `manager` ou `finance`.
+- [feito] O papel caixa/POS entra em `/gestao` apenas com Cantina: venda rapida, vendas do dia, estoque e produtos.
+- [feito] Seeds demo incluem `caixa.prime@demo.atp.local` vinculado ao Clube Racket Prime como `cashier`.
 
 ### Competition Staff
 

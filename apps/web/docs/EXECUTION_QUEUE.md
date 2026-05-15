@@ -1044,8 +1044,63 @@ Validacao executada:
 
 Riscos restantes:
 
-- Cantina/POS ainda precisa de papel proprio de caixa antes de ser liberada para operador financeiro.
+- Cantina/POS ganhou papel proprio em `ROLE-CASHIER-01`; validar seed autenticado com operador real no Supabase alvo segue como risco de QA.
 - Validacao visual autenticada depende de seed/migration aplicados no Supabase alvo.
+
+#### [x] ROLE-CASHIER-01 - Papel caixa/POS dedicado para Cantina
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- `ROLE_VISIBILITY_MATRIX.md`
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+- `MGMT-CANTEEN-01`
+- `ROLE-FINANCE-01`
+
+Descricao:
+
+- Criar suporte real para operador de caixa/cantina sem promover a pessoa a `manager` nem misturar POS com o papel `finance`.
+- O papel deve operar venda rapida, vendas do dia, estoque e produtos da cantina apenas quando o plano habilita `canteen`.
+
+Resultado esperado:
+
+- `place_staff.role` e convites aceitam `cashier`;
+- `/gestao` em modo caixa abre diretamente em Cantina/POS;
+- operador de caixa nao recebe Agenda, Academia, Clientes/CRM, Financeiro, Equipe ou Ajustes;
+- POS tem guardrail de backend para leitura/escrita e registro de venda;
+- Equipe do local permite convidar/atribuir `Caixa/POS`.
+
+Entregue:
+
+- criada migration `0088_place_cashier_staff_role_v1.sql`;
+- `place_staff.role` e `place_staff_invites.role` passam a aceitar `cashier`;
+- criada RPC helper `app_can_manage_place_canteen(...)`, permitindo owner, manager e cashier;
+- policies de `place_pos_products` e `place_pos_sales` passaram a aceitar `app_can_manage_place_canteen(...)`;
+- `app_record_place_pos_sale(...)` agora valida permissao de Cantina, nao permissao ampla de gestor;
+- `placeResourceAccess(...)` ganhou `canManageCanteen`;
+- `placeManagementModules(...)` entrega apenas `["canteen"]` para `cashier`;
+- `fetchPlaceAdminResources(...)` carrega POS por `canManageCanteen`;
+- `/gestao` ganhou modo Caixa/POS com atalhos `Registrar venda` e `Estoque`;
+- `Locais > Equipe` ganhou label, convite, resumo e guia do papel `Caixa/POS`;
+- Home mostra convite de local com papel `Caixa/POS`.
+- seeds demo adicionam `caixa.prime@demo.atp.local` vinculado ao Clube Racket Prime como `cashier`;
+- verificador de seed valida a presenca do papel `cashier`.
+
+Relatorio:
+
+- `ROLE_CASHIER_01_REPORT_2026_05_15.md`.
+
+Validacao executada:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- validar visual autenticado depois que a migration `0088` e seed atualizado estiverem aplicados no Supabase alvo.
+- o papel `cashier` nao acessa Financeiro; se o produto quiser fechamento financeiro/repasse do caixa, deve virar escopo futuro, nao permissao implicita.
 
 #### [x] QA-SEED-ROLE-01 - Perfis seed puros para QA por papel
 
@@ -1458,7 +1513,7 @@ Validacao:
 
 Risco residual:
 
-- O bloco publico/legado de aulas em `/locais` ainda preserva funcoes de descoberta/interesse do jogador e deve ser tratado em `PUBLIC-PLACE-01` ou task player/publica especifica, sem misturar com a rotina interna de Gestao.
+- Resolvido em `PUBLIC-PLACE-01`: a pagina publica do local preserva descoberta/interesse do jogador sem misturar cockpit ou rotina interna de Gestao.
 
 #### [x] MGMT-FINANCE-01 - Financeiro por cobranca
 
@@ -1554,38 +1609,232 @@ Risco residual:
 - O CRM ainda usa contatos do local (`place_crm_contacts`) sem modelo de funil customizavel por academia. Se o produto exigir etapas configuraveis, criar task propria de schema/UX.
 - Notificacoes reais de retorno/WhatsApp continuam fora deste sprint; o sprint preserva WhatsApp externo e historico manual.
 
-#### [>] MGMT-TEAM-01 - Equipe/permissoes por convite aceito
+#### [x] MGMT-TEAM-01 - Equipe/permissoes por convite aceito
 
 Descricao:
 
 - Buscar usuario, convidar, aceitar, aplicar papel e liberar acesso somente apos aceite.
 
-#### [ ] PUBLIC-PLACE-01 - Pagina publica do local
+Status: `[x]` concluido em 2026-05-15
+
+Entregue:
+
+- `Equipe` passou a abrir por padrao na subvisao operacional de pessoas, antes de resumo secundario.
+- Convite de equipe do local agora usa busca por nome/email via `app_search_place_staff_candidates(...)`, permitindo selecionar usuario existente antes de enviar.
+- `app_add_place_staff(...)` deixou de conceder acesso direto quando o email ja existe; sempre cria convite pendente, e `app_claim_place_staff_invites()` virou no-op para remover aceite automatico legado.
+- Foram criadas RPCs de aceite/recusa/listagem: `app_list_my_place_staff_invites(...)`, `app_accept_place_staff_invite(...)`, `app_decline_place_staff_invite(...)` e `app_list_place_staff(...)`.
+- A Home agora mostra `Convite de local` junto aos convites profissionais; o usuario aceita ou recusa, e o local so entra em `/gestao` depois do aceite.
+- Cards/rows de equipe mostram nome do usuario quando encontrado em `profiles/auth.users`; pendentes deixam claro que ainda nao liberam acesso.
+- Vinculo de login do professor foi alinhado ao mesmo modelo: `app_link_place_coach_by_email(...)` envia convite de professor e vincula `place_coaches.user_id` apenas no aceite.
+- Remover membro ativo continua revogando acesso real via `place_staff`; cancelar convite pendente nao altera visibilidade do usuario.
+
+Impacto UX/produto:
+
+- Gestor evita erro de email porque busca e seleciona usuario quando ele existe.
+- Convite pendente virou estado honesto: nao aparece como acesso ativo e nao vaza menu/rota.
+- Professor, recepcao e financeiro recebem acesso profissional somente apos aceitar, mantendo separacao entre Player App e Management OS.
+- A equipe local fica consistente com a regra ja aplicada ao staff de torneio.
+
+Arquivos alterados:
+
+- `web/src/pages/PlacesPage.tsx`
+- `web/src/pages/HomePage.tsx`
+- `web/src/lib/places.ts`
+- `web/src/lib/types.ts`
+- `web/src/components/place/TeamWorkspaceShell.tsx`
+- `web/src/App.css`
+- `web/supabase/migrations/0087_place_staff_invite_acceptance_v1.sql`
+- `web/docs/MGMT_TEAM_01_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- O convite depende de email do usuario autenticado; se o app ganhar convite por telefone/WhatsApp, sera necessaria camada propria de identidade/aceite.
+- Troca de papel de usuario ja ativo ainda deve ser feita removendo o acesso e reenviando convite, para preservar aceite explicito.
+
+#### [x] PUBLIC-PLACE-01 - Pagina publica do local
+
+Status: `[x]` concluido em 2026-05-15
 
 Descricao:
 
 - Local publico com marca, reserva, aula, eventos, contato e CTA, sem cockpit.
 
-#### [ ] PUBLIC-COMP-01 - Pagina publica de competicao
+Contexto:
+
+- A pagina publica ja tinha reserva real, lista de espera, interesse em turma e entrada em jogo aberto.
+- O problema era de organizacao: header duplicado, KPIs publicos, informacao secundaria competindo com fluxo principal e kit de divulgacao visivel para jogador comum.
+- Pela matriz de responsabilidades, `/locais/:placeId` deve converter o jogador/publico, nao expor cockpit, indicadores administrativos ou ferramenta de publicacao.
+
+Entregue:
+
+- topo publico ficou compacto, com nome do local apenas como contexto e sem repetir hero/header;
+- hero passou a escolher CTA principal por oferta real publicada: reservar quadra, entrar em aula, ver jogos ou compartilhar;
+- rail curto de acoes substituiu KPIs publicos, mostrando Reserva, Aulas, Jogos, Planos e Compartilhar apenas quando fazem sentido;
+- `PublishingKit`/widget ficou restrito ao dono do local no fim da pagina, como divulgacao secundaria;
+- reserva, interesse em aula, lista de espera, jogos abertos, planos e acesso a gestao do owner foram preservados;
+- quadras e valores sairam de card concorrente e viraram detalhe secundario recolhivel;
+- mobile recebeu rail horizontal em vez de empilhamento de cards e CTA sticky contextual.
+
+Arquivos alterados:
+
+- `web/src/pages/PlacePublicPage.tsx`
+- `web/src/App.css`
+- `web/docs/PUBLIC_PLACE_01_REPORT_2026_05_15.md`
+- `web/docs/CURRENT_PRODUCT_STATE.md`
+- `web/docs/SCREEN_RESPONSIBILITIES.md`
+- `web/docs/COMPONENT_GRAMMAR.md`
+- `web/docs/EXECUTION_QUEUE.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- A pagina publica ainda depende do `coverUrl` publicado pelo local para ter visual mais rico; sem imagem, usa logo/iniciais e identidade do produto.
+- A busca de disponibilidade continua fazendo varredura de slots no frontend; para escala maior, vale mover disponibilidade do dia para RPC agregada.
+
+#### [x] PUBLIC-COMP-01 - Pagina publica de competicao
+
+Status: `[x]` concluido em 2026-05-15
 
 Descricao:
 
 - Competicao publica com poster, local/data, categorias, inscritos/jogos e CTA, sem fila de organizador.
 
+Contexto:
+
+- Torneio e liga publicos ja tinham hero/CTA, mas ainda herdavam cabecalho operacional duplicado, resumo com cara de KPI e filtros/controles internos perto da primeira dobra.
+- A leitura publica precisava parecer pagina de evento: entender, escolher categoria/classe, ver inscritos/jogadores, acompanhar jogos/partidas e agir.
+- Jogador visitante ou inscrito nao deve ver fila de organizador, exportacao/copiar agenda, filtro interno de temporada/classe como primeiro componente nem contato de inscritos.
+
+Entregue:
+
+- `TournamentPage` e `LeagueDetailsPage` deixaram de renderizar `CompetitionHeader` para leitor publico; usam topbar compacta com `Voltar` e `Compartilhar`.
+- fatos publicos viraram `competition-public-action-rail`: Categorias/Classes, Inscritos/Jogadores e Jogos/Partidas como tiles acionaveis, sem aparencia de cockpit.
+- torneio publico ganhou secao `Inscritos` com rows de nome e categoria/classe, sem telefone ou ferramenta de aprovacao.
+- liga publica ganhou secao `Jogadores` com rows de nome, classe e pontos, sem painel operacional.
+- controles internos de agenda (`Exportar PNG`, `Copiar agenda`) ficaram restritos a quem pode gerenciar partidas.
+- filtro `Escopo da liga` deixou de aparecer para leitor publico; classes continuam selecionaveis pelo rail publico.
+- CSS publico recebeu topbar, action rail e lista compacta compartilhada, com mobile em trilho horizontal e CTA sticky preservado.
+- tipografia do hero publico removeu `clamp()` por viewport e passou a usar token fixo.
+
+Arquivos alterados:
+
+- `web/src/pages/TournamentPage.tsx`
+- `web/src/pages/LeagueDetailsPage.tsx`
+- `web/src/App.css`
+- `web/docs/PUBLIC_COMP_01_REPORT_2026_05_15.md`
+- `web/docs/CURRENT_PRODUCT_STATE.md`
+- `web/docs/SCREEN_RESPONSIBILITIES.md`
+- `web/docs/COMPONENT_GRAMMAR.md`
+- `web/docs/COMPETITION_OS_V2_UX_PLAN.md`
+- `web/docs/COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
+- `web/docs/EXECUTION_QUEUE.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- O detalhe completo por inscrito/categoria ainda depende de uma futura subvisao publica dedicada se o volume de participantes ficar muito alto.
+- Torneio publico ainda depende do `posterUrl` cadastrado; sem poster, usa placeholder com iniciais.
+
 ### P2 - Complementos e refinamentos internos
 
-#### [ ] MGMT-CANTEEN-01 - Cantina/POS por venda rapida
+#### [x] MGMT-CANTEEN-01 - Cantina/POS por venda rapida
 
-Descricao:
+Status: `[x]` concluido em 2026-05-15
 
-- Cantina abre em venda rapida, estoque baixo, vendas do dia e cadastro secundario.
-- Modulo desativado nao aparece como operacao.
+Objetivo:
 
-#### [ ] MGMT-SETTINGS-01 - Ajustes como configuracao estrutural
+- Transformar Cantina/POS em rotina de venda rapida e estoque, sem abrir por resumo/KPI e sem aparecer quando o plano nao habilita o modulo.
 
-Descricao:
+Criterios entregues:
+
+- `/gestao/:placeId/cantina` agora abre por padrao em `Venda rapida`, com produtos cadastrados como botoes acionaveis, busca, venda avulsa, quantidade, valor, cliente opcional e total estimado visivel.
+- `Estoque baixo` virou segunda subvisao e mostra alertas de reposicao, busca de estoque e link direto para `Produtos`.
+- `Vendas do dia` concentra caixa do dia e rows de lancamentos, com cancelamento preservado quando a venda esta paga.
+- `Produtos` ganhou busca e filtros `Todos`/`Baixo`/`Zerado`, sem `slice` silencioso; cadastro de produto permanece como formulario progressivo secundario.
+- `placeProductFeatures(...)`, `placeResourceAccess(...)`, `placeManagementModules(...)` e `place-admin-data` passaram a tratar `canteen` como feature propria de plano (`club_pro`/`multi_unit`), nao como derivacao generica de Financeiro.
+- Plano sem Cantina nao recebe modulo, KPI ou dados POS como operacao ativa; estado de upgrade deve continuar em Ajustes quando existir.
+
+Arquivos alterados:
+
+- `web/src/lib/place-management.ts`
+- `web/src/lib/place-admin-data.ts`
+- `web/src/lib/place-admin-navigation.ts`
+- `web/src/components/place/CanteenWorkspaceShell.tsx`
+- `web/src/components/place/PlaceCanteenSaleForm.tsx`
+- `web/src/components/place/PlaceCanteenStockModule.tsx`
+- `web/src/components/place/PlaceCanteenProductsModule.tsx`
+- `web/src/components/place/PlaceCanteenSummaryModule.tsx`
+- `web/src/pages/PlacesPage.tsx`
+- `web/src/App.css`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`: passou.
+- `npm.cmd run lint`: passou.
+- `npm.cmd run build`: passou.
+
+Risco residual:
+
+- Ainda nao existe papel dedicado de caixa/POS; por enquanto Cantina continua restrita a owner/manager em planos que habilitam o modulo.
+- Ajuste fino visual em device real deve validar conforto dos botoes de produto quando houver catalogo muito grande.
+
+#### [x] MGMT-SETTINGS-01 - Ajustes como configuracao estrutural
+
+Status: `[x]` concluido em 2026-05-15
+
+Objetivo:
 
 - Separar dados publicos, recursos, regras, planos, permissoes e publicacao da rotina diaria.
+
+Criterios entregues:
+
+- `/gestao/:placeId/ajustes` agora usa subvisoes estruturais: `Checklist`, `Dados publicos`, `Recursos`, `Regras`, `Planos`, `Permissoes` e `Publicacao`.
+- `Checklist` concentra prontidao estrutural, modulos liberados e proximos ajustes com rows acionaveis, sem duplicar a rotina operacional dos outros modulos.
+- `Dados publicos` concentra nome, cidade, UF, descricao, logo e acesso direto para ver a pagina publica.
+- `Recursos` mostra quadras/precos, professores/horarios, turmas e produtos da cantina como configuracao estrutural, levando para Agenda, Academia ou Cantina quando a operacao detalhada pertence a esses modulos.
+- `Regras` separa regras de reserva, ausencia/reposicao e lista de espera, usando links semanticos para as configuracoes reais.
+- `Planos` concentra plano contratado, modulos liberados, planos de socio e pacotes/creditos sem abrir financeiro como dashboard.
+- `Permissoes` mostra equipe ativa, convites pendentes e atalhos para Equipe, preservando aceite explicito e menor papel suficiente.
+- `Publicacao` revisa dados publicos, quadras e ofertas visiveis antes de divulgar a pagina.
+- O bloco legado de configuracoes abaixo do workspace deixou de duplicar checklist/plano quando `SettingsWorkspaceShell` esta ativo.
+
+Arquivos alterados:
+
+- `web/src/components/place/SettingsWorkspaceShell.tsx`
+- `web/src/lib/place-admin-navigation.ts`
+- `web/src/pages/PlacesPage.tsx`
+- `web/docs/EXECUTION_QUEUE.md`
+- `web/docs/CURRENT_PRODUCT_STATE.md`
+- `web/docs/MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+- `web/docs/SCREEN_RESPONSIBILITIES.md`
+- `web/docs/COMPONENT_GRAMMAR.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`: passou.
+- `npm.cmd run lint`: passou.
+- `npm.cmd run build`: passou.
+
+Risco residual:
+
+- Ajustes tem sete subvisoes por ser configuracao estrutural ampla; mobile usa rolagem horizontal das tabs. Se a navegacao ficar pesada em teste real, o proximo refinamento deve agrupar `Dados publicos/Publicacao` e `Recursos/Regras`.
+- As configuracoes detalhadas continuam nos modulos donos da rotina. Ajustes e uma central de estrutura e atalhos, nao uma segunda implementacao de Agenda, Academia, Equipe ou Financeiro.
 
 ### [x] QA-R2-FIX-01 - Correcoes operacionais da Rodada 2 de QA
 
@@ -1621,16 +1870,55 @@ Risco residual:
 
 - A validacao visual fina em device real ainda deve confirmar conforto de toque do seletor de quadra em telas muito estreitas.
 
-### [ ] QA-R2-ROADMAP - Gaps de produto detectados na Rodada 2
+### [x] QA-R2-ROADMAP - Gaps de produto detectados na Rodada 2
 
-Status: `[ ]` backlog
+Status: `[x]` encerrado em 2026-05-15
 
-Itens:
+Encerramento dos gaps:
 
-- GAP-R2-01: Financeiro dedicado/consolidado para leitura executiva e rotina de cobranca.
-- GAP-R2-02: lembrete em lote para cobrancas/pendencias.
-- GAP-R2-03: lista de espera player-side.
-- GAP-R2-04: governanca completa de Cantina/POS por plano alem do KPI operacional.
+- GAP-R2-01: financeiro dedicado/consolidado foi entregue em `MGMT-FINANCE-01` e `ROLE-FINANCE-01`.
+- GAP-R2-02: lembrete em lote foi entregue em `PlaceFinanceReceivablesModule`, com `Lembrar lista atual`, `Cobrar socios` e `Cobrar alunos`.
+- GAP-R2-03: lista de espera player-side foi completada em `QA-R2-GAP-03`, com nome real do local e abertura contextual no local correto.
+- GAP-R2-04: governanca de Cantina/POS por plano foi entregue em `MGMT-CANTEEN-01` e refinada em `MGMT-SETTINGS-01`, separando `canteen` de Financeiro.
+
+### [x] QA-R2-GAP-03 - Lista de espera player-side contextual
+
+Status: `[x]` concluido em 2026-05-15
+
+Contexto:
+
+- `PLAYER-UX-03` ja permitia o jogador entrar em lista de espera pela pagina publica do local quando nao havia disponibilidade.
+- A Home do jogador tambem listava entradas de espera, mas ainda usava `Local` generico e levava o usuario para `/locais?intent=booking`, exigindo que ele reencontrasse manualmente o clube.
+- Isso mantinha o gap de Rodada 2 parcialmente aberto: a espera existia, mas nao era suficientemente contextual no lado do jogador.
+
+Criterios entregues:
+
+- `listMyCourtBookingWaitlist()` agora carrega tambem o nome do local a partir de `places`.
+- `listMyCourtBookingWaitlist()` filtra explicitamente `user_id` do usuario autenticado, sem depender apenas de RLS para definir "minha espera".
+- `CourtBookingWaitlistEntry` passou a carregar `placeName`, preservando `placeId`, quadra, horario e status.
+- Home do jogador mostra a lista de espera com nome real do local em vez de `Local`.
+- Convites/esperas de quadra no resumo e nas prioridades abrem diretamente `/locais/:placeId?intent=booking`.
+- Itens internos de `Meu contexto` agora podem abrir o destino especifico de cada item, nao apenas o destino generico da secao.
+
+Arquivos alterados:
+
+- `web/src/lib/types.ts`
+- `web/src/lib/places.ts`
+- `web/src/pages/HomePage.tsx`
+- `web/docs/EXECUTION_QUEUE.md`
+- `web/docs/CURRENT_PRODUCT_STATE.md`
+- `web/docs/AGENDA_MODULE_FUNCTION_MAP.md`
+- `web/docs/QA_R2_GAP_03_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`: passou.
+- `npm.cmd run lint`: passou.
+- `npm.cmd run build`: passou.
+
+Risco residual:
+
+- A aceitacao ativa de convite de lista de espera pelo proprio jogador ainda depende de uma regra de produto especifica: hoje o jogador e levado ao local correto para agir, enquanto a conversao/promocao segue operacional no Management OS.
 
 ### [x] COMP-QA-01 - Convite de equipe de torneio por usuario selecionado
 

@@ -4,6 +4,10 @@ Status: levantamento funcional baseado nos prints locais de 2026-05-14 e no codi
 Escopo: `Gestao > Agenda` do local `Arena Pantanal Tennis`, usuario `escalao@gmail.com`.
 Objetivo: mapear funcoes, inputs, acoes, logica basica e pontos de evolucao das telas `Hoje`, `Reservas`, `Calendario`, `Nova reserva`, `Espera` e `Quadras`.
 
+Atualizacao 2026-05-15:
+- `QA-R2-GAP-03` completou o lado do jogador da lista de espera: `listMyCourtBookingWaitlist()` carrega `placeName`, a Home deixa de mostrar `Local` generico e abre a espera/reserva diretamente em `/locais/:placeId?intent=booking`.
+- A promocao/conversao de espera continua responsabilidade operacional do Management OS; aceitacao ativa pelo jogador deve ser tratada como regra futura se o produto decidir que convite de espera exige aceite formal.
+
 ## 1. Screenshots capturados
 
 Pasta: `web/docs/screenshots/agenda-2026-05-14`

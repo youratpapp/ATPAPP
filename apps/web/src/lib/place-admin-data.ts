@@ -140,9 +140,11 @@ const FULL_PLACE_ACCESS: ReturnType<typeof placeResourceAccess> = {
   canUseFinance: true,
   canUseCrm: true,
   canUseMemberships: true,
+  canUseCanteen: true,
   canManageBookings: true,
   canManageAcademy: true,
   canManageFinance: true,
+  canManageCanteen: true,
 };
 
 export function paymentMapKey(targetType: string, targetId: string, billingPeriod = ""): string {
@@ -253,7 +255,7 @@ export async function fetchPlaceAdminResources(input: {
 }): Promise<PlaceAdminResourceEntry> {
   const staff = await listPlaceStaff(input.placeId).catch(() => [] as PlaceStaffMember[]);
   const access = input.place ? placeResourceAccess(input.place, input.userId, staff) : FULL_PLACE_ACCESS;
-  const canUsePointOfSale = access.canManagePlace && access.canManageFinance;
+  const canUsePointOfSale = access.canManageCanteen;
   const [
     courts,
     bookingRules,

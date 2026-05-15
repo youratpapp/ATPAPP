@@ -117,6 +117,20 @@ select
 
 insert into qa_seed_integrity_checks
 select
+  'qa_cashier_staff_missing',
+  case
+    when exists (
+      select 1
+      from public.seed_users u
+      join public.place_staff s on s.user_id = u.id
+      where u.email = 'caixa.prime@demo.atp.local'
+        and s.role = 'cashier'
+    ) then 0 else 1
+  end,
+  'caixa.prime@demo.atp.local must be linked as place_staff.role = cashier.';
+
+insert into qa_seed_integrity_checks
+select
   'qa_coach_solo_has_place_links',
   coalesce((
     select count(*)::integer

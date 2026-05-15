@@ -91,6 +91,7 @@ from (
     ('prime', 'gerente.prime@demo.atp.local', 'manager'),
     ('prime', 'recepcao.prime@demo.atp.local', 'frontdesk'),
     ('prime', 'financeiro.prime@demo.atp.local', 'finance'),
+    ('prime', 'caixa.prime@demo.atp.local', 'cashier'),
     ('prime', 'prof.julia@demo.atp.local', 'coach'),
     ('prime', 'prof.vitor@demo.atp.local', 'coach'),
     ('prime', 'prof.talita@demo.atp.local', 'coach'),

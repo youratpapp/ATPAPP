@@ -68,6 +68,14 @@ Responsabilidade:
 
 - explicar e converter inscricao.
 
+Status 2026-05-15:
+
+- `COMP-UX-02` criou a base de pagina-evento para torneio/liga;
+- `PUBLIC-COMP-01` refinou a superficie publica para remover cabecalho operacional duplicado, filtros internos e KPIs;
+- torneio e liga publicos agora usam topbar compacta, action rail de Categorias/Inscritos/Jogos, CTA contextual e CTA sticky mobile;
+- inscritos/jogadores aparecem em rows publicas sem telefone/email e sem ferramenta de organizador;
+- exportacao/copia de agenda e escopo operacional ficam restritos a owner/staff.
+
 Estrutura alvo:
 
 - nome;
@@ -75,7 +83,7 @@ Estrutura alvo:
 - data;
 - status;
 - imagem/poster quando existir;
-- tabs: Evento, Categorias, Inscritos/Jogos;
+- tabs/anchors: Evento, Categorias/Classes, Inscritos/Jogadores e Jogos/Partidas;
 - CTA sticky de inscricao ou meus jogos;
 - regras resumidas.
 

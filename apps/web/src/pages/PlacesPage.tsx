@@ -304,6 +304,7 @@ const STAFF_ROLE_LABELS: Record<"owner" | PlaceStaffMember["role"], string> = {
   coach: "Professor",
   frontdesk: "Recepcao",
   finance: "Financeiro",
+  cashier: "Caixa/POS",
 };
 
 const DEFAULT_PLACE_STAFF_DRAFT: PlaceStaffDraft = {
@@ -3807,7 +3808,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const academySlots = academySlotsByPlace[p.id] || [];
         const staff = staffByPlace[p.id] || [];
         const access = placeResourceAccess(p, user.id, staff);
-        const { staffRole, canManagePlace, canUseBookings, canUseAcademy, canUseCrm, canUseMemberships, canManageBookings, canManageAcademy, canManageFinance } = access;
+        const { staffRole, canManagePlace, canUseBookings, canUseAcademy, canUseCrm, canUseMemberships, canUseCanteen, canManageBookings, canManageAcademy, canManageFinance, canManageCanteen } = access;
         const managementModules = placeManagementModules(access);
         const canUseCanteenModule = managementModules.includes("canteen");
         const isPlayerView = !staffRole;
@@ -3953,7 +3954,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           ])
         );
         const posProductDraft = posProductDraftByPlace[p.id] || { name: "", category: "", price: "0", stock: "0" };
-        const posSaleDraft = posSaleDraftByPlace[p.id] || { productId: posProducts[0]?.id || "", productName: "", buyerName: "", quantity: "1", unitAmount: "0" };
+        const posSaleDraft = posSaleDraftByPlace[p.id] || { productId: "", productName: "", buyerName: "", quantity: "1", unitAmount: "0" };
         const expenseDraft = expenseDraftByPlace[p.id] || { category: "", description: "", amount: "0", spentOn: todayDateInputValue() };
         const coachDraft = coachDraftByPlace[p.id] || { name: "", phone: "", email: "" };
         const fitSearch = academyFitSearchByPlace[p.id] || {
@@ -4498,7 +4499,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             title: "Dados do local",
             detail: p.description ? "Descricao preenchida" : "Inclua horarios, contato e orientacoes para alunos.",
             module: "settings" as PlaceManagementModule,
-            viewSegment: "estrutura",
+            viewSegment: "dados-publicos",
           },
           {
             key: "courts",
@@ -4554,9 +4555,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           },
           {
             key: "canteen",
-            done: !access.canUseFinance || posProducts.length > 0,
-            title: "Cantina",
-            detail: access.canUseFinance
+            done: !canUseCanteen || posProducts.length > 0,
+            title: "Produtos da cantina",
+            detail: canUseCanteen
               ? posProducts.length
                 ? `${countLabel(posProducts.length, "produto cadastrado", "produtos cadastrados")}`
                 : "Cadastre produtos para venda rapida."
@@ -4604,8 +4605,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showTeamWorkspace = isManagementCockpit && isOwner;
         const showTeamStaff = !showTeamWorkspace || teamView === "staff";
         const settingsView = (settingsViewByPlace[p.id] || "overview") as SettingsManagementView;
-        const showSettingsWorkspace = isManagementCockpit && isOwner;
-        const showSettingsDetails = !showSettingsWorkspace || settingsView === "setup" || settingsView === "plan";
+        const showSettingsWorkspace = isManagementCockpit && canManagePlace;
+        const showSettingsDetails = !showSettingsWorkspace;
         const bookingView = (bookingViewByPlace[p.id] || "today") as BookingManagementView;
         const showBookingWorkspace = isManagementCockpit && showBookingTools;
         const showBookingResources = !showBookingWorkspace || bookingView === "resources";
@@ -4619,8 +4620,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showFinanceReceivables = !showFinanceWorkspace;
         const showFinancePackages = !showFinanceWorkspace;
         const showFinanceExpenses = !showFinanceWorkspace;
-        const canteenView = (canteenViewByPlace[p.id] || "today") as CanteenManagementView;
-        const showCanteenWorkspace = isManagementCockpit && canManageFinance;
+        const canteenView = (canteenViewByPlace[p.id] || "sell") as CanteenManagementView;
+        const showCanteenWorkspace = isManagementCockpit && canUseCanteenModule;
         const showCanteenSummary = !showCanteenWorkspace || canteenView === "today";
         const showCanteenSale = !showCanteenWorkspace || canteenView === "sell";
         const showCanteenStock = !showCanteenWorkspace || canteenView === "stock";
@@ -5094,6 +5095,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           countLabel(staff.filter((member) => member.role === "frontdesk").length, "recepcao", "recepcao"),
                           countLabel(staff.filter((member) => member.role === "coach").length, "professor", "professores"),
                           countLabel(staff.filter((member) => member.role === "finance").length, "financeiro", "financeiro"),
+                          countLabel(staff.filter((member) => member.role === "cashier").length, "caixa", "caixas"),
                         ]}
                       />
                       <WorkspaceCard
@@ -5142,6 +5144,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       <WorkspaceCard title="Recepcao" subtitle="Cuida de reservas, check-in, fila de espera e atendimento diario." />
                       <WorkspaceCard title="Professor" subtitle="Acessa turmas, chamada, faltas, reposicoes e evolucao dos alunos." />
                       <WorkspaceCard title="Financeiro" subtitle="Acessa recebiveis, lembretes, baixas e despesas sem operar agenda, academia ou equipe." />
+                      <WorkspaceCard title="Caixa/POS" subtitle="Acessa venda rapida, vendas do dia, estoque e produtos da cantina sem abrir gestao completa." />
                     </WorkspaceGrid>
                   ) : null}
                 </TeamWorkspaceShell>
@@ -5219,6 +5222,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <option value="coach">Professor</option>
                     <option value="frontdesk">Recepcao</option>
                     <option value="finance">Financeiro</option>
+                    <option value="cashier">Caixa/POS</option>
                   </select>
                   <button
                     className="primary"
@@ -5261,6 +5265,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <span><strong>Recepcao</strong> cuida de reservas, check-in e rotina de atendimento.</span>
                   <span><strong>Professor</strong> acessa turmas, chamada, faltas e evolucao de alunos.</span>
                   <span><strong>Financeiro</strong> acessa recebiveis, lembretes, baixas e despesas sem virar gerente.</span>
+                  <span><strong>Caixa/POS</strong> acessa venda rapida, vendas do dia e estoque da cantina.</span>
                 </div>
               </div>
             ) : null}
@@ -5277,87 +5282,281 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   onViewChange={(view) => selectSettingsView(p.id, view)}
                 >
                   {settingsView === "overview" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard
-                        title="Prontidao do local"
-                        subtitle="Checklist basico para operar sem atrito"
-                        value={`${setupDoneCount}/${setupChecklist.length}`}
-                        metrics={[
-                          `${setupPercent}% concluido`,
-                          PLACE_PRODUCT_PLAN_LABELS[p.productPlan],
-                          countLabel(setupChecklist.length - setupDoneCount, "pendencia", "pendencias"),
-                        ]}
-                      />
-                      <WorkspaceCard title="Proximo ajuste" subtitle="O item mais importante para liberar valor rapido" value={nextSetupItem ? "1" : "OK"}>
-                        <WorkspaceList>
-                          {nextSetupItem ? (
-                            <span>
-                              <strong>{nextSetupItem.title}</strong>
-                              <small>{nextSetupItem.detail}</small>
-                            </span>
-                          ) : (
-                            <span>Configuracao essencial pronta.</span>
-                          )}
-                        </WorkspaceList>
-                      </WorkspaceCard>
-                    </WorkspaceGrid>
-                  ) : null}
-                  {settingsView === "structure" ? (
                     <>
-                      {isOwner ? (
-                        <div className="place-staff-form">
-                          <input
-                            value={placeProfileDraft.name}
-                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, name: event.target.value } }))}
-                            placeholder="Nome publico do local"
-                          />
-                          <input
-                            value={placeProfileDraft.city}
-                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, city: event.target.value } }))}
-                            placeholder="Cidade"
-                          />
-                          <input
-                            value={placeProfileDraft.state}
-                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, state: normalizeStateUf(event.target.value) } }))}
-                            placeholder="UF"
-                            maxLength={2}
-                          />
-                          <textarea
-                            value={placeProfileDraft.description}
-                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, description: event.target.value } }))}
-                            placeholder="Descricao publica, horarios, contato e orientacoes"
-                            rows={3}
-                          />
-                          <input
-                            value={placeProfileDraft.logoUrl}
-                            onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, logoUrl: event.target.value } }))}
-                            placeholder="URL do logo"
-                          />
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(event) => setPlaceProfileLogoFileByPlace((prev) => ({ ...prev, [p.id]: event.target.files?.[0] || null }))}
-                          />
-                          <button onClick={() => void onSavePlaceProfile(p)} disabled={busy || !placeProfileDraft.name.trim()}>
-                            Salvar dados publicos
-                          </button>
-                        </div>
-                      ) : null}
                       <WorkspaceGrid>
-                        <WorkspaceCard title="Quadras" subtitle="Base para reservas e bloqueios" value={activeCourts.length} />
                         <WorkspaceCard
-                          title="Academia"
-                          subtitle="Professores e turmas ativas"
-                          value={activeAcademyClasses.length}
-                          metrics={[countLabel(academyCoaches.length, "professor", "professores"), countLabel(academySlots.length, "janela", "janelas")]}
+                          title="Prontidao estrutural"
+                          subtitle="O que precisa estar pronto antes de divulgar ou operar com equipe"
+                          value={`${setupDoneCount}/${setupChecklist.length}`}
+                          metrics={[
+                            `${setupPercent}% concluido`,
+                            PLACE_PRODUCT_PLAN_LABELS[p.productPlan],
+                            countLabel(setupChecklist.length - setupDoneCount, "pendencia", "pendencias"),
+                          ]}
                         />
                         <WorkspaceCard
-                          title="Relacionamento"
-                          subtitle="Planos e contatos comerciais"
-                          value={activeMembershipPlans.length}
-                          metrics={[countLabel(memberships.length, "socio", "socios"), countLabel(crmContacts.length, "contato", "contatos")]}
+                          title="Modulos liberados"
+                          subtitle="Plano atual define as superficies de trabalho"
+                          value={enabledFeatures.length}
+                          metrics={enabledFeatures.slice(0, 4)}
+                        />
+                        <WorkspaceCard title="Proximo ajuste" subtitle="Atalho para o item estrutural mais importante" value={nextSetupItem ? "1" : "OK"}>
+                          <WorkspaceList>
+                            {nextSetupItem ? (
+                              <span>
+                                <strong>{nextSetupItem.title}</strong>
+                                <small>{nextSetupItem.detail}</small>
+                              </span>
+                            ) : (
+                              <span>Configuracao essencial pronta.</span>
+                            )}
+                          </WorkspaceList>
+                        </WorkspaceCard>
+                      </WorkspaceGrid>
+                      <WorkspaceList>
+                        {setupChecklist.map((item) => (
+                          <WorkspaceRow
+                            key={`${p.id}:settings-check:${item.key}`}
+                            title={`${item.done ? "OK" : "Pendente"} · ${item.title}`}
+                            detail={item.detail}
+                            actions={
+                              <button
+                                type="button"
+                                onClick={() => navigate(buildPlaceAdminPath(p.id, item.module, item.viewSegment))}
+                                disabled={!managementModules.includes(item.module)}
+                              >
+                                Abrir
+                              </button>
+                            }
+                          />
+                        ))}
+                      </WorkspaceList>
+                    </>
+                  ) : null}
+                  {settingsView === "public" ? (
+                    <>
+                      <WorkspaceGrid>
+                        <WorkspaceCard
+                          title="Dados publicos"
+                          subtitle="Nome, cidade, UF e descricao aparecem para jogador"
+                          value={p.description ? "OK" : "Pendente"}
+                          metrics={[p.city || "Cidade pendente", p.state || "UF pendente", p.logoUrl ? "logo" : "sem logo"]}
+                        />
+                        <WorkspaceCard
+                          title="Pagina publica"
+                          subtitle="Previa da experiencia que o jogador encontra"
+                          value="Publica"
+                          metrics={[countLabel(activeCourts.length, "quadra", "quadras"), countLabel(activeAcademyClasses.length, "turma", "turmas")]}
                         />
                       </WorkspaceGrid>
+                      <div className="place-staff-form">
+                        <input
+                          value={placeProfileDraft.name}
+                          onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, name: event.target.value } }))}
+                          placeholder="Nome publico do local"
+                        />
+                        <input
+                          value={placeProfileDraft.city}
+                          onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, city: event.target.value } }))}
+                          placeholder="Cidade"
+                        />
+                        <input
+                          value={placeProfileDraft.state}
+                          onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, state: normalizeStateUf(event.target.value) } }))}
+                          placeholder="UF"
+                          maxLength={2}
+                        />
+                        <textarea
+                          value={placeProfileDraft.description}
+                          onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, description: event.target.value } }))}
+                          placeholder="Descricao publica, horarios, contato e orientacoes"
+                          rows={3}
+                        />
+                        <input
+                          value={placeProfileDraft.logoUrl}
+                          onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, logoUrl: event.target.value } }))}
+                          placeholder="URL do logo"
+                        />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(event) => setPlaceProfileLogoFileByPlace((prev) => ({ ...prev, [p.id]: event.target.files?.[0] || null }))}
+                        />
+                        <button type="button" onClick={() => void onSavePlaceProfile(p)} disabled={busy || !placeProfileDraft.name.trim()}>
+                          Salvar dados publicos
+                        </button>
+                        <button type="button" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
+                          Ver pagina publica
+                        </button>
+                      </div>
+                    </>
+                  ) : null}
+                  {settingsView === "resources" ? (
+                    <WorkspaceList>
+                      <WorkspaceRow
+                        title="Quadras e precos"
+                        detail={`${countLabel(activeCourts.length, "quadra ativa", "quadras ativas")} · cadastro, superficie e preco por quadra`}
+                        actions={
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "quadras"))} disabled={!managementModules.includes("bookings")}>
+                            Abrir quadras
+                          </button>
+                        }
+                      />
+                      <WorkspaceRow
+                        title="Professores e horarios"
+                        detail={`${countLabel(academyCoaches.length, "professor", "professores")} · ${countLabel(academySlots.length, "horario aberto", "horarios abertos")}`}
+                        actions={
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "configuracao"))} disabled={!managementModules.includes("academy")}>
+                            Abrir configuracao
+                          </button>
+                        }
+                      />
+                      <WorkspaceRow
+                        title="Turmas da academia"
+                        detail={`${countLabel(activeAcademyClasses.length, "turma ativa", "turmas ativas")} · grade e mensalidade ficam na Academia`}
+                        actions={
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "turmas"))} disabled={!managementModules.includes("academy")}>
+                            Abrir grade
+                          </button>
+                        }
+                      />
+                      <WorkspaceRow
+                        title="Produtos da cantina"
+                        detail={canUseCanteen ? `${countLabel(posProducts.length, "produto", "produtos")} · ${countLabel(lowStockProducts.length, "estoque baixo", "estoques baixos")}` : "Modulo desativado no plano atual"}
+                        actions={
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "canteen", "produtos"))} disabled={!managementModules.includes("canteen")}>
+                            Abrir produtos
+                          </button>
+                        }
+                      />
+                    </WorkspaceList>
+                  ) : null}
+                  {settingsView === "rules" ? (
+                    <WorkspaceList>
+                      <WorkspaceRow
+                        title="Regras de reserva"
+                        detail={`${countLabel(bookingRules.filter((rule) => rule.isActive).length, "regra ativa", "regras ativas")} · horarios, antecedencia, aprovacao e preco`}
+                        actions={
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "quadras"))} disabled={!managementModules.includes("bookings")}>
+                            Editar regras
+                          </button>
+                        }
+                      />
+                      <WorkspaceRow
+                        title="Ausencia avisada e reposicao"
+                        detail={`Regra atual: ${academySettings.makeupNoticeHours}h de antecedencia · ${academySettings.autoCreateMakeupCreditOnNotice ? "gera credito automatico" : "credito automatico desligado"}`}
+                        actions={
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "configuracao"))} disabled={!managementModules.includes("academy")}>
+                            Editar academia
+                          </button>
+                        }
+                      />
+                      <WorkspaceRow
+                        title="Lista de espera"
+                        detail={`${countLabel(waitingCourtEntries.length, "pessoa aguardando", "pessoas aguardando")} · operacao diaria fica na Agenda`}
+                        actions={
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "espera"))} disabled={!managementModules.includes("bookings")}>
+                            Ver espera
+                          </button>
+                        }
+                      />
+                    </WorkspaceList>
+                  ) : null}
+                  {settingsView === "plans" ? (
+                    <>
+                      <div className="place-staff-form">
+                        <select
+                          value={p.productPlan}
+                          onChange={(event) => void onUpdatePlaceProductPlan(p, event.target.value as PlaceProductPlan)}
+                          disabled={busy || !canManagePlace}
+                          aria-label="Plano do local"
+                        >
+                          {Object.entries(PLACE_PRODUCT_PLAN_LABELS).map(([value, label]) => (
+                            <option key={`settings-plan:${value}`} value={value}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="place-settings-note">{PLACE_PRODUCT_PLAN_HINTS[p.productPlan]}</span>
+                      </div>
+                      <WorkspaceGrid>
+                        <WorkspaceCard title="Modulos do plano" subtitle="Superficies habilitadas para este local" value={enabledFeatures.length} metrics={enabledFeatures} />
+                        <WorkspaceCard title="Planos de socio" subtitle="Recorrencia e descontos" value={activeMembershipPlans.length}>
+                          <WorkspaceList>
+                            {activeMembershipPlans.map((plan) => (
+                              <span key={`settings-plan-row:${plan.id}`}>
+                                <strong>{plan.name}</strong>
+                                <small>{formatMoneyFromCents(plan.monthlyFeeCents)} / mes</small>
+                              </span>
+                            ))}
+                            {!activeMembershipPlans.length ? <span>Nenhum plano ativo cadastrado.</span> : null}
+                          </WorkspaceList>
+                        </WorkspaceCard>
+                        <WorkspaceCard title="Pacotes e creditos" subtitle="Ofertas vendidas fora da mensalidade" value={activeCreditPackages.length}>
+                          <WorkspaceList>
+                            {activeCreditPackages.map((item) => (
+                              <span key={`settings-package-row:${item.id}`}>
+                                <strong>{item.name}</strong>
+                                <small>{formatMoneyFromCents(item.priceCents)} · {item.quantity} unidades</small>
+                              </span>
+                            ))}
+                            {!activeCreditPackages.length ? <span>Nenhum pacote ativo cadastrado.</span> : null}
+                          </WorkspaceList>
+                        </WorkspaceCard>
+                      </WorkspaceGrid>
+                      <div className="cluster">
+                        <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "clients", "socios"))} disabled={!managementModules.includes("clients")}>
+                          Editar planos de socio
+                        </button>
+                        <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "finance", "pacotes"))} disabled={!managementModules.includes("finance")}>
+                          Editar pacotes
+                        </button>
+                      </div>
+                    </>
+                  ) : null}
+                  {settingsView === "permissions" ? (
+                    <>
+                      <WorkspaceGrid>
+                        <WorkspaceCard
+                          title="Equipe ativa"
+                          subtitle="Pessoas com acesso real ao local"
+                          value={staff.filter((member) => member.status !== "pending").length}
+                          metrics={[
+                            countLabel(staff.filter((member) => member.role === "manager").length, "gerente", "gerentes"),
+                            countLabel(staff.filter((member) => member.role === "frontdesk").length, "recepcao", "recepcao"),
+                            countLabel(staff.filter((member) => member.role === "coach").length, "professor", "professores"),
+                            countLabel(staff.filter((member) => member.role === "finance").length, "financeiro", "financeiro"),
+                            countLabel(staff.filter((member) => member.role === "cashier").length, "caixa", "caixas"),
+                          ]}
+                        />
+                        <WorkspaceCard title="Convites pendentes" subtitle="Ainda nao liberam acesso" value={staff.filter((member) => member.status === "pending").length} />
+                      </WorkspaceGrid>
+                      <WorkspaceList>
+                        <WorkspaceRow title="Convidar ou remover acesso" detail="Gestao de pessoas fica no modulo Equipe, com aceite explicito do usuario." actions={<button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "equipe"))}>Abrir equipe</button>} />
+                        <WorkspaceRow title="Revisar papeis" detail="Use o menor papel suficiente para a rotina: gerente, recepcao, professor, financeiro ou caixa/POS." actions={<button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "papeis"))}>Ver papeis</button>} />
+                        <WorkspaceRow title="Convites sem aceite" detail="Convite pendente nao aparece como membro ativo e nao libera Management OS." actions={<button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "convites"))}>Ver convites</button>} />
+                      </WorkspaceList>
+                    </>
+                  ) : null}
+                  {settingsView === "publication" ? (
+                    <>
+                      <WorkspaceGrid>
+                        <WorkspaceCard
+                          title="Pagina publica"
+                          subtitle="A pagina existe, mas deve estar pronta antes de divulgar"
+                          value={p.description && activeCourts.length ? "Pronta" : "Revisar"}
+                          metrics={[
+                            p.description ? "descricao OK" : "descricao pendente",
+                            activeCourts.length ? "quadras OK" : "sem quadras",
+                            activeAcademyClasses.length || activeMembershipPlans.length ? "ofertas OK" : "sem ofertas",
+                          ]}
+                        />
+                        <WorkspaceCard title="Ofertas visiveis" subtitle="Reserva, aulas e planos que ajudam conversao" value={activeAcademyClasses.length + activeMembershipPlans.length} />
+                      </WorkspaceGrid>
+                      <WorkspaceList>
+                        <WorkspaceRow title="Dados publicos" detail={p.description ? "Descricao preenchida." : "Preencha descricao, horarios, contato e orientacoes."} actions={<button type="button" onClick={() => selectSettingsView(p.id, "public")}>Editar dados</button>} />
+                        <WorkspaceRow title="Reserva e aulas" detail={`${countLabel(activeCourts.length, "quadra", "quadras")} · ${countLabel(activeAcademyClasses.length, "turma", "turmas")}`} actions={<button type="button" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>Ver como jogador</button>} />
+                      </WorkspaceList>
                     </>
                   ) : null}
                 </SettingsWorkspaceShell>
@@ -5894,7 +6093,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ) : null}
               </div>
             ) : null}
-            {showManagementModule("canteen") && canManageFinance ? (
+            {showManagementModule("canteen") && canManageCanteen ? (
               <div className="place-booking-panel">
                 {showCanteenWorkspace ? (
                   <CanteenWorkspaceShell
@@ -5911,19 +6110,26 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         sales={posSales}
                         todayRevenueCents={todayPosRevenueCents}
                         todaySales={todayPosSales}
+                        onCancelSale={(sale) => void onCancelPosSale(p.id, sale.id)}
                       />
                     ) : null}
                     {canteenView === "sell" ? (
                       <PlaceCanteenSaleForm
                         busy={busy}
                         draft={posSaleDraft}
+                        formatMoneyFromCents={formatMoneyFromCents}
                         products={posProducts}
                         onChange={(draft) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
                         onSubmit={() => void onRecordPosSale(p)}
                       />
                     ) : null}
                     {canteenView === "stock" ? (
-                      <PlaceCanteenStockModule countLabel={countLabel} formatMoneyFromCents={formatMoneyFromCents} products={posProducts} />
+                      <PlaceCanteenStockModule
+                        countLabel={countLabel}
+                        formatMoneyFromCents={formatMoneyFromCents}
+                        products={posProducts}
+                        onOpenProducts={() => selectCanteenView(p.id, "products")}
+                      />
                     ) : null}
                     {canteenView === "products" ? (
                       <>
@@ -5965,13 +6171,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <PlaceCanteenSaleForm
                   busy={busy}
                   draft={posSaleDraft}
+                  formatMoneyFromCents={formatMoneyFromCents}
                   products={posProducts}
                   onChange={(draft) => setPosSaleDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
                   onSubmit={() => void onRecordPosSale(p)}
                 />
                 ) : null}
                 {showCanteenStock ? (
-                <PlaceCanteenStockModule countLabel={countLabel} formatMoneyFromCents={formatMoneyFromCents} products={posProducts} showHeader />
+                <PlaceCanteenStockModule
+                  countLabel={countLabel}
+                  formatMoneyFromCents={formatMoneyFromCents}
+                  products={posProducts}
+                  showHeader
+                  onOpenProducts={() => selectCanteenView(p.id, "products")}
+                />
                 ) : null}
               </div>
             ) : null}

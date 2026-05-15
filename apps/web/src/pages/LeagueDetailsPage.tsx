@@ -742,6 +742,23 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       inactive: standings.filter((player) => player.status === "inactive").length,
     };
   }, [standings, standingsByClass]);
+  const publicLeaguePlayers = useMemo(
+    () =>
+      standings
+        .filter((player) => player.status !== "inactive")
+        .map((player) => {
+          const cls = player.classId ? classById[player.classId] : null;
+          return {
+            id: player.id,
+            classLabel: cls ? classLabel(cls) : "Classe a definir",
+            matchesPlayed: player.matchesPlayed,
+            name: player.displayName,
+            points: player.rankingPoints,
+          };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")),
+    [classById, standings]
+  );
 
   const filteredRegistrations = useMemo(() => {
     const byClass = selectedClassId.trim();
@@ -1983,13 +2000,15 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
-      <CompetitionHeader
-        title={league?.name || "Liga"}
-        subtitle={league ? `${typeLabel(league.leagueType)} | ${league.visibility === "public" ? "Publica" : "Privada"}` : "Carregando competicao"}
-        status={league ? statusLabel(league.status) : null}
-        backLabel="Voltar para ligas"
-        onBack={() => navigate(leagueBackPath)}
-      />
+      {isOwner ? (
+        <CompetitionHeader
+          title={league?.name || "Liga"}
+          subtitle={league ? `${typeLabel(league.leagueType)} | ${league.visibility === "public" ? "Publica" : "Privada"}` : "Carregando competicao"}
+          status={league ? statusLabel(league.status) : null}
+          backLabel="Voltar para ligas"
+          onBack={() => navigate(leagueBackPath)}
+        />
+      ) : null}
 
       {loading ? <p className="subtle">Carregando...</p> : null}
       {error ? <p className="feedback error">{error}</p> : null}
@@ -1999,6 +2018,15 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         <>
           {!isOwner ? (
             <section id="league-public-event" className="tournament-public-event league-public-event">
+              <div className="competition-public-topbar" aria-label="Navegacao publica da liga">
+                <button className="quiet" type="button" onClick={() => navigate(leagueBackPath)}>
+                  Voltar
+                </button>
+                <button className="quiet" type="button" onClick={() => void shareLeagueInviteWhatsApp()} disabled={busy}>
+                  Compartilhar
+                </button>
+              </div>
+
               <article className="tournament-public-hero league-public-hero">
                 <div className="tournament-public-copy">
                   <div className="tournament-public-title-row">
@@ -2013,27 +2041,27 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     <span>{[league.category, league.classScope].filter(Boolean).join(" / ") || "Classe a definir"}</span>
                     <span>{selectedSeason?.name || "Temporada a definir"}</span>
                   </div>
-                  <div className="tournament-public-facts">
-                    <span>
-                      <strong>{classes.length}</strong>
-                      classes
-                    </span>
-                    <span>
-                      <strong>{standingsSummary.players || registrationStats.approved}</strong>
-                      jogadores
-                    </span>
-                    <span>
-                      <strong>{leagueOverview.pending}</strong>
-                      jogos pendentes
-                    </span>
+                  <div className="competition-public-action-rail" aria-label="Resumo publico da liga">
+                    <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-classes")}>
+                      <span>Classes</span>
+                      <strong>{classes.length || "A definir"}</strong>
+                      <small>Grupos e niveis da temporada.</small>
+                    </button>
+                    <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-players")}>
+                      <span>Jogadores</span>
+                      <strong>{publicLeaguePlayers.length || registrationStats.approved || "A definir"}</strong>
+                      <small>Inscritos ativos na liga.</small>
+                    </button>
+                    <button type="button" onClick={() => goToTab("partidas")}>
+                      <span>Partidas</span>
+                      <strong>{leagueOverview.matches || "A definir"}</strong>
+                      <small>{leagueOverview.matches ? `${leagueOverview.rounds} rodadas` : "Rodada ainda nao publicada."}</small>
+                    </button>
                   </div>
                   <div className="tournament-public-actions">
                     <button className="primary tournament-public-main-cta" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
                       <span>{publicLeagueCta.label}</span>
                       <small>{publicLeagueCta.detail}</small>
-                    </button>
-                    <button className="quiet" type="button" onClick={() => void shareLeagueInviteWhatsApp()} disabled={busy}>
-                      Compartilhar
                     </button>
                   </div>
                 </div>
@@ -2051,6 +2079,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </button>
                 <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-classes")}>
                   Classes
+                </button>
+                <button type="button" onClick={() => scrollToLeaguePublicSection("league-public-players")}>
+                  Jogadores
                 </button>
                 <button type="button" className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
                   Classificacao
@@ -2092,6 +2123,28 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 )}
               </section>
 
+              <section id="league-public-players" className="competition-public-list-section">
+                <div className="section-title">
+                  <h2>Jogadores</h2>
+                  <span>{publicLeaguePlayers.length} {publicLeaguePlayers.length === 1 ? "jogador" : "jogadores"}</span>
+                </div>
+                {!publicLeaguePlayers.length ? (
+                  <p className="subtle">Nenhum jogador ativo publicado ainda.</p>
+                ) : (
+                  <div className="competition-public-person-list">
+                    {publicLeaguePlayers.map((player) => (
+                      <article key={`league-public-player:${player.id}`} className="competition-public-person-row">
+                        <div>
+                          <strong>{player.name}</strong>
+                          <span>{player.classLabel}</span>
+                        </div>
+                        <small>{player.points} pts</small>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </section>
+
               <div className="tournament-public-sticky-cta" aria-label="Acao principal da liga">
                 <button className="primary" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
                   {publicLeagueCta.label}
@@ -2100,6 +2153,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </section>
           ) : null}
 
+          {isOwner ? (
           <ResponsiveFilterSheet
             buttonLabel="Escopo da liga"
             eyebrow="Filtros da liga"
@@ -2128,6 +2182,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               />
             </section>
           </ResponsiveFilterSheet>
+          ) : null}
 
           {isOwner ? (
             <section className="competition-focus-panel league-operation-panel">

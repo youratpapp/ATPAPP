@@ -472,17 +472,36 @@ Se plano nao habilita:
 
 Subvisoes:
 
-- `Vender`;
-- `Estoque`;
+- `Venda rapida`;
+- `Estoque baixo`;
 - `Vendas do dia`;
 - `Produtos`.
 
 Primeira leitura:
 
-- botao vender;
-- produtos populares;
+- venda rapida;
+- produtos acionaveis;
 - estoque baixo;
 - total do dia.
+
+Implementado em `MGMT-CANTEEN-01`:
+
+- `/gestao/:placeId/cantina` abre por padrao em `Venda rapida`, nao em resumo/KPI.
+- A venda rapida oferece busca, grade de produtos acionaveis, venda avulsa, quantidade, valor, cliente opcional e total estimado antes de confirmar.
+- Produto sem estoque suficiente bloqueia a venda com mensagem contextual; produtos com estoque baixo aparecem como alerta de reposicao.
+- `Estoque baixo` e a segunda subvisao e funciona como rotina de reposicao, com busca e atalho para o catalogo.
+- `Vendas do dia` concentra caixa, total do dia e rows de lancamentos; cancelamento permanece acao secundaria quando permitido.
+- `Produtos` e catalogo/cadastro: usa busca e filtros `Todos`/`Baixo`/`Zerado`, sem `slice` silencioso.
+- `canteen` e feature propria de plano em `placeProductFeatures(...)`; financeiro nao deve habilitar POS por heranca.
+- Se o plano nao habilita cantina, o modulo, KPI operacional e carregamento de dados POS nao aparecem como rotina ativa.
+
+Implementado em `ROLE-CASHIER-01`:
+
+- `place_staff.role = cashier` e um papel dedicado para caixa/cantina, separado de `finance`.
+- `/gestao` para `cashier` abre apenas Cantina/POS, com acao primaria `Registrar venda` e secundaria `Estoque`.
+- `cashier` nao recebe Agenda, Academia, Clientes/CRM, Financeiro, Equipe ou Ajustes.
+- O backend ganhou `app_can_manage_place_canteen(...)`, usado por policies de `place_pos_products`, `place_pos_sales` e por `app_record_place_pos_sale(...)`.
+- Equipe do local permite convidar `Caixa/POS`; convite pendente continua sem liberar acesso ate aceite explicito.
 
 ## Equipe
 
@@ -514,6 +533,16 @@ Papeis:
 - professor;
 - POS/cantina, se existir.
 
+Implementado em `MGMT-TEAM-01`:
+
+- a aba `Equipe` abre por padrao na gestao de pessoas, com resumo e papeis como leitura secundaria;
+- busca de usuario por nome/email usa RPC segura e retorna nome quando ha profile;
+- envio sempre cria convite pendente, inclusive para usuario existente;
+- convite pendente nao cria `place_staff`, nao libera `/gestao` e nao deve aparecer como membro ativo;
+- aceite/recusa acontece na Home do usuario convidado;
+- `app_accept_place_staff_invite(...)` cria o vinculo em `place_staff` e, quando o convite veio de professor, vincula `place_coaches.user_id`;
+- remover membro ativo revoga acesso; cancelar convite apenas remove a pendencia.
+
 ## Ajustes
 
 Responsabilidade:
@@ -531,6 +560,22 @@ Subvisoes:
 - publicacao.
 
 Nao deve ser primeira tela quando ha pendencias operacionais.
+
+Implementado em `MGMT-SETTINGS-01`:
+
+- `Ajustes` usa subvisoes estruturais: `Checklist`, `Dados publicos`, `Recursos`, `Regras`, `Planos`, `Permissoes` e `Publicacao`.
+- `Checklist` responde "o que falta para o local estar pronto?", usando rows acionaveis para abrir o modulo responsavel.
+- `Dados publicos` concentra nome, cidade, UF, descricao, logo e preview da pagina publica.
+- `Recursos` e um indice estrutural de quadras/precos, professores/horarios, turmas e produtos; detalhes continuam em Agenda, Academia e Cantina.
+- `Regras` separa regras de reserva, ausencia/reposicao e lista de espera, apontando para a configuracao real sem duplicar formularios.
+- `Planos` concentra plano contratado, modulos liberados, planos de socio e pacotes/creditos.
+- `Permissoes` e leitura/atalho para Equipe: pessoas ativas, convites pendentes e papeis. Convite continua dependendo de aceite.
+- `Publicacao` revisa prontidao da pagina publica antes de divulgacao.
+- O bloco legado de configuracoes nao deve renderizar junto com o workspace de Ajustes; evita checklist/plano duplicados e reduz scroll.
+
+Regra de manutencao:
+
+- Ajustes pode ter mais subvisoes do que uma rotina diaria porque e setup estrutural raro. Em mobile, as tabs devem rolar horizontalmente; se teste real mostrar friccao, agrupar `Dados publicos/Publicacao` e `Recursos/Regras` antes de criar novas abas.
 
 ## Componentes Reutilizaveis
 

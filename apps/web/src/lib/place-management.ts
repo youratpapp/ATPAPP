@@ -31,6 +31,7 @@ export function placeProductFeatures(plan: PlaceProductPlan) {
     finance: plan === "club_pro" || plan === "multi_unit",
     crm: plan === "club_pro" || plan === "multi_unit",
     memberships: plan === "club_pro" || plan === "multi_unit",
+    canteen: plan === "club_pro" || plan === "multi_unit",
   };
 }
 
@@ -46,9 +47,11 @@ export function placeResourceAccess(place: Place, userId: string, staff: PlaceSt
     canUseFinance: features.finance,
     canUseCrm: features.crm,
     canUseMemberships: features.memberships,
+    canUseCanteen: features.canteen,
     canManageBookings: features.bookings && (canManagePlace || staffRole === "frontdesk"),
     canManageAcademy: features.academy && (canManagePlace || staffRole === "coach"),
     canManageFinance: features.finance && (canManagePlace || staffRole === "finance"),
+    canManageCanteen: features.canteen && (canManagePlace || staffRole === "cashier"),
   };
 }
 
@@ -59,6 +62,7 @@ export function featureList(access: ReturnType<typeof placeResourceAccess>): str
     access.canUseMemberships ? "Socios" : "",
     access.canUseCrm ? "CRM" : "",
     access.canUseFinance ? "Financeiro" : "",
+    access.canUseCanteen ? "Cantina" : "",
   ].filter(Boolean);
 }
 
@@ -66,11 +70,15 @@ export function placeManagementModules(access: ReturnType<typeof placeResourceAc
   if (access.staffRole === "finance" && !access.canManagePlace) {
     return access.canManageFinance ? ["finance"] : [];
   }
+  if (access.staffRole === "cashier" && !access.canManagePlace) {
+    return access.canManageCanteen ? ["canteen"] : [];
+  }
   const modules: PlaceManagementModule[] = access.canManagePlace ? ["dashboard"] : [];
   if (access.canUseBookings && access.staffRole !== "coach") modules.push("bookings");
   if (access.canUseAcademy) modules.push("academy");
   if ((access.canUseMemberships || access.canUseCrm) && (access.canManagePlace || access.staffRole === "frontdesk")) modules.push("clients");
-  if (access.canUseFinance && access.canManagePlace) modules.push("finance", "canteen");
+  if (access.canUseFinance && access.canManagePlace) modules.push("finance");
+  if (access.canManageCanteen) modules.push("canteen");
   if (access.canManagePlace) modules.push("team", "settings");
   return modules;
 }

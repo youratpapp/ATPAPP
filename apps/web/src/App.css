@@ -1085,6 +1085,17 @@
   margin-bottom: var(--space-3);
 }
 
+.competition-public-topbar {
+  align-items: center;
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.competition-public-topbar button {
+  min-height: 38px;
+}
+
 .tournament-public-hero {
   align-items: stretch;
   background: #ffffff;
@@ -1123,7 +1134,7 @@
 
 .tournament-public-copy h2 {
   color: var(--color-text);
-  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-size: var(--font-size-3xl);
   font-weight: 950;
   letter-spacing: 0;
   line-height: var(--line-tight);
@@ -1140,29 +1151,48 @@
   padding: 7px 10px;
 }
 
-.tournament-public-facts {
+.competition-public-action-rail {
   display: grid;
   gap: var(--space-2);
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.tournament-public-facts span {
+.competition-public-action-rail button {
+  align-content: start;
   background: #f8fafc;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  color: var(--color-text-subtle);
+  color: var(--color-text);
   display: grid;
-  font-size: var(--font-size-xs);
-  font-weight: 850;
-  gap: 2px;
+  gap: 4px;
+  min-height: 104px;
   padding: var(--space-2);
+  text-align: left;
 }
 
-.tournament-public-facts strong {
+.competition-public-action-rail button:hover {
+  border-color: rgba(21, 128, 61, 0.34);
+  box-shadow: var(--shadow-sm);
+}
+
+.competition-public-action-rail span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+}
+
+.competition-public-action-rail strong {
   color: var(--color-text);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   font-weight: 950;
-  line-height: 1;
+  line-height: 1.05;
+}
+
+.competition-public-action-rail small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 750;
+  line-height: var(--line-normal);
 }
 
 .tournament-public-main-cta {
@@ -1317,6 +1347,58 @@
   font-style: normal;
   font-weight: 950;
   margin-top: var(--space-2);
+}
+
+.competition-public-list-section {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.competition-public-person-list {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  overflow: hidden;
+}
+
+.competition-public-person-row {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+  min-height: 58px;
+  padding: var(--space-2) var(--space-3);
+}
+
+.competition-public-person-row:last-child {
+  border-bottom: 0;
+}
+
+.competition-public-person-row div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.competition-public-person-row strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 900;
+  line-height: var(--line-title);
+}
+
+.competition-public-person-row span,
+.competition-public-person-row small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 750;
+}
+
+.competition-public-person-row small {
+  flex: 0 0 auto;
 }
 
 .tournament-public-sticky-cta {
@@ -7984,6 +8066,35 @@ button:disabled {
   gap: var(--space-3);
 }
 
+.place-public-topbar {
+  align-items: center;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.place-public-topbar > div {
+  min-width: 0;
+  text-align: center;
+}
+
+.place-public-topbar span {
+  color: var(--color-text-subtle);
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.place-public-topbar strong {
+  color: var(--color-text);
+  display: block;
+  font-size: var(--font-size-sm);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .place-public-hero {
   align-items: center;
   background:
@@ -7996,6 +8107,10 @@ button:disabled {
   gap: var(--space-4);
   grid-template-columns: 132px minmax(0, 1fr);
   padding: var(--space-5);
+}
+
+.place-public-hero.has-cover {
+  grid-template-columns: 132px minmax(0, 1fr) minmax(220px, 0.72fr);
 }
 
 .place-public-hero-logo {
@@ -8013,6 +8128,20 @@ button:disabled {
 }
 
 .place-public-hero-logo img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.place-public-cover {
+  aspect-ratio: 4 / 3;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-md);
+  box-shadow: 0 18px 36px rgba(0, 32, 51, 0.22);
+  overflow: hidden;
+}
+
+.place-public-cover img {
   height: 100%;
   object-fit: cover;
   width: 100%;
@@ -8070,6 +8199,51 @@ button:disabled {
   margin-top: var(--space-3);
 }
 
+.place-public-action-rail {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
+}
+
+.place-public-action-rail button {
+  align-content: start;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+  min-height: 94px;
+  padding: var(--space-3);
+  text-align: left;
+}
+
+.place-public-action-rail button:hover {
+  border-color: var(--color-green-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.place-public-action-rail span {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.place-public-action-rail strong {
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  line-height: var(--line-tight);
+}
+
+.place-public-action-rail small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  line-height: var(--line-body);
+}
+
 .place-public-kpis,
 .place-public-grid {
   display: grid;
@@ -8112,6 +8286,10 @@ button:disabled {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.place-public-main-flow {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .place-public-grid h3 {
   color: var(--color-text);
   font-size: var(--font-size-lg);
@@ -8151,6 +8329,31 @@ button:disabled {
 
 .place-public-channel-card {
   grid-column: 1 / -1;
+}
+
+.place-public-secondary-info {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.place-public-secondary-info details,
+.place-public-secondary-info article {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  padding: var(--space-3);
+}
+
+.place-public-secondary-info summary {
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+}
+
+.place-public-secondary-info details[open] summary {
+  margin-bottom: var(--space-2);
 }
 
 .place-public-sticky-cta {
@@ -11156,6 +11359,250 @@ button:disabled {
   font-weight: 850;
 }
 
+.canteen-sale-workspace {
+  align-items: start;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.32fr);
+}
+
+.canteen-sale-form {
+  min-width: 0;
+}
+
+.canteen-sale-head,
+.canteen-product-search,
+.canteen-list-toolbar,
+.canteen-stock-summary {
+  align-items: end;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.canteen-sale-head {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.canteen-sale-head > div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.canteen-sale-head strong,
+.canteen-stock-section > strong,
+.canteen-sale-side > strong {
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  font-weight: 950;
+}
+
+.canteen-sale-head span,
+.canteen-sale-side small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+}
+
+.canteen-sale-head b {
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-green-200);
+  border-radius: var(--radius-pill);
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+  padding: 7px 10px;
+  white-space: nowrap;
+}
+
+.canteen-product-search {
+  grid-template-columns: minmax(220px, 1fr) auto;
+}
+
+.canteen-product-search label,
+.canteen-list-toolbar label,
+.canteen-stock-summary label,
+.canteen-sale-fields label {
+  color: var(--color-text-subtle);
+  display: grid;
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+  gap: 4px;
+  min-width: 0;
+}
+
+.canteen-product-search button,
+.segmented-control button,
+.canteen-stock-summary button {
+  border-radius: var(--radius-sm);
+  font-weight: 900;
+  min-height: 38px;
+}
+
+.canteen-product-search button.active,
+.segmented-control button.active {
+  background: var(--color-primary-soft);
+  border-color: var(--color-green-200);
+  color: var(--color-primary-strong);
+}
+
+.canteen-product-grid {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.canteen-product-pick {
+  align-content: start;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  cursor: pointer;
+  display: grid;
+  gap: 3px;
+  min-height: 92px;
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.canteen-product-pick.active {
+  border-color: var(--color-green-200);
+  box-shadow: 0 0 0 2px rgba(27, 122, 83, 0.12);
+}
+
+.canteen-product-pick.unavailable {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.canteen-product-pick strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+  overflow-wrap: anywhere;
+}
+
+.canteen-product-pick span,
+.canteen-product-pick small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+}
+
+.canteen-sale-fields {
+  align-items: end;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(180px, 1fr) minmax(72px, 0.35fr) minmax(110px, 0.45fr) minmax(160px, 0.8fr) auto;
+}
+
+.canteen-sale-note {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+  margin: 0;
+  padding: var(--space-2);
+}
+
+.canteen-sale-note.danger {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  color: #9a3412;
+}
+
+.canteen-sale-side {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.canteen-low-stock-strip {
+  display: grid;
+  gap: 6px;
+}
+
+.canteen-low-stock-strip span {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  display: flex;
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+  gap: 6px;
+  justify-content: space-between;
+  padding: 7px 9px;
+}
+
+.canteen-low-stock-strip b {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: var(--radius-pill);
+  color: #9a3412;
+  min-width: 28px;
+  padding: 3px 6px;
+  text-align: center;
+}
+
+.canteen-list-toolbar {
+  grid-template-columns: minmax(220px, 1fr) auto;
+}
+
+.segmented-control {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+}
+
+.segmented-control button {
+  background: transparent;
+  border-color: transparent;
+  min-height: 34px;
+  padding-inline: 10px;
+}
+
+.canteen-stock-summary {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  grid-template-columns: minmax(180px, 0.55fr) minmax(220px, 1fr) auto;
+  padding: var(--space-3);
+}
+
+.canteen-stock-summary > div {
+  display: grid;
+  gap: 2px;
+}
+
+.canteen-stock-summary strong {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xl);
+  line-height: 1;
+}
+
+.canteen-stock-summary span {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+}
+
+.canteen-stock-section {
+  display: grid;
+  gap: var(--space-2);
+}
+
 .place-analytics-panel {
   margin-top: var(--space-2);
 }
@@ -12282,10 +12729,36 @@ button:disabled {
   }
 
   .place-public-hero,
+  .place-public-hero.has-cover,
   .place-public-kpis,
   .place-public-grid,
   .place-public-booking-form {
     grid-template-columns: 1fr;
+  }
+
+  .place-public-topbar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .place-public-topbar > div {
+    text-align: left;
+  }
+
+  .place-public-cover {
+    aspect-ratio: 16 / 9;
+  }
+
+  .place-public-action-rail {
+    display: flex;
+    margin-inline: calc(-1 * var(--space-3));
+    overflow-x: auto;
+    padding: 0 var(--space-3) 2px;
+    scroll-snap-type: x proximity;
+  }
+
+  .place-public-action-rail button {
+    flex: 0 0 min(76vw, 260px);
+    scroll-snap-align: start;
   }
 
   .place-public-sticky-cta {
@@ -12383,6 +12856,27 @@ button:disabled {
 
   .academy-workspace-grid {
     grid-template-columns: 1fr;
+  }
+
+  .canteen-sale-workspace,
+  .canteen-sale-fields,
+  .canteen-list-toolbar,
+  .canteen-stock-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .canteen-product-search {
+    grid-template-columns: 1fr;
+  }
+
+  .canteen-product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  }
+
+  .canteen-product-search button,
+  .canteen-sale-fields button,
+  .canteen-stock-summary button {
+    width: 100%;
   }
 
   .academy-student-toolbar {
@@ -14407,8 +14901,18 @@ button,
     border-radius: var(--radius-sm);
   }
 
-  .tournament-public-facts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .competition-public-action-rail {
+    grid-auto-columns: minmax(74%, 84%);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    margin-inline: calc(var(--space-1) * -1);
+    overflow-x: auto;
+    padding: 0 var(--space-1) 4px;
+    scrollbar-width: thin;
+  }
+
+  .competition-public-action-rail button {
+    min-height: 98px;
   }
 
   .tournament-public-actions {
@@ -14435,6 +14939,11 @@ button,
     grid-auto-columns: minmax(78%, 86%);
     margin-inline: calc(var(--space-1) * -1);
     padding-inline: var(--space-1);
+  }
+
+  .competition-public-person-row {
+    align-items: flex-start;
+    display: grid;
   }
 
   .tournament-public-sticky-cta {
