@@ -14,6 +14,7 @@ import type {
   AcademyEnrollment,
   AcademyMakeupCredit,
   PlaceMembership,
+  PlaceStaffInvite,
   TournamentChatMessage,
   TournamentDetails,
   TournamentMatchConfirmation,
@@ -43,6 +44,9 @@ import {
   loadUpcomingPublic,
 } from "../lib/tournaments";
 import {
+  acceptPlaceStaffInvite,
+  declinePlaceStaffInvite,
+  listMyPlaceStaffInvites,
   listMyAcademyEnrollments,
   listMyAcademyMakeupCredits,
   listMyCourtBookings,
@@ -189,6 +193,13 @@ const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffInvite["role"], string
   scorekeeper: "Placar",
   checkin: "Credenciamento",
   media: "Comunicacao",
+};
+
+const PLACE_STAFF_ROLE_LABELS: Record<PlaceStaffInvite["role"], string> = {
+  manager: "Gerente",
+  coach: "Professor",
+  frontdesk: "Recepcao",
+  finance: "Financeiro",
 };
 
 function formatDateRange(starts: string): string {
@@ -1152,6 +1163,36 @@ function TournamentStaffInviteCard({
   );
 }
 
+function PlaceStaffInviteCard({
+  invite,
+  busy,
+  onAccept,
+  onDecline,
+}: {
+  invite: PlaceStaffInvite;
+  busy: boolean;
+  onAccept: () => void;
+  onDecline: () => void;
+}) {
+  return (
+    <article className="home-action-card urgent staff-invite-action-card">
+      <div>
+        <p className="home-action-label">Convite de local</p>
+        <p className="home-action-title">{invite.placeName}</p>
+        <p className="home-action-body">{PLACE_STAFF_ROLE_LABELS[invite.role]} - aguardando seu aceite</p>
+      </div>
+      <div className="staff-invite-actions">
+        <button className="primary" type="button" onClick={onAccept} disabled={busy}>
+          Aceitar
+        </button>
+        <button className="link" type="button" onClick={onDecline} disabled={busy}>
+          Recusar
+        </button>
+      </div>
+    </article>
+  );
+}
+
 function ActivityFeedCard({ item, onOpen }: { item: HomeFeedItem; onOpen: () => void }) {
   return (
     <article className={`home-feed-card ${item.tone}`} onClick={onOpen}>
@@ -1499,6 +1540,7 @@ export function HomePage({ user, profile }: Props) {
   const [courtWaitlistActions, setCourtWaitlistActions] = useState<HomeCourtWaitlistAction[]>([]);
   const [academyActions, setAcademyActions] = useState<HomeAcademyAction[]>([]);
   const [tournamentStaffInvites, setTournamentStaffInvites] = useState<TournamentStaffInvite[]>([]);
+  const [placeStaffInvites, setPlaceStaffInvites] = useState<PlaceStaffInvite[]>([]);
   const [staffInviteBusyId, setStaffInviteBusyId] = useState("");
   const [playerNotices, setPlayerNotices] = useState<HomeNotice[]>([]);
   const [operationalNotices, setOperationalNotices] = useState<HomeNotice[]>([]);
@@ -1510,8 +1552,14 @@ export function HomePage({ user, profile }: Props) {
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    Promise.all([loadUpcomingPublic(4), loadDashboardData(user), loadMyLeagues(), listMyTournamentStaffInvites()])
-      .then(async ([publicRows, dashboard, leagues, staffInvites]) => {
+    Promise.all([
+      loadUpcomingPublic(4),
+      loadDashboardData(user),
+      loadMyLeagues(),
+      listMyTournamentStaffInvites(),
+      listMyPlaceStaffInvites(),
+    ])
+      .then(async ([publicRows, dashboard, leagues, staffInvites, placeInvites]) => {
         const [
           actions,
           tournamentPlayerActions,
@@ -1552,6 +1600,7 @@ export function HomePage({ user, profile }: Props) {
         setCourtWaitlistActions(waitlistActions);
         setAcademyActions(academyDailyActions);
         setTournamentStaffInvites(staffInvites);
+        setPlaceStaffInvites(placeInvites);
         setPlayerNotices(playerHomeNotices);
         setOperationalNotices(operationalHomeNotices);
         setError("");
@@ -1588,6 +1637,32 @@ export function HomePage({ user, profile }: Props) {
     try {
       await declineTournamentStaffInvite(invite.id);
       setTournamentStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
+      setFeedback({ kind: "success", text: "Convite recusado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao recusar convite." });
+    } finally {
+      setStaffInviteBusyId("");
+    }
+  };
+
+  const acceptLocalStaffInvite = async (invite: PlaceStaffInvite) => {
+    setStaffInviteBusyId(invite.id);
+    try {
+      await acceptPlaceStaffInvite(invite.id);
+      setPlaceStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
+      setFeedback({ kind: "success", text: "Convite aceito. O local agora aparece na sua gestao." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aceitar convite." });
+    } finally {
+      setStaffInviteBusyId("");
+    }
+  };
+
+  const declineLocalStaffInvite = async (invite: PlaceStaffInvite) => {
+    setStaffInviteBusyId(invite.id);
+    try {
+      await declinePlaceStaffInvite(invite.id);
+      setPlaceStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
       setFeedback({ kind: "success", text: "Convite recusado." });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao recusar convite." });
@@ -1635,11 +1710,16 @@ export function HomePage({ user, profile }: Props) {
   const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
   const urgentOperationalPriorityItems = operationalPriorityItems.filter((item) => item.tone === "urgent");
   const playerUrgentCount = urgentPriorityItems.length;
-  const professionalSignalCount = tournamentStaffInvites.length + urgentOperationalPriorityItems.length;
+  const staffInviteCount = tournamentStaffInvites.length + placeStaffInvites.length;
+  const professionalSignalCount = staffInviteCount + urgentOperationalPriorityItems.length;
   const notificationCount = playerUrgentCount + professionalSignalCount;
   const visibleStaffInvites = tournamentStaffInvites.slice(0, 4);
+  const visiblePlaceStaffInvites = placeStaffInvites.slice(0, Math.max(0, 4 - visibleStaffInvites.length));
   const visiblePriorityItems = priorityItems.slice(0, 4);
-  const visibleProfessionalPriorityItems = operationalPriorityItems.slice(0, Math.max(0, 4 - visibleStaffInvites.length));
+  const visibleProfessionalPriorityItems = operationalPriorityItems.slice(
+    0,
+    Math.max(0, 4 - visibleStaffInvites.length - visiblePlaceStaffInvites.length)
+  );
   const visibleActivityFeedItems = activityFeedItems.slice(0, 3);
   const visibleUpcoming = upcoming.slice(0, 3);
   const nextPlayerAgenda = agendaItems[0] || null;
@@ -1962,9 +2042,9 @@ export function HomePage({ user, profile }: Props) {
               Fechar
             </button>
           </div>
-          {tournamentStaffInvites.length > 0 || priorityItems.length > 0 ? (
+          {staffInviteCount > 0 || priorityItems.length > 0 ? (
             <>
-              {tournamentStaffInvites.length > 0 ? (
+              {staffInviteCount > 0 ? (
                 <div className="home-notification-group">
                   <p className="home-notification-heading">Convites</p>
                   {tournamentStaffInvites.map((invite) => (
@@ -1974,6 +2054,15 @@ export function HomePage({ user, profile }: Props) {
                       busy={staffInviteBusyId === invite.id}
                       onAccept={() => void acceptStaffInvite(invite)}
                       onDecline={() => void declineStaffInvite(invite)}
+                    />
+                  ))}
+                  {placeStaffInvites.map((invite) => (
+                    <PlaceStaffInviteCard
+                      key={`place-staff-invite:${invite.id}`}
+                      invite={invite}
+                      busy={staffInviteBusyId === invite.id}
+                      onAccept={() => void acceptLocalStaffInvite(invite)}
+                      onDecline={() => void declineLocalStaffInvite(invite)}
                     />
                   ))}
                 </div>
@@ -2039,7 +2128,7 @@ export function HomePage({ user, profile }: Props) {
           </section>
           ) : null}
 
-          {visibleStaffInvites.length > 0 || operationalPriorityItems.length > 0 || activeOrganizingCount > 0 ? (
+          {visibleStaffInvites.length > 0 || visiblePlaceStaffInvites.length > 0 || operationalPriorityItems.length > 0 || activeOrganizingCount > 0 ? (
             <section className="home-section home-pro-workspace">
               <div className="section-title">
                 <div>
@@ -2051,7 +2140,7 @@ export function HomePage({ user, profile }: Props) {
                 </button>
               </div>
               <p className="home-pro-note">Rotinas de gestao, equipe e organizacao ficam separadas da sua area de jogador.</p>
-              {visibleStaffInvites.length > 0 || visibleProfessionalPriorityItems.length > 0 ? (
+              {visibleStaffInvites.length > 0 || visiblePlaceStaffInvites.length > 0 || visibleProfessionalPriorityItems.length > 0 ? (
                 <div className="home-pro-list">
                   {visibleStaffInvites.map((invite) => (
                     <TournamentStaffInviteCard
@@ -2060,6 +2149,15 @@ export function HomePage({ user, profile }: Props) {
                       busy={staffInviteBusyId === invite.id}
                       onAccept={() => void acceptStaffInvite(invite)}
                       onDecline={() => void declineStaffInvite(invite)}
+                    />
+                  ))}
+                  {visiblePlaceStaffInvites.map((invite) => (
+                    <PlaceStaffInviteCard
+                      key={`pro-place-staff-invite:${invite.id}`}
+                      invite={invite}
+                      busy={staffInviteBusyId === invite.id}
+                      onAccept={() => void acceptLocalStaffInvite(invite)}
+                      onDecline={() => void declineLocalStaffInvite(invite)}
                     />
                   ))}
                   {visibleProfessionalPriorityItems.map((item) => (

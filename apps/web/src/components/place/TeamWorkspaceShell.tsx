@@ -4,17 +4,17 @@ import { PlaceWorkspaceShell } from "./PlaceWorkspaceShell";
 export type TeamManagementView = "overview" | "staff" | "invites" | "roles";
 
 const TEAM_VIEW_LABELS: Record<TeamManagementView, string> = {
-  overview: "Resumo",
   staff: "Equipe",
   invites: "Convites",
   roles: "Papeis",
+  overview: "Resumo",
 };
 
 const TEAM_VIEW_DESCRIPTIONS: Record<TeamManagementView, string> = {
-  overview: "Quem opera o local e quais acessos precisam de atencao.",
-  staff: "Cadastro, remocao e acompanhamento da equipe ativa.",
+  staff: "Busca de usuario, convite e acompanhamento da equipe ativa.",
   invites: "Convites pendentes para novos operadores do local.",
   roles: "Permissoes por perfil para manter a operacao organizada.",
+  overview: "Quem opera o local e quais acessos precisam de atencao.",
 };
 
 type TeamWorkspaceShellProps = {

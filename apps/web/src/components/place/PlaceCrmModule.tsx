@@ -1,7 +1,8 @@
+import { useMemo, useState } from "react";
 import type { PlaceCrmContact, PlaceCrmInteraction } from "../../lib/types";
 import { PlaceCrmContactForm, type PlaceCrmContactDraft } from "./PlaceCrmContactForm";
-import { PlaceCrmContactRow, type PlaceCrmInteractionDraft } from "./PlaceCrmContactRow";
-import { PlaceCrmHistoryDrawer } from "./PlaceCrmHistoryDrawer";
+import { PlaceCrmContactRow } from "./PlaceCrmContactRow";
+import { WorkspaceEmptyState, WorkspaceMetrics } from "./PlaceWorkspaceUi";
 
 type PlaceCrmStageCounts = {
   contacted: number;
@@ -15,32 +16,46 @@ type PlaceCrmModuleProps = {
   contacts: PlaceCrmContact[];
   conversionRate: number;
   draft: PlaceCrmContactDraft;
-  followUpDraftsByContact: Record<string, string>;
+  embedded?: boolean;
   followUpsDue: number;
-  historyContactId: string;
-  interactionDraftsByContact: Record<string, PlaceCrmInteractionDraft>;
   interactionsByContact: Record<string, PlaceCrmInteraction[]>;
-  ownerDraftsByContact: Record<string, string>;
   ownerListId: string;
   ownerOptions: string[];
   stageCounts: PlaceCrmStageCounts;
   todayDate: string;
-  emptyInteractionDraft: PlaceCrmInteractionDraft;
-  onArchiveContact: (contact: PlaceCrmContact) => void;
   onChangeDraft: (draft: PlaceCrmContactDraft) => void;
-  onChangeFollowUpDraft: (contact: PlaceCrmContact, value: string) => void;
-  onChangeInteractionDraft: (contact: PlaceCrmContact, draft: PlaceCrmInteractionDraft) => void;
-  onChangeOwnerDraft: (contact: PlaceCrmContact, value: string) => void;
-  onCloseHistory: () => void;
   onCreateContact: () => void;
-  onCreateInteraction: (contact: PlaceCrmContact) => void;
-  onMarkContacted: (contact: PlaceCrmContact) => void;
-  onMarkConverted: (contact: PlaceCrmContact) => void;
   onOpenHistory: (contact: PlaceCrmContact) => void;
-  onSaveHistoryFollowUp: (contact: PlaceCrmContact) => void;
-  onUpdateFollowUp: (contact: PlaceCrmContact) => void;
-  onUpdateOwner: (contact: PlaceCrmContact) => void;
 };
+
+type CrmFilter = "priority" | "all" | "lead" | "contacted" | "converted" | "archived";
+
+const CRM_FILTERS: Array<{ key: CrmFilter; label: string }> = [
+  { key: "priority", label: "Prioridade" },
+  { key: "all", label: "Todos" },
+  { key: "lead", label: "Leads" },
+  { key: "contacted", label: "Em contato" },
+  { key: "converted", label: "Convertidos" },
+  { key: "archived", label: "Arquivados" },
+];
+
+function isCrmFollowUpDue(contact: PlaceCrmContact, todayDate: string): boolean {
+  return contact.status !== "converted" && contact.status !== "archived" && Boolean(contact.nextContactOn) && contact.nextContactOn <= todayDate;
+}
+
+function isCrmStale(contact: PlaceCrmContact, interactionsByContact: Record<string, PlaceCrmInteraction[]>): boolean {
+  if (contact.status === "converted" || contact.status === "archived") return false;
+  return !contact.nextContactOn && (interactionsByContact[contact.id] || []).length === 0;
+}
+
+function crmPriority(contact: PlaceCrmContact, todayDate: string, interactionsByContact: Record<string, PlaceCrmInteraction[]>): number {
+  if (isCrmFollowUpDue(contact, todayDate)) return 0;
+  if (contact.status === "lead") return 1;
+  if (isCrmStale(contact, interactionsByContact)) return 2;
+  if (contact.status === "contacted") return 3;
+  if (contact.status === "converted") return 4;
+  return 5;
+}
 
 export function PlaceCrmModule({
   busy,
@@ -48,90 +63,92 @@ export function PlaceCrmModule({
   contacts,
   conversionRate,
   draft,
-  emptyInteractionDraft,
-  followUpDraftsByContact,
+  embedded = false,
   followUpsDue,
-  historyContactId,
-  interactionDraftsByContact,
   interactionsByContact,
-  ownerDraftsByContact,
   ownerListId,
   ownerOptions,
   stageCounts,
   todayDate,
-  onArchiveContact,
   onChangeDraft,
-  onChangeFollowUpDraft,
-  onChangeInteractionDraft,
-  onChangeOwnerDraft,
-  onCloseHistory,
   onCreateContact,
-  onCreateInteraction,
-  onMarkContacted,
-  onMarkConverted,
   onOpenHistory,
-  onSaveHistoryFollowUp,
-  onUpdateFollowUp,
-  onUpdateOwner,
 }: PlaceCrmModuleProps) {
-  const drawerContact = contacts.find((contact) => contact.id === historyContactId) || null;
+  const [filter, setFilter] = useState<CrmFilter>("priority");
+  const [query, setQuery] = useState("");
+  const [showAll, setShowAll] = useState(false);
+
+  const filteredContacts = useMemo(() => {
+    const text = query.trim().toLowerCase();
+    return contacts
+      .filter((contact) => {
+        if (filter === "priority") {
+          const isPriority =
+            contact.status === "lead" ||
+            contact.status === "contacted" ||
+            isCrmFollowUpDue(contact, todayDate) ||
+            isCrmStale(contact, interactionsByContact);
+          if (!isPriority) return false;
+        } else if (filter !== "all" && contact.status !== filter) {
+          return false;
+        }
+        if (!text) return true;
+        return [contact.name, contact.phone, contact.email, contact.interest, contact.source, contact.ownerLabel]
+          .filter(Boolean)
+          .some((value) => value.toLowerCase().includes(text));
+      })
+      .sort((a, b) => {
+        const priorityDiff = crmPriority(a, todayDate, interactionsByContact) - crmPriority(b, todayDate, interactionsByContact);
+        if (priorityDiff) return priorityDiff;
+        return (a.nextContactOn || a.name).localeCompare(b.nextContactOn || b.name);
+      });
+  }, [contacts, filter, interactionsByContact, query, todayDate]);
+
+  const visibleContacts = showAll ? filteredContacts : filteredContacts.slice(0, 18);
+  const hiddenCount = filteredContacts.length - visibleContacts.length;
+  const activeWorkCount = contacts.filter(
+    (contact) => contact.status === "lead" || contact.status === "contacted" || isCrmFollowUpDue(contact, todayDate) || isCrmStale(contact, interactionsByContact)
+  ).length;
 
   return (
-    <div className="place-booking-panel">
+    <div className={embedded ? "crm-module-workspace" : "place-booking-panel"}>
       <div className="place-booking-head">
-        <strong>CRM do local</strong>
-        <span>{contactCountLabel} | {conversionRate}% conversao</span>
+        <strong>Contatos e leads</strong>
+        <span>{contactCountLabel} | {conversionRate}% conversao | {activeWorkCount} em rotina</span>
       </div>
-      <div className="place-analytics-grid compact">
-        <div>
-          <strong>{stageCounts.lead}</strong>
-          <span>Novos leads</span>
+      <WorkspaceMetrics
+        items={[
+          `${stageCounts.lead} leads`,
+          `${followUpsDue} retornos hoje`,
+          `${stageCounts.contacted} em contato`,
+          `${stageCounts.converted} convertidos`,
+        ]}
+      />
+      <div className="crm-toolbar">
+        <input
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            setShowAll(false);
+          }}
+          placeholder="Buscar por nome, telefone, interesse ou responsavel"
+          aria-label="Buscar contatos do CRM"
+        />
+        <div className="billing-quick-actions secondary" aria-label="Filtros de contatos">
+          {CRM_FILTERS.map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              className={filter === item.key ? "primary" : ""}
+              onClick={() => {
+                setFilter(item.key);
+                setShowAll(false);
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
-        <div>
-          <strong>{stageCounts.contacted}</strong>
-          <span>Contatados</span>
-        </div>
-        <div>
-          <strong>{stageCounts.converted}</strong>
-          <span>Convertidos</span>
-        </div>
-        <div>
-          <strong>{followUpsDue}</strong>
-          <span>Follow-ups hoje</span>
-        </div>
-      </div>
-      <div className="place-booking-list">
-        {contacts.slice(0, 6).map((contact) => {
-          const followUpDraft = followUpDraftsByContact[contact.id] ?? contact.nextContactOn ?? todayDate;
-          const followUpDue = contact.status !== "converted" && contact.nextContactOn && contact.nextContactOn <= todayDate;
-          const ownerDraft = ownerDraftsByContact[contact.id] ?? contact.ownerLabel;
-          const interactionDraft = interactionDraftsByContact[contact.id] || emptyInteractionDraft;
-          const recentInteractions = interactionsByContact[contact.id] || [];
-          return (
-            <PlaceCrmContactRow
-              key={contact.id}
-              busy={busy}
-              contact={contact}
-              followUpDraft={followUpDraft}
-              followUpDue={followUpDue}
-              interactionCount={recentInteractions.length}
-              interactionDraft={interactionDraft}
-              ownerDraft={ownerDraft}
-              ownerListId={ownerListId}
-              onArchive={() => onArchiveContact(contact)}
-              onCreateInteraction={() => onCreateInteraction(contact)}
-              onFollowUpDraftChange={(value) => onChangeFollowUpDraft(contact, value)}
-              onInteractionDraftChange={(nextDraft) => onChangeInteractionDraft(contact, nextDraft)}
-              onMarkContacted={() => onMarkContacted(contact)}
-              onMarkConverted={() => onMarkConverted(contact)}
-              onOpenHistory={() => onOpenHistory(contact)}
-              onOwnerDraftChange={(value) => onChangeOwnerDraft(contact, value)}
-              onUpdateFollowUp={() => onUpdateFollowUp(contact)}
-              onUpdateOwner={() => onUpdateOwner(contact)}
-            />
-          );
-        })}
-        {!contacts.length ? <p className="subtle">Sem contatos no CRM.</p> : null}
       </div>
       <PlaceCrmContactForm
         busy={busy}
@@ -142,14 +159,46 @@ export function PlaceCrmModule({
         onChange={onChangeDraft}
         onSubmit={onCreateContact}
       />
-      <PlaceCrmHistoryDrawer
-        busy={busy}
-        contact={drawerContact}
-        interactions={drawerContact ? interactionsByContact[drawerContact.id] || [] : []}
-        onClose={onCloseHistory}
-        onMarkConverted={onMarkConverted}
-        onSaveFollowUp={onSaveHistoryFollowUp}
-      />
+      <div className="place-booking-list">
+        {visibleContacts.map((contact) => {
+          const followUpDue = contact.status !== "converted" && contact.nextContactOn && contact.nextContactOn <= todayDate;
+          const recentInteractions = interactionsByContact[contact.id] || [];
+          return (
+            <PlaceCrmContactRow
+              key={contact.id}
+              busy={busy}
+              contact={contact}
+              followUpDue={followUpDue}
+              interactionCount={recentInteractions.length}
+              onOpenHistory={() => onOpenHistory(contact)}
+            />
+          );
+        })}
+        {!filteredContacts.length ? (
+          <WorkspaceEmptyState
+            title={query || filter !== "all" ? "Nenhum contato encontrado" : "Sem contatos no CRM"}
+            detail={query || filter !== "all" ? "Limpe a busca ou ajuste o filtro para ver outros contatos." : "Crie o primeiro contato para acompanhar relacionamento."}
+            action={
+              query || filter !== "all" ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFilter("all");
+                    setQuery("");
+                  }}
+                >
+                  Limpar filtros
+                </button>
+              ) : null
+            }
+          />
+        ) : null}
+        {hiddenCount > 0 ? (
+          <button type="button" className="secondary" onClick={() => setShowAll(true)}>
+            Ver {hiddenCount} contato{hiddenCount === 1 ? "" : "s"} restante{hiddenCount === 1 ? "" : "s"}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }

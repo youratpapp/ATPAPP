@@ -187,6 +187,7 @@ Quando uma tela cresce demais:
 - 2026-05-14: `/gestao/:placeId/:module` nao deve reutilizar visual de descoberta publica. O topo deve ser do Management OS e a pagina publica deve aparecer apenas como acao secundaria.
 - 2026-05-14: navegacao de modulos da gestao local nao deve esconder opcoes em `Mais` quando ha espaco. A barra deve exibir todos os modulos liberados por plano/permissao e rolar horizontalmente quando necessario.
 - 2026-05-14: plano `academy` deve manter `Agenda` operacional. Pode restringir reserva publica/financeiro/CRM por plano, mas agenda de aulas, quadras, horarios e ocupacao nao pode desaparecer.
+- 2026-05-15: `Clientes/CRM` em `/gestao/:placeId/clientes` tem responsabilidade primaria de relacionamento, nao cobranca. A primeira subvisao deve ser `Rotina`, com follow-ups, leads novos e contatos parados em rows; `Contatos` e a lista pesquisavel/historico; `Financeiro` concentra cobranca, lembrete e baixa de pagamento.
 - 2026-05-13: `/eventos` refinou `Organizando agora` para rows operacionais com proximo passo e CTA por torneio/liga, deixando os atalhos de lista como suporte.
 - 2026-05-13: Competition OS no hub passou a escolher destino por status do evento, evitando que todo item organizado abra genericamente sem dizer a tarefa.
 - 2026-05-14: `/eventos/ligas/:leagueId` passou a iniciar a experiencia do organizador com foco operacional antes das tabs, deixando proxima acao, escopo ativo e pendencias visiveis sem depender da aba `Visao`.

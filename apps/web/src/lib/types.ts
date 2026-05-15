@@ -40,9 +40,25 @@ export type PlaceStaffMember = {
   placeId: string;
   userId: string | null;
   email: string;
+  displayName?: string;
   role: "manager" | "coach" | "frontdesk" | "finance";
   createdAt: string;
   status?: "active" | "pending";
+};
+
+export type PlaceStaffCandidate = {
+  userId: string;
+  email: string;
+  displayName: string;
+};
+
+export type PlaceStaffInvite = {
+  id: string;
+  placeId: string;
+  placeName: string;
+  email: string;
+  role: PlaceStaffMember["role"];
+  createdAt: string;
 };
 
 export type PlaceCourt = {

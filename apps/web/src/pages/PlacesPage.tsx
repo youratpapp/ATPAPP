@@ -35,6 +35,7 @@ import { PlaceBookingWaitlistModule } from "../components/place/PlaceBookingWait
 import { PlaceClientActionQueue } from "../components/place/PlaceClientActionQueue";
 import { PlaceClientRelationshipModule, type PlaceClientReceivable } from "../components/place/PlaceClientRelationshipModule";
 import type { PlaceCrmContactDraft } from "../components/place/PlaceCrmContactForm";
+import { PlaceCrmHistoryDrawer } from "../components/place/PlaceCrmHistoryDrawer";
 import { PlaceCrmModule } from "../components/place/PlaceCrmModule";
 import { PlaceFinanceExpensesModule, type PlaceExpenseDraft } from "../components/place/PlaceFinanceExpensesModule";
 import { PlaceFinanceOverviewModule } from "../components/place/PlaceFinanceOverviewModule";
@@ -87,6 +88,7 @@ import {
   requestAcademyLessonFit,
   searchAcademyLessonFitSlots,
   searchAcademyClassesForDiscovery,
+  searchPlaceStaffCandidates,
   searchAvailableCourts,
   searchAvailableCourtsForDiscovery,
   scheduleAcademyMakeupCredit,
@@ -175,6 +177,7 @@ import type {
   PlaceMembershipPlan,
   PlaceOrganization,
   PlaceProductPlan,
+  PlaceStaffCandidate,
   PlaceStaffMember,
   Profile,
 } from "../lib/types";
@@ -227,6 +230,12 @@ type AcademyStudentContractDraft = {
   phone: string;
   startsOn: string;
   weeklyLessonsCount: string;
+};
+type PlaceStaffDraft = {
+  email: string;
+  query: string;
+  role: PlaceStaffMember["role"];
+  selectedUserId: string;
 };
 type CrmInteractionDraft = { interactionType: PlaceCrmInteraction["interactionType"]; body: string; nextContactOn: string };
 type PlaceProfileDraft = { city: string; description: string; logoUrl: string; name: string; state: string };
@@ -295,6 +304,13 @@ const STAFF_ROLE_LABELS: Record<"owner" | PlaceStaffMember["role"], string> = {
   coach: "Professor",
   frontdesk: "Recepcao",
   finance: "Financeiro",
+};
+
+const DEFAULT_PLACE_STAFF_DRAFT: PlaceStaffDraft = {
+  email: "",
+  query: "",
+  role: "manager",
+  selectedUserId: "",
 };
 
 function discoveryIntentFromParam(value: string | null): PlaceDiscoveryIntent {
@@ -827,7 +843,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   }));
   const [openMatchCommentsById, setOpenMatchCommentsById] = useState<Record<string, OpenMatchComment[]>>({});
   const [openMatchCommentDraftById, setOpenMatchCommentDraftById] = useState<Record<string, string>>({});
-  const [staffDraftByPlace, setStaffDraftByPlace] = useState<Record<string, { email: string; role: PlaceStaffMember["role"] }>>({});
+  const [staffDraftByPlace, setStaffDraftByPlace] = useState<Record<string, PlaceStaffDraft>>({});
+  const [staffCandidatesByPlace, setStaffCandidatesByPlace] = useState<Record<string, PlaceStaffCandidate[]>>({});
+  const [staffCandidateBusyByPlace, setStaffCandidateBusyByPlace] = useState<Record<string, boolean>>({});
   const [reportPeriodByPlace, setReportPeriodByPlace] = useState<Record<string, AnalyticsReportPeriod>>({});
   const [reportRangeByPlace, setReportRangeByPlace] = useState<Record<string, { startDate: string; endDate: string }>>({});
   const [placeProfileDraftByPlace, setPlaceProfileDraftByPlace] = useState<Record<string, PlaceProfileDraft>>({});
@@ -1966,7 +1984,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         kind: "success",
         text: updated.userId
           ? "Professor vinculado ao login."
-          : "Convite pendente criado. Quando o professor cadastrar esse e-mail, o login sera vinculado automaticamente.",
+          : "Convite enviado. O professor so tera acesso e login vinculado depois de aceitar no app.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao vincular professor.") });
@@ -2614,20 +2632,49 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
 
+  const onSearchStaffCandidates = async (place: Place) => {
+    const draft = staffDraftByPlace[place.id] || DEFAULT_PLACE_STAFF_DRAFT;
+    const query = draft.query.trim();
+    if (query.length < 3) {
+      setFeedback({ kind: "error", text: "Digite ao menos 3 caracteres para buscar." });
+      return;
+    }
+    setStaffCandidateBusyByPlace((prev) => ({ ...prev, [place.id]: true }));
+    setFeedback(null);
+    try {
+      const rows = await searchPlaceStaffCandidates(place.id, query);
+      setStaffCandidatesByPlace((prev) => ({ ...prev, [place.id]: rows }));
+      setFeedback(rows.length ? null : { kind: "info", text: "Nenhum usuario encontrado. Use um email completo para deixar convite pendente." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao buscar usuarios.") });
+    } finally {
+      setStaffCandidateBusyByPlace((prev) => ({ ...prev, [place.id]: false }));
+    }
+  };
+
   const onAddStaff = async (place: Place) => {
-    const draft = staffDraftByPlace[place.id] || { email: "", role: "manager" as const };
-    if (!draft.email.trim()) return;
+    const draft = staffDraftByPlace[place.id] || DEFAULT_PLACE_STAFF_DRAFT;
+    const candidates = staffCandidatesByPlace[place.id] || [];
+    const selectedCandidate = candidates.find((candidate) => candidate.userId === draft.selectedUserId) || null;
+    if (candidates.length > 0 && !selectedCandidate) {
+      setFeedback({ kind: "error", text: "Selecione o usuario encontrado ou busque outro email." });
+      return;
+    }
+    const email = (selectedCandidate?.email || draft.email || draft.query).trim().toLowerCase();
+    if (!email || !email.includes("@")) {
+      setFeedback({ kind: "error", text: "Informe um email valido ou selecione um usuario encontrado." });
+      return;
+    }
     setBusy(true);
     setFeedback(null);
     try {
-      const row = await addPlaceStaff({ placeId: place.id, email: draft.email, role: draft.role });
-      setStaffDraftByPlace((prev) => ({ ...prev, [place.id]: { ...draft, email: "" } }));
+      await addPlaceStaff({ placeId: place.id, email, role: draft.role });
+      setStaffDraftByPlace((prev) => ({ ...prev, [place.id]: DEFAULT_PLACE_STAFF_DRAFT }));
+      setStaffCandidatesByPlace((prev) => ({ ...prev, [place.id]: [] }));
       await refreshPlaceResources(place.id);
       setFeedback({
         kind: "success",
-        text: row.status === "pending"
-          ? "Convite pendente criado. Quando a pessoa cadastrar esse e-mail, o acesso sera liberado automaticamente."
-          : "Membro da equipe adicionado.",
+        text: "Convite enviado. O acesso ao local so aparece depois que a pessoa aceitar no app.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao adicionar equipe.") });
@@ -3884,7 +3931,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           ? Math.min(100, Math.round((calendarReservedMinutes / calendarAvailableMinutes) * 100))
           : 0;
         const enabledFeatures = featureList(access);
-        const staffDraft = staffDraftByPlace[p.id] || { email: "", role: "manager" as const };
+        const staffDraft = staffDraftByPlace[p.id] || DEFAULT_PLACE_STAFF_DRAFT;
+        const staffCandidates = staffCandidatesByPlace[p.id] || [];
+        const selectedStaffCandidate = staffCandidates.find((candidate) => candidate.userId === staffDraft.selectedUserId) || null;
+        const staffCandidateBusy = Boolean(staffCandidateBusyByPlace[p.id]);
         const membershipDraft = membershipPlanDraftByPlace[p.id] || { name: "", monthlyFee: "0", courtDiscount: "0", academyDiscount: "0" };
         const creditPackageDraft = creditPackageDraftByPlace[p.id] || DEFAULT_CREDIT_PACKAGE_DRAFT;
         const creditPurchaseDraft = creditPurchaseDraftByPlace[p.id] || { ...DEFAULT_CREDIT_PURCHASE_DRAFT, packageId: activeCreditPackages[0]?.id || "" };
@@ -4311,8 +4361,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           converted: crmContacts.filter((contact) => contact.status === "converted").length,
           archived: crmContacts.filter((contact) => contact.status === "archived").length,
         };
+        const crmLeadContacts = crmContacts
+          .filter((contact) => contact.status === "lead")
+          .sort((a, b) => a.name.localeCompare(b.name));
         const crmFollowUpsDue = crmContacts.filter(
-          (contact) => contact.status !== "converted" && contact.nextContactOn && contact.nextContactOn <= todayDateInputValue()
+          (contact) => contact.status !== "converted" && contact.status !== "archived" && contact.nextContactOn && contact.nextContactOn <= todayDateInputValue()
         ).length;
         const crmFollowUpContacts = crmContacts
           .filter((contact) => contact.status !== "converted" && contact.status !== "archived" && contact.nextContactOn && contact.nextContactOn <= todayDateInputValue())
@@ -4323,20 +4376,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             const interactions = crmInteractionsByContact[contact.id] || [];
             return !contact.nextContactOn && interactions.length === 0;
           })
-          .slice(0, 6);
+          .sort((a, b) => a.name.localeCompare(b.name));
         const crmConversionRate = crmContacts.length
           ? Math.round((crmStageCounts.converted / crmContacts.length) * 100)
           : 0;
         const crmSources = Array.from(
           crmContacts.reduce((acc, contact) => {
             const key = contact.source.trim() || "Sem origem";
-            acc.set(key, (acc.get(key) || 0) + 1);
-            return acc;
-          }, new Map<string, number>())
-        ).sort((a, b) => b[1] - a[1]);
-        const crmInterests = Array.from(
-          crmContacts.reduce((acc, contact) => {
-            const key = contact.interest.trim() || "Sem interesse";
             acc.set(key, (acc.get(key) || 0) + 1);
             return acc;
           }, new Map<string, number>())
@@ -4348,14 +4394,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             detail: crmFollowUpContacts.slice(0, 2).map((contact) => contact.name).join(", ") || "Sem retorno vencido",
           },
           {
-            label: "Leads parados",
-            value: crmStaleContacts.length,
-            detail: crmStaleContacts.slice(0, 2).map((contact) => contact.name).join(", ") || "Sem lead parado",
+            label: "Leads novos",
+            value: crmLeadContacts.length,
+            detail: crmLeadContacts.slice(0, 2).map((contact) => contact.name).join(", ") || "Sem lead novo",
           },
           {
-            label: "Inadimplentes",
-            value: openReceivables.filter((receivable) => receivable.status === "open").length,
-            detail: formatMoneyFromCents(openReceivables.filter((receivable) => receivable.status === "open").reduce((sum, receivable) => sum + receivable.amountCents, 0)),
+            label: "Contatos parados",
+            value: crmStaleContacts.length,
+            detail: crmStaleContacts.slice(0, 2).map((contact) => contact.name).join(", ") || "Sem contato parado",
           },
           {
             label: "Solicitacoes",
@@ -4538,13 +4584,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const isManagementCockpit = isAdminRoute && Boolean(staffRole);
         const isPublicDiscoveryCard = !isAdminRoute;
         const showManagementModule = (module: PlaceManagementModule) => !isPublicDiscoveryCard && (!isManagementCockpit || currentManagementModule === module);
-        const clientsView = (clientsViewByPlace[p.id] || "overview") as ClientsManagementView;
+        const clientsView = (clientsViewByPlace[p.id] || "relationship") as ClientsManagementView;
         const showClientsWorkspace = isManagementCockpit && (showMembershipTools || (canUseCrm && canManagePlace));
         const showClientsOverview = !showClientsWorkspace || clientsView === "overview";
         const showClientsMembers = !showClientsWorkspace || clientsView === "members";
         const showClientsLeads = !showClientsWorkspace || clientsView === "leads";
         const showClientsRelationship = !showClientsWorkspace || clientsView === "relationship";
-        const teamView = (teamViewByPlace[p.id] || "overview") as TeamManagementView;
+        const crmDrawerContact = crmContacts.find((contact) => contact.id === crmHistoryDrawerContactId) || null;
+        const crmDrawerFollowUpDraft = crmDrawerContact
+          ? crmFollowUpDraftByContact[crmDrawerContact.id] ?? crmDrawerContact.nextContactOn ?? todayDateInputValue()
+          : todayDateInputValue();
+        const crmDrawerInteractionDraft = crmDrawerContact
+          ? crmInteractionDraftByContact[crmDrawerContact.id] || DEFAULT_CRM_INTERACTION_DRAFT
+          : DEFAULT_CRM_INTERACTION_DRAFT;
+        const crmDrawerOwnerDraft = crmDrawerContact
+          ? crmOwnerDraftByContact[crmDrawerContact.id] ?? crmDrawerContact.ownerLabel
+          : "";
+        const teamView = (teamViewByPlace[p.id] || "staff") as TeamManagementView;
         const showTeamWorkspace = isManagementCockpit && isOwner;
         const showTeamStaff = !showTeamWorkspace || teamView === "staff";
         const settingsView = (settingsViewByPlace[p.id] || "overview") as SettingsManagementView;
@@ -5048,8 +5104,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <WorkspaceList>
                           {staff.filter((member) => member.status === "pending").slice(0, 4).map((member) => (
                             <span key={`team-pending:${member.email}:${member.role}`}>
-                              <strong>{member.email || "Convite pendente"}</strong>
-                              <small>{STAFF_ROLE_LABELS[member.role]}</small>
+                              <strong>{member.displayName || member.email || "Convite pendente"}</strong>
+                              <small>{STAFF_ROLE_LABELS[member.role]} - sem acesso ate aceitar</small>
                             </span>
                           ))}
                           {!staff.some((member) => member.status === "pending") ? <span>Nenhum convite pendente.</span> : null}
@@ -5062,8 +5118,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       {staff.filter((member) => member.status === "pending").map((member) => (
                         <WorkspaceRow
                           key={`team-invite:${member.email}:${member.role}`}
-                          title={member.email || "Convite pendente"}
-                          detail={`${STAFF_ROLE_LABELS[member.role]} aguardando aceite`}
+                          title={member.displayName || member.email || "Convite pendente"}
+                          detail={`${STAFF_ROLE_LABELS[member.role]} aguardando aceite. O local ainda nao aparece para esta pessoa.`}
                           actions={
                             <button className="danger" onClick={() => void onRemoveStaff(p, member)} disabled={busy}>
                               Cancelar convite
@@ -5097,14 +5153,59 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <strong>Equipe do local</strong>
                   <span>{countLabel(staff.length, "membro", "membros")}</span>
                 </div>
-                <div className="place-staff-form">
-                  <input
-                    value={staffDraft.email}
-                    onChange={(event) =>
-                      setStaffDraftByPlace((prev) => ({ ...prev, [p.id]: { ...staffDraft, email: event.target.value } }))
-                    }
-                    placeholder="email@exemplo.com"
-                  />
+                <div className="place-staff-form place-staff-form-search">
+                  <div className="place-staff-search-field">
+                    <input
+                      value={staffDraft.query}
+                      onChange={(event) => {
+                        const query = event.target.value;
+                        setStaffDraftByPlace((prev) => ({
+                          ...prev,
+                          [p.id]: { ...staffDraft, query, email: query, selectedUserId: "" },
+                        }));
+                        setStaffCandidatesByPlace((prev) => ({ ...prev, [p.id]: [] }));
+                      }}
+                      placeholder="Buscar por nome ou email"
+                    />
+                    {staffDraft.query.trim().length >= 3 ? (
+                      <div className="staff-candidate-picker">
+                        {staffCandidateBusy ? (
+                          <small className="subtle">Buscando usuario...</small>
+                        ) : staffCandidates.length > 0 ? (
+                          staffCandidates.map((candidate) => {
+                            const selected = selectedStaffCandidate?.userId === candidate.userId;
+                            return (
+                              <button
+                                key={candidate.userId}
+                                type="button"
+                                className={selected ? "staff-candidate-option selected" : "staff-candidate-option"}
+                                onClick={() =>
+                                  setStaffDraftByPlace((prev) => ({
+                                    ...prev,
+                                    [p.id]: {
+                                      ...staffDraft,
+                                      email: candidate.email,
+                                      query: candidate.email,
+                                      selectedUserId: candidate.userId,
+                                    },
+                                  }))
+                                }
+                                disabled={busy}
+                              >
+                                <strong>{candidate.displayName}</strong>
+                                <span>{candidate.email}</span>
+                              </button>
+                            );
+                          })
+                        ) : (
+                          <small className="subtle">Nenhum usuario selecionado ainda. Busque um usuario ou informe um email completo.</small>
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                  <button type="button" onClick={() => void onSearchStaffCandidates(p)} disabled={busy || staffCandidateBusy || staffDraft.query.trim().length < 3}>
+                    {staffCandidateBusy ? "Buscando..." : "Buscar"}
+                  </button>
                   <select
                     value={staffDraft.role}
                     onChange={(event) =>
@@ -5119,18 +5220,32 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <option value="frontdesk">Recepcao</option>
                     <option value="finance">Financeiro</option>
                   </select>
-                  <button onClick={() => void onAddStaff(p)} disabled={busy || !staffDraft.email.trim()}>
-                    Adicionar
+                  <button
+                    className="primary"
+                    onClick={() => void onAddStaff(p)}
+                    disabled={
+                      busy ||
+                      !staffDraft.query.trim() ||
+                      (staffCandidates.length > 0 && !selectedStaffCandidate)
+                    }
+                  >
+                    {selectedStaffCandidate ? "Convidar selecionado" : "Criar convite"}
                   </button>
                 </div>
+                <p className="subtle" style={{ margin: "6px 0 10px" }}>
+                  Convites pendentes nao liberam acesso. A pessoa recebe o convite na Home e so entra na gestao depois de aceitar.
+                </p>
                 {staff.length ? (
                   <div className="place-staff-list">
                     {staff.map((member) => {
                       const activeUserId = member.userId;
                       return (
                         <span key={activeUserId || `${member.email}:${member.role}`}>
-                          {member.email || activeUserId?.slice(0, 8) || "Convite pendente"} ({STAFF_ROLE_LABELS[member.role]})
-                          {member.status === "pending" ? <small> convite pendente</small> : null}
+                          <strong>{member.displayName || member.email || activeUserId?.slice(0, 8) || "Convite pendente"}</strong>
+                          <small>
+                            {STAFF_ROLE_LABELS[member.role]}
+                            {member.status === "pending" ? " - aguardando aceite" : " - ativo"}
+                          </small>
                           <button className="danger" onClick={() => void onRemoveStaff(p, member)} disabled={busy}>
                             {activeUserId ? "Remover" : "Cancelar convite"}
                           </button>
@@ -5362,68 +5477,33 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     </WorkspaceGrid>
                   ) : null}
                   {clientsView === "leads" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard
-                        title="Funil comercial"
-                        subtitle="Leads, contatos feitos e conversoes"
-                        value={crmContacts.length}
-                        metrics={[
-                          countLabel(crmStageCounts.lead, "lead", "leads"),
-                          countLabel(crmStageCounts.contacted, "contatado", "contatados"),
-                          countLabel(crmStageCounts.converted, "convertido", "convertidos"),
-                        ]}
-                      />
-                      <WorkspaceCard title="Proximos retornos" subtitle="Priorize quem ainda esta em aberto" value={operationalStats.crmLeads}>
-                        <WorkspaceList>
-                          {crmContacts.filter((contact) => contact.status === "lead").slice(0, 4).map((contact) => (
-                            <span key={`lead-summary:${contact.id}`}>
-                              <strong>{contact.name}</strong>
-                              <small>{[contact.interest, contact.source, contact.phone].filter(Boolean).join(" | ") || "Sem detalhes cadastrados"}</small>
-                            </span>
-                          ))}
-                          {!operationalStats.crmLeads ? <span>Sem leads abertos.</span> : null}
-                        </WorkspaceList>
-                      </WorkspaceCard>
-                      <WorkspaceCard title="Origem dos leads" subtitle="Canais que mais geram oportunidade" value={crmSources.length}>
-                        <WorkspaceList>
-                          {crmSources.slice(0, 4).map(([source, count]) => (
-                            <span key={`lead-source:${source}`}>
-                              <strong>{source}</strong>
-                              <small>{countLabel(count, "contato", "contatos")}</small>
-                            </span>
-                          ))}
-                          {!crmSources.length ? <span>Sem origem cadastrada ainda.</span> : null}
-                        </WorkspaceList>
-                      </WorkspaceCard>
-                      <WorkspaceCard title="Interesses mais comuns" subtitle="Ajuda a vender turma, plano ou reserva" value={crmInterests.length}>
-                        <WorkspaceList>
-                          {crmInterests.slice(0, 4).map(([interest, count]) => (
-                            <span key={`lead-interest:${interest}`}>
-                              <strong>{interest}</strong>
-                              <small>{countLabel(count, "contato", "contatos")}</small>
-                            </span>
-                          ))}
-                          {!crmInterests.length ? <span>Sem interesses cadastrados ainda.</span> : null}
-                        </WorkspaceList>
-                      </WorkspaceCard>
-                    </WorkspaceGrid>
+                    <PlaceCrmModule
+                      busy={busy}
+                      contactCountLabel={countLabel(crmContacts.length, "contato", "contatos")}
+                      contacts={crmContacts}
+                      conversionRate={crmConversionRate}
+                      draft={crmDraft}
+                      embedded
+                      followUpsDue={crmFollowUpsDue}
+                      interactionsByContact={crmInteractionsByContact}
+                      ownerListId={`crm-owners-${p.id}`}
+                      ownerOptions={crmOwnerOptions}
+                      stageCounts={crmStageCounts}
+                      todayDate={todayDateInputValue()}
+                      onChangeDraft={(draft) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                      onCreateContact={() => void onCreateCrmContact(p)}
+                      onOpenHistory={(contact) => setCrmHistoryDrawerContactId(contact.id)}
+                    />
                   ) : null}
                   {showClientsRelationship ? (
                     <PlaceClientRelationshipModule
-                      academyReceivables={openAcademyReceivables}
                       busy={busy}
                       countLabel={countLabel}
                       followUpContacts={crmFollowUpContacts}
-                      formatMoneyFromCents={formatMoneyFromCents}
-                      membershipReceivables={openMembershipReceivables}
-                      openReceivables={openReceivables}
-                      openReceivablesAmountCents={openReceivablesAmountCents}
+                      leadContacts={crmLeadContacts}
                       relationshipSegments={crmRelationshipSegments}
                       staleContacts={crmStaleContacts}
-                      onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
-                      onCreatePaymentReminderBatch={(receivables) => void onCreatePaymentReminderBatch(receivables)}
-                      onMarkContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
-                      onScheduleContact={(contact) => void onUpdateCrmContactFollowUp(p.id, contact.id)}
+                      onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
                     />
                   ) : null}
                   {clientsView === "requests" ? (
@@ -5503,37 +5583,43 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               />
             </div>
             ) : null}
-            {showManagementModule("clients") && showClientsLeads && canUseCrm && canManagePlace ? (
+            {showManagementModule("clients") && !showClientsWorkspace && showClientsLeads && canUseCrm && canManagePlace ? (
               <PlaceCrmModule
                 busy={busy}
                 contactCountLabel={countLabel(crmContacts.length, "contato", "contatos")}
                 contacts={crmContacts}
                 conversionRate={crmConversionRate}
                 draft={crmDraft}
-                emptyInteractionDraft={DEFAULT_CRM_INTERACTION_DRAFT}
-                followUpDraftsByContact={crmFollowUpDraftByContact}
                 followUpsDue={crmFollowUpsDue}
-                historyContactId={crmHistoryDrawerContactId}
-                interactionDraftsByContact={crmInteractionDraftByContact}
                 interactionsByContact={crmInteractionsByContact}
-                ownerDraftsByContact={crmOwnerDraftByContact}
                 ownerListId={`crm-owners-${p.id}`}
                 ownerOptions={crmOwnerOptions}
                 stageCounts={crmStageCounts}
                 todayDate={todayDateInputValue()}
-                onArchiveContact={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "archived")}
                 onChangeDraft={(draft) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                onCreateContact={() => void onCreateCrmContact(p)}
+                onOpenHistory={(contact) => setCrmHistoryDrawerContactId(contact.id)}
+              />
+            ) : null}
+            {showManagementModule("clients") && canUseCrm && canManagePlace ? (
+              <PlaceCrmHistoryDrawer
+                busy={busy}
+                contact={crmDrawerContact}
+                followUpDraft={crmDrawerFollowUpDraft}
+                interactionDraft={crmDrawerInteractionDraft}
+                interactions={crmDrawerContact ? crmInteractionsByContact[crmDrawerContact.id] || [] : []}
+                ownerDraft={crmDrawerOwnerDraft}
+                ownerListId={`crm-owners-${p.id}`}
+                ownerOptions={crmOwnerOptions}
+                onArchiveContact={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "archived")}
                 onChangeFollowUpDraft={(contact, value) => setCrmFollowUpDraftByContact((prev) => ({ ...prev, [contact.id]: value }))}
                 onChangeInteractionDraft={(contact, draft) => setCrmInteractionDraftByContact((prev) => ({ ...prev, [contact.id]: draft }))}
                 onChangeOwnerDraft={(contact, value) => setCrmOwnerDraftByContact((prev) => ({ ...prev, [contact.id]: value }))}
-                onCloseHistory={() => setCrmHistoryDrawerContactId("")}
-                onCreateContact={() => void onCreateCrmContact(p)}
+                onClose={() => setCrmHistoryDrawerContactId("")}
                 onCreateInteraction={(contact) => void onCreateCrmInteraction(p.id, contact)}
                 onMarkContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
                 onMarkConverted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "converted")}
-                onOpenHistory={(contact) => setCrmHistoryDrawerContactId(contact.id)}
-                onSaveHistoryFollowUp={(contact) => void onUpdateCrmContactFollowUp(p.id, contact.id)}
-                onUpdateFollowUp={(contact) => void onUpdateCrmContactFollowUp(p.id, contact.id)}
+                onSaveFollowUp={(contact) => void onUpdateCrmContactFollowUp(p.id, contact.id)}
                 onUpdateOwner={(contact) => void onUpdateCrmContactOwner(p.id, contact)}
               />
             ) : null}

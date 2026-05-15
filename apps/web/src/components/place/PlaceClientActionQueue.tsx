@@ -26,9 +26,9 @@ export function PlaceClientActionQueue({
   onMarkContactContacted,
   onMarkContactConverted,
 }: PlaceClientActionQueueProps) {
-  const pendingMemberships = memberships.filter((membership) => membership.status === "pending").slice(0, 3);
-  const leadContacts = contacts.filter((contact) => contact.status === "lead").slice(0, 3);
-  const pendingEnrollments = academyEnrollments.filter((enrollment) => enrollment.status === "pending").slice(0, 3);
+  const pendingMemberships = memberships.filter((membership) => membership.status === "pending");
+  const leadContacts = contacts.filter((contact) => contact.status === "lead");
+  const pendingEnrollments = academyEnrollments.filter((enrollment) => enrollment.status === "pending");
   const hasItems = pendingMemberships.length || leadContacts.length || pendingEnrollments.length;
 
   return (

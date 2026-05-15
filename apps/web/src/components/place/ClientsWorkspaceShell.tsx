@@ -1,22 +1,22 @@
 import type { ReactNode } from "react";
 import { PlaceWorkspaceShell } from "./PlaceWorkspaceShell";
 
-export type ClientsManagementView = "overview" | "members" | "leads" | "relationship" | "requests";
+export type ClientsManagementView = "relationship" | "leads" | "members" | "requests" | "overview";
 
 const CLIENTS_VIEW_LABELS: Record<ClientsManagementView, string> = {
-  overview: "Resumo",
-  members: "Socios",
-  leads: "Leads",
   relationship: "Rotina",
+  leads: "Contatos",
+  members: "Socios",
   requests: "Pendencias",
+  overview: "Resumo",
 };
 
 const CLIENTS_VIEW_DESCRIPTIONS: Record<ClientsManagementView, string> = {
-  overview: "Base ativa, oportunidades e proximas acoes de relacionamento.",
+  relationship: "Follow-ups, leads novos e contatos parados para resolver hoje.",
+  leads: "Busca, historico e cadastro de contatos comerciais.",
   members: "Planos, solicitacoes, mensalidades e situacao dos socios.",
-  leads: "Contatos comerciais, origem, interesse e conversao.",
-  relationship: "Follow-ups, inativos, inadimplentes e lembretes segmentados.",
   requests: "Aprovacoes e retornos que precisam de atendimento.",
+  overview: "Base ativa, oportunidades e leitura resumida de relacionamento.",
 };
 
 type ClientsWorkspaceShellProps = {

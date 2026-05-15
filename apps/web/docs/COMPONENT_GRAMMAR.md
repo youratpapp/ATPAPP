@@ -329,7 +329,7 @@ Uso atual no produto:
 
 - CRM do local: lead/cliente com interesse, origem, responsavel, follow-up e acao primaria contextual.
 - Financeiro do local: recebivel com origem, pagador, periodo/vencimento, valor, status e `Marcar pago` como acao primaria; `Enviar lembrete` e lote sao secundarios.
-- Clientes/CRM do local: cobranca pendente usa row com cliente, origem, valor e `Enviar lembrete` como acao primaria, evitando tratar inadimplencia como painel separado.
+- Clientes/CRM do local: relacionamento usa row com contato, interesse, origem/responsavel, proxima acao e drawer; cobranca pendente pertence ao `Financeiro`, nao a fila de relacionamento.
 - Cantina: produto com categoria, preco, estoque e status de estoque.
 - Academia: turma com horario, professor/quadra/nivel, ocupacao, pendencias e metricas de suporte.
 - Academia: aluno com turma, telefone, pagamento, presenca e uma acao primaria contextual; acoes secundarias ficam em disclosure.
@@ -505,6 +505,7 @@ Variacoes obrigatorias para Academia v2:
 - `StudentDrawer`: dados, matriculas, pagamentos, presenca, evolucao, reposicoes e historico.
 - `CoachDrawer`: dados, agenda, turmas, comissao e login/convite.
 - `FitDrawer`: busca de encaixe para aula avulsa ou reposicao, acionada a partir de `Pendencias`.
+- `CrmContactDrawer`: contato, historico, responsavel, proximo contato, registro de interacao, WhatsApp secundario, converter e arquivar.
 
 Implementado em 2026-05-14:
 
@@ -520,6 +521,7 @@ Implementado em 2026-05-14:
 - `StudentDrawer` passou a reconhecer contratos vinculados e mostrar plano/horarios do contrato antes dos detalhes de matricula isolada.
 - A area financeira de `ClassDrawer`/`StudentDrawer` deve acionar cobranca pelo contrato (`academy_student_contract`) quando existir, mantendo matricula (`academy_enrollment`) apenas como fallback legado.
 - `Configuracao > Quadras e horarios` passou a expor regra operacional curta para reposicao por ausencia avisada; `Pendencias` e `StudentDrawer` mostram a origem do credito sem transformar isso em wizard.
+- 2026-05-15: `CrmContactDrawer` foi aplicado em `Clientes > Rotina/Contatos`, removendo controles inline por contato e mantendo follow-up, historico, responsavel, conversao, arquivamento e WhatsApp em detalhe curto.
 
 Regra:
 

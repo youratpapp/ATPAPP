@@ -10788,6 +10788,52 @@ button:disabled {
   align-items: start;
 }
 
+.crm-module-workspace,
+.crm-toolbar,
+.crm-relationship-workspace {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.crm-toolbar input {
+  width: 100%;
+}
+
+.crm-drawer-summary,
+.crm-drawer-form {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.crm-drawer-summary span,
+.crm-drawer-form label {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.crm-drawer-summary strong,
+.crm-drawer-form label {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.crm-drawer-summary span {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+}
+
+.crm-drawer-form {
+  grid-template-columns: minmax(150px, 1fr) auto minmax(140px, 0.8fr) auto;
+}
+
 .crm-row-controls {
   display: grid;
   gap: var(--space-1);
@@ -11007,6 +11053,15 @@ button:disabled {
   grid-template-columns: minmax(160px, 1fr) minmax(110px, 0.6fr) auto;
 }
 
+.place-staff-form-search {
+  align-items: start;
+  grid-template-columns: minmax(220px, 1fr) auto minmax(130px, 0.45fr) auto;
+}
+
+.place-staff-search-field {
+  min-width: 0;
+}
+
 .place-staff-list {
   display: flex;
   flex-wrap: wrap;
@@ -11020,10 +11075,15 @@ button:disabled {
   border-radius: var(--radius-md);
   color: var(--color-text-subtle);
   display: flex;
+  flex-wrap: wrap;
   font-size: var(--font-size-xs);
   font-weight: 800;
   gap: var(--space-2);
   padding: 5px 7px;
+}
+
+.place-staff-list span strong {
+  color: var(--color-text);
 }
 
 .progressive-form {
@@ -12885,6 +12945,7 @@ button:disabled {
 
 @media (max-width: 760px) {
   .academy-grade-toolbar,
+  .crm-drawer-form,
   .academy-drawer-form,
   .academy-drawer-form.compact,
   .academy-drawer-inline-form,

@@ -449,6 +449,16 @@ Nao deve:
 - virar feed social;
 - mostrar WhatsApp como acao primaria quando a tarefa real e aprovar/cobrar/converter.
 
+Implementado em `MGMT-CRM-01`:
+
+- `Clientes` abre em `Rotina`, nao em funil/resumo.
+- `Rotina` mostra follow-ups vencidos, leads novos e contatos sem retorno como rows com acao primaria.
+- `Contatos` concentra busca, filtros por prioridade/status e cadastro progressivo.
+- Detalhe do contato fica em drawer com historico, responsavel, proximo contato, registro de interacao, converter e arquivar.
+- WhatsApp e secundario e nao substitui a acao operacional.
+- Cobranca foi removida da rotina de CRM e permanece em `Financeiro > Recebiveis`.
+- Listas com alto volume usam expansao explicita em vez de `slice` silencioso.
+
 ## Cantina / POS
 
 Responsabilidade:

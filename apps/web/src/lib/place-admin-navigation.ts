@@ -101,23 +101,26 @@ export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView
 };
 
 export const CLIENTS_ADMIN_VIEW_SEGMENTS: Record<ClientsManagementView, string> = {
-  overview: "resumo",
-  members: "socios",
-  leads: "leads",
   relationship: "rotina",
+  leads: "contatos",
+  members: "socios",
   requests: "pendencias",
+  overview: "resumo",
 };
 
 export const CLIENTS_ADMIN_SEGMENT_TO_VIEW: Record<string, ClientsManagementView> = {
-  resumo: "overview",
-  overview: "overview",
-  socios: "members",
-  members: "members",
-  leads: "leads",
   rotina: "relationship",
   relationship: "relationship",
+  contatos: "leads",
+  contatos_comerciais: "leads",
+  contacts: "leads",
+  leads: "leads",
+  socios: "members",
+  members: "members",
   pendencias: "requests",
   requests: "requests",
+  resumo: "overview",
+  overview: "overview",
 };
 
 export const FINANCE_ADMIN_VIEW_SEGMENTS: Record<FinanceManagementView, string> = {
@@ -215,12 +218,12 @@ const PLACE_ADMIN_VIEW_CONFIGS: {
     viewSegments: ACADEMY_ADMIN_VIEW_SEGMENTS,
   },
   clients: {
-    defaultView: "overview",
+    defaultView: "relationship",
     segmentToView: CLIENTS_ADMIN_SEGMENT_TO_VIEW as Record<string, PlaceAdminRoutableView>,
     viewSegments: CLIENTS_ADMIN_VIEW_SEGMENTS,
   },
   finance: {
-    defaultView: "overview",
+    defaultView: "receivables",
     segmentToView: FINANCE_ADMIN_SEGMENT_TO_VIEW as Record<string, PlaceAdminRoutableView>,
     viewSegments: FINANCE_ADMIN_VIEW_SEGMENTS,
   },

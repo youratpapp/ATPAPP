@@ -1505,13 +1505,56 @@ Risco residual:
 - O modelo ainda nao tem campo canonico `due_date` em `app_payments`; a UI calcula vencimento por convencao de periodo mensal ou data da origem. Uma evolucao futura pode criar vencimento persistido por cobranca.
 - Torneio/liga seguem em financeiro de Competition OS; o sprint cobriu Financeiro do local.
 
-#### [>] MGMT-CRM-01 - Clientes/CRM como fila de relacionamento
+#### [x] MGMT-CRM-01 - Clientes/CRM como fila de relacionamento
 
 Descricao:
 
 - Leads, follow-up, contatos parados, drawer de contato e WhatsApp secundario.
 
-#### [ ] MGMT-TEAM-01 - Equipe/permissoes por convite aceito
+Status: `[x]` concluido em 2026-05-15
+
+Entregue:
+
+- `Clientes` passou a abrir por padrao em `Rotina`, com fila unica de relacionamento para `Follow-ups`, `Leads` e `Contatos parados`.
+- `Clientes > Contatos` virou lista operacional pesquisavel, com filtros por prioridade/status, expansao explicita para todos os registros e formulario progressivo de novo contato.
+- Rows de CRM deixaram de carregar formulario inline por contato; a acao primaria abre drawer curto para registrar retorno, salvar responsavel, agendar proximo contato, converter ou arquivar.
+- WhatsApp permanece como acao secundaria, sem competir com a tarefa principal de relacionamento.
+- Cobranca saiu da fila de relacionamento e permanece no modulo `Financeiro`, reduzindo duplicidade entre Clientes e Financeiro.
+- A navegacao canonica de Clientes usa `rotina`, `contatos`, `socios`, `pendencias` e `resumo`, com aliases legados preservados.
+- Fila de pendencias de clientes deixou de cortar leads/matriculas/socios silenciosamente.
+
+Impacto UX/produto:
+
+- Recepcao/gestor abre Clientes vendo quem precisa de contato agora, e nao KPIs ou funil passivo.
+- A captura de lead continua disponivel, mas nao domina a primeira dobra.
+- Historico, notas, responsavel e proximo contato ficaram em drawer acionavel, adequado a uso diario.
+- Financeiro e CRM passaram a ter fronteira mais clara: cobrar e marcar pago ficam no Financeiro; relacionamento e follow-up ficam em Clientes.
+
+Arquivos alterados:
+
+- `web/src/pages/PlacesPage.tsx`
+- `web/src/components/place/ClientsWorkspaceShell.tsx`
+- `web/src/components/place/PlaceClientActionQueue.tsx`
+- `web/src/components/place/PlaceClientRelationshipModule.tsx`
+- `web/src/components/place/PlaceCrmContactRow.tsx`
+- `web/src/components/place/PlaceCrmHistoryDrawer.tsx`
+- `web/src/components/place/PlaceCrmModule.tsx`
+- `web/src/lib/place-admin-navigation.ts`
+- `web/src/App.css`
+- `web/docs/MGMT_CRM_01_REPORT_2026_05_15.md`
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco residual:
+
+- O CRM ainda usa contatos do local (`place_crm_contacts`) sem modelo de funil customizavel por academia. Se o produto exigir etapas configuraveis, criar task propria de schema/UX.
+- Notificacoes reais de retorno/WhatsApp continuam fora deste sprint; o sprint preserva WhatsApp externo e historico manual.
+
+#### [>] MGMT-TEAM-01 - Equipe/permissoes por convite aceito
 
 Descricao:
 

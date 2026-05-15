@@ -32,6 +32,8 @@ import type {
   PlaceProductPlan,
   PlacePosProduct,
   PlacePosSale,
+  PlaceStaffCandidate,
+  PlaceStaffInvite,
   PlaceStaffMember,
 } from "./types";
 
@@ -586,9 +588,25 @@ type PlaceStaffRow = {
   place_id: string;
   user_id: string | null;
   email?: string | null;
+  display_name?: string | null;
   role: "manager" | "coach" | "frontdesk" | "finance" | string;
   created_at: string | null;
   status?: "active" | "pending" | string | null;
+};
+
+type PlaceStaffCandidateRow = {
+  user_id: string;
+  email: string | null;
+  display_name: string | null;
+};
+
+type PlaceStaffInviteActionRow = {
+  invite_id: string;
+  place_id: string;
+  place_name: string | null;
+  email: string | null;
+  role: string | null;
+  created_at: string | null;
 };
 
 function rowToPlace(row: PlaceRow, followerCount = 0, isFollowing = false): Place {
@@ -1135,15 +1153,39 @@ function rowToOpenMatchComment(row: OpenMatchCommentRow): OpenMatchComment {
   };
 }
 
+function normalizePlaceStaffRole(value: string | null | undefined): PlaceStaffMember["role"] {
+  return value === "coach" || value === "frontdesk" || value === "finance" ? value : "manager";
+}
+
 function rowToPlaceStaff(row: PlaceStaffRow): PlaceStaffMember {
-  const role = row.role === "coach" || row.role === "frontdesk" || row.role === "finance" ? row.role : "manager";
+  const role = normalizePlaceStaffRole(row.role);
   return {
     placeId: row.place_id,
     userId: row.user_id,
     email: row.email || "",
+    displayName: row.display_name?.trim() || undefined,
     role,
     createdAt: row.created_at || "",
     status: row.status === "pending" ? "pending" : "active",
+  };
+}
+
+function rowToPlaceStaffCandidate(row: PlaceStaffCandidateRow): PlaceStaffCandidate {
+  return {
+    userId: row.user_id,
+    email: row.email || "",
+    displayName: row.display_name?.trim() || row.email || "Usuario encontrado",
+  };
+}
+
+function rowToPlaceStaffInvite(row: PlaceStaffInviteActionRow): PlaceStaffInvite {
+  return {
+    id: row.invite_id,
+    placeId: row.place_id,
+    placeName: row.place_name || "Local",
+    email: row.email || "",
+    role: normalizePlaceStaffRole(row.role),
+    createdAt: row.created_at || "",
   };
 }
 
@@ -1217,7 +1259,6 @@ export async function listPlacesIOwn(user: User): Promise<Place[]> {
 
 export async function listPlacesIAccess(user: User): Promise<Place[]> {
   if (!supabase) return [];
-  await claimPlaceStaffInvites().catch(() => 0);
   const [owned, staffRows] = await Promise.all([
     listPlacesIOwn(user),
     supabase.from(TABLE_PLACE_STAFF).select("place_id").eq("user_id", user.id),
@@ -3178,27 +3219,49 @@ export async function toggleOpenMatchReaction(user: User, match: OpenMatch): Pro
 
 export async function listPlaceStaff(placeId: string): Promise<PlaceStaffMember[]> {
   if (!supabase) return [];
-  await claimPlaceStaffInvites().catch(() => 0);
-  const [staffRows, inviteRows] = await Promise.all([
-    supabase
-      .from(TABLE_PLACE_STAFF)
-      .select("place_id,user_id,role,created_at")
-      .eq("place_id", placeId)
-      .order("created_at", { ascending: false }),
-    supabase
-      .from(TABLE_PLACE_STAFF_INVITES)
-      .select("place_id,email,role,created_at,status")
-      .eq("place_id", placeId)
-      .eq("status", "pending")
-      .order("created_at", { ascending: false }),
-  ]);
-  if (staffRows.error) throw new Error(staffRows.error.message);
-  if (inviteRows.error) throw new Error(inviteRows.error.message);
-  const active = ((staffRows.data ?? []) as PlaceStaffRow[]).map((row) => rowToPlaceStaff({ ...row, status: "active" }));
-  const pending = ((inviteRows.data ?? []) as PlaceStaffRow[]).map((row) =>
-    rowToPlaceStaff({ ...row, user_id: null, status: "pending" })
-  );
-  return [...pending, ...active];
+  const { data, error } = await supabase.rpc("app_list_place_staff", {
+    p_place_id: placeId,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PlaceStaffRow[]).map(rowToPlaceStaff);
+}
+
+export async function searchPlaceStaffCandidates(placeId: string, query: string): Promise<PlaceStaffCandidate[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const term = query.trim();
+  if (term.length < 3) return [];
+  const { data, error } = await supabase.rpc("app_search_place_staff_candidates", {
+    p_place_id: placeId,
+    p_query: term,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PlaceStaffCandidateRow[]).map(rowToPlaceStaffCandidate);
+}
+
+export async function listMyPlaceStaffInvites(): Promise<PlaceStaffInvite[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_list_my_place_staff_invites");
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PlaceStaffInviteActionRow[]).map(rowToPlaceStaffInvite);
+}
+
+export async function acceptPlaceStaffInvite(inviteId: string): Promise<PlaceStaffMember> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_accept_place_staff_invite", {
+    p_invite_id: inviteId,
+  });
+  if (error) throw new Error(error.message);
+  const rowRaw = Array.isArray(data) ? data[0] : data;
+  if (!rowRaw) throw new Error("Nao foi possivel aceitar o convite.");
+  return rowToPlaceStaff(rowRaw as PlaceStaffRow);
+}
+
+export async function declinePlaceStaffInvite(inviteId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.rpc("app_decline_place_staff_invite", {
+    p_invite_id: inviteId,
+  });
+  if (error) throw new Error(error.message);
 }
 
 export async function addPlaceStaff(input: {

@@ -1,5 +1,6 @@
+import { useMemo, useState } from "react";
 import type { PlaceCrmContact } from "../../lib/types";
-import { EntityActionRow, WorkspaceCard, WorkspaceGrid, WorkspaceList } from "./PlaceWorkspaceUi";
+import { EntityActionRow, WorkspaceEmptyState, WorkspaceMetrics } from "./PlaceWorkspaceUi";
 
 export type PlaceClientReceivable = {
   amountCents: number;
@@ -25,158 +26,160 @@ type RelationshipSegment = {
 };
 
 type PlaceClientRelationshipModuleProps = {
-  academyReceivables: PlaceClientReceivable[];
   busy: boolean;
   countLabel: (count: number, singular: string, plural: string) => string;
   followUpContacts: PlaceCrmContact[];
-  formatMoneyFromCents: (amountCents: number) => string;
-  membershipReceivables: PlaceClientReceivable[];
-  openReceivables: PlaceClientReceivable[];
-  openReceivablesAmountCents: number;
+  leadContacts: PlaceCrmContact[];
   relationshipSegments: RelationshipSegment[];
   staleContacts: PlaceCrmContact[];
-  onCreatePaymentReminder: (targetType: string, targetId: string, billingPeriod: string, message: string) => void;
-  onCreatePaymentReminderBatch: (receivables: PlaceClientReceivable[]) => void;
-  onMarkContacted: (contact: PlaceCrmContact) => void;
-  onScheduleContact: (contact: PlaceCrmContact) => void;
+  onOpenContact: (contact: PlaceCrmContact) => void;
 };
 
 export function PlaceClientRelationshipModule({
-  academyReceivables,
   busy,
   countLabel,
   followUpContacts,
-  formatMoneyFromCents,
-  membershipReceivables,
-  openReceivables,
-  openReceivablesAmountCents,
+  leadContacts,
   relationshipSegments,
   staleContacts,
-  onCreatePaymentReminder,
-  onCreatePaymentReminderBatch,
-  onMarkContacted,
-  onScheduleContact,
+  onOpenContact,
 }: PlaceClientRelationshipModuleProps) {
-  const openOnlyReceivables = openReceivables.filter((receivable) => receivable.status === "open");
+  const [segment, setSegment] = useState<"all" | "followups" | "leads" | "stale">("all");
+  const [showAll, setShowAll] = useState(false);
+
+  const relationshipRows = useMemo(() => {
+    const rows = [
+      ...followUpContacts.map((contact) => ({
+        contact,
+        detail: [contact.nextContactOn ? `Retorno ${contact.nextContactOn}` : "Retorno pendente", contact.ownerLabel || "sem responsavel"].join(" | "),
+        priority: 0,
+        status: "Follow-up",
+        type: "followups" as const,
+      })),
+      ...leadContacts.map((contact) => ({
+        contact,
+        detail: [contact.source || "sem origem", contact.ownerLabel || "sem responsavel"].join(" | "),
+        priority: 1,
+        status: "Novo lead",
+        type: "leads" as const,
+      })),
+      ...staleContacts.map((contact) => ({
+        contact,
+        detail: [contact.source || "sem origem", "sem proxima data"].join(" | "),
+        priority: 2,
+        status: "Parado",
+        type: "stale" as const,
+      })),
+    ];
+    const seen = new Set<string>();
+    return rows
+      .filter((row) => {
+        if (seen.has(row.contact.id)) return false;
+        seen.add(row.contact.id);
+        return segment === "all" || row.type === segment;
+      })
+      .sort((a, b) => a.priority - b.priority || a.contact.name.localeCompare(b.contact.name));
+  }, [followUpContacts, leadContacts, segment, staleContacts]);
+
+  const visibleRows = showAll ? relationshipRows : relationshipRows.slice(0, 12);
+  const hiddenCount = relationshipRows.length - visibleRows.length;
 
   return (
-    <WorkspaceGrid>
-      <WorkspaceCard
-        title="Rotina de relacionamento"
-        subtitle="Fila diaria para vender e reter"
-        value={followUpContacts.length + staleContacts.length + openReceivables.length}
-        metrics={relationshipSegments.map((segment) => `${segment.value} ${segment.label.toLowerCase()}`)}
-      >
-        <WorkspaceList>
-          {relationshipSegments.map((segment) => (
-            <span key={`crm-segment:${segment.label}`}>
-              <strong>{segment.label}</strong>
-              <small>{segment.detail}</small>
-            </span>
-          ))}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard title="Follow-ups de hoje" subtitle="Contatos que precisam de retorno" value={followUpContacts.length}>
-        <WorkspaceList>
-          {followUpContacts.slice(0, 5).map((contact) => (
-            <span key={`crm-followup:${contact.id}`}>
-              <strong>{contact.name}</strong>
-              <small>{[contact.interest, contact.ownerLabel || "sem responsavel", contact.phone].filter(Boolean).join(" | ")}</small>
-              <button type="button" onClick={() => onMarkContacted(contact)} disabled={busy}>
-                Marcar contatado
+    <div className="crm-relationship-workspace">
+      <div className="place-booking-head">
+        <strong>Fila de relacionamento</strong>
+        <span>{countLabel(relationshipRows.length, "acao aberta", "acoes abertas")}</span>
+      </div>
+      <WorkspaceMetrics items={relationshipSegments.map((item) => `${item.value} ${item.label.toLowerCase()}`)} />
+      <div className="billing-quick-actions secondary" aria-label="Filtros de relacionamento">
+        <button
+          type="button"
+          className={segment === "all" ? "primary" : ""}
+          onClick={() => {
+            setSegment("all");
+            setShowAll(false);
+          }}
+        >
+          Todos
+        </button>
+        <button
+          type="button"
+          className={segment === "followups" ? "primary" : ""}
+          onClick={() => {
+            setSegment("followups");
+            setShowAll(false);
+          }}
+        >
+          Follow-ups
+        </button>
+        <button
+          type="button"
+          className={segment === "leads" ? "primary" : ""}
+          onClick={() => {
+            setSegment("leads");
+            setShowAll(false);
+          }}
+        >
+          Leads
+        </button>
+        <button
+          type="button"
+          className={segment === "stale" ? "primary" : ""}
+          onClick={() => {
+            setSegment("stale");
+            setShowAll(false);
+          }}
+        >
+          Parados
+        </button>
+      </div>
+      <div className="place-booking-list">
+        {visibleRows.map(({ contact, detail, status, type }) => (
+          <EntityActionRow
+            key={`crm-relationship:${type}:${contact.id}`}
+            className={`crm-contact-row ${type === "followups" ? "due" : contact.status}`}
+            title={contact.name}
+            context={[contact.interest || "Sem interesse", detail].filter(Boolean).join(" | ")}
+            detail={contact.phone || contact.email || "Sem telefone/email"}
+            status={status}
+            primaryAction={
+              <button type="button" className="primary" onClick={() => onOpenContact(contact)} disabled={busy}>
+                {type === "followups" ? "Registrar retorno" : type === "stale" ? "Agendar contato" : "Registrar contato"}
               </button>
-            </span>
-          ))}
-          {!followUpContacts.length ? <span>Sem follow-up vencido.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard title="Leads parados" subtitle="Sem historico e sem proxima data" value={staleContacts.length}>
-        <WorkspaceList>
-          {staleContacts.slice(0, 5).map((contact) => (
-            <span key={`crm-stale:${contact.id}`}>
-              <strong>{contact.name}</strong>
-              <small>{[contact.interest, contact.source, contact.phone].filter(Boolean).join(" | ") || "Sem detalhes cadastrados"}</small>
-              <button type="button" onClick={() => onScheduleContact(contact)} disabled={busy}>
-                Agendar contato
-              </button>
-            </span>
-          ))}
-          {!staleContacts.length ? <span>Sem lead parado.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard title="Cobrancas pendentes" subtitle="Clientes que precisam de lembrete" value={openOnlyReceivables.length}>
-        <WorkspaceList>
-          {openOnlyReceivables.slice(0, 5).map((receivable) => (
-            <EntityActionRow
-              key={`crm-receivable:${receivable.id}`}
-              className="finance-receivable-row open"
-              title={receivable.title}
-              context={receivable.subtitle}
-              detail={formatMoneyFromCents(receivable.amountCents)}
-              status="Em aberto"
-              primaryAction={
+            }
+            actions={
+              contact.phone ? (
                 <button
-                  className="primary"
                   type="button"
-                  onClick={() => onCreatePaymentReminder(receivable.targetType, receivable.targetId, receivable.billingPeriod, receivable.reminder)}
+                  className="secondary"
+                  onClick={() => window.open(`https://wa.me/${contact.phone.replace(/\D/g, "")}`, "_blank", "noopener,noreferrer")}
                   disabled={busy}
                 >
-                  Enviar lembrete
+                  WhatsApp
                 </button>
-              }
-            >
-              <small>{receivable.billingPeriod ? `Periodo ${receivable.billingPeriod}` : "Pagamento em aberto"}</small>
-            </EntityActionRow>
-          ))}
-          {!openOnlyReceivables.length ? <span>Sem cobranca pendente.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-      {openReceivables.length ? (
-        <WorkspaceCard title="Acoes de cobranca" subtitle="Atalhos por intencao real" value={openReceivables.length}>
-          <WorkspaceList>
-            {membershipReceivables.length ? (
-              <EntityActionRow
-                className="billing-segment-row"
-                title="Cobrar socios"
-                context={countLabel(membershipReceivables.length, "pendencia", "pendencias")}
-                detail="Mensalidades de socio"
-                status="Pendente"
-                primaryAction={
-                  <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy}>
-                    Enviar lembrete
-                  </button>
-                }
-              />
-            ) : null}
-            {academyReceivables.length ? (
-              <EntityActionRow
-                className="billing-segment-row"
-                title="Cobrar alunos"
-                context={countLabel(academyReceivables.length, "pendencia", "pendencias")}
-                detail="Mensalidades da academia"
-                status="Pendente"
-                primaryAction={
-                  <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy}>
-                    Enviar lembrete
-                  </button>
-                }
-              />
-            ) : null}
-            <EntityActionRow
-              className="billing-segment-row"
-              title="Cobrar todos em aberto"
-              context={countLabel(openReceivables.length, "pendencia", "pendencias")}
-              detail={formatMoneyFromCents(openReceivablesAmountCents)}
-              status="Pendente"
-              primaryAction={
-                <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(openReceivables)} disabled={busy}>
-                  Enviar lembrete
+              ) : null
+            }
+          />
+        ))}
+        {!relationshipRows.length ? (
+          <WorkspaceEmptyState
+            title="Nenhuma pendencia de relacionamento"
+            detail={segment === "all" ? "A rotina de clientes esta em dia agora." : "Este filtro nao tem contatos aguardando acao."}
+            action={
+              segment === "all" ? null : (
+                <button type="button" onClick={() => setSegment("all")}>
+                  Ver todos
                 </button>
-              }
-            />
-          </WorkspaceList>
-        </WorkspaceCard>
-      ) : null}
-    </WorkspaceGrid>
+              )
+            }
+          />
+        ) : null}
+        {hiddenCount > 0 ? (
+          <button type="button" className="secondary" onClick={() => setShowAll(true)}>
+            Ver {hiddenCount} {hiddenCount === 1 ? "acao restante" : "acoes restantes"}
+          </button>
+        ) : null}
+      </div>
+    </div>
   );
 }
