@@ -74,10 +74,19 @@ Regras:
 - Local deve aceitar autocomplete por nome.
 - Se local nao for escolhido, a busca pode retornar qualquer local compativel com UF/cidade/data/hora.
 - Piso e dado de quadra, nao so texto visual; deve existir no cadastro da quadra e no filtro publico.
+- O filtro de horario deve aceitar horas cheias e tambem atalhos de periodo: qualquer horario, manha, tarde e noite.
+- A reserva publica deve evitar meia hora enquanto o produto nao tiver uma razao operacional clara para isso.
 - Resultados devem mostrar somente quadras livres acionaveis para o horario pesquisado.
 - A confirmacao deve usar o perfil logado como identidade da reserva.
 - Nome e telefone nao devem parecer novo cadastro duplicado; telefone so deve ser pedido se o perfil nao tiver contato.
 - Apos solicitar, feedback deve explicar que a reserva fica pendente para aprovacao na agenda do local.
+
+Proximo estado desejado:
+
+- Se o jogador filtrar por UF/cidade/data sem escolher local, mostrar cards enxutos de locais com horarios livres.
+- Ao escolher um local, abrir uma agenda visual por quadra.
+- Em mobile, essa agenda deve usar carrossel/seletor por quadra, com horas cheias em linhas acionaveis.
+- O jogador escolhe o slot visualmente e so depois confirma.
 
 Nao pode aparecer:
 

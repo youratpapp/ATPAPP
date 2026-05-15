@@ -82,6 +82,54 @@ Risco restante:
 - a lista de horas ainda usa opcoes padrao de operacao; a disponibilidade real e validada na busca/RPC no momento da pesquisa.
 - validacao visual por Playwright ficou limitada porque o ambiente local redirecionou para login sem sessao QA ativa.
 
+### [x] PLAYER-UX-03C - Polir filtro de reserva e busca por periodo
+
+Status: `[x]` concluido em 2026-05-15
+
+Contexto:
+
+- O campo `Data` ainda sobrepunha visualmente o campo `Hora`.
+- O botao textual de buscar tomava espaco demais no grid.
+- O jogador precisava escolher uma hora exata antes de entender a disponibilidade.
+
+Resultado:
+
+- grid do filtro de reserva reorganizado em 12 colunas com spans explicitos para evitar sobreposicao;
+- botao textual foi substituido por botao compacto com icone de busca;
+- filtro de hora passou a aceitar `Qualquer horario`, `Manha`, `Tarde`, `Noite` e horas cheias;
+- discovery de reserva busca disponibilidade em horas cheias e retorna o primeiro horario livre por quadra;
+- cards de resultado exibem data/hora sugerida;
+- fluxo publico de reserva passou a usar apenas horas cheias e duracoes de 1h ou 2h.
+
+Validacao:
+
+- `npm run lint`;
+- `npm run build`.
+
+### [>] PLAYER-UX-03D - Calendario de quadras por local no fluxo do jogador
+
+Status: `[>]` proximo sprint recomendado
+
+Objetivo:
+
+- Evoluir a reserva publica para um fluxo visual: filtrar contexto, escolher local, ver calendario de quadras e tocar no horario.
+
+Especificacao:
+
+- Com `UF + Cidade + Data` e sem local selecionado, mostrar cards de locais com resumo de disponibilidade: nome, cidade, pisos, menor preco e proximos horarios livres.
+- Ao selecionar um local, abrir uma visualizacao propria de agenda por quadra.
+- A agenda deve priorizar mobile: carrossel horizontal por quadra ou seletor de quadra, com linhas de horas cheias.
+- Cada linha representa uma hora; slot livre e acionavel, ocupado fica neutro/indisponivel.
+- Ao tocar em um slot livre, abrir confirmacao curta vinculada ao perfil.
+- Nao misturar neste fluxo aulas, planos, jogos abertos ou beneficios.
+- Backend deve continuar usando `app_search_available_courts`/`app_create_court_booking`; se necessario, criar RPC agregada para disponibilidade do dia por local.
+
+Fora de escopo:
+
+- regras financeiras novas;
+- reserva de meia hora;
+- dados administrativos do local no Player App.
+
 ### [x] QA-CURRENT-P0-01 - Alinhar Supabase alvo com migrations/seeds da reestruturacao
 
 Status: `[x]` concluido em 2026-05-15

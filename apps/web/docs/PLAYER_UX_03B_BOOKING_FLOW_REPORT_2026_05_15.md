@@ -22,6 +22,9 @@ Corrigir a experiencia de reserva publica de quadra no Player App sem reabrir a 
 - UF e cidade agora sao listas derivadas de locais com quadras ativas;
 - local usa autocomplete com nomes cadastrados;
 - piso foi exposto no filtro e aplicado aos resultados;
+- hora aceita `Qualquer horario`, `Manha`, `Tarde`, `Noite` e horas cheias;
+- busca por periodo retorna o primeiro horario livre por quadra e mostra esse horario no card;
+- botao textual de busca foi substituido por um botao compacto com icone;
 - cadastro de quadra na gestao permite informar piso;
 - fluxo publico de reserva mostra a identidade vinculada ao perfil logado;
 - telefone so aparece como complemento se o perfil nao tiver contato;
@@ -50,5 +53,5 @@ Corrigir a experiencia de reserva publica de quadra no Player App sem reabrir a 
 
 ## Riscos Restantes
 
-- horarios do filtro ainda usam grade padrao; a disponibilidade real e confirmada pela busca/RPC.
+- a experiencia ideal ainda deve evoluir para calendario visual por quadra depois da escolha do local.
 - validacao visual automatizada nao foi concluida porque a sessao Playwright local foi redirecionada para login sem sessao QA ativa.

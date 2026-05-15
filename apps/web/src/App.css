@@ -12667,7 +12667,35 @@ button:disabled {
 }
 
 .places-filter-grid.court {
-  grid-template-columns: 76px minmax(132px, 0.9fr) minmax(180px, 1.25fr) minmax(118px, 0.8fr);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.places-filter-grid.court .court-filter-state {
+  grid-column: span 1;
+}
+
+.places-filter-grid.court .court-filter-city {
+  grid-column: span 3;
+}
+
+.places-filter-grid.court .court-filter-place {
+  grid-column: span 5;
+}
+
+.places-filter-grid.court .court-filter-surface {
+  grid-column: span 3;
+}
+
+.places-filter-grid.court .court-filter-date {
+  grid-column: span 3;
+}
+
+.places-filter-grid.court .court-filter-time {
+  grid-column: span 4;
+}
+
+.places-filter-grid.court .court-filter-duration {
+  grid-column: span 4;
 }
 
 .places-filter-grid.classes {
@@ -12693,7 +12721,16 @@ button:disabled {
 }
 
 .places-filter-grid.court button {
+  align-items: center;
+  display: inline-flex;
+  grid-column: span 1;
+  justify-content: center;
   width: 100%;
+}
+
+.places-filter-search-button svg {
+  height: 20px;
+  width: 20px;
 }
 
 .places-filter-grid.classes button {
@@ -12996,6 +13033,10 @@ button:disabled {
   .places-filter-grid.classes,
   .places-filter-grid.matches {
     grid-template-columns: 1fr;
+  }
+
+  .places-filter-grid.court > * {
+    grid-column: 1 / -1;
   }
 
   .places-discovery-filter {

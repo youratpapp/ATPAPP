@@ -212,6 +212,7 @@ type DiscoveryAcademyClassGroup = {
   place: Place;
   primary: DiscoveryAcademyClass;
 };
+type DiscoveryAvailableCourtWithTime = DiscoveryAvailableCourt & { discoveryTime: string };
 type OpenMatchDiscoveryFilter = {
   query: string;
   city: string;
@@ -312,6 +313,16 @@ const BOOKING_TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
   const minute = minutes % 60;
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 });
+
+const BOOKING_FULL_HOUR_OPTIONS = BOOKING_TIME_OPTIONS.filter((time) => time.endsWith(":00"));
+
+const COURT_DISCOVERY_TIME_OPTIONS = [
+  { label: "Qualquer horario", value: "any" },
+  { label: "Manha", value: "morning" },
+  { label: "Tarde", value: "afternoon" },
+  { label: "Noite", value: "night" },
+  ...BOOKING_FULL_HOUR_OPTIONS.map((time) => ({ label: time, value: time })),
+];
 
 const STAFF_ROLE_LABELS: Record<"owner" | PlaceStaffMember["role"], string> = {
   owner: "Admin",
@@ -513,6 +524,18 @@ function courtSurfaceMatches(court: { surface: string }, surface: string): boole
 function combineDateAndTime(date: string, time: string): string {
   if (!date || !time) return "";
   return `${date}T${time.length === 5 ? time : time.slice(0, 5)}`;
+}
+
+function courtDiscoveryTimesFor(value: string): string[] {
+  if (value === "any" || !value) return BOOKING_FULL_HOUR_OPTIONS;
+  if (value === "morning") return BOOKING_FULL_HOUR_OPTIONS.filter((time) => Number(time.slice(0, 2)) < 12);
+  if (value === "afternoon") return BOOKING_FULL_HOUR_OPTIONS.filter((time) => Number(time.slice(0, 2)) >= 12 && Number(time.slice(0, 2)) < 18);
+  if (value === "night") return BOOKING_FULL_HOUR_OPTIONS.filter((time) => Number(time.slice(0, 2)) >= 18);
+  return [value];
+}
+
+function courtDiscoveryTimeLabel(value: string): string {
+  return COURT_DISCOVERY_TIME_OPTIONS.find((option) => option.value === value)?.label || value;
 }
 
 function addMinutesToDateTimeLocal(value: string, minutes: number): string {
@@ -871,7 +894,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     state: normalizeStateUf(profile?.state || ""),
     surface: "",
     date: todayDateInputValue(),
-    time: "18:00",
+    time: "any",
     durationMinutes: "60",
   }));
   const [directoryFilter, setDirectoryFilter] = useState<DirectoryDiscoveryFilter>(() => ({
@@ -880,7 +903,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     state: normalizeStateUf(profile?.state || ""),
   }));
   const [courtDiscoveryResultsByPlace, setCourtDiscoveryResultsByPlace] = useState<Record<string, PlaceCourtAvailabilitySummary>>({});
-  const [courtDiscoveryCourtsByPlace, setCourtDiscoveryCourtsByPlace] = useState<Record<string, DiscoveryAvailableCourt[]>>({});
+  const [courtDiscoveryCourtsByPlace, setCourtDiscoveryCourtsByPlace] = useState<Record<string, DiscoveryAvailableCourtWithTime[]>>({});
   const [courtDiscoverySearchKey, setCourtDiscoverySearchKey] = useState("");
   const [courtDiscoveryBusy, setCourtDiscoveryBusy] = useState(false);
   const [classDiscoveryFilter, setClassDiscoveryFilter] = useState<ClassDiscoveryFilter>(() => ({
@@ -2908,26 +2931,36 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setClassDiscoverySearchKey("");
   };
   const runCourtDiscoverySearch = async () => {
-    const startsAt = combineDateAndTime(courtDiscoveryFilter.date, courtDiscoveryFilter.time);
+    const searchTimes = courtDiscoveryTimesFor(courtDiscoveryFilter.time);
     const duration = Math.max(30, Math.min(240, Number(courtDiscoveryFilter.durationMinutes) || 60));
-    const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
-    if (!startsAt || !endsAt) {
-      setFeedback({ kind: "error", text: "Escolha data e horario para buscar quadras livres." });
+    if (!courtDiscoveryFilter.date || !searchTimes.length) {
+      setFeedback({ kind: "error", text: "Escolha uma data para buscar quadras livres." });
       return;
     }
     setCourtDiscoveryBusy(true);
     setFeedback(null);
     try {
-      const rows = (
-        await searchAvailableCourtsForDiscovery({
-          city: courtDiscoveryFilter.city,
-          state: courtDiscoveryFilter.state,
-          query: courtDiscoveryFilter.query,
-          startsAt: new Date(startsAt).toISOString(),
-          endsAt: new Date(endsAt).toISOString(),
+      const rowsByTime = await Promise.all(
+        searchTimes.map(async (time) => {
+          const startsAtForTime = combineDateAndTime(courtDiscoveryFilter.date, time);
+          const endsAtForTime = addMinutesToDateTimeLocal(startsAtForTime, duration);
+          const rows = await searchAvailableCourtsForDiscovery({
+            city: courtDiscoveryFilter.city,
+            state: courtDiscoveryFilter.state,
+            query: courtDiscoveryFilter.query,
+            startsAt: new Date(startsAtForTime).toISOString(),
+            endsAt: new Date(endsAtForTime).toISOString(),
+          });
+          return rows.filter((court) => courtSurfaceMatches(court, courtDiscoveryFilter.surface)).map((court) => ({ ...court, discoveryTime: time }));
         })
-      ).filter((court) => courtSurfaceMatches(court, courtDiscoveryFilter.surface));
-      const courtsByPlace = rows.reduce<Record<string, DiscoveryAvailableCourt[]>>((acc, court) => {
+      );
+      const firstCourtSlotByCourt = new Map<string, DiscoveryAvailableCourtWithTime>();
+      rowsByTime.flat().forEach((court) => {
+        const key = `${court.placeId}:${court.id}`;
+        if (!firstCourtSlotByCourt.has(key)) firstCourtSlotByCourt.set(key, court);
+      });
+      const rows = Array.from(firstCourtSlotByCourt.values());
+      const courtsByPlace = rows.reduce<Record<string, DiscoveryAvailableCourtWithTime[]>>((acc, court) => {
         const list = acc[court.placeId] || [];
         list.push(court);
         acc[court.placeId] = list;
@@ -2948,19 +2981,30 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setCourtDiscoveryResultsByPlace(summaries);
       setCourtDiscoverySearchKey(courtDiscoveryKey);
       if (!rows.length) {
-        setFeedback({ kind: "info", text: "Nenhuma quadra livre para este filtro. Ajuste cidade, data ou horario." });
+        setFeedback({ kind: "info", text: "Nenhuma quadra livre para este filtro. Ajuste cidade, data, periodo ou horario." });
       }
     } catch (err) {
       const candidatePlaces = visiblePlaces.filter((place) => placeMatchesDiscoveryText(place, courtDiscoveryFilter) && placeHasDiscoveryCourt(place));
       const fallbackRows = (
         await Promise.all(
           candidatePlaces.map(async (place) => {
-            const rows = await searchAvailableCourts({
-              placeId: place.id,
-              startsAt: new Date(startsAt).toISOString(),
-              endsAt: new Date(endsAt).toISOString(),
-            }).catch(() => [] as AvailableCourt[]);
-            const matchingRows = rows.filter((court) => courtSurfaceMatches(court, courtDiscoveryFilter.surface));
+            const rowsByTime = await Promise.all(
+              searchTimes.map(async (time) => {
+                const startsAtForTime = combineDateAndTime(courtDiscoveryFilter.date, time);
+                const endsAtForTime = addMinutesToDateTimeLocal(startsAtForTime, duration);
+                const rows = await searchAvailableCourts({
+                  placeId: place.id,
+                  startsAt: new Date(startsAtForTime).toISOString(),
+                  endsAt: new Date(endsAtForTime).toISOString(),
+                }).catch(() => [] as AvailableCourt[]);
+                return rows.filter((court) => courtSurfaceMatches(court, courtDiscoveryFilter.surface)).map((court) => ({ ...court, discoveryTime: time }));
+              })
+            );
+            const firstCourtSlotByCourt = new Map<string, AvailableCourt & { discoveryTime: string }>();
+            rowsByTime.flat().forEach((court) => {
+              if (!firstCourtSlotByCourt.has(court.id)) firstCourtSlotByCourt.set(court.id, court);
+            });
+            const matchingRows = Array.from(firstCourtSlotByCourt.values());
             if (!matchingRows.length) return null;
             return {
               summary: {
@@ -2974,11 +3018,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 placeName: place.name,
                 placeCity: place.city,
                 placeState: place.state,
-              } satisfies DiscoveryAvailableCourt)),
+              } satisfies DiscoveryAvailableCourtWithTime)),
             };
           })
         )
-      ).filter(Boolean) as Array<{ summary: PlaceCourtAvailabilitySummary; courts: DiscoveryAvailableCourt[] }>;
+      ).filter(Boolean) as Array<{ summary: PlaceCourtAvailabilitySummary; courts: DiscoveryAvailableCourtWithTime[] }>;
       setCourtDiscoveryCourtsByPlace(Object.fromEntries(fallbackRows.map((row) => [row.summary.placeId, row.courts])));
       setCourtDiscoveryResultsByPlace(Object.fromEntries(fallbackRows.map((row) => [row.summary.placeId, row.summary])));
       setCourtDiscoverySearchKey(courtDiscoveryKey);
@@ -3147,16 +3191,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     ? directoryPlaces.flatMap((place) => (classDiscoveryClassesByPlace[place.id] || []).map((academyClass) => ({ academyClass, place })))
     : [];
   const classDiscoveryAvailableGroups = groupDiscoveryAcademyClasses(classDiscoveryAvailableRows);
-  const courtDiscoveryStartsAt = combineDateAndTime(courtDiscoveryFilter.date, courtDiscoveryFilter.time);
+  const courtDiscoveryExactTime = /^\d{2}:\d{2}$/.test(courtDiscoveryFilter.time) ? courtDiscoveryFilter.time : "";
+  const courtDiscoveryStartsAt = courtDiscoveryExactTime ? combineDateAndTime(courtDiscoveryFilter.date, courtDiscoveryExactTime) : "";
   const courtDiscoveryDuration = Math.max(30, Math.min(240, Number(courtDiscoveryFilter.durationMinutes) || 60));
   const courtDiscoveryEndsAt = addMinutesToDateTimeLocal(courtDiscoveryStartsAt, courtDiscoveryDuration);
   const courtDiscoveryWhenLabel =
-    courtDiscoveryStartsAt && courtDiscoveryEndsAt
+    courtDiscoveryExactTime && courtDiscoveryStartsAt && courtDiscoveryEndsAt
       ? `${courtDiscoveryFilter.date.split("-").reverse().join("/")} das ${courtDiscoveryFilter.time} as ${courtDiscoveryEndsAt.slice(11, 16)}`
+      : courtDiscoveryFilter.date
+      ? `${courtDiscoveryFilter.date.split("-").reverse().join("/")} - ${courtDiscoveryTimeLabel(courtDiscoveryFilter.time)}`
       : "";
-  const goToCourtReservation = (placeId: string, courtId: string) => {
-    const startsAt = courtDiscoveryStartsAt;
-    const endsAt = courtDiscoveryEndsAt;
+  const goToCourtReservation = (placeId: string, courtId: string, time?: string) => {
+    const selectedTime = time || courtDiscoveryExactTime || "18:00";
+    const startsAt = combineDateAndTime(courtDiscoveryFilter.date, selectedTime);
+    const endsAt = addMinutesToDateTimeLocal(startsAt, courtDiscoveryDuration);
     const params = new URLSearchParams({ intent: "booking", courtId });
     if (startsAt) params.set("startsAt", new Date(startsAt).toISOString());
     if (endsAt) params.set("endsAt", new Date(endsAt).toISOString());
@@ -3318,7 +3366,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             <b>{courtDiscoveryHasAvailability ? countLabel(courtDiscoveryAvailableRows.length, "quadra livre", "quadras livres") : "Busca por horario"}</b>
           </div>
           <div className="places-filter-grid court">
-            <label>
+            <label className="court-filter-state">
               UF
               <select
                 value={courtDiscoveryFilter.state}
@@ -3332,7 +3380,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ))}
               </select>
             </label>
-            <label>
+            <label className="court-filter-city">
               Cidade
               <select
                 value={courtDiscoveryFilter.city}
@@ -3346,7 +3394,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ))}
               </select>
             </label>
-            <label>
+            <label className="court-filter-place">
               Local
               <input
                 value={courtDiscoveryFilter.query}
@@ -3360,7 +3408,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ))}
               </datalist>
             </label>
-            <label>
+            <label className="court-filter-surface">
               Piso
               <select value={courtDiscoveryFilter.surface} onChange={(event) => updateCourtDiscoveryFilter({ surface: event.target.value })}>
                 {courtDiscoverySurfaceOptions.map((option) => (
@@ -3370,7 +3418,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ))}
               </select>
             </label>
-            <label>
+            <label className="court-filter-date">
               Data
               <input
                 type="date"
@@ -3378,29 +3426,36 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 onChange={(event) => updateCourtDiscoveryFilter({ date: event.target.value })}
               />
             </label>
-            <label>
+            <label className="court-filter-time">
               Hora
               <select value={courtDiscoveryFilter.time} onChange={(event) => updateCourtDiscoveryFilter({ time: event.target.value })}>
-                {BOOKING_TIME_OPTIONS.map((time) => (
-                  <option key={`court-discovery-time:${time}`} value={time}>
-                    {time}
+                {COURT_DISCOVERY_TIME_OPTIONS.map((option) => (
+                  <option key={`court-discovery-time:${option.value}`} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
             </label>
-            <label>
+            <label className="court-filter-duration">
               Duracao
               <select
                 value={courtDiscoveryFilter.durationMinutes}
                 onChange={(event) => updateCourtDiscoveryFilter({ durationMinutes: event.target.value })}
               >
                 <option value="60">1h</option>
-                <option value="90">1h30</option>
                 <option value="120">2h</option>
               </select>
             </label>
-            <button className="primary" onClick={() => void runCourtDiscoverySearch()} disabled={courtDiscoveryBusy}>
-              {courtDiscoveryBusy ? "Buscando..." : "Buscar quadras livres"}
+            <button
+              className="primary places-filter-search-button"
+              onClick={() => void runCourtDiscoverySearch()}
+              disabled={courtDiscoveryBusy}
+              aria-label={courtDiscoveryBusy ? "Buscando quadras livres" : "Buscar quadras livres"}
+              title={courtDiscoveryBusy ? "Buscando..." : "Buscar quadras livres"}
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                <path d="M10.8 5.2a5.6 5.6 0 1 1 0 11.2 5.6 5.6 0 0 1 0-11.2Zm0-2a7.6 7.6 0 1 0 4.8 13.5l3.4 3.4a1 1 0 0 0 1.4-1.4L17 15.3A7.6 7.6 0 0 0 10.8 3.2Z" fill="currentColor" />
+              </svg>
             </button>
           </div>
         </section>
@@ -3823,7 +3878,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <button
                   key={`${place.id}:${court.id}`}
                   className="court-discovery-card"
-                  onClick={() => goToCourtReservation(place.id, court.id)}
+                  onClick={() => goToCourtReservation(place.id, court.id, court.discoveryTime)}
                 >
                   <span className="court-discovery-kicker">{[place.city, place.state].filter(Boolean).join(" - ") || "Local"}</span>
                   <strong>{court.name}</strong>
@@ -3832,6 +3887,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <span>{courtSurfaceLabel(court.surface)}</span>
                     <b>{formatMoneyFromCents(court.effectiveFeeCents || court.bookingFeeCents || 0)}</b>
                   </div>
+                  <em>{courtDiscoveryFilter.date.split("-").reverse().join("/")} as {court.discoveryTime}</em>
                   <em>{court.requiresApproval ? "Sujeita a confirmacao" : "Confirmacao imediata"}</em>
                   <span className="court-discovery-cta">Solicitar esta quadra</span>
                 </button>

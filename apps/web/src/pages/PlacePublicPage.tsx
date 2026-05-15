@@ -30,17 +30,14 @@ type Props = {
 const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
 
-const BOOKING_TIME_OPTIONS = Array.from({ length: 35 }, (_, index) => {
-  const minutes = 6 * 60 + index * 30;
-  const hour = Math.floor(minutes / 60);
-  const minute = minutes % 60;
+const BOOKING_TIME_OPTIONS = Array.from({ length: 17 }, (_, index) => {
+  const hour = 6 + index;
+  const minute = 0;
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 });
 
 const BOOKING_DURATION_OPTIONS = [
-  { label: "30 min", value: 30 },
   { label: "1h", value: 60 },
-  { label: "1h30", value: 90 },
   { label: "2h", value: 120 },
 ];
 

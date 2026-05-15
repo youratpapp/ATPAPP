@@ -66,6 +66,7 @@ Atualizacao 2026-05-15:
 
 - o fluxo Player de reservar quadra em `/locais?intent=booking` agora usa filtro guiado por UF, cidade, local, piso, data, hora e duracao;
 - UF/cidade/local sao derivados de locais com quadras ativas, reduzindo escolhas que nao levam a reserva real;
+- a busca de reserva aceita qualquer horario, periodo do dia e horas cheias, retornando a primeira disponibilidade por quadra;
 - o piso da quadra passou a ser dado operacional tambem no cadastro de quadra da gestao;
 - a reserva publica fica vinculada ao perfil logado; nome/contato deixam de parecer cadastro duplicado e telefone so aparece como complemento quando o perfil nao tem contato;
 - solicitacoes publicas de reserva continuam entrando como pendentes em `court_bookings` via `createCourtBooking`/RPC e devem ser aprovadas pela gestao em `Gestao > Agenda > Reservas pendentes`.
