@@ -1989,12 +1989,85 @@ export function HomePage({ user, profile }: Props) {
     setFeedback({ kind: "success", text: "Lembrete aberto no WhatsApp." });
   };
 
+  const notificationPanel = (
+    <section className="home-notification-panel">
+      <div className="section-title">
+        <h2>Notificacoes</h2>
+        <button className="link" onClick={() => setNotificationsOpen(false)}>
+          Fechar
+        </button>
+      </div>
+      {staffInviteCount > 0 || priorityItems.length > 0 ? (
+        <>
+          {staffInviteCount > 0 ? (
+            <div className="home-notification-group">
+              <p className="home-notification-heading">Convites</p>
+              {tournamentStaffInvites.map((invite) => (
+                <TournamentStaffInviteCard
+                  key={`staff-invite:${invite.id}`}
+                  invite={invite}
+                  busy={staffInviteBusyId === invite.id}
+                  onAccept={() => void acceptStaffInvite(invite)}
+                  onDecline={() => void declineStaffInvite(invite)}
+                />
+              ))}
+              {placeStaffInvites.map((invite) => (
+                <PlaceStaffInviteCard
+                  key={`place-staff-invite:${invite.id}`}
+                  invite={invite}
+                  busy={staffInviteBusyId === invite.id}
+                  onAccept={() => void acceptLocalStaffInvite(invite)}
+                  onDecline={() => void declineLocalStaffInvite(invite)}
+                />
+              ))}
+            </div>
+          ) : null}
+          {urgentPriorityItems.length > 0 ? (
+            <div className="home-notification-group">
+              <p className="home-notification-heading">Pendencias</p>
+              {urgentPriorityItems.slice(0, 5).map((item) => (
+                <PriorityCard
+                  key={`bell-urgent:${item.id}`}
+                  item={item}
+                  onOpen={() => {
+                    setNotificationsOpen(false);
+                    navigate(item.targetPath);
+                  }}
+                />
+              ))}
+            </div>
+          ) : null}
+          {followUpPriorityItems.length > 0 ? (
+            <div className="home-notification-group">
+              <p className="home-notification-heading">Acompanhar</p>
+              {followUpPriorityItems.slice(0, urgentPriorityItems.length > 0 ? 3 : 5).map((item) => (
+                <PriorityCard
+                  key={`bell-follow:${item.id}`}
+                  item={item}
+                  onOpen={() => {
+                    setNotificationsOpen(false);
+                    navigate(item.targetPath);
+                  }}
+                />
+              ))}
+            </div>
+          ) : null}
+        </>
+      ) : (
+        <p className="subtle">Nada urgente agora.</p>
+      )}
+    </section>
+  );
+
   return (
     <AppShell
       user={user}
       profile={profile}
       bellCount={notificationCount}
+      bellOpen={notificationsOpen}
+      bellPanel={notificationPanel}
       onBellClick={() => setNotificationsOpen((open) => !open)}
+      onBellClose={() => setNotificationsOpen(false)}
     >
       <section className="home-player-os" aria-label="Resumo do jogador">
         <div className="home-today-panel">
@@ -2064,76 +2137,6 @@ export function HomePage({ user, profile }: Props) {
       {loading ? <p className="subtle">Carregando...</p> : null}
       {error ? <p className="feedback error">{error}</p> : null}
       {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
-
-      {notificationsOpen ? (
-        <section className="home-notification-panel">
-          <div className="section-title">
-            <h2>Notificacoes</h2>
-            <button className="link" onClick={() => setNotificationsOpen(false)}>
-              Fechar
-            </button>
-          </div>
-          {staffInviteCount > 0 || priorityItems.length > 0 ? (
-            <>
-              {staffInviteCount > 0 ? (
-                <div className="home-notification-group">
-                  <p className="home-notification-heading">Convites</p>
-                  {tournamentStaffInvites.map((invite) => (
-                    <TournamentStaffInviteCard
-                      key={`staff-invite:${invite.id}`}
-                      invite={invite}
-                      busy={staffInviteBusyId === invite.id}
-                      onAccept={() => void acceptStaffInvite(invite)}
-                      onDecline={() => void declineStaffInvite(invite)}
-                    />
-                  ))}
-                  {placeStaffInvites.map((invite) => (
-                    <PlaceStaffInviteCard
-                      key={`place-staff-invite:${invite.id}`}
-                      invite={invite}
-                      busy={staffInviteBusyId === invite.id}
-                      onAccept={() => void acceptLocalStaffInvite(invite)}
-                      onDecline={() => void declineLocalStaffInvite(invite)}
-                    />
-                  ))}
-                </div>
-              ) : null}
-              {urgentPriorityItems.length > 0 ? (
-                <div className="home-notification-group">
-                  <p className="home-notification-heading">Pendencias</p>
-                  {urgentPriorityItems.slice(0, 5).map((item) => (
-                    <PriorityCard
-                      key={`bell-urgent:${item.id}`}
-                      item={item}
-                      onOpen={() => {
-                        setNotificationsOpen(false);
-                        navigate(item.targetPath);
-                      }}
-                    />
-                  ))}
-                </div>
-              ) : null}
-              {followUpPriorityItems.length > 0 ? (
-                <div className="home-notification-group">
-                  <p className="home-notification-heading">Acompanhar</p>
-                  {followUpPriorityItems.slice(0, urgentPriorityItems.length > 0 ? 3 : 5).map((item) => (
-                    <PriorityCard
-                      key={`bell-follow:${item.id}`}
-                      item={item}
-                      onOpen={() => {
-                        setNotificationsOpen(false);
-                        navigate(item.targetPath);
-                      }}
-                    />
-                  ))}
-                </div>
-              ) : null}
-            </>
-          ) : (
-            <p className="subtle">Nada urgente agora.</p>
-          )}
-        </section>
-      ) : null}
 
       {!loading && !error ? (
         <>

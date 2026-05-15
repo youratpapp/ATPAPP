@@ -44,6 +44,39 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] PLAYER-UX-03E - Notificacoes em popover/sheet nativo do shell
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback visual da Home do jogador;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`;
+- `COMPONENT_GRAMMAR.md`.
+
+Contexto:
+
+- o sino de notificacoes abria um card comum no meio da Home;
+- o painel empurrava o conteudo e parecia uma nova secao da pagina, nao uma extensao do sino;
+- o comportamento quebrava a expectativa comum de web/mobile, onde notificacoes abrem em popover ancorado ou sheet.
+
+Resultado:
+
+- `AppShell` passou a aceitar `bellOpen`, `bellPanel` e `onBellClose`;
+- no desktop, notificacoes abrem em popover ancorado ao sino, com seta visual e fechamento por backdrop;
+- no mobile, o mesmo conteudo abre como bottom sheet com backdrop, sem alterar o layout da pagina;
+- a Home deixou de renderizar notificacoes como bloco inline e passa apenas o conteudo ao shell;
+- acoes internas continuam fechando o painel antes de navegar.
+
+Validacao:
+
+- `npm run lint`;
+- `npm run build`.
+
+Risco restante:
+
+- se outros shells/telas passarem a usar notificacoes no futuro, devem reutilizar o contrato `bellPanel` para manter o padrao.
+
 ### [x] PLAYER-UX-03B - Reserva publica guiada por disponibilidade e perfil
 
 Status: `[x]` concluido em 2026-05-15

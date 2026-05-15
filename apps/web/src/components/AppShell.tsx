@@ -12,6 +12,9 @@ type Props = {
   children: ReactNode;
   showHeader?: boolean;
   onBellClick?: () => void;
+  onBellClose?: () => void;
+  bellOpen?: boolean;
+  bellPanel?: ReactNode;
   bellCount?: number;
   mode?: AppSurfaceMode;
 };
@@ -33,7 +36,18 @@ function BellIcon() {
   );
 }
 
-export function AppShell({ user, profile, children, showHeader = true, onBellClick, bellCount = 0, mode }: Props) {
+export function AppShell({
+  user,
+  profile,
+  children,
+  showHeader = true,
+  onBellClick,
+  onBellClose,
+  bellOpen = false,
+  bellPanel,
+  bellCount = 0,
+  mode,
+}: Props) {
   const { pathname } = useLocation();
   const surfaceMode = mode ?? getRouteSurfaceMode(pathname);
   const displayName = profile?.displayName || user.email?.split("@")[0] || "Atleta";
@@ -57,10 +71,31 @@ export function AppShell({ user, profile, children, showHeader = true, onBellCli
             <div className="app-header-actions">
               <img src={logoSymbol} alt="ATP" className="app-header-mark" />
               {onBellClick ? (
-                <button className="icon-btn app-bell-btn" onClick={onBellClick} aria-label="Notificacoes">
-                  <BellIcon />
-                  {bellCount > 0 ? <span className="app-bell-badge">{Math.min(9, bellCount)}</span> : null}
-                </button>
+                <>
+                  <button
+                    className={`icon-btn app-bell-btn${bellOpen ? " active" : ""}`}
+                    onClick={onBellClick}
+                    aria-label="Notificacoes"
+                    aria-haspopup="dialog"
+                    aria-expanded={bellOpen}
+                  >
+                    <BellIcon />
+                    {bellCount > 0 ? <span className="app-bell-badge">{Math.min(9, bellCount)}</span> : null}
+                  </button>
+                  {bellOpen && bellPanel ? (
+                    <>
+                      <button
+                        type="button"
+                        className="app-notification-backdrop"
+                        aria-label="Fechar notificacoes"
+                        onClick={onBellClose ?? onBellClick}
+                      />
+                      <div className="app-notification-popover" role="dialog" aria-label="Notificacoes">
+                        {bellPanel}
+                      </div>
+                    </>
+                  ) : null}
+                </>
               ) : null}
             </div>
           </div>
