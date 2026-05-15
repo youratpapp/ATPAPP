@@ -44,6 +44,45 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] COMP-PUBLIC-02B - Torneio publico com abas limpas por intencao
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback para aplicar nos torneios o mesmo padrao reorganizado da liga;
+- feedback da rota publica de evento com menus duplicados e pagina longa;
+- `COMP-PUBLIC-02A`;
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Contexto:
+
+- o torneio publico ainda misturava hero, categorias, inscritos e conteudo da aba selecionada na mesma pagina;
+- `Evento`, `Categorias` e `Inscritos` funcionavam como ancoras, enquanto `Jogos`, `Classificacao` e `Chat` eram abas reais;
+- a lista de inscritos podia aparecer como bloco fixo mesmo quando o usuario queria ver jogos, classificacao ou chat;
+- o seletor de classe ficava implicito demais e podia trocar o contexto de outras areas sem clareza.
+
+Resultado:
+
+- a navegacao publica do torneio agora tem abas reais: `Evento`, `Categorias`, `Inscritos`, `Jogos`, `Classificacao` e `Chat`;
+- `Evento` mostra somente leitura publica, resumo, CTA e atalhos;
+- `Categorias` mostra somente categorias/classes do torneio;
+- `Inscritos` mostra somente jogadores publicados e filtrados pela classe ativa;
+- `Jogos`, `Classificacao` e `Chat` nao recebem mais hero, lista fixa ou blocos publicos anteriores acima do conteudo;
+- `Jogos`, `Classificacao` e `Inscritos` receberam filtro contextual de classe no topo, em rail horizontal quando houver muitas classes;
+- clicar em uma categoria abre o recorte de `Jogos` daquela classe, preservando a intencao selecionada;
+- o menu publico segue clicavel e arrastavel no mobile, sem transformar o torneio em pagina infinita.
+
+Validacao:
+
+- `npm run lint`;
+- `npm run build`.
+
+Risco restante:
+
+- a experiencia visual ainda deve ser conferida em browser mobile real para calibrar densidade e sticky CTA, mas a separacao funcional por aba ja esta aplicada.
+
 ### [x] COMP-SCORE-02 - Torneios com placar visual padronizado com a sala da liga
 
 Status: `[x]` concluido em 2026-05-15

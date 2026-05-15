@@ -1629,7 +1629,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       games_side2: computed.games2,
       winner_side: Number(computed.winnerSide),
       is_wo: f.isWo,
-      summary: f.summary.trim() || `Resolvido pelo admin: ${side1Name} ${computed.summaryScore} ${side2Name}`,
+      summary: f.summary.trim() || `${side1Name} ${computed.summaryScore} ${side2Name}`,
     };
     setBusy(true);
     setFeedback(null);

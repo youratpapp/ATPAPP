@@ -110,6 +110,7 @@ type Props = {
 };
 
 type TabKey = TournamentTabKey;
+type PublicTournamentTab = "evento" | "categorias" | "inscritos" | "jogos" | "classificacao" | "chat";
 
 type Feedback = { kind: "success" | "error" | "info"; text: string };
 
@@ -459,7 +460,7 @@ function WhatsAppAppIcon() {
 function scoreDetailToSubmissionText(detail: MatchScoreDetail, config: ClassData["config"]): string {
   const normalized = normalizeMatchScoreDetail(detail, config);
   if (isSuperTieBreakPointsMode(config)) {
-    return normalized.superTbA && normalized.superTbB ? `${normalized.superTbA}-${normalized.superTbB}` : "";
+    return normalized.superTbA && normalized.superTbB ? `STB ${normalized.superTbA}-${normalized.superTbB}` : "";
   }
 
   const parts: string[] = [];
@@ -467,14 +468,14 @@ function scoreDetailToSubmissionText(detail: MatchScoreDetail, config: ClassData
   for (let idx = 0; idx < count; idx += 1) {
     const set = normalized.sets[idx] ?? emptyScoreSet();
     if (!set.a || !set.b) continue;
-    parts.push(`${set.a}-${set.b}${set.tbA && set.tbB ? ` (${set.tbA}-${set.tbB})` : ""}`);
+    parts.push(`${set.a}/${set.b}${set.tbA && set.tbB ? ` (${set.tbA}-${set.tbB})` : ""}`);
   }
 
   if (shouldShowSuperTbInput(normalized, config) && normalized.superTbA && normalized.superTbB) {
-    parts.push(`${normalized.superTbA}-${normalized.superTbB}`);
+    parts.push(`STB ${normalized.superTbA}-${normalized.superTbB}`);
   }
 
-  return parts.join(" ");
+  return parts.join(" | ");
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -1178,6 +1179,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [tournament, setTournament] = useState<TournamentDetails | null>(null);
   const [classes, setClasses] = useState<LegacyClassRef[]>([]);
   const [activeClassKey, setActiveClassKey] = useState("");
+  const [publicActiveTab, setPublicActiveTab] = useState<PublicTournamentTab>("evento");
   const [agendaConfig, setAgendaConfig] = useState<AgendaConfig>(normalizeAgendaConfig(null));
   const [agenda, setAgenda] = useState<Agenda>(normalizeAgenda(null));
   const [agendaDirty, setAgendaDirty] = useState(false);
@@ -1747,6 +1749,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             id: `${item.categoryId}:${item.classId}:${participant.nome}:${index}`,
             categoryName: item.categoryName,
             className: item.className,
+            classKey: scopeClassKey(item.categoryId, item.classId),
             group: participant.grupo || "",
             name: String(participant.nome || "").trim(),
           }))
@@ -1754,6 +1757,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         .filter((participant) => participant.name)
         .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")),
     [playerClassesSummary]
+  );
+  const publicParticipantRowsForActiveClass = useMemo(
+    () =>
+      activeClass?.key
+        ? publicParticipantRows.filter((participant) => participant.classKey === activeClass.key)
+        : publicParticipantRows,
+    [activeClass?.key, publicParticipantRows]
   );
   const publicTournamentCta = useMemo(() => {
     if (!tournament) {
@@ -1884,8 +1894,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     );
   };
 
-  const scrollToPublicSection = (sectionId: string) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const goToPublicTab = (next: PublicTournamentTab) => {
+    setPublicActiveTab(next);
+    if (next === "jogos" || next === "classificacao" || next === "chat") {
+      goToTab(next);
+    }
   };
 
   const handlePublicTournamentCta = () => {
@@ -1895,8 +1908,45 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       return;
     }
     if (publicTournamentCta.action === "games") {
-      goToTab("jogos");
+      goToPublicTab("jogos");
     }
+  };
+
+  const renderPublicTournamentClassFilter = (title: string, detail: string) => {
+    if (publicClassCards.length < 2) return null;
+    return (
+      <section className="league-public-class-filter" aria-label="Filtro de classe do torneio">
+        <div>
+          <span>Classe</span>
+          <strong>{title}</strong>
+          <small>{detail}</small>
+        </div>
+        <label>
+          <span>Filtrar classe</span>
+          <select value={activeClass?.key || ""} onChange={(event) => setActiveClassKey(event.target.value)}>
+            {publicClassCards.map((item) => (
+              <option key={`public-filter-select:${item.key}`} value={item.key}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="league-public-class-chip-rail" aria-label="Classes disponiveis">
+          {publicClassCards.map((item) => (
+            <button
+              key={`public-filter:${item.key}`}
+              type="button"
+              className={item.active ? "active" : ""}
+              onClick={() => setActiveClassKey(item.key)}
+            >
+              <span>{item.categoryName}</span>
+              <strong>{item.className}</strong>
+              <small>{item.players} {item.players === 1 ? "inscrito" : "inscritos"}</small>
+            </button>
+          ))}
+        </div>
+      </section>
+    );
   };
 
   useEffect(() => {
@@ -1930,6 +1980,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     tournamentAdminPhase.primaryTab,
     tournamentId,
   ]);
+
+  useEffect(() => {
+    if (!isPublicTournamentReader) return;
+    if (forcedTab === "jogos" || forcedTab === "classificacao" || forcedTab === "chat") {
+      setPublicActiveTab(forcedTab);
+    }
+  }, [forcedTab, isPublicTournamentReader]);
 
   const pinnedChatMessage = useMemo(
     () => chatMessages.find((m) => m.isPinned) ?? null,
@@ -4791,7 +4848,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       {!loading && tournament ? (
         <>
           {isPublicTournamentReader ? (
-            <section id="tournament-public-event" className="tournament-public-event">
+            <section className="tournament-public-event league-public-event league-public-page">
               <div className="competition-public-topbar" aria-label="Navegacao publica do torneio">
                 <button className="quiet" type="button" onClick={() => navigate(tournamentBackPath)}>
                   Voltar
@@ -4801,10 +4858,48 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </button>
               </div>
 
-              <article className="tournament-public-hero">
+              <header className="league-public-page-title">
+                <div>
+                  <span>Torneio</span>
+                  <h1>{tournament.name}</h1>
+                  <small>
+                    {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"} | {formatTournamentDate(tournament.startsAt)}
+                    {tournament.registrationCloseAt ? ` | Inscricoes ate ${formatTournamentDateTime(tournament.registrationCloseAt)}` : ""}
+                  </small>
+                </div>
+                <StatusBadge status={tournament.status} />
+              </header>
+
+              <nav className="tournament-public-nav league-public-nav" aria-label="Navegacao publica do torneio">
+                <button type="button" className={publicActiveTab === "evento" ? "active" : ""} onClick={() => goToPublicTab("evento")}>
+                  Evento
+                </button>
+                <button type="button" className={publicActiveTab === "categorias" ? "active" : ""} onClick={() => goToPublicTab("categorias")}>
+                  Categorias
+                </button>
+                <button type="button" className={publicActiveTab === "inscritos" ? "active" : ""} onClick={() => goToPublicTab("inscritos")}>
+                  Inscritos
+                </button>
+                <button type="button" className={publicActiveTab === "jogos" ? "active" : ""} onClick={() => goToPublicTab("jogos")}>
+                  Jogos
+                </button>
+                {canSeeClassificationTab ? (
+                  <button type="button" className={publicActiveTab === "classificacao" ? "active" : ""} onClick={() => goToPublicTab("classificacao")}>
+                    Classificacao
+                  </button>
+                ) : null}
+                {canUseChatTab ? (
+                  <button type="button" className={publicActiveTab === "chat" ? "active" : ""} onClick={() => goToPublicTab("chat")}>
+                    Chat
+                  </button>
+                ) : null}
+              </nav>
+
+              {publicActiveTab === "evento" ? (
+              <article className="tournament-public-hero league-public-hero">
                 <div className="tournament-public-copy">
                   <div className="tournament-public-title-row">
-                    <span>Torneio</span>
+                    <span>Evento</span>
                     <StatusBadge status={tournament.status} />
                   </div>
                   <h2>{tournament.name}</h2>
@@ -4814,17 +4909,17 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     {tournament.registrationCloseAt ? <span>Inscricoes ate {formatTournamentDateTime(tournament.registrationCloseAt)}</span> : null}
                   </div>
                   <div className="competition-public-action-rail" aria-label="Resumo publico do torneio">
-                    <button type="button" onClick={() => scrollToPublicSection("tournament-public-categories")}>
+                    <button type="button" onClick={() => goToPublicTab("categorias")}>
                       <span>Categorias</span>
                       <strong>{publicClassCards.length || "A definir"}</strong>
                       <small>Classes, formatos e vagas.</small>
                     </button>
-                    <button type="button" onClick={() => scrollToPublicSection("tournament-public-participants")}>
+                    <button type="button" onClick={() => goToPublicTab("inscritos")}>
                       <span>Inscritos</span>
                       <strong>{publicParticipantRows.length || playersOverview.approved || "A definir"}</strong>
                       <small>Nomes confirmados, sem contatos.</small>
                     </button>
-                    <button type="button" onClick={() => goToTab("jogos")}>
+                    <button type="button" onClick={() => goToPublicTab("jogos")}>
                       <span>Jogos</span>
                       <strong>{tournamentOverview.totalMatches || "A definir"}</strong>
                       <small>{tournamentOverview.totalMatches ? "Agenda e resultados." : "Ainda nao publicados."}</small>
@@ -4837,7 +4932,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     </button>
                   </div>
                 </div>
-                <div className="tournament-public-media" aria-label="Imagem do torneio">
+                <div className="tournament-public-media league-public-media" aria-label="Imagem do torneio">
                   {tournament.posterUrl ? (
                     <img src={tournament.posterUrl} alt={`Poster de ${tournament.name}`} />
                   ) : (
@@ -4848,33 +4943,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   )}
                 </div>
               </article>
+              ) : null}
 
-              <nav className="tournament-public-nav" aria-label="Navegacao publica do torneio">
-                <button type="button" onClick={() => scrollToPublicSection("tournament-public-event")}>
-                  Evento
-                </button>
-                <button type="button" onClick={() => scrollToPublicSection("tournament-public-categories")}>
-                  Categorias
-                </button>
-                <button type="button" onClick={() => scrollToPublicSection("tournament-public-participants")}>
-                  Inscritos
-                </button>
-                <button type="button" className={tab === "jogos" ? "active" : ""} onClick={() => goToTab("jogos")}>
-                  Jogos
-                </button>
-                {canSeeClassificationTab ? (
-                  <button type="button" className={tab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
-                    Classificacao
-                  </button>
-                ) : null}
-                {canUseChatTab ? (
-                  <button type="button" className={tab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
-                    Chat
-                  </button>
-                ) : null}
-              </nav>
-
-              <section id="tournament-public-categories" className="tournament-public-categories">
+              {publicActiveTab === "categorias" ? (
+              <section className="tournament-public-categories">
                 <div className="section-title">
                   <h2>Categorias</h2>
                   <span>{publicClassCards.length} {publicClassCards.length === 1 ? "categoria" : "categorias"}</span>
@@ -4890,7 +4962,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         className={item.active ? "active" : ""}
                         onClick={() => {
                           setActiveClassKey(item.key);
-                          goToTab("jogos");
+                          goToPublicTab("jogos");
                         }}
                       >
                         <span>{item.categoryName}</span>
@@ -4904,17 +4976,20 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   </div>
                 )}
               </section>
+              ) : null}
 
-              <section id="tournament-public-participants" className="competition-public-list-section">
+              {publicActiveTab === "inscritos" ? (
+              <section className="competition-public-list-section">
+                {renderPublicTournamentClassFilter("Inscritos por categoria", "Troque o recorte sem sair da lista de jogadores.")}
                 <div className="section-title">
                   <h2>Inscritos</h2>
-                  <span>{publicParticipantRows.length} {publicParticipantRows.length === 1 ? "jogador" : "jogadores"}</span>
+                  <span>{publicParticipantRowsForActiveClass.length} {publicParticipantRowsForActiveClass.length === 1 ? "jogador" : "jogadores"}</span>
                 </div>
-                {publicParticipantRows.length === 0 ? (
+                {publicParticipantRowsForActiveClass.length === 0 ? (
                   <p className="subtle">Nenhum inscrito confirmado para exibicao publica ainda.</p>
                 ) : (
                   <div className="competition-public-person-list">
-                    {publicParticipantRows.map((participant) => (
+                    {publicParticipantRowsForActiveClass.map((participant) => (
                       <article key={`public-participant:${participant.id}`} className="competition-public-person-row">
                         <div>
                           <strong>{participant.name}</strong>
@@ -4926,6 +5001,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   </div>
                 )}
               </section>
+              ) : null}
 
               <div className="tournament-public-sticky-cta" aria-label="Acao principal do torneio">
                 <button className="primary" type="button" onClick={handlePublicTournamentCta} disabled={publicTournamentCta.disabled}>
@@ -5176,8 +5252,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           />
           ) : null}
 
-          {tab === "jogos" ? (
+          {(!isPublicTournamentReader || publicActiveTab === "jogos") && tab === "jogos" ? (
             <section className="card tournament-games-card">
+              {isPublicTournamentReader ? renderPublicTournamentClassFilter("Jogos por categoria", "Troque o recorte sem misturar outras abas.") : null}
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
               {activeClass && canManageMatches ? (
                 <>
@@ -5718,8 +5795,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </section>
           ) : null}
 
-          {tab === "classificacao" && canSeeClassificationTab ? (
+          {(!isPublicTournamentReader || publicActiveTab === "classificacao") && tab === "classificacao" && canSeeClassificationTab ? (
             <section className="card">
+              {isPublicTournamentReader ? renderPublicTournamentClassFilter("Classificacao por categoria", "Troque o recorte sem sair da classificacao.") : null}
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
               {activeClass
                 ? Object.keys(activeClass.data.tabelaPorGrupo).map((groupName) => {
@@ -6687,7 +6765,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             </section>
           ) : null}
 
-          {tab === "chat" && canUseChatTab ? (
+          {(!isPublicTournamentReader || publicActiveTab === "chat") && tab === "chat" && canUseChatTab ? (
             <section className="card">
               <div className="section-title" style={{ marginBottom: 8 }}>
                 <h3 style={{ marginTop: 0 }}>Chat do torneio</h3>
