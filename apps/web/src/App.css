@@ -3940,6 +3940,32 @@
   gap: 8px;
 }
 
+.tournament-score-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 96px 96px;
+  width: 100%;
+}
+
+.tournament-score-row > .subtle {
+  align-self: center;
+  font-weight: 800;
+}
+
+.tournament-score-tiebreak-row {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(120px, 1fr) 96px 96px;
+  padding-left: 10px;
+}
+
+.tournament-score-tiebreak-row .match-score-input,
+.tournament-score-super-row .match-score-input {
+  background: var(--color-primary-soft);
+  border-color: var(--color-green-200);
+}
+
 .match-score-summary {
   background: #f8fafc;
   border: 1px solid var(--color-border);
@@ -4253,6 +4279,11 @@
   .match-admin-actions button {
     justify-content: center;
     width: 100%;
+  }
+
+  .tournament-score-row,
+  .tournament-score-tiebreak-row {
+    grid-template-columns: minmax(92px, 1fr) minmax(70px, 84px) minmax(70px, 84px);
   }
 
   .tournament-panel-kpis {
@@ -6960,10 +6991,26 @@ button:disabled {
   grid-template-columns: minmax(72px, auto) 80px 80px;
 }
 
-.league-score-row span {
+.league-score-row span,
+.league-score-tiebreak-row span {
   color: var(--color-text-subtle);
   font-size: var(--font-size-sm);
   font-weight: 700;
+}
+
+.league-score-tiebreak-row {
+  align-items: center;
+  display: grid;
+  gap: 6px;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(72px, auto) 80px 80px;
+  margin-top: -2px;
+  padding-left: 10px;
+}
+
+.league-score-tiebreak-row .match-score-input {
+  border-color: var(--color-green-200);
+  background: var(--color-primary-soft);
 }
 
 .league-participant-row {

@@ -4208,13 +4208,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       const bGames = asScore(set.b);
       const showTb = aGames === targetGames && bGames === targetGames;
       setRows.push(
-        <div key={`set:${setIndex}`} className="match-input-row" style={{ flexWrap: "wrap" }}>
+        <div key={`set:${setIndex}`} className="match-input-row tournament-score-row">
           <span className="subtle">Set {setIndex + 1}</span>
           <input
             className="match-score-input"
             inputMode="numeric"
             pattern="[0-9]*"
             placeholder="Games A"
+            aria-label={`Set ${setIndex + 1} games A`}
             value={set.a}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
@@ -4232,6 +4233,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             inputMode="numeric"
             pattern="[0-9]*"
             placeholder="Games B"
+            aria-label={`Set ${setIndex + 1} games B`}
             value={set.b}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
@@ -4245,13 +4247,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             disabled={saving || disabled}
           />
           {showTb ? (
-            <>
+            <div className="tournament-score-tiebreak-row">
               <span className="subtle">Tie-break</span>
               <input
                 className="match-score-input"
                 inputMode="numeric"
                 pattern="[0-9]*"
                 placeholder="TB A"
+                aria-label={`Set ${setIndex + 1} tie-break A`}
                 value={set.tbA}
                 onChange={(e) => {
                   const value = coerceScoreStringForSetInput(e.target.value);
@@ -4269,6 +4272,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 inputMode="numeric"
                 pattern="[0-9]*"
                 placeholder="TB B"
+                aria-label={`Set ${setIndex + 1} tie-break B`}
                 value={set.tbB}
                 onChange={(e) => {
                   const value = coerceScoreStringForSetInput(e.target.value);
@@ -4281,7 +4285,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 }}
                 disabled={saving || disabled}
               />
-            </>
+            </div>
           ) : null}
         </div>
       );
@@ -4289,13 +4293,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
     if (isSuperTieBreakPointsMode(config)) {
       return (
-        <div className="match-input-row" style={{ flexWrap: "wrap" }}>
+        <div className="match-input-row tournament-score-row">
           <span className="subtle">Super Tie-Break</span>
           <input
             className="match-score-input"
             inputMode="numeric"
             pattern="[0-9]*"
             placeholder="Pontos A"
+            aria-label="Super Tie-Break pontos A"
             value={detail.superTbA}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
@@ -4308,6 +4313,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             inputMode="numeric"
             pattern="[0-9]*"
             placeholder="Pontos B"
+            aria-label="Super Tie-Break pontos B"
             value={detail.superTbB}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
@@ -4325,13 +4331,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
     if (shouldShowSuperTbInput(detail, config)) {
       setRows.push(
-        <div key="set:stb" className="match-input-row" style={{ flexWrap: "wrap" }}>
+        <div key="set:stb" className="match-input-row tournament-score-row tournament-score-super-row">
           <span className="subtle">Super Tie-Break decisivo</span>
           <input
             className="match-score-input"
             inputMode="numeric"
             pattern="[0-9]*"
             placeholder="STB A"
+            aria-label="Super Tie-Break decisivo A"
             value={detail.superTbA}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
@@ -4344,6 +4351,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             inputMode="numeric"
             pattern="[0-9]*"
             placeholder="STB B"
+            aria-label="Super Tie-Break decisivo B"
             value={detail.superTbB}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);

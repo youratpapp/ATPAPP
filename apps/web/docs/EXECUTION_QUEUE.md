@@ -44,6 +44,66 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] COMP-SCORE-02 - Torneios com placar visual padronizado com a sala da liga
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback para aplicar o mesmo padrao da liga nos torneios;
+- `COMP-SCORE-01`;
+- padrao existente de lancamento admin em torneios.
+
+Contexto:
+
+- a regra de tie-break condicional ja existia no torneio, mas os campos apareciam como inputs soltos em linha flexivel;
+- jogador e admin usavam o mesmo renderer, mas a apresentacao ainda nao tinha a previsibilidade visual aplicada na sala da liga;
+- em mobile, o bloco podia parecer menos organizado quando o tie-break era habilitado.
+
+Resultado:
+
+- `Informar resultado`, `Lancar placar` e `Editar placar` em torneios usam linhas de placar consistentes;
+- cada set exibe label, games A e games B em grid previsivel;
+- quando o set exige tie-break, a sublinha `Tie-break` aparece no mesmo padrao visual da liga;
+- super tie-break unico e super tie-break decisivo tambem ficam no mesmo grid;
+- campos ganharam `aria-label` especifico para reduzir ambiguidade.
+
+Validacao:
+
+- `npm run lint`;
+- `npm run build`.
+
+### [x] COMP-SCORE-01 - Sala de liga com tie-break por set no envio de resultado
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback da sala de envio de resultado;
+- padrao existente de lancamento de placar em torneios pelo admin;
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`.
+
+Contexto:
+
+- a sala de partida da liga aceitava apenas dois campos numericos por linha;
+- sets decididos em tie-break ficavam sem campo especifico;
+- jogador e admin nao tinham o mesmo padrao visual/operacional usado no lancamento de torneio;
+- formatos como `melhor_de_3`, `set_unico`, `pro_set`, `fast4`, `melhor_de_3_super_tb` e `super_tb_unico` precisavam respeitar suas regras.
+
+Resultado:
+
+- cada set da sala de liga agora mostra primeiro os games dos lados 1 e 2;
+- quando o set chega ao placar que exige tie-break (`6/6`, `8/8` em pro set, `4/4` em Fast4), a UI abre campos `Tie-break` para os dois lados;
+- super tie-break e tie-break decisivo continuam como linhas de pontos, seguindo o formato da liga;
+- o calculo do vencedor considera o tie-break por set quando os games ficam empatados no alvo;
+- o resumo enviado preserva o detalhe do tie-break no formato `6/6(7/5)`;
+- jogador e admin usam o mesmo componente da sala para enviar/resolver resultado.
+
+Validacao:
+
+- `npm run lint`;
+- `npm run build`.
+
 ### [x] COMP-PUBLIC-02A - Liga publica com abas limpas por intencao
 
 Status: `[x]` concluido em 2026-05-15

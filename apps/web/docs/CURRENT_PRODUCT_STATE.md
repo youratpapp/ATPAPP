@@ -487,6 +487,9 @@ Bloco de discoverability executado em 2026-05-13:
 
 Sprint Player App executado em 2026-05-15:
 
+- `COMP-SCORE-02`: torneios agora usam apresentacao de placar padronizada com a sala da liga em `Informar resultado`, `Lancar placar` e `Editar placar`; tie-break por set aparece como sublinha contextual e super tie-break segue o mesmo grid.
+- `COMP-SCORE-01`: sala de partida da liga agora segue o padrao de placar do lancamento admin em torneios; cada set recebe games primeiro e abre tie-break quando o formato exige (`6/6`, `8/8` no pro set, `4/4` no Fast4).
+- O envio/resolucao de resultado de liga calcula vencedor considerando tie-break por set e preserva o resumo detalhado, como `6/6(7/5)`, sem pedir campos extras quando o set nao exige.
 - `PLAYER-UX-05`: `/locais` na intencao `Encontrar jogo` foi simplificada para busca e acao, sem painel de rede social.
 - O painel removeu KPIs de comunidade da primeira dobra e passou a destacar chamadas encontradas, CTA `Criar chamada` e rows acionaveis.
 - Comentarios e interesse foram preservados como detalhes secundarios, evitando perder funcao existente sem empurrar social para o fluxo principal.

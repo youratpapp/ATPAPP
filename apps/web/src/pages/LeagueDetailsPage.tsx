@@ -112,6 +112,8 @@ type MatchForm = {
 type MatchScoreRow = {
   side1: string;
   side2: string;
+  tie1: string;
+  tie2: string;
 };
 
 type ComputedMatchScore = {
@@ -505,32 +507,43 @@ function validateLeagueScoreRow(format: string, label: string, side1: number, si
   const low = Math.min(side1, side2);
   const diff = high - low;
 
-  if (side1 < 0 || side2 < 0 || side1 === side2) {
+  if (side1 < 0 || side2 < 0) {
     return { ok: false, message: `${label}: placar incompleto ou empatado.` };
   }
 
   if (label === "Super TB" || format === "super_tb_unico") {
+    if (side1 === side2) return { ok: false, message: `${label}: o super tie-break nao pode terminar empatado.` };
     return high >= 10 && diff >= 2
       ? { ok: true }
       : { ok: false, message: `${label}: o super tie-break precisa fechar em 10+ com 2 pontos de diferenca.` };
   }
 
   if (label === "Tie-break") {
+    if (side1 === side2) return { ok: false, message: `${label}: o tie-break nao pode terminar empatado.` };
     return high >= 7 && diff >= 2
       ? { ok: true }
       : { ok: false, message: `${label}: o tie-break precisa fechar em 7+ com 2 pontos de diferenca.` };
   }
 
   if (format === "fast4") {
+    if (side1 === 4 && side2 === 4) return { ok: true };
+    if (side1 === side2) return { ok: false, message: `${label}: informe o tie-break quando o set chegar em 4/4.` };
     return (high === 4 && low <= 2) || (high === 5 && low === 3)
       ? { ok: true }
-      : { ok: false, message: `${label}: no Fast4 use 4/0, 4/1, 4/2 ou 5/3.` };
+      : { ok: false, message: `${label}: no Fast4 use 4/0, 4/1, 4/2, 5/3 ou 4/4 com tie-break.` };
   }
 
   if (format === "pro_set") {
+    if (side1 === 8 && side2 === 8) return { ok: true };
+    if (side1 === side2) return { ok: false, message: `${label}: informe o tie-break quando o pro set chegar em 8/8.` };
     return (high === 8 && low <= 6) || (high === 9 && low === 7)
       ? { ok: true }
-      : { ok: false, message: `${label}: no pro set use 8/0 ate 8/6 ou 9/7.` };
+      : { ok: false, message: `${label}: no pro set use 8/0 ate 8/6, 9/7 ou 8/8 com tie-break.` };
+  }
+
+  if (side1 === 6 && side2 === 6) return { ok: true };
+  if (side1 === side2) {
+    return { ok: false, message: `${label}: informe o tie-break quando o set chegar em 6/6.` };
   }
 
   return (high === 6 && low <= 4) || (high === 7 && (low === 5 || low === 6))
@@ -538,8 +551,37 @@ function validateLeagueScoreRow(format: string, label: string, side1: number, si
     : { ok: false, message: `${label}: use um placar de set valido, como 6/4, 7/5 ou 7/6.` };
 }
 
+function leagueRowTieTarget(format: string, label: string): number | null {
+  if (label === "Super TB" || label === "Tie-break" || format === "super_tb_unico") return null;
+  if (format === "fast4") return 4;
+  if (format === "pro_set") return 8;
+  return 6;
+}
+
+function shouldShowLeagueSetTiebreak(format: string, label: string, row: MatchScoreRow): boolean {
+  const target = leagueRowTieTarget(format, label);
+  if (!target) return false;
+  return Number(row.side1) === target && Number(row.side2) === target;
+}
+
+function validateLeagueTiebreak(format: string, label: string, row: MatchScoreRow): LeagueScoreValidation {
+  const target = leagueRowTieTarget(format, label);
+  if (!target) return { ok: true };
+  const side1 = row.tie1 === "" ? null : Number(row.tie1);
+  const side2 = row.tie2 === "" ? null : Number(row.tie2);
+  if (side1 === null || side2 === null || side1 === side2) {
+    return { ok: false, message: `${label}: informe o placar do tie-break.` };
+  }
+  const minimum = target === 4 ? 5 : 7;
+  const high = Math.max(side1, side2);
+  const diff = Math.abs(side1 - side2);
+  return high >= minimum && diff >= 2
+    ? { ok: true }
+    : { ok: false, message: `${label}: o tie-break precisa fechar em ${minimum}+ com 2 pontos de diferenca.` };
+}
+
 function emptyScoreRows(format: string): MatchScoreRow[] {
-  return leagueScoreRowsForFormat(format).map(() => ({ side1: "", side2: "" }));
+  return leagueScoreRowsForFormat(format).map(() => ({ side1: "", side2: "", tie1: "", tie2: "" }));
 }
 
 function normalizeMatchForm(form: MatchForm | undefined, format: string): MatchForm {
@@ -549,6 +591,8 @@ function normalizeMatchForm(form: MatchForm | undefined, format: string): MatchF
       rows[index] = {
         side1: String(row.side1 || "").replace(/[^\d]/g, ""),
         side2: String(row.side2 || "").replace(/[^\d]/g, ""),
+        tie1: String(row.tie1 || "").replace(/[^\d]/g, ""),
+        tie2: String(row.tie2 || "").replace(/[^\d]/g, ""),
       };
     }
   });
@@ -565,6 +609,9 @@ function computeLeagueMatchScore(form: MatchForm, format: string): ComputedMatch
   const rows = form.scoreRows.map((row, index) => ({
     side1: row.side1 === "" ? null : Number(row.side1),
     side2: row.side2 === "" ? null : Number(row.side2),
+    tie1: row.tie1 === "" ? null : Number(row.tie1),
+    tie2: row.tie2 === "" ? null : Number(row.tie2),
+    raw: row,
     label: labels[index] || `Set ${index + 1}`,
   }));
   const firstEmptyIndex = rows.findIndex((row) => row.side1 === null && row.side2 === null);
@@ -580,14 +627,19 @@ function computeLeagueMatchScore(form: MatchForm, format: string): ComputedMatch
   const summaryParts: string[] = [];
 
   for (const row of playedRows) {
-    if (row.side1 === null || row.side2 === null || row.side1 === row.side2) return null;
+    if (row.side1 === null || row.side2 === null) return null;
     const valid = validateLeagueScoreRow(format, row.label, row.side1, row.side2);
     if (!valid.ok) return null;
+    const hasSetTiebreak = shouldShowLeagueSetTiebreak(format, row.label, row.raw);
+    if (hasSetTiebreak) {
+      const tieValid = validateLeagueTiebreak(format, row.label, row.raw);
+      if (!tieValid.ok || row.tie1 === null || row.tie2 === null) return null;
+    }
     games1 += row.side1;
     games2 += row.side2;
-    if (row.side1 > row.side2) sets1 += 1;
+    if (row.side1 > row.side2 || (hasSetTiebreak && row.tie1 !== null && row.tie2 !== null && row.tie1 > row.tie2)) sets1 += 1;
     else sets2 += 1;
-    summaryParts.push(`${row.side1}/${row.side2}`);
+    summaryParts.push(hasSetTiebreak ? `${row.side1}/${row.side2}(${row.tie1}/${row.tie2})` : `${row.side1}/${row.side2}`);
   }
 
   if (!summaryParts.length || sets1 === sets2) return null;
@@ -3132,35 +3184,72 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                                     <strong>2</strong> {side2}
                                   </span>
                                 </p>
-                                {scoreRowLabels.map((label, rowIndex) => (
-                                  <label key={`${m.id}:score:${label}`} className="league-score-row">
-                                    <span>{label}</span>
-                                    <input
-                                      className="match-score-input"
-                                      inputMode="numeric"
-                                      placeholder="1"
-                                      value={form.scoreRows[rowIndex]?.side1 || ""}
-                                      disabled={form.isWo}
-                                      onChange={(e) => {
-                                        const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
-                                        rows[rowIndex] = { ...rows[rowIndex], side1: e.target.value.replace(/[^\d]/g, "") };
-                                        setMatchForm(m.id, { scoreRows: rows });
-                                      }}
-                                    />
-                                    <input
-                                      className="match-score-input"
-                                      inputMode="numeric"
-                                      placeholder="2"
-                                      value={form.scoreRows[rowIndex]?.side2 || ""}
-                                      disabled={form.isWo}
-                                      onChange={(e) => {
-                                        const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
-                                        rows[rowIndex] = { ...rows[rowIndex], side2: e.target.value.replace(/[^\d]/g, "") };
-                                        setMatchForm(m.id, { scoreRows: rows });
-                                      }}
-                                    />
-                                  </label>
-                                ))}
+                                {scoreRowLabels.map((label, rowIndex) => {
+                                  const row = form.scoreRows[rowIndex] || { side1: "", side2: "", tie1: "", tie2: "" };
+                                  const showTie = shouldShowLeagueSetTiebreak(league.matchFormat, label, row);
+                                  return (
+                                    <div key={`${m.id}:score:${label}`} className="league-score-row">
+                                      <span>{label}</span>
+                                      <input
+                                        className="match-score-input"
+                                        inputMode="numeric"
+                                        placeholder="1"
+                                        aria-label={`${label} games lado 1`}
+                                        value={row.side1}
+                                        disabled={form.isWo}
+                                        onChange={(e) => {
+                                          const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                                          rows[rowIndex] = { ...rows[rowIndex], side1: e.target.value.replace(/[^\d]/g, "") };
+                                          setMatchForm(m.id, { scoreRows: rows });
+                                        }}
+                                      />
+                                      <input
+                                        className="match-score-input"
+                                        inputMode="numeric"
+                                        placeholder="2"
+                                        aria-label={`${label} games lado 2`}
+                                        value={row.side2}
+                                        disabled={form.isWo}
+                                        onChange={(e) => {
+                                          const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                                          rows[rowIndex] = { ...rows[rowIndex], side2: e.target.value.replace(/[^\d]/g, "") };
+                                          setMatchForm(m.id, { scoreRows: rows });
+                                        }}
+                                      />
+                                      {showTie ? (
+                                        <div className="league-score-tiebreak-row">
+                                          <span>Tie-break</span>
+                                          <input
+                                            className="match-score-input"
+                                            inputMode="numeric"
+                                            placeholder="TB 1"
+                                            aria-label={`${label} tie-break lado 1`}
+                                            value={row.tie1}
+                                            disabled={form.isWo}
+                                            onChange={(e) => {
+                                              const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                                              rows[rowIndex] = { ...rows[rowIndex], tie1: e.target.value.replace(/[^\d]/g, "") };
+                                              setMatchForm(m.id, { scoreRows: rows });
+                                            }}
+                                          />
+                                          <input
+                                            className="match-score-input"
+                                            inputMode="numeric"
+                                            placeholder="TB 2"
+                                            aria-label={`${label} tie-break lado 2`}
+                                            value={row.tie2}
+                                            disabled={form.isWo}
+                                            onChange={(e) => {
+                                              const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                                              rows[rowIndex] = { ...rows[rowIndex], tie2: e.target.value.replace(/[^\d]/g, "") };
+                                              setMatchForm(m.id, { scoreRows: rows });
+                                            }}
+                                          />
+                                        </div>
+                                      ) : null}
+                                    </div>
+                                  );
+                                })}
                               </div>
                               <div className="events-filter-grid">
                                 <label>
