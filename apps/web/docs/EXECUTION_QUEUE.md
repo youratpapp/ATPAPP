@@ -334,6 +334,7 @@ Resultado:
 - `Classificacao` aparece para leitor publico somente em torneios com fase de grupos;
 - `Encerramento / Podio por classe` aparece na aba `Evento` e apenas quando o torneio estiver finalizado;
 - a aba `Evento` exibe `Exportar chave` quando ha chaveamento gerado para alguma classe;
+- a exportacao de chave passou a respeitar margem superior real e quebra o titulo da classe/campeonato em linhas para nao cortar texto fora da imagem;
 - a exportacao de agenda por quadra em PNG ficou mais robusta: segura melhor agendas altas, nao revoga o arquivo temporario antes do navegador iniciar o download e baixa SVG como fallback se o canvas/PNG falhar;
 - o menu publico segue clicavel e arrastavel no mobile, sem transformar o torneio em pagina infinita.
 

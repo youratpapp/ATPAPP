@@ -856,6 +856,29 @@ function escXml(value: unknown): string {
     .replace(/'/g, "&apos;");
 }
 
+function wrapSvgText(value: unknown, maxWidth: number, fontSize: number, maxLines = 3): string[] {
+  const words = String(value ?? "").trim().split(/\s+/).filter(Boolean);
+  if (!words.length) return [""];
+  const maxChars = Math.max(12, Math.floor(maxWidth / (fontSize * 0.56)));
+  const lines: string[] = [];
+  let current = "";
+  words.forEach((word) => {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length <= maxChars || !current) {
+      current = next;
+      return;
+    }
+    lines.push(current);
+    current = word;
+  });
+  if (current) lines.push(current);
+  if (lines.length <= maxLines) return lines;
+  const visible = lines.slice(0, maxLines);
+  const last = visible[maxLines - 1] || "";
+  visible[maxLines - 1] = last.length > maxChars - 1 ? `${last.slice(0, Math.max(1, maxChars - 1)).trim()}...` : `${last}...`;
+  return visible;
+}
+
 function downloadBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -933,14 +956,17 @@ function buildClassVisualSvg(
   const leftW = 1220;
   const rightX = pad + leftW + 20;
   const rightW = width - rightX - pad;
-  let y = 30;
+  let y = 74;
   const out: string[] = [];
 
   out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="240" viewBox="0 0 ${width} 240">`);
   out.push(`<rect x="0" y="0" width="${width}" height="240" fill="#ffffff"/>`);
 
-  out.push(`<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="56" fill="#0f172a" font-weight="700">${escXml(`${categoryName} / ${className}`)}</text>`);
-  y += 34;
+  const titleLines = wrapSvgText(`${categoryName} / ${className}`, width - pad * 2, 56, 3);
+  titleLines.forEach((line, index) => {
+    out.push(`<text x="${pad}" y="${y + index * 60}" font-family="Arial, sans-serif" font-size="56" fill="#0f172a" font-weight="700">${escXml(line)}</text>`);
+  });
+  y += titleLines.length * 60 + 14;
   out.push(`<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="14" fill="#475569">Exportado em ${escXml(new Date().toLocaleString('pt-BR'))}</text>`);
   y += 20;
   out.push(`<text x="${pad}" y="${y}" font-family="Arial, sans-serif" font-size="13" fill="#475569">Modelo: ${escXml(competitionModelLabel(data.config))}</text>`);
@@ -1139,7 +1165,7 @@ function buildClassVisualSvg(
     y = maxBottom + 20;
   }
 
-  const contactsTop = 132;
+  const contactsTop = Math.max(132, y + 8);
   const contacts = (data.participantes || [])
     .map((p) => ({
       nome: String(p.nome || '').trim(),

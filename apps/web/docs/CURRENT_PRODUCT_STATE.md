@@ -171,6 +171,7 @@ Ordem de foco:
 - 2026-05-15: `PLAYER-PLACE-05` concluido. Na pagina publica do local, planos e quadras deixaram de ser informacao passiva: plano abre `Aulas` com contexto do plano escolhido, e quadra abre `Reservar` com calendario carregado preferindo aquela quadra. Quantidade de aulas por plano ainda nao existe no schema.
 - 2026-05-15: `PLAYER-PLACE-06` concluido. A reserva publica agora mostra visualmente todo o intervalo selecionado no calendario por quadra: em duracao de `2h`, a hora inicial fica selecionada e a hora seguinte aparece como parte da reserva, enquanto a confirmacao mostra inicio, fim e valor total proporcional.
 - 2026-05-15: exportacao de agenda por quadra em torneios revisada. O PNG usa canvas com escala limitada para agendas altas, o download nao revoga o arquivo temporario imediatamente e, se o navegador falhar ao gerar PNG, o app exporta SVG como fallback com feedback claro.
+- 2026-05-15: exportacao de chave de torneio revisada. O titulo agora tem margem superior suficiente, quebra em linhas quando fica longo e reposiciona a tabela lateral abaixo do cabecalho dinamico para evitar corte fora da imagem.
 
 ## Visual language consolidada
 
