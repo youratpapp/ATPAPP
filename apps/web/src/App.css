@@ -8506,6 +8506,14 @@ button:disabled {
   color: #fff;
 }
 
+.place-public-hour-list button.selected-range {
+  background: rgba(16, 185, 129, 0.13);
+  border-color: rgba(16, 185, 129, 0.42);
+  color: var(--color-primary-strong);
+  cursor: default;
+  opacity: 1;
+}
+
 .place-public-hour-list button span {
   font-size: var(--font-size-sm);
   font-weight: 950;

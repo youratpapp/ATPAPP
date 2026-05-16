@@ -115,6 +115,12 @@ function timePart(value: string): string {
   return value ? value.slice(11, 16) : "18:00";
 }
 
+function minutesFromTime(value: string): number {
+  const [hour, minute] = value.split(":").map((part) => Number(part));
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) return -1;
+  return hour * 60 + minute;
+}
+
 function durationFromRange(startsAt: string, endsAt: string): number {
   const start = new Date(startsAt).getTime();
   const end = new Date(endsAt).getTime();
@@ -513,8 +519,11 @@ export function PlacePublicPage({ user, profile }: Props) {
       ? Number(selectedCourt.effectiveFeeCents) || 0
       : Number(selectedCourt.bookingFeeCents) || 0
     : 0;
+  const selectedCourtTotalFeeCents = selectedCourtFeeCents ? Math.round(selectedCourtFeeCents * (bookingDuration / 60)) : 0;
   const selectedDurationLabel = BOOKING_DURATION_OPTIONS.find((option) => option.value === bookingDuration)?.label || `${bookingDuration} min`;
   const selectedSlotKey = `${bookingTime}:${bookingDraft.courtId}`;
+  const selectedSlotStartMinute = minutesFromTime(bookingTime);
+  const selectedSlotEndMinute = selectedSlotStartMinute + bookingDuration;
   const bookingProfileName = profile?.displayName || bookingDraft.playerName || user.email || "Jogador";
   const bookingProfilePhone = profile?.phone || bookingDraft.phone || "";
   const bookingNeedsContactCompletion = !bookingProfilePhone.trim();
@@ -704,16 +713,17 @@ export function PlacePublicPage({ user, profile }: Props) {
   };
 
   const selectAvailabilitySlot = (time: string, court: AvailableCourt) => {
-    const duration = Math.max(30, Math.min(240, Number(availabilityDurationMinutes) || 60));
+    const duration = Math.max(60, Math.min(120, Number(availabilityDurationMinutes) || 60));
     const startsAt = combineDateAndTime(availabilityDate, time);
+    const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
     setBookingDraft((prev) => ({
       ...prev,
       courtId: court.id,
       startsAt,
-      endsAt: addMinutesToDateTimeLocal(startsAt, duration),
+      endsAt,
     }));
     setAvailableCourts([court]);
-    setBookingFeedback(`${court.name} selecionada para ${time}. Complete seus dados para solicitar.`);
+    setBookingFeedback(`${court.name} selecionada das ${time} as ${timePart(endsAt)}. Complete seus dados para solicitar.`);
   };
 
   const requestBooking = async () => {
@@ -972,22 +982,28 @@ export function PlacePublicPage({ user, profile }: Props) {
                             <header>
                               <div>
                                 <strong>{court.name}</strong>
-                                <small>{[court.surface || "Piso a definir", court.bookingFeeCents ? formatMoneyFromCents(court.bookingFeeCents) : "Valor a combinar"].join(" | ")}</small>
+                                <small>{[court.surface || "Piso a definir", court.bookingFeeCents ? `${formatMoneyFromCents(court.bookingFeeCents)}/h` : "Valor a combinar"].join(" | ")}</small>
                               </div>
                             </header>
                             <div className="place-public-hour-list">
                               {slots.map((slot) => {
                                 const isSelected = selectedSlotKey === `${slot.time}:${court.id}`;
+                                const slotMinute = minutesFromTime(slot.time);
+                                const isSelectedRange =
+                                  bookingDraft.courtId === court.id &&
+                                  slotMinute >= selectedSlotStartMinute &&
+                                  slotMinute < selectedSlotEndMinute;
+                                const isSelectedContinuation = isSelectedRange && !isSelected;
                                 const isAvailable = Boolean(slot.availableCourt);
                                 return (
                                   <button
                                     key={`court-slot:${court.id}:${slot.time}`}
-                                    className={isSelected ? "selected" : slot.status}
-                                    disabled={!isAvailable}
+                                    className={isSelected ? "selected" : isSelectedContinuation ? "selected-range" : slot.status}
+                                    disabled={!isAvailable && !isSelectedContinuation}
                                     onClick={() => (slot.availableCourt ? selectAvailabilitySlot(slot.time, slot.availableCourt) : undefined)}
                                   >
                                     <span>{slot.time}</span>
-                                    <small>{isAvailable ? "Livre" : "Ocupado"}</small>
+                                    <small>{isSelected ? selectedDurationLabel : isSelectedContinuation ? "Na reserva" : isAvailable ? "Livre" : "Ocupado"}</small>
                                   </button>
                                 );
                               })}
@@ -1027,8 +1043,8 @@ export function PlacePublicPage({ user, profile }: Props) {
                     <div className="place-public-selected-slot">
                       <strong>{selectedCourt ? selectedCourt.name : "Escolha uma quadra"}</strong>
                       <span>
-                        {bookingDate} as {bookingTime} | {selectedDurationLabel}
-                        {selectedCourtFeeCents ? ` | ${formatMoneyFromCents(selectedCourtFeeCents)}` : ""}
+                        {bookingDate} das {bookingTime} as {timePart(bookingDraft.endsAt)} | {selectedDurationLabel}
+                        {selectedCourtTotalFeeCents ? ` | Total ${formatMoneyFromCents(selectedCourtTotalFeeCents)}` : ""}
                       </span>
                     </div>
 

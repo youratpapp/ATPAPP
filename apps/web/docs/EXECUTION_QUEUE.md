@@ -277,6 +277,32 @@ Risco restante:
 
 - quantidade de aulas por plano ainda nao existe no schema de planos; para automatizar isso, sera necessario adicionar campo/configuracao de aulas semanais por plano ou separar `plano de socio` de `plano de aulas`.
 
+### [x] PLAYER-PLACE-06 - Reserva publica mostra intervalo completo selecionado
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback do calendario publico de reserva de quadra;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Contexto:
+
+- a disponibilidade ja era buscada usando a duracao completa da reserva;
+- ao escolher `2h`, a UI ainda podia parecer que apenas a primeira hora estava selecionada, deixando a segunda hora com aparencia de slot comum;
+- isso gerava duvida se o sistema bloquearia uma ou duas horas.
+
+Resultado:
+
+- ao tocar em um horario livre com duracao de `2h`, o slot inicial fica selecionado e a hora seguinte aparece como `Na reserva`;
+- o resumo de confirmacao mostra inicio, fim e valor total proporcional a duracao selecionada;
+- a selecao visual continua usando a disponibilidade existente como fonte de verdade, sem criar bloqueio definitivo antes de o jogador solicitar a reserva.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
 ### [x] COMP-PUBLIC-02B - Torneio publico com abas limpas por intencao
 
 Status: `[x]` concluido em 2026-05-15; revisado em 2026-05-15
@@ -308,6 +334,7 @@ Resultado:
 - `Classificacao` aparece para leitor publico somente em torneios com fase de grupos;
 - `Encerramento / Podio por classe` aparece na aba `Evento` e apenas quando o torneio estiver finalizado;
 - a aba `Evento` exibe `Exportar chave` quando ha chaveamento gerado para alguma classe;
+- a exportacao de agenda por quadra em PNG ficou mais robusta: segura melhor agendas altas, nao revoga o arquivo temporario antes do navegador iniciar o download e baixa SVG como fallback se o canvas/PNG falhar;
 - o menu publico segue clicavel e arrastavel no mobile, sem transformar o torneio em pagina infinita.
 
 Validacao:

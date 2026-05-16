@@ -169,6 +169,8 @@ Ordem de foco:
 - 2026-05-15: `PLAYER-PLACE-03` concluido. Na pagina publica do local, `Aulas` agora sincroniza a turma escolhida com o filtro visivel, agrupa recorrencias por dados operacionais em vez do nome literal, exibe chips para selecionar um ou mais dias e informa que a aprovacao da academia ativa a matricula vinculada ao perfil em `Minhas aulas`. Na Home, cards de aula/reposicao abrem direto o local em `intent=academy` quando ha `placeId`.
 - 2026-05-15: `PLAYER-PLACE-04` concluido. Na pagina publica do local, `Jogos abertos` ganhou filtros de data, periodo e nivel, contador filtrado e deixou de esconder chamadas com corte silencioso.
 - 2026-05-15: `PLAYER-PLACE-05` concluido. Na pagina publica do local, planos e quadras deixaram de ser informacao passiva: plano abre `Aulas` com contexto do plano escolhido, e quadra abre `Reservar` com calendario carregado preferindo aquela quadra. Quantidade de aulas por plano ainda nao existe no schema.
+- 2026-05-15: `PLAYER-PLACE-06` concluido. A reserva publica agora mostra visualmente todo o intervalo selecionado no calendario por quadra: em duracao de `2h`, a hora inicial fica selecionada e a hora seguinte aparece como parte da reserva, enquanto a confirmacao mostra inicio, fim e valor total proporcional.
+- 2026-05-15: exportacao de agenda por quadra em torneios revisada. O PNG usa canvas com escala limitada para agendas altas, o download nao revoga o arquivo temporario imediatamente e, se o navegador falhar ao gerar PNG, o app exporta SVG como fallback com feedback claro.
 
 ## Visual language consolidada
 

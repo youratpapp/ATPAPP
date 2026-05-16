@@ -844,7 +844,7 @@ function downloadTextFile(content: string, filename: string, mime: string): void
   document.body.appendChild(a);
   a.click();
   a.remove();
-  URL.revokeObjectURL(url);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function escXml(value: unknown): string {
@@ -864,7 +864,7 @@ function downloadBlob(blob: Blob, filename: string): void {
   document.body.appendChild(a);
   a.click();
   a.remove();
-  URL.revokeObjectURL(url);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function formatKnockoutScore(match: KnockoutMatch, config: ClassData["config"]): string {
@@ -883,7 +883,8 @@ async function downloadSvgAsPng(svg: string, width: number, height: number, file
       el.src = svgUrl;
     });
 
-    const scale = 2;
+    const maxCanvasSide = 14000;
+    const scale = Math.max(1, Math.min(2, maxCanvasSide / Math.max(width, height)));
     const canvas = document.createElement("canvas");
     canvas.width = Math.max(1, Math.floor(width * scale));
     canvas.height = Math.max(1, Math.floor(height * scale));
@@ -902,7 +903,7 @@ async function downloadSvgAsPng(svg: string, width: number, height: number, file
     });
     downloadBlob(pngBlob, filename);
   } finally {
-    URL.revokeObjectURL(svgUrl);
+    window.setTimeout(() => URL.revokeObjectURL(svgUrl), 1000);
   }
 }
 
@@ -3448,8 +3449,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
-    await downloadSvgAsPng(out.join(""), width, height, `${safeName || "torneio"}-agenda-quadras.png`);
-    setFeedback({ kind: "success", text: "Agenda por quadra exportada em PNG." });
+    try {
+      await downloadSvgAsPng(out.join(""), width, height, `${safeName || "torneio"}-agenda-quadras.png`);
+      setFeedback({ kind: "success", text: "Agenda por quadra exportada em PNG." });
+    } catch (err) {
+      console.error("Falha ao exportar agenda por quadra em PNG", err);
+      downloadTextFile(out.join(""), `${safeName || "torneio"}-agenda-quadras.svg`, "image/svg+xml;charset=utf-8");
+      setFeedback({ kind: "error", text: "Nao foi possivel gerar o PNG neste navegador. Exportei a agenda em SVG como alternativa." });
+    }
   };
 
   const copyTournamentPodiumSummary = async () => {

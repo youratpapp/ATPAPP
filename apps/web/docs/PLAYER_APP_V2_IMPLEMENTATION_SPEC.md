@@ -425,6 +425,8 @@ Se uma acao nao persistir:
 - jogador escolhe data/duracao e ve um calendario visual em carrossel por quadra;
 - horarios sao exibidos hora a hora como `Livre` ou `Ocupado`;
 - apenas slots livres sao acionaveis e levam a confirmacao;
+- ao selecionar duracao maior que 1h, o calendario deve destacar todo o intervalo coberto pela reserva, nao apenas a primeira hora;
+- o valor de confirmacao deve ser total proporcional a duracao; o preco da quadra pode ser exibido como valor por hora no card da quadra;
 - `Quadras e valores` deve ser acionavel: clicar em uma quadra abre `Reservar` e carrega o calendario com preferencia por aquela quadra;
 - `Planos` deve ser acionavel: clicar em um plano abre `Aulas` com o contexto do plano escolhido;
 - o schema atual de plano publica mensalidade e descontos, nao quantidade de aulas semanais; automatizar aulas por plano exige evolucao de backend/modelo;
