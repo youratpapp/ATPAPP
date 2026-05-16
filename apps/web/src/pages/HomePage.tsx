@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
+import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
 import type {
   LeagueMatchSummary,
@@ -226,7 +227,7 @@ function isActiveLeague(l: LeagueSummary): boolean {
 }
 
 function matchStatusLabel(status: LeagueMatchSummary["status"]): string {
-  if (status === "aguardando_organizacao") return "Aguardando organizacao";
+  if (status === "aguardando_organizacao") return "Aguardando organização";
   if (status === "aguardando_resultado") return "Aguardando resultado";
   if (status === "aguardando_confirmacao") return "Confirmar resultado";
   if (status === "encerrada") return "Encerrada";
@@ -472,7 +473,7 @@ async function loadOrganizerActions(leagues: LeagueSummary[]): Promise<HomeOrgan
             sourceName: league.name,
             title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
             detail: "Aprovar ou rejeitar jogadores",
-            label: "Inscricoes",
+            label: "Inscrições",
             tone: "urgent",
           });
         }
@@ -564,9 +565,9 @@ async function loadTournamentPlayerActions(
             if (!confirmation) {
               return {
                 ...action,
-                label: "Confirmar presenca",
+                label: "Confirmar presença",
                 tone: "urgent" as const,
-                detail: `${action.detail} - confirme se voce vai jogar`,
+                detail: `${action.detail} - confirme se você vai jogar`,
               };
             }
             if (confirmation.status === "unavailable") {
@@ -612,7 +613,7 @@ async function loadTournamentOrganizerActions(
             sourceName: tournament.name,
             title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
             detail: "Aprovar ou rejeitar jogadores",
-            label: "Inscricoes",
+            label: "Inscrições",
             tone: "urgent",
           });
         }
@@ -891,9 +892,9 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
             id: `membership-owner:${place.id}:pending`,
             targetPath: buildPlaceAdminPath(place.id, "clients", "members"),
             sourceName: place.name,
-            title: `${pendingMemberships} solicitacao${pendingMemberships === 1 ? "" : "es"} de socio`,
+            title: `${pendingMemberships} solicitacao${pendingMemberships === 1 ? "" : "es"} de sócio`,
             detail: "Ative planos e acompanhe mensalidades do clube.",
-            label: "Socios",
+            label: "Sócios",
             tone: "urgent",
             order: 7,
           });
@@ -904,7 +905,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
             targetPath: buildPlaceAdminPath(place.id, "academy", "requests"),
             sourceName: place.name,
             title: `${pending} interesse${pending === 1 ? "" : "s"} em aula`,
-            detail: "Revise matriculas pendentes da academia.",
+            detail: "Revise matrículas pendentes da academia.",
             label: "Academia",
             tone: "urgent",
             order: 9,
@@ -915,8 +916,8 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
             id: `academy-owner:${place.id}:makeups`,
             targetPath: buildPlaceAdminPath(place.id, "academy", "requests"),
             sourceName: place.name,
-            title: `${openMakeups} reposicao${openMakeups === 1 ? "" : "es"} aberta${openMakeups === 1 ? "" : "s"}`,
-            detail: "Acompanhe creditos de reposicao dos alunos.",
+            title: `${openMakeups} reposição${openMakeups === 1 ? "" : "es"} aberta${openMakeups === 1 ? "" : "s"}`,
+            detail: "Acompanhe creditos de reposição dos alunos.",
             label: "Reposicoes",
             tone: "neutral",
             order: 38,
@@ -936,7 +937,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
       id: `academy-player:${item.id}`,
       targetPath: item.placeId ? `/locais/${item.placeId}?intent=academy` : "/locais?intent=classes",
       sourceName: "Academia",
-      title: item.status === "pending" ? "Matricula aguardando aprovacao" : "Matricula ativa",
+      title: item.status === "pending" ? "Matrícula aguardando aprovacao" : "Matrícula ativa",
       detail: item.status === "pending" ? "Aguarde a academia revisar seu interesse." : "Acompanhe sua turma e pagamentos.",
       label: "Aulas",
       tone: item.status === "pending" ? "urgent" : "neutral",
@@ -950,9 +951,9 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
       id: `academy-makeup:${item.id}`,
       targetPath: item.placeId ? `/locais/${item.placeId}?intent=academy` : "/locais?intent=classes",
       sourceName: "Academia",
-      title: "Reposicao disponivel",
-      detail: "Voce possui credito de reposicao aberto.",
-      label: "Reposicao",
+      title: "Reposição disponivel",
+      detail: "Você possui credito de reposição aberto.",
+      label: "Reposição",
       tone: "neutral",
       order: 36,
     }));
@@ -964,9 +965,9 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
       id: `membership-player:${item.id}`,
       targetPath: "/locais?intent=venues",
       sourceName: "Clube",
-      title: item.status === "pending" ? "Plano de socio aguardando aprovacao" : "Plano de socio ativo",
+      title: item.status === "pending" ? "Plano de sócio aguardando aprovacao" : "Plano de sócio ativo",
       detail: item.status === "pending" ? "Aguarde o clube revisar sua solicitacao." : "Acompanhe mensalidades e beneficios do plano.",
-      label: "Socio",
+      label: "Sócio",
       tone: item.status === "pending" ? "urgent" : "neutral",
       order: item.status === "pending" ? 26 : 56,
     }));
@@ -1164,7 +1165,7 @@ function buildAgendaItems(
           `${action.leagueName} - Rodada ${action.roundNumber}`,
           action.title,
           `Quando: ${formatShortDateTime(dueDate)}`,
-          action.needsAvailability ? "Acao: informe seus horarios disponiveis." : `Status: ${matchStatusLabel(action.status)}.`,
+          action.needsAvailability ? "Acao: informe seus horários disponíveis." : `Status: ${matchStatusLabel(action.status)}.`,
         ].join("\n"),
       };
     })
@@ -1231,7 +1232,7 @@ function buildPriorityItems(
     const dueDate = action.scheduledAt || action.roundEndsAt;
     const urgent = action.kind === "confirm_result" || action.kind === "send_result" || Boolean(action.needsAvailability);
     const availabilityDetail = action.needsAvailability
-      ? "informe seus horarios"
+      ? "informe seus horários"
       : action.availabilitySent
       ? "disponibilidade enviada"
       : "";
@@ -1365,7 +1366,7 @@ function isInvitePriority(item: HomePriorityItem): boolean {
 }
 
 function isIncompleteRegistrationPriority(item: HomePriorityItem): boolean {
-  return /inscricao|inscric|matricula|plano|pendente|aguardando/.test(priorityText(item));
+  return /inscricao|inscric|matrícula|plano|pendente|aguardando/.test(priorityText(item));
 }
 
 function isWithinNextHours(sortAt: string, hours: number): boolean {
@@ -1481,7 +1482,7 @@ export function HomePage({ user, profile }: Props) {
       setTournamentStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
       const dashboard = await loadDashboardData(user);
       setOrganizingTournaments(dashboard.organizing.filter((t) => t.status !== "finished").slice(0, 3));
-      setFeedback({ kind: "success", text: "Convite aceito. O torneio agora aparece nas suas competicoes." });
+      setFeedback({ kind: "success", text: "Convite aceito. O torneio agora aparece nas suas competições." });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aceitar convite." });
     } finally {
@@ -1659,7 +1660,7 @@ export function HomePage({ user, profile }: Props) {
       id: `invite-event:${item.id}`,
       targetPath: buildTournamentUrl(item.id),
       title: item.name,
-      detail: [item.city, item.state].filter(Boolean).join(" - ") || "Evento publico",
+      detail: [item.city, item.state].filter(Boolean).join(" - ") || "Evento público",
       meta: item.startsAt ? formatDateRange(item.startsAt) : "Data a definir",
       tone: "neutral" as const,
     })),
@@ -1735,7 +1736,7 @@ export function HomePage({ user, profile }: Props) {
             : {
                 id: "main:discovery",
                 title: "Encontre algo para jogar",
-                detail: nearbyUpcoming.length > 0 ? "Veja jogos, aulas e eventos perto de voce." : "Reserve quadra, entre em aula ou descubra competicoes abertas.",
+                detail: nearbyUpcoming.length > 0 ? "Veja jogos, aulas e eventos perto de você." : "Reserve quadra, entre em aula ou descubra competições abertas.",
                 label: nearbyUpcoming.length > 0 ? "Explorar perto de mim" : "Encontrar jogo",
                 targetPath: nearbyUpcoming.length > 0 ? "/eventos" : "/locais?intent=matches",
                 tone: "neutral",
@@ -1755,7 +1756,7 @@ export function HomePage({ user, profile }: Props) {
   if (nextPlayerPriority) {
     todayRows.push({
       id: nextPlayerPriority.id,
-      label: nextPlayerPriority.tone === "urgent" ? "Pendencia" : "Acompanhar",
+      label: nextPlayerPriority.tone === "urgent" ? "Pendência" : "Acompanhar",
       title: nextPlayerPriority.title,
       detail: nextPlayerPriority.detail,
       action: nextPlayerPriority.tone === "urgent" ? "Resolver" : "Abrir",
@@ -1806,7 +1807,7 @@ export function HomePage({ user, profile }: Props) {
       key: "matches",
       label: "Competicao",
       title: "Minhas partidas",
-      detail: "Confirmacoes, horarios e resultados pendentes.",
+      detail: "Confirmações, horários e resultados pendentes.",
       action: "Abrir eventos",
       items: playerMatchItems,
       onOpen: () => navigate("/eventos"),
@@ -1824,7 +1825,7 @@ export function HomePage({ user, profile }: Props) {
       key: "payments",
       label: "Financeiro",
       title: "Meus pagamentos",
-      detail: "Planos e pendencias ligadas ao clube.",
+      detail: "Planos e pendências ligadas ao clube.",
       action: "Ver financeiro",
       items: playerPaymentItems,
       onOpen: () => navigate("/locais?intent=venues"),
@@ -1833,16 +1834,16 @@ export function HomePage({ user, profile }: Props) {
       key: "invites",
       label: "Convites",
       title: "Oportunidades",
-      detail: "Convites, espera e eventos publicos relevantes.",
+      detail: "Convites, espera e eventos públicos relevantes.",
       action: "Ver oportunidades",
       items: playerInviteItems,
       onOpen: () => navigate(playerInviteItems.some((item) => item.id.startsWith("invite-event")) ? "/eventos" : "/locais?intent=matches"),
     },
     {
       key: "history",
-      label: "Historico",
-      title: "Evolucao esportiva",
-      detail: "Competicoes ativas e base para seu historico.",
+      label: "Histórico",
+      title: "Evolução esportiva",
+      detail: "Competições ativas e base para seu histórico.",
       action: "Abrir perfil",
       items: playerHistoryItems,
       onOpen: () => navigate("/perfil"),
@@ -1888,7 +1889,7 @@ export function HomePage({ user, profile }: Props) {
           ) : null}
           {urgentPriorityItems.length > 0 ? (
             <div className="home-notification-group">
-              <p className="home-notification-heading">Pendencias</p>
+              <p className="home-notification-heading">Pendências</p>
               {urgentPriorityItems.slice(0, 5).map((item) => (
                 <PriorityCard
                   key={`bell-urgent:${item.id}`}
@@ -1936,7 +1937,7 @@ export function HomePage({ user, profile }: Props) {
       <section className="home-player-os" aria-label="Resumo do jogador">
         <div className="home-today-panel">
           <div className="home-today-copy">
-            <p className="home-hero-kicker">Hoje para voce</p>
+            <p className="home-hero-kicker">Hoje para você</p>
             <h1>{heroTitle}</h1>
             <p>{heroDetail}</p>
           </div>
@@ -1972,7 +1973,7 @@ export function HomePage({ user, profile }: Props) {
             <button type="button" onClick={() => navigate("/locais?intent=booking")}>
               <span>Reservar</span>
               <strong>Quadra</strong>
-              <small>Horarios livres</small>
+              <small>Horários livres</small>
             </button>
             <button type="button" onClick={() => navigate("/locais?intent=matches")}>
               <span>Jogar</span>
@@ -1987,13 +1988,19 @@ export function HomePage({ user, profile }: Props) {
             <button type="button" onClick={() => navigate("/eventos")}>
               <span>Competir</span>
               <strong>Torneios e ligas</strong>
-              <small>Inscricoes abertas</small>
+              <small>Inscrições abertas</small>
             </button>
           </div>
         </aside>
       </section>
 
-      {loading ? <p className="subtle">Carregando...</p> : null}
+      {loading ? (
+        <ScreenState
+          kind="loading"
+          title="Preparando sua área"
+          detail="Buscando pendências, reservas e atividades relevantes para você."
+        />
+      ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
       {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
 
@@ -2002,7 +2009,7 @@ export function HomePage({ user, profile }: Props) {
           {playerHubSections.length > 0 ? (
           <section className="player-hub-panel">
             <div className="section-title">
-              <h2>Para voce</h2>
+              <h2>Para você</h2>
             </div>
             <div className="player-hub-workspace">
               {playerHubSections.map((section) => (
@@ -2033,7 +2040,7 @@ export function HomePage({ user, profile }: Props) {
                   Abrir
                 </button>
               </div>
-              <p className="home-pro-note">Rotinas de gestao, equipe e organizacao ficam separadas da sua area de jogador.</p>
+              <p className="home-pro-note">Rotinas de gestao, equipe e organização ficam separadas da sua area de jogador.</p>
               {visibleStaffInvites.length > 0 || visiblePlaceStaffInvites.length > 0 || visibleProfessionalPriorityItems.length > 0 ? (
                 <div className="home-pro-list">
                   {visibleStaffInvites.map((invite) => (
@@ -2059,14 +2066,14 @@ export function HomePage({ user, profile }: Props) {
                   ))}
                 </div>
               ) : (
-                <p className="subtle">Sem pendencias profissionais urgentes agora.</p>
+                <p className="subtle">Sem pendências profissionais urgentes agora.</p>
               )}
               <ActionBar className="home-pro-actions" label="Acessos profissionais">
                 <button type="button" className="primary" onClick={() => navigate("/gestao")}>
                   Operar academia
                 </button>
                 <button type="button" className="secondary" onClick={() => navigate("/eventos")}>
-                  Organizar competicoes
+                  Organizar competições
                 </button>
               </ActionBar>
             </section>
@@ -2080,7 +2087,7 @@ export function HomePage({ user, profile }: Props) {
           <div className="section-title">
             <div>
               <p className="home-context-eyebrow">Descoberta</p>
-              <h2>Perto de voce</h2>
+              <h2>Perto de você</h2>
             </div>
             <button className="link" onClick={() => navigate("/eventos/torneios")}>
               Ver todos
@@ -2089,10 +2096,10 @@ export function HomePage({ user, profile }: Props) {
           {nearbyUpcoming.length > 0 ? (
             <div className="home-discovery-block">
               <div className="home-discovery-heading">
-                <strong>Eventos na sua regiao</strong>
+                <strong>Eventos na sua região</strong>
                 <span>{profile?.city || profile?.state || "Mais relevantes primeiro"}</span>
               </div>
-              <div className="home-discovery-carousel" aria-label="Eventos perto de voce">
+              <div className="home-discovery-carousel" aria-label="Eventos perto de você">
                 {nearbyUpcoming.map((t) => (
                   <DiscoveryEventCard key={`nearby:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
                 ))}
@@ -2103,7 +2110,7 @@ export function HomePage({ user, profile }: Props) {
             <div className="home-discovery-block">
               <div className="home-discovery-heading">
                 <strong>Torneios abertos</strong>
-                <span>Inscricoes disponiveis</span>
+                <span>Inscrições disponíveis</span>
               </div>
               <div className="home-discovery-carousel" aria-label="Torneios abertos">
                 {openDiscoveryUpcoming.map((t) => (
@@ -2115,10 +2122,10 @@ export function HomePage({ user, profile }: Props) {
           {nearbyUpcoming.length === 0 && openDiscoveryUpcoming.length === 0 && generalDiscoveryUpcoming.length > 0 ? (
             <div className="home-discovery-block">
               <div className="home-discovery-heading">
-                <strong>Destaques publicos</strong>
-                <span>Eventos disponiveis no app</span>
+                <strong>Destaques públicos</strong>
+                <span>Eventos disponíveis no app</span>
               </div>
-              <div className="home-discovery-carousel" aria-label="Destaques publicos">
+              <div className="home-discovery-carousel" aria-label="Destaques públicos">
                 {generalDiscoveryUpcoming.map((t) => (
                   <DiscoveryEventCard key={`general:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
                 ))}
@@ -2127,7 +2134,7 @@ export function HomePage({ user, profile }: Props) {
           ) : null}
           {upcoming.length === 0 ? (
             <div className="home-empty-inline">
-              <strong>Nenhum evento publico em breve.</strong>
+              <strong>Nenhum evento público em breve.</strong>
               <button type="button" className="link" onClick={() => navigate("/locais?intent=matches")}>
                 Encontrar jogo
               </button>
@@ -2138,3 +2145,4 @@ export function HomePage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

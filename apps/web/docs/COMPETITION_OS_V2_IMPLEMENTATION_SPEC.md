@@ -72,6 +72,23 @@ Prioridade:
 6. publicacao/compartilhamento;
 7. configuracao.
 
+Atualizacao 2026-05-16:
+
+A mesma limpeza aplicada as paginas publicas de torneio/liga deve ser replicada no workspace do organizador, com uma diferenca importante: o organizador precisa de ferramentas potentes, mas elas nao devem aparecer como um cockpit unico.
+
+Regra executavel:
+
+- `Organizacao` e a central de foco operacional/setup, nao um despejo de todos os modulos;
+- `Inscritos/Jogadores` cuida de inscricoes, aprovacoes, espera, pagamentos e contatos daquele grupo;
+- `Jogos/Partidas` cuida de chave/rodada, horarios, quadras, confirmacao, resultado e exportacao relacionada a jogos;
+- `Classificacao` aparece quando o formato exige ranking/tabela, sem ser aba universal inutil;
+- `Chat/Comunicacao` nao deve repetir lista de jogadores, partidas ou configuracao;
+- `Configuracao` concentra setup raro, equipe, regras, quadras, publicacao e ajustes estruturais;
+- filtros de classe/temporada devem ser contextuais: aparecem no topo da aba que usa o recorte e nao alteram silenciosamente areas sem relacao;
+- mobile usa rail horizontal e bottom sheets, nao pagina longa ancorada.
+
+O objetivo e manter a operacao completa, mas reduzir a sensacao de backend empilhado.
+
 ## Arquitetura De Informacao
 
 ### Hub `/eventos`
@@ -237,6 +254,8 @@ Etapas obrigatorias:
 5. `Agenda e quadras`
    - duracao estimada;
    - quadras disponiveis;
+   - modo `Locais cadastrados` para selecionar uma ou mais academias e suas quadras ja existentes;
+   - modo `Manual` preservado para torneios fora de locais cadastrados;
    - horarios de jogo;
    - distribuicao automatica;
    - conflitos.
@@ -253,6 +272,20 @@ Regras:
 - erros aparecem por etapa;
 - progresso visivel;
 - salvar rascunho deve ser claro.
+
+Estado 2026-05-16:
+
+- `COMP-COURTS-01` implementou selecao de quadras cadastradas no wizard de criacao e no setup interno do torneio;
+- `agendaConfig.quadras` continua sendo a fonte usada pelo gerador, mas quando a quadra vem de um local cadastrado o label deve ser curto e completo: `Nome do local · Nome da quadra`;
+- `agendaConfig.courtLinks` guarda a origem estruturada (`placeId`, `courtId`, nomes e label) para permitir bloqueio/autorizacao posterior;
+- entrada manual continua valida para torneios em quadras nao cadastradas.
+
+Proximo backend obrigatorio:
+
+- criar `COMP-COURTS-02` antes de prometer bloqueio real de agenda;
+- se o owner/staff do local gera o torneio, a agenda gerada deve criar bloqueios `court_bookings.status = blocked`;
+- se o organizador nao administra o local, a agenda deve criar pedido de autorizacao para o admin do local aprovar antes de bloquear;
+- jogador nunca deve ver texto longo de autorizacao; nas partidas basta `Local · Quadra · Hora`.
 
 ## Setup De Liga
 
@@ -354,6 +387,37 @@ Estado implementado em `COMP-OPS-01`:
 - recorte visual de ate 8 rows nao e silencioso: a tela informa quantas tarefas existem e oferece entrada para lista completa;
 - nenhum backend novo foi criado neste sprint.
 
+Proxima consolidacao: `COMP-ORG-01`.
+
+O workspace interno do torneio deve abandonar qualquer resto de pagina longa ou mistura de cockpit entre abas:
+
+- `Organizacao`: fila, status de setup, publicacao, equipe, quadras/locais e configuracoes estruturais;
+- `Jogadores`: inscricoes, espera, pagamento, aprovar/rejeitar, busca/filtro e contato;
+- `Jogos`: chave/partidas, agenda, quadra, resultado, confirmacao, exportar chave e acoes de partida;
+- `Classificacao`: somente quando houver fase de grupos/tabela/ranking;
+- `Chat`: comunicacao, avisos e mensagens, sem repetir lista fixa de inscritos;
+- `Encerramento`: aparece como area de evento/configuracao quando o torneio acabou, nao como bloco permanente dentro de jogos em andamento.
+
+Ferramentas preservadas:
+
+- gerar jogos;
+- resetar sorteio/partidas;
+- exportar chave;
+- copiar agenda por quadra;
+- aprovar inscricoes;
+- marcar pagamento;
+- editar equipe;
+- configurar quadras de locais cadastrados/manual;
+- sincronizar bloqueio/autorizacao de quadras;
+- aplicar resultado enviado por jogador;
+- lançar/editar placar oficial.
+
+Regra de design:
+
+- qualquer ferramenta secundaria deve ficar em menu/disclosure/drawer;
+- a primeira dobra deve responder "qual e a proxima acao do organizador?";
+- nenhum filtro deve existir duplicado como botoes e select ao mesmo tempo.
+
 ## Operacao De Liga
 
 Primeira tela:
@@ -387,6 +451,23 @@ Status 2026-05-15:
 - jogador participante recebe fila `Minha rodada` apenas quando ha partida pendente;
 - rows usam drawer/bottom sheet e encaminham para a sala de partida existente;
 - backend novo nao foi criado: foram reaproveitados servicos de inscricao, pagamento manual/stub, geracao de rodada, resultado, WO e chat.
+
+Proxima consolidacao: `COMP-ORG-01`.
+
+O workspace interno da liga deve seguir a mesma disciplina do torneio:
+
+- `Rodada` ou `Operacao`: proxima rodada, partidas sem agenda, resultado/WO, disputa e gerar proxima rodada;
+- `Jogadores`: inscricoes, jogadores ativos, pendentes, recesso e convite/importacao;
+- `Classificacao`: ranking/tabela da temporada ou classe selecionada;
+- `Partidas`: lista por rodada/classe com filtros contextuais;
+- `Chat`: comunicacao;
+- `Configuracao`: temporada, classes, formato, pontuacao, regras de WO, agenda e publicacao.
+
+O seletor de classe/temporada deve ser local a cada aba. Alterar a classe em `Jogadores` nao deve fazer o usuario sentir que os outros menus mudaram de forma invisivel. Para muitas classes, usar:
+
+- select compacto no desktop quando houver volume alto;
+- rail horizontal com busca/filtro no mobile;
+- resumo "Classe A - 18 jogadores" como apoio, nao como navegacao concorrente.
 
 ## Permissoes
 
@@ -548,3 +629,43 @@ Riscos restantes:
 - agenda incompleta ainda leva para configuracao geral de agenda, nao para edicao granular de uma unica partida;
 - pagamento segue stub/manual ate existir provedor real;
 - validar visualmente com muitos itens e mobile real.
+
+## Atualizacao 2026-05-16 - Quadras cadastradas e bloqueio real
+
+`COMP-COURTS-02` implementou o backend operacional para torneios em quadras de locais cadastrados:
+
+- `tournament_court_usage_requests` guarda solicitacoes por torneio/local;
+- `app_sync_tournament_court_usage(...)` transforma agenda gerada em bloqueios reais ou pedidos pendentes;
+- `app_review_tournament_court_request(...)` permite a academia autorizar e bloquear ou recusar;
+- bloqueios de torneio usam `court_bookings.status = blocked` e marcador tecnico em `notes` para evitar duplicacao em regeneracoes;
+- se o owner/staff do local gera o torneio, a agenda gerada bloqueia direto;
+- se o organizador nao administra o local, a Agenda do local recebe pedido de autorizacao;
+- rejeicao ou conflito deve aparecer no setup do torneio como revisao de agenda;
+- jogador deve continuar vendo apenas a leitura curta: `Local · Quadra · Hora`.
+
+## Atualizacao 2026-05-16 - COMP-ORG-01
+
+`COMP-ORG-01` consolidou o workspace do organizador por tarefa, sem criar backend novo:
+
+- `TournamentPage.tsx`:
+  - `Organizacao` passou a concentrar fila operacional, operacoes pesadas, publicacao, agenda por quadra, backup, reset, exportacoes e encerramento/podio;
+  - o filtro de classe aparece apenas em `Jogos`, `Classificacao` e `Jogadores`;
+  - `Jogos` fica focado em chave/partidas e revisao de resultados enviados por jogadores;
+  - agenda por quadra, podio e reset/exportacao estrutural sairam da aba `Jogos` do organizador;
+  - a aba `Organizacao` continua acessivel tambem em torneios live/finalizados para manter ferramentas de publicacao, exportacao e fechamento.
+- `LeagueDetailsPage.tsx`:
+  - owner ganhou as abas `Rodada`, `Jogadores`, `Classificacao`, `Partidas`, `Chat` e `Configuracao`;
+  - `Classificacao` deixou de ser redirecionada para `visao`;
+  - `Configuracao` concentra regras, classes, geracao de rodada e scheduler;
+  - seletor de temporada/classe aparece apenas em `Jogadores`, `Classificacao` e `Partidas`;
+  - `Rodada` fica como central de foco operacional e fila de proximas acoes.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Riscos restantes:
+
+- validar screenshots autenticados em mobile 390px com torneio/liga contendo muitas classes;
+- a liga ainda usa estado compartilhado de classe/temporada entre abas, embora o seletor agora so apareca nas abas dependentes desse recorte.

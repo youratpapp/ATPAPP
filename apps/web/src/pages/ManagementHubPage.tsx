@@ -817,6 +817,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                         posProducts: [],
                         posSales: [],
                         staff: [],
+                        tournamentCourtRequests: [],
                       },
                       place,
                       access,

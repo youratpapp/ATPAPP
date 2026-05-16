@@ -256,6 +256,22 @@ export type CourtBookingWaitlistEntry = {
   createdAt: string;
 };
 
+export type TournamentCourtUsageRequest = {
+  id: string;
+  placeId: string;
+  tournamentId: string;
+  requestedBy: string;
+  reviewedBy: string;
+  status: "pending" | "approved" | "rejected" | "cancelled";
+  tournamentName: string;
+  placeName: string;
+  summary: string;
+  payload: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+  reviewedAt: string;
+};
+
 export type AcademyClass = {
   id: string;
   placeId: string;

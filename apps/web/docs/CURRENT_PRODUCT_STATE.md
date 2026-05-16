@@ -1,5 +1,11 @@
 # Current Product State
 
+Nota 2026-05-16: `PLAYER-QA-POLISH-01` e `PLAYER-QA-POLISH-02` foram concluidos. A rodada fez polimento transversal de qualidade percebida no Player App: textos visiveis foram ajustados sem alterar tokens internos de rotas/abas/status, `Perfil > Preferencias` deixou de exibir linguagem tecnica, a acao destrutiva de conta ficou isolada, carregamentos principais passaram a usar `ScreenState` contextual, `Seguir` no Ranking deixou de competir com CTA primario, e acoes de partida no mobile ganharam alvo/estilo mais confortavel. Lint e build passaram. A proxima prioridade da queue e `PLAYER-QA-POLISH-03`, focada em navegacao e contexto.
+
+Nota 2026-05-16: `COMP-COURTS-02` fechou o elo operacional entre Competition OS e Agenda. Torneios com quadras cadastradas sincronizam a agenda gerada com `court_bookings`: se o organizador administra o local, o bloqueio nasce automaticamente como `blocked`; se nao administra, a academia recebe uma solicitacao acionavel em `Gestao > Agenda` para autorizar/bloquear ou recusar. O setup do torneio mostra status por local para o organizador revisar agenda quando houver recusa ou conflito.
+
+Nota 2026-05-16: `COMP-ORG-01` aplicou ao workspace do organizador a mesma limpeza ja usada nas paginas publicas. Torneio owner/staff agora concentra fila, publicacao, agenda por quadra, exportacoes, reset, backup e encerramento em `Organizacao`; `Jogos` fica focado em chave/partidas e revisao de resultados enviados por jogadores. Liga owner agora separa `Rodada`, `Jogadores`, `Classificacao`, `Partidas`, `Chat` e `Configuracao`, com seletor de temporada/classe apenas nas abas que realmente usam esse recorte.
+
 Fonte principal:
 
 - `product-architecture-ux-audit.md`
@@ -29,8 +35,9 @@ Fonte principal:
 - `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
 - `MANAGEMENT_OS_V2_UX_PLAN.md`
 - `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
+- `PLAYER_POLISH_QA_2026_05_16.md`
 
-Data: 2026-05-15
+Data: 2026-05-16
 
 ## Para que este arquivo existe
 
@@ -64,6 +71,7 @@ Existe ainda uma camada publica:
 
 Atualizacao 2026-05-15:
 
+- `COMP-COURTS-01` conectou o setup de torneio aos locais reais: a criacao de torneio e a configuracao de agenda de torneio ja criado agora permitem escolher quadras cadastradas em uma ou mais academias, preservando a entrada manual como fallback. A agenda salva `courtLinks` com `placeId/courtId` e usa label curto `Local · Quadra`, permitindo que jogador e organizador entendam onde a partida acontece sem bloco de texto. Bloqueio automatico/autorizacao de quadras de terceiros ficou registrado como `COMP-COURTS-02`, pois exige migration/RPC e fluxo de aprovacao na Agenda do local.
 - `COMP-SCORE-03` corrigiu o envio de placar por jogador em torneios: `app_submit_tournament_match_result` deixou de falhar com `column reference "tournament_id" is ambiguous`, a migration `0090` foi aplicada no Supabase alvo e a UI passou a mostrar erro amigavel se o banco estiver desatualizado.
 - a Home do Player App deixou de funcionar como painel empilhado: a primeira dobra agora escolhe CTA contextual pela ordem `resultado pendente > atividade nas proximas 24h > convite pendente > inscricao incompleta > competicao em andamento > descoberta local`;
 - a secao pessoal foi renomeada para `Para voce` e so aparece quando existe dado real do usuario; empty states grandes de competicao foram removidos da Home principal;
@@ -76,12 +84,13 @@ Atualizacao 2026-05-15:
 - o fluxo Player de reservar quadra em `/locais?intent=booking` agora usa filtro guiado por UF, cidade, local, piso, data, hora e duracao;
 - o fluxo Player de encontrar jogo em `/locais?intent=matches` tambem usa filtro guiado por UF, cidade e local com opcoes dependentes dos locais que possuem chamadas abertas, evitando campos livres que nao levam a resultado real;
 - a pagina publica de local (`/locais/:placeId`) deixou de usar secoes ancoradas para `Reservar`, `Aulas`, `Jogos` e `Planos`: cada card troca a intencao e renderiza apenas a experiencia escolhida;
-- dentro do local, `Reservar` agora usa dia/duracao e um carrossel de quadras com horarios hora a hora, exibindo slots livres e ocupados antes da confirmacao;
+- dentro do local, `Reservar` agora usa dia/duracao e um carrossel de quadras com horarios hora a hora, exibindo slots livres, ocupados e o intervalo completo selecionado antes da confirmacao;
 - UF/cidade/local sao derivados de locais com quadras ativas, reduzindo escolhas que nao levam a reserva real;
 - a busca de reserva aceita qualquer horario, periodo do dia e horas cheias, retornando a primeira disponibilidade por quadra;
 - o piso da quadra passou a ser dado operacional tambem no cadastro de quadra da gestao;
 - a reserva publica fica vinculada ao perfil logado; nome/contato deixam de parecer cadastro duplicado e telefone so aparece como complemento quando o perfil nao tem contato;
 - solicitacoes publicas de reserva continuam entrando como pendentes em `court_bookings` via `createCourtBooking`/RPC e devem ser aprovadas pela gestao em `Gestao > Agenda > Reservas pendentes`.
+- `PLAYER-UX-03D` fechou o fluxo visual de reserva dentro do local: o jogador escolhe dia, duracao e slot no calendario por quadra, confirma com identidade do perfil e nao atravessa conteudos de aulas, jogos ou planos durante a reserva.
 
 A proxima evolucao consolidada e tornar essas experiencias visiveis por perfil, plano e intencao:
 
@@ -115,13 +124,14 @@ Gestao nao e uma variacao de Locais. Gestao e um sistema proprio.
 
 Ordem de foco:
 
-1. Player App v2: home por proxima acao, locais, reserva, aulas, jogar, ranking e perfil.
-2. Competition OS v2: separar jogador, publico, setup e operacao.
-3. Management OS v2: gestao por papel, fila antes de KPI, professor leve.
-4. Agenda e Academia como rotinas operacionais maduras.
-5. Financeiro, CRM e Cantina como filas/acesso por permissao.
-6. Paginas publicas sem vazamento de cockpit.
-7. QA por papel e auditoria visual contra o playbook.
+1. `PLAYER-QA-POLISH-03`: ajustes finos de navegacao e contexto do Player App.
+2. Player App v2: home por proxima acao, locais, reserva, aulas, jogar, ranking e perfil.
+3. Competition OS v2: separar jogador, publico, setup e operacao.
+4. Management OS v2: gestao por papel, fila antes de KPI, professor leve.
+5. Agenda e Academia como rotinas operacionais maduras.
+6. Financeiro, CRM e Cantina como filas/acesso por permissao.
+7. Paginas publicas sem vazamento de cockpit.
+8. QA por papel e auditoria visual contra o playbook.
 
 ## Atualizacoes recentes de QA
 

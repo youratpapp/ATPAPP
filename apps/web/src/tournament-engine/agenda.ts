@@ -6,9 +6,18 @@ export type AgendaDay = {
   fim: string;
 };
 
+export type AgendaCourtLink = {
+  placeId: string;
+  placeName: string;
+  courtId: string;
+  courtName: string;
+  label: string;
+};
+
 export type AgendaConfig = {
   duracaoMin: number;
   quadras: string[];
+  courtLinks?: AgendaCourtLink[];
   dias: AgendaDay[];
   travarSemifinalDia: boolean;
   diaSemifinal: string;
@@ -151,6 +160,17 @@ export function normalizeAgendaConfig(input: Partial<AgendaConfig> | null | unde
 
   c.duracaoMin = clampInt(c.duracaoMin, 10, 240, 45);
   c.quadras = (Array.isArray(c.quadras) ? c.quadras : []).map((q) => String(q || "").trim()).filter(Boolean);
+  c.courtLinks = Array.isArray(src.courtLinks)
+    ? src.courtLinks
+        .map((item) => ({
+          placeId: String(item?.placeId || "").trim(),
+          placeName: String(item?.placeName || "").trim(),
+          courtId: String(item?.courtId || "").trim(),
+          courtName: String(item?.courtName || "").trim(),
+          label: String(item?.label || "").trim(),
+        }))
+        .filter((item) => item.placeId && item.courtId && item.label)
+    : [];
 
   const validCourts = new Set(c.quadras.map((q) => q.toLowerCase()));
 

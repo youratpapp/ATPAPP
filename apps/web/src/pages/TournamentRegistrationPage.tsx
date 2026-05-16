@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
@@ -73,28 +73,28 @@ function registrationStatusLabel(status: TournamentRegistration["status"]): stri
 }
 
 function registrationStatusDetail(status: TournamentRegistration["status"]): string {
-  if (status === "approved") return "Voce ja pode acompanhar jogos, agenda e comunicados do torneio.";
-  if (status === "waitlist") return "A organizacao colocou sua inscricao na lista de espera desta categoria.";
-  if (status === "rejected") return "Sua solicitacao nao foi aprovada. Fale com a organizacao se precisar revisar a categoria.";
-  return "A organizacao ainda precisa aprovar sua inscricao antes de voce aparecer na chave.";
+  if (status === "approved") return "Você ja pode acompanhar jogos, agenda e comunicados do torneio.";
+  if (status === "waitlist") return "A organização colocou sua inscricao na lista de espera desta categoria.";
+  if (status === "rejected") return "Sua solicitacao não foi aprovada. Fale com a organização se precisar revisar a categoria.";
+  return "A organização ainda precisa aprovar sua inscricao antes de você aparecer na chave.";
 }
 
 function friendlyRegistrationError(error: unknown): string {
   const raw = error instanceof Error ? error.message : typeof error === "string" ? error : "";
   const lower = raw.toLowerCase();
   if (lower.includes("duplicate") || lower.includes("unique") || lower.includes("already") || lower.includes("ja existe")) {
-    return "Voce ja tem uma inscricao registrada neste torneio.";
+    return "Você ja tem uma inscricao registrada neste torneio.";
   }
   if (lower.includes("permission denied") || lower.includes("row-level security") || lower.includes("not authorized")) {
-    return "Nao foi possivel enviar a inscricao com este perfil. Entre novamente e tente de novo.";
+    return "Não foi possível enviar a inscricao com este perfil. Entre novamente e tente de novo.";
   }
   if (lower.includes("registration") && lower.includes("closed")) {
-    return "As inscricoes deste torneio nao estao abertas agora.";
+    return "As inscrições deste torneio não estao abertas agora.";
   }
   if (lower.includes("tournament") && lower.includes("not found")) {
-    return "Nao encontramos este torneio. Verifique o link e tente novamente.";
+    return "Não encontramos este torneio. Verifique o link e tente novamente.";
   }
-  return "Nao foi possivel enviar sua inscricao agora. Tente novamente em instantes.";
+  return "Não foi possível enviar sua inscricao agora. Tente novamente em instantes.";
 }
 
 function extractClassOptions(dataRaw: Record<string, unknown>): ClassOption[] {
@@ -180,7 +180,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
   const registrationClosedReason = useMemo(() => {
     if (!tournament) return "";
     if (tournament.status !== "registration_open") {
-      return "As inscricoes deste torneio nao estao abertas no momento.";
+      return "As inscrições deste torneio não estao abertas no momento.";
     }
     if (tournament.registrationCloseAt) {
       const closeAt = new Date(tournament.registrationCloseAt).getTime();
@@ -219,7 +219,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
         setFeedback(null);
       } catch {
         if (!alive) return;
-        setFeedback({ kind: "error", text: "Nao foi possivel abrir a inscricao deste torneio. Verifique o link e tente novamente." });
+        setFeedback({ kind: "error", text: "Não foi possível abrir a inscricao deste torneio. Verifique o link e tente novamente." });
       } finally {
         if (alive) setLoading(false);
       }
@@ -237,7 +237,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
       return;
     }
     if (existingRegistration) {
-      setFeedback({ kind: "info", text: "Voce ja tem uma inscricao registrada neste torneio." });
+      setFeedback({ kind: "info", text: "Você ja tem uma inscricao registrada neste torneio." });
       return;
     }
     setSubmitting(true);
@@ -262,8 +262,8 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
         kind: "success",
         text:
           mine?.status === "approved"
-            ? "Inscricao confirmada. O pagamento sera acompanhado pela organizacao."
-            : "Solicitacao enviada. A organizacao vai revisar sua categoria e pagamento.",
+            ? "Inscricao confirmada. O pagamento sera acompanhado pela organização."
+            : "Solicitacao enviada. A organização vai revisar sua categoria e pagamento.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyRegistrationError(err) });
@@ -321,13 +321,13 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
             <div>
               <div className="tournament-registration-status">
                 <StatusBadge status={tournament.status} />
-                <span>{tournament.visibility === "public" ? "Evento publico" : "Convite por link"}</span>
+                <span>{tournament.visibility === "public" ? "Evento público" : "Convite por link"}</span>
               </div>
               <h2>{tournament.name}</h2>
               <p>{locationLabel}</p>
               <div className="tournament-registration-facts">
                 <span>Inicio: {formatEventDate(tournament.startsAt)}</span>
-                <span>Inscricoes ate: {registrationCloseLabel}</span>
+                <span>Inscrições ate: {registrationCloseLabel}</span>
                 <span>Taxa: {formatMoneyFromCents(tournament.registrationFeeCents)}</span>
               </div>
             </div>
@@ -373,11 +373,11 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
                   <span>1</span>
                   <div>
                     <strong>Escolha a categoria</strong>
-                    <small>Selecione onde voce quer entrar. A organizacao pode revisar antes de aprovar.</small>
+                    <small>Selecione onde você quer entrar. A organização pode revisar antes de aprovar.</small>
                   </div>
                 </div>
                 {options.length === 0 ? (
-                  <p className="subtle">Este torneio ainda nao publicou categorias para inscricao.</p>
+                  <p className="subtle">Este torneio ainda não públicou categorias para inscricao.</p>
                 ) : (
                   <div className="registration-option-grid">
                     {options.map((option) => {
@@ -404,7 +404,7 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
                   <span>2</span>
                   <div>
                     <strong>Confirme seus dados</strong>
-                    <small>Esses dados ajudam a organizacao a validar comunicados, pagamento e chamada.</small>
+                    <small>Esses dados ajudam a organização a validar comunicados, pagamento e chamada.</small>
                   </div>
                 </div>
                 <div className="registration-form-grid">
@@ -440,13 +440,13 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
                   </p>
                   <p>
                     <span>Restricao de horario</span>
-                    <strong>Avise a organizacao se precisar combinar horario.</strong>
+                    <strong>Avise a organização se precisar combinar horario.</strong>
                   </p>
                 </div>
 
                 <div className="registration-sticky-cta">
                   <button className="primary" onClick={submit} disabled={!canSubmit}>
-                    {submitting ? "Enviando..." : registrationClosedReason ? "Inscricoes fechadas" : existingRegistration ? registrationStatusLabel(existingRegistration.status) : "Confirmar inscricao"}
+                    {submitting ? "Enviando..." : registrationClosedReason ? "Inscrições fechadas" : existingRegistration ? registrationStatusLabel(existingRegistration.status) : "Confirmar inscricao"}
                   </button>
                   <button onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}`)}>Abrir torneio</button>
                   <button onClick={shareRegistrationWhatsApp} disabled={!selected}>
@@ -459,18 +459,18 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
             <aside className="tournament-registration-side">
               <div>
                 <span>Como funciona</span>
-                <strong>{tournament.status === "registration_open" ? "Pedido com aprovacao" : "Inscricoes indisponiveis"}</strong>
+                <strong>{tournament.status === "registration_open" ? "Pedido com aprovacao" : "Inscrições indisponíveis"}</strong>
                 <p>Depois de solicitar, o organizador confere categoria, pagamento e libera sua entrada na chave.</p>
               </div>
               <div>
                 <span>Status</span>
-                <strong>{existingRegistration ? registrationStatusLabel(existingRegistration.status) : "Ainda nao enviado"}</strong>
-                <p>{existingRegistration ? registrationStatusDetail(existingRegistration.status) : "Ao confirmar, voce vera aqui se a solicitacao ficou em analise ou foi aprovada."}</p>
+                <strong>{existingRegistration ? registrationStatusLabel(existingRegistration.status) : "Ainda não enviado"}</strong>
+                <p>{existingRegistration ? registrationStatusDetail(existingRegistration.status) : "Ao confirmar, você vera aqui se a solicitacao ficou em analise ou foi aprovada."}</p>
               </div>
               <div>
                 <span>Contato</span>
                 <strong>Restricoes e duvidas</strong>
-                <p>Restricoes de horario ainda devem ser combinadas com a organizacao do torneio.</p>
+                <p>Restricoes de horario ainda devem ser combinadas com a organização do torneio.</p>
               </div>
             </aside>
           </div>
@@ -479,3 +479,4 @@ export function TournamentRegistrationPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

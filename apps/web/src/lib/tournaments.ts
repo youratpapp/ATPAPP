@@ -1,7 +1,9 @@
 import type { User } from "@supabase/supabase-js";
+import type { Agenda, AgendaCourtLink } from "../tournament-engine/agenda";
 import { supabase } from "./supabase";
 import type {
   TournamentChatMessage,
+  TournamentCourtUsageRequest,
   TournamentDetails,
   TournamentMatchConfirmation,
   TournamentMatchResultSubmission,
@@ -21,6 +23,7 @@ const TABLE_REGISTRATIONS = "tournament_registrations";
 const TABLE_CHAT = "tournament_chat_messages";
 const TABLE_RESULT_SUBMISSIONS = "tournament_match_result_submissions";
 const TABLE_MATCH_CONFIRMATIONS = "tournament_match_confirmations";
+const TABLE_COURT_USAGE_REQUESTS = "tournament_court_usage_requests";
 
 export const TOURNAMENT_COLUMNS =
   "id,name,owner_id,city,state,visibility,status,poster_url,starts_at,registration_close_at,updated_at,player_result_submission_enabled,registration_fee_cents";
@@ -147,6 +150,22 @@ type TournamentStaffInviteActionRow = {
   created_at: string | null;
 };
 
+type TournamentCourtUsageRequestRow = {
+  id: string;
+  place_id: string;
+  tournament_id: string;
+  requested_by: string | null;
+  reviewed_by: string | null;
+  status: string | null;
+  tournament_name: string | null;
+  place_name: string | null;
+  summary: string | null;
+  payload: Record<string, unknown> | null;
+  created_at: string | null;
+  updated_at: string | null;
+  reviewed_at: string | null;
+};
+
 const TOURNAMENT_STAFF_ROLES = ["organizer", "scorekeeper", "checkin", "media"] as const;
 
 function normalizeTournamentRole(value: string | null | undefined): TournamentRole {
@@ -194,6 +213,29 @@ function normalizeStatus(value: string | undefined):
   return (allowed as readonly string[]).includes(value || "")
     ? (value as (typeof allowed)[number])
     : "draft";
+}
+
+function normalizeTournamentCourtUsageStatus(value: string | null | undefined): TournamentCourtUsageRequest["status"] {
+  if (value === "approved" || value === "rejected" || value === "cancelled") return value;
+  return "pending";
+}
+
+function courtUsageRequestRowToModel(row: TournamentCourtUsageRequestRow): TournamentCourtUsageRequest {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    tournamentId: row.tournament_id,
+    requestedBy: row.requested_by ?? "",
+    reviewedBy: row.reviewed_by ?? "",
+    status: normalizeTournamentCourtUsageStatus(row.status),
+    tournamentName: row.tournament_name ?? "",
+    placeName: row.place_name ?? "",
+    summary: row.summary ?? "",
+    payload: row.payload ?? {},
+    createdAt: row.created_at ?? "",
+    updatedAt: row.updated_at ?? "",
+    reviewedAt: row.reviewed_at ?? "",
+  };
 }
 
 export function rowToSummary(row: TournamentRow): TournamentSummary {
@@ -419,6 +461,13 @@ export type CreateTournamentInput = {
   agenda?: {
     durationMin?: number;
     courts?: string[];
+    courtLinks?: Array<{
+      placeId: string;
+      placeName: string;
+      courtId: string;
+      courtName: string;
+      label: string;
+    }>;
     days?: Array<{ date: string; start: string; end: string }>;
   };
 };
@@ -498,6 +547,15 @@ export async function createTournament(user: User, input: CreateTournamentInput)
   const agendaConfig = {
     duracaoMin: clampNumber(input.agenda?.durationMin, 10, 240, 45),
     quadras: Array.from(new Set((input.agenda?.courts || []).map((court) => court.trim()).filter(Boolean))),
+    courtLinks: (input.agenda?.courtLinks || [])
+      .map((item) => ({
+        placeId: item.placeId,
+        placeName: item.placeName,
+        courtId: item.courtId,
+        courtName: item.courtName,
+        label: item.label,
+      }))
+      .filter((item) => item.placeId && item.courtId && item.label),
     dias: (input.agenda?.days || [])
       .map((day) => ({ data: day.date, inicio: day.start, fim: day.end }))
       .filter((day) => day.data && day.inicio && day.fim),
@@ -666,6 +724,50 @@ export async function updateTournamentDetails(
   if (error) throw new Error(error.message);
 
   return loadTournamentDetails(user, tournamentId);
+}
+
+export async function syncTournamentCourtUsage(input: {
+  tournamentId: string;
+  agenda: Agenda;
+  courtLinks: AgendaCourtLink[];
+}): Promise<{
+  approvedPlaces: number;
+  pendingPlaces: number;
+  blockedSlots: number;
+  conflicts: number;
+}> {
+  if (!supabase) {
+    return { approvedPlaces: 0, pendingPlaces: 0, blockedSlots: 0, conflicts: 0 };
+  }
+  if (!input.courtLinks.length || !input.agenda.assignments.length) {
+    return { approvedPlaces: 0, pendingPlaces: 0, blockedSlots: 0, conflicts: 0 };
+  }
+  const { data, error } = await supabase.rpc("app_sync_tournament_court_usage", {
+    p_tournament_id: input.tournamentId,
+    p_agenda: input.agenda,
+    p_court_links: input.courtLinks,
+  });
+  if (error) throw new Error(error.message);
+  const result = (data ?? {}) as Record<string, unknown>;
+  return {
+    approvedPlaces: Number(result.approvedPlaces || 0),
+    pendingPlaces: Number(result.pendingPlaces || 0),
+    blockedSlots: Number(result.blockedSlots || 0),
+    conflicts: Number(result.conflicts || 0),
+  };
+}
+
+export async function listTournamentCourtUsageRequests(tournamentId: string): Promise<TournamentCourtUsageRequest[]> {
+  if (!supabase || !tournamentId) return [];
+  const { data, error } = await supabase
+    .from(TABLE_COURT_USAGE_REQUESTS)
+    .select(
+      "id,place_id,tournament_id,requested_by,reviewed_by,status,tournament_name,place_name,summary,payload,created_at,updated_at,reviewed_at"
+    )
+    .eq("tournament_id", tournamentId)
+    .order("updated_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentCourtUsageRequestRow[]).map(courtUsageRequestRowToModel);
 }
 
 export async function loadTournamentRegistrations(

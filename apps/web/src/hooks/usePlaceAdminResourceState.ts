@@ -26,6 +26,7 @@ import type {
   PlacePosProduct,
   PlacePosSale,
   PlaceStaffMember,
+  TournamentCourtUsageRequest,
 } from "../lib/types";
 import type { PlaceAdminResourceEntry, PlaceAdminResourceMaps } from "../lib/place-admin-data";
 
@@ -43,6 +44,7 @@ export function usePlaceAdminResourceState() {
   const [expensesByPlace, setExpensesByPlace] = useState<Record<string, PlaceExpense[]>>({});
   const [bookingsByPlace, setBookingsByPlace] = useState<Record<string, CourtBooking[]>>({});
   const [bookingWaitlistByPlace, setBookingWaitlistByPlace] = useState<Record<string, CourtBookingWaitlistEntry[]>>({});
+  const [tournamentCourtRequestsByPlace, setTournamentCourtRequestsByPlace] = useState<Record<string, TournamentCourtUsageRequest[]>>({});
   const [academyClassesByPlace, setAcademyClassesByPlace] = useState<Record<string, AcademyClass[]>>({});
   const [academyCoachesByPlace, setAcademyCoachesByPlace] = useState<Record<string, AcademyCoach[]>>({});
   const [academySlotsByPlace, setAcademySlotsByPlace] = useState<Record<string, AcademySlot[]>>({});
@@ -71,6 +73,7 @@ export function usePlaceAdminResourceState() {
     setExpensesByPlace(maps.expensesByPlace);
     setBookingsByPlace(maps.bookingsByPlace);
     setBookingWaitlistByPlace(maps.bookingWaitlistByPlace);
+    setTournamentCourtRequestsByPlace(maps.tournamentCourtRequestsByPlace);
     setAcademyClassesByPlace(maps.academyClassesByPlace);
     setAcademyCoachesByPlace(maps.academyCoachesByPlace);
     setAcademySlotsByPlace(maps.academySlotsByPlace);
@@ -100,6 +103,7 @@ export function usePlaceAdminResourceState() {
     setExpensesByPlace((prev) => ({ ...prev, [placeId]: entry.expenses }));
     setBookingsByPlace((prev) => ({ ...prev, [placeId]: entry.bookings }));
     setBookingWaitlistByPlace((prev) => ({ ...prev, [placeId]: entry.bookingWaitlist }));
+    setTournamentCourtRequestsByPlace((prev) => ({ ...prev, [placeId]: entry.tournamentCourtRequests }));
     setAcademyClassesByPlace((prev) => ({ ...prev, [placeId]: entry.academyClasses }));
     setAcademyCoachesByPlace((prev) => ({ ...prev, [placeId]: entry.academyCoaches }));
     setAcademySlotsByPlace((prev) => ({ ...prev, [placeId]: entry.academySlots }));
@@ -145,5 +149,6 @@ export function usePlaceAdminResourceState() {
     setAcademyAttendanceByPlace,
     setPaymentsByTarget,
     staffByPlace,
+    tournamentCourtRequestsByPlace,
   };
 }

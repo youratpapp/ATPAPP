@@ -11,7 +11,7 @@ Fonte de reestruturacao v2:
 - `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
 - `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
 
-Data: 2026-05-15
+Data: 2026-05-16
 
 ## Para que este arquivo existe
 
@@ -43,6 +43,360 @@ Continue para o proximo item da Execution Queue.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
 ## P0 - Prioridade atual
+
+### [x] PLAYER-QA-POLISH-01 - Qualidade percebida do Player App: texto, estados e loading
+
+Status: `[x]` concluido em 2026-05-16
+
+Fonte:
+
+- analise manual externa `ux-analysis-atpapp.md`;
+- `PLAYER_POLISH_QA_2026_05_16.md`;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`;
+- `PREMIUM_UX_VISUAL_LANGUAGE.md`;
+- feedback recorrente de que o Player App deve parecer leve, simples, premium e nao um backend empilhado.
+
+Contexto:
+
+- a reorganizacao estrutural do Player App, Locais, torneios/ligas e pagina publica de local ja reduziu a carga cognitiva;
+- agora a percepcao de produto ainda pode cair por detalhes pequenos e visiveis: acentos faltando, microcopy tecnica, `Carregando...` cru, empty states grandes, retangulos vazios e labels confusos;
+- esses pontos nao pedem backend novo nem redesign amplo, mas passam sensacao de app inacabado.
+
+Objetivo:
+
+Fazer uma rodada transversal de acabamento no Player App para elevar confianca visual e leitura:
+
+- corrigir portugues visivel da UI, com acentos e cedilhas onde o usuario le;
+- remover textos internos/de desenvolvimento;
+- ajustar Preferencias para parecer configuracao real do usuario;
+- trocar placeholders vazios por icones/fallbacks consistentes;
+- substituir loading bruto por skeleton/estado contextual;
+- reduzir empty states grandes que nao guiam acao.
+
+Escopo do sprint:
+
+1. Textos hardcoded visiveis:
+   - varrer Home, Locais, Competir, Ranking, Perfil, torneio/liga publica e pagina publica de local;
+   - corrigir palavras comuns sem acento/cedilha apenas na UI;
+   - nao alterar nomes de rotas, ids, status internos, variaveis ou documentos que dependem de ASCII.
+
+2. Perfil > Preferencias:
+   - remover ou trocar texto tecnico sobre futura engine de notificacoes;
+   - labels de preferencias devem usar capitalizacao normal;
+   - checkbox/toggle deve ficar claramente associado ao label;
+   - nao deixar nota interna aparecendo para jogador.
+
+3. Estados vazios e imagens ausentes:
+   - listas/cards sem foto/cartaz/logo devem usar icone/fallback visual pequeno;
+   - nao renderizar retangulo vazio que parece imagem quebrada;
+   - empty state deve ser compacto e ter acao clara quando houver proximo passo.
+
+4. Loading:
+   - substituir `Carregando...` em blocos principais por skeleton ou estado curto contextual;
+   - se o loading for local e rapido, manter discreto;
+   - erro tecnico continua com mensagem amigavel ao usuario e detalhe apenas em console/log.
+
+Nao objetivos:
+
+- nao mudar arquitetura de rotas;
+- nao criar backend;
+- nao redesenhar Home inteira;
+- nao adicionar KPIs ou conteudo novo;
+- nao transformar o app em rede social.
+
+Criterio de conclusao:
+
+- UI principal do Player App nao exibe palavras comuns sem acento em menus, tabs, cards, botoes e mensagens;
+- Perfil > Preferencias nao mostra texto tecnico/de desenvolvimento;
+- toggles/checkboxes estao legiveis e alinhados;
+- listas sem imagem nao parecem quebradas;
+- loading principal nao aparece como texto cru persistente;
+- lint/build passam.
+
+Entrega 2026-05-16:
+
+- textos visiveis principais do Player App foram polidos em Home, Competir, Locais, Perfil, torneio/liga publica e estados relacionados, preservando tokens internos ASCII de rotas/abas/status;
+- `Perfil > Preferencias` deixou de mencionar engine futura e passou a explicar preferencias em linguagem de usuario, com checkbox associado a label e layout mais claro;
+- `Excluir minha conta` foi isolado em zona destrutiva com aviso curto;
+- carregamentos principais em Home, Competicoes, Locais, Torneio e Liga usam `ScreenState` contextual em vez de `Carregando...` solto;
+- validado com `npm.cmd run lint` e `npm.cmd run build`.
+
+Validacao obrigatoria:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`;
+- validar desktop e mobile em:
+  - `/inicio`;
+  - `/locais`;
+  - `/eventos`;
+  - `/ranking`;
+  - `/perfil`;
+  - uma pagina publica de local;
+  - uma pagina publica de torneio ou liga.
+
+### [x] PLAYER-QA-POLISH-02 - Hierarquia de acoes e alvos mobile
+
+Status: `[x]` concluido em 2026-05-16
+
+Fonte:
+
+- `PLAYER_POLISH_QA_2026_05_16.md`;
+- analise manual externa `ux-analysis-atpapp.md`.
+
+Objetivo:
+
+Corrigir acoes que hoje parecem primarias demais ou pequenas demais:
+
+- `Seguir` no Ranking deve ser outline/ghost ou icone discreto;
+- `Placar e WhatsApp` em partida no mobile deve ter area de toque minima de 44px;
+- `Nao posso jogar` deve parecer acao secundaria real, nao texto perdido;
+- `Excluir minha conta` deve ficar isolado como acao destrutiva, com aviso e confirmacao explicita.
+
+Criterio de conclusao:
+
+- uma tela nao deve ter acao secundaria competindo visualmente com CTA principal;
+- acoes de toque em mobile devem ser confortaveis;
+- acao destrutiva nao deve aparecer misturada a links normais.
+
+Entrega 2026-05-16:
+
+- `Seguir` no Ranking deixou de usar estilo primario verde e passou a ser acao discreta/outline;
+- `Placar e WhatsApp` em partida de torneio ganhou area minima de 44px no summary;
+- `Nao posso jogar` passou a usar estilo secundario real, sem competir com `Confirmar presenca`;
+- `Excluir minha conta` ja havia sido isolado em zona destrutiva no sprint anterior;
+- validado com `npm.cmd run lint` e `npm.cmd run build`.
+
+### [>] PLAYER-QA-POLISH-03 - Ajustes finos de navegacao e contexto do Player App
+
+Status: `[>]` prioridade atual
+
+Fonte:
+
+- `PLAYER_POLISH_QA_2026_05_16.md`;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Objetivo:
+
+Revisar pequenos pontos de navegacao sem reabrir arquitetura:
+
+- avaliar se `Competir` no mobile deve abrir a superficie geral de competicoes em vez de subview especifica;
+- decidir se `Modo jogador` vira seletor real de modo ou deixa de parecer componente clicavel;
+- avaliar entrada direta para `Aulas` somente se nao duplicar `Locais > Entrar em aula`;
+- melhorar contexto em paginas de detalhe quando o usuario chega por notificacao/link direto.
+
+Criterio de conclusao:
+
+- navegacao continua simples;
+- nenhum item promete modo/acao que nao existe;
+- jogador entende onde esta sem precisar de breadcrumbs pesados.
+
+### [x] COMP-ORG-01 - Organizador de torneio/liga com paginas limpas por tarefa
+
+Status: `[x]` concluido em 2026-05-16
+
+Fonte:
+
+- feedback sobre replicar a limpeza de torneio/liga publica na area de organizacao;
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`;
+- `COMPETITION_OS_V2_UX_PLAN.md`;
+- padrao ja aplicado em paginas publicas: abas reais, filtros contextuais e remocao de blocos globais repetidos.
+
+Contexto:
+
+- a leitura publica de torneios e ligas ja foi separada por intencao;
+- a area de organizacao ainda carrega trechos de cockpit antigo em algumas abas, com blocos agregados, configuracao, filtros, listas e ferramentas aparecendo perto demais umas das outras;
+- o organizador precisa de potencia operacional, mas nao precisa ver tudo ao mesmo tempo;
+- setup raro, operacao diaria, comunicacao, inscricoes, agenda, jogos e resultados devem ter superfices separadas.
+
+Objetivo:
+
+Transformar a area de organizacao de torneios e ligas no mesmo padrao de limpeza aplicado ao lado publico:
+
+- cada aba/pagina deve renderizar somente o conteudo da tarefa selecionada;
+- a fila operacional deve abrir a experiencia do organizador, mas nao deve ser repetida em todas as abas;
+- filtros de classe/temporada devem ser contextuais e aparecer apenas em `Inscritos/Jogadores`, `Jogos/Partidas`, `Classificacao` e telas que realmente dependem desse recorte;
+- configuracao/setup deve ficar separado de operacao diaria;
+- ferramentas de publicacao/exportacao devem aparecer no local de decisao, sem poluir a lista de jogos ou jogadores.
+
+Escopo do sprint:
+
+1. Torneio - workspace do organizador:
+   - revisar `/eventos/:tournamentId/organizacao`, `/jogadores`, `/jogos`, `/classificacao` e `/chat`;
+   - garantir que `Organizacao` seja uma central de operacao/setup, nao uma pagina longa com todas as ferramentas;
+   - mover cards de resumo/KPIs para estado compacto ou retirar quando nao guiam acao;
+   - manter `inscricoes pendentes`, `pagamentos`, `lista de espera`, `sorteio`, `agenda`, `equipe`, `quadras`, `exportar chave`, `resetar sorteio`, `publicacao`, `resultados` e `encerramento`, mas cada um no lugar certo;
+   - evitar que `Jogos` misture operacao de resultado, exportacao, podio, agenda e setup sem hierarquia;
+   - usar drawer/bottom sheet para detalhe de inscricao, partida, resultado e uso de quadra.
+
+2. Liga - workspace do organizador:
+   - revisar `/eventos/ligas/:leagueId` para separar `Rodada`, `Jogadores`, `Classificacao`, `Partidas`, `Chat` e `Configuracao`;
+   - remover blocos grandes de status quando puderem virar badge/linha curta;
+   - garantir que classe/temporada nao altere silenciosamente conteudo de abas nao relacionadas;
+   - usar seletor contextual no topo das abas que precisam de classe, com comportamento bom para muitas classes;
+   - preservar geracao de rodada, WO, resultado, disputa, mensagens e ranking.
+
+3. Hub de organizacao:
+   - manter `/eventos?modo=organizing`, `/eventos/torneios?view=organizing` e `/eventos/ligas?view=organizing` como entrada por proxima acao;
+   - a lista de competicoes organizadas deve mostrar tipo, status, proximo passo e CTA primario;
+   - filtros/historico ficam em disclosure ou area secundaria.
+
+4. Mobile:
+   - menus internos devem funcionar como rail horizontal arrastavel;
+   - cada aba deve parecer uma tela propria, nao uma ancora dentro de pagina longa;
+   - drawer vira bottom sheet;
+   - evitar tabelas largas sem alternativa compacta.
+
+Regras:
+
+- nao remover funcao existente;
+- nao transformar rotina diaria em wizard;
+- nao duplicar o mesmo filtro como botoes e select ao mesmo tempo;
+- nao mostrar ferramentas de admin para jogador/publico;
+- nao esconder pendencias com slice silencioso: se houver recorte, mostrar contagem e link para ver tudo;
+- se faltar backend real para uma acao, manter a acao atual com feedback amigavel ou documentar gap.
+
+Criterio de conclusao:
+
+- organizador abre torneio e encontra a proxima acao sem rolar uma pagina longa;
+- `Organizacao`, `Inscritos/Jogadores`, `Jogos/Partidas`, `Classificacao`, `Chat` e `Configuracao` nao repetem conteudo estrutural umas das outras;
+- classe/temporada aparecem como filtros contextuais nas abas certas;
+- ferramentas pesadas ficam separadas de leitura operacional;
+- mobile 390px nao vira empilhamento de cockpit;
+- lint/build passam;
+- `CURRENT_PRODUCT_STATE.md` e specs ficam atualizados.
+
+Validacao obrigatoria:
+
+- `npm.cmd run lint` - aprovado em 2026-05-16;
+- `npm.cmd run build` - aprovado em 2026-05-16;
+- validar pelo menos um torneio owner em:
+  - organizacao/setup;
+  - inscritos;
+  - jogos;
+  - classificacao quando aplicavel;
+  - chat/equipe;
+- validar pelo menos uma liga owner em:
+  - rodada/operacao;
+  - jogadores;
+  - partidas;
+  - classificacao;
+  - chat;
+- gerar screenshots quando houver browser disponivel.
+
+Resultado:
+
+- torneio owner/staff deixou de renderizar seletor de classe e painel operacional em todas as abas;
+- `Organizacao` concentra fila, operacoes pesadas, publicacao, agenda por quadra, exportacoes, backup, reset e encerramento/podio;
+- `Jogos` ficou focado em chave/partidas e revisao de resultados enviados por jogadores, sem bloco fixo de agenda, podio ou reset/exportacao estrutural;
+- filtro de classe do torneio aparece somente em `Jogos`, `Classificacao` e `Jogadores`;
+- liga owner ganhou aba `Rodada` para operacao atual, `Classificacao` propria e `Configuracao` separada para regras, classes, geracao e scheduler;
+- seletor de temporada/classe da liga aparece somente nas abas que usam recorte: `Jogadores`, `Classificacao` e `Partidas`;
+- leitor publico/jogador permanece sem ferramentas administrativas.
+
+Arquivos alterados:
+
+- `web/src/pages/TournamentPage.tsx`;
+- `web/src/pages/LeagueDetailsPage.tsx`;
+- `web/docs/CURRENT_PRODUCT_STATE.md`;
+- `web/docs/COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`;
+- `web/docs/EXECUTION_QUEUE.md`.
+
+Riscos restantes:
+
+- screenshots autenticados ainda devem revisar 390px em dados reais com muitas classes;
+- a liga ainda usa um unico estado interno de classe/temporada compartilhado entre abas, mas o seletor deixou de aparecer fora de contexto para reduzir a sensacao de mudanca invisivel.
+
+### [x] COMP-COURTS-01 - Selecionar locais e quadras cadastradas no setup do torneio
+
+Status: `[x]` concluido em 2026-05-16
+
+Contexto:
+
+- torneios em academias cadastradas nao devem exigir redigitacao manual das quadras;
+- um torneio pode usar mais de uma academia;
+- a informacao de partida precisa ficar curta para jogador e organizador.
+
+Resultado:
+
+- wizard de criacao de torneio ganhou escolha entre `Locais cadastrados` e `Manual` na etapa `Agenda`;
+- locais sao filtrados por cidade/UF do torneio e suas quadras ativas podem ser adicionadas;
+- setup interno do torneio tambem permite adicionar quadras de academias cadastradas;
+- `agendaConfig.courtLinks` preserva `placeId`, `courtId`, nomes e label;
+- `agendaConfig.quadras` usa o label `Local · Quadra`, mantendo compatibilidade com o gerador atual;
+- entrada manual continua disponivel para torneios fora de locais cadastrados.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco restante:
+
+- ainda nao cria bloqueio real em `court_bookings`;
+- ainda nao existe pedido de autorizacao para local de terceiro. Isso ficou em `COMP-COURTS-02`.
+
+### [x] COMP-COURTS-02 - Autorizacao e bloqueio real de quadras de locais em torneios
+
+Status: `[x]` concluido em 2026-05-16
+
+Fonte:
+
+- decisao de produto sobre torneios em locais com quadras cadastradas;
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`;
+- `AGENDA_MODULE_FUNCTION_MAP.md`;
+- schema atual de `place_courts` e `court_bookings`.
+
+Contexto:
+
+- torneios grandes podem usar uma ou mais academias;
+- as quadras ja existem em `place_courts` e nao devem ser redigitadas quando o torneio acontece em local cadastrado;
+- se o organizador administra o local, a agenda do torneio deve bloquear as quadras automaticamente quando as partidas forem geradas;
+- se o organizador nao administra o local, a academia precisa receber um pedido de autorizacao com locais, quadras, dias e horarios antes do bloqueio;
+- jogador e organizador precisam entender a quadra da partida em leitura curta, como `Arena Pantanal Tennis · Quadra 2 · 16:00`.
+
+Sprint ja entregue em `COMP-COURTS-01`:
+
+- criacao de torneio permite escolher `Locais cadastrados` ou entrada `Manual` na etapa `Agenda`;
+- o organizador pode selecionar uma ou mais academias e suas quadras cadastradas;
+- agendaConfig passa a guardar `courtLinks` com `placeId`, `courtId`, nomes e label;
+- sorteio usa labels completos de quadra, preservando clareza para jogador e organizador sem textos longos;
+- torneio ja criado tambem permite adicionar quadras cadastradas na area `Organizacao > Agenda do torneio`.
+
+Escopo entregue:
+
+1. Criada migration `0091_tournament_court_usage_requests_v1.sql` com tabela `tournament_court_usage_requests`.
+2. Criadas RPCs:
+   - `app_sync_tournament_court_usage(...)`;
+   - `app_list_place_tournament_court_requests(...)`;
+   - `app_review_tournament_court_request(...)`.
+3. Ao salvar/gerar agenda de torneio com `courtLinks`, o Competition OS sincroniza o uso das quadras:
+   - owner/staff do local cria bloqueios reais em `court_bookings.status = blocked`;
+   - organizador externo cria solicitacao pendente para a academia.
+4. `Gestao > Agenda` mostra pedidos de torneio na fila operacional e permite `Autorizar e bloquear` ou `Recusar`.
+5. Aprovacao cria bloqueios reais com marcador tecnico em `notes` e evita duplicidade ao cancelar/recriar bloqueios anteriores do mesmo torneio/local.
+6. Recusa fica visivel no setup do torneio como `Recusado - revise a agenda`.
+7. O setup do torneio mostra status por local: aguardando autorizacao, autorizado/bloqueado ou recusado.
+8. O calendario de quadras passa a receber os bloqueios de torneio como itens `blocked`.
+
+Criterio de conclusao:
+
+- owner/staff de local consegue gerar torneio e bloquear automaticamente suas quadras;
+- organizador externo consegue solicitar quadras e a academia recebe pedido acionavel;
+- aprovacao cria bloqueios reais sem conflito de horario;
+- rejeicao aparece como pendencia clara no torneio;
+- jogador ve local, quadra e horario em formato curto nas partidas;
+- lint/build passam e MDs sao atualizados.
+
+Validacao:
+
+- `npm.cmd run lint` passou;
+- `npm.cmd run build` passou;
+- migration `0091` aplicada diretamente no Supabase alvo por execucao SQL direta.
+
+Risco restante:
+
+- `supabase migration up` padrao ainda tenta reaplicar migrations antigas do historico remoto e falha antes da `0091`; o banco alvo recebeu a `0091`, mas o historico de migrations remoto deve ser reparado/baselineado antes de depender do comando completo.
+- conflitos de horario existentes retornam contador de conflito; o organizador ainda precisa revisar a agenda quando houver conflito real.
 
 ### [x] COMP-SCORE-03 - Corrigir envio de placar por jogador no Supabase
 
@@ -541,9 +895,9 @@ Validacao:
 - `npm run lint`;
 - `npm run build`.
 
-### [>] PLAYER-UX-03D - Calendario de quadras por local no fluxo do jogador
+### [x] PLAYER-UX-03D - Calendario de quadras por local no fluxo do jogador
 
-Status: `[>]` proximo sprint recomendado
+Status: `[x]` concluido em 2026-05-16
 
 Objetivo:
 
@@ -558,6 +912,28 @@ Especificacao:
 - Ao tocar em um slot livre, abrir confirmacao curta vinculada ao perfil.
 - Nao misturar neste fluxo aulas, planos, jogos abertos ou beneficios.
 - Backend deve continuar usando `app_search_available_courts`/`app_create_court_booking`; se necessario, criar RPC agregada para disponibilidade do dia por local.
+
+Resultado:
+
+- a pagina publica do local (`/locais/:placeId?intent=booking`) renderiza apenas o fluxo de reserva quando a intencao e `Reservar`, sem empilhar aulas, jogos, planos e beneficios abaixo;
+- o fluxo foi reorganizado em tres passos: `Quando?`, `Qual horario?` e `Confirmar`;
+- `Quando?` usa dia e duracao em horas cheias (`1h` ou `2h`);
+- `Qual horario?` mostra um carrossel horizontal de quadras, cada uma com lista hora a hora;
+- slots livres ficam acionaveis, slots ocupados ficam neutros e o intervalo completo selecionado fica destacado quando a duracao e de `2h`;
+- `Confirmar` mostra quadra, horario inicial/final, duracao, total calculado por duracao e reserva vinculada ao perfil logado;
+- telefone so aparece como campo editavel quando o perfil nao tem contato;
+- `Solicitar reserva` continua usando `createCourtBooking`/`app_create_court_booking`, mantendo a reserva pendente para a gestao aprovar;
+- `Lista de espera` permanece disponivel quando nao ha slot escolhido ou quando o usuario quer aguardar liberacao.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco restante:
+
+- a disponibilidade do dia ainda e montada no frontend chamando `app_search_available_courts` por hora cheia; funciona para o volume atual, mas uma RPC agregada por dia/local pode ser criada se a agenda ficar pesada com muitas quadras;
+- conflitos continuam sendo validados pelo backend no momento de criar a reserva, que permanece como fonte final de verdade.
 
 Fora de escopo:
 

@@ -5,9 +5,10 @@ import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { SetupWizard } from "../components/SetupWizard";
 import { StatusBadge } from "../components/StatusBadge";
-import type { Profile, TournamentSummary } from "../lib/types";
+import type { Place, PlaceCourt, Profile, TournamentSummary } from "../lib/types";
 import { buildTournamentUrl, createTournament, joinTournament, loadDashboardData } from "../lib/tournaments";
 import { BRAZILIAN_STATES, listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
+import { listAllPlaces, listPlaceCourts } from "../lib/places";
 
 type Props = {
   user: User;
@@ -28,6 +29,14 @@ type CreateClassDraft = {
 };
 type CreateCompetitionModel = "grupos_mata_mata" | "mata_mata_simples" | "round_robin" | "dupla_eliminacao";
 type CreateScoring = "melhor_de_3" | "melhor_de_3_super_tb" | "set_unico" | "pro_set" | "fast4";
+type CreateCourtMode = "places" | "manual";
+type CreateCourtLink = {
+  placeId: string;
+  placeName: string;
+  courtId: string;
+  courtName: string;
+  label: string;
+};
 
 const DEFAULT_CREATE_CLASS: CreateClassDraft = {
   categoryName: "Tenis",
@@ -64,6 +73,10 @@ function splitCourtNames(value: string): string[] {
         .filter(Boolean)
     )
   );
+}
+
+function buildTournamentCourtLabel(placeName: string, courtName: string): string {
+  return [placeName, courtName].map((part) => part.trim()).filter(Boolean).join(" Â· ");
 }
 
 function buildAgendaDays(startDate: string, endDate: string, startTime: string, endTime: string) {
@@ -111,15 +124,15 @@ function formatUpdatedAt(value: string): string {
 }
 
 function formatStatusLabel(status: string): string {
-  if (status === "registration_open") return "Inscricoes abertas";
-  if (status === "registration_closed") return "Inscricoes encerradas";
+  if (status === "registration_open") return "Inscrições abertas";
+  if (status === "registration_closed") return "Inscrições encerradas";
   if (status === "live") return "Em andamento";
   if (status === "finished") return "Concluido";
   return "Rascunho";
 }
 
 function formatVisibilityLabel(visibility: string): string {
-  return visibility === "public" ? "Publico" : "Privado";
+  return visibility === "public" ? "Público" : "Privado";
 }
 
 function buildTournamentOperationUrl(t: TournamentSummary): string {
@@ -143,7 +156,7 @@ function operationHint(t: TournamentSummary): string {
   if (t.status === "registration_open") return "Acompanhe inscritos, pagamentos e lista de espera.";
   if (t.status === "registration_closed") return "Revise inscritos e gere partidas quando estiver pronto.";
   if (t.status === "live") return "Organize jogos, resultados e comunicacao.";
-  if (t.status === "finished") return "Consulte classificacao, historico e publicacao final.";
+  if (t.status === "finished") return "Consulte classificação, histórico e publicacao final.";
   return "Abra a operacao do torneio.";
 }
 
@@ -325,7 +338,7 @@ function EventCard({
           <div className="ec-info-row">
             <span className="ec-info-left">
               <CalendarIcon />
-              Inscricoes ate {new Date(t.registrationCloseAt).toLocaleDateString("pt-BR")}
+              Inscrições ate {new Date(t.registrationCloseAt).toLocaleDateString("pt-BR")}
             </span>
           </div>
         ) : null}
@@ -336,7 +349,7 @@ function EventCard({
 
         {isOwner && onCopyLink ? (
           <div className="ec-footer">
-            <span className="ec-footer-left">Voce organiza</span>
+            <span className="ec-footer-left">Você organiza</span>
             <button
               style={{ minHeight: "auto", padding: "4px 10px", fontSize: "var(--font-size-xs)" }}
               onClick={(e) => {
@@ -389,6 +402,13 @@ export function EventsPage({ user, profile }: Props) {
   const [newAgendaStartTime, setNewAgendaStartTime] = useState("08:00");
   const [newAgendaEndTime, setNewAgendaEndTime] = useState("20:00");
   const [newCourtNames, setNewCourtNames] = useState("Quadra 1\nQuadra 2");
+  const [newCourtMode, setNewCourtMode] = useState<CreateCourtMode>("places");
+  const [createPlaces, setCreatePlaces] = useState<Place[]>([]);
+  const [createPlacesLoading, setCreatePlacesLoading] = useState(false);
+  const [createPlacesError, setCreatePlacesError] = useState("");
+  const [createCourtsByPlace, setCreateCourtsByPlace] = useState<Record<string, PlaceCourt[]>>({});
+  const [createCourtsLoadingByPlace, setCreateCourtsLoadingByPlace] = useState<Record<string, boolean>>({});
+  const [selectedCreateCourtKeys, setSelectedCreateCourtKeys] = useState<string[]>([]);
 
   const [showJoin, setShowJoin] = useState(false);
   const [joinUuid, setJoinUuid] = useState("");
@@ -418,7 +438,31 @@ export function EventsPage({ user, profile }: Props) {
         .filter((item) => item.categoryName && item.className),
     [newCreateClasses]
   );
-  const createCourts = useMemo(() => splitCourtNames(newCourtNames), [newCourtNames]);
+  const filteredCreatePlaces = useMemo(() => {
+    return createPlaces.filter((place) => {
+      if (normalizedNewUf && normalizeStateUf(place.state) !== normalizedNewUf) return false;
+      if (newCity.trim() && place.city.trim().toLowerCase() !== newCity.trim().toLowerCase()) return false;
+      return true;
+    });
+  }, [createPlaces, newCity, normalizedNewUf]);
+  const selectedCreateCourtLinks = useMemo<CreateCourtLink[]>(() => {
+    const selected = new Set(selectedCreateCourtKeys);
+    return createPlaces.flatMap((place) =>
+      (createCourtsByPlace[place.id] || [])
+        .filter((court) => selected.has(`${place.id}:${court.id}`))
+        .map((court) => ({
+          placeId: place.id,
+          placeName: place.name,
+          courtId: court.id,
+          courtName: court.name,
+          label: buildTournamentCourtLabel(place.name, court.name),
+        }))
+    );
+  }, [createCourtsByPlace, createPlaces, selectedCreateCourtKeys]);
+  const createCourts = useMemo(
+    () => (newCourtMode === "places" ? selectedCreateCourtLinks.map((item) => item.label) : splitCourtNames(newCourtNames)),
+    [newCourtMode, newCourtNames, selectedCreateCourtLinks]
+  );
   const createAgendaDays = useMemo(
     () => buildAgendaDays(newStartsOn, newEndsOn, newAgendaStartTime, newAgendaEndTime),
     [newAgendaEndTime, newAgendaStartTime, newEndsOn, newStartsOn]
@@ -451,6 +495,8 @@ export function EventsPage({ user, profile }: Props) {
     setNewAgendaStartTime("08:00");
     setNewAgendaEndTime("20:00");
     setNewCourtNames("Quadra 1\nQuadra 2");
+    setNewCourtMode("places");
+    setSelectedCreateCourtKeys([]);
   };
 
   const closeCreateModal = () => {
@@ -497,7 +543,7 @@ export function EventsPage({ user, profile }: Props) {
       .catch(() => {
         if (cancelled) return;
         setNewCityOptions([]);
-        setNewCityLoadError("Nao foi possivel carregar os municipios desta UF.");
+        setNewCityLoadError("Não foi possível carregar os municípios desta UF.");
       })
       .finally(() => {
         if (!cancelled) setNewCityLoading(false);
@@ -533,6 +579,52 @@ export function EventsPage({ user, profile }: Props) {
       cancelled = true;
     };
   }, [normalizedSearchUf]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!showCreate) return () => {
+      cancelled = true;
+    };
+    setCreatePlacesLoading(true);
+    setCreatePlacesError("");
+    listAllPlaces(user)
+      .then((places) => {
+        if (cancelled) return;
+        setCreatePlaces(places);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setCreatePlaces([]);
+        setCreatePlacesError(err instanceof Error ? err.message : "Não foi possível carregar locais cadastrados.");
+      })
+      .finally(() => {
+        if (!cancelled) setCreatePlacesLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [showCreate, user]);
+
+  const ensureCreatePlaceCourts = async (placeId: string) => {
+    if (createCourtsByPlace[placeId] || createCourtsLoadingByPlace[placeId]) return;
+    setCreateCourtsLoadingByPlace((prev) => ({ ...prev, [placeId]: true }));
+    try {
+      const courts = await listPlaceCourts(placeId);
+      setCreateCourtsByPlace((prev) => ({ ...prev, [placeId]: courts.filter((court) => court.isActive) }));
+    } catch (err) {
+      setFeedback({
+        kind: "error",
+        text: err instanceof Error ? err.message : "Não foi possível carregar as quadras do local.",
+      });
+    } finally {
+      setCreateCourtsLoadingByPlace((prev) => ({ ...prev, [placeId]: false }));
+    }
+  };
+
+  const toggleCreateCourt = (place: Place, court: PlaceCourt) => {
+    const key = `${place.id}:${court.id}`;
+    setSelectedCreateCourtKeys((prev) => (prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key]));
+  };
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -589,6 +681,7 @@ export function EventsPage({ user, profile }: Props) {
         agenda: {
           durationMin: parseIntegerOrUndefined(newMatchDuration),
           courts: createCourts,
+          courtLinks: newCourtMode === "places" ? selectedCreateCourtLinks : [],
           days: createAgendaDays,
         },
       });
@@ -680,7 +773,7 @@ export function EventsPage({ user, profile }: Props) {
       : { label: "Jogando", value: kpis.participating };
     return [
       primary,
-      { label: "Inscricoes abertas", value: kpis.open },
+      { label: "Inscrições abertas", value: kpis.open },
       { label: "Em andamento", value: kpis.live },
     ].filter((item) => item.value > 0);
   }, [kpis.live, kpis.open, kpis.organizing, kpis.participating, mode]);
@@ -694,7 +787,7 @@ export function EventsPage({ user, profile }: Props) {
     if (mode !== "organizing") return [];
     const chips = [
       { label: "Rascunhos", value: organizing.filter((t) => t.status === "draft").length },
-      { label: "Inscricoes abertas", value: organizing.filter((t) => t.status === "registration_open").length },
+      { label: "Inscrições abertas", value: organizing.filter((t) => t.status === "registration_open").length },
       { label: "Aguardando jogos", value: organizing.filter((t) => t.status === "registration_closed").length },
       { label: "Em andamento", value: organizing.filter((t) => t.status === "live").length },
     ];
@@ -717,17 +810,17 @@ export function EventsPage({ user, profile }: Props) {
           <h1>{mode === "organizing" ? "Torneios que organizo" : "Torneios que jogo"}</h1>
           <p className="page-intro">
             {mode === "organizing"
-              ? "Crie torneios, acompanhe inscricoes e ajuste a organizacao."
-              : "Acompanhe somente torneios em que voce participa como jogador."}
+              ? "Crie torneios, acompanhe inscrições e ajuste a organização."
+              : "Acompanhe somente torneios em que você participa como jogador."}
           </p>
         </div>
         <div className="ph-actions">
-          <button className="compact-action" onClick={() => navigate("/eventos")} aria-label="Voltar para competicoes">
+          <button className="compact-action" onClick={() => navigate("/eventos")} aria-label="Voltar para competições">
             <BackIcon />
             <span>Voltar</span>
           </button>
           {mode === "participating" ? (
-            <button className="compact-action" onClick={() => setShowJoin(true)} aria-label="Entrar por codigo" title="Entrar por codigo">
+            <button className="compact-action" onClick={() => setShowJoin(true)} aria-label="Entrar por código" title="Entrar por código">
               <SearchIcon />
               <span>Entrar</span>
             </button>
@@ -756,8 +849,8 @@ export function EventsPage({ user, profile }: Props) {
           <div className="organizer-tournament-command-head">
             <div>
               <span>Proximas acoes</span>
-              <h2>Organizacao de torneios</h2>
-              <p>Abra o torneio pelo que precisa ser feito agora. Filtros e historico ficam como suporte.</p>
+              <h2>Organização de torneios</h2>
+              <p>Abra o torneio pelo que precisa ser feito agora. Filtros e histórico ficam como suporte.</p>
             </div>
             <button type="button" className="primary" onClick={() => setShowCreate(true)}>
               Criar torneio
@@ -793,7 +886,7 @@ export function EventsPage({ user, profile }: Props) {
             <small>
               {hasActiveFilters
                 ? `${list.length} de ${listByTab.length} torneio${listByTab.length === 1 ? "" : "s"}`
-                : "Busca, status, local e ordenacao"}
+                : "Busca, status, local e ordenação"}
             </small>
           </summary>
           <div className="events-filter-grid">
@@ -833,7 +926,7 @@ export function EventsPage({ user, profile }: Props) {
                   {!normalizedSearchUf
                     ? "Todos"
                     : searchCityLoading
-                    ? "Carregando municipios..."
+                    ? "Carregando municípios..."
                     : "Todos"}
                 </option>
                 {searchCityOptions.map((cityName) => (
@@ -848,8 +941,8 @@ export function EventsPage({ user, profile }: Props) {
               <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}>
                 <option value="all">Todos</option>
                 <option value="draft">Rascunho</option>
-                <option value="registration_open">Inscricoes abertas</option>
-                <option value="registration_closed">Inscricoes encerradas</option>
+                <option value="registration_open">Inscrições abertas</option>
+                <option value="registration_closed">Inscrições encerradas</option>
                 <option value="live">Em andamento</option>
                 <option value="finished">Concluido</option>
               </select>
@@ -858,12 +951,12 @@ export function EventsPage({ user, profile }: Props) {
               <label>Visibilidade</label>
               <select value={visibilityFilter} onChange={(e) => setVisibilityFilter(e.target.value as VisibilityFilter)}>
                 <option value="all">Todas</option>
-                <option value="public">Publico</option>
+                <option value="public">Público</option>
                 <option value="private">Privado</option>
               </select>
             </div>
             <div>
-              <label>Ordenacao</label>
+              <label>Ordenação</label>
               <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortKey)}>
                 <option value="updated_desc">Mais recentes</option>
                 <option value="updated_asc">Mais antigos</option>
@@ -889,7 +982,7 @@ export function EventsPage({ user, profile }: Props) {
         </p>
       ) : null}
 
-      {loading ? <ScreenState kind="loading" icon="Torneios" title="Carregando torneios" detail="Buscando seus eventos, filtros e convites disponiveis." /> : null}
+      {loading ? <ScreenState kind="loading" icon="Torneios" title="Carregando torneios" detail="Buscando seus eventos, filtros e convites disponíveis." /> : null}
 
       {!loading && list.length === 0 ? (
         <ScreenState
@@ -898,15 +991,15 @@ export function EventsPage({ user, profile }: Props) {
             listByTab.length > 0 && hasActiveFilters
               ? "Nenhum torneio encontrado com estes filtros"
               : mode === "organizing"
-              ? "Voce ainda nao organiza torneios"
-              : "Voce ainda nao esta em nenhum torneio"
+              ? "Você ainda não organiza torneios"
+              : "Você ainda não esta em nenhum torneio"
           }
           detail={
             listByTab.length > 0 && hasActiveFilters
               ? "Limpe filtros ou ajuste busca, status, visibilidade e periodo."
               : mode === "organizing"
-              ? "Crie o primeiro torneio quando quiser abrir inscricoes ou montar uma chave."
-              : "Entre por codigo ou acompanhe torneios publicos disponiveis."
+              ? "Crie o primeiro torneio quando quiser abrir inscrições ou montar uma chave."
+              : "Entre por código ou acompanhe torneios públicos disponíveis."
           }
           action={
           <button
@@ -923,7 +1016,7 @@ export function EventsPage({ user, profile }: Props) {
               setShowJoin(true);
             }}
           >
-            {listByTab.length > 0 && hasActiveFilters ? "Limpar filtros" : mode === "organizing" ? "Criar torneio" : "Entrar por codigo"}
+            {listByTab.length > 0 && hasActiveFilters ? "Limpar filtros" : mode === "organizing" ? "Criar torneio" : "Entrar por código"}
           </button>
           }
         />
@@ -965,9 +1058,9 @@ export function EventsPage({ user, profile }: Props) {
           <div className="modal competition-create-modal" onClick={(e) => e.stopPropagation()}>
             <SetupWizard
               title="Novo torneio"
-              subtitle="Monte o rascunho inicial em uma ordem operacional. Depois voce ajusta detalhes finos dentro do torneio."
+              subtitle="Monte o rascunho inicial em uma ordem operacional. Depois você ajusta detalhes finos dentro do torneio."
               busy={busy}
-              finishLabel={newInitialStatus === "registration_open" ? "Criar e abrir inscricoes" : "Criar rascunho"}
+              finishLabel={newInitialStatus === "registration_open" ? "Criar e abrir inscrições" : "Criar rascunho"}
               onCancel={closeCreateModal}
               onFinish={onCreate}
               steps={[
@@ -1015,7 +1108,7 @@ export function EventsPage({ user, profile }: Props) {
                             {!normalizedNewUf
                               ? "Selecione o estado primeiro"
                               : newCityLoading
-                              ? "Carregando municipios..."
+                              ? "Carregando municípios..."
                               : "Selecione o municipio"}
                           </option>
                           {newCityValueInOptions ? null : newCity.trim() ? <option value={newCity}>{newCity}</option> : null}
@@ -1030,7 +1123,7 @@ export function EventsPage({ user, profile }: Props) {
                         <span>Visibilidade</span>
                         <select value={newVisibility} onChange={(e) => setNewVisibility(e.target.value as "private" | "public")}>
                           <option value="private">Privado / por link</option>
-                          <option value="public">Publico</option>
+                          <option value="public">Público</option>
                         </select>
                       </label>
                       <label className="wide">
@@ -1043,12 +1136,12 @@ export function EventsPage({ user, profile }: Props) {
                 },
                 {
                   id: "registration",
-                  label: "Inscricoes",
+                  label: "Inscrições",
                   detail: "Prazo, taxa e aprovacao",
                   content: (
                     <div className="competition-setup-grid">
                       <label>
-                        <span>Inscricoes ate</span>
+                        <span>Inscrições ate</span>
                         <input type="date" value={newRegistrationCloseOn} onChange={(e) => setNewRegistrationCloseOn(e.target.value)} />
                       </label>
                       <label>
@@ -1069,8 +1162,8 @@ export function EventsPage({ user, profile }: Props) {
                       </label>
                       <label>
                         <span>Resultado pelo jogador</span>
-                        <select value={newPlayerResultsEnabled ? "sim" : "nao"} onChange={(e) => setNewPlayerResultsEnabled(e.target.value === "sim")}>
-                          <option value="nao">Nao permitir agora</option>
+                        <select value={newPlayerResultsEnabled ? "sim" : "não"} onChange={(e) => setNewPlayerResultsEnabled(e.target.value === "sim")}>
+                          <option value="não">Não permitir agora</option>
                           <option value="sim">Permitir envio</option>
                         </select>
                       </label>
@@ -1078,7 +1171,7 @@ export function EventsPage({ user, profile }: Props) {
                         <strong>{newRegistrationApproval === "manual" ? "Fila controlada" : "Entrada rapida"}</strong>
                         <span>
                           {newRegistrationApproval === "manual"
-                            ? "Inscricoes entram pendentes para aprovacao e cobranca."
+                            ? "Inscrições entram pendentes para aprovacao e cobranca."
                             : "Jogadores entram aprovados quando se inscrevem."}
                         </span>
                       </article>
@@ -1157,7 +1250,7 @@ export function EventsPage({ user, profile }: Props) {
                             <div>
                               <strong>{item.categoryName} - {item.className}</strong>
                               <span>
-                                {item.gender === "male" ? "Masculino" : item.gender === "female" ? "Feminino" : "Aberto"} · {item.maxParticipants || "16"} vagas
+                                {item.gender === "male" ? "Masculino" : item.gender === "female" ? "Feminino" : "Aberto"} Â· {item.maxParticipants || "16"} vagas
                               </span>
                             </div>
                             <button
@@ -1246,19 +1339,89 @@ export function EventsPage({ user, profile }: Props) {
                         <span>Fim diario</span>
                         <input type="time" value={newAgendaEndTime} onChange={(e) => setNewAgendaEndTime(e.target.value)} />
                       </label>
-                      <label className="wide">
-                        <span>Quadras</span>
-                        <textarea
-                          rows={4}
-                          value={newCourtNames}
-                          onChange={(e) => setNewCourtNames(e.target.value)}
-                          placeholder={"Quadra 1\nQuadra 2\nQuadra 3"}
-                        />
-                      </label>
+                      <div className="competition-court-source wide">
+                        <div className="competition-court-source-head">
+                          <div>
+                            <span>Quadras do torneio</span>
+                            <strong>Use quadras cadastradas ou informe manualmente</strong>
+                          </div>
+                          <div className="segmented-control compact">
+                            <button
+                              type="button"
+                              className={newCourtMode === "places" ? "active" : ""}
+                              onClick={() => setNewCourtMode("places")}
+                            >
+                              Locais cadastrados
+                            </button>
+                            <button
+                              type="button"
+                              className={newCourtMode === "manual" ? "active" : ""}
+                              onClick={() => setNewCourtMode("manual")}
+                            >
+                              Manual
+                            </button>
+                          </div>
+                        </div>
+                        {newCourtMode === "places" ? (
+                          <div className="competition-place-court-picker">
+                            {createPlacesLoading ? <p className="subtle">Carregando locais...</p> : null}
+                            {createPlacesError ? <p className="feedback error">{createPlacesError}</p> : null}
+                            {!createPlacesLoading && !filteredCreatePlaces.length ? (
+                              <p className="subtle">Nenhum local cadastrado para esta cidade/UF. Use a entrada manual ou ajuste o local do torneio.</p>
+                            ) : null}
+                            {filteredCreatePlaces.slice(0, 8).map((place) => {
+                              const courts = createCourtsByPlace[place.id] || [];
+                              const loadingCourts = Boolean(createCourtsLoadingByPlace[place.id]);
+                              return (
+                                <article key={`create-place:${place.id}`} className="competition-place-court-card">
+                                  <div>
+                                    <strong>{place.name}</strong>
+                                    <span>{[place.city, place.state].filter(Boolean).join(" - ")}</span>
+                                  </div>
+                                  <button type="button" className="ghost" onClick={() => ensureCreatePlaceCourts(place.id)}>
+                                    {courts.length ? "Atualizar quadras" : loadingCourts ? "Carregando..." : "Ver quadras"}
+                                  </button>
+                                  {courts.length ? (
+                                    <div className="competition-court-chip-grid">
+                                      {courts.map((court) => {
+                                        const key = `${place.id}:${court.id}`;
+                                        const active = selectedCreateCourtKeys.includes(key);
+                                        return (
+                                          <button
+                                            key={key}
+                                            type="button"
+                                            className={active ? "selected" : ""}
+                                            onClick={() => toggleCreateCourt(place, court)}
+                                          >
+                                            <strong>{court.name}</strong>
+                                            <span>{court.surface || "Piso não informado"}</span>
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
+                                  ) : null}
+                                </article>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <label>
+                            <span>Quadras manuais</span>
+                            <textarea
+                              rows={4}
+                              value={newCourtNames}
+                              onChange={(e) => setNewCourtNames(e.target.value)}
+                              placeholder={"Quadra 1\nQuadra 2\nQuadra 3"}
+                            />
+                          </label>
+                        )}
+                      </div>
                       <article className="competition-setup-card wide">
                         <strong>{createAgendaDays.length} dia(s) de agenda</strong>
                         <span>
-                          O gerador usa estes dias, horarios e quadras para distribuir partidas quando a chave for gerada.
+                          {newCourtMode === "places"
+                            ? "O sorteio mostrara local e quadra juntos para jogadores e organizadores."
+                            : "O gerador usa estes dias, horários e quadras para distribuir partidas quando a chave for gerada."}
                         </span>
                       </article>
                     </div>
@@ -1276,7 +1439,7 @@ export function EventsPage({ user, profile }: Props) {
                           <span>Status inicial</span>
                           <select value={newInitialStatus} onChange={(e) => setNewInitialStatus(e.target.value as "draft" | "registration_open")}>
                             <option value="draft">Criar como rascunho</option>
-                            <option value="registration_open">Criar com inscricoes abertas</option>
+                            <option value="registration_open">Criar com inscrições abertas</option>
                           </select>
                         </label>
                       </div>
@@ -1284,22 +1447,22 @@ export function EventsPage({ user, profile }: Props) {
                         <article>
                           <span>Torneio</span>
                           <strong>{newName || "Novo torneio"}</strong>
-                          <small>{[newCity, normalizedNewUf].filter(Boolean).join(" - ")} · {newVisibility === "public" ? "Publico" : "Privado"}</small>
+                          <small>{[newCity, normalizedNewUf].filter(Boolean).join(" - ")} Â· {newVisibility === "public" ? "Público" : "Privado"}</small>
                         </article>
                         <article>
-                          <span>Inscricoes</span>
+                          <span>Inscrições</span>
                           <strong>{newRegistrationCloseOn || "Prazo a definir"}</strong>
-                          <small>{formatCurrencyPreview(newRegistrationFee)} · {newRegistrationApproval === "manual" ? "aprovacao manual" : "aprovacao automatica"}</small>
+                          <small>{formatCurrencyPreview(newRegistrationFee)} Â· {newRegistrationApproval === "manual" ? "aprovacao manual" : "aprovacao automatica"}</small>
                         </article>
                         <article>
                           <span>Categorias</span>
                           <strong>{createClasses.length} classe(s)</strong>
-                          <small>{newMatchType === "simples" ? "Simples" : "Duplas"} · {newCompetitionModel === "grupos_mata_mata" ? "grupos + mata-mata" : "formato escolhido"}</small>
+                          <small>{newMatchType === "simples" ? "Simples" : "Duplas"} Â· {newCompetitionModel === "grupos_mata_mata" ? "grupos + mata-mata" : "formato escolhido"}</small>
                         </article>
                         <article>
                           <span>Agenda</span>
                           <strong>{createCourts.length} quadra(s), {createAgendaDays.length} dia(s)</strong>
-                          <small>{newMatchDuration || "60"} min por jogo · {newAgendaStartTime}-{newAgendaEndTime}</small>
+                          <small>{newMatchDuration || "60"} min por jogo Â· {newAgendaStartTime}-{newAgendaEndTime}</small>
                         </article>
                       </div>
                     </div>
@@ -1329,3 +1492,4 @@ export function EventsPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

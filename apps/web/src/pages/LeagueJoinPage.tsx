@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
@@ -32,23 +32,23 @@ function leagueJoinStatusLabel(status: "approved" | "pending"): string {
 
 function leagueJoinStatusDetail(status: "approved" | "pending"): string {
   return status === "approved"
-    ? "Voce ja pode acompanhar partidas, chat e proximas rodadas da liga."
-    : "O organizador precisa aprovar sua entrada antes de voce aparecer nas rodadas.";
+    ? "Você ja pode acompanhar partidas, chat e próximas rodadas da liga."
+    : "O organizador precisa aprovar sua entrada antes de você aparecer nas rodadas.";
 }
 
 function friendlyLeagueJoinLinkError(error: unknown): string {
   const raw = error instanceof Error ? error.message : typeof error === "string" ? error : "";
   const lower = raw.toLowerCase();
   if (lower.includes("duplicate") || lower.includes("unique") || lower.includes("already") || lower.includes("ja existe")) {
-    return "Voce ja tem uma inscricao registrada nesta liga.";
+    return "Você ja tem uma inscricao registrada nesta liga.";
   }
   if (lower.includes("expired") || lower.includes("expirado") || lower.includes("invalido")) {
-    return "Este link de inscricao nao esta mais disponivel.";
+    return "Este link de inscricao não esta mais disponivel.";
   }
   if (lower.includes("permission denied") || lower.includes("row-level security")) {
-    return "Nao foi possivel solicitar entrada com este perfil. Entre novamente e tente de novo.";
+    return "Não foi possível solicitar entrada com este perfil. Entre novamente e tente de novo.";
   }
-  return "Nao foi possivel solicitar entrada agora. Tente novamente em instantes.";
+  return "Não foi possível solicitar entrada agora. Tente novamente em instantes.";
 }
 
 export function LeagueJoinPage({ user, profile }: Props) {
@@ -94,8 +94,8 @@ export function LeagueJoinPage({ user, profile }: Props) {
       setSubmittedStatus(normalized);
       setFeedback(
         normalized === "approved"
-          ? "Entrada aprovada. O pagamento sera acompanhado pela organizacao."
-          : "Solicitacao enviada para aprovacao. O pagamento sera acompanhado pela organizacao."
+          ? "Entrada aprovada. O pagamento sera acompanhado pela organização."
+          : "Solicitacao enviada para aprovacao. O pagamento sera acompanhado pela organização."
       );
     } catch (err) {
       setError(friendlyLeagueJoinLinkError(err));
@@ -165,7 +165,7 @@ export function LeagueJoinPage({ user, profile }: Props) {
               <span>1</span>
               <div>
                 <strong>Revise a entrada</strong>
-                <small>O link ja aponta para a liga e classe configuradas pela organizacao.</small>
+                <small>O link ja aponta para a liga e classe configuradas pela organização.</small>
               </div>
             </div>
             <div className="registration-review-card">
@@ -179,7 +179,7 @@ export function LeagueJoinPage({ user, profile }: Props) {
               </p>
               <p>
                 <span>Tipo de entrada</span>
-                <strong>{ctx.joinRequiresApproval ? "A organizacao aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
+                <strong>{ctx.joinRequiresApproval ? "A organização aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
               </p>
             </div>
 
@@ -187,7 +187,7 @@ export function LeagueJoinPage({ user, profile }: Props) {
               <span>2</span>
               <div>
                 <strong>Confirme seus dados</strong>
-                <small>Esses dados aparecem para a organizacao validar sua entrada.</small>
+                <small>Esses dados aparecem para a organização validar sua entrada.</small>
               </div>
             </div>
             <div className="registration-form-grid">
@@ -213,3 +213,4 @@ export function LeagueJoinPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

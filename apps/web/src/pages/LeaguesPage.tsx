@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
@@ -322,11 +322,11 @@ export function LeaguesPage({ user, profile }: Props) {
           <p className="page-intro">
             {mode === "organizing"
               ? "Crie ligas, aprove jogadores, gere rodadas e acompanhe temporadas."
-              : "Acompanhe somente ligas em que voce participa como jogador."}
+              : "Acompanhe somente ligas em que você participa como jogador."}
           </p>
         </div>
         <div className="ph-actions">
-          <button className="compact-action" onClick={() => navigate("/eventos")} aria-label="Voltar para competicoes">
+          <button className="compact-action" onClick={() => navigate("/eventos")} aria-label="Voltar para competições">
             <BackIcon />
             <span>Voltar</span>
           </button>
@@ -355,11 +355,11 @@ export function LeaguesPage({ user, profile }: Props) {
       {!loading && !visibleItems.length ? (
         <ScreenState
           icon="ATP"
-          title={mode === "organizing" ? "Voce ainda nao organiza ligas" : "Voce ainda nao participa de ligas"}
-          detail={mode === "organizing" ? "Crie uma liga para rodadas recorrentes, ranking e classificacao por temporada." : "Volte ao hub de competicoes para encontrar torneios, ligas e convites."}
+          title={mode === "organizing" ? "Você ainda não organiza ligas" : "Você ainda não participa de ligas"}
+          detail={mode === "organizing" ? "Crie uma liga para rodadas recorrentes, ranking e classificação por temporada." : "Volte ao hub de competições para encontrar torneios, ligas e convites."}
           action={
             <button type="button" onClick={() => (mode === "organizing" ? setShowCreate(true) : navigate("/eventos"))}>
-              {mode === "organizing" ? "Criar liga" : "Voltar para competicoes"}
+              {mode === "organizing" ? "Criar liga" : "Voltar para competições"}
             </button>
           }
         />
@@ -525,9 +525,9 @@ export function LeaguesPage({ user, profile }: Props) {
                       <div className="competition-setup-grid">
                         <label>
                           <span>Inscricao publica</span>
-                          <select value={publicJoinEnabled ? "sim" : "nao"} onChange={(e) => setPublicJoinEnabled(e.target.value === "sim")}>
+                          <select value={publicJoinEnabled ? "sim" : "não"} onChange={(e) => setPublicJoinEnabled(e.target.value === "sim")}>
                             <option value="sim">Permitir entrada por link</option>
-                            <option value="nao">Somente convite/admin</option>
+                            <option value="não">Somente convite/admin</option>
                           </select>
                         </label>
                         <label>
@@ -635,21 +635,21 @@ export function LeaguesPage({ user, profile }: Props) {
                       </label>
                       <label>
                         <span>No-Ad</span>
-                        <select value={noAdEnabled ? "sim" : "nao"} onChange={(e) => setNoAdEnabled(e.target.value === "sim")}>
-                          <option value="nao">Nao usar</option>
+                        <select value={noAdEnabled ? "sim" : "não"} onChange={(e) => setNoAdEnabled(e.target.value === "sim")}>
+                          <option value="não">Não usar</option>
                           <option value="sim">Usar No-Ad</option>
                         </select>
                       </label>
                       <label>
                         <span>Coringa/recesso</span>
-                        <select value={wildcardEnabled ? "sim" : "nao"} onChange={(e) => setWildcardEnabled(e.target.value === "sim")}>
-                          <option value="nao">Sem coringa</option>
+                        <select value={wildcardEnabled ? "sim" : "não"} onChange={(e) => setWildcardEnabled(e.target.value === "sim")}>
+                          <option value="não">Sem coringa</option>
                           <option value="sim">Permitir coringa</option>
                         </select>
                       </label>
                       <article className="competition-setup-card wide">
                         <strong>Pontuacao padrao</strong>
-                        <span>Vitoria soma 3 pontos, derrota 0, WO -1, dupla ausencia -2 e empate 1. O ranking usa vitorias, saldo de sets e saldo de games.</span>
+                        <span>Vitoria soma 3 pontos, derrota 0, WO -1, dupla ausencia -2 e empate 1. O ranking usa vitórias, saldo de sets e saldo de games.</span>
                       </article>
                     </div>
                   ),
@@ -679,9 +679,9 @@ export function LeaguesPage({ user, profile }: Props) {
                       </label>
                       <label>
                         <span>Geracao automatica</span>
-                        <select value={autoRoundGenerationEnabled ? "sim" : "nao"} onChange={(e) => setAutoRoundGenerationEnabled(e.target.value === "sim")}>
+                        <select value={autoRoundGenerationEnabled ? "sim" : "não"} onChange={(e) => setAutoRoundGenerationEnabled(e.target.value === "sim")}>
                           <option value="sim">Gerar rodadas automaticamente</option>
-                          <option value="nao">Gerar manualmente</option>
+                          <option value="não">Gerar manualmente</option>
                         </select>
                       </label>
                       <label>
@@ -752,3 +752,4 @@ export function LeaguesPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

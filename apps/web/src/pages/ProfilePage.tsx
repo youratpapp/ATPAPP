@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
@@ -37,8 +37,8 @@ type ProfileSection = "public" | "history" | "preferences" | "account";
 
 const PROFILE_SECTIONS: Array<{ id: ProfileSection; label: string }> = [
   { id: "public", label: "Perfil" },
-  { id: "history", label: "Historico" },
-  { id: "preferences", label: "Preferencias" },
+  { id: "history", label: "Histórico" },
+  { id: "preferences", label: "Preferências" },
   { id: "account", label: "Conta" },
 ];
 
@@ -354,7 +354,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       .catch(() => {
         if (cancelled) return;
         setCityOptions([]);
-        setCityLoadError("Nao foi possivel carregar os municipios desta UF.");
+        setCityLoadError("Não foi possível carregar os municípios desta UF.");
       })
       .finally(() => {
         if (!cancelled) setCityLoading(false);
@@ -470,9 +470,9 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
     try {
       const saved = await saveNotificationPreferences(user, nextPrefs);
       setNotificationPrefs(saved);
-      setFeedback({ kind: "success", text: "Preferencias salvas." });
+      setFeedback({ kind: "success", text: "Preferências salvas." });
     } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar preferencias." });
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao salvar preferências." });
     } finally {
       setBusy(false);
     }
@@ -542,14 +542,14 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
     },
     {
       id: "first-win",
-      title: "Primeira vitoria",
-      detail: "Ja tem vitoria no historico recente.",
+      title: "Primeira vitória",
+      detail: "Ja tem vitória no histórico recente.",
       unlocked: recentWins > 0,
     },
     {
       id: "win-streak",
       title: "Sequencia quente",
-      detail: "Duas ou mais vitorias seguidas no historico recente.",
+      detail: "Duas ou mais vitórias seguidas no histórico recente.",
       unlocked: currentWinStreak >= 2,
     },
     {
@@ -574,8 +574,8 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const trophyHistory = [
     {
       id: "first-win",
-      title: "Primeira vitoria",
-      detail: `${recentWins} vitoria${recentWins === 1 ? "" : "s"} no historico recente.`,
+      title: "Primeira vitória",
+      detail: `${recentWins} vitória${recentWins === 1 ? "" : "s"} no histórico recente.`,
       earned: recentWins > 0,
     },
     {
@@ -593,7 +593,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
     {
       id: "active-organizer",
       title: "Organizador ativo",
-      detail: `${organizingCount} competicao${organizingCount === 1 ? "" : "es"} em organizacao.`,
+      detail: `${organizingCount} competicao${organizingCount === 1 ? "" : "es"} em organização.`,
       earned: organizingCount > 0,
     },
   ].filter((trophy) => trophy.earned);
@@ -616,8 +616,8 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       : recentWinRate >= 50
       ? "Fase positiva"
       : recentWins > 0
-      ? "Em evolucao"
-      : "Buscando primeira vitoria";
+      ? "Em evolução"
+      : "Buscando primeira vitória";
   const playerNameForComparison = normalizePlayerName(profile?.displayName || user.email?.split("@")[0] || "");
   const headToHeadRows = Object.values(
     recentMatches.reduce<
@@ -682,7 +682,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       `Nivel ${playerLevel} - ${playerXp} XP`,
       `Trofeus recentes: ${trophyHistory.length}`,
       `Fase: ${performanceLabel}`,
-      `Historico de evolucao: ${recentWinRate}% aproveitamento, melhor sequencia ${bestWinStreak}`,
+      `Histórico de evolução: ${recentWinRate}% aproveitamento, melhor sequencia ${bestWinStreak}`,
       headToHeadRows[0]
         ? `Principal confronto recente: ${headToHeadRows[0].opponent} (${headToHeadRows[0].wins}V/${headToHeadRows[0].losses}D)`
         : "",
@@ -717,7 +717,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       await navigator.clipboard.writeText(buildRecentMatchPostLines(match).join("\n"));
       setFeedback({ kind: "success", text: "Post da partida copiado." });
     } catch {
-      setFeedback({ kind: "error", text: "Nao foi possivel copiar o post agora." });
+      setFeedback({ kind: "error", text: "Não foi possível copiar o post agora." });
     }
   };
 
@@ -789,7 +789,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
 
       {editing ? (
         <div className="card" style={{ marginBottom: 12 }}>
-          <label>Nome de exibição</label>
+          <label>Nome de exibiÃ§Ã£o</label>
           <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Como aparece nos torneios" />
           <div className="row">
             <div>
@@ -817,7 +817,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                   {!normalizedUf
                     ? "Selecione o estado primeiro"
                     : cityLoading
-                    ? "Carregando municipios..."
+                    ? "Carregando municípios..."
                     : "Selecione o municipio"}
                 </option>
                 {cityValueInOptions ? null : city.trim() ? <option value={city}>{city}</option> : null}
@@ -847,7 +847,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
             <span className="pr-icon"><PhoneIcon /></span>
             <div className="pr-content">
               <p className="pr-label">Telefone</p>
-              <p className="pr-value">{profile?.phone || "—"}</p>
+              <p className="pr-value">{profile?.phone || "â€”"}</p>
             </div>
           </div>
           <div className="profile-row">
@@ -864,7 +864,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
               <p className="pr-value">
                 {profile?.birthDate
                   ? new Date(profile.birthDate + "T12:00:00").toLocaleDateString("pt-BR")
-                  : "—"}
+                  : "â€”"}
               </p>
             </div>
           </div>
@@ -874,7 +874,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       {!editing && profileSection === "history" ? (
         <div className="profile-activity-card">
           <div className="section-title">
-            <h2>Historico</h2>
+            <h2>Histórico</h2>
             <div className="cluster">
               <button className="link" onClick={shareProfileSummaryWhatsApp} title="Compartilhar pelo WhatsApp" aria-label="Compartilhar pelo WhatsApp">
                 <WhatsAppAppIcon />
@@ -911,12 +911,12 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                 </div>
               ) : (
                 <p className="subtle" style={{ marginBottom: 0 }}>
-                  Quando voce entrar em torneios ou ligas como jogador, seu historico comeca a aparecer aqui.
+                  Quando você entrar em torneios ou ligas como jogador, seu histórico comeca a aparecer aqui.
                 </p>
               )}
 
               <details className="profile-secondary-details">
-                <summary>Estatisticas e conquistas</summary>
+                <summary>Estatísticas e conquistas</summary>
                 <div className="profile-secondary-content">
                   <div className="profile-level-card">
                     <div className="profile-level-header">
@@ -932,7 +932,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                     <p>
                       {levelProgress === 0 && playerXp > 0
                         ? "Nivel recem alcancado. Continue jogando para avancar."
-                        : `${xpToNextLevel} XP para o proximo nivel.`}
+                        : `${xpToNextLevel} XP para o próximo nivel.`}
                     </p>
                   </div>
 
@@ -967,13 +967,13 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                       </div>
                     ) : (
                       <p className="subtle" style={{ marginBottom: 0 }}>
-                        Vitorias, sequencias e competicoes ativas vao aparecer como trofeus aqui.
+                        Vitórias, sequencias e competições ativas vao aparecer como trofeus aqui.
                       </p>
                     )}
                   </div>
 
                   <div className="profile-ranking-history">
-                    <p className="profile-activity-heading">Evolucao recente</p>
+                    <p className="profile-activity-heading">Evolução recente</p>
                     <div className="profile-ranking-timeline">
                       {rankingHistory.map((item) => (
                         <div key={item.id} className="profile-ranking-item">
@@ -997,7 +997,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                     </div>
                     <div>
                       <strong>{recentWins}</strong>
-                      <span>Vitorias</span>
+                      <span>Vitórias</span>
                     </div>
                     <div>
                       <strong>{recentLosses}</strong>
@@ -1053,7 +1053,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
                         </div>
                         <p>
                           {currentWinStreak > 0
-                            ? `Voce vem de ${currentWinStreak} vitoria${currentWinStreak === 1 ? "" : "s"} seguida${currentWinStreak === 1 ? "" : "s"}. Melhor sequencia recente: ${bestWinStreak}.`
+                            ? `Você vem de ${currentWinStreak} vitória${currentWinStreak === 1 ? "" : "s"} seguida${currentWinStreak === 1 ? "" : "s"}. Melhor sequencia recente: ${bestWinStreak}.`
                             : bestWinStreak > 0
                             ? `Melhor sequencia recente: ${bestWinStreak}.`
                             : "Venca uma partida para iniciar sua sequencia."}
@@ -1103,46 +1103,62 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       {!editing && profileSection === "preferences" && (
         <div className="profile-rows-card notification-pref-card">
           <div className="section-title">
-            <h2>Preferencias</h2>
+            <h2>Preferências</h2>
+            <p>Escolha quais avisos ajudam no seu dia de jogo.</p>
           </div>
-          <label>
+          <label className="notification-pref-option">
             <input
               type="checkbox"
               checked={notificationPrefs.whatsappReminders}
               onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, whatsappReminders: event.target.checked })}
               disabled={busy}
             />
-            Preparar lembretes para WhatsApp
+            <span className="notification-pref-copy">
+              <strong>Lembretes por WhatsApp</strong>
+              <small>Avisos importantes podem ser preparados para envio.</small>
+            </span>
           </label>
-          <label>
+          <label className="notification-pref-option">
             <input
               type="checkbox"
               checked={notificationPrefs.matchReminders}
               onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, matchReminders: event.target.checked })}
               disabled={busy}
             />
-            Partidas e resultados
+            <span className="notification-pref-copy">
+              <strong>Partidas e resultados</strong>
+              <small>Confirmações, horários e placares pendentes.</small>
+            </span>
           </label>
-          <label>
+          <label className="notification-pref-option">
             <input
               type="checkbox"
               checked={notificationPrefs.bookingReminders}
               onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, bookingReminders: event.target.checked })}
               disabled={busy}
             />
-            Reservas de quadra
+            <span className="notification-pref-copy">
+              <strong>Reservas de quadra</strong>
+              <small>Confirmações, lista de espera e lembretes da agenda.</small>
+            </span>
           </label>
-          <label>
+          <label className="notification-pref-option">
             <input
               type="checkbox"
               checked={notificationPrefs.socialUpdates}
               onChange={(event) => void onSaveNotificationPrefs({ ...notificationPrefs, socialUpdates: event.target.checked })}
               disabled={busy}
             />
-            Atualizacoes sociais
+            <span className="notification-pref-copy">
+              <strong>Novidades da comunidade</strong>
+              <small>Convites, chamadas abertas e atividades próximas.</small>
+            </span>
           </label>
-          <label>
-            Antecedencia do lembrete
+          <label className="notification-pref-select">
+            <span className="notification-pref-copy">
+              <strong>Antecedência do lembrete</strong>
+              <small>Quando você prefere ser avisado.</small>
+            </span>
             <select
               value={notificationPrefs.reminderHoursBefore}
               onChange={(event) =>
@@ -1156,7 +1172,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
               <option value={48}>2 dias antes</option>
             </select>
           </label>
-          <p className="subtle">Preferencias salvas para a futura engine de notificacoes. Hoje a Home continua usando lembretes manuais.</p>
+          <p className="subtle">Suas escolhas ficam salvas no perfil e ajudam a priorizar os avisos mais úteis.</p>
         </div>
       )}
 
@@ -1246,12 +1262,18 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
             <span className="pr-chevron"><ChevronRight /></span>
           </div>
 
-          <div className="profile-row tappable" onClick={onDeleteAccount}>
-            <span className="pr-icon" style={{ color: "var(--color-danger)" }}><TrashIcon /></span>
-            <div className="pr-content">
-              <p className="pr-label" style={{ color: "var(--color-danger)" }}>Excluir minha Conta</p>
+          <div className="profile-danger-zone">
+            <p className="profile-danger-caption">Ação irreversível</p>
+            <div className="profile-row tappable profile-row-danger" onClick={onDeleteAccount}>
+              <span className="pr-icon"><TrashIcon /></span>
+              <div className="pr-content">
+                <p className="pr-label">Excluir minha conta</p>
+                <p className="pr-value" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-danger)" }}>
+                  Remove seu acesso e dados vinculados ao perfil.
+                </p>
+              </div>
+              <span className="pr-chevron"><ChevronRight /></span>
             </div>
-            <span className="pr-chevron"><ChevronRight /></span>
           </div>
         </div>
       )}
@@ -1269,3 +1291,4 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
     </AppShell>
   );
 }
+

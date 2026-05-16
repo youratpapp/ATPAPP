@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { CompetitionHeader, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
 import { ResponsiveFilterSheet } from "../components/ResponsiveFilterSheet";
+import { ScreenState } from "../components/ScreenState";
 import {
   adminResolveLeagueMatchResult,
   applyLeagueSeasonMovements,
@@ -61,9 +62,9 @@ type Props = {
   profile: Profile | null;
 };
 
-type PageTab = "visao" | "jogadores" | "classificacao" | "partidas" | "chat";
+type PageTab = "visao" | "jogadores" | "classificacao" | "partidas" | "chat" | "configuracao";
 
-const PAGE_TABS: PageTab[] = ["visao", "jogadores", "classificacao", "partidas", "chat"];
+const PAGE_TABS: PageTab[] = ["visao", "jogadores", "classificacao", "partidas", "chat", "configuracao"];
 
 function parsePageTab(value: string | null): PageTab {
   if (value === "classes") return "classificacao";
@@ -71,8 +72,8 @@ function parsePageTab(value: string | null): PageTab {
 }
 
 function normalizePageTab(tab: PageTab, isOwner: boolean): PageTab {
-  if (!isOwner) return tab;
-  return tab === "classificacao" ? "visao" : tab;
+  if (!isOwner && tab === "configuracao") return "visao";
+  return tab;
 }
 
 function leagueRegistrationStatusLabel(status: LeagueRegistration["status"]): string {
@@ -82,24 +83,24 @@ function leagueRegistrationStatusLabel(status: LeagueRegistration["status"]): st
 }
 
 function leagueRegistrationStatusDetail(status: LeagueRegistration["status"]): string {
-  if (status === "approved") return "Voce ja pode acompanhar partidas, classificacao e comunicados da liga.";
-  if (status === "rejected") return "Sua solicitacao nao foi aprovada. Fale com a organizacao se precisar revisar a classe.";
-  return "A organizacao ainda precisa aprovar sua inscricao antes de voce aparecer nas rodadas.";
+  if (status === "approved") return "Você ja pode acompanhar partidas, classificação e comunicados da liga.";
+  if (status === "rejected") return "Sua solicitacao não foi aprovada. Fale com a organização se precisar revisar a classe.";
+  return "A organização ainda precisa aprovar sua inscricao antes de você aparecer nas rodadas.";
 }
 
 function friendlyLeagueJoinError(error: unknown): string {
   const raw = error instanceof Error ? error.message : typeof error === "string" ? error : "";
   const lower = raw.toLowerCase();
   if (lower.includes("duplicate") || lower.includes("unique") || lower.includes("already") || lower.includes("ja existe")) {
-    return "Voce ja tem uma inscricao registrada nesta liga.";
+    return "Você ja tem uma inscricao registrada nesta liga.";
   }
   if (lower.includes("permission denied") || lower.includes("row-level security") || lower.includes("not authorized")) {
-    return "Nao foi possivel solicitar entrada com este perfil. Entre novamente e tente de novo.";
+    return "Não foi possível solicitar entrada com este perfil. Entre novamente e tente de novo.";
   }
   if (lower.includes("not found") || lower.includes("invalido")) {
-    return "Nao encontramos esta liga ou classe. Atualize a pagina e tente novamente.";
+    return "Não encontramos esta liga ou classe. Atualize a página e tente novamente.";
   }
-  return "Nao foi possivel solicitar entrada agora. Tente novamente em instantes.";
+  return "Não foi possível solicitar entrada agora. Tente novamente em instantes.";
 }
 
 type MatchForm = {
@@ -398,7 +399,7 @@ function sortStandingRows(rows: LeaguePlayerStanding[]): LeaguePlayerStanding[] 
 }
 
 function matchStatusLabel(v: LeagueMatchSummary["status"]): string {
-  if (v === "aguardando_organizacao") return "Aguardando organizacao";
+  if (v === "aguardando_organizacao") return "Aguardando organização";
   if (v === "aguardando_resultado") return "Aguardando resultado";
   if (v === "aguardando_confirmacao") return "Aguardando confirmacao";
   if (v === "encerrada") return "Encerrada";
@@ -512,14 +513,14 @@ function validateLeagueScoreRow(format: string, label: string, side1: number, si
   }
 
   if (label === "Super TB" || format === "super_tb_unico") {
-    if (side1 === side2) return { ok: false, message: `${label}: o super tie-break nao pode terminar empatado.` };
+    if (side1 === side2) return { ok: false, message: `${label}: o super tie-break não pode terminar empatado.` };
     return high >= 10 && diff >= 2
       ? { ok: true }
       : { ok: false, message: `${label}: o super tie-break precisa fechar em 10+ com 2 pontos de diferenca.` };
   }
 
   if (label === "Tie-break") {
-    if (side1 === side2) return { ok: false, message: `${label}: o tie-break nao pode terminar empatado.` };
+    if (side1 === side2) return { ok: false, message: `${label}: o tie-break não pode terminar empatado.` };
     return high >= 7 && diff >= 2
       ? { ok: true }
       : { ok: false, message: `${label}: o tie-break precisa fechar em 7+ com 2 pontos de diferenca.` };
@@ -736,6 +737,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [selectedLeagueTaskId, setSelectedLeagueTaskId] = useState("");
 
   const isOwner = Boolean(league && league.ownerId === user.id);
+  const showOwnerLeagueScope =
+    isOwner && (activeTab === "jogadores" || activeTab === "classificacao" || activeTab === "partidas");
+  const showOwnerLeagueFocus = isOwner && activeTab === "visao";
   const leagueBackPath = isOwner ? "/eventos/ligas?view=organizing" : "/eventos/ligas?view=participating";
   const classById = useMemo(() => {
     const map: Record<string, LeagueClassSummary> = {};
@@ -849,7 +853,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     let nextAction = "Acompanhar partidas e mensagens da liga.";
     let nextTab: PageTab = "partidas";
     if (isOwner && registrationStats.pending > 0) {
-      nextAction = "Aprovar ou rejeitar inscricoes pendentes.";
+      nextAction = "Aprovar ou rejeitar inscrições pendentes.";
       nextTab = "jogadores";
     } else if (isOwner && statusSummary.scheduling > 0) {
       nextAction = "Organizar partidas ainda sem agenda.";
@@ -862,7 +866,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       nextTab = "partidas";
     } else if (isOwner && league?.status === "draft") {
       nextAction = "Conferir configuracao e gerar a primeira rodada.";
-      nextTab = "visao";
+      nextTab = "configuracao";
     }
     return {
       rounds: roundsData.length,
@@ -953,7 +957,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       return {
         action: "matches" as const,
         disabled: false,
-        detail: myLeagueMatches.length > 0 ? "Acompanhe rodada, agenda e resultados." : "Rodada ainda nao gerada.",
+        detail: myLeagueMatches.length > 0 ? "Acompanhe rodada, agenda e resultados." : "Rodada ainda não gerada.",
         label: myLeagueMatches.length > 0 ? "Ver minhas partidas" : "Acompanhar liga",
       };
     }
@@ -961,7 +965,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       return {
         action: "none" as const,
         disabled: true,
-        detail: "A organizacao ainda precisa aprovar sua inscricao.",
+        detail: "A organização ainda precisa aprovar sua inscricao.",
         label: "Inscricao em analise",
       };
     }
@@ -969,7 +973,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       return {
         action: "none" as const,
         disabled: true,
-        detail: "Sua inscricao nao foi aprovada pela organizacao.",
+        detail: "Sua inscricao não foi aprovada pela organização.",
         label: "Inscricao recusada",
       };
     }
@@ -984,7 +988,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     return {
       action: "matches" as const,
       disabled: false,
-      detail: league.status === "finished" ? "Consulte ranking e historico." : "Acompanhe partidas e classificacao.",
+      detail: league.status === "finished" ? "Consulte ranking e histórico." : "Acompanhe partidas e classificação.",
       label: league.status === "finished" ? "Ver resultados" : "Ver partidas",
     };
   }, [league, myLeagueMatches.length, myLeagueRegistration, myPendingLeagueMatches.length]);
@@ -998,10 +1002,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     if (targetRounds > 0 && seasonRoundNumber < targetRounds) {
       blockers.push(`Rodadas geradas: ${seasonRoundNumber}/${targetRounds}.`);
     }
-    if (leagueOverview.scheduling > 0) blockers.push("Existem partidas aguardando organizacao.");
+    if (leagueOverview.scheduling > 0) blockers.push("Existem partidas aguardando organização.");
     if (leagueOverview.attention > 0) blockers.push("Resolva partidas em disputa ou analise administrativa.");
     if (leagueOverview.pending > 0) blockers.push("Finalize resultados pendentes.");
-    if (registrationStats.pending > 0) blockers.push("Resolva inscricoes pendentes.");
+    if (registrationStats.pending > 0) blockers.push("Resolva inscrições pendentes.");
     if (selectedSeason?.status === "finished") {
       return {
         ready: true,
@@ -1012,7 +1016,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
     return {
       ready: blockers.length === 0 && standingsSummary.players > 0,
-      title: blockers.length === 0 ? "Temporada pronta para fechamento" : "Temporada ainda nao pronta",
+      title: blockers.length === 0 ? "Temporada pronta para fechamento" : "Temporada ainda não pronta",
       detail:
         blockers.length === 0
           ? "Confira as zonas de sobe/desce antes de aplicar movimentos."
@@ -1245,7 +1249,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         kind: "success",
         text: copied
           ? "Link de inscricao copiado."
-          : "Link de inscricao gerado. Se nao copiou automatico, copie manualmente no campo abaixo.",
+          : "Link de inscricao gerado. Se não copiou automatico, copie manualmente no campo abaixo.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao gerar link." });
@@ -1333,8 +1337,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         kind: "success",
         text:
           status === "approved"
-            ? "Inscricao aprovada automaticamente. O pagamento sera acompanhado pela organizacao."
-            : "Solicitacao enviada para aprovacao. O pagamento sera acompanhado pela organizacao.",
+            ? "Inscricao aprovada automaticamente. O pagamento sera acompanhado pela organização."
+            : "Solicitacao enviada para aprovacao. O pagamento sera acompanhado pela organização.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyLeagueJoinError(err) });
@@ -1767,7 +1771,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           eyebrow: "Inscricao",
           title: `Aprovar ${registration.playerName}`,
           meta: `${cls ? classLabel(cls) : "Classe a definir"} | ${registration.phone || "sem telefone"}`,
-          detail: "Solicitacao aguardando decisao da organizacao.",
+          detail: "Solicitacao aguardando decisao da organização.",
           impact: paymentLabel,
           tone: "attention",
           primaryAction: {
@@ -1813,8 +1817,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </div>
               </dl>
               <ul>
-                <li>Aprovar cria o jogador ativo da liga e o coloca nas proximas rodadas geradas.</li>
-                <li>Rejeitar remove esta solicitacao da fila operacional sem apagar o historico.</li>
+                <li>Aprovar cria o jogador ativo da liga e o coloca nas próximas rodadas geradas.</li>
+                <li>Rejeitar remove esta solicitacao da fila operacional sem apagar o histórico.</li>
               </ul>
             </div>
           ),
@@ -1867,7 +1871,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               </dl>
               <ul>
                 <li>O registro usa o fluxo de pagamento manual/stub ja existente.</li>
-                <li>Se o pagamento nao foi recebido, mantenha a pendencia visivel na lista de jogadores.</li>
+                <li>Se o pagamento não foi recebido, mantenha a pendência visivel na lista de jogadores.</li>
               </ul>
             </div>
           ),
@@ -1932,7 +1936,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             <ul>
               <li>{opState.detail}</li>
               <li>A sala da partida concentra disponibilidade, resultado, WO, confirmacao e mensagens.</li>
-              <li>{match.scheduledAt ? `Horario atual: ${formatDateTime(match.scheduledAt)}.` : "Horario ainda nao definido para os jogadores."}</li>
+              <li>{match.scheduledAt ? `Horario atual: ${formatDateTime(match.scheduledAt)}.` : "Horario ainda não definido para os jogadores."}</li>
             </ul>
           </div>
         ),
@@ -1943,18 +1947,18 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     if (!selectedSeasonId) generationBlockers.push("Selecione uma temporada.");
     if (!classes.length) generationBlockers.push("Crie ao menos uma classe.");
     if (!standingsSummary.players) generationBlockers.push("Aprove jogadores ativos.");
-    if (registrationStats.pending > 0) generationBlockers.push("Resolva inscricoes pendentes antes de gerar a rodada.");
-    if (unfinishedLeagueMatchItems.length > 0) generationBlockers.push("Finalize a rodada pendente antes de gerar a proxima.");
+    if (registrationStats.pending > 0) generationBlockers.push("Resolva inscrições pendentes antes de gerar a rodada.");
+    if (unfinishedLeagueMatchItems.length > 0) generationBlockers.push("Finalize a rodada pendente antes de gerar a próxima.");
     if (selectedSeason?.status !== "finished" && !unfinishedLeagueMatchItems.length) {
       tasks.push({
         id: "generate-round",
         eyebrow: "Proxima rodada",
-        title: generationBlockers.length ? "Rodada ainda nao esta pronta para gerar" : "Gerar proxima rodada",
+        title: generationBlockers.length ? "Rodada ainda não esta pronta para gerar" : "Gerar próxima rodada",
         meta: selectedSeason?.name || "Temporada selecionada",
         detail: generationBlockers.length
-          ? "Ainda ha requisitos operacionais antes da proxima rodada."
-          : "Todas as pendencias da rodada atual estao limpas.",
-        impact: generationBlockers.length ? generationBlockers[0] : "Cria os confrontos da proxima rodada.",
+          ? "Ainda ha requisitos operacionais antes da próxima rodada."
+          : "Todas as pendências da rodada atual estao limpas.",
+        impact: generationBlockers.length ? generationBlockers[0] : "Cria os confrontos da próxima rodada.",
         tone: generationBlockers.length ? "neutral" : "ready",
         primaryAction: {
           label: "Gerar rodada",
@@ -2075,7 +2079,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             ))}
           </select>
         </label>
-        <div className="league-public-class-chip-rail" aria-label="Classes disponiveis">
+        <div className="league-public-class-chip-rail" aria-label="Classes disponíveis">
           <button type="button" className={!selectedClassId ? "active" : ""} onClick={() => setSelectedClassId("")}>
             Todas
           </button>
@@ -2106,7 +2110,13 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         />
       ) : null}
 
-      {loading ? <p className="subtle">Carregando...</p> : null}
+      {loading ? (
+        <ScreenState
+          kind="loading"
+          title="Carregando liga"
+          detail="Buscando rodada, jogadores, classificação e mensagens."
+        />
+      ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
       {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
 
@@ -2140,7 +2150,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   Jogadores
                 </button>
                 <button type="button" className={activeTab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
-                  Classificacao
+                  Classificação
                 </button>
                 <button type="button" className={activeTab === "partidas" ? "active" : ""} onClick={() => goToTab("partidas")}>
                   Partidas
@@ -2166,11 +2176,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         <span>{[league.category, league.classScope].filter(Boolean).join(" / ") || "Classe a definir"}</span>
                         <span>{selectedSeason?.name || "Temporada a definir"}</span>
                       </div>
-                      <div className="competition-public-action-rail" aria-label="Resumo publico da liga">
+                      <div className="competition-public-action-rail" aria-label="Resumo público da liga">
                         <button type="button" onClick={() => goToTab("classificacao")}>
                           <span>Classes</span>
                           <strong>{classes.length || "A definir"}</strong>
-                          <small>Use como filtro em jogadores, classificacao e partidas.</small>
+                          <small>Use como filtro em jogadores, classificação e partidas.</small>
                         </button>
                         <button type="button" onClick={() => goToTab("jogadores")}>
                           <span>Jogadores</span>
@@ -2180,7 +2190,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         <button type="button" onClick={() => goToTab("partidas")}>
                           <span>Partidas</span>
                           <strong>{leagueOverview.matches || "A definir"}</strong>
-                          <small>{leagueOverview.matches ? `${leagueOverview.rounds} rodadas` : "Rodada ainda nao publicada."}</small>
+                          <small>{leagueOverview.matches ? `${leagueOverview.rounds} rodadas` : "Rodada ainda não publicada."}</small>
                         </button>
                       </div>
                       {myLeagueRegistration ? (
@@ -2265,7 +2275,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   </div>
                 </div>
                 {!classes.length ? (
-                  <p className="subtle">A liga ainda nao publicou classes especificas. A entrada sera enviada como classe aberta.</p>
+                  <p className="subtle">A liga ainda não públicou classes especificas. A entrada sera enviada como classe aberta.</p>
                 ) : (
                   <div className="registration-option-grid">
                     {classes.map((item) => {
@@ -2294,7 +2304,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   <span>2</span>
                   <div>
                     <strong>Confirme seus dados</strong>
-                    <small>A organizacao usa esses dados para liberar a entrada e avisos da rodada.</small>
+                    <small>A organização usa esses dados para liberar a entrada e avisos da rodada.</small>
                   </div>
                 </div>
                 <div className="registration-form-grid">
@@ -2320,7 +2330,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   <span>3</span>
                   <div>
                     <strong>Revise e confirme</strong>
-                    <small>Entrada, valor e proximo passo ficam claros antes do envio.</small>
+                    <small>Entrada, valor e próximo passo ficam claros antes do envio.</small>
                   </div>
                 </div>
                 <div className="registration-review-card">
@@ -2334,7 +2344,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   </p>
                   <p>
                     <span>Tipo de entrada</span>
-                    <strong>{league.joinRequiresApproval ? "A organizacao aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
+                    <strong>{league.joinRequiresApproval ? "A organização aprova sua solicitacao" : "Entrada direta apos confirmar"}</strong>
                   </p>
                 </div>
                 <div className="registration-sticky-cta">
@@ -2355,7 +2365,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </section>
           ) : null}
 
-          {isOwner ? (
+          {showOwnerLeagueScope ? (
           <ResponsiveFilterSheet
             buttonLabel="Escopo da liga"
             eyebrow="Filtros da liga"
@@ -2386,7 +2396,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           </ResponsiveFilterSheet>
           ) : null}
 
-          {isOwner ? (
+          {showOwnerLeagueFocus ? (
             <section className="competition-focus-panel league-operation-panel">
               <div className="competition-focus-main">
                 <span>Operacao da liga</span>
@@ -2402,7 +2412,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </span>
                 <span>
                   <strong>{registrationStats.pending}</strong>
-                  inscricoes pendentes
+                  inscrições pendentes
                 </span>
                 <span>
                   <strong>{leagueOverview.attention}</strong>
@@ -2414,7 +2424,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               </button>
               <LeagueOperationTaskRows
                 ariaLabel="Fila operacional da liga"
-                emptyDetail="A liga nao tem inscricoes, partidas ou geracao de rodada aguardando acao nesta selecao."
+                emptyDetail="A liga não tem inscrições, partidas ou geracao de rodada aguardando acao nesta selecao."
                 emptyTitle="Nenhuma acao critica agora"
                 heading="Rodada atual"
                 onOpenAll={openOwnerLeagueTaskList}
@@ -2428,7 +2438,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           {!isOwner && activeTab === "visao" && visiblePlayerLeagueTasks.length > 0 ? (
             <LeagueOperationTaskRows
               ariaLabel="Minhas tarefas na liga"
-              emptyDetail="Voce nao tem partida pendente nesta liga agora."
+              emptyDetail="Você não tem partida pendente nesta liga agora."
               emptyTitle="Sem acao pendente"
               heading="Minha rodada"
               onOpenAll={() => goToTab("partidas")}
@@ -2446,13 +2456,17 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               items={[
                 {
                   value: "visao",
-                  label: "Organizacao",
+                  label: "Rodada",
                   badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
                 },
                 {
                   value: "jogadores",
                   label: "Jogadores",
                   badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
+                },
+                {
+                  value: "classificacao",
+                  label: "Classificação",
                 },
                 {
                   value: "partidas",
@@ -2462,6 +2476,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 {
                   value: "chat",
                   label: "Chat",
+                },
+                {
+                  value: "configuracao",
+                  label: "Configuracao",
                 },
               ]}
             />
@@ -2492,7 +2510,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             ) : null}
             <CompetitionPublishingPanel
               label="Acoes de publicacao da liga"
-              hint="Link publico, convite e inscricao sempre no mesmo padrao das competicoes."
+              hint="Link público, convite e inscricao sempre no mesmo padrao das competições."
               actions={
                 <>
                   <button onClick={() => void copyLeagueShareLink()} disabled={busy}>
@@ -2519,15 +2537,15 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           </section>
           ) : null}
 
-          {(isOwner && activeTab === "visao") || (!isOwner && activeTab === "classificacao") ? (
+          {activeTab === "classificacao" ? (
             <>
           <section className="section-card">
-            {!isOwner ? renderPublicClassFilter("Classificacao por classe", "Troque o recorte sem sair da classificacao.") : null}
+            {!isOwner ? renderPublicClassFilter("Classificação por classe", "Troque o recorte sem sair da classificação.") : null}
             <div className="section-title" style={{ marginBottom: 10 }}>
               <div>
-                <h3 style={{ margin: 0 }}>Classificacao da temporada</h3>
+                <h3 style={{ margin: 0 }}>Classificação da temporada</h3>
                 <p className="subtle" style={{ margin: "4px 0 0" }}>
-                  Ordenacao: vitorias, saldo de sets, saldo de games, partidas jogadas e nome.
+                  Ordenação: vitórias, saldo de sets, saldo de games, partidas jogadas e nome.
                 </p>
               </div>
               {isOwner ? (
@@ -2596,7 +2614,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             ))}
             {rankingSnapshots.length ? (
               <div className="league-ranking-snapshots">
-                <strong>Historico salvo</strong>
+                <strong>Histórico salvo</strong>
                 {rankingSnapshots.slice(0, 4).map((snapshot) => (
                   <span key={snapshot.id}>
                     {new Date(snapshot.computedAt).toLocaleString("pt-BR")} - {snapshot.ranking.length} jogadores
@@ -2608,7 +2626,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             </>
           ) : null}
 
-          {activeTab === "visao" && isOwner ? (
+          {activeTab === "configuracao" && isOwner ? (
             <>
               <section className="section-card">
                 <h3 style={{ marginTop: 0, marginBottom: 10 }}>Config da liga</h3>
@@ -2853,7 +2871,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 {isOwner ? (
                   <div className="modal-actions">
                     <button onClick={onGenerateRound} disabled={busy || !selectedSeasonId}>
-                      {busy ? "Processando..." : "Gerar proxima rodada"}
+                      {busy ? "Processando..." : "Gerar próxima rodada"}
                     </button>
                   </div>
                 ) : null}
@@ -2938,7 +2956,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 {isOwner ? (
                   <p className="subtle" style={{ marginTop: 0 }}>
                     Classe: {selectedClassLabel} | Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas:{" "}
-                    {registrationStats.rejected} | Pagas: {registrationPaymentStats.paidCount}/{filteredRegistrations.length} ·{" "}
+                    {registrationStats.rejected} | Pagas: {registrationPaymentStats.paidCount}/{filteredRegistrations.length} Â·{" "}
                     {formatMoneyFromCents(registrationPaymentStats.paidAmountCents)}
                   </p>
                 ) : (
@@ -3153,15 +3171,15 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               )}
                               {commonAvailability.length ? (
                                 <div className="league-common-availability">
-                                  <strong>Horarios em comum</strong>
+                                  <strong>Horários em comum</strong>
                                   {commonAvailability.map((slot) => (
                                     <span key={slot.key}>
-                                      {new Date(slot.availableAt).toLocaleString("pt-BR")} · {slot.playerNames.join(" / ")}
+                                      {new Date(slot.availableAt).toLocaleString("pt-BR")} Â· {slot.playerNames.join(" / ")}
                                     </span>
                                   ))}
                                 </div>
                               ) : avail.length > 1 ? (
-                                <p className="subtle">Ainda sem horarios em comum.</p>
+                                <p className="subtle">Ainda sem horários em comum.</p>
                               ) : null}
                               <div className="league-availability-list">
                                 {avail.map((a) => (
@@ -3422,3 +3440,4 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

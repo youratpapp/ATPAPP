@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { PublishingKit } from "../components/PublishingKit";
@@ -23,7 +23,7 @@ function classLabel(row: PublicRankingRow): string {
 }
 
 function locationLabel(row: PublicRankingRow): string {
-  return [row.city, row.state].filter(Boolean).join(" - ") || "Local nao informado";
+  return [row.city, row.state].filter(Boolean).join(" - ") || "Local não informado";
 }
 
 function winRate(row: PublicRankingRow): number {
@@ -141,7 +141,7 @@ export function RankingPage({ user, profile }: Props) {
       .catch((err) => {
         if (alive) {
           console.warn("Ranking load failed", err);
-          setError("Nao conseguimos carregar o ranking agora. Tente novamente em instantes.");
+          setError("Não conseguimos carregar o ranking agora. Tente novamente em instantes.");
         }
       })
       .finally(() => {
@@ -249,7 +249,7 @@ export function RankingPage({ user, profile }: Props) {
           players: items.length,
           activePlayers,
           matches,
-          leader: sorted[0]?.displayName || "Sem lider",
+          leader: sorted[0]?.displayName || "Sem líder",
           leaderPoints: sorted[0]?.rankingPoints || 0,
         };
       })
@@ -261,7 +261,7 @@ export function RankingPage({ user, profile }: Props) {
   const playersWithMatches = filteredRows.filter((row) => row.matchesPlayed > 0).length;
   const rankingCompleteness = totalPlayers > 0 ? Math.round((playersWithMatches / totalPlayers) * 100) : 0;
   const exportRankingCsv = () => {
-    const header = ["posicao", "jogador", "liga", "temporada", "classe", "cidade", "vitorias", "derrotas", "jogos", "pontos"];
+    const header = ["posição", "jogador", "liga", "temporada", "classe", "cidade", "vitórias", "derrotas", "jogos", "pontos"];
     const lines = visibleRows.map((row, index) => [
       row.position || index + 1,
       row.displayName,
@@ -295,7 +295,7 @@ export function RankingPage({ user, profile }: Props) {
       await navigator.clipboard.writeText(lines.join("\n"));
       setFeedback("Resumo do ranking copiado.");
     } catch {
-      setFeedback("Nao foi possivel copiar o ranking agora.");
+      setFeedback("Não foi possível copiar o ranking agora.");
     }
   };
   const selectedRules = selectedLeagueDetails
@@ -311,7 +311,7 @@ export function RankingPage({ user, profile }: Props) {
         { label: "Recorte", value: scopeLabel },
         { label: "Classes", value: `${classCount || 0} em exibicao` },
         { label: "Jogadores ativos", value: `${highActivityPlayers} com 3+ jogos` },
-        { label: "Criterio atual", value: "Pontos, vitorias e jogos lancados" },
+        { label: "Criterio atual", value: "Pontos, vitórias e jogos lancados" },
       ];
 
   const onToggleFollow = async (targetUserId: string) => {
@@ -345,7 +345,7 @@ export function RankingPage({ user, profile }: Props) {
 
       <section className="ranking-player-overview">
         <div className="ranking-player-position">
-          <span>Minha posicao</span>
+          <span>Minha posição</span>
           {isInitialLoading ? (
             <>
               <strong>...</strong>
@@ -358,14 +358,14 @@ export function RankingPage({ user, profile }: Props) {
               <h2>{classLabel(myPrimaryRow)}</h2>
               <p>
                 {myPrimaryRow.rankingPoints} pts em {myPrimaryRow.leagueName}
-                {myGapToLeader > 0 ? ` | ${myGapToLeader} pts do lider` : " | voce lidera este recorte"}
+                {myGapToLeader > 0 ? ` | ${myGapToLeader} pts do líder` : " | você lídera este recorte"}
               </p>
             </>
           ) : (
             <>
               <strong>-</strong>
-              <h2>Voce ainda nao aparece neste recorte</h2>
-              <p>Use filtros de liga, cidade ou classe para encontrar rankings onde voce participa.</p>
+              <h2>Você ainda não aparece neste recorte</h2>
+              <p>Use filtros de liga, cidade ou classe para encontrar rankings onde você participa.</p>
             </>
           )}
         </div>
@@ -373,7 +373,7 @@ export function RankingPage({ user, profile }: Props) {
           <span>Recorte atual</span>
           <strong>{scopeLabel}</strong>
           <small>{recorteCountLabel}</small>
-          {!isInitialLoading && playerAboveMe ? <small>Acima de voce: {playerAboveMe.displayName} ({playerAboveMe.rankingPoints} pts)</small> : null}
+          {!isInitialLoading && playerAboveMe ? <small>Acima de você: {playerAboveMe.displayName} ({playerAboveMe.rankingPoints} pts)</small> : null}
           {!isInitialLoading && leader && !myPrimaryRow ? <small>Lider: {leader.displayName} ({leader.rankingPoints} pts)</small> : null}
         </div>
       </section>
@@ -443,13 +443,13 @@ export function RankingPage({ user, profile }: Props) {
         <ScreenState
           kind="error"
           icon="Perfil incompleto"
-          title="Cidade e UF ainda nao foram definidos"
+          title="Cidade e UF ainda não foram definidos"
           detail="Complete seu perfil para ver o ranking local com contexto correto."
         />
       ) : null}
-      {error ? <ScreenState kind="error" title="Nao foi possivel carregar o ranking" detail={error} /> : null}
+      {error ? <ScreenState kind="error" title="Não foi possível carregar o ranking" detail={error} /> : null}
       {feedback ? <p className="feedback success">{feedback}</p> : null}
-      {isInitialLoading ? <ScreenState kind="loading" icon="Ranking" title="Carregando ranking" detail="Buscando jogadores, ligas e recortes disponiveis." /> : null}
+      {isInitialLoading ? <ScreenState kind="loading" icon="Ranking" title="Carregando ranking" detail="Buscando jogadores, ligas e recortes disponíveis." /> : null}
 
       {!loading && !visibleRows.length ? (
         <ScreenState
@@ -475,7 +475,7 @@ export function RankingPage({ user, profile }: Props) {
           <div className="ranking-list-head">
             <div>
               <span>Ranking do recorte</span>
-              <h2>{myPrimaryRow ? "Top jogadores e sua posicao" : "Top jogadores"}</h2>
+              <h2>{myPrimaryRow ? "Top jogadores e sua posição" : "Top jogadores"}</h2>
             </div>
             <small>
               Mostrando {visibleRows.length} de {filteredRows.length}
@@ -511,7 +511,7 @@ export function RankingPage({ user, profile }: Props) {
                 <span>
                   {row.userId && row.userId !== user.id ? (
                     <button
-                      className={followingIds.has(row.userId) ? "" : "primary"}
+                      className={followingIds.has(row.userId) ? "ranking-follow-button active" : "ranking-follow-button"}
                       onClick={() => void onToggleFollow(row.userId!)}
                       disabled={busyFollowId === row.userId}
                     >
@@ -566,7 +566,7 @@ export function RankingPage({ user, profile }: Props) {
                 <article className="ranking-player-card">
                   <span>Seu momento</span>
                   <strong>Entre em uma liga</strong>
-                  <small>Quando voce aparecer em uma temporada, sua posicao fica destacada aqui.</small>
+                  <small>Quando você aparecer em uma temporada, sua posição fica destacada aqui.</small>
                 </article>
               )}
             </section>
@@ -599,7 +599,7 @@ export function RankingPage({ user, profile }: Props) {
                   <p key={`race:${row.leaguePlayerId}`}>
                     <b>#{row.effectivePosition}</b>
                     <strong>{row.displayName}</strong>
-                    <em>{row.gapToLeader === 0 ? "lider" : `${row.gapToLeader} pts atras`}</em>
+                    <em>{row.gapToLeader === 0 ? "líder" : `${row.gapToLeader} pts atras`}</em>
                   </p>
                 ))}
               </div>
@@ -643,3 +643,4 @@ export function RankingPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

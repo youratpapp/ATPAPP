@@ -2,6 +2,7 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { ScreenState } from "../components/ScreenState";
 import { ManagementShell } from "../components/management/ManagementShell";
 import { AcademyWorkspaceShell, type AcademyManagementView } from "../components/place/AcademyWorkspaceShell";
 import { BookingWorkspaceShell, type BookingManagementView } from "../components/place/BookingWorkspaceShell";
@@ -84,6 +85,7 @@ import {
   listOpenMatches,
   markAcademyAttendance,
   requestPlaceMembership,
+  reviewTournamentCourtUsageRequest,
   reportAcademyAbsence,
   requestAcademyLessonFit,
   searchAcademyLessonFitSlots,
@@ -179,6 +181,7 @@ import type {
   PlaceProductPlan,
   PlaceStaffCandidate,
   PlaceStaffMember,
+  TournamentCourtUsageRequest,
   Profile,
 } from "../lib/types";
 import { listMunicipalitiesByUf, normalizeStateUf } from "../lib/brazil-location";
@@ -289,15 +292,15 @@ const PLACE_PRODUCT_PLAN_LABELS: Record<PlaceProductPlan, string> = {
 
 const PLACE_PRODUCT_PLAN_HINTS: Record<PlaceProductPlan, string> = {
   club_basic: "Reservas, quadras e lista de espera.",
-  academy: "Professores, turmas, presenca e evolucao.",
-  club_pro: "Reservas, academia, socios, CRM e financeiro.",
+  academy: "Professores, turmas, presença e evolução.",
+  club_pro: "Reservas, academia, sócios, CRM e financeiro.",
   multi_unit: "Pacote completo para rede com unidades.",
 };
 
 const BOOKING_PROFILE_SCOPE_LABELS: Record<PlaceBookingRule["profileScope"], string> = {
   all: "Todos",
   public: "Avulso",
-  member: "Socio",
+  member: "Sócio",
 };
 
 const COURT_SURFACE_OPTIONS = [
@@ -375,16 +378,16 @@ function friendlyError(err: unknown, fallback: string): string {
     console.error(fallback, err);
     return fallback;
   }
-  if (lower.includes("row-level security") || lower.includes("nao autorizado") || lower.includes("permission denied")) {
-    return "Seu perfil nao tem permissao para executar esta acao.";
+  if (lower.includes("row-level security") || lower.includes("não autorizado") || lower.includes("permission denied")) {
+    return "Seu perfil não tem permissao para executar esta acao.";
   }
   if (lower.includes("duplicate key") || lower.includes("unique constraint")) {
     return "Ja existe um registro semelhante.";
   }
   if (lower.includes("violates foreign key")) {
-    return "Nao encontramos um item relacionado. Atualize a pagina e tente novamente.";
+    return "Não encontramos um item relacionado. Atualize a página e tente novamente.";
   }
-  if (lower.includes("professor ja possui") || lower.includes("quadra ja possui") || lower.includes("matricula") || lower.includes("reposicao")) {
+  if (lower.includes("professor ja possui") || lower.includes("quadra ja possui") || lower.includes("matrícula") || lower.includes("reposição")) {
     return text;
   }
   return text || fallback;
@@ -825,6 +828,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setAcademyAttendanceByPlace,
     setPaymentsByTarget,
     staffByPlace,
+    tournamentCourtRequestsByPlace,
   } = usePlaceAdminResourceState();
   const [courtDraftByPlace, setCourtDraftByPlace] = useState<Record<string, string>>({});
   const [courtSurfaceDraftByPlace, setCourtSurfaceDraftByPlace] = useState<Record<string, string>>({});
@@ -975,7 +979,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       .catch(() => {
         if (cancelled) return;
         setCityOptions([]);
-        setCityLoadError("Nao foi possivel carregar os municipios desta UF.");
+        setCityLoadError("Não foi possível carregar os municípios desta UF.");
       })
       .finally(() => {
         if (!cancelled) setCityLoading(false);
@@ -1152,10 +1156,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         },
       }));
       setPlaceProfileLogoFileByPlace((prev) => ({ ...prev, [place.id]: null }));
-      setFeedback({ kind: "success", text: "Dados publicos atualizados." });
+      setFeedback({ kind: "success", text: "Dados públicos atualizados." });
       await refresh();
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar dados publicos.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar dados públicos.") });
     } finally {
       setBusy(false);
     }
@@ -1291,7 +1295,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         [place.id]: { name: "", monthlyFee: "0", courtDiscount: "0", academyDiscount: "0" },
       }));
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Plano de socio criado." });
+      setFeedback({ kind: "success", text: "Plano de sócio criado." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar plano.") });
     } finally {
@@ -1312,7 +1316,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       });
       setMembershipNoteByPlan((prev) => ({ ...prev, [plan.id]: "" }));
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Solicitacao de socio enviada. O pagamento sera confirmado pela plataforma quando o checkout/webhook estiver ativo." });
+      setFeedback({ kind: "success", text: "Solicitacao de sócio enviada. O pagamento sera confirmado pela plataforma quando o checkout/webhook estiver ativo." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao solicitar plano.") });
     } finally {
@@ -1326,9 +1330,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     try {
       await updatePlaceMembershipStatus(membershipId, status);
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: status === "active" ? "Socio ativado." : "Socio atualizado." });
+      setFeedback({ kind: "success", text: status === "active" ? "Sócio ativado." : "Sócio atualizado." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar socio.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar sócio.") });
     } finally {
       setBusy(false);
     }
@@ -1423,9 +1427,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         metadata: { source: "membership_admin_manual_stub", planId: plan.id },
       });
       setPaymentsByTarget((prev) => ({ ...prev, [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod)]: payment }));
-      setFeedback({ kind: "success", text: "Mensalidade de socio marcada como paga pelo admin." });
+      setFeedback({ kind: "success", text: "Mensalidade de sócio marcada como paga pelo admin." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao marcar mensalidade de socio.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao marcar mensalidade de sócio.") });
     } finally {
       setBusy(false);
     }
@@ -1548,7 +1552,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: "Proximo contato atualizado." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar proximo contato.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar próximo contato.") });
     } finally {
       setBusy(false);
     }
@@ -1784,7 +1788,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         notes: draft.notes,
       });
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Voce entrou na lista de espera deste horario." });
+      setFeedback({ kind: "success", text: "Você entrou na lista de espera deste horario." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao entrar na lista de espera.") });
     } finally {
@@ -1827,6 +1831,28 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setFeedback({ kind: "success", text: status === "confirmed" ? "Reserva confirmada." : "Reserva cancelada." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar reserva.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onReviewTournamentCourtRequest = async (
+    placeId: string,
+    requestId: string,
+    status: TournamentCourtUsageRequest["status"]
+  ) => {
+    if (status !== "approved" && status !== "rejected") return;
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await reviewTournamentCourtUsageRequest(requestId, status);
+      await refreshPlaceResources(placeId);
+      setFeedback({
+        kind: "success",
+        text: status === "approved" ? "Quadras bloqueadas para o torneio." : "Uso de quadras recusado.",
+      });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao revisar solicitacao de torneio.") });
     } finally {
       setBusy(false);
     }
@@ -2200,9 +2226,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         makeupNoticeHours: Number(draft.makeupNoticeHours) || 0,
       });
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: "Regra de reposicao por ausencia avisada atualizada." });
+      setFeedback({ kind: "success", text: "Regra de reposição por ausencia avisada atualizada." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar regra de reposicao.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar regra de reposição.") });
     } finally {
       setBusy(false);
     }
@@ -2250,9 +2276,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         },
       }));
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Contrato do aluno criado com plano e horarios semanais." });
+      setFeedback({ kind: "success", text: "Contrato do aluno criado com plano e horários semanais." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao matricular aluno.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao matrícular aluno.") });
     } finally {
       setBusy(false);
     }
@@ -2285,9 +2311,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setFeedback({
         kind: "success",
         text: shouldCreateCredit
-          ? "Ausencia avisada. Credito de reposicao criado e vaga liberada."
+          ? "Ausencia avisada. Credito de reposição criado e vaga liberada."
           : settings.autoCreateMakeupCreditOnNotice
-            ? `Ausencia registrada. Fora da regra de ${settings.makeupNoticeHours}h, nao gerou credito automatico.`
+            ? `Ausencia registrada. Fora da regra de ${settings.makeupNoticeHours}h, não gerou credito automatico.`
             : "Ausencia registrada. Credito automatico esta desativado na configuracao da academia.",
       });
     } catch (err) {
@@ -2348,7 +2374,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         ),
       }));
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: status === "present" ? "Presenca registrada." : "Falta registrada." });
+      setFeedback({ kind: "success", text: status === "present" ? "Presença registrada." : "Falta registrada." });
     } catch (err) {
       setAcademyAttendanceByPlace((prev) => ({ ...prev, [placeId]: previousRows }));
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar chamada.") });
@@ -2380,7 +2406,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         genderScope: filters.genderScope,
       });
       setAcademyFitSlotsByPlace((prev) => ({ ...prev, [placeId]: rows }));
-      setFeedback({ kind: "success", text: rows.length ? `${countLabel(rows.length, "horario com encaixe encontrado", "horarios com encaixe encontrados")}.` : "Nenhum encaixe encontrado para estes filtros." });
+      setFeedback({ kind: "success", text: rows.length ? `${countLabel(rows.length, "horario com encaixe encontrado", "horários com encaixe encontrados")}.` : "Nenhum encaixe encontrado para estes filtros." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao buscar encaixes.") });
     } finally {
@@ -2404,7 +2430,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       ? (academyMakeupsByPlace[placeId] || []).find((credit) => credit.status === "open" && credit.userId === user.id)
       : null;
     if (draft.requestType === "makeup" && !openMakeupCredit) {
-      setFeedback({ kind: "error", text: "Voce nao tem credito de reposicao aberto para usar neste encaixe." });
+      setFeedback({ kind: "error", text: "Você não tem credito de reposição aberto para usar neste encaixe." });
       return;
     }
     setBusy(true);
@@ -2428,7 +2454,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       await onSearchAcademyFitSlots(placeId);
       setFeedback({
         kind: "success",
-        text: draft.requestType === "makeup" ? "Solicitacao de reposicao enviada para aprovacao." : "Aula avulsa solicitada. A equipe aprova e libera o pagamento.",
+        text: draft.requestType === "makeup" ? "Solicitacao de reposição enviada para aprovacao." : "Aula avulsa solicitada. A equipe aprova e libera o pagamento.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao solicitar encaixe.") });
@@ -2463,9 +2489,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [slot.classId]: { ...draft, requestType: "makeup", notes: "" } }));
       await refreshPlaceResources(placeId);
       await onSearchAcademyFitSlots(placeId);
-      setFeedback({ kind: "success", text: "Reposicao agendada e credito marcado como usado." });
+      setFeedback({ kind: "success", text: "Reposição agendada e credito marcado como usado." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao agendar reposicao.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao agendar reposição.") });
     } finally {
       setBusy(false);
     }
@@ -2556,9 +2582,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     try {
       await updateAcademyEnrollmentStatus(enrollmentId, status);
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: status === "active" ? "Matricula ativada." : "Matricula cancelada." });
+      setFeedback({ kind: "success", text: status === "active" ? "Matrícula ativada." : "Matrícula cancelada." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar matricula.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar matrícula.") });
     } finally {
       setBusy(false);
     }
@@ -2588,7 +2614,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         status: patch.status,
       });
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: "Matricula do aluno atualizada." });
+      setFeedback({ kind: "success", text: "Matrícula do aluno atualizada." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar aluno.") });
     } finally {
@@ -2602,9 +2628,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     try {
       await updateAcademyMakeupCreditStatus(creditId, status);
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: status === "used" ? "Reposicao marcada como usada." : "Reposicao atualizada." });
+      setFeedback({ kind: "success", text: status === "used" ? "Reposição marcada como usada." : "Reposição atualizada." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar reposicao.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar reposição.") });
     } finally {
       setBusy(false);
     }
@@ -2624,9 +2650,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       });
       setAcademyProgressDraftByEnrollment((prev) => ({ ...prev, [enrollmentId]: { level: "", focus: "", notes: "" } }));
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: "Evolucao do aluno registrada." });
+      setFeedback({ kind: "success", text: "Evolução do aluno registrada." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar evolucao.") });
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar evolução.") });
     } finally {
       setBusy(false);
     }
@@ -2667,7 +2693,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     try {
       await joinOpenMatch(user, match, profile?.displayName || user.email || "Jogador", profile?.phone || "");
       await refreshOpenMatches();
-      setFeedback({ kind: "success", text: "Voce entrou na partida." });
+      setFeedback({ kind: "success", text: "Você entrou na partida." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao entrar na partida.") });
     } finally {
@@ -2860,9 +2886,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(place.id)}`;
     try {
       await navigator.clipboard.writeText(publicLink);
-      setFeedback({ kind: "success", text: `Link publico de ${place.name} copiado.` });
+      setFeedback({ kind: "success", text: `Link público de ${place.name} copiado.` });
     } catch {
-      setFeedback({ kind: "error", text: "Nao foi possivel copiar o link." });
+      setFeedback({ kind: "error", text: "Não foi possível copiar o link." });
     }
   };
   const shareAcademyContact = (message: string) => {
@@ -3117,7 +3143,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         setFeedback({
           kind: "info",
           text: fallbackRows.length
-            ? "Filtro aplicado com turmas disponiveis deste local."
+            ? "Filtro aplicado com turmas disponíveis deste local."
             : "Nenhuma turma com vaga para este perfil. Ajuste dia, periodo ou nivel.",
         });
         return;
@@ -3250,7 +3276,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     discoveryIntent === "classes"
       ? "Encontre uma turma compativel por local, dia, horario e nivel."
       : discoveryIntent === "directory"
-        ? "Locais proximos, seguindo ou gerenciados por voce. Use a ficha publica para ver detalhes."
+        ? "Locais próximos, seguindo ou gerenciados por você. Use a ficha publica para ver detalhes."
       : courtDiscoveryHasAvailability
         ? "Escolha diretamente uma quadra livre no horario pesquisado. Planos, aulas e outros dados ficam fora deste fluxo."
         : "Use cidade, data e hora para ver apenas quadras livres no horario desejado.";
@@ -3271,11 +3297,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       ) : null}
 
       {!isAdminRoute ? (
-        <section className="places-intent-panel" aria-label="Escolha o que voce quer encontrar">
+        <section className="places-intent-panel" aria-label="Escolha o que você quer encontrar">
           <div className="places-intent-copy">
             <span>Descoberta</span>
-            <h2>O que voce quer encontrar?</h2>
-            <p>Escolha a intencao e veja somente o caminho necessario.</p>
+            <h2>O que você quer encontrar?</h2>
+            <p>Escolha a intenção e veja somente o caminho necessario.</p>
           </div>
           <div className="places-intent-actions">
             <button
@@ -3291,7 +3317,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               onClick={() => selectDiscoveryIntent("places")}
             >
               <strong>Reservar quadra</strong>
-              <span>Horarios livres</span>
+              <span>Horários livres</span>
               {activeCourtsCount > 0 ? <small>{countLabel(activeCourtsCount, "quadra ativa", "quadras ativas")}</small> : null}
             </button>
             <button
@@ -3317,9 +3343,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       {!isAdminRoute && discoveryIntent === "overview" ? (
         <section className="places-start-state" aria-label="Como usar a busca de locais">
           <div>
-            <span>Comece pela intencao</span>
+            <span>Comece pela intenção</span>
             <strong>Escolha uma busca acima para ver somente o que importa.</strong>
-            <p>Quadra, aula, jogo e lista de locais ficam separados para nao misturar informacoes.</p>
+            <p>Quadra, aula, jogo e lista de locais ficam separados para não misturar informações.</p>
           </div>
           <button className="quiet" onClick={() => selectDiscoveryIntent("places")}>
             Buscar quadra agora
@@ -3384,7 +3410,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             <div>
               <span>Reservar quadra</span>
               <strong>Encontre quadras livres no horario</strong>
-              <small>Use cidade, data e hora para receber quadras disponiveis, sem misturar aulas ou planos.</small>
+              <small>Use cidade, data e hora para receber quadras disponíveis, sem misturar aulas ou planos.</small>
             </div>
             <b>{courtDiscoveryHasAvailability ? countLabel(courtDiscoveryAvailableRows.length, "quadra livre", "quadras livres") : "Busca por horario"}</b>
           </div>
@@ -3580,8 +3606,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </strong>
             <p>
               {discoveryIntent === "classes"
-                ? "Nao mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher."
-                : "Nao mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario."}
+                ? "Não mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher."
+                : "Não mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario."}
             </p>
           </div>
           <button className="quiet" onClick={() => (discoveryIntent === "classes" ? void runClassDiscoverySearch() : void runCourtDiscoverySearch())}>
@@ -3596,24 +3622,30 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </p>
       ) : null}
 
-      {loading ? <p className="subtle">Carregando...</p> : null}
+      {loading ? (
+        <ScreenState
+          kind="loading"
+          title="Buscando locais"
+          detail="Carregando quadras, aulas e jogos disponíveis para o seu contexto."
+        />
+      ) : null}
 
       {!loading && showGenericPlaceDirectory && directoryPlaces.length === 0 ? (
         <div className="empty-state">
           <span className="empty-emoji" aria-hidden>Local</span>
           <p>
             {isAdminRoute
-              ? "Voce nao tem acesso administrativo a este local."
+              ? "Você não tem acesso administrativo a este local."
               : tab === "following"
-              ? "Voce ainda nao segue nenhum local."
+              ? "Você ainda não segue nenhum local."
               : tab === "mine"
               ? canCreatePlaceAccess
-                ? "Voce ainda nao criou nenhum local."
-                : "Seu perfil atual nao tem plano de gestao para cadastrar local."
+                ? "Você ainda não criou nenhum local."
+                : "Seu perfil atual não tem plano de gestao para cadastrar local."
               : discoveryIntent === "directory"
               ? directoryFilterActive
                 ? "Nenhum local encontrado para este filtro."
-                : "Nenhum local publico encontrado."
+                : "Nenhum local público encontrado."
               : discoveryIntent === "classes"
               ? "Nenhuma academia com aulas ativas encontrada."
               : "Nenhum local com quadras ativas encontrado."}
@@ -3647,7 +3679,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             <div className="places-filter-head">
               <div>
                 <span>Busca rapida</span>
-                <strong>Mostre jogos que combinam com voce</strong>
+                <strong>Mostre jogos que combinam com você</strong>
                 <small>Use poucos filtros e entre direto na chamada quando fizer sentido.</small>
               </div>
               <b>{countLabel(visibleOpenMatches.length, "chamada encontrada", "chamadas encontradas")}</b>
@@ -3722,7 +3754,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <input
                     value={openMatchFilter.level}
                     onChange={(event) => updateOpenMatchFilter({ level: event.target.value })}
-                    placeholder="Ex.: intermediario"
+                    placeholder="Ex.: intermediário"
                   />
                 </label>
                 <label className="match-filter-query">
@@ -3753,7 +3785,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           </div>
           <div className="open-match-create-intro">
             <div>
-              <strong>Nao encontrou um jogo bom?</strong>
+              <strong>Não encontrou um jogo bom?</strong>
               <small>Crie uma chamada. A reserva da quadra continua no fluxo de quadras.</small>
             </div>
             <button type="button" className="primary" onClick={() => setShowOpenMatchCreate((prev) => !prev)}>
@@ -4033,6 +4065,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const activeCourts = courts.filter((court) => court.isActive);
         const bookings = bookingsByPlace[p.id] || [];
         const bookingWaitlist = bookingWaitlistByPlace[p.id] || [];
+        const tournamentCourtRequests = tournamentCourtRequestsByPlace[p.id] || [];
         const academyClasses = academyClassesByPlace[p.id] || [];
         const academyCoaches = academyCoachesByPlace[p.id] || [];
         const academySlots = academySlotsByPlace[p.id] || [];
@@ -4280,8 +4313,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const financeReceivableOriginLabel: Record<NonNullable<PlaceClientReceivable["origin"]>, string> = {
           academy: "Mensalidade de academia",
           booking: "Reserva de quadra",
-          lesson: "Aula avulsa/reposicao",
-          membership: "Plano de socio",
+          lesson: "Aula avulsa/reposição",
+          membership: "Plano de sócio",
           other: "Cobranca",
         };
         const enrichFinanceReceivable = (
@@ -4309,10 +4342,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               return enrichFinanceReceivable({
                 id: `membership:${membership.id}:${billingPeriod}`,
                 title: membership.memberName,
-                subtitle: plan?.name || "Plano de socio",
+                subtitle: plan?.name || "Plano de sócio",
                 amountCents: plan?.monthlyFeeCents || 0,
                 status: (payment?.status === "paid" ? "paid" : membership.status === "pending" ? "pending_approval" : "open") as PlaceClientReceivable["status"],
-                reminder: `${membership.memberName}, sua mensalidade de socio esta pendente.`,
+                reminder: `${membership.memberName}, sua mensalidade de sócio esta pendente.`,
                 targetType: "place_membership",
                 targetId: membership.id,
                 billingPeriod,
@@ -4362,10 +4395,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               return enrichFinanceReceivable({
                 id: `lesson:${request.id}:${billingPeriod}`,
                 title: request.playerName,
-                subtitle: [request.requestType === "drop_in" ? "Aula avulsa" : "Reposicao", academyClass?.title].filter(Boolean).join(" | "),
+                subtitle: [request.requestType === "drop_in" ? "Aula avulsa" : "Reposição", academyClass?.title].filter(Boolean).join(" | "),
                 amountCents: request.amountCents,
                 status: (payment?.status === "paid" || request.paymentStatus === "paid" ? "paid" : "open") as PlaceClientReceivable["status"],
-                reminder: `${request.playerName}, sua ${request.requestType === "drop_in" ? "aula avulsa" : "reposicao"} esta com pagamento pendente.`,
+                reminder: `${request.playerName}, sua ${request.requestType === "drop_in" ? "aula avulsa" : "reposição"} esta com pagamento pendente.`,
                 targetType: "academy_lesson_request",
                 targetId: request.id,
                 billingPeriod,
@@ -4383,10 +4416,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               return enrichFinanceReceivable({
                 id: `membership:${membership.id}:${payment.billingPeriod || ""}`,
                 title: membership.memberName,
-                subtitle: plan?.name || payment.description || "Plano de socio",
+                subtitle: plan?.name || payment.description || "Plano de sócio",
                 amountCents: payment.amountCents || plan?.monthlyFeeCents || 0,
                 status: payment.status === "paid" ? "paid" : "open",
-                reminder: `${membership.memberName}, sua mensalidade de socio esta pendente.`,
+                reminder: `${membership.memberName}, sua mensalidade de sócio esta pendente.`,
                 targetType: payment.targetType,
                 targetId: payment.targetId,
                 billingPeriod: payment.billingPeriod,
@@ -4432,10 +4465,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               return enrichFinanceReceivable({
                 id: `lesson:${request.id}:${payment.billingPeriod || request.requestedOn.slice(0, 7)}`,
                 title: request.playerName,
-                subtitle: [request.requestType === "drop_in" ? "Aula avulsa" : "Reposicao", academyClass?.title || payment.description].filter(Boolean).join(" | "),
+                subtitle: [request.requestType === "drop_in" ? "Aula avulsa" : "Reposição", academyClass?.title || payment.description].filter(Boolean).join(" | "),
                 amountCents: payment.amountCents || request.amountCents,
                 status: payment.status === "paid" ? "paid" : "open",
-                reminder: `${request.playerName}, sua ${request.requestType === "drop_in" ? "aula avulsa" : "reposicao"} esta com pagamento pendente.`,
+                reminder: `${request.playerName}, sua ${request.requestType === "drop_in" ? "aula avulsa" : "reposição"} esta com pagamento pendente.`,
                 targetType: payment.targetType,
                 targetId: payment.targetId,
                 billingPeriod: payment.billingPeriod || request.requestedOn.slice(0, 7),
@@ -4500,6 +4533,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           .reduce((sum, request) => sum + request.amountCents, 0);
         const lowStockProducts = posProducts.filter((product) => product.stockQuantity <= 3);
         const pendingBookings = bookings.filter((booking) => booking.status === "pending");
+        const pendingTournamentCourtRequests = tournamentCourtRequests.filter((request) => request.status === "pending");
         const todayBookings = bookings
           .filter((booking) => booking.status !== "cancelled" && dateInputValue(booking.startsAt) === todayDateInputValue())
           .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
@@ -4573,12 +4607,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           ...memberships.filter((membership) => membership.status === "pending").map((membership) => ({
             id: `membership-action:${membership.id}`,
             title: membership.memberName,
-            text: "Solicitacao de socio aguardando aprovacao",
+            text: "Solicitacao de sócio aguardando aprovacao",
           })),
           ...crmContacts.filter((contact) => contact.status === "lead").map((contact) => ({
             id: `crm-action:${contact.id}`,
             title: contact.name,
-            text: [contact.interest, contact.source].filter(Boolean).join(" | ") || "Lead sem proxima acao",
+            text: [contact.interest, contact.source].filter(Boolean).join(" | ") || "Lead sem próxima acao",
           })),
           ...academyEnrollments.filter((enrollment) => enrollment.status === "pending").map((enrollment) => ({
             id: `enrollment-action:${enrollment.id}`,
@@ -4637,7 +4671,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           {
             label: "Solicitacoes",
             value: pendingClientActions.length,
-            detail: "Socios, leads e alunos aguardando acao",
+            detail: "Sócios, leads e alunos aguardando acao",
           },
         ];
         const reportTopProduct = Array.from(
@@ -4656,7 +4690,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           {
             title: "Academia",
             value: reportAttendance.length,
-            detail: `${reportAttendanceRate}% de presenca, ${activeStudentCount} alunos ativos`,
+            detail: `${reportAttendanceRate}% de presença, ${activeStudentCount} alunos ativos`,
           },
           {
             title: "Financeiro",
@@ -4673,7 +4707,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 {
                   title: "Cantina",
                   value: formatMoneyFromCents(reportPosRevenueCents),
-                  detail: reportTopProduct ? `${reportTopProduct[0]} lidera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
+                  detail: reportTopProduct ? `${reportTopProduct[0]} lídera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
                 },
               ]
             : []),
@@ -4689,10 +4723,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           { label: "Turmas", value: operationalStats.academyClasses },
           { label: "Alunos ativos", value: activeStudentCount },
           { label: "Chamada no periodo", value: reportAttendance.length },
-          { label: "Presenca no periodo", value: `${reportAttendanceRate}%` },
+          { label: "Presença no periodo", value: `${reportAttendanceRate}%` },
           { label: "Interesses em aula", value: operationalStats.pendingEnrollments },
-          { label: "Socios ativos", value: operationalStats.activeMembers },
-          { label: "Solicitacoes de socio", value: operationalStats.pendingMemberships },
+          { label: "Sócios ativos", value: operationalStats.activeMembers },
+          { label: "Solicitacoes de sócio", value: operationalStats.pendingMemberships },
           { label: "Conversao CRM", value: `${crmConversionRate}%` },
           { label: "Leads no CRM", value: operationalStats.crmLeads },
           { label: "Reposicoes abertas", value: operationalStats.openMakeups },
@@ -4727,9 +4761,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             key: "profile",
             done: Boolean(p.name && p.city && p.state && p.description),
             title: "Dados do local",
-            detail: p.description ? "Descricao preenchida" : "Inclua horarios, contato e orientacoes para alunos.",
+            detail: p.description ? "Descricao preenchida" : "Inclua horários, contato e orientacoes para alunos.",
             module: "settings" as PlaceManagementModule,
-            viewSegment: "dados-publicos",
+            viewSegment: "dados-públicos",
           },
           {
             key: "courts",
@@ -4781,7 +4815,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 : "Crie um plano antes de divulgar mensalistas."
               : "Modulo desativado no plano.",
             module: "clients" as PlaceManagementModule,
-            viewSegment: "socios",
+            viewSegment: "sócios",
           },
           {
             key: "canteen",
@@ -4804,7 +4838,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           : managementModules[0] || "dashboard";
         const moduleCounts: Record<PlaceManagementModule, number> = {
           dashboard: operationalStats.pendingBookings + operationalStats.pendingEnrollments + operationalStats.pendingLessonRequests + operationalStats.pendingMemberships + openReceivables.length,
-          bookings: pendingBookings.length + waitingCourtEntries.length,
+          bookings: pendingBookings.length + waitingCourtEntries.length + pendingTournamentCourtRequests.length,
           academy: operationalStats.pendingEnrollments + operationalStats.pendingLessonRequests + operationalStats.openMakeups,
           clients: pendingClientActions.length,
           finance: openReceivables.length + expenses.filter((expense) => expense.status === "posted").length,
@@ -4910,12 +4944,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           .slice()
           .sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt))[0];
         const placePublicPrimaryLabel =
-          discoveryIntent === "classes" ? "Ver aulas" : discoveryIntent === "directory" ? "Ver local" : "Ver horarios";
+          discoveryIntent === "classes" ? "Ver aulas" : discoveryIntent === "directory" ? "Ver local" : "Ver horários";
         const placePublicPrimaryHint =
           discoveryIntent === "classes"
             ? "Turmas, professores e interesse em aula."
             : discoveryIntent === "directory"
-            ? "Pagina publica, estrutura, horarios e contatos."
+            ? "Pagina publica, estrutura, horários e contatos."
             : "Quadras, regras e pedido de reserva.";
         const discoveryFeatureLabels = isPublicDiscoveryCard
           ? discoveryIntent === "classes"
@@ -5042,7 +5076,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <details className="place-card-more">
                     <summary>Mais</summary>
                     <div>
-                      <small>Voce gerencia este local. A operacao fica separada em Gestao.</small>
+                      <small>Você gerencia este local. A operacao fica separada em Gestao.</small>
                       <button onClick={() => sharePlace(p)}>WhatsApp</button>
                       <button onClick={() => void copyPlaceLink(p)}>Copiar link</button>
                     </div>
@@ -5191,7 +5225,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </button>
                     ))}
                     {!bookings.some((booking) => booking.status === "pending") && !actionableLessonRequests.length && !openReceivables.length ? (
-                      <span>Nenhuma pendencia critica agora.</span>
+                      <span>Nenhuma pendência critica agora.</span>
                     ) : null}
                 </OperationalQueue>
               </div>
@@ -5267,11 +5301,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </div>
                   <div>
                     <strong>{operationalStats.activeMembers}</strong>
-                    <span>Socios ativos</span>
+                    <span>Sócios ativos</span>
                   </div>
                   <div>
                     <strong>{operationalStats.pendingMemberships}</strong>
-                    <span>Solicitacoes de socio</span>
+                    <span>Solicitacoes de sócio</span>
                   </div>
                   <div>
                     <strong>{operationalStats.crmLeads}</strong>
@@ -5351,7 +5385,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <WorkspaceRow
                           key={`team-invite:${member.email}:${member.role}`}
                           title={member.displayName || member.email || "Convite pendente"}
-                          detail={`${STAFF_ROLE_LABELS[member.role]} aguardando aceite. O local ainda nao aparece para esta pessoa.`}
+                          detail={`${STAFF_ROLE_LABELS[member.role]} aguardando aceite. O local ainda não aparece para esta pessoa.`}
                           actions={
                             <button className="danger" onClick={() => void onRemoveStaff(p, member)} disabled={busy}>
                               Cancelar convite
@@ -5372,7 +5406,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <WorkspaceGrid>
                       <WorkspaceCard title="Gerente" subtitle="Administra operacao, clientes, agenda, financeiro e configuracoes do local." />
                       <WorkspaceCard title="Recepcao" subtitle="Cuida de reservas, check-in, fila de espera e atendimento diario." />
-                      <WorkspaceCard title="Professor" subtitle="Acessa turmas, chamada, faltas, reposicoes e evolucao dos alunos." />
+                      <WorkspaceCard title="Professor" subtitle="Acessa turmas, chamada, faltas, reposicoes e evolução dos alunos." />
                       <WorkspaceCard title="Financeiro" subtitle="Acessa recebiveis, lembretes, baixas e despesas sem operar agenda, academia ou equipe." />
                       <WorkspaceCard title="Caixa/POS" subtitle="Acessa venda rapida, vendas do dia, estoque e produtos da cantina sem abrir gestao completa." />
                     </WorkspaceGrid>
@@ -5467,7 +5501,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </button>
                 </div>
                 <p className="subtle" style={{ margin: "6px 0 10px" }}>
-                  Convites pendentes nao liberam acesso. A pessoa recebe o convite na Home e so entra na gestao depois de aceitar.
+                  Convites pendentes não liberam acesso. A pessoa recebe o convite na Home e so entra na gestao depois de aceitar.
                 </p>
                 {staff.length ? (
                   <div className="place-staff-list">
@@ -5493,7 +5527,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <div className="place-role-guide">
                   <span><strong>Gerente</strong> administra operacao, clientes, agenda e financeiro.</span>
                   <span><strong>Recepcao</strong> cuida de reservas, check-in e rotina de atendimento.</span>
-                  <span><strong>Professor</strong> acessa turmas, chamada, faltas e evolucao de alunos.</span>
+                  <span><strong>Professor</strong> acessa turmas, chamada, faltas e evolução de alunos.</span>
                   <span><strong>Financeiro</strong> acessa recebiveis, lembretes, baixas e despesas sem virar gerente.</span>
                   <span><strong>Caixa/POS</strong> acessa venda rapida, vendas do dia e estoque da cantina.</span>
                 </div>
@@ -5502,7 +5536,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             {!isOwner && !canUseBookings && !canUseAcademy && !canUseMemberships ? (
               <div className="place-booking-panel place-player-note">
                 <strong>Local em modo acompanhamento</strong>
-                <span>Siga o local para receber novidades e chamadas de partida quando estiverem disponiveis.</span>
+                <span>Siga o local para receber novidades e chamadas de partida quando estiverem disponíveis.</span>
               </div>
             ) : null}
             {showManagementModule("settings") && showSettingsWorkspace ? (
@@ -5521,7 +5555,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           metrics={[
                             `${setupPercent}% concluido`,
                             PLACE_PRODUCT_PLAN_LABELS[p.productPlan],
-                            countLabel(setupChecklist.length - setupDoneCount, "pendencia", "pendencias"),
+                            countLabel(setupChecklist.length - setupDoneCount, "pendência", "pendências"),
                           ]}
                         />
                         <WorkspaceCard
@@ -5567,7 +5601,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <>
                       <WorkspaceGrid>
                         <WorkspaceCard
-                          title="Dados publicos"
+                          title="Dados públicos"
                           subtitle="Nome, cidade, UF e descricao aparecem para jogador"
                           value={p.description ? "OK" : "Pendente"}
                           metrics={[p.city || "Cidade pendente", p.state || "UF pendente", p.logoUrl ? "logo" : "sem logo"]}
@@ -5583,7 +5617,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <input
                           value={placeProfileDraft.name}
                           onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, name: event.target.value } }))}
-                          placeholder="Nome publico do local"
+                          placeholder="Nome público do local"
                         />
                         <input
                           value={placeProfileDraft.city}
@@ -5599,7 +5633,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <textarea
                           value={placeProfileDraft.description}
                           onChange={(event) => setPlaceProfileDraftByPlace((prev) => ({ ...prev, [p.id]: { ...placeProfileDraft, description: event.target.value } }))}
-                          placeholder="Descricao publica, horarios, contato e orientacoes"
+                          placeholder="Descricao publica, horários, contato e orientacoes"
                           rows={3}
                         />
                         <input
@@ -5613,10 +5647,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           onChange={(event) => setPlaceProfileLogoFileByPlace((prev) => ({ ...prev, [p.id]: event.target.files?.[0] || null }))}
                         />
                         <button type="button" onClick={() => void onSavePlaceProfile(p)} disabled={busy || !placeProfileDraft.name.trim()}>
-                          Salvar dados publicos
+                          Salvar dados públicos
                         </button>
                         <button type="button" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>
-                          Ver pagina publica
+                          Ver página publica
                         </button>
                       </div>
                     </>
@@ -5633,8 +5667,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         }
                       />
                       <WorkspaceRow
-                        title="Professores e horarios"
-                        detail={`${countLabel(academyCoaches.length, "professor", "professores")} · ${countLabel(academySlots.length, "horario aberto", "horarios abertos")}`}
+                        title="Professores e horários"
+                        detail={`${countLabel(academyCoaches.length, "professor", "professores")} · ${countLabel(academySlots.length, "horario aberto", "horários abertos")}`}
                         actions={
                           <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "configuracao"))} disabled={!managementModules.includes("academy")}>
                             Abrir configuracao
@@ -5665,7 +5699,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <WorkspaceList>
                       <WorkspaceRow
                         title="Regras de reserva"
-                        detail={`${countLabel(bookingRules.filter((rule) => rule.isActive).length, "regra ativa", "regras ativas")} · horarios, antecedencia, aprovacao e preco`}
+                        detail={`${countLabel(bookingRules.filter((rule) => rule.isActive).length, "regra ativa", "regras ativas")} · horários, antecedência, aprovacao e preco`}
                         actions={
                           <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "quadras"))} disabled={!managementModules.includes("bookings")}>
                             Editar regras
@@ -5673,8 +5707,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         }
                       />
                       <WorkspaceRow
-                        title="Ausencia avisada e reposicao"
-                        detail={`Regra atual: ${academySettings.makeupNoticeHours}h de antecedencia · ${academySettings.autoCreateMakeupCreditOnNotice ? "gera credito automatico" : "credito automatico desligado"}`}
+                        title="Ausencia avisada e reposição"
+                        detail={`Regra atual: ${academySettings.makeupNoticeHours}h de antecedência · ${academySettings.autoCreateMakeupCreditOnNotice ? "gera credito automatico" : "credito automatico desligado"}`}
                         actions={
                           <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "configuracao"))} disabled={!managementModules.includes("academy")}>
                             Editar academia
@@ -5711,7 +5745,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </div>
                       <WorkspaceGrid>
                         <WorkspaceCard title="Modulos do plano" subtitle="Superficies habilitadas para este local" value={enabledFeatures.length} metrics={enabledFeatures} />
-                        <WorkspaceCard title="Planos de socio" subtitle="Recorrencia e descontos" value={activeMembershipPlans.length}>
+                        <WorkspaceCard title="Planos de sócio" subtitle="Recorrencia e descontos" value={activeMembershipPlans.length}>
                           <WorkspaceList>
                             {activeMembershipPlans.map((plan) => (
                               <span key={`settings-plan-row:${plan.id}`}>
@@ -5735,8 +5769,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         </WorkspaceCard>
                       </WorkspaceGrid>
                       <div className="cluster">
-                        <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "clients", "socios"))} disabled={!managementModules.includes("clients")}>
-                          Editar planos de socio
+                        <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "clients", "sócios"))} disabled={!managementModules.includes("clients")}>
+                          Editar planos de sócio
                         </button>
                         <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "finance", "pacotes"))} disabled={!managementModules.includes("finance")}>
                           Editar pacotes
@@ -5759,12 +5793,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             countLabel(staff.filter((member) => member.role === "cashier").length, "caixa", "caixas"),
                           ]}
                         />
-                        <WorkspaceCard title="Convites pendentes" subtitle="Ainda nao liberam acesso" value={staff.filter((member) => member.status === "pending").length} />
+                        <WorkspaceCard title="Convites pendentes" subtitle="Ainda não liberam acesso" value={staff.filter((member) => member.status === "pending").length} />
                       </WorkspaceGrid>
                       <WorkspaceList>
                         <WorkspaceRow title="Convidar ou remover acesso" detail="Gestao de pessoas fica no modulo Equipe, com aceite explicito do usuario." actions={<button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "equipe"))}>Abrir equipe</button>} />
                         <WorkspaceRow title="Revisar papeis" detail="Use o menor papel suficiente para a rotina: gerente, recepcao, professor, financeiro ou caixa/POS." actions={<button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "papeis"))}>Ver papeis</button>} />
-                        <WorkspaceRow title="Convites sem aceite" detail="Convite pendente nao aparece como membro ativo e nao libera Management OS." actions={<button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "convites"))}>Ver convites</button>} />
+                        <WorkspaceRow title="Convites sem aceite" detail="Convite pendente não aparece como membro ativo e não libera Management OS." actions={<button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "convites"))}>Ver convites</button>} />
                       </WorkspaceList>
                     </>
                   ) : null}
@@ -5773,7 +5807,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       <WorkspaceGrid>
                         <WorkspaceCard
                           title="Pagina publica"
-                          subtitle="A pagina existe, mas deve estar pronta antes de divulgar"
+                          subtitle="A página existe, mas deve estar pronta antes de divulgar"
                           value={p.description && activeCourts.length ? "Pronta" : "Revisar"}
                           metrics={[
                             p.description ? "descricao OK" : "descricao pendente",
@@ -5784,7 +5818,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <WorkspaceCard title="Ofertas visiveis" subtitle="Reserva, aulas e planos que ajudam conversao" value={activeAcademyClasses.length + activeMembershipPlans.length} />
                       </WorkspaceGrid>
                       <WorkspaceList>
-                        <WorkspaceRow title="Dados publicos" detail={p.description ? "Descricao preenchida." : "Preencha descricao, horarios, contato e orientacoes."} actions={<button type="button" onClick={() => selectSettingsView(p.id, "public")}>Editar dados</button>} />
+                        <WorkspaceRow title="Dados públicos" detail={p.description ? "Descricao preenchida." : "Preencha descricao, horários, contato e orientacoes."} actions={<button type="button" onClick={() => selectSettingsView(p.id, "public")}>Editar dados</button>} />
                         <WorkspaceRow title="Reserva e aulas" detail={`${countLabel(activeCourts.length, "quadra", "quadras")} · ${countLabel(activeAcademyClasses.length, "turma", "turmas")}`} actions={<button type="button" onClick={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}>Ver como jogador</button>} />
                       </WorkspaceList>
                     </>
@@ -5830,8 +5864,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 </div>
                 <div className="place-role-guide">
                   <span><strong>Estrutura</strong> {countLabel(activeCourts.length, "quadra", "quadras")}, {countLabel(academyCoaches.length, "professor", "professores")}, {countLabel(activeAcademyClasses.length, "turma", "turmas")}.</span>
-                  <span><strong>Plano ativo</strong> {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} define quais modulos ficam disponiveis.</span>
-                  <span><strong>Proximo basico</strong> revisar horarios, precos, equipe e planos antes de divulgar o local.</span>
+                  <span><strong>Plano ativo</strong> {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} define quais modulos ficam disponíveis.</span>
+                  <span><strong>Proximo basico</strong> revisar horários, precos, equipe e planos antes de divulgar o local.</span>
                 </div>
               </div>
             ) : null}
@@ -5845,11 +5879,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <WorkspaceGrid>
                       <WorkspaceCard
                         title="Base de relacionamento"
-                        subtitle="Socios, leads e alunos em acompanhamento"
+                        subtitle="Sócios, leads e alunos em acompanhamento"
                         value={operationalStats.activeMembers}
                         metrics={[
                           countLabel(activeMembershipPlans.length, "plano ativo", "planos ativos"),
-                          `${countLabel(operationalStats.pendingMemberships, "solicitacao", "solicitacoes")} de socio`,
+                          `${countLabel(operationalStats.pendingMemberships, "solicitacao", "solicitacoes")} de sócio`,
                           countLabel(operationalStats.crmLeads, "lead aberto", "leads abertos"),
                         ]}
                       />
@@ -5878,7 +5912,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                   {clientsView === "members" ? (
                     <WorkspaceGrid>
-                      <WorkspaceCard title="Planos ativos" subtitle="Oferta de recorrencia para socios do local" value={activeMembershipPlans.length}>
+                      <WorkspaceCard title="Planos ativos" subtitle="Oferta de recorrencia para sócios do local" value={activeMembershipPlans.length}>
                         <WorkspaceList>
                           {activeMembershipPlans.slice(0, 4).map((plan) => (
                             <span key={`plan-summary:${plan.id}`}>
@@ -5889,7 +5923,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           {!activeMembershipPlans.length ? <span>Cadastre planos para vender recorrencia.</span> : null}
                         </WorkspaceList>
                       </WorkspaceCard>
-                      <WorkspaceCard title="Socios ativos" subtitle="Pagamentos e situacao do mes" value={operationalStats.activeMembers}>
+                      <WorkspaceCard title="Sócios ativos" subtitle="Pagamentos e situacao do mes" value={operationalStats.activeMembers}>
                         <WorkspaceList>
                           {memberships.filter((membership) => membership.status === "active").slice(0, 4).map((membership) => {
                             const paid = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())]?.status === "paid";
@@ -5900,7 +5934,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                               </span>
                             );
                           })}
-                          {!memberships.some((membership) => membership.status === "active") ? <span>Nenhum socio ativo ainda.</span> : null}
+                          {!memberships.some((membership) => membership.status === "active") ? <span>Nenhum sócio ativo ainda.</span> : null}
                         </WorkspaceList>
                       </WorkspaceCard>
                     </WorkspaceGrid>
@@ -5957,7 +5991,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <div className="place-module-summary">
                   <div>
                     <strong>{operationalStats.activeMembers}</strong>
-                    <span>Socios ativos</span>
+                    <span>Sócios ativos</span>
                   </div>
                   <div>
                     <strong>{operationalStats.pendingMemberships}</strong>
@@ -6154,7 +6188,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </div>
                   <div>
                     <strong>{operationalStats.pendingMemberships}</strong>
-                    <span>Socios pendentes</span>
+                    <span>Sócios pendentes</span>
                   </div>
                 </div>
                 </>
@@ -6171,7 +6205,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         Lembrar todos
                       </button>
                       <button onClick={() => void onCreatePaymentReminderBatch(openMembershipReceivables)} disabled={busy || !openMembershipReceivables.length}>
-                        Socios
+                        Sócios
                       </button>
                       <button onClick={() => void onCreatePaymentReminderBatch(openAcademyReceivables)} disabled={busy || !openAcademyReceivables.length}>
                         Academia
@@ -6187,7 +6221,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <div>
                           <strong>{membership.memberName}</strong>
                           <span>{plan.name} | {formatMoneyFromCents(plan.monthlyFeeCents)}</span>
-                          <small>Mensalidade de socio em aberto</small>
+                          <small>Mensalidade de sócio em aberto</small>
                         </div>
                         <span>
                           <button onClick={() => void onAdminMarkMembershipPaid(plan, membership)} disabled={busy}>
@@ -6199,7 +6233,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                 "place_membership",
                                 membership.id,
                                 currentBillingPeriod(),
-                                `${membership.memberName}, sua mensalidade de socio esta pendente.`
+                                `${membership.memberName}, sua mensalidade de sócio esta pendente.`
                               )
                             }
                             disabled={busy}
@@ -6300,7 +6334,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <div>
                       <strong>Mapa de ofertas</strong>
                       <small>
-                        Socio recorrente, turma mensal e aula avulsa podem ser vendidos agora. Credito com saldo fica bloqueado ate existir controle de saldo e consumo por aluno.
+                        Sócio recorrente, turma mensal e aula avulsa podem ser vendidos agora. Credito com saldo fica bloqueado ate existir controle de saldo e consumo por aluno.
                       </small>
                     </div>
                   </div>
@@ -6438,9 +6472,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onOpenReservations={() => selectBookingView(p.id, "reservations")}
                       onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
                       onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                      onReviewTournamentCourtRequest={(requestId, status) => void onReviewTournamentCourtRequest(p.id, requestId, status)}
                       onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                       onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
                       pendingBookings={pendingBookings}
+                      tournamentCourtRequests={tournamentCourtRequests}
                       waitingSinceLabel={waitingSinceLabel}
                       waitlistEntries={waitingCourtEntries}
                     />
@@ -6568,9 +6604,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   onOpenReservations={() => selectBookingView(p.id, "reservations")}
                   onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
                   onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                  onReviewTournamentCourtRequest={(requestId, status) => void onReviewTournamentCourtRequest(p.id, requestId, status)}
                   onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                   onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
                   pendingBookings={pendingBookings}
+                  tournamentCourtRequests={tournamentCourtRequests}
                   waitingSinceLabel={waitingSinceLabel}
                   waitlistEntries={waitingCourtEntries}
                 />
@@ -6666,7 +6704,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       ? {
                           today: "Suas aulas de hoje, chamada, faltas e observacoes rapidas.",
                           classes: "Sua grade semanal, ocupacao e alunos por turma.",
-                          students: "Alunos das suas turmas, presenca, faltas e evolucao.",
+                          students: "Alunos das suas turmas, presença, faltas e evolução.",
                         }
                       : undefined
                   }
@@ -6677,7 +6715,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   {coachWithoutAcademyProfile ? (
                     <WorkspaceEmptyState
                       title="Professor sem agenda vinculada"
-                      detail="Seu usuario esta na equipe como professor, mas ainda nao foi vinculado a um cadastro de professor da academia. Peça ao gestor para vincular seu login pelo email do professor."
+                      detail="Seu usuario esta na equipe como professor, mas ainda não foi vinculado a um cadastro de professor da academia. Peça ao gestor para vincular seu login pelo email do professor."
                     />
                   ) : null}
                   {isCoachMode && currentCoach ? (
@@ -6917,8 +6955,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         >
                           <header>
                             <div>
-                              <strong>Horarios abertos</strong>
-                              <span>{countLabel(academySlots.filter((slot) => slot.status === "open").length, "horario aberto", "horarios abertos")}</span>
+                              <strong>Horários abertos</strong>
+                              <span>{countLabel(academySlots.filter((slot) => slot.status === "open").length, "horario aberto", "horários abertos")}</span>
                             </div>
                           </header>
                           <small>Ver disponibilidade por data, professor ou quadra.</small>
@@ -6968,7 +7006,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </div>
                   <div>
                     <strong>{isCoachMode ? visibleAcademyClasses.length : operationalStats.pendingEnrollments}</strong>
-                    <span>{isCoachMode ? "Minhas turmas" : "Matriculas pendentes"}</span>
+                    <span>{isCoachMode ? "Minhas turmas" : "Matrículas pendentes"}</span>
                   </div>
                   <div>
                     <strong>{isCoachMode ? visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length : operationalStats.pendingLessonRequests}</strong>
@@ -7071,7 +7109,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           {myMembership?.status === "active" ? (() => {
                             const plan = membershipPlans.find((item) => item.id === myMembership.planId);
                             const memberPrice = plan ? Math.round((academyClass.monthlyFeeCents * (100 - plan.academyDiscountPercent)) / 100) : academyClass.monthlyFeeCents;
-                            return plan && plan.academyDiscountPercent > 0 ? ` | socio ${formatMoneyFromCents(memberPrice)}` : "";
+                            return plan && plan.academyDiscountPercent > 0 ? ` | sócio ${formatMoneyFromCents(memberPrice)}` : "";
                           })() : ""}
                           {canManageAcademy
                             ? ` | Hoje: ${countLabel(presentCount, "presente", "presentes")} | Reposicoes: ${classMakeups.length} | Ausencias avisadas: ${plannedAbsences.length}`
@@ -7146,7 +7184,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                               placeholder="Telefone"
                             />
                             <button onClick={() => void onCreateAcademyStudentByAdmin(p, academyClass)} disabled={busy || !studentDraft.name.trim()}>
-                              Matricular aluno
+                              Matrícular aluno
                             </button>
                           </div>
                         ) : null}
@@ -7163,7 +7201,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             <small key={enrollment.id} className="place-enrollment-chip">
                               {enrollment.playerName} ({enrollment.status})
                               {enrollmentPaid ? " Â· pago no mes" : ""}
-                              {latestProgress ? ` Â· evolucao: ${latestProgress.levelLabel || latestProgress.focus || "registrada"}` : ""}
+                              {latestProgress ? ` Â· evolução: ${latestProgress.levelLabel || latestProgress.focus || "registrada"}` : ""}
                               {todayEnrollmentAttendance ? (
                                 <> Â· {todayEnrollmentAttendance.status === "present" ? "check-in hoje" : "falta hoje"}</>
                               ) : null}
@@ -7241,16 +7279,16 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                         [enrollment.id]: { ...progressDraft, notes: event.target.value },
                                       }))
                                     }
-                                    placeholder="Evolucao"
+                                    placeholder="Evolução"
                                   />
                                   <button onClick={() => void onCreateProgressNote(p.id, enrollment.id)} disabled={busy || !progressDraft.notes.trim()}>
-                                    Registrar evolucao
+                                    Registrar evolução
                                   </button>
                                 </>
                               ) : null}
                               {classMakeups.filter((credit) => credit.enrollmentId === enrollment.id).map((credit) => (
                                 <button key={credit.id} onClick={() => void onUpdateMakeupCredit(p.id, credit.id, "used")} disabled={busy}>
-                                  Usar reposicao
+                                  Usar reposição
                                 </button>
                               ))}
                             </small>
@@ -7282,16 +7320,16 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                 </header>
                                 <div className="academy-player-metrics">
                                   <span><strong>{openMakeups.length}</strong> reposicoes</span>
-                                  <span><strong>{presentTotal}</strong> presencas</span>
+                                  <span><strong>{presentTotal}</strong> presenças</span>
                                   <span><strong>{absentTotal}</strong> faltas</span>
                                 </div>
                                 <small>
                                   {myProgress
-                                    ? `Evolucao: ${myProgress.levelLabel || myProgress.focus || myProgress.notes}`
-                                    : "Evolucao ainda nao registrada pelo professor."}
+                                    ? `Evolução: ${myProgress.levelLabel || myProgress.focus || myProgress.notes}`
+                                    : "Evolução ainda não registrada pelo professor."}
                                 </small>
                                 <small>
-                                  Colegas: {classmates.length ? classmates.join(", ") : "voce e o primeiro aluno ativo visivel"}
+                                  Colegas: {classmates.length ? classmates.join(", ") : "você e o primeiro aluno ativo visivel"}
                                 </small>
                                 <div className="academy-player-actions">
                                   <input
@@ -7387,12 +7425,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         profile={profile}
         eyebrow="Gestao do local"
         title={adminRoutePlace?.name || "Gestao do local"}
-        description="Workspace operacional do local. A pagina publica e a descoberta ficam fora desta tela."
+        description="Workspace operacional do local. A página publica e a descoberta ficam fora desta tela."
         actions={
           adminPlaceId ? (
             <>
               <button onClick={() => navigate("/gestao")}>Voltar para central</button>
-              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Ver pagina publica</button>
+              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Ver página publica</button>
             </>
           ) : null
         }
@@ -7408,5 +7446,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     </AppShell>
   );
 }
+
 
 

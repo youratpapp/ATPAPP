@@ -76,6 +76,8 @@ Logica basica:
 - Modulos sao controlados por `placeResourceAccess`, plano e papel.
 - `canManageBookings` libera confirmacao, cancelamento, bloqueio, regras e lista de espera.
 - `canManageFinance` libera precos e pagamentos.
+- Pedidos de uso de quadra por torneio entram na mesma responsabilidade de Agenda quando o solicitante nao administra o local.
+- Aprovacao de pedido de torneio cria bloqueios reais em `court_bookings.status = blocked`; recusa devolve o estado para revisao no Competition OS.
 
 ### Resumo do modulo Agenda
 

@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+﻿import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigured } from "./lib/supabase";
@@ -461,7 +461,7 @@ function AuthCallbackPage() {
 
       const code = readOAuthCode();
       if (!code) {
-        if (!cancelled) setMessage("Nao recebemos o codigo de autenticacao. Volte e tente entrar de novo.");
+        if (!cancelled) setMessage("Não recebemos o código de autenticacao. Volte e tente entrar de novo.");
         return;
       }
 
@@ -543,14 +543,14 @@ function NotFoundPage() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <h1>Página não encontrada</h1>
-        <p className="auth-sub">Não encontramos essa rota. Você pode voltar para os eventos.</p>
+        <h1>PÃ¡gina nÃ£o encontrada</h1>
+        <p className="auth-sub">NÃ£o encontramos essa rota. VocÃª pode voltar para os eventos.</p>
         <div className="auth-actions">
           <button className="primary" onClick={() => navigate("/eventos", { replace: true })}>
             Ir para eventos
           </button>
           <button className="secondary" onClick={() => navigate("/inicio", { replace: true })}>
-            Ir para início
+            Ir para inÃ­cio
           </button>
         </div>
       </section>
@@ -633,4 +633,5 @@ export default function App() {
     </HashRouter>
   );
 }
+
 

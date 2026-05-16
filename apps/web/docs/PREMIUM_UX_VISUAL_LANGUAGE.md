@@ -384,6 +384,39 @@ Erro precisa dizer:
 - impacto;
 - o que o usuario pode fazer.
 
+## Qualidade de texto e acabamento percebido
+
+Fonte: `PLAYER_POLISH_QA_2026_05_16.md`.
+
+Regra:
+
+- texto visivel para usuario deve estar em portugues natural, com acentos e cedilhas;
+- nomes tecnicos, ids, rotas e chaves internas podem continuar sem acento;
+- microcopy nao deve expor implementacao, roadmap interno ou linguagem de desenvolvimento;
+- labels longos nao devem ficar em caixa alta;
+- abreviacoes so entram quando forem universais ou acompanhadas de contexto.
+
+Exemplos:
+
+- `Inscricoes` na UI vira `Inscrições`;
+- `Nao posso jogar` vira `Não posso jogar`;
+- `Classificacao` vira `Classificação`;
+- `Preferencias salvas para futura engine...` nao deve aparecer para usuario final.
+
+Estados sem dado:
+
+- nao renderizar retangulo vazio onde deveria haver imagem;
+- usar icone/fallback visual pequeno e consistente;
+- empty state grande so existe quando guia uma acao;
+- `Carregando...` cru nao deve ser estado principal de uma tela.
+
+Hierarquia de acoes:
+
+- botao verde preenchido e reservado para acao primaria;
+- seguir, copiar, ver detalhes e acoes opcionais usam outline/ghost;
+- acao destrutiva deve ser separada visualmente e confirmada;
+- mobile deve respeitar area minima de toque de 44px.
+
 ## Tela por tela
 
 ### Gestao

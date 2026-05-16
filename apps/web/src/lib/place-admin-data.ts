@@ -17,6 +17,7 @@ import {
   listPlaceBookingRules,
   listPlaceBookings,
   listPlaceBookingWaitlist,
+  listPlaceTournamentCourtUsageRequests,
   listPlaceCoaches,
   listPlaceCourts,
   listPlaceCreditPackages,
@@ -63,6 +64,7 @@ import type {
   PlacePosProduct,
   PlacePosSale,
   PlaceStaffMember,
+  TournamentCourtUsageRequest,
 } from "./types";
 
 export type PlacesTabKey = "all" | "following" | "mine";
@@ -94,6 +96,7 @@ export type PlaceAdminResourceEntry = {
   posProducts: PlacePosProduct[];
   posSales: PlacePosSale[];
   staff: PlaceStaffMember[];
+  tournamentCourtRequests: TournamentCourtUsageRequest[];
 };
 
 export type PlaceAdminResourceMaps = {
@@ -122,6 +125,7 @@ export type PlaceAdminResourceMaps = {
   posProductsByPlace: Record<string, PlacePosProduct[]>;
   posSalesByPlace: Record<string, PlacePosSale[]>;
   staffByPlace: Record<string, PlaceStaffMember[]>;
+  tournamentCourtRequestsByPlace: Record<string, TournamentCourtUsageRequest[]>;
 };
 
 export type PlacesWorkspaceData = {
@@ -178,6 +182,7 @@ export function entriesToPlaceAdminResourceMaps(entries: PlaceAdminResourceEntry
     posProductsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.posProducts])),
     posSalesByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.posSales])),
     staffByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.staff])),
+    tournamentCourtRequestsByPlace: Object.fromEntries(entries.map((entry) => [entry.placeId, entry.tournamentCourtRequests])),
   };
 }
 
@@ -226,6 +231,7 @@ function emptyPlaceAdminResourceEntry(placeId: string): PlaceAdminResourceEntry 
     posProducts: [],
     posSales: [],
     staff: [],
+    tournamentCourtRequests: [],
   };
 }
 
@@ -270,6 +276,7 @@ export async function fetchPlaceAdminResources(input: {
     expenses,
     bookings,
     bookingWaitlist,
+    tournamentCourtRequests,
     academyClasses,
     academyCoaches,
     academySlots,
@@ -295,6 +302,7 @@ export async function fetchPlaceAdminResources(input: {
     access.canManageFinance ? listPlaceExpenses(input.placeId).catch(() => [] as PlaceExpense[]) : Promise.resolve([] as PlaceExpense[]),
     access.canUseBookings ? listPlaceBookings(input.placeId).catch(() => [] as CourtBooking[]) : Promise.resolve([] as CourtBooking[]),
     access.canUseBookings ? listPlaceBookingWaitlist(input.placeId).catch(() => [] as CourtBookingWaitlistEntry[]) : Promise.resolve([] as CourtBookingWaitlistEntry[]),
+    access.canManageBookings ? listPlaceTournamentCourtUsageRequests(input.placeId).catch(() => [] as TournamentCourtUsageRequest[]) : Promise.resolve([] as TournamentCourtUsageRequest[]),
     access.canUseAcademy ? listPlaceAcademyClasses(input.placeId).catch(() => [] as AcademyClass[]) : Promise.resolve([] as AcademyClass[]),
     access.canUseAcademy ? listPlaceCoaches(input.placeId).catch(() => [] as AcademyCoach[]) : Promise.resolve([] as AcademyCoach[]),
     access.canManageAcademy ? listPlaceAcademySlots(input.placeId).catch(() => [] as AcademySlot[]) : Promise.resolve([] as AcademySlot[]),
@@ -334,6 +342,7 @@ export async function fetchPlaceAdminResources(input: {
     posProducts,
     posSales,
     staff,
+    tournamentCourtRequests,
   };
 }
 

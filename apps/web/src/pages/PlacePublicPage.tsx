@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
@@ -269,7 +269,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     async function load() {
       const id = String(placeId || "").trim();
       if (!id) {
-        setError("Local nao encontrado.");
+        setError("Local não encontrado.");
         setLoading(false);
         return;
       }
@@ -287,7 +287,7 @@ export function PlacePublicPage({ user, profile }: Props) {
         if (!loadedPlace) {
           if (!cancelled) {
             setPlace(null);
-            setError("Local nao encontrado.");
+            setError("Local não encontrado.");
           }
           return;
         }
@@ -448,7 +448,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     : pageIntent === "booking" && hasBookableOffer
       ? cheapestCourt
         ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
-        : "Quadras disponiveis para reserva"
+        : "Quadras disponíveis para reserva"
     : pageIntent === "matches" && hasOpenMatches
       ? countLabel(matches.length, "jogo aberto", "jogos abertos")
     : pageIntent === "plans" && hasMembershipOffer
@@ -456,7 +456,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     : hasBookableOffer
       ? cheapestCourt
         ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
-        : "Quadras disponiveis para reserva"
+        : "Quadras disponíveis para reserva"
     : hasAcademyOffer
       ? cheapestClass
         ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
@@ -467,7 +467,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     hasAcademyOffer ? countLabel(activeClasses.length, "turma", "turmas") : "",
     hasOpenMatches ? countLabel(matches.length, "jogo aberto", "jogos abertos") : "",
     hasMembershipOffer ? countLabel(activePlans.length, "plano", "planos") : "",
-  ].filter(Boolean).join(" | ") || "Informacoes publicas do local";
+  ].filter(Boolean).join(" | ") || "Informações publicas do local";
   const primaryCta =
     pageIntent === "academy" && hasAcademyOffer
       ? { label: "Entrar em aula", intent: "academy" as PublicPlaceActionIntent }
@@ -636,7 +636,7 @@ export function PlacePublicPage({ user, profile }: Props) {
 
   const copyLink = async () => {
     await navigator.clipboard.writeText(publicLink);
-    setChannelFeedback("Link publico copiado.");
+    setChannelFeedback("Link público copiado.");
   };
 
   const copyWidget = async () => {
@@ -745,7 +745,7 @@ export function PlacePublicPage({ user, profile }: Props) {
       setBookingDraft((prev) => ({ ...prev, startsAt, endsAt: defaultBookingEnd(startsAt), notes: "" }));
       setAvailableCourts([]);
     } catch (err) {
-      setBookingFeedback(err instanceof Error ? err.message : "Nao foi possivel solicitar a reserva.");
+      setBookingFeedback(err instanceof Error ? err.message : "Não foi possível solicitar a reserva.");
     } finally {
       setBookingBusy(false);
     }
@@ -766,11 +766,11 @@ export function PlacePublicPage({ user, profile }: Props) {
         endsAt: new Date(bookingDraft.endsAt).toISOString(),
         playerName: bookingProfileName,
         phone: bookingProfilePhone,
-        notes: bookingDraft.notes || "Entrada criada pela pagina publica do local.",
+        notes: bookingDraft.notes || "Entrada criada pela página publica do local.",
       });
-      setBookingFeedback("Voce entrou na lista de espera. O local pode avisar se liberar horario.");
+      setBookingFeedback("Você entrou na lista de espera. O local pode avisar se liberar horario.");
     } catch (err) {
-      setBookingFeedback(err instanceof Error ? err.message : "Nao foi possivel entrar na lista de espera.");
+      setBookingFeedback(err instanceof Error ? err.message : "Não foi possível entrar na lista de espera.");
     } finally {
       setWaitlistBusy(false);
     }
@@ -798,13 +798,13 @@ export function PlacePublicPage({ user, profile }: Props) {
       );
       setAcademyFeedback(
         academyDraft.classIds.length > 1
-          ? "Interesse enviado para os dias escolhidos. O local pode aprovar sua matricula pela Academia."
-          : "Interesse enviado. O local pode aprovar sua matricula pela Academia."
+          ? "Interesse enviado para os dias escolhidos. O local pode aprovar sua matrícula pela Academia."
+          : "Interesse enviado. O local pode aprovar sua matrícula pela Academia."
       );
       setAcademyDraft((prev) => ({ ...prev, notes: "" }));
     } catch (err) {
       console.error("Failed to request academy enrollment", err);
-      setAcademyFeedback("Nao foi possivel enviar seu interesse agora. Confira seus dados e tente novamente.");
+      setAcademyFeedback("Não foi possível enviar seu interesse agora. Confira seus dados e tente novamente.");
     } finally {
       setAcademyBusy(false);
     }
@@ -817,9 +817,9 @@ export function PlacePublicPage({ user, profile }: Props) {
       await joinOpenMatch(user, match, profile?.displayName || user.email || "Jogador", profile?.phone || "");
       const updatedMatches = await listOpenMatches(user, [match.placeId || String(placeId || "")]).catch(() => [] as OpenMatch[]);
       setMatches(updatedMatches.filter((item) => item.status === "open"));
-      setMatchFeedback("Voce entrou no jogo aberto.");
+      setMatchFeedback("Você entrou no jogo aberto.");
     } catch (err) {
-      setMatchFeedback(err instanceof Error ? err.message : "Nao foi possivel entrar no jogo.");
+      setMatchFeedback(err instanceof Error ? err.message : "Não foi possível entrar no jogo.");
     } finally {
       setMatchBusyId("");
     }
@@ -831,7 +831,7 @@ export function PlacePublicPage({ user, profile }: Props) {
         <div className="place-public-topbar">
           <button className="quiet" onClick={() => navigate("/locais")}>Voltar</button>
           <div>
-            <span>Local publico</span>
+            <span>Local público</span>
             <strong>{place?.name || "Local"}</strong>
           </div>
           {place ? <button className="quiet" onClick={sharePlace}>Compartilhar</button> : null}
@@ -954,7 +954,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                         </select>
                       </label>
                       <button className="secondary" onClick={() => void loadDayAvailability()} disabled={availabilityBusy || !activeCourts.length}>
-                        {availabilityBusy ? "Buscando..." : "Atualizar horarios"}
+                        {availabilityBusy ? "Buscando..." : "Atualizar horários"}
                       </button>
                     </div>
                   </section>
@@ -971,7 +971,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                     {!activeCourts.length ? (
                       <div className="place-public-booking-empty">
                         <strong>Nenhuma quadra publicada.</strong>
-                        <span>Este local ainda nao disponibilizou reserva publica.</span>
+                        <span>Este local ainda não disponibilizou reserva publica.</span>
                       </div>
                     ) : null}
 
@@ -1025,7 +1025,7 @@ export function PlacePublicPage({ user, profile }: Props) {
 
                     {!availabilityBusy && !availabilityLoaded && activeCourts.length ? (
                       <div className="place-public-booking-empty compact">
-                        <span>Busque o dia para ver somente os horarios livres.</span>
+                        <span>Busque o dia para ver somente os horários livres.</span>
                       </div>
                     ) : null}
 
@@ -1113,7 +1113,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                         .filter(Boolean)
                         .join(" | ")}
                     </small>
-                    <small>Escolha abaixo os dias/turmas para a academia confirmar sua matricula.</small>
+                    <small>Escolha abaixo os dias/turmas para a academia confirmar sua matrícula.</small>
                   </div>
                 ) : null}
                 <div className="place-public-class-flow">
@@ -1227,8 +1227,8 @@ export function PlacePublicPage({ user, profile }: Props) {
                       )
                     ) : (
                       <div className="place-public-booking-empty">
-                        <strong>Turmas ainda nao publicadas</strong>
-                        <p>Este local ainda nao abriu turmas publicas para novos alunos.</p>
+                        <strong>Turmas ainda não publicadas</strong>
+                        <p>Este local ainda não abriu turmas publicas para novos alunos.</p>
                       </div>
                     )}
                   </section>
@@ -1260,7 +1260,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                             .filter(Boolean)
                             .join(" | ")}
                         </small>
-                        <small>Ao aprovar, a academia ativa sua matricula vinculada ao seu perfil e ela aparece em Minhas aulas.</small>
+                        <small>Ao aprovar, a academia ativa sua matrícula vinculada ao seu perfil e ela aparece em Minhas aulas.</small>
                       </div>
                     ) : (
                       <p className="subtle">Selecione uma turma acima para enviar seu interesse.</p>
@@ -1389,16 +1389,16 @@ export function PlacePublicPage({ user, profile }: Props) {
                     <em>Escolher plano e ver aulas</em>
                   </button>
                 ))}
-                {!activePlans.length ? <p className="subtle">Planos ainda nao publicados.</p> : null}
-                <p className="subtle">Os planos atuais informam mensalidade e descontos. A quantidade de aulas por semana ainda depende da configuracao da matricula pela academia.</p>
+                {!activePlans.length ? <p className="subtle">Planos ainda não publicados.</p> : null}
+                <p className="subtle">Os planos atuais informam mensalidade e descontos. A quantidade de aulas por semana ainda depende da configuracao da matrícula pela academia.</p>
               </article>
               ) : null}
 
               {!showBookingSection && !showAcademySection && !showMatchesSection && !showPlansSection ? (
                 <article className="place-public-empty-offer">
                   <span>Local</span>
-                  <h3>Informacoes em preparacao</h3>
-                  <p className="subtle">Este local ainda nao publicou reservas, aulas ou jogos abertos. Compartilhe o link ou volte para descobrir outros locais.</p>
+                  <h3>Informações em preparacao</h3>
+                  <p className="subtle">Este local ainda não públicou reservas, aulas ou jogos abertos. Compartilhe o link ou volte para descobrir outros locais.</p>
                   <ActionBar label="Acoes do local">
                     <button className="primary" onClick={() => navigate("/locais")}>Ver outros locais</button>
                     <button className="secondary" onClick={sharePlace}>Compartilhar</button>
@@ -1407,7 +1407,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               ) : null}
             </section>
 
-            <section className="place-public-secondary-info" aria-label="Informacoes adicionais do local">
+            <section className="place-public-secondary-info" aria-label="Informações adicionais do local">
               {!isFocusedIntent && activeCourts.length ? (
                 <details>
                   <summary>Quadras e valores</summary>
@@ -1415,7 +1415,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                     <button key={court.id} type="button" className="place-public-row place-public-row-action" onClick={() => openBookingForCourt(court)}>
                       <strong>{court.name}</strong>
                       <small>{[court.surface, court.bookingFeeCents ? formatMoneyFromCents(court.bookingFeeCents) : "valor a combinar"].filter(Boolean).join(" | ")}</small>
-                      <em>Ver horarios desta quadra</em>
+                      <em>Ver horários desta quadra</em>
                     </button>
                   ))}
                 </details>
@@ -1455,3 +1455,4 @@ export function PlacePublicPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

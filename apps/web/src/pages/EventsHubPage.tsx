@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
+import { ScreenState } from "../components/ScreenState";
 import { loadMyLeagues } from "../lib/leagues";
 import type { LeagueSummary, Profile, TournamentSummary } from "../lib/types";
 import { buildTournamentUrl, loadDashboardData } from "../lib/tournaments";
@@ -53,8 +54,8 @@ function SearchIcon() {
 }
 
 function statusLabel(status: TournamentSummary["status"] | LeagueSummary["status"]): string {
-  if (status === "registration_open") return "Inscricoes abertas";
-  if (status === "registration_closed") return "Inscricoes encerradas";
+  if (status === "registration_open") return "Inscrições abertas";
+  if (status === "registration_closed") return "Inscrições encerradas";
   if (status === "live") return "Em andamento";
   if (status === "finished") return "Finalizada";
   if (status === "active") return "Ativa";
@@ -76,15 +77,15 @@ function tournamentOperationInfo(tournament: TournamentSummary): { action: strin
   if (tournament.status === "draft") {
     return {
       action: "Finalizar setup",
-      detail: "Configure dados, classes e publicacao antes de abrir inscricoes.",
+      detail: "Configure dados, classes e publicacao antes de abrir inscrições.",
       targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
       tone: "urgent",
     };
   }
   if (tournament.status === "registration_open") {
     return {
-      action: "Ver inscricoes",
-      detail: tournament.registrationCloseAt ? `Inscricoes ate ${new Date(tournament.registrationCloseAt).toLocaleDateString("pt-BR")}.` : "Aprove inscritos e acompanhe a lista.",
+      action: "Ver inscrições",
+      detail: tournament.registrationCloseAt ? `Inscrições ate ${new Date(tournament.registrationCloseAt).toLocaleDateString("pt-BR")}.` : "Aprove inscritos e acompanhe a lista.",
       targetPath: `/eventos/${encodeURIComponent(tournament.id)}/jogadores`,
       tone: "urgent",
     };
@@ -92,7 +93,7 @@ function tournamentOperationInfo(tournament: TournamentSummary): { action: strin
   if (tournament.status === "registration_closed") {
     return {
       action: "Preparar jogos",
-      detail: "Inscricoes encerradas. Revise classes, sorteio e primeira rodada.",
+      detail: "Inscrições encerradas. Revise classes, sorteio e primeira rodada.",
       targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
       tone: "urgent",
     };
@@ -100,14 +101,14 @@ function tournamentOperationInfo(tournament: TournamentSummary): { action: strin
   if (tournament.status === "live") {
     return {
       action: "Operar jogos",
-      detail: "Resultados, confirmacoes e andamento ficam na fila de jogos.",
+      detail: "Resultados, confirmações e andamento ficam na fila de jogos.",
       targetPath: `/eventos/${encodeURIComponent(tournament.id)}/jogos`,
       tone: "urgent",
     };
   }
   return {
     action: "Ver resumo",
-    detail: "Competicao encerrada. Consulte classificacao, historico e mensagens.",
+    detail: "Competicao encerrada. Consulte classificação, histórico e mensagens.",
     targetPath: `/eventos/${encodeURIComponent(tournament.id)}/classificacao`,
     tone: "neutral",
   };
@@ -139,7 +140,7 @@ function leagueOperationInfo(league: LeagueSummary): { action: string; detail: s
     };
   }
   return {
-    action: "Ver historico",
+    action: "Ver histórico",
     detail: "Liga encerrada. Consulte ranking e partidas finalizadas.",
     targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
     tone: "neutral",
@@ -293,7 +294,7 @@ export function EventsHubPage({ user, profile }: Props) {
       })
       .catch((err: unknown) => {
         if (!alive) return;
-        setError(err instanceof Error ? err.message : "Falha ao carregar competicoes.");
+        setError(err instanceof Error ? err.message : "Falha ao carregar competições.");
       })
       .finally(() => {
         if (alive) setLoading(false);
@@ -356,19 +357,25 @@ export function EventsHubPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className="page-header">
         <div>
-          <h1>Competicoes</h1>
+          <h1>Competições</h1>
           <p className="page-intro">Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.</p>
         </div>
       </div>
 
-      {loading ? <p className="subtle">Carregando...</p> : null}
+      {loading ? (
+        <ScreenState
+          kind="loading"
+          title="Carregando competições"
+          detail="Organizando torneios, ligas e convites pelo seu papel."
+        />
+      ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
 
       {!loading && !error ? (
-        <section className="competition-intent-strip" aria-label="Modo de competicoes">
+        <section className="competition-intent-strip" aria-label="Modo de competições">
           <IntentPill
             label="Jogando"
-            detail="partidas e inscricoes"
+            detail="partidas e inscrições"
             count={playerCount}
             active={activeMode === "playing"}
             onSelect={() => selectMode("playing")}
@@ -456,10 +463,10 @@ export function EventsHubPage({ user, profile }: Props) {
               <strong>{hasOrganizerContext ? "Nenhuma operacao ativa agora" : "Comece pelo tipo de competicao"}</strong>
               <span>
                 {hasOrganizerContext
-                  ? "Seus eventos estao sem pendencias visiveis. Abra a lista para publicar, ajustar inscricoes ou criar o proximo evento."
+                  ? "Seus eventos estao sem pendências visiveis. Abra a lista para publicar, ajustar inscrições ou criar o próximo evento."
                   : "Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro de cada fluxo."}
               </span>
-              <ActionBar className="home-empty-actions" label="Acoes de organizador em competicoes">
+              <ActionBar className="home-empty-actions" label="Acoes de organizador em competições">
                 <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
                   Torneios
                 </button>
@@ -474,7 +481,7 @@ export function EventsHubPage({ user, profile }: Props) {
 
       {activeMode === "playing" ? (
         <section id="competitions-playing" className="section-card flow-card primary-flow">
-          <FlowHeader title="Jogando" detail="Acompanhe jogos, classificacao, mensagens e inscricoes em que voce participa." />
+          <FlowHeader title="Jogando" detail="Acompanhe jogos, classificação, mensagens e inscrições em que você participa." />
           <div className="quick-grid">
             <button className="quick-action" onClick={() => navigate("/eventos/torneios?view=participating")}>
               <span className="qa-icon">
@@ -512,7 +519,7 @@ export function EventsHubPage({ user, profile }: Props) {
           {totalActivePlayingCount > activePlayerCount ? (
             <div className="competition-list-note">
               <span>
-                Mostrando {activePlayerCount} de {totalActivePlayingCount} competicoes ativas.
+                Mostrando {activePlayerCount} de {totalActivePlayingCount} competições ativas.
               </span>
               <button type="button" onClick={() => navigate("/eventos/torneios?view=participating")}>
                 Ver todos
@@ -522,8 +529,8 @@ export function EventsHubPage({ user, profile }: Props) {
           {activePlayerCount === 0 ? (
             <div className="home-empty-panel">
               <strong>Nada ativo como jogador</strong>
-              <span>Entre em um torneio por convite ou acompanhe ligas em que voce participar.</span>
-              <ActionBar className="home-empty-actions" label="Acoes de jogador em competicoes">
+              <span>Entre em um torneio por convite ou acompanhe ligas em que você participar.</span>
+              <ActionBar className="home-empty-actions" label="Acoes de jogador em competições">
                 <button type="button" onClick={() => navigate("/eventos/torneios?view=participating")}>
                   Meus torneios
                 </button>
@@ -538,18 +545,18 @@ export function EventsHubPage({ user, profile }: Props) {
 
       {activeMode === "discover" ? (
         <section id="competitions-discover" className="section-card flow-card competition-discovery">
-          <FlowHeader title="Descobrir" detail="Entrada leve para encontrar competicoes e locais, sem fila administrativa." />
+          <FlowHeader title="Descobrir" detail="Entrada leve para encontrar competições e locais, sem fila administrativa." />
           <div className="competition-discovery-grid">
             <DiscoveryAction
               icon={<TrophyIcon />}
               title="Torneios"
-              detail="Veja torneios em que voce joga ou entre por codigo."
+              detail="Veja torneios em que você joga ou entre por código."
               onOpen={() => navigate("/eventos/torneios?view=participating")}
             />
             <DiscoveryAction
               icon={<LeagueIcon />}
               title="Ligas"
-              detail="Acesse ligas em que voce participa."
+              detail="Acesse ligas em que você participa."
               onOpen={() => navigate("/eventos/ligas?view=participating")}
             />
             <DiscoveryAction
@@ -572,3 +579,4 @@ export function EventsHubPage({ user, profile }: Props) {
     </AppShell>
   );
 }
+

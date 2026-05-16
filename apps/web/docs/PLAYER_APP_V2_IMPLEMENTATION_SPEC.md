@@ -88,6 +88,13 @@ Proximo estado desejado:
 - Em mobile, essa agenda deve usar carrossel/seletor por quadra, com horas cheias em linhas acionaveis.
 - O jogador escolhe o slot visualmente e so depois confirma.
 
+Status 2026-05-16:
+
+- `/locais/:placeId?intent=booking` ja usa fluxo visual por local: dia, duracao, carrossel de quadras, slots hora a hora e confirmacao vinculada ao perfil;
+- duracoes publicas ficam em horas cheias (`1h` e `2h`);
+- quando o usuario escolhe `2h`, o intervalo completo aparece destacado para reduzir duvida sobre bloqueio de duas horas;
+- o backend existente (`app_search_available_courts` e `app_create_court_booking`) segue como fonte de disponibilidade e criacao da reserva.
+
 Nao pode aparecer:
 
 - recebiveis de outros usuarios;
@@ -505,6 +512,18 @@ Status 2026-05-15:
 - a aba `Preferencias` concentra notificacoes/lembretes;
 - a aba `Conta` concentra suporte, Instagram, privacidade, exclusao e logout;
 - usuarios que tambem organizam competicoes recebem atalho em `Conta > Area profissional`, sem transformar o perfil de jogador em cockpit.
+
+### QA Polish 2026-05-16
+
+Fonte: `PLAYER_POLISH_QA_2026_05_16.md`.
+
+Regras adicionais para a proxima rodada:
+
+- `Preferencias` nao pode expor texto de desenvolvimento, roadmap ou engine interna;
+- labels de configuracao devem usar capitalizacao normal e ficar proximos ao controle;
+- `Historico`, `Preferencias`, `Estatisticas`, `Vitorias`, `Aproveitamento` e textos equivalentes devem aparecer com portugues correto na UI;
+- a aba `Conta` deve isolar `Excluir minha conta` como acao destrutiva, com aviso e confirmacao;
+- itens sem foto ou avatar precisam de fallback visual pequeno, nao retangulo vazio.
 
 ## QA Player App
 

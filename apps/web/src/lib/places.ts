@@ -35,6 +35,7 @@ import type {
   PlaceStaffCandidate,
   PlaceStaffInvite,
   PlaceStaffMember,
+  TournamentCourtUsageRequest,
 } from "./types";
 
 const TABLE_PLACES = "places";
@@ -366,6 +367,22 @@ type BookingWaitlistRow = {
   status: "waiting" | "invited" | "cancelled" | "booked";
   notes: string | null;
   created_at: string | null;
+};
+
+type TournamentCourtUsageRequestRow = {
+  id: string;
+  place_id: string;
+  tournament_id: string;
+  requested_by: string | null;
+  reviewed_by: string | null;
+  status: "pending" | "approved" | "rejected" | "cancelled" | string;
+  tournament_name: string | null;
+  place_name: string | null;
+  summary: string | null;
+  payload: Record<string, unknown> | null;
+  created_at: string | null;
+  updated_at: string | null;
+  reviewed_at: string | null;
 };
 
 type AcademyClassRow = {
@@ -893,6 +910,28 @@ function rowToBookingWaitlist(row: BookingWaitlistRow, courtName = "", placeName
     status: row.status,
     notes: row.notes || "",
     createdAt: row.created_at || "",
+  };
+}
+
+function normalizeTournamentCourtUsageStatus(status: string): TournamentCourtUsageRequest["status"] {
+  return status === "approved" || status === "rejected" || status === "cancelled" ? status : "pending";
+}
+
+function rowToTournamentCourtUsageRequest(row: TournamentCourtUsageRequestRow): TournamentCourtUsageRequest {
+  return {
+    id: row.id,
+    placeId: row.place_id,
+    tournamentId: row.tournament_id,
+    requestedBy: row.requested_by || "",
+    reviewedBy: row.reviewed_by || "",
+    status: normalizeTournamentCourtUsageStatus(row.status),
+    tournamentName: row.tournament_name || "Torneio",
+    placeName: row.place_name || "",
+    summary: row.summary || "",
+    payload: row.payload || {},
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+    reviewedAt: row.reviewed_at || "",
   };
 }
 
@@ -1971,6 +2010,30 @@ export async function listPlaceBookingWaitlist(placeId: string): Promise<CourtBo
     .limit(80);
   if (error) throw new Error(error.message);
   return ((data ?? []) as BookingWaitlistRow[]).map((row) => rowToBookingWaitlist(row, courtNameById.get(row.court_id) || ""));
+}
+
+export async function listPlaceTournamentCourtUsageRequests(placeId: string): Promise<TournamentCourtUsageRequest[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase.rpc("app_list_place_tournament_court_requests", {
+    p_place_id: placeId,
+  });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as TournamentCourtUsageRequestRow[]).map(rowToTournamentCourtUsageRequest);
+}
+
+export async function reviewTournamentCourtUsageRequest(
+  requestId: string,
+  status: "approved" | "rejected"
+): Promise<TournamentCourtUsageRequest> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_review_tournament_court_request", {
+    p_request_id: requestId,
+    p_status: status,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as TournamentCourtUsageRequestRow[])[0];
+  if (!row) throw new Error("Solicitacao nao atualizada.");
+  return rowToTournamentCourtUsageRequest(row);
 }
 
 export async function listMyCourtBookingWaitlist(): Promise<CourtBookingWaitlistEntry[]> {

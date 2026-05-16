@@ -27,6 +27,9 @@ Hoje parte da complexidade vem de mostrar essas tres realidades na mesma linguag
 5. Tabs ficam visiveis antes de resumos.
 6. Resumo nao deve empurrar menu.
 7. Publicacao e configuracao nao disputam com jogos/inscricoes.
+8. Na organizacao, cada aba deve ser uma ferramenta limpa, nao uma ancora para uma parte de uma pagina enorme.
+9. Filtros de classe/temporada pertencem a aba que precisa deles; nao devem ser navegacao global invisivel.
+10. Ferramenta poderosa pode existir, mas deve ficar no momento de decisao correto.
 
 ## Areas
 
@@ -151,6 +154,7 @@ Status 2026-05-15:
 - a criacao em `/eventos` no modo `Organizando` agora abre wizard em vez de formulario curto;
 - etapas atuais: `Basico`, `Inscricoes`, `Categorias`, `Formato`, `Agenda` e `Revisar`;
 - o fluxo cria estrutura inicial real: dados publicos, prazo/taxa, categorias/classes, formato padrao, quadras/janelas e status inicial;
+- 2026-05-16: etapa `Agenda` ganhou escolha entre quadras de `Locais cadastrados` e entrada `Manual`; quando vem de academia, o label usado no sorteio e nas partidas e `Local · Quadra`, sem texto grande;
 - o torneio pode nascer como rascunho ou com inscricoes abertas;
 - ajustes finos continuam no workspace interno do torneio para nao inflar o fluxo inicial.
 
@@ -162,6 +166,14 @@ Deve virar wizard:
 4. Formato: grupos/mata-mata, sets, games, criterios.
 5. Agenda/quadras: duracao, recursos, distribuicao.
 6. Revisar e publicar.
+
+Regra de UX para quadras de academias:
+
+- o organizador deve escolher primeiro a origem da quadra: local cadastrado ou manual;
+- local cadastrado mostra academias filtradas pela cidade/UF do torneio e permite selecionar uma ou mais quadras;
+- torneio grande pode usar varias academias sem duplicar texto em cada jogo;
+- jogador deve ver somente a informacao curta da partida: local, quadra e horario;
+- autorizacao de uso de quadras de terceiros pertence ao Management OS/Agenda do local, nao a um texto explicativo dentro da pagina publica do torneio.
 
 Nao deve:
 
@@ -201,6 +213,15 @@ Status 2026-05-15:
 - detalhe abre drawer no desktop e bottom sheet no mobile;
 - acoes usam backend/servicos existentes: aprovar/rejeitar/lista de espera, marcar pagamento stub, gerar jogos, aplicar resultado oficial e WhatsApp de indisponibilidade;
 - alerta separado de indisponibilidade foi fundido na fila para evitar duplicidade visual.
+
+Proximo refinamento planejado:
+
+- replicar no lado organizador o mesmo padrao aplicado ao publico;
+- `Organizacao`, `Inscritos`, `Jogos`, `Classificacao`, `Chat` e futura/atual `Configuracao` devem renderizar conteudo proprio;
+- remover repeticoes como lista fixa de jogadores em abas que nao sao de jogadores;
+- manter exportacao, reset, equipe, agenda, inscricoes, pagamentos e resultados, mas sem competir todos na mesma dobra;
+- `Encerramento/Podio` deve ser contextual ao status finalizado;
+- filtros de classe devem ser um unico controle por aba.
 
 ### Criar Liga
 
@@ -250,6 +271,14 @@ Status 2026-05-15:
 - detalhe abre drawer no desktop e bottom sheet no mobile, usando a sala da partida como destino de disponibilidade, resultado, WO e mensagens;
 - jogador participante ve apenas `Minha rodada` quando tem partida pendente, sem cockpit de organizador;
 - ranking/classificacao e chat continuam preservados como tabs, sem competir com a fila da rodada.
+
+Proximo refinamento planejado:
+
+- organizar o owner workspace da liga em tarefas limpas;
+- trocar blocos grandes de status por badges/linhas curtas quando a informacao nao exigir acao;
+- evitar que selecionar classe pareca trocar o conteudo global de todos os menus;
+- usar seletor/rail contextual em `Jogadores`, `Classificacao` e `Partidas`;
+- separar configuracao estrutural de operacao de rodada.
 
 ## Componentes Alvo
 
@@ -318,3 +347,12 @@ Aplicado:
 Proximo:
 
 - `COMP-OPS-02` transformou liga em operacao por rodada atual, partidas pendentes e resultados/WO.
+
+## Atualizacao 2026-05-16 - Uso de quadras de academias
+
+Quando o torneio usa quadras cadastradas de uma academia, a UX deve continuar curta para jogador e organizador:
+
+- jogador ve apenas `Local · Quadra · Hora`;
+- organizador ve status por local no setup da agenda: aguardando autorizacao, autorizado/bloqueado ou recusado;
+- academia decide no Management OS/Agenda, junto das demais filas operacionais;
+- textos longos de autorizacao nao devem aparecer na pagina publica do torneio.
