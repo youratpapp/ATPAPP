@@ -9125,6 +9125,30 @@ button:disabled {
   padding: 5px 10px;
 }
 
+.place-public-match-filter {
+  align-items: end;
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(150px, 0.8fr) minmax(150px, 1fr) minmax(160px, 1fr) auto;
+  padding-top: var(--space-3);
+}
+
+.place-public-match-filter label {
+  color: var(--color-text-subtle);
+  display: grid;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  gap: 5px;
+  min-width: 0;
+  text-transform: uppercase;
+}
+
+.place-public-match-filter input,
+.place-public-match-filter select {
+  min-width: 0;
+}
+
 .place-public-booking-card {
   grid-column: 1 / -1;
 }
@@ -16168,6 +16192,7 @@ button,
 
   .place-public-availability-controls,
   .place-public-class-filter,
+  .place-public-match-filter,
   .place-public-class-board button {
     grid-template-columns: 1fr;
   }

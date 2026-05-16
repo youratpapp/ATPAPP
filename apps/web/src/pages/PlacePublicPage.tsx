@@ -1247,9 +1247,50 @@ export function PlacePublicPage({ user, profile }: Props) {
 
               {showMatchesSection ? (
               <article id="place-public-matches">
-                <span>Comunidade</span>
-                <h3>Jogos abertos</h3>
-                {matches.slice(0, 4).map((match) => (
+                <div className="place-public-booking-header">
+                  <div>
+                    <span>Comunidade</span>
+                    <h3>Jogos abertos</h3>
+                    <p>Filtre por dia, periodo e nivel para encontrar uma chamada compativel.</p>
+                  </div>
+                  <small>{countLabel(filteredMatches.length, "chamada", "chamadas")}</small>
+                </div>
+                <div className="place-public-match-filter">
+                  <label>
+                    Data
+                    <input
+                      type="date"
+                      value={matchFilter.date}
+                      onChange={(event) => setMatchFilter((prev) => ({ ...prev, date: event.target.value }))}
+                    />
+                  </label>
+                  <label>
+                    Periodo
+                    <select value={matchFilter.period} onChange={(event) => setMatchFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
+                      <option value="">Qualquer horario</option>
+                      <option value="morning">Manha</option>
+                      <option value="afternoon">Tarde</option>
+                      <option value="night">Noite</option>
+                    </select>
+                  </label>
+                  <label>
+                    Nivel
+                    <select value={matchFilter.level} onChange={(event) => setMatchFilter((prev) => ({ ...prev, level: event.target.value }))}>
+                      <option value="">Qualquer nivel</option>
+                      {matchLevelOptions.map((level) => (
+                        <option key={`match-level:${level}`} value={level}>
+                          {level}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {matchFiltersActive ? (
+                    <button className="quiet" onClick={() => setMatchFilter({ date: "", level: "", period: "" })}>
+                      Limpar filtros
+                    </button>
+                  ) : null}
+                </div>
+                {filteredMatches.map((match) => (
                   <div key={match.id} className="place-public-row">
                     <strong>{new Date(match.startsAt).toLocaleString("pt-BR", { day: "2-digit", hour: "2-digit", minute: "2-digit", month: "2-digit" })}</strong>
                     <small>{[match.level || "nivel livre", `${match.participantCount} jogadores`, match.notes].filter(Boolean).join(" | ")}</small>
@@ -1263,6 +1304,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                   </div>
                 ))}
                 {!matches.length ? <p className="subtle">Nenhum jogo aberto publicado agora.</p> : null}
+                {matches.length && !filteredMatches.length ? <p className="subtle">Nenhuma chamada combina com os filtros selecionados.</p> : null}
                 {matchFeedback ? <p className="subtle">{matchFeedback}</p> : null}
               </article>
               ) : null}
