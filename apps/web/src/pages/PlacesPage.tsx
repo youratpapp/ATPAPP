@@ -216,6 +216,7 @@ type DiscoveryAvailableCourtWithTime = DiscoveryAvailableCourt & { discoveryTime
 type OpenMatchDiscoveryFilter = {
   query: string;
   city: string;
+  placeId: string;
   state: string;
   date: string;
   period: DiscoveryPeriod;
@@ -923,6 +924,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [openMatchFilter, setOpenMatchFilter] = useState<OpenMatchDiscoveryFilter>(() => ({
     query: "",
     city: profile?.city || "",
+    placeId: "",
     state: normalizeStateUf(profile?.state || ""),
     date: "",
     period: "",
@@ -2806,6 +2808,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       .toLowerCase();
     return (
       (!openMatchFilter.status || match.status === openMatchFilter.status) &&
+      (!openMatchFilter.placeId || match.placeId === openMatchFilter.placeId) &&
       (!query || text.includes(query)) &&
       (!openMatchFilter.city.trim() || normalizeText(matchCity) === normalizeText(openMatchFilter.city)) &&
       (!openMatchFilter.state.trim() || normalizeStateUf(matchState) === normalizeStateUf(openMatchFilter.state)) &&
@@ -2821,6 +2824,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const openMatchActiveFilterCount = [
     openMatchFilter.query.trim(),
     openMatchFilter.city.trim(),
+    openMatchFilter.placeId,
     openMatchFilter.state.trim(),
     openMatchFilter.date,
     openMatchFilter.period,
@@ -2831,6 +2835,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setOpenMatchFilter({
       query: "",
       city: profile?.city || "",
+      placeId: "",
       state: normalizeStateUf(profile?.state || ""),
       date: "",
       period: "",
@@ -2891,6 +2896,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const courtDiscoveryPlaceOptions = courtDiscoveryPlaces
     .filter((place) => placeMatchesDiscoveryLocation(place, courtDiscoveryFilter))
     .sort((a, b) => a.name.localeCompare(b.name));
+  const openMatchPlaces = visiblePlaces.filter((place) => openMatches.some((match) => match.placeId === place.id));
+  const openMatchStateOptions = Array.from(
+    new Set(openMatchPlaces.map((place) => normalizeStateUf(place.state)).filter(Boolean))
+  ).sort();
+  const openMatchCityOptions = Array.from(
+    new Set(
+      openMatchPlaces
+        .filter((place) => !openMatchFilter.state || normalizeStateUf(place.state) === normalizeStateUf(openMatchFilter.state))
+        .map((place) => place.city)
+        .filter(Boolean)
+    )
+  ).sort((a, b) => a.localeCompare(b));
+  const openMatchPlaceOptions = openMatchPlaces
+    .filter((place) => placeMatchesDiscoveryLocation(place, openMatchFilter))
+    .sort((a, b) => a.name.localeCompare(b.name));
   const courtDiscoverySurfaceOptions = COURT_SURFACE_OPTIONS.filter((option) => {
     if (!option.value) return true;
     return visiblePlaces
@@ -2929,6 +2949,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setClassDiscoveryResultsByPlace({});
     setClassDiscoveryClassesByPlace({});
     setClassDiscoverySearchKey("");
+  };
+  const updateOpenMatchFilter = (patch: Partial<OpenMatchDiscoveryFilter>) => {
+    setOpenMatchFilter((prev) => ({ ...prev, ...patch }));
   };
   const runCourtDiscoverySearch = async () => {
     const searchTimes = courtDiscoveryTimesFor(courtDiscoveryFilter.time);
@@ -3635,60 +3658,86 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 {openMatchActiveFilterCount ? <span>{openMatchActiveFilterCount}</span> : null}
               </summary>
               <div className="places-filter-grid matches">
-                <label>
-                  Local ou mensagem
-                  <input
-                    value={openMatchFilter.query}
-                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, query: event.target.value }))}
-                    placeholder="Clube, bairro ou texto da chamada"
-                  />
-                </label>
-                <label>
-                  Cidade
-                  <input
-                    value={openMatchFilter.city}
-                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, city: event.target.value }))}
-                    placeholder="Ex.: Sao Paulo"
-                  />
-                </label>
-                <label>
+                <label className="match-filter-state">
                   UF
-                  <input
+                  <select
                     value={openMatchFilter.state}
-                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, state: event.target.value.toUpperCase().slice(0, 2) }))}
-                    placeholder="SP"
-                  />
+                    onChange={(event) => updateOpenMatchFilter({ state: event.target.value, city: "", placeId: "" })}
+                  >
+                    <option value="">Todas</option>
+                    {openMatchStateOptions.map((state) => (
+                      <option key={`open-match-state:${state}`} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
                 </label>
-                <label>
+                <label className="match-filter-city">
+                  Cidade
+                  <select
+                    value={openMatchFilter.city}
+                    onChange={(event) => updateOpenMatchFilter({ city: event.target.value, placeId: "" })}
+                  >
+                    <option value="">Todas</option>
+                    {openMatchCityOptions.map((city) => (
+                      <option key={`open-match-city:${city}`} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="match-filter-place">
+                  Local
+                  <select
+                    value={openMatchFilter.placeId}
+                    onChange={(event) => updateOpenMatchFilter({ placeId: event.target.value })}
+                  >
+                    <option value="">Todos os locais</option>
+                    {openMatchPlaceOptions.map((place) => (
+                      <option key={`open-match-place-filter:${place.id}`} value={place.id}>
+                        {place.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="match-filter-date">
                   Data
                   <input
                     type="date"
                     value={openMatchFilter.date}
-                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, date: event.target.value }))}
+                    onChange={(event) => updateOpenMatchFilter({ date: event.target.value })}
                   />
                 </label>
-                <label>
+                <label className="match-filter-period">
                   Periodo
-                  <select value={openMatchFilter.period} onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
+                  <select value={openMatchFilter.period} onChange={(event) => updateOpenMatchFilter({ period: event.target.value as DiscoveryPeriod })}>
                     <option value="">Qualquer horario</option>
                     <option value="morning">Manha</option>
                     <option value="afternoon">Tarde</option>
                     <option value="night">Noite</option>
                   </select>
                 </label>
-                <label>
+                <label className="match-filter-level">
                   Nivel
                   <input
                     value={openMatchFilter.level}
-                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, level: event.target.value }))}
+                    onChange={(event) => updateOpenMatchFilter({ level: event.target.value })}
                     placeholder="Ex.: intermediario"
                   />
                 </label>
-                <label>
+                <label className="match-filter-query">
+                  Texto
+                  <input
+                    value={openMatchFilter.query}
+                    onChange={(event) => updateOpenMatchFilter({ query: event.target.value })}
+                    placeholder="Mensagem da chamada"
+                  />
+                </label>
+                <label className="match-filter-status">
                   Status
                   <select
                     value={openMatchFilter.status}
-                    onChange={(event) => setOpenMatchFilter((prev) => ({ ...prev, status: event.target.value as "" | OpenMatch["status"] }))}
+                    onChange={(event) => updateOpenMatchFilter({ status: event.target.value as "" | OpenMatch["status"] })}
                   >
                     <option value="">Todos</option>
                     <option value="open">Abertas</option>

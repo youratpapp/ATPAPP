@@ -44,14 +44,151 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
-### [x] COMP-PUBLIC-02B - Torneio publico com abas limpas por intencao
+### [x] PLAYER-HOME-05 - Home mobile com primeira dobra contextual e descoberta leve
 
 Status: `[x]` concluido em 2026-05-15
 
 Fonte:
 
+- feedback do print da Home mobile atual;
+- regra explicita de prioridade de CTA contextual;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`;
+- `CURRENT_PRODUCT_STATE.md`.
+
+Contexto:
+
+- a Home de jogador ainda parecia um painel administrativo, com textos de onboarding permanente, blocos pessoais vazios e eventos publicos empilhados;
+- informacoes urgentes e descoberta publica competiam pela mesma hierarquia;
+- `Meu contexto` soava tecnico e reforcava a sensacao de backend.
+
+Resultado:
+
+- primeira dobra usa CTA contextual na ordem: resultado pendente, atividade nas proximas 24h, convite pendente, inscricao incompleta, competicao em andamento e descoberta local;
+- cards de acao ficaram mais curtos e escaneaveis;
+- `Meu contexto` virou `Para voce` e so renderiza quando existem reservas, partidas, aulas, pagamentos, convites ou historico reais;
+- empty state grande de competicao ativa saiu da Home principal;
+- descoberta publica usa carrossel horizontal com prioridade por cidade do usuario, estado/regiao e destaques gerais;
+- gestao segue isolada em `Acesso profissional`, apenas para usuarios com convites, permissoes ou sinais operacionais.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco restante:
+
+- ainda nao ha backend novo para academias proximas como carrossel dedicado; a Home usa os eventos publicos ja disponiveis e deixa locais/aulas para os fluxos de `/locais`.
+
+### [x] PLAYER-LOCALS-06 - Encontrar jogo com filtro guiado por localidade
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback do print de `/locais?intent=matches`;
+- padrao ja aplicado em `Reservar quadra` e `Entrar em aula`;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Contexto:
+
+- o filtro de `Encontrar jogo` usava campos livres e uma grade fixa que encavalava no desktop;
+- UF, cidade e local nao seguiam a mesma logica dependente dos outros fluxos de descoberta;
+- o usuario podia digitar localidades sem relacao com locais cadastrados ou chamadas abertas.
+
+Resultado:
+
+- `Encontrar jogo` agora usa UF, cidade e local como selects dependentes;
+- as opcoes derivam dos locais cadastrados que possuem chamadas abertas;
+- ao trocar UF, cidade e local sao limpos; ao trocar cidade, local e limpo;
+- a busca preserva filtros de data, periodo, nivel, texto da chamada e status;
+- o grid desktop passou a usar 12 colunas responsivas, sem encavalar campos.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+### [x] PLAYER-PLACE-02 - Pagina publica do local por intencao e reserva por calendario de quadras
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback da pagina publica da academia/local;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`;
+- `CURRENT_PRODUCT_STATE.md`;
+- padrao v2 de separar experiencias por intencao em vez de pagina longa ancorada.
+
+Contexto:
+
+- a pagina publica do local ainda funcionava como uma pagina longa: `Reservar`, `Aulas`, `Jogos` e `Planos` rolavam para secoes na mesma tela;
+- isso misturava reserva, aulas, jogos abertos e beneficios, deixando a experiencia pesada para o jogador comum;
+- o fluxo de reserva dentro do local ainda dependia de selects manuais de quadra/horario, em vez de mostrar a disponibilidade por quadra de forma visual.
+
+Resultado:
+
+- os cards de `Reservar`, `Aulas`, `Jogos` e `Planos` agora trocam a intencao no URL e renderizam apenas o conteudo daquela pagina;
+- a pagina nao desce mais para uma ancora quando o usuario escolhe uma acao principal;
+- o CTA do hero e o sticky CTA passam a abrir a intencao correspondente;
+- `Reservar` foi reorganizado em dia/duracao, carrossel de quadras e confirmacao;
+- o calendario de reserva mostra cada quadra em um card horizontal com horarios hora a hora;
+- slots livres sao acionaveis, slots sem disponibilidade aparecem como ocupados;
+- a solicitacao de reserva continua usando o backend existente de `createCourtBooking` e fica vinculada ao perfil logado;
+- duracao publica foi limitada a horas cheias, preservando o fluxo simples pedido para jogador.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco restante:
+
+- o carrossel usa a consulta de disponibilidade existente por horario; se a academia configurar regras muito complexas, o backend continua sendo a fonte final de verdade ao solicitar a reserva.
+
+### [x] PLAYER-PLACE-03 - Aulas publicas com selecao clara de dias recorrentes
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback do fluxo publico `Aulas` na pagina do local;
+- regra de que alunos podem fazer mais de um dia por semana;
+- `CURRENT_PRODUCT_STATE.md`;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Contexto:
+
+- a lista de aulas podia deixar uma turma selecionada fora do filtro atual, criando risco de enviar interesse para uma turma escondida ou sem vaga;
+- turmas recorrentes equivalentes ainda dependiam demais do nome literal da turma, entao pequenas variacoes de titulo impediam selecionar um ou mais dias da mesma rotina;
+- o usuario nao recebia clareza suficiente de que o interesse fica vinculado ao perfil logado e que a aprovacao da academia ativa essa matricula.
+
+Resultado:
+
+- o agrupamento de aulas recorrentes passou a usar atributos operacionais: local, professor, quadra, horario, nivel, perfil e mensalidade, em vez do titulo literal;
+- cada grupo exibe chips de dias, permitindo selecionar um dia especifico ou mais de um dia na mesma turma recorrente;
+- ao mudar filtros, a selecao e sincronizada com o primeiro grupo visivel, evitando resumo de turma escondida;
+- o resumo de envio informa que a aprovacao pela academia ativa a matricula vinculada ao perfil e aparece em `Minhas aulas`;
+- os cards de `Minhas aulas` e `Reposicao` na Home agora abrem diretamente a pagina publica do local em `intent=academy` quando a matricula possui `placeId`;
+- o cabecalho da etapa foi ajustado para nao colar numero e texto.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco restante:
+
+- o envio publico ainda cria uma solicitacao pendente por dia selecionado via `createAcademyEnrollment`; contrato mensal consolidado, cobranca recorrente e calendario semanal completo continuam pertencendo ao Management OS/Academia.
+
+### [x] COMP-PUBLIC-02B - Torneio publico com abas limpas por intencao
+
+Status: `[x]` concluido em 2026-05-15; revisado em 2026-05-15
+
+Fonte:
+
 - feedback para aplicar nos torneios o mesmo padrao reorganizado da liga;
 - feedback da rota publica de evento com menus duplicados e pagina longa;
+- feedback posterior removendo `Categorias` como aba publica independente;
 - `COMP-PUBLIC-02A`;
 - `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`;
 - `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
@@ -65,19 +202,21 @@ Contexto:
 
 Resultado:
 
-- a navegacao publica do torneio agora tem abas reais: `Evento`, `Categorias`, `Inscritos`, `Jogos`, `Classificacao` e `Chat`;
+- a navegacao publica do torneio agora tem abas reais: `Evento`, `Inscritos`, `Jogos`, `Classificacao` e `Chat`;
 - `Evento` mostra somente leitura publica, resumo, CTA e atalhos;
-- `Categorias` mostra somente categorias/classes do torneio;
-- `Inscritos` mostra somente jogadores publicados e filtrados pela classe ativa;
+- `Categorias` deixou de ser pagina propria; classes viraram seletor contextual dentro das areas que dependem desse recorte;
+- `Inscritos` mostra jogadores publicados e filtrados pela classe ativa, usando a chave publica da classe para nao cair em falso vazio;
 - `Jogos`, `Classificacao` e `Chat` nao recebem mais hero, lista fixa ou blocos publicos anteriores acima do conteudo;
-- `Jogos`, `Classificacao` e `Inscritos` receberam filtro contextual de classe no topo, em rail horizontal quando houver muitas classes;
-- clicar em uma categoria abre o recorte de `Jogos` daquela classe, preservando a intencao selecionada;
+- `Jogos`, `Classificacao` e `Inscritos` receberam filtro contextual de classe no topo com seletor unico, evitando duplicidade entre botoes e select;
+- `Classificacao` aparece para leitor publico somente em torneios com fase de grupos;
+- `Encerramento / Podio por classe` aparece na aba `Evento` e apenas quando o torneio estiver finalizado;
+- a aba `Evento` exibe `Exportar chave` quando ha chaveamento gerado para alguma classe;
 - o menu publico segue clicavel e arrastavel no mobile, sem transformar o torneio em pagina infinita.
 
 Validacao:
 
-- `npm run lint`;
-- `npm run build`.
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
 
 Risco restante:
 

@@ -315,10 +315,12 @@ Status implementado em 2026-05-15:
 Complemento implementado em 2026-05-15:
 
 - filtro de descoberta de aulas deve usar grid responsivo de sete campos no desktop e quebra segura no mobile, sempre com CTA dentro do container;
-- resultados de aulas devem agrupar encontros que representam a mesma turma recorrente: mesmo local, titulo, professor, horario, nivel, perfil adulto/kids/genero e mensalidade;
+- resultados de aulas devem agrupar encontros que representam a mesma turma recorrente por dados operacionais: mesmo local, professor, quadra quando existir, horario, nivel, perfil adulto/kids/genero e mensalidade; o titulo literal nao deve impedir a recorrencia quando a turma e operacionalmente a mesma;
 - se o grupo tiver mais de um dia, a pagina publica deve exibir chips de dias selecionaveis;
 - selecionar o grupo inteiro marca todos os dias; tocar em um chip alterna apenas aquele dia, mantendo pelo menos um dia selecionado;
+- ao trocar filtros, a turma selecionada precisa acompanhar o primeiro grupo visivel para nao enviar interesse em aula escondida ou sem vaga;
 - o envio publico cria uma solicitacao pendente por dia/turma selecionado via backend existente, sem inventar contrato publico ainda;
+- a solicitacao usa o `user_id` logado; quando a academia aprova, a matricula fica ativa e deve aparecer para o jogador em `Minhas aulas`;
 - `intent=academy` em `/locais/:placeId` deve esconder secoes de reserva, jogos e planos da leitura principal, mantendo apenas aula e contato.
 
 ### Ao Selecionar Encontrar Jogo
@@ -412,8 +414,10 @@ Se uma acao nao persistir:
 `PLAYER-UX-03` implementou a primeira versao do fluxo na pagina publica do local:
 
 - local ja esta definido pela pagina publica;
-- jogador escolhe data/duracao, ve slots livres e confirma dados;
-- horarios ocupados nao sao renderizados como lista longa;
+- `Reservar`, `Aulas`, `Jogos` e `Planos` funcionam como paginas por intencao, nao como ancoras em uma pagina longa;
+- jogador escolhe data/duracao e ve um calendario visual em carrossel por quadra;
+- horarios sao exibidos hora a hora como `Livre` ou `Ocupado`;
+- apenas slots livres sao acionaveis e levam a confirmacao;
 - `createCourtBooking` cria a solicitacao;
 - `joinCourtBookingWaitlist` cria espera quando nao ha disponibilidade;
 - falta ainda evoluir a descoberta cross-local em `/locais?intent=booking` para cards de disponibilidade mais ricos, se a proxima rodada de QA pedir.

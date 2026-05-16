@@ -180,7 +180,7 @@ Quando uma tela cresce demais:
 - 2026-05-13: `/locais` passou a tratar filtros como parte da intencao: reservar quadra exige cidade/data/hora para disponibilidade real, entrar em aula filtra por perfil/dia/periodo/vaga e encontrar jogadores filtra chamadas sem misturar quadras.
 - 2026-05-14: `/locais` passou a iniciar em estado neutro de escolha de intencao; a pagina nao deve abrir mostrando ficha de academia, formulario de reserva ou turmas antes do usuario escolher o fluxo.
 - 2026-05-14: em `/locais`, `Reservar quadra` e `Entrar em aula` tambem nao devem listar academias genericas antes da busca. Sem filtro executado, mostram orientacao; com filtro executado, mostram cards de quadra/turma acionaveis.
-- 2026-05-13: `/locais/:placeId` passou a resolver a decisao dentro do local com agenda visual de quadras por horario e filtro de turmas compativeis antes do formulario.
+- 2026-05-15: `/locais/:placeId` passou a separar `Reservar`, `Aulas`, `Jogos` e `Planos` por intencao no URL, evitando pagina longa ancorada; `Reservar` usa carrossel de quadras com horarios hora a hora antes da confirmacao.
 - 2026-05-13: resultado de `Reservar quadra` em `/locais` passou a ser lista direta de quadras livres no horario pesquisado; ficha completa, planos e aulas ficam fora desse fluxo.
 - 2026-05-13: resultado de `Entrar em aula` em `/locais` passou a ser lista direta de turmas com vaga; nome da academia, UF, dia, periodo e nivel levam a uma turma acionavel, nao a uma ficha generica.
 - 2026-05-13: `Agenda > Calendario` passou a ser mapa operacional unico de ocupacao, combinando reservas, bloqueios, turmas, aulas avulsas/reposicoes e faltas avisadas com filtros por tipo, quadra, professor, turma e aluno.

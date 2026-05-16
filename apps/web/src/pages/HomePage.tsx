@@ -153,17 +153,6 @@ type HomeNotice = {
   tone: "urgent" | "neutral";
 };
 
-type HomeFeedItem = {
-  id: string;
-  targetPath: string;
-  sourceName: string;
-  title: string;
-  detail: string;
-  label: string;
-  sortAt: string;
-  tone: "urgent" | "neutral";
-};
-
 type PlayerHubItem = {
   id: string;
   targetPath?: string;
@@ -193,6 +182,15 @@ type HomePriorityItem = {
   label: string;
   tone: "urgent" | "neutral";
   order: number;
+};
+
+type HomeMainAction = {
+  id: string;
+  title: string;
+  detail: string;
+  label: string;
+  targetPath: string;
+  tone: "urgent" | "neutral";
 };
 
 type HomePlaceAccessRole = "owner" | "manager" | "coach" | "frontdesk" | "finance" | "cashier" | "";
@@ -225,13 +223,6 @@ function isActiveTournament(t: TournamentSummary): boolean {
 
 function isActiveLeague(l: LeagueSummary): boolean {
   return l.status === "active";
-}
-
-function leagueStatusLabel(status: LeagueSummary["status"]): string {
-  if (status === "active") return "Ativa";
-  if (status === "paused") return "Pausada";
-  if (status === "finished") return "Finalizada";
-  return "Rascunho";
 }
 
 function matchStatusLabel(status: LeagueMatchSummary["status"]): string {
@@ -943,7 +934,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
     .slice(0, 3)
     .map((item): HomeAcademyAction => ({
       id: `academy-player:${item.id}`,
-      targetPath: "/locais?intent=classes",
+      targetPath: item.placeId ? `/locais/${item.placeId}?intent=academy` : "/locais?intent=classes",
       sourceName: "Academia",
       title: item.status === "pending" ? "Matricula aguardando aprovacao" : "Matricula ativa",
       detail: item.status === "pending" ? "Aguarde a academia revisar seu interesse." : "Acompanhe sua turma e pagamentos.",
@@ -957,7 +948,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
     .slice(0, 3)
     .map((item): HomeAcademyAction => ({
       id: `academy-makeup:${item.id}`,
-      targetPath: "/locais?intent=classes",
+      targetPath: item.placeId ? `/locais/${item.placeId}?intent=academy` : "/locais?intent=classes",
       sourceName: "Academia",
       title: "Reposicao disponivel",
       detail: "Voce possui credito de reposicao aberto.",
@@ -1003,71 +994,22 @@ function toHomeLeagueAction(
   };
 }
 
-function CalendarIcon() {
+function DiscoveryEventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () => void }) {
+  const location = [t.city, t.state].filter(Boolean).join(" - ") || "Local a definir";
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-    </svg>
-  );
-}
-
-function LocationPinIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-      <circle cx="12" cy="9" r="2.5" />
-    </svg>
-  );
-}
-
-function ChevronRight() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  );
-}
-
-function EventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () => void }) {
-  const location = [t.city, t.state].filter(Boolean).join(" - ");
-  return (
-    <article className="event-card" onClick={onOpen}>
+    <button type="button" className="home-discovery-card" onClick={onOpen}>
       {t.posterUrl ? (
-        <img className="ec-poster" src={t.posterUrl} alt="" />
+        <img src={t.posterUrl} alt="" />
       ) : (
-        <div className="ec-poster-placeholder">
-          <span>ATP</span>
-        </div>
+        <span className="home-discovery-poster">ATP</span>
       )}
-      <div className="ec-body">
-        <div className="ec-name-row">
-          <p className="ec-name">{t.name}</p>
-          <StatusBadge status={t.status} />
-        </div>
-        {t.startsAt ? (
-          <div className="ec-info-row">
-            <span className="ec-info-left">
-              <CalendarIcon />
-              {formatDateRange(t.startsAt)}
-            </span>
-            <span className="ec-chevron">
-              <ChevronRight />
-            </span>
-          </div>
-        ) : null}
-        {location ? (
-          <div className="ec-info-row">
-            <span className="ec-info-left">
-              <LocationPinIcon />
-              {location}
-            </span>
-          </div>
-        ) : null}
-      </div>
-    </article>
+      <span className="home-discovery-body">
+        <strong>{t.name}</strong>
+        <small>{location}</small>
+        <em>{t.startsAt ? formatDateRange(t.startsAt) : "Data a definir"}</em>
+      </span>
+      <StatusBadge status={t.status} />
+    </button>
   );
 }
 
@@ -1121,22 +1063,6 @@ function PlayerHubSection({
       <button type="button" className="player-hub-section-action" onClick={onOpen}>
         {action}
       </button>
-    </article>
-  );
-}
-
-function LeagueCard({ league, onOpen }: { league: LeagueSummary; onOpen: () => void }) {
-  return (
-    <article className="home-compact-card" onClick={onOpen}>
-      <div>
-        <p className="home-compact-title">{league.name}</p>
-        <p className="home-compact-meta">
-          {[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
-        </p>
-      </div>
-      <span className={`home-league-chip ${league.role === "owner" ? "owner" : "member"}`}>
-        {leagueStatusLabel(league.status)}
-      </span>
     </article>
   );
 }
@@ -1208,74 +1134,6 @@ function PlaceStaffInviteCard({
         </button>
         <button className="link" type="button" onClick={onDecline} disabled={busy}>
           Recusar
-        </button>
-      </div>
-    </article>
-  );
-}
-
-function ActivityFeedCard({ item, onOpen }: { item: HomeFeedItem; onOpen: () => void }) {
-  return (
-    <article className={`home-feed-card ${item.tone}`} onClick={onOpen}>
-      <div>
-        <p className="home-action-label">{item.sourceName}</p>
-        <p className="home-action-title">{item.title}</p>
-        <p className="home-action-body">{item.detail}</p>
-      </div>
-      <span>{item.label}</span>
-    </article>
-  );
-}
-
-function WhatsAppAppIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="brand-app-icon">
-      <circle cx="12" cy="12" r="10" fill="#25d366" />
-      <path d="M7.5 18.2l.8-2.9a6.5 6.5 0 1 1 2.5 1.9z" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M9.7 8.7c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.6 1.4c.1.3.1.5-.1.7l-.4.5c.6 1 1.3 1.7 2.4 2.3l.5-.5c.2-.2.4-.3.7-.1l1.4.6c.3.1.4.3.4.6v.4c0 .4-.2.7-.5.9-.5.3-1.5.4-2.9-.2-2.4-1-4.3-3.1-4.8-5.1-.2-.7-.1-1.2.1-1.5z" fill="#fff" />
-    </svg>
-  );
-}
-
-function AgendaCard({
-  item,
-  onOpen,
-  onCopyReminder,
-  onShareReminder,
-}: {
-  item: HomeAgendaItem;
-  onOpen: () => void;
-  onCopyReminder: () => void;
-  onShareReminder: () => void;
-}) {
-  return (
-    <article className="home-agenda-card" onClick={onOpen}>
-      <div>
-        <p className="home-action-label">{item.sourceName}</p>
-        <p className="home-action-title">{item.title}</p>
-        <p className="home-action-body">{item.when}</p>
-      </div>
-      <div className="home-agenda-actions">
-        <span>{item.label}</span>
-        <button
-          onClick={(event) => {
-            event.stopPropagation();
-            onCopyReminder();
-          }}
-        >
-          Copiar lembrete
-        </button>
-        <button
-          className="primary"
-          title="Enviar pelo WhatsApp"
-          aria-label="Enviar pelo WhatsApp"
-          onClick={(event) => {
-            event.stopPropagation();
-            onShareReminder();
-          }}
-        >
-          <WhatsAppAppIcon />
-          WhatsApp
         </button>
       </div>
     </article>
@@ -1357,67 +1215,6 @@ function buildAgendaItems(
 
   return [...tournamentItems, ...courtItems, ...leagueItems]
     .sort((a, b) => (a.sortAt || "").localeCompare(b.sortAt || ""))
-    .slice(0, 6);
-}
-
-function buildActivityFeed(
-  playingTournaments: TournamentSummary[],
-  organizingTournaments: TournamentSummary[],
-  playingLeagues: LeagueSummary[],
-  organizingLeagues: LeagueSummary[],
-  notices: HomeNotice[],
-  upcoming: TournamentSummary[]
-): HomeFeedItem[] {
-  const noticeItems = notices.map((notice): HomeFeedItem => ({
-    id: `feed-notice:${notice.id}`,
-    targetPath: notice.targetPath,
-    sourceName: notice.sourceName,
-    title: notice.title,
-    detail: `${notice.body} - ${notice.meta}`,
-    label: notice.tone === "urgent" ? "Aviso" : "Chat",
-    sortAt: notice.createdAt,
-    tone: notice.tone,
-  }));
-
-  const playingItems = [...playingTournaments, ...playingLeagues].map((item): HomeFeedItem => ({
-    id: `feed-playing:${item.id}`,
-    targetPath: "role" in item ? `/eventos/ligas/${encodeURIComponent(item.id)}` : buildTournamentUrl(item.id),
-    sourceName: item.name,
-    title: "Voce esta participando",
-    detail: "Acompanhe partidas, avisos e proximas acoes desta competicao.",
-    label: "Jogador",
-    sortAt: item.updatedAt,
-    tone: "neutral",
-  }));
-
-  const organizerItems = [...organizingTournaments, ...organizingLeagues].map((item): HomeFeedItem => ({
-    id: `feed-organizer:${item.id}`,
-    targetPath: "role" in item ? `/eventos/ligas/${encodeURIComponent(item.id)}` : buildTournamentUrl(item.id),
-    sourceName: item.name,
-    title: "Voce esta organizando",
-    detail: "Verifique inscricoes, partidas, comunicados e pendencias.",
-    label: "Organizacao",
-    sortAt: item.updatedAt,
-    tone: "neutral",
-  }));
-
-  const upcomingItems = upcoming.slice(0, 2).map((item): HomeFeedItem => ({
-    id: `feed-upcoming:${item.id}`,
-    targetPath: buildTournamentUrl(item.id),
-    sourceName: item.name,
-    title: "Evento publico em breve",
-    detail: item.startsAt ? `Inicio em ${formatDateRange(item.startsAt)}` : "Data a definir",
-    label: "Publico",
-    sortAt: item.startsAt || item.updatedAt,
-    tone: "neutral",
-  }));
-
-  return [...noticeItems, ...playingItems, ...organizerItems, ...upcomingItems]
-    .sort((a, b) => {
-      const urgent = Number(b.tone === "urgent") - Number(a.tone === "urgent");
-      if (urgent !== 0) return urgent;
-      return (b.sortAt || "").localeCompare(a.sortAt || "");
-    })
     .slice(0, 6);
 }
 
@@ -1547,6 +1344,45 @@ function isPlayerAcademyAction(action: HomeAcademyAction): boolean {
   );
 }
 
+function normalizeHomeText(value?: string | null): string {
+  return (value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+function priorityText(item: HomePriorityItem): string {
+  return `${item.sourceName} ${item.title} ${item.detail} ${item.label}`.toLowerCase();
+}
+
+function isResultPriority(item: HomePriorityItem): boolean {
+  return item.tone === "urgent" && /resultado|placar/.test(priorityText(item));
+}
+
+function isInvitePriority(item: HomePriorityItem): boolean {
+  return /convite|lista de espera|espera/.test(priorityText(item));
+}
+
+function isIncompleteRegistrationPriority(item: HomePriorityItem): boolean {
+  return /inscricao|inscric|matricula|plano|pendente|aguardando/.test(priorityText(item));
+}
+
+function isWithinNextHours(sortAt: string, hours: number): boolean {
+  const time = new Date(sortAt).getTime();
+  if (Number.isNaN(time)) return false;
+  const now = Date.now();
+  return time >= now - 30 * 60 * 1000 && time <= now + hours * 60 * 60 * 1000;
+}
+
+function tournamentLocationRank(tournament: TournamentSummary, userCity: string, userState: string): number {
+  const city = normalizeHomeText(tournament.city);
+  const state = normalizeHomeText(tournament.state);
+  if (userCity && city === userCity) return 0;
+  if (userState && state === userState) return 2;
+  return 4;
+}
+
 export function HomePage({ user, profile }: Props) {
   const navigate = useNavigate();
   const [upcoming, setUpcoming] = useState<TournamentSummary[]>([]);
@@ -1574,7 +1410,7 @@ export function HomePage({ user, profile }: Props) {
     let alive = true;
     setLoading(true);
     Promise.all([
-      loadUpcomingPublic(4),
+      loadUpcomingPublic(12),
       loadDashboardData(user),
       loadMyLeagues(),
       listMyTournamentStaffInvites(),
@@ -1692,7 +1528,6 @@ export function HomePage({ user, profile }: Props) {
     }
   };
 
-  const activePlayingCount = playingTournaments.length + playingLeagues.length;
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
   const playerCourtBookingActions = courtBookingActions.filter((item) => item.role === "player");
   const operationalCourtBookingActions = courtBookingActions.filter((item) => item.role === "owner");
@@ -1719,14 +1554,6 @@ export function HomePage({ user, profile }: Props) {
     operationalAcademyActions,
     operationalNotices
   );
-  const activityFeedItems = buildActivityFeed(
-    playingTournaments,
-    [],
-    playingLeagues,
-    [],
-    playerNotices.filter((notice) => notice.tone !== "urgent"),
-    upcoming
-  );
   const urgentPriorityItems = priorityItems.filter((item) => item.tone === "urgent");
   const followUpPriorityItems = priorityItems.filter((item) => item.tone !== "urgent");
   const urgentOperationalPriorityItems = operationalPriorityItems.filter((item) => item.tone === "urgent");
@@ -1736,13 +1563,24 @@ export function HomePage({ user, profile }: Props) {
   const notificationCount = playerUrgentCount + professionalSignalCount;
   const visibleStaffInvites = tournamentStaffInvites.slice(0, 4);
   const visiblePlaceStaffInvites = placeStaffInvites.slice(0, Math.max(0, 4 - visibleStaffInvites.length));
-  const visiblePriorityItems = priorityItems.slice(0, 4);
   const visibleProfessionalPriorityItems = operationalPriorityItems.slice(
     0,
     Math.max(0, 4 - visibleStaffInvites.length - visiblePlaceStaffInvites.length)
   );
-  const visibleActivityFeedItems = activityFeedItems.slice(0, 3);
-  const visibleUpcoming = upcoming.slice(0, 3);
+  const userCityKey = normalizeHomeText(profile?.city);
+  const userStateKey = normalizeHomeText(profile?.state);
+  const prioritizedUpcoming = [...upcoming].sort((a, b) => {
+    const byLocation = tournamentLocationRank(a, userCityKey, userStateKey) - tournamentLocationRank(b, userCityKey, userStateKey);
+    if (byLocation !== 0) return byLocation;
+    return (a.startsAt || a.updatedAt || "").localeCompare(b.startsAt || b.updatedAt || "");
+  });
+  const nearbyUpcoming = prioritizedUpcoming.filter((item) => tournamentLocationRank(item, userCityKey, userStateKey) <= 2).slice(0, 8);
+  const openUpcoming = prioritizedUpcoming.filter((item) => item.status === "registration_open").slice(0, 8);
+  const highlightUpcoming = prioritizedUpcoming.slice(0, 8);
+  const nearbyUpcomingIds = new Set(nearbyUpcoming.map((item) => item.id));
+  const openDiscoveryUpcoming = openUpcoming.filter((item) => !nearbyUpcomingIds.has(item.id)).slice(0, 8);
+  const discoveryUsedIds = new Set([...nearbyUpcoming, ...openDiscoveryUpcoming].map((item) => item.id));
+  const generalDiscoveryUpcoming = highlightUpcoming.filter((item) => !discoveryUsedIds.has(item.id)).slice(0, 8);
   const nextPlayerAgenda = agendaItems[0] || null;
   const nextPlayerPriority = urgentPriorityItems[0] || priorityItems[0] || null;
   const nextPlayerLearning = playerAcademyActions[0] || null;
@@ -1844,25 +1682,68 @@ export function HomePage({ user, profile }: Props) {
       tone: "neutral" as const,
     })),
   ];
-  const showPlayerEmptyRecommendation = activePlayingCount === 0 && upcoming.length > 0;
-  const hasPlayerFollowUp = Boolean(nextPlayerPriority && nextPlayerPriority.tone !== "urgent");
-  const heroTitle = playerUrgentCount > 0
-    ? `${playerUrgentCount} pendencia${playerUrgentCount > 1 ? "s" : ""} para resolver`
-    : agendaItems.length > 0
-      ? "Voce tem compromisso na agenda"
-      : hasPlayerFollowUp
-        ? "Algo seu merece acompanhamento"
-        : "O que voce quer fazer hoje?";
-  const heroDetail = playerUrgentCount > 0
-    ? "Resolva agora para manter seus jogos e atividades em movimento."
-    : agendaItems.length > 0
-      ? `${agendaItems[0]?.title || "Proximo compromisso"} - ${agendaItems[0]?.when || "em breve"}`
-      : hasPlayerFollowUp && nextPlayerPriority
-        ? `${nextPlayerPriority.title} - ${nextPlayerPriority.detail}`
-      : activePlayingCount > 0
-        ? "Acompanhe suas competicoes ou escolha outra atividade para jogar."
-        : "Escolha uma acao simples: reservar quadra, encontrar jogo, entrar em aula ou competir.";
+  const resultPriority = priorityItems.find(isResultPriority);
+  const nextAgenda24h = agendaItems.find((item) => isWithinNextHours(item.sortAt, 24));
+  const invitePriority = priorityItems.find(isInvitePriority);
+  const incompleteRegistrationPriority = priorityItems.find(isIncompleteRegistrationPriority);
+  const competitionPriority = playerMatchItems[0] || playerHistoryItems[0] || null;
+  const homeMainAction: HomeMainAction = resultPriority
+    ? {
+        id: `main:${resultPriority.id}`,
+        title: resultPriority.title,
+        detail: resultPriority.detail,
+        label: resultPriority.label || "Resolver resultado",
+        targetPath: resultPriority.targetPath,
+        tone: "urgent",
+      }
+    : nextAgenda24h
+      ? {
+          id: `main:${nextAgenda24h.id}`,
+          title: nextAgenda24h.title,
+          detail: `${nextAgenda24h.when} - ${nextAgenda24h.sourceName}`,
+          label: nextAgenda24h.label || "Abrir compromisso",
+          targetPath: nextAgenda24h.targetPath,
+          tone: "neutral",
+        }
+      : invitePriority
+        ? {
+            id: `main:${invitePriority.id}`,
+            title: invitePriority.title,
+            detail: invitePriority.detail,
+            label: invitePriority.label || "Responder convite",
+            targetPath: invitePriority.targetPath,
+            tone: invitePriority.tone,
+          }
+        : incompleteRegistrationPriority
+          ? {
+              id: `main:${incompleteRegistrationPriority.id}`,
+              title: incompleteRegistrationPriority.title,
+              detail: incompleteRegistrationPriority.detail,
+              label: incompleteRegistrationPriority.label || "Continuar inscricao",
+              targetPath: incompleteRegistrationPriority.targetPath,
+              tone: incompleteRegistrationPriority.tone,
+            }
+          : competitionPriority
+            ? {
+                id: `main:${competitionPriority.id}`,
+                title: competitionPriority.title,
+                detail: `${competitionPriority.detail} - ${competitionPriority.meta}`,
+                label: "Acompanhar",
+                targetPath: competitionPriority.targetPath || "/eventos",
+                tone: competitionPriority.tone || "neutral",
+              }
+            : {
+                id: "main:discovery",
+                title: "Encontre algo para jogar",
+                detail: nearbyUpcoming.length > 0 ? "Veja jogos, aulas e eventos perto de voce." : "Reserve quadra, entre em aula ou descubra competicoes abertas.",
+                label: nearbyUpcoming.length > 0 ? "Explorar perto de mim" : "Encontrar jogo",
+                targetPath: nearbyUpcoming.length > 0 ? "/eventos" : "/locais?intent=matches",
+                tone: "neutral",
+              };
+  const heroTitle = homeMainAction.title;
+  const heroDetail = homeMainAction.detail;
   const todayRows: Array<{
+    id: string;
     label: string;
     title: string;
     detail: string;
@@ -1873,6 +1754,7 @@ export function HomePage({ user, profile }: Props) {
 
   if (nextPlayerPriority) {
     todayRows.push({
+      id: nextPlayerPriority.id,
       label: nextPlayerPriority.tone === "urgent" ? "Pendencia" : "Acompanhar",
       title: nextPlayerPriority.title,
       detail: nextPlayerPriority.detail,
@@ -1884,6 +1766,7 @@ export function HomePage({ user, profile }: Props) {
 
   if (nextPlayerAgenda) {
     todayRows.push({
+      id: nextPlayerAgenda.id,
       label: "Agenda",
       title: nextPlayerAgenda.title,
       detail: `${nextPlayerAgenda.when} - ${nextPlayerAgenda.sourceName}`,
@@ -1895,6 +1778,7 @@ export function HomePage({ user, profile }: Props) {
 
   if (nextPlayerLearning && !nextPlayerPriority?.id.includes(nextPlayerLearning.id)) {
     todayRows.push({
+      id: nextPlayerLearning.id,
       label: "Aulas",
       title: nextPlayerLearning.title,
       detail: nextPlayerLearning.detail,
@@ -1903,6 +1787,10 @@ export function HomePage({ user, profile }: Props) {
       onOpen: () => navigate(nextPlayerLearning.targetPath),
     });
   }
+  const visibleTodayRows = todayRows
+    .filter((row) => row.tone === "urgent" || row.label === "Agenda")
+    .filter((row) => !homeMainAction.id.endsWith(row.id))
+    .slice(0, 2);
 
   const playerHubSections = [
     {
@@ -1962,31 +1850,7 @@ export function HomePage({ user, profile }: Props) {
   ].filter((section) => section.items.length > 0);
 
   const handleHeroAction = () => {
-    if (nextPlayerPriority) {
-      navigate(nextPlayerPriority.targetPath);
-      return;
-    }
-    if (agendaItems.length > 0 && agendaItems[0]) {
-      navigate(agendaItems[0].targetPath);
-      return;
-    }
-    navigate("/locais?intent=booking");
-  };
-  const copyAgendaReminder = async (item: HomeAgendaItem) => {
-    try {
-      await navigator.clipboard.writeText(item.reminderText);
-      setFeedback({ kind: "success", text: "Lembrete copiado." });
-    } catch {
-      setFeedback({ kind: "error", text: "Nao foi possivel copiar o lembrete agora." });
-    }
-  };
-  const shareAgendaReminder = (item: HomeAgendaItem) => {
-    window.open(
-      `https://api.whatsapp.com/send?text=${encodeURIComponent(item.reminderText)}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
-    setFeedback({ kind: "success", text: "Lembrete aberto no WhatsApp." });
+    navigate(homeMainAction.targetPath);
   };
 
   const notificationPanel = (
@@ -2077,18 +1941,18 @@ export function HomePage({ user, profile }: Props) {
             <p>{heroDetail}</p>
           </div>
           <ActionBar className="home-hero-actions" label="Acoes principais do dia">
-            <button className="primary" type="button" onClick={handleHeroAction}>
-              {nextPlayerPriority ? (nextPlayerPriority.tone === "urgent" ? "Resolver agora" : "Abrir") : agendaItems.length > 0 ? "Abrir compromisso" : "Reservar quadra"}
+            <button className={homeMainAction.tone === "urgent" ? "primary urgent" : "primary"} type="button" onClick={handleHeroAction}>
+              {homeMainAction.label}
             </button>
             <button className="quiet" type="button" onClick={() => navigate("/eventos")}>
               Competir
             </button>
           </ActionBar>
-          {todayRows.length > 0 ? (
+          {visibleTodayRows.length > 0 ? (
             <div className="home-today-rows" aria-label="Proximas acoes do jogador">
-              {todayRows.map((row) => (
+              {visibleTodayRows.map((row) => (
                 <button
-                  key={`${row.label}:${row.title}`}
+                  key={row.id}
                   type="button"
                   className={row.tone === "urgent" ? "urgent" : ""}
                   onClick={row.onOpen}
@@ -2100,12 +1964,7 @@ export function HomePage({ user, profile }: Props) {
                 </button>
               ))}
             </div>
-          ) : (
-            <div className="home-today-empty">
-              <strong>Comece por uma intencao.</strong>
-              <span>Escolha a acao certa e o app mostra apenas o caminho necessario.</span>
-            </div>
-          )}
+          ) : null}
         </div>
 
         <aside className="home-player-side" aria-label="Acoes principais do jogador">
@@ -2113,16 +1972,16 @@ export function HomePage({ user, profile }: Props) {
             <button type="button" onClick={() => navigate("/locais?intent=booking")}>
               <span>Reservar</span>
               <strong>Quadra</strong>
-              <small>Encontrar horario</small>
+              <small>Horarios livres</small>
             </button>
             <button type="button" onClick={() => navigate("/locais?intent=matches")}>
               <span>Jogar</span>
               <strong>Encontrar jogo</strong>
-              <small>Chamada ou parceiro</small>
+              <small>Chamadas abertas</small>
             </button>
             <button type="button" onClick={() => navigate("/locais?intent=classes")}>
               <span>Aulas</span>
-              <strong>Entrar em turma</strong>
+              <strong>Entrar em aula</strong>
               <small>Turmas com vaga</small>
             </button>
             <button type="button" onClick={() => navigate("/eventos")}>
@@ -2143,7 +2002,7 @@ export function HomePage({ user, profile }: Props) {
           {playerHubSections.length > 0 ? (
           <section className="player-hub-panel">
             <div className="section-title">
-              <h2>Meu contexto</h2>
+              <h2>Para voce</h2>
             </div>
             <div className="player-hub-workspace">
               {playerHubSections.map((section) => (
@@ -2213,112 +2072,69 @@ export function HomePage({ user, profile }: Props) {
             </section>
           ) : null}
 
-          {agendaItems.length === 0 && priorityItems.length === 0 && activityFeedItems.length === 0 ? (
-            <section className="home-empty-panel home-ok-panel">
-              <strong>Tudo em dia</strong>
-              <span>Sem pendencias ou compromissos proximos agora.</span>
-            </section>
-          ) : null}
-
-          {agendaItems.length > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Agenda da semana</h2>
-              </div>
-              {agendaItems.map((item) => (
-                <AgendaCard
-                  key={item.id}
-                  item={item}
-                  onOpen={() => navigate(item.targetPath)}
-                  onCopyReminder={() => copyAgendaReminder(item)}
-                  onShareReminder={() => shareAgendaReminder(item)}
-                />
-              ))}
-            </section>
-          ) : null}
-
-          {priorityItems.length > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Prioridades de hoje</h2>
-                {priorityItems.length > visiblePriorityItems.length ? (
-                  <button className="link" type="button" onClick={() => setNotificationsOpen(true)}>
-                    Ver todas
-                  </button>
-                ) : null}
-              </div>
-              {visiblePriorityItems.map((item) => (
-                <PriorityCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
-              ))}
-            </section>
-          ) : null}
-
-          {activityFeedItems.length > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Atualizacoes recentes</h2>
-              </div>
-              {visibleActivityFeedItems.map((item) => (
-                <ActivityFeedCard key={item.id} item={item} onOpen={() => navigate(item.targetPath)} />
-              ))}
-            </section>
-          ) : null}
-
-          {activePlayingCount > 0 ? (
-            <section className="home-section">
-              <div className="section-title">
-                <h2>Minhas competicoes</h2>
-              </div>
-              {playingTournaments.map((t) => (
-                <EventCard key={`play-t:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
-              ))}
-              {playingLeagues.map((league) => (
-                <LeagueCard
-                  key={`play-l:${league.id}`}
-                  league={league}
-                  onOpen={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}`)}
-                />
-              ))}
-            </section>
-          ) : (
-            <section className="home-empty-panel">
-              <strong>Nenhuma competicao ativa como jogador</strong>
-              <span>
-                {showPlayerEmptyRecommendation
-                  ? "Eventos publicos em breve aparecem abaixo para voce avaliar."
-                  : "Quando voce entrar em torneios ou ligas, eles aparecem aqui."}
-              </span>
-              <ActionBar className="home-empty-actions" label="Acoes para encontrar competicoes">
-                <button className="secondary" type="button" onClick={() => navigate("/eventos/torneios")}>
-                  Ver torneios
-                </button>
-                <button className="secondary" type="button" onClick={() => navigate("/eventos/ligas")}>
-                  Ver ligas
-                </button>
-                <button className="quiet" type="button" onClick={() => navigate("/locais?intent=venues")}>
-                  Buscar locais
-                </button>
-              </ActionBar>
-            </section>
-          )}
-
         </>
       ) : null}
 
-      <div className="section-title">
-        <h2>Proximos eventos publicos</h2>
-        <button className="link" onClick={() => navigate("/eventos/torneios")}>
-          Ver todos
-        </button>
-      </div>
-
-      {!loading && !error && upcoming.length === 0 ? (
-        <p className="subtle">Nenhum evento publico em breve.</p>
+      {!loading && !error ? (
+        <section className="home-section home-discovery-section">
+          <div className="section-title">
+            <div>
+              <p className="home-context-eyebrow">Descoberta</p>
+              <h2>Perto de voce</h2>
+            </div>
+            <button className="link" onClick={() => navigate("/eventos/torneios")}>
+              Ver todos
+            </button>
+          </div>
+          {nearbyUpcoming.length > 0 ? (
+            <div className="home-discovery-block">
+              <div className="home-discovery-heading">
+                <strong>Eventos na sua regiao</strong>
+                <span>{profile?.city || profile?.state || "Mais relevantes primeiro"}</span>
+              </div>
+              <div className="home-discovery-carousel" aria-label="Eventos perto de voce">
+                {nearbyUpcoming.map((t) => (
+                  <DiscoveryEventCard key={`nearby:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+          {openDiscoveryUpcoming.length > 0 ? (
+            <div className="home-discovery-block">
+              <div className="home-discovery-heading">
+                <strong>Torneios abertos</strong>
+                <span>Inscricoes disponiveis</span>
+              </div>
+              <div className="home-discovery-carousel" aria-label="Torneios abertos">
+                {openDiscoveryUpcoming.map((t) => (
+                  <DiscoveryEventCard key={`open:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+          {nearbyUpcoming.length === 0 && openDiscoveryUpcoming.length === 0 && generalDiscoveryUpcoming.length > 0 ? (
+            <div className="home-discovery-block">
+              <div className="home-discovery-heading">
+                <strong>Destaques publicos</strong>
+                <span>Eventos disponiveis no app</span>
+              </div>
+              <div className="home-discovery-carousel" aria-label="Destaques publicos">
+                {generalDiscoveryUpcoming.map((t) => (
+                  <DiscoveryEventCard key={`general:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+          {upcoming.length === 0 ? (
+            <div className="home-empty-inline">
+              <strong>Nenhum evento publico em breve.</strong>
+              <button type="button" className="link" onClick={() => navigate("/locais?intent=matches")}>
+                Encontrar jogo
+              </button>
+            </div>
+          ) : null}
+        </section>
       ) : null}
-
-      {visibleUpcoming.map((t) => (
-        <EventCard key={t.id} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
-      ))}
     </AppShell>
   );
 }

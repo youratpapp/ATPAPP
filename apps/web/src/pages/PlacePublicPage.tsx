@@ -42,6 +42,7 @@ const BOOKING_DURATION_OPTIONS = [
 ];
 
 type PublicPlaceIntent = "overview" | "booking" | "academy" | "matches" | "plans";
+type PublicPlaceActionIntent = Exclude<PublicPlaceIntent, "overview">;
 
 type AcademyClassGroup = {
   key: string;
@@ -79,6 +80,18 @@ function datetimeLocalFromParam(value: string | null): string {
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return "";
   return datetimeLocalValue(d);
+}
+
+function dateInputFromDateTime(value: string): string {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return datetimeLocalValue(d).slice(0, 10);
+}
+
+function timeInputFromDateTime(value: string): string {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return datetimeLocalValue(d).slice(11, 16);
 }
 
 function defaultBookingStart(): string {
@@ -147,15 +160,11 @@ function buildAvailabilityTimes(): string[] {
   return BOOKING_TIME_OPTIONS;
 }
 
-function scrollToPublicSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
 function academyClassGroupKey(academyClass: AcademyClass): string {
   return [
     academyClass.placeId,
-    normalizeSearchText(academyClass.title),
     academyClass.coachId || normalizeSearchText(academyClass.coachName || ""),
+    academyClass.courtId || "",
     academyClass.startsAt.slice(0, 5),
     academyClass.endsAt.slice(0, 5),
     normalizeSearchText(academyClass.level || ""),
@@ -224,6 +233,11 @@ export function PlacePublicPage({ user, profile }: Props) {
   }>({ level: "", weekday: "", period: "", ageGroup: "", genderScope: "" });
   const [matchBusyId, setMatchBusyId] = useState("");
   const [matchFeedback, setMatchFeedback] = useState("");
+  const [matchFilter, setMatchFilter] = useState<{ date: string; level: string; period: DiscoveryPeriod }>({
+    date: "",
+    level: "",
+    period: "",
+  });
   const [channelFeedback, setChannelFeedback] = useState("");
   const [bookingDraft, setBookingDraft] = useState(() => {
     const startsAt = defaultBookingStart();
@@ -311,7 +325,6 @@ export function PlacePublicPage({ user, profile }: Props) {
               ? "Quadra e horario vieram da busca. Complete seus dados para solicitar."
               : "Confira a disponibilidade do horario antes de solicitar."
           );
-          window.setTimeout(() => document.getElementById("place-public-booking")?.scrollIntoView({ block: "start", behavior: "smooth" }), 80);
         }
         if (intent === "academy") {
           setAcademyFitFilter((prev) => ({ ...prev, level: requestedLevel || prev.level }));
@@ -327,7 +340,6 @@ export function PlacePublicPage({ user, profile }: Props) {
             notes: prev.notes || requestedLevel,
           }));
           setAcademyFeedback("Turma selecionada pela busca. Complete seus dados para enviar interesse.");
-          window.setTimeout(() => document.getElementById("place-public-academy")?.scrollIntoView({ block: "start", behavior: "smooth" }), 80);
         } else {
           setAcademyDraft((prev) => ({
             ...prev,
@@ -353,7 +365,7 @@ export function PlacePublicPage({ user, profile }: Props) {
   const activeCourts = courts.filter((court) => court.isActive);
   const activeClasses = classes.filter((academyClass) => academyClass.isActive);
   const activePlans = plans.filter((plan) => plan.isActive);
-  const pageIntent = (() => {
+  const rawPageIntent = (() => {
     const raw = new URLSearchParams(routeLocation.search).get("intent");
     return raw === "booking" || raw === "academy" || raw === "matches" || raw === "plans" ? raw : "overview";
   })() as PublicPlaceIntent;
@@ -392,11 +404,35 @@ export function PlacePublicPage({ user, profile }: Props) {
   const hasAcademyOffer = activeClasses.length > 0;
   const hasOpenMatches = matches.length > 0;
   const hasMembershipOffer = activePlans.length > 0;
+  const matchLevelOptions = Array.from(new Set(matches.map((match) => match.level || "").filter(Boolean))).sort((a, b) => a.localeCompare(b));
+  const filteredMatches = matches
+    .filter((match) => {
+      const matchDate = dateInputFromDateTime(match.startsAt);
+      const matchTime = timeInputFromDateTime(match.startsAt);
+      if (matchFilter.date && matchDate !== matchFilter.date) return false;
+      if (matchFilter.period && !periodMatchesTime(matchTime, matchFilter.period)) return false;
+      if (matchFilter.level && !normalizeSearchText(match.level || "").includes(normalizeSearchText(matchFilter.level))) return false;
+      return true;
+    })
+    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
+  const matchFiltersActive = Boolean(matchFilter.date || matchFilter.period || matchFilter.level);
+  const pageIntent: PublicPlaceIntent =
+    rawPageIntent !== "overview"
+      ? rawPageIntent
+      : hasBookableOffer
+        ? "booking"
+        : hasAcademyOffer
+          ? "academy"
+          : hasOpenMatches
+            ? "matches"
+            : hasMembershipOffer
+              ? "plans"
+              : "overview";
   const isFocusedIntent = pageIntent !== "overview";
-  const showBookingSection = hasBookableOffer && (!isFocusedIntent || pageIntent === "booking");
-  const showAcademySection = hasAcademyOffer && (!isFocusedIntent || pageIntent === "academy");
-  const showMatchesSection = hasOpenMatches && (!isFocusedIntent || pageIntent === "matches");
-  const showPlansSection = hasMembershipOffer && (!isFocusedIntent || pageIntent === "plans");
+  const showBookingSection = hasBookableOffer && pageIntent === "booking";
+  const showAcademySection = hasAcademyOffer && pageIntent === "academy";
+  const showMatchesSection = hasOpenMatches && pageIntent === "matches";
+  const showPlansSection = hasMembershipOffer && pageIntent === "plans";
   const heroOffer =
     pageIntent === "academy" && hasAcademyOffer
       ? cheapestClass
@@ -420,27 +456,27 @@ export function PlacePublicPage({ user, profile }: Props) {
         : "Turmas abertas para novos alunos"
     : "Clube esportivo aberto para comunidade";
   const heroOfferDetails = [
-    showBookingSection ? countLabel(activeCourts.length, "quadra", "quadras") : "",
-    showAcademySection ? countLabel(activeClasses.length, "turma", "turmas") : "",
-    showMatchesSection ? countLabel(matches.length, "jogo aberto", "jogos abertos") : "",
-    showPlansSection ? countLabel(activePlans.length, "plano", "planos") : "",
+    hasBookableOffer ? countLabel(activeCourts.length, "quadra", "quadras") : "",
+    hasAcademyOffer ? countLabel(activeClasses.length, "turma", "turmas") : "",
+    hasOpenMatches ? countLabel(matches.length, "jogo aberto", "jogos abertos") : "",
+    hasMembershipOffer ? countLabel(activePlans.length, "plano", "planos") : "",
   ].filter(Boolean).join(" | ") || "Informacoes publicas do local";
   const primaryCta =
     pageIntent === "academy" && hasAcademyOffer
-      ? { label: "Entrar em aula", sectionId: "place-public-academy" }
+      ? { label: "Entrar em aula", intent: "academy" as PublicPlaceActionIntent }
     : pageIntent === "booking" && hasBookableOffer
-      ? { label: "Reservar quadra", sectionId: "place-public-booking" }
+      ? { label: "Reservar quadra", intent: "booking" as PublicPlaceActionIntent }
     : pageIntent === "matches" && hasOpenMatches
-      ? { label: "Ver jogos", sectionId: "place-public-matches" }
+      ? { label: "Ver jogos", intent: "matches" as PublicPlaceActionIntent }
     : pageIntent === "plans" && hasMembershipOffer
-      ? { label: "Ver beneficios", sectionId: "place-public-plans" }
+      ? { label: "Ver beneficios", intent: "plans" as PublicPlaceActionIntent }
     : hasBookableOffer
-    ? { label: "Reservar quadra", sectionId: "place-public-booking" }
+    ? { label: "Reservar quadra", intent: "booking" as PublicPlaceActionIntent }
     : hasAcademyOffer
-      ? { label: "Entrar em aula", sectionId: "place-public-academy" }
+      ? { label: "Entrar em aula", intent: "academy" as PublicPlaceActionIntent }
       : hasOpenMatches
-        ? { label: "Ver jogos", sectionId: "place-public-matches" }
-        : { label: "Compartilhar local", sectionId: "" };
+        ? { label: "Ver jogos", intent: "matches" as PublicPlaceActionIntent }
+        : { label: "Compartilhar local", intent: null };
   const bookingDate = datePart(bookingDraft.startsAt) || availabilityDate || todayDateInputValue();
   const bookingTime = timePart(bookingDraft.startsAt);
   const bookingDuration = durationFromRange(bookingDraft.startsAt, bookingDraft.endsAt);
@@ -448,6 +484,7 @@ export function PlacePublicPage({ user, profile }: Props) {
   const selectedAcademyClasses = academyDraft.classIds
     .map((classId) => activeClasses.find((academyClass) => academyClass.id === classId))
     .filter(Boolean) as AcademyClass[];
+  const selectedAcademyClassIds = academyDraft.classIds;
   const selectedAcademyClass =
     filteredAcademyClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
     activeClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
@@ -480,6 +517,49 @@ export function PlacePublicPage({ user, profile }: Props) {
   const bookingProfileName = profile?.displayName || bookingDraft.playerName || user.email || "Jogador";
   const bookingProfilePhone = profile?.phone || bookingDraft.phone || "";
   const bookingNeedsContactCompletion = !bookingProfilePhone.trim();
+  const bookingSlotConfirmed = Boolean(
+    bookingDraft.courtId &&
+      bookingDraft.startsAt &&
+      bookingDraft.endsAt &&
+      availableCourts.some((court) => court.id === bookingDraft.courtId)
+  );
+  const courtAvailabilityCards = activeCourts.map((court) => ({
+    court,
+    slots: buildAvailabilityTimes().map((time) => {
+      const row = availabilityRows.find((item) => item.time === time);
+      const availableCourt = row?.courts.find((item) => item.id === court.id) || null;
+      return {
+        time,
+        availableCourt,
+        status: availableCourt ? "available" : availabilityLoaded ? "busy" : "idle",
+      };
+    }),
+  }));
+
+  useEffect(() => {
+    if (pageIntent !== "academy" || !filteredAcademyClassGroups.length) return;
+    const selectedStillVisible = filteredAcademyClassGroups.some((group) =>
+      group.classes.some((academyClass) => selectedAcademyClassIds.includes(academyClass.id))
+    );
+    if (selectedStillVisible && selectedAcademyClassIds.length) return;
+
+    const nextGroup = filteredAcademyClassGroups[0];
+    const nextClassIds = nextGroup.classes.map((academyClass) => academyClass.id);
+    setAcademyDraft((prev) => {
+      if (prev.classIds.join("|") === nextClassIds.join("|")) return prev;
+      return {
+        ...prev,
+        classIds: nextClassIds,
+        notes: prev.notes || academyFitFilter.level,
+      };
+    });
+  }, [academyFitFilter.level, filteredAcademyClassGroups, pageIntent, selectedAcademyClassIds]);
+
+  const goToPublicIntent = (intent: PublicPlaceActionIntent) => {
+    const next = new URLSearchParams(routeLocation.search);
+    next.set("intent", intent);
+    navigate({ pathname: routeLocation.pathname, search: `?${next.toString()}` }, { replace: false });
+  };
 
   const updateBookingRange = (date: string, time: string, duration = bookingDuration) => {
     const startsAt = combineDateAndTime(date, time);
@@ -493,14 +573,16 @@ export function PlacePublicPage({ user, profile }: Props) {
     setAvailabilityRows([]);
     setAvailabilityLoaded(false);
     updateBookingRange(date, bookingTime, Number(availabilityDurationMinutes) || bookingDuration);
+    window.setTimeout(() => void loadDayAvailability(date, Number(availabilityDurationMinutes) || bookingDuration), 0);
   };
 
   const updateAvailabilityDuration = (duration: string) => {
-    const minutes = Math.max(30, Math.min(240, Number(duration) || 60));
+    const minutes = Math.max(60, Math.min(120, Number(duration) || 60));
     setAvailabilityDurationMinutes(String(minutes));
     setAvailabilityRows([]);
     setAvailabilityLoaded(false);
     updateBookingRange(bookingDate, bookingTime, minutes);
+    window.setTimeout(() => void loadDayAvailability(availabilityDate, minutes), 0);
   };
 
   const resetAcademyFitFilter = () => {
@@ -554,42 +636,16 @@ export function PlacePublicPage({ user, profile }: Props) {
     setChannelFeedback("Codigo do widget copiado.");
   };
 
-  const checkAvailability = async () => {
-    if (!place || !bookingDraft.startsAt || !bookingDraft.endsAt) return;
-    setAvailabilityBusy(true);
-    setBookingFeedback("");
-    try {
-      const rows = await searchAvailableCourts({
-        placeId: place.id,
-        startsAt: new Date(bookingDraft.startsAt).toISOString(),
-        endsAt: new Date(bookingDraft.endsAt).toISOString(),
-      });
-      setAvailableCourts(rows);
-      if (rows[0]) {
-        setBookingDraft((prev) => ({ ...prev, courtId: rows[0]!.id }));
-      }
-      setBookingFeedback(
-        rows.length
-          ? `${rows.length} quadra(s) livre(s) neste horario. Escolha uma quadra e confirme seus dados.`
-          : "Nenhuma quadra livre neste horario. Tente outro horario ou entre na lista de espera."
-      );
-    } catch (err) {
-      setBookingFeedback(err instanceof Error ? err.message : "Nao foi possivel verificar disponibilidade.");
-    } finally {
-      setAvailabilityBusy(false);
-    }
-  };
-
-  const loadDayAvailability = async () => {
-    if (!place || !availabilityDate) return;
-    const duration = Math.max(30, Math.min(240, Number(availabilityDurationMinutes) || 60));
+  const loadDayAvailability = async (dateOverride = availabilityDate, durationOverride = Number(availabilityDurationMinutes) || 60) => {
+    if (!place || !dateOverride) return;
+    const duration = Math.max(60, Math.min(120, durationOverride));
     setAvailabilityBusy(true);
     setAvailabilityLoaded(false);
     setBookingFeedback("");
     try {
       const rows = await Promise.all(
         buildAvailabilityTimes().map(async (time) => {
-          const startsAt = combineDateAndTime(availabilityDate, time);
+          const startsAt = combineDateAndTime(dateOverride, time);
           const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
           const courts = await searchAvailableCourts({
             placeId: place.id,
@@ -603,7 +659,7 @@ export function PlacePublicPage({ user, profile }: Props) {
       setAvailabilityLoaded(true);
       const firstOpen = rows.find((row) => row.courts.length);
       if (firstOpen?.courts[0]) {
-        const startsAt = combineDateAndTime(availabilityDate, firstOpen.time);
+        const startsAt = combineDateAndTime(dateOverride, firstOpen.time);
         setBookingDraft((prev) => ({
           ...prev,
           courtId: firstOpen.courts[0]!.id,
@@ -612,7 +668,7 @@ export function PlacePublicPage({ user, profile }: Props) {
         }));
         setAvailableCourts(firstOpen.courts);
       }
-      setBookingFeedback(firstOpen ? "Escolha um horario livre abaixo." : "Nenhuma quadra livre neste dia para a duracao escolhida.");
+      setBookingFeedback(firstOpen ? "Escolha uma quadra e um horario livre no calendario abaixo." : "Nenhuma quadra livre neste dia para a duracao escolhida.");
     } finally {
       setAvailabilityBusy(false);
     }
@@ -762,15 +818,15 @@ export function PlacePublicPage({ user, profile }: Props) {
                 <ActionBar className="place-public-hero-actions" label="Acoes publicas do local">
                   <button
                     className="primary"
-                    onClick={() => (primaryCta.sectionId ? scrollToPublicSection(primaryCta.sectionId) : sharePlace())}
+                    onClick={() => (primaryCta.intent ? goToPublicIntent(primaryCta.intent) : sharePlace())}
                   >
                     {primaryCta.label}
                   </button>
-                  {!isFocusedIntent && hasBookableOffer && primaryCta.sectionId !== "place-public-booking" ? (
-                    <button className="secondary" onClick={() => scrollToPublicSection("place-public-booking")}>Reservar quadra</button>
+                  {hasBookableOffer && primaryCta.intent !== "booking" ? (
+                    <button className="secondary" onClick={() => goToPublicIntent("booking")}>Reservar quadra</button>
                   ) : null}
-                  {!isFocusedIntent && hasAcademyOffer && primaryCta.sectionId !== "place-public-academy" ? (
-                    <button className="secondary" onClick={() => scrollToPublicSection("place-public-academy")}>Ver aulas</button>
+                  {hasAcademyOffer && primaryCta.intent !== "academy" ? (
+                    <button className="secondary" onClick={() => goToPublicIntent("academy")}>Ver aulas</button>
                   ) : null}
                   {canOpenAdmin ? (
                     <button className="quiet" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
@@ -787,29 +843,29 @@ export function PlacePublicPage({ user, profile }: Props) {
             </section>
 
             <section className="place-public-action-rail" aria-label="O que fazer neste local">
-              {showBookingSection ? (
-                <button onClick={() => scrollToPublicSection("place-public-booking")}>
+              {hasBookableOffer ? (
+                <button className={pageIntent === "booking" ? "active" : undefined} onClick={() => goToPublicIntent("booking")}>
                   <span>Reservar</span>
                   <strong>Quadra</strong>
                   <small>{cheapestCourt ? `A partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}` : countLabel(activeCourts.length, "quadra", "quadras")}</small>
                 </button>
               ) : null}
-              {showAcademySection ? (
-                <button onClick={() => scrollToPublicSection("place-public-academy")}>
+              {hasAcademyOffer ? (
+                <button className={pageIntent === "academy" ? "active" : undefined} onClick={() => goToPublicIntent("academy")}>
                   <span>Aulas</span>
                   <strong>Entrar em turma</strong>
                   <small>{cheapestClass ? `A partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}` : countLabel(activeClasses.length, "turma", "turmas")}</small>
                 </button>
               ) : null}
-              {showMatchesSection ? (
-                <button onClick={() => scrollToPublicSection("place-public-matches")}>
+              {hasOpenMatches ? (
+                <button className={pageIntent === "matches" ? "active" : undefined} onClick={() => goToPublicIntent("matches")}>
                   <span>Jogos</span>
                   <strong>Jogo aberto</strong>
                   <small>{countLabel(matches.length, "opcao", "opcoes")}</small>
                 </button>
               ) : null}
-              {showPlansSection ? (
-                <button onClick={() => scrollToPublicSection("place-public-plans")}>
+              {hasMembershipOffer ? (
+                <button className={pageIntent === "plans" ? "active" : undefined} onClick={() => goToPublicIntent("plans")}>
                   <span>Planos</span>
                   <strong>Beneficios</strong>
                   <small>{countLabel(activePlans.length, "plano", "planos")}</small>
@@ -855,12 +911,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                         Duracao
                         <select value={availabilityDurationMinutes} onChange={(event) => updateAvailabilityDuration(event.target.value)}>
                           <option value="60">1h</option>
-                          <option value="90">1h30</option>
                           <option value="120">2h</option>
                         </select>
                       </label>
                       <button className="secondary" onClick={() => void loadDayAvailability()} disabled={availabilityBusy || !activeCourts.length}>
-                        {availabilityBusy ? "Buscando..." : "Ver horarios livres"}
+                        {availabilityBusy ? "Buscando..." : "Atualizar horarios"}
                       </button>
                     </div>
                   </section>
@@ -870,7 +925,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <b>2</b>
                       <div>
                         <strong>Qual horario?</strong>
-                        <small>Toque no slot desejado ou ajuste manualmente</small>
+                        <small>Arraste as quadras e toque em um horario livre</small>
                       </div>
                     </header>
 
@@ -881,24 +936,34 @@ export function PlacePublicPage({ user, profile }: Props) {
                       </div>
                     ) : null}
 
-                    {availableAvailabilityRows.length ? (
-                      <div className="place-public-availability-board" aria-label="Horarios livres por quadra">
-                        {availableAvailabilityRows.map((row) => (
-                          <div key={`slot:${row.time}`} className="available">
-                            <strong>{row.time}</strong>
-                            <div>
-                              {row.courts.map((court) => (
-                                <button
-                                  key={`${row.time}:${court.id}`}
-                                  className={selectedSlotKey === `${row.time}:${court.id}` ? "selected" : undefined}
-                                  onClick={() => selectAvailabilitySlot(row.time, court)}
-                                >
-                                  {court.name}
-                                  <small>{court.effectiveFeeCents ? formatMoneyFromCents(court.effectiveFeeCents) : selectedDurationLabel}</small>
-                                </button>
-                              ))}
+                    {availabilityLoaded && courtAvailabilityCards.length ? (
+                      <div className="place-public-court-carousel" aria-label="Calendario de quadras por hora">
+                        {courtAvailabilityCards.map(({ court, slots }) => (
+                          <article key={`court-calendar:${court.id}`} className="place-public-court-calendar-card">
+                            <header>
+                              <div>
+                                <strong>{court.name}</strong>
+                                <small>{[court.surface || "Piso a definir", court.bookingFeeCents ? formatMoneyFromCents(court.bookingFeeCents) : "Valor a combinar"].join(" | ")}</small>
+                              </div>
+                            </header>
+                            <div className="place-public-hour-list">
+                              {slots.map((slot) => {
+                                const isSelected = selectedSlotKey === `${slot.time}:${court.id}`;
+                                const isAvailable = Boolean(slot.availableCourt);
+                                return (
+                                  <button
+                                    key={`court-slot:${court.id}:${slot.time}`}
+                                    className={isSelected ? "selected" : slot.status}
+                                    disabled={!isAvailable}
+                                    onClick={() => (slot.availableCourt ? selectAvailabilitySlot(slot.time, slot.availableCourt) : undefined)}
+                                  >
+                                    <span>{slot.time}</span>
+                                    <small>{isAvailable ? "Livre" : "Ocupado"}</small>
+                                  </button>
+                                );
+                              })}
                             </div>
-                          </div>
+                          </article>
                         ))}
                       </div>
                     ) : null}
@@ -919,39 +984,6 @@ export function PlacePublicPage({ user, profile }: Props) {
                       </div>
                     ) : null}
 
-                    <div className="place-public-manual-slot">
-                      <label>
-                        Quadra
-                        <select
-                          value={bookingDraft.courtId}
-                          onChange={(event) => setBookingDraft((prev) => ({ ...prev, courtId: event.target.value }))}
-                        >
-                          <option value="">Selecione</option>
-                          {(availableCourts.length ? availableCourts : activeCourts).map((court) => {
-                            const effectiveFee = "effectiveFeeCents" in court ? Number(court.effectiveFeeCents) : Number(court.bookingFeeCents) || 0;
-                            return (
-                              <option key={court.id} value={court.id}>
-                                {court.name}
-                                {effectiveFee ? ` - ${formatMoneyFromCents(effectiveFee)}` : ""}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </label>
-                      <label>
-                        Horario
-                        <select value={bookingTime} onChange={(event) => updateBookingRange(bookingDate, event.target.value, Number(availabilityDurationMinutes) || bookingDuration)}>
-                          {BOOKING_TIME_OPTIONS.map((time) => (
-                            <option key={`booking-time:${time}`} value={time}>
-                              {time}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                      <button className="quiet" onClick={() => void checkAvailability()} disabled={availabilityBusy || !bookingDraft.startsAt || !bookingDraft.endsAt}>
-                        Verificar horario
-                      </button>
-                    </div>
                   </section>
 
                   <section className="place-public-booking-step">
@@ -1002,7 +1034,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <button
                         className="primary"
                         onClick={() => void requestBooking()}
-                        disabled={bookingBusy || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt || !bookingProfileName.trim()}
+                        disabled={bookingBusy || !bookingSlotConfirmed || !bookingProfileName.trim()}
                       >
                         {bookingBusy ? "Solicitando..." : "Solicitar reserva"}
                       </button>
@@ -1082,6 +1114,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <div>
                         <span>2</span>
                         <strong>Turmas com vaga</strong>
+                        <p>Escolha a turma e marque um ou mais dias recorrentes.</p>
                       </div>
                       <small>{countLabel(filteredAcademyClassGroups.length, "turma", "turmas")}</small>
                     </div>
@@ -1105,23 +1138,21 @@ export function PlacePublicPage({ user, profile }: Props) {
                                   <em>{academyClass.monthlyFeeCents ? formatMoneyFromCents(academyClass.monthlyFeeCents) : "Valor a combinar"}</em>
                                   <b>{group.availableSpots} vaga(s)</b>
                                 </button>
-                                {group.classes.length > 1 ? (
-                                  <div className="place-public-class-days" aria-label="Dias da turma">
-                                    {group.classes.map((classDay) => {
-                                      const checked = academyDraft.classIds.includes(classDay.id);
-                                      return (
-                                        <button
-                                          key={`class-day:${classDay.id}`}
-                                          type="button"
-                                          className={checked ? "selected" : ""}
-                                          onClick={() => toggleAcademyClassDay(classDay)}
-                                        >
-                                          {WEEKDAY_LABELS[classDay.weekday]} {classDay.startsAt.slice(0, 5)}
-                                        </button>
-                                      );
-                                    })}
-                                  </div>
-                                ) : null}
+                                <div className="place-public-class-days" aria-label="Dias da turma">
+                                  {group.classes.map((classDay) => {
+                                    const checked = academyDraft.classIds.includes(classDay.id);
+                                    return (
+                                      <button
+                                        key={`class-day:${classDay.id}`}
+                                        type="button"
+                                        className={checked ? "selected" : ""}
+                                        onClick={() => toggleAcademyClassDay(classDay)}
+                                      >
+                                        {WEEKDAY_LABELS[classDay.weekday]} {classDay.startsAt.slice(0, 5)}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
                               </article>
                             );
                           })}
@@ -1168,6 +1199,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                             .filter(Boolean)
                             .join(" | ")}
                         </small>
+                        <small>Ao aprovar, a academia ativa sua matricula vinculada ao seu perfil e ela aparece em Minhas aulas.</small>
                       </div>
                     ) : (
                       <p className="subtle">Selecione uma turma acima para enviar seu interesse.</p>
@@ -1306,7 +1338,7 @@ export function PlacePublicPage({ user, profile }: Props) {
             <div className="place-public-sticky-cta" aria-label="Acao rapida de reserva">
               <button
                 className="primary"
-                onClick={() => (primaryCta.sectionId ? scrollToPublicSection(primaryCta.sectionId) : sharePlace())}
+                onClick={() => (primaryCta.intent ? goToPublicIntent(primaryCta.intent) : sharePlace())}
               >
                 {primaryCta.label}
               </button>

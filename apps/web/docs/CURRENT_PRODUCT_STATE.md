@@ -64,10 +64,18 @@ Existe ainda uma camada publica:
 
 Atualizacao 2026-05-15:
 
-- a pagina publica de torneio tambem deixou de funcionar como pagina longa ancorada: `Evento`, `Categorias`, `Inscritos`, `Jogos`, `Classificacao` e `Chat` agora renderizam apenas o conteudo da intencao selecionada; classe/categoria virou filtro contextual no topo de Inscritos/Jogos/Classificacao, sem lista fixa de jogadores poluindo outras abas;
+- a Home do Player App deixou de funcionar como painel empilhado: a primeira dobra agora escolhe CTA contextual pela ordem `resultado pendente > atividade nas proximas 24h > convite pendente > inscricao incompleta > competicao em andamento > descoberta local`;
+- a secao pessoal foi renomeada para `Para voce` e so aparece quando existe dado real do usuario; empty states grandes de competicao foram removidos da Home principal;
+- a descoberta publica passou a usar trilhos horizontais/carrosseis de eventos, priorizando cidade do usuario, depois estado/regiao e, por ultimo, destaques gerais;
+- urgencias pessoais continuam aparecendo diretamente na primeira dobra ou no sino, sem serem jogadas para carrossel;
+- acessos profissionais/gestao permanecem separados em `Acesso profissional`, sem contaminar a Home de jogador comum;
+- a pagina publica de torneio tambem deixou de funcionar como pagina longa ancorada: `Evento`, `Inscritos`, `Jogos`, `Classificacao` e `Chat` agora renderizam apenas o conteudo da intencao selecionada; `Categorias` deixou de ser aba propria e virou seletor contextual unico nas areas que precisam de classe; inscritos usam a chave publica da classe, `Classificacao` so aparece publicamente quando ha fase de grupos, e `Encerramento / Podio por classe` fica na aba `Evento` apenas apos o torneio finalizar;
 - a pagina publica de liga deixou de funcionar como pagina longa ancorada: `Liga`, `Jogadores`, `Classificacao`, `Partidas` e `Chat` agora renderizam apenas o conteudo da intencao selecionada; classe virou filtro contextual no topo de Jogadores/Classificacao/Partidas, com menu publico arrastavel no mobile;
 - o sino de notificacoes do Player App deixou de abrir uma secao inline na Home: agora usa popover ancorado ao sino no desktop e bottom sheet com backdrop no mobile;
 - o fluxo Player de reservar quadra em `/locais?intent=booking` agora usa filtro guiado por UF, cidade, local, piso, data, hora e duracao;
+- o fluxo Player de encontrar jogo em `/locais?intent=matches` tambem usa filtro guiado por UF, cidade e local com opcoes dependentes dos locais que possuem chamadas abertas, evitando campos livres que nao levam a resultado real;
+- a pagina publica de local (`/locais/:placeId`) deixou de usar secoes ancoradas para `Reservar`, `Aulas`, `Jogos` e `Planos`: cada card troca a intencao e renderiza apenas a experiencia escolhida;
+- dentro do local, `Reservar` agora usa dia/duracao e um carrossel de quadras com horarios hora a hora, exibindo slots livres e ocupados antes da confirmacao;
 - UF/cidade/local sao derivados de locais com quadras ativas, reduzindo escolhas que nao levam a reserva real;
 - a busca de reserva aceita qualquer horario, periodo do dia e horas cheias, retornando a primeira disponibilidade por quadra;
 - o piso da quadra passou a ser dado operacional tambem no cadastro de quadra da gestao;
@@ -157,6 +165,7 @@ Ordem de foco:
 - 2026-05-15: `QA-CURRENT-P1-02` concluido. `/eventos/torneios?view=organizing` agora abre como lista operacional de torneios organizados: proximas acoes aparecem antes dos filtros, zeros foram removidos, indicadores viraram resumo compacto, filtros/lista completa ficam em disclosure e rows exibem status + acao primaria. Desktop 1366px e mobile 390px foram recapturados sem erro bruto, sem HTTP >= 400 e sem overflow. Evidencias em `web/docs/screenshots/qa-current-p1-02-2026-05-15/` e relatorio em `QA_CURRENT_P1_02_ORGANIZER_TOURNAMENTS_REPORT_2026_05_15.md`. A queue segue para `QA-CURRENT-P1-03`, auditoria 404/500 da Central de Gestao.
 - 2026-05-15: `QA-CURRENT-P1-03` concluido. `/gestao` deixou de executar dados opcionais de suporte na primeira dobra (`app_payments` para `court_booking`, que gerava `57014 statement timeout`): `fetchPlacesWorkspaceData` agora aceita `includeSupportData` e a Central usa `false`. Gestor, professor, recepcao e financeiro foram validados em mobile 390px com 0 respostas HTTP >= 400 e sem erro bruto. Evidencias em `web/docs/screenshots/qa-current-p1-03-2026-05-15/` e relatorio em `QA_CURRENT_P1_03_MANAGEMENT_CONSOLE_REPORT_2026_05_15.md`. Nao ha novo item ativo na Execution Queue.
 - 2026-05-15: `PLAYER-UX-04A` concluido. O fluxo `Entrar em aula` corrigiu o grid do filtro para nao cortar campos/CTA, agrupou turmas recorrentes equivalentes para escolha de um ou mais dias e deixou `/locais/:placeId?intent=academy` focado em aulas, sem misturar reserva, jogos, planos e quadras no corpo principal. O envio publico continua usando `createAcademyEnrollment` como solicitacao pendente por dia selecionado; contrato mensal completo segue no Management OS/Academia.
+- 2026-05-15: `PLAYER-PLACE-03` concluido. Na pagina publica do local, `Aulas` agora sincroniza a turma escolhida com o filtro visivel, agrupa recorrencias por dados operacionais em vez do nome literal, exibe chips para selecionar um ou mais dias e informa que a aprovacao da academia ativa a matricula vinculada ao perfil em `Minhas aulas`. Na Home, cards de aula/reposicao abrem direto o local em `intent=academy` quando ha `placeId`.
 
 ## Visual language consolidada
 
