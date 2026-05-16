@@ -103,6 +103,24 @@ import {
   toIsoFromDateTimeLocal,
 } from "../lib/tournament-page-utils";
 
+function resultSubmissionErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : "";
+  const normalized = message.toLowerCase();
+  if (normalized.includes("column reference") || normalized.includes("ambiguous")) {
+    return "Nao foi possivel enviar o resultado porque a rotina de placar do torneio precisa ser atualizada no banco.";
+  }
+  if (normalized.includes("envio de resultado por jogador desativado")) {
+    return "O envio de resultado por jogador esta desativado para este torneio.";
+  }
+  if (normalized.includes("nao autorizado")) {
+    return "Seu usuario nao tem permissao para enviar resultado desta partida.";
+  }
+  if (normalized.includes("placar vazio")) {
+    return "Informe o placar antes de enviar.";
+  }
+  return message || "Falha ao enviar resultado.";
+}
+
 type Props = {
   user: User;
   profile: Profile | null;
@@ -3879,7 +3897,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           : "Resultado enviado. Aguardando o outro lado ou revisao do organizador.",
       });
     } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao enviar resultado." });
+      console.error("Failed to submit tournament match result", err);
+      setFeedback({ kind: "error", text: resultSubmissionErrorMessage(err) });
     } finally {
       setResultSubmitting(false);
     }

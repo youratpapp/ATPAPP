@@ -238,6 +238,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     level: "",
     period: "",
   });
+  const [selectedPlanContext, setSelectedPlanContext] = useState<PlaceMembershipPlan | null>(null);
   const [channelFeedback, setChannelFeedback] = useState("");
   const [bookingDraft, setBookingDraft] = useState(() => {
     const startsAt = defaultBookingStart();
@@ -636,7 +637,11 @@ export function PlacePublicPage({ user, profile }: Props) {
     setChannelFeedback("Codigo do widget copiado.");
   };
 
-  const loadDayAvailability = async (dateOverride = availabilityDate, durationOverride = Number(availabilityDurationMinutes) || 60) => {
+  const loadDayAvailability = async (
+    dateOverride = availabilityDate,
+    durationOverride = Number(availabilityDurationMinutes) || 60,
+    preferredCourtId = bookingDraft.courtId
+  ) => {
     if (!place || !dateOverride) return;
     const duration = Math.max(60, Math.min(120, durationOverride));
     setAvailabilityBusy(true);
@@ -657,21 +662,45 @@ export function PlacePublicPage({ user, profile }: Props) {
       );
       setAvailabilityRows(rows);
       setAvailabilityLoaded(true);
+      const preferredOpen = preferredCourtId
+        ? rows
+            .map((row) => ({ row, court: row.courts.find((court) => court.id === preferredCourtId) || null }))
+            .find((item) => item.court)
+        : null;
       const firstOpen = rows.find((row) => row.courts.length);
-      if (firstOpen?.courts[0]) {
-        const startsAt = combineDateAndTime(dateOverride, firstOpen.time);
+      const nextRow = preferredOpen?.row || firstOpen;
+      const nextCourt = preferredOpen?.court || firstOpen?.courts[0] || null;
+      if (nextRow && nextCourt) {
+        const startsAt = combineDateAndTime(dateOverride, nextRow.time);
         setBookingDraft((prev) => ({
           ...prev,
-          courtId: firstOpen.courts[0]!.id,
+          courtId: nextCourt.id,
           startsAt,
           endsAt: addMinutesToDateTimeLocal(startsAt, duration),
         }));
-        setAvailableCourts(firstOpen.courts);
+        setAvailableCourts(nextRow.courts);
       }
       setBookingFeedback(firstOpen ? "Escolha uma quadra e um horario livre no calendario abaixo." : "Nenhuma quadra livre neste dia para a duracao escolhida.");
     } finally {
       setAvailabilityBusy(false);
     }
+  };
+
+  const openBookingForCourt = (court: PlaceCourt) => {
+    setBookingDraft((prev) => ({ ...prev, courtId: court.id }));
+    goToPublicIntent("booking");
+    window.setTimeout(() => void loadDayAvailability(availabilityDate, Number(availabilityDurationMinutes) || 60, court.id), 0);
+  };
+
+  const openAcademyForPlan = (plan: PlaceMembershipPlan) => {
+    setSelectedPlanContext(plan);
+    setAcademyDraft((prev) => ({
+      ...prev,
+      notes:
+        prev.notes ||
+        `Tenho interesse no plano ${plan.name} (${formatMoneyFromCents(plan.monthlyFeeCents)}) e quero organizar minhas aulas semanais.`,
+    }));
+    goToPublicIntent("academy");
   };
 
   const selectAvailabilitySlot = (time: string, court: AvailableCourt) => {
@@ -1055,6 +1084,22 @@ export function PlacePublicPage({ user, profile }: Props) {
                 <span>Aulas</span>
                 <h3>Escolha uma turma e envie interesse</h3>
                 <p className="subtle">O caminho aqui e para entrar em aula: filtre por perfil, escolha uma turma com vaga e mande seus dados ao local.</p>
+                {selectedPlanContext ? (
+                  <div className="place-public-selected-class">
+                    <span>Plano escolhido</span>
+                    <strong>{selectedPlanContext.name}</strong>
+                    <small>
+                      {[
+                        formatMoneyFromCents(selectedPlanContext.monthlyFeeCents),
+                        selectedPlanContext.courtDiscountPercent ? `${selectedPlanContext.courtDiscountPercent}% quadras` : "",
+                        selectedPlanContext.academyDiscountPercent ? `${selectedPlanContext.academyDiscountPercent}% academia` : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" | ")}
+                    </small>
+                    <small>Escolha abaixo os dias/turmas para a academia confirmar sua matricula.</small>
+                  </div>
+                ) : null}
                 <div className="place-public-class-flow">
                   <section>
                     <div className="place-public-booking-header">
@@ -1313,8 +1358,8 @@ export function PlacePublicPage({ user, profile }: Props) {
               <article id="place-public-plans">
                 <span>Planos</span>
                 <h3>Recorrencia e beneficios</h3>
-                {activePlans.slice(0, 4).map((plan) => (
-                  <div key={plan.id} className="place-public-row">
+                {activePlans.map((plan) => (
+                  <button key={plan.id} type="button" className="place-public-row place-public-row-action" onClick={() => openAcademyForPlan(plan)}>
                     <strong>{plan.name}</strong>
                     <small>
                       {[
@@ -1325,9 +1370,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                         .filter(Boolean)
                         .join(" | ")}
                     </small>
-                  </div>
+                    <em>Escolher plano e ver aulas</em>
+                  </button>
                 ))}
                 {!activePlans.length ? <p className="subtle">Planos ainda nao publicados.</p> : null}
+                <p className="subtle">Os planos atuais informam mensalidade e descontos. A quantidade de aulas por semana ainda depende da configuracao da matricula pela academia.</p>
               </article>
               ) : null}
 
@@ -1349,10 +1396,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                 <details>
                   <summary>Quadras e valores</summary>
                   {activeCourts.slice(0, 8).map((court) => (
-                    <div key={court.id} className="place-public-row">
+                    <button key={court.id} type="button" className="place-public-row place-public-row-action" onClick={() => openBookingForCourt(court)}>
                       <strong>{court.name}</strong>
                       <small>{[court.surface, court.bookingFeeCents ? formatMoneyFromCents(court.bookingFeeCents) : "valor a combinar"].filter(Boolean).join(" | ")}</small>
-                    </div>
+                      <em>Ver horarios desta quadra</em>
+                    </button>
                   ))}
                 </details>
               ) : null}

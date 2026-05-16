@@ -346,6 +346,13 @@ Status 2026-05-15:
 - nao limitar chamadas com `slice` silencioso;
 - proxima evolucao visual pode trocar o disclosure por bottom sheet mobile dedicado sem mudar backend.
 
+Complemento local publico 2026-05-15:
+
+- dentro de `/locais/:placeId?intent=matches`, o local ja esta definido, entao nao repetir UF/cidade/local;
+- filtrar chamadas por data, periodo e nivel;
+- mostrar contador do resultado filtrado;
+- nao esconder jogos com corte silencioso.
+
 ### Ao Selecionar Ver Locais
 
 Mostrar:
@@ -418,6 +425,9 @@ Se uma acao nao persistir:
 - jogador escolhe data/duracao e ve um calendario visual em carrossel por quadra;
 - horarios sao exibidos hora a hora como `Livre` ou `Ocupado`;
 - apenas slots livres sao acionaveis e levam a confirmacao;
+- `Quadras e valores` deve ser acionavel: clicar em uma quadra abre `Reservar` e carrega o calendario com preferencia por aquela quadra;
+- `Planos` deve ser acionavel: clicar em um plano abre `Aulas` com o contexto do plano escolhido;
+- o schema atual de plano publica mensalidade e descontos, nao quantidade de aulas semanais; automatizar aulas por plano exige evolucao de backend/modelo;
 - `createCourtBooking` cria a solicitacao;
 - `joinCourtBookingWaitlist` cria espera quando nao ha disponibilidade;
 - falta ainda evoluir a descoberta cross-local em `/locais?intent=booking` para cards de disponibilidade mais ricos, se a proxima rodada de QA pedir.

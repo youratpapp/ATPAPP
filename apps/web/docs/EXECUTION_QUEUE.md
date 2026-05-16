@@ -44,6 +44,41 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] COMP-SCORE-03 - Corrigir envio de placar por jogador no Supabase
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- erro real em `app_submit_tournament_match_result`;
+- print da sala de partida do jogador;
+- `CURRENT_PRODUCT_STATE.md`.
+
+Contexto:
+
+- ao enviar placar de uma partida do torneio, o Supabase retornava HTTP 400;
+- a UI mostrava erro tecnico bruto: `column reference "tournament_id" is ambiguous`;
+- a rotina SQL tinha conflito entre nomes de colunas de retorno e colunas da tabela em PL/pgSQL, semelhante ao bug ja corrigido anteriormente em confirmacao de presenca.
+
+Resultado:
+
+- criada migration `0090_fix_tournament_result_submission_ambiguity.sql`;
+- a funcao `public.app_submit_tournament_match_result(...)` agora usa `#variable_conflict use_column` e qualifica os agregadores com alias;
+- migration aplicada no Supabase alvo `xdopstommqojjofapzjl`;
+- verificado no banco que a funcao publicada contem o fix;
+- UI passou a traduzir erros de envio de resultado para mensagens amigaveis e registrar o erro tecnico apenas no console.
+
+Validacao:
+
+- migration aplicada via conexao PostgreSQL no Supabase alvo;
+- verificacao SQL confirmou `function fixed`;
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco restante:
+
+- se houver outro Supabase/ambiente sem a migration 0090, o frontend exibira mensagem amigavel, mas o envio real continuara dependendo da funcao atualizada no banco.
+
 ### [x] PLAYER-HOME-05 - Home mobile com primeira dobra contextual e descoberta leve
 
 Status: `[x]` concluido em 2026-05-15
@@ -179,6 +214,68 @@ Validacao:
 Risco restante:
 
 - o envio publico ainda cria uma solicitacao pendente por dia selecionado via `createAcademyEnrollment`; contrato mensal consolidado, cobranca recorrente e calendario semanal completo continuam pertencendo ao Management OS/Academia.
+
+### [x] PLAYER-PLACE-04 - Jogos abertos do local com filtros simples
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback do fluxo publico `Jogos abertos` na pagina do local;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`;
+- padrao v2 de listas acionaveis sem excesso de texto.
+
+Contexto:
+
+- `Jogos abertos` no local mostrava uma lista direta de chamadas, sem filtro de dia, periodo ou nivel;
+- a lista era limitada com `slice(0, 4)`, escondendo jogos sem deixar claro para o usuario;
+- como o usuario ja esta dentro de um local, repetir UF/cidade/local ali seria ruido.
+
+Resultado:
+
+- `Jogos abertos` ganhou filtros de data, periodo e nivel;
+- o contador mostra a quantidade filtrada;
+- `Limpar filtros` aparece apenas quando ha filtros ativos;
+- a lista nao usa mais corte silencioso de quatro itens;
+- mobile herda grid em uma coluna para nao encavalar campos.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+### [x] PLAYER-PLACE-05 - Planos e quadras como atalhos acionaveis
+
+Status: `[x]` concluido em 2026-05-15
+
+Fonte:
+
+- feedback da pagina publica do local;
+- regra de que valores publicados precisam levar ao proximo passo acionavel;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Contexto:
+
+- `Planos` e `Quadras e valores` apareciam como informacao passiva;
+- clicar em um plano deveria conduzir para a escolha de aulas/turmas;
+- clicar em uma quadra deveria conduzir para o calendario de reserva daquela quadra;
+- o modelo atual de `place_membership_plans` possui mensalidade e descontos, mas nao possui campo de quantidade de aulas semanais.
+
+Resultado:
+
+- planos publicados agora sao clicaveis e levam para `Aulas`, preservando contexto do plano escolhido no resumo do fluxo;
+- o interesse em aula recebe uma mensagem inicial com o plano escolhido para a academia avaliar;
+- quadras em `Quadras e valores` agora sao clicaveis e levam para `Reservar`, carregando o calendario de horarios com preferencia pela quadra escolhida;
+- linhas clicaveis receberam affordance visual sem transformar o bloco em dashboard pesado.
+
+Validacao:
+
+- `npm.cmd run lint`;
+- `npm.cmd run build`.
+
+Risco restante:
+
+- quantidade de aulas por plano ainda nao existe no schema de planos; para automatizar isso, sera necessario adicionar campo/configuracao de aulas semanais por plano ou separar `plano de socio` de `plano de aulas`.
 
 ### [x] COMP-PUBLIC-02B - Torneio publico com abas limpas por intencao
 

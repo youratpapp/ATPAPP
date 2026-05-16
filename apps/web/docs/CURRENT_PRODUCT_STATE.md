@@ -64,6 +64,7 @@ Existe ainda uma camada publica:
 
 Atualizacao 2026-05-15:
 
+- `COMP-SCORE-03` corrigiu o envio de placar por jogador em torneios: `app_submit_tournament_match_result` deixou de falhar com `column reference "tournament_id" is ambiguous`, a migration `0090` foi aplicada no Supabase alvo e a UI passou a mostrar erro amigavel se o banco estiver desatualizado.
 - a Home do Player App deixou de funcionar como painel empilhado: a primeira dobra agora escolhe CTA contextual pela ordem `resultado pendente > atividade nas proximas 24h > convite pendente > inscricao incompleta > competicao em andamento > descoberta local`;
 - a secao pessoal foi renomeada para `Para voce` e so aparece quando existe dado real do usuario; empty states grandes de competicao foram removidos da Home principal;
 - a descoberta publica passou a usar trilhos horizontais/carrosseis de eventos, priorizando cidade do usuario, depois estado/regiao e, por ultimo, destaques gerais;
@@ -166,6 +167,8 @@ Ordem de foco:
 - 2026-05-15: `QA-CURRENT-P1-03` concluido. `/gestao` deixou de executar dados opcionais de suporte na primeira dobra (`app_payments` para `court_booking`, que gerava `57014 statement timeout`): `fetchPlacesWorkspaceData` agora aceita `includeSupportData` e a Central usa `false`. Gestor, professor, recepcao e financeiro foram validados em mobile 390px com 0 respostas HTTP >= 400 e sem erro bruto. Evidencias em `web/docs/screenshots/qa-current-p1-03-2026-05-15/` e relatorio em `QA_CURRENT_P1_03_MANAGEMENT_CONSOLE_REPORT_2026_05_15.md`. Nao ha novo item ativo na Execution Queue.
 - 2026-05-15: `PLAYER-UX-04A` concluido. O fluxo `Entrar em aula` corrigiu o grid do filtro para nao cortar campos/CTA, agrupou turmas recorrentes equivalentes para escolha de um ou mais dias e deixou `/locais/:placeId?intent=academy` focado em aulas, sem misturar reserva, jogos, planos e quadras no corpo principal. O envio publico continua usando `createAcademyEnrollment` como solicitacao pendente por dia selecionado; contrato mensal completo segue no Management OS/Academia.
 - 2026-05-15: `PLAYER-PLACE-03` concluido. Na pagina publica do local, `Aulas` agora sincroniza a turma escolhida com o filtro visivel, agrupa recorrencias por dados operacionais em vez do nome literal, exibe chips para selecionar um ou mais dias e informa que a aprovacao da academia ativa a matricula vinculada ao perfil em `Minhas aulas`. Na Home, cards de aula/reposicao abrem direto o local em `intent=academy` quando ha `placeId`.
+- 2026-05-15: `PLAYER-PLACE-04` concluido. Na pagina publica do local, `Jogos abertos` ganhou filtros de data, periodo e nivel, contador filtrado e deixou de esconder chamadas com corte silencioso.
+- 2026-05-15: `PLAYER-PLACE-05` concluido. Na pagina publica do local, planos e quadras deixaram de ser informacao passiva: plano abre `Aulas` com contexto do plano escolhido, e quadra abre `Reservar` com calendario carregado preferindo aquela quadra. Quantidade de aulas por plano ainda nao existe no schema.
 
 ## Visual language consolidada
 
