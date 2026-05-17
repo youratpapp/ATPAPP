@@ -4,7 +4,7 @@ export type AppSurfaceMode = "player" | "competition" | "management";
 
 export type GlobalNavigationVisibility = {
   activeSurface: AppSurfaceMode;
-  contextLabel: "Modo jogador" | "Competicoes" | "Operacao";
+  contextLabel: "Jogador" | "Competições" | "Operação";
   showCompetitionManagement: boolean;
   showManagement: boolean;
 };
@@ -31,7 +31,7 @@ export function getGlobalNavigationVisibility(
   return {
     activeSurface,
     contextLabel:
-      activeSurface === "management" ? "Operacao" : activeSurface === "competition" ? "Competicoes" : "Modo jogador",
+      activeSurface === "management" ? "Operação" : activeSurface === "competition" ? "Competições" : "Jogador",
     showCompetitionManagement,
     showManagement,
   };

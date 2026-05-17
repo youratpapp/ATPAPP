@@ -1,6 +1,6 @@
 # Current Product State
 
-Nota 2026-05-16: `PLAYER-QA-POLISH-01` e `PLAYER-QA-POLISH-02` foram concluidos. A rodada fez polimento transversal de qualidade percebida no Player App: textos visiveis foram ajustados sem alterar tokens internos de rotas/abas/status, `Perfil > Preferencias` deixou de exibir linguagem tecnica, a acao destrutiva de conta ficou isolada, carregamentos principais passaram a usar `ScreenState` contextual, `Seguir` no Ranking deixou de competir com CTA primario, e acoes de partida no mobile ganharam alvo/estilo mais confortavel. Lint e build passaram. A proxima prioridade da queue e `PLAYER-QA-POLISH-03`, focada em navegacao e contexto.
+Nota 2026-05-16: `PLAYER-QA-POLISH-01`, `PLAYER-QA-POLISH-02` e `PLAYER-QA-POLISH-03` foram concluidos. A rodada fez polimento transversal de qualidade percebida no Player App: textos visiveis foram ajustados sem alterar tokens internos de rotas/abas/status, `Perfil > Preferencias` deixou de exibir linguagem tecnica, a acao destrutiva de conta ficou isolada, carregamentos principais passaram a usar `ScreenState` contextual, `Seguir` no Ranking deixou de competir com CTA primario, acoes de partida no mobile ganharam alvo/estilo mais confortavel, o contexto `Jogador` deixou de parecer seletor clicavel e paginas publicas de torneio/liga ganharam retorno/contexto mais claro para acesso por link ou notificacao. Lint e build passaram.
 
 Nota 2026-05-16: `COMP-COURTS-02` fechou o elo operacional entre Competition OS e Agenda. Torneios com quadras cadastradas sincronizam a agenda gerada com `court_bookings`: se o organizador administra o local, o bloqueio nasce automaticamente como `blocked`; se nao administra, a academia recebe uma solicitacao acionavel em `Gestao > Agenda` para autorizar/bloquear ou recusar. O setup do torneio mostra status por local para o organizador revisar agenda quando houver recusa ou conflito.
 
@@ -124,14 +124,13 @@ Gestao nao e uma variacao de Locais. Gestao e um sistema proprio.
 
 Ordem de foco:
 
-1. `PLAYER-QA-POLISH-03`: ajustes finos de navegacao e contexto do Player App.
-2. Player App v2: home por proxima acao, locais, reserva, aulas, jogar, ranking e perfil.
-3. Competition OS v2: separar jogador, publico, setup e operacao.
-4. Management OS v2: gestao por papel, fila antes de KPI, professor leve.
-5. Agenda e Academia como rotinas operacionais maduras.
-6. Financeiro, CRM e Cantina como filas/acesso por permissao.
-7. Paginas publicas sem vazamento de cockpit.
-8. QA por papel e auditoria visual contra o playbook.
+1. Player App v2: home por proxima acao, locais, reserva, aulas, jogar, ranking e perfil.
+2. Competition OS v2: separar jogador, publico, setup e operacao.
+3. Management OS v2: gestao por papel, fila antes de KPI, professor leve.
+4. Agenda e Academia como rotinas operacionais maduras.
+5. Financeiro, CRM e Cantina como filas/acesso por permissao.
+6. Paginas publicas sem vazamento de cockpit.
+7. QA por papel e auditoria visual contra o playbook.
 
 ## Atualizacoes recentes de QA
 

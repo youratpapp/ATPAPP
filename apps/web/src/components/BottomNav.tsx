@@ -146,7 +146,7 @@ export function BottomNav({ user }: { user: User }) {
 
   return (
     <nav className={navClassName} aria-label="Navegacao principal">
-      <div className="bottom-nav-brand" aria-hidden>
+      <div className="bottom-nav-brand" aria-label={`Area atual: ${contextLabel}`}>
         <img src={logoMark} alt="" />
         <span>{visibility.activeSurface === "management" ? "Gestao esportiva" : "ATP"}</span>
         <small className="bottom-nav-context">{contextLabel}</small>

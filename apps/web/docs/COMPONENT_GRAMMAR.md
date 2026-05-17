@@ -417,7 +417,7 @@ Visual:
 - item ativo com barra lateral ou capsule suave;
 - sem bordas pesadas em cada item.
 - desktop pode agrupar entradas globais em Jogar, Trabalho e Conta.
-- contexto atual pode aparecer como chip curto em linguagem natural, como `Modo jogador`, `Competicoes` ou `Operacao`.
+- contexto atual pode aparecer como chip curto em linguagem natural, como `Jogador`, `Competicoes` ou `Operacao`; se nao houver troca real de modo, o chip deve parecer informativo, nao clicavel.
 
 Mobile:
 

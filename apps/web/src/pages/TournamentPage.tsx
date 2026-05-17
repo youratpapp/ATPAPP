@@ -5075,7 +5075,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             <section className="tournament-public-event league-public-event league-public-page">
               <div className="competition-public-topbar" aria-label="Navegacao publica do torneio">
                 <button className="quiet" type="button" onClick={() => navigate(tournamentBackPath)}>
-                  Voltar
+                  Voltar para competições
                 </button>
                 <button className="quiet" type="button" onClick={shareTournamentInviteWhatsApp} disabled={saving}>
                   Compartilhar
@@ -5090,6 +5090,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     {[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"} | {formatTournamentDate(tournament.startsAt)}
                     {tournament.registrationCloseAt ? ` | Inscrições ate ${formatTournamentDateTime(tournament.registrationCloseAt)}` : ""}
                   </small>
+                  <p className="competition-public-context-note">Área do jogador. Inscrição, jogos e mensagens ficam separados por aba.</p>
                 </div>
                 <StatusBadge status={tournament.status} />
               </header>

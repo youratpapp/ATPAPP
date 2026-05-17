@@ -166,9 +166,9 @@ Entrega 2026-05-16:
 - `Excluir minha conta` ja havia sido isolado em zona destrutiva no sprint anterior;
 - validado com `npm.cmd run lint` e `npm.cmd run build`.
 
-### [>] PLAYER-QA-POLISH-03 - Ajustes finos de navegacao e contexto do Player App
+### [x] PLAYER-QA-POLISH-03 - Ajustes finos de navegacao e contexto do Player App
 
-Status: `[>]` prioridade atual
+Status: `[x]` concluido em 2026-05-16
 
 Fonte:
 
@@ -189,6 +189,15 @@ Criterio de conclusao:
 - navegacao continua simples;
 - nenhum item promete modo/acao que nao existe;
 - jogador entende onde esta sem precisar de breadcrumbs pesados.
+
+Entrega 2026-05-16:
+
+- `Competir` no nav global foi mantido como entrada para `/eventos`, preservando a superficie geral de competicoes; as subvisoes continuam sendo escolha interna do hub;
+- o chip visual `Modo jogador` no menu lateral deixou de parecer um seletor/pill clicavel e virou contexto neutro `Jogador`;
+- contextos `Competicoes` e `Operacao` passaram a aparecer com acento e como estados reais da superficie atual;
+- `Aulas` permanece como entrada por `Locais > Entrar em aula`, evitando criar uma rota paralela duplicada;
+- paginas publicas de torneio e liga ganharam retorno explicito `Voltar para competicoes` e nota curta de contexto para quem chega por link/notificacao;
+- validado com `npm.cmd run lint` e `npm.cmd run build`.
 
 ### [x] COMP-ORG-01 - Organizador de torneio/liga com paginas limpas por tarefa
 

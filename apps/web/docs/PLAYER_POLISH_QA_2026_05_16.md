@@ -39,16 +39,16 @@ Entrega em 2026-05-16:
 - `Excluir minha conta` permanece isolado em zona destrutiva;
 - validado com `npm.cmd run lint` e `npm.cmd run build`.
 
-## Próximo Sprint
+## PLAYER-QA-POLISH-03 - Concluído
 
-### PLAYER-QA-POLISH-03 - Navegação e contexto
+Entrega em 2026-05-16:
 
-Revisar:
-
-- se `Competir` no mobile deve abrir a superfície geral em vez de subview;
-- se `Modo jogador` vira seletor real de modo ou deixa de parecer clicável;
-- entrada direta para `Aulas` somente se não duplicar `Locais > Entrar em aula`;
-- contexto de páginas de detalhe quando o usuário chega por notificação/link direto.
+- `Competir` permanece como entrada para a superfície geral `/eventos`; o usuário escolhe o recorte dentro do hub, sem nova rota duplicada;
+- o contexto do menu lateral deixou de usar `Modo jogador` em formato de pill clicável e passou a exibir `Jogador` como rótulo neutro;
+- `Competições` e `Operação` aparecem com acento e continuam diferenciando superfícies reais;
+- `Aulas` permanece em `Locais > Entrar em aula`, evitando dois caminhos paralelos para a mesma intenção;
+- torneio e liga públicos mostram `Voltar para competições` e uma nota curta de contexto para acesso por link/notificação;
+- validado com `npm.cmd run lint` e `npm.cmd run build`.
 
 ## O Que Não Entra Agora
 
@@ -64,4 +64,6 @@ Revisar:
 - nenhuma mensagem técnica/de desenvolvimento aparece em `Perfil > Preferências`;
 - estados de loading principais são contextuais;
 - ações secundárias não competem com CTAs primários;
+- itens de navegação não prometem modo/ação inexistente;
+- páginas públicas de competição mantêm contexto claro sem breadcrumb pesado;
 - lint/build passam.

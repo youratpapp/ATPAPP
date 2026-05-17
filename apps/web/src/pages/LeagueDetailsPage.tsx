@@ -2126,7 +2126,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             <section className="tournament-public-event league-public-event league-public-page">
               <div className="competition-public-topbar" aria-label="Navegacao publica da liga">
                 <button className="quiet" type="button" onClick={() => navigate(leagueBackPath)}>
-                  Voltar
+                  Voltar para competições
                 </button>
                 <button className="quiet" type="button" onClick={() => void shareLeagueInviteWhatsApp()} disabled={busy}>
                   Compartilhar
@@ -2136,6 +2136,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 <div>
                   <span>Liga</span>
                   <h1>{league.name}</h1>
+                  <small>{[typeLabel(league.leagueType), selectedSeason?.name].filter(Boolean).join(" | ") || "Temporada a definir"}</small>
+                  <p className="competition-public-context-note">Área do jogador. Rodada, jogadores e chat ficam separados por aba.</p>
                 </div>
                 <span className={`status-badge ${league.status === "active" ? "live" : league.status === "finished" ? "finished" : "draft"}`}>
                   {statusLabel(league.status)}
