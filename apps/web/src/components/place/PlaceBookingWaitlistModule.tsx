@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import type { CourtBookingWaitlistEntry } from "../../lib/types";
 import { WorkspaceList, WorkspaceMetrics, WorkspaceRow } from "./PlaceWorkspaceUi";
 
+const DEFAULT_VISIBLE_ROWS = 24;
+
 type Props = {
   busy: boolean;
   canManageBookings: boolean;
@@ -30,6 +32,7 @@ export function PlaceBookingWaitlistModule({
   const [statusFilter, setStatusFilter] = useState<CourtBookingWaitlistEntry["status"] | "all">("all");
   const [dateFilter, setDateFilter] = useState("");
   const [query, setQuery] = useState("");
+  const [showAll, setShowAll] = useState(false);
   const normalizedQuery = query.trim().toLowerCase();
   const hasFilters = statusFilter !== "all" || Boolean(dateFilter) || Boolean(normalizedQuery);
   const filteredEntries = useMemo(() => {
@@ -45,6 +48,8 @@ export function PlaceBookingWaitlistModule({
       return true;
     });
   }, [dateFilter, entries, normalizedQuery, statusFilter]);
+  const shouldLimitRows = !hasFilters && !showAll && filteredEntries.length > DEFAULT_VISIBLE_ROWS;
+  const visibleEntries = shouldLimitRows ? filteredEntries.slice(0, DEFAULT_VISIBLE_ROWS) : filteredEntries;
 
   return (
     <WorkspaceList>
@@ -66,13 +71,26 @@ export function PlaceBookingWaitlistModule({
               setQuery("");
               setDateFilter("");
               setStatusFilter("all");
+              setShowAll(false);
             }}
           >
             Limpar filtros
           </button>
         ) : null}
       </div>
-      {filteredEntries.map((entry) => {
+      {filteredEntries.length ? (
+        <div className="booking-results-summary">
+          <span>
+            Mostrando {visibleEntries.length} de {filteredEntries.length} item(ns) da espera. {hasFilters ? "Filtros aplicados." : "Use filtros para reduzir a lista."}
+          </span>
+          {shouldLimitRows ? (
+            <button className="quiet" type="button" onClick={() => setShowAll(true)}>
+              Ver lista completa
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+      {visibleEntries.map((entry) => {
         const promotable = isPromotable(entry);
         return (
           <WorkspaceRow

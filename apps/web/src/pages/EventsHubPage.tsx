@@ -6,7 +6,7 @@ import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { loadMyLeagues } from "../lib/leagues";
 import type { LeagueSummary, Profile, TournamentSummary } from "../lib/types";
-import { buildTournamentUrl, loadDashboardData } from "../lib/tournaments";
+import { buildTournamentUrl, loadDashboardData, loadUpcomingPublic } from "../lib/tournaments";
 
 type Props = {
   user: User;
@@ -212,6 +212,26 @@ function HubItemCard({ title, meta, status, onOpen }: { title: string; meta: str
   );
 }
 
+function DiscoveryTournamentCard({ tournament, onOpen }: { tournament: TournamentSummary; onOpen: () => void }) {
+  const place = [tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir";
+  const date = tournament.startsAt ? new Date(tournament.startsAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }) : "Data a definir";
+  return (
+    <article className="competition-discovery-card">
+      <div>
+        <span>{statusLabel(tournament.status)}</span>
+        <strong>{tournament.name}</strong>
+        <small>{place}</small>
+      </div>
+      <footer>
+        <small>{date}</small>
+        <button type="button" onClick={onOpen}>
+          Abrir
+        </button>
+      </footer>
+    </article>
+  );
+}
+
 function CompetitionOperationRow({
   kind,
   title,
@@ -277,6 +297,7 @@ export function EventsHubPage({ user, profile }: Props) {
   const [activeMode, setActiveMode] = useState<HubMode>(() => modeFromSearch(location.search));
   const [participatingTournaments, setParticipatingTournaments] = useState<TournamentSummary[]>([]);
   const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
+  const [publicTournaments, setPublicTournaments] = useState<TournamentSummary[]>([]);
   const [leagues, setLeagues] = useState<LeagueSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -284,11 +305,12 @@ export function EventsHubPage({ user, profile }: Props) {
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    Promise.all([loadDashboardData(user), loadMyLeagues()])
-      .then(([dashboard, leagueRows]) => {
+    Promise.all([loadDashboardData(user), loadMyLeagues(), loadUpcomingPublic(12).catch(() => [] as TournamentSummary[])])
+      .then(([dashboard, leagueRows, publicRows]) => {
         if (!alive) return;
         setParticipatingTournaments(dashboard.participating);
         setOrganizingTournaments(dashboard.organizing);
+        setPublicTournaments(publicRows);
         setLeagues(leagueRows);
         setError("");
       })
@@ -323,6 +345,24 @@ export function EventsHubPage({ user, profile }: Props) {
     () => organizingLeagues.filter((league) => league.status !== "finished").slice(0, PREVIEW_LIMIT),
     [organizingLeagues]
   );
+  const discoveryTournaments = useMemo(() => {
+    const blockedIds = new Set([...participatingTournaments, ...organizingTournaments].map((item) => item.id));
+    const city = (profile?.city || "").trim().toLowerCase();
+    const state = (profile?.state || "").trim().toLowerCase();
+    return publicTournaments
+      .filter((tournament) => !blockedIds.has(tournament.id))
+      .sort((a, b) => {
+        const aCity = (a.city || "").trim().toLowerCase();
+        const bCity = (b.city || "").trim().toLowerCase();
+        const aState = (a.state || "").trim().toLowerCase();
+        const bState = (b.state || "").trim().toLowerCase();
+        const aScore = (city && aCity === city ? 0 : state && aState === state ? 1 : 2) + (a.status === "registration_open" ? -0.2 : 0);
+        const bScore = (city && bCity === city ? 0 : state && bState === state ? 1 : 2) + (b.status === "registration_open" ? -0.2 : 0);
+        if (aScore !== bScore) return aScore - bScore;
+        return (a.startsAt || "").localeCompare(b.startsAt || "");
+      })
+      .slice(0, 6);
+  }, [organizingTournaments, participatingTournaments, profile?.city, profile?.state, publicTournaments]);
   const playerCount = participatingTournaments.length + playingLeagues.length;
   const organizerCount = organizingTournaments.length + organizingLeagues.length;
   const activePlayerCount = activePlayingTournaments.length + activePlayingLeagues.length;
@@ -366,7 +406,7 @@ export function EventsHubPage({ user, profile }: Props) {
         <ScreenState
           kind="loading"
           title="Carregando competições"
-          detail="Organizando torneios, ligas e convites pelo seu papel."
+          detail="Separando competicoes para jogar, descobrir ou organizar conforme seu perfil."
         />
       ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
@@ -380,21 +420,21 @@ export function EventsHubPage({ user, profile }: Props) {
             active={activeMode === "playing"}
             onSelect={() => selectMode("playing")}
           />
+          <IntentPill
+            label="Descobrir"
+            detail="torneios e ligas"
+            active={activeMode === "discover"}
+            onSelect={() => selectMode("discover")}
+          />
           {showOrganizerMode ? (
             <IntentPill
               label="Organizando"
-              detail="operacao e publicacao"
+              detail="area separada"
               count={organizerCount}
               active={activeMode === "organizing"}
               onSelect={() => selectMode("organizing")}
             />
           ) : null}
-          <IntentPill
-            label="Descobrir"
-            detail="convites e entrada"
-            active={activeMode === "discover"}
-            onSelect={() => selectMode("discover")}
-          />
         </section>
       ) : null}
 
@@ -573,6 +613,33 @@ export function EventsHubPage({ user, profile }: Props) {
                 onOpen={() => selectMode("organizing")}
               />
             ) : null}
+          </div>
+          <div className="competition-discovery-section">
+            <div className="competition-discovery-head">
+              <div>
+                <span>Descoberta</span>
+                <strong>Eventos perto de voce</strong>
+              </div>
+              <button type="button" onClick={() => navigate("/eventos/torneios?view=participating")}>
+                Ver todos
+              </button>
+            </div>
+            {discoveryTournaments.length ? (
+              <div className="competition-discovery-carousel" aria-label="Eventos publicos perto de voce">
+                {discoveryTournaments.map((tournament) => (
+                  <DiscoveryTournamentCard
+                    key={`discover-tournament:${tournament.id}`}
+                    tournament={tournament}
+                    onOpen={() => navigate(buildTournamentUrl(tournament.id))}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="home-empty-panel compact">
+                <strong>Nenhum evento publico proximo agora</strong>
+                <span>Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas.</span>
+              </div>
+            )}
           </div>
         </section>
       ) : null}

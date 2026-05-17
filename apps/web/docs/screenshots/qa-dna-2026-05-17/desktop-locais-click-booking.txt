@@ -1,0 +1,74 @@
+loaded=true
+textLength=833
+
+Locais
+Encontrar jogo
+Chamadas abertas
+Reservar quadra
+Horarios livres
+Entrar em aula
+Turmas com vaga
+Ver locais
+Proximos e seguindo
+RESERVAR QUADRA
+Encontre quadras livres no horario
+Use cidade, data e hora para receber quadras disponíveis, sem misturar aulas ou planos.
+Busca por horario
+UF
+Todos
+MS
+MT
+CIDADE
+Todas
+Campo Grande
+Cuiaba
+Dourados
+LOCAL
+PISO
+Qualquer piso
+Saibro
+Sintetica
+DATA
+HORA
+Qualquer horario
+Manha
+Tarde
+Noite
+06:00
+07:00
+08:00
+09:00
+10:00
+11:00
+12:00
+13:00
+14:00
+15:00
+16:00
+17:00
+18:00
+19:00
+20:00
+21:00
+22:00
+23:00
+DURACAO
+1h
+2h
+FILTRO DE QUADRA
+Defina cidade, data e horario para ver quadras livres acionaveis.
+
+Não mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario.
+
+Buscar quadras
+ATP
+Jogador
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+TRABALHO
+Trabalho
+CONTA
+Perfil

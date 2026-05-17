@@ -1,0 +1,58 @@
+{
+  "route": "http://127.0.0.1:5178/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+  "generatedAt": "2026-05-17T18:33:38.034Z",
+  "desktop": {
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "width": 1366,
+    "height": 900,
+    "tabs": [
+      "Evento",
+      "Inscritos",
+      "Jogos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "activeTabs": [
+      "Jogos",
+      "Competir"
+    ],
+    "hasCategoriasTab": false,
+    "hasAdminTools": false,
+    "hasSummary": true,
+    "publicMatchRows": 11,
+    "hasExport": true,
+    "hasLongBracket": true,
+    "hasScheduleMicrocopy": true,
+    "sample": "Voltar para competições\nCompartilhar\nTORNEIO\nOpen ADT Dourados - Maio\nDourados - MS | 11 de jun de 2026 | Inscrições ate 03 de jun, 15:00\n\nÁrea do jogador. Inscrição, jogos e mensagens ficam separados por aba.\n\nEm andamento\nEvento\nInscritos\nJogos\nCLASSE\nJogos por categoria\nTroque o recorte sem misturar outras abas.\nJOGOS DA CLASSE\nMasculino / Classe A\nExportar chave\nRodada Preliminar - Jogo 10\nSofia Mendes x Joao Jardim\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 11\nWagner Duarte x Henrique Araujo\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 12\nFelipe Lopes x Mariana Almeida\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 13\nKarina Queiroz x Eduarda Esteves\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 14\nAline Fonseca x Pedro Vieira\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 15\nRafael Ferreira x Diego Castro\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 16\nGabriela Silva x Isabela Cardoso\nHorario e quadra a definir\nPendente\nOitavas - Jogo 1\nLucas Yamamoto x Bruno Nascimento\nHorario e quadra a definir\nPendente\nOitavas - Jogo 2\nWagner Fonseca x Olivia Oliveira\nHorario e quadra a definir\nPendente\nOitavas - Jogo 3\nThiago Teixeira x Valentina Borges\nHorario e quadra a definir\nPendente\nOitavas - Jogo 4\nQuiteria Dias x Camila Uchida\nHorario e quadra a definir\nPendente\nVISAO GERAL\nChave da classe\n\nMasculino / Classe A\n\nRodada Preliminar\nJogo 1\nLucas Yamamoto\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 2\nBruno Nascimento\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 3\nWagner Fonseca\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 4\nOlivia Oliveira\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 5\nThiago Teixeira\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 6\nValentina Borges\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 7\nQuiteria Dias\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 8\nCamila Uchida\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 9\nNicolas Henrique\nx\nBYE\nFinalizado\nPartida finalizada\nConferir resultado\n0 x 0\nJogo 10\nSofia Mendes\nx\nJoao Jardim\nPendente\nSem horario\nAguardar agenda\nJogo 11\nWagner Duarte\nx\nHenrique Araujo\nPendente\nSem horario\nAguardar agenda\nJogo 12\nFelipe Lopes\nx\nMariana Almeida\nPendente\nSem horario\nAguardar agenda\nJogo 13\nKarina Queiroz\nx\nEduarda Esteves\nPendente\nSem horario\nAguardar agenda\nJogo 14\nAline Fonseca\nx\nPedro Vieira\nPendente\nSem horario\nAguardar agenda\nJogo 15\nRafael Ferreira\n"
+  },
+  "mobile": {
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "width": 390,
+    "height": 844,
+    "tabs": [
+      "Evento",
+      "Inscritos",
+      "Jogos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "activeTabs": [
+      "Jogos",
+      "Competir"
+    ],
+    "hasCategoriasTab": false,
+    "hasAdminTools": false,
+    "hasSummary": true,
+    "publicMatchRows": 11,
+    "hasExport": true,
+    "hasLongBracket": true,
+    "hasScheduleMicrocopy": false,
+    "sample": "Voltar para competições\nCompartilhar\nTORNEIO\nOpen ADT Dourados - Maio\nDourados - MS | 11 de jun de 2026 | Inscrições ate 03 de jun, 15:00\n\nÁrea do jogador. Inscrição, jogos e mensagens ficam separados por aba.\n\nEm andamento\nEvento\nInscritos\nJogos\nVer jogos\nCLASSE\nJogos por categoria\nTroque o recorte sem misturar outras abas.\nMasculino / Classe A\n23\nMasculino / Classe B\n21\nJOGOS DA CLASSE\nMasculino / Classe A\nExportar chave\nRodada Preliminar - Jogo 10\nSofia Mendes x Joao Jardim\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 11\nWagner Duarte x Henrique Araujo\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 12\nFelipe Lopes x Mariana Almeida\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 13\nKarina Queiroz x Eduarda Esteves\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 14\nAline Fonseca x Pedro Vieira\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 15\nRafael Ferreira x Diego Castro\nHorario e quadra a definir\nPendente\nRodada Preliminar - Jogo 16\nGabriela Silva x Isabela Cardoso\nHorario e quadra a definir\nPendente\nOitavas - Jogo 1\nLucas Yamamoto x Bruno Nascimento\nHorario e quadra a definir\nPendente\nOitavas - Jogo 2\nWagner Fonseca x Olivia Oliveira\nHorario e quadra a definir\nPendente\nOitavas - Jogo 3\nThiago Teixeira x Valentina Borges\nHorario e quadra a definir\nPendente\nOitavas - Jogo 4\nQuiteria Dias x Camila Uchida\nHorario e quadra a definir\nPendente\nInicio\nCompetir\nLocais\nRanking\nPerfil"
+  }
+}

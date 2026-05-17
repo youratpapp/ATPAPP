@@ -1,0 +1,24 @@
+route: #/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores
+url: http://127.0.0.1:5173/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao
+action: clicked safe button: Classificação
+loaded: true
+waitMs: 2004
+markers: -
+
+Open ADT Dourados - Maio Dourados - MS Em andamento Voltar Resumo por classe Classe ativa Masculino / Classe A Masculino / Classe B Jogos 22 Classificação Organização Jogadores Chat Sem tabela para esta classe. ATP Competições JOGAR Inicio Competir Locais Ranking TRABALHO Organizar CONTA Perfil
+
+LINKS:
+
+BUTTONS:
+- Voltar
+- Jogos 22
+- Classificação
+- Organização
+- Jogadores
+- Chat
+- Inicio
+- Competir
+- Locais
+- Ranking
+- Organizar
+- Perfil

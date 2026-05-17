@@ -1,0 +1,5 @@
+hash=#/locais?intent=classes
+loaded=true
+textLength=340
+
+{"hash":"#/locais?intent=classes","title":"ATP — Amateur Tennis Platform","body":"Locais\nDESCOBERTA\nO que você quer encontrar?\n\nEscolha um caminho e veja apenas o que ajuda nessa ação.\n\nEncontrar jogo\nChamadas abertas\n27 chamadas abertas\nReservar quadra\nHorarios livres\n18 quadras ativas\nEntrar em aula\nTurmas com vaga\n96 turmas ativas\nVer locais\nProximos e seguindo\n3 locais\nInicio\nCompetir\nLocais\nRanking\nTrabalho\nPerfil"}

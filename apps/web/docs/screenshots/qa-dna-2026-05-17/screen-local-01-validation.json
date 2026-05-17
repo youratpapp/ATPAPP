@@ -1,0 +1,502 @@
+{
+  "generatedAt": "2026-05-17T17:10:39.286Z",
+  "desktopHome": {
+    "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+    "title": "ATP — Amateur Tennis Platform",
+    "forbidden": [],
+    "hasHero": true,
+    "textSample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras a partir de R$ 70,00\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nReservar quadra\nVer aulas\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nVISAO GERAL\nEscolha uma acao neste local\n\nAqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas para evitar mistura de fluxos.\n\nCompartilhar\nRESERVAR\n6 quadras ativas\nA partir de R$ 70,00\nAULAS\n3 turmas\nA partir de R$ 420,00\nJOGOS\n11 jogos abertos\n15 de mai.\nPLANOS\n2 planos\nBeneficios e recorrencia\nQuadra 1\nhard | R$ 70,00\nQuadra 2\nsintetica | R$ 70,00\nKids Iniciante 1\nSeg 06:30-07:30 | Caio Ferraz\nAvancado Ranking 1\nSeg 07:30-08:30 | Caio Ferraz\nATP\nJogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil",
+    "links": [
+      {
+        "text": "Voltar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "quiet"
+      },
+      {
+        "text": "Compartilhar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "quiet"
+      },
+      {
+        "text": "Reservar quadra",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "primary"
+      },
+      {
+        "text": "Ver aulas",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "secondary"
+      },
+      {
+        "text": "RESERVAR\nQuadra\nA partir de R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "AULAS\nEntrar em turma\nA partir de R$ 420,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "JOGOS\nJogo aberto\n11 opcoes",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "PLANOS\nBeneficios\n2 planos",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "SOBRE\nContato\nInformacoes do local",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Compartilhar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "secondary"
+      },
+      {
+        "text": "RESERVAR\n6 quadras ativas\nA partir de R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "AULAS\n3 turmas\nA partir de R$ 420,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "JOGOS\n11 jogos abertos\n15 de mai.",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "PLANOS\n2 planos\nBeneficios e recorrencia",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "Quadra 1\nhard | R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Quadra 2\nsintetica | R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Kids Iniciante 1\nSeg 06:30-07:30 | Caio Ferraz",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Avancado Ranking 1\nSeg 07:30-08:30 | Caio Ferraz",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Reservar quadra",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "primary"
+      },
+      {
+        "text": "Inicio",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Competir",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Locais",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "active"
+      },
+      {
+        "text": "Ranking",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Perfil",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      }
+    ],
+    "sections": [
+      "Dourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras",
+      "RESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBene",
+      "VISAO GERAL\nEscolha uma acao neste local\n\nAqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas",
+      "VISAO GERAL\nEscolha uma acao neste local\n\nAqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas"
+    ]
+  },
+  "mobileHome": {
+    "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+    "title": "ATP — Amateur Tennis Platform",
+    "forbidden": [],
+    "hasHero": true,
+    "textSample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras a partir de R$ 70,00\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nReservar quadra\nVer aulas\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nVISAO GERAL\nEscolha uma acao neste local\n\nAqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas para evitar mistura de fluxos.\n\nCompartilhar\nRESERVAR\n6 quadras ativas\nA partir de R$ 70,00\nAULAS\n3 turmas\nA partir de R$ 420,00\nJOGOS\n11 jogos abertos\n15 de mai.\nPLANOS\n2 planos\nBeneficios e recorrencia\nQuadra 1\nhard | R$ 70,00\nQuadra 2\nsintetica | R$ 70,00\nKids Iniciante 1\nSeg 06:30-07:30 | Caio Ferraz\nAvancado Ranking 1\nSeg 07:30-08:30 | Caio Ferraz\nReservar quadra\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "links": [
+      {
+        "text": "Voltar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "quiet"
+      },
+      {
+        "text": "Compartilhar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "quiet"
+      },
+      {
+        "text": "Reservar quadra",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "primary"
+      },
+      {
+        "text": "Ver aulas",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "secondary"
+      },
+      {
+        "text": "RESERVAR\nQuadra\nA partir de R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "AULAS\nEntrar em turma\nA partir de R$ 420,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "JOGOS\nJogo aberto\n11 opcoes",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "PLANOS\nBeneficios\n2 planos",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "SOBRE\nContato\nInformacoes do local",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Compartilhar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "secondary"
+      },
+      {
+        "text": "RESERVAR\n6 quadras ativas\nA partir de R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "AULAS\n3 turmas\nA partir de R$ 420,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "JOGOS\n11 jogos abertos\n15 de mai.",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "PLANOS\n2 planos\nBeneficios e recorrencia",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "place-public-overview-tile"
+      },
+      {
+        "text": "Quadra 1\nhard | R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Quadra 2\nsintetica | R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Kids Iniciante 1\nSeg 06:30-07:30 | Caio Ferraz",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Avancado Ranking 1\nSeg 07:30-08:30 | Caio Ferraz",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Reservar quadra",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "primary"
+      },
+      {
+        "text": "Inicio",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Competir",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Locais",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "active"
+      },
+      {
+        "text": "Ranking",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Perfil",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      }
+    ],
+    "sections": [
+      "Dourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras",
+      "RESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBene",
+      "VISAO GERAL\nEscolha uma acao neste local\n\nAqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas",
+      "VISAO GERAL\nEscolha uma acao neste local\n\nAqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas"
+    ]
+  },
+  "mobileReserva": {
+    "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reserva",
+    "title": "ATP — Amateur Tennis Platform",
+    "forbidden": [
+      "Reserve em poucos toques"
+    ],
+    "hasHero": true,
+    "textSample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras a partir de R$ 70,00\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nReservar quadra\nVer aulas\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nReserva\nReserve em poucos toques\n\nEscolha dia e duracao, toque em um horario livre e confirme seus dados.\n\n6\nquadras\n1\nQuando?\nDia e duracao da reserva\nDIA\nDURACAO\n1h\n2h\nAtualizar horários\n2\nQual horario?\nArraste as quadras e toque em um horario livre\nBusque o dia para ver somente os horários livres.\n3\nConfirmar\nDados para o local retornar\nQuadra 1\n2026-05-18 das 18:00 as 19:00 | 1h | Total R$ 70,00\nReserva vinculada ao perfil\nLivia Jogadora Pura\n+55 67 99940-0046\nOBSERVACAO\nSolicitar reserva\nLista de espera\nVer outros locais\nReservar quadra\nInicio\nCompetir\nLocais\nRanking\nPerfil",
+    "links": [
+      {
+        "text": "Voltar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "quiet"
+      },
+      {
+        "text": "Compartilhar",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "quiet"
+      },
+      {
+        "text": "Reservar quadra",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "primary"
+      },
+      {
+        "text": "Ver aulas",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "secondary"
+      },
+      {
+        "text": "RESERVAR\nQuadra\nA partir de R$ 70,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "active"
+      },
+      {
+        "text": "AULAS\nEntrar em turma\nA partir de R$ 420,00",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "JOGOS\nJogo aberto\n11 opcoes",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "PLANOS\nBeneficios\n2 planos",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "SOBRE\nContato\nInformacoes do local",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Atualizar horários",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "secondary"
+      },
+      {
+        "text": "Solicitar reserva",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "primary"
+      },
+      {
+        "text": "Lista de espera",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "secondary"
+      },
+      {
+        "text": "Ver outros locais",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "quiet"
+      },
+      {
+        "text": "Reservar quadra",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "primary"
+      },
+      {
+        "text": "Inicio",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Competir",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Locais",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": "active"
+      },
+      {
+        "text": "Ranking",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      },
+      {
+        "text": "Perfil",
+        "tag": "BUTTON",
+        "href": "",
+        "cls": ""
+      }
+    ],
+    "sections": [
+      "Dourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras",
+      "RESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBene",
+      "Reserva\nReserve em poucos toques\n\nEscolha dia e duracao, toque em um horario livre e confirme seus dados.\n\n6\nquadras\n1\nQ",
+      "Reserva\nReserve em poucos toques\n\nEscolha dia e duracao, toque em um horario livre e confirme seus dados.\n\n6\nquadras\n1\nQ",
+      "1\nQuando?\nDia e duracao da reserva\nDIA\nDURACAO\n1h\n2h\nAtualizar horários",
+      "2\nQual horario?\nArraste as quadras e toque em um horario livre\nBusque o dia para ver somente os horários livres.",
+      "3\nConfirmar\nDados para o local retornar\nQuadra 1\n2026-05-18 das 18:00 as 19:00 | 1h | Total R$ 70,00\nReserva vinculada a"
+    ]
+  },
+  "routeChecks": [
+    {
+      "slug": "reserva",
+      "key": "booking",
+      "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reserva",
+      "forbidden": [
+        "Reserve em poucos toques"
+      ],
+      "sample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras a partir de R$ 70,00\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nReservar quadra\nVer aulas\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nReserva\nReserve em poucos toques\n\nEscolha dia e duracao, toque"
+    },
+    {
+      "slug": "aulas",
+      "key": "academy",
+      "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "forbidden": [
+        "Enviar interesse"
+      ],
+      "sample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nTurmas a partir de R$ 420,00\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nEntrar em aula\nReservar quadra\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nAulas\nEscolha uma turma e envie interesse\n\nO caminho aqui"
+    },
+    {
+      "slug": "jogos",
+      "key": "matches",
+      "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/jogos",
+      "forbidden": [
+        "Jogos abertos"
+      ],
+      "sample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\n11 jogos abertos\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nVer jogos\nReservar quadra\nVer aulas\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nComunidade\nJogos abertos\n\nFiltre por dia, periodo e nivel para e"
+    },
+    {
+      "slug": "planos",
+      "key": "plans",
+      "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/planos",
+      "forbidden": [
+        "Recorrencia e beneficios"
+      ],
+      "sample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\n2 planos publicados\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nVer beneficios\nReservar quadra\nVer aulas\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nPlanos\nRecorrencia e beneficios\nSocio Essencial\nR$ 159,0"
+    },
+    {
+      "slug": "sobre",
+      "key": "about",
+      "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "forbidden": [
+        "Quadras e valores"
+      ],
+      "sample": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras a partir de R$ 70,00\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nReservar quadra\nVer aulas\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nSOBRE O LOCAL\nADT Dourados\n\nAcademia completa com reservas, au"
+    }
+  ]
+}

@@ -140,6 +140,12 @@ function buildTournamentCourtLabel(placeName: string, courtName: string): string
   return [placeName, courtName].map((part) => part.trim()).filter(Boolean).join(" · ");
 }
 
+function formatPublicGroupLabel(value: string): string {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  return /^grupo\b/i.test(raw) ? raw : `Grupo ${raw}`;
+}
+
 type Props = {
   user: User;
   profile: Profile | null;
@@ -395,6 +401,16 @@ type PlayerTournamentMatch = {
   title: string;
   status: "done" | "pending";
   score: string;
+};
+type PublicTournamentMatchRow = {
+  id: string;
+  phaseLabel: string;
+  matchLabel: string;
+  playerA: string;
+  playerB: string;
+  status: "done" | "pending";
+  score: string;
+  scheduleText: string;
 };
 type PlayerMatchResultDraft = {
   matchId: string;
@@ -1244,6 +1260,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [classes, setClasses] = useState<LegacyClassRef[]>([]);
   const [activeClassKey, setActiveClassKey] = useState("");
   const [publicActiveTab, setPublicActiveTab] = useState<PublicTournamentTab>("evento");
+  const [publicParticipantSearch, setPublicParticipantSearch] = useState("");
+  const [organizerFocus, setOrganizerFocus] = useState<"overview" | "classes" | "config">("overview");
   const [agendaConfig, setAgendaConfig] = useState<AgendaConfig>(normalizeAgendaConfig(null));
   const [agenda, setAgenda] = useState<Agenda>(normalizeAgenda(null));
   const [agendaDirty, setAgendaDirty] = useState(false);
@@ -1470,8 +1488,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       }),
     [classes]
   );
+  const hasPublicClassificationData = useMemo(
+    () => classes.some((c) => Object.keys(c.data.tabelaPorGrupo || {}).length > 0),
+    [classes]
+  );
   const canSeeClassificationTab = canManageMatches || hasGroupClasses;
-  const canSeePublicClassificationTab = hasGroupClasses;
+  const canSeePublicClassificationTab = hasPublicClassificationData;
   const canUseChatTab = canManageComms || tournament?.role === "participant";
   const currentAdminPhaseKey = tournament
     ? tournamentAdminPhaseFor(
@@ -1489,7 +1511,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         canSeeClassificationTab,
         canUseChatTab,
         hideGamesInSetup: canManageTournament && currentAdminPhaseKey === "setup",
-        hideOrganization: currentAdminPhaseKey === "live" || currentAdminPhaseKey === "finished",
+        hideOrganization: false,
         hidePlayers: currentAdminPhaseKey === "finished",
       })
     : requestedTab;
@@ -1584,6 +1606,44 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       pendingMatches: Math.max(0, all.length - done),
     };
   }, [activeClass]);
+  const publicActiveClassMatchRows = useMemo<PublicTournamentMatchRow[]>(() => {
+    if (!activeClass) return [];
+    const rows: PublicTournamentMatchRow[] = [];
+    const pushMatch = (
+      match: GroupMatch | KnockoutMatch,
+      phaseLabel: string,
+      phaseKey: string,
+      matchIndex: number,
+      matchLabel: string
+    ) => {
+      if (!isRealMatch(match.a, match.b)) return;
+      const scheduled = agendaAssignmentByMatchKey.get(
+        buildScheduleMatchKey(activeClass.categoryName, activeClass.className, phaseLabel, matchIndex)
+      );
+      rows.push({
+        id: `${activeClass.key}:${phaseKey}:${matchIndex}`,
+        phaseLabel,
+        matchLabel,
+        playerA: String(match.a || "A definir"),
+        playerB: String(match.b || "A definir"),
+        status: match.done ? "done" : "pending",
+        score: formatMatchScoreValues(match.s1, match.s2, match.scoreLabel, Boolean(match.done), activeClass.data.config),
+        scheduleText: scheduled ? formatAssignmentTime(scheduled) : "Horario e quadra a definir",
+      });
+    };
+
+    (activeClass.data.grupos || []).forEach((group) => {
+      (group.matches || []).forEach((match, index) => {
+        pushMatch(match, group.name, `group:${group.name}`, index, `Partida ${index + 1}`);
+      });
+    });
+    (activeClass.data.knockout?.rounds || []).forEach((round, roundIndex) => {
+      (round.matches || []).forEach((match, index) => {
+        pushMatch(match, round.name, `ko:${roundIndex}`, index, `Jogo ${index + 1}`);
+      });
+    });
+    return rows;
+  }, [activeClass, agendaAssignmentByMatchKey]);
   const tournamentPodiumRows = useMemo(() => {
     return classes.map((cls) => {
       const classLabel = `${cls.categoryName} / ${cls.className}`;
@@ -1824,18 +1884,23 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       playerClassesSummary.map((item) => {
         const key = scopeClassKey(item.categoryId, item.classId);
         const ref = classes.find((cls) => cls.key === key);
+        const approvedRegistrations = registrations.filter(
+          (registration) =>
+            registration.status === "approved" &&
+            scopeClassKey(registration.categoryId, registration.classId) === key
+        ).length;
         return {
           key,
           label: `${item.categoryName} / ${item.className}`,
           categoryName: item.categoryName,
           className: item.className,
-          players: item.participantes.length,
+          players: Math.max(item.participantes.length, approvedRegistrations),
           generated: Boolean(ref?.data.gerado),
           model: ref ? competitionModelLabel(ref.data.config) : "Formato a definir",
           active: activeClass?.key === key,
         };
       }),
-    [activeClass?.key, classes, playerClassesSummary]
+    [activeClass?.key, classes, playerClassesSummary, registrations]
   );
   const publicActiveClassKey = useMemo(() => {
     if (!publicClassCards.length) return "";
@@ -1843,29 +1908,77 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     return publicClassCards[0].key;
   }, [activeClassKey, publicClassCards]);
   const publicParticipantRows = useMemo(
-    () =>
-      playerClassesSummary
-        .flatMap((item) =>
-          item.participantes.map((participant, index) => ({
-            id: `${item.categoryId}:${item.classId}:${participant.nome}:${index}`,
+    () => {
+      const rows = new Map<
+        string,
+        {
+          id: string;
+          categoryName: string;
+          className: string;
+          classKey: string;
+          group: string;
+          name: string;
+        }
+      >();
+      registrations
+        .filter((registration) => registration.status === "approved")
+        .forEach((registration) => {
+          const name = String(registration.playerName || "").trim();
+          if (!name) return;
+          const classKey = scopeClassKey(registration.categoryId, registration.classId);
+          rows.set(`${classKey}:${name.toLowerCase()}`, {
+            id: `registration:${registration.id}`,
+            categoryName: registration.categoryName,
+            className: registration.className,
+            classKey,
+            group: "",
+            name,
+          });
+        });
+      playerClassesSummary.forEach((item) => {
+        const classKey = scopeClassKey(item.categoryId, item.classId);
+        item.participantes.forEach((participant, index) => {
+          const name = String(participant.nome || "").trim();
+          if (!name) return;
+          const key = `${classKey}:${name.toLowerCase()}`;
+          if (rows.has(key)) {
+            const existing = rows.get(key);
+            if (existing && participant.grupo) rows.set(key, { ...existing, group: participant.grupo });
+            return;
+          }
+          rows.set(key, {
+            id: `participant:${item.categoryId}:${item.classId}:${name}:${index}`,
             categoryName: item.categoryName,
             className: item.className,
-            classKey: scopeClassKey(item.categoryId, item.classId),
+            classKey,
             group: participant.grupo || "",
-            name: String(participant.nome || "").trim(),
-          }))
-        )
-        .filter((participant) => participant.name)
-        .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")),
-    [playerClassesSummary]
+            name,
+          });
+        });
+      });
+      return Array.from(rows.values()).sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
+    },
+    [playerClassesSummary, registrations]
   );
   const publicParticipantRowsForActiveClass = useMemo(
-    () =>
-      publicActiveClassKey
+    () => {
+      const search = publicParticipantSearch.trim().toLowerCase();
+      return (publicActiveClassKey
         ? publicParticipantRows.filter((participant) => participant.classKey === publicActiveClassKey)
-        : publicParticipantRows,
-    [publicActiveClassKey, publicParticipantRows]
+        : publicParticipantRows
+      ).filter((participant) => {
+        if (!search) return true;
+        return `${participant.name} ${participant.categoryName} ${participant.className}`.toLowerCase().includes(search);
+      });
+    },
+    [publicActiveClassKey, publicParticipantRows, publicParticipantSearch]
   );
+  const publicClassificationActiveClass = useMemo(() => {
+    if (!activeClass) return classes.find((cls) => Object.keys(cls.data.tabelaPorGrupo || {}).length > 0) ?? null;
+    if (Object.keys(activeClass.data.tabelaPorGrupo || {}).length > 0) return activeClass;
+    return classes.find((cls) => Object.keys(cls.data.tabelaPorGrupo || {}).length > 0) ?? null;
+  }, [activeClass, classes]);
+  const visibleClassificationClass = isPublicTournamentReader ? publicClassificationActiveClass : activeClass;
   const publicTournamentCta = useMemo(() => {
     if (!tournament) {
       return {
@@ -1930,6 +2043,22 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       label: tournament.status === "finished" ? "Ver resultados" : "Ver jogos",
     };
   }, [myPendingMatches.length, myTournamentMatches.length, myTournamentRegistration, tournament]);
+  const publicPersonalStatus = useMemo(() => {
+    if (!myTournamentRegistration) return null;
+    if (myTournamentRegistration.status === "approved") {
+      return { label: "Inscricao aprovada", tone: "success" };
+    }
+    if (myTournamentRegistration.status === "pending") {
+      return { label: "Inscricao em analise", tone: "warning" };
+    }
+    if (myTournamentRegistration.status === "waitlist") {
+      return { label: "Lista de espera", tone: "warning" };
+    }
+    if (myTournamentRegistration.status === "rejected") {
+      return { label: "Inscricao recusada", tone: "danger" };
+    }
+    return { label: "Inscricao registrada", tone: "neutral" };
+  }, [myTournamentRegistration]);
   const unavailableConfirmationGroups = useMemo(() => {
     return Array.from(confirmationByMatch.values())
       .map((rows) => rows.filter((confirmation) => confirmation.status === "unavailable"))
@@ -1986,13 +2115,21 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       canSeeClassificationTab,
       canUseChatTab,
       hideGamesInSetup: canManageTournament && tournamentAdminPhase.key === "setup",
-      hideOrganization: tournamentAdminPhase.key === "live" || tournamentAdminPhase.key === "finished",
+      hideOrganization: false,
       hidePlayers: tournamentAdminPhase.key === "finished",
     });
     navigate(
       `/eventos/${encodeURIComponent(tournamentId)}/${allowed}`,
       { replace: false }
     );
+  };
+
+  const goToOrganizerSection = (sectionId: "setup-basics" | "setup-classes") => {
+    setOrganizerFocus(sectionId === "setup-classes" ? "classes" : "config");
+    goToTab("organizacao");
+    window.setTimeout(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   };
 
   const goToPublicTab = (next: PublicTournamentTab) => {
@@ -2020,6 +2157,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   const renderPublicTournamentClassFilter = (title: string, detail: string) => {
     if (publicClassCards.length < 2) return null;
+    const shouldUseSelect = publicClassCards.length > 6;
     return (
       <section className="league-public-class-filter tournament-public-class-filter" aria-label="Filtro de classe do torneio">
         <div>
@@ -2027,16 +2165,32 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           <strong>{title}</strong>
           <small>{detail}</small>
         </div>
-        <label>
-          <span>Filtrar classe</span>
-          <select value={publicActiveClassKey} onChange={(event) => setActiveClassKey(event.target.value)}>
+        {shouldUseSelect ? (
+          <label>
+            <span>Filtrar classe</span>
+            <select value={publicActiveClassKey} onChange={(event) => setActiveClassKey(event.target.value)}>
+              {publicClassCards.map((item) => (
+                <option key={`public-filter-select:${item.key}`} value={item.key}>
+                  {item.label} - {item.players} inscritos
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : (
+          <div className="league-public-class-chip-rail" aria-label="Classes do torneio">
             {publicClassCards.map((item) => (
-              <option key={`public-filter-select:${item.key}`} value={item.key}>
+              <button
+                key={`public-filter-chip:${item.key}`}
+                type="button"
+                className={item.key === publicActiveClassKey ? "active" : ""}
+                onClick={() => setActiveClassKey(item.key)}
+              >
                 {item.label}
-              </option>
+                <span>{item.players}</span>
+              </button>
             ))}
-          </select>
-        </label>
+          </div>
+        )}
       </section>
     );
   };
@@ -2045,8 +2199,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     if (!tournamentId || !(canManageTournament || canManagePlayers || canManageMatches || canManageComms)) return;
     const hiddenByPhase =
       (canManageTournament && tournamentAdminPhase.key === "setup" && tab === "jogos") ||
-      (tournamentAdminPhase.key === "live" && tab === "organizacao") ||
-      (tournamentAdminPhase.key === "finished" && (tab === "organizacao" || tab === "jogadores"));
+      (tournamentAdminPhase.key === "finished" && tab === "jogadores");
     if (!hiddenByPhase || tab === tournamentAdminPhase.primaryTab) return;
     const next = coerceTournamentTabForCapabilities(tournamentAdminPhase.primaryTab, {
       canManageTournament,
@@ -2055,7 +2208,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       canSeeClassificationTab,
       canUseChatTab,
       hideGamesInSetup: canManageTournament && tournamentAdminPhase.key === "setup",
-      hideOrganization: tournamentAdminPhase.key === "live" || tournamentAdminPhase.key === "finished",
+      hideOrganization: false,
       hidePlayers: tournamentAdminPhase.key === "finished",
     });
     navigate(`/eventos/${encodeURIComponent(tournamentId)}/${next}`, { replace: true });
@@ -2077,17 +2230,32 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     if (!isPublicTournamentReader) return;
     if (forcedTab === "classificacao" && !canSeePublicClassificationTab) {
       setPublicActiveTab("jogos");
+      if (tournamentId) {
+        navigate(`/eventos/${encodeURIComponent(tournamentId)}/jogos`, { replace: true });
+      }
+      return;
+    }
+    if (forcedTab === "jogadores") {
+      setPublicActiveTab("inscritos");
       return;
     }
     if (forcedTab === "jogos" || forcedTab === "classificacao" || forcedTab === "chat") {
       setPublicActiveTab(forcedTab);
     }
-  }, [canSeePublicClassificationTab, forcedTab, isPublicTournamentReader]);
+  }, [canSeePublicClassificationTab, forcedTab, isPublicTournamentReader, navigate, tournamentId]);
 
   useEffect(() => {
+    if (publicActiveTab === "classificacao" && publicClassificationActiveClass) return;
     if (!isPublicTournamentReader || !publicActiveClassKey || activeClassKey === publicActiveClassKey) return;
     setActiveClassKey(publicActiveClassKey);
-  }, [activeClassKey, isPublicTournamentReader, publicActiveClassKey]);
+  }, [activeClassKey, isPublicTournamentReader, publicActiveClassKey, publicActiveTab, publicClassificationActiveClass]);
+
+  useEffect(() => {
+    if (!isPublicTournamentReader || publicActiveTab !== "classificacao" || !publicClassificationActiveClass) return;
+    if (activeClassKey === publicClassificationActiveClass.key) return;
+    if (activeClass && Object.keys(activeClass.data.tabelaPorGrupo || {}).length > 0) return;
+    setActiveClassKey(publicClassificationActiveClass.key);
+  }, [activeClass, activeClassKey, isPublicTournamentReader, publicActiveTab, publicClassificationActiveClass]);
 
   const pinnedChatMessage = useMemo(
     () => chatMessages.find((m) => m.isPinned) ?? null,
@@ -2417,9 +2585,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
   useEffect(() => {
     if (!tournamentId || !tournament || !forcedTab) return;
+    if (isPublicTournamentReader && forcedTab === "jogadores") return;
     if (tab === forcedTab) return;
     navigate(`/eventos/${encodeURIComponent(tournamentId)}/${tab}`, { replace: true });
-  }, [tournamentId, tournament, forcedTab, tab, navigate]);
+  }, [forcedTab, isPublicTournamentReader, navigate, tab, tournament, tournamentId]);
 
   useEffect(() => {
     if (!tournament) return;
@@ -3589,7 +3758,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     const pad = 44;
     const courtRows = Array.from(byCourt.entries());
     const rowH = 34;
-    const headerH = 160;
+    const titleLines = wrapSvgText(tournament.name, width - pad * 2, 42, 2);
+    const headerH = 118 + titleLines.length * 46;
     const courtGap = 24;
     const courtHeights = courtRows.map(([, rows]) => 58 + Math.max(1, rows.length) * rowH + 18);
     const height = Math.max(760, headerH + courtHeights.reduce((sum, item) => sum + item + courtGap, 0) + pad);
@@ -3601,8 +3771,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     out.push(`<rect x="24" y="24" width="${width - 48}" height="${height - 48}" rx="24" fill="#ffffff" stroke="#dbe5ee"/>`);
     out.push(`<text x="${pad}" y="${y}" font-family="Inter, Arial, sans-serif" font-size="20" fill="#16804e" font-weight="900">AGENDA POR QUADRA</text>`);
     y += 42;
-    out.push(`<text x="${pad}" y="${y}" font-family="Inter, Arial, sans-serif" font-size="42" fill="#081225" font-weight="900">${escXml(tournament.name)}</text>`);
-    y += 34;
+    titleLines.forEach((line, index) => {
+      out.push(`<text x="${pad}" y="${y + index * 46}" font-family="Inter, Arial, sans-serif" font-size="42" fill="#081225" font-weight="900">${escXml(line)}</text>`);
+    });
+    y += titleLines.length * 46;
     out.push(`<text x="${pad}" y="${y}" font-family="Inter, Arial, sans-serif" font-size="18" fill="#66758c">${escXml(`Partidas alocadas: ${agenda.assignments.length}/${agenda.total}${agenda.unassigned > 0 ? ` | sem encaixe: ${agenda.unassigned}` : ""}`)}</text>`);
     y += 48;
 
@@ -5123,6 +5295,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <div className="tournament-public-title-row">
                     <span>Evento</span>
                     <StatusBadge status={tournament.status} />
+                    {publicPersonalStatus ? (
+                      <span className={`tournament-public-personal-status ${publicPersonalStatus.tone}`}>
+                        {publicPersonalStatus.label}
+                      </span>
+                    ) : null}
                   </div>
                   <h2>{tournament.name}</h2>
                   <div className="tournament-public-meta">
@@ -5210,8 +5387,26 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <h2>Inscritos</h2>
                   <span>{publicParticipantRowsForActiveClass.length} {publicParticipantRowsForActiveClass.length === 1 ? "jogador" : "jogadores"}</span>
                 </div>
+                <div className="competition-public-list-toolbar">
+                  <label>
+                    <span>Buscar inscrito</span>
+                    <input
+                      type="search"
+                      value={publicParticipantSearch}
+                      onChange={(event) => setPublicParticipantSearch(event.target.value)}
+                      placeholder="Nome do jogador"
+                    />
+                  </label>
+                </div>
                 {publicParticipantRowsForActiveClass.length === 0 ? (
-                  <p className="subtle">Nenhum inscrito confirmado para exibicao publica ainda.</p>
+                  <div className="home-empty-panel compact">
+                    <strong>Nenhum inscrito encontrado</strong>
+                    <span>
+                      {publicParticipantSearch.trim()
+                        ? "Tente outro nome ou troque a classe selecionada."
+                        : "Ainda nao ha inscritos confirmados para exibicao publica nesta classe."}
+                    </span>
+                  </div>
                 ) : (
                   <div className="competition-public-person-list">
                     {publicParticipantRowsForActiveClass.map((participant) => (
@@ -5220,7 +5415,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                           <strong>{participant.name}</strong>
                           <span>{participant.categoryName} / {participant.className}</span>
                         </div>
-                        {participant.group ? <small>Grupo {participant.group}</small> : null}
+                        {participant.group ? <small>{formatPublicGroupLabel(participant.group)}</small> : null}
                       </article>
                     ))}
                   </div>
@@ -5325,6 +5520,55 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               </strong>
             </button>
             {canManageTournament ? (
+              <div className="tournament-organizer-workspace-map" aria-label="Areas do organizador">
+                <button
+                  type="button"
+                  className={organizerFocus === "overview" ? "active" : ""}
+                  onClick={() => {
+                    setOrganizerFocus("overview");
+                    goToTab("organizacao");
+                  }}
+                >
+                  <span>Visao geral</span>
+                  <strong>Fila e publicacao</strong>
+                </button>
+                <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("jogadores"); }}>
+                  <span>Inscricoes</span>
+                  <strong>{tournamentOverview.pendingRegistrations} pendente(s)</strong>
+                </button>
+                <button
+                  type="button"
+                  className={organizerFocus === "classes" ? "active" : ""}
+                  onClick={() => goToOrganizerSection("setup-classes")}
+                >
+                  <span>Categorias</span>
+                  <strong>{classes.length} classe(s)</strong>
+                </button>
+                <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("jogos"); }}>
+                  <span>Jogos e agenda</span>
+                  <strong>{tournamentOverview.pendingMatches} pendente(s)</strong>
+                </button>
+                {canSeeClassificationTab ? (
+                  <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("classificacao"); }}>
+                    <span>Resultados</span>
+                    <strong>Classificacao</strong>
+                  </button>
+                ) : null}
+                <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("chat"); }}>
+                  <span>Comunicacao</span>
+                  <strong>Avisos e chat</strong>
+                </button>
+                <button
+                  type="button"
+                  className={organizerFocus === "config" ? "active" : ""}
+                  onClick={() => goToOrganizerSection("setup-basics")}
+                >
+                  <span>Configuracao</span>
+                  <strong>Dados e agenda</strong>
+                </button>
+              </div>
+            ) : null}
+            {canManageTournament ? (
               <div className="tournament-phase-flow">
                 {TOURNAMENT_ADMIN_PHASES.map((phase) => (
                   <button
@@ -5366,7 +5610,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     Excluir torneio
                   </button>
                 </div>
-                <div className="cluster">
+                <div className="cluster tournament-chat-head-actions">
                   <button onClick={exportBackupJson} disabled={saving}>
                     Backup
                   </button>
@@ -5603,7 +5847,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           ) : null}
 
           {(!isPublicTournamentReader || publicActiveTab === "jogos") && tab === "jogos" ? (
-            <section className="card tournament-games-card">
+            <section className={`card tournament-games-card ${isPublicTournamentReader ? "public-reader" : ""}`}>
               {isPublicTournamentReader ? renderPublicTournamentClassFilter("Jogos por categoria", "Troque o recorte sem misturar outras abas.") : null}
               {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
               {activeClass && canManageMatches ? (
@@ -5637,6 +5881,41 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <span className="match-card-origin">Jogador</span>
                   </div>
                 </>
+              ) : null}
+
+              {isPublicTournamentReader && activeClass ? (
+                <div className="tournament-public-match-summary">
+                  <div className="tournament-public-match-summary-head">
+                    <div>
+                      <span>Jogos da classe</span>
+                      <h3>{activeClass.categoryName} / {activeClass.className}</h3>
+                    </div>
+                    {publicExportClass ? (
+                      <button className="secondary" type="button" onClick={() => void exportActiveClassPng(publicExportClass)} disabled={saving}>
+                        Exportar chave
+                      </button>
+                    ) : null}
+                  </div>
+                  {publicActiveClassMatchRows.length === 0 ? (
+                    <div className="home-empty-panel compact">
+                      <strong>Jogos ainda nao publicados</strong>
+                      <span>Quando a organizacao gerar a chave, partidas e horarios aparecem aqui.</span>
+                    </div>
+                  ) : (
+                    <div className="tournament-public-match-list">
+                      {publicActiveClassMatchRows.map((match) => (
+                        <article key={`public-match:${match.id}`} className={`tournament-public-match-row ${match.status}`}>
+                          <div>
+                            <span>{match.phaseLabel} - {match.matchLabel}</span>
+                            <strong>{match.playerA} x {match.playerB}</strong>
+                            <small>{match.scheduleText}</small>
+                          </div>
+                          <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ) : null}
 
               {isPublicTournamentReader && agendaByCourt.length ? (
@@ -6058,20 +6337,20 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           (isPublicTournamentReader ? canSeePublicClassificationTab : canSeeClassificationTab) ? (
             <section className="card">
               {isPublicTournamentReader ? renderPublicTournamentClassFilter("Classificação por categoria", "Troque o recorte sem sair da classificação.") : null}
-              {!activeClass ? <p className="subtle">Sem classe ativa.</p> : null}
-              {activeClass
-                ? Object.keys(activeClass.data.tabelaPorGrupo).map((groupName) => {
-                    const rows = activeClass.data.tabelaPorGrupo[groupName] ?? [];
-                    const qualifiedCount = Math.max(0, Number(activeClass.data.config.classificadosPorGrupo || 0));
+              {!visibleClassificationClass ? <p className="subtle">Sem classe ativa.</p> : null}
+              {visibleClassificationClass
+                ? Object.keys(visibleClassificationClass.data.tabelaPorGrupo).map((groupName) => {
+                    const rows = visibleClassificationClass.data.tabelaPorGrupo[groupName] ?? [];
+                    const qualifiedCount = Math.max(0, Number(visibleClassificationClass.data.config.classificadosPorGrupo || 0));
                     return (
-                      <div key={`${activeClass.key}:table:${groupName}`} style={{ marginBottom: 14 }}>
+                      <div key={`${visibleClassificationClass.key}:table:${groupName}`} style={{ marginBottom: 14 }}>
                         <h3 style={{ marginBottom: 8 }}>{groupName}</h3>
                         {rows.length === 0 ? <p className="subtle">Sem dados de classificação.</p> : null}
                         {rows.map((row, idx) => {
                           const qualified = qualifiedCount > 0 && idx < qualifiedCount;
                           return (
                           <div
-                            key={`${activeClass.key}:table:${groupName}:${idx}`}
+                            key={`${visibleClassificationClass.key}:table:${groupName}:${idx}`}
                             style={{
                               borderTop: "1px solid var(--color-border)",
                               padding: "8px 0",
@@ -6090,13 +6369,18 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     );
                   })
                 : null}
-              {activeClass && Object.keys(activeClass.data.tabelaPorGrupo).length === 0 ? (
-                <p className="subtle">Sem tabela para esta classe.</p>
+              {visibleClassificationClass && Object.keys(visibleClassificationClass.data.tabelaPorGrupo).length === 0 ? (
+                <div className="home-empty-panel compact">
+                  <strong>Classificacao ainda nao publicada</strong>
+                  <span>Quando houver fase de grupos com tabela gerada, os dados aparecem aqui.</span>
+                </div>
               ) : null}
             </section>
           ) : null}
 
-          {tab === "organizacao" && canManageTournament && tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished" ? (
+          {tab === "organizacao" &&
+          canManageTournament &&
+          (organizerFocus !== "overview" || (tournamentAdminPhase.key !== "live" && tournamentAdminPhase.key !== "finished")) ? (
             <section className="card">
               <h3 style={{ marginTop: 0 }}>Organização do torneio</h3>
               <div className="setup-overview">
@@ -7111,9 +7395,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           ) : null}
 
           {(!isPublicTournamentReader || publicActiveTab === "chat") && tab === "chat" && canUseChatTab ? (
-            <section className="card">
-              <div className="section-title" style={{ marginBottom: 8 }}>
-                <h3 style={{ marginTop: 0 }}>Chat do torneio</h3>
+            <section className={`card tournament-chat-card ${isPublicTournamentReader ? "public-reader" : ""}`}>
+              <div className="section-title tournament-chat-head">
+                <div>
+                  <span>Comunicacao</span>
+                  <h3>{isPublicTournamentReader ? "Avisos e chat" : "Chat do torneio"}</h3>
+                </div>
                 <div className="cluster">
                   <button onClick={() => void refreshChat(true)} disabled={chatBusy || chatLoading}>
                     Atualizar
@@ -7127,34 +7414,26 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               </div>
 
               {pinnedChatMessage ? (
-                <article
-                  style={{
-                    border: "1px solid #93c5fd",
-                    borderRadius: 10,
-                    background: "#eff6ff",
-                    padding: 10,
-                    marginBottom: 10,
-                  }}
-                >
-                  <p style={{ margin: 0, fontWeight: 700, color: "#1e3a8a" }}>Mensagem fixada</p>
-                  <p style={{ margin: "6px 0 4px 0" }}>{pinnedChatMessage.body}</p>
-                  <p className="subtle" style={{ margin: 0 }}>
+                <article className="tournament-chat-pinned">
+                  <strong>Mensagem fixada</strong>
+                  <p>{pinnedChatMessage.body}</p>
+                  <small>
                     {pinnedChatMessage.messageType === "announcement" ? "Aviso" : "Mensagem"} de {pinnedChatMessage.senderName} em{" "}
                     {new Date(pinnedChatMessage.createdAt).toLocaleString("pt-BR")}
-                  </p>
+                  </small>
                 </article>
               ) : null}
 
               {canManageComms ? (
-                <div className="tournament-admin-ops" style={{ marginBottom: 10 }}>
-                  <h4 style={{ marginTop: 0, marginBottom: 8 }}>Aviso do admin</h4>
+                <div className="tournament-admin-ops tournament-chat-admin-tools">
+                  <h4>Aviso do admin</h4>
                   <textarea
                     value={announcementText}
                     onChange={(e) => setAnnouncementText(e.target.value)}
                     placeholder="Escreva um aviso para todos os participantes"
                     rows={3}
                   />
-                  <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                  <label>
                     <input
                       type="checkbox"
                       checked={pinAnnouncement}
@@ -7162,7 +7441,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     />
                     Fixar este aviso no topo
                   </label>
-                  <div className="cluster" style={{ marginTop: 8 }}>
+                  <div className="cluster">
                     <button
                       className="primary"
                       onClick={() => void postAnnouncementNow()}
@@ -7174,16 +7453,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </div>
               ) : null}
 
-              <div
-                style={{
-                  border: "1px solid var(--color-border)",
-                  borderRadius: 10,
-                  padding: 10,
-                  maxHeight: 380,
-                  overflow: "auto",
-                  background: "var(--color-surface-muted)",
-                }}
-              >
+              <div className="tournament-chat-list">
                 {chatLoading ? <p className="subtle">Carregando chat...</p> : null}
                 {!chatLoading && chatMessages.length === 0 ? <p className="subtle">Ainda sem mensagens no chat.</p> : null}
                 {chatMessages.map((m) => {
@@ -7191,31 +7461,24 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   return (
                     <div
                       key={m.id}
-                      style={{
-                        background: mine ? "var(--color-primary-soft)" : "#ffffff",
-                        border: "1px solid var(--color-border)",
-                        borderRadius: 10,
-                        padding: 8,
-                        marginBottom: 8,
-                      }}
+                      className={`tournament-chat-message ${mine ? "mine" : "other"} ${m.messageType}`}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
-                        <strong style={{ fontSize: 12 }}>
-                          {m.messageType === "announcement" ? "AVISO · " : ""}
+                      <div className="tournament-chat-message-meta">
+                        <strong>
+                          {m.messageType === "announcement" ? "AVISO - " : ""}
                           {m.senderName}
                         </strong>
-                        <span className="subtle" style={{ fontSize: 11 }}>
+                        <span>
                           {new Date(m.createdAt).toLocaleString("pt-BR")}
                         </span>
                       </div>
-                      <p style={{ margin: 0, whiteSpace: "pre-wrap" }}>{m.body}</p>
+                      <p>{m.body}</p>
                       {canManageComms ? (
-                        <div className="cluster" style={{ marginTop: 6 }}>
+                        <div className="cluster tournament-chat-message-actions">
                           <button
                             className="ghost"
                             onClick={() => void pinMessageNow(m.id)}
                             disabled={chatBusy}
-                            style={{ minHeight: 30, padding: "4px 10px" }}
                           >
                             {m.isPinned ? "Fixada" : "Fixar"}
                           </button>
@@ -7223,7 +7486,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                             className="danger"
                             onClick={() => void deleteChatMessageNow(m.id)}
                             disabled={chatBusy}
-                            style={{ minHeight: 30, padding: "4px 10px" }}
                           >
                             Excluir
                           </button>
@@ -7234,9 +7496,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 })}
               </div>
 
-              <div className="cluster" style={{ marginTop: 10, alignItems: "flex-end" }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ marginTop: 0 }}>Nova mensagem</label>
+              <div className="cluster tournament-chat-compose">
+                <div>
+                  <label>Nova mensagem</label>
                   <textarea
                     value={chatText}
                     onChange={(e) => setChatText(e.target.value)}

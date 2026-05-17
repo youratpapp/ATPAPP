@@ -1,0 +1,78 @@
+hash=#/locais?intent=matches
+loaded=true
+textLength=2120
+
+Locais
+Encontrar jogo
+Chamadas abertas
+Reservar quadra
+Horarios livres
+Entrar em aula
+Turmas com vaga
+Ver locais
+Proximos e seguindo
+Encontrar jogoEntre em uma chamada aberta ou crie uma combinacao simples para jogar.
+27 jogos abertos
+BUSCA RAPIDA
+Mostre jogos que combinam com você
+Use poucos filtros e entre direto na chamada quando fizer sentido.
+8 chamadas encontradas
+Ajustar filtros
+MS | Dourados | Todos locais | Qualquer dia | Qualquer horario
+Não encontrou um jogo bom?
+Crie uma chamada. A reserva da quadra continua no fluxo de quadras.
+Criar chamada
+Aberta
+ADT Dourados
+15/05/2026, 17:00:00 | Iniciante
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Aberta
+ADT Dourados
+16/05/2026, 14:00:00 | Intermediario
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Aberta
+ADT Dourados
+17/05/2026, 15:00:00 | Avancado
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Aberta
+ADT Dourados
+18/05/2026, 16:00:00 | Primeira Classe
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Aberta
+ADT Dourados
+19/05/2026, 17:00:00 | Profissional
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Aberta
+ADT Dourados
+20/05/2026, 14:00:00 | Iniciante
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Aberta
+ADT Dourados
+22/05/2026, 16:00:00 | Avancado
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Aberta
+ADT Dourados
+23/05/2026, 17:00:00 | Primeira Classe
+0 jogadores interessados | Partida aberta demo para validar feed social, participacao e descoberta de parceiros.
+Quero jogar
+Detalhes
+Inicio
+Competir
+Locais
+Ranking
+Trabalho
+Perfil

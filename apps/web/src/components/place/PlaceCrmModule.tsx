@@ -77,6 +77,7 @@ export function PlaceCrmModule({
   const [filter, setFilter] = useState<CrmFilter>("priority");
   const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const [newContactOpen, setNewContactOpen] = useState(!contacts.length);
 
   const filteredContacts = useMemo(() => {
     const text = query.trim().toLowerCase();
@@ -109,6 +110,10 @@ export function PlaceCrmModule({
   const activeWorkCount = contacts.filter(
     (contact) => contact.status === "lead" || contact.status === "contacted" || isCrmFollowUpDue(contact, todayDate) || isCrmStale(contact, interactionsByContact)
   ).length;
+  const priorityContacts = contacts
+    .filter((contact) => contact.status === "lead" || isCrmFollowUpDue(contact, todayDate) || isCrmStale(contact, interactionsByContact))
+    .sort((a, b) => crmPriority(a, todayDate, interactionsByContact) - crmPriority(b, todayDate, interactionsByContact))
+    .slice(0, 3);
 
   return (
     <div className={embedded ? "crm-module-workspace" : "place-booking-panel"}>
@@ -116,14 +121,41 @@ export function PlaceCrmModule({
         <strong>Contatos e leads</strong>
         <span>{contactCountLabel} | {conversionRate}% conversao | {activeWorkCount} em rotina</span>
       </div>
-      <WorkspaceMetrics
-        items={[
-          `${stageCounts.lead} leads`,
-          `${followUpsDue} retornos hoje`,
-          `${stageCounts.contacted} em contato`,
-          `${stageCounts.converted} convertidos`,
-        ]}
-      />
+      <div className="crm-first-fold">
+        <section className="crm-priority-panel" aria-label="Prioridades de relacionamento">
+          <div>
+            <span>Hoje</span>
+            <strong>{followUpsDue ? `${followUpsDue} retornos para fazer` : "Relacionamento em dia"}</strong>
+            <small>{activeWorkCount ? `${activeWorkCount} contatos em rotina` : "Sem lead ou follow-up pendente"}</small>
+          </div>
+          {priorityContacts.length ? (
+            <div className="crm-priority-list">
+              {priorityContacts.map((contact) => (
+                <button key={`crm-priority:${contact.id}`} type="button" onClick={() => onOpenHistory(contact)} disabled={busy}>
+                  <strong>{contact.name}</strong>
+                  <small>
+                    {isCrmFollowUpDue(contact, todayDate)
+                      ? `Retorno ${contact.nextContactOn}`
+                      : contact.status === "lead"
+                        ? "Novo lead"
+                        : "Sem historico recente"}
+                  </small>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <small>Nenhum contato precisa de acao imediata.</small>
+          )}
+        </section>
+        <section className="crm-create-panel">
+          <span>Novo</span>
+          <strong>Cadastrar contato</strong>
+          <small>Lead, aluno interessado ou retorno da recepcao.</small>
+          <button type="button" onClick={() => setNewContactOpen(true)} disabled={busy}>
+            Novo contato
+          </button>
+        </section>
+      </div>
       <div className="crm-toolbar">
         <input
           value={query}
@@ -154,10 +186,20 @@ export function PlaceCrmModule({
         busy={busy}
         defaultOpen={!contacts.length}
         draft={draft}
+        open={newContactOpen || !contacts.length}
         ownerListId={ownerListId}
         ownerOptions={ownerOptions}
         onChange={onChangeDraft}
+        onOpenChange={setNewContactOpen}
         onSubmit={onCreateContact}
+      />
+      <WorkspaceMetrics
+        items={[
+          `${stageCounts.lead} leads`,
+          `${followUpsDue} retornos hoje`,
+          `${stageCounts.contacted} em contato`,
+          `${stageCounts.converted} convertidos`,
+        ]}
       />
       <div className="place-booking-list">
         {visibleContacts.map((contact) => {

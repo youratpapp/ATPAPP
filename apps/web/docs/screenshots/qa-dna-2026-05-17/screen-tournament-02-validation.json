@@ -1,0 +1,54 @@
+{
+  "route": "http://127.0.0.1:5178/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+  "generatedAt": "2026-05-17T18:30:03.501Z",
+  "desktop": {
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "width": 1366,
+    "tabs": [
+      "Evento",
+      "Inscritos",
+      "Jogos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "activeTabs": [
+      "Inscritos",
+      "Competir"
+    ],
+    "hasCategoriasTab": false,
+    "hasAdminTools": false,
+    "hasSearch": true,
+    "playerRows": 23,
+    "hasEmpty": false,
+    "hasGrupoGrupo": false,
+    "sample": "Voltar para competições\nCompartilhar\nTORNEIO\nOpen ADT Dourados - Maio\nDourados - MS | 11 de jun de 2026 | Inscrições ate 03 de jun, 15:00\n\nÁrea do jogador. Inscrição, jogos e mensagens ficam separados por aba.\n\nEm andamento\nEvento\nInscritos\nJogos\nCLASSE\nInscritos por categoria\nTroque o recorte sem sair da lista de jogadores.\nInscritos\n23 jogadores\nBUSCAR INSCRITO\nAline Fonseca\nMasculino / Classe A\nGrupo A\nBruno Nascimento\nMasculino / Classe A\nGrupo B\nCamila Uchida\nMasculino / Classe A\nGrupo A\nDiego Castro\nMasculino / Classe A\nGrupo B\nEduarda Esteves\nMasculino / Classe A\nGrupo A\nFelipe Lopes\nMasculino / Classe A\nGrupo B\nGabriela Silva\nMasculino / Classe A\nGrupo A\nHenrique Araujo\nMasculino / Classe A\nGrupo B\nIsabela Cardoso\nMasculino / Classe A\nGrupo A\nJoao Jardim\nMasculino / Classe A\nGrupo B\nKarina Queiroz\nMasculino / Classe A\nGrupo A\nLucas Yamamoto\nMasculino / Classe A\nGrupo B\nMariana Almeida\nMasculino / Classe A\nGrupo A\nNicolas Henrique\nMasculino / Classe A\nGrupo B\nOlivia Oliveira\nMasculino / Classe A\nGrupo A\nPedro Vieira\nMasculino / Classe A\nGrupo B\nQuiteria Dias\nMasculino / Classe A\nGrupo A\nRafael Ferreira\nMasculino / Classe A\nGrupo B\nSofia Mendes\nMasculino / Classe A\nGrupo A\nThiago Teixeira\nMasculino / Classe A\nGrupo B\nValentina Borges\nMasculino / Classe A\nGrupo A\nWagner Duarte\nMasculino / Classe A\nGrupo B\nWagner Fonseca\nMasculino / Classe A\nGrupo A\nATP\nCompetições\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nCONTA\nPerfil"
+  },
+  "mobile": {
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "width": 390,
+    "tabs": [
+      "Evento",
+      "Inscritos",
+      "Jogos",
+      "Inicio",
+      "Competir",
+      "Locais",
+      "Ranking",
+      "Perfil"
+    ],
+    "activeTabs": [
+      "Inscritos",
+      "Competir"
+    ],
+    "hasCategoriasTab": false,
+    "hasAdminTools": false,
+    "hasSearch": true,
+    "playerRows": 23,
+    "hasEmpty": false,
+    "hasGrupoGrupo": false,
+    "sample": "Voltar para competições\nCompartilhar\nTORNEIO\nOpen ADT Dourados - Maio\nDourados - MS | 11 de jun de 2026 | Inscrições ate 03 de jun, 15:00\n\nÁrea do jogador. Inscrição, jogos e mensagens ficam separados por aba.\n\nEm andamento\nEvento\nInscritos\nJogos\nCLASSE\nInscritos por categoria\nTroque o recorte sem sair da lista de jogadores.\nMasculino / Classe A\n23\nMasculino / Classe B\n21\nInscritos\n23 jogadores\nBUSCAR INSCRITO\nAline Fonseca\nMasculino / Classe A\nGrupo A\nBruno Nascimento\nMasculino / Classe A\nGrupo B\nCamila Uchida\nMasculino / Classe A\nGrupo A\nDiego Castro\nMasculino / Classe A\nGrupo B\nEduarda Esteves\nMasculino / Classe A\nGrupo A\nFelipe Lopes\nMasculino / Classe A\nGrupo B\nGabriela Silva\nMasculino / Classe A\nGrupo A\nHenrique Araujo\nMasculino / Classe A\nGrupo B\nIsabela Cardoso\nMasculino / Classe A\nGrupo A\nJoao Jardim\nMasculino / Classe A\nGrupo B\nKarina Queiroz\nMasculino / Classe A\nGrupo A\nLucas Yamamoto\nMasculino / Classe A\nGrupo B\nMariana Almeida\nMasculino / Classe A\nGrupo A\nNicolas Henrique\nMasculino / Classe A\nGrupo B\nOlivia Oliveira\nMasculino / Classe A\nGrupo A\nPedro Vieira\nMasculino / Classe A\nGrupo B\nQuiteria Dias\nMasculino / Classe A\nGrupo A\nRafael Ferreira\nMasculino / Classe A\nGrupo B\nSofia Mendes\nMasculino / Classe A\nGrupo A\nThiago Teixeira\nMasculino / Classe A\nGrupo B\nValentina Borges\nMasculino / Classe A\nGrupo A\nWagner Duarte\nMasculino / Classe A\nGrupo B\nWagner Fonseca\nMasculino / Classe A\nGrupo A\nVer jogos\nInicio\nCompetir\nLocais\nRanking\nPerfil"
+  }
+}

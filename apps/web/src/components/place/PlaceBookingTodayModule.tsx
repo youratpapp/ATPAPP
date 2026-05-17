@@ -27,9 +27,22 @@ function paymentStatusLabel(payment?: AppPayment): string {
 }
 
 export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, getPaymentForBooking, onUpdateBooking }: Props) {
+  const orderedBookings = [...bookings].sort((a, b) => {
+    if (a.status === "pending" && b.status !== "pending") return -1;
+    if (a.status !== "pending" && b.status === "pending") return 1;
+    return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
+  });
+  const pendingCount = orderedBookings.filter((booking) => booking.status === "pending").length;
+
   return (
     <WorkspaceList>
-      {bookings.map((booking) => {
+      {pendingCount ? (
+        <div className="booking-results-summary urgent">
+          <strong>{pendingCount} pendente(s) para decidir hoje.</strong>
+          <span>Confirme ou cancele antes de operar a lista completa do dia.</span>
+        </div>
+      ) : null}
+      {orderedBookings.map((booking) => {
         const bookingPayment = getPaymentForBooking(booking.id);
         return (
           <WorkspaceRow

@@ -1,0 +1,15 @@
+{
+  "url": "http://127.0.0.1:5178/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09?intent=booking&startsAt=2026-05-17T11%3A00%3A00.000Z&endsAt=2026-05-17T13%3A00%3A00.000Z",
+  "selectedDuration": "120",
+  "selectedDurationLabel": "2h",
+  "hasTwoHourSummary": true,
+  "hasTotal": true,
+  "hasCarousel": true,
+  "freeButtons": 65,
+  "occupiedButtons": 35,
+  "selectedRangeLabels": [
+    "07:00\n2h",
+    "08:00\nIncluido"
+  ],
+  "bodyStart": "Voltar\nLOCAL PÚBLICO\nADT Dourados\nCompartilhar\nDourados - MS\nADT Dourados\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\nQuadras a partir de R$ 70,00\n6 quadras | 24 turmas | 11 jogos abertos | 2 planos\nReservar quadra\nVer aulas\nGestao\nRESERVAR\nQuadra\nA partir de R$ 70,00\nAULAS\nEntrar em turma\nA partir de R$ 420,00\nJOGOS\nJogo aberto\n11 opcoes\nPLANOS\nBeneficios\n2 planos\nSOBRE\nContato\nInformacoes do local\nReserva\nReserve em poucos toques\n\nEscolha dia e duracao, toque em um horario livre e confirme seus dados.\n\n6\nquadras\n1\nQuando?\nDia e duracao da reserva\nDIA\nDURACAO\n1h\n2h\nAtualizar horários\n2\nQual horario?\nArraste as quadras e toque em um horario livre\nQuadra 1\nhard | R$ 70,00/h\n06:00\nOcupado\n07:00\n2h\n08:00\nIncluido\n09:00\nOcupado\n10:00\nLivre\n11:00\nLivre\n12:00\nLivre\n13:00\nLivre\n14:00\nLivre\n15:00\nLivre\n16:00\nOcupado\n17:00\nOcupado\n18:00\nOcupado\n19:00\nLivre\n20:00\nLivre\n21:00\nLivre\n22:00\nLivre\nQuadra 2\nsintetica | R$ 70,00/h\n06:00\nOcupado\n07:00\nLivre\n08:00\nOcupado\n09:00\nOcupado\n10:00\nLivre\n11:00\nLivre\n12:00\nLivre\n13:00\nLivre\n14:00\nLivre\n15:00\nLivre\n16:00\nOcupado\n17:00\nOcupado\n18:00\nOcupado\n19:00\nLivre\n20:00\nLivre\n21:00\nLivre\n22:00\nLivre\nQuadra 3\nsaibr"
+}

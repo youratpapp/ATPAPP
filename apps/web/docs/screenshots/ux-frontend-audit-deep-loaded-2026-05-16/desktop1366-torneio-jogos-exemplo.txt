@@ -1,0 +1,24 @@
+route: #/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos
+url: http://127.0.0.1:5173/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos
+action: 
+loaded: true
+waitMs: 4017
+markers: -
+
+Open ADT Dourados - Maio Dourados - MS Em andamento Voltar Resumo por classe Classe ativa Masculino / Classe A Masculino / Classe B Jogos 22 Classificação Organização Jogadores Chat 31 Partidas da classe 9 Finalizadas 22 Pendentes 0 Grupos 5 Fases mata-mata Pendente Finalizado WO Jogador VISAO GERAL Chave da classe Masculino / Classe A Rodada Preliminar Jogo 1 Lucas Yamamoto x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 2 Bruno Nascimento x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 3 Wagner Fonseca x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 4 Olivia Oliveira x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 5 Thiago Teixeira x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 6 Valentina Borges x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 7 Quiteria Dias x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 8 Camila Uchida x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 9 Nicolas Henrique x BYE Finalizado Partida finalizada Conferir chave 0 x 0 Editar placar Placar, WO e limpeza Jogo 10 Sofia Mendes x Joao Jardim Pendente Sem horario Agendar partida Lancar placar Placar, WO e limpeza Jogo 11 Wagner Duarte x Henrique Araujo Pendente Sem horario Agendar partida Lancar placar Placar, WO e limpeza Jogo 12 Felipe Lopes x Mariana Almeida Pendente Sem horario Agendar partida Lancar placar Placar, WO e limpeza Jogo 13 Karina Queiroz x Eduarda Esteves Pendente Sem horario Agendar partida Lancar placar Placar, WO e limpeza Jogo 14 Aline Fonseca x Pedro Vieira Pendente Sem horario Agendar partida Lancar placar Placar, WO e limpeza Jogo 15 Rafael Ferreira x Diego Castro Pendente Sem horario Agendar partida Lancar placar Placar, WO e limpeza Jogo 16 Gabriela Silva x Isabela Cardoso Pendente Sem horario Agendar partida Lancar placar Placar, WO e limpeza Oitavas Jogo 1 Lucas Yamamoto x Brun
+
+LINKS:
+
+BUTTONS:
+- Voltar
+- Jogos 22
+- Classificação
+- Organização
+- Jogadores
+- Chat
+- Inicio
+- Competir
+- Locais
+- Ranking
+- Organizar
+- Perfil

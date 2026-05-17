@@ -1,0 +1,98 @@
+route: #/gestao
+url: http://127.0.0.1:5173/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda
+action: clicked safe button: Agenda
+loaded: true
+waitMs: 2014
+markers: -
+
+GESTAO DO LOCAL ADT Dourados Voltar para central Ver página publica ADMIN | PRO: COMPLETO ADT Dourados Dourados - MS 85 pendencias 100% implantado Painel 202 Agenda 77 Academia 105 Clientes 23 Financeiro 135 Cantina Equipe Ajustes Modulo ativo Agenda Reservas, bloqueios, calendario das quadras e lista de espera. 77 itens para acompanhar Reservas Academia Socios CRM Financeiro +1 Base operacional pronta Central de agenda Agenda do dia, pendencias e proximos horarios. Hoje Reservas Calendario Nova reserva Espera Quadras Reservas aguardando confirmacao Quadra 4Sofia Mendes - 16/05/2026, 04:00:00ConfirmarCancelar Quadra 2Igor Nascimento - 16/05/2026, 06:00:00ConfirmarCancelar Quadra 1Bruno Nascimento - 16/05/2026, 07:00:00ConfirmarCancelar Quadra 1Felipe Lopes - 16/05/2026, 09:00:00ConfirmarCancelar Quadra 6Helena Queiroz - 16/05/2026, 09:00:00ConfirmarCancelar Quadra 5Eduarda Oliveira - 16/05/2026, 17:30:00ConfirmarCancelar Ver todas as pendentes Mais 1 reserva(s) aguardando decisao. Lista de espera Enzo FerreiraQuadra 2 - 16/05/2026, 17:30:00 - 4d na espera - aguardando vagaCriar reservaMarcar convidadoRemover Enzo FerreiraQuadra 6 - 16/05/2026, 17:30:00 - 2d na espera - aguardando vagaCriar reservaMarcar convidadoRemover Enzo FerreiraQuadra 4 - 16/05/2026, 17:30:00 - 5d na espera - aguardando vagaCriar reservaMarcar convidadoRemover Enzo FerreiraQuadra 3 - 16/05/2026, 17:30:00 - 6d na espera - aguardando vagaCriar reservaMarcar convidadoRemover Enzo FerreiraQuadra 1 - 16/05/2026, 17:30:00 - 2d na espera - aguardando vagaCriar reservaMarcar convidadoRemover Ana GomesQuadra 5 - 17/05/2026, 17:30:00 - 5d na espera - aguardando vagaCriar reservaMarcar convidadoRemover Ver lista completa Mais 64 jogador(es) na espera. 04:00 - Quadra 4 Sofia Mendes | Pendente Fim 05:30 Sem pagamento Contato +55 67 990019043 Solicitada desde a ultima noite; revisar na abertura da recepcao. Confirmar Cancelar 04:00 - Quadra 5 Pedro Barbosa | Confirmada Fim 05:30 Sem pagamento Contato +55 67 990024112 Reserva demo confirmada. Cancelar 04:00 - Quadra 3 Wagner Yamamoto | Confirmada Fim 05:30 Sem pagamento Contato +55 65 990013974 Reserva demo confirmada. Cancelar 04:00 - Quadra 2 Beatriz Es
+
+LINKS:
+
+BUTTONS:
+- Voltar para central
+- Ver página publica
+- Pagina publica
+- Central de gestao
+- Painel 202
+- Agenda 77
+- Academia 105
+- Clientes 23
+- Financeiro 135
+- Cantina
+- Equipe
+- Ajustes
+- Hoje
+- Reservas
+- Calendario
+- Nova reserva
+- Espera
+- Quadras
+- Confirmar
+- Cancelar
+- Confirmar
+- Cancelar
+- Confirmar
+- Cancelar
+- Confirmar
+- Cancelar
+- Confirmar
+- Cancelar
+- Confirmar
+- Cancelar
+- Ver todas as pendentes Mais 1 reserva(s) aguardando decisao.
+- Criar reserva [disabled]
+- Marcar convidado
+- Remover
+- Criar reserva [disabled]
+- Marcar convidado
+- Remover
+- Criar reserva [disabled]
+- Marcar convidado
+- Remover
+- Criar reserva [disabled]
+- Marcar convidado
+- Remover
+- Criar reserva [disabled]
+- Marcar convidado
+- Remover
+- Criar reserva [disabled]
+- Marcar convidado
+- Remover
+- Ver lista completa Mais 64 jogador(es) na espera.
+- Confirmar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Confirmar
+- Cancelar
+- Cancelar
+- Cancelar
+- Confirmar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Confirmar
+- Cancelar
+- Confirmar
+- Cancelar
+- Cancelar
+- Confirmar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Cancelar
+- Inicio
+- Competir
+- Locais
+- Ranking
+- Gestao
+- Perfil

@@ -1,0 +1,23 @@
+route: #/perfil
+url: http://127.0.0.1:5173/#/perfil
+action: clicked safe button: Preferências
+loaded: true
+waitMs: 2006
+markers: -
+
+Perfil Escalao Admin Dourados - MS Perfil completo Sem competicao ativa Lembretes ativos Perfil Histórico Preferências Conta Preferências Escolha quais avisos ajudam no seu dia de jogo. LEMBRETES POR WHATSAPP AVISOS IMPORTANTES PODEM SER PREPARADOS PARA ENVIO. PARTIDAS E RESULTADOS CONFIRMAÇÕES, HORÁRIOS E PLACARES PENDENTES. RESERVAS DE QUADRA CONFIRMAÇÕES, LISTA DE ESPERA E LEMBRETES DA AGENDA. NOVIDADES DA COMUNIDADE CONVITES, CHAMADAS ABERTAS E ATIVIDADES PRÓXIMAS. ANTECEDÊNCIA DO LEMBRETE QUANDO VOCÊ PREFERE SER AVISADO. 6 horas antes 12 horas antes 1 dia antes 2 dias antes Suas escolhas ficam salvas no perfil e ajudam a priorizar os avisos mais úteis. ATP Jogador JOGAR Inicio Competir Locais Ranking TRABALHO Trabalho CONTA Perfil
+
+LINKS:
+
+BUTTONS:
+- Editar perfil
+- Perfil
+- Histórico
+- Preferências
+- Conta
+- Inicio
+- Competir
+- Locais
+- Ranking
+- Trabalho
+- Perfil

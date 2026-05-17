@@ -1,0 +1,27 @@
+route: #/locais?intent=classes
+url: http://127.0.0.1:5173/#/locais?intent=classes
+action: 
+loaded: true
+waitMs: 2020
+markers: -
+
+Locais DESCOBERTA O que você quer encontrar? Escolha a intenção e veja somente o caminho necessario. Encontrar jogo Chamadas abertas 27 chamadas abertas Reservar quadra Horários livres 18 quadras ativas Entrar em aula Turmas com vaga 96 turmas ativas Ver locais Proximos e seguindo 3 locais Todos Seguindo Meus locais RESERVAR QUADRA Encontre quadras livres no horario Use cidade, data e hora para receber quadras disponíveis, sem misturar aulas ou planos. Busca por horario UF Todas MS MT CIDADE Todas Campo Grande Dourados LOCAL PISO Qualquer piso Saibro Sintetica DATA HORA Qualquer horario Manha Tarde Noite 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 23:00 DURACAO 1h 2h FILTRO DE QUADRA Defina cidade, data e horario para ver quadras livres acionaveis. Não mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario. Buscar quadras Inicio Competir Locais Ranking Trabalho Perfil
+
+LINKS:
+
+BUTTONS:
+- Encontrar jogo Chamadas abertas 27 chamadas abertas
+- Reservar quadra Horários livres 18 quadras ativas
+- Entrar em aula Turmas com vaga 96 turmas ativas
+- Ver locais Proximos e seguindo 3 locais
+- Todos
+- Seguindo
+- Meus locais
+- Buscar quadras livres
+- Buscar quadras
+- Inicio
+- Competir
+- Locais
+- Ranking
+- Trabalho
+- Perfil

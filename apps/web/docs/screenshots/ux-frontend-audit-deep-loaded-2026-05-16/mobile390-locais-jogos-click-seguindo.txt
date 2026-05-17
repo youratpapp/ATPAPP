@@ -1,0 +1,26 @@
+route: #/locais?intent=matches
+url: http://127.0.0.1:5173/#/locais?intent=matches
+action: clicked safe button: Seguindo
+loaded: true
+waitMs: 2007
+markers: -
+
+Locais DESCOBERTA O que você quer encontrar? Escolha a intenção e veja somente o caminho necessario. Encontrar jogo Chamadas abertas 17 chamadas abertas Reservar quadra Horários livres Entrar em aula Turmas com vaga Ver locais Proximos e seguindo Todos Seguindo Meus locais ENTRAR EM AULA Escolha o perfil da aula Procure por local, dia, periodo e nivel para ver turmas com vaga. Busca por perfil ACADEMIA OU PROFESSOR CIDADE UF DIA Qualquer dia Dom Seg Ter Qua Qui Sex Sab PERIODO Qualquer horario Manha Tarde Noite NIVEL Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional PERFIL Adulto ou kids Adulto Kids Buscar turmas com vaga Local Você ainda não segue nenhum local. Inicio Competir Locais Ranking Trabalho Perfil
+
+LINKS:
+
+BUTTONS:
+- Encontrar jogo Chamadas abertas 17 chamadas abertas
+- Reservar quadra Horários livres
+- Entrar em aula Turmas com vaga
+- Ver locais Proximos e seguindo
+- Todos
+- Seguindo
+- Meus locais
+- Buscar turmas com vaga
+- Inicio
+- Competir
+- Locais
+- Ranking
+- Trabalho
+- Perfil

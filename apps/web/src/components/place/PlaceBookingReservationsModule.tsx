@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import type { AppPayment, CourtBooking } from "../../lib/types";
 import { WorkspaceList, WorkspaceMetrics, WorkspaceRow } from "./PlaceWorkspaceUi";
 
+const DEFAULT_VISIBLE_ROWS = 24;
+
 type Props = {
   bookings: CourtBooking[];
   busy: boolean;
@@ -33,6 +35,7 @@ export function PlaceBookingReservationsModule({ bookings, busy, canManageBookin
   const [statusFilter, setStatusFilter] = useState<CourtBooking["status"] | "all">("all");
   const [dateFilter, setDateFilter] = useState("");
   const [query, setQuery] = useState("");
+  const [showAll, setShowAll] = useState(false);
   const normalizedQuery = query.trim().toLowerCase();
   const hasFilters = statusFilter !== "all" || Boolean(dateFilter) || Boolean(normalizedQuery);
   const filteredBookings = useMemo(() => {
@@ -48,6 +51,8 @@ export function PlaceBookingReservationsModule({ bookings, busy, canManageBookin
       return true;
     });
   }, [bookings, dateFilter, normalizedQuery, statusFilter]);
+  const shouldLimitRows = !hasFilters && !showAll && filteredBookings.length > DEFAULT_VISIBLE_ROWS;
+  const visibleBookings = shouldLimitRows ? filteredBookings.slice(0, DEFAULT_VISIBLE_ROWS) : filteredBookings;
 
   return (
     <WorkspaceList>
@@ -69,13 +74,26 @@ export function PlaceBookingReservationsModule({ bookings, busy, canManageBookin
               setQuery("");
               setDateFilter("");
               setStatusFilter("all");
+              setShowAll(false);
             }}
           >
             Limpar filtros
           </button>
         ) : null}
       </div>
-      {filteredBookings.map((booking) => {
+      {filteredBookings.length ? (
+        <div className="booking-results-summary">
+          <span>
+            Mostrando {visibleBookings.length} de {filteredBookings.length} reserva(s). {hasFilters ? "Filtros aplicados." : "Use filtros para reduzir a lista."}
+          </span>
+          {shouldLimitRows ? (
+            <button className="quiet" type="button" onClick={() => setShowAll(true)}>
+              Ver todas
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+      {visibleBookings.map((booking) => {
         const payment = getPaymentForBooking(booking.id);
         return (
           <WorkspaceRow

@@ -65,6 +65,7 @@ type Props = {
 type PageTab = "visao" | "jogadores" | "classificacao" | "partidas" | "chat" | "configuracao";
 
 const PAGE_TABS: PageTab[] = ["visao", "jogadores", "classificacao", "partidas", "chat", "configuracao"];
+const LEAGUE_MATCH_PAGE_SIZE = 12;
 
 function parsePageTab(value: string | null): PageTab {
   if (value === "classes") return "classificacao";
@@ -101,6 +102,14 @@ function friendlyLeagueJoinError(error: unknown): string {
     return "Não encontramos esta liga ou classe. Atualize a página e tente novamente.";
   }
   return "Não foi possível solicitar entrada agora. Tente novamente em instantes.";
+}
+
+function normalizeLeagueSearchText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 type MatchForm = {
@@ -734,7 +743,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [generatedJoinLink, setGeneratedJoinLink] = useState("");
   const [showFinishedMyLeagueMatches, setShowFinishedMyLeagueMatches] = useState(false);
   const [calendarSyncing, setCalendarSyncing] = useState(false);
+  const [leagueMatchRoundFilter, setLeagueMatchRoundFilter] = useState("");
+  const [leagueMatchStatusFilter, setLeagueMatchStatusFilter] = useState("");
+  const [visibleLeagueMatchCount, setVisibleLeagueMatchCount] = useState(LEAGUE_MATCH_PAGE_SIZE);
   const [selectedLeagueTaskId, setSelectedLeagueTaskId] = useState("");
+  const [publicPlayerSearch, setPublicPlayerSearch] = useState("");
 
   const isOwner = Boolean(league && league.ownerId === user.id);
   const showOwnerLeagueScope =
@@ -817,10 +830,14 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         .sort((a, b) => a.name.localeCompare(b.name, "pt-BR")),
     [classById, standings]
   );
-  const visiblePublicLeaguePlayers = useMemo(
-    () => publicLeaguePlayers.filter((player) => !selectedClassId || player.classId === selectedClassId),
-    [publicLeaguePlayers, selectedClassId]
-  );
+  const visiblePublicLeaguePlayers = useMemo(() => {
+    const query = normalizeLeagueSearchText(publicPlayerSearch);
+    return publicLeaguePlayers.filter((player) => {
+      if (selectedClassId && player.classId !== selectedClassId) return false;
+      if (!query) return true;
+      return normalizeLeagueSearchText(`${player.name} ${player.classLabel}`).includes(query);
+    });
+  }, [publicLeaguePlayers, publicPlayerSearch, selectedClassId]);
 
   const filteredRegistrations = useMemo(() => {
     const byClass = selectedClassId.trim();
@@ -1157,6 +1174,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     if (classes.some((c) => c.id === selectedClassId)) return;
     setSelectedClassId("");
   }, [classes, selectedClassId]);
+
+  useEffect(() => {
+    setVisibleLeagueMatchCount(LEAGUE_MATCH_PAGE_SIZE);
+  }, [activeTab, selectedClassId, leagueMatchRoundFilter, leagueMatchStatusFilter]);
 
   async function openMatchRoom(match: LeagueMatchSummary, forceOpen = false) {
     const nextId = forceOpen ? match.id : expandedMatchId === match.id ? "" : match.id;
@@ -1728,6 +1749,42 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   }
 
   const allLeagueMatchItems = roundsData.flatMap(({ round, matches }) => matches.map((match) => ({ round, match })));
+  const visibleLeagueRoundsData = useMemo(
+    () =>
+      roundsData
+        .map(({ round, matches }) => ({
+          round,
+          matches: matches.filter((match) => {
+            const byClass = !selectedClassId || match.classId === selectedClassId;
+            const byRound = !leagueMatchRoundFilter || round.id === leagueMatchRoundFilter;
+            const byStatus = !leagueMatchStatusFilter || match.status === leagueMatchStatusFilter;
+            return byClass && byRound && byStatus;
+          }),
+        }))
+        .filter(({ matches }) => matches.length > 0 || leagueMatchRoundFilter),
+    [leagueMatchRoundFilter, leagueMatchStatusFilter, roundsData, selectedClassId]
+  );
+  const filteredLeagueMatchTotal = useMemo(
+    () => visibleLeagueRoundsData.reduce((sum, group) => sum + group.matches.length, 0),
+    [visibleLeagueRoundsData]
+  );
+  const paginatedLeagueRoundsData = useMemo(() => {
+    return visibleLeagueRoundsData.reduce<{ groups: RoundWithMatches[]; used: number }>(
+      (acc, { round, matches }) => {
+        const availableSlots = Math.max(visibleLeagueMatchCount - acc.used, 0);
+        const visibleMatches = availableSlots > 0 ? matches.slice(0, availableSlots) : [];
+        return {
+          groups: visibleMatches.length ? [...acc.groups, { round, matches: visibleMatches }] : acc.groups,
+          used: acc.used + visibleMatches.length,
+        };
+      },
+      { groups: [], used: 0 }
+    ).groups;
+  }, [visibleLeagueMatchCount, visibleLeagueRoundsData]);
+  const visibleLeagueMatchTotal = useMemo(
+    () => paginatedLeagueRoundsData.reduce((sum, group) => sum + group.matches.length, 0),
+    [paginatedLeagueRoundsData]
+  );
   const unfinishedLeagueMatchItems = allLeagueMatchItems
     .filter(({ match }) => match.status !== "encerrada" && match.status !== "wo")
     .sort((a, b) => {
@@ -2052,6 +2109,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const visiblePlayerLeagueTasks = playerLeagueTasks.slice(0, 4);
   const selectedLeagueTask =
     [...leagueOperationTasks, ...playerLeagueTasks].find((task) => task.id === selectedLeagueTaskId) ?? null;
+  const pinnedLeagueMessage = leagueChat.find((message) => message.isPinned) ?? null;
   const openOwnerLeagueTaskList = () => {
     if (leagueOperationTasks.some((task) => task.id.startsWith("registration:") || task.id.startsWith("payment:"))) {
       goToTab("jogadores");
@@ -2061,8 +2119,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   };
   const renderPublicClassFilter = (title: string, detail: string) => {
     if (isOwner || classes.length < 2) return null;
+    const shouldUseSelect = classes.length > 6;
     return (
-      <section className="league-public-class-filter" aria-label="Filtro de classe da liga">
+      <section className={`league-public-class-filter ${shouldUseSelect ? "select-mode" : "chip-mode"}`} aria-label="Filtro de classe da liga">
         <div>
           <span>Classe</span>
           <strong>{title}</strong>
@@ -2079,7 +2138,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             ))}
           </select>
         </label>
-        <div className="league-public-class-chip-rail" aria-label="Classes disponíveis">
+        <div className={`league-public-class-chip-rail ${shouldUseSelect ? "is-hidden" : ""}`} aria-label="Classes disponíveis">
           <button type="button" className={!selectedClassId ? "active" : ""} onClick={() => setSelectedClassId("")}>
             Todas
           </button>
@@ -2199,10 +2258,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         <div className={`league-public-member-status ${myLeagueRegistration.status}`}>
                           <span>{leagueRegistrationStatusLabel(myLeagueRegistration.status)}</span>
                           <strong>
-                            {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
+                            {myLeagueRegistration.playerName} - {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
                               ? classLabel(classById[myLeagueRegistration.classId])
                               : "Classe a confirmar"}
                           </strong>
+                          <small>{myLeagueRegistration.status === "approved" ? "Acompanhe partidas, ranking e avisos pelas abas." : "A organizacao ainda precisa revisar sua entrada."}</small>
                         </div>
                       ) : null}
                       <div className="tournament-public-actions">
@@ -2231,6 +2291,21 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               {activeTab === "jogadores" ? (
                 <section id="league-public-players" className="competition-public-list-section">
                   {renderPublicClassFilter("Jogadores por classe", "Filtre sem sair desta aba.")}
+                  <div className="competition-public-search-row" role="search">
+                    <label>
+                      <span>Buscar jogador</span>
+                      <input
+                        value={publicPlayerSearch}
+                        onChange={(event) => setPublicPlayerSearch(event.target.value)}
+                        placeholder="Nome ou classe"
+                      />
+                    </label>
+                    {publicPlayerSearch ? (
+                      <button type="button" className="quiet" onClick={() => setPublicPlayerSearch("")}>
+                        Limpar
+                      </button>
+                    ) : null}
+                  </div>
                   <div className="section-title">
                     <h2>Jogadores</h2>
                     <span>{visiblePublicLeaguePlayers.length} {visiblePublicLeaguePlayers.length === 1 ? "jogador" : "jogadores"}</span>
@@ -2541,9 +2616,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
           {activeTab === "classificacao" ? (
             <>
-          <section className="section-card">
+          <section className="section-card league-standings-page">
             {!isOwner ? renderPublicClassFilter("Classificação por classe", "Troque o recorte sem sair da classificação.") : null}
-            <div className="section-title" style={{ marginBottom: 10 }}>
+            <div className="section-title league-standings-title">
               <div>
                 <h3 style={{ margin: 0 }}>Classificação da temporada</h3>
                 <p className="subtle" style={{ margin: "4px 0 0" }}>
@@ -2573,6 +2648,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 <strong>{standingsSummary.inactive}</strong>
                 <span>Inativos fora da conta</span>
               </div>
+            </div>
+            <div className="league-standings-legend" aria-label="Legenda da classificacao">
+              <span className="promoted">Zona de subida</span>
+              <span className="stable">Permanece na classe</span>
+              <span className="relegated">Zona de descida</span>
             </div>
             {!standingsByClass.length ? <p className="subtle">Sem classes para a temporada selecionada.</p> : null}
             {standingsByClass.map((group) => (
@@ -2915,14 +2995,15 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           ) : null}
 
           {activeTab === "jogadores" ? (
-            <>
+            <div className={isOwner ? "league-owner-player-workspace" : undefined}>
               {isOwner ? (
-                <section className="section-card">
-                  <h3 style={{ marginTop: 0, marginBottom: 10 }}>Link de convite</h3>
-                  <p className="subtle" style={{ marginTop: 0 }}>
-                    Gere o link considerando os filtros atuais de temporada/classe.
-                  </p>
-                  <div className="modal-actions">
+                <section className="section-card league-owner-invite-card">
+                  <div>
+                    <span>Convite</span>
+                    <strong>Link da classe selecionada</strong>
+                    <small>Compartilhe apenas o recorte atual de temporada e classe.</small>
+                  </div>
+                  <div className="league-owner-invite-actions">
                     <button className="ghost" onClick={onCreateJoinLink} disabled={busy}>
                       {busy ? "Gerando..." : "Gerar e copiar link de inscricao"}
                     </button>
@@ -2953,14 +3034,42 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </section>
               ) : null}
 
-              <section className="section-card">
-                <h3 style={{ marginTop: 0, marginBottom: 10 }}>Solicitacoes de inscricao</h3>
+              <section className="section-card league-owner-registrations-panel">
+                <div className="section-title">
+                  <div>
+                    <span className="section-eyebrow">Inscricoes</span>
+                    <h3>Solicitacoes da liga</h3>
+                    <p className="subtle">
+                      Aprovacao, rejeicao e pagamento ficam na area do organizador.
+                    </p>
+                  </div>
+                </div>
                 {isOwner ? (
+                  <>
                   <p className="subtle" style={{ marginTop: 0 }}>
                     Classe: {selectedClassLabel} | Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas:{" "}
                     {registrationStats.rejected} | Pagas: {registrationPaymentStats.paidCount}/{filteredRegistrations.length} Â·{" "}
                     {formatMoneyFromCents(registrationPaymentStats.paidAmountCents)}
                   </p>
+                  <div className="league-owner-registration-summary" aria-label="Resumo das inscricoes da liga">
+                    <span>
+                      <strong>{registrationStats.pending}</strong>
+                      Pendentes
+                    </span>
+                    <span>
+                      <strong>{registrationStats.approved}</strong>
+                      Aprovadas
+                    </span>
+                    <span>
+                      <strong>{registrationStats.rejected}</strong>
+                      Rejeitadas
+                    </span>
+                    <span>
+                      <strong>{registrationPaymentStats.paidCount}/{filteredRegistrations.length}</strong>
+                      Pagas - {formatMoneyFromCents(registrationPaymentStats.paidAmountCents)}
+                    </span>
+                  </div>
+                  </>
                 ) : (
                   <p className="subtle">Somente o admin aprova solicitacoes.</p>
                 )}
@@ -2969,7 +3078,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   ? filteredRegistrations.map((r) => {
                       const cls = r.classId ? classById[r.classId] : null;
                       return (
-                        <div key={r.id} className="list-item">
+                        <div key={r.id} className={`list-item league-registration-row status-${r.status}`}>
                           <div className="li-body">
                             <p className="li-title">
                               {r.playerName} {r.phone ? `| ${r.phone}` : ""}
@@ -3009,13 +3118,53 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     })
                   : null}
               </section>
-            </>
+            </div>
           ) : null}
 
           {activeTab === "partidas" ? (
-            <section className="section-card">
+            <section className="section-card league-matches-page">
               {!isOwner ? renderPublicClassFilter("Partidas por classe", "Veja rodadas e jogos do recorte selecionado.") : null}
-              <h3 style={{ marginTop: 0, marginBottom: 10 }}>Partidas por rodada</h3>
+              <div className="section-title">
+                <div>
+                  <span className="section-eyebrow">Partidas</span>
+                  <h3>Partidas por rodada</h3>
+                  <p className="subtle">Filtre por rodada e status sem sair da lista.</p>
+                </div>
+              </div>
+              <div className="league-match-filter-bar">
+                <label>
+                  Rodada
+                  <select value={leagueMatchRoundFilter} onChange={(event) => setLeagueMatchRoundFilter(event.target.value)}>
+                    <option value="">Todas as rodadas</option>
+                    {roundsData.map(({ round }) => (
+                      <option key={`league-round-filter:${round.id}`} value={round.id}>
+                        Rodada {round.roundNumber}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Status
+                  <select value={leagueMatchStatusFilter} onChange={(event) => setLeagueMatchStatusFilter(event.target.value)}>
+                    <option value="">Todos os status</option>
+                    <option value="aguardando_organizacao">Aguardando organizacao</option>
+                    <option value="aguardando_resultado">Aguardando resultado</option>
+                    <option value="aguardando_confirmacao">Aguardando confirmacao</option>
+                    <option value="em_disputa">Em disputa</option>
+                    <option value="em_analise_adm">Em analise</option>
+                    <option value="encerrada">Encerrada</option>
+                    <option value="wo">WO</option>
+                  </select>
+                </label>
+                {(leagueMatchRoundFilter || leagueMatchStatusFilter) ? (
+                  <button type="button" className="ghost" onClick={() => {
+                    setLeagueMatchRoundFilter("");
+                    setLeagueMatchStatusFilter("");
+                  }}>
+                    Limpar filtros
+                  </button>
+                ) : null}
+              </div>
               {!isOwner && myLeagueMatches.length > 0 ? (
                 <div className="my-matches-panel">
                   <div className="section-title" style={{ marginBottom: 8 }}>
@@ -3084,7 +3233,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </div>
               ) : null}
               {!roundsData.length ? <p className="subtle">Sem rodadas geradas.</p> : null}
-              {roundsData.map(({ round, matches }) => (
+              {roundsData.length > 0 && filteredLeagueMatchTotal === 0 ? <p className="subtle">Nenhuma partida encontrada para os filtros atuais.</p> : null}
+              {paginatedLeagueRoundsData.map(({ round, matches }) => (
                 <div key={round.id} style={{ marginBottom: 14 }}>
                   <div className="league-round-head">
                     <strong>Rodada {round.roundNumber}</strong>
@@ -3373,16 +3523,50 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   })}
                 </div>
               ))}
+              {filteredLeagueMatchTotal > 0 ? (
+                <div className="league-match-pagination">
+                  <span>
+                    Mostrando {visibleLeagueMatchTotal} de {filteredLeagueMatchTotal} partidas.
+                    {filteredLeagueMatchTotal > LEAGUE_MATCH_PAGE_SIZE ? " Use os filtros para reduzir a lista." : ""}
+                  </span>
+                  {visibleLeagueMatchTotal < filteredLeagueMatchTotal ? (
+                    <button
+                      type="button"
+                      className="secondary"
+                      onClick={() => setVisibleLeagueMatchCount((count) => count + LEAGUE_MATCH_PAGE_SIZE)}
+                    >
+                      Ver mais partidas
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
             </section>
           ) : null}
 
           {activeTab === "chat" ? (
-            <section className="section-card">
-              <h3 style={{ marginTop: 0, marginBottom: 10 }}>Chat geral da liga</h3>
+            <section className={`section-card tournament-chat-card league-chat-card ${!isOwner ? "public-reader" : ""}`}>
+              <div className="tournament-chat-head">
+                <div>
+                  <span>Comunicacao</span>
+                  <h3>Chat geral da liga</h3>
+                  <p className="subtle">Avisos da organizacao e mensagens dos participantes.</p>
+                </div>
+                <span className="home-league-chip member">{leagueChat.length} {leagueChat.length === 1 ? "mensagem" : "mensagens"}</span>
+              </div>
+              {pinnedLeagueMessage ? (
+                <article className="tournament-chat-pinned">
+                  <strong>Aviso fixado</strong>
+                  <p>{pinnedLeagueMessage.body}</p>
+                  <small>{pinnedLeagueMessage.senderName} - {formatDateTime(pinnedLeagueMessage.createdAt)}</small>
+                </article>
+              ) : null}
               {isOwner ? (
-                <div className="league-room-panel" style={{ marginBottom: 10 }}>
-                  <h4>Comunicado do admin</h4>
-                  <div className="league-chat-send">
+                <div className="tournament-chat-admin-tools">
+                  <div>
+                    <strong>Comunicado do admin</strong>
+                    <small>Publique aviso para toda a liga.</small>
+                  </div>
+                  <div className="tournament-chat-compose">
                     <input
                       value={announcementDraft}
                       onChange={(e) => setAnnouncementDraft(e.target.value)}
@@ -3392,22 +3576,26 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       Publicar
                     </button>
                   </div>
-                  <label style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+                  <label className="toggle-row">
                     <input type="checkbox" checked={announcementPin} onChange={(e) => setAnnouncementPin(e.target.checked)} />
                     Fixar como mensagem principal
                   </label>
                 </div>
               ) : null}
 
-              <div className="league-chat-box" style={{ maxHeight: 360 }}>
+              <div className="tournament-chat-list">
                 {leagueChat.map((msg) => (
-                  <div key={msg.id} className={msg.senderUserId === user.id ? "league-chat-me" : "league-chat-other"}>
-                    {msg.isPinned ? <p style={{ border: "1px solid var(--color-success-border)" }}>[FIXADO] {msg.body}</p> : <p>{msg.body}</p>}
-                    <span>
-                      {msg.senderName} | {formatDateTime(msg.createdAt)}{msg.messageType === "announcement" ? " | comunicado" : ""}
-                    </span>
+                  <article
+                    key={msg.id}
+                    className={`tournament-chat-message ${msg.senderUserId === user.id ? "mine" : ""} ${msg.messageType === "announcement" ? "announcement" : ""}`}
+                  >
+                    <div className="tournament-chat-message-meta">
+                      <strong>{msg.senderName}</strong>
+                      <span>{formatDateTime(msg.createdAt)}{msg.messageType === "announcement" ? " - comunicado" : ""}</span>
+                    </div>
+                    <p>{msg.isPinned ? "FIXADO - " : ""}{msg.body}</p>
                     {isOwner ? (
-                      <div style={{ display: "inline-flex", gap: 6, marginTop: 4 }}>
+                      <div className="tournament-chat-message-actions">
                         <button className="ghost" onClick={() => void onPinLeagueMessage(msg.isPinned ? null : msg.id)} disabled={busy}>
                           {msg.isPinned ? "Desfixar" : "Fixar"}
                         </button>
@@ -3416,12 +3604,12 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                         </button>
                       </div>
                     ) : null}
-                  </div>
+                  </article>
                 ))}
                 {!leagueChat.length ? <p className="subtle">Nenhuma mensagem no chat.</p> : null}
               </div>
 
-              <div className="league-chat-send" style={{ marginTop: 10 }}>
+              <div className="tournament-chat-compose">
                 <input
                   value={leagueChatDraft}
                   onChange={(e) => setLeagueChatDraft(e.target.value)}

@@ -34,9 +34,9 @@ export function PlaceAcademyOperationalQueues({
 }: Props) {
   const [showAllToday, setShowAllToday] = useState(false);
   const [showAllPending, setShowAllPending] = useState(false);
-  const visibleTodayClasses = showAllToday ? todayClasses : todayClasses.slice(0, 6);
-  const visiblePendingEnrollments = showAllPending ? pendingEnrollments : pendingEnrollments.slice(0, 4);
-  const remainingPendingSlots = Math.max(0, 4 - visiblePendingEnrollments.length);
+  const visibleTodayClasses = showAllToday ? todayClasses : todayClasses.slice(0, 3);
+  const visiblePendingEnrollments = showAllPending ? pendingEnrollments : pendingEnrollments.slice(0, 3);
+  const remainingPendingSlots = Math.max(0, 3 - visiblePendingEnrollments.length);
   const visibleLessonRequests = showAllPending ? actionableLessonRequests : actionableLessonRequests.slice(0, remainingPendingSlots);
   const hasPendingWork = pendingEnrollments.length > 0 || actionableLessonRequests.length > 0;
   const hiddenTodayCount = Math.max(0, todayClasses.length - visibleTodayClasses.length);
@@ -52,7 +52,10 @@ export function PlaceAcademyOperationalQueues({
           ? visibleTodayClasses.map((academyClass) => (
               <span key={`today-class:${academyClass.id}`}>
                 <strong>{academyClass.startsAt.slice(0, 5)}</strong>
-                {academyClass.title} - {academyClass.coachName || "Professor"} - {academyClass.level || "nivel livre"}
+                <em>{academyClass.title}</em>
+                <small>
+                  {academyClass.coachName || "Professor"} | {academyClass.level || "nivel livre"}
+                </small>
                 <button type="button" onClick={() => onOpenTodayClass(academyClass.id)} disabled={busy}>
                   Abrir chamada
                 </button>
@@ -63,7 +66,7 @@ export function PlaceAcademyOperationalQueues({
           <button type="button" className="secondary queue-more-action" onClick={() => setShowAllToday(true)}>
             Ver {countLabel(hiddenTodayCount, "aula restante", "aulas restantes")}
           </button>
-        ) : todayClasses.length > 6 && onOpenToday ? (
+        ) : todayClasses.length > 3 && onOpenToday ? (
           <button type="button" className="secondary queue-more-action" onClick={onOpenToday}>
             Ver agenda de hoje
           </button>
@@ -76,7 +79,8 @@ export function PlaceAcademyOperationalQueues({
             return (
               <span key={`pending-enrollment:${enrollment.id}`}>
                 <strong>{enrollment.playerName}</strong>
-                Matricula em {academyClass?.title || "turma"} aguardando aprovacao
+                <em>Matricula pendente</em>
+                <small>{academyClass?.title || "Turma"} aguardando aprovacao</small>
                 <button onClick={() => onUpdateEnrollment(enrollment.id, "active")} disabled={busy}>
                   Ativar
                 </button>
@@ -89,7 +93,10 @@ export function PlaceAcademyOperationalQueues({
           {visibleLessonRequests.map((request) => (
             <span key={`pending-lesson:${request.id}`}>
               <strong>{request.playerName}</strong>
-              {request.requestType === "makeup" ? "Reposicao" : "Aula avulsa"} - {request.requestedOn} - {request.status}
+              <em>{request.requestType === "makeup" ? "Reposicao" : "Aula avulsa"}</em>
+              <small>
+                {request.requestedOn} | {request.status}
+              </small>
               {request.status === "pending" ? (
                 <>
                   <button onClick={() => onUpdateLessonRequest(request, "approved")} disabled={busy}>

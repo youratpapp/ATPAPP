@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 import { useLocation } from "react-router-dom";
 import type { Profile } from "../lib/types";
@@ -54,6 +54,17 @@ export function AppShell({
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
 
+  useEffect(() => {
+    if (!bellOpen) return undefined;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onBellClose?.();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [bellOpen, onBellClose]);
+
   return (
     <div className={`app-shell app-shell--${surfaceMode}`} data-surface={surfaceMode}>
       {showHeader ? (
@@ -78,6 +89,7 @@ export function AppShell({
                     aria-label="Notificacoes"
                     aria-haspopup="dialog"
                     aria-expanded={bellOpen}
+                    aria-controls={bellOpen ? "app-notification-panel" : undefined}
                   >
                     <BellIcon />
                     {bellCount > 0 ? <span className="app-bell-badge">{Math.min(9, bellCount)}</span> : null}
@@ -90,7 +102,7 @@ export function AppShell({
                         aria-label="Fechar notificacoes"
                         onClick={onBellClose ?? onBellClick}
                       />
-                      <div className="app-notification-popover" role="dialog" aria-label="Notificacoes">
+                      <div id="app-notification-panel" className="app-notification-popover" role="dialog" aria-modal="false" aria-label="Notificacoes">
                         {bellPanel}
                       </div>
                     </>

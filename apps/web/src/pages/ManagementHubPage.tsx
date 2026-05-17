@@ -388,6 +388,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   const [places, setPlaces] = useState<Place[]>([]);
   const [entries, setEntries] = useState<PlaceAdminResourceEntry[]>([]);
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
+  const [showAllManagedPlaces, setShowAllManagedPlaces] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -476,6 +477,7 @@ export function ManagementHubPage({ user, profile }: Props) {
       }),
     [accessByPlace, aggregate, places, summariesByPlace, user.id]
   );
+  const visibleAggregateQueueRows = activeAggregateQueueRows.slice(0, 5);
   const setupPlaces = useMemo(
     () =>
       places
@@ -521,6 +523,21 @@ export function ManagementHubPage({ user, profile }: Props) {
         ),
     [accessByPlace, entriesByPlace, places, user.id]
   );
+  const orderedManagedPlaces = useMemo(
+    () =>
+      [...places].sort((a, b) => {
+        const aSummary = summariesByPlace[a.id];
+        const bSummary = summariesByPlace[b.id];
+        const byPending = (bSummary ? pendingTotal(bSummary) : 0) - (aSummary ? pendingTotal(aSummary) : 0);
+        if (byPending !== 0) return byPending;
+        const bySetup = (aSummary?.setupProgress ?? 100) - (bSummary?.setupProgress ?? 100);
+        if (bySetup !== 0) return bySetup;
+        return a.name.localeCompare(b.name, "pt-BR");
+      }),
+    [places, summariesByPlace]
+  );
+  const visibleManagedPlaces = showAllManagedPlaces ? orderedManagedPlaces : orderedManagedPlaces.slice(0, 4);
+  const hiddenManagedPlacesCount = Math.max(0, orderedManagedPlaces.length - visibleManagedPlaces.length);
 
   function rowPulseText(summary: PlaceOperationSummary, access: PlaceAccess): string {
     if (access.staffRole === "coach" && !access.canManagePlace) {
@@ -612,9 +629,9 @@ export function ManagementHubPage({ user, profile }: Props) {
                 </div>
                 <button className="quiet" onClick={() => navigate("/locais")}>Ver locais publicos</button>
               </div>
-              {activeAggregateQueueRows.length ? (
+              {visibleAggregateQueueRows.length ? (
                 <div className="management-priority-list">
-                  {activeAggregateQueueRows.map((row) => (
+                  {visibleAggregateQueueRows.map((row) => (
                     <button
                       key={row.label}
                       className="management-priority-row"
@@ -645,24 +662,6 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <span>{aggregateGoodStateText()}</span>
                 </div>
               )}
-            </section>
-
-            <section className="management-support-strip" aria-label="Resumo operacional">
-              <span>Sinais de suporte</span>
-              <div className="management-shell-stats">
-                <article>
-                  <strong>{places.length}</strong>
-                  <small>{countLabel(places.length, "local acessivel", "locais acessiveis")}</small>
-                </article>
-                <article>
-                  <strong>{pendingTotal(aggregate)}</strong>
-                  <small>pendencias operacionais</small>
-                </article>
-                <article>
-                  <strong>{isFinanceOnlyHub ? aggregate.pendingFinance : isCashierOnlyHub ? aggregate.lowStock : aggregate.todayBookings}</strong>
-                  <small>{isFinanceOnlyHub ? "recebiveis pendentes" : isCashierOnlyHub ? "itens com estoque baixo" : "reservas hoje"}</small>
-                </article>
-              </div>
             </section>
 
             {coachWorkspaces.length ? (
@@ -721,51 +720,20 @@ export function ManagementHubPage({ user, profile }: Props) {
               </section>
             ) : null}
 
-            {setupFocus ? (
-              <section className="management-onboarding-panel" aria-label="Roteiro de implantacao">
-                <div className="management-section-title">
-                  <div>
-                    <span>Implantacao guiada</span>
-                    <h2>Complete a base de {setupFocus.place.name}</h2>
-                  </div>
-                  <strong>{setupFocus.summary.setupProgress}% pronto</strong>
-                </div>
-                <div className="management-onboarding-progress" aria-hidden>
-                  <span style={{ width: `${setupFocus.summary.setupProgress}%` }} />
-                </div>
-                <div className="management-onboarding-grid">
-                  {setupFocus.summary.setupChecklist.map((step) => {
-                    const entry = entriesByPlace[setupFocus.place.id];
-                    const access = placeResourceAccess(setupFocus.place, user.id, (entry?.staff || []) as PlaceStaffMember[]);
-                    const modules = placeManagementModules(access);
-                    const targetModule = modules.includes(step.module) ? step.module : "dashboard";
-                    return (
-                      <button
-                        key={`${setupFocus.place.id}:checklist:${step.label}`}
-                        className={step.done ? "management-onboarding-step done" : "management-onboarding-step"}
-                        type="button"
-                        onClick={() => navigate(buildPlaceAdminPath(setupFocus.place.id, targetModule, step.viewSegment))}
-                      >
-                        <span>{step.done ? "Concluido" : "Proximo passo"}</span>
-                        <strong>{step.label}</strong>
-                        <small>{step.detail}</small>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
-            ) : null}
-
             <section className="management-workspace" aria-label="Locais em gestao">
               <div className="management-workspace-head">
                 <div>
                   <span>Workspaces</span>
                   <h2>Locais sob sua gestao</h2>
                 </div>
-                <p>{countLabel(places.length, "local com acesso operacional", "locais com acesso operacional")}</p>
+                <p>
+                  {showAllManagedPlaces || !hiddenManagedPlacesCount
+                    ? countLabel(orderedManagedPlaces.length, "local com acesso operacional", "locais com acesso operacional")
+                    : `${visibleManagedPlaces.length} em foco de ${orderedManagedPlaces.length}`}
+                </p>
               </div>
               <div className="management-place-list">
-                {places.map((place) => {
+                {visibleManagedPlaces.map((place) => {
                   const entry = entriesByPlace[place.id];
                   const staff = entry?.staff || [];
                   const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, staff as PlaceStaffMember[]);
@@ -871,9 +839,11 @@ export function ManagementHubPage({ user, profile }: Props) {
                       </div>
 
                       {summary.setupGaps.length ? (
-                        <div className="management-row-setup">
-                          <span>Base incompleta</span>
-                          <strong>{summary.setupGaps.slice(0, 2).join(" | ")}</strong>
+                        <details className="management-row-setup">
+                          <summary>
+                            <span>Base incompleta</span>
+                            <strong>{summary.setupGaps.slice(0, 2).join(" | ")}</strong>
+                          </summary>
                           <div className="management-semantic-actions">
                             {summary.setupActions.slice(0, 3).map((action) => (
                               <button
@@ -893,7 +863,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                               </button>
                             ))}
                           </div>
-                        </div>
+                        </details>
                       ) : summary.routineActions.length ? (
                         <div className="management-row-setup routine">
                           <span>Acoes rapidas</span>
@@ -948,7 +918,74 @@ export function ManagementHubPage({ user, profile }: Props) {
                   );
                 })}
               </div>
+              {hiddenManagedPlacesCount ? (
+                <div className="management-place-list-actions">
+                  <button type="button" className="secondary" onClick={() => setShowAllManagedPlaces(true)}>
+                    Ver todos os {orderedManagedPlaces.length} locais
+                  </button>
+                  <span>Os locais com pendencias e setup incompleto aparecem primeiro.</span>
+                </div>
+              ) : showAllManagedPlaces && orderedManagedPlaces.length > 4 ? (
+                <div className="management-place-list-actions">
+                  <button type="button" className="quiet" onClick={() => setShowAllManagedPlaces(false)}>
+                    Voltar ao foco operacional
+                  </button>
+                </div>
+              ) : null}
             </section>
+
+            <section className="management-support-strip" aria-label="Resumo operacional">
+              <span>Sinais de suporte</span>
+              <div className="management-shell-stats">
+                <article>
+                  <strong>{places.length}</strong>
+                  <small>{countLabel(places.length, "local acessivel", "locais acessiveis")}</small>
+                </article>
+                <article>
+                  <strong>{pendingTotal(aggregate)}</strong>
+                  <small>pendencias operacionais</small>
+                </article>
+                <article>
+                  <strong>{isFinanceOnlyHub ? aggregate.pendingFinance : isCashierOnlyHub ? aggregate.lowStock : aggregate.todayBookings}</strong>
+                  <small>{isFinanceOnlyHub ? "recebiveis pendentes" : isCashierOnlyHub ? "itens com estoque baixo" : "reservas hoje"}</small>
+                </article>
+              </div>
+            </section>
+
+            {setupFocus ? (
+              <details className="management-onboarding-panel" aria-label="Roteiro de implantacao">
+                <summary className="management-onboarding-summary">
+                  <div>
+                    <span>Implantacao guiada</span>
+                    <h2>Complete a base de {setupFocus.place.name}</h2>
+                  </div>
+                  <strong>{setupFocus.summary.setupProgress}% pronto</strong>
+                </summary>
+                <div className="management-onboarding-progress" aria-hidden>
+                  <span style={{ width: `${setupFocus.summary.setupProgress}%` }} />
+                </div>
+                <div className="management-onboarding-grid">
+                  {setupFocus.summary.setupChecklist.map((step) => {
+                    const entry = entriesByPlace[setupFocus.place.id];
+                    const access = placeResourceAccess(setupFocus.place, user.id, (entry?.staff || []) as PlaceStaffMember[]);
+                    const modules = placeManagementModules(access);
+                    const targetModule = modules.includes(step.module) ? step.module : "dashboard";
+                    return (
+                      <button
+                        key={`${setupFocus.place.id}:checklist:${step.label}`}
+                        className={step.done ? "management-onboarding-step done" : "management-onboarding-step"}
+                        type="button"
+                        onClick={() => navigate(buildPlaceAdminPath(setupFocus.place.id, targetModule, step.viewSegment))}
+                      >
+                        <span>{step.done ? "Concluido" : "Proximo passo"}</span>
+                        <strong>{step.label}</strong>
+                        <small>{step.detail}</small>
+                      </button>
+                    );
+                  })}
+                </div>
+              </details>
+            ) : null}
           </>
         ) : null}
       </div>

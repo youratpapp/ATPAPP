@@ -1,0 +1,31 @@
+hash=#/locais?intent=booking
+loaded=true
+textLength=618
+
+Locais
+Encontrar jogo
+Chamadas abertas
+Reservar quadra
+Horarios livres
+Entrar em aula
+Turmas com vaga
+Ver locais
+Proximos e seguindo
+RESERVAR QUADRA
+Encontre quadras livres no horario
+Use cidade, data e hora para receber quadras disponíveis, sem misturar aulas ou planos.
+Busca por horario
+Ajustar filtros
+Todos | Todas | Qualquer local | 17/05/2026 | Qualquer horario | 1h
+FILTRO DE QUADRA
+Defina cidade, data e horario para ver quadras livres acionaveis.
+
+Não mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario.
+
+Buscar quadras
+Inicio
+Competir
+Locais
+Ranking
+Trabalho
+Perfil

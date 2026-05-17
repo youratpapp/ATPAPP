@@ -1,0 +1,5 @@
+hash=#/eventos/ligas
+loaded=true
+textLength=282
+
+{"hash":"#/eventos/ligas","title":"ATP — Amateur Tennis Platform","body":"Ligas que jogo\n\nAcompanhe somente ligas em que você participa como jogador.\n\nJogando\n\n0\n\nAtivas\n\n3\n\nATP\nVocê ainda não participa de ligas\n\nVolte ao hub de competições para encontrar torneios, ligas e convites.\n\nVoltar para competições\nInicio\nCompetir\nLocais\nRanking\nOrganizar\nPerfil"}

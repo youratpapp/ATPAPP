@@ -1,0 +1,19 @@
+{
+  "desktop": {
+    "url": "http://127.0.0.1:5178/#/locais?intent=classes",
+    "hasClasses": true,
+    "hasMultiDayChips": 11,
+    "hasSelectClass": false,
+    "resultText": true,
+    "bodyStart": "Locais\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nENTRAR EM AULA\nEscolha o perfil da aula\nProcure por local, dia, periodo e nivel para ver turmas com vaga.\nBusca por perfil\nUF\nTodos\nMS\nMT\nCIDADE\nTodas\nCampo Grande\nDourados\nACADEMIA OU PROFESSOR\nDias\nQualquer dia\nDom\nSeg\nTer\nQua\nQui\nSex\nSab\nPERIODO\nQualquer horario\nManha\nTarde\nNoite\nNIVEL\nQualquer nivel\nIniciante\nIntermediario\nAvancado\nPrimeira Classe\nProfissional\nPERFIL\nAdulto ou kids\nAdulto\nKids\nBuscar turmas com vaga\nFILTRO DE AULA\nDefina cidade, dia, periodo ou nivel para ver turmas com vaga.\n\nNão mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher.\n\nBuscar turmas\nInicio\nCompetir\nLocais\nRanking\nTrabalho\nPerfil"
+  },
+  "mobile430": {
+    "filterButton": true,
+    "text": "Locais\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nENTRAR EM AULA\nEscolha o perfil da aula\nProcure por local, dia, periodo e nivel para ver turmas com vaga.\nBusca por perfil\nAjustar filtros\nMS · Dourados · Qualquer dia\nFILTRO DE AULA\nDefina cidade, dia, periodo ou nivel para ver turmas com vaga.\n\nNão mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher.\n\nBuscar turmas\nInicio\nCompetir\nLocais\nRanking\nTrabalho\nPerfil",
+    "dayChipCount": 11
+  },
+  "mobile390": {
+    "text": "Locais\nEncontrar jogo\nChamadas abertas\nReservar quadra\nHorarios livres\nEntrar em aula\nTurmas com vaga\nVer locais\nProximos e seguindo\nENTRAR EM AULA\nEscolha o perfil da aula\nProcure por local, dia, periodo e nivel para ver turmas com vaga.\nBusca por perfil\nOcultar filtros\nMS · Dourados · Qualquer dia\nUF\nTodos\nMS\nMT\nCIDADE\nTodas\nCampo Grande\nDourados\nACADEMIA OU PROFESSOR\nDias\nQualquer dia\nDom\nSeg\nTer\nQua\nQui\nSex\nSab\nPERIODO\nQualquer horario\nManha\nTarde\nNoite\nNIVEL\nQualquer nivel\nIniciante\nIntermediario\nAvancado\nPrimeira Classe\nProfissional\nPERFIL\nAdulto ou kids\nAdulto\nKids\nBuscar turmas com vaga\nFILTRO DE AULA\nDefina cidade, dia, periodo ou nivel para ver turmas com vaga.\n\nNão mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher.\n\nBuscar turmas\nInicio\nCompetir\nLocais\nRanking\nTrabalho\nPerfil",
+    "overflow": []
+  }
+}

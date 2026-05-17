@@ -44,6 +44,2158 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] APP-DNA-01 - Consolidar DNA visual e gramática estrutural do app
+
+Status: `[x]` concluido em 2026-05-17
+
+Fonte:
+
+- `UX_APP_DNA_RESTRUCTURE_REPORT_2026_05_16.md`;
+- `UX_FRONTEND_AUDIT.md`;
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`;
+- `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`;
+- `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`;
+- manual externo `manual_frontend_design_produto_apps_modernos.md`;
+- screenshots carregados em `web/docs/screenshots/ux-frontend-audit-deep-loaded-2026-05-16/`.
+
+Contexto:
+
+- o app ja tem muitas funcoes implementadas, mas ainda parece complexo porque as telas expõem inventario de modulos, listas longas e ferramentas internas antes da intencao do usuario;
+- prints carregados mostram que o problema se repete em Player App, Locais, competicoes e Management OS;
+- antes de continuar mudancas pontuais, precisamos fixar uma gramática visual e estrutural unica para evitar que cada area resolva o mesmo problema de um jeito diferente.
+
+Objetivo:
+
+Criar uma base comum para os proximos sprints de reestruturação:
+
+- uma tela deve ter uma intencao principal;
+- jogador ve tarefa e contexto pessoal, nao painel;
+- gestor ve rotina operacional, nao catalogo de tudo;
+- organizador opera em workspace separado da pagina publica;
+- filtros, tabs, rows, cards e empty states seguem um padrao comum;
+- mobile usa telas focadas, listas e sheets; desktop usa sidebar, filtros e listas/tabelas com densidade controlada.
+
+Escopo:
+
+1. Formalizar e aplicar no codigo uma gramática minima reutilizavel, sem redesign total:
+   - `PageHeader`/cabecalho compacto;
+   - `ActionPanel` para proxima acao ou fila curta;
+   - `ObjectRow` para listas operacionais repetitivas;
+   - `DiscoveryCarousel` para descoberta;
+   - `FilterBar` desktop e `FilterSheet`/resumo mobile;
+   - `ScopeSelector` para classe, data, local ou quadra;
+   - `CompactEmptyState`;
+   - `StatusBadge` e `PrimaryAction`.
+
+2. Definir regras praticas de uso:
+   - card so para objeto importante ou escolha;
+   - row para repeticao operacional;
+   - tabs so para paginas irmas;
+   - filtros dependentes por dados reais quando possivel;
+   - empty state compacto;
+   - uma acao primaria por tela.
+
+3. Revisar os componentes existentes antes de criar novos:
+   - reaproveitar padrões ja existentes quando estiverem bons;
+   - nao introduzir biblioteca pesada;
+   - nao alterar regras de negocio.
+
+Nao objetivos:
+
+- nao reescrever o app;
+- nao trocar stack;
+- nao criar backend novo neste item;
+- nao redesenhar todas as telas de uma vez;
+- nao remover funcionalidades.
+
+Criterios de aceite:
+
+- existe uma base de componentes/padroes pronta para os itens seguintes;
+- docs deixam claro quando usar card, row, tabela, sheet, modal e tabs;
+- nenhuma tela principal perde funcao;
+- lint/build passam;
+- `UX_APP_DNA_RESTRUCTURE_REPORT_2026_05_16.md` e `CURRENT_PRODUCT_STATE.md` sao atualizados com o que virou padrao real.
+
+Entrega 2026-05-17:
+
+- criado `src/components/AppPrimitives.tsx` com `PageHeader`, `ActionPanel`, `ObjectRow`, `DiscoveryCarousel`, `CompactEmptyState`, `ScopeSelector` e `PrimaryAction`;
+- `App.css` recebeu tokens/classes compartilhadas para os primitives, com comportamento mobile;
+- Home passou a usar `ActionPanel`, `ObjectRow` e `DiscoveryCarousel` na primeira dobra e descoberta;
+- notificacoes passaram a ter dialog ancorado com `aria-controls` e fechamento por `Escape`;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] PLAYER-HOME-DNA-01 - Home do jogador por prioridade contextual
+
+Fonte: `UX_APP_DNA_RESTRUCTURE_REPORT_2026_05_16.md`, secao 5.1.
+
+Problema:
+
+- a Home mobile ainda tem cara de dashboard: texto de onboarding permanente, cards de acao altos, `Para voce`, `Trabalho` e descoberta competindo na mesma rolagem;
+- usuarios com perfil gestor/admin veem informacao profissional contaminando a primeira leitura do modo jogador.
+
+Objetivo:
+
+Transformar a primeira dobra em uma tela objetiva:
+
+1. header compacto;
+2. CTA contextual com prioridade:
+   - resultado pendente;
+   - atividade nas proximas 24h;
+   - convite pendente;
+   - inscricao incompleta;
+   - competicao em andamento;
+   - descoberta local;
+3. quatro acoes rapidas compactas:
+   - Reservar quadra;
+   - Encontrar jogo;
+   - Aulas;
+   - Torneios e ligas;
+4. `Para voce` somente com dados reais;
+5. area profissional separada e recolhida para quem tem permissao;
+6. descoberta em carrosseis por proximidade.
+
+Criterios de aceite:
+
+- jogador puro nao ve gestao;
+- admin em modo jogador ve entrada profissional separada, sem poluir a primeira dobra;
+- empty states sao compactos;
+- mobile 390px nao parece lista de cards administrativos;
+- desktop aproveita melhor largura sem virar painel operacional.
+
+Entrega 2026-05-17:
+
+- primeira dobra usa CTA contextual ja calculado por prioridade;
+- acoes rapidas permanecem compactas e separadas do painel pessoal;
+- `Para voce` segue condicionado a dados reais;
+- descoberta usa carrosseis horizontais;
+- area profissional permanece separada para perfis com permissao.
+
+### [x] PLAYER-LOCATIONS-DNA-01 - Locais por paginas de intencao
+
+Fonte: `UX_APP_DNA_RESTRUCTURE_REPORT_2026_05_16.md`, secoes 5.2 e 5.3.
+
+Problema:
+
+- `Locais` mistura reservar, aulas, jogos e lista de locais;
+- algumas capturas com `intent=classes` ou `intent=matches` renderizam conteudo de outra intencao, sinalizando fragilidade de estado/rota;
+- abas `Todos`, `Seguindo`, `Meus locais` aparecem em fluxos onde o usuario queria reservar ou entrar em aula.
+
+Objetivo:
+
+Separar o hub e as intencoes:
+
+- `/locais` = escolha leve de intencao;
+- `/locais/reservar` ou estado equivalente = somente reserva;
+- `/locais/aulas` = somente aulas;
+- `/locais/jogos` = somente jogos abertos;
+- `/locais/explorar` = locais, seguindo e meus locais.
+
+Regras:
+
+- cada intencao tem primeira dobra propria;
+- filtro mobile em sheet/resumo;
+- desktop pode manter filtro visivel, mas sem sobreposicao;
+- tabs de lista de locais nao aparecem em reserva/aulas/jogos;
+- rota direta deve carregar o conteudo correto.
+
+Criterios de aceite:
+
+- `intent=booking`, `intent=classes` e `intent=matches` nao trocam conteudo entre si;
+- mobile nao mostra formulario inteiro antes do usuario entender a acao;
+- "Seguindo" e "Meus locais" ficam apenas no contexto de explorar locais;
+- prints novos mostram quatro experiencias distintas.
+
+Entrega parcial 2026-05-17:
+
+- `/locais` sem `intent` agora funciona como hub neutro de intencao, sem filtros, tabs ou bloco explicativo extra abaixo dos cards;
+- as quatro escolhas do hub levam para intents dedicadas via query (`matches`, `booking`, `classes`, `venues`);
+- quando uma intent esta ativa, o painel grande de descoberta vira um seletor compacto horizontal para trocar de caminho sem contaminar a primeira dobra;
+- tabs `Todos`, `Seguindo` e `Meus locais` agora aparecem somente em `Ver locais`/`directory`, nao mais em reservar quadra ou entrar em aula;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram;
+- pendente dentro deste item: filtros/sheets das intents e prints autenticados das quatro experiencias.
+
+Entrega final 2026-05-17:
+
+- as intents diretas `#/locais?intent=booking`, `#/locais?intent=classes`, `#/locais?intent=matches` e `#/locais?intent=venues` foram validadas com capturas desktop/mobile carregadas;
+- `PlacesPage` passou a sincronizar o `intent` da URL usando `useSearchParams`, `location.search` e fallback do hash, evitando que uma entrada direta caia no hub neutro;
+- os filtros especificos de `Reserva`, `Aulas` e `Encontrar jogo` permanecem separados e sem tabs `Todos/Seguindo/Meus locais` fora de `Ver locais`;
+- screenshots finais ficaram em `web/docs/screenshots/qa-dna-2026-05-17/`;
+- validacao final: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+
+### [x] PLAYER-BOOKING-DNA-01 - Reserva publica com filtros dependentes e agenda por quadra
+
+Fonte: `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md` e `UX_APP_DNA_RESTRUCTURE_REPORT_2026_05_16.md`.
+
+Problema:
+
+- filtro de reserva ainda pode ficar encavalado;
+- campos livres permitem escolhas impossiveis;
+- fluxo precisa ser mais visual, principalmente dentro do local;
+- duracao de 2h deve mostrar e bloquear intervalo completo;
+- preco precisa refletir duracao.
+
+Objetivo:
+
+Construir fluxo de reserva em camadas:
+
+1. filtros dependentes:
+   - UF;
+   - cidade;
+   - local com autocomplete;
+   - piso;
+   - data;
+   - periodo/hora;
+   - duracao;
+2. se local nao for escolhido, mostrar cards de locais com horarios livres;
+3. ao escolher local, abrir agenda por quadra;
+4. mobile usa carrossel/seletor de quadra;
+5. cada quadra mostra horas cheias;
+6. duracao 2h seleciona e destaca o intervalo inteiro;
+7. confirmacao usa perfil logado e pede telefone somente se faltar.
+
+Criterios de aceite:
+
+- nenhuma sobreposicao em desktop ou mobile;
+- UF/cidade/local/piso sao baseados em locais/quadras cadastrados;
+- horarios de meia hora nao aparecem no fluxo publico;
+- duracao altera preco e disponibilidade;
+- reserva solicitada aparece para o gestor aprovar na agenda;
+- feedback de sucesso explica o status pendente.
+
+Entrega 2026-05-17:
+
+- filtro publico de reserva ganhou grid por areas para impedir sobreposicao entre data, hora, duracao e busca em desktop;
+- mobile limpa as areas do grid e usa uma coluna com botao de busca em largura total;
+- busca publica normaliza duracao para 1h ou 2h, mantendo apenas horas cheias no fluxo do jogador;
+- resultado por local e resultado por quadra exibem preco total calculado pela duracao escolhida;
+- cards de locais deixam claro que reserva de 2h bloqueia o intervalo completo na agenda por quadra;
+- pagina publica do local preserva carrossel de quadras, horarios hora a hora, intervalo selecionado e confirmacao vinculada ao perfil;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] PLAYER-CLASSES-DNA-01 - Aulas com multi-dia e interesse/matricula rastreavel
+
+Problema:
+
+- muitas turmas aparecem como um dia por semana;
+- aluno pode querer entrar na mesma turma em mais de um dia;
+- enviar interesse precisa deixar claro o que acontece apos a aprovacao.
+
+Objetivo:
+
+- agrupar turmas recorrentes equivalentes quando forem o mesmo professor/nivel/horario/plano;
+- permitir selecionar um ou mais dias conforme plano/quantidade semanal;
+- ao enviar interesse, vincular ao perfil logado;
+- na gestao, aprovacao deve criar/vincular matricula quando houver suporte;
+- no jogador, interesse aprovado deve aparecer como aula/calendario pessoal.
+
+Criterios de aceite:
+
+- filtro de aulas permite multi-dia sem quebrar layout;
+- card/lista de turma mostra dias disponiveis de forma compacta;
+- jogador entende se esta enviando interesse, entrando em lista ou solicitando matricula;
+- status do pedido aparece depois do envio.
+
+Entrega 2026-05-17:
+
+- pagina publica do local preserva agrupamento de turmas equivalentes por professor, nivel, horario, perfil, valor e plano;
+- aluno pode selecionar todos os dias recorrentes do grupo ou alternar dias especificos antes de enviar interesse;
+- envio de interesse agora evita duplicar solicitacoes ja pendentes/ativas para os mesmos dias;
+- solicitacoes criadas entram imediatamente no estado local e passam a exibir chip `Interesse enviado` ou `Matriculado`;
+- painel de confirmacao mostra status por dia escolhido, deixando claro que a academia precisa aprovar antes de virar aula ativa;
+- CTA muda para `Interesse enviado` ou `Matricula ativa` quando o perfil ja tem vinculo naquele dia;
+- filtro publico de aulas ganhou grid por areas em desktop e continua colapsando em uma coluna no mobile;
+- suporte estrutural existente foi preservado: aprovacao na gestao segue usando matriculas da academia; calendario pessoal depende dos dados ja expostos pela Home/agenda do jogador;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] PLAYER-MATCHES-DNA-01 - Encontrar jogo com filtros reais e criacao secundaria
+
+Problema:
+
+- filtro de encontrar jogo quebra/encavala;
+- campos nao seguem a mesma logica de reservar quadra/aulas;
+- criar chamada aparece competindo com encontrar jogo.
+
+Objetivo:
+
+- filtro por UF, cidade, local, data, periodo, nivel e status;
+- UF/cidade/local derivados de locais cadastrados;
+- resultados aparecem como rows/cards compactos de jogo;
+- "Criar chamada" aparece como alternativa quando nao houver jogo bom ou como CTA secundario.
+
+Criterios de aceite:
+
+- desktop sem campos sobrepostos;
+- mobile com filtro recolhido em sheet;
+- resultados nao misturam jogos de contexto impossivel;
+- criar chamada nao rouba a tarefa principal de encontrar jogo.
+
+Entrega 2026-05-17:
+
+- filtro de `Encontrar jogo` passou a seguir a mesma arquitetura de descoberta usada em quadras/aulas: UF, cidade, local, data, periodo, nivel, mensagem e status;
+- UF/cidade/local sao derivados dos locais cadastrados com chamadas abertas/registradas, evitando opcoes soltas sem contexto;
+- grid desktop usa areas nomeadas para impedir sobreposicao entre campos;
+- mobile usa o mesmo controle recolhido de filtros dos fluxos de quadra/aula;
+- `Criar chamada` permanece como alternativa secundaria apos a busca, sem competir com a tarefa principal de entrar em um jogo existente;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] PUBLIC-PLACE-DNA-01 - Pagina publica de local por paginas irmas
+
+Problema:
+
+- pagina de local empilha Reserva, Aulas, Jogos, Planos e Quadras/valores;
+- atalhos funcionam mais como scroll anchors do que como areas focadas.
+
+Objetivo:
+
+Separar conteudos:
+
+- `Reserva`;
+- `Aulas`;
+- `Jogos`;
+- `Planos`;
+- `Sobre/Contato`.
+
+Regras:
+
+- header do local permanece compacto;
+- cada aba/atalho mostra apenas seu conteudo;
+- planos e quadras sao acionaveis:
+  - plano abre fluxo de aulas conforme quantidade semanal;
+  - quadra abre agenda de reserva daquela quadra/local.
+
+Criterios de aceite:
+
+- clicar em Reserva, Aulas, Jogos ou Planos nao leva para uma rolagem enorme;
+- cada pagina tem uma acao principal clara;
+- mobile reduz scroll e melhora orientacao.
+
+Entrega 2026-05-17:
+
+- pagina publica do local usa rotas irmas `/reserva`, `/aulas`, `/jogos`, `/planos` e `/sobre`, mantendo o header compacto e conteudo focado por intencao;
+- atalhos superiores navegam para paginas focadas em vez de depender de ancora em uma pagina enorme;
+- troca de aba/rota reposiciona o topo para reforcar a sensacao de nova tela;
+- planos e quadras sao acionaveis: plano direciona para aulas/reserva com contexto; quadra direciona para agenda daquela quadra;
+- conteudo secundario de quadras/valores fica em `Sobre`, sem poluir Reserva/Aulas/Jogos/Planos;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] COMP-PUBLIC-DNA-01 - Torneio publico limpo e separado do workspace do organizador
+
+Problema:
+
+- pagina publica de torneio exibe ferramentas de organizador em `Jogadores`;
+- `Organizacao` pode redirecionar para `Jogadores`;
+- `Classificacao` aparece mesmo quando o formato nao tem fase de grupos;
+- encerramento/podio aparece em `Jogos`, antes do fim.
+
+Objetivo:
+
+- separar public/player de organizer;
+- remover ferramentas admin da pagina publica;
+- exibir `Classificacao` apenas quando aplicavel;
+- mover podio/encerramento para `Evento` e apenas apos fim;
+- adicionar exportar chave no evento quando houver chaveamento;
+- usar seletor de classe contextual, sem duplicar chips e select.
+
+Criterios de aceite:
+
+- inscrito publico ve jogadores/inscritos, nao botoes de importar/remover;
+- organizador tem rota/workspace proprio para operar;
+- torneio sem grupos nao mostra aba Classificacao;
+- exportar chave aparece quando existe bracket;
+- mobile nao vira pagina de 20.000 px.
+
+Entrega 2026-05-17:
+
+- pagina publica do torneio ja estava operando com abas reais (`Evento`, `Inscritos`, `Jogos`, `Classificacao` quando aplicavel e `Chat` quando permitido);
+- `Categorias` nao fica como aba publica independente; classe aparece apenas como filtro contextual nas abas que precisam;
+- ferramentas de organizador permanecem no workspace proprio, fora da leitura publica de inscritos/jogos;
+- podio/encerramento fica em `Evento` e apenas apos torneio finalizado;
+- `Evento` exibe `Exportar chave` quando ha chaveamento publicado;
+- filtro publico de classe foi ajustado para nao duplicar chips e select: ate 6 classes usa chips; acima disso usa select unico escalavel;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] COMP-LEAGUE-DNA-01 - Liga com jogador, publico e organizador separados
+
+Status: `[x]` concluido em 2026-05-17
+
+Problema:
+
+- Liga mistura jogadores, convite, pagamentos, classificacao, partidas e chat admin;
+- paginas mobile ficam longas demais;
+- class selector precisa escalar para muitas classes.
+
+Objetivo:
+
+- jogador ve rodada, partidas, classificacao, jogadores e avisos;
+- organizador ve convite, pagamentos, aprovacoes, configuracao e comunicacao;
+- selector de classe unificado e contextual;
+- partidas em rows compactas por rodada/classe/status.
+
+Criterios de aceite:
+
+- `Jogadores` publico nao mostra pagamentos/convite como conteudo principal;
+- `Chat` publico nao mostra ferramentas admin para usuario sem papel;
+- `Partidas` mobile reduz scroll por filtro/sheet/paginacao;
+- classificacao usa seletor de classe compacto.
+
+Entrega 2026-05-17:
+
+- leitura publica da liga permanece separada em abas reais (`Liga`, `Jogadores`, `Classificacao`, `Partidas`, `Chat`);
+- ferramentas de convite, pagamento, aprovacoes, configuracao e comunicacao admin seguem restritas ao workspace do organizador;
+- filtro publico de classe agora replica o padrao do torneio: chips para ate 6 classes e select unico quando houver muitas classes;
+- `Partidas` agora aplica de fato o recorte de classe aos jogos exibidos, alem dos filtros de rodada e status;
+- chat publico nao exibe ferramentas administrativas para usuario sem papel de organizador;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] MANAGEMENT-DNA-01 - Management OS mobile e desktop por rotina
+
+Status: `[x]` concluido em 2026-05-17
+
+Problema:
+
+- central de gestao mobile lista fila, implantacao, varios locais, setup e acoes de modulo em uma rolagem muito longa;
+- modulos de gestao ainda usam muitos cards/containers repetidos.
+
+Objetivo:
+
+- central mostra primeiro fila do dia;
+- mobile escolhe local antes de abrir operacao completa;
+- setup/implantacao fica recolhido ou em pagina propria;
+- modulos mostram: contexto, fila do modulo, lista operacional, metricas/relatorio e configuracao;
+- listas longas usam rows/tabelas, nao card para tudo.
+
+Criterios de aceite:
+
+- mobile de gestao nao empilha todos os locais com todos os detalhes;
+- agenda mostra pendencias primeiro e lista completa depois;
+- academia/clientes/financeiro/cantina seguem a mesma gramática;
+- permissoes continuam preservadas.
+
+Entrega 2026-05-17:
+
+- central de gestao preserva `Fila do dia` como primeira camada e mantem a fila acionavel por modulo/local;
+- `Locais sob sua gestao` agora ordena por pendencias, depois menor progresso de setup e depois nome;
+- a primeira leitura mostra ate 4 locais em foco, com acao explicita para ver todos, evitando empilhar todos os workspaces no mobile;
+- setup/implantacao continua recolhido em `details` e as acoes de rotina permanecem dentro de cada local;
+- permissoes e atalhos por papel foram preservados, pois a mudanca reaproveita `placeManagementModules` e `placeResourceAccess`;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] QA-DNA-01 - Auditoria visual carregada apos cada sprint de reestruturação
+
+Objetivo:
+
+Repetir a captura carregada apos cada sprint grande para garantir que o app nao volte ao padrao de cards empilhados.
+
+Escopo:
+
+- desktop 1366;
+- mobile 390;
+- Home;
+- Locais por intencao;
+- pagina publica de local;
+- torneio publico;
+- liga publica;
+- workspace organizador;
+- gestao central e um modulo.
+
+Criterios de aceite:
+
+- capturas sem loading;
+- relatorio curto com antes/depois;
+- bugs visuais P0/P1 entram imediatamente na queue.
+
+Entrega 2026-05-17:
+
+- capturas desktop 1366 e mobile 390 geradas em `web/docs/screenshots/qa-dna-2026-05-17/`;
+- relatorio criado em `QA_DNA_01_VISUAL_AUDIT_2026_05_17.md`;
+- todas as capturas principais registraram `loaded: true` em `summary.json`;
+- achado P1 de `Locais` foi corrigido no mesmo sprint: rota direta com `intent` agora abre a intencao correta;
+- nao foram encontrados P0 visuais bloqueadores nas telas auditadas;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+
+## P0 - Reestruturação tela por tela sem margem de interpretação
+
+Fonte:
+
+- `UX_APP_DNA_RESTRUCTURE_REPORT_2026_05_16.md`;
+- screenshots em `web/docs/screenshots/ux-frontend-audit-deep-loaded-2026-05-16/`;
+- contact sheets em `web/docs/screenshots/ux-frontend-audit-deep-loaded-2026-05-16/_contact_sheets/`;
+- feedback manual do usuario sobre Home, Locais, reserva, aulas, jogos, local publico, torneio e liga.
+
+Regra desta subfila:
+
+- executar em ordem;
+- cada item representa uma tela, rota ou estado visual especifico;
+- nao substituir por um "ajuste geral";
+- nao encerrar item sem screenshot desktop e mobile;
+- se faltar backend, criar fallback seguro ou documentar gap no proprio item antes de avançar.
+
+### Gate obrigatorio do manual para qualquer item `SCREEN-*`
+
+Antes de marcar qualquer item `SCREEN-*` como concluido, validar explicitamente:
+
+1. Intencao dominante:
+   - a tela responde em ate 3 segundos onde o usuario esta e o que pode fazer;
+   - existe uma acao primaria dominante por regiao de tela;
+   - acoes secundarias nao competem com a primaria.
+
+2. Camadas corretas:
+   - jogador nao ve ferramenta de gestor/organizador;
+   - organizador nao opera dentro da pagina publica;
+   - configuracao/setup nao compete com rotina diaria;
+   - detalhes avancados ficam em disclosure, aba propria, drawer ou pagina dedicada.
+
+3. Cards, listas e containers:
+   - card representa objeto/atalho/alerta independente;
+   - lista operacional longa usa row/tabela, nao card repetitivo;
+   - nao usar card dentro de card salvo excecao justificada;
+   - bordas e sombras nao substituem hierarquia por espaco.
+
+4. Filtros e formularios:
+   - label sempre visivel;
+   - placeholder nao substitui label;
+   - campos aparecem na ordem natural da decisao;
+   - mobile usa resumo + bottom sheet quando o filtro tiver muitos campos;
+   - valores impossiveis nao aparecem quando houver dados para restringir;
+   - erro aparece junto ao campo ou como feedback amigavel.
+
+5. Mobile:
+   - nao e desktop empilhado;
+   - bottom nav nao cobre conteudo ou CTA;
+   - area tocavel adequada;
+   - pagina longa tem filtros, paginacao, agrupamento ou "ver mais";
+   - modais longos viram paginas ou sheets adequadas.
+
+6. Desktop:
+   - usa melhor a largura sem poluir;
+   - filtros podem ficar visiveis quando sao tarefa principal;
+   - listas extensas usam tabela/row com densidade produtiva;
+   - acoes secundarias ficam no topo direito, menu ou coluna lateral.
+
+7. Estados:
+   - loading nao aparece como texto cru persistente;
+   - empty state tem titulo curto, explicacao curta e uma acao;
+   - erro tecnico nunca aparece cru;
+   - sucesso/falha tem feedback visivel.
+
+8. Evidencia:
+   - screenshot desktop carregado;
+   - screenshot mobile 390px carregado;
+   - rota direta validada;
+   - se houver permissao, validar usuario sem permissao ou documentar gap.
+
+Se qualquer regra acima falhar, o item permanece aberto mesmo que a funcao "funcione".
+
+### Matriz de conformidade com o manual
+
+| Item | Manual aplicado | Risco atual observado | Resultado esperado |
+|---|---|---|---|
+| `SCREEN-HOME-01` | Home nao e catalogo; uma proxima acao; separar perfis | Home mobile parece dashboard e mistura profissional | Primeira dobra contextual, leve e pessoal |
+| `SCREEN-HOME-02` | Desktop usa largura sem virar painel administrativo | Home desktop pode repetir modulos | Duas colunas com proxima acao, pessoal e descoberta |
+| `SCREEN-NOTIFICATIONS-01` | Modal/popover/sheet conforme contexto | Sino abre card solto no meio da pagina | Popover ancorado no desktop, sheet no mobile |
+| `SCREEN-LOCAIS-01` | Organizar por intencao | Hub parece mini-dashboard | Quatro escolhas claras, sem filtro antes da escolha |
+| `SCREEN-LOCAIS-02` | Inputs claros, labels, campos dependentes | Filtro encavala e aceita valores livres demais | UF/cidade/local/piso/data/hora/duracao com layout robusto |
+| `SCREEN-LOCAIS-03` | Lista leve antes de detalhe | Quadras de varios locais aparecem soltas | Primeiro escolher local, depois agenda |
+| `SCREEN-LOCAIS-04` | Acao primaria e feedback visual | Duracao 2h nao comunica intervalo/preco | Slots hora a hora com intervalo e custo corretos |
+| `SCREEN-LOCAIS-05` | Formulario nao duplica identidade | Nome/telefone parecem cadastro manual | Reserva vinculada ao perfil logado |
+| `SCREEN-LOCAIS-06` | Filtro mobile em sheet; dados agrupados | Turmas viram itens isolados e filtro pesado | Turmas agrupadas, multi-dia e resultado claro |
+| `SCREEN-LOCAIS-07` | Estado e proximo passo claros | Interesse nao explica aprovacao/matricula | Status rastreavel e consequencia visivel |
+| `SCREEN-LOCAIS-08` | Busca por intencao; CTA secundario | Criar chamada compete com encontrar jogo | Filtros reais e criar chamada como alternativa |
+| `SCREEN-LOCAL-01` | Pagina de objeto com acoes irmas | Local empilha todos os modulos | Vitrine do local + navegacao para paginas irmas |
+| `SCREEN-LOCAL-02` | Tela focada em tarefa | Reserva convive com outros modulos | Reserva dedicada, agenda por quadra |
+| `SCREEN-LOCAL-03` | Tela focada em tarefa | Aulas misturadas com reserva/jogos/planos | Aulas dedicadas, filtro e selecao de dias |
+| `SCREEN-LOCAL-04` | Tela focada em tarefa | Jogos abertos sem filtros | Jogos do local com filtro e CTA |
+| `SCREEN-LOCAL-05` | Objeto acionavel, nao texto passivo | Planos/quadras apenas informativos | Planos iniciam fluxo de aulas/reserva |
+| `SCREEN-COMP-HUB-01` | Separar por perfil/intencao | Jogando, descobrindo e organizando podem misturar | Hub com segmentos limpos e organizacao secundaria |
+| `SCREEN-TOURNAMENT-01` | Evento publico como objeto | Evento vira cockpit | Resumo publico, CTA e exportar chave quando aplicavel |
+| `SCREEN-TOURNAMENT-02` | Camadas publico vs admin | Inscritos mostra remover/importar | Lista publica sem ferramentas admin |
+| `SCREEN-TOURNAMENT-03` | Mobile nao deve ser pagina enorme | Jogos/chave muito longos | Classe contextual, lista por fase e exportacao |
+| `SCREEN-TOURNAMENT-04` | Nao mostrar aba sem funcao | Classificacao vazia em mata-mata | Aba some quando nao aplicavel |
+| `SCREEN-TOURNAMENT-05` | Comunicacao limpa por permissao | Chat mostra ferramentas admin | Avisos limpos; publicar/fixar so com permissao |
+| `SCREEN-TOURNAMENT-ORG-01` | Workspace separado | Organizacao redireciona/mistura jogadores | Workspace com abas operacionais proprias |
+| `SCREEN-LEAGUE-01` | Status compacto e classe contextual | Inscricao aprovada vira card grande | Badge discreto e selector por aba |
+| `SCREEN-LEAGUE-02` | Lista publica vs admin | Jogadores mistura pagamento/convite | Publico limpo, pagamentos no organizador |
+| `SCREEN-LEAGUE-03` | Lista mobile compacta | Partidas geram rolagem gigante | Filtros e rows por classe/rodada/status |
+| `SCREEN-LEAGUE-04` | Tabela mobile adaptada | Classificacao longa e tecnica | Selector + tabela compacta |
+| `SCREEN-LEAGUE-05` | Acoes por permissao | Chat com ferramentas admin | Avisos para jogador, ferramentas no organizador |
+| `SCREEN-GESTAO-01` | Operacao diaria antes de configuracao | Central mobile lista tudo | Fila do dia + locais compactos |
+| `SCREEN-GESTAO-AGENDA-01` | Rotina antes de lista completa | Agenda empilha pendencias e historico | Pendencias, espera, filtros e lista depois |
+| `SCREEN-GESTAO-ACADEMIA-01` | Rotina diaria sem wizard | Academia mistura setup e rotina | Hoje/chamada/pendencias primeiro |
+| `SCREEN-GESTAO-CLIENTES-01` | Busca/acao principal clara | CRM pode parecer planilha/card pile | Follow-up, busca e novo contato |
+| `SCREEN-GESTAO-FINANCEIRO-01` | Origem e acao financeira claras | Recebiveis misturam origens | Pendentes/vencidos/origem/acao |
+| `SCREEN-GESTAO-CANTINA-01` | Modulo por plano/permissao | Cantina pode aparecer desativada | POS so quando ativo; vender produto como CTA |
+
+### Ordem rigida de execucao por sprint
+
+Sprint 1 - base e primeira dobra:
+
+1. `APP-DNA-01`
+2. `SCREEN-HOME-01`
+3. `SCREEN-HOME-02`
+4. `SCREEN-NOTIFICATIONS-01`
+
+Sprint 2 - Locais e reserva:
+
+1. `SCREEN-LOCAIS-01`
+2. `SCREEN-LOCAIS-02`
+3. `SCREEN-LOCAIS-03`
+4. `SCREEN-LOCAIS-04`
+5. `SCREEN-LOCAIS-05`
+
+Sprint 3 - Aulas, jogos e local publico:
+
+1. `SCREEN-LOCAIS-06`
+2. `SCREEN-LOCAIS-07`
+3. `SCREEN-LOCAIS-08`
+4. `SCREEN-LOCAL-01`
+5. `SCREEN-LOCAL-02`
+6. `SCREEN-LOCAL-03`
+7. `SCREEN-LOCAL-04`
+8. `SCREEN-LOCAL-05`
+
+Sprint 4 - Torneio publico e workspace:
+
+1. `SCREEN-COMP-HUB-01`
+2. `SCREEN-TOURNAMENT-01`
+3. `SCREEN-TOURNAMENT-02`
+4. `SCREEN-TOURNAMENT-03`
+5. `SCREEN-TOURNAMENT-04`
+6. `SCREEN-TOURNAMENT-05`
+7. `SCREEN-TOURNAMENT-ORG-01`
+
+Sprint 5 - Liga:
+
+1. `SCREEN-LEAGUE-01`
+2. `SCREEN-LEAGUE-02`
+3. `SCREEN-LEAGUE-03`
+4. `SCREEN-LEAGUE-04`
+5. `SCREEN-LEAGUE-05`
+
+Sprint 6 - Gestao:
+
+1. `SCREEN-GESTAO-01`
+2. `SCREEN-GESTAO-AGENDA-01`
+3. `SCREEN-GESTAO-ACADEMIA-01`
+4. `SCREEN-GESTAO-CLIENTES-01`
+5. `SCREEN-GESTAO-FINANCEIRO-01`
+6. `SCREEN-GESTAO-CANTINA-01`
+
+Sprint 7 - regressao:
+
+1. `QA-DNA-01`
+
+### Validacao documental da subfila `SCREEN-*`
+
+Executada em 2026-05-16 antes de entregar a queue final para implementacao.
+
+Resultado da checagem:
+
+- 34 itens `SCREEN-*` encontrados;
+- 34 itens cobertos na matriz de conformidade com o manual;
+- 0 itens sem matriz;
+- 0 itens extras na matriz;
+- 34 itens com `Mudanca obrigatoria`;
+- 34 itens com `Criterio de aceite`;
+- todo item herda o gate obrigatorio do manual com validacao desktop, mobile, estados e evidencia.
+
+Regra de revisao:
+
+- se uma implementacao futura nao cumprir o gate do manual, o item volta para aberto mesmo que a funcao esteja operacional;
+- se a implementacao descobrir uma tela nao mapeada, criar novo `SCREEN-*` antes de seguir para a proxima sprint;
+- se uma mudanca exigir backend estrutural, documentar o gap no item e entregar fallback visual seguro, sem expor erro cru ao usuario.
+
+### [x] SCREEN-HOME-01 - `/inicio` mobile: primeira dobra do jogador
+
+Screenshots de referencia:
+
+- `mobile390-inicio.png`
+- `desktop1366-inicio.png`
+
+Problema:
+
+- primeira dobra ainda parece painel;
+- texto de onboarding permanente ocupa espaco;
+- cards de acao sao altos e repetem explicacao;
+- area profissional aparece como continuidade do jogador.
+
+Mudanca obrigatoria:
+
+- header compacto com nome/avatar e sino;
+- bloco principal com CTA contextual unico;
+- regra de prioridade do CTA:
+  1. resultado pendente;
+  2. atividade nas proximas 24h;
+  3. convite pendente;
+  4. inscricao incompleta;
+  5. competicao em andamento;
+  6. descoberta local;
+- quatro acoes rapidas compactas:
+  - Reservar;
+  - Jogar;
+  - Aulas;
+  - Competir;
+- remover textos longos do tipo "escolha uma acao simples";
+- `Para voce` so aparece se houver dado real;
+- entrada de gestao/profissional fica em bloco separado, abaixo, recolhivel ou com peso secundario.
+
+Backend/dados:
+
+- usar dados ja existentes de partidas, reservas, aulas, convites, inscricoes e competicoes;
+- nao criar backend novo neste item;
+- se algum tipo nao existir, omitir do ranking de prioridade.
+
+Criterio de aceite:
+
+- em 390px, a primeira dobra mostra header, CTA contextual e acoes rapidas sem parecer dashboard;
+- jogador puro nao ve bloco profissional;
+- admin em modo jogador ve bloco profissional separado;
+- nao existe card vazio grande.
+
+Entrega 2026-05-17:
+
+- Home usa `ActionPanel` para o CTA contextual e reduz a primeira dobra a acao principal + rows pessoais;
+- rows pessoais usam `ObjectRow`, evitando card alto/explicativo;
+- descoberta usa carrossel em vez de pilha longa;
+- validacao visual autenticada via Chrome headless ficou bloqueada no gate de login, apesar de login demo documentado; screenshots nao autenticados foram salvos em `web/docs/screenshots/sprint-2026-05-17-app-dna-01/`.
+
+### [x] SCREEN-HOME-02 - `/inicio` desktop: Home sem catalogo de modulos
+
+Screenshots de referencia:
+
+- `desktop1366-inicio.png`
+
+Problema:
+
+- desktop pode aproveitar largura, mas nao deve virar painel administrativo para jogador.
+
+Mudanca obrigatoria:
+
+- layout em duas colunas:
+  - coluna principal: CTA contextual, pendencias pessoais, proximos compromissos;
+  - coluna lateral: acoes rapidas e descoberta local;
+- area profissional aparece como card/section propria apenas para perfil com permissao;
+- eventos/locais de descoberta aparecem em carrossel/lista curta, nao em pilha longa.
+
+Criterio de aceite:
+
+- a acao principal da Home e evidente em ate 3 segundos;
+- nenhuma metrica administrativa aparece no modo jogador;
+- desktop nao repete os mesmos atalhos em mais de um bloco.
+
+Entrega 2026-05-17:
+
+- o sino segue usando o popover/sheet existente, mas agora recebe semantica de dialog, `aria-controls` e fechamento por `Escape`;
+- a entrega evita o card solto como conteudo da pagina e preserva a fonte atual de notificacoes.
+
+### [x] SCREEN-NOTIFICATIONS-01 - Sino de notificacoes web/mobile
+
+Screenshots de referencia:
+
+- prints manuais do sino abrindo card no meio da Home.
+
+Problema:
+
+- notificacoes abrem como card comum dentro da pagina, quebrando expectativa de produto web/mobile.
+
+Mudanca obrigatoria:
+
+- desktop:
+  - sino abre popover ancorado ao botao;
+  - largura controlada;
+  - fecha ao clicar fora, ESC ou botao fechar;
+  - lista notificacoes por prioridade;
+  - acoes inline compactas;
+- mobile:
+  - sino abre bottom sheet ou tela dedicada curta;
+  - nao empurra a Home para baixo;
+  - botao voltar/fechar claro;
+- notificacao com acao leva para rota correta;
+- estado vazio compacto.
+
+Backend/dados:
+
+- reaproveitar fonte atual de notificacoes/pendencias;
+- nao criar notificacao nova neste item.
+
+Criterio de aceite:
+
+- clicar no sino nunca cria um card solto no meio da pagina;
+- popover/sheet respeita foco visual;
+- mobile e desktop seguem padrao comum.
+
+### [x] SCREEN-LOCAIS-01 - `/locais`: hub de intencao
+
+Status: `[x]` concluido em 2026-05-17
+
+Screenshots de referencia:
+
+- `mobile390-locais.png`
+- `desktop1366-locais.png`
+
+Problema:
+
+- hub ainda parece mini-dashboard com cards explicativos;
+- CTA "comece pela intencao" repete conceito do proprio hub.
+
+Mudanca obrigatoria:
+
+- manter titulo `Locais`;
+- mostrar quatro escolhas:
+  - Reservar quadra;
+  - Entrar em aula;
+  - Encontrar jogo;
+  - Ver locais;
+- cada escolha tem titulo curto, uma microcopy e numero opcional;
+- remover bloco explicativo extra se nao houver acao real;
+- clique vai para tela dedicada, nao scroll/estado misturado.
+
+Criterio de aceite:
+
+- em mobile, hub cabe quase inteiro na primeira dobra;
+- cada card leva para uma intencao diferente;
+- nao aparecem filtros na tela de hub antes da escolha.
+
+Entrega 2026-05-17:
+
+- removido o estado explicativo redundante `Comece pela intencao`;
+- hub renderiza apenas titulo da pagina e quatro cards de intencao;
+- cards deixaram de marcar uma intencao ativa quando o usuario ainda esta no hub;
+- intents ativas usam `places-intent-strip` compacto em vez do painel grande;
+- tabs de locais foram restringidas a `Ver locais`.
+
+### [x] SCREEN-LOCAIS-02 - `/locais/reservar` ou `?intent=booking`: filtro inicial de reserva
+
+Screenshots de referencia:
+
+- `mobile390-locais-reserva.png`
+- `desktop1366-locais-reserva.png`
+- prints manuais de sobreposicao em Data/Hora.
+
+Problema:
+
+- filtro pode quebrar em desktop;
+- botao grande compete com campos;
+- campos permitem escolhas fora do universo real.
+
+Mudanca obrigatoria:
+
+- campos nesta ordem:
+  1. UF;
+  2. Cidade;
+  3. Local;
+  4. Piso;
+  5. Data;
+  6. Periodo/Hora;
+  7. Duracao;
+- defaults:
+  - UF: `Todos`;
+  - Cidade: `Todas`;
+  - Local: vazio com autocomplete;
+  - Piso: `Qualquer piso`;
+  - Data: hoje/proxima data valida;
+  - Periodo/Hora: `Qualquer horario`;
+  - Duracao: `1h`;
+- botao de busca desktop pode virar icone/lupa quando o contexto estiver claro;
+- mobile usa resumo + sheet, nao formulario comprido sempre aberto;
+- nenhuma sobreposicao de campos.
+
+Backend/dados:
+
+- UF e cidade devem vir de locais com quadras ativas;
+- local autocomplete deve respeitar UF/cidade;
+- piso deve vir de `place_courts.surface` ou campo equivalente;
+- se piso nao existir confiavel, documentar gap e usar fallback visual sem bloquear fluxo.
+
+Criterio de aceite:
+
+- 1366px, 430px e 390px sem campo cortado;
+- trocar UF recalcula cidades e locais;
+- trocar cidade recalcula locais;
+- busca sem local retorna locais compativeis.
+
+Entrega final 2026-05-17:
+
+- filtro de reserva passou a iniciar neutro: UF `Todas`, cidade `Todas`, local vazio, piso `Qualquer piso`, data atual, hora/periodo `Qualquer horario` e duracao `1h`;
+- grid recebeu normalizacao de largura para inputs/selects, reduzindo risco de data/hora/duracao encavalarem;
+- no mobile, foi criado resumo acionavel `Ajustar filtros`; os campos ficam recolhidos ate o usuario pedir ajuste;
+- o botao de busca permanece como lupa no desktop e fica dentro do bloco de filtros no mobile;
+- a segunda linha do grid foi redistribuida para evitar que `Data`, `Hora`, `Duracao` e a lupa encavalem em larguras intermediarias;
+- UF/cidade/local/piso continuam derivados de locais/quadras ativas ja carregados no app;
+- screenshots autenticados gerados em `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-locais-reserva-validated.png` e `web/docs/screenshots/qa-dna-2026-05-17/mobile390-locais-reserva-validated.png`;
+- validacao final: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] SCREEN-LOCAIS-03 - Resultado de reserva sem local escolhido
+
+Screenshots de referencia:
+
+- prints manuais com cards de quadras de varios locais.
+
+Problema:
+
+- quando nao ha local escolhido, o app mostra muitas quadras diretamente; o usuario perde contexto de academia/local.
+
+Mudanca obrigatoria:
+
+- resultado primario deve ser por local:
+  - nome do local;
+  - cidade/UF;
+  - menor preco;
+  - pisos disponiveis;
+  - quantidade de quadras com horario livre;
+  - 2-4 horarios livres destacados;
+  - CTA `Ver horarios`;
+- so apos escolher o local, mostrar agenda por quadra.
+
+Criterio de aceite:
+
+- resultado sem local nao mistura quadras soltas de academias diferentes;
+- o usuario entende primeiro onde vai jogar;
+- mobile usa cards horizontais/lista compacta.
+
+Entrega final 2026-05-17:
+
+- quando a busca de reserva retorna disponibilidade sem um local exato escolhido, o resultado agora agrupa primeiro por local/academia;
+- cada card de local mostra cidade/UF, quantidade de quadras livres, menor preco, pisos disponiveis, ate quatro horarios e CTA `Ver horarios`;
+- ao escolher um local, o usuario vai para a pagina publica daquele local ja no contexto de reserva, preservando data/hora/duracao quando houver horario selecionado;
+- quando o usuario escolhe um local exato no autocomplete, o resultado continua podendo mostrar as quadras daquele local para selecao direta;
+- screenshots autenticados gerados em `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-locais-reserva-resultados-local.png` e `web/docs/screenshots/qa-dna-2026-05-17/mobile390-locais-reserva-resultados-local.png`;
+- validacao mostrou 3 cards de local e 0 cards de quadra solta sem local escolhido;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] SCREEN-LOCAIS-04 - Agenda de reserva por local e quadra
+
+Screenshots de referencia:
+
+- prints manuais da agenda de quadra com 06:00, 07:00, 08:00...
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`.
+
+Problema:
+
+- selecao de horario para duracao 2h pode gerar duvida;
+- preco precisa acompanhar duracao;
+- agenda precisa ser bonita e clara.
+
+Mudanca obrigatoria:
+
+- mostrar seletor/carrossel de quadras:
+  - cada quadro = uma quadra;
+  - superficie e preco/hora visiveis;
+  - slots hora cheia;
+  - ocupado visualmente neutro/desabilitado;
+  - livre acionavel;
+- ao selecionar duracao 2h:
+  - so habilitar horarios com duas horas consecutivas livres;
+  - clicar em 12:00 destaca 12:00-14:00;
+  - resumo mostra intervalo completo;
+  - preco = preco/hora * duracao;
+- sticky CTA de confirmar apenas quando slot valido selecionado.
+
+Backend/dados:
+
+- validar disponibilidade final no backend antes de criar reserva;
+- se houver conflito no submit, mostrar mensagem amigavel e atualizar agenda.
+
+Criterio de aceite:
+
+- duracao 2h nunca permite slot sem segunda hora livre;
+- resumo e preco batem com intervalo;
+- mobile nao exige selecionar quadra em dropdown se ja esta no carrossel.
+
+Entrega parcial 2026-05-17:
+
+- a pagina publica do local ja possui carrossel/seletor de quadras com superficie, preco/hora e slots em horas cheias;
+- disponibilidade e consultada por intervalo completo, entao duracao `2h` busca somente quadras livres para as duas horas;
+- resumo de confirmacao mostra intervalo e total proporcional a duracao;
+- ajuste aplicado: a segunda hora destacada no intervalo de `2h` fica desabilitada como continuacao (`Incluido`), evitando parecer um novo horario clicavel;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram;
+- pendente para marcar `[x]`: screenshot autenticado desktop/mobile e revisao visual do CTA sticky no mobile.
+
+Entrega final 2026-05-17:
+
+- ajuste aplicado em `PlacePublicPage`: quando a pagina publica recebe `startsAt` e `endsAt` pela URL, o controle visual de duracao tambem sincroniza para `1h` ou `2h`;
+- validacao autenticada confirmou seletor em `2h`, resumo com intervalo completo e total proporcional;
+- carrossel de quadras carregado com horarios hora cheia, slots ocupados desabilitados, livres acionaveis e intervalo de `2h` destacado como `07:00 2h` + `08:00 Incluido`;
+- evidencias geradas:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-reserva-agenda-2h-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-reserva-agenda-2h-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-reserva-agenda-2h-carousel.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-reserva-agenda-2h-carousel.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-04-carousel-validation.json`;
+- validacao tecnica final deste item sera consolidada no fechamento do sprint corrente com `git diff --check`, lint e build.
+
+### [x] SCREEN-LOCAIS-05 - Confirmacao de reserva
+
+Screenshots de referencia:
+
+- prints manuais mostrando nome/WhatsApp preenchidos.
+
+Problema:
+
+- nome e contato parecem novo cadastro manual, apesar de usuario estar logado.
+
+Mudanca obrigatoria:
+
+- bloco `Reserva vinculada ao perfil`;
+- exibir nome e telefone do perfil como dados usados;
+- permitir editar/confirmar telefone apenas se ausente ou claramente "alterar contato";
+- observacao opcional;
+- botoes:
+  - `Solicitar reserva`;
+  - `Entrar na lista de espera` quando aplicavel.
+
+Backend/dados:
+
+- criar reserva com `auth.uid()`/perfil logado;
+- gravar nome/telefone snapshot para local retornar;
+- reserva pendente deve aparecer em Agenda do gestor.
+
+Criterio de aceite:
+
+- jogador entende que reserva e dele;
+- gestor encontra a reserva pendente em agenda/fila;
+- erro de criacao nao fica silencioso.
+
+Verificacao 2026-05-17:
+
+- a confirmacao ja exibe bloco `Reserva vinculada ao perfil` com nome e telefone do perfil;
+- telefone so aparece como campo editavel quando falta contato no perfil;
+- observacao permanece opcional;
+- `Solicitar reserva` usa o perfil logado via service/auth e grava snapshot de nome/telefone;
+- feedback de sucesso informa que o gestor encontra em `Gestao > Agenda > Reservas pendentes`;
+- lista de espera usa o mesmo vinculo de perfil e snapshot de contato;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram apos o sprint de reserva;
+- pendente para marcar `[x]`: validacao autenticada criando uma reserva real e conferindo a aparicao na Agenda do gestor.
+
+Entrega final 2026-05-17:
+
+- validacao autenticada criou uma reserva publica real vinculada ao perfil logado;
+- confirmacao exibiu `Reserva vinculada ao perfil`, usando nome e telefone do usuario sem repetir formulario de cadastro;
+- feedback de sucesso confirmou que a reserva foi solicitada e orientou onde o gestor encontra a pendencia;
+- `Gestao > Agenda > Reservas` exibiu a nova pendencia como `Escalao Admin - 17/05, 10:00`, com acoes `Confirmar` e `Cancelar`;
+- evidencias geradas:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-reserva-confirmacao-solicitada.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-gestao-agenda-reserva-pendente-pos-solicitacao.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-05-validation.json`;
+- validacao tecnica final deste item sera consolidada no fechamento do sprint corrente com `git diff --check`, lint e build.
+
+### [x] SCREEN-LOCAIS-06 - `/locais/aulas`: filtro e resultado de aulas
+
+Screenshots de referencia:
+
+- `mobile390-locais-aulas.png`
+- `desktop1366-locais-aulas.png`
+- prints manuais da lista "Turmas com vaga".
+
+Problema:
+
+- filtro ainda e pesado;
+- turmas semanais aparecem como itens isolados;
+- nao ha selecao clara de multiplos dias da mesma turma/plano.
+
+Mudanca obrigatoria:
+
+- filtro:
+  - UF;
+  - Cidade;
+  - Local/professor;
+  - Dias da semana multi-select;
+  - Periodo;
+  - Nivel;
+  - Perfil adulto/kids;
+- resultados:
+  - agrupar turmas recorrentes equivalentes por local/professor/nivel/horario quando fizer sentido;
+  - mostrar dias disponiveis como chips;
+  - permitir selecionar um ou mais dias;
+  - respeitar capacidade: adulto max 4, kids max 8, conforme dados;
+  - CTA `Ver turma` ou `Selecionar turma`.
+
+Backend/dados:
+
+- usar `place_academy_classes`, `place_academy_enrollments` e contrato/plano quando houver;
+- se nao houver modelo de grupo recorrente, agrupar no frontend por assinatura e documentar gap.
+
+Criterio de aceite:
+
+- usuario pode selecionar dias especificos;
+- listagem nao parece tabela administrativa;
+- mobile tem filtro em sheet e resultado legivel.
+
+Entrega parcial 2026-05-17:
+
+- filtro de aulas passou a usar UF e cidade dependentes dos locais com turmas ativas;
+- campo `Academia ou professor` ganhou sugestoes por locais/professores existentes no recorte selecionado;
+- `Dia` deixou de ser select unico e virou multi-select por chips, permitindo buscar turmas em um ou mais dias da semana;
+- busca backend agora consulta cada dia selecionado e consolida os resultados sem duplicar turma;
+- fallback local tambem respeita multiplos dias;
+- resultados continuam agrupados por assinatura de turma recorrente (`local + titulo + professor + nivel + horario + valor`) e exibem dias disponiveis;
+- CTA mudou para `Selecionar turma` e envia todos os `classIds` do grupo para a pagina publica do local;
+- `/locais/:placeId?intent=academy&classIds=...` agora pre-seleciona todos os dias equivalentes da turma, mantendo a selecao final/editavel na pagina do local;
+- layout do filtro de aulas foi reorganizado em grid de 12 colunas no desktop e recolhido por `Ajustar filtros` no mobile, seguindo o padrao de reserva;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Entrega final 2026-05-17:
+
+- screenshots autenticados gerados em desktop, 430px e 390px;
+- filtro validado com chips de dias e sem overflow horizontal indevido no mobile 390px;
+- busca real retornou 18 turmas com vaga e CTA `Selecionar turma`;
+- resultado mobile preserva contexto compacto (`Ajustar filtros`, resumo de filtro e lista de turmas) sem parecer tabela administrativa;
+- evidencias geradas:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-locais-aulas-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile430-locais-aulas-filtros-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-locais-aulas-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-locais-aulas-resultados-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-locais-aulas-resultados-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-06-results-validation.json`;
+- validacao de envio/aprovacao do interesse ficou concentrada no item seguinte `SCREEN-LOCAIS-07`, para nao misturar listagem/filtro com confirmacao transacional.
+
+### [x] SCREEN-LOCAIS-07 - Enviar interesse em aula
+
+Screenshots de referencia:
+
+- print manual do bloco `Enviar interesse`.
+
+Problema:
+
+- o usuario nao entende se esta entrando na turma, entrando em fila ou mandando pedido;
+- apos aprovacao, caminho ate calendario/matricula nao esta claro.
+
+Mudanca obrigatoria:
+
+- resumo da turma selecionada:
+  - local;
+  - professor;
+  - dias selecionados;
+  - horario;
+  - valor estimado/plano;
+  - vagas;
+- dados do perfil logado;
+- mensagem opcional;
+- CTA `Enviar interesse`;
+- apos envio, mostrar status `Aguardando retorno da academia`;
+- explicar em uma linha: "Se aprovado, suas aulas aparecem na sua agenda."
+
+Backend/dados:
+
+- criar `place_academy_lesson_requests` ou entidade existente equivalente;
+- garantir que admin consiga aprovar;
+- quando aprovado, criar/vincular `place_academy_enrollments`/contract se backend permitir;
+- se estrutural demais, documentar gap como bloqueador.
+
+Criterio de aceite:
+
+- jogador ve status do interesse depois;
+- academia ve pedido;
+- aprovacao leva a matricula/calendario ou gap documentado.
+
+Entrega parcial 2026-05-17:
+
+- resumo da turma selecionada foi reestruturado para mostrar local, professor, dias/horarios, valor e vagas em campos curtos;
+- envio ficou vinculado ao perfil logado, com nome/telefone exibidos como confirmacao;
+- WhatsApp so vira input quando o perfil nao tem telefone;
+- mensagem permanece opcional;
+- CTA segue `Enviar interesse`, mas agora exige contato antes do envio;
+- feedback de sucesso usa status claro: `Aguardando retorno da academia. Se aprovado, suas aulas aparecem na sua agenda.`;
+- backend atual continua usando `createAcademyEnrollment(...)` para criar pedidos pendentes por `classId`, incluindo os dias escolhidos nas notas;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Conclusao 2026-05-17:
+
+- validado em app autenticado com `qa.jogador.puro@demo.atp.local`:
+  - envio de interesse exibiu feedback `Interesse enviado`;
+  - status da turma passou a `Aguardando aprovacao`;
+  - texto explica que, se aprovado, as aulas aparecem na agenda;
+- validado com `escalao@gmail.com` em `Gestao > Academia > Pendencias`:
+  - pedido entrou como matricula pendente (`Livia Jogadora Pura`, turma `Kids Iniciante 1`);
+  - acao `Ativar` ficou disponivel na fila da academia;
+  - apos ativacao, a turma saiu da lista de vagas para o aluno e a Home carregou contexto de aula;
+- comportamento backend atual confirmado:
+  - interesse publico usa `place_academy_enrollments` com `status=pending`;
+  - aprovacao usa `updateAcademyEnrollmentStatus(..., "active")`;
+  - nao ha entidade separada de calendario do aluno; a agenda pessoal deriva da matricula ativa + dados da turma;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-player-interest-created.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-admin-interest-visible.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-admin-after-activate.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-player-after-approval.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-player-home-after-approval.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-validation-real-interest.json`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-approval-validation.json`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-player-home-after-approval.json`.
+
+### [x] SCREEN-LOCAIS-08 - `/locais/jogos`: encontrar jogo
+
+Screenshots de referencia:
+
+- `mobile390-locais-jogos.png`
+- `desktop1366-locais-jogos.png`
+- print manual com filtro encavalado.
+
+Problema:
+
+- filtro quebra no desktop;
+- nao segue dependencia UF/cidade/local;
+- criar chamada compete com buscar chamada.
+
+Mudanca obrigatoria:
+
+- filtro:
+  - UF;
+  - Cidade;
+  - Local;
+  - Data;
+  - Periodo;
+  - Nivel;
+  - Status;
+- UF/cidade/local dependentes como reserva;
+- resultado com jogos abertos em rows/cards compactos:
+  - local;
+  - data/hora;
+  - nivel;
+  - jogadores/interessados;
+  - CTA `Quero jogar`;
+  - detalhes secundario;
+- `Criar chamada` aparece como secundaria:
+  - no topo como link menor;
+  - ou em empty state quando nao encontrou jogo.
+
+Criterio de aceite:
+
+- filtro sem sobreposicao;
+- resultados respondem ao filtro;
+- mobile usa sheet;
+- criar chamada nao e o CTA principal quando ha jogos disponiveis.
+
+Entrega parcial 2026-05-17:
+
+- filtro de jogos ja usa UF, cidade e local dependentes dos locais com chamadas abertas;
+- grid desktop foi ajustado para evitar UF estreito e sobreposicao entre local/data/periodo/nivel/status;
+- `Criar chamada` deixou de ser CTA primario quando existem resultados e passou a aparecer como acao secundaria;
+- empty state sem resultados ganhou acao clara para criar chamada;
+- resultados continuam em rows/cards compactos com local, data/hora, nivel, interessados, CTA `Quero jogar` e detalhes secundarios;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Conclusao 2026-05-17:
+
+- corrigida quebra mobile do grid de filtros, anulando explicitamente as areas nomeadas no breakpoint responsivo;
+- corrigida hierarquia do cabecalho para separar titulo e microcopy;
+- validacao autenticada com `qa.jogador.puro@demo.atp.local`:
+  - desktop 1366px: 8 resultados, 0 overlaps, 0 overflow;
+  - mobile 390px: 8 resultados, 0 overlaps, 0 overflow;
+  - filtro mostra UF, cidade, local, data, periodo, nivel, mensagem e status;
+  - `Criar chamada` permanece secundaria abaixo do filtro, sem competir com `Quero jogar`;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-locais-jogos-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-locais-jogos-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-08-validation.json`.
+
+### [x] SCREEN-LOCAL-01 - `/locais/:id`: pagina inicial do local
+
+Screenshots de referencia:
+
+- prints manuais da Arena Pantanal Tennis.
+
+Problema:
+
+- pagina inicial do local ainda carrega blocos demais se o usuario rolar;
+- atalhos levam a secoes em vez de paginas focadas.
+
+Mudanca obrigatoria:
+
+- header com imagem/logo, cidade, descricao curta e status/preco inicial;
+- cards/atalhos:
+  - Reservar;
+  - Aulas;
+  - Jogos;
+  - Planos;
+  - Sobre/Contato;
+- abaixo, apenas resumo curto e talvez destaques;
+- nao renderizar formularios completos na home do local.
+
+Criterio de aceite:
+
+- primeira dobra do local parece vitrine objetiva;
+- clicar em cada atalho muda para pagina/conteudo focado;
+- nao ha empilhamento de todos os modulos.
+
+Entrega parcial 2026-05-17:
+
+- `intent=overview` deixou de redirecionar automaticamente para reserva/aulas/jogos; a home do local permanece como vitrine objetiva;
+- atalhos do local agora levam para conteudos focados via `intent=booking`, `intent=academy`, `intent=matches`, `intent=plans` e `intent=about`;
+- o card `Sobre/Contato` virou pagina/area focada com descricao, cidade, contadores resumidos e acoes de compartilhar/ver outros locais;
+- a home mostra apenas tiles de resumo e poucos destaques acionaveis, sem renderizar formularios completos;
+- `Quadras e valores` deixou de aparecer como detalhe expansivel na home e fica restrito ao contexto `Sobre/Contato`;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que a home do local nao renderiza formularios completos de reserva, aulas, jogos ou planos;
+- atalhos foram validados por rotas irmas (`/reserva`, `/aulas`, `/jogos`, `/planos`, `/sobre`) e mantem conteudo focado fora da home;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-home-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-home-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-local-01-validation.json`.
+
+### [x] SCREEN-LOCAL-02 - `/locais/:id/reserva`
+
+Mudanca obrigatoria:
+
+- pagina dedicada de reserva do local;
+- escolher data e duracao;
+- agenda por quadra em carrossel/seletor;
+- confirmar com perfil logado;
+- lista de espera se horario indisponivel.
+
+Criterio de aceite:
+
+- nao aparecem aulas, jogos e planos nessa pagina, exceto como navegacao discreta;
+- agenda mostra ocupados/livres hora a hora;
+- duracao 2h funciona igual ao item `SCREEN-LOCAIS-04`.
+
+Entrega parcial 2026-05-17:
+
+- adicionada rota dedicada `/locais/:placeId/reserva`, mantendo compatibilidade com links antigos por `?intent=booking`;
+- atalhos internos do local agora navegam para rotas irmas reais:
+  - `/locais/:placeId/reserva`;
+  - `/locais/:placeId/aulas`;
+  - `/locais/:placeId/jogos`;
+  - `/locais/:placeId/planos`;
+  - `/locais/:placeId/sobre`;
+- a rota de reserva renderiza somente o fluxo de reserva no corpo, com hero/atalhos como navegacao discreta;
+- a agenda por quadra, hora a hora, segue preservada no fluxo de reserva;
+- a confirmacao continua vinculada ao perfil logado e mantem lista de espera;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que `/locais/:placeId/reserva` renderiza somente o fluxo de reserva, sem misturar aulas, jogos ou planos no corpo;
+- reserva de 2h foi testada com jogador real: o calendario marcou a hora inicial como `2h`, a hora seguinte como `Incluido` e exibiu total proporcional (`R$ 140,00` em quadra de `R$ 70,00/h`);
+- validacao no banco confirmou `court_bookings.status = pending` com intervalo real de duas horas para `Livia Jogadora Pura`;
+- gestao em `Gestao > Agenda > Reservas` exibiu a reserva pendente ao filtrar pelo jogador, pronta para confirmacao/cancelamento;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-reserva-before-2h.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-reserva-2h-selected.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-reserva-2h-submitted.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-reserva-admin-filter-livia.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-reserva-route-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-local-02-validation.json`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-local-02-booking-db-check.json`.
+
+### [x] SCREEN-LOCAL-03 - `/locais/:id/aulas`
+
+Mudanca obrigatoria:
+
+- pagina dedicada de aulas daquele local;
+- filtro local: dias, periodo, nivel, perfil;
+- resultado de turmas daquele local;
+- selecionar dias e enviar interesse;
+- plano selecionado pode preconfigurar quantidade de dias.
+
+Criterio de aceite:
+
+- nao aparecem reserva de quadra, jogos abertos e planos completos no corpo;
+- o usuario sabe que esta entrando em aula naquele local.
+
+Entrega parcial 2026-05-17:
+
+- adicionada rota dedicada `/locais/:placeId/aulas`, mantendo compatibilidade com `?intent=academy`;
+- a pagina de aulas renderiza somente o fluxo de turmas/interesse no corpo;
+- o filtro local de aulas deixou de limitar o usuario a um unico dia e agora aceita multi-selecao de dias por chips;
+- a filtragem local retorna turmas de qualquer dia selecionado e mantem agrupamento de turmas recorrentes equivalentes;
+- a selecao de uma turma recorrente continua permitindo marcar/desmarcar dias especificos antes de enviar interesse;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que `/locais/:placeId/aulas` renderiza somente o fluxo de aulas, sem reserva de quadra, jogos abertos ou planos completos no corpo;
+- filtro local validado com nivel, multi-selecao de dias, periodo e perfil;
+- lista de turmas mostra vagas daquele local e permite selecao de dias recorrentes antes do envio de interesse;
+- fluxo ponta a ponta reutiliza a evidencia real de `SCREEN-LOCAIS-07`: jogador enviou interesse, academia viu a pendencia, aprovou a matricula e o contexto de aula passou a aparecer para o aluno;
+- observacao de produto: ainda nao existe entidade separada de calendario do aluno; a agenda/aulas do jogador deriva da matricula ativa vinculada a `place_academy_classes`;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-aulas-route-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-aulas-route-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-local-03-validation.json`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-player-interest-created.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-admin-interest-visible.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-admin-after-activate.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-locais-07-player-after-approval.png`.
+
+### [x] SCREEN-LOCAL-04 - `/locais/:id/jogos`
+
+Mudanca obrigatoria:
+
+- pagina dedicada de jogos abertos daquele local;
+- filtro por data, periodo, nivel e status;
+- CTA `Quero jogar`;
+- CTA secundario `Criar chamada neste local`.
+
+Criterio de aceite:
+
+- jogos abertos deixam de ser lista solta sem filtros;
+- mobile tem lista curta e filtro em sheet.
+
+Entrega parcial 2026-05-17:
+
+- `/locais/:placeId/jogos` agora renderiza uma pagina focada de jogos do local mesmo quando nao ha chamada aberta, em vez de cair em estado generico;
+- a lista recebeu filtro por data, periodo, nivel e status (`Abertas`, `Encerradas`, `Canceladas` ou todos), mantendo status funcional sem filtrar tudo no carregamento;
+- o CTA principal dos jogos abertos passou para `Quero jogar`, com estado `Participando` quando o usuario ja entrou;
+- foi adicionado CTA secundario `Criar chamada neste local`, com formulario compacto inline e empty state acionavel quando nao ha chamadas ou nenhum filtro combina;
+- contadores e hero usam somente jogos abertos, enquanto a tela dedicada ainda permite consultar encerrados/cancelados via filtro;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que `/locais/:placeId/jogos` renderiza somente jogos abertos daquele local, sem misturar reserva, aulas ou planos no corpo;
+- desktop mantem filtros visiveis por data, periodo, nivel e status;
+- mobile recebeu resumo recolhido `Ajustar filtros`, expandindo os campos apenas quando o jogador pede;
+- jogador criou uma chamada real no local e entrou nela pelo CTA `Quero jogar`;
+- Supabase confirmou a chamada em `open_matches` e a participacao em `open_match_participants` com `status = joined`;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-jogos-route-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-jogos-create-form.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-jogos-after-create.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-jogos-after-join.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-jogos-route-collapsed-filter.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-jogos-route-expanded-filter.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-local-04-validation.json`.
+
+### [x] SCREEN-LOCAL-05 - `/locais/:id/planos`
+
+Mudanca obrigatoria:
+
+- planos aparecem como produtos clicaveis;
+- clicar em plano de academia leva para selecao de aulas/dias com limite do plano;
+- clicar em beneficio de quadra pode levar para reserva com desconto/beneficio aplicado quando houver suporte;
+- se backend nao aplicar plano ainda, mostrar expectativa e documentar gap.
+
+Criterio de aceite:
+
+- plano nao e texto passivo;
+- o proximo passo do usuario e claro;
+- nao misturar quadras/valores como acordeon solto na mesma tela.
+
+Entrega parcial 2026-05-17:
+
+- `/locais/:placeId/planos` ja funciona como pagina focada via rota irma;
+- planos deixaram de ser rows puramente informativos e viraram cards de produto com CTAs separados;
+- `Ver aulas` leva para a selecao de aulas/dias daquele local com contexto do plano escolhido;
+- `Reservar quadra` leva para a agenda de reserva do local e informa que desconto/beneficio precisa ser confirmado pela academia;
+- o texto de gap foi ajustado para deixar claro que quantidade semanal de aulas e aplicacao automatica de beneficios ainda dependem da configuracao/aprovacao da academia;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que `/locais/:placeId/planos` renderiza somente planos e beneficios, sem misturar reserva, aulas, jogos ou acordeon solto de quadras/valores no corpo;
+- planos aparecem como cards acionaveis com CTAs `Ver aulas` e `Reservar quadra`;
+- `Ver aulas` leva para `/locais/:placeId/aulas` com bloco `Plano escolhido`, preconfigurando o contexto da mensagem para a academia;
+- `Reservar quadra` leva para `/locais/:placeId/reserva` com bloco `Plano escolhido`, explicando que o beneficio de quadra sera conferido pela academia ao confirmar a reserva;
+- a aplicacao automatica de descontos e quantidade semanal de aulas permanece documentada como gap estrutural de backend/configuracao da academia, sem bloquear o fluxo manual atual;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-planos-route-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-planos-ver-aulas-context.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-local-planos-reservar-context.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-local-planos-route-validated.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-local-05-validation.json`.
+
+### [x] SCREEN-COMP-HUB-01 - `/eventos`: hub competir
+
+Screenshots de referencia:
+
+- `mobile390-eventos-hub.png`
+- `desktop1366-eventos-hub.png`
+
+Mudanca obrigatoria:
+
+- separar claramente:
+  - Jogando;
+  - Descobrir;
+  - Organizando, se permitido;
+- jogador puro nao ve organizacao;
+- admin/organizador ve entrada profissional com peso secundario no modo jogador;
+- eventos descobertos em carrossel/lista curta por localidade.
+
+Criterio de aceite:
+
+- hub nao mistura torneios que joga e organiza;
+- mobile nao vira lista longa de cards repetidos.
+
+Entrega parcial 2026-05-17:
+
+- o hub `/eventos` passou a ordenar as intencoes como `Jogando`, `Descobrir` e `Organizando`;
+- `Organizando` continua visivel apenas para quem tem contexto de organizador/admin, ou quando a rota ja foi aberta explicitamente nesse modo;
+- a entrada de organizacao recebeu microcopy secundaria (`area separada`) para nao competir com a experiencia de jogador;
+- `Descobrir` agora carrega torneios publicos via `loadUpcomingPublic(12)`, remove eventos em que o usuario ja joga/organiza e prioriza cidade do perfil, depois estado e depois destaques gerais;
+- eventos descobertos aparecem em carrossel/lista curta, evitando uma lista longa de cards repetidos no mobile;
+- validacao: `npm.cmd run lint`, `npm.cmd run build` e `git diff --check` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que jogador puro ve `Jogando` e `Descobrir`, sem entrada `Organizando`;
+- validacao autenticada desktop/mobile confirmou que admin/organizador ve `Organizando` como area separada, com fila operacional propria e peso distinto da visao de jogador;
+- discovery para jogador aparece em lista curta/carrossel de eventos, sem virar lista longa de cards repetidos;
+- loading do hub foi neutralizado para nao falar de organizacao antes de identificar o perfil;
+- gap mantido: descoberta de ligas publicas ainda depende de endpoint/listagem publica equivalente para entrar no mesmo trilho de descoberta;
+- validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-eventos-hub-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-eventos-hub-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-eventos-hub-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-eventos-hub-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-comp-hub-01-validation.json`.
+
+### [x] SCREEN-TOURNAMENT-01 - Evento publico do torneio
+
+Screenshots de referencia:
+
+- `desktop1366-torneio-jogos-exemplo.png`
+- `mobile390-torneio-jogos-exemplo.png`
+
+Mudanca obrigatoria:
+
+- aba/pagina `Evento` deve conter:
+  - nome, cidade, data, status;
+  - inscricao/status pessoal discreto;
+  - CTA principal conforme fase;
+  - poster/info;
+  - botao `Exportar chave` se existe chaveamento;
+  - podio/encerramento somente apos fim do torneio;
+- remover blocos de encerramento de `Jogos`.
+
+Criterio de aceite:
+
+- evento nao parece cockpit;
+- exportar chave aparece no local certo;
+- podio nao aparece antes do torneio terminar.
+
+Entrega parcial 2026-05-17:
+
+- a aba `Evento` permanece como pagina focada do torneio publico, com nome, cidade, data, status e CTA principal;
+- o status pessoal do jogador (`Inscricao aprovada`, `Inscricao em analise`, `Lista de espera`, `Inscricao recusada`) agora aparece como chip discreto no hero, sem ocupar um card grande;
+- `Exportar chave` segue localizado na aba `Evento` quando existe classe gerada/chaveamento disponivel;
+- `Podio por classe` permanece condicionado a torneio finalizado (`status = finished`) e fora da aba `Jogos`;
+- validacao: `npm.cmd run lint`, `npm.cmd run build` e `git diff --check` passaram.
+
+Concluido em 2026-05-17:
+
+- capturas autenticadas desktop/mobile da aba `Evento` confirmaram que o jogador puro ve apenas `Evento`, `Inscritos` e `Jogos`, sem aba `Categorias` e sem ferramentas de organizador;
+- `Podio por classe` nao aparece antes de o torneio estar finalizado;
+- `Exportar chave` aparece no local certo quando existe chaveamento e gerou feedback de sucesso no browser (`Chave da classe exportada em PNG.`);
+- a aba Evento permanece como resumo publico, com CTA contextual e sem card grande de inscricao aprovada;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-event-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-tournament-event-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-event-player-after-export.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-tournament-01-validation.json`.
+
+### [x] SCREEN-TOURNAMENT-02 - Inscritos publicos do torneio
+
+Screenshots de referencia:
+
+- `desktop1366-torneio-inscritos-exemplo.png`
+- `mobile390-torneio-inscritos-exemplo.png`
+
+Problema:
+
+- atualmente mostra ferramentas de organizador como adicionar/importar/remover.
+
+Mudanca obrigatoria:
+
+- publico/jogador ve:
+  - seletor de classe;
+  - lista de inscritos da classe;
+  - busca;
+  - contagem;
+  - contato apenas se permitido;
+- nao mostrar `Adicionar`, `Importar lista`, `Remover`, pagamentos ou operacao.
+
+Criterio de aceite:
+
+- inscritos aparecem corretamente;
+- ferramentas admin so no workspace organizador;
+- classe escalavel para torneio com 10+ categorias.
+
+Entrega parcial 2026-05-17:
+
+- a visao publica de `Inscritos` continua sem ferramentas de admin, pagamentos, importacao ou remocao;
+- a lista agora combina participantes ja presentes na chave com inscricoes aprovadas vindas de `tournament_registrations`, evitando lista vazia quando a aprovacao existe mas ainda nao foi mesclada no draft;
+- o seletor de classe mostra contagem por classe e ganhou trilho horizontal de chips para torneios com muitas categorias;
+- foi adicionada busca por nome do inscrito, com empty state compacto e acionavel;
+- contatos seguem ocultos na visao publica;
+- validacao: `npm.cmd run lint`, `npm.cmd run build` e `git diff --check` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que a rota direta `#/eventos/{id}/jogadores` abre a aba publica `Inscritos` sem cair em `Jogos`;
+- a lista publica carregou 23 jogadores na Classe A, com busca, contagem, chips/select de classe e sem ferramentas administrativas;
+- `Categorias` nao aparece como aba publica e contatos/pagamentos/importacao/remocao seguem fora da camada de jogador;
+- corrigido o rotulo duplicado `Grupo Grupo`, mantendo apenas `Grupo A`, `Grupo B` etc.;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-inscritos-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-tournament-inscritos-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-tournament-02-validation.json`.
+
+### [x] SCREEN-TOURNAMENT-03 - Jogos/chave do torneio
+
+Mudanca obrigatoria:
+
+- seletor de classe contextual;
+- se houver chave, mostrar chave ou lista conforme viewport;
+- mobile:
+  - lista por fase/rodada;
+  - abrir chave completa/exportar como acao secundaria;
+- horarios/quadras exibem local + quadra em microcopy curta;
+- resultado informado por jogador usa mesma formatacao do admin.
+
+Criterio de aceite:
+
+- mobile nao precisa rolar 20.000 px para entender jogos;
+- jogos sem horario/quadra mostram estado acionavel para organizador, neutro para jogador;
+- placar player/admin fica visualmente consistente.
+
+Entrega parcial em 2026-05-17:
+
+- a aba publica de `Jogos` agora tem resumo por classe antes da chave completa;
+- o resumo lista partidas por fase/rodada com jogadores, status e microcopy curta de horario/quadra;
+- quando nao ha jogos gerados, aparece empty state compacto e acionavel;
+- a acao secundaria `Exportar chave` fica disponivel no resumo quando existe chave gerada;
+- no mobile publico, a chave detalhada fica fora da primeira camada e a lista por fase vira a leitura principal;
+- o formulario de resultado do jogador segue reaproveitando `renderScoreFields`, mantendo o mesmo padrao visual e de regra usado pelo admin;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que a aba publica `Jogos` abre sem `Categorias` e sem ferramentas administrativas;
+- a primeira leitura mostra resumo por classe/fase com 11 jogos, status e microcopy curta de horario/quadra;
+- no mobile, a lista por fase fica na camada principal e a chave longa nao domina a primeira dobra;
+- `Exportar chave` permanece como acao secundaria disponivel quando ha chaveamento;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-jogos-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-tournament-jogos-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-tournament-03-validation.json`.
+
+### [x] SCREEN-TOURNAMENT-04 - Classificacao do torneio
+
+Mudanca obrigatoria:
+
+- so renderizar aba se torneio tiver fase de grupos/tabela;
+- se nao tiver, remover aba da navegacao;
+- se tiver, seletor de classe/grupo e tabela compacta.
+
+Criterio de aceite:
+
+- torneio mata-mata simples nao exibe aba vazia `Classificacao`;
+- nenhum "Sem tabela para esta classe" como pagina principal.
+
+Entrega parcial em 2026-05-17:
+
+- a aba publica `Classificacao` agora depende de tabela real em `tabelaPorGrupo`, nao apenas de configuracao interna de classe;
+- torneios mata-mata simples ou sem tabela publicada deixam de prometer aba vazia para o jogador;
+- se o usuario chegar em classificacao com uma classe sem tabela, a tela usa a primeira classe com tabela disponivel;
+- o fallback publico deixou de ser `Sem tabela para esta classe` como pagina principal e virou empty state compacto;
+- validacao: `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile em torneio mata-mata puro confirmou que `Classificacao` nao aparece como aba publica;
+- a rota direta `#/eventos/{id}/classificacao` agora normaliza para `#/eventos/{id}/jogos` quando nao ha tabela publica, evitando pagina vazia ou promessa sem conteudo;
+- nenhum empty state tecnico como `Sem tabela para esta classe` aparece como pagina principal;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-classificacao-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-tournament-classificacao-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-tournament-04-validation.json`.
+
+### [x] SCREEN-TOURNAMENT-05 - Chat/avisos do torneio
+
+Mudanca obrigatoria:
+
+- jogador ve avisos/mensagens permitidas;
+- organizador ve publicar/fixar/remover em workspace ou controles discretos por permissao;
+- nao misturar lista de jogadores ou jogos no chat.
+
+Criterio de aceite:
+
+- chat publico nao parece admin;
+- admin ainda consegue publicar aviso.
+
+Entrega parcial em 2026-05-17:
+
+- a aba de chat/avisos do torneio recebeu estrutura visual propria (`tournament-chat-card`) com cabecalho, mensagem fixada, lista de mensagens e compose padronizados;
+- controles de publicar aviso, fixar/desfixar e excluir continuam condicionados por `canManageComms`, mantendo jogador em camada de consumo/chat sem ferramentas admin;
+- mensagens fixadas e avisos ganharam tratamento visual discreto, sem misturar jogadores, jogos ou blocos de outras abas no chat;
+- removidos estilos inline principais do bloco de mensagens para alinhar com a gramatica visual e responsividade;
+- mobile recebeu layout em coluna para cabecalho, acoes, mensagens e envio.
+
+Validacao:
+
+- `npm.cmd run lint` passou;
+- `npm.cmd run build` passou.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada desktop/mobile confirmou que jogador sem permissao de chat nao ve aba `Chat` e a rota direta `/chat` normaliza para `Jogos`, sem tela morta;
+- validacao autenticada desktop/mobile como admin confirmou que a aba `Chat` abre com card proprio, mensagem fixada, publicar aviso, fixar/desfixar e excluir;
+- o chat admin nao mistura lista de jogadores ou jogos no conteudo da comunicacao;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-chat-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-tournament-chat-player.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-chat-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-tournament-chat-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-tournament-05-validation.json`.
+
+### [x] SCREEN-TOURNAMENT-ORG-01 - Workspace organizador de torneio
+
+Mudanca obrigatoria:
+
+- criar/ajustar superficie de organizacao separada:
+  - Visao geral operacional;
+  - Inscricoes;
+  - Categorias;
+  - Jogos e agenda;
+  - Resultados;
+  - Comunicacao;
+  - Configuracao;
+- rota `organizacao` nao pode redirecionar silenciosamente para `jogadores` publico;
+- cada aba mostra somente sua funcao.
+
+Criterio de aceite:
+
+- organizador encontra ferramentas completas sem poluir pagina publica;
+- jogador sem permissao nao acessa controles admin.
+
+Entrega parcial em 2026-05-17:
+
+- a rota/aba `organizacao` deixou de ser escondida ou redirecionada em torneios `live` e `finished`; o organizador continua tendo acesso a publicacao, agenda, backup, encerramento e configuracoes operacionais;
+- a primeira camada da Organizacao ganhou um mapa de workspace com areas: Visao geral, Inscricoes, Categorias, Jogos e agenda, Resultados, Comunicacao e Configuracao;
+- cada entrada do mapa leva para a aba ou trecho correto, evitando que o organizador precise procurar ferramentas em uma pagina longa sem orientacao;
+- a pagina publica segue separada por `isPublicTournamentReader`, e jogador sem permissao continua sem acesso aos controles internos;
+- o ajuste preserva as ferramentas existentes e reduz o risco de a Organizacao parecer um redirecionamento silencioso para conteudo publico.
+
+Validacao:
+
+- `git diff --check` passou;
+- `npm.cmd run lint` passou;
+- `npm.cmd run build` passou.
+
+Concluido em 2026-05-17:
+
+- validacao autenticada confirmou o workspace do organizador em torneio `draft`, `live` e `finished`, sem cair em pagina publica ou em tela vazia;
+- o mapa de trabalho mostra `Visao geral`, `Inscricoes`, `Categorias`, `Jogos e agenda`, `Resultados`, `Comunicacao` e `Configuracao`;
+- atalhos externos navegam para as rotas corretas (`jogadores`, `jogos`, `classificacao`, `chat`);
+- `Categorias` e `Configuracao` agora abrem a subcamada de organizacao mesmo em torneio live/finished, antes escondida pela fase operacional, e rolam para a secao certa;
+- jogador sem permissao continua sem acesso aos controles internos;
+- evidencias:
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-org-draft-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-org-live-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-tournament-org-finished-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/mobile390-tournament-org-live-admin.png`;
+  - `web/docs/screenshots/qa-dna-2026-05-17/screen-tournament-org-01-validation.json`.
+
+Observacao para roadmap:
+
+- `Categorias` e `Configuracao` ainda usam subcamada/scroll interno dentro de `Organizacao`; a experiencia esta funcional, mas pode virar subrota real em etapa posterior se a densidade voltar a crescer.
+
+### [x] SCREEN-LEAGUE-01 - Home/evento da liga
+
+Screenshots de referencia:
+
+- `mobile390-liga-partidas-exemplo.png`
+- `desktop1366-liga-partidas-exemplo.png`
+
+Mudanca obrigatoria:
+
+- topo da liga mostra status, temporada e CTA pessoal;
+- inscricao aprovada aparece como badge/linha curta, nao card grande;
+- menu sem `Classes` como aba independente se a classe e apenas filtro;
+- classe vira seletor contextual nas abas que precisam.
+
+Criterio de aceite:
+
+- home da liga nao abre com card enorme de inscricao aprovada;
+- classe nao altera silenciosamente o conteudo de outras abas.
+
+Entrega parcial em 2026-05-17:
+
+- status de inscricao do jogador na home publica da liga virou linha/chip compacto com nome, classe e orientacao curta;
+- a aba publica continua sem `Classes` como item independente;
+- filtro contextual de classe permanece nas abas que precisam, mas agora usa select no desktop e trilho horizontal de chips no mobile, evitando dois controles concorrendo na mesma largura;
+- a mesma regra visual beneficia o filtro publico equivalente de torneio.
+
+Validacao:
+
+- `git diff --check` passou;
+- `npm.cmd run lint` passou;
+- `npm.cmd run build` passou.
+
+Validacao final em 2026-05-17:
+
+- screenshots autenticados desktop/mobile gerados em `web/docs/screenshots/qa-dna-2026-05-17/desktop1366-league-home-player.png` e `mobile390-league-home-player.png`;
+- `screen-league-01-validation.json` confirmou que a home publica da liga nao tem aba `Classes`, nao mostra card enorme de inscricao aprovada, nao exibe ferramentas administrativas e preserva classe como recorte contextual;
+- rota legada `?tab=classes` cai em `Classificacao`, evitando aba morta;
+- banco atual possui somente ligas com 3 classes, entao o caso 10+ classes ficou coberto pela regra de componente ja implementada, mas sem massa real para screenshot.
+
+### [x] SCREEN-LEAGUE-02 - Jogadores da liga
+
+Mudanca obrigatoria:
+
+- jogador/publico ve lista por classe;
+- organizador ve convites, inscricoes e pagamentos em workspace proprio;
+- busca e seletor de classe compactos.
+
+Criterio de aceite:
+
+- lista publica nao mistura `Marcar pago`;
+- mobile nao vira lista infinita sem filtro visivel.
+
+Entrega parcial em 2026-05-17:
+
+- aba publica `Jogadores` permanece focada em leitura: lista por classe, pontos e filtro contextual sem acoes administrativas;
+- aba do organizador ganhou workspace proprio para convite e solicitacoes;
+- `Link de convite` virou bloco operacional curto, com recorte de temporada/classe;
+- solicitacoes ganharam resumo visual de pendentes, aprovadas, rejeitadas e pagamentos, antes da fila;
+- rows de inscricao receberam estado visual por status, preservando aprovar/rejeitar/marcar pago apenas para organizador.
+
+Validacao:
+
+- `git diff --check` passou;
+- `npm.cmd run lint` passou;
+- `npm.cmd run build` passou.
+
+Entrega final em 2026-05-17:
+
+- lista publica de jogadores ganhou busca compacta por nome/classe, combinada com o seletor contextual de classe;
+- jogador autenticado foi validado em desktop/mobile sem `Link de convite`, `Aprovar`, `Rejeitar` ou `Marcar pago`;
+- organizador foi validado em desktop/mobile com convite, solicitacoes e pagamento restritos ao workspace proprio;
+- evidencias: `desktop1366-league-jogadores-player.png`, `mobile390-league-jogadores-player.png`, `desktop1366-league-jogadores-admin.png`, `mobile390-league-jogadores-admin.png` e `screen-league-02-validation.json`;
+- lint, build e `git diff --check` passaram apos a correcao.
+
+### [x] SCREEN-LEAGUE-03 - Partidas da liga
+
+Mudanca obrigatoria:
+
+- filtro por classe, rodada e status;
+- rows compactas;
+- minhas partidas destacadas;
+- sala de partida abre em pagina/drawer focado;
+- resultado player usa mesmo formato do admin.
+
+Criterio de aceite:
+
+- mobile reduz scroll;
+- jogador entende o que precisa fazer;
+- organizador ve pendencias separadas.
+
+Entrega em 2026-05-17:
+
+- aba `Partidas` ganhou filtro por rodada e status sem sair da pagina;
+- `Minhas partidas` continua acima da lista geral para jogador, com agenda e pendencias visiveis;
+- lista geral passa a respeitar filtros e exibe estado compacto quando nao encontra partidas;
+- lista geral deixa de despejar todas as rodadas no mobile: exibe 12 partidas por vez com contador `Mostrando X de Y` e CTA explicito `Ver mais partidas`;
+- sala de partida, disponibilidade, resultado e mensagens foram preservados sem reabrir backend.
+
+Validacao:
+
+- `git diff --check` passou;
+- `npm.cmd run lint` passou;
+- `npm.cmd run build` passou.
+- screenshots autenticados desktop/mobile gerados para jogador e organizador: `desktop1366-league-partidas-player.png`, `mobile390-league-partidas-player.png`, `desktop1366-league-partidas-admin.png`, `mobile390-league-partidas-admin.png`;
+- `screen-league-03-validation.json` confirmou 12 cards visiveis de 48, filtro por rodada/status, jogador sem ferramentas admin e organizador com acoes operacionais.
+
+### [x] SCREEN-LEAGUE-04 - Classificacao da liga
+
+Mudanca obrigatoria:
+
+- seletor de classe no topo;
+- tabela mobile compacta;
+- zonas/promocao/rebaixamento com legenda clara;
+- snapshot/salvar so aparece para organizador.
+
+Criterio de aceite:
+
+- jogador nao ve ferramenta administrativa;
+- tabela e legivel no mobile.
+
+Entrega em 2026-05-17:
+
+- area de classificacao ganhou estrutura visual propria (`league-standings-page`) e legenda para subida, permanencia e descida;
+- resumo de jogadores/subida/descida/inativos foi preservado;
+- botao `Salvar snapshot` segue visivel apenas para organizador;
+- tabela mobile deixou de depender de largura minima de 620px e passa a compactar colunas em tela pequena.
+
+Validacao:
+
+- `git diff --check` passou;
+- `npm.cmd run lint` passou;
+- `npm.cmd run build` passou.
+- screenshots autenticados desktop/mobile gerados para jogador e organizador: `desktop1366-league-classificacao-player.png`, `mobile390-league-classificacao-player.png`, `desktop1366-league-classificacao-admin.png`, `mobile390-league-classificacao-admin.png`;
+- `screen-league-04-validation.json` confirmou seletor por classe, legenda de zonas, ausencia de overflow horizontal no mobile e `Salvar snapshot` apenas para organizador.
+
+### [>] SCREEN-LEAGUE-05 - Chat/avisos da liga
+
+Mudanca obrigatoria:
+
+- avisos para jogador;
+- publicar/fixar/remover apenas para organizador;
+- mensagens com hierarquia simples.
+
+Criterio de aceite:
+
+- chat nao parece painel de admin para jogador;
+- comunicados fixados aparecem com destaque moderado.
+
+Entrega parcial em 2026-05-17:
+
+- Chat/avisos da liga passou a usar a mesma gramatica visual do chat de torneio.
+- Aviso fixado agora aparece como bloco destacado moderado, separado do feed normal.
+- Ferramentas de publicar/fixar/remover continuam visiveis apenas para organizador.
+- Leitor jogador ve cabecalho, aviso fixado, lista de mensagens e campo simples de envio, sem painel administrativo.
+- Removidos estilos inline do bloco principal para reduzir divergencia visual entre liga e torneio.
+
+Validacao:
+
+- `git diff --check -- web/src/pages/LeagueDetailsPage.tsx web/src/App.css` passou.
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+
+Pendente:
+
+- validar screenshot autenticado desktop/mobile;
+- conferir comportamento com chat muito longo e comunicados fixados extensos.
+
+### [>] SCREEN-GESTAO-01 - `/gestao` central mobile/desktop
+
+Screenshots de referencia:
+
+- `mobile390-gestao.png`
+- `desktop1366-gestao.png`
+
+Mudanca obrigatoria:
+
+- primeira dobra:
+  - fila do dia;
+  - 3-5 pendencias reais;
+  - locais sob gestao em lista compacta;
+- mobile:
+  - nao renderizar todos os detalhes de todos os locais;
+  - tocar em local abre operacao daquele local;
+- implantacao/setup recolhido ou em pagina propria;
+- metricas de suporte abaixo da fila.
+
+Criterio de aceite:
+
+- mobile de gestao deixa de ter rolagem gigantesca na central;
+- admin entende onde operar primeiro.
+
+Entrega parcial em 2026-05-17:
+
+- Fila agregada da central agora mostra no maximo 5 pendencias prioritarias, evitando primeira dobra longa.
+- Locais sob gestao foram reposicionados antes de sinais de suporte e implantacao, deixando a acao operacional aparecer mais cedo.
+- Implantacao/setup virou bloco recolhido em `<details>`, fora do fluxo principal de rotina diaria.
+- Setup incompleto dentro de cada local tambem virou detalhe recolhido; a linha do local mantem foco em pendencias e acoes rapidas.
+- Sinais de suporte continuam disponiveis, mas abaixo dos locais, sem competir com a primeira acao do admin.
+
+Validacao:
+
+- `git diff --check -- web/src/pages/ManagementHubPage.tsx web/src/App.css` passou.
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+
+Pendente:
+
+- validar screenshot desktop/mobile autenticado;
+- conferir se locais com muitos modulos continuam compactos em 390px;
+- avaliar se a central deve ganhar busca/filtro quando houver muitos locais sob gestao.
+
+### [>] SCREEN-GESTAO-AGENDA-01 - Modulo Agenda
+
+Screenshots de referencia:
+
+- `desktop1366-gestao-click-agenda.png`
+- `mobile390-gestao-click-agenda.png`
+
+Mudanca obrigatoria:
+
+- primeira dobra:
+  - reservas pendentes;
+  - espera acionavel;
+  - CTA nova reserva/bloqueio;
+- lista completa vem depois com filtros;
+- rows compactas;
+- confirmar/cancelar com feedback imediato;
+- exportar agenda por quadra funcionando e com titulo nao cortado.
+
+Criterio de aceite:
+
+- pendencias do dia aparecem antes da lista longa;
+- mobile nao renderiza centenas de rows sem filtro;
+- exportacao gera imagem correta.
+
+Entrega parcial 2026-05-17:
+
+- Fila operacional da Agenda agora mostra ate 3 itens por bloco na primeira dobra, com links explicitos para ver pendentes/lista completa quando houver mais itens.
+- `Hoje` ordena reservas pendentes antes das demais e destaca a quantidade que precisa de decisao.
+- `Reservas` e `Espera` ganharam limite inicial de 24 rows quando nao ha filtro, com texto `Mostrando X de Y` e CTA `Ver todas`/`Ver lista completa`; filtros continuam exibindo o resultado completo.
+- Exportacao de agenda por quadra em torneios recebeu quebra de titulo em ate 2 linhas para evitar corte em nomes longos.
+- `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+Pendente:
+
+- Validar screenshots autenticados desktop/mobile da Agenda em `/gestao`;
+- validar no browser um torneio com agenda alta exportando PNG;
+- avaliar se a primeira dobra deve trocar automaticamente para `Reservas` quando houver pendencias mas a aba ativa for outra.
+
+### [x] SCREEN-GESTAO-ACADEMIA-01 - Modulo Academia
+
+Screenshots de referencia:
+
+- `desktop1366-gestao-click-academia.png`
+- `mobile390-gestao-click-academia.png`
+
+Mudanca obrigatoria:
+
+- primeira dobra:
+  - aulas de hoje/chamada;
+  - pendencias de interesse/reposicao;
+  - CTA nova matricula/turma conforme permissao;
+- tabs/rotas:
+  - Hoje;
+  - Grade;
+  - Alunos;
+  - Pendencias;
+  - Professores;
+  - Configuracao;
+- listas operacionais em rows;
+- formularios em drawer/modal, nao enterrados no fim.
+
+Criterio de aceite:
+
+- rotina diaria aparece antes de setup;
+- alunos/turmas/professores continuam acessiveis;
+- erro tecnico nunca aparece cru.
+
+Entrega 2026-05-17:
+
+- Primeira dobra da `Central da academia` ganhou faixa de prioridade com `Hoje`, `Pendencias`, `Nova matricula` e `Nova turma`, respeitando modo professor e permissoes de gestao.
+- Atalhos levam para as subvisoes onde a rotina termina: chamada em `Hoje`, fila em `Pendencias`, matricula em `Alunos` e criacao/grade em `Grade`.
+- Fila operacional da Academia ficou mais compacta na primeira dobra: ate 3 aulas/pendencias antes de exigir expansao ou fila completa, sem `slice` silencioso.
+- Rows de `Aulas do dia` e `Pendencias da academia` passaram a separar titulo, tipo e detalhe curto, reduzindo leitura de paragrafo em tela operacional.
+- `Alunos` preserva drawer de `Nova matricula`; `Grade` preserva setup de nova turma/horario aberto; `Professores` e `Configuracao` seguem acessiveis pelas tabs.
+- Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+
+Pendente:
+
+- Gerar screenshots autenticados desktop/mobile da Academia apos carga completa;
+- avaliar em QA visual se o CTA `Nova turma` deve abrir diretamente o disclosure de criacao ou se navegar para `Grade` continua suficiente.
+
+### [x] SCREEN-GESTAO-CLIENTES-01 - Modulo Clientes/CRM
+
+Screenshots de referencia:
+
+- `desktop1366-gestao-click-clientes.png`
+- `mobile390-gestao-click-clientes.png`
+
+Mudanca obrigatoria:
+
+- primeira dobra:
+  - leads/contatos para follow-up hoje;
+  - busca;
+  - CTA novo contato;
+- lista principal em rows;
+- detalhes/interacoes em drawer/pagina;
+- filtros em sheet no mobile.
+
+Criterio de aceite:
+
+- CRM nao parece planilha empilhada no mobile;
+- follow-up fica acionavel.
+
+Entrega 2026-05-17:
+
+- `Contatos e leads` passou a abrir com primeira dobra operacional: painel `Hoje` com retornos/leads prioritarios e card `Novo contato`.
+- Follow-ups e leads prioritarios aparecem como botoes acionaveis que abrem o drawer de historico/interacao.
+- Busca e filtros continuam logo abaixo da primeira dobra, preservando lista principal em rows e limite explicito.
+- `Novo contato` ganhou CTA visivel; o formulario inline existente continua como progressive disclosure controlado para evitar novo backend ou refatoracao ampla.
+- Drawer de historico/interacoes foi preservado como local de detalhe, follow-up, WhatsApp, conversao e arquivamento.
+- Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+
+Pendente:
+
+- Transformar filtros em bottom sheet no mobile se QA visual ainda considerar a barra longa demais;
+- avaliar se `Novo contato` deve virar drawer dedicado em uma sprint de formularios.
+
+### [x] SCREEN-GESTAO-FINANCEIRO-01 - Modulo Financeiro
+
+Screenshots de referencia:
+
+- `desktop1366-gestao-click-financeiro.png`
+- `mobile390-gestao-click-financeiro.png`
+
+Mudanca obrigatoria:
+
+- primeira dobra:
+  - recebimentos pendentes;
+  - vencidos;
+  - CTA registrar pagamento/despesa;
+- separar reserva, mensalidade, plano, aula avulsa e produto;
+- lista em rows/tabela;
+- acoes financeiras conforme permissao.
+
+Criterio de aceite:
+
+- financeiro mostra origem da cobranca;
+- mobile nao mostra blocos repetidos sem agrupamento;
+- marcar pago tem feedback.
+
+Entrega 2026-05-17:
+
+- `Central financeira` ganhou faixa de prioridade na primeira dobra com `Receber`, `Vencidos`, `Registrar baixa` e `Registrar despesa`.
+- Recebiveis continuam em rows com origem explicita (`Reserva de quadra`, `Mensalidade de academia`, `Plano de socio`, `Aula avulsa/reposicao`) e acao primaria `Marcar pago`.
+- CTA de baixa leva para `Recebiveis`; CTA de despesa leva para `Despesas`.
+- `Despesas` dentro do workspace agora recebe o formulario real de lancamento, igual ao fallback legado, evitando aba sem acao principal.
+- Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+
+Pendente:
+
+- Validar screenshots autenticados desktop/mobile do Financeiro;
+- avaliar se `Registrar pagamento` merece drawer dedicado quando houver muitos recebiveis.
+
+### [x] SCREEN-GESTAO-CANTINA-01 - Modulo Cantina/POS
+
+Screenshots de referencia:
+
+- `desktop1366-gestao-click-cantina.png`
+- `mobile390-gestao-click-cantina.png`
+
+Mudanca obrigatoria:
+
+- se modulo desativado no plano, nao mostrar como operacional;
+- se ativo:
+  - vender produto como CTA principal;
+  - produtos e estoque baixo;
+  - resumo do dia;
+- mobile com lista de produtos acionavel.
+
+Criterio de aceite:
+
+- cantina respeita plano;
+- venda nao fica escondida entre metricas.
+
+Entrega 2026-05-17:
+
+- `Cantina / POS` ganhou faixa de prioridade na primeira dobra com `Venda rapida`, `Estoque`, `Hoje` e `Produtos`.
+- CTA principal leva para `Venda rapida`; estoque baixo recebe destaque visual quando houver item critico.
+- Resumo do dia permanece na aba `Vendas do dia`, sem virar a primeira camada da operacao.
+- Produtos e estoque continuam em listas acionaveis; venda rapida preserva busca de produto, venda avulsa e bloqueio por estoque insuficiente.
+- O modulo continua condicionado ao plano/permissao (`canManageCanteen`/matriz de modulos), sem aparecer como operacional quando a Cantina esta desativada.
+- Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+
+Pendente:
+
+- Validar screenshots autenticados desktop/mobile da Cantina;
+- avaliar se o cadastro de produto deve virar drawer dedicado em sprint futura de formularios.
+
+
 ### [x] PLAYER-QA-POLISH-01 - Qualidade percebida do Player App: texto, estados e loading
 
 Status: `[x]` concluido em 2026-05-16

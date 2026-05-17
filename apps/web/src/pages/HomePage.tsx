@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
+import { ActionPanel, DiscoveryCarousel, ObjectRow } from "../components/AppPrimitives";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
@@ -217,7 +218,6 @@ function formatDateRange(starts: string): string {
   if (Number.isNaN(d.getTime())) return starts;
   return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
 }
-
 function isActiveTournament(t: TournamentSummary): boolean {
   return t.status === "registration_open" || t.status === "registration_closed" || t.status === "live";
 }
@@ -400,7 +400,6 @@ function latestConfirmationForSide(
       .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))[0] ?? null
   );
 }
-
 async function loadLeagueActions(userId: string, leagues: LeagueSummary[]): Promise<HomeLeagueAction[]> {
   const activePlayingLeagues = leagues.filter((l) => l.role !== "owner" && isActiveLeague(l)).slice(0, 4);
   const actionGroups = await Promise.all(
@@ -1013,7 +1012,6 @@ function DiscoveryEventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () =>
     </button>
   );
 }
-
 function PlayerHubSection({
   label,
   title,
@@ -1935,38 +1933,36 @@ export function HomePage({ user, profile }: Props) {
       onBellClose={() => setNotificationsOpen(false)}
     >
       <section className="home-player-os" aria-label="Resumo do jogador">
-        <div className="home-today-panel">
-          <div className="home-today-copy">
-            <p className="home-hero-kicker">Hoje para você</p>
-            <h1>{heroTitle}</h1>
-            <p>{heroDetail}</p>
-          </div>
-          <ActionBar className="home-hero-actions" label="Acoes principais do dia">
-            <button className={homeMainAction.tone === "urgent" ? "primary urgent" : "primary"} type="button" onClick={handleHeroAction}>
-              {homeMainAction.label}
-            </button>
-            <button className="quiet" type="button" onClick={() => navigate("/eventos")}>
-              Competir
-            </button>
-          </ActionBar>
+        <ActionPanel
+          className="home-today-panel"
+          eyebrow="Hoje para voce"
+          title={heroTitle}
+          subtitle={heroDetail}
+          tone={homeMainAction.tone === "urgent" ? "urgent" : "default"}
+          actions={
+            <ActionBar className="home-hero-actions" label="Acoes principais do dia">
+              <button className={homeMainAction.tone === "urgent" ? "primary urgent" : "primary"} type="button" onClick={handleHeroAction}>
+                {homeMainAction.label}
+              </button>
+            </ActionBar>
+          }
+        >
           {visibleTodayRows.length > 0 ? (
             <div className="home-today-rows" aria-label="Proximas acoes do jogador">
               {visibleTodayRows.map((row) => (
-                <button
+                <ObjectRow
                   key={row.id}
-                  type="button"
-                  className={row.tone === "urgent" ? "urgent" : ""}
+                  badge={row.label}
+                  title={row.title}
+                  detail={row.detail}
+                  action={row.action}
+                  tone={row.tone === "urgent" ? "urgent" : "default"}
                   onClick={row.onOpen}
-                >
-                  <span>{row.label}</span>
-                  <strong>{row.title}</strong>
-                  <small>{row.detail}</small>
-                  <em>{row.action}</em>
-                </button>
+                />
               ))}
             </div>
           ) : null}
-        </div>
+        </ActionPanel>
 
         <aside className="home-player-side" aria-label="Acoes principais do jogador">
           <div className="home-intent-rail" aria-label="Escolha o que fazer">
@@ -2099,11 +2095,11 @@ export function HomePage({ user, profile }: Props) {
                 <strong>Eventos na sua região</strong>
                 <span>{profile?.city || profile?.state || "Mais relevantes primeiro"}</span>
               </div>
-              <div className="home-discovery-carousel" aria-label="Eventos perto de você">
+              <DiscoveryCarousel className="home-discovery-carousel" label="Eventos perto de voce">
                 {nearbyUpcoming.map((t) => (
                   <DiscoveryEventCard key={`nearby:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
                 ))}
-              </div>
+              </DiscoveryCarousel>
             </div>
           ) : null}
           {openDiscoveryUpcoming.length > 0 ? (
@@ -2112,11 +2108,11 @@ export function HomePage({ user, profile }: Props) {
                 <strong>Torneios abertos</strong>
                 <span>Inscrições disponíveis</span>
               </div>
-              <div className="home-discovery-carousel" aria-label="Torneios abertos">
+              <DiscoveryCarousel className="home-discovery-carousel" label="Torneios abertos">
                 {openDiscoveryUpcoming.map((t) => (
                   <DiscoveryEventCard key={`open:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
                 ))}
-              </div>
+              </DiscoveryCarousel>
             </div>
           ) : null}
           {nearbyUpcoming.length === 0 && openDiscoveryUpcoming.length === 0 && generalDiscoveryUpcoming.length > 0 ? (
@@ -2125,11 +2121,11 @@ export function HomePage({ user, profile }: Props) {
                 <strong>Destaques públicos</strong>
                 <span>Eventos disponíveis no app</span>
               </div>
-              <div className="home-discovery-carousel" aria-label="Destaques públicos">
+              <DiscoveryCarousel className="home-discovery-carousel" label="Destaques publicos">
                 {generalDiscoveryUpcoming.map((t) => (
                   <DiscoveryEventCard key={`general:${t.id}`} t={t} onOpen={() => navigate(buildTournamentUrl(t.id))} />
                 ))}
-              </div>
+              </DiscoveryCarousel>
             </div>
           ) : null}
           {upcoming.length === 0 ? (
@@ -2145,4 +2141,3 @@ export function HomePage({ user, profile }: Props) {
     </AppShell>
   );
 }
-

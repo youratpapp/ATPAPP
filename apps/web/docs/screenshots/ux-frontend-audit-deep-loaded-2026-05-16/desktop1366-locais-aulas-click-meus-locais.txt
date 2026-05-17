@@ -1,0 +1,32 @@
+route: #/locais?intent=classes
+url: http://127.0.0.1:5173/#/locais?intent=classes
+action: clicked safe button: Meus locais
+loaded: true
+waitMs: 2007
+markers: -
+
+Locais Cadastrar local DESCOBERTA O que você quer encontrar? Escolha a intenção e veja somente o caminho necessario. Encontrar jogo Chamadas abertas 27 chamadas abertas Reservar quadra Horários livres 18 quadras ativas Entrar em aula Turmas com vaga 96 turmas ativas Ver locais Proximos e seguindo 3 locais Todos Seguindo Meus locais QUADRAS Reservar quadra Use cidade, data e hora para ver apenas quadras livres no horario desejado. 3 resultados ADT Dourados Dourados - MS 80 seguidores Unidade de Grupo Escalao Sports Reservas Use a busca por cidade, data e hora para ver disponibilidade real. 6 quadras ativas buscar livres agora Pagina publica Abrir gestao Mais Arena Pantanal Tennis Campo Grande - MS 80 seguidores Unidade de Grupo Escalao Sports Reservas Use a busca por cidade, data e hora para ver disponibilidade real. 4 quadras ativas buscar livres agora Pagina publica Abrir gestao Mais Clube Racket Prime Cuiaba - MT 80 seguidores Unidade de Grupo Escalao Sports Reservas Use a busca por cidade, data e hora para ver disponibilidade real. 8 quadras ativas buscar livres agora Pagina publica Abrir gestao Mais ATP Jogador JOGAR Inicio Competir Locais Ranking TRABALHO Trabalho CONTA Perfil
+
+LINKS:
+
+BUTTONS:
+- Cadastrar local
+- Encontrar jogo Chamadas abertas 27 chamadas abertas
+- Reservar quadra Horários livres 18 quadras ativas
+- Entrar em aula Turmas com vaga 96 turmas ativas
+- Ver locais Proximos e seguindo 3 locais
+- Todos
+- Seguindo
+- Meus locais
+- Pagina publica
+- Abrir gestao
+- Pagina publica
+- Abrir gestao
+- Pagina publica
+- Abrir gestao
+- Inicio
+- Competir
+- Locais
+- Ranking
+- Trabalho
+- Perfil

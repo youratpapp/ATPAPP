@@ -7,10 +7,12 @@ import { PublishingKit } from "../components/PublishingKit";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import {
   createAcademyEnrollment,
+  createOpenMatch,
   createCourtBooking,
   getPlaceById,
   joinCourtBookingWaitlist,
   joinOpenMatch,
+  listMyAcademyEnrollments,
   listOpenMatches,
   listPublicAcademyClassSpots,
   listPlaceAcademyClasses,
@@ -20,7 +22,7 @@ import {
   type AcademyClassSpot,
 } from "../lib/places";
 import { ACADEMY_LEVEL_OPTIONS, academyLevelMatches } from "../lib/academy-levels";
-import type { AcademyClass, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
+import type { AcademyClass, AcademyEnrollment, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
 
 type Props = {
   user: User;
@@ -41,7 +43,7 @@ const BOOKING_DURATION_OPTIONS = [
   { label: "2h", value: 120 },
 ];
 
-type PublicPlaceIntent = "overview" | "booking" | "academy" | "matches" | "plans";
+type PublicPlaceIntent = "overview" | "booking" | "academy" | "matches" | "plans" | "about";
 type PublicPlaceActionIntent = Exclude<PublicPlaceIntent, "overview">;
 
 type AcademyClassGroup = {
@@ -207,8 +209,14 @@ function academyClassGroupDayLabel(group: AcademyClassGroup): string {
   return `${days} ${group.primary.startsAt.slice(0, 5)}-${group.primary.endsAt.slice(0, 5)}`;
 }
 
+function academyEnrollmentStatusLabel(status: AcademyEnrollment["status"]): string {
+  if (status === "active") return "Matricula ativa";
+  if (status === "pending") return "Aguardando aprovacao";
+  return "Cancelada";
+}
+
 export function PlacePublicPage({ user, profile }: Props) {
-  const { placeId } = useParams();
+  const { placeId, placeIntent } = useParams();
   const navigate = useNavigate();
   const routeLocation = useLocation();
   const [place, setPlace] = useState<Place | null>(null);
@@ -229,21 +237,27 @@ export function PlacePublicPage({ user, profile }: Props) {
   const [availabilityRows, setAvailabilityRows] = useState<Array<{ time: string; courts: AvailableCourt[] }>>([]);
   const [academyBusy, setAcademyBusy] = useState(false);
   const [academyFeedback, setAcademyFeedback] = useState("");
+  const [myAcademyEnrollments, setMyAcademyEnrollments] = useState<AcademyEnrollment[]>([]);
   const [academySpotsByClass, setAcademySpotsByClass] = useState<Record<string, AcademyClassSpot>>({});
   const [academyFitFilter, setAcademyFitFilter] = useState<{
     level: string;
-    weekday: string;
+    weekdays: string[];
     period: DiscoveryPeriod;
     ageGroup: "" | AcademyClass["ageGroup"];
     genderScope: "" | AcademyClass["genderScope"];
-  }>({ level: "", weekday: "", period: "", ageGroup: "", genderScope: "" });
+  }>({ level: "", weekdays: [], period: "", ageGroup: "", genderScope: "" });
   const [matchBusyId, setMatchBusyId] = useState("");
   const [matchFeedback, setMatchFeedback] = useState("");
-  const [matchFilter, setMatchFilter] = useState<{ date: string; level: string; period: DiscoveryPeriod }>({
+  const [matchFilter, setMatchFilter] = useState<{ date: string; level: string; period: DiscoveryPeriod; status: "" | OpenMatch["status"] }>({
     date: "",
     level: "",
     period: "",
+    status: "open",
   });
+  const [showMatchCreate, setShowMatchCreate] = useState(false);
+  const [showMatchMobileFilters, setShowMatchMobileFilters] = useState(false);
+  const [matchCreateBusy, setMatchCreateBusy] = useState(false);
+  const [matchCreateDraft, setMatchCreateDraft] = useState({ startsAt: "", level: "", notes: "" });
   const [selectedPlanContext, setSelectedPlanContext] = useState<PlaceMembershipPlan | null>(null);
   const [channelFeedback, setChannelFeedback] = useState("");
   const [bookingDraft, setBookingDraft] = useState(() => {
@@ -280,6 +294,10 @@ export function PlacePublicPage({ user, profile }: Props) {
         const intent = query.get("intent") || "";
         const requestedCourtId = query.get("courtId") || "";
         const requestedClassId = query.get("classId") || "";
+        const requestedClassIds = (query.get("classIds") || "")
+          .split(",")
+          .map((classId) => classId.trim())
+          .filter(Boolean);
         const requestedLevel = query.get("level") || "";
         const requestedStartsAt = datetimeLocalFromParam(query.get("startsAt"));
         const requestedEndsAt = datetimeLocalFromParam(query.get("endsAt"));
@@ -291,12 +309,13 @@ export function PlacePublicPage({ user, profile }: Props) {
           }
           return;
         }
-        const [loadedCourts, loadedClasses, loadedPlans, loadedMatches, loadedSpots] = await Promise.all([
+        const [loadedCourts, loadedClasses, loadedPlans, loadedMatches, loadedSpots, loadedMyEnrollments] = await Promise.all([
           listPlaceCourts(id).catch(() => [] as PlaceCourt[]),
           listPlaceAcademyClasses(id).catch(() => [] as AcademyClass[]),
           listPlaceMembershipPlans(id).catch(() => [] as PlaceMembershipPlan[]),
           listOpenMatches(user, [id]).catch(() => [] as OpenMatch[]),
           listPublicAcademyClassSpots(id).catch(() => [] as AcademyClassSpot[]),
+          listMyAcademyEnrollments().catch(() => [] as AcademyEnrollment[]),
         ]);
         const linkedAvailableCourts =
           requestedStartsAt && requestedEndsAt
@@ -311,10 +330,14 @@ export function PlacePublicPage({ user, profile }: Props) {
         setCourts(loadedCourts);
         setClasses(loadedClasses);
         setPlans(loadedPlans);
-        setMatches(loadedMatches.filter((match) => match.status === "open"));
+        setMatches(loadedMatches);
+        setMyAcademyEnrollments(loadedMyEnrollments.filter((enrollment) => enrollment.placeId === id));
         setAcademySpotsByClass(Object.fromEntries(loadedSpots.map((row) => [row.classId, row])));
         if (linkedAvailableCourts.length) setAvailableCourts(linkedAvailableCourts);
         if (requestedStartsAt) setAvailabilityDate(requestedStartsAt.slice(0, 10));
+        if (requestedStartsAt && requestedEndsAt) {
+          setAvailabilityDurationMinutes(String(durationFromRange(requestedStartsAt, requestedEndsAt)));
+        }
         setBookingDraft((prev) => {
           const activeDefaultCourt = loadedCourts.find((court) => court.isActive)?.id || "";
           const requestedCourtIsActive = loadedCourts.some((court) => court.id === requestedCourtId && court.isActive);
@@ -335,10 +358,16 @@ export function PlacePublicPage({ user, profile }: Props) {
         }
         if (intent === "academy") {
           setAcademyFitFilter((prev) => ({ ...prev, level: requestedLevel || prev.level }));
+          const linkedClassIds = requestedClassIds.filter((classId) =>
+            loadedClasses.some((academyClass) => academyClass.id === classId && academyClass.isActive)
+          );
+          if (!linkedClassIds.length && loadedClasses.some((academyClass) => academyClass.id === requestedClassId && academyClass.isActive)) {
+            linkedClassIds.push(requestedClassId);
+          }
           setAcademyDraft((prev) => ({
             ...prev,
-            classIds: loadedClasses.some((academyClass) => academyClass.id === requestedClassId && academyClass.isActive)
-              ? [requestedClassId]
+            classIds: linkedClassIds.length
+              ? linkedClassIds
               : prev.classIds.length
                 ? prev.classIds
                 : loadedClasses.find((academyClass) => academyClass.isActive)?.id
@@ -373,15 +402,27 @@ export function PlacePublicPage({ user, profile }: Props) {
   const activeClasses = classes.filter((academyClass) => academyClass.isActive);
   const activePlans = plans.filter((plan) => plan.isActive);
   const rawPageIntent = (() => {
-    const raw = new URLSearchParams(routeLocation.search).get("intent");
-    return raw === "booking" || raw === "academy" || raw === "matches" || raw === "plans" ? raw : "overview";
+    const intentFromPath =
+      placeIntent === "reserva"
+        ? "booking"
+        : placeIntent === "aulas"
+          ? "academy"
+          : placeIntent === "jogos"
+            ? "matches"
+            : placeIntent === "planos"
+              ? "plans"
+              : placeIntent === "sobre"
+                ? "about"
+                : "";
+    const raw = intentFromPath || new URLSearchParams(routeLocation.search).get("intent");
+    return raw === "booking" || raw === "academy" || raw === "matches" || raw === "plans" || raw === "about" ? raw : "overview";
   })() as PublicPlaceIntent;
   const filteredAcademyClasses = activeClasses
     .filter((academyClass) => {
-      const weekday = academyFitFilter.weekday ? Number(academyFitFilter.weekday) : null;
+      const weekdays = academyFitFilter.weekdays.map((weekday) => Number(weekday)).filter((weekday) => Number.isFinite(weekday));
       const level = academyFitFilter.level.trim();
       const spot = academySpotsByClass[academyClass.id];
-      if (weekday !== null && academyClass.weekday !== weekday) return false;
+      if (weekdays.length && !weekdays.includes(academyClass.weekday)) return false;
       if (!periodMatchesTime(academyClass.startsAt, academyFitFilter.period)) return false;
       if (
         level &&
@@ -409,7 +450,8 @@ export function PlacePublicPage({ user, profile }: Props) {
   );
   const hasBookableOffer = activeCourts.length > 0;
   const hasAcademyOffer = activeClasses.length > 0;
-  const hasOpenMatches = matches.length > 0;
+  const openMatches = matches.filter((match) => match.status === "open");
+  const hasOpenMatches = openMatches.length > 0;
   const hasMembershipOffer = activePlans.length > 0;
   const matchLevelOptions = Array.from(new Set(matches.map((match) => match.level || "").filter(Boolean))).sort((a, b) => a.localeCompare(b));
   const filteredMatches = matches
@@ -419,27 +461,31 @@ export function PlacePublicPage({ user, profile }: Props) {
       if (matchFilter.date && matchDate !== matchFilter.date) return false;
       if (matchFilter.period && !periodMatchesTime(matchTime, matchFilter.period)) return false;
       if (matchFilter.level && !normalizeSearchText(match.level || "").includes(normalizeSearchText(matchFilter.level))) return false;
+      if (matchFilter.status && match.status !== matchFilter.status) return false;
       return true;
     })
     .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
-  const matchFiltersActive = Boolean(matchFilter.date || matchFilter.period || matchFilter.level);
-  const pageIntent: PublicPlaceIntent =
-    rawPageIntent !== "overview"
-      ? rawPageIntent
-      : hasBookableOffer
-        ? "booking"
-        : hasAcademyOffer
-          ? "academy"
-          : hasOpenMatches
-            ? "matches"
-            : hasMembershipOffer
-              ? "plans"
-              : "overview";
-  const isFocusedIntent = pageIntent !== "overview";
+  const matchFiltersActive = Boolean(matchFilter.date || matchFilter.period || matchFilter.level || matchFilter.status !== "open");
+  const matchFilterCount = [matchFilter.date, matchFilter.period, matchFilter.level, matchFilter.status && matchFilter.status !== "open" ? matchFilter.status : ""].filter(Boolean).length;
+  const pageIntent: PublicPlaceIntent = rawPageIntent;
+  const showOverviewSection = pageIntent === "overview";
   const showBookingSection = hasBookableOffer && pageIntent === "booking";
   const showAcademySection = hasAcademyOffer && pageIntent === "academy";
-  const showMatchesSection = hasOpenMatches && pageIntent === "matches";
+  const showMatchesSection = pageIntent === "matches";
   const showPlansSection = hasMembershipOffer && pageIntent === "plans";
+  const showAboutSection = pageIntent === "about";
+  const loadedPlaceId = place?.id || "";
+
+  useEffect(() => {
+    if (!loadedPlaceId) return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pageIntent, loadedPlaceId]);
+
+  const overviewClassGroups = groupAcademyClasses(activeClasses, academySpotsByClass).slice(0, 3);
+  const overviewMatches = openMatches
+    .slice()
+    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())
+    .slice(0, 3);
   const heroOffer =
     pageIntent === "academy" && hasAcademyOffer
       ? cheapestClass
@@ -450,7 +496,7 @@ export function PlacePublicPage({ user, profile }: Props) {
         ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
         : "Quadras disponíveis para reserva"
     : pageIntent === "matches" && hasOpenMatches
-      ? countLabel(matches.length, "jogo aberto", "jogos abertos")
+      ? countLabel(openMatches.length, "jogo aberto", "jogos abertos")
     : pageIntent === "plans" && hasMembershipOffer
       ? countLabel(activePlans.length, "plano publicado", "planos publicados")
     : hasBookableOffer
@@ -465,7 +511,7 @@ export function PlacePublicPage({ user, profile }: Props) {
   const heroOfferDetails = [
     hasBookableOffer ? countLabel(activeCourts.length, "quadra", "quadras") : "",
     hasAcademyOffer ? countLabel(activeClasses.length, "turma", "turmas") : "",
-    hasOpenMatches ? countLabel(matches.length, "jogo aberto", "jogos abertos") : "",
+    hasOpenMatches ? countLabel(openMatches.length, "jogo aberto", "jogos abertos") : "",
     hasMembershipOffer ? countLabel(activePlans.length, "plano", "planos") : "",
   ].filter(Boolean).join(" | ") || "Informações publicas do local";
   const primaryCta =
@@ -492,6 +538,13 @@ export function PlacePublicPage({ user, profile }: Props) {
     .map((classId) => activeClasses.find((academyClass) => academyClass.id === classId))
     .filter(Boolean) as AcademyClass[];
   const selectedAcademyClassIds = academyDraft.classIds;
+  const selectedAcademyEnrollments = selectedAcademyClassIds
+    .map((classId) => myAcademyEnrollments.find((enrollment) => enrollment.classId === classId && enrollment.status !== "cancelled"))
+    .filter(Boolean) as AcademyEnrollment[];
+  const selectedAcademyCoveredByEnrollment =
+    selectedAcademyClassIds.length > 0 &&
+    selectedAcademyClassIds.every((classId) => myAcademyEnrollments.some((enrollment) => enrollment.classId === classId && enrollment.status !== "cancelled"));
+  const selectedAcademyHasActiveEnrollment = selectedAcademyEnrollments.some((enrollment) => enrollment.status === "active");
   const selectedAcademyClass =
     filteredAcademyClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
     activeClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
@@ -505,7 +558,7 @@ export function PlacePublicPage({ user, profile }: Props) {
       : null;
   const academyFiltersActive = Boolean(
     academyFitFilter.level ||
-      academyFitFilter.weekday ||
+      academyFitFilter.weekdays.length ||
       academyFitFilter.period ||
       academyFitFilter.ageGroup ||
       academyFitFilter.genderScope
@@ -527,6 +580,18 @@ export function PlacePublicPage({ user, profile }: Props) {
   const bookingProfileName = profile?.displayName || bookingDraft.playerName || user.email || "Jogador";
   const bookingProfilePhone = profile?.phone || bookingDraft.phone || "";
   const bookingNeedsContactCompletion = !bookingProfilePhone.trim();
+  const academyProfileName = profile?.displayName || academyDraft.playerName || user.email || "Aluno";
+  const academyProfilePhone = profile?.phone || academyDraft.phone || "";
+  const academyNeedsContactCompletion = !academyProfilePhone.trim();
+  const academySubmitDisabled =
+    academyBusy || !academyDraft.classIds.length || !academyProfileName.trim() || !academyProfilePhone.trim() || selectedAcademyCoveredByEnrollment;
+  const academySubmitLabel = academyBusy
+    ? "Enviando..."
+    : selectedAcademyHasActiveEnrollment
+      ? "Matricula ativa"
+      : selectedAcademyCoveredByEnrollment
+        ? "Interesse enviado"
+        : "Enviar interesse";
   const bookingSlotConfirmed = Boolean(
     bookingDraft.courtId &&
       bookingDraft.startsAt &&
@@ -567,8 +632,21 @@ export function PlacePublicPage({ user, profile }: Props) {
 
   const goToPublicIntent = (intent: PublicPlaceActionIntent) => {
     const next = new URLSearchParams(routeLocation.search);
-    next.set("intent", intent);
-    navigate({ pathname: routeLocation.pathname, search: `?${next.toString()}` }, { replace: false });
+    next.delete("intent");
+    const slugByIntent: Record<PublicPlaceActionIntent, string> = {
+      booking: "reserva",
+      academy: "aulas",
+      matches: "jogos",
+      plans: "planos",
+      about: "sobre",
+    };
+    navigate(
+      {
+        pathname: `/locais/${encodeURIComponent(String(placeId || ""))}/${slugByIntent[intent]}`,
+        search: next.toString() ? `?${next.toString()}` : "",
+      },
+      { replace: false }
+    );
   };
 
   const updateBookingRange = (date: string, time: string, duration = bookingDuration) => {
@@ -596,7 +674,17 @@ export function PlacePublicPage({ user, profile }: Props) {
   };
 
   const resetAcademyFitFilter = () => {
-    setAcademyFitFilter({ level: "", weekday: "", period: "", ageGroup: "", genderScope: "" });
+    setAcademyFitFilter({ level: "", weekdays: [], period: "", ageGroup: "", genderScope: "" });
+  };
+
+  const toggleAcademyFitWeekday = (weekday: number) => {
+    const value = String(weekday);
+    setAcademyFitFilter((prev) => ({
+      ...prev,
+      weekdays: prev.weekdays.includes(value)
+        ? prev.weekdays.filter((item) => item !== value)
+        : [...prev.weekdays, value].sort((a, b) => Number(a) - Number(b)),
+    }));
   };
 
   const selectAcademyGroup = (group: AcademyClassGroup) => {
@@ -712,6 +800,17 @@ export function PlacePublicPage({ user, profile }: Props) {
     goToPublicIntent("academy");
   };
 
+  const openBookingForPlan = (plan: PlaceMembershipPlan) => {
+    setSelectedPlanContext(plan);
+    setBookingFeedback(
+      plan.courtDiscountPercent
+        ? `Plano ${plan.name} selecionado. O desconto de quadra ainda sera confirmado pela academia na aprovacao.`
+        : `Plano ${plan.name} selecionado. Escolha um horario para solicitar a reserva.`
+    );
+    goToPublicIntent("booking");
+    window.setTimeout(() => void loadDayAvailability(), 0);
+  };
+
   const selectAvailabilitySlot = (time: string, court: AvailableCourt) => {
     const duration = Math.max(60, Math.min(120, Number(availabilityDurationMinutes) || 60));
     const startsAt = combineDateAndTime(availabilityDate, time);
@@ -781,26 +880,33 @@ export function PlacePublicPage({ user, profile }: Props) {
     setAcademyBusy(true);
     setAcademyFeedback("");
     try {
+      const classIdsToCreate = academyDraft.classIds.filter(
+        (classId) => !myAcademyEnrollments.some((enrollment) => enrollment.classId === classId && enrollment.status !== "cancelled")
+      );
+      if (!classIdsToCreate.length) {
+        setAcademyFeedback("Seu interesse ja foi enviado. A academia precisa aprovar antes de aparecer como aula ativa.");
+        return;
+      }
       const selectedLabels = selectedAcademyClasses
         .map((academyClass) => nextClassLabel(academyClass))
         .join(", ");
-      await Promise.all(
-        academyDraft.classIds.map((classId) =>
+      const createdEnrollments = await Promise.all(
+        classIdsToCreate.map((classId) =>
           createAcademyEnrollment({
             placeId: place.id,
             classId,
             userId: user.id,
-            playerName: academyDraft.playerName || profile?.displayName || user.email || "Aluno",
-            phone: academyDraft.phone || profile?.phone || "",
+            playerName: academyProfileName,
+            phone: academyProfilePhone,
             notes: [academyDraft.notes, selectedLabels ? `Dias escolhidos: ${selectedLabels}` : ""].filter(Boolean).join(" | "),
           })
         )
       );
-      setAcademyFeedback(
-        academyDraft.classIds.length > 1
-          ? "Interesse enviado para os dias escolhidos. O local pode aprovar sua matrícula pela Academia."
-          : "Interesse enviado. O local pode aprovar sua matrícula pela Academia."
-      );
+      setMyAcademyEnrollments((prev) => {
+        const createdClassIds = new Set(createdEnrollments.map((enrollment) => enrollment.classId));
+        return [...createdEnrollments, ...prev.filter((enrollment) => !createdClassIds.has(enrollment.classId))];
+      });
+      setAcademyFeedback("Interesse enviado. A academia vai aprovar ou ajustar os dias; quando aprovado, suas aulas aparecem na sua agenda.");
       setAcademyDraft((prev) => ({ ...prev, notes: "" }));
     } catch (err) {
       console.error("Failed to request academy enrollment", err);
@@ -816,12 +922,42 @@ export function PlacePublicPage({ user, profile }: Props) {
     try {
       await joinOpenMatch(user, match, profile?.displayName || user.email || "Jogador", profile?.phone || "");
       const updatedMatches = await listOpenMatches(user, [match.placeId || String(placeId || "")]).catch(() => [] as OpenMatch[]);
-      setMatches(updatedMatches.filter((item) => item.status === "open"));
+      setMatches(updatedMatches);
       setMatchFeedback("Você entrou no jogo aberto.");
     } catch (err) {
       setMatchFeedback(err instanceof Error ? err.message : "Não foi possível entrar no jogo.");
     } finally {
       setMatchBusyId("");
+    }
+  };
+
+  const createLocalMatch = async () => {
+    if (!place) return;
+    if (!matchCreateDraft.startsAt) {
+      setMatchFeedback("Escolha dia e horario para criar a chamada.");
+      return;
+    }
+    setMatchCreateBusy(true);
+    setMatchFeedback("");
+    try {
+      await createOpenMatch(user, {
+        placeId: place.id,
+        city: place.city || "",
+        state: place.state || "",
+        startsAt: matchCreateDraft.startsAt || undefined,
+        level: matchCreateDraft.level,
+        notes: matchCreateDraft.notes || "Chamada criada pela pagina do local.",
+      });
+      const updatedMatches = await listOpenMatches(user, [place.id]).catch(() => [] as OpenMatch[]);
+      setMatches(updatedMatches);
+      setMatchFilter((prev) => ({ ...prev, status: "open" }));
+      setMatchCreateDraft({ startsAt: "", level: "", notes: "" });
+      setShowMatchCreate(false);
+      setMatchFeedback("Chamada criada neste local.");
+    } catch (err) {
+      setMatchFeedback(err instanceof Error ? err.message : "Não foi possível criar a chamada.");
+    } finally {
+      setMatchCreateBusy(false);
     }
   };
 
@@ -900,9 +1036,15 @@ export function PlacePublicPage({ user, profile }: Props) {
                 <button className={pageIntent === "matches" ? "active" : undefined} onClick={() => goToPublicIntent("matches")}>
                   <span>Jogos</span>
                   <strong>Jogo aberto</strong>
-                  <small>{countLabel(matches.length, "opcao", "opcoes")}</small>
+                  <small>{countLabel(openMatches.length, "opcao", "opcoes")}</small>
                 </button>
-              ) : null}
+              ) : (
+                <button className={pageIntent === "matches" ? "active" : undefined} onClick={() => goToPublicIntent("matches")}>
+                  <span>Jogos</span>
+                  <strong>Criar chamada</strong>
+                  <small>Neste local</small>
+                </button>
+              )}
               {hasMembershipOffer ? (
                 <button className={pageIntent === "plans" ? "active" : undefined} onClick={() => goToPublicIntent("plans")}>
                   <span>Planos</span>
@@ -910,14 +1052,89 @@ export function PlacePublicPage({ user, profile }: Props) {
                   <small>{countLabel(activePlans.length, "plano", "planos")}</small>
                 </button>
               ) : null}
-              <button onClick={sharePlace}>
-                <span>Contato</span>
-                <strong>Compartilhar</strong>
-                <small>Enviar link do local</small>
+              <button className={pageIntent === "about" ? "active" : undefined} onClick={() => goToPublicIntent("about")}>
+                <span>Sobre</span>
+                <strong>Contato</strong>
+                <small>Informacoes do local</small>
               </button>
             </section>
 
             <section className="place-public-grid place-public-main-flow">
+              {showOverviewSection ? (
+                <article className="place-public-overview-card">
+                  <div className="place-public-overview-header">
+                    <div>
+                      <span>Visao geral</span>
+                      <h3>Escolha uma acao neste local</h3>
+                      <p className="subtle">Aqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas para evitar mistura de fluxos.</p>
+                    </div>
+                    <button className="secondary" onClick={sharePlace}>Compartilhar</button>
+                  </div>
+
+                  <div className="place-public-overview-grid">
+                    {hasBookableOffer ? (
+                      <button type="button" className="place-public-overview-tile" onClick={() => goToPublicIntent("booking")}>
+                        <span>Reservar</span>
+                        <strong>{countLabel(activeCourts.length, "quadra ativa", "quadras ativas")}</strong>
+                        <small>{cheapestCourt ? `A partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}` : "Horarios publicados"}</small>
+                      </button>
+                    ) : null}
+
+                    {hasAcademyOffer ? (
+                      <button type="button" className="place-public-overview-tile" onClick={() => goToPublicIntent("academy")}>
+                        <span>Aulas</span>
+                        <strong>{countLabel(overviewClassGroups.length || activeClasses.length, "turma", "turmas")}</strong>
+                        <small>{cheapestClass ? `A partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}` : "Turmas publicadas"}</small>
+                      </button>
+                    ) : null}
+
+                    {hasOpenMatches ? (
+                      <button type="button" className="place-public-overview-tile" onClick={() => goToPublicIntent("matches")}>
+                        <span>Jogos</span>
+                        <strong>{countLabel(openMatches.length, "jogo aberto", "jogos abertos")}</strong>
+                        <small>{overviewMatches[0] ? new Date(overviewMatches[0].startsAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }) : "Comunidade ativa"}</small>
+                      </button>
+                    ) : null}
+
+                    {hasMembershipOffer ? (
+                      <button type="button" className="place-public-overview-tile" onClick={() => goToPublicIntent("plans")}>
+                        <span>Planos</span>
+                        <strong>{countLabel(activePlans.length, "plano", "planos")}</strong>
+                        <small>Beneficios e recorrencia</small>
+                      </button>
+                    ) : null}
+                  </div>
+
+                  <div className="place-public-overview-list" aria-label="Destaques do local">
+                    {activeCourts.slice(0, 2).map((court) => (
+                      <button key={`overview-court:${court.id}`} type="button" onClick={() => openBookingForCourt(court)}>
+                        <strong>{court.name}</strong>
+                        <small>{[court.surface || "Piso a definir", court.bookingFeeCents ? formatMoneyFromCents(court.bookingFeeCents) : "valor a combinar"].join(" | ")}</small>
+                      </button>
+                    ))}
+                    {overviewClassGroups.slice(0, 2).map((group) => (
+                      <button
+                        key={`overview-class:${group.key}`}
+                        type="button"
+                        onClick={() => {
+                          selectAcademyGroup(group);
+                          goToPublicIntent("academy");
+                        }}
+                      >
+                        <strong>{group.primary.title}</strong>
+                        <small>{[academyClassGroupDayLabel(group), group.primary.coachName || "Professor a definir"].join(" | ")}</small>
+                      </button>
+                    ))}
+                    {!hasBookableOffer && !hasAcademyOffer && !hasOpenMatches && !hasMembershipOffer ? (
+                      <div className="place-public-overview-empty">
+                        <strong>Informacoes em preparacao</strong>
+                        <small>Este local ainda nao publicou reservas, aulas, jogos ou planos.</small>
+                      </div>
+                    ) : null}
+                  </div>
+                </article>
+              ) : null}
+
               {showBookingSection ? (
               <article id="place-public-booking" className="place-public-booking-card place-public-booking-flow-card">
                 <div className="place-public-booking-header">
@@ -931,6 +1148,18 @@ export function PlacePublicPage({ user, profile }: Props) {
                     <span>quadras</span>
                   </div>
                 </div>
+
+                {selectedPlanContext ? (
+                  <div className="place-public-selected-class">
+                    <span>Plano escolhido</span>
+                    <strong>{selectedPlanContext.name}</strong>
+                    <small>
+                      {selectedPlanContext.courtDiscountPercent
+                        ? `${selectedPlanContext.courtDiscountPercent}% em quadras. O beneficio sera conferido pela academia ao confirmar a reserva.`
+                        : "Escolha um horario e a academia confirma a reserva pelo seu perfil."}
+                    </small>
+                  </div>
+                ) : null}
 
                 <div className="place-public-booking-steps">
                   <section className="place-public-booking-step">
@@ -999,11 +1228,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                                   <button
                                     key={`court-slot:${court.id}:${slot.time}`}
                                     className={isSelected ? "selected" : isSelectedContinuation ? "selected-range" : slot.status}
-                                    disabled={!isAvailable && !isSelectedContinuation}
-                                    onClick={() => (slot.availableCourt ? selectAvailabilitySlot(slot.time, slot.availableCourt) : undefined)}
+                                    disabled={isSelectedContinuation || !isAvailable}
+                                    onClick={() => (slot.availableCourt && !isSelectedContinuation ? selectAvailabilitySlot(slot.time, slot.availableCourt) : undefined)}
                                   >
                                     <span>{slot.time}</span>
-                                    <small>{isSelected ? selectedDurationLabel : isSelectedContinuation ? "Na reserva" : isAvailable ? "Livre" : "Ocupado"}</small>
+                                    <small>{isSelected ? selectedDurationLabel : isSelectedContinuation ? "Incluido" : isAvailable ? "Livre" : "Ocupado"}</small>
                                   </button>
                                 );
                               })}
@@ -1139,17 +1368,25 @@ export function PlacePublicPage({ user, profile }: Props) {
                           ))}
                         </select>
                       </label>
-                      <label>
-                        Dia
-                        <select value={academyFitFilter.weekday} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, weekday: event.target.value }))}>
-                          <option value="">Qualquer dia</option>
-                          {WEEKDAY_LABELS.map((label, index) => (
-                            <option key={`public-class-day:${label}`} value={index}>
-                              {label}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
+                      <fieldset className="place-public-class-weekday-filter">
+                        <legend>Dias</legend>
+                        <div>
+                          {WEEKDAY_LABELS.map((label, index) => {
+                            const selected = academyFitFilter.weekdays.includes(String(index));
+                            return (
+                              <button
+                                key={`public-class-day:${label}`}
+                                type="button"
+                                className={selected ? "selected" : ""}
+                                onClick={() => toggleAcademyFitWeekday(index)}
+                                aria-pressed={selected}
+                              >
+                                {label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </fieldset>
                       <label>
                         Periodo
                         <select value={academyFitFilter.period} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
@@ -1185,6 +1422,10 @@ export function PlacePublicPage({ user, profile }: Props) {
                           {filteredAcademyClassGroups.map((group) => {
                             const academyClass = group.primary;
                             const selectedInGroup = group.classes.filter((item) => academyDraft.classIds.includes(item.id));
+                            const groupEnrollments = group.classes
+                              .map((item) => myAcademyEnrollments.find((enrollment) => enrollment.classId === item.id && enrollment.status !== "cancelled"))
+                              .filter(Boolean) as AcademyEnrollment[];
+                            const groupHasActiveEnrollment = groupEnrollments.some((enrollment) => enrollment.status === "active");
                             return (
                               <article
                                 key={`class-fit:${group.key}`}
@@ -1213,6 +1454,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                                       </button>
                                     );
                                   })}
+                                  {groupEnrollments.length ? (
+                                    <span className={groupHasActiveEnrollment ? "place-public-class-status-chip active" : "place-public-class-status-chip"}>
+                                      {groupHasActiveEnrollment ? "Matriculado" : "Interesse enviado"}
+                                    </span>
+                                  ) : null}
                                 </div>
                               </article>
                             );
@@ -1244,44 +1490,74 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <div className="place-public-selected-class">
                         <span>Turma escolhida</span>
                         <strong>{selectedAcademyClass.title}</strong>
+                        <div className="place-public-selected-class-grid">
+                          <span>
+                            <small>Local</small>
+                            <b>{place?.name || "Local"}</b>
+                          </span>
+                          <span>
+                            <small>Professor</small>
+                            <b>{selectedAcademyClass.coachName || "A definir"}</b>
+                          </span>
+                          <span>
+                            <small>Dias</small>
+                            <b>
+                              {selectedAcademyClasses.length
+                                ? selectedAcademyClasses.map((academyClass) => nextClassLabel(academyClass)).join(", ")
+                                : selectedAcademyGroup
+                                  ? academyClassGroupDayLabel(selectedAcademyGroup)
+                                  : nextClassLabel(selectedAcademyClass)}
+                            </b>
+                          </span>
+                          <span>
+                            <small>Valor</small>
+                            <b>{selectedAcademyClass.monthlyFeeCents ? formatMoneyFromCents(selectedAcademyClass.monthlyFeeCents) : "A combinar"}</b>
+                          </span>
+                          <span>
+                            <small>Vagas</small>
+                            <b>{selectedAcademySpot ? `${selectedAcademySpot.availableSpots} vaga(s)` : "Consultar"}</b>
+                          </span>
+                        </div>
+                        {selectedAcademyEnrollments.length ? (
+                          <div className="place-public-academy-status-list">
+                            {selectedAcademyEnrollments.map((enrollment) => {
+                              const academyClass = activeClasses.find((item) => item.id === enrollment.classId);
+                              return (
+                                <span key={`academy-enrollment:${enrollment.id}`} className={`status-${enrollment.status}`}>
+                                  <b>{academyClass ? nextClassLabel(academyClass) : "Dia solicitado"}</b>
+                                  <small>{academyEnrollmentStatusLabel(enrollment.status)}</small>
+                                </span>
+                              );
+                            })}
+                          </div>
+                        ) : null}
                         <small>
-                          {[
-                            selectedAcademyClasses.length
-                              ? selectedAcademyClasses.map((academyClass) => nextClassLabel(academyClass)).join(", ")
-                              : selectedAcademyGroup
-                                ? academyClassGroupDayLabel(selectedAcademyGroup)
-                                : nextClassLabel(selectedAcademyClass),
-                            selectedAcademyClass.coachName || "Professor a definir",
-                            selectedAcademyClass.level || "Nivel livre",
-                            selectedAcademyClass.monthlyFeeCents ? formatMoneyFromCents(selectedAcademyClass.monthlyFeeCents) : "Valor a combinar",
-                            selectedAcademyClasses.length > 1 ? `${selectedAcademyClasses.length} dias selecionados` : null,
-                            selectedAcademySpot ? `${selectedAcademySpot.availableSpots} vaga(s)` : null,
-                          ]
-                            .filter(Boolean)
-                            .join(" | ")}
+                          {selectedAcademyHasActiveEnrollment
+                            ? "Matricula ativa: acompanhe suas aulas na Home e na sua agenda."
+                            : selectedAcademyCoveredByEnrollment
+                              ? "Solicitacao enviada: a academia precisa aprovar antes de aparecer como aula ativa."
+                              : "Ao aprovar, a academia ativa sua matricula vinculada ao seu perfil. Se aprovado, suas aulas aparecem na sua agenda."}
                         </small>
-                        <small>Ao aprovar, a academia ativa sua matrícula vinculada ao seu perfil e ela aparece em Minhas aulas.</small>
                       </div>
                     ) : (
                       <p className="subtle">Selecione uma turma acima para enviar seu interesse.</p>
                     )}
+                    <div className="place-public-profile-confirmation">
+                      <span>Interesse vinculado ao perfil</span>
+                      <strong>{academyProfileName}</strong>
+                      {academyProfilePhone ? <small>{academyProfilePhone}</small> : <small>Informe um WhatsApp para a academia retornar.</small>}
+                    </div>
                     <div className="place-public-booking-form compact academy-interest-form">
-                      <label>
-                        Nome
-                        <input
-                          value={academyDraft.playerName}
-                          onChange={(event) => setAcademyDraft((prev) => ({ ...prev, playerName: event.target.value }))}
-                          placeholder="Seu nome"
-                        />
-                      </label>
-                      <label>
-                        WhatsApp
-                        <input
-                          value={academyDraft.phone}
-                          onChange={(event) => setAcademyDraft((prev) => ({ ...prev, phone: event.target.value }))}
-                          placeholder="Telefone para contato"
-                        />
-                      </label>
+                      {academyNeedsContactCompletion ? (
+                        <label>
+                          WhatsApp
+                          <input
+                            value={academyDraft.phone}
+                            onChange={(event) => setAcademyDraft((prev) => ({ ...prev, phone: event.target.value }))}
+                            placeholder="Telefone para contato"
+                          />
+                        </label>
+                      ) : null}
                       <label>
                         Mensagem
                         <input
@@ -1295,9 +1571,9 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <button
                         className="primary"
                         onClick={() => void requestAcademyEnrollment()}
-                        disabled={academyBusy || !academyDraft.classIds.length || !academyDraft.playerName.trim()}
+                        disabled={academySubmitDisabled}
                       >
-                        {academyBusy ? "Enviando..." : "Enviar interesse"}
+                        {academySubmitLabel}
                       </button>
                     </div>
                     {academyFeedback ? <p className="place-public-booking-feedback">{academyFeedback}</p> : null}
@@ -1314,9 +1590,54 @@ export function PlacePublicPage({ user, profile }: Props) {
                     <h3>Jogos abertos</h3>
                     <p>Filtre por dia, periodo e nivel para encontrar uma chamada compativel.</p>
                   </div>
-                  <small>{countLabel(filteredMatches.length, "chamada", "chamadas")}</small>
+                  <div className="place-public-header-actions">
+                    <small>{countLabel(filteredMatches.length, "chamada", "chamadas")}</small>
+                    <button type="button" className="quiet" onClick={() => setShowMatchCreate((prev) => !prev)}>
+                      {showMatchCreate ? "Fechar" : "Criar chamada neste local"}
+                    </button>
+                  </div>
                 </div>
-                <div className="place-public-match-filter">
+                {showMatchCreate ? (
+                  <div className="place-public-match-create">
+                    <label>
+                      Dia e hora
+                      <input
+                        type="datetime-local"
+                        value={matchCreateDraft.startsAt}
+                        onChange={(event) => setMatchCreateDraft((prev) => ({ ...prev, startsAt: event.target.value }))}
+                      />
+                    </label>
+                    <label>
+                      Nivel
+                      <input
+                        value={matchCreateDraft.level}
+                        onChange={(event) => setMatchCreateDraft((prev) => ({ ...prev, level: event.target.value }))}
+                        placeholder="Ex.: intermediario"
+                      />
+                    </label>
+                    <label>
+                      Mensagem
+                      <input
+                        value={matchCreateDraft.notes}
+                        onChange={(event) => setMatchCreateDraft((prev) => ({ ...prev, notes: event.target.value }))}
+                        placeholder="Ex.: jogo amistoso, 4 jogadores"
+                      />
+                    </label>
+                    <button className="primary" type="button" onClick={() => void createLocalMatch()} disabled={matchCreateBusy}>
+                      {matchCreateBusy ? "Criando..." : "Criar chamada"}
+                    </button>
+                  </div>
+                ) : null}
+                <button
+                  type="button"
+                  className="place-public-match-filter-toggle"
+                  onClick={() => setShowMatchMobileFilters((prev) => !prev)}
+                  aria-expanded={showMatchMobileFilters}
+                >
+                  <span>{showMatchMobileFilters ? "Ocultar filtros" : "Ajustar filtros"}</span>
+                  <small>{matchFilterCount ? `${matchFilterCount} ativo(s)` : "Data, periodo e nivel"}</small>
+                </button>
+                <div className={`place-public-match-filter${showMatchMobileFilters ? " is-mobile-open" : ""}`}>
                   <label>
                     Data
                     <input
@@ -1345,8 +1666,20 @@ export function PlacePublicPage({ user, profile }: Props) {
                       ))}
                     </select>
                   </label>
+                  <label>
+                    Status
+                    <select value={matchFilter.status} onChange={(event) => setMatchFilter((prev) => ({ ...prev, status: event.target.value as "" | OpenMatch["status"] }))}>
+                      <option value="">Todos os status</option>
+                      <option value="open">Abertas</option>
+                      <option value="closed">Encerradas</option>
+                      <option value="cancelled">Canceladas</option>
+                    </select>
+                  </label>
                   {matchFiltersActive ? (
-                    <button className="quiet" onClick={() => setMatchFilter({ date: "", level: "", period: "" })}>
+                    <button className="quiet" onClick={() => {
+                      setMatchFilter({ date: "", level: "", period: "", status: "open" });
+                      setShowMatchMobileFilters(false);
+                    }}>
                       Limpar filtros
                     </button>
                   ) : null}
@@ -1355,17 +1688,38 @@ export function PlacePublicPage({ user, profile }: Props) {
                   <div key={match.id} className="place-public-row">
                     <strong>{new Date(match.startsAt).toLocaleString("pt-BR", { day: "2-digit", hour: "2-digit", minute: "2-digit", month: "2-digit" })}</strong>
                     <small>{[match.level || "nivel livre", `${match.participantCount} jogadores`, match.notes].filter(Boolean).join(" | ")}</small>
-                    <button
-                      className={match.joinedByMe ? "" : "primary"}
-                      onClick={() => void joinMatch(match)}
-                      disabled={matchBusyId === match.id || match.joinedByMe}
-                    >
-                      {match.joinedByMe ? "Participando" : "Entrar no jogo"}
-                    </button>
+                    {match.status === "open" ? (
+                      <button
+                        className={match.joinedByMe ? "" : "primary"}
+                        onClick={() => void joinMatch(match)}
+                        disabled={matchBusyId === match.id || match.joinedByMe}
+                      >
+                        {match.joinedByMe ? "Participando" : "Quero jogar"}
+                      </button>
+                    ) : (
+                      <span className="place-public-match-status">{match.status === "closed" ? "Encerrado" : "Cancelado"}</span>
+                    )}
                   </div>
                 ))}
-                {!matches.length ? <p className="subtle">Nenhum jogo aberto publicado agora.</p> : null}
-                {matches.length && !filteredMatches.length ? <p className="subtle">Nenhuma chamada combina com os filtros selecionados.</p> : null}
+                {!matches.length ? (
+                  <div className="place-public-booking-empty compact">
+                    <strong>Nenhum jogo aberto publicado agora.</strong>
+                    <span>Crie uma chamada neste local para encontrar parceiros sem sair do contexto.</span>
+                    <button type="button" className="secondary" onClick={() => setShowMatchCreate(true)}>Criar chamada neste local</button>
+                  </div>
+                ) : null}
+                {matches.length && !filteredMatches.length ? (
+                  <div className="place-public-booking-empty compact">
+                    <strong>Nenhuma chamada combina com os filtros selecionados.</strong>
+                    <span>Ajuste a busca ou crie uma chamada neste local.</span>
+                    <button type="button" className="secondary" onClick={() => setShowMatchCreate(true)}>Criar chamada neste local</button>
+                    {matchFiltersActive ? (
+                      <button type="button" className="quiet" onClick={() => setMatchFilter({ date: "", level: "", period: "", status: "open" })}>
+                        Limpar filtros
+                      </button>
+                    ) : null}
+                  </div>
+                ) : null}
                 {matchFeedback ? <p className="subtle">{matchFeedback}</p> : null}
               </article>
               ) : null}
@@ -1374,27 +1728,72 @@ export function PlacePublicPage({ user, profile }: Props) {
               <article id="place-public-plans">
                 <span>Planos</span>
                 <h3>Recorrencia e beneficios</h3>
-                {activePlans.map((plan) => (
-                  <button key={plan.id} type="button" className="place-public-row place-public-row-action" onClick={() => openAcademyForPlan(plan)}>
-                    <strong>{plan.name}</strong>
-                    <small>
-                      {[
-                        formatMoneyFromCents(plan.monthlyFeeCents),
-                        plan.courtDiscountPercent ? `${plan.courtDiscountPercent}% quadras` : "",
-                        plan.academyDiscountPercent ? `${plan.academyDiscountPercent}% academia` : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" | ")}
-                    </small>
-                    <em>Escolher plano e ver aulas</em>
-                  </button>
-                ))}
+                <div className="place-public-plan-list">
+                  {activePlans.map((plan) => (
+                    <section key={plan.id} className="place-public-plan-card">
+                      <div>
+                        <strong>{plan.name}</strong>
+                        <small>
+                          {[
+                            formatMoneyFromCents(plan.monthlyFeeCents),
+                            plan.courtDiscountPercent ? `${plan.courtDiscountPercent}% quadras` : "",
+                            plan.academyDiscountPercent ? `${plan.academyDiscountPercent}% academia` : "",
+                          ]
+                            .filter(Boolean)
+                            .join(" | ")}
+                        </small>
+                      </div>
+                      <div className="place-public-plan-actions">
+                        {hasAcademyOffer ? (
+                          <button type="button" className="primary" onClick={() => openAcademyForPlan(plan)}>
+                            Ver aulas
+                          </button>
+                        ) : null}
+                        {hasBookableOffer ? (
+                          <button type="button" className="secondary" onClick={() => openBookingForPlan(plan)}>
+                            Reservar quadra
+                          </button>
+                        ) : null}
+                      </div>
+                    </section>
+                  ))}
+                </div>
                 {!activePlans.length ? <p className="subtle">Planos ainda não publicados.</p> : null}
-                <p className="subtle">Os planos atuais informam mensalidade e descontos. A quantidade de aulas por semana ainda depende da configuracao da matrícula pela academia.</p>
+                <p className="subtle">Os planos atuais informam mensalidade e descontos. A quantidade de aulas por semana e a aplicacao automatica de beneficios ainda dependem da configuracao/aprovacao da academia.</p>
               </article>
               ) : null}
 
-              {!showBookingSection && !showAcademySection && !showMatchesSection && !showPlansSection ? (
+              {showAboutSection ? (
+                <article className="place-public-about-card">
+                  <span>Sobre o local</span>
+                  <h3>{place.name}</h3>
+                  <p className="subtle">{place.description || "Local publicado para reservas, aulas, jogos e atividades da comunidade."}</p>
+                  <div className="place-public-about-grid">
+                    <span>
+                      <small>Cidade</small>
+                      <strong>{location || "Nao informado"}</strong>
+                    </span>
+                    <span>
+                      <small>Quadras</small>
+                      <strong>{countLabel(activeCourts.length, "quadra", "quadras")}</strong>
+                    </span>
+                    <span>
+                      <small>Aulas</small>
+                      <strong>{countLabel(activeClasses.length, "turma", "turmas")}</strong>
+                    </span>
+                    <span>
+                      <small>Planos</small>
+                      <strong>{countLabel(activePlans.length, "plano", "planos")}</strong>
+                    </span>
+                  </div>
+                  <ActionBar label="Contato do local">
+                    <button className="primary" onClick={sharePlace}>Compartilhar local</button>
+                    <button className="secondary" onClick={() => navigate("/locais")}>Ver outros locais</button>
+                  </ActionBar>
+                </article>
+              ) : null}
+
+              {!showOverviewSection && !showBookingSection && !showAcademySection && !showMatchesSection && !showPlansSection && !showAboutSection ? (
                 <article className="place-public-empty-offer">
                   <span>Local</span>
                   <h3>Informações em preparacao</h3>
@@ -1408,7 +1807,7 @@ export function PlacePublicPage({ user, profile }: Props) {
             </section>
 
             <section className="place-public-secondary-info" aria-label="Informações adicionais do local">
-              {!isFocusedIntent && activeCourts.length ? (
+              {showAboutSection && activeCourts.length ? (
                 <details>
                   <summary>Quadras e valores</summary>
                   {activeCourts.slice(0, 8).map((court) => (

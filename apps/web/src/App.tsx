@@ -329,6 +329,7 @@ function AppInner() {
         <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
         <Route path="/locais/:placeId/admin" element={<PlaceAdminPage user={authUser} profile={profile} />} />
         <Route path="/locais/:placeId/admin/:module" element={<PlaceAdminPage user={authUser} profile={profile} />} />
+        <Route path="/locais/:placeId/:placeIntent" element={<PlacePublicPage user={authUser} profile={profile} />} />
         <Route path="/locais/:placeId" element={<PlacePublicPage user={authUser} profile={profile} />} />
         <Route path="/ranking" element={<RankingPage user={authUser} profile={profile} />} />
         <Route

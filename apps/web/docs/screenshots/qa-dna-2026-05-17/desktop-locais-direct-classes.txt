@@ -1,0 +1,69 @@
+hash=#/locais?intent=classes
+loaded=true
+textLength=841
+
+Locais
+Encontrar jogo
+Chamadas abertas
+Reservar quadra
+Horarios livres
+Entrar em aula
+Turmas com vaga
+Ver locais
+Proximos e seguindo
+ENTRAR EM AULA
+Escolha o perfil da aula
+Procure por local, dia, periodo e nivel para ver turmas com vaga.
+Busca por perfil
+UF
+Todos
+MS
+MT
+CIDADE
+Todas
+Campo Grande
+Dourados
+ACADEMIA OU PROFESSOR
+Dias
+Qualquer dia
+Dom
+Seg
+Ter
+Qua
+Qui
+Sex
+Sab
+PERIODO
+Qualquer horario
+Manha
+Tarde
+Noite
+NIVEL
+Qualquer nivel
+Iniciante
+Intermediario
+Avancado
+Primeira Classe
+Profissional
+PERFIL
+Adulto ou kids
+Adulto
+Kids
+Buscar turmas com vaga
+FILTRO DE AULA
+Defina cidade, dia, periodo ou nivel para ver turmas com vaga.
+
+Não mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher.
+
+Buscar turmas
+ATP
+Jogador
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+TRABALHO
+Trabalho
+CONTA
+Perfil

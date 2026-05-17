@@ -13,15 +13,32 @@ type PlaceCrmContactFormProps = {
   busy: boolean;
   defaultOpen?: boolean;
   draft: PlaceCrmContactDraft;
+  open?: boolean;
   ownerListId: string;
   ownerOptions: string[];
   onChange: (draft: PlaceCrmContactDraft) => void;
+  onOpenChange?: (open: boolean) => void;
   onSubmit: () => void;
 };
 
-export function PlaceCrmContactForm({ busy, defaultOpen = false, draft, ownerListId, ownerOptions, onChange, onSubmit }: PlaceCrmContactFormProps) {
+export function PlaceCrmContactForm({
+  busy,
+  defaultOpen = false,
+  draft,
+  open,
+  ownerListId,
+  ownerOptions,
+  onChange,
+  onOpenChange,
+  onSubmit,
+}: PlaceCrmContactFormProps) {
+  const controlled = typeof open === "boolean";
   return (
-    <details className="progressive-form" open={defaultOpen}>
+    <details
+      className="progressive-form"
+      open={controlled ? open : defaultOpen}
+      onToggle={(event) => onOpenChange?.((event.currentTarget as HTMLDetailsElement).open)}
+    >
       <summary>Novo contato</summary>
       <div className="progressive-form-primary">
         <label>

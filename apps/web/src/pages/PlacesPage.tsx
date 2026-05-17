@@ -1,5 +1,5 @@
 ﻿import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
@@ -202,7 +202,7 @@ type ClassDiscoveryFilter = {
   query: string;
   city: string;
   state: string;
-  weekday: string;
+  weekdays: string[];
   period: DiscoveryPeriod;
   level: string;
   ageGroup: "" | AcademyClass["ageGroup"];
@@ -542,6 +542,10 @@ function courtDiscoveryTimeLabel(value: string): string {
   return COURT_DISCOVERY_TIME_OPTIONS.find((option) => option.value === value)?.label || value;
 }
 
+function normalizeBookingDurationMinutes(value: string | number): 60 | 120 {
+  return Number(value) === 120 ? 120 : 60;
+}
+
 function addMinutesToDateTimeLocal(value: string, minutes: number): string {
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return "";
@@ -579,10 +583,10 @@ function placeMatchesDiscoveryLocation(place: Place, filter: { city: string; sta
 
 function academyClassMatchesDiscovery(academyClass: AcademyClass, filter: ClassDiscoveryFilter): boolean {
   const query = normalizeText(filter.query);
-  const weekday = filter.weekday ? Number(filter.weekday) : null;
+  const weekdays = filter.weekdays.map((weekday) => Number(weekday)).filter((weekday) => Number.isFinite(weekday));
   const classText = normalizeText([academyClass.title, academyClass.coachName, academyClass.level].filter(Boolean).join(" "));
   if (query && !classText.includes(query)) return false;
-  if (weekday !== null && academyClass.weekday !== weekday) return false;
+  if (weekdays.length && !weekdays.includes(academyClass.weekday)) return false;
   if (!periodMatchesTime(academyClass.startsAt, filter.period)) return false;
   if (filter.level && !academyLevelMatches(academyClass.level, filter.level) && !normalizeText(academyClass.title).includes(normalizeText(filter.level))) return false;
   if (filter.ageGroup && academyClass.ageGroup !== filter.ageGroup) return false;
@@ -774,11 +778,17 @@ export function PlaceAdminPage({ user, profile }: Props) {
 
 export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const isAdminRoute = Boolean(adminPlaceId);
+  const fallbackHashSearch = location.hash.includes("?") ? location.hash.slice(location.hash.indexOf("?")) : "";
+  const intentParam =
+    searchParams.get("intent") ||
+    new URLSearchParams(location.search).get("intent") ||
+    new URLSearchParams(fallbackHashSearch).get("intent");
   const [tab, setTab] = useState<TabKey>(isAdminRoute ? "mine" : "all");
   const [discoveryIntent, setDiscoveryIntent] = useState<PlaceDiscoveryIntent>(() =>
-    isAdminRoute ? "overview" : discoveryIntentFromParam(searchParams.get("intent"))
+    isAdminRoute ? "overview" : discoveryIntentFromParam(intentParam)
   );
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [managementModuleByPlace, setManagementModuleByPlace] = useState<Record<string, PlaceManagementModule>>({});
@@ -797,6 +807,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: "info" | "error" | "success"; text: string } | null>(null);
+
+  useEffect(() => {
+    if (isAdminRoute) return;
+    const nextIntent = discoveryIntentFromParam(intentParam);
+    setDiscoveryIntent((current) => (current === nextIntent ? current : nextIntent));
+  }, [intentParam, isAdminRoute]);
   const {
     academyAbsencesByPlace,
     academyAttendanceByPlace,
@@ -895,13 +911,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [showOpenMatchCreate, setShowOpenMatchCreate] = useState(false);
   const [courtDiscoveryFilter, setCourtDiscoveryFilter] = useState<CourtDiscoveryFilter>(() => ({
     query: "",
-    city: profile?.city || "",
-    state: normalizeStateUf(profile?.state || ""),
+    city: "",
+    state: "",
     surface: "",
     date: todayDateInputValue(),
     time: "any",
     durationMinutes: "60",
   }));
+  const [courtDiscoveryFilterExpanded, setCourtDiscoveryFilterExpanded] = useState(false);
   const [directoryFilter, setDirectoryFilter] = useState<DirectoryDiscoveryFilter>(() => ({
     query: "",
     city: profile?.city || "",
@@ -915,12 +932,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     query: "",
     city: profile?.city || "",
     state: normalizeStateUf(profile?.state || ""),
-    weekday: "",
+    weekdays: [],
     period: "",
     level: "",
     ageGroup: "",
     genderScope: "",
   }));
+  const [classDiscoveryFilterExpanded, setClassDiscoveryFilterExpanded] = useState(false);
   const [classDiscoveryResultsByPlace, setClassDiscoveryResultsByPlace] = useState<Record<string, PlaceAcademyDiscoverySummary>>({});
   const [classDiscoveryClassesByPlace, setClassDiscoveryClassesByPlace] = useState<Record<string, DiscoveryAcademyClass[]>>({});
   const [classDiscoverySearchKey, setClassDiscoverySearchKey] = useState("");
@@ -935,6 +953,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     level: "",
     status: "open",
   }));
+  const [openMatchFilterExpanded, setOpenMatchFilterExpanded] = useState(false);
   const [openMatchCommentsById, setOpenMatchCommentsById] = useState<Record<string, OpenMatchComment[]>>({});
   const [openMatchCommentDraftById, setOpenMatchCommentDraftById] = useState<Record<string, string>>({});
   const [staffDraftByPlace, setStaffDraftByPlace] = useState<Record<string, PlaceStaffDraft>>({});
@@ -2937,6 +2956,28 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const openMatchPlaceOptions = openMatchPlaces
     .filter((place) => placeMatchesDiscoveryLocation(place, openMatchFilter))
     .sort((a, b) => a.name.localeCompare(b.name));
+  const classDiscoveryPlaces = visiblePlaces.filter((place) => (academyClassesByPlace[place.id] || []).some((academyClass) => academyClass.isActive));
+  const classDiscoveryStateOptions = Array.from(
+    new Set(classDiscoveryPlaces.map((place) => normalizeStateUf(place.state)).filter(Boolean))
+  ).sort();
+  const classDiscoveryCityOptions = Array.from(
+    new Set(
+      classDiscoveryPlaces
+        .filter((place) => !classDiscoveryFilter.state || normalizeStateUf(place.state) === normalizeStateUf(classDiscoveryFilter.state))
+        .map((place) => place.city)
+        .filter(Boolean)
+    )
+  ).sort((a, b) => a.localeCompare(b));
+  const classDiscoveryPlaceOptions = classDiscoveryPlaces
+    .filter((place) => placeMatchesDiscoveryLocation(place, classDiscoveryFilter))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const classDiscoveryCoachOptions = Array.from(
+    new Set(
+      classDiscoveryPlaces
+        .flatMap((place) => (academyClassesByPlace[place.id] || []).map((academyClass) => academyClass.coachName || ""))
+        .filter(Boolean)
+    )
+  ).sort((a, b) => a.localeCompare(b));
   const courtDiscoverySurfaceOptions = COURT_SURFACE_OPTIONS.filter((option) => {
     if (!option.value) return true;
     return visiblePlaces
@@ -2956,7 +2997,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     classDiscoveryFilter.query.trim(),
     classDiscoveryFilter.city.trim(),
     normalizeStateUf(classDiscoveryFilter.state),
-    classDiscoveryFilter.weekday,
+    classDiscoveryFilter.weekdays.join(","),
     classDiscoveryFilter.period,
     classDiscoveryFilter.level.trim(),
     classDiscoveryFilter.ageGroup,
@@ -2976,12 +3017,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setClassDiscoveryClassesByPlace({});
     setClassDiscoverySearchKey("");
   };
+  const toggleClassDiscoveryWeekday = (weekday: string) => {
+    setClassDiscoveryFilter((prev) => {
+      const weekdays = prev.weekdays.includes(weekday)
+        ? prev.weekdays.filter((item) => item !== weekday)
+        : [...prev.weekdays, weekday].sort((a, b) => Number(a) - Number(b));
+      return { ...prev, weekdays };
+    });
+    setClassDiscoveryResultsByPlace({});
+    setClassDiscoveryClassesByPlace({});
+    setClassDiscoverySearchKey("");
+  };
   const updateOpenMatchFilter = (patch: Partial<OpenMatchDiscoveryFilter>) => {
     setOpenMatchFilter((prev) => ({ ...prev, ...patch }));
   };
   const runCourtDiscoverySearch = async () => {
     const searchTimes = courtDiscoveryTimesFor(courtDiscoveryFilter.time);
-    const duration = Math.max(30, Math.min(240, Number(courtDiscoveryFilter.durationMinutes) || 60));
+    const duration = normalizeBookingDurationMinutes(courtDiscoveryFilter.durationMinutes);
     if (!courtDiscoveryFilter.date || !searchTimes.length) {
       setFeedback({ kind: "error", text: "Escolha uma data para buscar quadras livres." });
       return;
@@ -3085,6 +3137,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
   const runClassDiscoverySearch = async () => {
+    const selectedWeekdays = classDiscoveryFilter.weekdays.map((weekday) => Number(weekday)).filter((weekday) => Number.isFinite(weekday));
     const buildLocalClassDiscoveryRows = () =>
       visiblePlaces
         .filter((place) => placeMatchesDiscoveryLocation(place, classDiscoveryFilter))
@@ -3127,16 +3180,30 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setClassDiscoveryBusy(true);
     setFeedback(null);
     try {
-      const rows = await searchAcademyClassesForDiscovery({
-        city: classDiscoveryFilter.city,
-        state: classDiscoveryFilter.state,
-        query: classDiscoveryFilter.query,
-        weekday: classDiscoveryFilter.weekday ? Number(classDiscoveryFilter.weekday) : null,
-        period: classDiscoveryFilter.period,
-        level: classDiscoveryFilter.level,
-        ageGroup: classDiscoveryFilter.ageGroup,
-        genderScope: classDiscoveryFilter.genderScope,
-      });
+      const weekdayQueries = selectedWeekdays.length ? selectedWeekdays : [null];
+      const rowsByWeekday = await Promise.all(
+        weekdayQueries.map((weekday) =>
+          searchAcademyClassesForDiscovery({
+            city: classDiscoveryFilter.city,
+            state: classDiscoveryFilter.state,
+            query: classDiscoveryFilter.query,
+            weekday,
+            period: classDiscoveryFilter.period,
+            level: classDiscoveryFilter.level,
+            ageGroup: classDiscoveryFilter.ageGroup,
+            genderScope: classDiscoveryFilter.genderScope,
+          })
+        )
+      );
+      const rows = Array.from(
+        rowsByWeekday
+          .flat()
+          .reduce((acc, academyClass) => {
+            acc.set(academyClass.id, academyClass);
+            return acc;
+          }, new Map<string, DiscoveryAcademyClass>())
+          .values()
+      );
       if (!rows.length) {
         const fallbackRows = buildLocalClassDiscoveryRows();
         applyLocalClassDiscoveryRows(fallbackRows);
@@ -3236,19 +3303,36 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const courtDiscoveryAvailableRows = showCourtDiscoveryResults
     ? directoryPlaces.flatMap((place) => (courtDiscoveryCourtsByPlace[place.id] || []).map((court) => ({ court, place })))
     : [];
+  const courtDiscoverySelectedPlace = courtDiscoveryFilter.query.trim()
+    ? courtDiscoveryPlaceOptions.find((place) => normalizeText(place.name) === normalizeText(courtDiscoveryFilter.query))
+    : null;
+  const showCourtDiscoveryPlaceResults = showCourtDiscoveryResults && !courtDiscoverySelectedPlace;
+  const showCourtDiscoveryCourtResults = showCourtDiscoveryResults && Boolean(courtDiscoverySelectedPlace);
+  const courtDiscoveryPlaceRows = showCourtDiscoveryPlaceResults
+    ? directoryPlaces
+        .map((place) => {
+          const courts = courtDiscoveryCourtsByPlace[place.id] || [];
+          const summary = courtDiscoveryResultsByPlace[place.id];
+          const times = Array.from(new Set(courts.map((court) => court.discoveryTime).filter(Boolean))).slice(0, 4);
+          const surfaces = Array.from(new Set(courts.map((court) => courtSurfaceLabel(court.surface)).filter(Boolean))).slice(0, 3);
+          return { courts, place, summary, surfaces, times };
+        })
+        .filter((row) => row.courts.length)
+    : [];
   const classDiscoveryAvailableRows = showClassDiscoveryResults
     ? directoryPlaces.flatMap((place) => (classDiscoveryClassesByPlace[place.id] || []).map((academyClass) => ({ academyClass, place })))
     : [];
   const classDiscoveryAvailableGroups = groupDiscoveryAcademyClasses(classDiscoveryAvailableRows);
   const courtDiscoveryExactTime = /^\d{2}:\d{2}$/.test(courtDiscoveryFilter.time) ? courtDiscoveryFilter.time : "";
   const courtDiscoveryStartsAt = courtDiscoveryExactTime ? combineDateAndTime(courtDiscoveryFilter.date, courtDiscoveryExactTime) : "";
-  const courtDiscoveryDuration = Math.max(30, Math.min(240, Number(courtDiscoveryFilter.durationMinutes) || 60));
+  const courtDiscoveryDuration = normalizeBookingDurationMinutes(courtDiscoveryFilter.durationMinutes);
+  const courtDiscoveryDurationLabel = courtDiscoveryDuration === 120 ? "2h" : "1h";
   const courtDiscoveryEndsAt = addMinutesToDateTimeLocal(courtDiscoveryStartsAt, courtDiscoveryDuration);
   const courtDiscoveryWhenLabel =
     courtDiscoveryExactTime && courtDiscoveryStartsAt && courtDiscoveryEndsAt
-      ? `${courtDiscoveryFilter.date.split("-").reverse().join("/")} das ${courtDiscoveryFilter.time} as ${courtDiscoveryEndsAt.slice(11, 16)}`
+      ? `${courtDiscoveryFilter.date.split("-").reverse().join("/")} das ${courtDiscoveryFilter.time} as ${courtDiscoveryEndsAt.slice(11, 16)} (${courtDiscoveryDurationLabel})`
       : courtDiscoveryFilter.date
-      ? `${courtDiscoveryFilter.date.split("-").reverse().join("/")} - ${courtDiscoveryTimeLabel(courtDiscoveryFilter.time)}`
+      ? `${courtDiscoveryFilter.date.split("-").reverse().join("/")} - ${courtDiscoveryTimeLabel(courtDiscoveryFilter.time)} (${courtDiscoveryDurationLabel})`
       : "";
   const goToCourtReservation = (placeId: string, courtId: string, time?: string) => {
     const selectedTime = time || courtDiscoveryExactTime || "18:00";
@@ -3259,8 +3343,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     if (endsAt) params.set("endsAt", new Date(endsAt).toISOString());
     navigate(`/locais/${encodeURIComponent(placeId)}?${params.toString()}`);
   };
-  const goToAcademyClass = (placeId: string, classId: string) => {
+  const goToPlaceCourtSchedule = (placeId: string, time?: string) => {
+    const params = new URLSearchParams({ intent: "booking" });
+    const selectedTime = time || courtDiscoveryExactTime;
+    if (selectedTime) {
+      const startsAt = combineDateAndTime(courtDiscoveryFilter.date, selectedTime);
+      const endsAt = addMinutesToDateTimeLocal(startsAt, courtDiscoveryDuration);
+      if (startsAt) params.set("startsAt", new Date(startsAt).toISOString());
+      if (endsAt) params.set("endsAt", new Date(endsAt).toISOString());
+    }
+    navigate(`/locais/${encodeURIComponent(placeId)}?${params.toString()}`);
+  };
+  const goToAcademyClass = (placeId: string, classId: string, classIds: string[] = []) => {
     const params = new URLSearchParams({ intent: "academy", classId });
+    const selectedClassIds = Array.from(new Set(classIds.filter(Boolean)));
+    if (selectedClassIds.length > 1) params.set("classIds", selectedClassIds.join(","));
     if (classDiscoveryFilter.level) params.set("level", classDiscoveryFilter.level);
     navigate(`/locais/${encodeURIComponent(placeId)}?${params.toString()}`);
   };
@@ -3270,6 +3367,49 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     const param = discoveryIntentToParam(intent);
     navigate(param ? `/locais?intent=${encodeURIComponent(param)}` : "/locais", { replace: true });
   };
+  const isDiscoveryHub = !isAdminRoute && discoveryIntent === "overview";
+  const showDiscoverySwitcher = !isAdminRoute && discoveryIntent !== "overview";
+  const discoveryIntentOptions: Array<{
+    count?: number;
+    intent: PlaceDiscoveryIntent;
+    label: string;
+    meta: string;
+    plural: string;
+    singular: string;
+  }> = [
+    {
+      count: openMatchOpenCount,
+      intent: "matches",
+      label: "Encontrar jogo",
+      meta: "Chamadas abertas",
+      plural: "chamadas abertas",
+      singular: "chamada aberta",
+    },
+    {
+      count: activeCourtsCount,
+      intent: "places",
+      label: "Reservar quadra",
+      meta: "Horarios livres",
+      plural: "quadras ativas",
+      singular: "quadra ativa",
+    },
+    {
+      count: activeAcademyClassesCount,
+      intent: "classes",
+      label: "Entrar em aula",
+      meta: "Turmas com vaga",
+      plural: "turmas ativas",
+      singular: "turma ativa",
+    },
+    {
+      count: visiblePlaces.length,
+      intent: "directory",
+      label: "Ver locais",
+      meta: "Proximos e seguindo",
+      plural: "locais",
+      singular: "local",
+    },
+  ];
   const placeDirectoryTitle =
     discoveryIntent === "classes" ? "Entrar em aula" : discoveryIntent === "directory" ? "Locais" : "Reservar quadra";
   const placeDirectoryDescription =
@@ -3296,64 +3436,45 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </div>
       ) : null}
 
-      {!isAdminRoute ? (
+      {isDiscoveryHub ? (
         <section className="places-intent-panel" aria-label="Escolha o que você quer encontrar">
           <div className="places-intent-copy">
             <span>Descoberta</span>
             <h2>O que você quer encontrar?</h2>
-            <p>Escolha a intenção e veja somente o caminho necessario.</p>
+            <p>Escolha um caminho e veja apenas o que ajuda nessa ação.</p>
           </div>
           <div className="places-intent-actions">
-            <button
-              className={discoveryIntent === "matches" ? "places-intent-card active" : "places-intent-card"}
-              onClick={() => selectDiscoveryIntent("matches")}
-            >
-              <strong>Encontrar jogo</strong>
-              <span>Chamadas abertas</span>
-              {openMatchOpenCount > 0 ? <small>{countLabel(openMatchOpenCount, "chamada aberta", "chamadas abertas")}</small> : null}
-            </button>
-            <button
-              className={discoveryIntent === "places" ? "places-intent-card active" : "places-intent-card"}
-              onClick={() => selectDiscoveryIntent("places")}
-            >
-              <strong>Reservar quadra</strong>
-              <span>Horários livres</span>
-              {activeCourtsCount > 0 ? <small>{countLabel(activeCourtsCount, "quadra ativa", "quadras ativas")}</small> : null}
-            </button>
-            <button
-              className={discoveryIntent === "classes" ? "places-intent-card active" : "places-intent-card"}
-              onClick={() => selectDiscoveryIntent("classes")}
-            >
-              <strong>Entrar em aula</strong>
-              <span>Turmas com vaga</span>
-              {activeAcademyClassesCount > 0 ? <small>{countLabel(activeAcademyClassesCount, "turma ativa", "turmas ativas")}</small> : null}
-            </button>
-            <button
-              className={discoveryIntent === "directory" ? "places-intent-card active" : "places-intent-card"}
-              onClick={() => selectDiscoveryIntent("directory")}
-            >
-              <strong>Ver locais</strong>
-              <span>Proximos e seguindo</span>
-              {visiblePlaces.length > 0 ? <small>{countLabel(visiblePlaces.length, "local", "locais")}</small> : null}
-            </button>
+            {discoveryIntentOptions.map((option) => (
+              <button
+                key={`places-hub-intent:${option.intent}`}
+                className="places-intent-card"
+                onClick={() => selectDiscoveryIntent(option.intent)}
+              >
+                <strong>{option.label}</strong>
+                <span>{option.meta}</span>
+                {option.count ? <small>{countLabel(option.count, option.singular, option.plural)}</small> : null}
+              </button>
+            ))}
           </div>
         </section>
       ) : null}
 
-      {!isAdminRoute && discoveryIntent === "overview" ? (
-        <section className="places-start-state" aria-label="Como usar a busca de locais">
-          <div>
-            <span>Comece pela intenção</span>
-            <strong>Escolha uma busca acima para ver somente o que importa.</strong>
-            <p>Quadra, aula, jogo e lista de locais ficam separados para não misturar informações.</p>
-          </div>
-          <button className="quiet" onClick={() => selectDiscoveryIntent("places")}>
-            Buscar quadra agora
-          </button>
-        </section>
+      {showDiscoverySwitcher ? (
+        <nav className="places-intent-strip" aria-label="Trocar busca em locais">
+          {discoveryIntentOptions.map((option) => (
+            <button
+              key={`places-intent-strip:${option.intent}`}
+              className={discoveryIntent === option.intent ? "active" : ""}
+              onClick={() => selectDiscoveryIntent(option.intent)}
+            >
+              <strong>{option.label}</strong>
+              <span>{option.meta}</span>
+            </button>
+          ))}
+        </nav>
       ) : null}
 
-      {!isAdminRoute && discoveryIntent !== "overview" && discoveryIntent !== "matches" ? (
+      {!isAdminRoute && discoveryIntent === "directory" ? (
         <div className="tabs places-scope-tabs" aria-label="Filtrar locais">
           <button className={tab === "all" ? "active" : ""} onClick={() => setTab("all")}>
             Todos
@@ -3414,14 +3535,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </div>
             <b>{courtDiscoveryHasAvailability ? countLabel(courtDiscoveryAvailableRows.length, "quadra livre", "quadras livres") : "Busca por horario"}</b>
           </div>
-          <div className="places-filter-grid court">
+          <button
+            type="button"
+            className="places-filter-mobile-toggle"
+            onClick={() => setCourtDiscoveryFilterExpanded((value) => !value)}
+          >
+            <span>{courtDiscoveryFilterExpanded ? "Ocultar filtros" : "Ajustar filtros"}</span>
+            <small>
+              {[
+                courtDiscoveryFilter.state || "Todos",
+                courtDiscoveryFilter.city || "Todas",
+                courtDiscoveryFilter.query.trim() || "Qualquer local",
+                courtDiscoveryFilter.date.split("-").reverse().join("/"),
+                courtDiscoveryTimeLabel(courtDiscoveryFilter.time),
+                courtDiscoveryDurationLabel,
+              ].join(" | ")}
+            </small>
+          </button>
+          <div className={`places-filter-grid court ${courtDiscoveryFilterExpanded ? "mobile-open" : ""}`}>
             <label className="court-filter-state">
               UF
               <select
                 value={courtDiscoveryFilter.state}
                 onChange={(event) => updateCourtDiscoveryFilter({ state: event.target.value, city: "", query: "" })}
               >
-                <option value="">Todas</option>
+                <option value="">Todos</option>
                 {courtDiscoveryStateOptions.map((state) => (
                   <option key={`court-discovery-state:${state}`} value={state}>
                     {state}
@@ -3520,44 +3658,94 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </div>
             <b>{classDiscoveryHasSpotSearch ? countLabel(classDiscoveryAvailableGroups.length, "turma com vaga", "turmas com vaga") : "Busca por perfil"}</b>
           </div>
-          <div className="places-filter-grid classes">
-            <label>
-              Academia ou professor
-              <input
-                value={classDiscoveryFilter.query}
-                onChange={(event) => updateClassDiscoveryFilter({ query: event.target.value })}
-                placeholder="Nome, professor ou nivel"
-              />
-            </label>
-            <label>
-              Cidade
-              <input
-                value={classDiscoveryFilter.city}
-                onChange={(event) => updateClassDiscoveryFilter({ city: event.target.value })}
-                placeholder="Ex.: Sao Paulo"
-              />
-            </label>
-            <label>
+          <button
+            type="button"
+            className="places-filter-mobile-toggle"
+            onClick={() => setClassDiscoveryFilterExpanded((prev) => !prev)}
+            aria-expanded={classDiscoveryFilterExpanded}
+          >
+            <span>{classDiscoveryFilterExpanded ? "Ocultar filtros" : "Ajustar filtros"}</span>
+            <small>
+              {[
+                classDiscoveryFilter.state || "Todos UFs",
+                classDiscoveryFilter.city || "Todas cidades",
+                classDiscoveryFilter.weekdays.length ? `${classDiscoveryFilter.weekdays.length} dia(s)` : "Qualquer dia",
+              ].join(" · ")}
+            </small>
+          </button>
+          <div className={`places-filter-grid classes ${classDiscoveryFilterExpanded ? "mobile-open" : ""}`}>
+            <label className="class-filter-state">
               UF
-              <input
+              <select
                 value={classDiscoveryFilter.state}
-                onChange={(event) => updateClassDiscoveryFilter({ state: normalizeStateUf(event.target.value) })}
-                placeholder="SP"
-                maxLength={2}
-              />
-            </label>
-            <label>
-              Dia
-              <select value={classDiscoveryFilter.weekday} onChange={(event) => updateClassDiscoveryFilter({ weekday: event.target.value })}>
-                <option value="">Qualquer dia</option>
-                {WEEKDAY_LABELS.map((label, index) => (
-                  <option key={`class-day:${label}`} value={index}>
-                    {label}
+                onChange={(event) => updateClassDiscoveryFilter({ state: event.target.value, city: "", query: "" })}
+              >
+                <option value="">Todos</option>
+                {classDiscoveryStateOptions.map((state) => (
+                  <option key={`class-state:${state}`} value={state}>
+                    {state}
                   </option>
                 ))}
               </select>
             </label>
-            <label>
+            <label className="class-filter-city">
+              Cidade
+              <select
+                value={classDiscoveryFilter.city}
+                onChange={(event) => updateClassDiscoveryFilter({ city: event.target.value, query: "" })}
+              >
+                <option value="">Todas</option>
+                {classDiscoveryCityOptions.map((city) => (
+                  <option key={`class-city:${city}`} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="class-filter-query">
+              Academia ou professor
+              <input
+                list="class-discovery-options"
+                value={classDiscoveryFilter.query}
+                onChange={(event) => updateClassDiscoveryFilter({ query: event.target.value })}
+                placeholder="Nome, professor ou nivel"
+              />
+              <datalist id="class-discovery-options">
+                {classDiscoveryPlaceOptions.map((place) => (
+                  <option key={`class-place-option:${place.id}`} value={place.name} />
+                ))}
+                {classDiscoveryCoachOptions.map((coachName) => (
+                  <option key={`class-coach-option:${coachName}`} value={coachName} />
+                ))}
+              </datalist>
+            </label>
+            <fieldset className="class-filter-weekdays">
+              <legend>Dias</legend>
+              <button
+                type="button"
+                className={!classDiscoveryFilter.weekdays.length ? "selected" : ""}
+                onClick={() => updateClassDiscoveryFilter({ weekdays: [] })}
+                aria-pressed={!classDiscoveryFilter.weekdays.length}
+              >
+                Qualquer dia
+              </button>
+              {WEEKDAY_LABELS.map((label, index) => {
+                const value = String(index);
+                const selected = classDiscoveryFilter.weekdays.includes(value);
+                return (
+                  <button
+                    key={`class-day:${label}`}
+                    type="button"
+                    className={selected ? "selected" : ""}
+                    onClick={() => toggleClassDiscoveryWeekday(value)}
+                    aria-pressed={selected}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </fieldset>
+            <label className="class-filter-period">
               Periodo
               <select value={classDiscoveryFilter.period} onChange={(event) => updateClassDiscoveryFilter({ period: event.target.value as DiscoveryPeriod })}>
                 <option value="">Qualquer horario</option>
@@ -3566,7 +3754,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <option value="night">Noite</option>
               </select>
             </label>
-            <label>
+            <label className="class-filter-level">
               Nivel
               <select
                 value={classDiscoveryFilter.level}
@@ -3580,7 +3768,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ))}
               </select>
             </label>
-            <label>
+            <label className="class-filter-profile">
               Perfil
               <select value={classDiscoveryFilter.ageGroup} onChange={(event) => updateClassDiscoveryFilter({ ageGroup: event.target.value as ClassDiscoveryFilter["ageGroup"] })}>
                 <option value="">Adulto ou kids</option>
@@ -3588,7 +3776,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <option value="kids">Kids</option>
               </select>
             </label>
-            <button className="primary" onClick={() => void runClassDiscoverySearch()} disabled={classDiscoveryBusy}>
+            <button className="primary class-filter-submit" onClick={() => void runClassDiscoverySearch()} disabled={classDiscoveryBusy}>
               {classDiscoveryBusy ? "Buscando..." : "Buscar turmas com vaga"}
             </button>
           </div>
@@ -3684,19 +3872,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               </div>
               <b>{countLabel(visibleOpenMatches.length, "chamada encontrada", "chamadas encontradas")}</b>
             </div>
-            <details className="open-match-filter-panel" open={!visibleOpenMatches.length || openMatchActiveFilterCount === 0}>
-              <summary>
-                Ajustar filtros
-                {openMatchActiveFilterCount ? <span>{openMatchActiveFilterCount}</span> : null}
-              </summary>
-              <div className="places-filter-grid matches">
+            <button
+              type="button"
+              className="places-filter-mobile-toggle"
+              onClick={() => setOpenMatchFilterExpanded((prev) => !prev)}
+              aria-expanded={openMatchFilterExpanded}
+            >
+              <span>{openMatchFilterExpanded ? "Ocultar filtros" : "Ajustar filtros"}</span>
+              <small>
+                {[
+                  openMatchFilter.state || "Todos UFs",
+                  openMatchFilter.city || "Todas cidades",
+                  openMatchFilter.placeId ? openMatchPlaceOptions.find((place) => place.id === openMatchFilter.placeId)?.name || "Local" : "Todos locais",
+                  openMatchFilter.date ? openMatchFilter.date.split("-").reverse().join("/") : "Qualquer dia",
+                  openMatchFilter.period || "Qualquer horario",
+                ].join(" | ")}
+              </small>
+            </button>
+              <div className={`places-filter-grid matches ${openMatchFilterExpanded ? "mobile-open" : ""}`}>
                 <label className="match-filter-state">
                   UF
                   <select
                     value={openMatchFilter.state}
                     onChange={(event) => updateOpenMatchFilter({ state: event.target.value, city: "", placeId: "" })}
                   >
-                    <option value="">Todas</option>
+                    <option value="">Todos</option>
                     {openMatchStateOptions.map((state) => (
                       <option key={`open-match-state:${state}`} value={state}>
                         {state}
@@ -3758,11 +3958,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   />
                 </label>
                 <label className="match-filter-query">
-                  Texto
+                  Mensagem
                   <input
                     value={openMatchFilter.query}
                     onChange={(event) => updateOpenMatchFilter({ query: event.target.value })}
-                    placeholder="Mensagem da chamada"
+                    placeholder="Buscar texto da chamada"
                   />
                 </label>
                 <label className="match-filter-status">
@@ -3777,18 +3977,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <option value="cancelled">Canceladas</option>
                   </select>
                 </label>
+                <button type="button" className="quiet match-filter-clear" onClick={resetOpenMatchFilters} disabled={!openMatchActiveFilterCount}>
+                  Limpar filtros
+                </button>
               </div>
-              <button type="button" onClick={resetOpenMatchFilters}>
-                Limpar filtros
-              </button>
-            </details>
           </div>
           <div className="open-match-create-intro">
             <div>
               <strong>Não encontrou um jogo bom?</strong>
               <small>Crie uma chamada. A reserva da quadra continua no fluxo de quadras.</small>
             </div>
-            <button type="button" className="primary" onClick={() => setShowOpenMatchCreate((prev) => !prev)}>
+            <button type="button" className="quiet" onClick={() => setShowOpenMatchCreate((prev) => !prev)}>
               {showOpenMatchCreate || hasOpenMatchDraft ? "Fechar criacao" : "Criar chamada"}
             </button>
           </div>
@@ -3924,7 +4123,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ) : null}
               </div>
             ))}
-            {!visibleOpenMatches.length ? <p className="subtle">Nenhuma partida encontrada para estes filtros.</p> : null}
+            {!visibleOpenMatches.length ? (
+              <div className="empty-state compact">
+                <strong>Nenhum jogo encontrado</strong>
+                <p>Ajuste os filtros ou crie uma chamada para outros jogadores entrarem.</p>
+                <button type="button" className="empty-action" onClick={() => setShowOpenMatchCreate(true)}>
+                  Criar chamada
+                </button>
+              </div>
+            ) : null}
           </div>
         </section>
       ) : null}
@@ -3944,16 +4151,47 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         <section className="court-discovery-results" aria-label="Quadras livres encontradas">
           <div className="court-discovery-results-head">
             <div>
-              <span>Quadras livres</span>
-              <h2>Escolha uma quadra para solicitar reserva</h2>
+              <span>{showCourtDiscoveryPlaceResults ? "Locais com quadra livre" : "Quadras livres"}</span>
+              <h2>{showCourtDiscoveryPlaceResults ? "Escolha onde quer jogar" : "Escolha uma quadra para solicitar reserva"}</h2>
               <p>
                 {courtDiscoveryWhenLabel || "Horario pesquisado"}.
-                {courtDiscoveryAvailableRows.length ? ` ${countLabel(courtDiscoveryAvailableRows.length, "quadra encontrada", "quadras encontradas")}.` : ""}
+                {showCourtDiscoveryPlaceResults
+                  ? courtDiscoveryPlaceRows.length
+                    ? ` ${countLabel(courtDiscoveryPlaceRows.length, "local encontrado", "locais encontrados")}.`
+                    : ""
+                  : courtDiscoveryAvailableRows.length
+                  ? ` ${countLabel(courtDiscoveryAvailableRows.length, "quadra encontrada", "quadras encontradas")}.`
+                  : ""}
               </p>
             </div>
             <strong>{countLabel(directoryPlaces.length, "local", "locais")}</strong>
           </div>
-          {courtDiscoveryAvailableRows.length ? (
+          {showCourtDiscoveryPlaceResults && courtDiscoveryPlaceRows.length ? (
+            <div className="court-discovery-grid court-discovery-place-grid">
+              {courtDiscoveryPlaceRows.map(({ courts, place, summary, surfaces, times }) => (
+                <button
+                  key={`court-discovery-place:${place.id}`}
+                  className="court-discovery-card court-discovery-place-card"
+                  onClick={() => goToPlaceCourtSchedule(place.id, times[0])}
+                >
+                  <span className="court-discovery-kicker">{[place.city, place.state].filter(Boolean).join(" - ") || "Local"}</span>
+                  <strong>{place.name}</strong>
+                  <small>{countLabel(summary?.availableCourts ?? courts.length, "quadra livre", "quadras livres")}</small>
+                  <div>
+                    <span>{surfaces.length ? surfaces.join(", ") : "Piso a confirmar"}</span>
+                    <b>
+                      {summary?.minEffectiveFeeCents
+                        ? `a partir de ${formatMoneyFromCents(summary.minEffectiveFeeCents * (courtDiscoveryDuration / 60))}`
+                        : "valor a confirmar"}
+                    </b>
+                  </div>
+                  <em>{times.length ? `Horarios: ${times.join(", ")}` : courtDiscoveryWhenLabel || "Horario pesquisado"}</em>
+                  <em>{courtDiscoveryDurationLabel} de reserva; a agenda bloqueia o intervalo completo.</em>
+                  <span className="court-discovery-cta">Ver horários</span>
+                </button>
+              ))}
+            </div>
+          ) : showCourtDiscoveryCourtResults && courtDiscoveryAvailableRows.length ? (
             <div className="court-discovery-grid">
               {courtDiscoveryAvailableRows.map(({ court, place }) => (
                 <button
@@ -3966,9 +4204,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <small>{place.name}</small>
                   <div>
                     <span>{courtSurfaceLabel(court.surface)}</span>
-                    <b>{formatMoneyFromCents(court.effectiveFeeCents || court.bookingFeeCents || 0)}</b>
+                    <b>{formatMoneyFromCents((court.effectiveFeeCents || court.bookingFeeCents || 0) * (courtDiscoveryDuration / 60))}</b>
                   </div>
-                  <em>{courtDiscoveryFilter.date.split("-").reverse().join("/")} as {court.discoveryTime}</em>
+                  <em>{courtDiscoveryFilter.date.split("-").reverse().join("/")} as {court.discoveryTime} | {courtDiscoveryDurationLabel}</em>
                   <em>{court.requiresApproval ? "Sujeita a confirmacao" : "Confirmacao imediata"}</em>
                   <span className="court-discovery-cta">Solicitar esta quadra</span>
                 </button>
@@ -3976,7 +4214,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </div>
           ) : (
             <div className="empty-state">
-              <strong>Nenhuma quadra retornada</strong>
+              <strong>{showCourtDiscoveryPlaceResults ? "Nenhum local retornado" : "Nenhuma quadra retornada"}</strong>
               <p>Ajuste cidade, data ou horario para encontrar disponibilidade real.</p>
             </div>
           )}
@@ -4005,7 +4243,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <button
                   key={`${place.id}:${group.key}`}
                   className="court-discovery-card class-discovery-card"
-                  onClick={() => goToAcademyClass(place.id, academyClass.id)}
+                  onClick={() => goToAcademyClass(place.id, academyClass.id, group.classes.map((classDay) => classDay.id))}
                 >
                   <span className="court-discovery-kicker">{[place.city, place.state].filter(Boolean).join(" - ") || "Local"}</span>
                   <strong>{academyClass.title}</strong>
@@ -4019,7 +4257,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       .filter(Boolean)
                       .join(" | ")}
                   </em>
-                  <span className="court-discovery-cta">Ver turma</span>
+                  <span className="court-discovery-cta">Selecionar turma</span>
                 </button>
                 );
               })}
@@ -4511,6 +4749,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const openAcademyReceivables = openReceivables.filter(
           (item) => item.targetType === "academy_enrollment" || item.targetType === "academy_student_contract" || item.targetType === "academy_lesson_request"
         );
+        const overdueFinanceReceivables = openReceivables.filter((item) => item.dueStatus === "overdue");
+        const todayFinanceReceivables = openReceivables.filter((item) => item.dueStatus === "today");
         const openReceivablesAmountCents = openReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
         const activeAcademyRevenueCents =
           academyStudentContracts
@@ -6093,6 +6333,44 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     activeView={financeView}
                     onViewChange={(view) => selectFinanceView(p.id, view)}
                   >
+                    <div className="finance-priority-strip" aria-label="Atalhos financeiros">
+                      <button
+                        type="button"
+                        className={financeView === "receivables" ? "active urgent" : overdueFinanceReceivables.length ? "urgent" : ""}
+                        onClick={() => selectFinanceView(p.id, "receivables")}
+                      >
+                        <span>Receber</span>
+                        <strong>{formatMoneyFromCents(openReceivablesAmountCents)}</strong>
+                        <small>{countLabel(openReceivables.length, "pendencia aberta", "pendencias abertas")}</small>
+                      </button>
+                      <button
+                        type="button"
+                        className={financeView === "receivables" ? "active" : ""}
+                        onClick={() => selectFinanceView(p.id, "receivables")}
+                      >
+                        <span>Vencidos</span>
+                        <strong>{overdueFinanceReceivables.length}</strong>
+                        <small>{todayFinanceReceivables.length} vencem hoje</small>
+                      </button>
+                      <button
+                        type="button"
+                        className={financeView === "receivables" ? "active" : ""}
+                        onClick={() => selectFinanceView(p.id, "receivables")}
+                      >
+                        <span>Pagamento</span>
+                        <strong>Registrar baixa</strong>
+                        <small>Marcar pago por row</small>
+                      </button>
+                      <button
+                        type="button"
+                        className={financeView === "expenses" ? "active" : ""}
+                        onClick={() => selectFinanceView(p.id, "expenses")}
+                      >
+                        <span>Despesa</span>
+                        <strong>Registrar despesa</strong>
+                        <small>Saida do caixa</small>
+                      </button>
+                    </div>
                     {financeView === "overview" ? (
                       <PlaceFinanceOverviewModule
                         activeAcademyClassCount={activeAcademyClasses.length}
@@ -6160,9 +6438,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     {financeView === "expenses" ? (
                       <PlaceFinanceExpensesModule
                         busy={busy}
+                        draft={expenseDraft}
                         expenses={expenses}
                         formatMoneyFromCents={formatMoneyFromCents}
                         onCancelExpense={(expense) => void onCancelExpense(p.id, expense.id)}
+                        onCreateExpense={() => void onCreateExpense(p)}
+                        onDraftChange={(draft) => setExpenseDraftByPlace((prev) => ({ ...prev, [p.id]: { ...draft, spentOn: draft.spentOn || todayDateInputValue() } }))}
                       />
                     ) : null}
                   </FinanceWorkspaceShell>
@@ -6364,6 +6645,44 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     activeView={canteenView}
                     onViewChange={(view) => selectCanteenView(p.id, view)}
                   >
+                    <div className="canteen-priority-strip" aria-label="Atalhos da cantina">
+                      <button
+                        type="button"
+                        className={canteenView === "sell" ? "active" : ""}
+                        onClick={() => selectCanteenView(p.id, "sell")}
+                      >
+                        <span>Vender</span>
+                        <strong>Venda rapida</strong>
+                        <small>{countLabel(posProducts.filter((product) => product.stockQuantity > 0).length, "produto disponivel", "produtos disponiveis")}</small>
+                      </button>
+                      <button
+                        type="button"
+                        className={canteenView === "stock" ? "active urgent" : lowStockProducts.length ? "urgent" : ""}
+                        onClick={() => selectCanteenView(p.id, "stock")}
+                      >
+                        <span>Estoque</span>
+                        <strong>{countLabel(lowStockProducts.length, "item baixo", "itens baixos")}</strong>
+                        <small>Reposicao e disponibilidade</small>
+                      </button>
+                      <button
+                        type="button"
+                        className={canteenView === "today" ? "active" : ""}
+                        onClick={() => selectCanteenView(p.id, "today")}
+                      >
+                        <span>Hoje</span>
+                        <strong>{formatMoneyFromCents(todayPosRevenueCents)}</strong>
+                        <small>{countLabel(todayPosSales.length, "venda paga", "vendas pagas")}</small>
+                      </button>
+                      <button
+                        type="button"
+                        className={canteenView === "products" ? "active" : ""}
+                        onClick={() => selectCanteenView(p.id, "products")}
+                      >
+                        <span>Produtos</span>
+                        <strong>{posProducts.length}</strong>
+                        <small>Cadastro e tabela</small>
+                      </button>
+                    </div>
                     {canteenView === "today" ? (
                       <PlaceCanteenSummaryModule
                         busy={busy}
@@ -6736,6 +7055,52 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         ))}
                         {!coachAgendaPreview.length ? <span>Nenhuma turma ativa vinculada ao seu login.</span> : null}
                       </div>
+                    </div>
+                  ) : null}
+                  {!coachWithoutAcademyProfile ? (
+                    <div className="academy-priority-strip" aria-label="Atalhos da rotina da academia">
+                      <button
+                        type="button"
+                        className={academyView === "today" ? "active" : ""}
+                        onClick={() => selectAcademyView(p.id, "today")}
+                      >
+                        <span>Hoje</span>
+                        <strong>{countLabel(todayClasses.length, "aula", "aulas")}</strong>
+                        <small>Chamada e faltas</small>
+                      </button>
+                      {!isCoachMode ? (
+                        <button
+                          type="button"
+                          className={academyView === "requests" ? "active urgent" : pendingAcademyEnrollments.length + actionableLessonRequests.length > 0 ? "urgent" : ""}
+                          onClick={() => selectAcademyView(p.id, "requests")}
+                        >
+                          <span>Pendencias</span>
+                          <strong>{countLabel(pendingAcademyEnrollments.length + actionableLessonRequests.length, "item", "itens")}</strong>
+                          <small>Interesses e reposicoes</small>
+                        </button>
+                      ) : null}
+                      {canManagePlace ? (
+                        <button
+                          type="button"
+                          className={academyView === "students" ? "active" : ""}
+                          onClick={() => selectAcademyView(p.id, "students")}
+                        >
+                          <span>Alunos</span>
+                          <strong>Nova matricula</strong>
+                          <small>Drawer na lista</small>
+                        </button>
+                      ) : null}
+                      {canManagePlace ? (
+                        <button
+                          type="button"
+                          className={academyView === "classes" ? "active" : ""}
+                          onClick={() => selectAcademyView(p.id, "classes")}
+                        >
+                          <span>Grade</span>
+                          <strong>Nova turma</strong>
+                          <small>Horarios e vagas</small>
+                        </button>
+                      ) : null}
                     </div>
                   ) : null}
                   {isManagementCockpit && academyView !== "today" && academyView !== "requests" ? (

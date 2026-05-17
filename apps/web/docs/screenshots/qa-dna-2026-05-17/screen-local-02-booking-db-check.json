@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "status": 200,
+  "rows": [
+    {
+      "id": "bc96bf55-18ee-4033-8a8f-53b66a6a030c",
+      "player_name": "Livia Jogadora Pura",
+      "starts_at": "2026-05-18T23:00:00+00:00",
+      "ends_at": "2026-05-19T01:00:00+00:00",
+      "status": "pending",
+      "court_id": "8f2578f0-ee33-441f-99b6-5415d2b7f303"
+    },
+    {
+      "id": "0291d344-cc85-4ce1-b4bc-b7e46ef9c70a",
+      "player_name": "Livia Jogadora Pura",
+      "starts_at": "2026-05-18T19:00:00+00:00",
+      "ends_at": "2026-05-18T21:00:00+00:00",
+      "status": "pending",
+      "court_id": "8f2578f0-ee33-441f-99b6-5415d2b7f303"
+    },
+    {
+      "id": "198efcc2-7f64-455c-a921-dda629a302ca",
+      "player_name": "Livia Jogadora Pura",
+      "starts_at": "2026-05-18T17:00:00+00:00",
+      "ends_at": "2026-05-18T19:00:00+00:00",
+      "status": "pending",
+      "court_id": "8f2578f0-ee33-441f-99b6-5415d2b7f303"
+    }
+  ]
+}
