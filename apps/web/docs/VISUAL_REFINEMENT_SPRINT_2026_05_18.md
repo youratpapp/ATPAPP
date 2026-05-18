@@ -30,6 +30,17 @@ Elevar a linguagem visual do ATP para parecer um produto esportivo premium, meno
 - Ranking ganhou hero visual, cards de posicao/recorte mais fortes e tabs/controles menos administrativos.
 - Central de trabalho/gestao recebeu camadas visuais, fundo esportivo leve e cards operacionais menos crus.
 
+## Expansao VISUAL-DNA-02
+
+- Criados assets visuais complementares:
+  - `visual-club-hero.svg`
+  - `visual-lesson-hero.svg`
+  - `visual-match-hero.svg`
+- Pagina publica do local agora usa hero contextual com imagem de clube/aulas quando nao existe cover cadastrado.
+- Locais, reserva, aulas, jogos e planos receberam camadas visuais mais esportivas: action rail com profundidade, superficies premium, cards menos secos e textura contextual em turmas.
+- Perfil publico do jogador recebeu hero de quadra, avatar mais expressivo, metricas e scouting privado com visual de anotacao pessoal.
+- Liga e torneio receberam a mesma direcao visual em `CompetitionHeader`, `CompetitionTabs`, hero publico e blocos de contexto, mantendo a separacao entre leitor publico, jogador e organizador.
+
 ## Decisoes UX
 
 - Imagem e textura entram como suporte de hierarquia, nao como decoracao aleatoria.
@@ -49,4 +60,5 @@ Elevar a linguagem visual do ATP para parecer um produto esportivo premium, meno
 
 - `npm.cmd run lint` passou.
 - `npm.cmd run build` passou.
-
+- VISUAL-DNA-02: `npm.cmd run lint` passou.
+- VISUAL-DNA-02: `npm.cmd run build` passou.

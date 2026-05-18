@@ -20560,6 +20560,181 @@ button,
   box-shadow: var(--shadow-md);
 }
 
+.place-public-hero--visual {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(90deg, rgba(4, 18, 38, 0.96), rgba(5, 50, 34, 0.82) 52%, rgba(4, 18, 38, 0.32)),
+    var(--place-cover-image) right center / cover no-repeat,
+    var(--gradient-sport-hero);
+  box-shadow: var(--shadow-sport);
+}
+
+.place-public-hero--visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 84% 20%, rgba(226, 255, 68, 0.22), transparent 22%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 36%);
+  pointer-events: none;
+}
+
+.place-public-hero--visual > * {
+  position: relative;
+  z-index: 1;
+}
+
+.place-public-hero--visual .place-public-hero-logo {
+  width: 124px;
+  height: 124px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.06));
+  color: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.place-public-hero--visual h2,
+.place-public-hero--visual p,
+.place-public-hero--visual span,
+.place-public-hero--visual small,
+.place-public-hero--visual strong {
+  color: #fff;
+}
+
+.place-public-hero--visual > div:not(.place-public-cover):not(.place-public-hero-logo) {
+  max-width: 620px;
+}
+
+.place-public-hero--visual h2 {
+  max-width: 580px;
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.place-public-hero--visual p {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 1.02rem;
+}
+
+.place-public-hero--visual .place-public-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.place-public-hero--visual .place-public-offer-strip {
+  max-width: 540px;
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.place-public-hero--visual .place-public-hero-actions button {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.place-public-action-rail {
+  gap: 14px;
+}
+
+.place-public-action-rail button {
+  position: relative;
+  min-height: 110px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.96), rgba(242,248,245,0.92)),
+    var(--gradient-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.place-public-action-rail button::after {
+  content: "";
+  position: absolute;
+  right: -22px;
+  bottom: -34px;
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(5, 133, 81, 0.16), transparent 62%);
+}
+
+.place-public-action-rail button.active {
+  border: 0;
+  background:
+    linear-gradient(135deg, rgba(5, 133, 81, 0.96), rgba(4, 43, 34, 0.96));
+  box-shadow: 0 22px 48px rgba(5, 133, 81, 0.24);
+}
+
+.place-public-booking-card,
+.place-public-overview-card,
+.place-public-about-card,
+#place-public-matches,
+#place-public-plans {
+  border: 1px solid rgba(8, 53, 43, 0.09);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(248,252,250,0.92)),
+    var(--gradient-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.place-public-booking-header {
+  align-items: center;
+}
+
+.place-public-booking-header > div > span,
+.place-public-booking-card > span,
+#place-public-matches .place-public-booking-header span,
+#place-public-plans > span {
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+}
+
+.place-public-class-board.public-class-options {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.place-public-class-option-main {
+  min-height: 152px;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.94), rgba(238,249,243,0.98));
+}
+
+.place-public-class-option-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("./assets/visual-lesson-hero.svg") right bottom / 220px auto no-repeat;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.place-public-class-option-main > * {
+  position: relative;
+  z-index: 1;
+}
+
+.place-public-row {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(8, 53, 43, 0.09);
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.place-public-row:hover {
+  border-color: rgba(5, 133, 81, 0.28);
+  box-shadow: var(--shadow-soft);
+}
+
 .ranking-player-overview {
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr) minmax(260px, 0.9fr);
 }
@@ -20829,5 +21004,268 @@ button,
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 248, 0.9)),
       url("./assets/visual-stadium-card.svg") right top / 210px auto no-repeat;
+  }
+}
+
+/* ----- Visual refinement sprint: Locais, Perfil and Competitions ----- */
+.player-public-page {
+  position: relative;
+}
+
+.player-public-page::before {
+  background:
+    radial-gradient(circle at 86% 12%, rgba(212, 244, 77, 0.18), transparent 18%),
+    url("./assets/visual-profile-court.svg") right top / 540px auto no-repeat;
+  content: "";
+  inset: -32px -24px auto auto;
+  min-height: 380px;
+  opacity: 0.72;
+  pointer-events: none;
+  position: absolute;
+  width: min(58vw, 760px);
+  z-index: 0;
+}
+
+.player-public-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.player-public-hero {
+  overflow: hidden;
+  position: relative;
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.98) 0 54%, rgba(255, 255, 255, 0.68) 76%, rgba(255, 255, 255, 0.26)),
+    url("./assets/visual-profile-court.svg") right center / cover no-repeat,
+    var(--gradient-surface);
+  border: 0;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  min-height: 220px;
+}
+
+.player-public-hero::after {
+  background: radial-gradient(circle at 88% 24%, rgba(226, 255, 68, 0.2), transparent 20%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.player-public-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.player-public-avatar {
+  background: linear-gradient(135deg, #c7df2e, #0f8d57);
+  border: 4px solid rgba(255, 255, 255, 0.84);
+  border-radius: 28px;
+  color: #fff;
+  box-shadow: var(--shadow-sport);
+}
+
+.player-public-stats article,
+.player-private-note-card,
+.player-public-section,
+.player-private-profile-notice,
+.player-head-to-head-card {
+  border-color: rgba(197, 210, 220, 0.82);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 252, 250, 0.9)),
+    var(--gradient-surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.player-public-stats article {
+  min-height: 116px;
+}
+
+.player-private-note-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.player-private-note-card::after {
+  background: url("./assets/visual-match-hero.svg") right bottom / 260px auto no-repeat;
+  content: "";
+  inset: auto 0 0 auto;
+  opacity: 0.12;
+  pointer-events: none;
+  position: absolute;
+  width: 320px;
+  height: 180px;
+}
+
+.player-private-note-card textarea {
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: var(--radius-lg);
+  position: relative;
+  z-index: 1;
+}
+
+.player-public-competition-list article {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-lg);
+}
+
+.competition-header {
+  overflow: hidden;
+  position: relative;
+  background:
+    linear-gradient(105deg, rgba(4, 18, 38, 0.96), rgba(6, 78, 59, 0.82) 58%, rgba(4, 18, 38, 0.5)),
+    url("./assets/visual-court-night.svg") right center / cover no-repeat;
+  border: 0;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sport);
+  min-height: 172px;
+  padding: var(--space-5);
+}
+
+.competition-header::after {
+  background:
+    radial-gradient(circle at 86% 18%, rgba(226, 255, 68, 0.24), transparent 19%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent 42%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.competition-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.competition-header h1,
+.competition-header span {
+  color: #fff;
+}
+
+.competition-header h1 {
+  font-size: clamp(1.8rem, 3vw, 3rem);
+}
+
+.competition-header-actions .compact-action {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--color-primary-strong);
+}
+
+.competition-tabs {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(197, 210, 220, 0.74);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+  padding: 6px;
+}
+
+.competition-tabs button {
+  border-radius: var(--radius-pill);
+  min-height: 42px;
+  padding: 8px 16px;
+}
+
+.competition-tabs button.active {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+  border-color: transparent;
+  box-shadow: var(--shadow-sport);
+}
+
+.tournament-public-hero.league-public-hero,
+.tournament-public-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.97) 0 55%, rgba(255, 255, 255, 0.7) 76%, rgba(255, 255, 255, 0.28)),
+    url("./assets/visual-match-hero.svg") right center / cover no-repeat,
+    var(--gradient-surface);
+  border-color: rgba(168, 223, 191, 0.42);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.tournament-public-hero.league-public-hero::after,
+.tournament-public-hero::after {
+  background: radial-gradient(circle at 88% 20%, rgba(212, 244, 77, 0.16), transparent 20%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.tournament-public-hero.league-public-hero > *,
+.tournament-public-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.competition-scope-selector,
+.competition-operational-queue,
+.competition-focus-panel,
+.competition-publishing-panel,
+.league-overview-card,
+.competition-overview-card {
+  border-radius: var(--radius-lg);
+  border-color: rgba(197, 210, 220, 0.78);
+  box-shadow: var(--shadow-soft);
+}
+
+.competition-scope-selector {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.competition-operational-queue-grid button,
+.league-match-room-card,
+.tournament-match-room-card,
+.tournament-class-card,
+.league-round-card {
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 760px) {
+  .player-public-page::before {
+    opacity: 0.28;
+    width: 100%;
+  }
+
+  .player-public-hero {
+    background:
+      linear-gradient(180deg, rgba(3, 15, 33, 0.96), rgba(5, 50, 34, 0.84)),
+      url("./assets/visual-profile-court.svg") center top / cover no-repeat;
+    color: #fff;
+    grid-template-columns: 1fr;
+    min-height: 260px;
+  }
+
+  .player-public-hero h1,
+  .player-public-hero p,
+  .player-public-hero small,
+  .player-public-hero span {
+    color: #fff;
+  }
+
+  .competition-header {
+    align-items: flex-start;
+    flex-direction: column;
+    min-height: 220px;
+    padding: var(--space-4);
+  }
+
+  .competition-tabs {
+    border-radius: var(--radius-lg);
+  }
+
+  .competition-tabs button {
+    min-width: 112px;
+    justify-content: center;
+  }
+
+  .tournament-public-hero,
+  .tournament-public-hero.league-public-hero {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 252, 250, 0.9)),
+      var(--gradient-surface);
   }
 }

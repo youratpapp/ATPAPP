@@ -78,9 +78,9 @@ Criterios validados:
 - lint passou;
 - build passou.
 
-### [>] VISUAL-DNA-02 - Expandir refinamento visual para Locais, Perfil, Liga e Torneio
+### [x] VISUAL-DNA-02 - Expandir refinamento visual para Locais, Perfil, Liga e Torneio
 
-Status: `[>]` prioridade atual
+Status: `[x]` concluido em 2026-05-18
 
 Objetivo:
 
@@ -101,6 +101,19 @@ Nao fazer:
 - nao alterar regra de negocio;
 - nao misturar gestao na experiencia do jogador;
 - nao usar imagem decorativa em area operacional critica sem ganho de clareza.
+
+Entrega:
+
+1. Criados assets visuais locais para `visual-club-hero.svg`, `visual-lesson-hero.svg` e `visual-match-hero.svg`, mantendo a estrategia de imagem leve e versionavel.
+2. Pagina publica do local passou a usar hero contextual com imagem de clube/aulas quando nao ha cover real cadastrado, sem alterar rotas ou regras.
+3. Locais, aulas, jogos e planos receberam superficie visual mais premium, action rail com profundidade, cards com radius/sombra consistentes e resultado de aula com textura sutil.
+4. Perfil publico recebeu hero esportivo, avatar com presenca visual, metricas e scouting privado com tratamento menos administrativo.
+5. Liga e torneio receberam camada visual compartilhada em `CompetitionHeader`, `CompetitionTabs`, hero publico, seletores e blocos operacionais, preservando a separacao publico/jogador/organizador.
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
 
 ## Sprint atual - Contexto pessoal, reservas e sala de jogo
 

@@ -1,5 +1,6 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import type { CSSProperties } from "react";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
@@ -24,6 +25,8 @@ import {
 } from "../lib/places";
 import { ACADEMY_LEVEL_OPTIONS, academyLevelMatches } from "../lib/academy-levels";
 import type { AcademyClass, AcademyEnrollment, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
+import clubHeroImage from "../assets/visual-club-hero.svg";
+import lessonHeroImage from "../assets/visual-lesson-hero.svg";
 
 type Props = {
   user: User;
@@ -575,6 +578,7 @@ export function PlacePublicPage({ user, profile }: Props) {
       academyFitFilter.ageGroup ||
       academyFitFilter.genderScope
   );
+  const publicHeroBackgroundImage = place?.coverUrl || (pageIntent === "academy" ? lessonHeroImage : clubHeroImage);
   const selectedCourt =
     availableCourts.find((court) => court.id === bookingDraft.courtId) ||
     activeCourts.find((court) => court.id === bookingDraft.courtId) ||
@@ -1030,7 +1034,10 @@ export function PlacePublicPage({ user, profile }: Props) {
 
         {place && !loading ? (
           <>
-            <section className={place.coverUrl ? "place-public-hero has-cover" : "place-public-hero"}>
+            <section
+              className={`place-public-hero has-cover place-public-hero--visual place-public-hero--${pageIntent}`}
+              style={{ "--place-cover-image": `url(${publicHeroBackgroundImage})` } as CSSProperties}
+            >
               <div className="place-public-hero-logo" aria-hidden>
                 {place.logoUrl ? <img src={place.logoUrl} alt="" /> : placeInitials(place.name)}
               </div>
@@ -1062,11 +1069,9 @@ export function PlacePublicPage({ user, profile }: Props) {
                   ) : null}
                 </ActionBar>
               </div>
-              {place.coverUrl ? (
-                <div className="place-public-cover" aria-hidden>
-                  <img src={place.coverUrl} alt="" />
-                </div>
-              ) : null}
+              <div className="place-public-cover" aria-hidden>
+                <img src={publicHeroBackgroundImage} alt="" />
+              </div>
             </section>
 
             <section className="place-public-action-rail" aria-label="O que fazer neste local">
