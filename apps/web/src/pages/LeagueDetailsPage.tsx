@@ -1317,9 +1317,36 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     return digits.length >= 12 ? digits : "";
   }
 
-  function buildParticipantWhatsAppUrl(phone: string, targetLink: string): string {
+  function buildParticipantWhatsAppUrl(
+    phone: string,
+    context: {
+      match: LeagueMatchSummary;
+      round: LeagueRoundSummary;
+      roomLink: string;
+      groupLink: string;
+      side1: string;
+      side2: string;
+    }
+  ): string {
     const normalized = normalizeWhatsAppPhone(phone);
-    const text = `Ola, segue o link da sala/grupo da nossa partida: ${targetLink}`;
+    const cls = context.match.classId ? classById[context.match.classId] : null;
+    const classText = cls ? classLabel(cls) : selectedClassLabel;
+    const scheduleText = context.match.scheduledAt ? formatDateTime(context.match.scheduledAt) : "horario a combinar";
+    const lines = [
+      `Ola! Segue o acesso da nossa partida da liga ${league?.name || ""}.`,
+      "",
+      `Rodada ${context.round.roundNumber} - ${classText}`,
+      `${context.side1} x ${context.side2}`,
+      `Horario: ${scheduleText}`,
+      "",
+      "Sala da partida:",
+      context.roomLink,
+    ];
+    if (context.groupLink) {
+      lines.push("", "Grupo do WhatsApp:", context.groupLink);
+    }
+    lines.push("", "Use a sala para confirmar disponibilidade, combinar horario e enviar resultado.");
+    const text = lines.join("\n");
     return `https://wa.me/${normalized}?text=${encodeURIComponent(text)}`;
   }
 
@@ -1915,7 +1942,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     const myPlayer = m.participants.find((p) => p.userId === user.id);
     const roomLink = roomLinksByMatch[m.id]?.whatsappGroupUrl || "";
     const roomLinkDraft = roomLinkDraftByMatch[m.id] ?? roomLink;
-    const roomShareTarget = roomLink || buildLeagueMatchRoomLink(m.id);
+    const roomShareTarget = buildLeagueMatchRoomLink(m.id);
     const myPhone = normalizeWhatsAppPhone(profile?.phone || "");
     const canEditRoomLink = Boolean(isOwner || myPlayer);
     const opState = buildLeagueMatchOperationalState({
@@ -2174,7 +2201,19 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   <span><PlayerProfileLink userId={p.userId} name={p.displayName} /></span>
                   <span>{p.phone || "-"}</span>
                   {canSendWhatsApp ? (
-                    <a className="button-like secondary compact" href={buildParticipantWhatsAppUrl(p.phone, roomShareTarget)} target="_blank" rel="noreferrer">
+                    <a
+                      className="button-like secondary compact"
+                      href={buildParticipantWhatsAppUrl(p.phone, {
+                        match: m,
+                        round: entry.round,
+                        roomLink: roomShareTarget,
+                        groupLink: roomLink,
+                        side1,
+                        side2,
+                      })}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       Enviar link
                     </a>
                   ) : null}
