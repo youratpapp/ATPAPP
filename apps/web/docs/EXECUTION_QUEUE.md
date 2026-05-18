@@ -44,6 +44,64 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## Sprint visual premium - ATP sport DNA
+
+### [x] VISUAL-DNA-01 - Base visual com imagens, heros e componentes reutilizaveis
+
+Status: `[x]` concluido em 2026-05-18
+
+Fonte:
+
+- manual de frontend/design de produto;
+- referencias visuais anexadas pelo usuario;
+- `VISUAL_REFINEMENT_SPRINT_2026_05_18.md`;
+- `VISUAL_ASSET_PROMPTS.md`.
+
+Objetivo:
+
+- tirar a primeira camada do app da aparencia de painel administrativo simples;
+- criar base visual com imagem/textura esportiva, tokens premium e componentes reaproveitaveis;
+- aplicar a primeira camada em telas de maior percepcao: Login, Home do jogador, Ranking e Central de Trabalho.
+
+Entrega:
+
+1. Criados `VisualHeroCard`, `ShortcutCard`, `MetricCard` e `VisualBadge`.
+2. Criados assets SVG locais para hero de quadra, auth, perfil/ranking, estadio e atalhos.
+3. Tokens globais ganharam surfaces esverdeadas/azuladas, radius maior, sombras premium e gradientes esportivos.
+4. Login ganhou background de quadra noturna e composicao premium.
+5. Home ganhou hero contextual com imagem, atalhos visuais e cards de descoberta com thumbnail.
+6. Ranking ganhou hero visual e cards de posicao/recorte mais esportivos.
+7. Central de Trabalho ganhou camadas visuais e cards operacionais menos crus.
+
+Criterios validados:
+
+- lint passou;
+- build passou.
+
+### [>] VISUAL-DNA-02 - Expandir refinamento visual para Locais, Perfil, Liga e Torneio
+
+Status: `[>]` prioridade atual
+
+Objetivo:
+
+- aplicar a mesma linguagem visual sem copiar layout de uma tela para outra;
+- substituir placeholders por imagens contextuais ou prompts raster quando houver asset final;
+- manter cada tela focada na intencao dominante.
+
+Escopo sugerido:
+
+1. Locais/Reserva/Aulas/Jogos/Planos: hero contextual por intencao, cards de resultado mais visuais e filtros compactos.
+2. Perfil proprio e perfil publico: hero com textura de quadra, stats em `MetricCard`, scouting privado visual e tabs mais premium.
+3. Liga: hero esportivo, rodada atual e match cards com imagem/textura leve.
+4. Torneio: hero esportivo, cards de evento/inscritos/jogos com status visual e exportacao de chave integrada.
+5. Validar mobile 390/430 e desktop 1366.
+
+Nao fazer:
+
+- nao alterar regra de negocio;
+- nao misturar gestao na experiencia do jogador;
+- nao usar imagem decorativa em area operacional critica sem ganho de clareza.
+
 ## Sprint atual - Contexto pessoal, reservas e sala de jogo
 
 ### [x] PLAYER-CONTEXT-01 - Home abre areas reais em vez de modulos genericos

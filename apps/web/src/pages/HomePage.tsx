@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
-import { ActionPanel, DiscoveryCarousel, ObjectRow } from "../components/AppPrimitives";
+import { DiscoveryCarousel, ObjectRow, VisualBadge, VisualHeroCard } from "../components/AppPrimitives";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
+import heroCourtImage from "../assets/visual-court-hero.svg";
+import stadiumCardImage from "../assets/visual-stadium-card.svg";
 import type {
   LeagueMatchSummary,
   LeagueChatMessage,
@@ -454,7 +456,7 @@ async function loadOrganizerActions(leagues: LeagueSummary[]): Promise<HomeOrgan
             sourceName: league.name,
             title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
             detail: "Aprovar ou rejeitar jogadores",
-            label: "Inscrições",
+            label: "Inscricoes",
             tone: "urgent",
           });
         }
@@ -594,7 +596,7 @@ async function loadTournamentOrganizerActions(
             sourceName: tournament.name,
             title: `${pending} inscricao${pending === 1 ? "" : "es"} pendente${pending === 1 ? "" : "s"}`,
             detail: "Aprovar ou rejeitar jogadores",
-            label: "Inscrições",
+            label: "Inscricoes",
             tone: "urgent",
           });
         }
@@ -992,11 +994,7 @@ function DiscoveryEventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () =>
   const location = [t.city, t.state].filter(Boolean).join(" - ") || "Local a definir";
   return (
     <button type="button" className="home-discovery-card" onClick={onOpen}>
-      {t.posterUrl ? (
-        <img src={t.posterUrl} alt="" />
-      ) : (
-        <span className="home-discovery-poster">ATP</span>
-      )}
+      <img src={t.posterUrl || stadiumCardImage} alt="" />
       <span className="home-discovery-body">
         <strong>{t.name}</strong>
         <small>{location}</small>
@@ -1606,7 +1604,7 @@ export function HomePage({ user, profile }: Props) {
             : {
                 id: "main:discovery",
                 title: "Encontre algo para jogar",
-                detail: nearbyUpcoming.length > 0 ? "Veja jogos, aulas e eventos perto de você." : "Reserve quadra, entre em aula ou descubra competições abertas.",
+                detail: nearbyUpcoming.length > 0 ? "Veja jogos, aulas e eventos perto de voce." : "Reserve quadra, entre em aula ou descubra competições abertas.",
                 label: nearbyUpcoming.length > 0 ? "Explorar perto de mim" : "Encontrar jogo",
                 targetPath: nearbyUpcoming.length > 0 ? "/eventos" : "/locais?intent=matches",
                 tone: "neutral",
@@ -1695,7 +1693,7 @@ export function HomePage({ user, profile }: Props) {
       key: "payments",
       label: "Financeiro",
       title: "Meus pagamentos",
-      detail: "Planos e pendências ligadas ao clube.",
+      detail: "Planos e pendencias ligadas ao clube.",
       action: "Ver financeiro",
       items: playerPaymentItems,
       onOpen: () => navigate("/meus-pagamentos"),
@@ -1786,13 +1784,21 @@ export function HomePage({ user, profile }: Props) {
       onBellClick={() => setNotificationsOpen((open) => !open)}
       onBellClose={() => setNotificationsOpen(false)}
     >
-      <section className="home-player-os" aria-label="Resumo do jogador">
-        <ActionPanel
-          className="home-today-panel"
+      <section className="home-player-os home-player-os--visual" aria-label="Resumo do jogador">
+        <VisualHeroCard
+          className={homeMainAction.tone === "urgent" ? "home-visual-hero urgent" : "home-visual-hero"}
+          backgroundImage={heroCourtImage}
           eyebrow="Hoje para voce"
           title={heroTitle}
           subtitle={heroDetail}
-          tone={homeMainAction.tone === "urgent" ? "urgent" : "default"}
+          badges={
+            <>
+              <VisualBadge tone={homeMainAction.tone === "urgent" ? "warning" : "success"}>
+                {notificationCount > 0 ? `${notificationCount} pendente(s)` : "Em dia"}
+              </VisualBadge>
+              <VisualBadge>{profile?.city && profile?.state ? `${profile.city} - ${profile.state}` : "ATP"}</VisualBadge>
+            </>
+          }
           actions={
             <ActionBar className="home-hero-actions" label="Acoes principais do dia">
               <button className={homeMainAction.tone === "urgent" ? "primary urgent" : "primary"} type="button" onClick={handleHeroAction}>
@@ -1802,8 +1808,8 @@ export function HomePage({ user, profile }: Props) {
           }
         >
           {visibleTodayRows.length > 0 ? (
-            <div className="home-today-rows" aria-label="Proximas acoes do jogador">
-              {visibleTodayRows.map((row) => (
+            <div className="home-today-rows home-today-rows--floating" aria-label="Proximas acoes do jogador">
+              {visibleTodayRows.slice(0, 3).map((row) => (
                 <ObjectRow
                   key={row.id}
                   badge={row.label}
@@ -1816,14 +1822,14 @@ export function HomePage({ user, profile }: Props) {
               ))}
             </div>
           ) : null}
-        </ActionPanel>
+        </VisualHeroCard>
 
         <aside className="home-player-side" aria-label="Acoes principais do jogador">
-          <div className="home-intent-rail" aria-label="Escolha o que fazer">
+          <div className="home-intent-rail home-intent-rail--visual" aria-label="Escolha o que fazer">
             <button type="button" onClick={() => navigate("/locais?intent=booking")}>
               <span>Reservar</span>
               <strong>Quadra</strong>
-              <small>Horários livres</small>
+              <small>Horarios livres</small>
             </button>
             <button type="button" onClick={() => navigate("/locais?intent=matches")}>
               <span>Jogar</span>
@@ -1838,7 +1844,7 @@ export function HomePage({ user, profile }: Props) {
             <button type="button" onClick={() => navigate("/eventos")}>
               <span>Competir</span>
               <strong>Torneios e ligas</strong>
-              <small>Inscrições abertas</small>
+              <small>Inscricoes abertas</small>
             </button>
           </div>
         </aside>
@@ -1847,8 +1853,8 @@ export function HomePage({ user, profile }: Props) {
       {loading ? (
         <ScreenState
           kind="loading"
-          title="Preparando sua área"
-          detail="Buscando pendências, reservas e atividades relevantes para você."
+          title="Preparando sua area"
+          detail="Buscando pendencias, reservas e atividades relevantes para voce."
         />
       ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
@@ -1858,7 +1864,7 @@ export function HomePage({ user, profile }: Props) {
           {playerHubSections.length > 0 ? (
           <section className="player-hub-panel">
             <div className="section-title">
-              <h2>Para você</h2>
+              <h2>Para voce</h2>
             </div>
             <div className="player-hub-workspace">
               {playerHubSections.map((section) => (
@@ -1907,7 +1913,7 @@ export function HomePage({ user, profile }: Props) {
           <div className="section-title">
             <div>
               <p className="home-context-eyebrow">Descoberta</p>
-              <h2>Perto de você</h2>
+              <h2>Perto de voce</h2>
             </div>
             <button className="link" onClick={() => navigate("/eventos/torneios")}>
               Ver todos
@@ -1930,7 +1936,7 @@ export function HomePage({ user, profile }: Props) {
             <div className="home-discovery-block">
               <div className="home-discovery-heading">
                 <strong>Torneios abertos</strong>
-                <span>Inscrições disponíveis</span>
+                <span>Inscricoes disponíveis</span>
               </div>
               <DiscoveryCarousel className="home-discovery-carousel" label="Torneios abertos">
                 {openDiscoveryUpcoming.map((t) => (

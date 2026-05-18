@@ -1,9 +1,11 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { MetricCard, VisualHeroCard } from "../components/AppPrimitives";
 import { PlayerProfileLink } from "../components/PlayerProfileLink";
 import { PublishingKit } from "../components/PublishingKit";
 import { ScreenState } from "../components/ScreenState";
+import rankingHeroImage from "../assets/visual-profile-court.svg";
 import { loadLeagueDetails, loadMyLeagues } from "../lib/leagues";
 import { loadPublicRankings } from "../lib/rankings";
 import { followUser, listFollowingIds, unfollowUser } from "../lib/social";
@@ -340,12 +342,29 @@ export function RankingPage({ user, profile }: Props) {
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
-      <div className="page-header">
-        <h1>Ranking</h1>
-      </div>
+      <VisualHeroCard
+        className="ranking-visual-hero"
+        backgroundImage={rankingHeroImage}
+        eyebrow="Ranking"
+        title="Ranking ATP"
+        subtitle="Acompanhe sua posicao, encontre recortes e veja quem esta em alta."
+        tone="light"
+      />
 
       <section className="ranking-player-overview">
-        <div className="ranking-player-position">
+        <MetricCard
+          className="ranking-player-position"
+          label="Minha posicao"
+          value={isInitialLoading ? "..." : myPrimaryRow ? `#${myPrimaryRow.position || myPrimaryIndex + 1}` : "-"}
+          meta={
+            isInitialLoading
+              ? "Buscando seu recorte"
+              : myPrimaryRow
+                ? `${myPrimaryRow.rankingPoints} pts em ${myPrimaryRow.leagueName}`
+                : "Use filtros para encontrar rankings onde voce participa."
+          }
+        />
+        <div className="ranking-player-position ranking-player-position-copy">
           <span>Minha posição</span>
           {isInitialLoading ? (
             <>

@@ -23,10 +23,12 @@
   --color-amber-500: #d97706;
   --color-amber-100: #fff7ed;
 
-  --color-bg: #f5f7f6;
+  --color-bg: #f3f8f5;
   --color-surface: #ffffff;
-  --color-surface-muted: #f8fafc;
+  --color-surface-muted: #f6faf8;
   --color-surface-raised: #ffffff;
+  --color-surface-court: #eef8f2;
+  --color-surface-night: #071426;
   --color-border: #e4e9ef;
   --color-border-strong: #c8d2df;
 
@@ -85,17 +87,28 @@
   --space-10: 40px;
 
   /* Cantos e elevacao */
-  --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-pill: 999px;
 
-  --shadow-xs: 0 1px 2px rgba(8, 18, 37, 0.04);
-  --shadow-sm: 0 1px 3px rgba(8, 18, 37, 0.06), 0 8px 22px rgba(8, 18, 37, 0.04);
-  --shadow-md: 0 12px 30px rgba(8, 18, 37, 0.09);
-  --shadow-lg: 0 20px 54px rgba(8, 18, 37, 0.14);
+  --shadow-xs: 0 1px 2px rgba(8, 18, 37, 0.035);
+  --shadow-sm: 0 1px 3px rgba(8, 18, 37, 0.055), 0 10px 26px rgba(8, 18, 37, 0.045);
+  --shadow-md: 0 16px 38px rgba(8, 18, 37, 0.1);
+  --shadow-lg: 0 26px 70px rgba(8, 18, 37, 0.16);
+  --shadow-sport: 0 22px 60px rgba(8, 18, 37, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   --shadow-focus: 0 0 0 4px var(--color-primary-ring);
+
+  --gradient-sport-hero:
+    radial-gradient(circle at 92% 24%, rgba(213, 239, 74, 0.82) 0 9%, rgba(213, 239, 74, 0.18) 10% 18%, transparent 19%),
+    linear-gradient(115deg, rgba(8, 18, 37, 0.96), rgba(7, 35, 42, 0.9) 48%, rgba(18, 97, 58, 0.82));
+  --gradient-court-lines:
+    linear-gradient(134deg, transparent 0 44%, rgba(255, 255, 255, 0.16) 44.2% 45%, transparent 45.2%),
+    linear-gradient(20deg, transparent 0 61%, rgba(255, 255, 255, 0.11) 61.2% 61.8%, transparent 62%);
+  --gradient-surface:
+    radial-gradient(circle at 88% -10%, rgba(167, 227, 196, 0.32), transparent 34%),
+    linear-gradient(180deg, #f8fcfa 0%, #f3f8f5 100%);
 
   /* Layout */
   --bottom-nav-height: 68px;
@@ -108,7 +121,7 @@
   --player-section-gap: var(--space-5);
   --player-surface-padding: var(--space-4);
   --player-card-padding: var(--space-5);
-  --player-card-radius: var(--radius-md);
+  --player-card-radius: var(--radius-lg);
   --player-row-padding: var(--space-3) var(--space-4);
   --player-row-radius: var(--radius-sm);
   --player-row-min-height: 72px;
@@ -124,7 +137,7 @@
   --competition-section-gap: var(--space-4);
   --competition-surface-padding: var(--space-4);
   --competition-card-padding: var(--space-4);
-  --competition-card-radius: var(--radius-md);
+  --competition-card-radius: var(--radius-lg);
   --competition-row-padding: var(--space-3);
   --competition-row-radius: var(--radius-sm);
   --competition-row-min-height: 64px;

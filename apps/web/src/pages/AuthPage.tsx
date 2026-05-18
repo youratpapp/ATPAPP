@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import logo from "../assets/logo-atp.svg";
+import authCourtImage from "../assets/visual-court-night.svg";
 
 function GoogleIcon() {
   return (
@@ -82,45 +83,59 @@ export function AuthPage() {
 
   return (
     <main className="auth-page">
-      <section className="auth-card">
-        <img src={logo} alt="ATP - Amateur Tennis Platform" className="auth-logo" />
-        <h1>Entrar na ATP</h1>
-        <p className="auth-sub">Torneios, ligas e ranking para tenistas amadores.</p>
+      <section className="auth-stage" style={{ "--auth-image": `url(${authCourtImage})` } as CSSProperties}>
+        <aside className="auth-brand-panel" aria-label="ATP">
+          <img src={logo} alt="ATP - Amateur Tennis Platform" className="auth-brand-logo" />
+          <div>
+            <h2>Sua jornada no tenis amador comeca aqui.</h2>
+            <p>Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais.</p>
+          </div>
+          <ul>
+            <li><span>Torneios</span><small>Encontre disputas no seu nivel.</small></li>
+            <li><span>Ligas</span><small>Acompanhe rodadas e resultados.</small></li>
+            <li><span>Ranking</span><small>Veja sua evolucao em quadra.</small></li>
+          </ul>
+        </aside>
+        <section className="auth-card">
+          <img src={logo} alt="ATP - Amateur Tennis Platform" className="auth-logo" />
+          <h1>Entrar na ATP</h1>
+          <p className="auth-sub">Torneios, ligas e ranking para tenistas amadores.</p>
 
-        <button className="auth-google-btn" disabled={busy} onClick={loginWithGoogle}>
-          <GoogleIcon />
-          <span>Continuar com Google</span>
-        </button>
-
-        <div className="auth-divider"><span>ou entre com e-mail</span></div>
-
-        <label htmlFor="email">E-mail</label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="voce@email.com"
-          autoComplete="email"
-        />
-        <label htmlFor="password">Senha</label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="minimo 6 caracteres"
-          autoComplete="current-password"
-        />
-        <div className="auth-actions">
-          <button className="primary" disabled={busy || !email.trim() || !password.trim()} onClick={login}>
-            Entrar
+          <button className="auth-google-btn" disabled={busy} onClick={loginWithGoogle}>
+            <GoogleIcon />
+            <span>Continuar com Google</span>
           </button>
-          <button className="secondary" disabled={busy || !email.trim() || password.trim().length < 6} onClick={signUp}>
-            Criar conta
-          </button>
-        </div>
-        {msg ? <p className={`feedback ${msg.kind === "success" ? "success" : msg.kind === "error" ? "error" : ""}`}>{msg.text}</p> : null}
+
+          <div className="auth-divider"><span>ou entre com e-mail</span></div>
+
+          <label htmlFor="email">E-mail</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="voce@email.com"
+            autoComplete="email"
+          />
+          <label htmlFor="password">Senha</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="minimo 6 caracteres"
+            autoComplete="current-password"
+          />
+          <div className="auth-actions">
+            <button className="primary" disabled={busy || !email.trim() || !password.trim()} onClick={login}>
+              Entrar
+            </button>
+            <button className="secondary" disabled={busy || !email.trim() || password.trim().length < 6} onClick={signUp}>
+              Criar conta
+            </button>
+          </div>
+          {msg ? <p className={`feedback ${msg.kind === "success" ? "success" : msg.kind === "error" ? "error" : ""}`}>{msg.text}</p> : null}
+        </section>
       </section>
     </main>
   );
