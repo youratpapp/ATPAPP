@@ -8,6 +8,20 @@ Data: 2026-05-13
 
 Cada tela deve ter uma responsabilidade primaria. Se uma tela precisa resolver operacao, configuracao, publicacao e relatorio ao mesmo tempo, ela deve virar shell com modulos, drawers ou subrotas.
 
+## Regra ROLE-MODE-V2
+
+Cada tela tambem deve pertencer claramente a uma experiencia:
+
+- `Jogador`: jogar, reservar, competir, acompanhar compromissos proprios, perfil e ranking;
+- `Trabalho`: operar local, academia, competicao, financeiro, cantina, equipe e configuracao conforme papel.
+
+Se uma tela tenta resolver as duas experiencias ao mesmo tempo, ela deve ser separada em:
+
+1. superficie de jogador com CTA para abrir o modo trabalho quando fizer sentido;
+2. superficie de trabalho com workspace, fila e modulo especifico.
+
+Referencia: `ROLE_MODE_V2_PRODUCT_UX_SPEC.md` e `ROLE_MODE_V2_FLOW_MATRIX.md`.
+
 ## Matriz de responsabilidades
 
 | Tela | Acao primaria | Deve conter | Nao deve conter | Direcao |

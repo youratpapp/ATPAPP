@@ -35,8 +35,6 @@ import {
 } from "../lib/leagues";
 import {
   buildTournamentUrl,
-  acceptTournamentStaffInvite,
-  declineTournamentStaffInvite,
   listMyTournamentStaffInvites,
   loadDashboardData,
   loadTournamentChatMessages,
@@ -46,8 +44,6 @@ import {
   loadUpcomingPublic,
 } from "../lib/tournaments";
 import {
-  acceptPlaceStaffInvite,
-  declinePlaceStaffInvite,
   listMyPlaceStaffInvites,
   listMyAcademyEnrollments,
   listMyAcademyMakeupCredits,
@@ -63,6 +59,7 @@ import {
   listPlaceStaff,
 } from "../lib/places";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
+import { useUserMode } from "../lib/user-mode-context";
 import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
 import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
 
@@ -196,21 +193,6 @@ type HomeMainAction = {
 };
 
 type HomePlaceAccessRole = "owner" | "manager" | "coach" | "frontdesk" | "finance" | "cashier" | "";
-
-const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffInvite["role"], string> = {
-  organizer: "Coordenador",
-  scorekeeper: "Placar",
-  checkin: "Credenciamento",
-  media: "Comunicacao",
-};
-
-const PLACE_STAFF_ROLE_LABELS: Record<PlaceStaffInvite["role"], string> = {
-  manager: "Gerente",
-  coach: "Professor",
-  frontdesk: "Recepcao",
-  finance: "Financeiro",
-  cashier: "Caixa/POS",
-};
 
 function formatDateRange(starts: string): string {
   if (!starts) return "Data a definir";
@@ -1091,66 +1073,6 @@ function PriorityCard({ item, onOpen }: { item: HomePriorityItem; onOpen: () => 
   );
 }
 
-function TournamentStaffInviteCard({
-  invite,
-  busy,
-  onAccept,
-  onDecline,
-}: {
-  invite: TournamentStaffInvite;
-  busy: boolean;
-  onAccept: () => void;
-  onDecline: () => void;
-}) {
-  return (
-    <article className="home-action-card urgent staff-invite-action-card">
-      <div>
-        <p className="home-action-label">Convite de equipe</p>
-        <p className="home-action-title">{invite.tournamentName}</p>
-        <p className="home-action-body">{TOURNAMENT_STAFF_ROLE_LABELS[invite.role]} - aguardando seu aceite</p>
-      </div>
-      <div className="staff-invite-actions">
-        <button className="primary" type="button" onClick={onAccept} disabled={busy}>
-          Aceitar
-        </button>
-        <button className="link" type="button" onClick={onDecline} disabled={busy}>
-          Recusar
-        </button>
-      </div>
-    </article>
-  );
-}
-
-function PlaceStaffInviteCard({
-  invite,
-  busy,
-  onAccept,
-  onDecline,
-}: {
-  invite: PlaceStaffInvite;
-  busy: boolean;
-  onAccept: () => void;
-  onDecline: () => void;
-}) {
-  return (
-    <article className="home-action-card urgent staff-invite-action-card">
-      <div>
-        <p className="home-action-label">Convite de local</p>
-        <p className="home-action-title">{invite.placeName}</p>
-        <p className="home-action-body">{PLACE_STAFF_ROLE_LABELS[invite.role]} - aguardando seu aceite</p>
-      </div>
-      <div className="staff-invite-actions">
-        <button className="primary" type="button" onClick={onAccept} disabled={busy}>
-          Aceitar
-        </button>
-        <button className="link" type="button" onClick={onDecline} disabled={busy}>
-          Recusar
-        </button>
-      </div>
-    </article>
-  );
-}
-
 function buildAgendaItems(
   leagueActions: HomeLeagueAction[],
   tournamentActions: HomeTournamentAction[],
@@ -1396,6 +1318,7 @@ function tournamentLocationRank(tournament: TournamentSummary, userCity: string,
 
 export function HomePage({ user, profile }: Props) {
   const navigate = useNavigate();
+  const userMode = useUserMode();
   const [upcoming, setUpcoming] = useState<TournamentSummary[]>([]);
   const [playingTournaments, setPlayingTournaments] = useState<TournamentSummary[]>([]);
   const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
@@ -1409,13 +1332,11 @@ export function HomePage({ user, profile }: Props) {
   const [academyActions, setAcademyActions] = useState<HomeAcademyAction[]>([]);
   const [tournamentStaffInvites, setTournamentStaffInvites] = useState<TournamentStaffInvite[]>([]);
   const [placeStaffInvites, setPlaceStaffInvites] = useState<PlaceStaffInvite[]>([]);
-  const [staffInviteBusyId, setStaffInviteBusyId] = useState("");
   const [playerNotices, setPlayerNotices] = useState<HomeNotice[]>([]);
   const [operationalNotices, setOperationalNotices] = useState<HomeNotice[]>([]);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -1485,60 +1406,6 @@ export function HomePage({ user, profile }: Props) {
     };
   }, [user]);
 
-  const acceptStaffInvite = async (invite: TournamentStaffInvite) => {
-    setStaffInviteBusyId(invite.id);
-    try {
-      await acceptTournamentStaffInvite(invite.id);
-      setTournamentStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
-      const dashboard = await loadDashboardData(user);
-      setOrganizingTournaments(dashboard.organizing.filter((t) => t.status !== "finished").slice(0, 3));
-      setFeedback({ kind: "success", text: "Convite aceito. O torneio agora aparece nas suas competições." });
-    } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aceitar convite." });
-    } finally {
-      setStaffInviteBusyId("");
-    }
-  };
-
-  const declineStaffInvite = async (invite: TournamentStaffInvite) => {
-    setStaffInviteBusyId(invite.id);
-    try {
-      await declineTournamentStaffInvite(invite.id);
-      setTournamentStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
-      setFeedback({ kind: "success", text: "Convite recusado." });
-    } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao recusar convite." });
-    } finally {
-      setStaffInviteBusyId("");
-    }
-  };
-
-  const acceptLocalStaffInvite = async (invite: PlaceStaffInvite) => {
-    setStaffInviteBusyId(invite.id);
-    try {
-      await acceptPlaceStaffInvite(invite.id);
-      setPlaceStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
-      setFeedback({ kind: "success", text: "Convite aceito. O local agora aparece na sua gestao." });
-    } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aceitar convite." });
-    } finally {
-      setStaffInviteBusyId("");
-    }
-  };
-
-  const declineLocalStaffInvite = async (invite: PlaceStaffInvite) => {
-    setStaffInviteBusyId(invite.id);
-    try {
-      await declinePlaceStaffInvite(invite.id);
-      setPlaceStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
-      setFeedback({ kind: "success", text: "Convite recusado." });
-    } catch (err) {
-      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao recusar convite." });
-    } finally {
-      setStaffInviteBusyId("");
-    }
-  };
-
   const activeOrganizingCount = organizingTournaments.length + organizingLeagues.length;
   const playerCourtBookingActions = courtBookingActions.filter((item) => item.role === "player");
   const operationalCourtBookingActions = courtBookingActions.filter((item) => item.role === "owner");
@@ -1570,14 +1437,7 @@ export function HomePage({ user, profile }: Props) {
   const urgentOperationalPriorityItems = operationalPriorityItems.filter((item) => item.tone === "urgent");
   const playerUrgentCount = urgentPriorityItems.length;
   const staffInviteCount = tournamentStaffInvites.length + placeStaffInvites.length;
-  const professionalSignalCount = staffInviteCount + urgentOperationalPriorityItems.length;
-  const notificationCount = playerUrgentCount + professionalSignalCount;
-  const visibleStaffInvites = tournamentStaffInvites.slice(0, 4);
-  const visiblePlaceStaffInvites = placeStaffInvites.slice(0, Math.max(0, 4 - visibleStaffInvites.length));
-  const visibleProfessionalPriorityItems = operationalPriorityItems.slice(
-    0,
-    Math.max(0, 4 - visibleStaffInvites.length - visiblePlaceStaffInvites.length)
-  );
+  const notificationCount = playerUrgentCount;
   const userCityKey = normalizeHomeText(profile?.city);
   const userStateKey = normalizeHomeText(profile?.state);
   const prioritizedUpcoming = [...upcoming].sort((a, b) => {
@@ -1864,6 +1724,11 @@ export function HomePage({ user, profile }: Props) {
     navigate(homeMainAction.targetPath);
   };
 
+  const openWorkMode = () => {
+    userMode.setMode("work");
+    navigate(userMode.workEntryPath);
+  };
+
   const notificationPanel = (
     <section className="home-notification-panel">
       <div className="section-title">
@@ -1872,31 +1737,8 @@ export function HomePage({ user, profile }: Props) {
           Fechar
         </button>
       </div>
-      {staffInviteCount > 0 || priorityItems.length > 0 ? (
+      {priorityItems.length > 0 ? (
         <>
-          {staffInviteCount > 0 ? (
-            <div className="home-notification-group">
-              <p className="home-notification-heading">Convites</p>
-              {tournamentStaffInvites.map((invite) => (
-                <TournamentStaffInviteCard
-                  key={`staff-invite:${invite.id}`}
-                  invite={invite}
-                  busy={staffInviteBusyId === invite.id}
-                  onAccept={() => void acceptStaffInvite(invite)}
-                  onDecline={() => void declineStaffInvite(invite)}
-                />
-              ))}
-              {placeStaffInvites.map((invite) => (
-                <PlaceStaffInviteCard
-                  key={`place-staff-invite:${invite.id}`}
-                  invite={invite}
-                  busy={staffInviteBusyId === invite.id}
-                  onAccept={() => void acceptLocalStaffInvite(invite)}
-                  onDecline={() => void declineLocalStaffInvite(invite)}
-                />
-              ))}
-            </div>
-          ) : null}
           {urgentPriorityItems.length > 0 ? (
             <div className="home-notification-group">
               <p className="home-notification-heading">Pendências</p>
@@ -2010,7 +1852,6 @@ export function HomePage({ user, profile }: Props) {
         />
       ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
-      {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
 
       {!loading && !error ? (
         <>
@@ -2037,53 +1878,24 @@ export function HomePage({ user, profile }: Props) {
           </section>
           ) : null}
 
-          {visibleStaffInvites.length > 0 || visiblePlaceStaffInvites.length > 0 || operationalPriorityItems.length > 0 || activeOrganizingCount > 0 ? (
-            <section className="home-section home-pro-workspace">
+          {userMode.isProfessional && (staffInviteCount > 0 || urgentOperationalPriorityItems.length > 0 || activeOrganizingCount > 0) ? (
+            <section className="home-section home-pro-workspace home-pro-workspace--compact">
               <div className="section-title">
                 <div>
                   <p className="home-context-eyebrow">Trabalho</p>
                   <h2>Acesso profissional</h2>
                 </div>
-                <button className="link" type="button" onClick={() => navigate("/gestao")}>
+                <button className="link" type="button" onClick={openWorkMode}>
                   Abrir
                 </button>
               </div>
-              <p className="home-pro-note">Rotinas de gestao, equipe e organização ficam separadas da sua area de jogador.</p>
-              {visibleStaffInvites.length > 0 || visiblePlaceStaffInvites.length > 0 || visibleProfessionalPriorityItems.length > 0 ? (
-                <div className="home-pro-list">
-                  {visibleStaffInvites.map((invite) => (
-                    <TournamentStaffInviteCard
-                      key={`pro-staff-invite:${invite.id}`}
-                      invite={invite}
-                      busy={staffInviteBusyId === invite.id}
-                      onAccept={() => void acceptStaffInvite(invite)}
-                      onDecline={() => void declineStaffInvite(invite)}
-                    />
-                  ))}
-                  {visiblePlaceStaffInvites.map((invite) => (
-                    <PlaceStaffInviteCard
-                      key={`pro-place-staff-invite:${invite.id}`}
-                      invite={invite}
-                      busy={staffInviteBusyId === invite.id}
-                      onAccept={() => void acceptLocalStaffInvite(invite)}
-                      onDecline={() => void declineLocalStaffInvite(invite)}
-                    />
-                  ))}
-                  {visibleProfessionalPriorityItems.map((item) => (
-                    <PriorityCard key={`op:${item.id}`} item={item} onOpen={() => navigate(item.targetPath)} />
-                  ))}
-                </div>
-              ) : (
-                <p className="subtle">Sem pendências profissionais urgentes agora.</p>
-              )}
-              <ActionBar className="home-pro-actions" label="Acessos profissionais">
-                <button type="button" className="primary" onClick={() => navigate("/gestao")}>
-                  Operar academia
-                </button>
-                <button type="button" className="secondary" onClick={() => navigate("/eventos")}>
-                  Organizar competições
-                </button>
-              </ActionBar>
+              <p className="home-pro-note">
+                {staffInviteCount > 0
+                  ? `${staffInviteCount} convite(s) profissional(is) aguardam decisao no modo Trabalho.`
+                  : urgentOperationalPriorityItems.length > 0
+                    ? `${urgentOperationalPriorityItems.length} pendencia(s) operacional(is) aguardam no modo Trabalho.`
+                    : "Gestao, equipe e organizacao ficam em uma area separada da sua rotina de jogador."}
+              </p>
             </section>
           ) : null}
 

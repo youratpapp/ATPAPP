@@ -330,6 +330,12 @@ export function EventsHubPage({ user, profile }: Props) {
     setActiveMode(modeFromSearch(location.search));
   }, [location.search]);
 
+  useEffect(() => {
+    if (activeMode === "organizing") {
+      navigate("/gestao", { replace: true });
+    }
+  }, [activeMode, navigate]);
+
   const playingLeagues = useMemo(() => leagues.filter((league) => league.role !== "owner"), [leagues]);
   const organizingLeagues = useMemo(() => leagues.filter((league) => league.role === "owner"), [leagues]);
   const activePlayingTournaments = useMemo(
@@ -368,7 +374,6 @@ export function EventsHubPage({ user, profile }: Props) {
   const activePlayerCount = activePlayingTournaments.length + activePlayingLeagues.length;
   const activeOrganizerCount = activeOrganizingTournaments.length + activeOrganizingLeagues.length;
   const hasOrganizerContext = organizerCount > 0;
-  const showOrganizerMode = hasOrganizerContext || activeMode === "organizing";
   const totalActivePlayingCount =
     participatingTournaments.filter(isActiveTournament).length + playingLeagues.filter(isActiveLeague).length;
   const totalActiveOrganizerCount =
@@ -377,11 +382,7 @@ export function EventsHubPage({ user, profile }: Props) {
 
   useEffect(() => {
     if (loading || hasExplicitMode(location.search)) return;
-    if (playerCount === 0 && organizerCount > 0) {
-      setActiveMode("organizing");
-      return;
-    }
-    if (playerCount === 0 && organizerCount === 0) {
+    if (playerCount === 0) {
       setActiveMode("discover");
       return;
     }
@@ -389,6 +390,10 @@ export function EventsHubPage({ user, profile }: Props) {
   }, [loading, location.search, organizerCount, playerCount]);
 
   const selectMode = (mode: HubMode) => {
+    if (mode === "organizing") {
+      navigate("/gestao");
+      return;
+    }
     setActiveMode(mode);
     navigate(`/eventos?modo=${mode}`, { replace: true });
   };
@@ -426,14 +431,10 @@ export function EventsHubPage({ user, profile }: Props) {
             active={activeMode === "discover"}
             onSelect={() => selectMode("discover")}
           />
-          {showOrganizerMode ? (
-            <IntentPill
-              label="Organizando"
-              detail="area separada"
-              count={organizerCount}
-              active={activeMode === "organizing"}
-              onSelect={() => selectMode("organizing")}
-            />
+          {hasOrganizerContext ? (
+            <button className="competition-work-link" type="button" onClick={() => navigate("/gestao")}>
+              Trabalho <CountBadge value={organizerCount} />
+            </button>
           ) : null}
         </section>
       ) : null}

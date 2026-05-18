@@ -3,8 +3,15 @@ import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ManagementShell } from "../components/management/ManagementShell";
 import { fetchPlacesWorkspaceData, type PlaceAdminResourceEntry } from "../lib/place-admin-data";
-import { canCreatePlace } from "../lib/places";
+import { loadMyLeagues } from "../lib/leagues";
+import { acceptPlaceStaffInvite, canCreatePlace, declinePlaceStaffInvite, listMyPlaceStaffInvites } from "../lib/places";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
+import {
+  acceptTournamentStaffInvite,
+  declineTournamentStaffInvite,
+  listMyTournamentStaffInvites,
+  loadDashboardData,
+} from "../lib/tournaments";
 import {
   PLACE_MANAGEMENT_MODULE_LABELS,
   countLabel,
@@ -12,7 +19,15 @@ import {
   placeResourceAccess,
   type PlaceManagementModule,
 } from "../lib/place-management";
-import type { Place, PlaceStaffMember, Profile } from "../lib/types";
+import type {
+  LeagueSummary,
+  Place,
+  PlaceStaffInvite,
+  PlaceStaffMember,
+  Profile,
+  TournamentStaffInvite,
+  TournamentSummary,
+} from "../lib/types";
 
 type Props = {
   user: User;
@@ -76,6 +91,13 @@ const ROLE_LABELS: Record<string, string> = {
   frontdesk: "Recepcao",
   manager: "Gerente",
   owner: "Administrador",
+};
+
+const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffInvite["role"], string> = {
+  organizer: "Coordenador",
+  scorekeeper: "Placar",
+  checkin: "Credenciamento",
+  media: "Comunicacao",
 };
 
 function todayKey(): string {
@@ -387,10 +409,16 @@ export function ManagementHubPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const [places, setPlaces] = useState<Place[]>([]);
   const [entries, setEntries] = useState<PlaceAdminResourceEntry[]>([]);
+  const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
+  const [organizingLeagues, setOrganizingLeagues] = useState<LeagueSummary[]>([]);
+  const [tournamentStaffInvites, setTournamentStaffInvites] = useState<TournamentStaffInvite[]>([]);
+  const [placeStaffInvites, setPlaceStaffInvites] = useState<PlaceStaffInvite[]>([]);
+  const [inviteBusyId, setInviteBusyId] = useState("");
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [showAllManagedPlaces, setShowAllManagedPlaces] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -398,13 +426,21 @@ export function ManagementHubPage({ user, profile }: Props) {
       setLoading(true);
       setError("");
       try {
-        const [data, createPlaceAccess] = await Promise.all([
+        const [data, createPlaceAccess, tournamentDashboard, leagues, tournamentInvites, placeInvites] = await Promise.all([
           fetchPlacesWorkspaceData({ includeSupportData: false, isAdminRoute: true, tab: "mine", user }),
           canCreatePlace().catch(() => false),
+          loadDashboardData(user).catch(() => ({ organizing: [] as TournamentSummary[] })),
+          loadMyLeagues().catch(() => [] as LeagueSummary[]),
+          listMyTournamentStaffInvites().catch(() => [] as TournamentStaffInvite[]),
+          listMyPlaceStaffInvites().catch(() => [] as PlaceStaffInvite[]),
         ]);
         if (cancelled) return;
         setPlaces(data.places);
         setEntries(data.entries);
+        setOrganizingTournaments(tournamentDashboard.organizing);
+        setOrganizingLeagues(leagues.filter((league) => league.role === "owner"));
+        setTournamentStaffInvites(tournamentInvites);
+        setPlaceStaffInvites(placeInvites);
         setCanCreatePlaceAccess(createPlaceAccess);
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar gestao.");
@@ -417,6 +453,67 @@ export function ManagementHubPage({ user, profile }: Props) {
       cancelled = true;
     };
   }, [user]);
+
+  const acceptTournamentInvite = async (invite: TournamentStaffInvite) => {
+    setInviteBusyId(invite.id);
+    setFeedback(null);
+    try {
+      await acceptTournamentStaffInvite(invite.id);
+      setTournamentStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
+      const dashboard = await loadDashboardData(user);
+      setOrganizingTournaments(dashboard.organizing);
+      setFeedback({ kind: "success", text: "Convite aceito. A competicao entrou na sua central de trabalho." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aceitar convite profissional." });
+    } finally {
+      setInviteBusyId("");
+    }
+  };
+
+  const declineTournamentInvite = async (invite: TournamentStaffInvite) => {
+    setInviteBusyId(invite.id);
+    setFeedback(null);
+    try {
+      await declineTournamentStaffInvite(invite.id);
+      setTournamentStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
+      setFeedback({ kind: "success", text: "Convite recusado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao recusar convite profissional." });
+    } finally {
+      setInviteBusyId("");
+    }
+  };
+
+  const acceptPlaceInvite = async (invite: PlaceStaffInvite) => {
+    setInviteBusyId(invite.id);
+    setFeedback(null);
+    try {
+      await acceptPlaceStaffInvite(invite.id);
+      setPlaceStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
+      const data = await fetchPlacesWorkspaceData({ includeSupportData: false, isAdminRoute: true, tab: "mine", user });
+      setPlaces(data.places);
+      setEntries(data.entries);
+      setFeedback({ kind: "success", text: "Convite aceito. O local entrou na sua central de trabalho." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aceitar convite profissional." });
+    } finally {
+      setInviteBusyId("");
+    }
+  };
+
+  const declinePlaceInvite = async (invite: PlaceStaffInvite) => {
+    setInviteBusyId(invite.id);
+    setFeedback(null);
+    try {
+      await declinePlaceStaffInvite(invite.id);
+      setPlaceStaffInvites((prev) => prev.filter((item) => item.id !== invite.id));
+      setFeedback({ kind: "success", text: "Convite recusado." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao recusar convite profissional." });
+    } finally {
+      setInviteBusyId("");
+    }
+  };
 
   const entriesByPlace = useMemo(() => Object.fromEntries(entries.map((entry) => [entry.placeId, entry])), [entries]);
   const accessByPlace = useMemo(
@@ -538,6 +635,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   );
   const visibleManagedPlaces = showAllManagedPlaces ? orderedManagedPlaces : orderedManagedPlaces.slice(0, 4);
   const hiddenManagedPlacesCount = Math.max(0, orderedManagedPlaces.length - visibleManagedPlaces.length);
+  const professionalInviteCount = tournamentStaffInvites.length + placeStaffInvites.length;
 
   function rowPulseText(summary: PlaceOperationSummary, access: PlaceAccess): string {
     if (access.staffRole === "coach" && !access.canManagePlace) {
@@ -570,6 +668,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   }
 
   function aggregateGoodStateText(): string {
+    if (!places.length && competitionWorkspaceCount) return "Use os cards de competicao para operar torneios e ligas sem misturar com a area de jogador.";
     if (isCoachOnlyHub) return "Nenhuma aula pendente agora. Use Aulas, Turmas e Alunos para revisar sua rotina.";
     if (isFrontdeskOnlyHub) return "Nenhuma pendencia critica agora. Use Agenda e Aulas para revisar o atendimento do dia.";
     if (isFinanceOnlyHub) return "Nenhuma cobranca critica agora. Use Recebiveis e Despesas para revisar o caixa.";
@@ -577,7 +676,8 @@ export function ManagementHubPage({ user, profile }: Props) {
     return "Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar agenda, setup ou pagina publica.";
   }
 
-  const noManagementAccess = !loading && !places.length && !canCreatePlaceAccess;
+  const competitionWorkspaceCount = organizingTournaments.length + organizingLeagues.length;
+  const noManagementAccess = !loading && !places.length && !competitionWorkspaceCount && !professionalInviteCount && !canCreatePlaceAccess;
 
   return (
     <ManagementShell
@@ -595,9 +695,10 @@ export function ManagementHubPage({ user, profile }: Props) {
       <div className="management-hub-page">
 
         {error ? <p className="feedback error">{error}</p> : null}
+        {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
         {loading ? <p className="subtle">Carregando central de gestao...</p> : null}
 
-        {!loading && !places.length ? (
+        {!loading && noManagementAccess ? (
           <section className="management-empty-state">
             <span>{canCreatePlaceAccess ? "Operacao ainda nao configurada" : "Modo jogador"}</span>
             <h2>{canCreatePlaceAccess ? "Crie ou acesse um local para ativar a gestao profissional." : "Gestao nao disponivel para este perfil."}</h2>
@@ -619,7 +720,7 @@ export function ManagementHubPage({ user, profile }: Props) {
           </section>
         ) : null}
 
-        {!loading && places.length ? (
+        {!loading && (places.length || competitionWorkspaceCount || professionalInviteCount) ? (
           <>
             <section className="management-command-panel">
               <div className="management-section-title">
@@ -663,6 +764,93 @@ export function ManagementHubPage({ user, profile }: Props) {
                 </div>
               )}
             </section>
+
+            {professionalInviteCount ? (
+              <section className="management-invite-panel" aria-label="Convites profissionais">
+                <div className="management-section-title">
+                  <div>
+                    <span>Convites</span>
+                    <h2>Entradas profissionais pendentes</h2>
+                  </div>
+                  <strong>{professionalInviteCount}</strong>
+                </div>
+                <div className="management-invite-list">
+                  {tournamentStaffInvites.map((invite) => (
+                    <article className="management-invite-row" key={`tournament-invite:${invite.id}`}>
+                      <div>
+                        <span>Torneio</span>
+                        <strong>{invite.tournamentName}</strong>
+                        <small>{TOURNAMENT_STAFF_ROLE_LABELS[invite.role]} aguardando aceite</small>
+                      </div>
+                      <div className="management-invite-actions">
+                        <button className="primary" disabled={inviteBusyId === invite.id} onClick={() => void acceptTournamentInvite(invite)}>
+                          Aceitar
+                        </button>
+                        <button className="quiet" disabled={inviteBusyId === invite.id} onClick={() => void declineTournamentInvite(invite)}>
+                          Recusar
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                  {placeStaffInvites.map((invite) => (
+                    <article className="management-invite-row" key={`place-invite:${invite.id}`}>
+                      <div>
+                        <span>Local</span>
+                        <strong>{invite.placeName}</strong>
+                        <small>{ROLE_LABELS[invite.role] || "Equipe"} aguardando aceite</small>
+                      </div>
+                      <div className="management-invite-actions">
+                        <button className="primary" disabled={inviteBusyId === invite.id} onClick={() => void acceptPlaceInvite(invite)}>
+                          Aceitar
+                        </button>
+                        <button className="quiet" disabled={inviteBusyId === invite.id} onClick={() => void declinePlaceInvite(invite)}>
+                          Recusar
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
+            {competitionWorkspaceCount ? (
+              <section className="management-workspace management-competition-workspace" aria-label="Competicoes em organizacao">
+                <div className="management-workspace-head">
+                  <div>
+                    <span>Competicoes</span>
+                    <h2>Torneios e ligas que voce organiza</h2>
+                  </div>
+                  <p>{countLabel(competitionWorkspaceCount, "competicao ativa", "competicoes ativas")}</p>
+                </div>
+                <div className="management-competition-grid">
+                  {organizingTournaments.slice(0, 6).map((tournament) => (
+                    <article key={`tournament:${tournament.id}`} className="management-competition-card">
+                      <span>Torneio</span>
+                      <strong>{tournament.name}</strong>
+                      <small>{[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}</small>
+                      <button className="primary" onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}/organizacao`)}>
+                        Organizar
+                      </button>
+                    </article>
+                  ))}
+                  {organizingLeagues.slice(0, 6).map((league) => (
+                    <article key={`league:${league.id}`} className="management-competition-card">
+                      <span>Liga</span>
+                      <strong>{league.name}</strong>
+                      <small>{league.status === "active" ? "Em andamento" : "Configurar temporada"}</small>
+                      <button className="primary" onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}?mode=work`)}>
+                        Organizar
+                      </button>
+                    </article>
+                  ))}
+                </div>
+                {competitionWorkspaceCount > 12 ? (
+                  <button className="secondary" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+                    Ver todas as competicoes
+                  </button>
+                ) : null}
+              </section>
+            ) : null}
 
             {coachWorkspaces.length ? (
               <section className="coach-operation-panel" aria-label="Operacao do professor">
@@ -720,6 +908,7 @@ export function ManagementHubPage({ user, profile }: Props) {
               </section>
             ) : null}
 
+            {places.length ? (
             <section className="management-workspace" aria-label="Locais em gestao">
               <div className="management-workspace-head">
                 <div>
@@ -933,6 +1122,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                 </div>
               ) : null}
             </section>
+            ) : null}
 
             <section className="management-support-strip" aria-label="Resumo operacional">
               <span>Sinais de suporte</span>

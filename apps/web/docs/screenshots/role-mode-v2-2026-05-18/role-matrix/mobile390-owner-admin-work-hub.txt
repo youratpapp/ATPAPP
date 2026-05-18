@@ -1,0 +1,140 @@
+CENTRAL OPERACIONAL
+Gestao
+TRABALHO
+Ir para jogador
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Reservas pendentes
+Abrir primeiro local com acao pendente
+6
+Lista de espera
+Abrir primeiro local com acao pendente
+239
+Academia
+Abrir primeiro local com acao pendente
+315
+Clientes/CRM
+Abrir primeiro local com acao pendente
+66
+Financeiro
+Abrir primeiro local com acao pendente
+14
+COMPETICOES
+Torneios e ligas que voce organiza
+
+9 competicoes ativas
+
+TORNEIO
+Open ADT Dourados - Maio
+Dourados - MS
+Organizar
+TORNEIO
+Prime Cup Noturna
+Cuiaba - MT
+Organizar
+TORNEIO
+Festival Feminino Pantanal
+Campo Grande - MS
+Organizar
+TORNEIO
+Torneio Ranking Outono
+Dourados - MS
+Organizar
+TORNEIO
+Desafio Interno Prime Kids
+Cuiaba - MT
+Organizar
+TORNEIO
+Prime Open Inscricoes Encerradas
+Cuiaba - MT
+Organizar
+LIGA
+Liga ADT Simples 2026
+Em andamento
+Organizar
+LIGA
+Prime Duplas Fixas
+Em andamento
+Organizar
+LIGA
+Ranking Pantanal Intermediario
+Em andamento
+Organizar
+WORKSPACES
+Locais sob sua gestao
+
+3 locais com acesso operacional
+
+ADMINISTRADOR | OPERACAO COMPLETA
+Clube Racket Prime
+
+Cuiaba - MT
+
+261 pendencia(s)
+24 reserva(s) hoje
+80
+Lista de espera
+139
+Academia
+33
+Clientes/CRM
+ACOES RAPIDASChamar espera | Ver agenda
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+Clientes
+Financeiro
+Cantina
+ADMINISTRADOR | OPERACAO COMPLETA
+ADT Dourados
+
+Dourados - MS
+
+199 pendencia(s)
+23 reserva(s) hoje
+6
+Reservas pendentes
+80
+Lista de espera
+75
+Academia
+ACOES RAPIDASConfirmar reservas | Chamar espera
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+Clientes
+Financeiro
+Cantina
+ADMINISTRADOR | ACADEMIA
+Arena Pantanal Tennis
+
+Campo Grande - MS
+
+180 pendencia(s)
+12 reserva(s) hoje
+79
+Lista de espera
+101
+Academia
+BASE INCOMPLETA
+Cadastrar cliente | Configurar plano
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+SINAIS DE SUPORTE
+3
+3 locais acessiveis
+640
+pendencias operacionais
+59
+reservas hoje
+Implantacao guiada
+Complete a base de Arena Pantanal Tennis
+71% pronto
+Gestao
+Organizar
+Perfil

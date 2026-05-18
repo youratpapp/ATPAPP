@@ -7008,6 +7008,20 @@ button:disabled {
   padding: var(--space-3);
 }
 
+.home-pro-workspace--compact {
+  border-style: dashed;
+  box-shadow: none;
+  margin-top: var(--space-2);
+}
+
+.home-pro-workspace--compact .section-title {
+  margin-bottom: var(--space-1);
+}
+
+.home-pro-workspace--compact .home-pro-note {
+  margin-bottom: 0;
+}
+
 .home-pro-workspace .section-title {
   align-items: flex-start;
   margin-bottom: var(--space-2);
@@ -11021,6 +11035,42 @@ button:disabled {
   justify-content: flex-end;
 }
 
+.management-mode-switch {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-xs);
+  display: inline-flex;
+  gap: var(--space-1);
+  padding: 4px;
+}
+
+.management-mode-switch span {
+  color: var(--color-success-dark);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  padding: 6px 10px;
+  text-transform: uppercase;
+}
+
+.management-mode-switch button {
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  min-height: 32px;
+  padding: 6px 12px;
+}
+
+.management-mode-switch button:hover {
+  border-color: var(--color-success);
+  color: var(--color-success-dark);
+}
+
 .management-hub-page {
   display: grid;
   gap: var(--space-4);
@@ -11095,6 +11145,120 @@ button:disabled {
   color: rgba(255, 255, 255, 0.76);
   font-size: var(--font-size-xs);
   font-weight: 900;
+}
+
+.management-competition-workspace {
+  margin-top: var(--space-4);
+}
+
+.management-competition-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.management-competition-card {
+  align-items: flex-start;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 170px;
+  padding: var(--space-3);
+}
+
+.management-competition-card span {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.management-competition-card strong {
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-tight);
+}
+
+.management-competition-card small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: 750;
+}
+
+.management-competition-card button {
+  margin-top: auto;
+}
+
+.management-invite-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.management-invite-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.management-invite-row {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: var(--space-3);
+}
+
+.management-invite-row span {
+  color: var(--color-primary-strong);
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.management-invite-row strong {
+  color: var(--color-text);
+  display: block;
+  font-size: var(--font-size-md);
+}
+
+.management-invite-row small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  font-weight: 750;
+}
+
+.management-invite-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.competition-work-link {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  display: inline-flex;
+  font-size: var(--font-size-sm);
+  font-weight: 900;
+  gap: var(--space-2);
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 var(--space-4);
 }
 
 .management-command-panel,

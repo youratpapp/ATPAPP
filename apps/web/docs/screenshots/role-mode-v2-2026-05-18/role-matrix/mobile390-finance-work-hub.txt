@@ -1,0 +1,37 @@
+CENTRAL OPERACIONAL
+Gestao
+TRABALHO
+Ir para jogador
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Financeiro
+Abrir primeiro local com acao pendente
+9
+WORKSPACES
+Locais sob sua gestao
+
+1 local com acesso operacional
+
+FINANCEIRO | FINANCEIRO DO LOCAL
+Clube Racket Prime
+
+Cuiaba - MT
+
+148 pendencia(s)
+Cobrancas para revisar
+9
+Financeiro
+ACOES RAPIDASCobrar pendentes
+Abrir financeiro
+Despesas
+Financeiro
+SINAIS DE SUPORTE
+1
+1 local acessivel
+148
+pendencias operacionais
+9
+recebiveis pendentes
+Gestao
+Perfil

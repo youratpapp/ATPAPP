@@ -5,7 +5,7 @@ import type { Profile } from "../lib/types";
 import { BottomNav } from "./BottomNav";
 import { AppPopover } from "./AppOverlays";
 import logoSymbol from "../assets/logo-atp-symbol.svg";
-import { getRouteSurfaceMode, type AppSurfaceMode } from "../lib/role-visibility";
+import { getRouteExperienceMode, getRouteSurfaceMode, type AppSurfaceMode } from "../lib/role-visibility";
 import { useUserMode } from "../lib/user-mode-context";
 
 type Props = {
@@ -50,14 +50,22 @@ export function AppShell({
   bellCount = 0,
   mode,
 }: Props) {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const userMode = useUserMode();
   const routeSurfaceMode = getRouteSurfaceMode(pathname);
-  const surfaceMode = mode ?? (routeSurfaceMode === "player" ? (userMode.mode === "work" ? "management" : "player") : routeSurfaceMode === "management" ? "management" : "competition");
+  const routeExperienceMode = getRouteExperienceMode(pathname, search);
+  const surfaceMode = mode ?? routeSurfaceMode;
   const displayName = profile?.displayName || user.email?.split("@")[0] || "Atleta";
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
+
+  useEffect(() => {
+    if (!userMode.isProfessional) return;
+    if (routeExperienceMode !== userMode.mode) {
+      userMode.setMode(routeExperienceMode);
+    }
+  }, [routeExperienceMode, userMode]);
 
   useEffect(() => {
     if (!bellOpen) return undefined;
@@ -92,7 +100,7 @@ export function AppShell({
                     className={userMode.mode === "player" ? "active" : ""}
                     onClick={() => {
                       userMode.setMode("player");
-                      if (routeSurfaceMode !== "player") navigate("/inicio");
+                      if (routeExperienceMode !== "player") navigate("/inicio");
                     }}
                   >
                     Jogador
@@ -102,7 +110,7 @@ export function AppShell({
                     className={userMode.mode === "work" ? "active" : ""}
                     onClick={() => {
                       userMode.setMode("work");
-                      if (routeSurfaceMode === "player") navigate(userMode.workEntryPath);
+                      if (routeExperienceMode !== "work") navigate(userMode.workEntryPath);
                     }}
                   >
                     Trabalho

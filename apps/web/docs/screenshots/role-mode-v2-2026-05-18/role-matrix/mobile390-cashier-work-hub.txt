@@ -1,0 +1,36 @@
+CENTRAL OPERACIONAL
+Gestao
+TRABALHO
+Ir para jogador
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Operacao em dia
+Nenhuma pendencia critica agora. Use Registrar venda e Estoque para revisar a cantina.
+WORKSPACES
+Locais sob sua gestao
+
+1 local com acesso operacional
+
+CAIXA/POS | CAIXA E CANTINA
+Clube Racket Prime
+
+Cuiaba - MT
+
+Em dia
+Caixa e cantina
+Sem pendencias criticas
+Use Registrar venda e Estoque para operar a cantina sem abrir a gestao completa.
+ACOES RAPIDASRegistrar venda
+Registrar venda
+Estoque
+Cantina
+SINAIS DE SUPORTE
+1
+1 local acessivel
+0
+pendencias operacionais
+0
+itens com estoque baixo
+Gestao
+Perfil

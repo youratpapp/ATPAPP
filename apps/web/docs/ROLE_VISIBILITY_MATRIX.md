@@ -37,6 +37,23 @@ Preservar funcao significa reposicionar no papel correto.
 
 ## Navegacao Global
 
+### Politica ROLE-MODE-V2
+
+`Jogador` e `Trabalho` passam a ser experiencias persistidas, nao apenas grupos de menu.
+
+Regras:
+
+- jogador puro nunca ve seletor de modo;
+- usuario com acesso profissional ve troca explicita `Jogador/Trabalho`;
+- a escolha deve persistir por usuario ate troca manual;
+- modo `Jogador` nao deve carregar nem protagonizar filas operacionais, CRM, equipe, estoque ou recebiveis de terceiros;
+- modo `Trabalho` nao deve abrir como descoberta publica nem competir com ranking/locais do jogador;
+- rotas profissionais diretas podem ativar `Trabalho`, preservando permissao;
+- rotas de jogador diretas podem ativar `Jogador`;
+- notificacoes devem ser classificadas por modo e priorizadas no painel do modo ativo.
+
+Fonte executavel: `ROLE_MODE_V2_PRODUCT_UX_SPEC.md` e `ROLE_MODE_V2_FLOW_MATRIX.md`.
+
 | Relacao | Inicio | Locais/Jogar | Competir | Ranking | Perfil | Organizar | Gestao |
 |---|---|---|---|---|---|---|---|
 | Jogador puro | sim | sim | sim | sim | sim | nao | nao |

@@ -1,0 +1,50 @@
+CENTRAL OPERACIONAL
+Gestao
+
+Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.
+
+TRABALHO
+Ir para jogador
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Operacao em dia
+Use os cards de competicao para operar torneios e ligas sem misturar com a area de jogador.
+COMPETICOES
+Torneios e ligas que voce organiza
+
+5 competicoes ativas
+
+TORNEIO
+Open ADT Dourados - Maio
+Dourados - MS
+Organizar
+TORNEIO
+Torneio Ranking Outono
+Dourados - MS
+Organizar
+TORNEIO
+Festival Feminino Pantanal
+Campo Grande - MS
+Organizar
+TORNEIO
+Prime Cup Noturna
+Cuiaba - MT
+Organizar
+TORNEIO
+Prime Open Inscricoes Encerradas
+Cuiaba - MT
+Organizar
+SINAIS DE SUPORTE
+0
+0 locais acessiveis
+0
+pendencias operacionais
+0
+reservas hoje
+ATP
+Trabalho
+TRABALHO
+Organizar
+CONTA
+Perfil

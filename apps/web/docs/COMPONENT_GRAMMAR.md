@@ -432,6 +432,88 @@ Anti-pattern:
 - item ativo apenas por cor fraca.
 - atalhos de modulo com peso de botao primario.
 
+## ModeSwitch
+
+Uso:
+
+- usuarios multi-papel que podem alternar entre `Jogador` e `Trabalho`;
+- shell global, header mobile ou sheet de conta;
+- nunca como filtro de pagina.
+
+Anatomia:
+
+```text
+[Jogador] [Trabalho]
+```
+
+Comportamento:
+
+- aparece apenas se o usuario tem acesso profissional real;
+- persiste escolha por usuario;
+- ao trocar para `Jogador`, leva para experiencia de jogador quando a rota atual for profissional;
+- ao trocar para `Trabalho`, leva para central/workspace profissional;
+- deve deixar claro o modo atual sem ocupar a primeira dobra da tarefa.
+
+Visual:
+
+- discreto;
+- compacto;
+- sem parecer CTA principal;
+- ativo evidente por fundo/contraste, nao apenas cor de texto.
+
+Mobile:
+
+- preferir header/avatar/sheet de conta;
+- nao adicionar sexto item fixo na bottom nav do jogador;
+- no modo trabalho, bottom nav deve trocar para rotinas de trabalho.
+
+Anti-pattern:
+
+- mostrar para jogador puro;
+- usar como tabs de conteudo da pagina;
+- manter blocos de gestao dentro da Home do jogador porque existe o switch;
+- trocar modo silenciosamente sem feedback/contexto.
+
+## WorkspaceSwitcher
+
+Uso:
+
+- modo `Trabalho`;
+- usuario com mais de um local, competicao ou papel operacional;
+- escolha do contexto profissional antes da rotina.
+
+Anatomia:
+
+```text
+[tipo/papel] [nome do workspace] [pendencias] [acao primaria]
+```
+
+Exemplos:
+
+- `Local | Arena Pantanal Tennis | 11 pendencias | Abrir operacao`
+- `Professor | Gustavo Amaral | 3 aulas hoje | Abrir aulas`
+- `Competicao | Open ADT Dourados | 4 inscricoes | Organizar`
+
+Visual:
+
+- rows compactas;
+- badge de papel;
+- pendencia numerica discreta;
+- uma acao primaria por row.
+
+Mobile:
+
+- lista vertical;
+- filtros/agrupamentos em sheet se houver muitos workspaces;
+- toque na row abre destino principal.
+
+Anti-pattern:
+
+- cards grandes para cada workspace;
+- misturar eventos publicos de descoberta;
+- mostrar workspace sem permissao aceita;
+- usar labels tecnicos de tabela.
+
 ## Topbar / ContextHeader
 
 Uso:

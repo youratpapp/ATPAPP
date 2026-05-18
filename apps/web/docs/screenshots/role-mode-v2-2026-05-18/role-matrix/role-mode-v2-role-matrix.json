@@ -1,0 +1,681 @@
+{
+  "createdAt": "2026-05-18T15:58:59.530Z",
+  "results": [
+    {
+      "user": "pure-player",
+      "email": "qa.jogador.puro@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-pure-player-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-pure-player-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "pure-player",
+      "email": "qa.jogador.puro@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-pure-player-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-pure-player-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "player",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "pure-player",
+      "email": "qa.jogador.puro@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-pure-player-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-pure-player-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "pure-player",
+      "email": "qa.jogador.puro@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-pure-player-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-pure-player-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "player",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "owner-admin",
+      "email": "escalao@gmail.com",
+      "viewport": "desktop1366",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-owner-admin-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-owner-admin-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "owner-admin",
+      "email": "escalao@gmail.com",
+      "viewport": "desktop1366",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-owner-admin-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-owner-admin-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "owner-admin",
+      "email": "escalao@gmail.com",
+      "viewport": "mobile390",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-owner-admin-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-owner-admin-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "owner-admin",
+      "email": "escalao@gmail.com",
+      "viewport": "mobile390",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-owner-admin-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-owner-admin-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "coach",
+      "email": "prof.renato@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-coach-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-coach-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "coach",
+      "email": "prof.renato@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-coach-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-coach-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "coach",
+      "email": "prof.renato@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-coach-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-coach-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "coach",
+      "email": "prof.renato@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-coach-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-coach-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "frontdesk",
+      "email": "recepcao.dourados@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-frontdesk-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-frontdesk-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "frontdesk",
+      "email": "recepcao.dourados@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-frontdesk-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-frontdesk-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "frontdesk",
+      "email": "recepcao.dourados@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-frontdesk-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-frontdesk-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "frontdesk",
+      "email": "recepcao.dourados@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-frontdesk-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-frontdesk-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "finance",
+      "email": "financeiro.prime@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-finance-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-finance-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "finance",
+      "email": "financeiro.prime@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-finance-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-finance-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "finance",
+      "email": "financeiro.prime@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-finance-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-finance-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "finance",
+      "email": "financeiro.prime@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-finance-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-finance-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "cashier",
+      "email": "caixa.prime@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-cashier-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-cashier-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "cashier",
+      "email": "caixa.prime@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-cashier-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-cashier-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "cashier",
+      "email": "caixa.prime@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-cashier-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-cashier-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "cashier",
+      "email": "caixa.prime@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-cashier-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-cashier-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Gestao",
+        "Perfil"
+      ],
+      "hasWorkHub": true,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": false
+    },
+    {
+      "user": "organizer",
+      "email": "organizador.circuito@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-organizer-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-organizer-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "organizer",
+      "email": "organizador.circuito@demo.atp.local",
+      "viewport": "desktop1366",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-organizer-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/desktop1366-organizer-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "organizer",
+      "email": "organizador.circuito@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "player-home",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-organizer-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-organizer-player-home.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/inicio",
+      "surface": "player",
+      "modeSwitch": [
+        "Jogador:active",
+        "Trabalho"
+      ],
+      "bottomNav": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": false,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    },
+    {
+      "user": "organizer",
+      "email": "organizador.circuito@demo.atp.local",
+      "viewport": "mobile390",
+      "route": "work-hub",
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-organizer-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/role-matrix/mobile390-organizer-work-hub.txt",
+      "errors": [],
+      "ok": true,
+      "hash": "#/gestao",
+      "surface": "management",
+      "modeSwitch": [],
+      "bottomNav": [
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkHub": false,
+      "hasWorkReturn": true,
+      "hasNoPermission": false,
+      "hasPlayerDiscovery": true
+    }
+  ]
+}

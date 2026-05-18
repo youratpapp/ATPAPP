@@ -7,6 +7,8 @@ Fonte de reestruturacao v2:
 - `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
 - `ROLE_BASED_RESTRUCTURE_IMPLEMENTATION_SPEC.md`
 - `ROLE_VISIBILITY_MATRIX.md`
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `ROLE_MODE_V2_FLOW_MATRIX.md`
 - `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
 - `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
 - `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
@@ -43,6 +45,258 @@ Continue para o proximo item da Execution Queue.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
 ## P0 - Prioridade atual
+
+### [x] ROLE-MODE-V2-01 - Separacao real Jogador vs Trabalho
+
+Status: `[x]` concluido
+
+Fonte:
+
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `ROLE_MODE_V2_FLOW_MATRIX.md`
+- `manual_frontend_design_produto_apps_modernos.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `SCREEN_RESPONSIBILITIES.md`
+- `COMPONENT_GRAMMAR.md`
+
+Contexto:
+
+- `CTX-MODE-01` criou o seletor persistido `Jogador/Trabalho`, mas ainda e uma primeira camada de navegacao;
+- o app precisa consolidar `Jogador` e `Trabalho` como experiencias completas, nao como uma Home de jogador com blocos administrativos;
+- multi-esporte e novas capacidades devem ser construidos em cima dessa separacao para nao multiplicar confusao.
+
+Objetivo:
+
+- tornar `Modo Jogador` uma experiencia limpa de atleta;
+- tornar `Modo Trabalho` uma experiencia propria para gestor, professor, recepcao, financeiro, caixa/POS e organizador;
+- manter a escolha persistida entre sessoes ate o usuario trocar manualmente.
+
+Escopo:
+
+1. Auditar onde conteudo profissional ainda aparece dentro da experiencia de jogador.
+2. Remover da Home do jogador filas/listas operacionais de trabalho, mantendo apenas acesso discreto ao modo.
+3. Criar/ajustar entrada de trabalho como Home operacional propria.
+4. Garantir que troca para `Jogador` navegue para `/inicio` quando o usuario estiver em rota profissional.
+5. Garantir que troca para `Trabalho` abra o melhor workspace permitido ou uma central de workspaces quando houver mais de um.
+6. Separar navegacao mobile por modo, sem sexto item poluindo o player.
+7. Preservar rotas diretas e permissoes.
+
+Criterios de conclusao:
+
+- jogador puro nao ve seletor nem caminhos profissionais;
+- multi-papel alterna modo e o modo persiste apos reload/login;
+- Home do jogador nao mostra fila/lista operacional de trabalho;
+- Home do trabalho nao mostra descoberta publica de jogador como primeira dobra;
+- desktop 1366px e mobile 390px validados;
+- lint/build passam;
+- docs atualizados.
+
+### [x] ROLE-MODE-V2-02 - Central de Trabalho e Workspace Switcher
+
+Status: `[x]` concluido
+
+Fonte:
+
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `ROLE_MODE_V2_FLOW_MATRIX.md`
+- `MANAGEMENT_OS_V2_UX_PLAN.md`
+- `COMPETITION_OS_V2_UX_PLAN.md`
+
+Objetivo:
+
+- transformar o modo `Trabalho` em uma central propria, capaz de escolher entre local, professor, financeiro, caixa/POS e competicoes organizadas.
+
+Escopo:
+
+1. Criar contrato de `Workspace` profissional: tipo, nome, papel, pendencias, destino principal.
+2. Se houver um unico workspace, abrir destino direto.
+3. Se houver varios, mostrar central com rows compactas, nao cards grandes.
+4. Separar workspaces de local e competicao.
+5. Exibir papel e pendencias por workspace.
+6. Manter configuracao e descoberta fora da primeira dobra.
+
+Criterios de conclusao:
+
+- organizador sem local ve apenas competicoes organizadas;
+- professor ve `Minha operacao de aulas`;
+- gestor de local ve locais sob gestao;
+- financeiro/caixa recebem entrada isolada;
+- workspaces nao misturam dados de jogador;
+- lint/build passam.
+
+### [x] ROLE-MODE-V2-03 - RouteModeGuard e rotas diretas sem mistura mental
+
+Status: `[x]` concluido
+
+Fonte:
+
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `ROLE_MODE_V2_FLOW_MATRIX.md`
+- `web/src/lib/role-visibility.ts`
+- `web/src/App.tsx`
+
+Objetivo:
+
+- declarar explicitamente qual modo cada rota representa e sincronizar o modo quando a intencao for inequivoca.
+
+Escopo:
+
+1. Criar helper/guard de rota para superficie `player`, `work-management`, `work-competition`, `public-competition`.
+2. `/gestao/*` ativa `work`.
+3. `/inicio`, `/locais`, `/ranking` ativam `player`.
+4. Rotas publicas de torneio/liga nao ativam `work` automaticamente.
+5. Rotas de organizacao/operacao de torneio/liga ativam `work`.
+6. Quando faltar permissao, mostrar estado amigavel com CTA certo.
+
+Criterios de conclusao:
+
+- links diretos mantem permissao;
+- modo visual nao fica incoerente com rota;
+- erro sem permissao nao parece bug;
+- lint/build passam.
+
+### [x] ROLE-MODE-V2-04 - Notificacoes separadas por modo
+
+Status: `[x]` concluido
+
+Fonte:
+
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `COMPONENT_GRAMMAR.md`
+- `CTX-MODAL-01`
+- `CTX-FEEDBACK-01`
+
+Objetivo:
+
+- separar avisos pessoais de jogador dos avisos operacionais de trabalho, sem esconder urgencias.
+
+Escopo:
+
+1. Classificar notificacoes como `player` ou `work`.
+2. Painel aberto no modo atual prioriza notificacoes daquele modo.
+3. Notificacoes do outro modo aparecem como agrupamento discreto.
+4. Clicar em notificacao profissional troca para `work` com destino contextual.
+5. Clicar em notificacao pessoal troca para `player` quando necessario.
+6. Mobile usa popover/sheet responsivo ja existente.
+
+Criterios de conclusao:
+
+- jogador nao recebe fila operacional misturada no painel principal;
+- gestor nao precisa procurar pendencia profissional em feed de jogador;
+- badge continua util;
+- lint/build passam.
+
+### [x] ROLE-MODE-V2-05 - Competition OS: separar Competir de Organizar
+
+Status: `[x]` concluido
+
+Fonte:
+
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `ROLE_MODE_V2_FLOW_MATRIX.md`
+- `COMPETITION_OS_V2_UX_PLAN.md`
+
+Objetivo:
+
+- impedir que descoberta/participacao de competicoes e operacao de torneios/ligas disputem a mesma tela mental.
+
+Escopo:
+
+1. Em `player`, `Competir` mostra jogar/descobrir/acompanhar.
+2. Em `work`, `Organizar` mostra operacao de torneios/ligas.
+3. Rotas existentes continuam funcionando, mas UI deve deixar claro o modo.
+4. Listas de organizacao usam rows com proximo passo e CTA unico.
+5. Detalhes publicos nao exibem ferramentas administrativas como protagonistas.
+6. Ferramentas administrativas aparecem apenas para owner/staff aceito em modo `work`.
+
+Criterios de conclusao:
+
+- jogador nao ve cockpit de organizacao dentro de descoberta;
+- organizador nao precisa atravessar descoberta para operar;
+- torneio/liga seguem padrao de tabs e seletor de classe ja definido;
+- lint/build passam.
+
+### [x] ROLE-MODE-V2-06 - Mobile mode UX
+
+Status: `[x]` concluido
+
+Fonte:
+
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `ROLE_MODE_V2_FLOW_MATRIX.md`
+- `COMPONENT_GRAMMAR.md`
+- `UX_FRONTEND_AUDIT.md`
+
+Objetivo:
+
+- tornar a troca de modo natural no mobile sem transformar bottom nav em menu lotado.
+
+Escopo:
+
+1. No modo jogador, bottom nav fica 5 itens de jogador.
+2. Troca de modo fica no avatar/header/sheet de conta.
+3. No modo trabalho, bottom nav mostra rotinas do trabalho, nao `Inicio/Locais/Ranking`.
+4. Workspace switcher deve ser acessivel em um toque.
+5. Testar 390px e 430px.
+
+Criterios de conclusao:
+
+- sem sexto item visualmente pesado no player;
+- sem menus cortados;
+- alvos de toque adequados;
+- modo atual claramente visivel;
+- lint/build passam.
+
+Evidencias:
+
+- `docs/screenshots/role-mode-v2-2026-05-18/mobile390-player-home.png`
+- `docs/screenshots/role-mode-v2-2026-05-18/mobile390-work-hub.png`
+- `docs/screenshots/role-mode-v2-2026-05-18/desktop1366-player-home.png`
+- `docs/screenshots/role-mode-v2-2026-05-18/desktop1366-work-hub.png`
+
+### [x] ROLE-MODE-V2-07 - QA por papel da separacao de modo
+
+Status: `[x]` concluido
+
+Fonte:
+
+- `ROLE_MODE_V2_FLOW_MATRIX.md`
+- `ROLE_VISIBILITY_MATRIX.md`
+- `USER_ACTIVITY_TEST_PLAN.md`
+
+Objetivo:
+
+- validar a separacao real com perfis diferentes.
+
+Escopo:
+
+1. Jogador puro.
+2. Gestor de local.
+3. Professor vinculado.
+4. Recepcao.
+5. Financeiro.
+6. Caixa/POS.
+7. Organizador sem local.
+8. Usuario multi-papel com local e competicao.
+
+Criterios de conclusao:
+
+- screenshots desktop/mobile por perfil critico;
+- nenhum papel ve modulo indevido;
+- modo persiste apos reload;
+- rotas diretas respeitam permissao;
+
+Evidencias:
+
+- `docs/screenshots/role-mode-v2-2026-05-18/role-mode-v2-validation.json`
+- `docs/screenshots/role-mode-v2-2026-05-18/role-matrix/role-mode-v2-role-matrix.json`
+- `docs/screenshots/role-mode-v2-2026-05-18/role-matrix/role-mode-v2-organizer-after-fix.json`
+- perfis validados: jogador puro, administrador/gestor, professor, recepcao, financeiro, caixa/POS e organizador sem local.
+
+Observacao:
+
+- O QA encontrou e corrigiu no mesmo sprint o empty state contraditorio para organizador sem local: a central agora mostra apenas competicoes organizadas e o retorno claro para `Jogador`.
+- docs atualizados.
 
 ### [x] CTX-FEEDBACK-01 - Padrao global de feedback visivel
 

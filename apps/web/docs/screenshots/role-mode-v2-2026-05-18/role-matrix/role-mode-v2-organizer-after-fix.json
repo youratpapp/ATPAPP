@@ -1,0 +1,35 @@
+{
+  "createdAt": "2026-05-18T16:02:09.157Z",
+  "results": [
+    {
+      "name": "desktop1366-organizer-work-hub",
+      "id": "desktop1366",
+      "width": 1366,
+      "height": 900,
+      "hash": "#/gestao",
+      "surface": "management",
+      "bottomNav": [
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkReturn": true,
+      "hasEmptyContradiction": false,
+      "hasCompetitionWorkspace": true
+    },
+    {
+      "name": "mobile390-organizer-work-hub",
+      "id": "mobile390",
+      "width": 390,
+      "height": 900,
+      "hash": "#/gestao",
+      "surface": "management",
+      "bottomNav": [
+        "Organizar",
+        "Perfil"
+      ],
+      "hasWorkReturn": true,
+      "hasEmptyContradiction": false,
+      "hasCompetitionWorkspace": true
+    }
+  ]
+}

@@ -41,7 +41,7 @@ export function UserModeProvider({ user, children }: { user: User; children: Rea
 
   const value = useMemo<UserModeContextValue>(() => {
     const isProfessional = access.hasCompetitionManagement || access.hasManagement;
-    const workEntryPath = access.hasManagement ? "/gestao" : "/eventos/torneios?view=organizing";
+    const workEntryPath = access.hasManagement || access.hasCompetitionManagement ? "/gestao" : "/inicio";
     return {
       access,
       isProfessional,

@@ -94,7 +94,9 @@ function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: U
   const visibility = getGlobalNavigationVisibility(access, pathname);
   const hasProfessionalEntry = visibility.showCompetitionManagement || visibility.showManagement;
 
-  if (mode === "player" || !hasProfessionalEntry) {
+  if (mode === "player") return items;
+
+  if (!hasProfessionalEntry) {
     return items;
   }
 
@@ -129,7 +131,7 @@ export function BottomNav({ user }: { user: User }) {
   void user;
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { access, mode, workEntryPath } = useUserMode();
+  const { access, mode, setMode, workEntryPath } = useUserMode();
 
   const items = useMemo(() => buildNavItems(access, pathname, mode, workEntryPath), [access, mode, pathname, workEntryPath]);
   const visibility = useMemo(() => getGlobalNavigationVisibility(access, pathname), [access, pathname]);
@@ -156,7 +158,11 @@ export function BottomNav({ user }: { user: User }) {
               <button
                 key={item.path}
                 className={active ? "active" : ""}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  if (item.group === "work") setMode("work");
+                  if (item.group === "player") setMode("player");
+                  navigate(item.path);
+                }}
                 aria-current={active ? "page" : undefined}
               >
                 <span className="nav-icon" aria-hidden>

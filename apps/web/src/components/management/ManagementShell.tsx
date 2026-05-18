@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
+import { useNavigate } from "react-router-dom";
 import { AppShell } from "../AppShell";
 import type { Profile } from "../../lib/types";
 import type { AppSurfaceMode } from "../../lib/role-visibility";
+import { useUserMode } from "../../lib/user-mode-context";
 
 type ManagementShellStat = {
   label: string;
@@ -32,6 +34,10 @@ export function ManagementShell({
   title,
   user,
 }: ManagementShellProps) {
+  const navigate = useNavigate();
+  const userMode = useUserMode();
+  const showModeSwitch = userMode.isProfessional;
+
   return (
     <AppShell user={user} profile={profile} showHeader={false} mode={mode}>
       <div className="management-shell-page">
@@ -51,7 +57,25 @@ export function ManagementShell({
               ))}
             </div>
           ) : null}
-          {actions ? <div className="management-shell-actions">{actions}</div> : null}
+          {actions || showModeSwitch ? (
+            <div className="management-shell-actions">
+              {showModeSwitch ? (
+                <div className="management-mode-switch" aria-label="Modo atual">
+                  <span>Trabalho</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      userMode.setMode("player");
+                      navigate("/inicio");
+                    }}
+                  >
+                    Ir para jogador
+                  </button>
+                </div>
+              ) : null}
+              {actions}
+            </div>
+          ) : null}
         </header>
         {children}
       </div>

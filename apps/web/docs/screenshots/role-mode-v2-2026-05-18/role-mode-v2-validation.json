@@ -1,0 +1,157 @@
+{
+  "createdAt": "2026-05-18T15:51:22.571Z",
+  "shots": [
+    {
+      "name": "desktop1366-player-home",
+      "route": "/inicio",
+      "width": 1366,
+      "height": 900,
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/desktop1366-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/desktop1366-player-home.txt",
+      "errors": [],
+      "path": "#/inicio",
+      "surface": "player",
+      "navItems": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "modeButtons": [
+        {
+          "text": "Jogador",
+          "active": true
+        },
+        {
+          "text": "Trabalho",
+          "active": false
+        }
+      ],
+      "managementModeSwitch": false,
+      "hasManagementWorkspace": false,
+      "hasPlayerDiscovery": true,
+      "hasProfessionalInviteCopy": true
+    },
+    {
+      "name": "mobile390-player-home",
+      "route": "/inicio",
+      "width": 390,
+      "height": 900,
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/mobile390-player-home.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/mobile390-player-home.txt",
+      "errors": [],
+      "path": "#/inicio",
+      "surface": "player",
+      "navItems": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "modeButtons": [
+        {
+          "text": "Jogador",
+          "active": true
+        },
+        {
+          "text": "Trabalho",
+          "active": false
+        }
+      ],
+      "managementModeSwitch": false,
+      "hasManagementWorkspace": false,
+      "hasPlayerDiscovery": true,
+      "hasProfessionalInviteCopy": true
+    },
+    {
+      "name": "desktop1366-work-hub",
+      "route": "/gestao",
+      "width": 1366,
+      "height": 900,
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/desktop1366-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/desktop1366-work-hub.txt",
+      "errors": [],
+      "path": "#/gestao",
+      "surface": "management",
+      "navItems": [
+        "Gestao",
+        "Organizar",
+        "Perfil"
+      ],
+      "modeButtons": [],
+      "managementModeSwitch": true,
+      "hasManagementWorkspace": true,
+      "hasPlayerDiscovery": true,
+      "hasProfessionalInviteCopy": false
+    },
+    {
+      "name": "mobile390-work-hub",
+      "route": "/gestao",
+      "width": 390,
+      "height": 900,
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/mobile390-work-hub.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/mobile390-work-hub.txt",
+      "errors": [],
+      "path": "#/gestao",
+      "surface": "management",
+      "navItems": [
+        "Gestao",
+        "Organizar",
+        "Perfil"
+      ],
+      "modeButtons": [],
+      "managementModeSwitch": true,
+      "hasManagementWorkspace": true,
+      "hasPlayerDiscovery": true,
+      "hasProfessionalInviteCopy": false
+    },
+    {
+      "name": "desktop1366-player-competir",
+      "route": "/eventos",
+      "width": 1366,
+      "height": 900,
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/desktop1366-player-competir.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/desktop1366-player-competir.txt",
+      "errors": [],
+      "path": "#/eventos",
+      "surface": "competition",
+      "navItems": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "modeButtons": [],
+      "managementModeSwitch": false,
+      "hasManagementWorkspace": false,
+      "hasPlayerDiscovery": true,
+      "hasProfessionalInviteCopy": false
+    },
+    {
+      "name": "mobile390-player-competir",
+      "route": "/eventos",
+      "width": 390,
+      "height": 900,
+      "png": "web/docs/screenshots/role-mode-v2-2026-05-18/mobile390-player-competir.png",
+      "txt": "web/docs/screenshots/role-mode-v2-2026-05-18/mobile390-player-competir.txt",
+      "errors": [],
+      "path": "#/eventos",
+      "surface": "competition",
+      "navItems": [
+        "Inicio",
+        "Competir",
+        "Locais",
+        "Ranking",
+        "Perfil"
+      ],
+      "modeButtons": [],
+      "managementModeSwitch": false,
+      "hasManagementWorkspace": false,
+      "hasPlayerDiscovery": true,
+      "hasProfessionalInviteCopy": false
+    }
+  ]
+}

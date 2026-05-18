@@ -1,6 +1,7 @@
 import type { WorkspaceAccessSummary } from "./workspace-access";
 
 export type AppSurfaceMode = "player" | "competition" | "management";
+export type AppExperienceMode = "player" | "work";
 
 export type GlobalNavigationVisibility = {
   activeSurface: AppSurfaceMode;
@@ -16,6 +17,17 @@ export function getRouteSurfaceMode(pathname: string): AppSurfaceMode {
   if (pathname.startsWith("/inscricao/")) return "competition";
   if (pathname.startsWith("/join/")) return "competition";
   if (pathname.startsWith("/t/")) return "competition";
+  return "player";
+}
+
+export function getRouteExperienceMode(pathname: string, search = ""): AppExperienceMode {
+  const params = new URLSearchParams(search);
+  if (params.get("mode") === "work") return "work";
+  if (pathname.startsWith("/gestao")) return "work";
+  if (/^\/locais\/[^/]+\/admin(\/|$)/.test(pathname)) return "work";
+  if (/^\/eventos\/[^/]+\/organizacao(\/|$)/.test(pathname)) return "work";
+  if (pathname === "/eventos/torneios" && params.get("view") === "organizing") return "work";
+  if (pathname === "/eventos/ligas" && params.get("view") === "organizing") return "work";
   return "player";
 }
 
