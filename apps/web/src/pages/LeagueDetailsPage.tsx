@@ -13,6 +13,7 @@ import {
   applyLeagueSeasonMovements,
   createLeagueRankingSnapshot,
   createLeagueClass,
+  deleteLeagueMatchRoomLink,
   deleteLeagueChatMessage,
   confirmLeagueMatchResult,
   createLeagueJoinLink,
@@ -27,6 +28,7 @@ import {
   loadLeagueSchedulerRuns,
   loadMatchAvailability,
   loadMatchMessages,
+  loadLeagueMatchRoomLink,
   loadMatchSubmissions,
   loadRoundMatches,
   loadSeasonRounds,
@@ -34,6 +36,7 @@ import {
   requestPublicLeagueJoin,
   saveMyMatchAvailability,
   sendLeagueChatMessage,
+  saveLeagueMatchRoomLink,
   sendMatchMessage,
   setLeaguePinnedMessage,
   setLeagueRegistrationStatus,
@@ -48,6 +51,7 @@ import type {
   LeagueDetails,
   LeagueMatchAvailability,
   LeagueMatchMessage,
+  LeagueMatchRoomLink,
   LeagueMatchSummary,
   LeaguePlayerStanding,
   LeagueRankingSnapshot,
@@ -735,6 +739,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [availabilityByMatch, setAvailabilityByMatch] = useState<Record<string, LeagueMatchAvailability[]>>({});
   const [messagesByMatch, setMessagesByMatch] = useState<Record<string, LeagueMatchMessage[]>>({});
   const [messageDraftByMatch, setMessageDraftByMatch] = useState<Record<string, string>>({});
+  const [roomLinksByMatch, setRoomLinksByMatch] = useState<Record<string, LeagueMatchRoomLink | null>>({});
+  const [roomLinkDraftByMatch, setRoomLinkDraftByMatch] = useState<Record<string, string>>({});
   const [myAvailabilityByMatch, setMyAvailabilityByMatch] = useState<Record<string, string[]>>({});
   const [settingsDraft, setSettingsDraft] = useState<LeagueSettingsDraft | null>(null);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
@@ -1192,14 +1198,17 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   async function openMatchRoom(match: LeagueMatchSummary, forceOpen = false) {
     const nextId = forceOpen ? match.id : match.id;
     setExpandedMatchId(nextId);
-    const [subs, avail, msgs] = await Promise.all([
+    const [subs, avail, msgs, roomLink] = await Promise.all([
       loadMatchSubmissions(match.id).catch(() => []),
       loadMatchAvailability(match.id).catch(() => []),
       loadMatchMessages(match.id).catch(() => []),
+      loadLeagueMatchRoomLink(match.id).catch(() => null),
     ]);
     setMatchSubmissions((prev) => ({ ...prev, [match.id]: subs }));
     setAvailabilityByMatch((prev) => ({ ...prev, [match.id]: avail }));
     setMessagesByMatch((prev) => ({ ...prev, [match.id]: msgs }));
+    setRoomLinksByMatch((prev) => ({ ...prev, [match.id]: roomLink }));
+    setRoomLinkDraftByMatch((prev) => ({ ...prev, [match.id]: roomLink?.whatsappGroupUrl || prev[match.id] || "" }));
 
     const myPlayer = match.participants.find((p) => p.userId === user.id);
     if (myPlayer?.leaguePlayerId) {
@@ -1294,6 +1303,26 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     return `${u.origin}${u.pathname}#/eventos/ligas/${encodeURIComponent(league.id)}`;
   }
 
+  function buildLeagueMatchRoomLink(matchId: string): string {
+    if (!league) return "";
+    const u = new URL(window.location.href);
+    return `${u.origin}${u.pathname}#/eventos/ligas/${encodeURIComponent(league.id)}?tab=partidas&room=${encodeURIComponent(matchId)}`;
+  }
+
+  function normalizeWhatsAppPhone(phone: string): string {
+    const digits = phone.replace(/\D/g, "");
+    if (!digits) return "";
+    if (digits.startsWith("55") && digits.length >= 12) return digits;
+    if (digits.length === 10 || digits.length === 11) return `55${digits}`;
+    return digits.length >= 12 ? digits : "";
+  }
+
+  function buildParticipantWhatsAppUrl(phone: string, targetLink: string): string {
+    const normalized = normalizeWhatsAppPhone(phone);
+    const text = `Ola, segue o link da sala/grupo da nossa partida: ${targetLink}`;
+    return `https://wa.me/${normalized}?text=${encodeURIComponent(text)}`;
+  }
+
   async function copyLeagueShareLink() {
     const copied = await copyTextWithFallback(buildLeagueShareLink());
     setFeedback({
@@ -1336,6 +1365,37 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       setFeedback({ kind: "success", text: "Convite da liga aberto no WhatsApp." });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao compartilhar liga." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onSaveMatchRoomLink(matchId: string) {
+    const draft = (roomLinkDraftByMatch[matchId] || "").trim();
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const saved = await saveLeagueMatchRoomLink(matchId, draft);
+      setRoomLinksByMatch((prev) => ({ ...prev, [matchId]: saved }));
+      setRoomLinkDraftByMatch((prev) => ({ ...prev, [matchId]: saved.whatsappGroupUrl }));
+      setFeedback({ kind: "success", text: draft ? "Link do grupo salvo." : "Link do grupo limpo." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Nao foi possivel salvar o link." });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onDeleteMatchRoomLink(matchId: string) {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await deleteLeagueMatchRoomLink(matchId);
+      setRoomLinksByMatch((prev) => ({ ...prev, [matchId]: null }));
+      setRoomLinkDraftByMatch((prev) => ({ ...prev, [matchId]: "" }));
+      setFeedback({ kind: "success", text: "Link do grupo removido." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Nao foi possivel remover o link." });
     } finally {
       setBusy(false);
     }
@@ -1853,6 +1913,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     const msgs = messagesByMatch[m.id] || [];
     const mySlots = myAvailabilityByMatch[m.id] || ["", "", ""];
     const myPlayer = m.participants.find((p) => p.userId === user.id);
+    const roomLink = roomLinksByMatch[m.id]?.whatsappGroupUrl || "";
+    const roomLinkDraft = roomLinkDraftByMatch[m.id] ?? roomLink;
+    const roomShareTarget = roomLink || buildLeagueMatchRoomLink(m.id);
+    const myPhone = normalizeWhatsAppPhone(profile?.phone || "");
+    const canEditRoomLink = Boolean(isOwner || myPlayer);
     const opState = buildLeagueMatchOperationalState({
       match: m,
       availability: avail,
@@ -2062,17 +2127,60 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             )}
           </section>
 
+          <section className="league-room-panel league-room-whatsapp">
+            <h4>Grupo do WhatsApp</h4>
+            <p className="subtle">Use um link curto para manter a comunicacao da partida sem sair desta sala.</p>
+            {roomLink ? (
+              <div className="league-room-link-actions">
+                <a className="button-like primary" href={roomLink} target="_blank" rel="noreferrer">
+                  Abrir grupo
+                </a>
+                <button className="secondary" onClick={() => void copyTextWithFallback(roomLink).then((copied) => setFeedback({ kind: "success", text: copied ? "Link copiado." : "Link aberto para copia manual." }))}>
+                  Copiar link
+                </button>
+              </div>
+            ) : (
+              <p className="subtle">Nenhum link de grupo salvo ainda.</p>
+            )}
+            {canEditRoomLink ? (
+              <div className="league-room-link-editor">
+                <input
+                  value={roomLinkDraft}
+                  onChange={(event) => setRoomLinkDraftByMatch((prev) => ({ ...prev, [m.id]: event.target.value }))}
+                  placeholder="https://chat.whatsapp.com/..."
+                />
+                <button onClick={() => void onSaveMatchRoomLink(m.id)} disabled={busy}>
+                  Salvar link
+                </button>
+                {roomLink ? (
+                  <button className="danger" onClick={() => void onDeleteMatchRoomLink(m.id)} disabled={busy}>
+                    Remover
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
+          </section>
+
           <details className="league-room-panel league-room-disclosure">
             <summary>
               <span>Participantes e contatos</span>
               <small>{m.participants.length} jogadores</small>
             </summary>
-            {m.participants.map((p, pIdx) => (
-              <div key={`${p.leaguePlayerId || "x"}-${pIdx}`} className="league-participant-row">
-                <span><PlayerProfileLink userId={p.userId} name={p.displayName} /></span>
-                <span>{p.phone || "-"}</span>
-              </div>
-            ))}
+            {m.participants.map((p, pIdx) => {
+              const normalizedPhone = normalizeWhatsAppPhone(p.phone || "");
+              const canSendWhatsApp = Boolean(normalizedPhone && (!myPhone || normalizedPhone !== myPhone));
+              return (
+                <div key={`${p.leaguePlayerId || "x"}-${pIdx}`} className="league-participant-row">
+                  <span><PlayerProfileLink userId={p.userId} name={p.displayName} /></span>
+                  <span>{p.phone || "-"}</span>
+                  {canSendWhatsApp ? (
+                    <a className="button-like secondary compact" href={buildParticipantWhatsAppUrl(p.phone, roomShareTarget)} target="_blank" rel="noreferrer">
+                      Enviar link
+                    </a>
+                  ) : null}
+                </div>
+              );
+            })}
           </details>
 
           <details className="league-room-panel league-room-disclosure league-room-chat">

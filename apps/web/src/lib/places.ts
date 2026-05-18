@@ -2076,14 +2076,19 @@ export async function listMyCourtBookingWaitlist(): Promise<CourtBookingWaitlist
   );
 }
 
-export async function listMyCourtBookings(): Promise<CourtBooking[]> {
+export async function listMyCourtBookings(options: { includeHistory?: boolean; limit?: number } = {}): Promise<CourtBooking[]> {
   if (!supabase) return [];
-  const { data, error } = await supabase
+  let query = supabase
     .from(TABLE_BOOKINGS)
     .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,recurrence_group_id,recurrence_index,recurrence_total,created_at")
-    .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
     .order("starts_at", { ascending: true })
-    .limit(80);
+    .limit(options.limit || 160);
+
+  if (!options.includeHistory) {
+    query = query.gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+  }
+
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
 
   const rows = (data ?? []) as BookingRow[];

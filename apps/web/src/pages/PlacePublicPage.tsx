@@ -148,6 +148,16 @@ function addMinutesToDateTimeLocal(value: string, minutes: number): string {
   return datetimeLocalValue(d);
 }
 
+function isPastDateTimeLocal(value: string): boolean {
+  if (!value) return false;
+  const d = new Date(value);
+  return !Number.isNaN(d.getTime()) && d.getTime() <= Date.now();
+}
+
+function pastBookingMessage(): string {
+  return "Esse horario ja passou. Escolha outro horario disponivel.";
+}
+
 function periodMatchesTime(time: string, period: DiscoveryPeriod): boolean {
   if (!period) return true;
   const hour = Number((time || "").slice(0, 2));
@@ -579,6 +589,7 @@ export function PlacePublicPage({ user, profile }: Props) {
   const selectedSlotKey = `${bookingTime}:${bookingDraft.courtId}`;
   const selectedSlotStartMinute = minutesFromTime(bookingTime);
   const selectedSlotEndMinute = selectedSlotStartMinute + bookingDuration;
+  const bookingSlotIsPast = isPastDateTimeLocal(bookingDraft.startsAt);
   const bookingProfileName = profile?.displayName || bookingDraft.playerName || user.email || "Jogador";
   const bookingProfilePhone = profile?.phone || bookingDraft.phone || "";
   const bookingNeedsContactCompletion = !bookingProfilePhone.trim();
@@ -598,17 +609,20 @@ export function PlacePublicPage({ user, profile }: Props) {
     bookingDraft.courtId &&
       bookingDraft.startsAt &&
       bookingDraft.endsAt &&
+      !bookingSlotIsPast &&
       availableCourts.some((court) => court.id === bookingDraft.courtId)
   );
   const courtAvailabilityCards = activeCourts.map((court) => ({
     court,
     slots: buildAvailabilityTimes().map((time) => {
+      const slotStartsAt = combineDateAndTime(availabilityDate || bookingDate, time);
+      const isPast = isPastDateTimeLocal(slotStartsAt);
       const row = availabilityRows.find((item) => item.time === time);
       const availableCourt = row?.courts.find((item) => item.id === court.id) || null;
       return {
         time,
-        availableCourt,
-        status: availableCourt ? "available" : availabilityLoaded ? "busy" : "idle",
+        availableCourt: isPast ? null : availableCourt,
+        status: isPast ? "past" : availableCourt ? "available" : availabilityLoaded ? "busy" : "idle",
       };
     }),
   }));
@@ -751,6 +765,9 @@ export function PlacePublicPage({ user, profile }: Props) {
         buildAvailabilityTimes().map(async (time) => {
           const startsAt = combineDateAndTime(dateOverride, time);
           const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
+          if (isPastDateTimeLocal(startsAt)) {
+            return { time, courts: [] as AvailableCourt[] };
+          }
           const courts = await searchAvailableCourts({
             placeId: place.id,
             startsAt: new Date(startsAt).toISOString(),
@@ -817,6 +834,12 @@ export function PlacePublicPage({ user, profile }: Props) {
     const duration = Math.max(60, Math.min(120, Number(availabilityDurationMinutes) || 60));
     const startsAt = combineDateAndTime(availabilityDate, time);
     const endsAt = addMinutesToDateTimeLocal(startsAt, duration);
+    if (isPastDateTimeLocal(startsAt)) {
+      const message = pastBookingMessage();
+      setBookingFeedback(message);
+      showToast({ kind: "error", text: message });
+      return;
+    }
     setBookingDraft((prev) => ({
       ...prev,
       courtId: court.id,
@@ -829,6 +852,12 @@ export function PlacePublicPage({ user, profile }: Props) {
 
   const requestBooking = async () => {
     if (!place || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt) return;
+    if (isPastDateTimeLocal(bookingDraft.startsAt)) {
+      const message = pastBookingMessage();
+      setBookingFeedback(message);
+      showToast({ kind: "error", text: message });
+      return;
+    }
     setBookingBusy(true);
     setBookingFeedback("");
     try {
@@ -858,6 +887,12 @@ export function PlacePublicPage({ user, profile }: Props) {
   const requestBookingWaitlist = async () => {
     if (!place || !bookingDraft.courtId || !bookingDraft.startsAt || !bookingDraft.endsAt) {
       setBookingFeedback("Escolha uma quadra e um horario para entrar na lista de espera.");
+      return;
+    }
+    if (isPastDateTimeLocal(bookingDraft.startsAt)) {
+      const message = pastBookingMessage();
+      setBookingFeedback(message);
+      showToast({ kind: "error", text: message });
       return;
     }
     setWaitlistBusy(true);
@@ -1241,15 +1276,16 @@ export function PlacePublicPage({ user, profile }: Props) {
                                   slotMinute < selectedSlotEndMinute;
                                 const isSelectedContinuation = isSelectedRange && !isSelected;
                                 const isAvailable = Boolean(slot.availableCourt);
+                                const isPast = slot.status === "past";
                                 return (
                                   <button
                                     key={`court-slot:${court.id}:${slot.time}`}
                                     className={isSelected ? "selected" : isSelectedContinuation ? "selected-range" : slot.status}
-                                    disabled={isSelectedContinuation || !isAvailable}
+                                    disabled={isSelectedContinuation || !isAvailable || isPast}
                                     onClick={() => (slot.availableCourt && !isSelectedContinuation ? selectAvailabilitySlot(slot.time, slot.availableCourt) : undefined)}
                                   >
                                     <span>{slot.time}</span>
-                                    <small>{isSelected ? selectedDurationLabel : isSelectedContinuation ? "Incluido" : isAvailable ? "Livre" : "Ocupado"}</small>
+                                    <small>{isPast ? "Passou" : isSelected ? selectedDurationLabel : isSelectedContinuation ? "Incluido" : isAvailable ? "Livre" : "Ocupado"}</small>
                                   </button>
                                 );
                               })}
@@ -1325,11 +1361,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <button
                         className="primary"
                         onClick={() => void requestBooking()}
-                        disabled={bookingBusy || !bookingSlotConfirmed || !bookingProfileName.trim()}
+                        disabled={bookingBusy || bookingSlotIsPast || !bookingSlotConfirmed || !bookingProfileName.trim()}
                       >
                         {bookingBusy ? "Solicitando..." : "Solicitar reserva"}
                       </button>
-                      <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || !bookingDraft.courtId || !bookingProfileName.trim()}>
+                      <button className="secondary" onClick={() => void requestBookingWaitlist()} disabled={waitlistBusy || bookingSlotIsPast || !bookingDraft.courtId || !bookingProfileName.trim()}>
                         {waitlistBusy ? "Entrando..." : "Lista de espera"}
                       </button>
                       <button className="quiet" onClick={() => navigate("/locais?intent=booking")}>Ver outros locais</button>

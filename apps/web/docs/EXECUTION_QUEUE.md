@@ -44,6 +44,82 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## Sprint atual - Contexto pessoal, reservas e sala de jogo
+
+### [x] PLAYER-CONTEXT-01 - Home abre areas reais em vez de modulos genericos
+
+Status: `[x]` concluido em 2026-05-18
+
+Fonte:
+
+- `manual_frontend_design_produto_apps_modernos.md`
+- `ROLE_MODE_V2_PRODUCT_UX_SPEC.md`
+- `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
+- pedido de QA/contexto do usuario em 2026-05-18
+
+Objetivo:
+
+- transformar cards da Home (`Minhas reservas`, `Minhas partidas`, `Minhas aulas`, `Meus pagamentos`) em atalhos para paginas proprias;
+- manter a Home como resumo pessoal, nao como tela completa de gestao;
+- preservar o contexto ao clicar em item especifico.
+
+Entrega:
+
+1. Criada rota `/minhas-reservas` com proximas reservas, historico e detalhe em dialog contextual.
+2. Criada rota `/minhas-partidas` com competicoes ativas e historico, apontando para o contexto correto de torneio/liga.
+3. Criada rota `/minhas-aulas` com matriculas ativas/pendentes e contexto de turma/professor/local.
+4. Criada rota `/meus-pagamentos` com pendencias e historico de pagamentos manuais/simulados.
+5. Home agora aponta reservas especificas para `/minhas-reservas?reserva={id}`.
+
+Criterios validados:
+
+- lint passou;
+- build passou;
+- paginas novas usam `AppShell` em modo jogador e estados de carregando/vazio/erro.
+
+### [x] PLAYER-BOOKING-01 - Reserva nao permite horarios passados
+
+Status: `[x]` concluido em 2026-05-18
+
+Objetivo:
+
+- impedir solicitacao de reserva ou lista de espera em horario ja encerrado;
+- corrigir UI para nao apresentar horarios passados como livres.
+
+Entrega:
+
+1. Horarios passados deixam de ser consultados na busca de disponibilidade.
+2. Slots passados aparecem desabilitados como `Passou`.
+3. Solicitar reserva/lista de espera valida novamente no frontend antes de enviar.
+4. Migration `0095_booking_past_time_guard_v1.sql` adiciona protecao nas RPCs `app_search_available_courts`, `app_create_court_booking` e `app_join_court_booking_waitlist`.
+
+Criterios validados:
+
+- lint passou;
+- build passou.
+
+### [x] PLAYER-ROOM-01 - Sala da liga sem perda de foco e com WhatsApp contextual
+
+Status: `[x]` concluido em 2026-05-18
+
+Objetivo:
+
+- corrigir chat da sala perdendo foco ao digitar;
+- adicionar link de grupo de WhatsApp e envio do link para participantes sem sair do modal.
+
+Entrega:
+
+1. `AppDialog` deixou de refazer o ciclo de foco quando `onClose` muda entre renders.
+2. Criada tabela `league_match_room_links` via migration `0096_league_match_room_links_v1.sql`.
+3. Sala da liga carrega/salva/remove link de grupo.
+4. Participantes com telefone valido recebem acao `Enviar link`; o proprio usuario nao recebe botao para si mesmo.
+5. Se nao houver grupo salvo, o link enviado e o da propria sala.
+
+Criterios validados:
+
+- lint passou;
+- build passou.
+
 ## P0 - Prioridade atual
 
 ### [x] ROLE-MODE-V2-01 - Separacao real Jogador vs Trabalho

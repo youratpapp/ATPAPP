@@ -7,6 +7,7 @@ import type {
   LeagueJoinContext,
   LeagueMatchAvailability,
   LeagueMatchMessage,
+  LeagueMatchRoomLink,
   LeagueMatchSummary,
   LeaguePlayerStanding,
   LeagueRankingSnapshot,
@@ -33,6 +34,15 @@ type LeagueRpcRow = {
   status: string | null;
   visibility: string | null;
   role: string | null;
+  updated_at: string | null;
+};
+
+type LeagueMatchRoomLinkRow = {
+  match_id: string;
+  whatsapp_group_url: string | null;
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string | null;
   updated_at: string | null;
 };
 
@@ -1031,6 +1041,58 @@ export async function sendMatchMessage(matchId: string, body: string): Promise<v
     sender_user_id: authData.user.id,
     body: text,
   });
+  if (error) throw new Error(error.message);
+}
+
+function rowToLeagueMatchRoomLink(row: LeagueMatchRoomLinkRow): LeagueMatchRoomLink {
+  return {
+    matchId: row.match_id,
+    whatsappGroupUrl: row.whatsapp_group_url || "",
+    createdBy: row.created_by,
+    updatedBy: row.updated_by,
+    createdAt: row.created_at || "",
+    updatedAt: row.updated_at || "",
+  };
+}
+
+export async function loadLeagueMatchRoomLink(matchId: string): Promise<LeagueMatchRoomLink | null> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase
+    .from("league_match_room_links")
+    .select("match_id,whatsapp_group_url,created_by,updated_by,created_at,updated_at")
+    .eq("match_id", matchId)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return data ? rowToLeagueMatchRoomLink(data as LeagueMatchRoomLinkRow) : null;
+}
+
+export async function saveLeagueMatchRoomLink(matchId: string, whatsappGroupUrl: string): Promise<LeagueMatchRoomLink> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const url = whatsappGroupUrl.trim();
+  if (url && !/^https?:\/\//i.test(url)) throw new Error("Informe um link valido com http ou https.");
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError || !authData.user) throw new Error(authError?.message || "Usuario nao autenticado.");
+  const { data, error } = await supabase
+    .from("league_match_room_links")
+    .upsert(
+      {
+        match_id: matchId,
+        whatsapp_group_url: url,
+        created_by: authData.user.id,
+        updated_by: authData.user.id,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "match_id" }
+    )
+    .select("match_id,whatsapp_group_url,created_by,updated_by,created_at,updated_at")
+    .single();
+  if (error) throw new Error(error.message);
+  return rowToLeagueMatchRoomLink(data as LeagueMatchRoomLinkRow);
+}
+
+export async function deleteLeagueMatchRoomLink(matchId: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { error } = await supabase.from("league_match_room_links").delete().eq("match_id", matchId);
   if (error) throw new Error(error.message);
 }
 

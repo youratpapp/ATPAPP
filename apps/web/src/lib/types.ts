@@ -838,6 +838,15 @@ export type LeagueMatchMessage = {
   createdAt: string;
 };
 
+export type LeagueMatchRoomLink = {
+  matchId: string;
+  whatsappGroupUrl: string;
+  createdBy: string | null;
+  updatedBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type LeagueSchedulerRun = {
   id: string;
   executedAt: string;

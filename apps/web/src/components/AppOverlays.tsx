@@ -14,6 +14,11 @@ type OverlayBaseProps = {
 function useOverlayLifecycle(open: boolean, onClose: () => void) {
   const panelRef = useRef<HTMLDivElement | HTMLElement | null>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     if (!open) return;
@@ -26,7 +31,7 @@ function useOverlayLifecycle(open: boolean, onClose: () => void) {
     }, 0);
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") onCloseRef.current();
     };
 
     window.addEventListener("keydown", onKeyDown);
@@ -35,7 +40,7 @@ function useOverlayLifecycle(open: boolean, onClose: () => void) {
       window.removeEventListener("keydown", onKeyDown);
       previousFocusRef.current?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   return panelRef;
 }

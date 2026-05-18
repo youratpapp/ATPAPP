@@ -1460,7 +1460,7 @@ export function HomePage({ user, profile }: Props) {
       .filter((item) => item.role === "player" && item.status !== "cancelled")
       .map((item) => ({
         id: `booking:${item.id}`,
-        targetPath: buildPublicPlaceBookingPath(item.placeId),
+        targetPath: `/minhas-reservas?reserva=${encodeURIComponent(item.id)}`,
         title: item.courtName,
         detail: item.placeName,
         meta: `${formatShortDateTime(item.startsAt)} - ${courtBookingStatusLabel(item.status)}`,
@@ -1470,7 +1470,7 @@ export function HomePage({ user, profile }: Props) {
       .filter((item) => item.role === "player" && item.status !== "cancelled")
       .map((item) => ({
         id: `waitlist:${item.id}`,
-        targetPath: buildPublicPlaceBookingPath(item.placeId),
+        targetPath: "/minhas-reservas",
         title: item.courtName,
         detail: item.placeName,
         meta: `${formatShortDateTime(item.startsAt)} - ${courtWaitlistStatusLabel(item.status)}`,
@@ -1499,7 +1499,7 @@ export function HomePage({ user, profile }: Props) {
     .filter((item) => item.id.startsWith("academy-player") || item.id.startsWith("academy-makeup"))
     .map((item) => ({
       id: `lesson:${item.id}`,
-      targetPath: item.targetPath,
+      targetPath: "/minhas-aulas",
       title: item.title,
       detail: item.sourceName,
       meta: item.detail,
@@ -1509,7 +1509,7 @@ export function HomePage({ user, profile }: Props) {
     .filter((item) => item.id.startsWith("membership-player") || item.detail.toLowerCase().includes("pagamento"))
     .map((item) => ({
       id: `payment:${item.id}`,
-      targetPath: item.targetPath,
+      targetPath: "/meus-pagamentos",
       title: item.title,
       detail: item.sourceName,
       meta: item.detail,
@@ -1669,9 +1669,9 @@ export function HomePage({ user, profile }: Props) {
       label: "Quadras",
       title: "Minhas reservas",
       detail: "Reservas e lista de espera em um so lugar.",
-      action: "Abrir agenda de quadras",
+      action: "Ver reservas",
       items: playerReservationItems,
-      onOpen: () => navigate("/locais?intent=booking"),
+      onOpen: () => navigate("/minhas-reservas"),
     },
     {
       key: "matches",
@@ -1680,7 +1680,7 @@ export function HomePage({ user, profile }: Props) {
       detail: "Confirmações, horários e resultados pendentes.",
       action: "Abrir eventos",
       items: playerMatchItems,
-      onOpen: () => navigate("/eventos"),
+      onOpen: () => navigate("/minhas-partidas"),
     },
     {
       key: "lessons",
@@ -1689,7 +1689,7 @@ export function HomePage({ user, profile }: Props) {
       detail: "Turmas, reposicoes e acompanhamento de aula.",
       action: "Abrir aulas",
       items: playerLessonItems,
-      onOpen: () => navigate("/locais?intent=classes"),
+      onOpen: () => navigate("/minhas-aulas"),
     },
     {
       key: "payments",
@@ -1698,7 +1698,7 @@ export function HomePage({ user, profile }: Props) {
       detail: "Planos e pendências ligadas ao clube.",
       action: "Ver financeiro",
       items: playerPaymentItems,
-      onOpen: () => navigate("/locais?intent=venues"),
+      onOpen: () => navigate("/meus-pagamentos"),
     },
     {
       key: "invites",
