@@ -1,0 +1,47 @@
+url=http://127.0.0.1:5173/#/jogadores/4f815a44-4630-4f25-a9b6-e671dc6a189d
+
+Bem-vindo
+
+Escalao Admin
+
+Jogador
+Trabalho
+Voltar
+PERFIL DO JOGADOR
+Guilherme Teixeira
+
+Campo Grande - MS
+
+Joga torneios e liga semanalmente. Perfil demo completo para QA.
+Partidas
+7
+Vitorias
+7
+Aproveitamento
+88%
+Melhor pontuacao
+141
+CONFRONTO DIRETO
+Voce x Guilherme Teixeira
+
+Historico direto sera exibido aqui quando houver partidas registradas entre voces.
+
+SCOUTING PRIVADO
+Suas anotacoes sobre este jogador
+Salvo
+HISTORICO
+Competicoes e rankings
+1 recortes
+Prime Duplas Fixas
+Temporada 2026.1 - Adulto / Classe C
+#1
+141 pts | 7-1
+ATP
+Jogador
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+CONTA
+Perfil

@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
 import { PublishingKit } from "../components/PublishingKit";
+import { friendlyToastMessage, useToast } from "../components/toast";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import {
   createAcademyEnrollment,
@@ -219,6 +220,7 @@ export function PlacePublicPage({ user, profile }: Props) {
   const { placeId, placeIntent } = useParams();
   const navigate = useNavigate();
   const routeLocation = useLocation();
+  const { showToast } = useToast();
   const [place, setPlace] = useState<Place | null>(null);
   const [courts, setCourts] = useState<PlaceCourt[]>([]);
   const [classes, setClasses] = useState<AcademyClass[]>([]);
@@ -839,12 +841,15 @@ export function PlacePublicPage({ user, profile }: Props) {
         phone: bookingProfilePhone,
         notes: bookingDraft.notes,
       });
-      setBookingFeedback("Reserva solicitada e vinculada ao seu perfil. O gestor encontra em Gestao > Agenda > Reservas pendentes.");
+      setBookingFeedback("Reserva solicitada. O local pode confirmar o horario pela agenda.");
+      showToast({ kind: "success", text: "Reserva solicitada. O local pode confirmar o horario pela agenda." });
       const startsAt = defaultBookingStart();
       setBookingDraft((prev) => ({ ...prev, startsAt, endsAt: defaultBookingEnd(startsAt), notes: "" }));
       setAvailableCourts([]);
     } catch (err) {
-      setBookingFeedback(err instanceof Error ? err.message : "Não foi possível solicitar a reserva.");
+      const message = friendlyToastMessage(err, "Nao foi possivel solicitar a reserva.");
+      setBookingFeedback(message);
+      showToast({ kind: "error", text: message });
     } finally {
       setBookingBusy(false);
     }
@@ -867,9 +872,12 @@ export function PlacePublicPage({ user, profile }: Props) {
         phone: bookingProfilePhone,
         notes: bookingDraft.notes || "Entrada criada pela página publica do local.",
       });
-      setBookingFeedback("Você entrou na lista de espera. O local pode avisar se liberar horario.");
+      setBookingFeedback("Voce entrou na lista de espera. O local pode avisar se liberar horario.");
+      showToast({ kind: "success", text: "Voce entrou na lista de espera." });
     } catch (err) {
-      setBookingFeedback(err instanceof Error ? err.message : "Não foi possível entrar na lista de espera.");
+      const message = friendlyToastMessage(err, "Nao foi possivel entrar na lista de espera.");
+      setBookingFeedback(message);
+      showToast({ kind: "error", text: message });
     } finally {
       setWaitlistBusy(false);
     }
@@ -885,6 +893,7 @@ export function PlacePublicPage({ user, profile }: Props) {
       );
       if (!classIdsToCreate.length) {
         setAcademyFeedback("Seu interesse ja foi enviado. A academia precisa aprovar antes de aparecer como aula ativa.");
+        showToast({ kind: "info", text: "Seu interesse ja foi enviado." });
         return;
       }
       const selectedLabels = selectedAcademyClasses
@@ -907,10 +916,12 @@ export function PlacePublicPage({ user, profile }: Props) {
         return [...createdEnrollments, ...prev.filter((enrollment) => !createdClassIds.has(enrollment.classId))];
       });
       setAcademyFeedback("Interesse enviado. A academia vai aprovar ou ajustar os dias; quando aprovado, suas aulas aparecem na sua agenda.");
+      showToast({ kind: "success", text: "Interesse enviado para a academia." });
       setAcademyDraft((prev) => ({ ...prev, notes: "" }));
     } catch (err) {
       console.error("Failed to request academy enrollment", err);
       setAcademyFeedback("Não foi possível enviar seu interesse agora. Confira seus dados e tente novamente.");
+      showToast({ kind: "error", text: "Nao foi possivel enviar seu interesse agora." });
     } finally {
       setAcademyBusy(false);
     }
@@ -924,8 +935,11 @@ export function PlacePublicPage({ user, profile }: Props) {
       const updatedMatches = await listOpenMatches(user, [match.placeId || String(placeId || "")]).catch(() => [] as OpenMatch[]);
       setMatches(updatedMatches);
       setMatchFeedback("Você entrou no jogo aberto.");
+      showToast({ kind: "success", text: "Voce entrou no jogo aberto." });
     } catch (err) {
-      setMatchFeedback(err instanceof Error ? err.message : "Não foi possível entrar no jogo.");
+      const message = friendlyToastMessage(err, "Nao foi possivel entrar no jogo.");
+      setMatchFeedback(message);
+      showToast({ kind: "error", text: message });
     } finally {
       setMatchBusyId("");
     }
@@ -954,8 +968,11 @@ export function PlacePublicPage({ user, profile }: Props) {
       setMatchCreateDraft({ startsAt: "", level: "", notes: "" });
       setShowMatchCreate(false);
       setMatchFeedback("Chamada criada neste local.");
+      showToast({ kind: "success", text: "Chamada criada neste local." });
     } catch (err) {
-      setMatchFeedback(err instanceof Error ? err.message : "Não foi possível criar a chamada.");
+      const message = friendlyToastMessage(err, "Nao foi possivel criar a chamada.");
+      setMatchFeedback(message);
+      showToast({ kind: "error", text: message });
     } finally {
       setMatchCreateBusy(false);
     }

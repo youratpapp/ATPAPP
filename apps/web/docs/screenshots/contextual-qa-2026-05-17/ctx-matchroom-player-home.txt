@@ -1,0 +1,12 @@
+url=http://127.0.0.1:5173/#/auth?next=%2Finicio
+
+Entrar na ATP
+
+Torneios, ligas e ranking para tenistas amadores.
+
+Continuar com Google
+OU ENTRE COM E-MAIL
+E-MAIL
+SENHA
+Entrar
+Criar conta

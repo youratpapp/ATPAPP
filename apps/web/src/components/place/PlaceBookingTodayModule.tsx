@@ -1,5 +1,8 @@
+import { useState } from "react";
 import type { AppPayment, CourtBooking } from "../../lib/types";
 import { WorkspaceList, WorkspaceMetrics, WorkspaceRow } from "./PlaceWorkspaceUi";
+
+const DEFAULT_VISIBLE_TODAY_ROWS = 12;
 
 type Props = {
   bookings: CourtBooking[];
@@ -27,12 +30,15 @@ function paymentStatusLabel(payment?: AppPayment): string {
 }
 
 export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, getPaymentForBooking, onUpdateBooking }: Props) {
+  const [showAllTodayBookings, setShowAllTodayBookings] = useState(false);
   const orderedBookings = [...bookings].sort((a, b) => {
     if (a.status === "pending" && b.status !== "pending") return -1;
     if (a.status !== "pending" && b.status === "pending") return 1;
     return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
   });
   const pendingCount = orderedBookings.filter((booking) => booking.status === "pending").length;
+  const shouldLimitTodayRows = !showAllTodayBookings && orderedBookings.length > DEFAULT_VISIBLE_TODAY_ROWS;
+  const visibleBookings = shouldLimitTodayRows ? orderedBookings.slice(0, DEFAULT_VISIBLE_TODAY_ROWS) : orderedBookings;
 
   return (
     <WorkspaceList>
@@ -42,7 +48,19 @@ export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, get
           <span>Confirme ou cancele antes de operar a lista completa do dia.</span>
         </div>
       ) : null}
-      {orderedBookings.map((booking) => {
+      {orderedBookings.length ? (
+        <div className="booking-results-summary">
+          <span>
+            Mostrando {visibleBookings.length} de {orderedBookings.length} reserva(s) de hoje. Pendencias aparecem primeiro.
+          </span>
+          {shouldLimitTodayRows ? (
+            <button className="quiet" type="button" onClick={() => setShowAllTodayBookings(true)}>
+              Ver todas
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+      {visibleBookings.map((booking) => {
         const bookingPayment = getPaymentForBooking(booking.id);
         return (
           <WorkspaceRow

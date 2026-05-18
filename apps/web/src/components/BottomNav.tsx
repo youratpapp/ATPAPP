@@ -1,10 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import type { ComponentType } from "react";
 import type { User } from "@supabase/supabase-js";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import logoMark from "../assets/logo-atp-mark.svg";
-import { EMPTY_WORKSPACE_ACCESS, loadWorkspaceAccessSummary, type WorkspaceAccessSummary } from "../lib/workspace-access";
+import type { WorkspaceAccessSummary } from "../lib/workspace-access";
 import { getGlobalNavigationVisibility } from "../lib/role-visibility";
+import { useUserMode, type UserMode } from "../lib/user-mode-context";
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
@@ -88,22 +89,26 @@ const GROUPS: Array<{ id: NavItem["group"]; label: string }> = [
   { id: "account", label: "Conta" },
 ];
 
-function buildNavItems(access: WorkspaceAccessSummary, pathname: string): NavItem[] {
-  const items = [...BASE_ITEMS];
+function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: UserMode, workEntryPath: string): NavItem[] {
+  const items = mode === "work" ? BASE_ITEMS.filter((item) => item.group === "account") : [...BASE_ITEMS];
   const visibility = getGlobalNavigationVisibility(access, pathname);
   const hasProfessionalEntry = visibility.showCompetitionManagement || visibility.showManagement;
 
-  if (visibility.activeSurface === "player" && hasProfessionalEntry) {
+  if (mode === "player" || !hasProfessionalEntry) {
+    return items;
+  }
+
+  if (access.hasManagement) {
     items.push({
-      activePath: visibility.showManagement ? "/gestao" : "/eventos/torneios",
+      activePath: "/gestao",
       group: "work",
-      path: visibility.showManagement ? "/gestao" : "/eventos/torneios?view=organizing",
-      label: "Trabalho",
+      path: "/gestao",
+      label: "Gestao",
       Icon: ManagementIcon,
     });
   }
 
-  if (visibility.activeSurface === "competition" && visibility.showCompetitionManagement) {
+  if (access.hasCompetitionManagement) {
     items.push({
       activePath: "/eventos/torneios",
       group: "work",
@@ -113,36 +118,23 @@ function buildNavItems(access: WorkspaceAccessSummary, pathname: string): NavIte
     });
   }
 
-  if (visibility.activeSurface === "management" && visibility.showManagement) {
-    items.push({ activePath: pathname, group: "work", path: "/gestao", label: "Gestao", Icon: ManagementIcon });
+  if (!access.hasManagement && !access.hasCompetitionManagement) {
+    items.push({ activePath: workEntryPath.split("?")[0], group: "work", path: workEntryPath, label: "Trabalho", Icon: ManagementIcon });
   }
 
   return items;
 }
 
 export function BottomNav({ user }: { user: User }) {
+  void user;
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [access, setAccess] = useState<WorkspaceAccessSummary>(EMPTY_WORKSPACE_ACCESS);
+  const { access, mode, workEntryPath } = useUserMode();
 
-  useEffect(() => {
-    let cancelled = false;
-    loadWorkspaceAccessSummary(user)
-      .then((summary) => {
-        if (!cancelled) setAccess(summary);
-      })
-      .catch(() => {
-        if (!cancelled) setAccess(EMPTY_WORKSPACE_ACCESS);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [user]);
-
-  const items = useMemo(() => buildNavItems(access, pathname), [access, pathname]);
+  const items = useMemo(() => buildNavItems(access, pathname, mode, workEntryPath), [access, mode, pathname, workEntryPath]);
   const visibility = useMemo(() => getGlobalNavigationVisibility(access, pathname), [access, pathname]);
-  const contextLabel = visibility.contextLabel;
-  const navClassName = `bottom-nav is-${visibility.activeSurface}`;
+  const contextLabel = mode === "work" ? "Trabalho" : visibility.contextLabel;
+  const navClassName = `bottom-nav is-${mode === "work" ? "management" : visibility.activeSurface}`;
 
   return (
     <nav className={navClassName} aria-label="Navegacao principal">

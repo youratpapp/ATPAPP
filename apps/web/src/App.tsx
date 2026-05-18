@@ -4,6 +4,8 @@ import type { User } from "@supabase/supabase-js";
 import { supabase, supabaseConfigured } from "./lib/supabase";
 import { fetchProfile } from "./lib/profiles";
 import { buildTournamentUrl, joinTournament } from "./lib/tournaments";
+import { ToastProvider } from "./components/ToastProvider";
+import { UserModeProvider } from "./lib/user-mode";
 import type { Profile } from "./lib/types";
 import "./App.css";
 
@@ -24,6 +26,7 @@ const PlacePublicPage = lazy(() => import("./pages/PlacePublicPage").then((modul
 const PlaceAdminPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlaceAdminPage })));
 const PlacesPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlacesPage })));
 const ProfilePage = lazy(() => import("./pages/ProfilePage").then((module) => ({ default: module.ProfilePage })));
+const PublicPlayerPage = lazy(() => import("./pages/PublicPlayerPage").then((module) => ({ default: module.PublicPlayerPage })));
 const RankingPage = lazy(() => import("./pages/RankingPage").then((module) => ({ default: module.RankingPage })));
 const TournamentPage = lazy(() => import("./pages/TournamentPage").then((module) => ({ default: module.TournamentPage })));
 const TournamentRegistrationPage = lazy(() => import("./pages/TournamentRegistrationPage").then((module) => ({ default: module.TournamentRegistrationPage })));
@@ -309,6 +312,7 @@ function AppInner() {
 
   return (
     <Suspense fallback={<AppLoadingState />}>
+      <UserModeProvider user={authUser}>
       <Routes>
         <Route path="/auth" element={<AuthAlreadySignedInRedirect />} />
         <Route path="/auth/callback" element={<AuthAlreadySignedInRedirect />} />
@@ -331,6 +335,7 @@ function AppInner() {
         <Route path="/locais/:placeId/admin/:module" element={<PlaceAdminPage user={authUser} profile={profile} />} />
         <Route path="/locais/:placeId/:placeIntent" element={<PlacePublicPage user={authUser} profile={profile} />} />
         <Route path="/locais/:placeId" element={<PlacePublicPage user={authUser} profile={profile} />} />
+        <Route path="/jogadores/:playerId" element={<PublicPlayerPage user={authUser} profile={profile} />} />
         <Route path="/ranking" element={<RankingPage user={authUser} profile={profile} />} />
         <Route
           path="/perfil"
@@ -348,6 +353,7 @@ function AppInner() {
         <Route path="/dashboard" element={<Navigate to="/eventos" replace />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </UserModeProvider>
     </Suspense>
   );
 }
@@ -544,14 +550,14 @@ function NotFoundPage() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <h1>PÃ¡gina nÃ£o encontrada</h1>
-        <p className="auth-sub">NÃ£o encontramos essa rota. VocÃª pode voltar para os eventos.</p>
+        <h1>Pagina nao encontrada</h1>
+        <p className="auth-sub">Nao encontramos essa rota. Voce pode voltar para os eventos.</p>
         <div className="auth-actions">
           <button className="primary" onClick={() => navigate("/eventos", { replace: true })}>
             Ir para eventos
           </button>
           <button className="secondary" onClick={() => navigate("/inicio", { replace: true })}>
-            Ir para inÃ­cio
+            Ir para inicio
           </button>
         </div>
       </section>
@@ -627,11 +633,13 @@ export default function App() {
     );
   }
   return (
-    <HashRouter>
-      <LazyChunkBoundary>
-        <AppInner />
-      </LazyChunkBoundary>
-    </HashRouter>
+    <ToastProvider>
+      <HashRouter>
+        <LazyChunkBoundary>
+          <AppInner />
+        </LazyChunkBoundary>
+      </HashRouter>
+    </ToastProvider>
   );
 }
 

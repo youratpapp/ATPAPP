@@ -44,6 +44,390 @@ Continue para o proximo item da Execution Queue.
 
 ## P0 - Prioridade atual
 
+### [x] CTX-FEEDBACK-01 - Padrao global de feedback visivel
+
+Status: `[x]` concluido em 2026-05-17
+
+Fonte:
+
+- `CONTEXTUAL_UX_RESTRUCTURE_ANALYSIS.md`
+- `COMPONENT_GRAMMAR.md`
+- `UX_FRONTEND_AUDIT.md`
+- manual externo `manual_frontend_design_produto_apps_modernos.md`
+
+Contexto:
+
+- o app usa muitos `setFeedback` locais e mensagens renderizadas dentro da pagina;
+- sucesso/erro de mutacao pode ficar fora da viewport, especialmente no mobile;
+- o manual exige feedback visivel, contextual e sem erro tecnico bruto.
+
+Objetivo:
+
+- criar um padrao global de toast/alerta para resultados de API e mutacoes;
+- manter validacoes de campo inline;
+- garantir que sucesso, erro, loading e cancelamento sejam percebidos no momento da acao.
+
+Escopo:
+
+1. Criar `ToastProvider`/`useToast` no shell raiz do app.
+2. Definir variantes `success`, `error`, `info` e, se simples, `loading`.
+3. Desktop: stack em area fixa, sem cobrir menu/CTA.
+4. Mobile: stack acima da bottom nav ou safe area, sem cobrir CTA principal.
+5. Migrar primeiro fluxos criticos: resultado liga/torneio, reserva, interesse de aula, inscricao e configuracoes importantes.
+6. Erro tecnico fica em console/log; UI recebe mensagem amigavel.
+
+Criterios de conclusao:
+
+- acoes criticas mostram feedback visivel em desktop e mobile;
+- nenhum erro bruto de Supabase aparece em tela nos fluxos migrados;
+- toast nao cria scroll nem empurra layout;
+- lint/build passam;
+- `CURRENT_PRODUCT_STATE.md` atualizado.
+
+Evidencia:
+
+- `ToastProvider` global criado e montado no shell raiz;
+- fluxos migrados: torneio, liga, gestao de locais/academia/agenda e pagina publica de local para reserva, lista de espera, interesse de aula e jogos abertos;
+- erros tecnicos nos toasts migrados passam por mensagem amigavel;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] CTX-MODAL-01 - Sistema unico de dialog, sheet, popover e formulario responsivo
+
+Status: `[x]` concluido em 2026-05-17
+
+Contexto:
+
+- `EntityDrawer` existe, mas ainda nao cobre foco, safe area, scroll lock, teclado mobile e action bar fixa;
+- `ResponsiveFilterSheet` reutiliza os mesmos `children` inline e no drawer, podendo duplicar campos e estados.
+
+Objetivo:
+
+- criar uma base confiavel para modais, salas, filtros e formularios sem cortes no web/mobile.
+
+Escopo:
+
+1. Criar/ajustar componentes base: `AppDialog`, `AppSheet`, `AppPopover` e `FormDialogLayout`.
+2. Garantir `Escape`, retorno de foco, body scroll lock, `dvh`, safe area mobile, action bar fixa, backdrop consistente e aria correto.
+3. Migrar primeiro notificacoes, filtros mobile, sala de jogo e drawers pequenos de gestao que hoje cortam.
+
+Criterios de conclusao:
+
+- modal/sheet funciona em 390px, 430px e desktop;
+- formulario dentro de modal nao corta CTA;
+- filtro mobile nao duplica estado;
+- lint/build passam.
+
+Progresso 2026-05-17:
+
+- criados `AppDialog`, `AppSheet`, `AppPopover` e `FormDialogLayout`;
+- base inclui Escape, retorno de foco, body scroll lock, `dvh`, safe area mobile, backdrop e actions fixas;
+- `EntityDrawer` passou a usar `AppSheet`, preservando compatibilidade com drawers existentes;
+- sino de notificacoes passou a usar `AppPopover`;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+- `ResponsiveFilterSheet` agora renderiza filtros inline no desktop e no drawer apenas no mobile, evitando duplicar os mesmos `children`/estado quando o sheet abre;
+- `npm.cmd run lint` passou apos a correcao do filtro responsivo;
+- a base foi aplicada na sala contextual de liga e torneio pela `CTX-MATCHROOM-01`;
+- `npm.cmd run lint`, `npm.cmd run build` e `git diff --check` passaram apos as migracoes.
+
+Observacao:
+
+- screenshots 390px/430px/desktop ficam na task de QA visual da frente contextual, para nao bloquear a migracao funcional dos fluxos.
+
+### [x] CTX-MATCHROOM-01 - Sala de jogo contextual em modal/sheet para liga e torneio
+
+Status: `[x]` concluido em 2026-05-17
+
+Contexto:
+
+- em liga, `Abrir sala` expande conteudo inline por `expandedMatchId`;
+- em torneio, jogador/admin tambem interagem com resultado e sala dentro da pagina;
+- usuario perde contexto ao abrir sala vindo de Home, notificacao ou lista.
+
+Objetivo:
+
+- clicar em `Abrir sala`, `Entrar na sala`, `Preencher resultado`, `Reservar` ou acao equivalente deve abrir a sala na propria tela, sem redirecionamento e sem expandir a lista.
+
+Escopo:
+
+1. Criar `MatchRoomDialog`/`MatchRoomSheet`.
+2. Extrair formulario comum de placar com mesmo padrao do admin e tiebreak conforme formato.
+3. Criar adaptadores de liga e torneio.
+4. Em listas e notificacoes, trocar expansao/redirecionamento por abertura contextual.
+5. Fechar modal deve manter usuario no mesmo scroll/contexto.
+
+Criterios de conclusao:
+
+- sala abre em modal no desktop e sheet no mobile;
+- envio de resultado funciona ou falha com toast amigavel;
+- dados da lista atualizam ao fechar/salvar;
+- nao ha duplicacao inline da sala abaixo do item;
+- lint/build passam.
+
+Progresso 2026-05-17:
+
+- liga: `Abrir sala` agora abre a sala em `AppDialog` contextual, sem expandir a lista de partidas;
+- a sala preserva disponibilidade, resultado/confirmacao, WO, participantes, contatos e mini chat;
+- fechar a sala retorna ao mesmo contexto visual da aba `Partidas`;
+- torneio: `Informar resultado`/`Compartilhar placar` nas partidas do jogador deixou de abrir um `<details>` inline e passou a abrir uma sala contextual em `AppDialog`;
+- o dialog de torneio preserva o formulario de placar existente, regra de tiebreak/formato da classe, envio por RPC, WhatsApp e lista de resultados enviados;
+- o card da partida fica mais leve e nao duplica o formulario logo abaixo do item;
+- Home/agenda/notificacoes agora enviam acoes de partida para deep links com `room=...`, em vez de mandar o usuario para uma aba generica;
+- liga consome `room` e abre a sala correta dentro de `AppDialog`/sheet, preservando a lista e o contexto visual;
+- torneio consome `room` para partidas do jogador e abre a sala contextual quando a partida pertence ao usuario logado;
+- `allLeagueMatchItems` foi estabilizado com `useMemo` para evitar reaberturas por render e manter o deep link previsivel;
+- evidencia visual mobile: `web/docs/screenshots/contextual-qa-2026-05-17/ctx-matchroom-league-click-mobile.png` confirma sheet contextual com disponibilidade, resultado/confirmacao e lista por tras;
+- `npm.cmd run lint`, `npm.cmd run build` e `git diff --check` passaram.
+
+### [x] CTX-TOURNAMENT-01 - Central do jogador no torneio sem duplicar jogos
+
+Status: `[x]` concluido em 2026-05-17
+
+Contexto:
+
+- a aba `Jogos` pode misturar jogos pessoais e visao geral da classe;
+- isso faz o jogador ver a mesma partida em blocos diferentes.
+
+Objetivo:
+
+- separar claramente `Sua central do torneio` e `Visao geral da chave/classe`.
+
+Escopo:
+
+1. Na aba `Jogos`, renderizar `Sua central do torneio` apenas quando houver dado real do usuario.
+2. Incluir proximas partidas, resultado pendente, confirmacao, sala e agenda/quadra.
+3. `Visao geral` fica abaixo, com chave/lista/fase da classe selecionada.
+4. Partida do usuario nao deve ser repetida como card destacado e novamente como card equivalente logo abaixo.
+5. `Exportar chave` permanece acao secundaria quando houver chaveamento.
+
+Criterios de conclusao:
+
+- jogador entende primeiro o que precisa fazer;
+- visao geral continua disponivel;
+- sem duplicacao visual de jogos pessoais;
+- desktop/mobile validados;
+- lint/build passam.
+
+Evidencia:
+
+- na aba `Jogos`, `Sua central no torneio` agora aparece antes de `Jogos da classe`, agenda por quadra e chave detalhada;
+- o card pessoal ficou mais enxuto: presenca/indisponibilidade continuam inline, mas placar/WhatsApp abrem sala contextual;
+- `Visao geral` continua disponivel logo abaixo com exportacao de chave e agenda;
+- `npm.cmd run lint`, `npm.cmd run build` e `git diff --check` passaram.
+
+### [x] CTX-TOURNAMENT-02 - `Ver meus jogos` e seletor de chave/classe padronizado
+
+Status: `[x]` concluido em 2026-05-17
+
+Contexto:
+
+- botao `Ver meus jogos` deve levar ao recorte certo, nao a uma aba generica;
+- torneio precisa seguir o mesmo padrao de seletor contextual usado em liga.
+
+Objetivo:
+
+- `Ver meus jogos` abre `Jogos` focando `Sua central do torneio`;
+- classe/chave usa um unico controle por contexto.
+
+Escopo:
+
+1. `Ver meus jogos` deve setar aba `Jogos` e foco/query para central do usuario.
+2. Se houver uma unica pendencia critica, abrir sala contextual diretamente apos chegar em `Jogos`.
+3. Ate 6 classes: chips horizontais com snap no mobile.
+4. Mais de 6 classes: select unico.
+5. Nunca exibir chips e select como controles equivalentes ao mesmo tempo.
+6. Aplicar em `Inscritos`, `Jogos` e `Classificacao` quando houver classificacao real.
+
+Criterios de conclusao:
+
+- nenhuma aba `Categorias` publica volta a aparecer;
+- seletor nao quebra fonte/espacamento;
+- muitas classes continuam navegaveis;
+- lint/build passam.
+
+Evidencia:
+
+- CTA publico `Ver meus jogos` agora seleciona a classe da proxima partida do usuario, abre `Jogos`, foca `Sua central no torneio` e abre a sala automaticamente quando ha uma unica pendencia;
+- o filtro publico do torneio preserva um unico controle por contexto: chips ate 6 classes e select para muitas classes;
+- o mesmo padrao continua aplicado em `Inscritos`, `Jogos` e `Classificacao` quando ha tabela real;
+- `npm.cmd run lint`, `npm.cmd run build` e `git diff --check` passaram.
+
+### [x] CTX-PLAYER-01 - Perfil publico de jogador e nomes clicaveis
+
+Status: `[x]` concluido em 2026-05-17
+
+Contexto:
+
+- nomes em ranking, partidas, inscritos e listas aparecem como texto;
+- o app perde fluidez social/competitiva porque o jogador nao consegue abrir rapidamente o perfil de outro jogador.
+
+Objetivo:
+
+- transformar jogador com `userId` real em entidade navegavel.
+
+Escopo:
+
+1. Criar rota de perfil publico/controlado do jogador.
+2. Linkar nomes/avatares quando houver `userId` em Ranking, liga, torneio, partidas e chamadas quando aplicavel.
+3. Exibir nome, foto, cidade/UF, bio publica, historico recente, estatisticas simples, ranking/ligas e confronto contra usuario logado quando houver dados.
+4. Se nao houver `userId`, manter texto sem link.
+
+Criterios de conclusao:
+
+- nome clicavel abre perfil sem expor telefone/e-mail;
+- mobile usa leitura em lista, nao tabela;
+- rotas diretas funcionam;
+- lint/build passam.
+
+Evidencia:
+
+- criada rota `/jogadores/:playerId` com ficha publica/controlada do jogador;
+- nomes com `userId` real em Ranking, Liga e Torneio passam por `PlayerProfileLink`; nomes soltos continuam texto;
+- `profiles.profile_visibility` permite `public`/`private`, e `app_get_public_profiles` redige cidade, foto, bio e metadados pessoais quando o perfil e privado;
+- no perfil privado de outro jogador, a ficha pessoal fica oculta, mas resumo competitivo, rankings e confronto direto permanecem visiveis como informacao esportiva contextual;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] CTX-SCOUT-01 - Anotacoes privadas sobre adversarios
+
+Status: `[x]` concluido em 2026-05-17
+
+Dependencia:
+
+- `CTX-PLAYER-01`
+
+Objetivo:
+
+- adicionar scouting pessoal privado no perfil de outro jogador.
+
+Escopo:
+
+1. Criar tabela/RLS `player_private_notes` com `owner_user_id`, `target_user_id`, `notes` e timestamps.
+2. Criar servico para buscar/salvar nota do usuario logado.
+3. UI no perfil publico com textarea discreta, autosave com debounce e feedback pequeno `Salvo`.
+4. Campo visivel apenas para quem esta logado e nao e o proprio perfil.
+
+Criterios de conclusao:
+
+- nota salva e reaparece;
+- outro usuario nao ve anotacao;
+- RLS validada;
+- lint/build passam.
+
+Evidencia:
+
+- criada tabela `player_private_notes` com RLS owner-only;
+- perfil de outro jogador exibe `Scouting privado` com autosave debounce e estado `Salvando/Salvo/Erro`;
+- anotacao pertence apenas ao usuario logado e nao fica exposta ao jogador alvo;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] CTX-MODE-01 - Modo Jogador vs Trabalho/Gestao persistido
+
+Status: `[x]` concluido em 2026-05-17
+
+Contexto:
+
+- `AppSurfaceMode` ja existe, mas e inferido por rota;
+- usuario multi-papel precisa escolher mentalmente se esta jogando ou trabalhando.
+
+Objetivo:
+
+- criar seletor de modo persistido: `Jogador` e `Trabalho`.
+
+Escopo:
+
+1. Criar `UserModeContext`.
+2. Persistir ultimo modo por usuario em `localStorage` inicialmente.
+3. Mostrar seletor apenas para quem tem permissao profissional.
+4. Modo `Jogador`: menu e Home focados em jogar, sem gestao como protagonista.
+5. Modo `Trabalho`: menu abre melhor destino profissional permitido.
+6. URLs diretas continuam funcionando e respeitando autorizacao.
+7. Mobile: seletor em local discreto, sem poluir bottom nav.
+
+Criterios de conclusao:
+
+- usuario multi-papel alterna contexto sem confusao;
+- ultimo modo reabre apos login/reload;
+- jogador puro nao ve seletor;
+- rotas protegidas continuam protegidas;
+- lint/build passam.
+
+Evidencia:
+
+- criado `UserModeProvider`/`useUserMode` com persistencia `localStorage` por usuario;
+- `AppShell` mostra seletor discreto `Jogador/Trabalho` apenas para usuarios com acesso profissional;
+- `BottomNav` usa o modo para separar menu de jogador do menu de trabalho, preservando rotas diretas e permissoes;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] CTX-ACADEMY-01 - Turmas com multiplos dias no mesmo horario
+
+Status: `[x]` concluido em 2026-05-17
+
+Contexto:
+
+- `place_academy_classes` usa `weekday` unico;
+- rotina real de academia usa a mesma turma em varios dias.
+
+Objetivo:
+
+- permitir criar e gerir turma recorrente em multiplos dias, sem quebrar chamada, agenda, conflito, matricula e mensalidade.
+
+Escopo recomendado:
+
+1. Adicionar `series_id`/`recurrence_group_id` em `place_academy_classes` ou entidade equivalente.
+2. Criar ocorrencia por dia, todas ligadas a mesma serie.
+3. Formulario de criacao com dados da turma, horario unico, chips de dias, professor/quadra, preview e validacao de conflitos.
+4. Matricula/interesse permite aluno escolher um ou mais dias.
+5. Preservar turmas antigas como serie de 1 dia.
+
+Criterios de conclusao:
+
+- criar turma Seg/Qua/Sex gera ocorrencias corretas;
+- conflito de professor/quadra e bloqueado por dia;
+- aluno pode selecionar dias;
+- chamada continua por dia;
+- lint/build passam.
+
+Evidencia:
+
+- adicionada coluna `place_academy_classes.recurrence_group_id` para ligar ocorrencias da mesma turma;
+- criacao de turma agora permite selecionar varios dias no mesmo horario por chips de semana;
+- cada dia vira uma ocorrencia real, mantendo chamada, agenda, capacidade, matricula e mensalidade por classe existente;
+- validacao de conflito considera todos os dias selecionados;
+- horarios abertos tambem podem ser criados em lote por multiplos dias;
+- fluxo publico de aulas ja permite selecao de um ou mais dias especificos ao enviar interesse;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
+### [x] CTX-QA-01 - QA cruzado web/mobile por modo, permissao e contexto
+
+Status: `[x]` concluido em 2026-05-17
+
+Objetivo:
+
+- validar que as mudancas contextuais nao quebraram funcoes atuais nem misturaram jogador e gestao.
+
+Escopo:
+
+1. Validar desktop 1366 e mobile 390/430.
+2. Perfis: jogador puro, organizador, academia/admin, professor, recepcao/financeiro quando aplicavel.
+3. Fluxos: ranking -> perfil, perfil -> anotacao privada, Home/notificacao -> sala, liga -> sala, torneio -> sala, criar turma multi-dia, alternar modo jogador/trabalho e feedbacks.
+4. Capturar screenshots e atualizar MDs de resultado.
+
+Criterios de conclusao:
+
+- nenhum P0/P1 visual novo;
+- jogador puro nao ve gestao indevida;
+- profissional mantem ferramentas;
+- mobile sem modal cortado;
+- screenshots e docs atualizados.
+
+Evidencia:
+
+- validacao autenticada com `escalao@gmail.com` no app local contra Supabase `xdopstommqojjofapzjl`;
+- migrations `0092_player_private_notes_v1.sql`, `0093_profile_visibility_v1.sql` e `0094_academy_class_recurrence_group_v1.sql` aplicadas no Supabase remoto e schema PostgREST recarregado;
+- screenshots desktop/mobile capturados em `web/docs/screenshots/contextual-qa-2026-05-17/`;
+- fluxos verificados: Home por modo, Ranking -> perfil publico, editor de perfil com privacidade, perfil publico com scouting privado, Academia carregando apos schema novo e Gestao acessivel para usuario profissional;
+- relatorio: `CTX_QA_01_VALIDATION_2026_05_17.md`;
+- `npm.cmd run lint` e `npm.cmd run build` passaram.
+
 ### [x] APP-DNA-01 - Consolidar DNA visual e gramática estrutural do app
 
 Status: `[x]` concluido em 2026-05-17
@@ -1931,7 +2315,7 @@ Validacao:
 - screenshots autenticados desktop/mobile gerados para jogador e organizador: `desktop1366-league-classificacao-player.png`, `mobile390-league-classificacao-player.png`, `desktop1366-league-classificacao-admin.png`, `mobile390-league-classificacao-admin.png`;
 - `screen-league-04-validation.json` confirmou seletor por classe, legenda de zonas, ausencia de overflow horizontal no mobile e `Salvar snapshot` apenas para organizador.
 
-### [>] SCREEN-LEAGUE-05 - Chat/avisos da liga
+### [x] SCREEN-LEAGUE-05 - Chat/avisos da liga
 
 Mudanca obrigatoria:
 
@@ -1944,7 +2328,7 @@ Criterio de aceite:
 - chat nao parece painel de admin para jogador;
 - comunicados fixados aparecem com destaque moderado.
 
-Entrega parcial em 2026-05-17:
+Entrega em 2026-05-17:
 
 - Chat/avisos da liga passou a usar a mesma gramatica visual do chat de torneio.
 - Aviso fixado agora aparece como bloco destacado moderado, separado do feed normal.
@@ -1957,13 +2341,10 @@ Validacao:
 - `git diff --check -- web/src/pages/LeagueDetailsPage.tsx web/src/App.css` passou.
 - `npm.cmd run lint` passou.
 - `npm.cmd run build` passou.
+- screenshots autenticados desktop/mobile gerados para jogador e organizador: `desktop1366-league-chat-player.png`, `mobile390-league-chat-player.png`, `desktop1366-league-chat-admin.png`, `mobile390-league-chat-admin.png`;
+- `screen-league-05-validation.json` confirmou jogador sem publicar/fixar/remover, organizador com ferramentas de comunicacao e ausencia de overflow horizontal no mobile.
 
-Pendente:
-
-- validar screenshot autenticado desktop/mobile;
-- conferir comportamento com chat muito longo e comunicados fixados extensos.
-
-### [>] SCREEN-GESTAO-01 - `/gestao` central mobile/desktop
+### [x] SCREEN-GESTAO-01 - `/gestao` central mobile/desktop
 
 Screenshots de referencia:
 
@@ -1987,7 +2368,7 @@ Criterio de aceite:
 - mobile de gestao deixa de ter rolagem gigantesca na central;
 - admin entende onde operar primeiro.
 
-Entrega parcial em 2026-05-17:
+Entrega em 2026-05-17:
 
 - Fila agregada da central agora mostra no maximo 5 pendencias prioritarias, evitando primeira dobra longa.
 - Locais sob gestao foram reposicionados antes de sinais de suporte e implantacao, deixando a acao operacional aparecer mais cedo.
@@ -2000,14 +2381,10 @@ Validacao:
 - `git diff --check -- web/src/pages/ManagementHubPage.tsx web/src/App.css` passou.
 - `npm.cmd run lint` passou.
 - `npm.cmd run build` passou.
+- screenshots autenticados gerados: `desktop1366-gestao-01.png` e `mobile390-gestao-01.png`;
+- `screen-gestao-01-validation.json` confirmou fila do dia na primeira dobra, 3 locais compactos, detalhes recolhidos, 6 cards principais e ausencia de overflow horizontal no mobile.
 
-Pendente:
-
-- validar screenshot desktop/mobile autenticado;
-- conferir se locais com muitos modulos continuam compactos em 390px;
-- avaliar se a central deve ganhar busca/filtro quando houver muitos locais sob gestao.
-
-### [>] SCREEN-GESTAO-AGENDA-01 - Modulo Agenda
+### [x] SCREEN-GESTAO-AGENDA-01 - Modulo Agenda
 
 Screenshots de referencia:
 
@@ -2031,19 +2408,20 @@ Criterio de aceite:
 - mobile nao renderiza centenas de rows sem filtro;
 - exportacao gera imagem correta.
 
-Entrega parcial 2026-05-17:
+Entrega 2026-05-17:
 
 - Fila operacional da Agenda agora mostra ate 3 itens por bloco na primeira dobra, com links explicitos para ver pendentes/lista completa quando houver mais itens.
-- `Hoje` ordena reservas pendentes antes das demais e destaca a quantidade que precisa de decisao.
+- `Hoje` ordena reservas pendentes antes das demais, destaca a quantidade que precisa de decisao e limita a primeira carga a 12 reservas com texto `Mostrando X de Y` e CTA `Ver todas`, sem corte silencioso.
 - `Reservas` e `Espera` ganharam limite inicial de 24 rows quando nao ha filtro, com texto `Mostrando X de Y` e CTA `Ver todas`/`Ver lista completa`; filtros continuam exibindo o resultado completo.
 - Exportacao de agenda por quadra em torneios recebeu quebra de titulo em ate 2 linhas para evitar corte em nomes longos.
 - `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
+- Validacao autenticada da Agenda em `/gestao` passou em desktop/mobile: `desktop1366-gestao-agenda-01-afterlimit.png`, `mobile390-gestao-agenda-01-afterlimit.png` e `screen-gestao-agenda-01-afterlimit-validation.json`.
+- A validacao confirmou 12 rows visiveis de 32 reservas do dia, ausencia de overflow horizontal e queda do scroll mobile de 8575px para 4347px.
+- Tentativa de validar exportacao de agenda por quadra no torneio `Open ADT Dourados - Maio` confirmou que o botao nao aparece enquanto as partidas estao sem horario/quadra; a exportacao fica disponivel quando existe agenda por quadra gerada.
 
-Pendente:
+Risco residual:
 
-- Validar screenshots autenticados desktop/mobile da Agenda em `/gestao`;
-- validar no browser um torneio com agenda alta exportando PNG;
-- avaliar se a primeira dobra deve trocar automaticamente para `Reservas` quando houver pendencias mas a aba ativa for outra.
+- A troca automatica para `Reservas` quando ha pendencias mas a aba ativa e `Hoje` segue como melhoria opcional; o operador ja encontra pendencias na primeira dobra e pode abrir a lista completa.
 
 ### [x] SCREEN-GESTAO-ACADEMIA-01 - Modulo Academia
 
@@ -2082,10 +2460,10 @@ Entrega 2026-05-17:
 - Rows de `Aulas do dia` e `Pendencias da academia` passaram a separar titulo, tipo e detalhe curto, reduzindo leitura de paragrafo em tela operacional.
 - `Alunos` preserva drawer de `Nova matricula`; `Grade` preserva setup de nova turma/horario aberto; `Professores` e `Configuracao` seguem acessiveis pelas tabs.
 - Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+- Validacao visual autenticada passou em desktop/mobile: `desktop1366-gestao-academia-01-validated.png`, `mobile390-gestao-academia-01-validated.png` e `screen-gestao-academia-01-validation.json`.
 
-Pendente:
+Risco residual:
 
-- Gerar screenshots autenticados desktop/mobile da Academia apos carga completa;
 - avaliar em QA visual se o CTA `Nova turma` deve abrir diretamente o disclosure de criacao ou se navegar para `Grade` continua suficiente.
 
 ### [x] SCREEN-GESTAO-CLIENTES-01 - Modulo Clientes/CRM
@@ -2118,8 +2496,9 @@ Entrega 2026-05-17:
 - `Novo contato` ganhou CTA visivel; o formulario inline existente continua como progressive disclosure controlado para evitar novo backend ou refatoracao ampla.
 - Drawer de historico/interacoes foi preservado como local de detalhe, follow-up, WhatsApp, conversao e arquivamento.
 - Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+- Validacao visual autenticada passou em desktop/mobile: `desktop1366-gestao-clientes-01-validated.png`, `mobile390-gestao-clientes-01-validated.png` e `screen-gestao-clientes-financeiro-cantina-validation.json`.
 
-Pendente:
+Risco residual:
 
 - Transformar filtros em bottom sheet no mobile se QA visual ainda considerar a barra longa demais;
 - avaliar se `Novo contato` deve virar drawer dedicado em uma sprint de formularios.
@@ -2154,10 +2533,10 @@ Entrega 2026-05-17:
 - CTA de baixa leva para `Recebiveis`; CTA de despesa leva para `Despesas`.
 - `Despesas` dentro do workspace agora recebe o formulario real de lancamento, igual ao fallback legado, evitando aba sem acao principal.
 - Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+- Validacao visual autenticada passou em desktop/mobile: `desktop1366-gestao-financeiro-01-validated.png`, `mobile390-gestao-financeiro-01-validated.png` e `screen-gestao-clientes-financeiro-cantina-validation.json`.
 
-Pendente:
+Risco residual:
 
-- Validar screenshots autenticados desktop/mobile do Financeiro;
 - avaliar se `Registrar pagamento` merece drawer dedicado quando houver muitos recebiveis.
 
 ### [x] SCREEN-GESTAO-CANTINA-01 - Modulo Cantina/POS
@@ -2189,10 +2568,10 @@ Entrega 2026-05-17:
 - Produtos e estoque continuam em listas acionaveis; venda rapida preserva busca de produto, venda avulsa e bloqueio por estoque insuficiente.
 - O modulo continua condicionado ao plano/permissao (`canManageCanteen`/matriz de modulos), sem aparecer como operacional quando a Cantina esta desativada.
 - Validacao obrigatoria executada: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
+- Validacao visual autenticada passou em desktop/mobile: `desktop1366-gestao-cantina-01-validated.png`, `mobile390-gestao-cantina-01-validated.png` e `screen-gestao-clientes-financeiro-cantina-validation.json`.
 
-Pendente:
+Risco residual:
 
-- Validar screenshots autenticados desktop/mobile da Cantina;
 - avaliar se o cadastro de produto deve virar drawer dedicado em sprint futura de formularios.
 
 

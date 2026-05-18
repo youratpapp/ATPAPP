@@ -2,9 +2,12 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { AppDialog } from "../components/AppOverlays";
 import { CompetitionHeader, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
+import { PlayerProfileLink } from "../components/PlayerProfileLink";
 import { ResponsiveFilterSheet } from "../components/ResponsiveFilterSheet";
 import { ScreenState } from "../components/ScreenState";
+import { friendlyToastMessage, useToast } from "../components/toast";
 import {
   adminResolveLeagueMatchResult,
   applyLeagueSeasonMovements,
@@ -708,6 +711,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const { leagueId } = useParams();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { showToast } = useToast();
   const requestedTab = parsePageTab(searchParams.get("tab"));
   const [activeTab, setActiveTab] = useState<PageTab>(requestedTab);
   const [loading, setLoading] = useState(true);
@@ -727,12 +731,18 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [matchForms, setMatchForms] = useState<Record<string, MatchForm>>({});
   const [matchSubmissions, setMatchSubmissions] = useState<Record<string, LeagueResultSubmission[]>>({});
   const [expandedMatchId, setExpandedMatchId] = useState("");
+  const [autoOpenedLeagueRoomId, setAutoOpenedLeagueRoomId] = useState("");
   const [availabilityByMatch, setAvailabilityByMatch] = useState<Record<string, LeagueMatchAvailability[]>>({});
   const [messagesByMatch, setMessagesByMatch] = useState<Record<string, LeagueMatchMessage[]>>({});
   const [messageDraftByMatch, setMessageDraftByMatch] = useState<Record<string, string>>({});
   const [myAvailabilityByMatch, setMyAvailabilityByMatch] = useState<Record<string, string[]>>({});
   const [settingsDraft, setSettingsDraft] = useState<LeagueSettingsDraft | null>(null);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
+
+  useEffect(() => {
+    if (!feedback) return;
+    showToast({ kind: feedback.kind, text: feedback.kind === "error" ? friendlyToastMessage(feedback.text) : feedback.text });
+  }, [feedback, showToast]);
   const [leagueChat, setLeagueChat] = useState<LeagueChatMessage[]>([]);
   const [schedulerRuns, setSchedulerRuns] = useState<LeagueSchedulerRun[]>([]);
   const [leagueChatDraft, setLeagueChatDraft] = useState("");
@@ -1180,9 +1190,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   }, [activeTab, selectedClassId, leagueMatchRoundFilter, leagueMatchStatusFilter]);
 
   async function openMatchRoom(match: LeagueMatchSummary, forceOpen = false) {
-    const nextId = forceOpen ? match.id : expandedMatchId === match.id ? "" : match.id;
+    const nextId = forceOpen ? match.id : match.id;
     setExpandedMatchId(nextId);
-    if (!nextId) return;
     const [subs, avail, msgs] = await Promise.all([
       loadMatchSubmissions(match.id).catch(() => []),
       loadMatchAvailability(match.id).catch(() => []),
@@ -1748,7 +1757,27 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
   }
 
-  const allLeagueMatchItems = roundsData.flatMap(({ round, matches }) => matches.map((match) => ({ round, match })));
+  const allLeagueMatchItems = useMemo(
+    () => roundsData.flatMap(({ round, matches }) => matches.map((match) => ({ round, match }))),
+    [roundsData]
+  );
+  const requestedLeagueRoomId = searchParams.get("room") || "";
+
+  useEffect(() => {
+    if (!requestedLeagueRoomId || autoOpenedLeagueRoomId === requestedLeagueRoomId) return;
+    const entry = allLeagueMatchItems.find(({ match }) => match.id === requestedLeagueRoomId);
+    if (!entry) {
+      setExpandedMatchId(requestedLeagueRoomId);
+      return;
+    }
+    if (activeTab !== "partidas") {
+      goToTab("partidas");
+    }
+    setAutoOpenedLeagueRoomId(requestedLeagueRoomId);
+    void openMatchRoom(entry.match, true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, allLeagueMatchItems, autoOpenedLeagueRoomId, requestedLeagueRoomId]);
+
   const visibleLeagueRoundsData = useMemo(
     () =>
       roundsData
@@ -1802,10 +1831,278 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       if (a.round.roundNumber !== b.round.roundNumber) return a.round.roundNumber - b.round.roundNumber;
       return a.match.id.localeCompare(b.match.id);
     });
+  const activeLeagueRoomEntry = expandedMatchId
+    ? allLeagueMatchItems.find(({ match }) => match.id === expandedMatchId) || null
+    : null;
 
   function openLeagueMatchFromQueue(match: LeagueMatchSummary) {
     goToTab("partidas");
     void openMatchRoom(match, true);
+  }
+
+  function renderLeagueMatchRoomDialog(entry: { match: LeagueMatchSummary; round: LeagueRoundSummary } | null) {
+    if (!entry || !league) return null;
+    const m = entry.match;
+    const side1 = m.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ") || "A definir";
+    const side2 = m.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ") || "A definir";
+    const form = getMatchForm(m.id);
+    const scoreRowLabels = leagueScoreRowsForFormat(league.matchFormat);
+    const subs = matchSubmissions[m.id] || [];
+    const avail = availabilityByMatch[m.id] || [];
+    const commonAvailability = buildCommonAvailabilitySlots(avail);
+    const msgs = messagesByMatch[m.id] || [];
+    const mySlots = myAvailabilityByMatch[m.id] || ["", "", ""];
+    const myPlayer = m.participants.find((p) => p.userId === user.id);
+    const opState = buildLeagueMatchOperationalState({
+      match: m,
+      availability: avail,
+      submissions: subs,
+      myPlayer,
+      isOwner,
+    });
+
+    return (
+      <AppDialog
+        open={Boolean(entry)}
+        title={`${side1} x ${side2}`}
+        eyebrow={`Rodada ${entry.round.roundNumber}`}
+        subtitle={m.scheduledAt ? formatDateTime(m.scheduledAt) : "Horario ainda nao definido"}
+        className="league-match-room-dialog"
+        onClose={() => setExpandedMatchId("")}
+      >
+        <div className="league-room-grid league-room-grid--dialog">
+          <section className={`league-room-panel league-room-state state-${opState.severity}`}>
+            <h4>Estado da partida</h4>
+            <strong>{opState.label}</strong>
+            <p>{opState.detail}</p>
+            <span>{isOwner ? opState.ownerAction : opState.playerAction}</span>
+          </section>
+
+          <section className="league-room-panel league-room-priority">
+            <h4>Disponibilidade</h4>
+            {myPlayer?.leaguePlayerId ? (
+              <>
+                <div className="league-availability-inputs">
+                  {mySlots.map((slot, slotIdx) => (
+                    <input
+                      key={`${m.id}-dialog-slot-${slotIdx}`}
+                      type="datetime-local"
+                      value={slot}
+                      onChange={(e) =>
+                        setMyAvailabilityByMatch((prev) => {
+                          const next = [...(prev[m.id] || ["", "", ""])];
+                          next[slotIdx] = e.target.value;
+                          return { ...prev, [m.id]: next };
+                        })
+                      }
+                    />
+                  ))}
+                </div>
+                <button onClick={() => void onSaveAvailability(m)} disabled={busy}>
+                  Salvar disponibilidade
+                </button>
+              </>
+            ) : (
+              <p className="subtle">Somente participantes podem registrar disponibilidade.</p>
+            )}
+            {commonAvailability.length ? (
+              <div className="league-common-availability">
+                <strong>Horarios em comum</strong>
+                {commonAvailability.map((slot) => (
+                  <span key={slot.key}>
+                    {new Date(slot.availableAt).toLocaleString("pt-BR")} - {slot.playerNames.join(" / ")}
+                  </span>
+                ))}
+              </div>
+            ) : avail.length > 1 ? (
+              <p className="subtle">Ainda sem horarios em comum.</p>
+            ) : null}
+            <div className="league-availability-list">
+              {avail.map((a) => (
+                <p key={a.id}>
+                  {a.playerName}: {new Date(a.availableAt).toLocaleString("pt-BR")}
+                </p>
+              ))}
+              {!avail.length ? <p className="subtle">Nenhuma disponibilidade enviada.</p> : null}
+            </div>
+          </section>
+
+          <section className="league-room-panel league-room-result league-room-priority">
+            <h4>Resultado e confirmacao</h4>
+            <div className="my-match-score-fields league-score-fields">
+              <p className="my-match-score-map">
+                <span>
+                  <strong>1</strong> {side1}
+                </span>
+                <span>
+                  <strong>2</strong> {side2}
+                </span>
+              </p>
+              {scoreRowLabels.map((label, rowIndex) => {
+                const row = form.scoreRows[rowIndex] || { side1: "", side2: "", tie1: "", tie2: "" };
+                const showTie = shouldShowLeagueSetTiebreak(league.matchFormat, label, row);
+                return (
+                  <div key={`${m.id}:dialog-score:${label}`} className="league-score-row">
+                    <span>{label}</span>
+                    <input
+                      className="match-score-input"
+                      inputMode="numeric"
+                      placeholder="1"
+                      aria-label={`${label} games lado 1`}
+                      value={row.side1}
+                      disabled={form.isWo}
+                      onChange={(e) => {
+                        const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                        rows[rowIndex] = { ...rows[rowIndex], side1: e.target.value.replace(/[^\d]/g, "") };
+                        setMatchForm(m.id, { scoreRows: rows });
+                      }}
+                    />
+                    <input
+                      className="match-score-input"
+                      inputMode="numeric"
+                      placeholder="2"
+                      aria-label={`${label} games lado 2`}
+                      value={row.side2}
+                      disabled={form.isWo}
+                      onChange={(e) => {
+                        const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                        rows[rowIndex] = { ...rows[rowIndex], side2: e.target.value.replace(/[^\d]/g, "") };
+                        setMatchForm(m.id, { scoreRows: rows });
+                      }}
+                    />
+                    {showTie ? (
+                      <div className="league-score-tiebreak-row">
+                        <span>Tie-break</span>
+                        <input
+                          className="match-score-input"
+                          inputMode="numeric"
+                          placeholder="TB 1"
+                          aria-label={`${label} tie-break lado 1`}
+                          value={row.tie1}
+                          disabled={form.isWo}
+                          onChange={(e) => {
+                            const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                            rows[rowIndex] = { ...rows[rowIndex], tie1: e.target.value.replace(/[^\d]/g, "") };
+                            setMatchForm(m.id, { scoreRows: rows });
+                          }}
+                        />
+                        <input
+                          className="match-score-input"
+                          inputMode="numeric"
+                          placeholder="TB 2"
+                          aria-label={`${label} tie-break lado 2`}
+                          value={row.tie2}
+                          disabled={form.isWo}
+                          onChange={(e) => {
+                            const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
+                            rows[rowIndex] = { ...rows[rowIndex], tie2: e.target.value.replace(/[^\d]/g, "") };
+                            setMatchForm(m.id, { scoreRows: rows });
+                          }}
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+            <div className="events-filter-grid">
+              <label>
+                Vencedor se WO
+                <select
+                  value={form.winnerSide}
+                  disabled={!form.isWo}
+                  onChange={(e) => setMatchForm(m.id, { winnerSide: e.target.value as "1" | "2" })}
+                >
+                  <option value="1">{side1}</option>
+                  <option value="2">{side2}</option>
+                </select>
+              </label>
+              <label>
+                Resumo
+                <input value={form.summary} onChange={(e) => setMatchForm(m.id, { summary: e.target.value })} placeholder="Opcional" />
+              </label>
+            </div>
+            <label style={{ display: "inline-flex", gap: 8, alignItems: "center" }}>
+              <input type="checkbox" checked={form.isWo} onChange={(e) => setMatchForm(m.id, { isWo: e.target.checked })} />
+              Resultado por WO
+            </label>
+            <div className="modal-actions">
+              <button onClick={() => void onSubmitResult(m)} disabled={busy}>
+                Enviar resultado
+              </button>
+              {isOwner && m.status !== "encerrada" && m.status !== "wo" ? (
+                <button className="danger" onClick={() => void onAdminResolveResult(m)} disabled={busy}>
+                  Resolver pelo admin
+                </button>
+              ) : null}
+            </div>
+            {subs.length ? (
+              <div className="league-submission-list">
+                {subs.map((s) => (
+                  <div key={s.id} className="league-submission-row">
+                    <span>
+                      Submissao em {formatDateTime(s.createdAt)} | Status: {s.status}
+                      {typeof s.payload.summary === "string" && s.payload.summary ? ` | ${s.payload.summary}` : ""}
+                    </span>
+                    {s.status === "pending" ? (
+                      <span>
+                        <button onClick={() => void onConfirmSubmission(m.id, s.id, true)} disabled={busy}>
+                          Confirmar
+                        </button>
+                        <button className="danger" onClick={() => void onConfirmSubmission(m.id, s.id, false)} disabled={busy}>
+                          Disputar
+                        </button>
+                      </span>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="subtle">Sem submissao enviada.</p>
+            )}
+          </section>
+
+          <details className="league-room-panel league-room-disclosure">
+            <summary>
+              <span>Participantes e contatos</span>
+              <small>{m.participants.length} jogadores</small>
+            </summary>
+            {m.participants.map((p, pIdx) => (
+              <div key={`${p.leaguePlayerId || "x"}-${pIdx}`} className="league-participant-row">
+                <span><PlayerProfileLink userId={p.userId} name={p.displayName} /></span>
+                <span>{p.phone || "-"}</span>
+              </div>
+            ))}
+          </details>
+
+          <details className="league-room-panel league-room-disclosure league-room-chat">
+            <summary>
+              <span>Mini chat</span>
+              <small>{msgs.length ? `${msgs.length} mensagens` : "Sem mensagens"}</small>
+            </summary>
+            <div className="league-chat-box">
+              {msgs.map((msg) => (
+                <div key={msg.id} className={msg.senderUserId === user.id ? "league-chat-me" : "league-chat-other"}>
+                  <p>{msg.body}</p>
+                  <span>{formatDateTime(msg.createdAt)}</span>
+                </div>
+              ))}
+              {!msgs.length ? <p className="subtle">Sem mensagens ainda.</p> : null}
+            </div>
+            <div className="league-chat-send">
+              <input
+                value={messageDraftByMatch[m.id] || ""}
+                onChange={(e) => setMessageDraftByMatch((prev) => ({ ...prev, [m.id]: e.target.value }))}
+                placeholder="Escreva uma mensagem"
+              />
+              <button onClick={() => void onSendMessage(m.id)} disabled={busy}>
+                Enviar
+              </button>
+            </div>
+          </details>
+        </div>
+      </AppDialog>
+    );
   }
 
   const leagueOperationTasks: LeagueOperationTask[] = (() => {
@@ -2177,7 +2474,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         />
       ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
-      {feedback ? <p className={`feedback ${feedback.kind}`}>{feedback.text}</p> : null}
 
       {!loading && !error && league ? (
         <>
@@ -2678,7 +2974,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                       <div key={row.id} className={`league-standings-row ${row.movement}`}>
                         <span>{row.position}</span>
                         <span>
-                          <strong>{row.displayName}</strong>
+                          <strong><PlayerProfileLink userId={row.userId} name={row.displayName} /></strong>
                           {row.movement === "promoted" ? <em>Sobe</em> : null}
                           {row.movement === "relegated" ? <em>Desce</em> : null}
                         </span>
@@ -3223,7 +3519,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                           </div>
                           <div className="my-match-actions">
                             <button onClick={() => void openMatchRoom(item.match)}>
-                              {expandedMatchId === item.id ? "Fechar sala" : "Abrir sala"}
+                              Abrir sala
                             </button>
                           </div>
                         </div>
@@ -3246,13 +3542,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   {matches.map((m, idx) => {
                     const side1 = m.participants.filter((p) => p.side === 1).map((p) => p.displayName).join(" / ") || "A definir";
                     const side2 = m.participants.filter((p) => p.side === 2).map((p) => p.displayName).join(" / ") || "A definir";
-                    const form = getMatchForm(m.id);
-                    const scoreRowLabels = leagueScoreRowsForFormat(league.matchFormat);
                     const subs = matchSubmissions[m.id] || [];
                     const avail = availabilityByMatch[m.id] || [];
-                    const commonAvailability = buildCommonAvailabilitySlots(avail);
-                    const msgs = messagesByMatch[m.id] || [];
-                    const mySlots = myAvailabilityByMatch[m.id] || ["", "", ""];
                     const myPlayer = m.participants.find((p) => p.userId === user.id);
                     const allowRoom = Boolean(myPlayer || isOwner);
                     const opState = buildLeagueMatchOperationalState({
@@ -3280,249 +3571,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                           </div>
                           <div className="league-match-actions">
                             <button className="ghost" onClick={() => void openMatchRoom(m)} disabled={!allowRoom}>
-                              {expandedMatchId === m.id ? "Fechar sala" : "Abrir sala"}
+                              Abrir sala
                             </button>
                           </div>
                         </div>
-
-                        {expandedMatchId === m.id ? (
-                          <div className="league-room-grid">
-                            <section className={`league-room-panel league-room-state state-${opState.severity}`}>
-                              <h4>Estado da partida</h4>
-                              <strong>{opState.label}</strong>
-                              <p>{opState.detail}</p>
-                              <span>{isOwner ? opState.ownerAction : opState.playerAction}</span>
-                            </section>
-
-                            <section className="league-room-panel league-room-priority">
-                              <h4>Disponibilidade</h4>
-                              {myPlayer?.leaguePlayerId ? (
-                                <>
-                                  <div className="league-availability-inputs">
-                                    {mySlots.map((slot, slotIdx) => (
-                                      <input
-                                        key={`${m.id}-slot-${slotIdx}`}
-                                        type="datetime-local"
-                                        value={slot}
-                                        onChange={(e) =>
-                                          setMyAvailabilityByMatch((prev) => {
-                                            const next = [...(prev[m.id] || ["", "", ""])];
-                                            next[slotIdx] = e.target.value;
-                                            return { ...prev, [m.id]: next };
-                                          })
-                                        }
-                                      />
-                                    ))}
-                                  </div>
-                                  <button onClick={() => void onSaveAvailability(m)} disabled={busy}>
-                                    Salvar disponibilidade
-                                  </button>
-                                </>
-                              ) : (
-                                <p className="subtle">Somente participantes podem registrar disponibilidade.</p>
-                              )}
-                              {commonAvailability.length ? (
-                                <div className="league-common-availability">
-                                  <strong>Horários em comum</strong>
-                                  {commonAvailability.map((slot) => (
-                                    <span key={slot.key}>
-                                      {new Date(slot.availableAt).toLocaleString("pt-BR")} Â· {slot.playerNames.join(" / ")}
-                                    </span>
-                                  ))}
-                                </div>
-                              ) : avail.length > 1 ? (
-                                <p className="subtle">Ainda sem horários em comum.</p>
-                              ) : null}
-                              <div className="league-availability-list">
-                                {avail.map((a) => (
-                                  <p key={a.id}>
-                                    {a.playerName}: {new Date(a.availableAt).toLocaleString("pt-BR")}
-                                  </p>
-                                ))}
-                                {!avail.length ? <p className="subtle">Nenhuma disponibilidade enviada.</p> : null}
-                              </div>
-                            </section>
-
-                            <section className="league-room-panel league-room-result league-room-priority">
-                              <h4>Resultado e confirmacao</h4>
-                              <div className="my-match-score-fields league-score-fields">
-                                <p className="my-match-score-map">
-                                  <span>
-                                    <strong>1</strong> {side1}
-                                  </span>
-                                  <span>
-                                    <strong>2</strong> {side2}
-                                  </span>
-                                </p>
-                                {scoreRowLabels.map((label, rowIndex) => {
-                                  const row = form.scoreRows[rowIndex] || { side1: "", side2: "", tie1: "", tie2: "" };
-                                  const showTie = shouldShowLeagueSetTiebreak(league.matchFormat, label, row);
-                                  return (
-                                    <div key={`${m.id}:score:${label}`} className="league-score-row">
-                                      <span>{label}</span>
-                                      <input
-                                        className="match-score-input"
-                                        inputMode="numeric"
-                                        placeholder="1"
-                                        aria-label={`${label} games lado 1`}
-                                        value={row.side1}
-                                        disabled={form.isWo}
-                                        onChange={(e) => {
-                                          const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
-                                          rows[rowIndex] = { ...rows[rowIndex], side1: e.target.value.replace(/[^\d]/g, "") };
-                                          setMatchForm(m.id, { scoreRows: rows });
-                                        }}
-                                      />
-                                      <input
-                                        className="match-score-input"
-                                        inputMode="numeric"
-                                        placeholder="2"
-                                        aria-label={`${label} games lado 2`}
-                                        value={row.side2}
-                                        disabled={form.isWo}
-                                        onChange={(e) => {
-                                          const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
-                                          rows[rowIndex] = { ...rows[rowIndex], side2: e.target.value.replace(/[^\d]/g, "") };
-                                          setMatchForm(m.id, { scoreRows: rows });
-                                        }}
-                                      />
-                                      {showTie ? (
-                                        <div className="league-score-tiebreak-row">
-                                          <span>Tie-break</span>
-                                          <input
-                                            className="match-score-input"
-                                            inputMode="numeric"
-                                            placeholder="TB 1"
-                                            aria-label={`${label} tie-break lado 1`}
-                                            value={row.tie1}
-                                            disabled={form.isWo}
-                                            onChange={(e) => {
-                                              const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
-                                              rows[rowIndex] = { ...rows[rowIndex], tie1: e.target.value.replace(/[^\d]/g, "") };
-                                              setMatchForm(m.id, { scoreRows: rows });
-                                            }}
-                                          />
-                                          <input
-                                            className="match-score-input"
-                                            inputMode="numeric"
-                                            placeholder="TB 2"
-                                            aria-label={`${label} tie-break lado 2`}
-                                            value={row.tie2}
-                                            disabled={form.isWo}
-                                            onChange={(e) => {
-                                              const rows = normalizeMatchForm(form, league.matchFormat).scoreRows;
-                                              rows[rowIndex] = { ...rows[rowIndex], tie2: e.target.value.replace(/[^\d]/g, "") };
-                                              setMatchForm(m.id, { scoreRows: rows });
-                                            }}
-                                          />
-                                        </div>
-                                      ) : null}
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                              <div className="events-filter-grid">
-                                <label>
-                                  Vencedor se WO
-                                  <select
-                                    value={form.winnerSide}
-                                    disabled={!form.isWo}
-                                    onChange={(e) => setMatchForm(m.id, { winnerSide: e.target.value as "1" | "2" })}
-                                  >
-                                    <option value="1">{side1}</option>
-                                    <option value="2">{side2}</option>
-                                  </select>
-                                </label>
-                                <label>
-                                  Resumo
-                                  <input value={form.summary} onChange={(e) => setMatchForm(m.id, { summary: e.target.value })} placeholder="Opcional" />
-                                </label>
-                              </div>
-                              <label style={{ display: "inline-flex", gap: 8, alignItems: "center" }}>
-                                <input type="checkbox" checked={form.isWo} onChange={(e) => setMatchForm(m.id, { isWo: e.target.checked })} />
-                                Resultado por WO
-                              </label>
-                              <div className="modal-actions">
-                                <button onClick={() => void onSubmitResult(m)} disabled={busy}>
-                                  Enviar resultado
-                                </button>
-                                {isOwner && m.status !== "encerrada" && m.status !== "wo" ? (
-                                  <button className="danger" onClick={() => void onAdminResolveResult(m)} disabled={busy}>
-                                    Resolver pelo admin
-                                  </button>
-                                ) : null}
-                              </div>
-                              {subs.length ? (
-                                <div className="league-submission-list">
-                                  {subs.map((s) => (
-                                    <div key={s.id} className="league-submission-row">
-                                      <span>
-                                        Submissao em {formatDateTime(s.createdAt)} | Status: {s.status}
-                                        {typeof s.payload.summary === "string" && s.payload.summary ? ` | ${s.payload.summary}` : ""}
-                                      </span>
-                                      {s.status === "pending" ? (
-                                        <span>
-                                          <button onClick={() => void onConfirmSubmission(m.id, s.id, true)} disabled={busy}>
-                                            Confirmar
-                                          </button>
-                                          <button className="danger" onClick={() => void onConfirmSubmission(m.id, s.id, false)} disabled={busy}>
-                                            Disputar
-                                          </button>
-                                        </span>
-                                      ) : null}
-                                    </div>
-                                  ))}
-                                </div>
-                              ) : (
-                                <p className="subtle">Sem submissao enviada.</p>
-                              )}
-                            </section>
-
-                            <details className="league-room-panel league-room-disclosure">
-                              <summary>
-                                <span>Participantes e contatos</span>
-                                <small>{m.participants.length} jogadores</small>
-                              </summary>
-                              {m.participants.map((p, pIdx) => (
-                                <div key={`${p.leaguePlayerId || "x"}-${pIdx}`} className="league-participant-row">
-                                  <span>{p.displayName}</span>
-                                  <span>{p.phone || "-"}</span>
-                                </div>
-                              ))}
-                            </details>
-
-                            <details className="league-room-panel league-room-disclosure league-room-chat">
-                              <summary>
-                                <span>Mini chat</span>
-                                <small>{msgs.length ? `${msgs.length} mensagens` : "Sem mensagens"}</small>
-                              </summary>
-                              <div className="league-chat-box">
-                                {msgs.map((msg) => (
-                                  <div key={msg.id} className={msg.senderUserId === user.id ? "league-chat-me" : "league-chat-other"}>
-                                    <p>{msg.body}</p>
-                                    <span>{formatDateTime(msg.createdAt)}</span>
-                                  </div>
-                                ))}
-                                {!msgs.length ? <p className="subtle">Sem mensagens ainda.</p> : null}
-                              </div>
-                              <div className="league-chat-send">
-                                <input
-                                  value={messageDraftByMatch[m.id] || ""}
-                                  onChange={(e) => setMessageDraftByMatch((prev) => ({ ...prev, [m.id]: e.target.value }))}
-                                  placeholder="Escreva uma mensagem"
-                                />
-                                <button onClick={() => void onSendMessage(m.id)} disabled={busy}>
-                                  Enviar
-                                </button>
-                              </div>
-                            </details>
-                          </div>
-                        ) : null}
                       </article>
                     );
                   })}
                 </div>
               ))}
+              {renderLeagueMatchRoomDialog(activeLeagueRoomEntry)}
               {filteredLeagueMatchTotal > 0 ? (
                 <div className="league-match-pagination">
                   <span>

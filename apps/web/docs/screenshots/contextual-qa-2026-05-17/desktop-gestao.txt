@@ -1,0 +1,108 @@
+url=http://127.0.0.1:5173/#/gestao
+
+CENTRAL OPERACIONAL
+Gestao
+
+Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada.
+
+FILA DO DIA
+O que precisa de atencao agora
+Ver locais publicos
+Reservas pendentes
+Abrir primeiro local com acao pendente
+4
+Lista de espera
+Abrir primeiro local com acao pendente
+239
+Academia
+Abrir primeiro local com acao pendente
+315
+Clientes/CRM
+Abrir primeiro local com acao pendente
+66
+Financeiro
+Abrir primeiro local com acao pendente
+14
+WORKSPACES
+Locais sob sua gestao
+
+3 locais com acesso operacional
+
+ADMINISTRADOR | OPERACAO COMPLETA
+Clube Racket Prime
+
+Cuiaba - MT
+
+261 pendencia(s)
+24 reserva(s) hoje
+80
+Lista de espera
+139
+Academia
+33
+Clientes/CRM
+ACOES RAPIDASChamar espera | Ver agenda
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+Clientes
+Financeiro
+Cantina
+ADMINISTRADOR | OPERACAO COMPLETA
+ADT Dourados
+
+Dourados - MS
+
+197 pendencia(s)
+22 reserva(s) hoje
+4
+Reservas pendentes
+80
+Lista de espera
+75
+Academia
+ACOES RAPIDASConfirmar reservas | Chamar espera
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+Clientes
+Financeiro
+Cantina
+ADMINISTRADOR | ACADEMIA
+Arena Pantanal Tennis
+
+Campo Grande - MS
+
+180 pendencia(s)
+12 reserva(s) hoje
+79
+Lista de espera
+101
+Academia
+BASE INCOMPLETA
+Cadastrar cliente | Configurar plano
+Abrir operacao
+Pagina publica
+Agenda
+Academia
+SINAIS DE SUPORTE
+3
+3 locais acessiveis
+638
+pendencias operacionais
+58
+reservas hoje
+Implantacao guiada
+Complete a base de Arena Pantanal Tennis
+71% pronto
+Gestao esportiva
+Operação
+JOGAR
+Inicio
+Competir
+Locais
+Ranking
+CONTA
+Perfil

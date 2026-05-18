@@ -20,6 +20,7 @@ export type PlaceAcademyClassSetupDraft = {
   startsAt: string;
   title: string;
   weekday: number;
+  weekdays: number[];
 };
 
 type Props = {
@@ -49,6 +50,13 @@ export function PlaceAcademyClassSetupModule({
 }: Props) {
   const canCreateClass = Boolean(draft.title.trim() && draft.coachId && draft.startsAt && draft.endsAt && !coachConflict && !courtConflict);
   const canCreateSlot = Boolean(draft.coachId && draft.startsAt && draft.endsAt && !coachConflict && !courtConflict);
+  const selectedWeekdays = draft.weekdays?.length ? draft.weekdays : [draft.weekday];
+  const toggleWeekday = (weekday: number) => {
+    const next = selectedWeekdays.includes(weekday)
+      ? selectedWeekdays.filter((item) => item !== weekday)
+      : [...selectedWeekdays, weekday].sort((a, b) => a - b);
+    onChangeDraft({ ...draft, weekday: next[0] ?? weekday, weekdays: next });
+  };
 
   return (
     <WorkspaceCard
@@ -105,7 +113,7 @@ export function PlaceAcademyClassSetupModule({
           {
             id: "schedule",
             label: "Agenda",
-            detail: "Dia, quadra e horario",
+            detail: "Dias, quadra e horario",
             canContinue: Boolean(draft.coachId && draft.startsAt && draft.endsAt && !coachConflict && !courtConflict),
             content: (
               <div className="place-academy-form">
@@ -117,13 +125,16 @@ export function PlaceAcademyClassSetupModule({
                     </option>
                   ))}
                 </select>
-                <select value={draft.weekday} onChange={(event) => onChangeDraft({ ...draft, weekday: Number(event.target.value) })} aria-label="Dia da semana da turma">
-                  {weekdayLabels.map((label, index) => (
-                    <option key={`academy-day:${index}`} value={index}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
+                <div className="academy-weekday-picker" aria-label="Dias da semana da turma">
+                  {weekdayLabels.map((label, index) => {
+                    const active = selectedWeekdays.includes(index);
+                    return (
+                      <button key={`academy-day:${index}`} type="button" className={active ? "active" : ""} onClick={() => toggleWeekday(index)} aria-pressed={active}>
+                        {label.slice(0, 3)}
+                      </button>
+                    );
+                  })}
+                </div>
                 <input type="time" value={draft.startsAt} onChange={(event) => onChangeDraft({ ...draft, startsAt: event.target.value })} aria-label="Horario de inicio da turma" />
                 <input type="time" value={draft.endsAt} onChange={(event) => onChangeDraft({ ...draft, endsAt: event.target.value })} aria-label="Horario de fim da turma" />
                 {coachConflict || courtConflict ? (

@@ -1,6 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { PlayerProfileLink } from "../components/PlayerProfileLink";
 import { PublishingKit } from "../components/PublishingKit";
 import { ScreenState } from "../components/ScreenState";
 import { loadLeagueDetails, loadMyLeagues } from "../lib/leagues";
@@ -494,7 +495,7 @@ export function RankingPage({ user, profile }: Props) {
               <div key={`${row.leaguePlayerId}:${index}`} className={row.userId === user.id ? "ranking-row mine" : "ranking-row"}>
                 <span>{row.position || index + 1}</span>
                 <span>
-                  <strong>{row.displayName}</strong>
+                  <strong><PlayerProfileLink userId={row.userId} name={row.displayName} /></strong>
                   <small>{locationLabel(row)}</small>
                 </span>
                 <span>

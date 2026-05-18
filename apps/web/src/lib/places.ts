@@ -392,6 +392,7 @@ type AcademyClassRow = {
   court_id: string | null;
   title: string;
   coach_name: string | null;
+  recurrence_group_id?: string | null;
   weekday: number | null;
   starts_at: string;
   ends_at: string;
@@ -943,6 +944,7 @@ function rowToAcademyClass(row: AcademyClassRow): AcademyClass {
     courtId: row.court_id,
     title: row.title,
     coachName: row.coach_name || "",
+    recurrenceGroupId: row.recurrence_group_id || null,
     weekday: row.weekday ?? 1,
     startsAt: row.starts_at,
     endsAt: row.ends_at,
@@ -2380,7 +2382,7 @@ export async function listPlaceAcademyClasses(placeId: string): Promise<AcademyC
   if (!supabase) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_CLASSES)
-    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
+    .select("id,place_id,coach_id,court_id,title,coach_name,recurrence_group_id,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
     .eq("place_id", placeId)
     .order("weekday", { ascending: true })
     .order("starts_at", { ascending: true });
@@ -2535,6 +2537,7 @@ export async function createPlaceAcademyClass(input: {
   courtId?: string | null;
   title: string;
   coachName?: string;
+  recurrenceGroupId?: string | null;
   weekday: number;
   startsAt: string;
   endsAt: string;
@@ -2556,6 +2559,7 @@ export async function createPlaceAcademyClass(input: {
       court_id: input.courtId || null,
       title: input.title.trim(),
       coach_name: input.coachName?.trim() || null,
+      recurrence_group_id: input.recurrenceGroupId || null,
       weekday: Math.max(0, Math.min(6, Number(input.weekday) || 1)),
       starts_at: input.startsAt,
       ends_at: input.endsAt,
@@ -2568,7 +2572,7 @@ export async function createPlaceAcademyClass(input: {
       capacity: Math.max(1, Number(input.capacity) || 8),
       monthly_fee_cents: Math.max(0, Math.floor(input.monthlyFeeCents || 0)),
     })
-    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
+    .select("id,place_id,coach_id,court_id,title,coach_name,recurrence_group_id,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyClass(data as AcademyClassRow);
@@ -2581,6 +2585,7 @@ export async function createPlaceAcademyClassFromSlot(input: {
   courtId?: string | null;
   title: string;
   coachName?: string;
+  recurrenceGroupId?: string | null;
   weekday: number;
   startsAt: string;
   endsAt: string;
@@ -2616,7 +2621,18 @@ export async function createPlaceAcademyClassFromSlot(input: {
     })
     .single();
   if (error) throw new Error(error.message);
-  return rowToAcademyClass(data as AcademyClassRow);
+  const created = rowToAcademyClass(data as AcademyClassRow);
+  if (input.recurrenceGroupId) {
+    const { data: updated, error: updateError } = await supabase
+      .from(TABLE_ACADEMY_CLASSES)
+      .update({ recurrence_group_id: input.recurrenceGroupId })
+      .eq("id", created.id)
+      .select("id,place_id,coach_id,court_id,title,coach_name,recurrence_group_id,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
+      .single();
+    if (updateError) throw new Error(updateError.message);
+    return rowToAcademyClass(updated as AcademyClassRow);
+  }
+  return created;
 }
 
 export async function updatePlaceAcademyClassPricing(classId: string, monthlyFeeCents: number): Promise<void> {
@@ -2635,6 +2651,7 @@ export async function updatePlaceAcademyClass(input: {
   classId: string;
   coachId?: string | null;
   coachName?: string;
+  recurrenceGroupId?: string | null;
   courtId?: string | null;
   endsAt: string;
   genderScope: AcademyClass["genderScope"];
@@ -2656,6 +2673,7 @@ export async function updatePlaceAcademyClass(input: {
       capacity: Math.max(1, Number(input.capacity) || 1),
       coach_id: input.coachId || null,
       coach_name: input.coachName?.trim() || null,
+      recurrence_group_id: input.recurrenceGroupId || null,
       court_id: input.courtId || null,
       ends_at: input.endsAt,
       gender_scope: input.genderScope,
@@ -2669,7 +2687,7 @@ export async function updatePlaceAcademyClass(input: {
       weekday: Math.max(0, Math.min(6, Number(input.weekday) || 0)),
     })
     .eq("id", input.classId)
-    .select("id,place_id,coach_id,court_id,title,coach_name,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
+    .select("id,place_id,coach_id,court_id,title,coach_name,recurrence_group_id,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
     .single();
   if (error) throw new Error(error.message);
   return rowToAcademyClass(data as AcademyClassRow);

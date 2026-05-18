@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-05-18T01:18:18.130Z",
+  "desktop": {
+    "url": "http://127.0.0.1:5178/ATPAPP/?app_reload=1779067072386#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=hoje",
+    "title": "ATP — Amateur Tennis Platform",
+    "loaded": true,
+    "hasTodaySummary": false,
+    "hasSeeAll": true,
+    "hasPendingFirstFold": false,
+    "hasWaitlist": true,
+    "hasNewReservationCta": true,
+    "rows": 12,
+    "bookingSummary": [
+      "Mostrando 12 de 32 reserva(s) de hoje. Pendencias aparecem primeiro.Ver todas"
+    ],
+    "scrollHeight": 2206,
+    "innerWidth": 1366,
+    "overflowX": false,
+    "textSample": "GESTAO DO LOCAL\nClube Racket Prime\n\nWorkspace operacional do local. A página publica e a descoberta ficam fora desta tela.\n\nVoltar para central\nVer página publica\nADMIN | MULTIUNIDADE\nClube Racket Prime\nCuiaba - MT\n142\npendencias\n100%\nimplantado\nPainel\n323\nAgenda\n71\nAcademia\n233\nClientes\n27\nFinanceiro\n199\nCantina\nEquipe\nAjustes\nModulo ativo\nAgenda\nReservas, bloqueios, calendario das quadras e lista de espera.\n71 itens para acompanhar\nReservas\nAcademia\nSocios\nCRM\nFinanceiro\n+1\nBase operacional pronta\nCentral de agenda\nAgenda do dia, pendencias e proximos horarios.\nHoje\nReservas\nCalendario\nNova reserva\nEspera\nQuadras\nLista de espera\nAna Gomes\nQuadra 8 - 17/05/2026, 17:30:00\n5d na espera - aguardando vaga\nCriar reservaMarcar convidadoRemover\nAna Gomes\nQuadra 5 - 17/05/2026, 17:30:00\n3d na espera - aguardando vaga\nCriar reservaMarcar convidadoRemover\nAna Gomes\nQuadra 7 - 17/05/2026, 17:30:00\n6d na espera - aguardando vaga\nCriar reservaMarcar convidadoRemover\nVer lista completa\nMais 68 jogador(es) na espera.\nMostrando 12 de 32 reserva(s) de hoje. Pendencias aparecem primeiro.\nVer todas\n04:00 - Quadra 2\nEnzo Araujo | Confirmada\nFim 05:30\nSem pagamento\nContato +55 67 990009316\nReserva dem"
+  },
+  "mobile": {
+    "url": "http://127.0.0.1:5178/ATPAPP/?app_reload=1779067085288#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=hoje",
+    "title": "ATP — Amateur Tennis Platform",
+    "loaded": true,
+    "hasTodaySummary": false,
+    "hasSeeAll": true,
+    "hasPendingFirstFold": false,
+    "hasWaitlist": true,
+    "hasNewReservationCta": true,
+    "rows": 12,
+    "bookingSummary": [
+      "Mostrando 12 de 32 reserva(s) de hoje. Pendencias aparecem primeiro.Ver todas"
+    ],
+    "scrollHeight": 4347,
+    "innerWidth": 390,
+    "overflowX": false,
+    "textSample": "GESTAO DO LOCAL\nClube Racket Prime\nVoltar para central\nVer página publica\nADMIN | MULTIUNIDADE\nClube Racket Prime\nCuiaba - MT\n142\npendencias\n100%\nimplantado\nPainel\n323\nAgenda\n71\nAcademia\n233\nClientes\n27\nFinanceiro\n199\nCantina\nEquipe\nAjustes\nModulo ativo\nAgenda\nReservas, bloqueios, calendario das quadras e lista de espera.\n71 itens para acompanhar\nReservas\nAcademia\nSocios\nCRM\nFinanceiro\n+1\nBase operacional pronta\nCentral de agenda\nAgenda do dia, pendencias e proximos horarios.\nHoje\nReservas\nCalendario\nNova reserva\nEspera\nQuadras\nLista de espera\nAna Gomes\nQuadra 8 - 17/05/2026, 17:30:00\n5d na espera - aguardando vaga\nCriar reservaMarcar convidadoRemover\nAna Gomes\nQuadra 5 - 17/05/2026, 17:30:00\n3d na espera - aguardando vaga\nCriar reservaMarcar convidadoRemover\nAna Gomes\nQuadra 7 - 17/05/2026, 17:30:00\n6d na espera - aguardando vaga\nCriar reservaMarcar convidadoRemover\nVer lista completa\nMais 68 jogador(es) na espera.\nMostrando 12 de 32 reserva(s) de hoje. Pendencias aparecem primeiro.\nVer todas\n04:00 - Quadra 2\nEnzo Araujo | Confirmada\nFim 05:30\nSem pagamento\nContato +55 67 990009316\nReserva demo confirmada.\nCancelar\n04:00 - Quadra 4\nWagner Duarte | Confirmada\nFim 05:30\nSem pagament"
+  }
+}

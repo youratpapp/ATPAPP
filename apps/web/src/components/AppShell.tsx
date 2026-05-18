@@ -1,10 +1,12 @@
 import { useEffect, type ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { Profile } from "../lib/types";
 import { BottomNav } from "./BottomNav";
+import { AppPopover } from "./AppOverlays";
 import logoSymbol from "../assets/logo-atp-symbol.svg";
 import { getRouteSurfaceMode, type AppSurfaceMode } from "../lib/role-visibility";
+import { useUserMode } from "../lib/user-mode-context";
 
 type Props = {
   user: User;
@@ -49,7 +51,10 @@ export function AppShell({
   mode,
 }: Props) {
   const { pathname } = useLocation();
-  const surfaceMode = mode ?? getRouteSurfaceMode(pathname);
+  const navigate = useNavigate();
+  const userMode = useUserMode();
+  const routeSurfaceMode = getRouteSurfaceMode(pathname);
+  const surfaceMode = mode ?? (routeSurfaceMode === "player" ? (userMode.mode === "work" ? "management" : "player") : routeSurfaceMode === "management" ? "management" : "competition");
   const displayName = profile?.displayName || user.email?.split("@")[0] || "Atleta";
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
@@ -80,6 +85,30 @@ export function AppShell({
               </div>
             </div>
             <div className="app-header-actions">
+              {userMode.isProfessional ? (
+                <div className="app-mode-switch" role="group" aria-label="Modo de uso">
+                  <button
+                    type="button"
+                    className={userMode.mode === "player" ? "active" : ""}
+                    onClick={() => {
+                      userMode.setMode("player");
+                      if (routeSurfaceMode !== "player") navigate("/inicio");
+                    }}
+                  >
+                    Jogador
+                  </button>
+                  <button
+                    type="button"
+                    className={userMode.mode === "work" ? "active" : ""}
+                    onClick={() => {
+                      userMode.setMode("work");
+                      if (routeSurfaceMode === "player") navigate(userMode.workEntryPath);
+                    }}
+                  >
+                    Trabalho
+                  </button>
+                </div>
+              ) : null}
               <img src={logoSymbol} alt="ATP" className="app-header-mark" />
               {onBellClick ? (
                 <>
@@ -94,19 +123,15 @@ export function AppShell({
                     <BellIcon />
                     {bellCount > 0 ? <span className="app-bell-badge">{Math.min(9, bellCount)}</span> : null}
                   </button>
-                  {bellOpen && bellPanel ? (
-                    <>
-                      <button
-                        type="button"
-                        className="app-notification-backdrop"
-                        aria-label="Fechar notificacoes"
-                        onClick={onBellClose ?? onBellClick}
-                      />
-                      <div id="app-notification-panel" className="app-notification-popover" role="dialog" aria-modal="false" aria-label="Notificacoes">
-                        {bellPanel}
-                      </div>
-                    </>
-                  ) : null}
+                  <AppPopover
+                    id="app-notification-panel"
+                    open={Boolean(bellOpen && bellPanel)}
+                    label="Notificacoes"
+                    onClose={onBellClose ?? onBellClick}
+                    className="app-notification-popover"
+                  >
+                    {bellPanel}
+                  </AppPopover>
                 </>
               ) : null}
             </div>

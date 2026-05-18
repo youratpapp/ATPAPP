@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useCallback } from "react";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
+import { AppDialog } from "../components/AppOverlays";
 import { CompetitionHeader, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
+import { PlayerProfileLink } from "../components/PlayerProfileLink";
 import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
+import { friendlyToastMessage, useToast } from "../components/toast";
 import {
   addTournamentStaff,
   cancelTournamentMatchConfirmation,
@@ -1252,6 +1255,8 @@ function buildClassVisualSvg(
 export function TournamentPage({ user, profile, forcedTab }: Props) {
   const navigate = useNavigate();
   const { tournamentId = "" } = useParams();
+  const [searchParams] = useSearchParams();
+  const { showToast } = useToast();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -1266,6 +1271,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [agenda, setAgenda] = useState<Agenda>(normalizeAgenda(null));
   const [agendaDirty, setAgendaDirty] = useState(false);
   const [courtUsageRequests, setCourtUsageRequests] = useState<TournamentCourtUsageRequest[]>([]);
+
+  useEffect(() => {
+    if (!feedback) return;
+    showToast({ kind: feedback.kind, text: feedback.kind === "error" ? friendlyToastMessage(feedback.text) : feedback.text });
+  }, [feedback, showToast]);
 
   const [newAgendaDate, setNewAgendaDate] = useState("");
   const [newAgendaStart, setNewAgendaStart] = useState("08:00");
@@ -1320,6 +1330,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [announcementText, setAnnouncementText] = useState("");
   const [pinAnnouncement, setPinAnnouncement] = useState(false);
   const [playerResultDraft, setPlayerResultDraft] = useState<PlayerMatchResultDraft>({ matchId: "", detail: null });
+  const [activeTournamentRoomMatchId, setActiveTournamentRoomMatchId] = useState("");
+  const [autoOpenedTournamentRoomId, setAutoOpenedTournamentRoomId] = useState("");
   const [showFinishedMyMatches, setShowFinishedMyMatches] = useState(false);
   const [resultSubmissions, setResultSubmissions] = useState<TournamentMatchResultSubmission[]>([]);
   const [resultSubmitting, setResultSubmitting] = useState(false);
@@ -1867,6 +1879,21 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     () => myTournamentMatches.filter((match) => match.status === "pending"),
     [myTournamentMatches]
   );
+  const requestedTournamentRoomId = searchParams.get("room") || "";
+
+  useEffect(() => {
+    if (!requestedTournamentRoomId || autoOpenedTournamentRoomId === requestedTournamentRoomId) return;
+    const match = myTournamentMatches.find((item) => item.id === requestedTournamentRoomId);
+    if (!match) {
+      setActiveTournamentRoomMatchId(requestedTournamentRoomId);
+      return;
+    }
+    setActiveClassKey(match.classKey);
+    setPublicActiveTab("jogos");
+    setActiveTournamentRoomMatchId(match.id);
+    setAutoOpenedTournamentRoomId(requestedTournamentRoomId);
+  }, [autoOpenedTournamentRoomId, myTournamentMatches, requestedTournamentRoomId]);
+
   const myFinishedMatches = useMemo(
     () => myTournamentMatches.filter((match) => match.status === "done"),
     [myTournamentMatches]
@@ -1875,6 +1902,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     const source = showFinishedMyMatches ? myTournamentMatches : myPendingMatches;
     return (source.length ? source : myTournamentMatches).slice(0, 6);
   }, [myPendingMatches, myTournamentMatches, showFinishedMyMatches]);
+  const activeTournamentRoomMatch = useMemo(
+    () => myTournamentMatches.find((match) => match.id === activeTournamentRoomMatchId) ?? null,
+    [activeTournamentRoomMatchId, myTournamentMatches]
+  );
   const myTournamentRegistration = useMemo(
     () => registrations.find((registration) => registration.userId === user.id) ?? null,
     [registrations, user.id]
@@ -1918,6 +1949,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           classKey: string;
           group: string;
           name: string;
+          userId: string | null;
         }
       >();
       registrations
@@ -1933,6 +1965,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             classKey,
             group: "",
             name,
+            userId: registration.userId || null,
           });
         });
       playerClassesSummary.forEach((item) => {
@@ -1953,6 +1986,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             classKey,
             group: participant.grupo || "",
             name,
+            userId: null,
           });
         });
       });
@@ -2144,6 +2178,20 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
   };
 
+  const focusMyTournamentCenter = () => {
+    const preferredMatch = myPendingMatches[0] ?? myTournamentMatches[0] ?? null;
+    if (preferredMatch) {
+      setActiveClassKey(preferredMatch.classKey);
+    }
+    goToPublicTab("jogos");
+    window.setTimeout(() => {
+      document.getElementById("my-tournament-center")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (myPendingMatches.length === 1 && myPendingMatches[0]) {
+        setActiveTournamentRoomMatchId(myPendingMatches[0].id);
+      }
+    }, 120);
+  };
+
   const handlePublicTournamentCta = () => {
     if (!tournament || publicTournamentCta.disabled) return;
     if (publicTournamentCta.action === "register") {
@@ -2151,7 +2199,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       return;
     }
     if (publicTournamentCta.action === "games") {
-      goToPublicTab("jogos");
+      focusMyTournamentCenter();
     }
   };
 
@@ -4317,6 +4365,109 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
   };
 
+  const renderTournamentPlayerMatchRoom = (match: PlayerTournamentMatch | null) => {
+    if (!match || !tournament) return null;
+    const matchClassRef = classes.find((cls) => cls.key === match.classKey);
+    if (!matchClassRef) return null;
+    const playerScoreDetail = draftDetailForMatch(match, matchClassRef.data.config);
+    const playerScoreMatch: GroupMatch = {
+      a: "A",
+      b: "B",
+      s1: "",
+      s2: "",
+      scoreLabel: encodeMatchScoreDetail(playerScoreDetail),
+      done: false,
+      winner: null,
+    };
+    const scheduled = agendaAssignmentByMatchKey.get(
+      buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
+    );
+    const submissions = resultSubmissionByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
+    const confirmations = confirmationByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
+    const myConfirmation = confirmations.find((confirmation) => confirmation.userId === user.id);
+    const hasAccepted = submissions.some((submission) => submission.status === "accepted");
+    const hasConflict = submissions.some((submission) => submission.status === "conflict");
+    const submittedSides = new Set(submissions.map((submission) => submission.side)).size;
+    const submissionStatusText = hasConflict
+      ? "Divergente: organizador precisa revisar."
+      : hasAccepted
+      ? "Conferido pelos lados. Aguardando placar oficial."
+      : submissions.length > 0
+      ? `Enviado por ${submittedSides} ${submittedSides === 1 ? "lado" : "lados"}.`
+      : "Informe o placar conforme a regra desta classe.";
+
+    return (
+      <AppDialog
+        open={Boolean(match)}
+        onClose={() => setActiveTournamentRoomMatchId("")}
+        title={match.title}
+        eyebrow="Sala da partida"
+        subtitle={`${match.classLabel} - ${match.phase}${scheduled ? ` | ${formatAssignmentTime(scheduled)}` : ""}`}
+        className="tournament-match-room-dialog"
+      >
+        <div className="tournament-match-room-body">
+          <section className="tournament-match-room-card">
+            <span>Status</span>
+            <strong>{match.status === "done" ? match.score || "Partida finalizada" : "Partida pendente"}</strong>
+            {myConfirmation ? (
+              <small>{myConfirmation.status === "confirmed" ? "Sua presenca esta confirmada." : "Sua indisponibilidade foi enviada."}</small>
+            ) : (
+              <small>{scheduled ? "Confira o horario e combine os detalhes com o adversario." : "Horario ainda nao definido pela organizacao."}</small>
+            )}
+          </section>
+
+          {match.status === "pending" ? (
+            <>
+              <section className="my-match-score-fields tournament-match-room-score">
+                <p className="my-match-score-map">
+                  <span><strong>A</strong> {match.playerA}</span>
+                  <span><strong>B</strong> {match.playerB}</span>
+                </p>
+                {renderScoreFields(matchClassRef.data.config, playerScoreMatch, false, (updater) => {
+                  const current = draftDetailForMatch(match, matchClassRef.data.config);
+                  setPlayerResultDraft({
+                    matchId: match.id,
+                    detail: normalizeMatchScoreDetail(updater(current), matchClassRef.data.config),
+                  });
+                })}
+              </section>
+              <div className="tournament-match-room-status">{submissionStatusText}</div>
+              <div className="tournament-match-room-actions">
+                {tournament.playerResultSubmissionEnabled ? (
+                  <button onClick={() => void submitPlayerMatchResultNow(match)} disabled={resultSubmitting}>
+                    Enviar resultado
+                  </button>
+                ) : null}
+                <button
+                  className="brand-icon-btn secondary-action"
+                  onClick={() => sharePlayerMatchResultWhatsApp(match, matchClassRef.data.config)}
+                  title="Enviar pelo WhatsApp"
+                  aria-label="Enviar pelo WhatsApp"
+                >
+                  <WhatsAppAppIcon />
+                  <span>WhatsApp</span>
+                </button>
+              </div>
+            </>
+          ) : null}
+
+          {submissions.length > 0 ? (
+            <section className="tournament-match-room-card">
+              <span>Resultados enviados</span>
+              <div className="tournament-match-room-submissions">
+                {submissions.map((submission) => (
+                  <small key={submission.id}>
+                    Lado {submission.side.toUpperCase()}: {submission.scoreText} - {submission.status}
+                  </small>
+                ))}
+              </div>
+            </section>
+          ) : null}
+        </div>
+      </AppDialog>
+    );
+  };
+
   const buildSelfRegistrationLink = () => {
     if (!tournament || !activeDraftCategory || !activeDraftClass) return "";
     const u = new URL(window.location.href);
@@ -5227,12 +5378,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         />
       ) : null}
 
-      {feedback ? (
-        <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
-          {feedback.text}
-        </p>
-      ) : null}
-
       {loading ? (
         <ScreenState
           kind="loading"
@@ -5412,7 +5557,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     {publicParticipantRowsForActiveClass.map((participant) => (
                       <article key={`public-participant:${participant.id}`} className="competition-public-person-row">
                         <div>
-                          <strong>{participant.name}</strong>
+                          <strong><PlayerProfileLink userId={participant.userId} name={participant.name} /></strong>
                           <span>{participant.categoryName} / {participant.className}</span>
                         </div>
                         {participant.group ? <small>{formatPublicGroupLabel(participant.group)}</small> : null}
@@ -5883,6 +6028,129 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </>
               ) : null}
 
+              {!isOwner && !isTournamentStaff && myTournamentMatches.length > 0 ? (
+                <div className="my-matches-panel" id="my-tournament-center">
+                  <div className="my-matches-head">
+                    <div>
+                      <span>Sua central no torneio</span>
+                      <h3>Minhas partidas</h3>
+                    </div>
+                    <div className="my-matches-tools">
+                      <span className="home-league-chip member">{myPendingMatches.length} {myPendingMatches.length === 1 ? "pendente" : "pendentes"}</span>
+                      {myFinishedMatches.length > 0 ? (
+                        <button
+                          className="link"
+                          onClick={() => setShowFinishedMyMatches((value) => !value)}
+                        >
+                          {showFinishedMyMatches ? "Ocultar finalizadas" : `Ver ${myFinishedMatches.length} ${myFinishedMatches.length === 1 ? "finalizada" : "finalizadas"}`}
+                        </button>
+                      ) : null}
+                      <button
+                        className="brand-icon-btn"
+                        onClick={() => void syncMyTournamentGoogleCalendar()}
+                        disabled={saving || calendarSyncing}
+                        title="Sincronizar no Google Agenda"
+                        aria-label="Sincronizar no Google Agenda"
+                      >
+                        <GoogleCalendarAppIcon />
+                        <span>Agenda</span>
+                      </button>
+                    </div>
+                  </div>
+                  {visibleMyTournamentMatches.map((match) => {
+                    const scheduled = agendaAssignmentByMatchKey.get(
+                      buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
+                    );
+                    const submissions = resultSubmissionByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
+                    const confirmations = confirmationByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
+                    const myConfirmation = confirmations.find((confirmation) => confirmation.userId === user.id);
+                    const opState = buildTournamentMatchOperationalState({
+                      done: match.status === "done",
+                      hasSchedule: Boolean(scheduled),
+                      submissions,
+                      confirmations,
+                      myUserId: user.id,
+                      isOwner: false,
+                    });
+                    const hasAccepted = submissions.some((submission) => submission.status === "accepted");
+                    const hasConflict = submissions.some((submission) => submission.status === "conflict");
+                    const submittedSides = new Set(submissions.map((submission) => submission.side)).size;
+                    const matchClassRef = classes.find((cls) => cls.key === match.classKey);
+                    const submissionStatusText = hasConflict
+                      ? "Divergente: organizador precisa revisar."
+                      : hasAccepted
+                      ? "Conferido pelos lados. Aguardando placar oficial."
+                      : submissions.length > 0
+                      ? `Enviado por ${submittedSides} ${submittedSides === 1 ? "lado" : "lados"}.`
+                      : "";
+                    const canOpenPlayerRoom = match.status === "pending" && matchClassRef;
+                    const canSendPlayerResult = canOpenPlayerRoom && tournament.playerResultSubmissionEnabled;
+                    return (
+                      <div key={match.id} className={`my-match-row ${match.status}`}>
+                        <div className="my-match-main">
+                          <button className="my-match-summary" type="button" onClick={() => setActiveClassKey(match.classKey)}>
+                            <span>
+                              <strong>{match.title}</strong>
+                              <small>{match.classLabel} - {match.phase}</small>
+                            </span>
+                            <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
+                          </button>
+                          <div className="my-match-context">
+                            {scheduled ? <span className="match-schedule-info">{formatAssignmentTime(scheduled)}</span> : null}
+                            <span className={`match-operational-state ${opState.severity}`}>
+                              <span>{opState.label}</span>
+                              <strong>{opState.playerAction}</strong>
+                            </span>
+                            {myConfirmation ? (
+                              <span className={`match-confirmation-status ${myConfirmation.status}`}>
+                                {myConfirmation.status === "confirmed" ? "Presença confirmada" : "Indisponibilidade avisada"}
+                              </span>
+                            ) : null}
+                            {submissionStatusText ? <span className="result-submission-status">{submissionStatusText}</span> : null}
+                          </div>
+                          <div className="my-match-actions">
+                            {match.status === "pending" && !myConfirmation ? (
+                              <>
+                                <button onClick={() => void confirmPlayerMatchNow(match, "confirmed")} disabled={matchConfirming}>
+                                  Confirmar presença
+                                </button>
+                                <button className="secondary-action" onClick={() => void confirmPlayerMatchNow(match, "unavailable")} disabled={matchConfirming}>
+                                  Não posso jogar
+                                </button>
+                              </>
+                            ) : null}
+                            {myConfirmation ? (
+                              <button className="quiet" onClick={() => void cancelPlayerMatchConfirmationNow(match)} disabled={matchConfirming}>
+                                {myConfirmation.status === "confirmed" ? "Desfazer" : "Alterar"}
+                              </button>
+                            ) : null}
+                          </div>
+                        </div>
+                        {canOpenPlayerRoom ? (
+                          <div className="my-match-result-tools my-match-result-tools--compact">
+                            <button type="button" onClick={() => setActiveTournamentRoomMatchId(match.id)}>
+                              {canSendPlayerResult ? "Informar resultado" : "Compartilhar placar"}
+                            </button>
+                            <button
+                              type="button"
+                              className="brand-icon-btn secondary-action"
+                              onClick={() => sharePlayerMatchResultWhatsApp(match, matchClassRef.data.config)}
+                              title="Enviar pelo WhatsApp"
+                              aria-label="Enviar pelo WhatsApp"
+                            >
+                              <WhatsAppAppIcon />
+                              <span>WhatsApp</span>
+                            </button>
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                  {renderTournamentPlayerMatchRoom(activeTournamentRoomMatch)}
+                </div>
+              ) : null}
+
+
               {isPublicTournamentReader && activeClass ? (
                 <div className="tournament-public-match-summary">
                   <div className="tournament-public-match-summary-head">
@@ -5954,156 +6222,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       </article>
                     ))}
                   </div>
-                </div>
-              ) : null}
-
-              {!isOwner && !isTournamentStaff && myTournamentMatches.length > 0 ? (
-                <div className="my-matches-panel">
-                  <div className="my-matches-head">
-                    <div>
-                      <span>Sua central no torneio</span>
-                      <h3>Minhas partidas</h3>
-                    </div>
-                    <div className="my-matches-tools">
-                      <span className="home-league-chip member">{myPendingMatches.length} {myPendingMatches.length === 1 ? "pendente" : "pendentes"}</span>
-                      {myFinishedMatches.length > 0 ? (
-                        <button
-                          className="link"
-                          onClick={() => setShowFinishedMyMatches((value) => !value)}
-                        >
-                          {showFinishedMyMatches ? "Ocultar finalizadas" : `Ver ${myFinishedMatches.length} ${myFinishedMatches.length === 1 ? "finalizada" : "finalizadas"}`}
-                        </button>
-                      ) : null}
-                      <button
-                        className="brand-icon-btn"
-                        onClick={() => void syncMyTournamentGoogleCalendar()}
-                        disabled={saving || calendarSyncing}
-                        title="Sincronizar no Google Agenda"
-                        aria-label="Sincronizar no Google Agenda"
-                      >
-                        <GoogleCalendarAppIcon />
-                        <span>Agenda</span>
-                      </button>
-                    </div>
-                  </div>
-                  {visibleMyTournamentMatches.map((match) => {
-                    const scheduled = agendaAssignmentByMatchKey.get(
-                      buildScheduleMatchKey(match.categoryName, match.className, match.phase, match.matchIndex)
-                    );
-                    const submissions = resultSubmissionByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
-                    const confirmations = confirmationByMatch.get(`${match.classKey}:${match.phaseKey}:${match.matchIndex}`) || [];
-                    const myConfirmation = confirmations.find((confirmation) => confirmation.userId === user.id);
-                    const opState = buildTournamentMatchOperationalState({
-                      done: match.status === "done",
-                      hasSchedule: Boolean(scheduled),
-                      submissions,
-                      confirmations,
-                      myUserId: user.id,
-                      isOwner: false,
-                    });
-                    const hasAccepted = submissions.some((submission) => submission.status === "accepted");
-                    const hasConflict = submissions.some((submission) => submission.status === "conflict");
-                    const submittedSides = new Set(submissions.map((submission) => submission.side)).size;
-                    const matchClassRef = classes.find((cls) => cls.key === match.classKey);
-                    const playerScoreDetail = matchClassRef ? draftDetailForMatch(match, matchClassRef.data.config) : null;
-                    const playerScoreMatch: GroupMatch | null = playerScoreDetail
-                      ? {
-                          a: "A",
-                          b: "B",
-                          s1: "",
-                          s2: "",
-                          scoreLabel: encodeMatchScoreDetail(playerScoreDetail),
-                          done: false,
-                          winner: null,
-                        }
-                      : null;
-                    const submissionStatusText = hasConflict
-                      ? "Divergente: organizador precisa revisar."
-                      : hasAccepted
-                      ? "Conferido pelos lados. Aguardando placar oficial."
-                      : submissions.length > 0
-                      ? `Enviado por ${submittedSides} ${submittedSides === 1 ? "lado" : "lados"}.`
-                      : "";
-                    const canSendPlayerResult = match.status === "pending" && matchClassRef && playerScoreMatch && tournament.playerResultSubmissionEnabled;
-                    return (
-                      <div key={match.id} className={`my-match-row ${match.status}`}>
-                        <div className="my-match-main">
-                          <button className="my-match-summary" type="button" onClick={() => setActiveClassKey(match.classKey)}>
-                            <span>
-                              <strong>{match.title}</strong>
-                              <small>{match.classLabel} - {match.phase}</small>
-                            </span>
-                            <em>{match.status === "done" ? match.score || "Finalizada" : "Pendente"}</em>
-                          </button>
-                          <div className="my-match-context">
-                            {scheduled ? <span className="match-schedule-info">{formatAssignmentTime(scheduled)}</span> : null}
-                            <span className={`match-operational-state ${opState.severity}`}>
-                              <span>{opState.label}</span>
-                              <strong>{opState.playerAction}</strong>
-                            </span>
-                            {myConfirmation ? (
-                              <span className={`match-confirmation-status ${myConfirmation.status}`}>
-                                {myConfirmation.status === "confirmed" ? "Presença confirmada" : "Indisponibilidade avisada"}
-                              </span>
-                            ) : null}
-                            {submissionStatusText ? <span className="result-submission-status">{submissionStatusText}</span> : null}
-                          </div>
-                          <div className="my-match-actions">
-                            {match.status === "pending" && !myConfirmation ? (
-                              <>
-                                <button onClick={() => void confirmPlayerMatchNow(match, "confirmed")} disabled={matchConfirming}>
-                                  Confirmar presença
-                                </button>
-                                <button className="secondary-action" onClick={() => void confirmPlayerMatchNow(match, "unavailable")} disabled={matchConfirming}>
-                                  Não posso jogar
-                                </button>
-                              </>
-                            ) : null}
-                            {myConfirmation ? (
-                              <button className="quiet" onClick={() => void cancelPlayerMatchConfirmationNow(match)} disabled={matchConfirming}>
-                                {myConfirmation.status === "confirmed" ? "Desfazer" : "Alterar"}
-                              </button>
-                            ) : null}
-                          </div>
-                        </div>
-                        {match.status === "pending" && matchClassRef && playerScoreMatch ? (
-                          <details className="my-match-result-tools">
-                            <summary>
-                              <span>{canSendPlayerResult ? "Informar resultado" : "Compartilhar placar"}</span>
-                              <small>Placar e WhatsApp</small>
-                            </summary>
-                            <div className="my-match-score-fields">
-                              <p className="my-match-score-map">
-                                <span><strong>A</strong> {match.playerA}</span>
-                                <span><strong>B</strong> {match.playerB}</span>
-                              </p>
-                              {renderScoreFields(matchClassRef.data.config, playerScoreMatch, false, (updater) => {
-                                const current = draftDetailForMatch(match, matchClassRef.data.config);
-                                setPlayerResultDraft({
-                                  matchId: match.id,
-                                  detail: normalizeMatchScoreDetail(updater(current), matchClassRef.data.config),
-                                });
-                              })}
-                            </div>
-                            {tournament.playerResultSubmissionEnabled ? (
-                              <button onClick={() => void submitPlayerMatchResultNow(match)} disabled={resultSubmitting}>
-                                Enviar
-                              </button>
-                            ) : null}
-                            <button
-                              className="brand-icon-btn"
-                              onClick={() => sharePlayerMatchResultWhatsApp(match, matchClassRef.data.config)}
-                              title="Enviar pelo WhatsApp"
-                              aria-label="Enviar pelo WhatsApp"
-                            >
-                              <WhatsAppAppIcon />
-                              <span>WhatsApp</span>
-                            </button>
-                          </details>
-                        ) : null}
-                      </div>
-                    );
-                  })}
                 </div>
               ) : null}
 

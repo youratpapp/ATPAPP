@@ -8,6 +8,7 @@ export type Profile = {
   birthDate: string;
   instagram: string;
   bio: string;
+  profileVisibility: "public" | "private";
 };
 
 export type PlaceProductPlan = "club_basic" | "academy" | "club_pro" | "multi_unit";
@@ -279,6 +280,7 @@ export type AcademyClass = {
   courtId: string | null;
   title: string;
   coachName: string;
+  recurrenceGroupId: string | null;
   weekday: number;
   startsAt: string;
   endsAt: string;

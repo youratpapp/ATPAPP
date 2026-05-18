@@ -315,6 +315,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const [phone, setPhone] = useState(profile?.phone ?? "");
   const [birthDate, setBirthDate] = useState(profile?.birthDate ?? "");
   const [instagram, setInstagram] = useState(profile?.instagram ?? "");
+  const [profileVisibility, setProfileVisibility] = useState<Profile["profileVisibility"]>(profile?.profileVisibility ?? "public");
   const [activityLoading, setActivityLoading] = useState(true);
   const [activityError, setActivityError] = useState("");
   const [playingTournaments, setPlayingTournaments] = useState<TournamentSummary[]>([]);
@@ -421,6 +422,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         phone: phone.trim(),
         birthDate: birthDate.trim(),
         instagram: instagram.trim(),
+        profileVisibility,
       });
       onProfileChange(next);
       setEditing(false);
@@ -767,6 +769,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         <p className="profile-location">{locationLine || "Adicione cidade e estado"}</p>
         <div className="profile-identity-pills">
           <span>{profileComplete ? "Perfil completo" : "Perfil incompleto"}</span>
+          <span>{profile?.profileVisibility === "private" ? "Perfil privado" : "Perfil publico"}</span>
           <span>{playingCount > 0 ? "Jogador ativo" : "Sem competicao ativa"}</span>
           <span>{notificationPrefs.matchReminders || notificationPrefs.bookingReminders ? "Lembretes ativos" : "Lembretes pausados"}</span>
         </div>
@@ -789,7 +792,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
 
       {editing ? (
         <div className="card" style={{ marginBottom: 12 }}>
-          <label>Nome de exibiÃ§Ã£o</label>
+          <label>Nome de exibicao</label>
           <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Como aparece nos torneios" />
           <div className="row">
             <div>
@@ -836,6 +839,34 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           <input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
           <label>Instagram</label>
           <input value={instagram} onChange={(e) => setInstagram(e.target.value)} placeholder="@seuusuario" />
+          <div className="profile-visibility-control" role="group" aria-label="Privacidade do perfil">
+            <label className={profileVisibility === "public" ? "active" : ""}>
+              <input
+                type="radio"
+                name="profileVisibility"
+                value="public"
+                checked={profileVisibility === "public"}
+                onChange={() => setProfileVisibility("public")}
+              />
+              <span>
+                <strong>Perfil publico</strong>
+                <small>Foto, cidade, bio e resumo competitivo aparecem para outros jogadores.</small>
+              </span>
+            </label>
+            <label className={profileVisibility === "private" ? "active" : ""}>
+              <input
+                type="radio"
+                name="profileVisibility"
+                value="private"
+                checked={profileVisibility === "private"}
+                onChange={() => setProfileVisibility("private")}
+              />
+              <span>
+                <strong>Perfil privado</strong>
+                <small>Dados pessoais ficam ocultos; confrontos e partidas necessarias continuam visiveis.</small>
+              </span>
+            </label>
+          </div>
           <div className="row" style={{ marginTop: 16 }}>
             <button onClick={() => setEditing(false)} disabled={busy}>Cancelar</button>
             <button className="primary" onClick={onSave} disabled={busy}>Salvar</button>
@@ -847,7 +878,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
             <span className="pr-icon"><PhoneIcon /></span>
             <div className="pr-content">
               <p className="pr-label">Telefone</p>
-              <p className="pr-value">{profile?.phone || "â€”"}</p>
+              <p className="pr-value">{profile?.phone || "-"}</p>
             </div>
           </div>
           <div className="profile-row">
@@ -864,7 +895,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
               <p className="pr-value">
                 {profile?.birthDate
                   ? new Date(profile.birthDate + "T12:00:00").toLocaleDateString("pt-BR")
-                  : "â€”"}
+                  : "-"}
               </p>
             </div>
           </div>

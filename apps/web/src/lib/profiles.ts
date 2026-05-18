@@ -14,6 +14,7 @@ type ProfileRow = {
   birth_date: string | null;
   instagram: string | null;
   bio: string | null;
+  profile_visibility?: "public" | "private" | null;
 };
 
 function rowToProfile(row: ProfileRow): Profile {
@@ -27,6 +28,7 @@ function rowToProfile(row: ProfileRow): Profile {
     birthDate: row.birth_date ?? "",
     instagram: row.instagram ?? "",
     bio: row.bio ?? "",
+    profileVisibility: row.profile_visibility === "private" ? "private" : "public",
   };
 }
 
@@ -41,6 +43,7 @@ function emptyProfile(userId: string): Profile {
     birthDate: "",
     instagram: "",
     bio: "",
+    profileVisibility: "public",
   };
 }
 
@@ -48,7 +51,7 @@ export async function fetchProfile(user: User): Promise<Profile> {
   if (!supabase) return emptyProfile(user.id);
   const { data, error } = await supabase
     .from(TABLE)
-    .select("user_id,display_name,photo_url,city,state,phone,birth_date,instagram,bio")
+    .select("user_id,display_name,photo_url,city,state,phone,birth_date,instagram,bio,profile_visibility")
     .eq("user_id", user.id)
     .maybeSingle();
   if (error) throw new Error(error.message);
@@ -61,15 +64,46 @@ export async function fetchPublicProfiles(userIds: string[]): Promise<Map<string
   if (!supabase || userIds.length === 0) return result;
   const ids = Array.from(new Set(userIds.filter(Boolean)));
   if (ids.length === 0) return result;
-  const { data, error } = await supabase
-    .from(TABLE)
-    .select("user_id,display_name,photo_url,city,state,phone,birth_date,instagram,bio")
-    .in("user_id", ids);
+  const { data, error } = await supabase.rpc("app_get_public_profiles", { p_user_ids: ids });
   if (error) throw new Error(error.message);
   for (const row of (data ?? []) as ProfileRow[]) {
     result.set(row.user_id, rowToProfile(row));
   }
   return result;
+}
+
+export async function fetchPublicProfile(userId: string): Promise<Profile | null> {
+  const profiles = await fetchPublicProfiles([userId]);
+  return profiles.get(userId) ?? null;
+}
+
+export async function fetchPrivatePlayerNote(user: User, targetUserId: string): Promise<string> {
+  if (!supabase || !targetUserId || targetUserId === user.id) return "";
+  const { data, error } = await supabase
+    .from("player_private_notes")
+    .select("notes")
+    .eq("owner_user_id", user.id)
+    .eq("target_user_id", targetUserId)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return typeof data?.notes === "string" ? data.notes : "";
+}
+
+export async function savePrivatePlayerNote(user: User, targetUserId: string, notes: string): Promise<void> {
+  if (!supabase) throw new Error("Supabase nÃ£o configurado.");
+  if (!targetUserId || targetUserId === user.id) return;
+  const { error } = await supabase
+    .from("player_private_notes")
+    .upsert(
+      {
+        owner_user_id: user.id,
+        target_user_id: targetUserId,
+        notes,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "owner_user_id,target_user_id" }
+    );
+  if (error) throw new Error(error.message);
 }
 
 export async function upsertProfile(user: User, patch: Partial<Profile>): Promise<Profile> {
@@ -84,11 +118,12 @@ export async function upsertProfile(user: User, patch: Partial<Profile>): Promis
     birth_date: patch.birthDate || null,
     instagram: patch.instagram ?? null,
     bio: patch.bio ?? null,
+    profile_visibility: patch.profileVisibility ?? "public",
   };
   const { data, error } = await supabase
     .from(TABLE)
     .upsert(payload, { onConflict: "user_id" })
-    .select("user_id,display_name,photo_url,city,state,phone,birth_date,instagram,bio")
+    .select("user_id,display_name,photo_url,city,state,phone,birth_date,instagram,bio,profile_visibility")
     .single();
   if (error) throw new Error(error.message);
   return rowToProfile(data as ProfileRow);

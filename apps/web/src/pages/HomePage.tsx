@@ -696,6 +696,18 @@ function tournamentTabUrl(tournamentId: string, tab: "jogos" | "jogadores" | "ch
   return `/eventos/${encodeURIComponent(tournamentId)}/${tab}`;
 }
 
+function tournamentMatchRoomUrl(action: HomeTournamentAction): string {
+  if (!action.classKey || !action.phaseKey || typeof action.matchIndex !== "number") {
+    return tournamentTabUrl(action.tournamentId, "jogos");
+  }
+  const roomId = `${action.classKey}:${action.phaseKey}:${action.matchIndex}`;
+  return `${tournamentTabUrl(action.tournamentId, "jogos")}?room=${encodeURIComponent(roomId)}`;
+}
+
+function leagueMatchRoomUrl(action: HomeLeagueAction): string {
+  return `/eventos/ligas/${encodeURIComponent(action.leagueId)}?tab=partidas&room=${encodeURIComponent(action.id)}`;
+}
+
 function tournamentMessageToNotice(tournament: TournamentSummary, message: TournamentChatMessage): HomeNotice {
   const urgent = message.isPinned || message.messageType === "announcement";
   return {
@@ -1152,7 +1164,7 @@ function buildAgendaItems(
       const dueDate = action.scheduledAt || action.roundEndsAt;
       return {
         id: `agenda-league:${action.id}`,
-        targetPath: `/eventos/ligas/${encodeURIComponent(action.leagueId)}?tab=partidas`,
+        targetPath: leagueMatchRoomUrl(action),
         sourceName: `${action.leagueName} - Rodada ${action.roundNumber}`,
         title: action.title,
         when: formatShortDateTime(dueDate),
@@ -1174,7 +1186,7 @@ function buildAgendaItems(
 
   const tournamentItems = tournamentActions.map((action): HomeAgendaItem => ({
     id: `agenda-tournament:${action.id}`,
-    targetPath: tournamentTabUrl(action.tournamentId, "jogos"),
+    targetPath: tournamentMatchRoomUrl(action),
     sourceName: action.tournamentName,
     title: action.title,
     when: action.detail,
@@ -1236,7 +1248,7 @@ function buildPriorityItems(
       : "";
     return {
       id: `league-action:${action.id}`,
-      targetPath: `/eventos/ligas/${encodeURIComponent(action.leagueId)}?tab=partidas`,
+      targetPath: leagueMatchRoomUrl(action),
       sourceName: `${action.leagueName} - Rodada ${action.roundNumber}`,
       title: action.title,
       detail: availabilityDetail ? `${formatShortDateTime(dueDate)} - ${availabilityDetail}` : formatShortDateTime(dueDate),
@@ -1252,7 +1264,7 @@ function buildPriorityItems(
 
   const tournamentItems = tournamentActions.map((action): HomePriorityItem => ({
     id: `tournament-action:${action.id}`,
-    targetPath: tournamentTabUrl(action.tournamentId, "jogos"),
+    targetPath: tournamentMatchRoomUrl(action),
     sourceName: action.tournamentName,
     title: action.title,
     detail: action.detail,
@@ -1608,7 +1620,7 @@ export function HomePage({ user, profile }: Props) {
   const playerMatchItems = [
     ...tournamentActions.map((item) => ({
       id: `tournament:${item.id}`,
-      targetPath: buildTournamentUrl(item.tournamentId),
+      targetPath: tournamentMatchRoomUrl(item),
       title: item.title,
       detail: item.tournamentName,
       meta: item.detail,

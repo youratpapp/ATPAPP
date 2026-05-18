@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams, useSearchParams } from "react-rout
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
+import { friendlyToastMessage, useToast } from "../components/toast";
 import { ManagementShell } from "../components/management/ManagementShell";
 import { AcademyWorkspaceShell, type AcademyManagementView } from "../components/place/AcademyWorkspaceShell";
 import { BookingWorkspaceShell, type BookingManagementView } from "../components/place/BookingWorkspaceShell";
@@ -779,6 +780,7 @@ export function PlaceAdminPage({ user, profile }: Props) {
 export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { showToast } = useToast();
   const [searchParams] = useSearchParams();
   const isAdminRoute = Boolean(adminPlaceId);
   const fallbackHashSearch = location.hash.includes("?") ? location.hash.slice(location.hash.indexOf("?")) : "";
@@ -807,6 +809,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: "info" | "error" | "success"; text: string } | null>(null);
+
+  useEffect(() => {
+    if (!feedback) return;
+    showToast({ kind: feedback.kind, text: feedback.kind === "error" ? friendlyToastMessage(feedback.text) : feedback.text });
+  }, [feedback, showToast]);
 
   useEffect(() => {
     if (isAdminRoute) return;
@@ -881,6 +888,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         courtId: string;
         coachName: string;
         weekday: number;
+        weekdays?: number[];
         startsAt: string;
         endsAt: string;
         level: string;
@@ -1978,6 +1986,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       courtId: "",
       coachName: "",
       weekday: 1,
+      weekdays: [1],
       startsAt: "18:00",
       endsAt: "19:00",
       level: "",
@@ -1992,13 +2001,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setBusy(true);
     setFeedback(null);
     try {
+      const selectedWeekdays = (draft.weekdays?.length ? draft.weekdays : [draft.weekday])
+        .map((weekday) => Math.max(0, Math.min(6, Number(weekday) || 0)))
+        .filter((weekday, index, list) => list.indexOf(weekday) === index)
+        .sort((a, b) => a - b);
+      const recurrenceGroupId = crypto.randomUUID();
       const classPayload = {
         placeId: place.id,
         coachId: draft.coachId || null,
         courtId: draft.courtId || null,
         title: draft.title,
         coachName: draft.coachName,
-        weekday: draft.weekday,
         startsAt: draft.startsAt,
         endsAt: draft.endsAt,
         level: normalizeAcademyLevel(draft.level) || draft.level,
@@ -2009,18 +2022,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         allowMakeup: draft.allowMakeup,
         capacity: Number(draft.capacity) || 8,
         monthlyFeeCents: Math.max(0, Math.round(Number(draft.monthlyFee || 0) * 100)),
+        recurrenceGroupId,
       };
-      if (draft.slotId) {
-        await createPlaceAcademyClassFromSlot({ ...classPayload, slotId: draft.slotId });
-      } else {
-        await createPlaceAcademyClass(classPayload);
+      for (const weekday of selectedWeekdays) {
+        if (draft.slotId && weekday === draft.weekday) {
+          await createPlaceAcademyClassFromSlot({ ...classPayload, weekday, slotId: draft.slotId });
+        } else {
+          await createPlaceAcademyClass({ ...classPayload, weekday });
+        }
       }
       setAcademyClassDraftByPlace((prev) => ({
         ...prev,
-        [place.id]: { ...draft, slotId: "", title: "", coachName: "", level: "" },
+        [place.id]: { ...draft, slotId: "", title: "", coachName: "", level: "", weekdays: [draft.weekday] },
       }));
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: draft.slotId ? "Horario convertido em turma." : "Turma criada." });
+      setFeedback({ kind: "success", text: selectedWeekdays.length > 1 ? "Turma criada em varios dias." : draft.slotId ? "Horario convertido em turma." : "Turma criada." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar turma.") });
     } finally {
@@ -2138,6 +2154,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       courtId: "",
       coachName: "",
       weekday: 1,
+      weekdays: [1],
       startsAt: "18:00",
       endsAt: "19:00",
       level: "",
@@ -2152,18 +2169,25 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setBusy(true);
     setFeedback(null);
     try {
-      await createPlaceAcademySlot({
-        placeId: place.id,
-        coachId: draft.coachId,
-        courtId: draft.courtId || null,
-        weekday: draft.weekday,
-        startsAt: draft.startsAt,
-        endsAt: draft.endsAt,
-        capacity: Number(draft.capacity) || 8,
-        notes: draft.level,
-      });
+      const selectedWeekdays = (draft.weekdays?.length ? draft.weekdays : [draft.weekday])
+        .map((weekday) => Math.max(0, Math.min(6, Number(weekday) || 0)))
+        .filter((weekday, index, list) => list.indexOf(weekday) === index);
+      await Promise.all(
+        selectedWeekdays.map((weekday) =>
+          createPlaceAcademySlot({
+            placeId: place.id,
+            coachId: draft.coachId,
+            courtId: draft.courtId || null,
+            weekday,
+            startsAt: draft.startsAt,
+            endsAt: draft.endsAt,
+            capacity: Number(draft.capacity) || 8,
+            notes: draft.level,
+          })
+        )
+      );
       await refreshPlaceResources(place.id);
-      setFeedback({ kind: "success", text: "Horario aberto para o professor." });
+      setFeedback({ kind: "success", text: selectedWeekdays.length > 1 ? "Horarios abertos para o professor." : "Horario aberto para o professor." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao abrir horario.") });
     } finally {
@@ -3804,12 +3828,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
-      {feedback ? (
-        <p className={`feedback ${feedback.kind === "success" ? "success" : feedback.kind === "error" ? "error" : ""}`}>
-          {feedback.text}
-        </p>
-      ) : null}
-
       {loading ? (
         <ScreenState
           kind="loading"
@@ -4370,6 +4388,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           courtId: activeCourts[0]?.id || "",
           coachName: "",
           weekday: 1,
+          weekdays: [1],
           startsAt: "18:00",
           endsAt: "19:00",
           level: "",
@@ -4477,8 +4496,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           );
         });
         const placeOpenMatches = openMatches.filter((match) => match.placeId === p.id && match.status === "open");
-        const resourceDayClasses = visibleAcademyClasses.filter((item) => item.weekday === academyDraft.weekday);
-        const resourceDaySlots = academySlots.filter((item) => item.weekday === academyDraft.weekday && item.status === "open");
+        const academyDraftWeekdays = (academyDraft.weekdays?.length ? academyDraft.weekdays : [academyDraft.weekday])
+          .map((weekday) => Math.max(0, Math.min(6, Number(weekday) || 0)))
+          .filter((weekday, index, list) => list.indexOf(weekday) === index);
+        const resourceDayClasses = visibleAcademyClasses.filter((item) => academyDraftWeekdays.includes(item.weekday));
+        const resourceDaySlots = academySlots.filter((item) => academyDraftWeekdays.includes(item.weekday) && item.status === "open");
         const draftCoachConflict = academyDraft.coachId
           ? resourceDayClasses.some(
               (item) =>
@@ -7149,7 +7171,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             coachConflict={draftCoachConflict}
                             coaches={academyCoaches}
                             courtConflict={draftCourtConflict}
-                            draft={academyDraft}
+                            draft={{ ...academyDraft, weekdays: academyDraft.weekdays?.length ? academyDraft.weekdays : [academyDraft.weekday] }}
                             onChangeDraft={(draft) => setAcademyClassDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
                             onCreateClass={() => void onCreateAcademyClass(p)}
                             onCreateSlot={() => void onCreateAcademySlot(p)}
@@ -7346,6 +7368,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                   ...academyDraft,
                                   ...patch,
                                   coachName: patch.coachName || academyDraft.coachName,
+                                  weekdays: [patch.weekday],
                                 },
                               }));
                               setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
@@ -7403,6 +7426,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           ...academyDraft,
                           ...patch,
                           coachName: patch.coachName || academyDraft.coachName,
+                          weekdays: [patch.weekday],
                         },
                       }));
                       setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }));
