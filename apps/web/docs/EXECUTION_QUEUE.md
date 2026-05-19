@@ -44,6 +44,309 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## Sprint atual - Referencias visuais ATP premium
+
+Fonte:
+
+- referencias anexadas pelo usuario em 2026-05-19 (`ref1.jpeg` e `ref2.jpeg`);
+- comparacao visual feita contra o app atual em `Home` e `Locais`;
+- screenshots atuais em `docs/screenshots/visual-local-audit-2026-05-18/`;
+- escopo solicitado: aparencia, cores, design e formatacao, sem alterar conteudos/ferramentas.
+
+Objetivo:
+
+- aproximar o app das referencias visuais premium ATP;
+- corrigir escala, densidade, composicao, cor e acabamento visual;
+- preservar fluxos, rotas, permissoes, regras de negocio e conteudo funcional existente.
+
+Nao fazer neste sprint:
+
+- nao criar novas ferramentas;
+- nao alterar copy/conteudo alem do minimo necessario para caber visualmente;
+- nao mudar regras de busca, reserva, aula, ranking ou agenda;
+- nao reestruturar arquitetura de dados.
+
+### [x] REF-VISUAL-01 - Mobile player navy compacto alinhado as referencias
+
+Status: `[x]` concluido em 2026-05-19
+
+Contexto:
+
+- a Home mobile atual tem uma boa imagem premium, mas a composicao ocupa altura demais;
+- o header branco, a area de conteudo clara e o bottom nav branco quebram a percepcao de app esportivo imersivo vista na ref2;
+- os atalhos aparecem como tiles grandes demais e empurram o restante do conteudo para fora da primeira dobra;
+- esta tarefa deve atuar na camada visual compartilhada do modo jogador, sem redesenhar conteudo ou fluxos.
+
+Problema:
+
+- o mobile atual usa header branco, hero muito alto, tipografia gigante e bottom nav claro;
+- as referencias mostram mobile mais integrado, com fundo navy, primeira dobra compacta e navegacao encaixada no produto.
+
+Telas/componentes afetados:
+
+- `AppShell` em modo jogador;
+- header mobile do app;
+- bottom nav mobile em modo jogador;
+- Home do jogador;
+- componentes visuais compartilhados `VisualHeroCard`, `ShortcutCard`/intent rail e superficies player via CSS.
+
+Escopo:
+
+1. Ajustar `AppShell`/superficies mobile do modo jogador para usar navy como base visual dominante.
+2. Reduzir altura do hero mobile da Home e proteger area de texto sem ocupar a tela inteira.
+3. Compactar header mobile: avatar, nome, seletor de modo e sino com menos altura.
+4. Ajustar bottom nav mobile para parecer parte da composicao premium, com ativo verde/navy mais forte.
+5. Manter 5 itens, safe area, toque confortavel e legibilidade.
+
+Ganhos esperados:
+
+- primeira dobra mobile mais parecida com produto final, nao landing page inflada;
+- mais continuidade visual entre header, hero, atalhos e navegacao;
+- menos scroll antes de chegar nas acoes principais;
+- maior aderencia as referencias sem mexer em ferramenta/conteudo.
+
+Dependencias:
+
+- tokens em `src/styles/theme.css`;
+- estilos em `src/App.css`;
+- assets raster premium ja existentes.
+
+Risco de regressao:
+
+- reduzir demais o hero e perder impacto visual;
+- escurecer superficies que precisam de contraste para leitura;
+- afetar telas player alem da Home por uso compartilhado do shell.
+
+Criterios de conclusao:
+
+- mobile 390px mostra hero + pelo menos parte dos atalhos na primeira dobra;
+- visual geral se aproxima da ref2: navy, verde, branco e contraste limpo;
+- sem texto cortado em botoes/nav;
+- lint/build passam.
+
+Validacao obrigatoria:
+
+- capturar `mobile-home.png` e `desktop-home.png`;
+- comparar visualmente com ref2;
+- atualizar este item com entrega, evidencias e status.
+
+Entrega:
+
+1. Modo jogador no mobile passou a usar base navy com brilho verde sutil, aproximando a Home da ref2.
+2. Header mobile do player ficou escuro, mais compacto e integrado ao produto.
+3. Seletor `Jogador/Trabalho` recebeu tratamento dark/green legivel no contexto navy.
+4. Hero mobile da Home foi reduzido e refinado, mantendo imagem premium e CTA forte sem ocupar a tela inteira.
+5. Cards de intencao da Home ficaram menores, com icones mais contidos e densidade melhor.
+6. Bottom nav mobile do player passou a usar navy, ativo verde forte e contraste mais proximo das referencias.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-home.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-home.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- Captura mobile 390px confirmou header/nav navy, seletor legivel e atalhos visiveis logo abaixo do hero.
+
+Observacao:
+
+- O desktop foi preservado visualmente nesta rodada; o ajuste foi concentrado em mobile player, como definido no escopo.
+
+### [x] REF-VISUAL-02 - Locais com composicao visual da referencia
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- `Locais` atual esta limpo demais e com grande area vazia;
+- a referencia de Locais tem tabs/atalhos compactos, hero visual, busca/filtros e cards visuais logo no primeiro viewport.
+
+Escopo:
+
+1. Reformatar a primeira dobra de `/locais` desktop para: titulo, atalhos por intencao, hero contextual e filtros compactos.
+2. Reformatar `/locais` mobile para usar superficie navy e cards/listas mais parecidos com ref1.
+3. Diminuir o painel inicial de descoberta e eliminar vazio visual excessivo.
+4. Usar imagem de quadra/aula como hero contextual sem alterar as buscas existentes.
+5. Garantir que `Encontrar jogo`, `Reservar quadra`, `Entrar em aula` e `Ver locais` continuem com as mesmas intencoes.
+
+Criterios de conclusao:
+
+- desktop 1366px mostra hero/filtros/cards sem grande vazio;
+- mobile 390px tem densidade similar a ref1 e mantem bottom nav funcional;
+- fluxo neutro e intents por query continuam funcionando;
+- lint/build passam.
+
+Entrega:
+
+1. Hub de `/locais` ganhou hero visual de quadra dentro do painel de intencao, reduzindo a sensacao de vazio.
+2. Cards de intencao e switcher de `Locais` receberam acabamento mais premium: superficie clara, textura sutil, borda limpa e ativo verde/navy.
+3. Fluxos de `Reservar quadra` e `Entrar em aula` passaram a abrir com faixa visual de quadra antes dos filtros, aproximando a composicao da ref1.
+4. Mobile de `Locais` agora herda corretamente o fundo navy do modo jogador, com titulo branco legivel e bottom nav escuro.
+5. Trilho mobile de intencoes foi polido para nao cortar o primeiro card e preservar indicacao de arraste pelo card seguinte.
+6. Nenhum comportamento de busca, intent por query, filtro ou resultado foi alterado.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-places-overview.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-places-overview.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-places-lessons.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-places-lessons.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- Capturas confirmaram hero visual, cards de intencao refinados, titulo mobile legivel e navegacao inferior preservada.
+
+### [x] REF-VISUAL-03 - Reduzir escala tipografica e densidade dos cards player
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- titulos, cards e atalhos atuais parecem grandes demais, especialmente no mobile;
+- as referencias usam hierarquia forte, mas com escala mais controlada e melhor densidade.
+
+Escopo:
+
+1. Revisar escala de `VisualHeroCard`, `ShortcutCard`, cards de descoberta e paineis player.
+2. Reduzir H1 mobile e subtitulos sem perder impacto.
+3. Compactar padding vertical dos atalhos e cards repetidos.
+4. Ajustar pesos de fonte para evitar visual excessivamente pesado.
+5. Validar Home, Locais, Ranking e Perfil no minimo.
+
+Criterios de conclusao:
+
+- mais conteudo cabe no primeiro scroll mobile sem parecer apertado;
+- desktop fica menos inflado e mais proximo de dashboard premium;
+- nao ha regressao de legibilidade;
+- lint/build passam.
+
+Entrega:
+
+1. Heros do modo jogador foram compactados com altura e escala de H1 mais controladas.
+2. Atalhos/intent cards da Home ficaram menores, com icones e textos menos inflados.
+3. Cards de descoberta e metricas player receberam densidade mais alta e padding menor.
+4. Blocos do player hub tiveram radius e escala de titulo ajustados para leitura mais profissional.
+5. Ajustes foram feitos por CSS, sem alterar conteudo, rotas ou comportamento.
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+
+### [x] REF-VISUAL-04 - Calibrar raios, bordas e sombras para acabamento premium
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- o app usa muitos radius grandes e sombras difusas;
+- as referencias parecem mais precisas: cards com borda limpa, sombras discretas e cantos medios.
+
+Escopo:
+
+1. Revisar tokens de radius/sombra para superficies player.
+2. Reduzir radius de cards comuns, mantendo radius maior apenas em heros.
+3. Afinar bordas e sombras de shortcut cards, filtros, result cards e action panels.
+4. Evitar aparencia de bolha/cartao inflado.
+
+Criterios de conclusao:
+
+- cards repetidos parecem mais nativos e menos decorativos;
+- heros continuam com presenca premium;
+- estados hover/active continuam perceptiveis;
+- lint/build passam.
+
+Entrega:
+
+1. Radius de cards, rows, filtros, metricas e paineis player foi reduzido para acabamento mais preciso.
+2. Heros mantiveram radius maior, mas menos exagerado.
+3. Bordas repetidas ficaram mais definidas e consistentes.
+4. Sombras foram calibradas para menor difusao, mantendo profundidade em hover/active.
+5. Ajuste aplicado em superficies player e `Locais`, sem alterar componentes funcionais.
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+
+### [x] REF-VISUAL-05 - Limpar paleta clara e aumentar contraste navy/white/green
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- o fundo atual puxa para verde-claro/bege e deixa algumas telas lavadas;
+- as referencias usam branco limpo, navy profundo e verde ativo com maior disciplina.
+
+Escopo:
+
+1. Reduzir predominancia do fundo esverdeado/bege nas superficies player.
+2. Usar navy como bloco visual forte em mobile e em heros.
+3. Preservar verde ATP para ativos/CTAs, sem espalhar verde claro em tudo.
+4. Revisar contraste de textos muted em fundos com imagem.
+
+Criterios de conclusao:
+
+- telas claras parecem mais limpas;
+- telas escuras parecem intencionais, nao apenas overlay escuro;
+- contraste visual fica mais perto das refs;
+- lint/build passam.
+
+Entrega:
+
+1. Fundo claro do modo jogador foi limpo para branco/off-white, reduzindo leitura verde/bege lavada.
+2. Superficies repetidas player receberam branco mais consistente.
+3. Verde ATP ficou mais concentrado em CTAs, ativos e labels de estado.
+4. Mobile preservou navy forte no topo, com transicao mais limpa para superficies claras.
+5. Contraste de labels e botões em `Locais` e Home foi reforcado.
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+
+### [x] REF-VISUAL-06 - QA visual comparativo final
+
+Status: `[x]` concluido em 2026-05-19
+
+Escopo:
+
+1. Capturar Home e Locais em desktop 1366/1440 e mobile 390.
+2. Comparar lado a lado com ref1/ref2 no nivel de design, cores e formatacao.
+3. Registrar antes/depois com achados residuais.
+4. Atualizar este sprint com status final.
+
+Criterios de conclusao:
+
+- screenshots salvos em `docs/screenshots/`;
+- relatorio curto criado em `docs/`;
+- lint/build passam apos ajustes finais.
+
+Entrega:
+
+1. Capturas finais foram refeitas pelo script de auditoria visual.
+2. Home e Locais foram verificados em mobile e desktop.
+3. Relatorio curto criado em `REF_VISUAL_SPRINT_REPORT_2026_05_19.md`.
+4. O sprint visual de referencias foi fechado com todos os itens concluidos.
+
+Evidencias:
+
+- `docs/REF_VISUAL_SPRINT_REPORT_2026_05_19.md`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-home.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-home.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-places-overview.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-places-overview.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts/capture-visual-audit.mjs` concluiu e atualizou evidencias visuais.
+
 ## Sprint visual premium - ATP sport DNA
 
 ### [x] VISUAL-DNA-03 - Aplicar imagens raster premium e elevar o DNA esportivo

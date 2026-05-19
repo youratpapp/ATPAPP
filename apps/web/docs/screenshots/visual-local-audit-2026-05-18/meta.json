@@ -524,10 +524,7 @@
     "h1": [
       "Meus pagamentos"
     ],
-    "h2": [
-      "A resolver",
-      "Pagos e encerrados"
-    ],
+    "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
@@ -537,8 +534,8 @@
       "Ranking",
       "Perfil"
     ],
-    "cards": 2,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. PENDENCIAS A resolver 2 Inscricao em torneio 01 de out. de 2026 | R$ 70,00 Pendente Inscricao em torneio 24 de jun. de 2026 | R$ 120,00 Pendente HISTORICO Pagos e encerrados 198 Inscricao em torneio 13 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 12 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 11 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 10 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 09 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 08 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 07 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 06 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 05 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 04 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 03 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 02 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 30 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 29 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 28 de set. de 2026 | R$ "
+    "cards": 0,
+    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. Nao foi possivel carregar canceling statement due to statement timeout ATP Jogador JOGAR Inicio Competir Locais Ranking CONTA Perfil"
   },
   {
     "viewport": "desktop",

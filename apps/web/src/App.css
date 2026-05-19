@@ -21347,3 +21347,583 @@ button.app-object-row:hover:not(:disabled) {
       var(--gradient-surface);
   }
 }
+
+/* ----- REF-VISUAL-01: mobile player navy premium ----- */
+@media (max-width: 760px) {
+  .app-shell--player {
+    background:
+      radial-gradient(circle at 86% 4%, rgba(216, 244, 73, 0.18), transparent 13rem),
+      radial-gradient(circle at 18% 20%, rgba(34, 167, 102, 0.13), transparent 15rem),
+      linear-gradient(180deg, #061126 0%, #071426 46%, #eef6f1 46.2%, #f5faf7 100%);
+  }
+
+  .app-shell--player .app-header {
+    background: rgba(5, 15, 33, 0.92);
+    border-bottom-color: rgba(167, 227, 196, 0.14);
+    box-shadow: 0 12px 34px rgba(2, 8, 19, 0.26);
+    padding: calc(8px + env(safe-area-inset-top, 0px)) 12px 9px;
+  }
+
+  .app-shell--player .app-header-inner {
+    min-height: 48px;
+  }
+
+  .app-shell--player .app-header-greeting .avatar {
+    background: linear-gradient(145deg, #ff9f1c, #ff8a00);
+    border-color: rgba(167, 227, 196, 0.42);
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(1, 7, 18, 0.28);
+    color: #fff;
+    height: 38px;
+    width: 38px;
+  }
+
+  .app-shell--player .app-header-greeting .greeting-name {
+    color: #ffffff;
+    font-size: var(--font-size-sm);
+    max-width: 112px;
+  }
+
+  .app-shell--player .app-mode-switch {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .app-shell--player .app-mode-switch button {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.74);
+    font-size: var(--font-size-xs);
+    font-weight: 950;
+    min-height: 30px;
+    padding: 5px 10px;
+  }
+
+  .app-shell--player .app-mode-switch button:not(.active) {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .app-shell--player .app-mode-switch button.active {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(8, 128, 78, 0.28);
+  }
+
+  .app-shell--player .icon-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    height: 38px;
+    width: 38px;
+  }
+
+  .app-shell--player .app-content {
+    padding-top: var(--space-3);
+  }
+
+  .app-shell--player .app-visual-hero {
+    border: 1px solid rgba(167, 227, 196, 0.22);
+    border-radius: 24px;
+    margin-left: 0;
+    margin-right: 0;
+    min-height: 330px;
+    padding: 22px;
+  }
+
+  .app-shell--player .home-visual-hero {
+    background:
+      linear-gradient(90deg, rgba(3, 10, 24, 0.98) 0%, rgba(6, 20, 38, 0.86) 48%, rgba(6, 35, 42, 0.34) 100%),
+      var(--hero-image, var(--gradient-sport-hero));
+    background-position: center;
+    background-size: cover;
+    box-shadow: 0 18px 46px rgba(2, 8, 19, 0.34);
+    min-height: 360px;
+  }
+
+  .app-shell--player .home-visual-hero .app-visual-hero-content {
+    align-content: end;
+    gap: 10px;
+    max-width: 340px;
+  }
+
+  .app-shell--player .app-visual-eyebrow {
+    font-size: 0.72rem;
+  }
+
+  .app-shell--player .app-visual-hero h1 {
+    font-size: 2.45rem;
+    line-height: 1;
+    max-width: 9.5ch;
+  }
+
+  .app-shell--player .app-visual-hero p {
+    font-size: var(--font-size-sm);
+    line-height: 1.34;
+    max-width: 26ch;
+  }
+
+  .app-shell--player .app-visual-hero-actions button,
+  .app-shell--player .app-visual-hero-actions .app-primary-action {
+    min-height: 42px;
+    padding-inline: var(--space-4);
+  }
+
+  .app-shell--player .app-visual-hero-badges {
+    gap: 6px;
+  }
+
+  .app-shell--player .app-visual-badge {
+    min-height: 27px;
+    padding-inline: 10px;
+  }
+
+  .app-shell--player .home-visual-hero .app-visual-hero-extra {
+    display: none;
+  }
+
+  .app-shell--player .home-player-os {
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .app-shell--player .home-intent-rail--visual {
+    gap: var(--space-2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--player .home-intent-rail--visual button {
+    border-color: rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    box-shadow: 0 14px 34px rgba(2, 8, 19, 0.2);
+    gap: 7px;
+    min-height: 96px;
+    padding: 12px;
+  }
+
+  .app-shell--player .home-intent-rail--visual button::before {
+    border-radius: 16px;
+    height: 42px;
+    width: 42px;
+  }
+
+  .app-shell--player .home-intent-rail--visual button::after {
+    bottom: 12px;
+    font-size: 22px;
+    right: 12px;
+  }
+
+  .app-shell--player .home-intent-rail--visual button strong {
+    font-size: var(--font-size-md);
+    line-height: 1.12;
+  }
+
+  .app-shell--player .home-intent-rail--visual button small {
+    font-size: var(--font-size-xs);
+    line-height: 1.16;
+    max-width: calc(100% - 20px);
+  }
+
+  .app-shell--player .bottom-nav:not(.is-management):not(.is-competition) {
+    background: rgba(5, 15, 33, 0.94);
+    border-top-color: rgba(167, 227, 196, 0.16);
+    box-shadow: 0 -16px 40px rgba(2, 8, 19, 0.32);
+    gap: 4px;
+    padding-top: 7px;
+  }
+
+  .app-shell--player .bottom-nav:not(.is-management):not(.is-competition) button {
+    color: rgba(219, 232, 242, 0.76);
+    min-height: 48px;
+  }
+
+  .app-shell--player .bottom-nav:not(.is-management):not(.is-competition) button.active {
+    background: linear-gradient(180deg, rgba(22, 128, 78, 0.98), rgba(13, 76, 44, 0.98));
+    border-color: rgba(167, 227, 196, 0.32);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+    color: #ffffff;
+  }
+}
+
+/* ----- REF-VISUAL-02: Locais visual composition ----- */
+.places-intent-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.places-intent-panel::after {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 24, 0.94) 0%, rgba(5, 30, 42, 0.74) 52%, rgba(4, 42, 31, 0.22)),
+    url("./assets/hero-lessons-night-premium.png") right center / cover no-repeat,
+    var(--gradient-sport-hero);
+  border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  content: "";
+  grid-column: 1 / -1;
+  min-height: 184px;
+  order: 3;
+}
+
+.places-intent-card,
+.places-intent-strip button,
+.places-discovery-filter,
+.places-start-state {
+  box-shadow: 0 12px 30px rgba(8, 18, 37, 0.07);
+}
+
+.places-intent-card,
+.places-intent-strip button {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(247, 252, 249, 0.92)),
+    url("./assets/surface-court-lines-soft.png") right center / 280px auto no-repeat;
+  border-color: rgba(184, 202, 216, 0.72);
+  border-radius: 14px;
+}
+
+.places-intent-card.active,
+.places-intent-strip button.active {
+  background:
+    linear-gradient(135deg, rgba(18, 97, 58, 0.98), rgba(13, 76, 44, 0.98)),
+    url("./assets/surface-court-lines-soft.png") center / cover no-repeat;
+  border-color: rgba(167, 227, 196, 0.42);
+}
+
+.places-discovery-filter {
+  overflow: hidden;
+  position: relative;
+}
+
+.places-discovery-filter:not(.compact)::before {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 24, 0.96), rgba(4, 24, 42, 0.78) 48%, rgba(5, 76, 44, 0.22)),
+    url("./assets/hero-lessons-night-premium.png") right center / cover no-repeat,
+    var(--gradient-sport-hero);
+  border-radius: 18px;
+  content: "";
+  min-height: 152px;
+}
+
+.places-discovery-filter[aria-label*="quadra"]::before {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 24, 0.96), rgba(4, 24, 42, 0.72) 48%, rgba(5, 76, 44, 0.2)),
+    url("./assets/hero-club-court-premium.png") right center / cover no-repeat,
+    var(--gradient-sport-hero);
+}
+
+.places-filter-head,
+.places-filter-grid,
+.places-filter-mobile-toggle {
+  position: relative;
+  z-index: 1;
+}
+
+/* ----- REF-VISUAL-03: player typography and density ----- */
+.app-shell--player {
+  --player-card-padding: var(--space-4);
+  --player-section-gap: var(--space-4);
+}
+
+.app-shell--player .app-visual-hero {
+  min-height: 252px;
+  padding: clamp(20px, 3vw, 34px);
+}
+
+.app-shell--player .app-visual-hero h1 {
+  font-size: clamp(2rem, 3.6vw, 3.7rem);
+  line-height: 1;
+}
+
+.app-shell--player .app-visual-hero p {
+  font-size: var(--font-size-sm);
+}
+
+.app-shell--player .home-visual-hero {
+  min-height: clamp(280px, 31vw, 390px);
+}
+
+.app-shell--player .home-intent-rail--visual button {
+  border-radius: 18px;
+  min-height: 104px;
+  padding: var(--space-3);
+}
+
+.app-shell--player .home-intent-rail--visual button::before {
+  border-radius: 16px;
+  height: 46px;
+  width: 46px;
+}
+
+.app-shell--player .home-intent-rail--visual button strong {
+  font-size: var(--font-size-md);
+}
+
+.app-shell--player .home-intent-rail--visual button small {
+  font-size: var(--font-size-xs);
+}
+
+.app-shell--player .home-discovery-card {
+  min-height: 264px;
+}
+
+.app-shell--player .home-discovery-card img,
+.app-shell--player .home-discovery-poster {
+  aspect-ratio: 16 / 10;
+}
+
+.app-shell--player .home-discovery-body {
+  padding: var(--space-3);
+}
+
+.app-shell--player .player-hub-section,
+.app-shell--player .player-hub-card,
+.app-shell--player .player-hub-brief {
+  border-radius: var(--radius-md);
+}
+
+.app-shell--player .player-hub-section header strong,
+.app-shell--player .player-hub-card strong,
+.app-shell--player .player-hub-brief strong {
+  font-size: var(--font-size-sm);
+}
+
+.app-shell--player .app-metric-card {
+  border-radius: var(--radius-md);
+  min-height: 112px;
+  padding: var(--space-3);
+}
+
+  .app-shell--player .app-metric-card strong {
+    font-size: var(--font-size-2xl);
+  }
+
+/* ----- REF-VISUAL-04: sharper player surfaces ----- */
+.app-shell--player {
+  --player-card-radius: 14px;
+  --player-row-radius: 10px;
+  --player-surface-shadow: 0 10px 28px rgba(8, 18, 37, 0.075);
+  --player-row-shadow: 0 1px 2px rgba(8, 18, 37, 0.04);
+}
+
+.app-shell--player .app-action-panel,
+.app-shell--player .app-object-row,
+.app-shell--player .home-discovery-card,
+.app-shell--player .player-hub-section,
+.app-shell--player .places-intent-card,
+.app-shell--player .places-intent-strip button,
+.app-shell--player .places-start-state,
+.app-shell--player .places-discovery-filter,
+.app-shell--player .places-directory-toolbar {
+  border-color: rgba(184, 198, 211, 0.82);
+  box-shadow: 0 8px 22px rgba(8, 18, 37, 0.065);
+}
+
+.app-shell--player .app-object-row,
+.app-shell--player .home-discovery-card,
+.app-shell--player .player-hub-section,
+.app-shell--player .places-intent-card,
+.app-shell--player .places-intent-strip button,
+.app-shell--player .places-start-state,
+.app-shell--player .places-directory-toolbar {
+  border-radius: 12px;
+}
+
+.app-shell--player .places-discovery-filter {
+  border-radius: 16px;
+}
+
+.app-shell--player .app-visual-hero,
+.app-shell--player .places-intent-panel {
+  border-radius: 20px;
+}
+
+.app-shell--player .home-intent-rail--visual button,
+.app-shell--player .app-shortcut-card,
+.app-shell--player .app-metric-card {
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(8, 18, 37, 0.075);
+}
+
+.app-shell--player .home-discovery-card:hover:not(:disabled),
+.app-shell--player .home-intent-rail button:hover:not(:disabled),
+.app-shell--player .places-intent-card:hover,
+.app-shell--player .places-intent-strip button:hover {
+  box-shadow: 0 14px 30px rgba(8, 18, 37, 0.11);
+  transform: translateY(-1px);
+}
+
+/* ----- REF-VISUAL-05: cleaner player palette ----- */
+.app-shell--player {
+  background:
+    radial-gradient(circle at 88% 2%, rgba(216, 244, 73, 0.08), transparent 15rem),
+    url("./assets/surface-court-lines-soft.png") center top / 1500px auto no-repeat,
+    linear-gradient(180deg, rgba(248, 250, 252, 0.96) 0%, rgba(244, 247, 246, 0) 300px),
+    #f7faf9;
+}
+
+.app-shell--player .app-action-panel,
+.app-shell--player .app-object-row,
+.app-shell--player .home-discovery-card,
+.app-shell--player .player-hub-section,
+.app-shell--player .places-intent-panel,
+.app-shell--player .places-start-state,
+.app-shell--player .places-discovery-filter,
+.app-shell--player .places-directory-toolbar,
+.app-shell--player .home-empty-inline {
+  background-color: rgba(255, 255, 255, 0.96);
+}
+
+.app-shell--player .home-intent-rail--visual button,
+.app-shell--player .places-intent-card,
+.app-shell--player .places-intent-strip button {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.99), rgba(250, 252, 251, 0.96)),
+    url("./assets/surface-court-lines-soft.png") right center / 280px auto no-repeat;
+}
+
+.app-shell--player .home-discovery-body,
+.app-shell--player .player-hub-section {
+  background: linear-gradient(180deg, #ffffff, #fbfdfc);
+}
+
+.app-shell--player .app-page-eyebrow,
+.app-shell--player .home-context-eyebrow,
+.app-shell--player .places-intent-copy span,
+.app-shell--player .places-section-head span,
+.app-shell--player .places-filter-head span,
+.app-shell--player .places-start-state span {
+  color: #0c6b43;
+}
+
+.app-shell--player .app-primary-action--primary,
+.app-shell--player .home-hero-actions button.primary,
+.app-shell--player .places-filter-grid button,
+.app-shell--player .places-filter-grid.court .places-filter-search-button,
+.app-shell--player .places-filter-grid.classes .class-filter-submit {
+  background: #0f8b55;
+  border-color: #0f8b55;
+}
+
+.app-shell--player .places-intent-card.active,
+.app-shell--player .places-intent-strip button.active {
+  background: linear-gradient(135deg, #0f8b55, #0b5b41);
+}
+
+@media (min-width: 960px) {
+  .places-intent-panel {
+    grid-template-columns: minmax(240px, 0.36fr) minmax(0, 1fr);
+  }
+
+  .places-intent-actions {
+    align-self: start;
+  }
+
+  .places-discovery-filter:not(.compact) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--player {
+    background:
+      radial-gradient(circle at 86% 4%, rgba(216, 244, 73, 0.14), transparent 13rem),
+      radial-gradient(circle at 18% 20%, rgba(34, 167, 102, 0.1), transparent 15rem),
+      linear-gradient(180deg, #061126 0%, #071426 44%, #f7faf9 44.2%, #ffffff 100%);
+  }
+
+  .app-shell--player .page-header h1 {
+    color: #ffffff;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  }
+
+  .places-intent-panel {
+    border-color: rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    box-shadow: 0 22px 54px rgba(1, 8, 20, 0.32);
+  }
+
+  .places-intent-panel::after {
+    min-height: 132px;
+  }
+
+  .places-intent-card {
+    border-radius: 16px;
+    min-height: 86px;
+  }
+
+  .places-intent-strip {
+    margin-left: 0;
+    margin-right: 0;
+    padding-inline: 0;
+  }
+
+  .places-intent-strip button {
+    border-radius: 16px;
+    flex-basis: 156px;
+    min-height: 74px;
+  }
+
+  .places-discovery-filter {
+    border-radius: 24px;
+    box-shadow: 0 18px 46px rgba(1, 8, 20, 0.2);
+  }
+
+  .places-discovery-filter:not(.compact)::before {
+    border-radius: 18px;
+    min-height: 126px;
+  }
+
+  .places-filter-head strong {
+    font-size: var(--font-size-lg);
+  }
+
+  .app-shell--player .app-visual-hero {
+    min-height: 300px;
+    padding: var(--space-4);
+  }
+
+  .app-shell--player .home-visual-hero {
+    min-height: 330px;
+  }
+
+  .app-shell--player .app-visual-hero h1 {
+    font-size: 2.22rem;
+    max-width: 10ch;
+  }
+
+  .app-shell--player .app-visual-hero p {
+    font-size: 0.9rem;
+    max-width: 27ch;
+  }
+
+  .app-shell--player .home-intent-rail--visual button {
+    min-height: 92px;
+    padding: 11px;
+  }
+
+  .app-shell--player .home-intent-rail--visual button::before {
+    height: 38px;
+    width: 38px;
+  }
+
+  .app-shell--player .home-intent-rail--visual button strong {
+    font-size: 0.98rem;
+  }
+
+  .app-shell--player .home-intent-rail--visual button small {
+    font-size: 0.78rem;
+  }
+
+  .app-shell--player .home-discovery-card {
+    min-height: 248px;
+  }
+
+  .app-shell--player .app-visual-hero,
+  .app-shell--player .places-intent-panel {
+    border-radius: 22px;
+  }
+
+  .app-shell--player .places-intent-panel::after,
+  .app-shell--player .places-discovery-filter:not(.compact)::before {
+    border-radius: 14px;
+  }
+}
