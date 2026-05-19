@@ -28100,6 +28100,52 @@ body:has(.app-shell--player .home-player-os--visual),
     padding: 12px;
   }
 
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-grid {
+    display: grid;
+    gap: 10px;
+    grid-auto-columns: unset;
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card {
+    align-content: start;
+    display: grid;
+    gap: 6px;
+    min-height: 132px;
+    overflow: hidden;
+    padding: 14px;
+    scroll-snap-align: unset;
+    width: 100%;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card span,
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card strong,
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card small,
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card em {
+    display: block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card span {
+    font-size: 0.62rem;
+    line-height: 1.1;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card strong {
+    font-size: 0.95rem;
+    line-height: 1.15;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card small,
+  .app-shell--player:has(.home-player-os--visual) .home-agenda-preview-card em {
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+
   .app-shell--player:has(.home-player-os--visual) .home-spotlight-card {
     min-height: 142px;
     padding: 14px;
