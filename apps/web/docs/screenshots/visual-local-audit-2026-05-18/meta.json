@@ -366,7 +366,7 @@
       "Ir para jogador",
       "Ver locais publicos",
       "Reservas pendentesAbrir primeiro local com acao pendente6",
-      "Lista de esperaAbrir primeiro local com acao pendente239",
+      "Lista de esperaAbrir primeiro local com acao pendente233",
       "AcademiaAbrir primeiro local com acao pendente315",
       "Clientes/CRMAbrir primeiro local com acao pendente66",
       "FinanceiroAbrir primeiro local com acao pendente14",
@@ -405,7 +405,7 @@
       "Clientes"
     ],
     "cards": 9,
-    "textSample": "CENTRAL OPERACIONAL Gestao Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada. TRABALHO Ir para jogador FILA DO DIA O que precisa de atencao agora Ver locais publicos Reservas pendentes Abrir primeiro local com acao pendente 6 Lista de espera Abrir primeiro local com acao pendente 239 Academia Abrir primeiro local com acao pendente 315 Clientes/CRM Abrir primeiro local com acao pendente 66 Financeiro Abrir primeiro local com acao pendente 14 COMPETICOES Torneios e ligas que voce organiza 9 competicoes ativas TORNEIO Open ADT Dourados - Maio Dourados - MS Organizar TORNEIO Prime Cup Noturna Cuiaba - MT Organizar TORNEIO Festival Feminino Pantanal Campo Grande - MS Organizar TORNEIO Torneio Ranking Outono Dourados - MS Organizar TORNEIO Desafio Interno Prime Kids Cuiaba - MT Organizar TORNEIO Prime Open Inscricoes Encerradas Cuiaba - MT Organizar LIGA Liga ADT Simples 2026 Em andamento Organizar LIGA Prime Duplas Fixas Em andamento Organizar LIGA Ranking Pantanal Intermediario Em andamento Organizar WORKSPACES Locais sob sua gestao 3 locais com acesso operacional ADMINISTRADOR | OPERACAO COMPLETA Clube Racket Prime C"
+    "textSample": "CENTRAL OPERACIONAL Gestao Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada. TRABALHO Ir para jogador FILA DO DIA O que precisa de atencao agora Ver locais publicos Reservas pendentes Abrir primeiro local com acao pendente 6 Lista de espera Abrir primeiro local com acao pendente 233 Academia Abrir primeiro local com acao pendente 315 Clientes/CRM Abrir primeiro local com acao pendente 66 Financeiro Abrir primeiro local com acao pendente 14 COMPETICOES Torneios e ligas que voce organiza 9 competicoes ativas TORNEIO Open ADT Dourados - Maio Dourados - MS Organizar TORNEIO Prime Cup Noturna Cuiaba - MT Organizar TORNEIO Festival Feminino Pantanal Campo Grande - MS Organizar TORNEIO Torneio Ranking Outono Dourados - MS Organizar TORNEIO Desafio Interno Prime Kids Cuiaba - MT Organizar TORNEIO Prime Open Inscricoes Encerradas Cuiaba - MT Organizar LIGA Liga ADT Simples 2026 Em andamento Organizar LIGA Prime Duplas Fixas Em andamento Organizar LIGA Ranking Pantanal Intermediario Em andamento Organizar WORKSPACES Locais sob sua gestao 3 locais com acesso operacional ADMINISTRADOR | OPERACAO COMPLETA Clube Racket Prime C"
   },
   {
     "viewport": "desktop",
@@ -524,7 +524,10 @@
     "h1": [
       "Meus pagamentos"
     ],
-    "h2": [],
+    "h2": [
+      "A resolver",
+      "Pagos e encerrados"
+    ],
     "buttons": [
       "Jogador",
       "Trabalho",
@@ -534,8 +537,8 @@
       "Ranking",
       "Perfil"
     ],
-    "cards": 0,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. Nao foi possivel carregar canceling statement due to statement timeout ATP Jogador JOGAR Inicio Competir Locais Ranking CONTA Perfil"
+    "cards": 2,
+    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. PENDENCIAS A resolver 2 Inscricao em torneio 01 de out. de 2026 | R$ 70,00 Pendente Inscricao em torneio 24 de jun. de 2026 | R$ 120,00 Pendente HISTORICO Pagos e encerrados 198 Inscricao em torneio 13 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 12 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 11 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 10 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 09 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 08 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 07 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 06 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 05 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 04 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 03 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 02 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 30 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 29 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 28 de set. de 2026 | R$ "
   },
   {
     "viewport": "desktop",
@@ -1095,7 +1098,7 @@
       "Ir para jogador",
       "Ver locais publicos",
       "Reservas pendentesAbrir primeiro local com acao pendente6",
-      "Lista de esperaAbrir primeiro local com acao pendente239",
+      "Lista de esperaAbrir primeiro local com acao pendente233",
       "AcademiaAbrir primeiro local com acao pendente315",
       "Clientes/CRMAbrir primeiro local com acao pendente66",
       "FinanceiroAbrir primeiro local com acao pendente14",
@@ -1134,7 +1137,7 @@
       "Clientes"
     ],
     "cards": 9,
-    "textSample": "CENTRAL OPERACIONAL Gestao TRABALHO Ir para jogador FILA DO DIA O que precisa de atencao agora Ver locais publicos Reservas pendentes Abrir primeiro local com acao pendente 6 Lista de espera Abrir primeiro local com acao pendente 239 Academia Abrir primeiro local com acao pendente 315 Clientes/CRM Abrir primeiro local com acao pendente 66 Financeiro Abrir primeiro local com acao pendente 14 COMPETICOES Torneios e ligas que voce organiza 9 competicoes ativas TORNEIO Open ADT Dourados - Maio Dourados - MS Organizar TORNEIO Prime Cup Noturna Cuiaba - MT Organizar TORNEIO Festival Feminino Pantanal Campo Grande - MS Organizar TORNEIO Torneio Ranking Outono Dourados - MS Organizar TORNEIO Desafio Interno Prime Kids Cuiaba - MT Organizar TORNEIO Prime Open Inscricoes Encerradas Cuiaba - MT Organizar LIGA Liga ADT Simples 2026 Em andamento Organizar LIGA Prime Duplas Fixas Em andamento Organizar LIGA Ranking Pantanal Intermediario Em andamento Organizar WORKSPACES Locais sob sua gestao 3 locais com acesso operacional ADMINISTRADOR | OPERACAO COMPLETA Clube Racket Prime Cuiaba - MT 261 pendencia(s) 24 reserva(s) hoje 80 Lista de espera 139 Academia 33 Clientes/CRM ACOES RAPIDASChamar esper"
+    "textSample": "CENTRAL OPERACIONAL Gestao TRABALHO Ir para jogador FILA DO DIA O que precisa de atencao agora Ver locais publicos Reservas pendentes Abrir primeiro local com acao pendente 6 Lista de espera Abrir primeiro local com acao pendente 233 Academia Abrir primeiro local com acao pendente 315 Clientes/CRM Abrir primeiro local com acao pendente 66 Financeiro Abrir primeiro local com acao pendente 14 COMPETICOES Torneios e ligas que voce organiza 9 competicoes ativas TORNEIO Open ADT Dourados - Maio Dourados - MS Organizar TORNEIO Prime Cup Noturna Cuiaba - MT Organizar TORNEIO Festival Feminino Pantanal Campo Grande - MS Organizar TORNEIO Torneio Ranking Outono Dourados - MS Organizar TORNEIO Desafio Interno Prime Kids Cuiaba - MT Organizar TORNEIO Prime Open Inscricoes Encerradas Cuiaba - MT Organizar LIGA Liga ADT Simples 2026 Em andamento Organizar LIGA Prime Duplas Fixas Em andamento Organizar LIGA Ranking Pantanal Intermediario Em andamento Organizar WORKSPACES Locais sob sua gestao 3 locais com acesso operacional ADMINISTRADOR | OPERACAO COMPLETA Clube Racket Prime Cuiaba - MT 261 pendencia(s) 24 reserva(s) hoje 80 Lista de espera 139 Academia 33 Clientes/CRM ACOES RAPIDASChamar esper"
   },
   {
     "viewport": "mobile",
