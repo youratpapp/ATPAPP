@@ -80,8 +80,8 @@ Fila macro:
 1. `[x]` PDARK-00 - Fundacao visual e componentes premium.
 2. `[x]` PDARK-01 - Shell global, navegacao e contexto Jogador/Trabalho.
 3. `[x]` PDARK-02 - Login, cadastro e estados de entrada.
-4. `[>]` PDARK-03 - Home Jogador premium.
-5. `[ ]` PDARK-04 - Competições hub, torneios, ligas e rankings.
+4. `[x]` PDARK-03 - Home Jogador premium.
+5. `[>]` PDARK-04 - Competições hub, torneios, ligas e rankings.
 6. `[ ]` PDARK-05 - Detalhe de torneio, inscrição e convite.
 7. `[ ]` PDARK-06 - Liga, rodada, chat e matchroom.
 8. `[ ]` PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos.
@@ -121,6 +121,22 @@ Validacao sprint 1:
 Proximo item:
 
 - `PDARK-03 - Home Jogador premium`, agora em prioridade atual, deve refinar composicao especifica da Home alem da fundacao global ja entregue.
+
+Entrega sprint 2 em 2026-05-19:
+
+1. `PDARK-03` concluido: Home do jogador recebeu hero `Encontre seu proximo jogo`, header `Ola,`, cinco atalhos principais, trilho horizontal mobile e faixa de proximos passos com dados existentes.
+2. `PDARK-04` iniciado: hub `/eventos` ganhou KPIs, abas `Torneios/Ligas/Rankings` e paineis `Proximos torneios`, `Liga em destaque`, `Resultados recentes`.
+3. Auditoria visual atualizada com foco em `mobile-home.png`, `desktop-home.png`, `desktop-events-hub.png` e `mobile-events-hub.png`.
+
+Validacao sprint 2:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- Continuar `PDARK-04`, fechando `/eventos/torneios`, `/eventos/ligas` e o alinhamento final de `/ranking`.
 
 ## Sprint atual - Referencias visuais ATP premium
 

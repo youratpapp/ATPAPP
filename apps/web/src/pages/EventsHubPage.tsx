@@ -63,6 +63,12 @@ function statusLabel(status: TournamentSummary["status"] | LeagueSummary["status
   return "Rascunho";
 }
 
+function typeLabelForLeague(league: LeagueSummary): string {
+  if (league.leagueType === "dupla_fixa") return "Duplas fixas";
+  if (league.leagueType === "dupla_rotativa") return "Duplas rotativas";
+  return "Simples";
+}
+
 function modeFromSearch(search: string): HubMode {
   const mode = new URLSearchParams(search).get("modo");
   if (mode === "organizing" || mode === "discover") return mode;
@@ -379,6 +385,15 @@ export function EventsHubPage({ user, profile }: Props) {
   const totalActiveOrganizerCount =
     organizingTournaments.filter((tournament) => tournament.status !== "finished").length +
     organizingLeagues.filter((league) => league.status !== "finished").length;
+  const openRegistrationCount = publicTournaments.filter((tournament) => tournament.status === "registration_open").length;
+  const activeLeagueCount = leagues.filter((league) => league.status === "active").length;
+  const featuredLeague = [...playingLeagues, ...organizingLeagues].find((league) => league.status === "active") || leagues[0] || null;
+  const nextPublicTournaments = publicTournaments
+    .filter((tournament) => tournament.status === "registration_open" || tournament.status === "registration_closed")
+    .slice(0, 3);
+  const recentResults = [...participatingTournaments, ...organizingTournaments]
+    .filter((tournament) => tournament.status === "finished")
+    .slice(0, 3);
 
   useEffect(() => {
     if (loading || hasExplicitMode(location.search)) return;
@@ -417,6 +432,42 @@ export function EventsHubPage({ user, profile }: Props) {
       {error ? <p className="feedback error">{error}</p> : null}
 
       {!loading && !error ? (
+        <section className="competition-command-center" aria-label="Resumo de competicoes">
+          <div className="events-kpi-grid">
+            <article className="events-kpi-card">
+              <span className="events-kpi-label">Inscricoes abertas</span>
+              <strong className="events-kpi-value">{openRegistrationCount}</strong>
+              <small>torneios publicos agora</small>
+            </article>
+            <article className="events-kpi-card">
+              <span className="events-kpi-label">Ligas ativas</span>
+              <strong className="events-kpi-value">{activeLeagueCount}</strong>
+              <small>temporadas em andamento</small>
+            </article>
+            <article className="events-kpi-card">
+              <span className="events-kpi-label">Seu jogo</span>
+              <strong className="events-kpi-value">{playerCount}</strong>
+              <small>torneios e ligas vinculados</small>
+            </article>
+          </div>
+          <div className="competition-hub-tabs" role="tablist" aria-label="Atalhos de competicoes">
+            <button type="button" onClick={() => navigate("/eventos/torneios?view=participating")}>
+              <TrophyIcon />
+              <span>Torneios</span>
+            </button>
+            <button type="button" onClick={() => navigate("/eventos/ligas?view=participating")}>
+              <LeagueIcon />
+              <span>Ligas</span>
+            </button>
+            <button type="button" onClick={() => navigate("/ranking")}>
+              <SearchIcon />
+              <span>Rankings</span>
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {!loading && !error ? (
         <section className="competition-intent-strip" aria-label="Modo de competições">
           <IntentPill
             label="Jogando"
@@ -436,6 +487,63 @@ export function EventsHubPage({ user, profile }: Props) {
               Trabalho <CountBadge value={organizerCount} />
             </button>
           ) : null}
+        </section>
+      ) : null}
+
+      {!loading && !error ? (
+        <section className="competition-feature-grid" aria-label="Destaques de competicoes">
+          <article className="competition-feature-panel">
+            <header>
+              <span>Proximos torneios</span>
+              <button type="button" onClick={() => navigate("/eventos/torneios?view=participating")}>
+                Ver todos
+              </button>
+            </header>
+            {nextPublicTournaments.length ? (
+              nextPublicTournaments.map((tournament) => (
+                <button key={`feature-tournament:${tournament.id}`} type="button" onClick={() => navigate(buildTournamentUrl(tournament.id))}>
+                  <strong>{tournament.name}</strong>
+                  <small>{[tournament.city, tournament.state].filter(Boolean).join(" - ") || statusLabel(tournament.status)}</small>
+                </button>
+              ))
+            ) : (
+              <p>Nenhum torneio publico aberto agora.</p>
+            )}
+          </article>
+          <article className="competition-feature-panel highlight">
+            <header>
+              <span>Liga em destaque</span>
+              <button type="button" onClick={() => navigate("/eventos/ligas?view=participating")}>
+                Ligas
+              </button>
+            </header>
+            {featuredLeague ? (
+              <button type="button" onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(featuredLeague.id)}`)}>
+                <strong>{featuredLeague.name}</strong>
+                <small>{[typeLabelForLeague(featuredLeague), statusLabel(featuredLeague.status)].filter(Boolean).join(" - ")}</small>
+              </button>
+            ) : (
+              <p>Entre em uma liga para acompanhar rodadas e ranking.</p>
+            )}
+          </article>
+          <article className="competition-feature-panel">
+            <header>
+              <span>Resultados recentes</span>
+              <button type="button" onClick={() => navigate("/ranking")}>
+                Ranking
+              </button>
+            </header>
+            {recentResults.length ? (
+              recentResults.map((tournament) => (
+                <button key={`feature-result:${tournament.id}`} type="button" onClick={() => navigate(buildTournamentUrl(tournament.id))}>
+                  <strong>{tournament.name}</strong>
+                  <small>{statusLabel(tournament.status)}</small>
+                </button>
+              ))
+            ) : (
+              <p>Seus resultados aparecem aqui depois das competicoes.</p>
+            )}
+          </article>
         </section>
       ) : null}
 

@@ -88,7 +88,7 @@ export function AppShell({
                 {photo ? <img src={photo} alt="" /> : initials}
               </div>
               <div style={{ minWidth: 0 }}>
-                <p className="greeting-label">Bem-vindo</p>
+                <p className="greeting-label">Ola,</p>
                 <p className="greeting-name">{displayName}</p>
               </div>
             </div>

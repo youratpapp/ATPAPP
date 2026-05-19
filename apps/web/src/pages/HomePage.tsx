@@ -1722,6 +1722,12 @@ export function HomePage({ user, profile }: Props) {
     navigate(homeMainAction.targetPath);
   };
 
+  const homeAgendaPreview = [
+    ...playerMatchItems.slice(0, 1).map((item) => ({ ...item, label: "Proxima partida", action: "Ver partida" })),
+    ...playerReservationItems.slice(0, 1).map((item) => ({ ...item, label: "Minha reserva", action: "Ver reserva" })),
+    ...playerLessonItems.slice(0, 1).map((item) => ({ ...item, label: "Aula", action: "Ver aula" })),
+  ].slice(0, 3);
+
   const openWorkMode = () => {
     userMode.setMode("work");
     navigate(userMode.workEntryPath);
@@ -1828,7 +1834,7 @@ export function HomePage({ user, profile }: Props) {
           <div className="home-intent-rail home-intent-rail--visual" aria-label="Escolha o que fazer">
             <button type="button" onClick={() => navigate("/locais?intent=booking")}>
               <span>Reservar</span>
-              <strong>Quadra</strong>
+              <strong>Reservar quadra</strong>
               <small>Horarios livres</small>
             </button>
             <button type="button" onClick={() => navigate("/locais?intent=matches")}>
@@ -1836,15 +1842,20 @@ export function HomePage({ user, profile }: Props) {
               <strong>Encontrar jogo</strong>
               <small>Chamadas abertas</small>
             </button>
+            <button type="button" onClick={() => navigate("/eventos/torneios")}>
+              <span>Competir</span>
+              <strong>Torneios</strong>
+              <small>Inscricoes abertas</small>
+            </button>
             <button type="button" onClick={() => navigate("/locais?intent=classes")}>
               <span>Aulas</span>
-              <strong>Entrar em aula</strong>
+              <strong>Aulas</strong>
               <small>Turmas com vaga</small>
             </button>
-            <button type="button" onClick={() => navigate("/eventos")}>
-              <span>Competir</span>
-              <strong>Torneios e ligas</strong>
-              <small>Inscricoes abertas</small>
+            <button type="button" onClick={() => navigate("/eventos/ligas")}>
+              <span>Ligas</span>
+              <strong>Ligas</strong>
+              <small>Rodadas ativas</small>
             </button>
           </div>
         </aside>
@@ -1861,6 +1872,35 @@ export function HomePage({ user, profile }: Props) {
 
       {!loading && !error ? (
         <>
+          {homeAgendaPreview.length > 0 ? (
+            <section className="home-section home-agenda-preview" aria-label="Agenda do jogador">
+              <div className="section-title">
+                <div>
+                  <p className="home-context-eyebrow">Agora no app</p>
+                  <h2>Proximos passos</h2>
+                </div>
+                <button className="link" type="button" onClick={() => navigate("/minhas-reservas")}>
+                  Ver agenda
+                </button>
+              </div>
+              <div className="home-agenda-preview-grid">
+                {homeAgendaPreview.map((item) => (
+                  <button
+                    key={`agenda-preview:${item.id}`}
+                    type="button"
+                    className={item.tone === "urgent" ? "home-agenda-preview-card urgent" : "home-agenda-preview-card"}
+                    onClick={() => navigate(item.targetPath || "/inicio")}
+                  >
+                    <span>{item.label}</span>
+                    <strong>{item.title}</strong>
+                    <small>{item.detail}</small>
+                    <em>{item.meta}</em>
+                  </button>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
           {playerHubSections.length > 0 ? (
           <section className="player-hub-panel">
             <div className="section-title">

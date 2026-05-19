@@ -23376,3 +23376,381 @@ label {
 .app-shell--management .management-place-list-actions span {
   color: var(--pdark-text-muted);
 }
+
+/* ----- PDARK-03: Home jogador premium ----- */
+.app-shell--player .home-player-os--visual {
+  align-items: stretch;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
+  margin-bottom: 18px;
+}
+
+.app-shell--player .home-visual-hero {
+  min-height: 276px;
+}
+
+.app-shell--player .home-visual-hero h1 {
+  max-width: 13ch;
+}
+
+.app-shell--player .home-player-side {
+  min-width: 0;
+}
+
+.app-shell--player .home-intent-rail--visual {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.app-shell--player .home-intent-rail--visual button {
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(238, 245, 241, 0.94)),
+    url("./assets/surface-court-lines-soft.png") right center / 420px auto no-repeat;
+  border-color: rgba(255, 255, 255, 0.68);
+  border-radius: 18px;
+  min-height: 112px;
+  padding: 14px;
+}
+
+.app-shell--player .home-intent-rail--visual button:nth-child(3) {
+  --shortcut-image: url("./assets/icon-league.svg");
+}
+
+.app-shell--player .home-intent-rail--visual button:nth-child(4) {
+  --shortcut-image: url("./assets/icon-class.svg");
+}
+
+.app-shell--player .home-intent-rail--visual button:nth-child(5) {
+  --shortcut-image: url("./assets/icon-league.svg");
+}
+
+.app-shell--player .home-intent-rail--visual button::before {
+  border-radius: 16px;
+  height: 46px;
+  width: 46px;
+}
+
+.app-shell--player .home-intent-rail--visual button::after {
+  bottom: 14px;
+  right: 14px;
+}
+
+.app-shell--player .home-intent-rail--visual button strong {
+  color: #061126;
+  font-size: 0.98rem;
+}
+
+.app-shell--player .home-intent-rail--visual button small {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+.home-agenda-preview {
+  display: grid;
+  gap: 12px;
+}
+
+.home-agenda-preview-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.home-agenda-preview-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 18px;
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  display: grid;
+  gap: 4px;
+  min-height: 118px;
+  padding: 14px;
+  text-align: left;
+}
+
+.home-agenda-preview-card.urgent {
+  border-color: rgba(245, 158, 11, 0.32);
+}
+
+.home-agenda-preview-card span {
+  color: #4ade80;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.home-agenda-preview-card strong {
+  color: var(--pdark-text-main);
+  font-size: var(--font-size-md);
+  font-weight: 950;
+}
+
+.home-agenda-preview-card small,
+.home-agenda-preview-card em {
+  color: var(--pdark-text-muted);
+  font-size: var(--font-size-xs);
+  font-style: normal;
+  font-weight: 800;
+}
+
+@media (min-width: 960px) {
+  .app-shell--player .home-player-os--visual {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--player .app-header-greeting .greeting-label {
+    color: rgba(248, 250, 252, 0.72);
+    display: block;
+    font-size: 0.72rem;
+  }
+
+  .app-shell--player .home-player-os--visual {
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .app-shell--player .home-visual-hero {
+    min-height: 222px;
+    padding: 18px;
+  }
+
+  .app-shell--player .home-visual-hero h1 {
+    font-size: 2.1rem;
+    max-width: 11ch;
+  }
+
+  .app-shell--player .home-visual-hero p {
+    font-size: 0.88rem;
+    max-width: 24ch;
+  }
+
+  .app-shell--player .home-intent-rail--visual {
+    display: grid;
+    grid-auto-columns: 126px;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    margin-left: -2px;
+    overflow-x: auto;
+    padding: 0 2px 8px;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+  }
+
+  .app-shell--player .home-intent-rail--visual::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app-shell--player .home-intent-rail--visual button {
+    min-height: 112px;
+    padding: 12px;
+    scroll-snap-align: start;
+  }
+
+  .app-shell--player .home-intent-rail--visual button strong {
+    font-size: 0.9rem;
+    line-height: 1.12;
+  }
+
+  .app-shell--player .home-intent-rail--visual button small {
+    font-size: 0.72rem;
+  }
+
+  .home-agenda-preview-grid {
+    grid-auto-columns: minmax(220px, 76vw);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+  }
+
+  .home-agenda-preview-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-agenda-preview-card {
+    min-height: 112px;
+    scroll-snap-align: start;
+  }
+}
+
+/* ----- PDARK-04: competition command center ----- */
+.competition-command-center {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+
+.competition-command-center .events-kpi-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.competition-command-center .events-kpi-card small {
+  color: var(--pdark-text-muted);
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.competition-hub-tabs {
+  background: rgba(3, 9, 20, 0.66);
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 18px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 8px;
+}
+
+.competition-hub-tabs button {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 14px;
+  color: var(--pdark-text-main);
+  display: inline-flex;
+  font-weight: 900;
+  gap: 8px;
+  justify-content: center;
+  min-height: 46px;
+}
+
+.competition-hub-tabs svg {
+  color: #4ade80;
+  height: 20px;
+  width: 20px;
+}
+
+.competition-feature-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 14px;
+}
+
+.competition-feature-panel {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 18px;
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  display: grid;
+  gap: 8px;
+  min-height: 190px;
+  padding: 14px;
+}
+
+.competition-feature-panel.highlight {
+  background:
+    linear-gradient(180deg, rgba(9, 82, 59, 0.82), rgba(8, 20, 36, 0.82)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") center / cover no-repeat;
+}
+
+.competition-feature-panel header {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.competition-feature-panel header span {
+  color: #4ade80;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.competition-feature-panel header button {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+  min-height: 30px;
+  padding: 0 10px;
+}
+
+.competition-feature-panel > button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 14px;
+  color: var(--pdark-text-main);
+  display: grid;
+  gap: 3px;
+  min-height: 52px;
+  padding: 10px;
+  text-align: left;
+}
+
+.competition-feature-panel strong {
+  color: var(--pdark-text-main);
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+}
+
+.competition-feature-panel small,
+.competition-feature-panel p {
+  color: var(--pdark-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .competition-command-center .events-kpi-grid {
+    grid-auto-columns: minmax(172px, 64vw);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+
+  .competition-command-center .events-kpi-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .competition-hub-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 6px;
+  }
+
+  .competition-hub-tabs button {
+    font-size: 0.78rem;
+    min-height: 42px;
+  }
+
+  .competition-hub-tabs svg {
+    height: 17px;
+    width: 17px;
+  }
+
+  .competition-feature-grid {
+    grid-auto-columns: minmax(238px, 80vw);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+  }
+
+  .competition-feature-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .competition-feature-panel {
+    min-height: 178px;
+    scroll-snap-align: start;
+  }
+}

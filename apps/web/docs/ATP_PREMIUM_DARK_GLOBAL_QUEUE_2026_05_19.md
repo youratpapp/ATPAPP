@@ -247,7 +247,7 @@ Validacao:
 
 ## PDARK-03 - Home Jogador premium
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Rota:
 
@@ -288,9 +288,28 @@ Criterios de aceite:
 - nao perde acesso a Locais, Ranking, Aulas, Reservas, Partidas e Pagamentos;
 - CTAs existentes continuam navegando.
 
+Entrega sprint 2:
+
+1. Home passou a usar hero default `Encontre seu proximo jogo`, com CTA curto e linguagem alinhada a referencia premium dark.
+2. Header mobile mudou de `Bem-vindo` para `Ola,` mantendo nome/avatar, seletor Jogador/Trabalho e sino.
+3. Quick actions foram reformatadas para cinco atalhos: `Reservar quadra`, `Encontrar jogo`, `Torneios`, `Aulas`, `Ligas`.
+4. Mobile usa trilho horizontal para os cinco atalhos, evitando quebra de layout e preservando densidade.
+5. Foi criada faixa `Proximos passos`, reaproveitando partidas, reservas e aulas existentes quando houver dados carregados.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-home.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-home.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-04 - Competições hub, torneios, ligas e rankings
 
-Status: `[ ]` pendente
+Status: `[~]` em andamento
 
 Rotas:
 
@@ -329,6 +348,31 @@ Criterios de aceite:
 - Competições desktop se aproxima da imagem desktop com trofeu;
 - mobile mostra central compacta, nao lista vazia;
 - organizacao de torneios/ligas continua disponivel para Trabalho.
+
+Entrega parcial sprint 2:
+
+1. Hub `/eventos` recebeu centro de comando com KPIs de inscricoes abertas, ligas ativas e competicoes vinculadas ao jogador.
+2. Foram adicionados atalhos em abas para `Torneios`, `Ligas` e `Rankings`.
+3. Hub ganhou paineis de destaque: `Proximos torneios`, `Liga em destaque` e `Resultados recentes`.
+4. Os novos blocos usam glass dark, imagem premium e comportamento responsivo com carrossel horizontal no mobile.
+
+Pendente para concluir PDARK-04:
+
+- refinar `/eventos/torneios`;
+- refinar `/eventos/ligas`;
+- fechar integracao visual de `/ranking` com a central de competicoes;
+- revisar estados vazios especificos dessas rotas.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-events-hub.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-events-hub.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
 
 ## PDARK-05 - Detalhe de torneio, inscrição e convite
 

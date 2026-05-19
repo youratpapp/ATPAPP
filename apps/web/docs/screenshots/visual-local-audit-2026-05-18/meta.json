@@ -6,17 +6,18 @@
     "title": "ATP — Amateur Tennis Platform",
     "hash": "#/inicio",
     "h1": [
-      "Encontre algo para jogar"
+      "Encontre seu proximo jogo"
     ],
     "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
-      "Encontrar jogo",
-      "ReservarQuadraHorarios livres",
+      "Explorar",
+      "ReservarReservar quadraHorarios livres",
       "JogarEncontrar jogoChamadas abertas",
-      "AulasEntrar em aulaTurmas com vaga",
-      "CompetirTorneios e ligasInscricoes abertas",
+      "CompetirTorneiosInscricoes abertas",
+      "AulasAulasTurmas com vaga",
+      "LigasLigasRodadas ativas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -24,7 +25,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre algo para jogar Reserve quadra, entre em aula ou descubra competições abertas. Em dia Dourados - MS Encontrar jogo Quadra Horarios livres Encontrar jogo Chamadas abertas Entrar em aula Turmas com vaga Torneios e ligas Inscricoes abertas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
   },
   {
     "viewport": "desktop",
@@ -33,17 +34,18 @@
     "title": "ATP — Amateur Tennis Platform",
     "hash": "#/inicio",
     "h1": [
-      "Encontre algo para jogar"
+      "Encontre seu proximo jogo"
     ],
     "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
-      "Encontrar jogo",
-      "ReservarQuadraHorarios livres",
+      "Explorar",
+      "ReservarReservar quadraHorarios livres",
       "JogarEncontrar jogoChamadas abertas",
-      "AulasEntrar em aulaTurmas com vaga",
-      "CompetirTorneios e ligasInscricoes abertas",
+      "CompetirTorneiosInscricoes abertas",
+      "AulasAulasTurmas com vaga",
+      "LigasLigasRodadas ativas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -51,7 +53,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre algo para jogar Reserve quadra, entre em aula ou descubra competições abertas. Em dia Dourados - MS Encontrar jogo Quadra Horarios livres Encontrar jogo Chamadas abertas Entrar em aula Turmas com vaga Torneios e ligas Inscricoes abertas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
   },
   {
     "viewport": "desktop",
@@ -205,9 +207,19 @@
     ],
     "h2": [],
     "buttons": [
+      "Torneios",
+      "Ligas",
+      "Rankings",
       "Jogandopartidas e inscrições",
       "Descobrirtorneios e ligas",
       "Trabalho 9",
+      "Ver todos",
+      "Prime Open Inscricoes EncerradasCuiaba - MT",
+      "Festival Feminino PantanalCampo Grande - MS",
+      "Ligas",
+      "Liga ADT Simples 2026Simples - Ativa",
+      "Ranking",
+      "Torneio Ranking OutonoFinalizada",
       "TorneiosVeja torneios em que você joga ou entre por código.",
       "LigasAcesse ligas em que você participa.",
       "Encontrar locaisVeja clubes e academias publicas.",
@@ -219,8 +231,8 @@
       "Locais",
       "Perfil"
     ],
-    "cards": 1,
-    "textSample": "Competições Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma. Jogando partidas e inscrições Descobrir torneios e ligas Trabalho 9 Descobrir Entrada leve para encontrar competições e locais, sem fila administrativa. Torneios Veja torneios em que você joga ou entre por código. Ligas Acesse ligas em que você participa. Encontrar locais Veja clubes e academias publicas. Modo organizador Crie torneios e ligas em uma area separada. DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. ATP Competições JOGAR Inicio Competições Reservas Locais CONTA Perfil"
+    "cards": 4,
+    "textSample": "Competições Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma. Inscricoes abertas1 torneios publicos agora Ligas ativas3 temporadas em andamento Seu jogo0 torneios e ligas vinculados Torneios Ligas Rankings Jogando partidas e inscrições Descobrir torneios e ligas Trabalho 9 PROXIMOS TORNEIOS Ver todos Prime Open Inscricoes Encerradas Cuiaba - MT Festival Feminino Pantanal Campo Grande - MS LIGA EM DESTAQUE Ligas Liga ADT Simples 2026 Simples - Ativa RESULTADOS RECENTES Ranking Torneio Ranking Outono Finalizada Descobrir Entrada leve para encontrar competições e locais, sem fila administrativa. Torneios Veja torneios em que você joga ou entre por código. Ligas Acesse ligas em que você participa. Encontrar locais Veja clubes e academias publicas. Modo organizador Crie torneios e ligas em uma area separada. DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. ATP Competições JOGAR Inicio Competições Reservas Locais CONTA Perfil"
   },
   {
     "viewport": "desktop",
@@ -463,7 +475,7 @@
       "Quadra 2ADT Dourados | 15 de nov., 09:00Finalizada"
     ],
     "cards": 2,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho QUADRAS Minhas reservas Reservas futuras, pendencias de confirmacao e historico em um lugar so. PROXIMAS Reservas futuras 0 Nenhuma reserva futura. HISTORICO Reservas passadas 200 Quadra 5 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 4 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 8 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 7 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 6 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 5 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 3 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 1 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 5 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 2 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho QUADRAS Minhas reservas Reservas futuras, pendencias de confirmacao e historico em um lugar so. PROXIMAS Reservas futuras 0 Nenhuma reserva futura. HISTORICO Reservas passadas 200 Quadra 5 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 4 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 8 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 7 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 6 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 5 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 3 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 1 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 5 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 2 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra 3 Ar"
   },
   {
     "viewport": "desktop",
@@ -488,7 +500,7 @@
       "Perfil"
     ],
     "cards": 2,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho COMPETICAO Minhas partidas Atalho para suas ligas e torneios. As salas e resultados continuam no contexto de cada competicao. Nenhuma partida vinculada Quando voce entrar em torneios ou ligas, eles aparecem aqui. AGORA Competicoes ativas 0 Nenhuma competicao ativa. HISTORICO Encerradas 0 Sem historico ainda. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho COMPETICAO Minhas partidas Atalho para suas ligas e torneios. As salas e resultados continuam no contexto de cada competicao. Nenhuma partida vinculada Quando voce entrar em torneios ou ligas, eles aparecem aqui. AGORA Competicoes ativas 0 Nenhuma competicao ativa. HISTORICO Encerradas 0 Sem historico ainda. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
   },
   {
     "viewport": "desktop",
@@ -513,7 +525,7 @@
       "Perfil"
     ],
     "cards": 2,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho AULAS Minhas aulas Turmas, professores, horarios e solicitacoes de matricula em um lugar leve. CONFIRMADAS Turmas ativas 78 Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Adulto Iniciante 1 Clube Racket Prime | Ter 06:30-07:30 | Talita Moraes Matriculado Adulto Iniciante 1 ADT Dourados | Ter 06:30-07:30 | Lais Monteiro Matriculado Adulto Iniciante 1 Arena Pantanal Tennis | Ter 06:30-07:30 | Priscila Araujo Matriculado Kids Iniciante 1 Arena Pantanal Tennis | Seg 06:30-07:30 | Gustavo Amaral Matriculado Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Kids Iniciante 1 Clube Racket Prime | Seg 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 ADT Dourados | Qui 06:30-07:30 | Caio Ferraz Matriculado Intermediario Noite 1 Clube Racket Prime | Qui 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 Arena Pantanal Tennis | Qui 06:30-07:30 | Priscila Araujo Matriculado Intermediario Manha 1 Arena Pantanal Tennis | Qua 06:30-07:30 | Gustavo Amaral Matriculado Intermediario Manha 1 Clube Racket Prime | Qua 06:30-07:30 | Vitor Leal Matriculado Intermediario Manha 1 ADT Dourados | "
+    "textSample": "Ola, Escalao Admin Jogador Trabalho AULAS Minhas aulas Turmas, professores, horarios e solicitacoes de matricula em um lugar leve. CONFIRMADAS Turmas ativas 78 Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Adulto Iniciante 1 Clube Racket Prime | Ter 06:30-07:30 | Talita Moraes Matriculado Adulto Iniciante 1 ADT Dourados | Ter 06:30-07:30 | Lais Monteiro Matriculado Adulto Iniciante 1 Arena Pantanal Tennis | Ter 06:30-07:30 | Priscila Araujo Matriculado Kids Iniciante 1 Arena Pantanal Tennis | Seg 06:30-07:30 | Gustavo Amaral Matriculado Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Kids Iniciante 1 Clube Racket Prime | Seg 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 ADT Dourados | Qui 06:30-07:30 | Caio Ferraz Matriculado Intermediario Noite 1 Clube Racket Prime | Qui 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 Arena Pantanal Tennis | Qui 06:30-07:30 | Priscila Araujo Matriculado Intermediario Manha 1 Arena Pantanal Tennis | Qua 06:30-07:30 | Gustavo Amaral Matriculado Intermediario Manha 1 Clube Racket Prime | Qua 06:30-07:30 | Vitor Leal Matriculado Intermediario Manha 1 ADT Dourados | Qua 0"
   },
   {
     "viewport": "desktop",
@@ -524,7 +536,10 @@
     "h1": [
       "Meus pagamentos"
     ],
-    "h2": [],
+    "h2": [
+      "A resolver",
+      "Pagos e encerrados"
+    ],
     "buttons": [
       "Jogador",
       "Trabalho",
@@ -534,8 +549,8 @@
       "Locais",
       "Perfil"
     ],
-    "cards": 0,
-    "textSample": "Bem-vindo Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. Nao foi possivel carregar canceling statement due to statement timeout ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
+    "cards": 2,
+    "textSample": "Ola, Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. PENDENCIAS A resolver 2 Inscricao em torneio 01 de out. de 2026 | R$ 70,00 Pendente Inscricao em torneio 24 de jun. de 2026 | R$ 120,00 Pendente HISTORICO Pagos e encerrados 198 Inscricao em torneio 13 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 12 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 11 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 10 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 09 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 08 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 07 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 06 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 05 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 04 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 03 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 02 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 30 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 29 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 28 de set. de 2026 | R$ 70,00"
   },
   {
     "viewport": "desktop",
@@ -735,17 +750,18 @@
     "title": "ATP — Amateur Tennis Platform",
     "hash": "#/inicio",
     "h1": [
-      "Encontre algo para jogar"
+      "Encontre seu proximo jogo"
     ],
     "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
-      "Encontrar jogo",
-      "ReservarQuadraHorarios livres",
+      "Explorar",
+      "ReservarReservar quadraHorarios livres",
       "JogarEncontrar jogoChamadas abertas",
-      "AulasEntrar em aulaTurmas com vaga",
-      "CompetirTorneios e ligasInscricoes abertas",
+      "CompetirTorneiosInscricoes abertas",
+      "AulasAulasTurmas com vaga",
+      "LigasLigasRodadas ativas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -753,7 +769,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre algo para jogar Reserve quadra, entre em aula ou descubra competições abertas. Em dia Dourados - MS Encontrar jogo Quadra Horarios livres Encontrar jogo Chamadas abertas Entrar em aula Turmas com vaga Torneios e ligas Inscricoes abertas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. Inicio Competições Reservas Locais Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",
@@ -762,17 +778,18 @@
     "title": "ATP — Amateur Tennis Platform",
     "hash": "#/inicio",
     "h1": [
-      "Encontre algo para jogar"
+      "Encontre seu proximo jogo"
     ],
     "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
-      "Encontrar jogo",
-      "ReservarQuadraHorarios livres",
+      "Explorar",
+      "ReservarReservar quadraHorarios livres",
       "JogarEncontrar jogoChamadas abertas",
-      "AulasEntrar em aulaTurmas com vaga",
-      "CompetirTorneios e ligasInscricoes abertas",
+      "CompetirTorneiosInscricoes abertas",
+      "AulasAulasTurmas com vaga",
+      "LigasLigasRodadas ativas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -780,7 +797,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre algo para jogar Reserve quadra, entre em aula ou descubra competições abertas. Em dia Dourados - MS Encontrar jogo Quadra Horarios livres Encontrar jogo Chamadas abertas Entrar em aula Turmas com vaga Torneios e ligas Inscricoes abertas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. Inicio Competições Reservas Locais Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",
@@ -934,9 +951,19 @@
     ],
     "h2": [],
     "buttons": [
+      "Torneios",
+      "Ligas",
+      "Rankings",
       "Jogandopartidas e inscrições",
       "Descobrirtorneios e ligas",
       "Trabalho 9",
+      "Ver todos",
+      "Prime Open Inscricoes EncerradasCuiaba - MT",
+      "Festival Feminino PantanalCampo Grande - MS",
+      "Ligas",
+      "Liga ADT Simples 2026Simples - Ativa",
+      "Ranking",
+      "Torneio Ranking OutonoFinalizada",
       "TorneiosVeja torneios em que você joga ou entre por código.",
       "LigasAcesse ligas em que você participa.",
       "Encontrar locaisVeja clubes e academias publicas.",
@@ -948,8 +975,8 @@
       "Locais",
       "Perfil"
     ],
-    "cards": 1,
-    "textSample": "Competições Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma. Jogando partidas e inscrições Descobrir torneios e ligas Trabalho 9 Descobrir Entrada leve para encontrar competições e locais, sem fila administrativa. Torneios Ligas Encontrar locais Modo organizador DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. Inicio Competições Reservas Locais Perfil"
+    "cards": 4,
+    "textSample": "Competições Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma. Inscricoes abertas1 torneios publicos agora Ligas ativas3 temporadas em andamento Seu jogo0 torneios e ligas vinculados Torneios Ligas Rankings Jogando partidas e inscrições Descobrir torneios e ligas Trabalho 9 PROXIMOS TORNEIOS Ver todos Prime Open Inscricoes Encerradas Cuiaba - MT Festival Feminino Pantanal Campo Grande - MS LIGA EM DESTAQUE Ligas Liga ADT Simples 2026 Simples - Ativa RESULTADOS RECENTES Ranking Torneio Ranking Outono Finalizada Descobrir Entrada leve para encontrar competições e locais, sem fila administrativa. Torneios Ligas Encontrar locais Modo organizador DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",
@@ -1192,7 +1219,7 @@
       "Quadra 2ADT Dourados | 15 de nov., 09:00Finalizada"
     ],
     "cards": 2,
-    "textSample": "Escalao Admin Jogador Trabalho QUADRAS Minhas reservas Reservas futuras, pendencias de confirmacao e historico em um lugar so. PROXIMAS Reservas futuras 0 Nenhuma reserva futura. HISTORICO Reservas passadas 200 Quadra 5 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 4 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 8 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 7 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 6 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 5 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 3 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 1 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 5 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 2 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra 3 Arena P"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho QUADRAS Minhas reservas Reservas futuras, pendencias de confirmacao e historico em um lugar so. PROXIMAS Reservas futuras 0 Nenhuma reserva futura. HISTORICO Reservas passadas 200 Quadra 5 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 4 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 3 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 8 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 7 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 6 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 5 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 3 ADT Dourados | 15 de nov., 04:00 Finalizada Quadra 1 Clube Racket Prime | 15 de nov., 04:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 04:00 Finalizada Quadra 5 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 2 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra 2 ADT Dourados | 15 de nov., 06:00 Finalizada Quadra 1 Arena Pantanal Tennis | 15 de nov., 06:00 Finalizada Quadra 3 Ar"
   },
   {
     "viewport": "mobile",
@@ -1217,7 +1244,7 @@
       "Perfil"
     ],
     "cards": 2,
-    "textSample": "Escalao Admin Jogador Trabalho COMPETICAO Minhas partidas Atalho para suas ligas e torneios. As salas e resultados continuam no contexto de cada competicao. Nenhuma partida vinculada Quando voce entrar em torneios ou ligas, eles aparecem aqui. AGORA Competicoes ativas 0 Nenhuma competicao ativa. HISTORICO Encerradas 0 Sem historico ainda. Inicio Competições Reservas Locais Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho COMPETICAO Minhas partidas Atalho para suas ligas e torneios. As salas e resultados continuam no contexto de cada competicao. Nenhuma partida vinculada Quando voce entrar em torneios ou ligas, eles aparecem aqui. AGORA Competicoes ativas 0 Nenhuma competicao ativa. HISTORICO Encerradas 0 Sem historico ainda. Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",
@@ -1242,7 +1269,7 @@
       "Perfil"
     ],
     "cards": 2,
-    "textSample": "Escalao Admin Jogador Trabalho AULAS Minhas aulas Turmas, professores, horarios e solicitacoes de matricula em um lugar leve. CONFIRMADAS Turmas ativas 78 Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Adulto Iniciante 1 Clube Racket Prime | Ter 06:30-07:30 | Talita Moraes Matriculado Adulto Iniciante 1 ADT Dourados | Ter 06:30-07:30 | Lais Monteiro Matriculado Adulto Iniciante 1 Arena Pantanal Tennis | Ter 06:30-07:30 | Priscila Araujo Matriculado Kids Iniciante 1 Arena Pantanal Tennis | Seg 06:30-07:30 | Gustavo Amaral Matriculado Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Kids Iniciante 1 Clube Racket Prime | Seg 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 ADT Dourados | Qui 06:30-07:30 | Caio Ferraz Matriculado Intermediario Noite 1 Clube Racket Prime | Qui 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 Arena Pantanal Tennis | Qui 06:30-07:30 | Priscila Araujo Matriculado Intermediario Manha 1 Arena Pantanal Tennis | Qua 06:30-07:30 | Gustavo Amaral Matriculado Intermediario Manha 1 Clube Racket Prime | Qua 06:30-07:30 | Vitor Leal Matriculado Intermediario Manha 1 ADT Dourados | Qua 06:30-"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho AULAS Minhas aulas Turmas, professores, horarios e solicitacoes de matricula em um lugar leve. CONFIRMADAS Turmas ativas 78 Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Adulto Iniciante 1 Clube Racket Prime | Ter 06:30-07:30 | Talita Moraes Matriculado Adulto Iniciante 1 ADT Dourados | Ter 06:30-07:30 | Lais Monteiro Matriculado Adulto Iniciante 1 Arena Pantanal Tennis | Ter 06:30-07:30 | Priscila Araujo Matriculado Kids Iniciante 1 Arena Pantanal Tennis | Seg 06:30-07:30 | Gustavo Amaral Matriculado Kids Iniciante 1 ADT Dourados | Seg 06:30-07:30 | Caio Ferraz Matriculado Kids Iniciante 1 Clube Racket Prime | Seg 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 ADT Dourados | Qui 06:30-07:30 | Caio Ferraz Matriculado Intermediario Noite 1 Clube Racket Prime | Qui 06:30-07:30 | Julia Campos Matriculado Intermediario Noite 1 Arena Pantanal Tennis | Qui 06:30-07:30 | Priscila Araujo Matriculado Intermediario Manha 1 Arena Pantanal Tennis | Qua 06:30-07:30 | Gustavo Amaral Matriculado Intermediario Manha 1 Clube Racket Prime | Qua 06:30-07:30 | Vitor Leal Matriculado Intermediario Manha 1 ADT Dourados | Qua 0"
   },
   {
     "viewport": "mobile",
@@ -1253,10 +1280,7 @@
     "h1": [
       "Meus pagamentos"
     ],
-    "h2": [
-      "A resolver",
-      "Pagos e encerrados"
-    ],
+    "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
@@ -1266,8 +1290,8 @@
       "Locais",
       "Perfil"
     ],
-    "cards": 2,
-    "textSample": "Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. PENDENCIAS A resolver 2 Inscricao em torneio 01 de out. de 2026 | R$ 70,00 Pendente Inscricao em torneio 24 de jun. de 2026 | R$ 120,00 Pendente HISTORICO Pagos e encerrados 198 Inscricao em torneio 13 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 12 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 11 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 10 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 09 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 08 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 07 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 06 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 05 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 04 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 03 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 02 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 30 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 29 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 28 de set. de 2026 | R$ 70,00 Pago"
+    "cards": 0,
+    "textSample": "Ola, Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. Nao foi possivel carregar canceling statement due to statement timeout Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",
