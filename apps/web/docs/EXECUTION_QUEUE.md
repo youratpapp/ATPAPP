@@ -85,15 +85,15 @@ Fila macro:
 6. `[x]` PDARK-05 - Detalhe de torneio, inscrição e convite.
 7. `[x]` PDARK-06 - Liga, rodada, chat e matchroom.
 8. `[x]` PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos.
-9. `[>]` PDARK-08 - Locais, detalhe do clube e reservar quadra.
-10. `[ ]` PDARK-09 - Aulas e turmas.
-11. `[ ]` PDARK-10 - Perfil, perfil publico e ranking.
-12. `[ ]` PDARK-11 - Mensagens e comunicacao contextual.
-13. `[ ]` PDARK-12 - Trabalho / Gestao geral.
-14. `[ ]` PDARK-13 - Trabalho / Academia.
-15. `[ ]` PDARK-14 - Trabalho / Gestao de quadras, reservas e agenda.
-16. `[ ]` PDARK-15 - Trabalho / Financeiro, CRM, Cantina, Time e Configuracoes.
-17. `[ ]` PDARK-16 - Paginas publicas e conversao.
+9. `[x]` PDARK-08 - Locais, detalhe do clube e reservar quadra.
+10. `[x]` PDARK-09 - Aulas e turmas.
+11. `[x]` PDARK-10 - Perfil, perfil publico e ranking.
+12. `[x]` PDARK-11 - Mensagens e comunicacao contextual.
+13. `[x]` PDARK-12 - Trabalho / Gestao geral.
+14. `[x]` PDARK-13 - Trabalho / Academia.
+15. `[x]` PDARK-14 - Trabalho / Gestao de quadras, reservas e agenda.
+16. `[x]` PDARK-15 - Trabalho / Financeiro, CRM, Cantina, Time e Configuracoes.
+17. `[>]` PDARK-16 - Paginas publicas e conversao.
 18. `[ ]` PDARK-17 - Estados vazios, loading, erro, modais, drawers e sheets.
 19. `[ ]` PDARK-18 - QA visual global e fechamento.
 
@@ -197,6 +197,141 @@ Validacao sprint 6:
 Proximo item:
 
 - `PDARK-08 - Locais, detalhe do clube e reservar quadra`.
+
+Entrega sprint 7 em 2026-05-19:
+
+1. `PDARK-08` concluido: `/locais`, discovery de quadras, discovery de aulas, jogos abertos e detalhe publico do clube receberam camada premium dark.
+2. Painel de descoberta ficou legivel, com tiles brancos premium sobre base deep navy e imagem de quadra/clube.
+3. Jogos abertos foram convertidos para cards dark/glass com CTAs verdes e detalhes secundários.
+4. Evidencias atualizadas: `desktop-places-overview.png`, `mobile-places-overview.png`, `desktop-places-match.png`, `mobile-places-match.png`, `desktop-places-lessons.png`.
+
+Validacao sprint 7:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-09 - Aulas e turmas`.
+
+Entrega sprint 8 em 2026-05-19:
+
+1. `PDARK-09` concluido: discovery de aulas, filtros, `Minhas aulas` e sinais de Academia na Gestao foram alinhados ao DNA premium dark.
+2. O grid de filtros de aulas foi corrigido para evitar texto cortado no CTA de busca.
+3. Evidencias atualizadas: `desktop-places-lessons.png`, `mobile-places-lessons.png`, `desktop-my-lessons.png`, `mobile-my-lessons.png`, `desktop-management.png`.
+
+Validacao sprint 8:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-10 - Perfil, perfil publico e ranking`.
+
+Entrega sprint 9 em 2026-05-19:
+
+1. `PDARK-10` concluido: Perfil, Perfil publico e Ranking receberam refinamento final de contraste, tabs e tabela.
+2. Ranking perdeu hero lavado e faixas brancas; tabela, filtros e botoes ficaram dark/glass.
+3. Evidencias atualizadas: `desktop-profile.png`, `mobile-profile.png`, `desktop-ranking.png`, `mobile-ranking.png`.
+
+Validacao sprint 9:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-11 - Mensagens e comunicacao contextual`.
+
+Entrega sprint 10 em 2026-05-19:
+
+1. `PDARK-11` concluido: notificacoes, chat de torneio, chat de liga, chat de partida e preferencias de notificacao receberam camada dark/glass unificada.
+2. Comunicados fixados, avisos, mensagens do usuario, mensagens de outros participantes, composer e acoes WhatsApp passaram a usar hierarquia visual consistente.
+3. Os campos de envio continuam operaveis e agora aparecem como parte do app esportivo, sem superficies brancas desalinhadas.
+4. Evidencias atualizadas: `desktop-league-chat.png`, `mobile-league-chat.png`, `desktop-tournament-games.png`, `mobile-profile.png`.
+
+Validacao sprint 10:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-12 - Trabalho / Gestao geral`.
+
+Entrega sprint 11 em 2026-05-19:
+
+1. `PDARK-12` concluido: `/gestao` foi refinada como central operacional premium, com fila do dia, workspaces, competicoes e sinais de suporte em dark/glass.
+2. Switch `Trabalho / Ir para jogador`, cards de prioridade, rows de locais, acoes rapidas e painel de implantacao receberam contraste e hierarquia alinhados ao playbook.
+3. Mobile foi ajustado para pilha operacional legivel, sem ilhas claras dominantes e com atalhos de modulo rolaveis.
+4. Evidencias atualizadas: `desktop-management.png`, `mobile-management.png`.
+
+Validacao sprint 11:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-13 - Trabalho / Academia`.
+
+Entrega sprint 12 em 2026-05-19:
+
+1. `PDARK-13` concluido: workspace de Academia recebeu camada premium dark em shell do local, cockpit, abas, fila de pendencias, cards, rows, toolbars, drawers e formularios progressivos.
+2. A rota direta `/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias` foi capturada para validar o modulo real, alem da central `/gestao`.
+3. Foram removidos containers brancos herdados por `.place-workspace`; metricas, filtros, pedidos, acoes e queues agora seguem dark/glass com CTA verde.
+4. Evidencias atualizadas: `desktop-management.png`, `mobile-management.png`, `desktop-management-academy.png`, `mobile-management-academy.png`.
+
+Validacao sprint 12:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-14 - Trabalho / Gestao de quadras, reservas e agenda`.
+
+Entrega sprint 13 em 2026-05-19:
+
+1. `PDARK-14` concluido: `BookingWorkspaceShell`, reservas, calendario por quadra, nova reserva, lista de espera, quadras e regras receberam camada premium dark.
+2. Agenda de quadras foi validada em rota direta `/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario`, preservando densidade operacional.
+3. Estados de reserva confirmada, bloqueio, aula/escola, ocupacao e horarios livres foram diferenciados por cor sem voltar ao visual de planilha clara.
+4. Evidencias atualizadas: `desktop-management-booking.png`, `mobile-management-booking.png`, `desktop-management.png`, `mobile-management.png`.
+
+Validacao sprint 13:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-15 - Trabalho / Financeiro, CRM, Cantina, Time e Configuracoes`.
+
+Entrega sprint 14 em 2026-05-19:
+
+1. `PDARK-15` concluido: Financeiro, Clientes/CRM, Cantina/POS, Equipe e Ajustes receberam o mesmo DNA premium dark/glass dos workspaces anteriores.
+2. Recebiveis, follow-ups, venda rapida, convites, papeis e checklist estrutural ganharam paineis escaneaveis, CTAs verdes, filtros dark e rows compactos.
+3. Inputs, selects, busca, cards de produto, lista de equipe e guia de papeis foram normalizados para contraste dark-first.
+4. Corrigido vazamento de cards brancos no guia de papeis de Equipe, mantendo leitura de permissoes e acoes perigosas preservadas.
+5. Evidencias atualizadas: `desktop-management-finance.png`, `mobile-management-finance.png`, `desktop-management-clients.png`, `mobile-management-clients.png`, `desktop-management-canteen.png`, `mobile-management-canteen.png`, `desktop-management-team.png`, `mobile-management-team.png`, `desktop-management-settings.png`, `mobile-management-settings.png`.
+
+Validacao sprint 14:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots globais antes das capturas diretas de PDARK-15.
+
+Proximo item:
+
+- `PDARK-16 - Paginas publicas e conversao`.
 
 ## Sprint atual - Referencias visuais ATP premium
 

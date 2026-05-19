@@ -579,7 +579,7 @@ Validacao:
 
 ## PDARK-08 - Locais, detalhe do clube e reservar quadra
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -625,9 +625,31 @@ Criterios de aceite:
 - listas longas recebem imagem/thumbnail;
 - fluxo reservar quadra continua funcionando.
 
+Entrega sprint 7:
+
+1. Hub `/locais` recebeu contraste corrigido no painel de descoberta, mantendo tiles brancos premium sobre base deep navy conforme referencia.
+2. Fluxos `Encontrar jogo`, `Reservar quadra`, `Entrar em aula` e `Ver locais` foram cobertos por filtros, resultados e cards dark/glass.
+3. Jogos abertos deixaram de usar cards brancos e passaram para linhas esportivas dark com CTA verde.
+4. Detalhe publico de clube, reserva de quadra, aulas, planos, sobre e sticky CTA receberam cobertura visual premium dark via seletores compartilhados.
+5. Mobile manteve navegação horizontal dos intents e cards legiveis com hierarquia mais proxima do app de referencia.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-places-overview.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-places-overview.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-places-match.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-places-match.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-places-lessons.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-09 - Aulas e turmas
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Areas:
 
@@ -664,9 +686,30 @@ Criterios de aceite:
 - gestor entende o dia da academia;
 - cadastro/gestao atuais continuam funcionais.
 
+Entrega sprint 8:
+
+1. Discovery de aulas em `/locais?intent=classes` recebeu filtros dark/glass, hero visual, botao de busca com grid corrigido e estado inicial legivel.
+2. `Minhas aulas` ja estava coberta pela camada de areas pessoais e foi validada com turmas ativas, solicitacoes e status pills de matricula/aguardando.
+3. Cards e filtros de aula usam a mesma linguagem de quadra/clube, com CTA verde e superficies deep navy.
+4. Gestao geral ja exibe metricas de Academia e entrada operacional no mesmo DNA dark; aprofundamento de workspace Academia segue preservado para `PDARK-13`.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-places-lessons.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-places-lessons.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-my-lessons.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-my-lessons.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-10 - Perfil, perfil publico e ranking
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -704,9 +747,29 @@ Criterios de aceite:
 - dados sensiveis continuam protegidos;
 - Ranking reforca progressao.
 
+Entrega sprint 9:
+
+1. Perfil recebeu refinamento nas tabs internas, removendo a quebra visual clara e mantendo hero/avatar/rows no DNA premium.
+2. Ranking recebeu hero mais escuro e cinematografico, tabela sem faixas brancas, controles dark/glass e botoes alinhados ao tema.
+3. Mobile de Ranking e Perfil foi revisado para manter hierarquia, contraste e navegacao inferior consistente.
+4. Perfil publico segue coberto pelos mesmos seletores de perfil e ranking, sem expor dados privados.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-profile.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-profile.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-ranking.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-ranking.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-11 - Mensagens e comunicacao contextual
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Areas:
 
@@ -742,9 +805,29 @@ Criterios de aceite:
 - campos de mensagem nao travam;
 - WhatsApp vira complemento, nao substituto confuso.
 
+Entrega sprint 10:
+
+1. Notificacoes globais, avisos da Home e preferencias de notificacao receberam superficie dark/glass com textura esportiva.
+2. Chat de torneio e chat de liga foram padronizados como `ChatThread`: mensagem fixada, aviso, mensagem propria, mensagem de outro participante e composer usam a mesma hierarquia.
+3. Chat de partida/rodada e comentarios de jogos abertos foram alinhados ao mesmo visual, com CTA verde e campos escuros.
+4. Acoes WhatsApp seguem presentes, mas visualmente como complemento contextual, sem competir com o chat interno.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-league-chat.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-league-chat.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-tournament-games.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-profile.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-12 - Trabalho / Gestao geral
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -782,9 +865,27 @@ Criterios de aceite:
 - jogador comum sem permissao recebe caminho correto;
 - nenhum workspace profissional fica inacessivel.
 
+Entrega sprint 11:
+
+1. `/gestao` foi refinada como central operacional dark-first, com header, switch de modo, fila do dia, convites, competicoes organizadas, workspaces e implantacao guiada.
+2. Cards de prioridade e rows de locais receberam textura premium, contraste consistente, CTAs verdes e superficies sem ilhas claras dominantes.
+3. Acoes rapidas e setup ganharam espaçamento/hierarquia para leitura no desktop e no mobile.
+4. Jogador sem permissao continua recebendo caminho correto para Inicio/Locais, agora com estado vazio no mesmo DNA visual.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-13 - Trabalho / Academia
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Areas:
 
@@ -825,9 +926,29 @@ Criterios de aceite:
 - formularios continuam progressivos;
 - financeiro resumido fica conectado sem poluir.
 
+Entrega sprint 12:
+
+1. Workspace de Academia recebeu acabamento premium em `PlaceAdminShell`, `PlaceWorkspaceShell`, `AcademyWorkspaceShell` e módulos `PlaceAcademy*`.
+2. Header do local, cockpit, tabs de módulo, tabs internas, fila de pendências, cards, rows, toolbars, drawers e formulários progressivos foram alinhados ao DNA dark/glass.
+3. O container claro herdado por `.place-workspace` foi removido; métricas, filtros, pedidos e queues operacionais ficaram legíveis e esportivos.
+4. Fluxos de turma, aluno, pendência, professor, encaixe e configuração continuam usando os componentes existentes.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management-academy.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management-academy.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-14 - Trabalho / Gestao de quadras, reservas e agenda
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Areas:
 
@@ -863,9 +984,29 @@ Criterios de aceite:
 - visual deixa de parecer planilha;
 - fluxo de criar/aceitar/cancelar reserva continua.
 
+Entrega sprint 13:
+
+1. `BookingWorkspaceShell` e os módulos de reservas/agenda receberam camada premium dark, incluindo calendário por quadra, reservas recentes, nova reserva, lista de espera, quadras e regras.
+2. Agenda de quadras manteve densidade operacional, mas com superfícies dark/glass, slots escaneáveis e distinção visual entre reserva, aula/escola, bloqueio e horário livre.
+3. Formulários, filtros, regras, cards de quadra e métricas foram convertidos para inputs escuros e CTAs verdes.
+4. Fluxos de confirmar, cancelar, criar reserva, converter espera e configurar quadra continuam nos componentes existentes.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management-booking.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management-booking.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-15 - Trabalho / Financeiro, CRM, Cantina, Time e Configuracoes
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Areas:
 
@@ -910,9 +1051,35 @@ Criterios de aceite:
 - formularios longos continuam em drawer/progressivo;
 - acoes perigosas continuam protegidas.
 
+Entrega sprint 14:
+
+1. Financeiro, Clientes/CRM, Cantina/POS, Equipe e Ajustes receberam superficies premium dark/glass no workspace operacional, mantendo os componentes e rotas existentes.
+2. Recebiveis, follow-ups, venda rapida, convites, papeis, checklist e configuracoes estruturais foram tratados como filas/paineis escaneaveis, com CTAs verdes e botoes secundarios em vidro escuro.
+3. Inputs, selects, busca, cards de produto, rows de cobranca/CRM e guia de papeis foram convertidos para contraste dark-first.
+4. O vazamento visual de cards brancos em `Equipe > Papeis` foi corrigido e recapturado em desktop/mobile.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management-finance.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management-finance.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management-clients.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management-clients.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management-canteen.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management-canteen.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management-team.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management-team.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-management-settings.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-management-settings.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots globais antes das capturas diretas de PDARK-15.
+
 ## PDARK-16 - Paginas publicas e conversao
 
-Status: `[ ]` pendente
+Status: `[>]` em andamento
 
 Rotas:
 
