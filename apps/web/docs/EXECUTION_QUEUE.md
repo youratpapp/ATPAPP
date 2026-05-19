@@ -81,8 +81,8 @@ Fila macro:
 2. `[x]` PDARK-01 - Shell global, navegacao e contexto Jogador/Trabalho.
 3. `[x]` PDARK-02 - Login, cadastro e estados de entrada.
 4. `[x]` PDARK-03 - Home Jogador premium.
-5. `[>]` PDARK-04 - Competições hub, torneios, ligas e rankings.
-6. `[ ]` PDARK-05 - Detalhe de torneio, inscrição e convite.
+5. `[x]` PDARK-04 - Competições hub, torneios, ligas e rankings.
+6. `[>]` PDARK-05 - Detalhe de torneio, inscrição e convite.
 7. `[ ]` PDARK-06 - Liga, rodada, chat e matchroom.
 8. `[ ]` PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos.
 9. `[ ]` PDARK-08 - Locais, detalhe do clube e reservar quadra.
@@ -134,9 +134,20 @@ Validacao sprint 2:
 - `npm.cmd run build` passou.
 - `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
 
+Entrega sprint 3 em 2026-05-19:
+
+1. `PDARK-04` concluido: `/eventos/torneios`, `/eventos/ligas` e `/ranking` receberam camada premium dark em cards, filtros, estados vazios, KPIs, tabela e modais.
+2. Evidencias atualizadas: `desktop-tournaments.png`, `mobile-leagues.png`, `desktop-ranking.png`, `mobile-ranking.png`.
+
+Validacao sprint 3:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
 Proximo item:
 
-- Continuar `PDARK-04`, fechando `/eventos/torneios`, `/eventos/ligas` e o alinhamento final de `/ranking`.
+- `PDARK-05 - Detalhe de torneio, inscricao e convite`.
 
 ## Sprint atual - Referencias visuais ATP premium
 

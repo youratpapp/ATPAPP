@@ -309,7 +309,7 @@ Validacao:
 
 ## PDARK-04 - Competições hub, torneios, ligas e rankings
 
-Status: `[~]` em andamento
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -349,24 +349,22 @@ Criterios de aceite:
 - mobile mostra central compacta, nao lista vazia;
 - organizacao de torneios/ligas continua disponivel para Trabalho.
 
-Entrega parcial sprint 2:
+Entrega sprint 2/3:
 
 1. Hub `/eventos` recebeu centro de comando com KPIs de inscricoes abertas, ligas ativas e competicoes vinculadas ao jogador.
 2. Foram adicionados atalhos em abas para `Torneios`, `Ligas` e `Rankings`.
 3. Hub ganhou paineis de destaque: `Proximos torneios`, `Liga em destaque` e `Resultados recentes`.
 4. Os novos blocos usam glass dark, imagem premium e comportamento responsivo com carrossel horizontal no mobile.
-
-Pendente para concluir PDARK-04:
-
-- refinar `/eventos/torneios`;
-- refinar `/eventos/ligas`;
-- fechar integracao visual de `/ranking` com a central de competicoes;
-- revisar estados vazios especificos dessas rotas.
+5. `/eventos/torneios` e `/eventos/ligas` receberam camada premium dark em cards, filtros, estados vazios, KPIs e modais de criacao.
+6. `/ranking` foi alinhado visualmente a Competicoes, com hero dark, controles, tabela e cards de posicao em superficies glass.
 
 Evidencias:
 
 - `docs/screenshots/visual-local-audit-2026-05-18/desktop-events-hub.png`
 - `docs/screenshots/visual-local-audit-2026-05-18/mobile-events-hub.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-tournaments.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-leagues.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-ranking.png`
 
 Validacao:
 

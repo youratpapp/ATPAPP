@@ -23754,3 +23754,294 @@ label {
     scroll-snap-align: start;
   }
 }
+
+/* ----- PDARK-04: tournaments and leagues internal routes ----- */
+.app-shell--competition .events-result-list {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.app-shell--competition .events-result-list.organizing,
+.app-shell--competition .events-all-disclosure {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 20px;
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  padding: 14px;
+}
+
+.app-shell--competition .events-result-list.organizing summary,
+.app-shell--competition .events-all-disclosure summary,
+.app-shell--competition .events-filter-disclosure summary {
+  color: var(--pdark-text-main);
+  font-weight: 950;
+}
+
+.app-shell--competition .event-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.8)),
+    url("./assets/pdark-tournament-card-01.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  border-radius: 20px;
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  overflow: hidden;
+}
+
+.app-shell--competition .event-card .ec-body {
+  background: linear-gradient(180deg, rgba(3, 9, 20, 0.28), rgba(3, 9, 20, 0.88));
+}
+
+.app-shell--competition .event-card .ec-name,
+.app-shell--competition .event-card .ec-name-row,
+.app-shell--competition .event-card strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .event-card .ec-info-left,
+.app-shell--competition .event-card small,
+.app-shell--competition .event-card .ec-footer-left {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--competition .event-card .ec-chip,
+.app-shell--competition .home-league-chip,
+.app-shell--competition .organizer-tournament-chip-row span {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.26);
+  color: #4ade80;
+}
+
+.app-shell--competition .organizer-tournament-command {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") center / cover no-repeat;
+  border-color: rgba(34, 197, 94, 0.24);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .organizer-tournament-command h2,
+.app-shell--competition .organizer-tournament-command strong,
+.app-shell--competition .organizer-tournament-row strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .organizer-tournament-command p,
+.app-shell--competition .organizer-tournament-row small,
+.app-shell--competition .organizer-tournament-command span {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--competition .organizer-tournament-row {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 16px;
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .events-filter-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.88), rgba(8, 20, 36, 0.76)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+}
+
+.app-shell--competition .events-filter-grid label {
+  color: var(--pdark-text-muted);
+  font-weight: 850;
+}
+
+.app-shell--competition .modal.competition-create-modal {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.96), rgba(8, 20, 36, 0.92)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .competition-class-list article,
+.app-shell--competition .competition-setup-card,
+.app-shell--competition .setup-stage {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .competition-class-list strong,
+.app-shell--competition .competition-setup-card strong,
+.app-shell--competition .setup-stage span {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .competition-class-list span,
+.app-shell--competition .competition-setup-card span,
+.app-shell--competition .setup-stage strong {
+  color: var(--pdark-text-muted);
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .events-result-list {
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell--competition .event-card {
+    min-height: 0;
+  }
+
+  .app-shell--competition .events-filter-disclosure {
+    border-radius: 18px;
+  }
+}
+
+/* ----- PDARK-04: ranking integration ----- */
+.app-shell--player .ranking-hero-panel,
+.app-shell--competition .ranking-hero-panel {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.68)),
+    url("./assets/pdark-ranking-desktop-hero.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.ranking-control-panel,
+.ranking-player-position,
+.ranking-player-context,
+.ranking-list-shell,
+.ranking-leader-card,
+.ranking-player-card,
+.ranking-rules-card,
+.ranking-race-card,
+.ranking-class-map-card,
+.ranking-tools-card,
+.ranking-table,
+.ranking-secondary-panel {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.8)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.ranking-hero-panel h2,
+.ranking-hero-panel p,
+.ranking-player-position h2,
+.ranking-player-position > strong,
+.ranking-player-context strong,
+.ranking-list-head h2,
+.ranking-leader-card strong,
+.ranking-player-card strong,
+.ranking-rules-card h3,
+.ranking-race-card h3,
+.ranking-class-map-card h3,
+.ranking-tools-card h3,
+.ranking-row strong,
+.ranking-row.head,
+.ranking-secondary-panel summary {
+  color: var(--pdark-text-main);
+}
+
+.ranking-hero-panel span,
+.ranking-player-position > span,
+.ranking-player-position p,
+.ranking-player-context > span,
+.ranking-player-context small,
+.ranking-list-head span,
+.ranking-list-head small,
+.ranking-leader-card small,
+.ranking-player-card small,
+.ranking-rules-card p,
+.ranking-race-card p,
+.ranking-class-map-card p,
+.ranking-tools-card p,
+.ranking-row small {
+  color: var(--pdark-text-muted);
+}
+
+.ranking-scope-tabs,
+.ranking-filters {
+  background: rgba(3, 9, 20, 0.58);
+  border-color: var(--pdark-border-soft);
+}
+
+.ranking-scope-tabs button {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.ranking-scope-tabs button.active {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  color: #ffffff;
+}
+
+.ranking-row {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--pdark-text-main);
+}
+
+.ranking-row.mine {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.ranking-row button,
+.ranking-load-more button,
+.ranking-filter-actions button {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.ranking-row .ranking-follow-button,
+.ranking-row .ranking-follow-button.active {
+  background: #ffffff;
+  color: #0f8b55;
+}
+
+@media (max-width: 760px) {
+  .ranking-hero-panel {
+    min-height: 210px;
+  }
+
+  .ranking-control-panel,
+  .ranking-player-position,
+  .ranking-player-context,
+  .ranking-list-shell {
+    border-radius: 20px;
+  }
+}
+
+.app-shell .ranking-hero-panel {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.96), rgba(6, 17, 31, 0.62)),
+    url("./assets/pdark-ranking-desktop-hero.png") center / cover no-repeat !important;
+}
+
+.app-shell .ranking-hero-panel::before {
+  background: linear-gradient(90deg, rgba(3, 9, 20, 0.58), rgba(3, 9, 20, 0.08));
+}
+
+.app-shell .ranking-my-card,
+.app-shell .ranking-player-overview .app-metric-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.8)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell .ranking-my-card strong,
+.app-shell .ranking-my-card span,
+.app-shell .ranking-player-overview .app-metric-card strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell .ranking-my-card small,
+.app-shell .ranking-player-overview .app-metric-card span {
+  color: var(--pdark-text-muted);
+}
