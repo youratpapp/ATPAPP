@@ -37,6 +37,16 @@ function LocationIcon({ active }: { active: boolean }) {
   );
 }
 
+function CalendarIcon({ active }: { active: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" fill={active ? "currentColor" : "none"} fillOpacity={active ? 0.14 : 0} />
+      <path d="M16 2v4M8 2v4M3 10h18" />
+      <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+    </svg>
+  );
+}
+
 function ManagementIcon({ active }: { active: boolean }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -44,14 +54,6 @@ function ManagementIcon({ active }: { active: boolean }) {
       <path d="M8 4V2h8v2" />
       <path d="M3 10h18" />
       <path d="M8 15h3M14 15h2" />
-    </svg>
-  );
-}
-
-function StarIcon({ active }: { active: boolean }) {
-  return (
-    <svg viewBox="0 0 24 24" fill={active ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
     </svg>
   );
 }
@@ -77,9 +79,9 @@ type NavItem = {
 
 const BASE_ITEMS: NavItem[] = [
   { group: "player", path: "/inicio", label: "Inicio", Icon: HomeIcon },
-  { group: "player", path: "/eventos", label: "Competir", Icon: TrophyIcon },
+  { group: "player", path: "/eventos", label: "Competições", Icon: TrophyIcon },
+  { group: "player", path: "/minhas-reservas", label: "Reservas", Icon: CalendarIcon },
   { group: "player", path: "/locais", label: "Locais", Icon: LocationIcon },
-  { group: "player", path: "/ranking", label: "Ranking", Icon: StarIcon },
   { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon },
 ];
 

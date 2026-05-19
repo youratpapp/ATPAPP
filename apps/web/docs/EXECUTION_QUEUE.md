@@ -44,6 +44,84 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## [>] Sprint atual - ATP Premium Dark global frontend
+
+Status: `[>]` prioridade atual em 2026-05-19
+
+Fonte primaria:
+
+- `m:/Downloads/Chrome/atp_premium_dark_design_playbook.md`
+
+Inspiracao visual:
+
+- imagens anexadas pelo usuario em 2026-05-19, com app premium dark, mobile-first, glass cards, fundo deep navy, verde ATP e imagens cinematograficas de tenis.
+
+Documentos de execucao desta sprint:
+
+- `docs/ATP_PREMIUM_DARK_GLOBAL_QUEUE_2026_05_19.md`
+- `docs/ATP_PREMIUM_DARK_ASSET_PROMPTS_2026_05_19.md`
+
+Objetivo:
+
+- reorganizar o frontend inteiro para o DNA premium dark definido no playbook;
+- contemplar todas as areas do app: Jogador, Trabalho, Login, Cadastro, paginas publicas, competicoes, reservas, locais, aulas, perfil, ranking, mensagens, gestao e estados auxiliares;
+- aproveitar as funcoes existentes sem reestruturação de backend;
+- mexer em pontos estruturais somente quando nao houver como aproveitar a UI atual com qualidade.
+
+Nao fazer:
+
+- nao alterar schema, RPCs, policies ou regras de negocio nesta fase visual;
+- nao remover ferramentas existentes;
+- nao substituir fluxos estabilizados por experiencias novas sem necessidade;
+- nao implementar tela por tela sem antes consolidar componentes reutilizaveis.
+
+Fila macro:
+
+1. `[x]` PDARK-00 - Fundacao visual e componentes premium.
+2. `[x]` PDARK-01 - Shell global, navegacao e contexto Jogador/Trabalho.
+3. `[x]` PDARK-02 - Login, cadastro e estados de entrada.
+4. `[>]` PDARK-03 - Home Jogador premium.
+5. `[ ]` PDARK-04 - Competições hub, torneios, ligas e rankings.
+6. `[ ]` PDARK-05 - Detalhe de torneio, inscrição e convite.
+7. `[ ]` PDARK-06 - Liga, rodada, chat e matchroom.
+8. `[ ]` PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos.
+9. `[ ]` PDARK-08 - Locais, detalhe do clube e reservar quadra.
+10. `[ ]` PDARK-09 - Aulas e turmas.
+11. `[ ]` PDARK-10 - Perfil, perfil publico e ranking.
+12. `[ ]` PDARK-11 - Mensagens e comunicacao contextual.
+13. `[ ]` PDARK-12 - Trabalho / Gestao geral.
+14. `[ ]` PDARK-13 - Trabalho / Academia.
+15. `[ ]` PDARK-14 - Trabalho / Gestao de quadras, reservas e agenda.
+16. `[ ]` PDARK-15 - Trabalho / Financeiro, CRM, Cantina, Time e Configuracoes.
+17. `[ ]` PDARK-16 - Paginas publicas e conversao.
+18. `[ ]` PDARK-17 - Estados vazios, loading, erro, modais, drawers e sheets.
+19. `[ ]` PDARK-18 - QA visual global e fechamento.
+
+Entrega desta rodada de planejamento:
+
+1. Queue global criada com escopo, objetivo, problemas, telas, criterios e ordem de execucao.
+2. Todas as areas do app foram contempladas, incluindo jogador, trabalho, login e cadastro.
+3. MD de prompts criado para gerar assets ausentes em dimensoes/contextos corretos.
+4. A implementacao visual deve iniciar por `PDARK-00` e seguir a ordem definida.
+
+Entrega sprint 1 em 2026-05-19:
+
+1. `PDARK-00` concluido: tokens premium dark, superficies glass, headers, navs, cards, estados vazios, inputs e contrastes globais foram aplicados em `src/App.css`.
+2. `PDARK-01` concluido: shell player/competition/management ficou dark-first; `BottomNav` do jogador foi atualizado para `Inicio`, `Competicoes`, `Reservas`, `Locais`, `Perfil`; sidebar e contexto Jogador/Trabalho receberam acabamento premium.
+3. `PDARK-02` concluido: Login/cadastro/callback passaram a usar base premium dark e asset `pdark-onboarding-hero.png`, preservando validacoes e fluxo.
+4. Assets `pdark-*` foram conectados a Home, Login, Ranking, Competicoes, Perfil, estados vazios e Gestao como primeira camada global.
+5. Auditoria visual revisada em `docs/screenshots/visual-local-audit-2026-05-18/`, com foco em `mobile-home.png`, `desktop-events-hub.png`, `mobile-profile.png` e `desktop-management.png`.
+
+Validacao sprint 1:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-03 - Home Jogador premium`, agora em prioridade atual, deve refinar composicao especifica da Home alem da fundacao global ja entregue.
+
 ## Sprint atual - Referencias visuais ATP premium
 
 Fonte:

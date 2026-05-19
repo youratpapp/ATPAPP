@@ -6,8 +6,8 @@ import { DiscoveryCarousel, ObjectRow, VisualBadge, VisualHeroCard } from "../co
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
-import heroCourtImage from "../assets/hero-home-court-premium.png";
-import stadiumCardImage from "../assets/card-event-night-premium.png";
+import heroCourtImage from "../assets/pdark-home-player-desktop-hero.png";
+import stadiumCardImage from "../assets/pdark-tournament-card-01.png";
 import type {
   LeagueMatchSummary,
   LeagueChatMessage,
@@ -1603,9 +1603,9 @@ export function HomePage({ user, profile }: Props) {
               }
             : {
                 id: "main:discovery",
-                title: "Encontre algo para jogar",
-                detail: nearbyUpcoming.length > 0 ? "Veja jogos, aulas e eventos perto de voce." : "Reserve quadra, entre em aula ou descubra competições abertas.",
-                label: nearbyUpcoming.length > 0 ? "Explorar perto de mim" : "Encontrar jogo",
+                title: "Encontre seu proximo jogo",
+                detail: nearbyUpcoming.length > 0 ? "Partidas, torneios e aulas perto de voce." : "Reserve quadra, entre em aula ou descubra competicoes abertas.",
+                label: nearbyUpcoming.length > 0 ? "Explorar perto" : "Explorar",
                 targetPath: nearbyUpcoming.length > 0 ? "/eventos" : "/locais?intent=matches",
                 tone: "neutral",
               };

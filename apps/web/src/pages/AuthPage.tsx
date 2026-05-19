@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import logo from "../assets/logo-atp.svg";
-import authCourtImage from "../assets/hero-login-court-premium.png";
+import authCourtImage from "../assets/pdark-onboarding-hero.png";
 
 function GoogleIcon() {
   return (

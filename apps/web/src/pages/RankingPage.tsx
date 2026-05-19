@@ -5,7 +5,7 @@ import { MetricCard, VisualHeroCard } from "../components/AppPrimitives";
 import { PlayerProfileLink } from "../components/PlayerProfileLink";
 import { PublishingKit } from "../components/PublishingKit";
 import { ScreenState } from "../components/ScreenState";
-import rankingHeroImage from "../assets/hero-ranking-premium.png";
+import rankingHeroImage from "../assets/pdark-ranking-desktop-hero.png";
 import { loadLeagueDetails, loadMyLeagues } from "../lib/leagues";
 import { loadPublicRankings } from "../lib/rankings";
 import { followUser, listFollowingIds, unfollowUser } from "../lib/social";

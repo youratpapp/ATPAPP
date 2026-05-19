@@ -21545,6 +21545,512 @@ button.app-object-row:hover:not(:disabled) {
   }
 }
 
+/* =====================================================================
+   PDARK-00/01/02: Premium dark global sprint
+   Fonte: ATP Premium Dark design playbook
+   ===================================================================== */
+:root {
+  --pdark-bg-main: #06111f;
+  --pdark-bg-deep: #030914;
+  --pdark-bg-elevated: #0b1a2c;
+  --pdark-bg-card: rgba(12, 27, 45, 0.74);
+  --pdark-bg-card-strong: rgba(10, 22, 38, 0.92);
+  --pdark-green-main: #22c55e;
+  --pdark-green-strong: #16a34a;
+  --pdark-green-soft: rgba(34, 197, 94, 0.14);
+  --pdark-green-border: rgba(34, 197, 94, 0.42);
+  --pdark-text-main: #f8fafc;
+  --pdark-text-muted: #a8b3c7;
+  --pdark-text-soft: #74829a;
+  --pdark-warning: #f59e0b;
+  --pdark-danger: #ef4444;
+  --pdark-info: #38bdf8;
+  --pdark-border-soft: rgba(255, 255, 255, 0.1);
+  --pdark-border-strong: rgba(255, 255, 255, 0.18);
+  --pdark-card-shadow: 0 18px 40px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.premium-dark-shell,
+.app-shell,
+.auth-page {
+  background:
+    radial-gradient(circle at 90% 0%, rgba(34, 197, 94, 0.12), transparent 32%),
+    radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08), transparent 28%),
+    linear-gradient(180deg, var(--pdark-bg-main) 0%, var(--pdark-bg-deep) 100%);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player,
+.app-shell--competition,
+.app-shell--management {
+  background:
+    radial-gradient(circle at 88% 0%, rgba(34, 197, 94, 0.13), transparent 31rem),
+    radial-gradient(circle at 0% 4%, rgba(56, 189, 248, 0.08), transparent 24rem),
+    url("./assets/surface-court-lines-soft.png") center top / 1600px auto no-repeat,
+    linear-gradient(180deg, #081427 0%, #030914 100%);
+}
+
+.app-shell--management {
+  background:
+    radial-gradient(circle at 88% 0%, rgba(34, 197, 94, 0.14), transparent 31rem),
+    linear-gradient(90deg, rgba(3, 9, 20, 0.96), rgba(6, 17, 31, 0.86)),
+    url("./assets/pdark-management-work-hero.png") center top / cover no-repeat fixed,
+    #030914;
+}
+
+.app-content {
+  color: var(--pdark-text-main);
+}
+
+.app-header {
+  background: rgba(3, 9, 20, 0.78);
+  border-bottom-color: var(--pdark-border-soft);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(18px);
+}
+
+.app-header-greeting .greeting-label,
+.app-header-greeting .greeting-name,
+.app-header-actions,
+.app-mode-switch button,
+.icon-btn {
+  color: var(--pdark-text-main);
+}
+
+.app-header-greeting .avatar {
+  background:
+    linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(56, 189, 248, 0.08)),
+    url("./assets/pdark-player-avatar-placeholder.png") center / cover no-repeat;
+  border-color: var(--pdark-border-strong);
+  color: var(--pdark-text-main);
+}
+
+.app-mode-switch {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--pdark-border-soft);
+}
+
+.app-mode-switch button.active {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(34, 197, 94, 0.22);
+}
+
+.icon-btn,
+.ph-icon-btn,
+.compact-action,
+button.secondary,
+button.quiet,
+.app-primary-action--secondary,
+.app-primary-action--quiet {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+button.primary,
+.primary,
+.app-primary-action--primary,
+.btn-primary,
+.auth-card button.primary {
+  background: linear-gradient(135deg, var(--pdark-green-main) 0%, var(--pdark-green-strong) 100%);
+  border-color: rgba(34, 197, 94, 0.42);
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(34, 197, 94, 0.22);
+}
+
+.premium-glass-card,
+.card,
+.section-card,
+.app-action-panel,
+.app-object-row,
+.app-shortcut-card,
+.app-metric-card,
+.screen-state,
+.home-discovery-card,
+.home-compact-card,
+.home-agenda-card,
+.home-feed-card,
+.player-hub-section,
+.player-hub-card,
+.player-hub-brief,
+.event-card,
+.events-kpi-card,
+.events-filter-card,
+.competition-intent-pill,
+.competition-discovery-action,
+.competition-discovery-card,
+.competition-operation-row,
+.organizer-tournament-command,
+.profile-rows-card,
+.profile-activity-card,
+.place-card,
+.court-discovery-card,
+.place-public-booking-card,
+.place-public-about-card,
+.place-public-plan-card,
+.personal-area-card,
+.management-competition-card,
+.management-place-card,
+.management-cockpit-card,
+.academy-workspace-card,
+.academy-player-card,
+.ranking-my-card,
+.ranking-player-card,
+.ranking-leader-card,
+.ranking-tools-card,
+.tournament-games-card,
+.tournament-chat-card,
+.league-overview-card,
+.league-round-card,
+.tournament-match-room-card,
+.league-match-card,
+.notification-pref-card,
+.profile-level-card {
+  background: var(--pdark-bg-card);
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  backdrop-filter: blur(18px);
+}
+
+.premium-glass-card strong,
+.card strong,
+.section-card strong,
+.app-action-panel h2,
+.app-object-row strong,
+.app-shortcut-card strong,
+.app-metric-card strong,
+.screen-state > strong,
+.home-discovery-card strong,
+.player-hub-section strong,
+.event-card .ec-name,
+.profile-name,
+.profile-row .pr-value,
+.section-title h2,
+.page-header h1,
+.app-page-header h1,
+.events-kpi-value,
+.ranking-player-card strong,
+.management-place-card strong,
+.academy-workspace-card strong {
+  color: var(--pdark-text-main);
+}
+
+.subtle,
+.page-intro,
+.app-page-header p,
+.app-visual-hero p,
+.app-object-row small,
+.app-shortcut-copy small,
+.app-metric-card span,
+.app-metric-card small,
+.screen-state p,
+.event-card .ec-info-left,
+.profile-location,
+.profile-row .pr-label,
+.events-kpi-label,
+.home-discovery-card small,
+.management-place-card small,
+.academy-workspace-card small,
+.feedback:not(.error):not(.success) {
+  color: var(--pdark-text-muted);
+}
+
+input,
+select,
+textarea {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(168, 179, 199, 0.72);
+}
+
+option {
+  background: var(--pdark-bg-elevated);
+  color: var(--pdark-text-main);
+}
+
+label {
+  color: var(--pdark-text-muted);
+}
+
+.app-visual-hero,
+.premium-hero {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.82) 48%, rgba(6, 17, 31, 0.2) 100%),
+    var(--hero-image, url("./assets/pdark-home-player-desktop-hero.png")) center / cover no-repeat;
+  border-color: var(--pdark-border-strong);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+  color: var(--pdark-text-main);
+}
+
+.home-visual-hero {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.76) 46%, rgba(6, 17, 31, 0.18) 100%),
+    url("./assets/pdark-home-player-desktop-hero.png") center / cover no-repeat;
+}
+
+.ranking-visual-hero {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.74) 48%, rgba(6, 17, 31, 0.2) 100%),
+    url("./assets/pdark-ranking-desktop-hero.png") center / cover no-repeat;
+}
+
+.app-shell--competition .page-header {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.74) 50%, rgba(6, 17, 31, 0.12) 100%),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") center / cover no-repeat;
+}
+
+.profile-photo-block {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.74) 54%, rgba(6, 17, 31, 0.15) 100%),
+    url("./assets/pdark-profile-ranking-hero.png") center / cover no-repeat;
+}
+
+.screen-state,
+.premium-empty-state {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.96), rgba(6, 17, 31, 0.78)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border-style: solid;
+}
+
+.app-visual-eyebrow,
+.app-page-eyebrow,
+.home-context-eyebrow,
+.places-intent-copy span,
+.places-section-head span,
+.places-filter-head span,
+.competition-discovery-head span,
+.events-result-head span,
+.organizer-tournament-main > span,
+.screen-state-icon,
+.profile-activity-heading {
+  color: #4ade80;
+}
+
+.app-visual-badge--success,
+.status-badge.success,
+.badge-success,
+.event-card .ec-chip.owner,
+.hub-action-count {
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.28);
+  color: #4ade80;
+}
+
+.app-shortcut-card,
+.premium-action-tile {
+  border-radius: 20px;
+  min-height: 104px;
+}
+
+.app-shortcut-card.active,
+.competition-intent-pill.active,
+.places-intent-card.active,
+.places-intent-strip button.active,
+.profile-purpose-tabs button.active,
+.tabs button.active {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.7));
+  border-color: var(--pdark-green-border);
+  color: #ffffff;
+}
+
+.app-shortcut-icon,
+.competition-discovery-action .qa-icon,
+.profile-row .pr-icon,
+.app-metric-icon {
+  background: rgba(34, 197, 94, 0.13);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.bottom-nav {
+  background: rgba(3, 9, 20, 0.86);
+  border-color: var(--pdark-border-soft);
+  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(20px);
+}
+
+.bottom-nav button {
+  color: rgba(248, 250, 252, 0.72);
+}
+
+.bottom-nav button.active {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  color: #ffffff;
+}
+
+.bottom-nav-brand,
+.bottom-nav-group-label,
+.bottom-nav-context {
+  color: var(--pdark-text-muted);
+}
+
+.auth-page {
+  background:
+    radial-gradient(circle at 86% 8%, rgba(34, 197, 94, 0.18), transparent 28rem),
+    linear-gradient(90deg, rgba(3, 9, 20, 0.94), rgba(3, 9, 20, 0.68)),
+    url("./assets/pdark-onboarding-hero.png") center / cover no-repeat fixed,
+    #030914;
+}
+
+.auth-stage {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.9), rgba(3, 9, 20, 0.36)),
+    var(--auth-image, url("./assets/pdark-onboarding-hero.png")) center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+}
+
+.auth-card,
+.auth-brand-panel {
+  background: rgba(10, 22, 38, 0.78);
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  backdrop-filter: blur(18px);
+}
+
+.auth-card h1,
+.auth-brand-panel h2 {
+  color: var(--pdark-text-main);
+}
+
+.auth-card .auth-sub,
+.auth-brand-panel p,
+.auth-brand-panel small {
+  color: var(--pdark-text-muted);
+}
+
+.auth-google-btn,
+.auth-card button.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.auth-divider span {
+  background: transparent;
+  color: var(--pdark-text-soft);
+}
+
+.auth-page > .auth-card {
+  background:
+    linear-gradient(180deg, rgba(10, 22, 38, 0.86), rgba(10, 22, 38, 0.74)),
+    url("./assets/pdark-onboarding-hero.png") center / cover no-repeat;
+}
+
+.event-card .ec-poster-placeholder,
+.home-discovery-poster {
+  background:
+    linear-gradient(180deg, rgba(3, 9, 20, 0.12), rgba(3, 9, 20, 0.6)),
+    url("./assets/pdark-tournament-card-01.png") center / cover no-repeat;
+}
+
+.court-discovery-card .court-card-thumb,
+.place-public-court-calendar-card,
+.personal-area-card .personal-area-thumb {
+  background-image: url("./assets/pdark-court-reservation-thumb.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.place-public-hero,
+.places-intent-panel {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.96), rgba(6, 17, 31, 0.58)),
+    url("./assets/pdark-club-public-hero.png") center / cover no-repeat;
+}
+
+.management-hero,
+.management-shell-hero,
+.management-cockpit-hero {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.64)),
+    url("./assets/pdark-management-work-hero.png") center / cover no-repeat;
+}
+
+@media (max-width: 760px) {
+  .app-shell--player,
+  .app-shell--competition,
+  .app-shell--management {
+    background:
+      radial-gradient(circle at 88% 0%, rgba(34, 197, 94, 0.13), transparent 14rem),
+      radial-gradient(circle at 0% 6%, rgba(56, 189, 248, 0.08), transparent 13rem),
+      linear-gradient(180deg, #06111f 0%, #030914 100%);
+  }
+
+  .app-header {
+    background: rgba(3, 9, 20, 0.86);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .app-content {
+    padding-top: var(--space-3);
+  }
+
+  .app-visual-hero,
+  .premium-hero {
+    border-radius: 22px;
+    min-height: 240px;
+    padding: 18px;
+  }
+
+  .home-visual-hero {
+    background:
+      linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.76) 55%, rgba(6, 17, 31, 0.08) 100%),
+      url("./assets/pdark-home-player-mobile-hero.png") center / cover no-repeat;
+    min-height: 250px;
+  }
+
+  .app-shell--competition .page-header {
+    background:
+      linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.72) 58%, rgba(6, 17, 31, 0.12) 100%),
+      url("./assets/pdark-competitions-mobile-hero.png") center / cover no-repeat;
+  }
+
+  .profile-photo-block {
+    background:
+      linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(6, 17, 31, 0.64) 58%, rgba(6, 17, 31, 0.12) 100%),
+      url("./assets/pdark-profile-ranking-hero.png") center / cover no-repeat;
+  }
+
+  .home-intent-rail--visual {
+    grid-auto-columns: minmax(104px, 30vw);
+  }
+
+  .home-intent-rail--visual button,
+  .app-shortcut-card {
+    min-height: 96px;
+  }
+
+  .bottom-nav {
+    background: rgba(3, 9, 20, 0.94);
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .bottom-nav button span:last-child {
+    display: inline;
+    font-size: 0.72rem;
+    max-width: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .auth-stage,
+  .auth-card,
+  .auth-brand-panel {
+    border-radius: 22px;
+  }
+}
+
 /* ----- REF-COMP/PROFILE: premium screenshot sprint ----- */
 .app-shell--competition {
   background:
@@ -22548,4 +23054,325 @@ button.app-object-row:hover:not(:disabled) {
   .app-shell--player .places-discovery-filter:not(.compact)::before {
     border-radius: 14px;
   }
+}
+
+/* ----- PDARK final cascade guards: keep legacy screens on the dark DNA ----- */
+.app-shell {
+  color: var(--pdark-text-main);
+}
+
+.app-shell .bottom-nav,
+.app-shell .app-header {
+  background: rgba(3, 9, 20, 0.92);
+  border-color: var(--pdark-border-soft);
+}
+
+@media (min-width: 721px) {
+  .bottom-nav {
+    background:
+      linear-gradient(180deg, rgba(3, 9, 20, 0.96), rgba(6, 17, 31, 0.94)),
+      url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+    border-right: 1px solid var(--pdark-border-soft);
+  }
+
+  .bottom-nav button {
+    color: rgba(248, 250, 252, 0.74);
+  }
+
+  .bottom-nav button.active {
+    background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+    color: #ffffff;
+  }
+
+  .bottom-nav-brand span,
+  .bottom-nav-context,
+  .bottom-nav-group-label {
+    color: var(--pdark-text-muted);
+  }
+}
+
+@media (max-width: 760px) {
+  .bottom-nav button span:last-child {
+    font-size: 0.64rem;
+    letter-spacing: 0;
+    max-width: 82px;
+    white-space: nowrap;
+  }
+}
+
+.app-shell--management .page-header,
+.app-shell--management .app-page-header,
+.app-shell--management .section-title,
+.app-shell--management .management-section-head,
+.app-shell--management .management-hub-head {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .page-header h1,
+.app-shell--management .app-page-header h1,
+.app-shell--management .section-title h2,
+.app-shell--management .management-section-head h2,
+.app-shell--management .management-hub-head h1,
+.app-shell--management h1,
+.app-shell--management h2,
+.app-shell--management h3 {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .page-intro,
+.app-shell--management .app-page-header p,
+.app-shell--management .management-section-head p,
+.app-shell--management p,
+.app-shell--management small {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--management .management-place-card,
+.app-shell--management .management-competition-card,
+.app-shell--management .management-cockpit-card,
+.app-shell--management .academy-workspace-card,
+.app-shell--management .place-workspace-panel,
+.app-shell--management .place-workspace-card,
+.app-shell--management .place-admin-card,
+.app-shell--management .entity-row,
+.app-shell--management .card,
+.app-shell--management .section-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.88), rgba(10, 22, 38, 0.74)),
+    url("./assets/pdark-finance-operation-texture.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .management-place-card strong,
+.app-shell--management .management-competition-card strong,
+.app-shell--management .management-cockpit-card strong,
+.app-shell--management .academy-workspace-card strong,
+.app-shell--management .place-workspace-panel strong,
+.app-shell--management .place-admin-card strong,
+.app-shell--management .entity-row strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .management-place-card .primary,
+.app-shell--management .management-competition-card .primary,
+.app-shell--management button.primary {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  border-color: var(--pdark-green-border);
+  color: #ffffff;
+}
+
+.app-shell--management .compact-action,
+.app-shell--management button.secondary,
+.app-shell--management button.quiet {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .feedback,
+.app-shell--management .status-badge,
+.app-shell--management .tag,
+.app-shell--management .chip {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.26);
+  color: #4ade80;
+}
+
+/* ----- PDARK contrast pass: remove legacy white islands inside dark routes ----- */
+.app-shell--competition .flow-card,
+.app-shell--competition .competition-discovery,
+.app-shell--competition .competition-intent-pill,
+.app-shell--competition .competition-discovery-action,
+.app-shell--competition .events-kpi-card,
+.app-shell--competition .events-filter-card,
+.app-shell--competition .competition-operation-row {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .competition-intent-pill:not(.active) {
+  background:
+    linear-gradient(180deg, rgba(14, 31, 51, 0.94), rgba(9, 22, 39, 0.84)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+}
+
+.app-shell--competition .flow-card h3,
+.app-shell--competition .flow-card strong,
+.app-shell--competition .competition-discovery-head strong,
+.app-shell--competition .competition-discovery-action strong,
+.app-shell--competition .competition-intent-pill strong,
+.app-shell--competition .events-kpi-value,
+.app-shell--competition .events-kpi-label {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .flow-card .subtle,
+.app-shell--competition .flow-card p,
+.app-shell--competition .flow-card small,
+.app-shell--competition .competition-discovery-head span,
+.app-shell--competition .competition-discovery-action small,
+.app-shell--competition .competition-intent-pill small {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--competition .competition-discovery-action .qa-icon,
+.app-shell--competition .events-kpi-card .qa-icon {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.app-shell--competition .screen-state {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 24, 0.96), rgba(5, 42, 44, 0.86)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+}
+
+.app-shell--competition .competition-discovery-head button,
+.app-shell--competition .flow-card .compact-action,
+.app-shell--competition .events-filter-card button {
+  color: #4ade80;
+}
+
+.app-shell--competition .home-empty-panel,
+.app-shell--competition .home-empty-panel.compact {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.82)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: 0 16px 42px rgba(2, 8, 19, 0.22);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .home-empty-panel strong,
+.app-shell--competition .home-empty-panel.compact strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .home-empty-panel span,
+.app-shell--competition .home-empty-panel.compact span {
+  color: var(--pdark-text-muted);
+}
+
+.profile-purpose-tabs,
+.profile-rows-card,
+.profile-activity-card,
+.profile-row {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.profile-row + .profile-row {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.profile-purpose-tabs button {
+  color: var(--pdark-text-muted);
+}
+
+.profile-purpose-tabs button.active {
+  color: #ffffff;
+}
+
+.profile-row .pr-label,
+.profile-activity-card p,
+.profile-activity-card small {
+  color: var(--pdark-text-muted);
+}
+
+.profile-row .pr-value,
+.profile-activity-card strong,
+.profile-activity-kpi strong {
+  color: var(--pdark-text-main);
+}
+
+.profile-row .pr-icon,
+.profile-activity-kpi {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.app-shell--management .management-command-panel,
+.app-shell--management .management-priority-row,
+.app-shell--management .management-place-row,
+.app-shell--management .management-onboarding-panel,
+.app-shell--management .management-support-strip,
+.app-shell--management .management-invite-row,
+.app-shell--management .coach-operation-row,
+.app-shell--management .management-good-state {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-finance-operation-texture.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .management-place-row.needs-attention {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.82)),
+    url("./assets/pdark-management-work-hero.png") center / cover no-repeat;
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.app-shell--management .management-section-title h2,
+.app-shell--management .management-workspace-head h2,
+.app-shell--management .management-row-identity h2,
+.app-shell--management .management-row-pulse strong,
+.app-shell--management .management-priority-row strong,
+.app-shell--management .management-good-state strong,
+.app-shell--management .management-onboarding-summary h2,
+.app-shell--management .management-place-row h2,
+.app-shell--management .management-place-row strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .management-section-title span,
+.app-shell--management .management-workspace-head span,
+.app-shell--management .management-row-identity p,
+.app-shell--management .management-row-pulse span,
+.app-shell--management .management-priority-row small,
+.app-shell--management .management-good-state span,
+.app-shell--management .management-place-row p,
+.app-shell--management .management-place-row small {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--management .management-priority-row b,
+.app-shell--management .management-row-task,
+.app-shell--management .management-quiet-summary,
+.app-shell--management .management-shell-stats article,
+.app-shell--management .management-row-setup,
+.app-shell--management .management-semantic-actions button {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.24);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .management-row-task b,
+.app-shell--management .management-priority-row b,
+.app-shell--management .management-shell-stats strong {
+  color: #4ade80;
+}
+
+.app-shell--management .management-row-task span,
+.app-shell--management .management-shell-stats small,
+.app-shell--management .management-row-setup span,
+.app-shell--management .management-quiet-summary span {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--management .management-place-list-actions span {
+  color: var(--pdark-text-muted);
 }
