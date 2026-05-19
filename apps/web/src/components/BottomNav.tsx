@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import type { ComponentType } from "react";
 import type { User } from "@supabase/supabase-js";
 import { useMemo } from "react";
-import logoMark from "../assets/logo-atp-mark.svg";
+import logoSymbol from "../assets/logo-atp-symbol.svg";
 import type { WorkspaceAccessSummary } from "../lib/workspace-access";
 import { getGlobalNavigationVisibility } from "../lib/role-visibility";
 import { useUserMode, type UserMode } from "../lib/user-mode-context";
@@ -143,7 +143,7 @@ export function BottomNav({ user }: { user: User }) {
   return (
     <nav className={navClassName} aria-label="Navegacao principal">
       <div className="bottom-nav-brand" aria-label={`Area atual: ${contextLabel}`}>
-        <img src={logoMark} alt="" />
+        <img src={logoSymbol} alt="" />
         <span>{visibility.activeSurface === "management" ? "Gestao esportiva" : "ATP"}</span>
         <small className="bottom-nav-context">{contextLabel}</small>
       </div>
