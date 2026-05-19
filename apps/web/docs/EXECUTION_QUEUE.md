@@ -44,9 +44,9 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
-## [>] Sprint atual - ATP Premium Dark global frontend
+## [x] Sprint atual - ATP Premium Dark global frontend
 
-Status: `[>]` prioridade atual em 2026-05-19
+Status: `[x]` concluido em 2026-05-19
 
 Fonte primaria:
 
@@ -95,7 +95,7 @@ Fila macro:
 16. `[x]` PDARK-15 - Trabalho / Financeiro, CRM, Cantina, Time e Configuracoes.
 17. `[x]` PDARK-16 - Paginas publicas e conversao.
 18. `[x]` PDARK-17 - Estados vazios, loading, erro, modais, drawers e sheets.
-19. `[>]` PDARK-18 - QA visual global e fechamento.
+19. `[x]` PDARK-18 - QA visual global e fechamento.
 
 Entrega desta rodada de planejamento:
 
@@ -368,6 +368,23 @@ Validacao sprint 16:
 Proximo item:
 
 - `PDARK-18 - QA visual global e fechamento`.
+
+Entrega sprint 17 em 2026-05-19:
+
+1. `PDARK-18` concluido: QA visual global fechado com revisao das evidencias em `docs/screenshots/visual-local-audit-2026-05-18/`.
+2. Relatorio de gaps criado em `docs/ATP_PREMIUM_DARK_QA_GAP_REPORT_2026_05_19.md`.
+3. Gaps residuais registrados como polish visual: backdrop continuo em algumas rotas autenticadas, placeholders de avatar no ranking mobile, captura signed-out dedicada, screenshots viewport-only para bottom nav e densidade mobile em paginas publicas.
+4. Queue global `PDARK-00` a `PDARK-18` encerrada preservando backend, schema, RPCs, policies e regras de negocio.
+
+Validacao sprint 17:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou.
+
+Proximo item:
+
+- Nenhum item pendente na queue global ATP Premium Dark; proximos ajustes devem nascer como polish secundario a partir do relatorio de gaps.
 
 ## Sprint atual - Referencias visuais ATP premium
 

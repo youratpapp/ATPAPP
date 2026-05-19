@@ -1190,7 +1190,7 @@ Validacao:
 
 ## PDARK-18 - QA visual global e fechamento
 
-Status: `[>]` em andamento
+Status: `[x]` concluido em 2026-05-19
 
 Objetivo:
 
@@ -1226,3 +1226,16 @@ Criterios de aceite:
 - screenshots documentam antes/depois;
 - gaps restantes ficam em queue secundaria;
 - nao ha regressao funcional obvia nos fluxos principais.
+
+Entrega sprint 17:
+
+1. `PDARK-18` concluido: QA visual global fechado com revisao das evidencias geradas em `docs/screenshots/visual-local-audit-2026-05-18/`.
+2. Relatorio de gaps criado em `docs/ATP_PREMIUM_DARK_QA_GAP_REPORT_2026_05_19.md`.
+3. Gaps residuais registrados como polish: backdrop continuo em algumas rotas autenticadas, placeholders de avatar no ranking mobile, captura signed-out dedicada, screenshots viewport-only para bottom nav e ajuste fino de densidade mobile em paginas publicas.
+4. A queue global `PDARK-00` a `PDARK-18` ficou encerrada sem alterar backend, schema, RPCs, policies ou regras de negocio.
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou.
