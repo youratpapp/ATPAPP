@@ -13,11 +13,11 @@
       "Jogador",
       "Trabalho",
       "Explorar",
-      "ReservarReservar quadraHorarios livres",
-      "JogarEncontrar jogoChamadas abertas",
-      "CompetirTorneiosInscricoes abertas",
-      "AulasAulasTurmas com vaga",
-      "LigasLigasRodadas ativas",
+      "ReservarQuadra",
+      "JogarEncontrar jogo",
+      "CompetirTorneios",
+      "TreinarAulas",
+      "EvoluirLigas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -25,7 +25,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Explorar 0 Pendencias sem urgencias 0 Agenda Livre agora 0 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios TREINAR Aulas EVOLUIR Ligas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
   },
   {
     "viewport": "desktop",
@@ -41,11 +41,11 @@
       "Jogador",
       "Trabalho",
       "Explorar",
-      "ReservarReservar quadraHorarios livres",
-      "JogarEncontrar jogoChamadas abertas",
-      "CompetirTorneiosInscricoes abertas",
-      "AulasAulasTurmas com vaga",
-      "LigasLigasRodadas ativas",
+      "ReservarQuadra",
+      "JogarEncontrar jogo",
+      "CompetirTorneios",
+      "TreinarAulas",
+      "EvoluirLigas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -53,7 +53,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Explorar 0 Pendencias sem urgencias 0 Agenda Livre agora 0 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios TREINAR Aulas EVOLUIR Ligas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
   },
   {
     "viewport": "desktop",
@@ -536,10 +536,7 @@
     "h1": [
       "Meus pagamentos"
     ],
-    "h2": [
-      "A resolver",
-      "Pagos e encerrados"
-    ],
+    "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
@@ -549,8 +546,8 @@
       "Locais",
       "Perfil"
     ],
-    "cards": 2,
-    "textSample": "Ola, Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. PENDENCIAS A resolver 2 Inscricao em torneio 01 de out. de 2026 | R$ 70,00 Pendente Inscricao em torneio 24 de jun. de 2026 | R$ 120,00 Pendente HISTORICO Pagos e encerrados 198 Inscricao em torneio 13 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 12 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 11 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 10 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 09 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 08 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 07 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 06 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 05 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 04 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 03 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 02 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 30 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 29 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 28 de set. de 2026 | R$ 70,00"
+    "cards": 0,
+    "textSample": "Ola, Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. Nao foi possivel carregar canceling statement due to statement timeout ATP Jogador JOGAR Inicio Competições Reservas Locais CONTA Perfil"
   },
   {
     "viewport": "desktop",
@@ -757,11 +754,11 @@
       "Jogador",
       "Trabalho",
       "Explorar",
-      "ReservarReservar quadraHorarios livres",
-      "JogarEncontrar jogoChamadas abertas",
-      "CompetirTorneiosInscricoes abertas",
-      "AulasAulasTurmas com vaga",
-      "LigasLigasRodadas ativas",
+      "ReservarQuadra",
+      "JogarEncontrar jogo",
+      "CompetirTorneios",
+      "TreinarAulas",
+      "EvoluirLigas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -769,7 +766,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Inicio Competições Reservas Locais Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Explorar 0 Pendencias sem urgencias 0 Agenda Livre agora 0 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios TREINAR Aulas EVOLUIR Ligas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",
@@ -785,11 +782,11 @@
       "Jogador",
       "Trabalho",
       "Explorar",
-      "ReservarReservar quadraHorarios livres",
-      "JogarEncontrar jogoChamadas abertas",
-      "CompetirTorneiosInscricoes abertas",
-      "AulasAulasTurmas com vaga",
-      "LigasLigasRodadas ativas",
+      "ReservarQuadra",
+      "JogarEncontrar jogo",
+      "CompetirTorneios",
+      "TreinarAulas",
+      "EvoluirLigas",
       "Inicio",
       "Competições",
       "Reservas",
@@ -797,7 +794,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Em dia Dourados - MS Explorar Reservar quadra Horarios livres Encontrar jogo Chamadas abertas Torneios Inscricoes abertas Aulas Turmas com vaga Ligas Rodadas ativas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Inicio Competições Reservas Locais Perfil"
+    "textSample": "Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Explorar 0 Pendencias sem urgencias 0 Agenda Livre agora 0 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios TREINAR Aulas EVOLUIR Ligas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",
@@ -1280,10 +1277,7 @@
     "h1": [
       "Meus pagamentos"
     ],
-    "h2": [
-      "A resolver",
-      "Pagos e encerrados"
-    ],
+    "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
@@ -1293,8 +1287,8 @@
       "Locais",
       "Perfil"
     ],
-    "cards": 2,
-    "textSample": "Ola, Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. PENDENCIAS A resolver 2 Inscricao em torneio 01 de out. de 2026 | R$ 70,00 Pendente Inscricao em torneio 24 de jun. de 2026 | R$ 120,00 Pendente HISTORICO Pagos e encerrados 198 Inscricao em torneio 13 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 12 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 11 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 10 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 09 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 08 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 07 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 06 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 05 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 04 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 03 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 02 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 30 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 29 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 28 de set. de 2026 | R$ 70,00"
+    "cards": 0,
+    "textSample": "Ola, Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. Nao foi possivel carregar canceling statement due to statement timeout Inicio Competições Reservas Locais Perfil"
   },
   {
     "viewport": "mobile",

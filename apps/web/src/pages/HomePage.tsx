@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
-import { DiscoveryCarousel, ObjectRow, VisualBadge, VisualHeroCard } from "../components/AppPrimitives";
+import { DiscoveryCarousel, ObjectRow } from "../components/AppPrimitives";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
-import heroCourtImage from "../assets/pdark-home-player-desktop-hero.png";
 import stadiumCardImage from "../assets/pdark-tournament-card-01.png";
 import type {
   LeagueMatchSummary,
@@ -1718,6 +1717,29 @@ export function HomePage({ user, profile }: Props) {
     },
   ].filter((section) => section.items.length > 0);
 
+  const totalPlayerHubItems = playerHubSections.reduce((sum, section) => sum + section.items.length, 0);
+  const nextAgendaLabel = nextPlayerAgenda?.when || nextPlayerPriority?.label || "Livre agora";
+  const homeStatCards = [
+    {
+      key: "priority",
+      label: "Pendencias",
+      value: notificationCount,
+      detail: notificationCount > 0 ? "pedem sua acao" : "sem urgencias",
+    },
+    {
+      key: "agenda",
+      label: "Agenda",
+      value: agendaItems.length,
+      detail: nextAgendaLabel,
+    },
+    {
+      key: "routine",
+      label: "Rotina",
+      value: totalPlayerHubItems,
+      detail: "itens no seu painel",
+    },
+  ];
+
   const handleHeroAction = () => {
     navigate(homeMainAction.targetPath);
   };
@@ -1791,74 +1813,51 @@ export function HomePage({ user, profile }: Props) {
       onBellClose={() => setNotificationsOpen(false)}
     >
       <section className="home-player-os home-player-os--visual" aria-label="Resumo do jogador">
-        <VisualHeroCard
-          className={homeMainAction.tone === "urgent" ? "home-visual-hero urgent" : "home-visual-hero"}
-          backgroundImage={heroCourtImage}
-          eyebrow="Hoje para voce"
-          title={heroTitle}
-          subtitle={heroDetail}
-          badges={
-            <>
-              <VisualBadge tone={homeMainAction.tone === "urgent" ? "warning" : "success"}>
-                {notificationCount > 0 ? `${notificationCount} pendente(s)` : "Em dia"}
-              </VisualBadge>
-              <VisualBadge>{profile?.city && profile?.state ? `${profile.city} - ${profile.state}` : "ATP"}</VisualBadge>
-            </>
-          }
-          actions={
+        <div className="home-command-hero">
+          <div className="home-command-copy">
+            <p className="home-context-eyebrow">Hoje para voce</p>
+            <h1>{heroTitle}</h1>
+            <p>{heroDetail}</p>
             <ActionBar className="home-hero-actions" label="Acoes principais do dia">
               <button className={homeMainAction.tone === "urgent" ? "primary urgent" : "primary"} type="button" onClick={handleHeroAction}>
                 {homeMainAction.label}
               </button>
             </ActionBar>
-          }
-        >
-          {visibleTodayRows.length > 0 ? (
-            <div className="home-today-rows home-today-rows--floating" aria-label="Proximas acoes do jogador">
-              {visibleTodayRows.slice(0, 3).map((row) => (
-                <ObjectRow
-                  key={row.id}
-                  badge={row.label}
-                  title={row.title}
-                  detail={row.detail}
-                  action={row.action}
-                  tone={row.tone === "urgent" ? "urgent" : "default"}
-                  onClick={row.onOpen}
-                />
-              ))}
-            </div>
-          ) : null}
-        </VisualHeroCard>
-
-        <aside className="home-player-side" aria-label="Acoes principais do jogador">
-          <div className="home-intent-rail home-intent-rail--visual" aria-label="Escolha o que fazer">
-            <button type="button" onClick={() => navigate("/locais?intent=booking")}>
-              <span>Reservar</span>
-              <strong>Reservar quadra</strong>
-              <small>Horarios livres</small>
-            </button>
-            <button type="button" onClick={() => navigate("/locais?intent=matches")}>
-              <span>Jogar</span>
-              <strong>Encontrar jogo</strong>
-              <small>Chamadas abertas</small>
-            </button>
-            <button type="button" onClick={() => navigate("/eventos/torneios")}>
-              <span>Competir</span>
-              <strong>Torneios</strong>
-              <small>Inscricoes abertas</small>
-            </button>
-            <button type="button" onClick={() => navigate("/locais?intent=classes")}>
-              <span>Aulas</span>
-              <strong>Aulas</strong>
-              <small>Turmas com vaga</small>
-            </button>
-            <button type="button" onClick={() => navigate("/eventos/ligas")}>
-              <span>Ligas</span>
-              <strong>Ligas</strong>
-              <small>Rodadas ativas</small>
-            </button>
           </div>
-        </aside>
+          <div className="home-command-stats" aria-label="Indicadores do jogador">
+            {homeStatCards.map((stat) => (
+              <article className={`home-command-stat home-command-stat--${stat.key}`} key={stat.key}>
+                <span aria-hidden />
+                <strong>{stat.value}</strong>
+                <small>{stat.label}</small>
+                <em>{stat.detail}</em>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <nav className="home-command-strip" aria-label="Acoes principais do jogador">
+          <button type="button" onClick={() => navigate("/locais?intent=booking")}>
+            <span>Reservar</span>
+            <strong>Quadra</strong>
+          </button>
+          <button type="button" onClick={() => navigate("/locais?intent=matches")}>
+            <span>Jogar</span>
+            <strong>Encontrar jogo</strong>
+          </button>
+          <button type="button" onClick={() => navigate("/eventos/torneios")}>
+            <span>Competir</span>
+            <strong>Torneios</strong>
+          </button>
+          <button type="button" onClick={() => navigate("/locais?intent=classes")}>
+            <span>Treinar</span>
+            <strong>Aulas</strong>
+          </button>
+          <button type="button" onClick={() => navigate("/eventos/ligas")}>
+            <span>Evoluir</span>
+            <strong>Ligas</strong>
+          </button>
+        </nav>
       </section>
 
       {loading ? (
@@ -1872,7 +1871,7 @@ export function HomePage({ user, profile }: Props) {
 
       {!loading && !error ? (
         <>
-          {homeAgendaPreview.length > 0 ? (
+          <section className="home-command-grid" aria-label="Painel do jogador">
             <section className="home-section home-agenda-preview" aria-label="Agenda do jogador">
               <div className="section-title">
                 <div>
@@ -1883,28 +1882,110 @@ export function HomePage({ user, profile }: Props) {
                   Ver agenda
                 </button>
               </div>
-              <div className="home-agenda-preview-grid">
-                {homeAgendaPreview.map((item) => (
+              {homeAgendaPreview.length > 0 ? (
+                <div className="home-agenda-preview-grid">
+                  {homeAgendaPreview.map((item) => (
+                    <button
+                      key={`agenda-preview:${item.id}`}
+                      type="button"
+                      className={item.tone === "urgent" ? "home-agenda-preview-card urgent" : "home-agenda-preview-card"}
+                      onClick={() => navigate(item.targetPath || "/inicio")}
+                    >
+                      <span>{item.label}</span>
+                      <strong>{item.title}</strong>
+                      <small>{item.detail}</small>
+                      <em>{item.meta}</em>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="home-empty-inline">
+                  <strong>Sem compromissos imediatos.</strong>
+                  <button type="button" className="link" onClick={() => navigate("/locais?intent=matches")}>
+                    Encontrar jogo
+                  </button>
+                </div>
+              )}
+            </section>
+
+            <section className="home-section home-spotlight-panel" aria-label="Prioridade do jogador">
+              <div className="section-title">
+                <div>
+                  <p className="home-context-eyebrow">Destaque</p>
+                  <h2>Seu proximo movimento</h2>
+                </div>
+              </div>
+              <button
+                type="button"
+                className={homeMainAction.tone === "urgent" ? "home-spotlight-card urgent" : "home-spotlight-card"}
+                onClick={handleHeroAction}
+              >
+                <span>{homeMainAction.tone === "urgent" ? "Acao pendente" : "Recomendado"}</span>
+                <strong>{homeMainAction.title}</strong>
+                <small>{homeMainAction.detail}</small>
+                <em>{homeMainAction.label}</em>
+              </button>
+              {visibleTodayRows.length > 0 ? (
+                <div className="home-today-rows home-today-rows--compact" aria-label="Acompanhamentos do jogador">
+                  {visibleTodayRows.slice(0, 2).map((row) => (
+                    <ObjectRow
+                      key={row.id}
+                      badge={row.label}
+                      title={row.title}
+                      detail={row.detail}
+                      action={row.action}
+                      tone={row.tone === "urgent" ? "urgent" : "default"}
+                      onClick={row.onOpen}
+                    />
+                  ))}
+                </div>
+              ) : null}
+            </section>
+
+            <section className="home-section home-routine-panel" aria-label="Rotina do jogador">
+              <div className="section-title">
+                <div>
+                  <p className="home-context-eyebrow">Rotina</p>
+                  <h2>Areas ativas</h2>
+                </div>
+                <button className="link" type="button" onClick={() => navigate("/perfil")}>
+                  Perfil
+                </button>
+              </div>
+              <div className="home-routine-list">
+                {(playerHubSections.length > 0 ? playerHubSections.slice(0, 4) : [
+                  {
+                    key: "empty",
+                    label: "ATP",
+                    title: "Comece uma rotina",
+                    detail: "Reserve, jogue ou entre em uma aula.",
+                    action: "Explorar",
+                    items: [],
+                    onOpen: () => navigate("/locais?intent=matches"),
+                  },
+                ]).map((section) => (
                   <button
-                    key={`agenda-preview:${item.id}`}
+                    key={`routine:${section.key}`}
                     type="button"
-                    className={item.tone === "urgent" ? "home-agenda-preview-card urgent" : "home-agenda-preview-card"}
-                    onClick={() => navigate(item.targetPath || "/inicio")}
+                    className="home-routine-row"
+                    onClick={section.onOpen}
                   >
-                    <span>{item.label}</span>
-                    <strong>{item.title}</strong>
-                    <small>{item.detail}</small>
-                    <em>{item.meta}</em>
+                    <span>{section.label}</span>
+                    <strong>{section.title}</strong>
+                    <small>{section.items.length ? `${section.items.length} item(ns)` : section.detail}</small>
                   </button>
                 ))}
               </div>
             </section>
-          ) : null}
+          </section>
 
           {playerHubSections.length > 0 ? (
           <section className="player-hub-panel">
             <div className="section-title">
-              <h2>Para voce</h2>
+              <div>
+                <p className="home-context-eyebrow">Painel completo</p>
+                <h2>Para voce</h2>
+              </div>
             </div>
             <div className="player-hub-workspace">
               {playerHubSections.map((section) => (
