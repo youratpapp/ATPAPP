@@ -82,10 +82,10 @@ Fila macro:
 3. `[x]` PDARK-02 - Login, cadastro e estados de entrada.
 4. `[x]` PDARK-03 - Home Jogador premium.
 5. `[x]` PDARK-04 - Competições hub, torneios, ligas e rankings.
-6. `[>]` PDARK-05 - Detalhe de torneio, inscrição e convite.
-7. `[ ]` PDARK-06 - Liga, rodada, chat e matchroom.
-8. `[ ]` PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos.
-9. `[ ]` PDARK-08 - Locais, detalhe do clube e reservar quadra.
+6. `[x]` PDARK-05 - Detalhe de torneio, inscrição e convite.
+7. `[x]` PDARK-06 - Liga, rodada, chat e matchroom.
+8. `[x]` PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos.
+9. `[>]` PDARK-08 - Locais, detalhe do clube e reservar quadra.
 10. `[ ]` PDARK-09 - Aulas e turmas.
 11. `[ ]` PDARK-10 - Perfil, perfil publico e ranking.
 12. `[ ]` PDARK-11 - Mensagens e comunicacao contextual.
@@ -148,6 +148,55 @@ Validacao sprint 3:
 Proximo item:
 
 - `PDARK-05 - Detalhe de torneio, inscricao e convite`.
+
+Entrega sprint 4 em 2026-05-19:
+
+1. `PDARK-05` concluido: detalhe de torneio, inscricao, convite, jogos, jogadores, chat, organizacao e matchroom receberam camada premium dark.
+2. Evidencias atualizadas: `desktop-tournament-games.png`, `mobile-tournament-games.png`, `desktop-tournament-players.png`.
+
+Validacao sprint 4:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-06 - Liga, rodada, chat e matchroom`.
+
+Entrega sprint 5 em 2026-05-19:
+
+1. `PDARK-06` concluido: liga, rodada, chat, partidas, classificacao, configuracao e matchroom receberam camada premium dark.
+2. Painel operacional, fila de tarefas, fechamento de temporada e acoes de publicacao deixaram de usar superficies claras.
+3. Chat da liga foi convertido para cards dark/glass com aviso fixado, mensagens, composer e ferramentas admin no mesmo DNA visual.
+4. Evidencias atualizadas: `desktop-league-detail.png`, `mobile-league-detail.png`, `desktop-league-chat.png`, `mobile-league-chat.png`.
+
+Validacao sprint 5:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos`.
+
+Entrega sprint 6 em 2026-05-19:
+
+1. `PDARK-07` concluido: `/minhas-reservas`, `/minhas-partidas`, `/minhas-aulas` e `/meus-pagamentos` receberam hero premium, cards dark/glass e linhas com textura esportiva.
+2. Grid desktop das areas pessoais deixou de esticar colunas vazias; listas longas ficaram rolaveis e escaneaveis.
+3. Mobile foi corrigido para uma coluna, com cards legiveis e status pills consistentes.
+4. Evidencias atualizadas: `desktop-my-reservations.png`, `mobile-my-reservations.png`, `desktop-my-lessons.png`, `mobile-my-payments.png`.
+
+Validacao sprint 6:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots.
+
+Proximo item:
+
+- `PDARK-08 - Locais, detalhe do clube e reservar quadra`.
 
 ## Sprint atual - Referencias visuais ATP premium
 

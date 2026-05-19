@@ -374,7 +374,7 @@ Validacao:
 
 ## PDARK-05 - Detalhe de torneio, inscrição e convite
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -422,9 +422,28 @@ Criterios de aceite:
 - fluxo de inscricao continua;
 - organizador e jogador veem contextos apropriados.
 
+Entrega sprint 4:
+
+1. Detalhe de torneio recebeu camada premium dark em hero, tabs, resumo, jogos, classificacao, jogadores, chat e organizacao.
+2. Inscricao/convite recebeu tratamento dark em hero, opcoes, review, CTA fixo e cards laterais.
+3. Matchroom/drawer de partida passou a usar asset `pdark-matchroom-mobile-header.png` e superficies glass.
+4. Cards de jogos, formulários de placar, rows de jogadores e painéis administrativos foram escurecidos sem remover campos ou acoes existentes.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-tournament-games.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-tournament-games.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-tournament-players.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-06 - Liga, rodada, chat e matchroom
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -471,9 +490,30 @@ Criterios de aceite:
 - chat nao trava digitacao;
 - partida deixa de parecer formulario/lista e passa a parecer ambiente de jogo.
 
+Entrega sprint 5:
+
+1. Liga recebeu fechamento visual premium dark nas abas de rodada, jogadores, classificacao, partidas, chat e configuracao, preservando rotas e dados existentes.
+2. Painel `Operacao da liga`, fila operacional, cards de rodada, fechamento de temporada e acoes de publicacao foram convertidos para superficies glass/deep navy.
+3. Chat da liga deixou de ter lista branca; aviso fixado, comunicados, mensagens, composer e ferramentas do admin agora usam dark cards, bordas suaves e estados verdes/amber.
+4. Matchroom, cards de partida, filtros, paginacao, registros e standings foram cobertos por seletores compartilhados da camada PDARK-06.
+5. Navegacao interna da liga recebeu tratamento dark/green para manter continuidade com o hero cinematografico.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-league-detail.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-league-detail.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-league-chat.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-league-chat.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
+
 ## PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -515,6 +555,27 @@ Criterios de aceite:
 - cada rota pessoal tem proximo passo claro;
 - dados existentes sao reaproveitados;
 - estados vazios sempre oferecem CTA.
+
+Entrega sprint 6:
+
+1. Areas pessoais receberam hero premium dark compartilhado, com titulo claro, contexto esportivo e asset cinematografico.
+2. `Minhas reservas`, `Minhas partidas`, `Minhas aulas` e `Meus pagamentos` passaram a usar cards deep navy/glass, status pills por tom e linhas com textura de quadra.
+3. Grid desktop deixou de esticar colunas vazias; listas longas agora ficam controladas e escaneaveis.
+4. Mobile foi corrigido para uma coluna, removendo cards estreitos e melhorando leitura de reservas, aulas, pagamentos e estados vazios.
+5. Dialog de detalhe de reserva herdou o visual dark sem alterar cancelamento, consulta ou dados.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-my-reservations.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-my-reservations.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-my-lessons.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-my-payments.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots.
 
 ## PDARK-08 - Locais, detalhe do clube e reservar quadra
 

@@ -24045,3 +24045,1015 @@ label {
 .app-shell .ranking-player-overview .app-metric-card span {
   color: var(--pdark-text-muted);
 }
+
+/* ----- PDARK-05: tournament detail, registration and invite ----- */
+.app-shell--competition .tournament-public-hero,
+.app-shell--competition .tournament-registration-hero,
+.app-shell--competition .tournament-public-event {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.96), rgba(6, 17, 31, 0.62)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .tournament-public-copy h2,
+.app-shell--competition .tournament-registration-hero h2,
+.app-shell--competition .tournament-public-title-row,
+.app-shell--competition .tournament-public-match-summary-head h3,
+.app-shell--competition .tournament-chat-head h3,
+.app-shell--competition .tournament-bracket-heading h3,
+.app-shell--competition .tournament-class-switcher strong,
+.app-shell--competition .tournament-games-card strong,
+.app-shell--competition .competition-overview-card strong,
+.app-shell--competition .tournament-organizer-queue-head strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .tournament-public-copy p,
+.app-shell--competition .tournament-registration-hero p,
+.app-shell--competition .tournament-public-meta span,
+.app-shell--competition .tournament-public-match-row span,
+.app-shell--competition .tournament-public-match-row small,
+.app-shell--competition .tournament-chat-message p,
+.app-shell--competition .tournament-chat-pinned p,
+.app-shell--competition .tournament-bracket-heading p,
+.app-shell--competition .tournament-organizer-queue-head small,
+.app-shell--competition .competition-overview-card p {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--competition .tournament-public-nav,
+.app-shell--competition .tournament-class-switcher,
+.app-shell--competition .tournament-games-card,
+.app-shell--competition .tournament-chat-card,
+.app-shell--competition .competition-overview-card,
+.app-shell--competition .tournament-organizer-queue,
+.app-shell--competition .tournament-match-room-card,
+.app-shell--competition .tournament-public-match-summary,
+.app-shell--competition .competition-registration-panel,
+.app-shell--competition .registration-review-card,
+.app-shell--competition .tournament-registration-side > div,
+.app-shell--competition .invite-overview-grid > *,
+.app-shell--competition .tournament-phase-section,
+.app-shell--competition .tournament-overview-kpi,
+.app-shell--competition .tournament-panel-kpi {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.8)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .tournament-public-nav button,
+.app-shell--competition .tournament-public-category-rail button,
+.app-shell--competition .tournament-phase-flow button,
+.app-shell--competition .registration-option,
+.app-shell--competition .tournament-organizer-task-row,
+.app-shell--competition .tournament-public-match-row,
+.app-shell--competition .tournament-chat-message,
+.app-shell--competition .tournament-chat-compose,
+.app-shell--competition .tournament-chat-admin-tools,
+.app-shell--competition .tournament-organizer-workspace-map button {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .tournament-public-nav button.active,
+.app-shell--competition .tournament-public-category-rail button.active,
+.app-shell--competition .tournament-phase-flow button.active,
+.app-shell--competition .registration-option.active,
+.app-shell--competition .tournament-organizer-workspace-map button.active {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.88), rgba(22, 163, 74, 0.68));
+  border-color: var(--pdark-green-border);
+  color: #ffffff;
+}
+
+.app-shell--competition .tournament-public-media,
+.app-shell--competition .tournament-public-media > div {
+  background:
+    linear-gradient(180deg, rgba(3, 9, 20, 0.12), rgba(3, 9, 20, 0.66)),
+    url("./assets/pdark-tournament-card-02.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+}
+
+.app-shell--competition .registration-sticky-cta,
+.app-shell--competition .tournament-public-sticky-cta {
+  background: rgba(3, 9, 20, 0.9);
+  border-color: var(--pdark-border-soft);
+  backdrop-filter: blur(18px);
+}
+
+.app-shell--competition .tournament-organizer-drawer,
+.app-shell--competition .tournament-match-room-dialog {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.98), rgba(8, 20, 36, 0.94)),
+    url("./assets/pdark-matchroom-mobile-header.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .match-card,
+.app-shell--competition .organizer-pending-card,
+.app-shell--competition .competition-place-court-card,
+.app-shell--competition .tournament-admin-ops,
+.app-shell--competition .tournament-court-agenda-panel,
+.app-shell--competition .tournament-court-agenda-row,
+.app-shell--competition .tournament-podium-panel,
+.app-shell--competition .tournament-games-card .card,
+.app-shell--competition .tournament-games-card form,
+.app-shell--competition .tournament-games-card fieldset,
+.app-shell--competition .tournament-games-card textarea,
+.app-shell--competition .tournament-games-card .match-input-row,
+.app-shell--competition .tournament-score-row,
+.app-shell--competition .card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .match-card input,
+.app-shell--competition .match-card select,
+.app-shell--competition .match-card textarea,
+.app-shell--competition .tournament-admin-ops input,
+.app-shell--competition .tournament-admin-ops select,
+.app-shell--competition .tournament-admin-ops textarea,
+.app-shell--competition .card input,
+.app-shell--competition .card select,
+.app-shell--competition .card textarea {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .match-card strong,
+.app-shell--competition .match-card label,
+.app-shell--competition .tournament-admin-ops strong,
+.app-shell--competition .tournament-admin-ops label,
+.app-shell--competition .card strong,
+.app-shell--competition .card h2,
+.app-shell--competition .card h3,
+.app-shell--competition .card h4 {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .match-card small,
+.app-shell--competition .match-card span,
+.app-shell--competition .tournament-admin-ops small,
+.app-shell--competition .tournament-admin-ops span,
+.app-shell--competition .card small,
+.app-shell--competition .card p {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--competition .match-card-status.done,
+.app-shell--competition .match-card-status.pending,
+.app-shell--competition .match-card-origin {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.26);
+  color: #4ade80;
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .tournament-public-hero,
+  .app-shell--competition .tournament-registration-hero {
+    background:
+      linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.7)),
+      url("./assets/pdark-competitions-mobile-hero.png") center / cover no-repeat;
+    border-radius: 22px;
+  }
+
+  .app-shell--competition .tournament-public-nav {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .app-shell--competition .tournament-public-nav::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ----- PDARK-06: league, rounds, chat and matchroom ----- */
+.app-shell--competition .league-public-event,
+.app-shell--competition .league-public-page,
+.app-shell--competition .league-operation-panel,
+.app-shell--competition .league-support-panel,
+.app-shell--competition .league-overview-card,
+.app-shell--competition .league-standings-page,
+.app-shell--competition .league-matches-page,
+.app-shell--competition .league-owner-invite-card,
+.app-shell--competition .league-owner-registrations-panel,
+.app-shell--competition .league-chat-card,
+.app-shell--competition .league-match-room-dialog {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.94), rgba(8, 20, 36, 0.82)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-public-hero {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.96), rgba(6, 17, 31, 0.58)),
+    url("./assets/pdark-competitions-mobile-hero.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-public-media,
+.app-shell--competition .league-public-media > div {
+  background:
+    linear-gradient(180deg, rgba(3, 9, 20, 0.12), rgba(3, 9, 20, 0.72)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+}
+
+.app-shell--competition .league-operation-panel > div,
+.app-shell--competition .league-operation-panel article,
+.app-shell--competition .league-operation-panel .tournament-organizer-queue,
+.app-shell--competition .league-operation-panel .competition-focus-main,
+.app-shell--competition .league-operation-panel .competition-focus-metrics span,
+.app-shell--competition .league-season-guard,
+.app-shell--competition .league-season-guard.ready,
+.app-shell--competition .league-core-state-grid button,
+.app-shell--competition .league-owner-registration-summary span,
+.app-shell--competition .league-registration-row,
+.app-shell--competition .league-scheduler-run,
+.app-shell--competition .league-public-class-filter,
+.app-shell--competition .league-public-member-status,
+.app-shell--competition .league-standings-summary div,
+.app-shell--competition .league-standings-class,
+.app-shell--competition .league-standings-class-head,
+.app-shell--competition .league-ranking-snapshots,
+.app-shell--competition .league-ranking-snapshots span,
+.app-shell--competition .league-match-filter-bar,
+.app-shell--competition .league-match-pagination,
+.app-shell--competition .my-match-row,
+.app-shell--competition .league-round-head,
+.app-shell--competition .league-match-card,
+.app-shell--competition .league-match-main,
+.app-shell--competition .league-chat-box,
+.app-shell--competition .league-chat-me,
+.app-shell--competition .league-chat-other,
+.app-shell--competition .league-chat-send {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-public-nav {
+  background: rgba(3, 9, 20, 0.72);
+  border: 1px solid var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+}
+
+.app-shell--competition .league-public-nav button {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid transparent;
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--competition .league-public-nav button.active {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  border-color: rgba(34, 197, 94, 0.44);
+  color: #ffffff;
+}
+
+.app-shell--competition .league-season-guard,
+.app-shell--competition .league-season-guard.ready,
+.app-shell--competition .tournament-chat-pinned {
+  background:
+    linear-gradient(135deg, rgba(146, 64, 14, 0.22), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border-color: rgba(245, 158, 11, 0.34);
+}
+
+.app-shell--competition .league-chat-card .tournament-chat-list {
+  background:
+    linear-gradient(180deg, rgba(3, 9, 20, 0.72), rgba(8, 20, 36, 0.88)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 20px;
+  color: var(--pdark-text-main);
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.app-shell--competition .league-chat-card .tournament-chat-message {
+  background: rgba(255, 255, 255, 0.065);
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 16px;
+  color: var(--pdark-text-main);
+  min-height: 0;
+  padding: 12px 14px;
+}
+
+.app-shell--competition .league-chat-card .tournament-chat-message.mine {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.app-shell--competition .league-chat-card .tournament-chat-message.announcement {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.app-shell--competition .league-chat-card .tournament-chat-admin-tools,
+.app-shell--competition .league-chat-card .tournament-chat-compose {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-public-page-title h1,
+.app-shell--competition .league-public-hero h2,
+.app-shell--competition .league-operation-panel strong,
+.app-shell--competition .league-support-panel strong,
+.app-shell--competition .league-season-guard strong,
+.app-shell--competition .league-standings-title h3,
+.app-shell--competition .league-standings-summary strong,
+.app-shell--competition .league-standings-class-head strong,
+.app-shell--competition .league-standings-row strong,
+.app-shell--competition .league-ranking-snapshots strong,
+.app-shell--competition .league-matches-page h3,
+.app-shell--competition .league-match-title,
+.app-shell--competition .league-match-card strong,
+.app-shell--competition .league-chat-card h3,
+.app-shell--competition .league-chat-card h4,
+.app-shell--competition .league-chat-card strong,
+.app-shell--competition .league-owner-invite-card strong,
+.app-shell--competition .league-owner-registrations-panel strong,
+.app-shell--competition .league-match-room-dialog h2,
+.app-shell--competition .league-match-room-dialog h3 {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-public-page-title small,
+.app-shell--competition .league-public-page-title p,
+.app-shell--competition .league-public-hero span,
+.app-shell--competition .league-public-hero small,
+.app-shell--competition .league-operation-panel p,
+.app-shell--competition .league-operation-panel small,
+.app-shell--competition .league-support-panel small,
+.app-shell--competition .league-season-guard small,
+.app-shell--competition .league-season-guard li,
+.app-shell--competition .league-standings-title .subtle,
+.app-shell--competition .league-standings-summary span,
+.app-shell--competition .league-standings-legend span,
+.app-shell--competition .league-standings-class-head span,
+.app-shell--competition .league-standings-row span,
+.app-shell--competition .league-standings-row em,
+.app-shell--competition .league-ranking-snapshots span,
+.app-shell--competition .league-match-filter-bar label,
+.app-shell--competition .league-match-sub,
+.app-shell--competition .league-match-next-state,
+.app-shell--competition .league-match-status,
+.app-shell--competition .league-chat-card p,
+.app-shell--competition .league-chat-card small,
+.app-shell--competition .league-chat-card .tournament-chat-message-meta span,
+.app-shell--competition .league-owner-invite-card small,
+.app-shell--competition .league-owner-registrations-panel small,
+.app-shell--competition .league-match-room-dialog p,
+.app-shell--competition .league-match-room-dialog small {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--competition .league-standings-row,
+.app-shell--competition .league-standings-row.head {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.app-shell--competition .league-standings-row.promoted,
+.app-shell--competition .league-registration-row.status-approved,
+.app-shell--competition .league-match-card.state-ok {
+  background: rgba(34, 197, 94, 0.11);
+  border-color: rgba(34, 197, 94, 0.26);
+}
+
+.app-shell--competition .league-standings-row.relegated,
+.app-shell--competition .league-registration-row.status-pending,
+.app-shell--competition .league-match-card.state-warning {
+  background: rgba(245, 158, 11, 0.11);
+  border-color: rgba(245, 158, 11, 0.28);
+}
+
+.app-shell--competition .league-registration-row.status-rejected,
+.app-shell--competition .league-match-card.state-danger {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.28);
+}
+
+.app-shell--competition .league-match-index,
+.app-shell--competition .league-match-state-pill,
+.app-shell--competition .league-match-status,
+.app-shell--competition .league-public-member-status span,
+.app-shell--competition .league-core-state-grid button.needs-action,
+.app-shell--competition .league-core-state-grid button.danger {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.26);
+  color: #4ade80;
+}
+
+.app-shell--competition .league-core-state-grid button.danger,
+.app-shell--competition .league-match-state-pill.danger {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.app-shell--competition .league-match-actions button,
+.app-shell--competition .league-match-pagination button,
+.app-shell--competition .league-owner-invite-actions button,
+.app-shell--competition .league-support-panel .publishing-kit button,
+.app-shell--competition .league-support-panel .competition-publishing-panel button,
+.app-shell--competition .league-support-panel button,
+.app-shell--competition .league-chat-card .tournament-chat-message-actions button,
+.app-shell--competition .league-chat-card .tournament-chat-compose button {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-match-actions button.primary,
+.app-shell--competition .league-operation-panel button.primary,
+.app-shell--competition .league-chat-card button.primary,
+.app-shell--competition .league-chat-card .tournament-chat-compose button:not(.danger) {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  border-color: rgba(34, 197, 94, 0.42);
+  color: #ffffff;
+}
+
+.app-shell--competition .league-match-filter-bar select,
+.app-shell--competition .league-chat-card input,
+.app-shell--competition .league-chat-card textarea,
+.app-shell--competition .league-chat-card select,
+.app-shell--competition .league-match-room-dialog input,
+.app-shell--competition .league-match-room-dialog textarea,
+.app-shell--competition .league-match-room-dialog select,
+.app-shell--competition .league-support-panel input,
+.app-shell--competition .league-support-panel select,
+.app-shell--competition .league-support-panel textarea {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-chat-card input::placeholder,
+.app-shell--competition .league-chat-card textarea::placeholder {
+  color: rgba(226, 232, 240, 0.58);
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .league-operation-panel {
+    border-radius: 22px;
+  }
+
+  .app-shell--competition .league-operation-panel > div,
+  .app-shell--competition .league-season-guard,
+  .app-shell--competition .league-chat-card .tournament-chat-list {
+    border-radius: 18px;
+  }
+
+  .app-shell--competition .league-chat-card .tournament-chat-message {
+    padding: 14px;
+  }
+}
+
+/* ----- PDARK-07: personal player areas ----- */
+.app-shell--player .personal-area-page {
+  gap: 16px;
+}
+
+.app-shell--player .personal-area-header {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.72), rgba(6, 17, 31, 0.24)),
+    url("./assets/pdark-profile-ranking-hero.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  border-radius: 22px;
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  min-height: 154px;
+  padding: 24px;
+}
+
+.app-shell--player .personal-area-header span,
+.app-shell--player .personal-area-card header span {
+  color: #4ade80;
+}
+
+.app-shell--player .personal-area-header h1 {
+  color: var(--pdark-text-main);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  letter-spacing: 0;
+  margin: 8px 0 6px;
+}
+
+.app-shell--player .personal-area-header p {
+  color: var(--pdark-text-muted);
+  font-weight: 800;
+  max-width: 68ch;
+}
+
+.app-shell--player .personal-area-grid {
+  align-items: start;
+  gap: 14px;
+}
+
+.app-shell--player .personal-area-card {
+  align-content: start;
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.8)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  border-radius: 20px;
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  gap: 10px;
+  max-height: min(760px, calc(100vh - 230px));
+  overflow: auto;
+  padding: 14px;
+  scrollbar-color: rgba(34, 197, 94, 0.42) rgba(255, 255, 255, 0.06);
+  scrollbar-width: thin;
+}
+
+.app-shell--player .personal-area-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-shell--player .personal-area-card::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.42);
+  border-radius: 999px;
+}
+
+.app-shell--player .personal-area-card header {
+  border-bottom-color: var(--pdark-border-soft);
+  gap: 12px;
+  position: sticky;
+  top: -14px;
+  z-index: 1;
+  background: rgba(8, 20, 36, 0.9);
+  margin: -14px -14px 2px;
+  padding: 14px;
+  backdrop-filter: blur(18px);
+}
+
+.app-shell--player .personal-area-card h2 {
+  color: var(--pdark-text-main);
+  font-size: 1.1rem;
+  line-height: 1.15;
+}
+
+.app-shell--player .personal-area-card header b {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.34);
+  color: #4ade80;
+}
+
+.app-shell--player .personal-area-row {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.078), rgba(255, 255, 255, 0.044)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  border-radius: 16px;
+  color: var(--pdark-text-main);
+  min-height: 76px;
+  padding: 13px 14px;
+}
+
+.app-shell--player button.personal-area-row {
+  cursor: pointer;
+}
+
+.app-shell--player .personal-area-row:hover {
+  border-color: rgba(34, 197, 94, 0.34);
+  transform: translateY(-1px);
+}
+
+.app-shell--player .personal-area-row span {
+  min-width: 0;
+}
+
+.app-shell--player .personal-area-row strong {
+  color: var(--pdark-text-main);
+  font-size: 0.96rem;
+  line-height: 1.18;
+}
+
+.app-shell--player .personal-area-row small {
+  color: var(--pdark-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.28;
+}
+
+.app-shell--player .status-pill {
+  border-color: var(--pdark-border-soft);
+  flex: 0 0 auto;
+}
+
+.app-shell--player .status-pill.tone-ok {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.34);
+  color: #4ade80;
+}
+
+.app-shell--player .status-pill.tone-pending {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.34);
+  color: #fbbf24;
+}
+
+.app-shell--player .status-pill.tone-danger {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.36);
+  color: #fca5a5;
+}
+
+.app-shell--player .status-pill.tone-muted {
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+}
+
+.app-shell--player .personal-area-card .subtle {
+  color: var(--pdark-text-muted);
+  font-weight: 850;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.app-shell--player .personal-area-detail {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .personal-area-detail dl {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.app-shell--player .personal-area-detail dt {
+  color: #4ade80;
+}
+
+.app-shell--player .personal-area-detail dd {
+  color: var(--pdark-text-main);
+}
+
+@media (max-width: 760px) {
+  .app-shell--player .personal-area-page {
+    gap: 12px;
+  }
+
+  .app-shell--player .personal-area-header {
+    border-radius: 18px;
+    min-height: 132px;
+    padding: 18px;
+  }
+
+  .app-shell--player .personal-area-header h1 {
+    font-size: 2rem;
+  }
+
+  .app-shell--player .personal-area-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell--player .personal-area-card {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .app-shell--player .personal-area-card header {
+    position: static;
+  }
+
+  .app-shell--player .personal-area-row {
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 88px;
+  }
+
+  .app-shell--player .personal-area-row .status-pill {
+    max-width: 42%;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
+/* ----- PDARK-08: places, club detail and court booking ----- */
+.app-shell--player .places-intent-panel,
+.app-shell--player .places-discovery-filter,
+.app-shell--player .places-start-state,
+.app-shell--player .places-directory-toolbar,
+.app-shell--player .court-discovery-results,
+.app-shell--player .place-public-page,
+.app-shell--player .place-public-booking-card,
+.app-shell--player .place-public-overview-card,
+.app-shell--player .place-public-about-card,
+.app-shell--player .place-public-plan-card,
+.app-shell--player .place-public-channel-card,
+.app-shell--player .place-public-secondary-info article,
+.app-shell--player #place-public-matches,
+.app-shell--player #place-public-plans {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.94), rgba(8, 20, 36, 0.82)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .places-intent-panel {
+  border-radius: 24px;
+  padding: clamp(16px, 2vw, 22px);
+}
+
+.app-shell--player .places-intent-panel::after {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.58), rgba(6, 17, 31, 0.14)),
+    url("./assets/pdark-club-public-hero.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 20px;
+  min-height: 196px;
+}
+
+.app-shell--player .places-intent-copy span,
+.app-shell--player .places-filter-head span,
+.app-shell--player .places-start-state span,
+.app-shell--player .court-discovery-results-head span,
+.app-shell--player .court-discovery-kicker,
+.app-shell--player .place-public-overview-header span,
+.app-shell--player .place-public-about-card > span,
+.app-shell--player .place-public-booking-header span,
+.app-shell--player .place-public-booking-card > span,
+.app-shell--player #place-public-matches .place-public-booking-header span,
+.app-shell--player #place-public-plans > span {
+  color: #4ade80;
+}
+
+.app-shell--player .places-intent-copy h2,
+.app-shell--player .places-filter-head strong,
+.app-shell--player .places-start-state strong,
+.app-shell--player .court-discovery-results-head h2,
+.app-shell--player .court-discovery-results-head strong,
+.app-shell--player .court-discovery-card strong,
+.app-shell--player .place-public-hero h2,
+.app-shell--player .place-public-overview-header h3,
+.app-shell--player .place-public-overview-tile strong,
+.app-shell--player .place-public-overview-list strong,
+.app-shell--player .place-public-row strong,
+.app-shell--player .place-public-booking-header h3,
+.app-shell--player .place-public-booking-step header strong,
+.app-shell--player .place-public-court-calendar-card header strong,
+.app-shell--player .place-public-plan-card strong,
+.app-shell--player .place-public-about-grid strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .places-intent-copy p,
+.app-shell--player .places-filter-head small,
+.app-shell--player .places-filter-head b,
+.app-shell--player .places-start-state p,
+.app-shell--player .court-discovery-results-head p,
+.app-shell--player .court-discovery-card small,
+.app-shell--player .court-discovery-card em,
+.app-shell--player .place-public-hero p,
+.app-shell--player .place-public-hero span,
+.app-shell--player .place-public-hero small,
+.app-shell--player .place-public-overview-tile small,
+.app-shell--player .place-public-overview-list small,
+.app-shell--player .place-public-row small,
+.app-shell--player .place-public-booking-header p,
+.app-shell--player .place-public-booking-step header small,
+.app-shell--player .place-public-court-calendar-card header small,
+.app-shell--player .place-public-booking-empty span,
+.app-shell--player .place-public-selected-slot span,
+.app-shell--player .place-public-profile-link span,
+.app-shell--player .place-public-profile-link small,
+.app-shell--player .place-public-plan-card small,
+.app-shell--player .place-public-about-grid small {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--player .places-intent-card,
+.app-shell--player .places-intent-strip button {
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(238, 245, 241, 0.94)),
+    url("./assets/surface-court-lines-soft.png") right center / 320px auto no-repeat;
+  border-color: rgba(255, 255, 255, 0.72);
+  border-radius: 16px;
+  color: #061126;
+}
+
+.app-shell--player .places-intent-card strong,
+.app-shell--player .places-intent-strip button strong {
+  color: #061126;
+}
+
+.app-shell--player .places-intent-card span,
+.app-shell--player .places-intent-strip button span {
+  color: #64748b;
+}
+
+.app-shell--player .places-intent-card small {
+  color: #0c6b43;
+}
+
+.app-shell--player .places-intent-card.active,
+.app-shell--player .places-intent-strip button.active {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  border-color: rgba(34, 197, 94, 0.48);
+  color: #ffffff;
+}
+
+.app-shell--player .places-intent-card.active strong,
+.app-shell--player .places-intent-card.active span,
+.app-shell--player .places-intent-card.active small,
+.app-shell--player .places-intent-strip button.active strong,
+.app-shell--player .places-intent-strip button.active span {
+  color: #ffffff;
+}
+
+.app-shell--player .places-discovery-filter:not(.compact)::before {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.66), rgba(6, 17, 31, 0.18)),
+    url("./assets/pdark-court-reservation-thumb.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+}
+
+.app-shell--player .places-discovery-filter[aria-label*="aula"]::before {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.66), rgba(6, 17, 31, 0.18)),
+    url("./assets/hero-lessons-night-premium.png") center / cover no-repeat;
+}
+
+.app-shell--player .places-filter-head,
+.app-shell--player .places-filter-grid,
+.app-shell--player .places-filter-mobile-toggle,
+.app-shell--player .places-scope-tabs,
+.app-shell--player .place-public-action-rail,
+.app-shell--player .place-public-booking-step,
+.app-shell--player .place-public-court-calendar-card,
+.app-shell--player .place-public-overview-tile,
+.app-shell--player .place-public-overview-list button,
+.app-shell--player .place-public-overview-empty,
+.app-shell--player .place-public-row,
+.app-shell--player .place-public-booking-empty,
+.app-shell--player .place-public-selected-slot,
+.app-shell--player .place-public-profile-link,
+.app-shell--player .place-public-booking-feedback,
+.app-shell--player .place-public-class-option,
+.app-shell--player .place-public-selected-class,
+.app-shell--player .place-public-profile-confirmation {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .places-filter-grid input,
+.app-shell--player .places-filter-grid select,
+.app-shell--player .place-public-booking-form input,
+.app-shell--player .place-public-booking-form select,
+.app-shell--player .place-public-booking-form textarea,
+.app-shell--player .place-public-match-create input,
+.app-shell--player .place-public-match-create select,
+.app-shell--player .place-public-match-create textarea,
+.app-shell--player .place-public-match-filter input,
+.app-shell--player .place-public-match-filter select {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .places-filter-grid label,
+.app-shell--player .places-filter-grid legend,
+.app-shell--player .place-public-booking-form label {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--player .places-filter-grid button,
+.app-shell--player .places-filter-grid.court .places-filter-search-button,
+.app-shell--player .places-filter-grid.classes .class-filter-submit,
+.app-shell--player .court-discovery-cta,
+.app-shell--player .place-public-hero-actions button.primary,
+.app-shell--player .place-public-booking-flow-card .place-public-hero-actions button.primary,
+.app-shell--player .place-public-row button.primary,
+.app-shell--player .place-public-sticky-cta button.primary {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  border-color: rgba(34, 197, 94, 0.44);
+  color: #ffffff;
+}
+
+.app-shell--player .places-filter-grid button:not(.primary):not(.places-filter-search-button),
+.app-shell--player .place-public-hero-actions button.secondary,
+.app-shell--player .place-public-hero-actions button.quiet,
+.app-shell--player .place-public-row button,
+.app-shell--player .place-public-action-rail button,
+.app-shell--player .place-public-plan-actions button,
+.app-shell--player .place-public-hour-list button {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .court-discovery-grid {
+  align-items: stretch;
+}
+
+.app-shell--player .court-discovery-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-court-reservation-thumb.png") center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  border-radius: 18px;
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .place-public-hero,
+.app-shell--player .place-public-hero.has-cover,
+.app-shell--player .place-public-hero--visual {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.62), rgba(6, 17, 31, 0.18)),
+    var(--place-cover-image, url("./assets/pdark-club-public-hero.png")) center / cover no-repeat;
+  border-color: var(--pdark-border-soft);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .place-public-hero--visual::before {
+  background: linear-gradient(90deg, rgba(3, 9, 20, 0.58), rgba(3, 9, 20, 0.08));
+}
+
+.app-shell--player .place-public-action-rail button.active,
+.app-shell--player .place-public-hour-list button.selected,
+.app-shell--player .place-public-hour-list button.selected-range,
+.app-shell--player .place-public-class-option.selected {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.38);
+  color: #4ade80;
+}
+
+.app-shell--player .place-public-hour-list button.busy,
+.app-shell--player .place-public-hour-list button.past,
+.app-shell--player .place-public-hour-list button:disabled {
+  background: rgba(148, 163, 184, 0.12);
+  color: rgba(226, 232, 240, 0.5);
+}
+
+.app-shell--player .place-public-sticky-cta {
+  background: rgba(3, 9, 20, 0.92);
+  border-color: var(--pdark-border-soft);
+  backdrop-filter: blur(18px);
+}
+
+@media (max-width: 760px) {
+  .app-shell--player .places-intent-panel {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .app-shell--player .places-intent-copy h2 {
+    color: var(--pdark-text-main);
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+
+  .app-shell--player .places-intent-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--player .places-intent-card {
+    min-height: 92px;
+    padding: 12px;
+  }
+
+  .app-shell--player .places-intent-card strong {
+    font-size: 1rem;
+    line-height: 1.12;
+  }
+
+  .app-shell--player .places-intent-card span,
+  .app-shell--player .places-intent-card small {
+    font-size: 0.78rem;
+  }
+
+  .app-shell--player .places-intent-panel::after {
+    min-height: 126px;
+  }
+
+  .app-shell--player .place-public-hero,
+  .app-shell--player .place-public-hero.has-cover,
+  .app-shell--player .place-public-hero--visual,
+  .app-shell--player .place-public-booking-card,
+  .app-shell--player .place-public-overview-card,
+  .app-shell--player .place-public-about-card {
+    border-radius: 20px;
+  }
+}
