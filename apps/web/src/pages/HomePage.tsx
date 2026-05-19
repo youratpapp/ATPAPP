@@ -1725,18 +1725,21 @@ export function HomePage({ user, profile }: Props) {
       label: "Pendencias",
       value: notificationCount,
       detail: notificationCount > 0 ? "pedem sua acao" : "sem urgencias",
+      targetPath: nextPlayerPriority?.targetPath || "/inicio",
     },
     {
       key: "agenda",
       label: "Agenda",
       value: agendaItems.length,
       detail: nextAgendaLabel,
+      targetPath: nextPlayerAgenda?.targetPath || "/minhas-reservas",
     },
     {
       key: "routine",
       label: "Rotina",
       value: totalPlayerHubItems,
       detail: "itens no seu painel",
+      targetPath: playerHubSections[0]?.key === "reservations" ? "/minhas-reservas" : "/perfil",
     },
   ];
 
@@ -1826,12 +1829,17 @@ export function HomePage({ user, profile }: Props) {
           </div>
           <div className="home-command-stats" aria-label="Indicadores do jogador">
             {homeStatCards.map((stat) => (
-              <article className={`home-command-stat home-command-stat--${stat.key}`} key={stat.key}>
+              <button
+                type="button"
+                className={`home-command-stat home-command-stat--${stat.key}`}
+                key={stat.key}
+                onClick={() => navigate(stat.targetPath)}
+              >
                 <span aria-hidden />
                 <strong>{stat.value}</strong>
                 <small>{stat.label}</small>
                 <em>{stat.detail}</em>
-              </article>
+              </button>
             ))}
           </div>
         </div>

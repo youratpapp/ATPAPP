@@ -358,6 +358,13 @@ Entrega sprint 2/3:
 5. `/eventos/torneios` e `/eventos/ligas` receberam camada premium dark em cards, filtros, estados vazios, KPIs e modais de criacao.
 6. `/ranking` foi alinhado visualmente a Competicoes, com hero dark, controles, tabela e cards de posicao em superficies glass.
 
+Entrega revisao pagina-a-pagina:
+
+1. Hub de Competicoes foi recalibrado contra screenshot: no desktop segue composicao hero + KPIs + atalhos + paineis; no mobile deixou de cortar cards em carrossel horizontal e passou a usar grids contidos.
+2. Botoes secundarios de Competicoes, Torneios/Ligas e descoberta deixaram de usar superficies brancas, mantendo contraste dark e estados hover verdes.
+3. O alternador Trabalho/Jogador e os links operacionais foram harmonizados para nao quebrar o DNA premium dark.
+4. A revisao preservou rotas, dados, filtros, inscricoes, ligas, torneios, ranking e navegacao existentes.
+
 Evidencias:
 
 - `docs/screenshots/visual-local-audit-2026-05-18/desktop-events-hub.png`

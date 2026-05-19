@@ -27678,10 +27678,29 @@ body:has(.app-shell--player .home-player-os--visual),
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  cursor: pointer;
   display: grid;
   gap: 3px;
   min-height: 98px;
   padding: 14px;
+  text-align: left;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-stat:hover,
+.app-shell--player:has(.home-player-os--visual) .home-command-stat:focus-visible {
+  background:
+    radial-gradient(circle at 82% 10%, rgba(34, 197, 94, 0.18), transparent 5rem),
+    rgba(8, 20, 36, 0.86);
+  border-color: rgba(74, 222, 128, 0.36);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-stat:active {
+  transform: translateY(0);
 }
 
 .app-shell--player:has(.home-player-os--visual) .home-command-stat span {
@@ -28038,6 +28057,7 @@ body:has(.app-shell--player .home-player-os--visual),
 
   .app-shell--player:has(.home-player-os--visual) .home-command-stat {
     border-radius: 14px;
+    gap: 2px;
     min-height: 88px;
     padding: 8px;
   }
@@ -28171,5 +28191,456 @@ body:has(.app-shell--player .home-player-os--visual),
 
   .app-shell--player:has(.home-player-os--visual) .home-intent-rail--visual button small {
     font-size: 0.68rem;
+  }
+}
+
+/* ----- ATP fluid page system: dark DNA para demais paginas ----- */
+html:has(.app-shell--player),
+body:has(.app-shell--player),
+#root:has(.app-shell--player),
+html:has(.app-shell--competition),
+body:has(.app-shell--competition),
+#root:has(.app-shell--competition) {
+  background: #030914;
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)),
+.app-shell--competition {
+  background:
+    radial-gradient(circle at 82% 2%, rgba(34, 197, 94, 0.13), transparent 30rem),
+    radial-gradient(circle at 8% 0%, rgba(56, 189, 248, 0.08), transparent 24rem),
+    linear-gradient(180deg, #06111f 0%, #030914 100%);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .app-content,
+.app-shell--competition .app-content {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.9), rgba(3, 9, 20, 0.58) 48%, rgba(3, 9, 20, 0.88)),
+    url("./assets/pdark-home-player-desktop-hero.png") center top / cover fixed no-repeat,
+    #030914;
+  color: var(--pdark-text-main);
+  overflow-x: hidden;
+}
+
+.app-shell--competition .app-content {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.92), rgba(3, 9, 20, 0.62) 48%, rgba(3, 9, 20, 0.9)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") center top / cover fixed no-repeat,
+    #030914;
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .app-content > *,
+.app-shell--competition .app-content > * {
+  max-width: 1220px;
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .page-header h1,
+.app-shell--player:not(:has(.home-player-os--visual)) .app-page-header h1,
+.app-shell--competition .page-header h1,
+.app-shell--competition .app-page-header h1,
+.app-shell--player:not(:has(.home-player-os--visual)) .section-title h2,
+.app-shell--competition .section-title h2 {
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.36);
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .page-intro,
+.app-shell--player:not(:has(.home-player-os--visual)) .app-page-header p,
+.app-shell--competition .page-intro,
+.app-shell--competition .app-page-header p,
+.app-shell--competition .section-title p {
+  color: rgba(203, 213, 225, 0.82);
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .page-header,
+.app-shell--player:not(:has(.home-player-os--visual)) .app-page-header,
+.app-shell--competition .page-header,
+.app-shell--competition .app-page-header {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-photo-block,
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-panel,
+.app-shell--player:not(:has(.home-player-os--visual)) .personal-area-header,
+.app-shell--player:not(:has(.home-player-os--visual)) .app-visual-hero,
+.app-shell--competition .app-visual-hero,
+.app-shell--competition .events-filter-card,
+.app-shell--competition .events-all-disclosure,
+.app-shell--competition .organizer-tournament-command,
+.app-shell--competition .competition-discovery-card,
+.app-shell--competition .league-room-card,
+.app-shell--competition .tournament-games-card {
+  background:
+    linear-gradient(180deg, rgba(8, 20, 36, 0.9), rgba(5, 14, 28, 0.82)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: rgba(255, 255, 255, 0.13);
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-purpose-tabs,
+.app-shell--competition .events-filter-card,
+.app-shell--competition .events-all-disclosure,
+.app-shell--competition .competition-command-center {
+  backdrop-filter: blur(18px);
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-card,
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-strip button,
+.app-shell--player:not(:has(.home-player-os--visual)) .places-discovery-filter,
+.app-shell--player:not(:has(.home-player-os--visual)) .places-directory-toolbar,
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-rows-card,
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-activity-card,
+.app-shell--player:not(:has(.home-player-os--visual)) .personal-area-card,
+.app-shell--player:not(:has(.home-player-os--visual)) .personal-area-row,
+.app-shell--competition .events-kpi-card,
+.app-shell--competition .events-result-list,
+.app-shell--competition .events-result-list.organizing,
+.app-shell--competition .events-all-disclosure summary,
+.app-shell--competition .organizer-tournament-row {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.8)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-card strong,
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-strip button strong,
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-row .pr-value,
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-activity-card strong,
+.app-shell--player:not(:has(.home-player-os--visual)) .personal-area-card h2,
+.app-shell--player:not(:has(.home-player-os--visual)) .personal-area-row strong,
+.app-shell--competition .events-kpi-value,
+.app-shell--competition .events-result-head span,
+.app-shell--competition .organizer-tournament-main strong,
+.app-shell--competition .events-filter-disclosure summary span {
+  color: #ffffff;
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-card small,
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-copy span,
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-row .pr-label,
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-location,
+.app-shell--player:not(:has(.home-player-os--visual)) .personal-area-row small,
+.app-shell--competition .events-kpi-label,
+.app-shell--competition .organizer-tournament-main small,
+.app-shell--competition .organizer-tournament-meta small,
+.app-shell--competition .events-filter-disclosure summary small {
+  color: rgba(203, 213, 225, 0.78);
+}
+
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-card.active,
+.app-shell--player:not(:has(.home-player-os--visual)) .places-intent-strip button.active,
+.app-shell--player:not(:has(.home-player-os--visual)) .profile-purpose-tabs button.active,
+.app-shell--competition .competition-discovery-action.active,
+.app-shell--competition .competition-tab.active,
+.app-shell--competition .events-view-button.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(74, 222, 128, 0.46);
+  color: #ffffff;
+  box-shadow: 0 14px 34px rgba(34, 197, 94, 0.22);
+}
+
+@media (max-width: 760px) {
+  .app-shell--player:not(:has(.home-player-os--visual)) .app-content,
+  .app-shell--competition .app-content {
+    background:
+      linear-gradient(180deg, rgba(3, 9, 20, 0.9), rgba(3, 9, 20, 0.98)),
+      url("./assets/pdark-home-player-mobile-hero.png") center top / cover fixed no-repeat,
+      #030914;
+    overflow-x: hidden;
+    padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app-shell--competition .app-content {
+    background:
+      linear-gradient(180deg, rgba(3, 9, 20, 0.9), rgba(3, 9, 20, 0.98)),
+      url("./assets/pdark-competitions-mobile-hero.png") center top / cover fixed no-repeat,
+      #030914;
+  }
+
+  .app-shell--player:not(:has(.home-player-os--visual)) .page-header h1,
+  .app-shell--player:not(:has(.home-player-os--visual)) .app-page-header h1,
+  .app-shell--competition .page-header h1,
+  .app-shell--competition .app-page-header h1 {
+    font-size: clamp(2.1rem, 10vw, 3.05rem);
+    line-height: 1.02;
+  }
+
+  .app-shell--player:not(:has(.home-player-os--visual)) .profile-photo-block,
+  .app-shell--player:not(:has(.home-player-os--visual)) .places-intent-panel,
+  .app-shell--player:not(:has(.home-player-os--visual)) .personal-area-header,
+  .app-shell--player:not(:has(.home-player-os--visual)) .app-visual-hero,
+  .app-shell--competition .app-visual-hero {
+    border-radius: 24px;
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .app-shell--competition .events-kpi-grid:not(.organizing-summary),
+  .app-shell--competition .competition-feature-grid,
+  .app-shell--competition .competition-discovery-grid {
+    display: grid;
+    gap: 10px;
+    grid-auto-columns: minmax(220px, 78vw);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+
+  .app-shell--competition .events-kpi-grid:not(.organizing-summary)::-webkit-scrollbar,
+  .app-shell--competition .competition-feature-grid::-webkit-scrollbar,
+  .app-shell--competition .competition-discovery-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app-shell--competition .events-result-list,
+  .app-shell--competition .events-result-list.organizing,
+  .app-shell--competition .organizer-tournament-list,
+  .app-shell--player:not(:has(.home-player-os--visual)) .personal-area-grid,
+  .app-shell--player:not(:has(.home-player-os--visual)) .profile-activity-grid,
+  .app-shell--player:not(:has(.home-player-os--visual)) .places-intent-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 100%;
+  }
+
+  .app-shell--competition .organizer-tournament-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--competition .events-filter-grid,
+  .app-shell--player:not(:has(.home-player-os--visual)) .places-filter-grid.court,
+  .app-shell--player:not(:has(.home-player-os--visual)) .places-filter-grid.classes,
+  .app-shell--player:not(:has(.home-player-os--visual)) .places-filter-grid.matches {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player:not(:has(.home-player-os--visual)) .places-intent-card,
+  .app-shell--player:not(:has(.home-player-os--visual)) .places-intent-strip button,
+  .app-shell--competition .events-kpi-card,
+  .app-shell--competition .competition-discovery-card,
+  .app-shell--competition .organizer-tournament-row {
+    min-width: 0;
+    overflow: hidden;
+  }
+}
+
+/* ----- ATP global dark sprint: mobile-contained competition hub ----- */
+.app-shell--competition .competition-work-link,
+.app-shell--competition .competition-discovery-action,
+.app-shell--competition .competition-intent-pill:not(.active) {
+  background:
+    linear-gradient(180deg, rgba(13, 28, 47, 0.92), rgba(6, 17, 33, 0.86)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.app-shell--competition .competition-work-link:hover,
+.app-shell--competition .competition-work-link:focus-visible,
+.app-shell--competition .competition-discovery-action:hover,
+.app-shell--competition .competition-discovery-action:focus-visible,
+.app-shell--competition .competition-intent-pill:not(.active):hover,
+.app-shell--competition .competition-intent-pill:not(.active):focus-visible {
+  background:
+    linear-gradient(180deg, rgba(17, 82, 58, 0.9), rgba(8, 24, 40, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border-color: rgba(74, 222, 128, 0.42);
+  color: #ffffff;
+}
+
+.app-shell--competition .competition-work-link .hub-action-count,
+.app-shell--competition .competition-intent-pill:not(.active) .hub-action-count {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: rgba(74, 222, 128, 0.36);
+  color: #86efac;
+}
+
+.app-shell--competition .competition-intent-pill strong,
+.app-shell--competition .competition-work-link,
+.app-shell--competition .competition-discovery-action strong {
+  color: #ffffff;
+}
+
+.app-shell--competition .competition-intent-pill small,
+.app-shell--competition .competition-discovery-action small {
+  color: rgba(203, 213, 225, 0.8);
+}
+
+.app-shell--competition .competition-discovery-action .qa-icon {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(74, 222, 128, 0.32);
+  color: #4ade80;
+}
+
+.app-shell--player .app-mode-switch,
+.app-shell--competition .app-mode-switch,
+.app-shell--management .app-mode-switch,
+.app-shell--management .management-mode-switch {
+  background: rgba(8, 20, 36, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.app-shell--player .app-mode-switch button:not(.active),
+.app-shell--competition .app-mode-switch button:not(.active),
+.app-shell--management .app-mode-switch button:not(.active),
+.app-shell--competition .compact-action:not(.primary),
+.app-shell--competition .competition-discovery-head button,
+.app-shell--management .compact-action:not(.primary),
+.app-shell--management .management-mode-switch button {
+  background: rgba(15, 28, 46, 0.88);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(241, 245, 249, 0.9);
+}
+
+.app-shell--management .management-mode-switch span {
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid rgba(74, 222, 128, 0.32);
+  border-radius: var(--radius-pill);
+  color: #86efac;
+}
+
+.app-shell--player .app-mode-switch button:not(.active):hover,
+.app-shell--player .app-mode-switch button:not(.active):focus-visible,
+.app-shell--competition .app-mode-switch button:not(.active):hover,
+.app-shell--competition .app-mode-switch button:not(.active):focus-visible,
+.app-shell--management .app-mode-switch button:not(.active):hover,
+.app-shell--management .app-mode-switch button:not(.active):focus-visible,
+.app-shell--competition .compact-action:not(.primary):hover,
+.app-shell--competition .compact-action:not(.primary):focus-visible,
+.app-shell--competition .competition-discovery-head button:hover,
+.app-shell--competition .competition-discovery-head button:focus-visible,
+.app-shell--management .compact-action:not(.primary):hover,
+.app-shell--management .compact-action:not(.primary):focus-visible,
+.app-shell--management .management-mode-switch button:hover,
+.app-shell--management .management-mode-switch button:focus-visible {
+  background: rgba(18, 58, 46, 0.9);
+  border-color: rgba(74, 222, 128, 0.34);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .competition-command-center,
+  .app-shell--competition .competition-feature-grid,
+  .app-shell--competition .competition-discovery-grid,
+  .app-shell--competition .events-result-list,
+  .app-shell--competition .events-result-list.organizing {
+    max-width: 100%;
+    overflow: visible;
+    width: 100%;
+  }
+
+  .app-shell--competition .competition-command-center .events-kpi-grid:not(.organizing-summary),
+  .app-shell--competition .events-kpi-grid:not(.organizing-summary) {
+    display: grid;
+    gap: 10px;
+    grid-auto-columns: unset;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .app-shell--competition .events-kpi-card {
+    align-content: start;
+    border-radius: 16px;
+    min-height: 102px;
+    padding: 12px;
+  }
+
+  .app-shell--competition .events-kpi-value {
+    font-size: clamp(1.35rem, 7vw, 1.7rem);
+    line-height: 1;
+  }
+
+  .app-shell--competition .events-kpi-label,
+  .app-shell--competition .events-kpi-card small {
+    font-size: 0.68rem;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+  }
+
+  .app-shell--competition .competition-feature-grid,
+  .app-shell--competition .competition-discovery-grid {
+    display: grid;
+    gap: 12px;
+    grid-auto-columns: unset;
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .app-shell--competition .competition-feature-panel {
+    min-height: 0;
+    padding: 14px;
+    width: 100%;
+  }
+
+  .app-shell--competition .competition-feature-panel > button,
+  .app-shell--competition .competition-feature-panel header,
+  .app-shell--competition .competition-intent-pill,
+  .app-shell--competition .competition-work-link,
+  .app-shell--competition .competition-discovery-action {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .app-shell--competition .competition-intent-strip {
+    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .app-shell--competition .competition-intent-pill,
+  .app-shell--competition .competition-work-link {
+    border-radius: 16px;
+    font-size: 0.76rem;
+    min-height: 70px;
+    padding: 10px;
+  }
+
+  .app-shell--competition .competition-intent-pill {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .app-shell--competition .competition-intent-pill small {
+    display: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .app-shell--competition .competition-command-center .events-kpi-grid:not(.organizing-summary),
+  .app-shell--competition .events-kpi-grid:not(.organizing-summary) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .competition-hub-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .competition-hub-tabs button {
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    padding: 8px 4px;
+    white-space: normal;
+  }
+
+  .app-shell--competition .competition-intent-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .competition-work-link {
+    justify-content: space-between;
   }
 }

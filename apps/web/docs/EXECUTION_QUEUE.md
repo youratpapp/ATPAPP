@@ -386,6 +386,21 @@ Proximo item:
 
 - Nenhum item pendente na queue global ATP Premium Dark; proximos ajustes devem nascer como polish secundario a partir do relatorio de gaps.
 
+Entrega sprint pagina-a-pagina em 2026-05-19:
+
+1. Home jogador foi refinada para o mesmo DNA da referencia: hero escuro cinematografico, atalhos compactos, indicadores acionaveis e cards de proximos passos sem sobreposicao no mobile.
+2. Competições hub foi reorganizada com base no padrao da referencia desktop: hero + KPIs + atalhos + paineis funcionais, com mobile contido em grids verticais em vez de carrossel cortado.
+3. Rotas internas de Torneios/Ligas, Ranking, Locais, Reservas, Perfil e Gestao receberam camada transversal para manter fundo deep navy, superficies glass, texto legivel e CTAs coerentes.
+4. Estados claros remanescentes foram neutralizados em botoes secundarios, alternadores Jogador/Trabalho, links de trabalho e acoes de descoberta, preservando verde apenas para CTAs primarios/ativos.
+5. Bottom nav, sidebar e shell continuam usando as mesmas rotas e funcoes, mas com contraste, hierarquia e espacamento alinhados ao app premium dark.
+
+Validacao sprint pagina-a-pagina:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou `docs/screenshots/visual-local-audit-2026-05-18/`.
+- Screenshots revisadas: `mobile-events-hub.png`, `desktop-events-hub.png`, `mobile-tournaments.png`, `mobile-places-overview.png`, `mobile-profile.png`, `mobile-management.png`, `desktop-management.png`.
+
 ## Sprint atual - Referencias visuais ATP premium
 
 Fonte:
