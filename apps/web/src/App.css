@@ -21545,6 +21545,628 @@ button.app-object-row:hover:not(:disabled) {
   }
 }
 
+/* ----- REF-COMP/PROFILE: premium screenshot sprint ----- */
+.app-shell--competition {
+  background:
+    radial-gradient(circle at 88% 2%, rgba(216, 244, 73, 0.16), transparent 18rem),
+    url("./assets/surface-court-lines-soft.png") center top / 1500px auto no-repeat,
+    linear-gradient(180deg, #f7fbf9 0%, #ffffff 56%, #f8fafc 100%);
+}
+
+.app-shell--competition .page-header {
+  align-items: flex-end;
+  background:
+    linear-gradient(90deg, rgba(3, 10, 24, 0.96) 0%, rgba(5, 28, 39, 0.82) 52%, rgba(6, 66, 54, 0.32) 100%),
+    url("./assets/hero-competition-court-premium.png") center / cover no-repeat;
+  border: 1px solid rgba(167, 227, 196, 0.22);
+  border-radius: 24px;
+  box-shadow: 0 22px 58px rgba(2, 8, 19, 0.16);
+  color: #ffffff;
+  margin-bottom: var(--space-4);
+  min-height: 210px;
+  overflow: hidden;
+  padding: clamp(24px, 4vw, 42px);
+  position: relative;
+}
+
+.app-shell--competition .page-header::after {
+  background: radial-gradient(circle at 92% 84%, rgba(216, 244, 73, 0.3), transparent 12rem);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.app-shell--competition .page-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell--competition .page-header h1,
+.app-shell--competition .page-intro {
+  color: #ffffff;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+.app-shell--competition .page-header h1 {
+  font-size: 2.35rem;
+  line-height: 1;
+  max-width: 12ch;
+}
+
+.app-shell--competition .page-intro {
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 820;
+  max-width: 46ch;
+}
+
+.app-shell--competition .page-header .compact-action {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 30px rgba(2, 8, 19, 0.18);
+  color: #061126;
+}
+
+.app-shell--competition .page-header .compact-action.primary {
+  background: #0f8b55;
+  border-color: #0f8b55;
+  color: #ffffff;
+}
+
+.app-shell--competition .competition-intent-strip {
+  gap: 10px;
+  margin-bottom: var(--space-4);
+}
+
+.app-shell--competition .competition-intent-pill,
+.app-shell--competition .competition-discovery-action,
+.app-shell--competition .events-kpi-card,
+.app-shell--competition .events-filter-card,
+.app-shell--competition .event-card,
+.app-shell--competition .organizer-tournament-command,
+.app-shell--competition .competition-discovery-card,
+.app-shell--competition .competition-operation-row {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(197, 210, 220, 0.82);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(8, 18, 37, 0.08);
+}
+
+.app-shell--competition .competition-intent-pill {
+  min-height: 66px;
+}
+
+.app-shell--competition .competition-intent-pill.active {
+  background:
+    linear-gradient(135deg, rgba(15, 139, 85, 0.98), rgba(5, 32, 55, 0.98)),
+    url("./assets/surface-court-lines-soft.png") center / 900px auto no-repeat;
+  border-color: rgba(167, 227, 196, 0.34);
+  box-shadow: 0 16px 38px rgba(2, 68, 47, 0.24);
+}
+
+.app-shell--competition .flow-card,
+.app-shell--competition .competition-discovery {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 252, 250, 0.94)),
+    url("./assets/surface-court-lines-soft.png") right top / 900px auto no-repeat;
+  border-color: rgba(197, 210, 220, 0.78);
+  border-radius: 20px;
+  box-shadow: 0 18px 48px rgba(8, 18, 37, 0.1);
+}
+
+.app-shell--competition .competition-discovery-grid {
+  gap: 10px;
+}
+
+.app-shell--competition .competition-discovery-action .qa-icon,
+.app-shell--competition .profile-row .pr-icon {
+  background: #ecfdf5;
+  border-color: #b8eacb;
+  color: #0c6b43;
+}
+
+.app-shell--competition .competition-discovery-card {
+  overflow: hidden;
+  position: relative;
+}
+
+.app-shell--competition .competition-discovery-card::before {
+  background:
+    linear-gradient(180deg, rgba(3, 10, 24, 0.06), rgba(3, 10, 24, 0)),
+    url("./assets/card-event-night-premium.png") center / cover no-repeat;
+  content: "";
+  height: 54px;
+  left: 0;
+  opacity: 0.92;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.app-shell--competition .competition-discovery-card > div,
+.app-shell--competition .competition-discovery-card footer {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell--competition .competition-discovery-card > div {
+  padding-top: 46px;
+}
+
+.app-shell--competition .events-kpi-grid {
+  gap: 10px;
+}
+
+.app-shell--competition .events-kpi-card {
+  overflow: hidden;
+  padding: 12px 14px;
+  position: relative;
+}
+
+.app-shell--competition .events-kpi-card::after {
+  background: #0f8b55;
+  border-radius: 999px;
+  content: "";
+  height: 6px;
+  left: 14px;
+  position: absolute;
+  right: auto;
+  top: 12px;
+  width: 32px;
+}
+
+.app-shell--competition .events-kpi-label {
+  font-weight: 900;
+  margin-top: 12px;
+}
+
+.app-shell--competition .events-kpi-value {
+  color: #061126;
+  font-size: 1.55rem;
+  font-weight: 950;
+}
+
+.app-shell--competition .screen-state {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 24, 0.96), rgba(5, 42, 44, 0.84)),
+    url("./assets/hero-competition-court-premium.png") center / cover no-repeat;
+  border: 1px solid rgba(167, 227, 196, 0.22);
+  border-radius: 22px;
+  box-shadow: 0 18px 46px rgba(2, 8, 19, 0.18);
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: var(--space-4);
+  min-height: 250px;
+  padding: var(--space-6);
+}
+
+.app-shell--competition .screen-state > strong,
+.app-shell--competition .screen-state p,
+.app-shell--competition .screen-state-icon {
+  color: #ffffff;
+}
+
+.app-shell--competition .screen-state p {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.app-shell--competition .screen-state button {
+  background: #0f8b55;
+  border-color: #0f8b55;
+  color: #ffffff;
+}
+
+.app-shell--competition .event-card .ec-poster-placeholder {
+  background:
+    linear-gradient(135deg, rgba(3, 10, 24, 0.9), rgba(9, 92, 68, 0.78)),
+    url("./assets/card-event-night-premium.png") center / cover no-repeat;
+}
+
+.profile-photo-block {
+  background:
+    linear-gradient(90deg, rgba(3, 10, 24, 0.96) 0%, rgba(5, 30, 45, 0.84) 52%, rgba(6, 66, 54, 0.36) 100%),
+    url("./assets/hero-profile-player-premium.png") center / cover no-repeat;
+  border: 1px solid rgba(167, 227, 196, 0.22);
+  border-radius: 24px;
+  box-shadow: 0 22px 58px rgba(2, 8, 19, 0.16);
+  color: #ffffff;
+  margin-bottom: var(--space-4);
+  min-height: 250px;
+  overflow: hidden;
+  padding: var(--space-6) var(--space-4);
+  position: relative;
+}
+
+.profile-photo-block::after {
+  background: radial-gradient(circle at 86% 78%, rgba(216, 244, 73, 0.26), transparent 13rem);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.profile-photo-block > * {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-photo,
+.profile-photo-inner {
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid rgba(255, 255, 255, 0.86);
+  box-shadow: 0 16px 42px rgba(1, 8, 20, 0.28);
+  color: #0c6b43;
+}
+
+.profile-photo .photo-edit {
+  background: #0f8b55;
+  border-color: rgba(255, 255, 255, 0.72);
+  color: #ffffff;
+}
+
+.profile-name {
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 950;
+  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+}
+
+.profile-location {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 820;
+}
+
+.profile-identity-pills span {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+}
+
+.profile-purpose-tabs,
+.profile-rows-card,
+.profile-activity-card {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(197, 210, 220, 0.82);
+  border-radius: 16px;
+  box-shadow: 0 14px 34px rgba(8, 18, 37, 0.08);
+}
+
+.profile-purpose-tabs {
+  padding: 5px;
+}
+
+.profile-purpose-tabs button.active {
+  background: linear-gradient(135deg, #0f8b55, #073c55);
+}
+
+.profile-row {
+  padding: 14px 16px;
+}
+
+.profile-row .pr-icon,
+.profile-activity-kpi {
+  background: #ecfdf5;
+  border: 1px solid #b8eacb;
+  color: #0c6b43;
+}
+
+.profile-activity-kpi {
+  border-radius: 14px;
+  box-shadow: none;
+  padding: 12px;
+}
+
+.profile-activity-kpi strong {
+  font-weight: 950;
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition {
+    background:
+      radial-gradient(circle at 86% 4%, rgba(216, 244, 73, 0.16), transparent 13rem),
+      radial-gradient(circle at 18% 20%, rgba(34, 167, 102, 0.11), transparent 15rem),
+      linear-gradient(180deg, #061126 0%, #071426 42%, #f7faf9 42.2%, #ffffff 100%);
+  }
+
+  .app-shell--competition .app-header {
+    background: rgba(5, 15, 33, 0.94);
+    border-bottom-color: rgba(167, 227, 196, 0.14);
+    box-shadow: 0 12px 34px rgba(2, 8, 19, 0.26);
+    padding: calc(8px + env(safe-area-inset-top, 0px)) 12px 9px;
+  }
+
+  .app-shell--competition .app-header-inner {
+    min-height: 48px;
+  }
+
+  .app-shell--competition .app-header-greeting .avatar {
+    background: linear-gradient(145deg, #ff9f1c, #ff8a00);
+    border-color: rgba(167, 227, 196, 0.42);
+    border-radius: 14px;
+    color: #ffffff;
+    height: 38px;
+    width: 38px;
+  }
+
+  .app-shell--competition .app-header-greeting .greeting-name {
+    color: #ffffff;
+    font-size: var(--font-size-sm);
+    max-width: 112px;
+  }
+
+  .app-shell--competition .app-mode-switch {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .app-shell--competition .app-mode-switch button {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: var(--font-size-xs);
+    min-height: 30px;
+    padding: 5px 9px;
+  }
+
+  .app-shell--competition .app-mode-switch button.active {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+    color: #ffffff;
+  }
+
+  .app-shell--competition .icon-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    height: 38px;
+    width: 38px;
+  }
+
+  .app-shell--competition .page-header {
+    align-items: flex-start;
+    border-radius: 22px;
+    display: grid;
+    gap: 10px;
+    margin-bottom: 12px;
+    min-height: 172px;
+    padding: 18px;
+  }
+
+  .app-shell--competition .page-header h1 {
+    font-size: 1.62rem;
+    line-height: 0.98;
+    max-width: 13ch;
+  }
+
+  .app-shell--competition .page-intro {
+    font-size: 0.78rem;
+    line-height: 1.32;
+    max-width: 29ch;
+  }
+
+  .app-shell--competition .page-header .ph-actions {
+    display: flex;
+    width: 100%;
+  }
+
+  .app-shell--competition .page-header .compact-action {
+    min-height: 38px;
+    padding-inline: 12px;
+  }
+
+  .app-shell--competition .page-header .compact-action span:last-child {
+    display: inline;
+  }
+
+  .app-shell--competition .competition-intent-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-left: 0;
+    margin-right: 0;
+    padding-inline: 0;
+    gap: 8px;
+  }
+
+  .app-shell--competition .competition-intent-pill {
+    border-radius: 14px;
+    min-height: 52px;
+    padding: 7px 8px;
+  }
+
+  .app-shell--competition .competition-intent-pill strong {
+    font-size: 0.74rem;
+  }
+
+  .app-shell--competition .competition-intent-pill small {
+    font-size: 0.62rem;
+    line-height: 1.22;
+  }
+
+  .app-shell--competition .flow-card,
+  .app-shell--competition .competition-discovery {
+    border-radius: 18px;
+    padding: 13px;
+  }
+
+  .app-shell--competition .flow-card h3,
+  .app-shell--competition .competition-discovery-head strong {
+    font-size: 1rem;
+  }
+
+  .app-shell--competition .flow-card .subtle {
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+
+  .app-shell--competition .competition-discovery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .app-shell--competition .competition-discovery-action {
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 92px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .app-shell--competition .competition-discovery-action .qa-icon {
+    border-radius: 12px;
+    height: 36px;
+    width: 36px;
+  }
+
+  .app-shell--competition .competition-discovery-action strong {
+    font-size: 0.82rem;
+    line-height: 1.1;
+  }
+
+  .app-shell--competition .competition-discovery-action small {
+    display: none;
+  }
+
+  .app-shell--competition .competition-discovery-section {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+
+  .app-shell--competition .competition-discovery-head {
+    align-items: center;
+    display: flex;
+  }
+
+  .app-shell--competition .competition-discovery-head span {
+    font-size: 0.68rem;
+  }
+
+  .app-shell--competition .competition-discovery-head button {
+    min-height: 34px;
+    padding-inline: 12px;
+  }
+
+  .app-shell--competition .screen-state {
+    min-height: 220px;
+    padding: var(--space-4);
+  }
+
+  .app-shell--competition .bottom-nav.is-competition {
+    background: rgba(5, 15, 33, 0.96);
+    border-top-color: rgba(167, 227, 196, 0.14);
+    box-shadow: 0 -14px 34px rgba(1, 7, 18, 0.28);
+  }
+
+  .app-shell--competition .bottom-nav.is-competition button {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .app-shell--competition .bottom-nav.is-competition button.active {
+    background: #0f8b55;
+    color: #ffffff;
+  }
+
+  .profile-photo-block {
+    align-items: flex-start;
+    border-radius: 18px;
+    margin-bottom: var(--space-3);
+    gap: 5px;
+    min-height: 0;
+    padding: 14px;
+    text-align: left;
+  }
+
+  .app-shell--player .page-header:has(+ .profile-photo-block) {
+    align-items: center;
+    display: flex;
+    gap: var(--space-2);
+    justify-content: space-between;
+    margin-bottom: 10px;
+    min-height: 0;
+    padding-top: 0;
+  }
+
+  .app-shell--player .page-header:has(+ .profile-photo-block) h1 {
+    font-size: 1.65rem;
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  .app-shell--player .page-header:has(+ .profile-photo-block) .ph-actions {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    width: auto;
+  }
+
+  .app-shell--player .page-header:has(+ .profile-photo-block) .ph-icon-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    flex: 0 0 38px;
+    height: 38px;
+    width: 38px;
+  }
+
+  .profile-photo,
+  .profile-photo-inner {
+    font-size: 1.25rem;
+    height: 58px !important;
+    width: 58px !important;
+  }
+
+  .profile-photo .photo-edit {
+    height: 24px;
+    width: 24px;
+  }
+
+  .profile-name {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .profile-location {
+    font-size: 0.76rem;
+    text-align: left;
+  }
+
+  .profile-identity-pills {
+    gap: 5px;
+    justify-content: flex-start;
+  }
+
+  .profile-identity-pills span {
+    font-size: 0.63rem;
+    padding: 3px 7px;
+  }
+
+  .profile-purpose-tabs {
+    border-radius: 14px;
+    margin-bottom: 10px;
+  }
+
+  .profile-purpose-tabs button {
+    font-size: 0.72rem;
+    min-height: 34px;
+    padding-inline: 8px;
+  }
+
+  .profile-row {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .profile-row .pr-icon {
+    border-radius: 12px;
+    height: 34px;
+    width: 34px;
+  }
+
+  .profile-row .pr-label {
+    font-size: 0.8rem;
+  }
+
+  .profile-row .pr-value {
+    font-size: 0.9rem;
+  }
+}
+
 /* ----- REF-VISUAL-02: Locais visual composition ----- */
 .places-intent-panel {
   position: relative;

@@ -949,7 +949,7 @@
       "Perfil"
     ],
     "cards": 1,
-    "textSample": "Competições Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma. Jogando partidas e inscrições Descobrir torneios e ligas Trabalho 9 Descobrir Entrada leve para encontrar competições e locais, sem fila administrativa. Torneios Veja torneios em que você joga ou entre por código. Ligas Acesse ligas em que você participa. Encontrar locais Veja clubes e academias publicas. Modo organizador Crie torneios e ligas em uma area separada. DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. Inicio Competir Locais Ranking Perfil"
+    "textSample": "Competições Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma. Jogando partidas e inscrições Descobrir torneios e ligas Trabalho 9 Descobrir Entrada leve para encontrar competições e locais, sem fila administrativa. Torneios Ligas Encontrar locais Modo organizador DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. Inicio Competir Locais Ranking Perfil"
   },
   {
     "viewport": "mobile",
@@ -971,7 +971,7 @@
       "Perfil"
     ],
     "cards": 2,
-    "textSample": "Ligas que jogo Acompanhe somente ligas em que você participa como jogador. Jogando 0 Ativas 3 ATP Você ainda não participa de ligas Volte ao hub de competições para encontrar torneios, ligas e convites. Voltar para competições Inicio Competir Locais Ranking Perfil"
+    "textSample": "Ligas que jogo Acompanhe somente ligas em que você participa como jogador. Voltar Jogando 0 Ativas 3 ATP Você ainda não participa de ligas Volte ao hub de competições para encontrar torneios, ligas e convites. Voltar para competições Inicio Competir Locais Ranking Perfil"
   },
   {
     "viewport": "mobile",
@@ -994,7 +994,7 @@
       "Perfil"
     ],
     "cards": 0,
-    "textSample": "Torneios que jogo Acompanhe somente torneios em que você participa como jogador. ATP Você ainda não esta em nenhum torneio Entre por código ou acompanhe torneios públicos disponíveis. Entrar por código Inicio Competir Locais Ranking Perfil"
+    "textSample": "Torneios que jogo Acompanhe somente torneios em que você participa como jogador. Voltar Entrar ATP Você ainda não esta em nenhum torneio Entre por código ou acompanhe torneios públicos disponíveis. Entrar por código Inicio Competir Locais Ranking Perfil"
   },
   {
     "viewport": "mobile",
@@ -1253,10 +1253,7 @@
     "h1": [
       "Meus pagamentos"
     ],
-    "h2": [
-      "A resolver",
-      "Pagos e encerrados"
-    ],
+    "h2": [],
     "buttons": [
       "Jogador",
       "Trabalho",
@@ -1266,8 +1263,8 @@
       "Ranking",
       "Perfil"
     ],
-    "cards": 2,
-    "textSample": "Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. PENDENCIAS A resolver 2 Inscricao em torneio 01 de out. de 2026 | R$ 70,00 Pendente Inscricao em torneio 24 de jun. de 2026 | R$ 120,00 Pendente HISTORICO Pagos e encerrados 198 Inscricao em torneio 13 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 12 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 11 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 10 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 09 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 08 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 07 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 06 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 05 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 04 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 03 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 02 de out. de 2026 | R$ 70,00 Pago Inscricao em torneio 30 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 29 de set. de 2026 | R$ 70,00 Pago Inscricao em torneio 28 de set. de 2026 | R$ 70,00 Pago"
+    "cards": 0,
+    "textSample": "Escalao Admin Jogador Trabalho FINANCEIRO Meus pagamentos Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados. Nao foi possivel carregar canceling statement due to statement timeout Inicio Competir Locais Ranking Perfil"
   },
   {
     "viewport": "mobile",

@@ -347,6 +347,215 @@ Validacao:
 - `npm.cmd run build` passou.
 - `node scripts/capture-visual-audit.mjs` concluiu e atualizou evidencias visuais.
 
+## Sprint atual - Competicoes e Perfil premium por screenshot
+
+Fonte:
+
+- revisao visual por screenshots feita em 2026-05-19;
+- `docs/COMPETITIONS_PROFILE_VISUAL_SCREENSHOT_REVIEW_2026_05_19.md`;
+- capturas atuais em `docs/screenshots/visual-local-audit-2026-05-18/`;
+- pedido do usuario: Competições e Perfil ainda nao atingiram o patamar adequado, revisar por screenshot e executar a queue em sprint.
+
+Objetivo:
+
+- elevar `/eventos`, `/eventos/torneios`, `/eventos/ligas` e `/perfil` ao mesmo patamar visual premium aplicado em Home e Locais;
+- corrigir composicao, cores, densidade, contraste e acabamento;
+- preservar conteudo, ferramentas, rotas, permissoes e regras de negocio.
+
+Nao fazer neste sprint:
+
+- nao criar nova funcionalidade de competicao;
+- nao alterar copy funcional alem de ajustes visuais inevitaveis;
+- nao mexer em banco, RPCs ou regras de participacao;
+- nao transformar Perfil em fluxo de onboarding.
+
+### [x] REF-COMP-01 - Hub de competicoes com hero esportivo e composicao premium
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- `/eventos` ainda parecia painel branco com cards administrativos;
+- faltava o impacto visual de quadra/tenis visto nas referencias e ja aplicado em Home/Locais;
+- no mobile, a tela ficava inflada e com bottom nav claro, quebrando a continuidade navy do app jogador.
+
+Escopo:
+
+1. Aplicar hero visual esportivo ao header do modo competicao.
+2. Refinar pills de intencao para parecerem atalhos premium, nao tabs administrativas.
+3. Dar mais acabamento aos cards de descoberta e ao fluxo principal.
+4. Ajustar mobile com header/nav navy, densidade menor e sem corte no seletor de modo.
+
+Criterios de conclusao:
+
+- desktop mostra hero esportivo na primeira dobra de Competições;
+- mobile 390px fica legivel, compacto e integrado ao tema navy;
+- lint/build passam;
+- screenshots atualizados.
+
+Entrega:
+
+1. `/eventos` ganhou hero esportivo com imagem de quadra/bola, usando navy profundo, verde ATP e branco como na ref2.
+2. Mobile de Competições foi recalibrado para composição de app: hero menor, tiles 2x2 e navegação inferior navy integrada.
+3. Cards de descoberta deixaram de ser lista administrativa e passaram a funcionar visualmente como atalhos.
+4. Desktop preserva a densidade de dashboard premium com hero, intents e area de descoberta em uma primeira dobra limpa.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-events-hub.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-events-hub.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts/capture-visual-audit.mjs` passou e atualizou screenshots.
+
+### [x] REF-COMP-02 - Torneios e Ligas com estados internos premium
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- paginas internas de `Torneios que jogo` e `Ligas que jogo` estavam muito vazias;
+- KPIs e estados vazios pareciam placeholders de dashboard;
+- faltava contexto visual esportivo no primeiro viewport.
+
+Escopo:
+
+1. Reformatar headers internos de Torneios/Ligas com hero visual.
+2. Refinar KPIs e cards/listas para maior densidade e acabamento.
+3. Transformar estados vazios em paineis premium com navy/quadra, sem esconder CTA.
+4. Garantir que desktop e mobile tenham composicao consistente.
+
+Criterios de conclusao:
+
+- estados vazios parecem intencionais e premium;
+- KPIs nao dominam a tela;
+- cards de liga/torneio ficam consistentes com o restante player;
+- lint/build passam.
+
+Entrega:
+
+1. Headers internos de Torneios/Ligas receberam o mesmo tratamento visual esportivo de Competições.
+2. Estados vazios agora usam painel navy com imagem, CTA verde e melhor contraste.
+3. KPIs ficaram com acabamento premium e leitura mais alinhada ao restante do modo jogador.
+4. Mobile preserva o DNA ref2 com fundo navy, bottom nav escuro e cards arredondados.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-tournaments.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-tournaments.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-leagues.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-leagues.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts/capture-visual-audit.mjs` passou e atualizou screenshots.
+
+### [x] REF-PROFILE-01 - Perfil mobile com hero escuro legivel
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- Perfil mobile tinha nome/seletor pouco legiveis sobre o navy;
+- havia espaco vertical excessivo antes do avatar;
+- o bloco parecia uma lista de configuracao, nao uma identidade de atleta.
+
+Escopo:
+
+1. Transformar o bloco de foto/nome em hero esportivo com imagem premium.
+2. Corrigir contraste de nome, local, badges e botao de foto.
+3. Reduzir espacos verticais no mobile.
+4. Manter tabs e dados com leitura simples.
+
+Criterios de conclusao:
+
+- mobile 390px mostra Perfil com identidade clara e sem texto invisivel;
+- avatar, nome e badges ficam integrados ao hero;
+- bottom nav permanece coerente com o modo jogador;
+- lint/build passam.
+
+Entrega:
+
+1. Perfil mobile recebeu hero escuro com imagem premium, avatar integrado e textos legiveis.
+2. Corrigido o problema em que o titulo `Perfil` quebrava letra por letra no mobile.
+3. O bloco foi compactado para se aproximar do ritmo da ref2: menos cartaz, mais app.
+4. Tabs, rows e bottom nav foram mantidos funcionais e com acabamento navy/green/white.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-profile.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts/capture-visual-audit.mjs` passou e atualizou screenshots.
+
+### [x] REF-PROFILE-02 - Perfil desktop como identidade atletica
+
+Status: `[x]` concluido em 2026-05-19
+
+Problema:
+
+- Perfil desktop parecia formulario/lista centralizada;
+- faltava presenca visual e hierarquia esportiva;
+- cards de dados e historico tinham acabamento mais administrativo que premium.
+
+Escopo:
+
+1. Aplicar hero visual ao topo do Perfil desktop.
+2. Melhorar rows, tabs e KPIs com radius, sombra e contraste coerentes.
+3. Preservar edicao, foto, historico, preferencias e conta.
+4. Validar desktop e mobile por screenshot.
+
+Criterios de conclusao:
+
+- Perfil desktop passa a comunicar atleta/ATP antes de formulario;
+- informacoes continuam claras e acionaveis;
+- visual alinha com Home, Locais e Competições;
+- lint/build passam.
+
+Entrega:
+
+1. Perfil desktop recebeu hero esportivo com imagem de atleta/quadra e identidade visual ATP.
+2. Rows, tabs e icones foram refinados para branco limpo, verde ativo e bordas mais precisas.
+3. O topo deixou de parecer somente lista/formulario e passou a comunicar identidade atletica.
+4. Edicao, upload de foto, dados publicos, historico, preferencias e conta foram preservados.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-profile.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts/capture-visual-audit.mjs` passou e atualizou screenshots.
+
+### [x] REF-COMP-PROFILE-QA - QA visual final e documentacao
+
+Status: `[x]` concluido em 2026-05-19
+
+Escopo:
+
+1. Rodar lint e build.
+2. Capturar screenshots de Competições, Torneios, Ligas e Perfil.
+3. Revisar screenshots gerados.
+4. Atualizar este MD com entrega, evidencias e validacao.
+5. Criar relatorio curto de sprint.
+
+Entrega:
+
+1. Lint e build foram executados apos os ajustes finais.
+2. Auditoria visual foi recapturada.
+3. A composicao foi recalibrada a partir da ref2: hero mais contido, tiles de acao, navy mobile, branco limpo e verde ativo.
+4. Relatorio curto criado em `docs/COMP_PROFILE_VISUAL_SPRINT_REPORT_2026_05_19.md`.
+
 ## Sprint visual premium - ATP sport DNA
 
 ### [x] VISUAL-DNA-03 - Aplicar imagens raster premium e elevar o DNA esportivo
