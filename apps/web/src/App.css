@@ -26877,6 +26877,24 @@ label {
   color: var(--pdark-text-main);
 }
 
+.app-shell--player:has(.place-public-page),
+.app-shell--player:has(.player-public-page),
+.app-shell--competition:has(.tournament-registration-layout),
+.app-shell--competition:has(.competition-registration-panel) {
+  background:
+    radial-gradient(circle at 88% 0%, rgba(34, 197, 94, 0.15), transparent 24rem),
+    url("./assets/pdark-home-player-desktop-hero.png") center top / cover fixed no-repeat,
+    linear-gradient(180deg, #020817 0%, #061426 48%, #020817 100%);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player:has(.place-public-page) .app-content,
+.app-shell--player:has(.player-public-page) .app-content,
+.app-shell--competition:has(.tournament-registration-layout) .app-content,
+.app-shell--competition:has(.competition-registration-panel) .app-content {
+  background: rgba(2, 8, 18, 0.72);
+}
+
 .app-shell--player .place-public-topbar,
 .app-shell--player .player-public-page .back-link,
 .app-shell--competition .tournament-registration-layout .compact-action,
@@ -26887,6 +26905,17 @@ label {
     var(--pdark-surface-texture);
   color: rgba(247, 251, 255, 0.92);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+}
+
+.app-shell--player .player-public-page .back-link {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 8px 14px;
+  text-decoration: none;
 }
 
 .app-shell--player .place-public-hero,
@@ -26980,7 +27009,10 @@ label {
 .app-shell--competition .tournament-registration-side > div,
 .app-shell--competition .competition-registration-panel,
 .app-shell--competition .registration-review-card,
-.app-shell--competition .invite-confirmation {
+.app-shell--competition .invite-confirmation,
+.app-shell--player .place-public-channel-card .publishing-kit,
+.app-shell--player .place-public-channel-card code,
+.app-shell--player .player-public-page .home-empty-panel {
   border: 1px solid rgba(166, 198, 229, 0.16);
   background:
     linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(7, 18, 32, 0.82)),
@@ -27015,7 +27047,8 @@ label {
 .app-shell--player .place-public-plan-actions button,
 .app-shell--competition .registration-sticky-cta button,
 .app-shell--competition .competition-registration-panel button,
-.app-shell--competition .registration-option {
+.app-shell--competition .registration-option,
+.app-shell--player .place-public-channel-card .publishing-kit button {
   min-height: 46px;
   border: 1px solid rgba(166, 198, 229, 0.18);
   background: linear-gradient(180deg, rgba(24, 38, 58, 0.94), rgba(13, 27, 44, 0.94));
@@ -27032,7 +27065,8 @@ label {
 .app-shell--player .place-public-class-option.selected,
 .app-shell--competition .registration-sticky-cta button.primary,
 .app-shell--competition .registration-option.active,
-.app-shell--competition .competition-registration-panel button.primary {
+.app-shell--competition .competition-registration-panel button.primary,
+.app-shell--player .place-public-channel-card .publishing-kit button.secondary {
   border-color: rgba(74, 222, 128, 0.42);
   background: linear-gradient(180deg, #27d468, #15984d);
   color: #ffffff;
@@ -27090,8 +27124,17 @@ label {
 .app-shell--competition .registration-review-card span,
 .app-shell--competition .registration-option span,
 .app-shell--competition .registration-option small,
-.app-shell--competition .registration-step-heading small {
+.app-shell--competition .registration-step-heading small,
+.app-shell--player .place-public-channel-card .publishing-kit small,
+.app-shell--player .place-public-channel-card code,
+.app-shell--player .player-public-page .home-empty-panel span {
   color: var(--pdark-text-muted);
+}
+
+.app-shell--player .place-public-channel-card .publishing-kit strong,
+.app-shell--player .place-public-channel-card .publishing-kit span,
+.app-shell--player .player-public-page .home-empty-panel strong {
+  color: #ffffff;
 }
 
 .app-shell--competition .registration-step-heading > span {
@@ -27149,5 +27192,311 @@ label {
   .app-shell--competition .registration-sticky-cta {
     position: static;
     padding: 12px;
+  }
+}
+
+/* ----- PDARK-17: empty states, feedback, overlays and setup wizard ----- */
+.screen-state,
+.empty-state,
+.home-empty-panel,
+.home-empty-inline,
+.home-today-empty,
+.workspace-empty-state,
+.management-empty-state,
+.app-compact-empty,
+.place-public-booking-empty,
+.place-public-overview-empty,
+.court-calendar-empty-slot {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(166, 198, 229, 0.16);
+  background:
+    linear-gradient(180deg, rgba(10, 26, 44, 0.9), rgba(5, 15, 28, 0.86)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  color: var(--pdark-text-main);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22);
+}
+
+.screen-state::before,
+.empty-state::before,
+.home-empty-panel::before,
+.workspace-empty-state::before,
+.management-empty-state::before,
+.app-compact-empty::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 82% 16%, rgba(74, 222, 128, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 34%);
+}
+
+.screen-state > *,
+.empty-state > *,
+.home-empty-panel > *,
+.workspace-empty-state > *,
+.management-empty-state > *,
+.app-compact-empty > * {
+  position: relative;
+  z-index: 1;
+}
+
+.screen-state > strong,
+.empty-state strong,
+.home-empty-panel strong,
+.home-empty-inline strong,
+.home-today-empty strong,
+.workspace-empty-state strong,
+.management-empty-state h2,
+.app-compact-empty strong,
+.place-public-booking-empty strong,
+.place-public-overview-empty strong {
+  color: #ffffff;
+}
+
+.screen-state p,
+.empty-state p,
+.empty-state small,
+.home-empty-panel span,
+.home-empty-inline span,
+.home-today-empty span,
+.workspace-empty-state span,
+.workspace-empty-state small,
+.management-empty-state p,
+.management-empty-state span,
+.app-compact-empty small,
+.place-public-booking-empty span,
+.place-public-overview-empty small,
+.court-calendar-empty-slot p {
+  color: var(--pdark-text-muted);
+}
+
+.screen-state-icon,
+.empty-state .empty-emoji,
+.app-compact-empty > span:first-child {
+  display: inline-grid;
+  min-width: 42px;
+  min-height: 42px;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(34, 197, 94, 0.16);
+  color: #8ff5b5;
+  box-shadow: inset 0 0 0 1px rgba(74, 222, 128, 0.22);
+}
+
+.screen-state-loading::after {
+  content: "";
+  position: absolute;
+  inset: auto 22px 18px 22px;
+  height: 4px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.9), transparent) 0 0 / 38% 100% no-repeat,
+    rgba(255, 255, 255, 0.08);
+  animation: pdark-loading-scan 1.35s ease-in-out infinite;
+}
+
+@keyframes pdark-loading-scan {
+  0% {
+    background-position: -45% 0, 0 0;
+  }
+  100% {
+    background-position: 145% 0, 0 0;
+  }
+}
+
+.feedback,
+.app-toast {
+  border: 1px solid rgba(166, 198, 229, 0.16);
+  background:
+    linear-gradient(135deg, rgba(9, 25, 42, 0.94), rgba(5, 15, 28, 0.94)),
+    var(--pdark-surface-texture);
+  color: var(--pdark-text-main);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.26);
+}
+
+.feedback.success,
+.app-toast--success {
+  border-color: rgba(74, 222, 128, 0.28);
+  background: linear-gradient(135deg, rgba(14, 74, 45, 0.9), rgba(5, 28, 22, 0.92));
+}
+
+.feedback.error,
+.app-toast--error {
+  border-color: rgba(248, 113, 113, 0.34);
+  background: linear-gradient(135deg, rgba(82, 22, 28, 0.94), rgba(35, 12, 18, 0.94));
+}
+
+.app-toast-copy strong {
+  color: #ffffff;
+}
+
+.app-toast-copy small {
+  color: var(--pdark-text-muted);
+}
+
+.modal-backdrop,
+.app-overlay-backdrop,
+.entity-drawer-backdrop,
+.tournament-organizer-drawer-backdrop {
+  background:
+    radial-gradient(circle at 72% 14%, rgba(34, 197, 94, 0.12), transparent 24rem),
+    rgba(1, 6, 15, 0.78);
+  backdrop-filter: blur(12px);
+}
+
+.modal,
+.app-dialog,
+.app-sheet,
+.entity-drawer,
+.tournament-organizer-drawer,
+.responsive-filter-sheet,
+.league-match-room-dialog,
+.tournament-match-room-dialog,
+.competition-create-modal {
+  border: 1px solid rgba(166, 198, 229, 0.18);
+  background:
+    linear-gradient(180deg, rgba(10, 27, 45, 0.96), rgba(5, 14, 27, 0.98)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  color: var(--pdark-text-main);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.42);
+}
+
+.app-overlay-header,
+.entity-drawer header,
+.tournament-organizer-drawer header,
+.modal h2,
+.setup-wizard-head {
+  border-color: rgba(166, 198, 229, 0.14);
+  color: var(--pdark-text-main);
+}
+
+.app-overlay-header strong,
+.entity-drawer header strong,
+.tournament-organizer-drawer h2,
+.modal h2,
+.league-match-room-dialog h2,
+.tournament-match-room-dialog h2,
+.setup-wizard-head h2 {
+  color: #ffffff;
+}
+
+.app-overlay-header span,
+.app-overlay-header small,
+.entity-drawer header span,
+.entity-drawer header small,
+.entity-drawer-body p,
+.entity-drawer-body small,
+.tournament-organizer-drawer p,
+.modal-helper,
+.setup-wizard-head p,
+.setup-wizard-steps small {
+  color: var(--pdark-text-muted);
+}
+
+.entity-drawer-body article,
+.app-overlay-body article,
+.responsive-filter-sheet-body,
+.setup-wizard-body,
+.academy-class-drawer section,
+.academy-student-drawer section,
+.academy-lesson-drawer section,
+.academy-coach-drawer section {
+  border-color: rgba(166, 198, 229, 0.15);
+  background:
+    linear-gradient(145deg, rgba(13, 31, 50, 0.84), rgba(6, 16, 30, 0.86)),
+    var(--pdark-surface-texture);
+  color: var(--pdark-text-main);
+}
+
+.app-overlay-actions button,
+.app-form-dialog-actions button,
+.entity-drawer-actions button,
+.modal-actions button,
+.setup-wizard-actions button,
+.setup-wizard-steps button,
+.responsive-filter-sheet button {
+  min-height: 42px;
+  border: 1px solid rgba(166, 198, 229, 0.18);
+  background: linear-gradient(180deg, rgba(24, 38, 58, 0.94), rgba(13, 27, 44, 0.94));
+  color: rgba(247, 251, 255, 0.94);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.app-overlay-actions button.primary,
+.app-form-dialog-actions button.primary,
+.entity-drawer-actions button.primary,
+.modal-actions button.primary,
+.setup-wizard-actions button.primary,
+.setup-wizard-steps button.active,
+.setup-wizard-steps button.done {
+  border-color: rgba(74, 222, 128, 0.42);
+  background: linear-gradient(180deg, #27d468, #15984d);
+  color: #ffffff;
+  box-shadow: 0 18px 40px rgba(34, 197, 94, 0.24);
+}
+
+.setup-wizard {
+  border: 1px solid rgba(166, 198, 229, 0.18);
+  background:
+    linear-gradient(180deg, rgba(10, 27, 45, 0.94), rgba(5, 14, 27, 0.96)),
+    url("./assets/pdark-management-work-hero.png") center / cover no-repeat;
+  color: var(--pdark-text-main);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+}
+
+.setup-wizard-head > span {
+  border-color: rgba(74, 222, 128, 0.28);
+  background: rgba(34, 197, 94, 0.16);
+  color: #8ff5b5;
+}
+
+.setup-wizard-steps button {
+  text-align: left;
+}
+
+.setup-wizard-steps strong {
+  color: #ffffff;
+}
+
+.app-dialog input,
+.app-dialog select,
+.app-dialog textarea,
+.app-sheet input,
+.app-sheet select,
+.app-sheet textarea,
+.modal input,
+.modal select,
+.modal textarea,
+.setup-wizard input,
+.setup-wizard select,
+.setup-wizard textarea {
+  border-color: rgba(166, 198, 229, 0.18);
+  background: rgba(2, 10, 20, 0.82);
+  color: var(--pdark-text-main);
+}
+
+@media (max-width: 720px) {
+  .modal,
+  .app-dialog,
+  .app-sheet,
+  .entity-drawer,
+  .tournament-organizer-drawer,
+  .responsive-filter-sheet,
+  .competition-create-modal {
+    border-radius: 24px 24px 0 0;
+  }
+
+  .setup-wizard-steps {
+    grid-auto-columns: minmax(170px, 78%);
+    overflow-x: auto;
+  }
+
+  .setup-wizard-actions,
+  .app-overlay-actions,
+  .app-form-dialog-actions,
+  .entity-drawer-actions {
+    grid-template-columns: 1fr;
   }
 }

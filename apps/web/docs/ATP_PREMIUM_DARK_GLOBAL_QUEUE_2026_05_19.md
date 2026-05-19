@@ -1079,7 +1079,7 @@ Validacao:
 
 ## PDARK-16 - Paginas publicas e conversao
 
-Status: `[>]` em andamento
+Status: `[x]` concluido em 2026-05-19
 
 Rotas:
 
@@ -1114,9 +1114,33 @@ Criterios de aceite:
 - CTAs ficam fortes;
 - dados privados seguem ocultos.
 
+Entrega sprint 15:
+
+1. Pagina publica de local recebeu refinamento de conversao com hero cinematografico, base dark na rota, action rail, overview e compartilhamento sem superficies brancas.
+2. Perfil publico de jogador recebeu identidade esportiva, stats e estados vazios dark; o link `Voltar` foi corrigido para pill compacto.
+3. Inscricao publica de torneio/liga recebeu acabamento dark/glass em hero, steps, opcoes, review, sidebar e CTAs, preservando estados de inscricao fechada/aprovacao.
+4. Fundos claros/bege das rotas publicas foram substituidos por base deep navy com textura esportiva.
+
+Evidencias:
+
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-public-place-overview.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-public-place-overview.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-public-place-booking.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-public-place-academy.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-public-player.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-public-player.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/desktop-public-tournament-registration.png`
+- `docs/screenshots/visual-local-audit-2026-05-18/mobile-public-tournament-registration.png`
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots globais.
+
 ## PDARK-17 - Estados vazios, loading, erro, modais, drawers e sheets
 
-Status: `[ ]` pendente
+Status: `[x]` concluido em 2026-05-19
 
 Objetivo:
 
@@ -1151,9 +1175,22 @@ Criterios de aceite:
 - modais continuam acessiveis;
 - setup de local/torneio/liga continua funcional.
 
+Entrega sprint 16:
+
+1. Estados vazios, loading, erro, feedbacks, toasts, modais, drawers, sheets e `SetupWizard` receberam camada premium dark transversal.
+2. `ScreenState`, `.empty-state`, `home-empty-panel`, `workspace-empty-state`, estados de calendario e estados publicos passaram a usar textura escura e hierarquia consistente.
+3. Loading ganhou scan bar sutil; feedback/toasts ganharam variacoes dark para sucesso/erro/info.
+4. Overlays, modais, drawers de torneio/liga/academia/CRM e sheets ficaram com backdrop blur, superficies glass e CTAs verdes.
+
+Validacao:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` atualizou screenshots globais.
+
 ## PDARK-18 - QA visual global e fechamento
 
-Status: `[ ]` pendente
+Status: `[>]` em andamento
 
 Objetivo:
 

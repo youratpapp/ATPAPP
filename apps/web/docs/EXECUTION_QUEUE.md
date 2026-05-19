@@ -93,9 +93,9 @@ Fila macro:
 14. `[x]` PDARK-13 - Trabalho / Academia.
 15. `[x]` PDARK-14 - Trabalho / Gestao de quadras, reservas e agenda.
 16. `[x]` PDARK-15 - Trabalho / Financeiro, CRM, Cantina, Time e Configuracoes.
-17. `[>]` PDARK-16 - Paginas publicas e conversao.
-18. `[ ]` PDARK-17 - Estados vazios, loading, erro, modais, drawers e sheets.
-19. `[ ]` PDARK-18 - QA visual global e fechamento.
+17. `[x]` PDARK-16 - Paginas publicas e conversao.
+18. `[x]` PDARK-17 - Estados vazios, loading, erro, modais, drawers e sheets.
+19. `[>]` PDARK-18 - QA visual global e fechamento.
 
 Entrega desta rodada de planejamento:
 
@@ -332,6 +332,42 @@ Validacao sprint 14:
 Proximo item:
 
 - `PDARK-16 - Paginas publicas e conversao`.
+
+Entrega sprint 15 em 2026-05-19:
+
+1. `PDARK-16` concluido: paginas publicas de local, perfil publico de jogador e inscricao de torneio/liga receberam camada premium dark de conversao.
+2. Local publico ganhou hero cinematografico, cards glass, CTAs fortes, fundo dark nas rotas publicas e bloco de compartilhamento sem superficies brancas.
+3. Perfil publico ganhou identidade esportiva, stats e estados vazios dark; o link `Voltar` foi corrigido para pill compacto.
+4. Inscricao publica recebeu hero dark, steps, opcoes, review, sidebar e CTAs alinhados ao Competition OS, preservando status fechado/aprovacao.
+5. Evidencias atualizadas: `desktop-public-place-overview.png`, `mobile-public-place-overview.png`, `desktop-public-place-booking.png`, `mobile-public-place-academy.png`, `desktop-public-player.png`, `mobile-public-player.png`, `desktop-public-tournament-registration.png`, `mobile-public-tournament-registration.png`.
+
+Validacao sprint 15:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots globais.
+
+Proximo item:
+
+- `PDARK-17 - Estados vazios, loading, erro, modais, drawers e sheets`.
+
+Entrega sprint 16 em 2026-05-19:
+
+1. `PDARK-17` concluido: estados vazios, loading, erro, feedbacks, toasts, modais, drawers, sheets e `SetupWizard` receberam camada premium dark transversal.
+2. `ScreenState`, `.empty-state`, `home-empty-panel`, `workspace-empty-state`, estados de calendario e estados publicos agora usam textura escura com contraste consistente.
+3. Loading recebeu scan bar sutil; feedback/toasts ganharam variacoes dark para sucesso/erro/info.
+4. Overlays, modais, drawers de torneio/liga/academia/CRM e sheets ficaram com backdrop blur, superficies glass e CTAs verdes.
+5. `SetupWizard` ganhou estrutura dark, steps escaneaveis e inputs alinhados ao restante do app.
+
+Validacao sprint 16:
+
+- `npm.cmd run lint` passou.
+- `npm.cmd run build` passou.
+- `node scripts\capture-visual-audit.mjs` passou e atualizou screenshots globais.
+
+Proximo item:
+
+- `PDARK-18 - QA visual global e fechamento`.
 
 ## Sprint atual - Referencias visuais ATP premium
 
