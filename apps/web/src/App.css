@@ -28002,30 +28002,32 @@ body:has(.app-shell--player .home-player-os--visual),
       linear-gradient(180deg, rgba(3, 9, 20, 0.72), rgba(3, 9, 20, 0.98)),
       url("./assets/pdark-home-player-mobile-hero.png") center top / cover fixed no-repeat,
       #030914;
+    padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-hero {
     background:
       linear-gradient(90deg, rgba(3, 9, 20, 0.94), rgba(5, 17, 31, 0.52)),
       url("./assets/pdark-home-player-mobile-hero.png") center / cover no-repeat;
+    gap: 16px;
     grid-template-columns: minmax(0, 1fr);
     min-height: 0;
-    padding: 24px 22px;
+    padding: 20px;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-copy h1 {
-    font-size: clamp(2.55rem, 10.5vw, 3.35rem);
+    font-size: clamp(2.15rem, 8.8vw, 2.8rem);
     line-height: 1;
-    max-width: 10ch;
+    max-width: 11ch;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-copy p:not(.home-context-eyebrow) {
-    font-size: 0.92rem;
+    font-size: 0.84rem;
     max-width: 26ch;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-copy .home-hero-actions button {
-    min-height: 54px;
+    min-height: 48px;
     width: 100%;
   }
 
@@ -28036,34 +28038,51 @@ body:has(.app-shell--player .home-player-os--visual),
 
   .app-shell--player:has(.home-player-os--visual) .home-command-stat {
     border-radius: 14px;
-    min-height: 112px;
-    padding: 10px;
+    min-height: 88px;
+    padding: 8px;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-stat span {
-    height: 30px;
-    width: 30px;
+    height: 24px;
+    width: 24px;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-stat strong {
-    font-size: 1.35rem;
+    font-size: 1rem;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-stat small {
-    font-size: 0.64rem;
+    font-size: 0.58rem;
+    line-height: 1.08;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-stat em {
-    font-size: 0.62rem;
+    font-size: 0.56rem;
     line-height: 1.15;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-strip {
-    grid-auto-columns: 136px;
+    border-radius: 16px;
+    grid-auto-columns: 122px;
     grid-auto-flow: column;
     grid-template-columns: none;
     overflow-x: auto;
+    padding: 8px;
     scrollbar-width: none;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip button {
+    min-height: 58px;
+    padding: 9px 10px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip span {
+    font-size: 0.58rem;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip strong {
+    font-size: 0.76rem;
+    line-height: 1.12;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-command-strip::-webkit-scrollbar {
@@ -28073,6 +28092,17 @@ body:has(.app-shell--player .home-player-os--visual),
   .app-shell--player:has(.home-player-os--visual) .home-command-grid,
   .app-shell--player:has(.home-player-os--visual) .player-hub-workspace {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-grid > .home-section,
+  .app-shell--player:has(.home-player-os--visual) .player-hub-panel,
+  .app-shell--player:has(.home-player-os--visual) .home-discovery-section {
+    padding: 12px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-spotlight-card {
+    min-height: 142px;
+    padding: 14px;
   }
 
   .app-shell--player:has(.home-player-os--visual) .home-intent-rail--visual {
