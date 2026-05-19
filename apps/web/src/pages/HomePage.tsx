@@ -6,8 +6,8 @@ import { DiscoveryCarousel, ObjectRow, VisualBadge, VisualHeroCard } from "../co
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
-import heroCourtImage from "../assets/visual-court-hero.svg";
-import stadiumCardImage from "../assets/visual-stadium-card.svg";
+import heroCourtImage from "../assets/hero-home-court-premium.png";
+import stadiumCardImage from "../assets/card-event-night-premium.png";
 import type {
   LeagueMatchSummary,
   LeagueChatMessage,

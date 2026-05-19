@@ -62,3 +62,39 @@ Elevar a linguagem visual do ATP para parecer um produto esportivo premium, meno
 - `npm.cmd run build` passou.
 - VISUAL-DNA-02: `npm.cmd run lint` passou.
 - VISUAL-DNA-02: `npm.cmd run build` passou.
+
+## Expansao VISUAL-DNA-03 - Raster premium aplicado
+
+Pedido de referencia: o app precisava deixar de parecer apenas "ajustado" e passar a usar imagens reais de alta qualidade em heros, fundos, cards e superficies, aproximando a percepcao das referencias premium anexadas.
+
+Entrega:
+
+- Assets PNG premium foram aplicados nos pontos principais, substituindo a primeira camada SVG onde a percepcao visual era fraca:
+  - `hero-home-court-premium.png` na Home do jogador;
+  - `hero-login-court-premium.png` no Login;
+  - `hero-club-court-premium.png` na pagina publica do local;
+  - `hero-lessons-night-premium.png` em aulas/turmas;
+  - `hero-ranking-premium.png` no Ranking;
+  - `hero-profile-player-premium.png` no perfil publico;
+  - `hero-competition-court-premium.png` em ligas/torneios;
+  - `hero-management-premium.png` na Central de Trabalho;
+  - `card-event-night-premium.png` em descoberta/eventos;
+  - `surface-court-lines-soft.png` como textura global de superficie.
+- O AppShell recebeu fundo esportivo sutil com linhas de quadra, brilho verde ATP e superficies menos brancas, preservando leitura.
+- `VisualHeroCard` ficou mais cinematografico: radius maior, overlay navy/verde mais profundo, altura mais generosa e area de texto protegida.
+- `ShortcutCard` e trilhos de intencao ganharam icones/tiles mais fortes, textura de quadra, sombras premium e seta visual curta.
+- Cards de descoberta, objetos e metricas receberam camadas de imagem/textura sem virar decoracao excessiva.
+- A direcao agora e raster-first para telas de percepcao e textura/fundo para componentes repetitivos.
+
+Decisoes UX:
+
+- Imagens fortes entram em heros e discovery cards; cards operacionais continuam mais contidos para nao esconder status, horarios e acoes.
+- A area esquerda dos heros continua reservada para texto/CTA, com imagem mais expressiva no lado direito ou no fundo.
+- O app passa a ter DNA esportivo por superficie, luz, quadra e bola, sem depender de longos textos explicativos.
+- Multi-esporte futuro devera trocar o pacote visual por contexto esportivo, mantendo os mesmos slots de hero/card.
+
+Pendencias de refinamento visual:
+
+- Gerar screenshots comparativos desktop/mobile depois do build para calibrar cortes das imagens por tela.
+- Criar variantes visuais para padel, beach tennis e pickleball antes de ativar multi-esporte amplo.
+- Revisar tela a tela onde ainda houver card administrativo sem imagem, sem remover densidade necessaria da gestao.

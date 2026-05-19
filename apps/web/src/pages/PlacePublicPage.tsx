@@ -25,8 +25,8 @@ import {
 } from "../lib/places";
 import { ACADEMY_LEVEL_OPTIONS, academyLevelMatches } from "../lib/academy-levels";
 import type { AcademyClass, AcademyEnrollment, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
-import clubHeroImage from "../assets/visual-club-hero.svg";
-import lessonHeroImage from "../assets/visual-lesson-hero.svg";
+import clubHeroImage from "../assets/hero-club-court-premium.png";
+import lessonHeroImage from "../assets/hero-lessons-night-premium.png";
 
 type Props = {
   user: User;

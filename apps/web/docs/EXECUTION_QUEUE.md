@@ -46,6 +46,40 @@ Continue para o proximo item da Execution Queue.
 
 ## Sprint visual premium - ATP sport DNA
 
+### [x] VISUAL-DNA-03 - Aplicar imagens raster premium e elevar o DNA esportivo
+
+Status: `[x]` concluido em 2026-05-18
+
+Fonte:
+
+- referencias visuais premium anexadas pelo usuario;
+- `VISUAL_REFINEMENT_SPRINT_2026_05_18.md`;
+- `PREMIUM_UX_VISUAL_LANGUAGE.md`;
+- manual de frontend/design de produto.
+
+Objetivo:
+
+- sair da camada de pequenos ajustes visuais e aplicar imagem real de alta qualidade nos slots principais;
+- aproximar Home, Login, Locais, Ranking, Perfil, Liga/Torneio e Gestao da percepcao de app esportivo premium;
+- preservar regras de negocio, rotas, permissoes e componentes ja estabilizados.
+
+Entrega:
+
+1. Home, Login, Ranking, Perfil publico, Local publico, Liga/Torneio e Central de Trabalho passaram a usar assets PNG premium em heros/cards.
+2. AppShell recebeu textura global de quadra e glows sutis por modo.
+3. `VisualHeroCard` ganhou composicao cinematografica com overlay mais forte, radius maior e area de texto protegida.
+4. `ShortcutCard`, action rail e cards de intencao ganharam tile visual, profundidade e seta curta sem texto extra.
+5. Cards de descoberta, metricas e rows receberam superficie menos administrativa, com imagem/textura quando ajuda a leitura.
+6. A camada antiga SVG fica como legado/fallback, mas a experiencia principal agora e raster-first.
+
+Criterios de conclusao:
+
+- lint passa;
+- build passa;
+- mudanca restrita a visual/UX, sem alterar dominio;
+- docs atualizados;
+- screenshots devem ser refeitos em uma rodada de QA visual apos deploy/local server.
+
 ### [x] VISUAL-DNA-01 - Base visual com imagens, heros e componentes reutilizaveis
 
 Status: `[x]` concluido em 2026-05-18

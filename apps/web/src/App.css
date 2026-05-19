@@ -24,7 +24,9 @@
   display: flex;
   flex-direction: column;
   background:
-    linear-gradient(180deg, rgba(232, 247, 239, 0.72) 0%, rgba(245, 247, 246, 0) 260px),
+    radial-gradient(circle at 92% 4%, rgba(216, 244, 73, 0.16), transparent 19rem),
+    url("./assets/surface-court-lines-soft.png") center top / 1600px auto no-repeat,
+    linear-gradient(180deg, rgba(232, 247, 239, 0.76) 0%, rgba(245, 247, 246, 0) 300px),
     var(--color-bg);
   color: var(--color-text);
 }
@@ -46,7 +48,9 @@
   --mode-compact-button-min-height: var(--player-compact-button-min-height);
   --mode-input-min-height: var(--player-input-min-height);
   background:
-    linear-gradient(180deg, rgba(232, 247, 239, 0.58) 0%, rgba(245, 247, 246, 0) 240px),
+    radial-gradient(circle at 88% 2%, rgba(216, 244, 73, 0.13), transparent 18rem),
+    url("./assets/surface-court-lines-soft.png") center top / 1500px auto no-repeat,
+    linear-gradient(180deg, rgba(231, 248, 240, 0.62) 0%, rgba(245, 247, 246, 0) 280px),
     var(--color-bg);
 }
 
@@ -67,7 +71,9 @@
   --mode-compact-button-min-height: var(--competition-compact-button-min-height);
   --mode-input-min-height: var(--competition-input-min-height);
   background:
-    linear-gradient(180deg, rgba(230, 247, 251, 0.72) 0%, rgba(245, 247, 246, 0) 260px),
+    radial-gradient(circle at 90% 0%, rgba(216, 244, 73, 0.12), transparent 18rem),
+    url("./assets/surface-court-lines-soft.png") center top / 1500px auto no-repeat,
+    linear-gradient(180deg, rgba(230, 247, 251, 0.72) 0%, rgba(245, 247, 246, 0) 300px),
     var(--color-bg);
 }
 
@@ -88,7 +94,9 @@
   --mode-compact-button-min-height: var(--management-compact-button-min-height);
   --mode-input-min-height: var(--management-input-min-height);
   background:
-    linear-gradient(180deg, rgba(232, 247, 239, 0.78) 0%, rgba(245, 247, 246, 0) 280px),
+    radial-gradient(circle at 88% 0%, rgba(216, 244, 73, 0.14), transparent 18rem),
+    url("./assets/surface-court-lines-soft.png") center top / 1500px auto no-repeat,
+    linear-gradient(180deg, rgba(232, 247, 239, 0.78) 0%, rgba(245, 247, 246, 0) 320px),
     var(--color-bg);
 }
 
@@ -483,34 +491,39 @@ button.app-object-row:hover:not(:disabled) {
 
 .app-visual-hero {
   background:
-    linear-gradient(90deg, rgba(6, 17, 38, 0.82), rgba(6, 17, 38, 0.36)),
+    linear-gradient(90deg, rgba(3, 10, 24, 0.97) 0%, rgba(4, 19, 40, 0.82) 43%, rgba(4, 19, 40, 0.18) 100%),
     var(--hero-image, var(--gradient-sport-hero));
   background-position: center;
   background-size: cover;
-  border: 1px solid rgba(167, 227, 196, 0.28);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sport);
+  border: 1px solid rgba(167, 227, 196, 0.34);
+  border-radius: 30px;
+  box-shadow:
+    0 30px 78px rgba(3, 15, 33, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
   color: #fff;
   display: grid;
-  min-height: 252px;
+  min-height: 286px;
   overflow: hidden;
   padding: clamp(22px, 4vw, 42px);
   position: relative;
 }
 
 .app-visual-hero::before {
-  background: var(--gradient-court-lines);
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.13), transparent 32%),
+    url("./assets/surface-court-lines-soft.png") left center / cover no-repeat;
   content: "";
   inset: 0;
-  opacity: 0.52;
+  opacity: 0.25;
   pointer-events: none;
   position: absolute;
+  mix-blend-mode: screen;
 }
 
 .app-visual-hero::after {
   background:
-    radial-gradient(circle at 86% 72%, rgba(216, 244, 73, 0.2), transparent 22%),
-    linear-gradient(180deg, transparent 45%, rgba(4, 11, 24, 0.32));
+    radial-gradient(circle at 88% 72%, rgba(216, 244, 73, 0.18), transparent 22%),
+    linear-gradient(180deg, transparent 42%, rgba(4, 11, 24, 0.42));
   content: "";
   inset: 0;
   pointer-events: none;
@@ -532,7 +545,7 @@ button.app-object-row:hover:not(:disabled) {
 
 .app-visual-hero--night {
   background:
-    linear-gradient(180deg, rgba(6, 17, 38, 0.06), rgba(6, 17, 38, 0.24)),
+    linear-gradient(90deg, rgba(3, 10, 24, 0.96) 0%, rgba(5, 34, 53, 0.7) 50%, rgba(6, 17, 38, 0.16)),
     var(--hero-image, var(--gradient-sport-hero));
 }
 
@@ -563,7 +576,7 @@ button.app-object-row:hover:not(:disabled) {
 
 .app-visual-hero h1 {
   color: inherit;
-  font-size: clamp(2rem, 4.2vw, 4rem);
+  font-size: clamp(2.25rem, 4.4vw, 4.35rem);
   font-weight: 950;
   letter-spacing: 0;
   line-height: 0.96;
@@ -640,15 +653,16 @@ button.app-object-row:hover:not(:disabled) {
 .app-shortcut-card {
   align-items: center;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 252, 250, 0.92));
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(247, 252, 249, 0.9)),
+    url("./assets/surface-court-lines-soft.png") right center / 360px auto no-repeat;
   border: 1px solid rgba(200, 210, 223, 0.72);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: 22px;
+  box-shadow: 0 16px 36px rgba(8, 18, 37, 0.08);
   color: var(--color-text);
   display: grid;
   gap: var(--space-3);
   grid-template-columns: 52px minmax(0, 1fr) auto;
-  min-height: 88px;
+  min-height: 104px;
   overflow: hidden;
   padding: var(--space-3);
   position: relative;
@@ -666,12 +680,14 @@ button.app-object-row:hover:not(:disabled) {
 
 .app-shortcut-card:hover:not(:disabled) {
   border-color: var(--color-green-200);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 22px 46px rgba(8, 18, 37, 0.12);
   transform: translateY(-1px);
 }
 
 .app-shortcut-card.active {
-  background: linear-gradient(145deg, var(--color-green-700), var(--color-green-600));
+  background:
+    linear-gradient(145deg, rgba(6, 78, 59, 0.94), rgba(13, 148, 85, 0.9)),
+    url("./assets/surface-court-lines-soft.png") center / cover no-repeat;
   border-color: rgba(167, 227, 196, 0.56);
   color: #fff;
 }
@@ -679,8 +695,11 @@ button.app-object-row:hover:not(:disabled) {
 .app-shortcut-image,
 .app-shortcut-icon {
   align-items: center;
-  background: var(--color-primary-soft);
-  border-radius: 18px;
+  background:
+    radial-gradient(circle at 28% 20%, rgba(216, 244, 73, 0.28), transparent 38%),
+    linear-gradient(145deg, rgba(231, 248, 240, 0.95), rgba(207, 239, 224, 0.9));
+  border: 1px solid rgba(32, 185, 109, 0.16);
+  border-radius: 19px;
   display: grid;
   height: 52px;
   justify-content: center;
@@ -690,7 +709,7 @@ button.app-object-row:hover:not(:disabled) {
 }
 
 .app-shortcut-icon {
-  color: var(--color-primary-strong);
+  color: var(--color-primary);
   font-size: 26px;
 }
 
@@ -6999,22 +7018,30 @@ button:disabled {
 
 .home-intent-rail--visual button {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 248, 0.94));
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  gap: var(--space-2);
-  min-height: 118px;
+    radial-gradient(circle at 18% 18%, rgba(216, 244, 73, 0.16), transparent 34%),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.99), rgba(244, 250, 247, 0.92)),
+    url("./assets/surface-court-lines-soft.png") right center / 320px auto no-repeat;
+  border-color: rgba(185, 203, 216, 0.7);
+  border-radius: 24px;
+  box-shadow: 0 18px 42px rgba(8, 18, 37, 0.09);
+  gap: var(--space-3);
+  min-height: 126px;
   overflow: hidden;
   padding: var(--space-4);
   position: relative;
 }
 
 .home-intent-rail--visual button::before {
-  background: var(--shortcut-image) center / cover no-repeat;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(216, 244, 73, 0.2), transparent 40%),
+    linear-gradient(145deg, rgba(232, 248, 240, 0.98), rgba(207, 239, 224, 0.92)),
+    var(--shortcut-image) center / 30px 30px no-repeat;
+  border: 1px solid rgba(19, 148, 87, 0.16);
   border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.76);
   content: "";
-  height: 54px;
-  width: 54px;
+  height: 58px;
+  width: 58px;
 }
 
 .home-intent-rail--visual button::after {
@@ -20542,8 +20569,59 @@ button,
   box-shadow: var(--shadow-sport);
 }
 
+.app-shortcut-card::after,
 .home-intent-rail--visual button::after {
   content: ">";
+}
+
+.app-object-row,
+.app-metric-card,
+.home-discovery-card {
+  border-color: rgba(184, 202, 216, 0.68);
+}
+
+.app-object-row {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.98), rgba(246, 251, 248, 0.92)),
+    url("./assets/surface-court-lines-soft.png") right center / 360px auto no-repeat;
+  border-radius: 18px;
+}
+
+button.app-object-row:hover:not(:disabled) {
+  box-shadow: 0 16px 34px rgba(8, 18, 37, 0.1);
+}
+
+.app-metric-card {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(32, 185, 109, 0.12), transparent 30%),
+    linear-gradient(155deg, rgba(255, 255, 255, 0.98), rgba(246, 251, 248, 0.92)),
+    url("./assets/surface-court-lines-soft.png") right center / 340px auto no-repeat;
+  border-radius: 22px;
+  box-shadow: 0 16px 36px rgba(8, 18, 37, 0.08);
+}
+
+.home-discovery-card {
+  border-radius: 24px;
+  box-shadow: 0 20px 42px rgba(8, 18, 37, 0.11);
+  min-height: 304px;
+}
+
+.home-discovery-card::after {
+  background: linear-gradient(180deg, transparent 0 34%, rgba(3, 9, 20, 0.1) 56%, rgba(3, 9, 20, 0.28));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.home-discovery-card img,
+.home-discovery-poster {
+  aspect-ratio: 16 / 10;
+}
+
+.home-discovery-body {
+  position: relative;
+  z-index: 1;
 }
 
 .ranking-visual-hero {
@@ -20714,8 +20792,8 @@ button,
   content: "";
   position: absolute;
   inset: 0;
-  background: url("./assets/visual-lesson-hero.svg") right bottom / 220px auto no-repeat;
-  opacity: 0.14;
+  background: url("./assets/hero-lessons-night-premium.png") right bottom / 250px auto no-repeat;
+  opacity: 0.18;
   pointer-events: none;
 }
 
@@ -20798,7 +20876,7 @@ button,
   background:
     radial-gradient(circle at 88% 22%, rgba(212, 244, 77, 0.18), transparent 15%),
     linear-gradient(120deg, transparent 0 64%, rgba(11, 82, 61, 0.06) 64.5%, transparent 65.5%),
-    url("./assets/visual-profile-court.svg") right top / 520px auto no-repeat;
+    url("./assets/hero-management-premium.png") right top / 560px auto no-repeat;
   content: "";
   inset: -20px -24px auto auto;
   min-height: 360px;
@@ -20851,8 +20929,8 @@ button,
 
 .management-place-row {
   background:
-    linear-gradient(100deg, rgba(255, 255, 255, 0.98) 0 72%, rgba(230, 248, 239, 0.76)),
-    url("./assets/visual-stadium-card.svg") right center / 280px auto no-repeat;
+    linear-gradient(100deg, rgba(255, 255, 255, 0.98) 0 68%, rgba(230, 248, 239, 0.72)),
+    url("./assets/hero-management-premium.png") right center / 340px auto no-repeat;
   border-color: rgba(197, 210, 220, 0.82);
   box-shadow: var(--shadow-sm);
 }
@@ -21003,7 +21081,7 @@ button,
   .management-place-row {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 248, 0.9)),
-      url("./assets/visual-stadium-card.svg") right top / 210px auto no-repeat;
+      url("./assets/hero-management-premium.png") right top / 230px auto no-repeat;
   }
 }
 
@@ -21015,7 +21093,7 @@ button,
 .player-public-page::before {
   background:
     radial-gradient(circle at 86% 12%, rgba(212, 244, 77, 0.18), transparent 18%),
-    url("./assets/visual-profile-court.svg") right top / 540px auto no-repeat;
+    url("./assets/hero-profile-player-premium.png") right top / 560px auto no-repeat;
   content: "";
   inset: -32px -24px auto auto;
   min-height: 380px;
@@ -21036,7 +21114,7 @@ button,
   position: relative;
   background:
     linear-gradient(100deg, rgba(255, 255, 255, 0.98) 0 54%, rgba(255, 255, 255, 0.68) 76%, rgba(255, 255, 255, 0.26)),
-    url("./assets/visual-profile-court.svg") right center / cover no-repeat,
+    url("./assets/hero-profile-player-premium.png") right center / cover no-repeat,
     var(--gradient-surface);
   border: 0;
   border-radius: var(--radius-xl);
@@ -21088,7 +21166,7 @@ button,
 }
 
 .player-private-note-card::after {
-  background: url("./assets/visual-match-hero.svg") right bottom / 260px auto no-repeat;
+  background: url("./assets/hero-competition-court-premium.png") right bottom / 280px auto no-repeat;
   content: "";
   inset: auto 0 0 auto;
   opacity: 0.12;
@@ -21115,7 +21193,7 @@ button,
   position: relative;
   background:
     linear-gradient(105deg, rgba(4, 18, 38, 0.96), rgba(6, 78, 59, 0.82) 58%, rgba(4, 18, 38, 0.5)),
-    url("./assets/visual-court-night.svg") right center / cover no-repeat;
+    url("./assets/hero-competition-court-premium.png") right center / cover no-repeat;
   border: 0;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sport);
@@ -21179,7 +21257,7 @@ button,
   overflow: hidden;
   background:
     linear-gradient(100deg, rgba(255, 255, 255, 0.97) 0 55%, rgba(255, 255, 255, 0.7) 76%, rgba(255, 255, 255, 0.28)),
-    url("./assets/visual-match-hero.svg") right center / cover no-repeat,
+    url("./assets/hero-competition-court-premium.png") right center / cover no-repeat,
     var(--gradient-surface);
   border-color: rgba(168, 223, 191, 0.42);
   border-radius: var(--radius-xl);
@@ -21233,7 +21311,7 @@ button,
   .player-public-hero {
     background:
       linear-gradient(180deg, rgba(3, 15, 33, 0.96), rgba(5, 50, 34, 0.84)),
-      url("./assets/visual-profile-court.svg") center top / cover no-repeat;
+      url("./assets/hero-profile-player-premium.png") center top / cover no-repeat;
     color: #fff;
     grid-template-columns: 1fr;
     min-height: 260px;
