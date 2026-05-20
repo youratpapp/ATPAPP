@@ -768,9 +768,20 @@ Casos por papel:
 Executado:
 
 - `ManagementHubPage`, `PlaceAdminShell`, `TournamentPage`, `LeagueDetailsPage` e CSS de suporte atualizados;
+- vazamento visual claro no painel mobile do professor corrigido durante QA;
 - `npm.cmd run build` passou apos a implementacao.
 
-Evidencias pendentes nesta nota:
+Evidencias capturadas:
 
-- capturar screenshots de `/gestao`, admin de local, torneio organizador e liga owner/participante apos a validacao visual;
-- validar contas reais de professor, recepcao, financeiro, caixa, gestor, owner e staff de torneio.
+- pasta: `docs/screenshots/workflow-v3-flow10-admin-out-of-routine-2026-05-20`;
+- rotas admin: `/gestao`, `/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/bookings`, `/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/settings`;
+- rotas competicao: `/eventos/eee62a99-6929-49c6-b4b9-533e82a6c9da/organizacao`, `/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3`;
+- personas auditadas por screenshot: admin/gestor, professor, recepcao, financeiro, caixa, owner de torneio e owner de liga;
+- viewports completos para rotas admin/competicao: `mobile390`, `mobile430`, `desktop1366`, `desktopwide`;
+- viewports de papeis operacionais: `mobile390` e `desktop1366`;
+- diagnosticos: 28 arquivos `.diagnostics.json`, 0 erros e 0 warnings de console/rede.
+
+Cobertura ainda pendente:
+
+- validar staff de torneio separado por `organizer`, `scorekeeper`, `checkin` e `media`;
+- validar owner/manager de local com setup incompleto real, para confirmar os atalhos de Administracao abrindo o item correto em Ajustes/Equipe.

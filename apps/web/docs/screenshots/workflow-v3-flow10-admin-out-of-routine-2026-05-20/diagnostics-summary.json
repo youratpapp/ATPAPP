@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "coach-work-today",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-coach-work-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "coach-work-today",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-coach-work-today.png",
+    "events": []
+  }
+]

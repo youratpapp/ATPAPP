@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile430",
+  "route": "management-hub-admin",
+  "hash": "#/gestao",
+  "screenshot": "mobile430-management-hub-admin.png",
+  "events": []
+}

@@ -11615,7 +11615,7 @@ Pendencias:
 
 ### [x] SPRINT-2026-05-20 - FLOW-10 Ajustes/admin fora da rotina
 
-Status: `[x]` concluido no codigo, aguardando screenshots e QA expandido por papel
+Status: `[x]` concluido no codigo, screenshots capturados e aguardando QA expandido por staff de torneio
 
 Fonte primaria:
 
@@ -11653,11 +11653,17 @@ Destino:
 Validacao:
 
 - `npm.cmd run build` executado com sucesso.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow10-admin-out-of-routine-2026-05-20`;
+- rotas auditadas: `/gestao`, `/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/bookings`, `/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/settings`, `/eventos/eee62a99-6929-49c6-b4b9-533e82a6c9da/organizacao`, `/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3`;
+- personas auditadas: admin/gestor, professor, recepcao, financeiro, caixa, owner de torneio e owner de liga;
+- viewports completos em rotas admin/competicao: `mobile390`, `mobile430`, `desktop1366`, `desktopwide`;
+- viewports de papeis operacionais: `mobile390`, `desktop1366`;
+- diagnosticos: 28 arquivos `.diagnostics.json`, 0 erros e 0 warnings de console/rede.
 
 Pendencias:
 
-- capturar screenshots mobile e desktop;
-- QA com papeis reais: professor, recepcao, financeiro, caixa, gestor, owner de local, owner de torneio, staff de torneio e participante/owner de liga.
+- QA com staff de torneio separado: organizer, scorekeeper, checkin e media;
+- validar owner/manager de local com setup incompleto real, para confirmar atalhos de Administracao em Ajustes/Equipe.
 
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 

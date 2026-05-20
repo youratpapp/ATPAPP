@@ -26825,8 +26825,36 @@ label {
 .app-shell--management .management-workspace,
 .app-shell--management .management-invite-panel,
 .app-shell--management .coach-operation-panel {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
+    url("./assets/pdark-management-work-hero.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 22px;
+  box-shadow: none;
+  color: var(--pdark-text-main);
   display: grid;
   gap: 14px;
+}
+
+.app-shell--management .coach-operation-row {
+  background: rgba(3, 10, 20, 0.66);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.app-shell--management .coach-operation-row strong,
+.app-shell--management .coach-operation-next b {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--management .coach-operation-row span,
+.app-shell--management .coach-operation-row small,
+.app-shell--management .coach-operation-next small,
+.app-shell--management .coach-operation-panel .management-section-title > strong {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--management .coach-operation-next {
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .app-shell--management .management-competition-grid {
