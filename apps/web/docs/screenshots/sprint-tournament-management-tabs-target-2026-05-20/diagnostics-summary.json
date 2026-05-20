@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "events-tournaments-organizing",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "desktop-events-tournaments-organizing.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "tournament-organization",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+    "screenshot": "desktop-tournament-organization.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "tournament-players",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "screenshot": "desktop-tournament-players.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "tournament-games",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "screenshot": "desktop-tournament-games.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "events-tournaments-organizing",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "mobile-events-tournaments-organizing.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "tournament-organization",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+    "screenshot": "mobile-tournament-organization.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "tournament-players",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "screenshot": "mobile-tournament-players.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "tournament-games",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "screenshot": "mobile-tournament-games.png",
+    "events": []
+  }
+]

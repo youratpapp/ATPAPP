@@ -25976,19 +25976,17 @@ label {
 
 @media (max-width: 920px) {
   .app-shell--management .management-shell-header {
-    grid-template-columns: 1fr;
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .app-shell--management .management-shell-actions,
-  .app-shell--management .management-mode-switch {
-    justify-content: stretch;
-    width: 100%;
+  .app-shell--management .management-shell-actions {
+    justify-content: flex-end;
+    width: auto;
   }
 
-  .app-shell--management .management-mode-switch span,
-  .app-shell--management .management-mode-switch button {
-    flex: 1 1 0;
-    text-align: center;
+  .app-shell--management .management-shell-actions .app-mode-switch {
+    justify-self: end;
   }
 
   .app-shell--management .management-place-row {
@@ -26007,12 +26005,29 @@ label {
     gap: 14px;
   }
 
+  .app-shell--management .management-shell-header {
+    column-gap: 10px;
+  }
+
+  .app-shell--management .management-shell-title {
+    min-width: 0;
+  }
+
   .app-shell--management .management-shell-title h1 {
     font-size: 2.05rem;
   }
 
   .app-shell--management .management-shell-title p {
     font-size: 0.88rem;
+  }
+
+  .app-shell--management .management-shell-actions .app-mode-switch {
+    padding: 3px;
+  }
+
+  .app-shell--management .management-shell-actions .app-mode-switch button {
+    min-height: 34px;
+    padding-inline: 10px;
   }
 
   .app-shell--management .management-command-panel,
@@ -28710,8 +28725,7 @@ body:has(.app-shell--competition),
 
 .app-shell--player .app-mode-switch,
 .app-shell--competition .app-mode-switch,
-.app-shell--management .app-mode-switch,
-.app-shell--management .management-mode-switch {
+.app-shell--management .app-mode-switch {
   background: rgba(8, 20, 36, 0.76);
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 30px rgba(0, 0, 0, 0.28);
@@ -28722,18 +28736,10 @@ body:has(.app-shell--competition),
 .app-shell--management .app-mode-switch button:not(.active),
 .app-shell--competition .compact-action:not(.primary),
 .app-shell--competition .competition-discovery-head button,
-.app-shell--management .compact-action:not(.primary),
-.app-shell--management .management-mode-switch button {
+.app-shell--management .compact-action:not(.primary) {
   background: rgba(15, 28, 46, 0.88);
   border-color: rgba(255, 255, 255, 0.14);
   color: rgba(241, 245, 249, 0.9);
-}
-
-.app-shell--management .management-mode-switch span {
-  background: rgba(34, 197, 94, 0.16);
-  border: 1px solid rgba(74, 222, 128, 0.32);
-  border-radius: var(--radius-pill);
-  color: #86efac;
 }
 
 .app-shell--player .app-mode-switch button:not(.active):hover,
@@ -28747,12 +28753,20 @@ body:has(.app-shell--competition),
 .app-shell--competition .competition-discovery-head button:hover,
 .app-shell--competition .competition-discovery-head button:focus-visible,
 .app-shell--management .compact-action:not(.primary):hover,
-.app-shell--management .compact-action:not(.primary):focus-visible,
-.app-shell--management .management-mode-switch button:hover,
-.app-shell--management .management-mode-switch button:focus-visible {
+.app-shell--management .compact-action:not(.primary):focus-visible {
   background: rgba(18, 58, 46, 0.9);
   border-color: rgba(74, 222, 128, 0.34);
   color: #ffffff;
+}
+
+.app-shell--management .management-shell-actions .app-mode-switch {
+  flex: 0 0 auto;
+  order: -1;
+}
+
+.app-shell--management .management-shell-actions .app-mode-switch button {
+  min-height: 36px;
+  padding-inline: 14px;
 }
 
 @media (max-width: 760px) {
@@ -31532,5 +31546,130 @@ body:has(.app-shell--competition),
     height: 38px;
     min-width: 38px;
     width: 38px;
+  }
+}
+
+/* Sprint 2026-05-20: tournament management publication controls cannot leak light-theme panels. */
+.app-shell--competition .competition-publishing-panel,
+.app-shell--competition .publishing-kit {
+  background:
+    linear-gradient(180deg, rgba(10, 24, 42, 0.96), rgba(5, 15, 29, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border: 1px solid rgba(128, 164, 197, 0.28) !important;
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.32) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .competition-publishing-panel {
+  border-style: solid !important;
+  border-radius: 20px !important;
+  padding: 14px !important;
+}
+
+.app-shell--competition .publishing-kit {
+  border-radius: 18px !important;
+}
+
+.app-shell--competition .publishing-kit span,
+.app-shell--competition .publishing-kit strong,
+.app-shell--competition .publishing-kit small,
+.app-shell--competition .tournament-share-actions span,
+.app-shell--competition .tournament-share-actions strong {
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .publishing-kit span,
+.app-shell--competition .competition-publishing-panel .action-bar-label,
+.app-shell--competition .competition-publishing-panel .action-bar-label span {
+  color: #37f58b !important;
+}
+
+.app-shell--competition .publishing-kit small,
+.app-shell--competition .competition-publishing-panel p,
+.app-shell--competition .competition-publishing-panel .subtle {
+  color: rgba(220, 230, 240, 0.76) !important;
+}
+
+.app-shell--competition .competition-publishing-panel button,
+.app-shell--competition .publishing-kit button,
+.app-shell--competition .tournament-share-actions button {
+  background: rgba(13, 28, 48, 0.92) !important;
+  border: 1px solid rgba(128, 164, 197, 0.34) !important;
+  box-shadow: none !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .competition-publishing-panel button:hover,
+.app-shell--competition .publishing-kit button:hover,
+.app-shell--competition .tournament-share-actions button:hover {
+  border-color: rgba(74, 222, 128, 0.52) !important;
+  transform: translateY(-1px);
+}
+
+.app-shell--competition .competition-publishing-panel .brand-icon-btn,
+.app-shell--competition .publishing-kit .brand-icon-btn {
+  color: #37f58b !important;
+}
+
+.app-shell--competition .tournament-admin-ops input[type="file"],
+.app-shell--competition .tournament-admin-ops input[type="file"]::file-selector-button,
+.app-shell--competition .tournament-organizer-task-row input,
+.app-shell--competition .tournament-organizer-task-row select {
+  background: rgba(13, 28, 48, 0.92) !important;
+  border-color: rgba(128, 164, 197, 0.34) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .tournament-admin-ops input[type="file"]::file-selector-button {
+  border: 1px solid rgba(128, 164, 197, 0.34);
+  border-radius: 10px;
+  margin-right: 10px;
+  min-height: 34px;
+}
+
+.app-shell--competition .tournament-next-action {
+  background:
+    linear-gradient(135deg, rgba(34, 197, 94, 0.22), rgba(12, 27, 45, 0.9)),
+    url("./assets/pdark-empty-state-court-texture.png") right center / 240px auto no-repeat !important;
+  border: 1px solid rgba(74, 222, 128, 0.42) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .tournament-next-action span {
+  color: #37f58b !important;
+}
+
+.app-shell--competition .tournament-next-action strong {
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .competition-tabs button small {
+  background: rgba(13, 28, 48, 0.92) !important;
+  border: 1px solid rgba(128, 164, 197, 0.28) !important;
+  color: #dfffea !important;
+}
+
+.app-shell--competition .competition-tabs button.active small {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.24) !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .competition-publishing-panel,
+  .app-shell--competition .publishing-kit {
+    border-radius: 20px !important;
+    padding: 16px !important;
+  }
+
+  .app-shell--competition .publishing-kit {
+    gap: 14px !important;
+  }
+
+  .app-shell--competition .competition-publishing-panel button,
+  .app-shell--competition .publishing-kit button,
+  .app-shell--competition .tournament-share-actions button {
+    min-height: 46px !important;
+    white-space: normal !important;
   }
 }

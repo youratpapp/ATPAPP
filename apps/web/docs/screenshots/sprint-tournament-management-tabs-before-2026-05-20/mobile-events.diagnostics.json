@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "events",
+  "hash": "#/eventos?mode=organizing",
+  "screenshot": "mobile-events.png",
+  "events": []
+}

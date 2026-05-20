@@ -11225,6 +11225,25 @@ Ganho:
 
 ## Concluidos recentes
 
+### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
+
+Status: `[x]` concluido
+
+Entregue:
+
+- removido vazamento de painel branco em `Organizacao` do torneio, principalmente `Acoes de publicacao do torneio` e `Kit de publicacao`;
+- botoes de publicacao, WhatsApp, link, exportacao e input de restore agora seguem o DNA premium dark;
+- `Proxima acao da classe` deixou de usar fundo claro, mantendo contraste em desktop e mobile;
+- badges das abas do torneio receberam tratamento dark para nao parecerem pills claras soltas;
+- validado por screenshots em `docs/screenshots/sprint-tournament-management-tabs-after-2026-05-20`;
+- build executado com sucesso e diagnosticos sem eventos de console nas rotas testadas.
+
+Ganho:
+
+- gestao de torneios fica consistente com a referencia dark;
+- elimina o contraste quebrado de texto branco em painel claro;
+- preserva funcoes existentes sem reestruturar componentes.
+
 ### [x] DOCS-01 - Criar sistema visual de referencia
 
 Status: `[x]` concluido

@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "mobile",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-management.png",
+    "events": []
+  }
+]

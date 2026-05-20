@@ -60,16 +60,25 @@ export function ManagementShell({
           {actions || showModeSwitch ? (
             <div className="management-shell-actions">
               {showModeSwitch ? (
-                <div className="management-mode-switch" aria-label="Modo atual">
-                  <span>Trabalho</span>
+                <div className="app-mode-switch" role="group" aria-label="Modo de uso">
                   <button
                     type="button"
+                    className={userMode.mode === "player" ? "active" : ""}
                     onClick={() => {
                       userMode.setMode("player");
                       navigate("/inicio");
                     }}
                   >
-                    Ir para jogador
+                    Jogador
+                  </button>
+                  <button
+                    type="button"
+                    className={userMode.mode === "work" ? "active" : ""}
+                    onClick={() => {
+                      userMode.setMode("work");
+                    }}
+                  >
+                    Trabalho
                   </button>
                 </div>
               ) : null}
