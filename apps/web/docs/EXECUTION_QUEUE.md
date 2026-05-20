@@ -11235,7 +11235,10 @@ Entregue:
 - botoes de publicacao, WhatsApp, link, exportacao e input de restore agora seguem o DNA premium dark;
 - `Proxima acao da classe` deixou de usar fundo claro, mantendo contraste em desktop e mobile;
 - badges das abas do torneio receberam tratamento dark para nao parecerem pills claras soltas;
+- validacao adicional no link real com admin (`Prime Open Inscricoes Encerradas`) encontrou e corrigiu cards brancos em `Agenda do torneio / Por quadra`;
+- auditoria visual agora aceita altura maior via `ATP_AUDIT_MAX_HEIGHT`, permitindo conferir a pagina ate o fim em mobile e desktop;
 - validado por screenshots em `docs/screenshots/sprint-tournament-management-tabs-after-2026-05-20`;
+- validado tambem por screenshots longos em `docs/screenshots/sprint-admin-tournament-real-link-full-after-2026-05-20`;
 - build executado com sucesso e diagnosticos sem eventos de console nas rotas testadas.
 
 Ganho:

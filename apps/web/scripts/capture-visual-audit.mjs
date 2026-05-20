@@ -198,7 +198,8 @@ async function capture(cdp, filePath) {
   const metrics = await cdp.send("Page.getLayoutMetrics");
   const contentSize = metrics.cssContentSize || metrics.contentSize;
   const width = Math.ceil(contentSize.width);
-  const height = Math.min(Math.ceil(contentSize.height), 4200);
+  const maxHeight = Number(process.env.ATP_AUDIT_MAX_HEIGHT || 4200);
+  const height = Math.min(Math.ceil(contentSize.height), Number.isFinite(maxHeight) && maxHeight > 0 ? maxHeight : 4200);
   const screenshot = await cdp.send("Page.captureScreenshot", {
     format: "png",
     captureBeyondViewport: true,

@@ -31655,6 +31655,42 @@ body:has(.app-shell--competition),
   color: #ffffff !important;
 }
 
+.app-shell--competition .tournament-court-agenda-grid article {
+  background:
+    linear-gradient(180deg, rgba(10, 24, 42, 0.94), rgba(5, 15, 29, 0.88)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border: 1px solid rgba(128, 164, 197, 0.28) !important;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .tournament-court-agenda-grid header strong,
+.app-shell--competition .tournament-court-agenda-row strong {
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .tournament-court-agenda-grid header span {
+  background: rgba(34, 197, 94, 0.16) !important;
+  border: 1px solid rgba(74, 222, 128, 0.28) !important;
+  color: #8af2b1 !important;
+}
+
+.app-shell--competition .tournament-court-agenda-row {
+  background: rgba(3, 9, 20, 0.34) !important;
+  border: 1px solid rgba(128, 164, 197, 0.16) !important;
+  border-radius: 10px !important;
+  padding: 8px !important;
+}
+
+.app-shell--competition .tournament-court-agenda-row + .tournament-court-agenda-row {
+  margin-top: 6px;
+}
+
+.app-shell--competition .tournament-court-agenda-grid article > .subtle {
+  color: rgba(220, 230, 240, 0.68) !important;
+  font-weight: 900;
+}
+
 @media (max-width: 760px) {
   .app-shell--competition .competition-publishing-panel,
   .app-shell--competition .publishing-kit {
