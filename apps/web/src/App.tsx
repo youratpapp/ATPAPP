@@ -22,10 +22,7 @@ const LeagueDetailsPage = lazy(() => import("./pages/LeagueDetailsPage").then((m
 const LeagueJoinPage = lazy(() => import("./pages/LeagueJoinPage").then((module) => ({ default: module.LeagueJoinPage })));
 const LeaguesPage = lazy(() => import("./pages/LeaguesPage").then((module) => ({ default: module.LeaguesPage })));
 const ManagementHubPage = lazy(() => import("./pages/ManagementHubPage").then((module) => ({ default: module.ManagementHubPage })));
-const MyLessonsPage = lazy(() => import("./pages/MyLessonsPage").then((module) => ({ default: module.MyLessonsPage })));
-const MyMatchesPage = lazy(() => import("./pages/MyMatchesPage").then((module) => ({ default: module.MyMatchesPage })));
-const MyPaymentsPage = lazy(() => import("./pages/MyPaymentsPage").then((module) => ({ default: module.MyPaymentsPage })));
-const MyReservationsPage = lazy(() => import("./pages/MyReservationsPage").then((module) => ({ default: module.MyReservationsPage })));
+const PersonalAgendaPage = lazy(() => import("./pages/PersonalAgendaPage").then((module) => ({ default: module.PersonalAgendaPage })));
 const PlacePublicPage = lazy(() => import("./pages/PlacePublicPage").then((module) => ({ default: module.PlacePublicPage })));
 const PlaceAdminPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlaceAdminPage })));
 const PlacesPage = lazy(() => import("./pages/PlacesPage").then((module) => ({ default: module.PlacesPage })));
@@ -329,10 +326,11 @@ function AppInner() {
         <Route path="/eventos/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />
         <Route path="/eventos/ligas/:leagueId" element={<LeagueDetailsPage user={authUser} profile={profile} />} />
         <Route path="/eventos/ligas/inscricao/:token" element={<LeagueJoinPage user={authUser} profile={profile} />} />
-        <Route path="/minhas-reservas" element={<MyReservationsPage user={authUser} profile={profile} />} />
-        <Route path="/minhas-partidas" element={<MyMatchesPage user={authUser} profile={profile} />} />
-        <Route path="/minhas-aulas" element={<MyLessonsPage user={authUser} profile={profile} />} />
-        <Route path="/meus-pagamentos" element={<MyPaymentsPage user={authUser} profile={profile} />} />
+        <Route path="/agenda" element={<PersonalAgendaPage user={authUser} profile={profile} />} />
+        <Route path="/minhas-reservas" element={<PersonalAgendaPage user={authUser} profile={profile} initialScope="reservas" />} />
+        <Route path="/minhas-partidas" element={<PersonalAgendaPage user={authUser} profile={profile} initialScope="partidas" />} />
+        <Route path="/minhas-aulas" element={<PersonalAgendaPage user={authUser} profile={profile} initialScope="aulas" />} />
+        <Route path="/meus-pagamentos" element={<PersonalAgendaPage user={authUser} profile={profile} initialScope="pagamentos" />} />
         <Route path="/ligas" element={<Navigate to="/eventos/ligas" replace />} />
         <Route path="/ligas/:leagueId" element={<LegacyLeagueDetailsRedirect />} />
         <Route path="/ligas/inscricao/:token" element={<LegacyLeagueJoinRedirect />} />

@@ -10767,6 +10767,195 @@ button:disabled {
   margin: 2px 0 0;
 }
 
+.personal-agenda-page {
+  gap: var(--space-3);
+}
+
+.personal-agenda-hero {
+  align-items: end;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
+}
+
+.personal-agenda-kpis,
+.personal-agenda-state-grid {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.personal-agenda-kpis article,
+.personal-agenda-summary-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 4px;
+  padding: var(--space-2);
+  text-decoration: none;
+}
+
+.personal-agenda-kpis article span,
+.personal-agenda-summary-card span,
+.personal-agenda-kind {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.personal-agenda-kpis article strong,
+.personal-agenda-summary-card strong {
+  color: var(--color-text);
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+}
+
+.personal-agenda-kpis article small,
+.personal-agenda-summary-card small {
+  color: var(--color-text-subtle);
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.personal-agenda-kpis article.danger strong,
+.personal-agenda-kpis article.danger span {
+  color: #b91c1c;
+}
+
+.personal-agenda-tabs {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.personal-agenda-tabs button {
+  border-radius: 999px;
+  flex: 0 0 auto;
+  min-height: 40px;
+}
+
+.personal-agenda-tabs button.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.personal-agenda-layout {
+  align-items: start;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
+}
+
+.personal-agenda-main,
+.personal-agenda-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.personal-agenda-state-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.personal-agenda-item {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  display: grid;
+  gap: 6px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: var(--space-3);
+  text-align: left;
+  transition: border-color 160ms ease, transform 160ms ease;
+  width: 100%;
+}
+
+.personal-agenda-item:hover,
+.personal-agenda-item.active {
+  border-color: rgba(32, 185, 109, 0.45);
+  transform: translateY(-1px);
+}
+
+.personal-agenda-item strong,
+.personal-agenda-item small,
+.personal-agenda-item em {
+  display: block;
+}
+
+.personal-agenda-item strong {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-title);
+}
+
+.personal-agenda-item small,
+.personal-agenda-item em {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-style: normal;
+  font-weight: 850;
+}
+
+.personal-agenda-item .status-pill {
+  align-self: start;
+  grid-column: 2;
+  grid-row: 1 / span 4;
+}
+
+.personal-agenda-detail-panel {
+  position: sticky;
+  top: 20px;
+}
+
+.personal-agenda-detail,
+.personal-agenda-empty-detail {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.personal-agenda-detail-head {
+  display: grid;
+  gap: 6px;
+}
+
+.personal-agenda-detail-head strong,
+.personal-agenda-empty-detail strong {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-title);
+}
+
+.personal-agenda-detail-head small,
+.personal-agenda-empty-detail small {
+  color: var(--color-text-subtle);
+  font-weight: 850;
+}
+
+.personal-agenda-detail dl {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.personal-agenda-detail dt {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.personal-agenda-detail dd {
+  font-weight: 850;
+  margin: 2px 0 0;
+}
+
 .place-public-manual-slot button {
   grid-column: 1 / -1;
 }
@@ -29338,6 +29527,84 @@ body:has(.app-shell--competition),
   color: rgba(220, 230, 240, 0.74);
 }
 
+.app-shell--player .personal-agenda-hero {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.76), rgba(6, 17, 31, 0.24)),
+    url("./assets/pdark-home-player-mobile-hero.png") center / cover no-repeat;
+}
+
+.app-shell--player .personal-agenda-kpis article,
+.app-shell--player .personal-agenda-summary-card,
+.app-shell--player .personal-agenda-item,
+.app-shell--player .personal-agenda-detail,
+.app-shell--player .personal-agenda-empty-detail {
+  background:
+    linear-gradient(145deg, rgba(8, 22, 40, 0.9), rgba(7, 20, 38, 0.78)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 300px auto no-repeat;
+  border-color: rgba(128, 164, 197, 0.24);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .personal-agenda-kpis article strong,
+.app-shell--player .personal-agenda-summary-card strong,
+.app-shell--player .personal-agenda-item strong,
+.app-shell--player .personal-agenda-detail-head strong,
+.app-shell--player .personal-agenda-empty-detail strong,
+.app-shell--player .personal-agenda-detail dd {
+  color: #fff;
+}
+
+.app-shell--player .personal-agenda-kpis article span,
+.app-shell--player .personal-agenda-summary-card span,
+.app-shell--player .personal-agenda-kind,
+.app-shell--player .personal-agenda-detail dt,
+.app-shell--player .personal-agenda-empty-detail span {
+  color: #4ade80;
+}
+
+.app-shell--player .personal-agenda-kpis article small,
+.app-shell--player .personal-agenda-summary-card small,
+.app-shell--player .personal-agenda-item small,
+.app-shell--player .personal-agenda-item em,
+.app-shell--player .personal-agenda-detail-head small,
+.app-shell--player .personal-agenda-empty-detail small {
+  color: rgba(220, 230, 240, 0.74);
+}
+
+.app-shell--player .personal-agenda-kpis article.danger span,
+.app-shell--player .personal-agenda-kpis article.danger strong {
+  color: #fca5a5;
+}
+
+.app-shell--player .personal-agenda-tabs {
+  background: rgba(3, 10, 23, 0.72);
+  border: 1px solid rgba(128, 164, 197, 0.18);
+  border-radius: 999px;
+  padding: 6px;
+}
+
+.app-shell--player .personal-agenda-tabs button {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(220, 230, 240, 0.78);
+}
+
+.app-shell--player .personal-agenda-tabs button.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(34, 197, 94, 0.42);
+  color: #fff;
+}
+
+.app-shell--player .personal-agenda-item:hover,
+.app-shell--player .personal-agenda-item.active {
+  border-color: rgba(43, 212, 117, 0.5);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+.app-shell--player .personal-agenda-detail-panel {
+  top: 24px;
+}
+
 .app-shell--player .home-pro-workspace {
   background:
     linear-gradient(135deg, rgba(7, 20, 38, 0.92), rgba(6, 60, 42, 0.72)),
@@ -29552,6 +29819,43 @@ body:has(.app-shell--competition),
 
   .app-shell--player .personal-area-row .status-pill {
     justify-self: start;
+  }
+
+  .personal-agenda-hero {
+    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .personal-agenda-kpis,
+  .personal-agenda-state-grid,
+  .personal-agenda-layout,
+  .personal-agenda-detail dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .personal-agenda-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .personal-agenda-tabs {
+    border-radius: 18px;
+  }
+
+  .personal-agenda-item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .personal-agenda-item .status-pill {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: start;
+    max-width: none;
+  }
+
+  .personal-agenda-sheet .personal-agenda-detail {
+    background: transparent;
+    border: 0;
+    padding: 0;
   }
 
   .open-match-row {

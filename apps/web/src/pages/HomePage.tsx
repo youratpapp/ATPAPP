@@ -1464,7 +1464,7 @@ export function HomePage({ user, profile }: Props) {
       .filter((item) => item.role === "player" && item.status !== "cancelled")
       .map((item) => ({
         id: `booking:${item.id}`,
-        targetPath: `/minhas-reservas?reserva=${encodeURIComponent(item.id)}`,
+        targetPath: `/agenda?tipo=reservas&item=${encodeURIComponent(`reservation:${item.id}`)}`,
         title: item.courtName,
         detail: item.placeName,
         meta: `${formatShortDateTime(item.startsAt)} - ${courtBookingStatusLabel(item.status)}`,
@@ -1474,7 +1474,7 @@ export function HomePage({ user, profile }: Props) {
       .filter((item) => item.role === "player" && item.status !== "cancelled")
       .map((item) => ({
         id: `waitlist:${item.id}`,
-        targetPath: "/minhas-reservas",
+        targetPath: `/agenda?tipo=reservas&item=${encodeURIComponent(`waitlist:${item.id}`)}`,
         title: item.courtName,
         detail: item.placeName,
         meta: `${formatShortDateTime(item.startsAt)} - ${courtWaitlistStatusLabel(item.status)}`,
@@ -1503,7 +1503,7 @@ export function HomePage({ user, profile }: Props) {
     .filter((item) => item.id.startsWith("academy-player") || item.id.startsWith("academy-makeup"))
     .map((item) => ({
       id: `lesson:${item.id}`,
-      targetPath: "/minhas-aulas",
+      targetPath: "/agenda?tipo=aulas",
       title: item.title,
       detail: item.sourceName,
       meta: item.detail,
@@ -1513,7 +1513,7 @@ export function HomePage({ user, profile }: Props) {
     .filter((item) => item.id.startsWith("membership-player") || item.detail.toLowerCase().includes("pagamento"))
     .map((item) => ({
       id: `payment:${item.id}`,
-      targetPath: "/meus-pagamentos",
+      targetPath: "/agenda?tipo=pagamentos",
       title: item.title,
       detail: item.sourceName,
       meta: item.detail,
@@ -1675,7 +1675,7 @@ export function HomePage({ user, profile }: Props) {
       detail: "Reservas e lista de espera em um so lugar.",
       action: "Ver reservas",
       items: playerReservationItems,
-      onOpen: () => navigate("/minhas-reservas"),
+      onOpen: () => navigate("/agenda?tipo=reservas"),
     },
     {
       key: "matches",
@@ -1684,7 +1684,7 @@ export function HomePage({ user, profile }: Props) {
       detail: "Confirmações, horários e resultados pendentes.",
       action: "Abrir eventos",
       items: playerMatchItems,
-      onOpen: () => navigate("/minhas-partidas"),
+      onOpen: () => navigate("/agenda?tipo=partidas"),
     },
     {
       key: "lessons",
@@ -1693,7 +1693,7 @@ export function HomePage({ user, profile }: Props) {
       detail: "Turmas, reposicoes e acompanhamento de aula.",
       action: "Abrir aulas",
       items: playerLessonItems,
-      onOpen: () => navigate("/minhas-aulas"),
+      onOpen: () => navigate("/agenda?tipo=aulas"),
     },
     {
       key: "payments",
@@ -1702,7 +1702,7 @@ export function HomePage({ user, profile }: Props) {
       detail: "Planos e pendencias ligadas ao clube.",
       action: "Ver financeiro",
       items: playerPaymentItems,
-      onOpen: () => navigate("/meus-pagamentos"),
+      onOpen: () => navigate("/agenda?tipo=pagamentos"),
     },
     {
       key: "invites",
@@ -1739,14 +1739,14 @@ export function HomePage({ user, profile }: Props) {
       label: "Agenda",
       value: agendaItems.length,
       detail: nextAgendaLabel,
-      targetPath: nextPlayerAgenda?.targetPath || "/minhas-reservas",
+      targetPath: nextPlayerAgenda?.targetPath || "/agenda",
     },
     {
       key: "routine",
       label: "Rotina",
       value: totalPlayerHubItems,
       detail: "itens no seu painel",
-      targetPath: playerHubSections[0]?.key === "reservations" ? "/minhas-reservas" : "/perfil",
+      targetPath: playerHubSections[0]?.key === "reservations" ? "/agenda?tipo=reservas" : "/perfil",
     },
   ];
 
@@ -1893,7 +1893,7 @@ export function HomePage({ user, profile }: Props) {
                   <p className="home-context-eyebrow">Agora no app</p>
                   <h2>Proximos passos</h2>
                 </div>
-                <button className="link" type="button" onClick={() => navigate("/minhas-reservas")}>
+                <button className="link" type="button" onClick={() => navigate("/agenda")}>
                   Ver agenda
                 </button>
               </div>

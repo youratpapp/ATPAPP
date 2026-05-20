@@ -90,9 +90,9 @@ const PLAYER_ITEMS: NavItem[] = [
   { group: "player", path: "/eventos", label: "Competir", activePaths: ["/eventos", "/ranking", "/inscricao", "/join", "/t"], Icon: TrophyIcon },
   {
     group: "player",
-    path: "/minhas-reservas",
+    path: "/agenda",
     label: "Agenda",
-    activePaths: ["/minhas-reservas", "/minhas-partidas", "/minhas-aulas", "/meus-pagamentos"],
+    activePaths: ["/agenda", "/minhas-reservas", "/minhas-partidas", "/minhas-aulas", "/meus-pagamentos"],
     Icon: CalendarIcon,
   },
   { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon },
