@@ -26,6 +26,7 @@ export function getRouteExperienceMode(pathname: string, search = ""): AppExperi
   if (pathname.startsWith("/gestao")) return "work";
   if (/^\/locais\/[^/]+\/admin(\/|$)/.test(pathname)) return "work";
   if (/^\/eventos\/[^/]+\/organizacao(\/|$)/.test(pathname)) return "work";
+  if (pathname === "/eventos" && params.get("modo") === "organizing") return "work";
   if (pathname === "/eventos/torneios" && params.get("view") === "organizing") return "work";
   if (pathname === "/eventos/ligas" && params.get("view") === "organizing") return "work";
   return "player";

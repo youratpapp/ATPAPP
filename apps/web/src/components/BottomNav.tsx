@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { useMemo } from "react";
 import logoSymbol from "../assets/logo-atp-symbol.svg";
 import type { WorkspaceAccessSummary } from "../lib/workspace-access";
+import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import { getGlobalNavigationVisibility } from "../lib/role-visibility";
 import { useUserMode, type UserMode } from "../lib/user-mode-context";
 
@@ -71,17 +72,25 @@ function PersonIcon({ active }: { active: boolean }) {
 
 type NavItem = {
   activePath?: string;
+  activePaths?: string[];
+  exactActive?: boolean;
   group: "player" | "work" | "account";
   path: string;
   label: string;
   Icon: ComponentType<{ active: boolean }>;
 };
 
-const BASE_ITEMS: NavItem[] = [
+const PLAYER_ITEMS: NavItem[] = [
   { group: "player", path: "/inicio", label: "Inicio", Icon: HomeIcon },
-  { group: "player", path: "/eventos", label: "Competições", Icon: TrophyIcon },
-  { group: "player", path: "/minhas-reservas", label: "Reservas", Icon: CalendarIcon },
-  { group: "player", path: "/locais", label: "Locais", Icon: LocationIcon },
+  { group: "player", path: "/locais", label: "Jogar", activePaths: ["/locais"], Icon: LocationIcon },
+  { group: "player", path: "/eventos", label: "Competir", activePaths: ["/eventos", "/ranking", "/inscricao", "/join", "/t"], Icon: TrophyIcon },
+  {
+    group: "player",
+    path: "/minhas-reservas",
+    label: "Agenda",
+    activePaths: ["/minhas-reservas", "/minhas-partidas", "/minhas-aulas", "/meus-pagamentos"],
+    Icon: CalendarIcon,
+  },
   { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon },
 ];
 
@@ -91,8 +100,32 @@ const GROUPS: Array<{ id: NavItem["group"]; label: string }> = [
   { id: "account", label: "Conta" },
 ];
 
+function workItem(path: string, label: string, Icon: ComponentType<{ active: boolean }>, activePaths?: string[], exactActive = false): NavItem {
+  return {
+    activePath: path.split("?")[0],
+    activePaths,
+    exactActive,
+    group: "work",
+    path,
+    label,
+    Icon,
+  };
+}
+
+function accountItem(): NavItem {
+  return { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon };
+}
+
+function placePath(access: WorkspaceAccessSummary, module: Parameters<typeof buildPlaceAdminPath>[1], view?: string): string {
+  return access.primaryPlaceId ? buildPlaceAdminPath(access.primaryPlaceId, module, view) : "/gestao";
+}
+
+function hasPlaceModule(access: WorkspaceAccessSummary, module: Parameters<typeof buildPlaceAdminPath>[1]): boolean {
+  return access.primaryPlaceModules.includes(module);
+}
+
 function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: UserMode, workEntryPath: string): NavItem[] {
-  const items = mode === "work" ? BASE_ITEMS.filter((item) => item.group === "account") : [...BASE_ITEMS];
+  const items = mode === "work" ? [accountItem()] : [...PLAYER_ITEMS];
   const visibility = getGlobalNavigationVisibility(access, pathname);
   const hasProfessionalEntry = visibility.showCompetitionManagement || visibility.showManagement;
 
@@ -102,31 +135,80 @@ function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: U
     return items;
   }
 
-  if (access.hasManagement) {
-    items.push({
-      activePath: "/gestao",
-      group: "work",
-      path: "/gestao",
-      label: "Gestao",
-      Icon: ManagementIcon,
-    });
+  const competitionWorkPath = "/eventos?modo=organizing";
+  const tournamentWorkPath = "/eventos/torneios?view=organizing";
+  const leagueWorkPath = "/eventos/ligas?view=organizing";
+
+  if (!access.hasManagement && access.hasCompetitionManagement) {
+    return [
+      workItem(workEntryPath, "Hoje", ManagementIcon, ["/gestao"], true),
+      workItem(tournamentWorkPath, "Torneios", TrophyIcon, ["/eventos/torneios"]),
+      workItem(leagueWorkPath, "Ligas", TrophyIcon, ["/eventos/ligas"]),
+      workItem(competitionWorkPath, "Publicacao", ManagementIcon, ["/eventos"]),
+      accountItem(),
+    ];
   }
 
-  if (access.hasCompetitionManagement) {
-    items.push({
-      activePath: "/eventos/torneios",
-      group: "work",
-      path: "/eventos/torneios?view=organizing",
-      label: "Organizar",
-      Icon: TrophyIcon,
-    });
+  if (access.primaryWorkRole === "coach") {
+    if (!hasPlaceModule(access, "academy")) return [workItem("/gestao", "Hoje", ManagementIcon, ["/gestao"], true), accountItem()];
+    return [
+      workItem("/gestao", "Hoje", ManagementIcon, ["/gestao"], true),
+      workItem(placePath(access, "academy", "hoje"), "Aulas", CalendarIcon),
+      workItem(placePath(access, "academy", "turmas"), "Turmas", TrophyIcon),
+      workItem(placePath(access, "academy", "alunos"), "Alunos", PersonIcon),
+      accountItem(),
+    ];
   }
 
-  if (!access.hasManagement && !access.hasCompetitionManagement) {
-    items.push({ activePath: workEntryPath.split("?")[0], group: "work", path: workEntryPath, label: "Trabalho", Icon: ManagementIcon });
+  if (access.primaryWorkRole === "frontdesk") {
+    const frontdeskItems = [workItem("/gestao", "Hoje", ManagementIcon, ["/gestao"], true)];
+    if (hasPlaceModule(access, "bookings")) frontdeskItems.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon));
+    if (hasPlaceModule(access, "clients")) frontdeskItems.push(workItem(placePath(access, "clients", "rotina"), "Clientes", PersonIcon));
+    if (hasPlaceModule(access, "academy")) frontdeskItems.push(workItem(placePath(access, "academy", "pendencias"), "Aulas", TrophyIcon));
+    return [...frontdeskItems.slice(0, 4), workItem("/gestao", "Mais", ManagementIcon, ["/gestao"], true)];
   }
 
-  return items;
+  if (access.primaryWorkRole === "finance") {
+    if (!hasPlaceModule(access, "finance")) return [workItem("/gestao", "Hoje", ManagementIcon, ["/gestao"], true), accountItem()];
+    return [
+      workItem(placePath(access, "finance", "recebiveis"), "Receber", ManagementIcon),
+      workItem(placePath(access, "finance", "pagos"), "Pagos", CalendarIcon),
+      workItem(placePath(access, "finance", "despesas"), "Despesas", TrophyIcon),
+      workItem(placePath(access, "finance", "resumo"), "Resumo", ManagementIcon),
+      accountItem(),
+    ];
+  }
+
+  if (access.primaryWorkRole === "cashier") {
+    if (!hasPlaceModule(access, "canteen")) return [workItem("/gestao", "Hoje", ManagementIcon, ["/gestao"], true), accountItem()];
+    return [
+      workItem(placePath(access, "canteen", "vender"), "Vender", ManagementIcon),
+      workItem(placePath(access, "canteen", "hoje"), "Hoje", CalendarIcon),
+      workItem(placePath(access, "canteen", "estoque"), "Estoque", TrophyIcon),
+      workItem(placePath(access, "canteen", "produtos"), "Produtos", ManagementIcon),
+      accountItem(),
+    ];
+  }
+
+  if (access.primaryWorkRole === "operator") {
+    const operatorItems = [workItem("/gestao", "Hoje", ManagementIcon, ["/gestao"], true)];
+    if (access.hasManagement) operatorItems.push(workItem("/gestao", "Locais", LocationIcon, ["/gestao"], true));
+    if (access.hasCompetitionManagement) operatorItems.push(workItem(competitionWorkPath, "Competir", TrophyIcon, ["/eventos"]));
+    return [...operatorItems.slice(0, 4), accountItem()];
+  }
+
+  const managerItems = [workItem("/gestao", "Hoje", ManagementIcon, ["/gestao"], true)];
+  if (hasPlaceModule(access, "bookings")) managerItems.push(workItem(placePath(access, "bookings", "hoje"), "Agenda", CalendarIcon));
+  if (hasPlaceModule(access, "academy")) managerItems.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon));
+  if (hasPlaceModule(access, "finance")) managerItems.push(workItem(placePath(access, "finance", "recebiveis"), "Financeiro", ManagementIcon));
+  if (access.hasCompetitionManagement && managerItems.length < 4) managerItems.push(workItem(competitionWorkPath, "Competir", TrophyIcon, ["/eventos"]));
+  return [...managerItems.slice(0, 4), workItem("/gestao", "Mais", PersonIcon, ["/gestao"], true)];
+}
+
+function isActiveNavItem(item: NavItem, pathname: string): boolean {
+  const candidates = item.activePaths || [item.activePath || item.path.split("?")[0] || item.path];
+  if (item.exactActive) return candidates.some((activePath) => pathname === activePath);
+  return candidates.some((activePath) => pathname === activePath || pathname.startsWith(`${activePath}/`));
 }
 
 export function BottomNav({ user }: { user: User }) {
@@ -139,12 +221,13 @@ export function BottomNav({ user }: { user: User }) {
   const visibility = useMemo(() => getGlobalNavigationVisibility(access, pathname), [access, pathname]);
   const contextLabel = mode === "work" ? "Trabalho" : visibility.contextLabel;
   const navClassName = `bottom-nav is-${mode === "work" ? "management" : visibility.activeSurface}`;
+  const brandLabel = mode === "work" ? "ATP Trabalho" : visibility.activeSurface === "management" ? "Gestao esportiva" : "ATP";
 
   return (
     <nav className={navClassName} aria-label="Navegacao principal">
       <div className="bottom-nav-brand" aria-label={`Area atual: ${contextLabel}`}>
         <img src={logoSymbol} alt="" />
-        <span>{visibility.activeSurface === "management" ? "Gestao esportiva" : "ATP"}</span>
+        <span>{brandLabel}</span>
         <small className="bottom-nav-context">{contextLabel}</small>
       </div>
       {GROUPS.map((group) => {
@@ -154,11 +237,10 @@ export function BottomNav({ user }: { user: User }) {
         <div className={`bottom-nav-group bottom-nav-group-${group.id}`} key={group.id}>
           <span className="bottom-nav-group-label">{group.label}</span>
           {groupItems.map((item) => {
-            const activePath = item.activePath || item.path.split("?")[0] || item.path;
-            const active = pathname === activePath || pathname.startsWith(`${activePath}/`);
+            const active = isActiveNavItem(item, pathname);
             return (
               <button
-                key={item.path}
+                key={`${item.group}:${item.label}:${item.path}`}
                 className={active ? "active" : ""}
                 onClick={() => {
                   if (item.group === "work") setMode("work");

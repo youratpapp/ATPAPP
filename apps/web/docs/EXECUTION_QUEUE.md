@@ -11225,6 +11225,111 @@ Ganho:
 
 ## Concluidos recentes
 
+### [ ] FLOW-V3 - Reestruturar arquitetura de fluxo global do app
+
+Status: `[ ]` planejado
+
+Fonte primaria:
+
+- `GLOBAL_WORKFLOW_RESTRUCTURE_STUDY_2026_05_20.md`
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+
+Objetivo:
+
+- reorganizar Player App, Competition OS e Management OS por papel, missao e etapa de trabalho;
+- reduzir menus/submenus/subvisoes que exigem adivinhacao;
+- preservar backend e funcoes existentes, reposicionando telas e fluxos;
+- garantir que jogador, aluno, socio, organizador, professor, recepcao, financeiro, caixa e gestor tenham caminhos claros sem prejudicar uns aos outros.
+
+Rechecagem global em 2026-05-20:
+
+- o MD fonte foi revalidado contra rotas reais, modulos de gestao, papeis de local, papeis de torneio, tabs de liga e paginas pessoais;
+- MDs anteriores passam a ser tratados como contexto/evidencia, nao como ordem automatica quando apontarem para outro produto;
+- a execucao deve preservar o ATP atual: jogador, competicoes, reservas, aulas, mensalidades, locais e operacao de clubes/academias;
+- proibido relaxar permissao, remover rota existente ou criar produto generico para simplificar IA;
+- novas rotas como `/agenda`, `/trabalho/competicoes` ou `/eventos/:id/operacao` devem nascer com alias/wrapper/redirect quando afetarem links atuais.
+- criado `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md` como manual executavel antes de codigo, com task flows, matriz de entrada, estados, ciclo de competicoes, mapa de rotas, navegacao, contratos de pagina, guardrails, queue e QA.
+
+Ordem proposta:
+
+1. `FLOW-00A` - transformar a rechecagem global em matriz de gaps, rotas, permissoes e CTAs;
+2. `FLOW-00` - congelar IA, contratos de pagina e rotas atuais x rotas-alvo;
+3. `FLOW-02` - simplificar navegacao principal v3 para Jogador/Trabalho e desktop/mobile;
+4. `FLOW-01` - transformar `/gestao` em `Trabalho Hoje` por papel;
+5. `FLOW-04` - criar workspace de Professor;
+6. `FLOW-05` - criar workspace de Recepcao/Atendimento;
+7. `FLOW-06` - criar hub de trabalho para Competicoes;
+8. `FLOW-07` - reestruturar Torneio operacional por fase e por papel real (`owner`, `organizer`, `scorekeeper`, `checkin`, `media`);
+9. `FLOW-08` - reestruturar Liga operacional por fase preservando `configuracao` owner-only;
+10. `FLOW-03` - consolidar Agenda do Jogador sem esconder pagamentos proprios;
+11. `FLOW-09` - mover ajustes/admin/destrutivos para fora da rotina;
+12. `FLOW-10` - QA transversal por persona, viewport e rotas primarias.
+
+Critério de aceite macro:
+
+- cada papel entra e entende a proxima acao sem procurar ferramenta;
+- mobile tem no maximo cinco destinos principais por modo;
+- desktop de trabalho usa grupos previsiveis;
+- setup/configuracao/publicacao/relatorio nao competem com operacao diaria;
+- nenhuma permissao/plano e relaxado;
+- nenhuma funcao existente e removida sem substituto de fluxo.
+- nenhum MD antigo deve prevalecer sobre o escopo atual quando desviar o produto para outro caminho.
+
+Detalhamento do `FLOW-00A`:
+
+- inventariar rotas atuais de jogador, trabalho/local, torneio, liga, convites e links publicos;
+- mapear cada CTA primario/secundario para destino real, rota faltante ou wrapper necessario;
+- registrar matriz `papel -> tarefas -> modulos visiveis -> paginas proibidas`;
+- usar `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md` como criterio de ready antes de qualquer sprint de codigo;
+- validar jogador puro, aluno, socio/reservas, jogador competitivo, organizador sem local, professor, recepcao, financeiro, caixa, gestor e usuario multi-papel;
+- registrar quais mudancas sao apenas frontend/IA e quais exigiriam decisao de produto antes de codigo;
+- produzir lista de screenshots obrigatorios, incluindo console e interacao de botoes em mobile e web.
+
+### [x] SPRINT-2026-05-20 - FLOW V3 gates e navegacao principal inicial
+
+Status: `[x]` concluido parcialmente com QA visual bloqueado pelo ambiente
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- criado `APP_WORKFLOW_EXECUTION_MATRIX_V3.md` com FLOW-00A, FLOW-00, FLOW-01 e escopo seguro de FLOW-02;
+- matriz cobre rotas principais, superficie futura, persona, permissoes, CTA, estados vazios/sem permissao, risco, alias/redirect, arquivos provaveis e QA;
+- contratos de pagina documentados para Player App, Competition OS e Management OS;
+- mapeamento de aliases preserva `/join`, `/inscricao/:tournamentId`, `/t/:tournamentId`, `/locais/:placeId/admin`, tabs/query de torneio/liga e paginas pessoais;
+- `workspace-access` passou a expor papel dominante de trabalho, local primario e modulos disponiveis do local sem relaxar permissoes;
+- `BottomNav` foi reorganizado para `Inicio | Jogar | Competir | Agenda | Perfil` no modo jogador;
+- modo Trabalho agora monta entradas por papel dominante: professor, recepcao, financeiro, caixa, organizador sem local, operador misto e gestor;
+- atalhos profundos de trabalho so sao criados quando o modulo existe em `primaryPlaceModules`;
+- `/eventos?modo=organizing` passou a ser reconhecido como experiencia `work`, evitando o seletor voltar para Jogador;
+- corrigido bug capturado em auditoria: keys duplicadas no React quando dois itens de nav apontavam para `/gestao`.
+
+O que nao foi alterado:
+
+- backend;
+- loaders de dominio;
+- permissoes de torneio/local;
+- rotas publicas/legadas;
+- visual premium dark de componentes.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso;
+- tentativa de captura visual completa falhou por `ENOSPC` ao gravar PNG;
+- tentativa smoke posterior travou por timeout de login/rede;
+- artefatos parciais de screenshots e temporarios `atp-visual-audit-*` foram removidos para recuperar espaco;
+- comandos de recaptura ficaram documentados em `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`.
+
+Riscos restantes:
+
+- precisa QA visual real em mobile 390px, mobile 430px, desktop 1366px e desktop amplo;
+- precisa validar contas especificas de professor, recepcao, financeiro, caixa, organizador e jogador puro;
+- `Agenda` do jogador ainda e alias operacional para `/minhas-reservas`, marcando tambem aulas/partidas/pagamentos como grupo ativo; a consolidacao real da agenda fica para FLOW-06;
+- work nav para usuario multi-papel sem gestor usa fallback seguro e pode ficar conservador ate termos selecao explicita de workspace.
+
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 
 Status: `[x]` concluido
