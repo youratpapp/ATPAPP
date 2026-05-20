@@ -14,6 +14,38 @@ type Props = {
 };
 
 type HubMode = "playing" | "organizing" | "discover";
+type WorkCompetitionKind = "Torneio" | "Liga";
+type WorkCompetitionTone = "urgent" | "neutral" | "done";
+type WorkCompetitionPhase =
+  | "draft"
+  | "registration_open"
+  | "games_to_generate"
+  | "live"
+  | "league_active"
+  | "league_between_rounds"
+  | "finished";
+
+type WorkCompetitionItem = {
+  id: string;
+  kind: WorkCompetitionKind;
+  phase: WorkCompetitionPhase;
+  title: string;
+  meta: string;
+  status: string;
+  action: string;
+  detail: string;
+  targetPath: string;
+  tone: WorkCompetitionTone;
+  updatedAt: string;
+};
+
+type WorkCompetitionGroup = {
+  key: WorkCompetitionPhase;
+  label: string;
+  detail: string;
+  empty: string;
+  items: WorkCompetitionItem[];
+};
 
 const PREVIEW_LIMIT = 3;
 
@@ -79,51 +111,53 @@ function hasExplicitMode(search: string): boolean {
   return new URLSearchParams(search).has("modo");
 }
 
-function tournamentOperationInfo(tournament: TournamentSummary): { action: string; detail: string; targetPath: string; tone: "urgent" | "neutral" } {
+function tournamentWorkOperationInfo(tournament: TournamentSummary): { action: string; detail: string; targetPath: string; tone: WorkCompetitionTone } {
   if (tournament.status === "draft") {
     return {
-      action: "Finalizar setup",
-      detail: "Configure dados, classes e publicacao antes de abrir inscrições.",
+      action: "Resolver proximo bloqueio",
+      detail: "Configure dados, classes e publicacao antes de abrir inscricoes.",
       targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
       tone: "urgent",
     };
   }
   if (tournament.status === "registration_open") {
     return {
-      action: "Ver inscrições",
-      detail: tournament.registrationCloseAt ? `Inscrições ate ${new Date(tournament.registrationCloseAt).toLocaleDateString("pt-BR")}.` : "Aprove inscritos e acompanhe a lista.",
-      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/jogadores`,
+      action: "Abrir cockpit da fase",
+      detail: tournament.registrationCloseAt
+        ? `Inscricoes ate ${new Date(tournament.registrationCloseAt).toLocaleDateString("pt-BR")}.`
+        : "Acompanhe inscritos, pagamentos e lista de espera.",
+      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
       tone: "urgent",
     };
   }
   if (tournament.status === "registration_closed") {
     return {
-      action: "Preparar jogos",
-      detail: "Inscrições encerradas. Revise classes, sorteio e primeira rodada.",
+      action: "Resolver proximo bloqueio",
+      detail: "Inscricoes encerradas. Revise classes, sorteio e primeira rodada.",
       targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
       tone: "urgent",
     };
   }
   if (tournament.status === "live") {
     return {
-      action: "Operar jogos",
-      detail: "Resultados, confirmações e andamento ficam na fila de jogos.",
-      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/jogos`,
+      action: "Abrir cockpit da fase",
+      detail: "Acompanhe jogos, resultados pendentes e comunicacao da fase.",
+      targetPath: `/eventos/${encodeURIComponent(tournament.id)}/organizacao`,
       tone: "urgent",
     };
   }
   return {
     action: "Ver resumo",
-    detail: "Competicao encerrada. Consulte classificação, histórico e mensagens.",
+    detail: "Competicao encerrada. Consulte classificacao, historico e mensagens.",
     targetPath: `/eventos/${encodeURIComponent(tournament.id)}/classificacao`,
-    tone: "neutral",
+    tone: "done",
   };
 }
 
-function leagueOperationInfo(league: LeagueSummary): { action: string; detail: string; targetPath: string; tone: "urgent" | "neutral" } {
+function leagueWorkOperationInfo(league: LeagueSummary): { action: string; detail: string; targetPath: string; tone: WorkCompetitionTone } {
   if (league.status === "draft") {
     return {
-      action: "Configurar liga",
+      action: "Resolver proximo bloqueio",
       detail: "Finalize temporada, classes e regras antes de ativar.",
       targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
       tone: "urgent",
@@ -131,7 +165,7 @@ function leagueOperationInfo(league: LeagueSummary): { action: string; detail: s
   }
   if (league.status === "active") {
     return {
-      action: "Operar rodada",
+      action: "Abrir cockpit da fase",
       detail: "Acompanhe partidas, disponibilidade, resultados e ranking.",
       targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
       tone: "urgent",
@@ -139,18 +173,134 @@ function leagueOperationInfo(league: LeagueSummary): { action: string; detail: s
   }
   if (league.status === "paused") {
     return {
-      action: "Revisar pausa",
-      detail: "Liga pausada. Abra a operacao para ajustar rodada ou comunicados.",
+      action: "Resolver proximo bloqueio",
+      detail: "Liga entre rodadas. Ajuste pendencias, valide resultados ou comunique a proxima etapa.",
       targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
       tone: "neutral",
     };
   }
   return {
-    action: "Ver histórico",
+    action: "Ver historico",
     detail: "Liga encerrada. Consulte ranking e partidas finalizadas.",
     targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
-    tone: "neutral",
+    tone: "done",
   };
+}
+
+function tournamentPhase(tournament: TournamentSummary): WorkCompetitionPhase {
+  if (tournament.status === "registration_open") return "registration_open";
+  if (tournament.status === "registration_closed") return "games_to_generate";
+  if (tournament.status === "live") return "live";
+  if (tournament.status === "finished") return "finished";
+  return "draft";
+}
+
+function leaguePhase(league: LeagueSummary): WorkCompetitionPhase {
+  if (league.status === "active") return "league_active";
+  if (league.status === "paused") return "league_between_rounds";
+  if (league.status === "finished") return "finished";
+  return "draft";
+}
+
+function formatUpdatedAt(value: string): string {
+  if (!value) return "sem atualizacao recente";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "sem atualizacao recente";
+  return `atualizado em ${date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}`;
+}
+
+function tournamentToWorkItem(tournament: TournamentSummary): WorkCompetitionItem {
+  const operation = tournamentWorkOperationInfo(tournament);
+  return {
+    id: `tournament:${tournament.id}`,
+    kind: "Torneio",
+    phase: tournamentPhase(tournament),
+    title: tournament.name,
+    meta: [tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio independente",
+    status: statusLabel(tournament.status),
+    updatedAt: tournament.updatedAt,
+    ...operation,
+  };
+}
+
+function leagueToWorkItem(league: LeagueSummary): WorkCompetitionItem {
+  const operation = leagueWorkOperationInfo(league);
+  return {
+    id: `league:${league.id}`,
+    kind: "Liga",
+    phase: leaguePhase(league),
+    title: league.name,
+    meta: [typeLabelForLeague(league), league.category, league.classScope].filter(Boolean).join(" / ") || "Liga",
+    status: statusLabel(league.status),
+    updatedAt: league.updatedAt,
+    ...operation,
+  };
+}
+
+function sortWorkItems(a: WorkCompetitionItem, b: WorkCompetitionItem): number {
+  const toneA = a.tone === "urgent" ? 0 : a.tone === "neutral" ? 1 : 2;
+  const toneB = b.tone === "urgent" ? 0 : b.tone === "neutral" ? 1 : 2;
+  if (toneA !== toneB) return toneA - toneB;
+  return (b.updatedAt || "").localeCompare(a.updatedAt || "");
+}
+
+function buildWorkCompetitionGroups(items: WorkCompetitionItem[]): WorkCompetitionGroup[] {
+  const byPhase = new Map<WorkCompetitionPhase, WorkCompetitionItem[]>();
+  for (const item of items) {
+    const phaseItems = byPhase.get(item.phase) ?? [];
+    phaseItems.push(item);
+    byPhase.set(item.phase, phaseItems);
+  }
+
+  const specs: Array<Omit<WorkCompetitionGroup, "items">> = [
+    {
+      key: "draft",
+      label: "Rascunhos e setup",
+      detail: "Competicoes que precisam de configuracao antes de publicar.",
+      empty: "Nenhum rascunho pendente. Quando uma competicao estiver incompleta, ela aparece aqui.",
+    },
+    {
+      key: "registration_open",
+      label: "Inscricoes abertas",
+      detail: "Inscritos, pagamentos e lista de espera ainda precisam de acompanhamento.",
+      empty: "Nenhum torneio com inscricoes abertas agora.",
+    },
+    {
+      key: "games_to_generate",
+      label: "Inscricoes encerradas / jogos a gerar",
+      detail: "A fase de inscricao terminou; a proxima tarefa e revisar inscritos e gerar jogos.",
+      empty: "Nenhum torneio aguardando geracao de jogos.",
+    },
+    {
+      key: "live",
+      label: "Jogos em andamento / resultados pendentes",
+      detail: "Operacao ativa: jogos, resultados, atrasos e comunicacao da fase.",
+      empty: "Nenhum torneio em operacao ao vivo neste momento.",
+    },
+    {
+      key: "league_active",
+      label: "Ligas com rodada ativa",
+      detail: "Rodadas que precisam de agenda, resultados e ranking atualizados.",
+      empty: "Nenhuma liga com rodada ativa agora.",
+    },
+    {
+      key: "league_between_rounds",
+      label: "Ligas entre rodadas",
+      detail: "Validacao, ajustes e comunicacao antes da proxima rodada.",
+      empty: "Nenhuma liga pausada ou entre rodadas.",
+    },
+    {
+      key: "finished",
+      label: "Finalizadas",
+      detail: "Historico, relatorios e publicacao final ficam em camada secundaria.",
+      empty: "Competicoes finalizadas aparecerao aqui como historico.",
+    },
+  ];
+
+  return specs.map((spec) => ({
+    ...spec,
+    items: [...(byPhase.get(spec.key) ?? [])].sort(sortWorkItems),
+  }));
 }
 
 function isActiveTournament(item: TournamentSummary): boolean {
@@ -248,13 +398,13 @@ function CompetitionOperationRow({
   tone,
   onOpen,
 }: {
-  kind: "Torneio" | "Liga";
+  kind: WorkCompetitionKind;
   title: string;
   meta: string;
   status: string;
   action: string;
   detail: string;
-  tone: "urgent" | "neutral";
+  tone: WorkCompetitionTone;
   onOpen: () => void;
 }) {
   return (
@@ -272,6 +422,39 @@ function CompetitionOperationRow({
         {action}
       </button>
     </article>
+  );
+}
+
+function WorkPhaseSection({ group, onOpen }: { group: WorkCompetitionGroup; onOpen: (targetPath: string) => void }) {
+  return (
+    <section className={`competition-work-phase phase-${group.key}`} aria-label={group.label}>
+      <header>
+        <div>
+          <span>{group.items.length}</span>
+          <strong>{group.label}</strong>
+          <small>{group.detail}</small>
+        </div>
+      </header>
+      {group.items.length ? (
+        <div className="competition-operation-list">
+          {group.items.map((item) => (
+            <CompetitionOperationRow
+              key={item.id}
+              kind={item.kind}
+              title={item.title}
+              meta={`${item.meta} · ${formatUpdatedAt(item.updatedAt)}`}
+              status={item.status}
+              action={item.action}
+              detail={item.detail}
+              tone={item.tone}
+              onOpen={() => onOpen(item.targetPath)}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="competition-work-empty">{group.empty}</p>
+      )}
+    </section>
   );
 }
 
@@ -336,12 +519,6 @@ export function EventsHubPage({ user, profile }: Props) {
     setActiveMode(modeFromSearch(location.search));
   }, [location.search]);
 
-  useEffect(() => {
-    if (activeMode === "organizing") {
-      navigate("/gestao", { replace: true });
-    }
-  }, [activeMode, navigate]);
-
   const playingLeagues = useMemo(() => leagues.filter((league) => league.role !== "owner"), [leagues]);
   const organizingLeagues = useMemo(() => leagues.filter((league) => league.role === "owner"), [leagues]);
   const activePlayingTournaments = useMemo(
@@ -349,14 +526,6 @@ export function EventsHubPage({ user, profile }: Props) {
     [participatingTournaments]
   );
   const activePlayingLeagues = useMemo(() => playingLeagues.filter(isActiveLeague).slice(0, PREVIEW_LIMIT), [playingLeagues]);
-  const activeOrganizingTournaments = useMemo(
-    () => organizingTournaments.filter((tournament) => tournament.status !== "finished").slice(0, PREVIEW_LIMIT),
-    [organizingTournaments]
-  );
-  const activeOrganizingLeagues = useMemo(
-    () => organizingLeagues.filter((league) => league.status !== "finished").slice(0, PREVIEW_LIMIT),
-    [organizingLeagues]
-  );
   const discoveryTournaments = useMemo(() => {
     const blockedIds = new Set([...participatingTournaments, ...organizingTournaments].map((item) => item.id));
     const city = (profile?.city || "").trim().toLowerCase();
@@ -378,13 +547,28 @@ export function EventsHubPage({ user, profile }: Props) {
   const playerCount = participatingTournaments.length + playingLeagues.length;
   const organizerCount = organizingTournaments.length + organizingLeagues.length;
   const activePlayerCount = activePlayingTournaments.length + activePlayingLeagues.length;
-  const activeOrganizerCount = activeOrganizingTournaments.length + activeOrganizingLeagues.length;
   const hasOrganizerContext = organizerCount > 0;
   const totalActivePlayingCount =
     participatingTournaments.filter(isActiveTournament).length + playingLeagues.filter(isActiveLeague).length;
-  const totalActiveOrganizerCount =
-    organizingTournaments.filter((tournament) => tournament.status !== "finished").length +
-    organizingLeagues.filter((league) => league.status !== "finished").length;
+  const workCompetitionItems = useMemo(
+    () =>
+      [
+        ...organizingTournaments.map(tournamentToWorkItem),
+        ...organizingLeagues.map(leagueToWorkItem),
+      ].sort(sortWorkItems),
+    [organizingLeagues, organizingTournaments]
+  );
+  const workCompetitionGroups = useMemo(() => buildWorkCompetitionGroups(workCompetitionItems), [workCompetitionItems]);
+  const activeWorkCompetitionItems = useMemo(
+    () => workCompetitionItems.filter((item) => item.phase !== "finished"),
+    [workCompetitionItems]
+  );
+  const workPhaseGroups = useMemo(
+    () => workCompetitionGroups.filter((group) => group.key !== "finished" && group.items.length > 0),
+    [workCompetitionGroups]
+  );
+  const finishedWorkGroup = workCompetitionGroups.find((group) => group.key === "finished");
+  const urgentWorkCount = activeWorkCompetitionItems.filter((item) => item.tone === "urgent").length;
   const openRegistrationCount = publicTournaments.filter((tournament) => tournament.status === "registration_open").length;
   const activeLeagueCount = leagues.filter((league) => league.status === "active").length;
   const featuredLeague = [...playingLeagues, ...organizingLeagues].find((league) => league.status === "active") || leagues[0] || null;
@@ -413,10 +597,6 @@ export function EventsHubPage({ user, profile }: Props) {
   }, [loading, location.search, organizerCount, playerCount]);
 
   const selectMode = (mode: HubMode) => {
-    if (mode === "organizing") {
-      navigate("/gestao");
-      return;
-    }
     setActiveMode(mode);
     navigate(`/eventos?modo=${mode}`, { replace: true });
   };
@@ -439,7 +619,7 @@ export function EventsHubPage({ user, profile }: Props) {
       ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
 
-      {!loading && !error ? (
+      {!loading && !error && activeMode !== "organizing" ? (
         <section className="competition-command-center" aria-label="Resumo de competicoes">
           <div className="events-kpi-grid">
             <article className="events-kpi-card">
@@ -475,7 +655,7 @@ export function EventsHubPage({ user, profile }: Props) {
         </section>
       ) : null}
 
-      {!loading && !error ? (
+      {!loading && !error && activeMode !== "organizing" ? (
         <section className="competition-intent-strip" aria-label="Modo de competições">
           <IntentPill
             label="Jogando"
@@ -491,14 +671,14 @@ export function EventsHubPage({ user, profile }: Props) {
             onSelect={() => selectMode("discover")}
           />
           {hasOrganizerContext ? (
-            <button className="competition-work-link" type="button" onClick={() => navigate("/gestao")}>
+            <button className="competition-work-link" type="button" onClick={() => selectMode("organizing")}>
               Trabalho <CountBadge value={organizerCount} />
             </button>
           ) : null}
         </section>
       ) : null}
 
-      {!loading && !error ? (
+      {!loading && !error && activeMode !== "organizing" ? (
         <section className="competition-feature-grid" aria-label="Destaques de competicoes">
           <article className="competition-feature-panel">
             <header>
@@ -558,77 +738,66 @@ export function EventsHubPage({ user, profile }: Props) {
       {activeMode === "organizing" ? (
         <section id="competitions-organizing" className="section-card flow-card primary-flow">
           <FlowHeader
-            title="Organizando agora"
-            detail="Fila operacional, publicacao e criacao ficam aqui. Nada disso disputa espaco com a visao de jogador."
+            title="Quais competicoes precisam de acao agora?"
+            detail="Hub de trabalho para organizador: fases, bloqueios e cockpit ficam aqui. Descoberta publica segue separada em /eventos."
           />
+          <div className="competition-work-summary" aria-label="Resumo operacional de competicoes">
+            <article>
+              <span>{urgentWorkCount}</span>
+              <strong>bloqueios</strong>
+              <small>precisam de acao</small>
+            </article>
+            <article>
+              <span>{activeWorkCompetitionItems.length}</span>
+              <strong>ativas</strong>
+              <small>em operacao</small>
+            </article>
+            <article>
+              <span>{finishedWorkGroup?.items.length ?? 0}</span>
+              <strong>finalizadas</strong>
+              <small>historico secundario</small>
+            </article>
+          </div>
           <div className="competition-operation-toolbar" aria-label="Acessos de organizador">
             <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-              Torneios organizados <CountBadge value={organizingTournaments.length} />
+              Torneios <CountBadge value={organizingTournaments.length} />
             </button>
             <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
-              Ligas organizadas <CountBadge value={organizingLeagues.length} />
+              Ligas <CountBadge value={organizingLeagues.length} />
             </button>
           </div>
           {hasOrganizerContext ? (
-            <div className="competition-operation-list">
-              {activeOrganizingTournaments.map((tournament) => {
-                const operation = tournamentOperationInfo(tournament);
-                return (
-                  <CompetitionOperationRow
-                    key={`organizer-tournament:${tournament.id}`}
-                    kind="Torneio"
-                    title={tournament.name}
-                    meta={[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Torneio"}
-                    status={statusLabel(tournament.status)}
-                    action={operation.action}
-                    detail={operation.detail}
-                    tone={operation.tone}
-                    onOpen={() => navigate(operation.targetPath)}
-                  />
-                );
-              })}
-              {activeOrganizingLeagues.map((league) => {
-                const operation = leagueOperationInfo(league);
-                return (
-                  <CompetitionOperationRow
-                    key={`organizer-league:${league.id}`}
-                    kind="Liga"
-                    title={league.name}
-                    meta={[league.category, league.classScope].filter(Boolean).join(" / ") || "Liga"}
-                    status={statusLabel(league.status)}
-                    action={operation.action}
-                    detail={operation.detail}
-                    tone={operation.tone}
-                    onOpen={() => navigate(operation.targetPath)}
-                  />
-                );
-              })}
+            <div className="competition-work-board">
+              {workPhaseGroups.length ? (
+                workPhaseGroups.map((group) => <WorkPhaseSection key={group.key} group={group} onOpen={navigate} />)
+              ) : (
+                <div className="home-empty-panel compact">
+                  <strong>Nenhuma competicao ativa agora</strong>
+                  <span>Quando um torneio ou liga exigir acao, ele entra nesta fila pela fase correta.</span>
+                </div>
+              )}
             </div>
           ) : null}
-          {totalActiveOrganizerCount > activeOrganizerCount ? (
-            <div className="competition-list-note">
-              <span>
-                Mostrando {activeOrganizerCount} de {totalActiveOrganizerCount} operacoes ativas.
-              </span>
-              <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-                Ver todos
-              </button>
-            </div>
+          {finishedWorkGroup?.items.length ? (
+            <details className="competition-work-archive">
+              <summary>Finalizadas e historico ({finishedWorkGroup.items.length})</summary>
+              <WorkPhaseSection group={finishedWorkGroup} onOpen={navigate} />
+            </details>
           ) : null}
-          {activeOrganizerCount === 0 ? (
+          {activeWorkCompetitionItems.length === 0 ? (
             <div className="home-empty-panel">
-              <strong>{hasOrganizerContext ? "Nenhuma operacao ativa agora" : "Comece pelo tipo de competicao"}</strong>
+              <strong>{hasOrganizerContext ? "Nenhum bloqueio operacional agora" : "Comece pelo tipo de competicao"}</strong>
               <span>
                 {hasOrganizerContext
-                  ? "Seus eventos estao sem pendências visiveis. Abra a lista para publicar, ajustar inscrições ou criar o próximo evento."
+                  ? "Suas competicoes estao sem acoes visiveis. Abra torneios ou ligas para revisar detalhes, publicar ajustes ou consultar historico."
                   : "Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro de cada fluxo."}
               </span>
               <ActionBar className="home-empty-actions" label="Acoes de organizador em competições">
                 <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-                  Torneios
+                  Criar torneio
                 </button>
                 <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
-                  Ligas
+                  Criar liga
                 </button>
               </ActionBar>
             </div>

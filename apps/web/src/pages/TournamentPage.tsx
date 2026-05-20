@@ -448,6 +448,13 @@ const ALL_CATEGORIES_SCOPE = "__all_categories__";
 const ALL_CLASSES_SCOPE = "__all_classes__";
 const VALID_TABS = VALID_TOURNAMENT_TABS;
 type TournamentAdminPhaseKey = "setup" | "registration" | "draw" | "live" | "finished";
+type TournamentOperationalPhaseKey =
+  | "draft"
+  | "registration_open"
+  | "registration_closed"
+  | "draw_generated"
+  | "live"
+  | "finished";
 
 const TOURNAMENT_ADMIN_PHASES: Array<{ key: TournamentAdminPhaseKey; label: string; detail: string }> = [
   { key: "setup", label: "Configurar", detail: "Dados, classes, agenda" },
@@ -470,6 +477,122 @@ function primaryTournamentTabForPhase(phase: TournamentAdminPhaseKey, canSeeClas
   if (phase === "registration" || phase === "draw") return "jogadores";
   if (phase === "finished") return canSeeClassificationTab ? "classificacao" : "jogos";
   return "jogos";
+}
+
+function tournamentOperationalPhaseFor(
+  status: TournamentStatus,
+  generatedClasses: number,
+  totalClasses: number,
+  totalMatches: number
+): TournamentOperationalPhaseKey {
+  if (status === "finished") return "finished";
+  if (status === "live") return "live";
+  if (status === "registration_open") return "registration_open";
+  if (status === "registration_closed") {
+    if (generatedClasses > 0 || totalMatches > 0 || (totalClasses > 0 && generatedClasses >= totalClasses)) return "draw_generated";
+    return "registration_closed";
+  }
+  if (generatedClasses > 0 || totalMatches > 0) return "draw_generated";
+  return "draft";
+}
+
+function labelForTournamentRole(role: TournamentRole): string {
+  if (role === "owner") return "Owner";
+  if (role === "organizer") return TOURNAMENT_STAFF_ROLE_LABELS.organizer;
+  if (role === "scorekeeper") return TOURNAMENT_STAFF_ROLE_LABELS.scorekeeper;
+  if (role === "checkin") return TOURNAMENT_STAFF_ROLE_LABELS.checkin;
+  if (role === "media") return TOURNAMENT_STAFF_ROLE_LABELS.media;
+  if (role === "participant") return "Jogador";
+  return "Visitante";
+}
+
+function preferredTournamentTabsFor(phase: TournamentOperationalPhaseKey, role: TournamentRole): TabKey[] {
+  if (role === "checkin") return ["jogadores", "chat", "jogos", "classificacao", "organizacao"];
+  if (role === "scorekeeper") return ["jogos", "classificacao", "chat", "jogadores", "organizacao"];
+  if (role === "media") return ["chat", "jogos", "classificacao", "jogadores", "organizacao"];
+  if (phase === "draft") return ["organizacao", "jogadores", "chat", "jogos", "classificacao"];
+  if (phase === "registration_open") return ["jogadores", "organizacao", "chat", "jogos", "classificacao"];
+  if (phase === "registration_closed") return ["jogadores", "jogos", "organizacao", "chat", "classificacao"];
+  if (phase === "draw_generated") return ["jogos", "jogadores", "chat", "classificacao", "organizacao"];
+  if (phase === "finished") return ["classificacao", "jogos", "chat", "organizacao", "jogadores"];
+  return ["jogos", "classificacao", "chat", "jogadores", "organizacao"];
+}
+
+type TournamentCockpitMetric = {
+  label: string;
+  value: string | number;
+};
+
+type TournamentCockpitAction = {
+  disabled?: boolean;
+  label: string;
+  onClick: () => void;
+};
+
+type TournamentCockpitModel = {
+  blockers: string[];
+  detail: string;
+  eyebrow: string;
+  metrics: TournamentCockpitMetric[];
+  phase: TournamentOperationalPhaseKey;
+  primaryAction: TournamentCockpitAction;
+  secondaryActions: TournamentCockpitAction[];
+  title: string;
+};
+
+function TournamentOperationalCockpit({
+  model,
+  roleLabel,
+}: {
+  model: TournamentCockpitModel;
+  roleLabel: string;
+}) {
+  return (
+    <section className={`tournament-operational-cockpit phase-${model.phase}`} aria-label="Cockpit operacional do torneio">
+      <div className="tournament-operational-copy">
+        <span>{model.eyebrow}</span>
+        <h2>{model.title}</h2>
+        <p>{model.detail}</p>
+      </div>
+      <div className="tournament-operational-side">
+        <span className="tournament-role-chip">{roleLabel}</span>
+        <div className="tournament-operational-metrics">
+          {model.metrics.map((metric) => (
+            <article key={metric.label}>
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+            </article>
+          ))}
+        </div>
+      </div>
+      <div className="tournament-operational-action">
+        <button className="primary" type="button" onClick={model.primaryAction.onClick} disabled={model.primaryAction.disabled}>
+          {model.primaryAction.label}
+        </button>
+        {model.secondaryActions.length ? (
+          <div>
+            {model.secondaryActions.map((action) => (
+              <button key={action.label} type="button" onClick={action.onClick} disabled={action.disabled}>
+                {action.label}
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+      <div className={`tournament-operational-blockers ${model.blockers.length ? "has-blockers" : "ready"}`}>
+        <strong>{model.blockers.length ? "O que falta resolver agora" : "Sem bloqueio critico nesta fase"}</strong>
+        {model.blockers.length ? (
+          <ul>
+            {model.blockers.slice(0, 4).map((blocker) => (
+              <li key={blocker}>{blocker}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>Use o CTA principal para seguir para a area mais provavel desta etapa.</p>
+        )}
+      </div>
+    </section>
+  );
 }
 
 function SaveDiskIcon() {
@@ -4985,6 +5108,182 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     return <>{setRows}</>;
   };
 
+  const operationalPhaseKey = tournamentOperationalPhaseFor(
+    (tournament?.status || "draft") as TournamentStatus,
+    tournamentOverview.generatedClasses,
+    tournamentOverview.totalClasses,
+    tournamentOverview.totalMatches
+  );
+  const tournamentRoleLabel = labelForTournamentRole(tournament?.role ?? "viewer");
+  const unpaidRegistrationCount = isOwner && tournament?.registrationFeeCents
+    ? registrations.filter((registration) => {
+        if (registration.status !== "approved") return false;
+        return paymentsByTarget[`tournament_registration:${registration.id}`]?.status !== "paid";
+      }).length
+    : 0;
+  const waitlistRegistrationCount = registrations.filter((registration) => registration.status === "waitlist").length;
+  const cockpitBlockers = (() => {
+    const blockers: string[] = [];
+    if (operationalPhaseKey === "draft") {
+      if (!organizationProgress.basicsReady) blockers.push("Completar nome, cidade e UF do torneio.");
+      if (!organizationProgress.classesReady) blockers.push("Cadastrar ao menos uma classe.");
+      if (!organizationProgress.playersReady) blockers.push("Adicionar ou aprovar jogadores suficientes.");
+      if (!organizationProgress.agendaReady) blockers.push("Configurar dias e quadras da agenda.");
+    } else if (operationalPhaseKey === "registration_open") {
+      if (tournamentOverview.pendingRegistrations > 0) blockers.push("Revisar inscricoes pendentes.");
+      if (unpaidRegistrationCount > 0) blockers.push("Conferir pagamentos de inscritos aprovados.");
+      if (waitlistRegistrationCount > 0) blockers.push("Avaliar lista de espera.");
+      if (tournament?.visibility !== "public") blockers.push("Compartilhar link publico/convite com os jogadores.");
+    } else if (operationalPhaseKey === "registration_closed") {
+      if (tournamentOverview.pendingRegistrations > 0) blockers.push("Resolver inscricoes pendentes antes de gerar jogos.");
+      if (waitlistRegistrationCount > 0) blockers.push("Resolver lista de espera.");
+      if (tournamentOverview.totalClasses === 0) blockers.push("Cadastrar classes antes do sorteio.");
+      if (!organizationProgress.agendaReady) blockers.push("Completar agenda antes de publicar jogos.");
+    } else if (operationalPhaseKey === "draw_generated") {
+      if (agenda.unassigned > 0) blockers.push("Existem jogos sem horario ou quadra.");
+      if (tournamentOverview.generatedClasses < tournamentOverview.totalClasses) blockers.push("Gerar jogos de todas as classes.");
+      if (tournamentOverview.totalMatches === 0) blockers.push("Conferir se as chaves foram geradas corretamente.");
+    } else if (operationalPhaseKey === "live") {
+      if (pendingResultReviewCount > 0) blockers.push("Revisar resultados enviados por jogadores.");
+      if (unavailableConfirmationCount > 0) blockers.push("Tratar avisos de indisponibilidade.");
+      if (tournamentOverview.pendingMatches > 0) blockers.push("Finalizar jogos pendentes.");
+      if (agenda.unassigned > 0) blockers.push("Ajustar agenda de jogos sem quadra/horario.");
+    } else {
+      tournamentCompletionBlockers.forEach((blocker) => blockers.push(blocker));
+      if (tournamentPodiumRows.some((row) => !row.champion)) blockers.push("Conferir campeoes e podio por classe.");
+    }
+    return blockers;
+  })();
+  const phaseCopy = (() => {
+    if (operationalPhaseKey === "draft") {
+      return {
+        eyebrow: "Rascunho",
+        title: "Complete a estrutura antes de abrir inscricoes",
+        detail: "Dados minimos, classes, jogadores e agenda precisam estar coerentes antes de jogos e resultados virarem foco.",
+      };
+    }
+    if (operationalPhaseKey === "registration_open") {
+      return {
+        eyebrow: "Inscricoes abertas",
+        title: "Controle inscritos, pagamentos e link publico",
+        detail: "A primeira decisao agora e aprovar pessoas certas e manter o link de entrada facil para os jogadores.",
+      };
+    }
+    if (operationalPhaseKey === "registration_closed") {
+      return {
+        eyebrow: "Inscricoes encerradas",
+        title: "Feche pendencias e gere os jogos",
+        detail: "A lista de classes e jogadores deve estar pronta para transformar inscricoes em partidas.",
+      };
+    }
+    if (operationalPhaseKey === "draw_generated") {
+      return {
+        eyebrow: "Sorteio / jogos gerados",
+        title: "Revise chaves, conflitos e agenda antes de publicar",
+        detail: "Jogos ja existem; agora o foco e validar encaixe, horario, quadra e comunicacao.",
+      };
+    }
+    if (operationalPhaseKey === "live") {
+      return {
+        eyebrow: "Em andamento",
+        title: "Resolva resultados, atrasos e WO",
+        detail: "A operacao deve priorizar jogos pendentes, resultados enviados, indisponibilidades e comunicacao.",
+      };
+    }
+    return {
+      eyebrow: "Finalizado",
+      title: "Publique campeoes, podio e relatorio final",
+      detail: "A rotina operacional saiu da disputa e virou entrega final: resultado oficial, ranking e historico.",
+    };
+  })();
+  const buildPrimaryCockpitAction = (): TournamentCockpitAction => {
+    if (tournament?.role === "checkin" && canManagePlayers) {
+      return { label: "Abrir credenciamento", onClick: () => goToTab("jogadores") };
+    }
+    if (tournament?.role === "scorekeeper" && canManageMatches) {
+      return { label: "Lancar resultado", onClick: () => goToTab("jogos") };
+    }
+    if (tournament?.role === "media" && canManageComms) {
+      return { label: "Publicar aviso", onClick: () => goToTab("chat") };
+    }
+    if (operationalPhaseKey === "draft") {
+      return { label: "Completar configuracao", onClick: () => goToOrganizerSection(organizationProgress.basicsReady ? "setup-classes" : "setup-basics") };
+    }
+    if (operationalPhaseKey === "registration_open") {
+      return { label: canManagePlayers ? "Revisar inscritos" : "Abrir comunicacao", onClick: () => goToTab(canManagePlayers ? "jogadores" : "chat") };
+    }
+    if (operationalPhaseKey === "registration_closed") {
+      return {
+        disabled: saving,
+        label: organizationProgress.canGenerate && canManageTournament ? "Gerar jogos" : "Resolver pendencias",
+        onClick: () => {
+          if (organizationProgress.canGenerate && canManageTournament) {
+            void generateAllClasses();
+            return;
+          }
+          goToTab(canManagePlayers ? "jogadores" : "organizacao");
+        },
+      };
+    }
+    if (operationalPhaseKey === "draw_generated") {
+      return { label: "Publicar jogos", onClick: () => goToTab(canManageComms ? "chat" : "jogos") };
+    }
+    if (operationalPhaseKey === "live") {
+      return { label: "Lancar resultado", onClick: () => goToTab("jogos") };
+    }
+    return { disabled: saving, label: "Publicar resultado final", onClick: () => void copyTournamentPodiumSummary() };
+  };
+  const tournamentCockpitModel: TournamentCockpitModel = {
+    ...phaseCopy,
+    blockers: cockpitBlockers,
+    metrics: [
+      { label: "classes", value: tournamentOverview.totalClasses },
+      { label: "inscritos pendentes", value: tournamentOverview.pendingRegistrations },
+      { label: "jogos pendentes", value: tournamentOverview.pendingMatches },
+      { label: "resultados para revisar", value: pendingResultReviewCount },
+    ],
+    phase: operationalPhaseKey,
+    primaryAction: buildPrimaryCockpitAction(),
+    secondaryActions: [
+      canManagePlayers ? { label: "Inscritos", onClick: () => goToTab("jogadores") } : null,
+      canManageMatches ? { label: "Jogos", onClick: () => goToTab("jogos") } : null,
+      canManageComms ? { label: "Comunicacao", onClick: () => goToTab("chat") } : null,
+    ].filter((action): action is TournamentCockpitAction => Boolean(action)),
+  };
+  const tournamentAdminTabItems = (() => {
+    const order = preferredTournamentTabsFor(operationalPhaseKey, tournament?.role ?? "viewer");
+    const items = [
+      {
+        value: "jogos" as TabKey,
+        label: operationalPhaseKey === "live" ? "Resultados" : "Jogos",
+        badge: activeClassMatchStats.pendingMatches > 0 ? activeClassMatchStats.pendingMatches : undefined,
+        hidden: canManageTournament ? tournamentAdminPhase.key === "setup" : false,
+      },
+      {
+        value: "classificacao" as TabKey,
+        label: operationalPhaseKey === "finished" ? "Podio" : "Classificacao",
+        hidden: !canSeeClassificationTab,
+      },
+      {
+        value: "organizacao" as TabKey,
+        label: "Organizacao",
+        hidden: !canManageTournament,
+      },
+      {
+        value: "jogadores" as TabKey,
+        label: tournament?.role === "checkin" ? "Check-in" : "Jogadores",
+        badge: tournamentOverview.pendingRegistrations > 0 ? tournamentOverview.pendingRegistrations : undefined,
+        hidden: !canManagePlayers || tournamentAdminPhase.key === "finished",
+      },
+      {
+        value: "chat" as TabKey,
+        label: tournament?.role === "media" ? "Publicacao" : "Chat",
+        hidden: !canUseChatTab,
+      },
+    ];
+    return items.sort((a, b) => order.indexOf(a.value) - order.indexOf(b.value));
+  })();
+
   const organizerTasks: TournamentOrganizerTask[] = (() => {
     if (!tournament || isPublicTournamentReader) return [];
 
@@ -5599,6 +5898,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
 
           {!isPublicTournamentReader ? (
             <>
+          <TournamentOperationalCockpit model={tournamentCockpitModel} roleLabel={tournamentRoleLabel} />
+
           {showTournamentClassScope ? (
             <CompetitionScopeSelector
               eyebrow="Resumo por classe"
@@ -5980,35 +6281,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             activeValue={tab}
             ariaLabel="Visoes do torneio"
             onChange={(value) => goToTab(value as TabKey)}
-            items={[
-              {
-                value: "jogos",
-                label: "Jogos",
-                badge: activeClassMatchStats.pendingMatches > 0 ? activeClassMatchStats.pendingMatches : undefined,
-                hidden: canManageTournament ? tournamentAdminPhase.key === "setup" : false,
-              },
-              {
-                value: "classificacao",
-                label: "Classificação",
-                hidden: !canSeeClassificationTab,
-              },
-              {
-                value: "organizacao",
-                label: "Organização",
-                hidden: !canManageTournament,
-              },
-              {
-                value: "jogadores",
-                label: "Jogadores",
-                badge: tournamentOverview.pendingRegistrations > 0 ? tournamentOverview.pendingRegistrations : undefined,
-                hidden: !canManagePlayers || tournamentAdminPhase.key === "finished",
-              },
-              {
-                value: "chat",
-                label: "Chat",
-                hidden: !canUseChatTab,
-              },
-            ]}
+            items={tournamentAdminTabItems}
           />
           ) : null}
 

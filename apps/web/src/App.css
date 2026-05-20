@@ -1951,6 +1951,227 @@ button.app-object-row:hover:not(:disabled) {
   font-size: var(--font-size-xs);
 }
 
+.tournament-operational-cockpit {
+  background:
+    linear-gradient(135deg, rgba(4, 16, 31, 0.96), rgba(8, 43, 41, 0.86)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") right center / cover no-repeat;
+  border: 1px solid rgba(74, 222, 128, 0.18);
+  border-radius: 22px;
+  box-shadow: 0 18px 48px rgba(2, 8, 19, 0.22);
+  color: #ffffff;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+  padding: var(--space-4);
+  position: relative;
+}
+
+.tournament-operational-cockpit::before {
+  background: linear-gradient(90deg, rgba(2, 8, 19, 0.82), rgba(2, 8, 19, 0.3));
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.tournament-operational-cockpit > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tournament-operational-copy {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.tournament-operational-copy span,
+.tournament-role-chip {
+  color: #86efac;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.tournament-operational-copy h2 {
+  color: #ffffff;
+  font-size: clamp(1.35rem, 3vw, 2.25rem);
+  line-height: var(--line-title);
+  margin: 0;
+  max-width: 16ch;
+}
+
+.tournament-operational-copy p {
+  color: rgba(226, 232, 240, 0.86);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  line-height: var(--line-normal);
+  margin: 0;
+  max-width: 66ch;
+}
+
+.tournament-operational-side {
+  align-content: start;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.tournament-role-chip {
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  border-radius: var(--radius-pill);
+  justify-self: start;
+  padding: 5px 10px;
+}
+
+.tournament-operational-metrics {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tournament-operational-metrics article {
+  background: rgba(8, 20, 36, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-2);
+}
+
+.tournament-operational-metrics strong {
+  color: #ffffff;
+  font-size: var(--font-size-lg);
+  font-weight: 950;
+  line-height: 1;
+}
+
+.tournament-operational-metrics span {
+  color: rgba(203, 213, 225, 0.82);
+  font-size: var(--font-size-xs);
+  font-weight: 820;
+}
+
+.tournament-operational-action {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  grid-column: 1 / -1;
+}
+
+.tournament-operational-action > button {
+  min-width: 220px;
+}
+
+.tournament-operational-action > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.tournament-operational-action > div button {
+  background: rgba(15, 28, 46, 0.88);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(241, 245, 249, 0.9);
+}
+
+.tournament-operational-blockers {
+  background: rgba(8, 20, 36, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 16px;
+  color: rgba(226, 232, 240, 0.88);
+  display: grid;
+  gap: var(--space-2);
+  grid-column: 1 / -1;
+  padding: var(--space-3);
+}
+
+.tournament-operational-blockers.has-blockers {
+  border-color: rgba(250, 204, 21, 0.24);
+}
+
+.tournament-operational-blockers.ready {
+  border-color: rgba(74, 222, 128, 0.26);
+}
+
+.tournament-operational-blockers strong {
+  color: #ffffff;
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+}
+
+.tournament-operational-blockers ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.tournament-operational-blockers li,
+.tournament-operational-blockers p {
+  color: rgba(203, 213, 225, 0.86);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  line-height: var(--line-normal);
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .tournament-operational-cockpit {
+    background-position: center top;
+    border-radius: 18px;
+    gap: var(--space-3);
+    grid-template-columns: 1fr;
+    padding: var(--space-3);
+  }
+
+  .tournament-operational-cockpit::before {
+    background: linear-gradient(180deg, rgba(2, 8, 19, 0.9), rgba(2, 8, 19, 0.58));
+  }
+
+  .tournament-operational-copy h2 {
+    font-size: 1.55rem;
+    max-width: none;
+  }
+
+  .tournament-operational-copy p {
+    max-width: none;
+  }
+
+  .tournament-operational-side {
+    gap: var(--space-2);
+  }
+
+  .tournament-operational-action {
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .tournament-operational-action > button {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .tournament-operational-action > div {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tournament-operational-action > div button {
+    min-width: 0;
+    padding-inline: 8px;
+  }
+
+  .tournament-operational-blockers {
+    padding: var(--space-2);
+  }
+}
+
 .tournament-share-actions {
   display: flex;
   flex-wrap: wrap;
@@ -6377,6 +6598,113 @@ button:disabled {
   gap: var(--space-2);
 }
 
+.competition-work-summary {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: var(--space-3) 0;
+}
+
+.competition-work-summary article {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: var(--space-3);
+}
+
+.competition-work-summary span {
+  color: var(--color-primary-strong);
+  font-size: 1.65rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.competition-work-summary strong {
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+}
+
+.competition-work-summary small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+}
+
+.competition-work-board {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.competition-work-phase {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.competition-work-phase > header {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.competition-work-phase > header div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.competition-work-phase > header span {
+  align-items: center;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-green-200);
+  border-radius: var(--radius-pill);
+  color: var(--color-primary-strong);
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  justify-content: center;
+  min-width: 30px;
+  padding: 4px 9px;
+  width: max-content;
+}
+
+.competition-work-phase > header strong {
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  font-weight: 950;
+  line-height: var(--line-title);
+}
+
+.competition-work-phase > header small,
+.competition-work-empty {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  line-height: var(--line-normal);
+  margin: 0;
+}
+
+.competition-work-archive {
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+}
+
+.competition-work-archive summary {
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+  margin-bottom: var(--space-2);
+}
+
 .competition-list-note {
   align-items: center;
   background: var(--color-surface-muted);
@@ -6415,6 +6743,10 @@ button:disabled {
 .competition-operation-row.urgent {
   border-color: var(--color-green-200);
   box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.competition-operation-row.done {
+  opacity: 0.82;
 }
 
 .competition-operation-main,
@@ -23593,7 +23925,9 @@ label {
 .app-shell--competition .competition-discovery-action,
 .app-shell--competition .events-kpi-card,
 .app-shell--competition .events-filter-card,
-.app-shell--competition .competition-operation-row {
+.app-shell--competition .competition-operation-row,
+.app-shell--competition .competition-work-phase,
+.app-shell--competition .competition-work-summary article {
   background:
     linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.78)),
     url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
@@ -23613,6 +23947,8 @@ label {
 .app-shell--competition .competition-discovery-head strong,
 .app-shell--competition .competition-discovery-action strong,
 .app-shell--competition .competition-intent-pill strong,
+.app-shell--competition .competition-work-summary strong,
+.app-shell--competition .competition-work-phase > header strong,
 .app-shell--competition .events-kpi-value,
 .app-shell--competition .events-kpi-label {
   color: var(--pdark-text-main);
@@ -23623,7 +23959,10 @@ label {
 .app-shell--competition .flow-card small,
 .app-shell--competition .competition-discovery-head span,
 .app-shell--competition .competition-discovery-action small,
-.app-shell--competition .competition-intent-pill small {
+.app-shell--competition .competition-intent-pill small,
+.app-shell--competition .competition-work-summary small,
+.app-shell--competition .competition-work-phase > header small,
+.app-shell--competition .competition-work-empty {
   color: var(--pdark-text-muted);
 }
 
@@ -23632,6 +23971,28 @@ label {
   background: rgba(34, 197, 94, 0.14);
   border-color: rgba(34, 197, 94, 0.3);
   color: #4ade80;
+}
+
+.app-shell--competition .competition-work-summary span,
+.app-shell--competition .competition-work-phase > header span {
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(74, 222, 128, 0.34);
+  color: #86efac;
+}
+
+.app-shell--competition .competition-operation-toolbar button,
+.app-shell--competition .competition-operation-state span,
+.app-shell--competition .competition-work-archive summary {
+  background: rgba(12, 27, 45, 0.72);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .competition-operation-toolbar button:hover,
+.app-shell--competition .competition-operation-toolbar button:focus-visible {
+  background: rgba(18, 58, 46, 0.9);
+  border-color: rgba(74, 222, 128, 0.34);
+  color: #ffffff;
 }
 
 .app-shell--competition .screen-state {
@@ -29241,6 +29602,28 @@ body:has(.app-shell--competition),
 
   .app-shell--competition .competition-intent-pill small {
     display: none;
+  }
+
+  .app-shell--competition .competition-work-summary {
+    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .competition-work-summary article,
+  .app-shell--competition .competition-work-phase {
+    border-radius: 16px;
+    padding: 12px;
+  }
+
+  .app-shell--competition .competition-work-summary span {
+    font-size: 1.35rem;
+  }
+
+  .app-shell--competition .competition-work-summary strong,
+  .app-shell--competition .competition-work-summary small {
+    font-size: 0.68rem;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
   }
 }
 

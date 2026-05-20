@@ -408,3 +408,200 @@ Cobertura ainda pendente:
 
 - QA com contas reais separadas de jogador puro, aluno, socio/reservas e competitivo;
 - validar massa real com partida de torneio e liga que possua adversario, agenda e resultado.
+
+## FLOW-07 - Hub De Competicoes De Trabalho Scope For This Sprint
+
+Objetivo: separar a experiencia de quem joga da experiencia de quem organiza. `/eventos` continua sendo superficie de jogador/descoberta, enquanto `/eventos?modo=organizing` passa a funcionar como hub de trabalho de competicoes.
+
+Implementacao permitida nesta rodada:
+
+- reorganizar somente `EventsHubPage` e CSS de suporte;
+- usar `loadDashboardData(user).organizing` e `loadMyLeagues()` sem criar loader novo;
+- manter torneios organizados por owner/staff e ligas em que `role === owner`;
+- derivar fases a partir dos status ja existentes;
+- preservar `/eventos`, `/eventos/torneios?view=organizing`, `/eventos/ligas?view=organizing` e rotas de detalhe;
+- manter organizador independente sem exigir local;
+- manter visual premium dark aprovado.
+
+O que nao alterar:
+
+- backend;
+- RLS/policies/permissoes;
+- regras de negocio;
+- detalhes internos de torneio/liga;
+- rotas publicas, convite, inscricao ou legado.
+
+Agrupamento por fase:
+
+| Grupo | Dados usados | CTA principal | Rota preservada |
+|---|---|---|---|
+| Rascunhos e setup | torneio `draft` e liga `draft` | Resolver proximo bloqueio | `/eventos/:id/organizacao` ou `/eventos/ligas/:id` |
+| Inscricoes abertas | torneio `registration_open` | Abrir cockpit da fase | `/eventos/:id/organizacao` |
+| Inscricoes encerradas / jogos a gerar | torneio `registration_closed` | Resolver proximo bloqueio | `/eventos/:id/organizacao` |
+| Jogos em andamento / resultados pendentes | torneio `live` | Abrir cockpit da fase | `/eventos/:id/organizacao` |
+| Ligas com rodada ativa | liga `active` | Abrir cockpit da fase | `/eventos/ligas/:id` |
+| Ligas entre rodadas | liga `paused` | Resolver proximo bloqueio | `/eventos/ligas/:id` |
+| Finalizadas | torneio/liga `finished` | Ver resumo/historico | classificacao ou detalhe da liga |
+
+Estados vazios definidos:
+
+- organizador sem nenhuma competicao: explicar diferenca entre torneio e liga e oferecer `Criar torneio` / `Criar liga`;
+- organizador com competicoes apenas finalizadas: mostrar nenhum bloqueio ativo e mover finalizadas para camada secundaria;
+- fase sem itens: nao ocupa a tela principal; aparece somente quando ha item real;
+- hub com fila ativa: mostra resumo de bloqueios, ativas e finalizadas.
+
+## QA Required After FLOW-07
+
+Viewports:
+
+- mobile 390px;
+- mobile 430px;
+- desktop 1366px;
+- desktop amplo.
+
+Casos por persona:
+
+- organizador sem local e sem competicoes: `/eventos?modo=organizing` deve permitir criar torneio/liga sem pedir local;
+- organizador independente com torneios: fila deve agrupar por fase e abrir cockpit da fase;
+- gestor com local e competicoes: menu Trabalho deve abrir hub operacional, sem misturar descoberta publica;
+- jogador comum em `/eventos`: nao deve ver a fila administrativa como foco;
+- `/eventos/torneios?view=organizing` e `/eventos/ligas?view=organizing` continuam funcionando como listas/criacao;
+- links publicos `/join`, `/inscricao` e `/t` nao sao afetados.
+
+## Validation Notes - FLOW-07 - 2026-05-20
+
+Executado:
+
+- `/eventos?modo=organizing` deixou de redirecionar para `/gestao` e virou hub de trabalho real de competicoes;
+- a superficie do organizador deixou de renderizar o resumo publico/descoberta antes da fila operacional;
+- torneios e ligas organizados sao convertidos em `WorkCompetitionItem` e agrupados por fase;
+- finalizadas foram movidas para `details` secundario;
+- estado sem competicoes oferece criar torneio e criar liga sem exigir local;
+- CTAs de fase preservam rotas existentes e abrem cockpit/detalhe atual;
+- `npm.cmd run build` passou apos a implementacao.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow07-work-competitions-2026-05-20/` para:
+  - `/eventos?modo=organizing`;
+  - `/eventos`;
+  - `/eventos/torneios?view=organizing`;
+  - `/eventos/ligas?view=organizing`;
+  - viewports `mobile390`, `mobile430`, `desktop1366` e `desktopwide`.
+- `diagnostics-summary.json` ficou sem eventos de console/rede nas rotas capturadas.
+
+Cobertura ainda pendente:
+
+- QA com conta real de organizador sem local e gestor com local;
+- validar massa real com torneios em todas as fases e ligas `active`/`paused`.
+
+## FLOW-08 - Torneio Operacional Por Fase E Papel Scope For This Sprint
+
+Objetivo: transformar a area administrativa do torneio em cockpit operacional por fase, mantendo `/eventos/:tournamentId/organizacao` como rota preservada e usando as abas antigas como entradas/wrappers da operacao atual.
+
+Implementacao permitida nesta rodada:
+
+- reorganizar somente a composicao frontend de `TournamentPage`;
+- derivar a fase operacional a partir de status, classes geradas, inscricoes e jogos existentes;
+- adicionar primeira dobra administrativa que responde "o que falta resolver agora?";
+- priorizar CTA e abas conforme fase e papel;
+- manter todas as acoes existentes no corpo da pagina;
+- manter visual premium dark aprovado.
+
+O que nao alterar:
+
+- backend;
+- RLS/policies/permissoes;
+- loaders de torneio;
+- rotas publicas `/inscricao`, `/join`, `/t`;
+- rotas internas antigas de torneio;
+- acoes criticas autorizadas para staff.
+
+Arquitetura por fase:
+
+| Fase operacional | Condicao derivada | Foco da primeira dobra | CTA primario | Abas priorizadas |
+|---|---|---|---|---|
+| Rascunho | status `draft` | checklist de configuracao minima | Completar configuracao | Configurar, Inscricoes, Sorteio |
+| Inscricoes abertas | status `registration_open` | inscritos, pagamentos, pendencias e link publico | Revisar inscritos | Inscritos, Configurar, Comunicacao |
+| Inscricoes encerradas | status `registration_closed` sem jogos gerados | classes prontas e pendencias antes do sorteio | Gerar jogos | Sorteio, Inscritos, Configurar |
+| Sorteio/jogos gerados | status pre-live com jogos gerados | classes geradas, conflitos e agenda | Publicar jogos | Jogos, Comunicacao, Inscritos |
+| Em andamento | status `live` ou equivalente | resultados pendentes, atrasos, WO e agenda | Lancar resultado | Jogos, Inscritos, Comunicacao |
+| Finalizado | status `finished` | campeoes, podio, relatorio e publicacao final | Publicar resultado final | Historico, Comunicacao, Jogos |
+
+Arquitetura por papel:
+
+| Papel | Visao permitida no cockpit | Prioridade de aba | Observacao |
+|---|---|---|---|
+| owner | operacao completa | fase atual + todas as abas criticas | continua vendo configuracao e acoes destrutivas conforme UI atual |
+| organizer | operacao ampla conforme permissao existente | fase atual + inscricoes/jogos/comunicacao | sem relaxar permissao |
+| checkin | inscritos, jogadores e credenciamento | Inscritos primeiro | evita focar em sorteio/configuracao |
+| scorekeeper | partidas e resultados | Jogos/Resultados primeiro | CTA deve levar para lancar resultado |
+| media | comunicacao e publicacao | Comunicacao primeiro | prioriza kit/publicacao e avisos |
+| jogador | status pessoal, jogos e classificacao | fora do cockpit admin | nao recebe ferramentas administrativas |
+
+Estados e bloqueios definidos:
+
+- sem classes configuradas: cockpit mostra bloqueio de configuracao e CTA para completar configuracao;
+- inscricoes abertas sem inscritos: orienta divulgar link publico e revisar inscritos;
+- inscricoes encerradas com inscricoes pendentes: bloqueio informa pendencia antes de gerar jogos;
+- sorteio gerado sem agenda completa: bloqueio aponta agenda/conflitos;
+- em andamento com jogos pendentes: bloqueio prioriza resultados, atrasos e WO;
+- finalizado com jogos pendentes: impede conclusao limpa e aponta publicar resultado final apenas quando resolvido;
+- sem permissao administrativa: jogador continua nas abas publicas/status pessoal sem cockpit admin.
+
+Rotas preservadas:
+
+- `/eventos/:tournamentId/organizacao` permanece rota principal do cockpit operacional;
+- `/eventos/:tournamentId/jogos` permanece entrada direta para jogos/resultados;
+- `/eventos/:tournamentId/jogadores` permanece entrada direta para inscritos/jogadores;
+- `/eventos/:tournamentId/classificacao` permanece classificacao;
+- `/eventos/:tournamentId/chat` permanece comunicacao;
+- `/inscricao/:tournamentId`, `/join/:tournamentId` e `/t` nao foram alteradas.
+
+## QA Required After FLOW-08
+
+Viewports:
+
+- mobile 390px;
+- mobile 430px;
+- desktop 1366px;
+- desktop amplo.
+
+Casos por fase:
+
+- rascunho: cockpit deve esconder jogos/resultados como foco e destacar configuracao;
+- inscricoes abertas: cockpit deve destacar inscritos, pagamentos e link/publicacao;
+- inscricoes encerradas: cockpit deve destacar gerar jogos;
+- jogos gerados: cockpit deve destacar publicar jogos e agenda;
+- em andamento: cockpit deve destacar resultados pendentes e WO;
+- finalizado: cockpit deve destacar podio, relatorio e publicacao final.
+
+Casos por papel:
+
+- owner: ve cockpit completo e todas as entradas criticas;
+- organizer: ve operacao ampla sem bypass de permissao;
+- checkin: Inscritos/Jogadores vem antes de jogos/configuracao;
+- scorekeeper: Jogos/Resultados vem antes de inscritos;
+- media: Comunicacao/Publicacao vem antes das demais;
+- jogador: nao deve receber a primeira dobra administrativa.
+
+## Validation Notes - FLOW-08 - 2026-05-20
+
+Executado:
+
+- adicionada camada `TournamentOperationalCockpit` em `TournamentPage`;
+- adicionada derivacao `tournamentOperationalPhaseFor` para separar rascunho, inscricoes abertas, inscricoes encerradas, jogos gerados, em andamento e finalizado;
+- adicionada modelagem de copy, metricas, bloqueios e CTA por fase;
+- adicionada priorizacao de abas por fase e papel;
+- `CompetitionTabs` administrativo agora recebe itens priorizados sem remover abas antigas;
+- CSS premium dark do cockpit adicionado com ajuste especifico mobile para evitar texto atropelado;
+- `npm.cmd run build` passou apos a implementacao.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow08-tournament-cockpit-2026-05-20/` para:
+  - `/eventos/eee62a99-6929-49c6-b4b9-533e82a6c9da/organizacao`;
+  - `/eventos/eee62a99-6929-49c6-b4b9-533e82a6c9da/jogos`;
+  - `/eventos/eee62a99-6929-49c6-b4b9-533e82a6c9da/jogadores`;
+  - viewports `mobile390`, `mobile430`, `desktop1366` e `desktopwide`.
+- `diagnostics-summary.json` ficou sem eventos de console/rede nas rotas capturadas.
+
+Cobertura ainda pendente:
+
+- QA com contas reais separadas de owner, organizer, checkin, scorekeeper, media e jogador;
+- validar torneios reais em todas as fases, porque a massa atual validada cobre principalmente inscricoes encerradas/em andamento com muitos jogos pendentes;
+- validar se o papel `media` deve ganhar CTA adicional dedicado no kit de publicacao em sprint futuro.

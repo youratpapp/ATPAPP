@@ -11480,6 +11480,94 @@ Pendencias:
 - validar com contas reais de jogador puro, aluno, socio/reservas e competitivo;
 - testar competicoes com partidas reais de torneio/liga contendo adversario, agenda e resultado.
 
+### [x] SPRINT-2026-05-20 - FLOW-07 Hub de competicoes de trabalho
+
+Status: `[x]` concluido no codigo, aguardando QA expandido por massa real
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- `/eventos` permanece superficie do jogador/descoberta;
+- `/eventos?modo=organizing` agora e hub operacional de trabalho, sem redirecionar para `/gestao`;
+- o hub responde "quais competicoes precisam de acao agora?";
+- torneios e ligas organizados sao agrupados por fase: rascunho/setup, inscricoes abertas, jogos a gerar, jogos em andamento/resultados pendentes, liga ativa, liga entre rodadas e finalizadas;
+- finalizadas aparecem em camada secundaria de historico;
+- estado sem competicoes orienta criar torneio ou criar liga sem exigir local;
+- organizador independente continua contemplado pelas rotas de Competition OS;
+- gestor com local preserva entrada pelo modo Trabalho;
+- CTAs preservam rotas existentes e abrem cockpit/detalhe atual.
+
+O que nao foi alterado:
+
+- backend;
+- loaders de dominio existentes;
+- RLS/policies/permissoes;
+- rotas publicas, convite, inscricao ou legado;
+- estrutura interna das paginas de torneio e liga.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow07-work-competitions-2026-05-20/`;
+- capturas cobrem `/eventos?modo=organizing`, `/eventos`, `/eventos/torneios?view=organizing` e `/eventos/ligas?view=organizing`;
+- capturas cobrem `mobile390`, `mobile430`, `desktop1366` e `desktopwide`;
+- `diagnostics-summary.json` sem eventos de console/rede nas rotas capturadas.
+
+Pendencias:
+
+- QA com conta real de organizador sem local e gestor com local;
+- testar massa real com torneios em todas as fases e ligas `active`/`paused`.
+
+### [x] SPRINT-2026-05-20 - FLOW-08 Torneio operacional por fase e papel
+
+Status: `[x]` concluido no codigo, aguardando QA expandido por papel/fase real
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- `/eventos/:tournamentId/organizacao` agora recebe um cockpit operacional acima das abas antigas;
+- a primeira dobra administrativa responde "o que falta resolver agora?";
+- fase operacional derivada no frontend para: rascunho, inscricoes abertas, inscricoes encerradas, sorteio/jogos gerados, em andamento e finalizado;
+- copy, metricas, bloqueios e CTA primario mudam conforme a fase;
+- abas administrativas sao priorizadas conforme fase e papel, sem remover wrappers antigos;
+- owner/organizer continuam com operacao ampla;
+- checkin prioriza inscritos/jogadores;
+- scorekeeper prioriza jogos/resultados;
+- media prioriza comunicacao/publicacao;
+- jogador nao recebe cockpit administrativo;
+- mobile foi ajustado para uma coluna, evitando sobreposicao de texto, chip e metricas.
+
+O que nao foi alterado:
+
+- backend;
+- loaders de dominio existentes;
+- RLS/policies/permissoes;
+- rotas publicas `/inscricao`, `/join` e `/t`;
+- rotas internas antigas `/jogos`, `/jogadores`, `/classificacao`, `/chat` e `/organizacao`;
+- acoes criticas ja existentes para staff autorizado.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow08-tournament-cockpit-2026-05-20/`;
+- capturas cobrem `/eventos/eee62a99-6929-49c6-b4b9-533e82a6c9da/organizacao`, `/jogos` e `/jogadores`;
+- capturas cobrem `mobile390`, `mobile430`, `desktop1366` e `desktopwide`;
+- `diagnostics-summary.json` sem eventos de console/rede nas rotas capturadas.
+
+Pendencias:
+
+- QA com contas reais separadas de owner, organizer, checkin, scorekeeper, media e jogador;
+- validar torneios reais em todas as fases;
+- calibrar CTA dedicado de media/publicacao caso a operacao real exija um atalho ainda mais direto.
+
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 
 Status: `[x]` concluido
