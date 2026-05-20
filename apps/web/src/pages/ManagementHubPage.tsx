@@ -61,6 +61,19 @@ type PlaceOperationSummary = {
   waitlist: number;
 };
 
+type WorkTodayPersona = "coach" | "frontdesk" | "finance" | "cashier" | "organizer" | "manager";
+
+type WorkTodayCard = {
+  cta: string;
+  detail: string;
+  eyebrow: string;
+  id: string;
+  path?: string;
+  title: string;
+  tone: string;
+  value: string;
+};
+
 type SetupChecklistStep = {
   detail: string;
   done: boolean;
@@ -98,6 +111,24 @@ const TOURNAMENT_STAFF_ROLE_LABELS: Record<TournamentStaffInvite["role"], string
   scorekeeper: "Placar",
   checkin: "Credenciamento",
   media: "Comunicacao",
+};
+
+const WORK_TODAY_LABELS: Record<WorkTodayPersona, string> = {
+  cashier: "Caixa",
+  coach: "Professor",
+  finance: "Financeiro",
+  frontdesk: "Recepcao",
+  manager: "Gestor",
+  organizer: "Organizador",
+};
+
+const WORK_TODAY_DESCRIPTIONS: Record<WorkTodayPersona, string> = {
+  cashier: "Venda rapida, vendas do dia e estoque baixo antes de qualquer relatorio.",
+  coach: "Aulas, chamada, reposicoes e alunos que precisam de atencao hoje.",
+  finance: "Cobrancas, recebiveis e pagamentos pendentes sem misturar financeiro pessoal.",
+  frontdesk: "Reservas, check-ins, lista de espera e atendimento do dia em primeiro lugar.",
+  manager: "Pendencias criticas por area, com acesso rapido para resolver o que trava a operacao.",
+  organizer: "Torneios e ligas com bloqueios, inscricoes, resultados e comunicacao pendente.",
 };
 
 function todayKey(): string {
@@ -339,8 +370,21 @@ function queueRows(summary: PlaceOperationSummary) {
   ];
 }
 
+function cardTone(value: number): string {
+  if (value > 0) return "attention";
+  return "ready";
+}
+
+function countValue(value: number): string {
+  return String(Math.max(0, value));
+}
+
 function weekdayLabel(value: number): string {
   return ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"][value] || "Dia";
+}
+
+function classTimeLabel(academyClass: PlaceAdminResourceEntry["academyClasses"][number]): string {
+  return `${weekdayLabel(academyClass.weekday)} | ${academyClass.startsAt}-${academyClass.endsAt}`;
 }
 
 function operatorProfileFor(access: ReturnType<typeof placeResourceAccess>, place: Place) {
@@ -575,7 +619,6 @@ export function ManagementHubPage({ user, profile }: Props) {
       }),
     [accessByPlace, aggregate, places, summariesByPlace, user.id]
   );
-  const visibleAggregateQueueRows = activeAggregateQueueRows.slice(0, 5);
   const setupPlaces = useMemo(
     () =>
       places
@@ -688,6 +731,425 @@ export function ManagementHubPage({ user, profile }: Props) {
     0,
     competitionWorkspaceCount - visibleOrganizingTournaments.length - visibleOrganizingLeagues.length
   );
+  const workTodayPersona: WorkTodayPersona = isCoachOnlyHub
+    ? "coach"
+    : isFrontdeskOnlyHub
+      ? "frontdesk"
+      : isFinanceOnlyHub
+        ? "finance"
+        : isCashierOnlyHub
+          ? "cashier"
+          : !places.length && competitionWorkspaceCount
+            ? "organizer"
+            : "manager";
+  const workTodayCards = useMemo<WorkTodayCard[]>(() => {
+    const contexts = orderedManagedPlaces.flatMap((place) => {
+      const entry = entriesByPlace[place.id];
+      const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, (entry?.staff || []) as PlaceStaffMember[]);
+      const modules = placeManagementModules(access);
+      const summary = summariesByPlace[place.id];
+      if (!entry || !summary) return [];
+      return [{ access, entry, modules, place, summary }];
+    });
+    const todayWeekday = new Date().getDay();
+    const firstPath = (
+      module: PlaceManagementModule,
+      viewSegment?: string,
+      predicate?: (context: (typeof contexts)[number]) => boolean
+    ) => {
+      const target = contexts.find((context) => context.modules.includes(module) && (!predicate || predicate(context)));
+      return target ? buildPlaceAdminPath(target.place.id, module, viewSegment) : undefined;
+    };
+    const classContexts = contexts.filter((context) => context.modules.includes("academy"));
+    const todayClasses = classContexts.flatMap((context) =>
+      context.entry.academyClasses
+        .filter((academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday)
+        .map((academyClass) => ({ academyClass, place: context.place }))
+    );
+    const pendingTeamInvites = contexts
+      .filter((context) => context.modules.includes("team"))
+      .reduce((sum, context) => sum + context.entry.staff.filter((member) => member.status === "pending").length, 0);
+
+    if (workTodayPersona === "coach") {
+      const coachContexts = contexts.filter(
+        (context) => context.modules.includes("academy") && context.access.staffRole === "coach" && !context.access.canManagePlace
+      );
+      const coachClassContexts = coachContexts.flatMap((context) => {
+        const classes = coachScopedClasses(context.entry, user.id).filter((academyClass) => academyClass.isActive);
+        const classIds = new Set(classes.map((academyClass) => academyClass.id));
+        const today = classes
+          .filter((academyClass) => academyClass.weekday === todayWeekday)
+          .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+        const students = context.entry.academyEnrollments.filter(
+          (enrollment) => classIds.has(enrollment.classId) && enrollment.status === "active"
+        ).length;
+        const pendingReplacements =
+          context.entry.academyMakeups.filter((makeup) => classIds.has(makeup.classId) && makeup.status === "open").length +
+          context.entry.academyLessonRequests.filter(
+            (request) => classIds.has(request.classId) && (request.status === "pending" || request.status === "approved")
+          ).length;
+        return [{ classes, pendingReplacements, place: context.place, students, today }];
+      });
+      const totalTodayClasses = coachClassContexts.reduce((sum, item) => sum + item.today.length, 0);
+      const nextClass = coachClassContexts.flatMap((item) => item.today.map((academyClass) => ({ academyClass, place: item.place }))).sort(
+        (a, b) => a.academyClass.startsAt.localeCompare(b.academyClass.startsAt)
+      )[0];
+      const pendingReplacements = coachClassContexts.reduce((sum, item) => sum + item.pendingReplacements, 0);
+      const activeClasses = coachClassContexts.reduce((sum, item) => sum + item.classes.length, 0);
+      const activeStudents = coachClassContexts.reduce((sum, item) => sum + item.students, 0);
+      return [
+        {
+          cta: "Abrir aulas",
+          detail: totalTodayClasses ? "Entre direto na rotina de chamada das aulas de hoje." : "Quando houver aula hoje, ela aparece aqui com horario, turma e alunos.",
+          eyebrow: "Aulas de hoje",
+          id: "coach-today-classes",
+          path: firstPath("academy", "hoje"),
+          title: totalTodayClasses ? `${totalTodayClasses} aula(s) para conduzir` : "Sem aulas hoje",
+          tone: cardTone(totalTodayClasses),
+          value: countValue(totalTodayClasses),
+        },
+        {
+          cta: "Fazer chamada",
+          detail: nextClass ? `${nextClass.place.name} - ${nextClass.academyClass.title} - ${classTimeLabel(nextClass.academyClass)}` : "A proxima chamada aparece aqui assim que existir aula vinculada a voce hoje.",
+          eyebrow: "Proxima chamada",
+          id: "coach-next-call",
+          path: firstPath("academy", "hoje"),
+          title: nextClass ? nextClass.academyClass.title : "Nenhuma chamada pendente",
+          tone: nextClass ? "attention" : "ready",
+          value: nextClass?.academyClass.startsAt || "--",
+        },
+        {
+          cta: "Ver reposicoes",
+          detail: pendingReplacements ? "Reposicoes e encaixes aguardando decisao ou acompanhamento." : "Reposicoes aprovadas e creditos aparecem aqui quando exigirem acao.",
+          eyebrow: "Reposicoes",
+          id: "coach-replacements",
+          path: firstPath("academy", "pendencias"),
+          title: pendingReplacements ? "Resolver reposicoes" : "Reposicoes em dia",
+          tone: cardTone(pendingReplacements),
+          value: countValue(pendingReplacements),
+        },
+        {
+          cta: "Abrir alunos",
+          detail: activeClasses ? `${activeStudents} aluno(s) ativos nas suas turmas.` : "Quando o gestor vincular suas turmas, alunos e agenda aparecem aqui.",
+          eyebrow: "Turmas e alunos",
+          id: "coach-students",
+          path: firstPath("academy", "alunos"),
+          title: activeClasses ? `${activeClasses} turma(s) ativa(s)` : "Turmas nao vinculadas",
+          tone: activeClasses ? "neutral" : "warning",
+          value: activeClasses ? `${activeClasses}/${activeStudents}` : "--",
+        },
+      ].filter((card) => Boolean(card.path));
+    }
+
+    if (workTodayPersona === "frontdesk") {
+      const confirmedToday = contexts
+        .filter((context) => context.modules.includes("bookings"))
+        .reduce((sum, context) => sum + context.entry.bookings.filter((booking) => booking.status === "confirmed" && isToday(booking.startsAt)).length, 0);
+      return [
+        {
+          cta: "Abrir reservas",
+          detail: aggregate.todayBookings ? "Reservas do dia organizadas para atendimento rapido." : "Sem reservas para hoje; use a agenda para criar ou revisar horarios.",
+          eyebrow: "Reservas de hoje",
+          id: "frontdesk-bookings",
+          path: firstPath("bookings", "hoje"),
+          title: aggregate.todayBookings ? "Agenda com movimento" : "Agenda livre",
+          tone: cardTone(aggregate.todayBookings),
+          value: countValue(aggregate.todayBookings),
+        },
+        {
+          cta: "Ver check-ins",
+          detail: confirmedToday ? "Reservas confirmadas que podem exigir chegada, quadra ou atendimento." : "Check-ins aparecem aqui quando houver reserva confirmada hoje.",
+          eyebrow: "Check-ins",
+          id: "frontdesk-checkins",
+          path: firstPath("bookings", "hoje"),
+          title: confirmedToday ? "Confirmar presencas" : "Sem check-ins agora",
+          tone: cardTone(confirmedToday),
+          value: countValue(confirmedToday),
+        },
+        {
+          cta: "Chamar espera",
+          detail: aggregate.waitlist ? "Converta lista de espera em horario disponivel." : "Lista de espera limpa no momento.",
+          eyebrow: "Lista de espera",
+          id: "frontdesk-waitlist",
+          path: firstPath("bookings", "espera"),
+          title: aggregate.waitlist ? "Clientes aguardando" : "Sem espera",
+          tone: cardTone(aggregate.waitlist),
+          value: countValue(aggregate.waitlist),
+        },
+        {
+          cta: "Atender clientes",
+          detail: aggregate.contactsDue ? "Leads e clientes com retorno previsto para hoje ou atrasado." : "Sem atendimento pendente agora.",
+          eyebrow: "Atendimento",
+          id: "frontdesk-clients",
+          path: firstPath("clients", "rotina"),
+          title: aggregate.contactsDue ? "Clientes para responder" : "Clientes em dia",
+          tone: cardTone(aggregate.contactsDue),
+          value: countValue(aggregate.contactsDue),
+        },
+        {
+          cta: "Ver aulas",
+          detail: aggregate.pendingAcademy ? "Matriculas, encaixes ou reposicoes aguardando atendimento." : "Aulas sem pendencias de atendimento.",
+          eyebrow: "Aulas pendentes",
+          id: "frontdesk-lessons",
+          path: firstPath("academy", "pendencias"),
+          title: aggregate.pendingAcademy ? "Resolver aulas" : "Aulas em dia",
+          tone: cardTone(aggregate.pendingAcademy),
+          value: countValue(aggregate.pendingAcademy),
+        },
+      ].filter((card) => Boolean(card.path));
+    }
+
+    if (workTodayPersona === "finance") {
+      const pendingMemberships = contexts
+        .filter((context) => context.modules.includes("finance"))
+        .reduce((sum, context) => sum + context.entry.memberships.filter((membership) => membership.status === "pending").length, 0);
+      const pendingContracts = contexts
+        .filter((context) => context.modules.includes("finance"))
+        .reduce((sum, context) => sum + context.entry.academyStudentContracts.filter((contract) => contract.status === "pending").length, 0);
+      const pendingLessonPayments = contexts
+        .filter((context) => context.modules.includes("finance"))
+        .reduce(
+          (sum, context) =>
+            sum + context.entry.academyLessonRequests.filter((request) => request.status === "approved" && request.paymentStatus === "pending").length,
+          0
+        );
+      const expensesToday = contexts
+        .filter((context) => context.modules.includes("finance"))
+        .reduce((sum, context) => sum + context.entry.expenses.filter((expense) => expense.status === "posted" && isToday(expense.spentOn)).length, 0);
+      return [
+        {
+          cta: "Cobrar / marcar pago",
+          detail: aggregate.pendingFinance ? "Abra recebiveis para cobrar, registrar baixa ou revisar pendencias." : "Nenhuma cobranca critica no momento.",
+          eyebrow: "Vencidos e pendentes",
+          id: "finance-overdue",
+          path: firstPath("finance", "recebiveis"),
+          title: aggregate.pendingFinance ? "Cobrancas para agir" : "Cobrancas em dia",
+          tone: cardTone(aggregate.pendingFinance),
+          value: countValue(aggregate.pendingFinance),
+        },
+        {
+          cta: "Ver recebiveis",
+          detail: "Solicitacoes de socio e contratos de aluno que precisam de validacao financeira.",
+          eyebrow: "Recebiveis de hoje",
+          id: "finance-receivables",
+          path: firstPath("finance", "recebiveis"),
+          title: pendingMemberships + pendingContracts ? "Validar recebiveis" : "Sem recebiveis pendentes",
+          tone: cardTone(pendingMemberships + pendingContracts),
+          value: countValue(pendingMemberships + pendingContracts),
+        },
+        {
+          cta: "Ver pagamentos",
+          detail: pendingLessonPayments ? "Aulas avulsas e reposicoes aprovadas ainda sem pagamento." : "Sem pagamentos de aula pendentes.",
+          eyebrow: "Pagamentos pendentes",
+          id: "finance-payments",
+          path: firstPath("finance", "recebiveis"),
+          title: pendingLessonPayments ? "Acompanhar pagamentos" : "Pagamentos em dia",
+          tone: cardTone(pendingLessonPayments),
+          value: countValue(pendingLessonPayments),
+        },
+        {
+          cta: "Abrir despesas",
+          detail: expensesToday ? "Despesas lancadas hoje para revisao do caixa." : "Nenhuma despesa lancada hoje.",
+          eyebrow: "Despesas",
+          id: "finance-expenses",
+          path: firstPath("finance", "despesas"),
+          title: expensesToday ? "Revisar despesas" : "Sem despesas hoje",
+          tone: expensesToday ? "neutral" : "ready",
+          value: countValue(expensesToday),
+        },
+      ].filter((card) => Boolean(card.path));
+    }
+
+    if (workTodayPersona === "cashier") {
+      const todaySales = contexts
+        .filter((context) => context.modules.includes("canteen"))
+        .reduce((sum, context) => sum + context.entry.posSales.filter((sale) => sale.status === "paid" && isToday(sale.soldAt || sale.createdAt)).length, 0);
+      const activeProducts = contexts
+        .filter((context) => context.modules.includes("canteen"))
+        .reduce((sum, context) => sum + context.entry.posProducts.filter((product) => product.isActive).length, 0);
+      return [
+        {
+          cta: "Vender agora",
+          detail: activeProducts ? "Abra o PDV direto, sem passar por relatorios ou configuracoes." : "Cadastre produtos para liberar a venda rapida.",
+          eyebrow: "Venda rapida",
+          id: "cashier-sell",
+          path: firstPath("canteen", "vender"),
+          title: activeProducts ? "PDV pronto" : "Produtos pendentes",
+          tone: activeProducts ? "attention" : "warning",
+          value: "PDV",
+        },
+        {
+          cta: "Ver hoje",
+          detail: todaySales ? "Vendas pagas registradas hoje." : "As vendas do dia aparecem aqui depois da primeira baixa.",
+          eyebrow: "Vendas do dia",
+          id: "cashier-today",
+          path: firstPath("canteen", "hoje"),
+          title: todaySales ? "Movimento de hoje" : "Sem vendas hoje",
+          tone: todaySales ? "neutral" : "ready",
+          value: countValue(todaySales),
+        },
+        {
+          cta: "Repor estoque",
+          detail: aggregate.lowStock ? "Itens ativos com estoque baixo para revisar antes de vender." : "Estoque sem alerta critico.",
+          eyebrow: "Estoque baixo",
+          id: "cashier-stock",
+          path: firstPath("canteen", "estoque"),
+          title: aggregate.lowStock ? "Revisar estoque" : "Estoque em dia",
+          tone: cardTone(aggregate.lowStock),
+          value: countValue(aggregate.lowStock),
+        },
+        {
+          cta: "Produtos",
+          detail: activeProducts ? "Produtos ativos disponiveis no PDV." : "Crie produtos para operar o caixa.",
+          eyebrow: "Produtos",
+          id: "cashier-products",
+          path: firstPath("canteen", "produtos"),
+          title: activeProducts ? "Catalogo ativo" : "Sem produtos ativos",
+          tone: activeProducts ? "neutral" : "warning",
+          value: countValue(activeProducts),
+        },
+      ].filter((card) => Boolean(card.path));
+    }
+
+    if (workTodayPersona === "organizer") {
+      const openRegistrations = organizingTournaments.filter((tournament) => tournament.status === "registration_open").length;
+      const liveCompetitions =
+        organizingTournaments.filter((tournament) => tournament.status === "live").length +
+        organizingLeagues.filter((league) => league.status === "active").length;
+      const publicationPending =
+        organizingTournaments.filter((tournament) => tournament.status === "draft" || tournament.visibility !== "public").length +
+        organizingLeagues.filter((league) => league.status === "draft" || league.visibility !== "public").length;
+      return [
+        {
+          cta: "Resolver bloqueios",
+          detail: competitionWorkspaceCount ? "Competicoes sob sua responsabilidade, ordenadas para operacao." : "Quando voce organizar torneios ou ligas, eles aparecem aqui.",
+          eyebrow: "Torneios e ligas",
+          id: "organizer-blocks",
+          path: competitionWorkspaceCount ? "/eventos?modo=organizing" : undefined,
+          title: competitionWorkspaceCount ? "Operacao ativa" : "Sem competicoes",
+          tone: cardTone(competitionWorkspaceCount),
+          value: countValue(competitionWorkspaceCount),
+        },
+        {
+          cta: "Revisar inscricoes",
+          detail: openRegistrations ? "Inscricoes abertas que podem exigir aprovacao, pagamento ou divulgacao." : "Nenhuma inscricao aberta exigindo acao agora.",
+          eyebrow: "Inscricoes",
+          id: "organizer-registrations",
+          path: "/eventos/torneios?view=organizing",
+          title: openRegistrations ? "Inscricoes em aberto" : "Inscricoes em dia",
+          tone: cardTone(openRegistrations),
+          value: countValue(openRegistrations),
+        },
+        {
+          cta: "Abrir jogos",
+          detail: liveCompetitions ? "Jogos e rodadas em andamento para acompanhar resultado." : "Jogos sem resultado aparecem aqui quando a competicao estiver em andamento.",
+          eyebrow: "Jogos sem resultado",
+          id: "organizer-results",
+          path: "/eventos?modo=organizing",
+          title: liveCompetitions ? "Acompanhar resultados" : "Sem resultados pendentes",
+          tone: cardTone(liveCompetitions),
+          value: countValue(liveCompetitions),
+        },
+        {
+          cta: "Publicar",
+          detail: publicationPending ? "Itens privados, rascunhos ou comunicacao que ainda precisam de revisao." : "Publicacao e comunicacao sem alerta.",
+          eyebrow: "Publicacao",
+          id: "organizer-publication",
+          path: "/eventos?modo=organizing",
+          title: publicationPending ? "Revisar comunicacao" : "Comunicacao em dia",
+          tone: cardTone(publicationPending),
+          value: countValue(publicationPending),
+        },
+      ];
+    }
+
+    const firstPending = activeAggregateQueueRows[0];
+    return [
+      {
+        cta: firstPending ? "Resolver agora" : "Abrir operacao",
+        detail: pendingTotal(aggregate) ? "Fila consolidada por area para atacar o que trava a rotina." : "Nenhuma pendencia critica agora; revise workspaces ou agenda do dia.",
+        eyebrow: "Pendencias criticas",
+        id: "manager-critical",
+        path: firstPending ? firstPath(firstPending.module) : "/gestao",
+        title: pendingTotal(aggregate) ? "Operacao exige acao" : "Operacao em dia",
+        tone: cardTone(pendingTotal(aggregate)),
+        value: countValue(pendingTotal(aggregate)),
+      },
+      {
+        cta: "Abrir agenda",
+        detail: aggregate.todayBookings || aggregate.waitlist || aggregate.pendingBookings ? "Reservas, fila e aprovacoes do dia." : "Agenda sem alerta critico agora.",
+        eyebrow: "Reservas",
+        id: "manager-bookings",
+        path: firstPath("bookings", "hoje"),
+        title: aggregate.todayBookings ? `${aggregate.todayBookings} reserva(s) hoje` : "Reservas em dia",
+        tone: cardTone(aggregate.todayBookings + aggregate.waitlist + aggregate.pendingBookings),
+        value: countValue(aggregate.todayBookings + aggregate.waitlist + aggregate.pendingBookings),
+      },
+      {
+        cta: "Abrir aulas",
+        detail: aggregate.pendingAcademy || todayClasses.length ? "Aulas de hoje, matriculas e reposicoes para acompanhar." : "Aulas sem pendencia operacional.",
+        eyebrow: "Aulas",
+        id: "manager-academy",
+        path: firstPath("academy", "hoje"),
+        title: todayClasses.length ? `${todayClasses.length} aula(s) hoje` : "Academia em dia",
+        tone: cardTone(aggregate.pendingAcademy + todayClasses.length),
+        value: countValue(aggregate.pendingAcademy + todayClasses.length),
+      },
+      {
+        cta: "Cobrar",
+        detail: aggregate.pendingFinance ? "Recebiveis, pagamentos pendentes e cobrancas para revisar." : "Financeiro sem alerta critico.",
+        eyebrow: "Financeiro",
+        id: "manager-finance",
+        path: firstPath("finance", "recebiveis"),
+        title: aggregate.pendingFinance ? "Cobrancas pendentes" : "Financeiro em dia",
+        tone: cardTone(aggregate.pendingFinance),
+        value: countValue(aggregate.pendingFinance),
+      },
+      {
+        cta: "Atender",
+        detail: aggregate.contactsDue ? "Clientes e leads com retorno previsto ou atrasado." : "Relacionamento sem retorno pendente.",
+        eyebrow: "Clientes",
+        id: "manager-clients",
+        path: firstPath("clients", "rotina"),
+        title: aggregate.contactsDue ? "Clientes para contato" : "Clientes em dia",
+        tone: cardTone(aggregate.contactsDue),
+        value: countValue(aggregate.contactsDue),
+      },
+      {
+        cta: "Repor",
+        detail: aggregate.lowStock ? "Itens de cantina abaixo do minimo operacional." : "Estoque sem alerta critico.",
+        eyebrow: "Estoque",
+        id: "manager-stock",
+        path: firstPath("canteen", "estoque"),
+        title: aggregate.lowStock ? "Estoque baixo" : "Estoque em dia",
+        tone: cardTone(aggregate.lowStock),
+        value: countValue(aggregate.lowStock),
+      },
+      {
+        cta: "Abrir equipe",
+        detail: pendingTeamInvites ? "Convites ou acessos da equipe aguardando revisao." : "Equipe sem convite pendente.",
+        eyebrow: "Equipe",
+        id: "manager-team",
+        path: firstPath("team", "equipe"),
+        title: pendingTeamInvites ? "Acessos pendentes" : "Equipe em dia",
+        tone: cardTone(pendingTeamInvites),
+        value: countValue(pendingTeamInvites),
+      },
+    ].filter((card) => Boolean(card.path));
+  }, [
+    accessByPlace,
+    activeAggregateQueueRows,
+    aggregate,
+    competitionWorkspaceCount,
+    entriesByPlace,
+    orderedManagedPlaces,
+    organizingLeagues,
+    organizingTournaments,
+    places.length,
+    summariesByPlace,
+    user.id,
+    workTodayPersona,
+  ]);
   const noManagementAccess = !loading && !places.length && !competitionWorkspaceCount && !professionalInviteCount && !canCreatePlaceAccess;
 
   return (
@@ -696,11 +1158,11 @@ export function ManagementHubPage({ user, profile }: Props) {
       profile={profile}
       mode={noManagementAccess ? "player" : "management"}
       eyebrow={noManagementAccess ? "Modo jogador" : "Central operacional"}
-      title={noManagementAccess ? "Area profissional indisponivel" : "Gestao"}
+      title={noManagementAccess ? "Area profissional indisponivel" : "Trabalho Hoje"}
       description={
         noManagementAccess
           ? "Sua conta nao esta vinculada a um local, equipe ou plano profissional. Continue pelo app de jogador ou aceite um convite de equipe."
-          : "Uma area propria para quem trabalha no app: pendencias primeiro, modulos claros e cada local com sua operacao separada."
+          : WORK_TODAY_DESCRIPTIONS[workTodayPersona]
       }
     >
       <div className="management-hub-page">
@@ -733,38 +1195,34 @@ export function ManagementHubPage({ user, profile }: Props) {
 
         {!loading && (places.length || competitionWorkspaceCount || professionalInviteCount) ? (
           <>
-            <section className="management-command-panel">
+          <section className={`management-command-panel management-today-panel is-${workTodayPersona}`}>
               <div className="management-section-title">
                 <div>
-                  <span>Fila do dia</span>
-                  <h2>O que precisa de atencao agora</h2>
+                  <span>{WORK_TODAY_LABELS[workTodayPersona]}</span>
+                  <h2>O que precisa ser resolvido agora?</h2>
+                  <p>Primeiro as tarefas acionaveis do papel atual, depois workspaces e contexto.</p>
                 </div>
-                <button className="quiet" onClick={() => navigate("/locais")}>Ver locais publicos</button>
+                <strong>{workTodayCards.length ? countLabel(workTodayCards.length, "acao em foco", "acoes em foco") : "Sem fila"}</strong>
               </div>
-              {visibleAggregateQueueRows.length ? (
-                <div className="management-priority-list">
-                  {visibleAggregateQueueRows.map((row) => (
+              {workTodayCards.length ? (
+                <div className="management-today-grid">
+                  {workTodayCards.map((card) => (
                     <button
-                      key={row.label}
-                      className="management-priority-row"
+                      key={card.id}
+                      type="button"
+                      className={`management-today-card ${card.tone}${card.path ? "" : " disabled"}`}
+                      disabled={!card.path}
                       onClick={() => {
-                        const targetPlace = places.find((place) => {
-                          const placeSummary = summariesByPlace[place.id];
-                          const modules = placeManagementModules(accessByPlace[place.id] || placeResourceAccess(place, user.id, []));
-                          if (!placeSummary) return false;
-                          if (!modules.includes(row.module)) return false;
-                          return queueRows(placeSummary).some(
-                            (placeRow) => placeRow.label === row.label && placeRow.module === row.module && placeRow.value > 0
-                          );
-                        });
-                        if (targetPlace) navigate(buildPlaceAdminPath(targetPlace.id, row.module));
+                        if (card.path) navigate(card.path);
                       }}
                     >
-                      <span>
-                        <strong>{row.label}</strong>
-                        <small>Abrir primeiro local com acao pendente</small>
-                      </span>
-                      <b>{row.value}</b>
+                      <span>{card.eyebrow}</span>
+                      <strong>{card.title}</strong>
+                      <small>{card.detail}</small>
+                      <div>
+                        <b>{card.value}</b>
+                        <em>{card.cta}</em>
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -879,7 +1337,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                         <span>{place.name}</span>
                         <strong>{hasCoachLink ? (todayClasses.length ? `${todayClasses.length} aula(s) hoje` : "Sem aulas hoje") : "Vinculo pendente"}</strong>
                         <small>
-                          {hasCoachLink ? `${activeClasses.length} turma(s) ativa(s) | ${activeStudents} aluno(s)` : "Peça ao gestor para vincular seu login ao cadastro de professor."}
+                          {hasCoachLink ? `${activeClasses.length} turma(s) ativa(s) | ${activeStudents} aluno(s)` : "Peca ao gestor para vincular seu login ao cadastro de professor."}
                         </small>
                       </div>
                       <div className="coach-operation-next">

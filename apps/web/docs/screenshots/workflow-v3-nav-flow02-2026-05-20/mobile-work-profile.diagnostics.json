@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "work-profile",
+  "hash": "#/perfil?mode=work",
+  "screenshot": "mobile-work-profile.png",
+  "events": []
+}

@@ -11330,6 +11330,107 @@ Riscos restantes:
 - `Agenda` do jogador ainda e alias operacional para `/minhas-reservas`, marcando tambem aulas/partidas/pagamentos como grupo ativo; a consolidacao real da agenda fica para FLOW-06;
 - work nav para usuario multi-papel sem gestor usa fallback seguro e pode ficar conservador ate termos selecao explicita de workspace.
 
+### [x] SPRINT-2026-05-20 - FLOW-02 Navegacao principal V3
+
+Status: `[x]` concluido no codigo, com screenshots smoke capturados.
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- `BottomNav` passou a montar dois conjuntos de navegacao: mobile por papel dominante e desktop por grupos de trabalho;
+- modo Jogador preservado como `Inicio | Jogar | Competir | Agenda | Perfil`;
+- modo Trabalho mobile alinhado por papel:
+  - professor: `Hoje | Agenda | Turmas | Alunos | Perfil`;
+  - recepcao: `Hoje | Reservas | Clientes | Aulas | Mais`;
+  - financeiro: `Receber | Pagos | Despesas | Resumo | Perfil`;
+  - caixa: `Vender | Hoje | Estoque | Produtos | Perfil`;
+  - organizador: `Hoje | Torneios | Ligas | Publicacao | Perfil`;
+  - gestor: `Hoje | Agenda | Aulas | Financeiro | Mais`;
+- desktop Trabalho agora agrupa por `Trabalho`, `Locais`, `Competicoes` e `Administracao`;
+- grupos vazios nao sao renderizados depois de aplicar filtros de viewport e permissao;
+- atalhos de `Agenda`, `Aulas`, `Clientes`, `Financeiro`, `Cantina`, `Equipe` e `Ajustes` so aparecem se o modulo existir em `primaryPlaceModules`;
+- `Perfil` acionado pelo modo Trabalho preserva `?mode=work`, mantendo o seletor em Trabalho sem criar rota nova;
+- `Relatorios` nao foi exposto porque o roteador atual nao tem modulo/rota segura para esse destino;
+- bottom nav mobile deixou de usar grade fixa de 6 colunas para evitar coluna fantasma em menus de 5 itens.
+- `scripts/capture-visual-audit.mjs` agora aceita `ATP_AUDIT_CUSTOM_VIEWPORTS_JSON` para validar 390px, 430px, 1366px e desktop amplo sem editar o script.
+
+O que nao foi alterado:
+
+- backend;
+- loaders;
+- policies/permissoes;
+- rotas publicas ou legadas;
+- regras de negocio;
+- design premium dark aprovado.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso;
+- screenshots smoke capturados em `docs/screenshots/workflow-v3-nav-flow02-2026-05-20/`;
+- screenshots por viewport capturados em `docs/screenshots/workflow-v3-nav-flow02-viewports-2026-05-20/`;
+- diagnostics das rotas capturadas sem eventos de console/rede;
+- rotas antigas preservadas por uso dos paths existentes: `/inicio`, `/locais`, `/eventos`, `/minhas-reservas`, `/perfil`, `/gestao`, `/gestao/:placeId/:module`, `/eventos/torneios?view=organizing`, `/eventos/ligas?view=organizing`, `/eventos?modo=organizing`;
+- matriz FLOW-02 atualizada em `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`.
+
+Pendencias:
+
+- confirmar `Relatorios` como modulo/rota antes de expor no menu de Administracao;
+- QA com contas reais de professor, recepcao, financeiro, caixa, organizador, gestor e jogador puro.
+- screenshots mobile de `/gestao` mostram overflow horizontal no conteudo do Management Hub, fora do escopo direto do `BottomNav`; tratar em sprint proprio de layout.
+
+### [x] SPRINT-2026-05-20 - FLOW-03 Trabalho Hoje
+
+Status: `[x]` concluido no codigo, aguardando QA expandido por contas especificas
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- `/gestao` passou a se apresentar como `Trabalho Hoje`, nao como uma lista generica de modulos;
+- a primeira dobra agora pergunta "O que precisa ser resolvido agora?" e muda por papel dominante;
+- `ManagementHubPage` calcula fila operacional para professor, recepcao, financeiro, caixa, organizador e gestor;
+- professor recebe cards de aulas de hoje, proxima chamada, reposicoes e turmas/alunos;
+- recepcao recebe reservas de hoje, check-ins, lista de espera, atendimento e aulas pendentes;
+- financeiro recebe vencidos/pendentes, recebiveis de hoje, pagamentos pendentes e despesas;
+- caixa recebe venda rapida, vendas do dia, estoque baixo e produtos;
+- organizador recebe torneios/ligas, inscricoes, jogos sem resultado e publicacao/comunicacao;
+- gestor recebe pendencias criticas consolidadas, reservas, aulas, financeiro, clientes, estoque e equipe;
+- cada card tem CTA claro, valor, detalhe orientativo e rota real quando o modulo e permitido;
+- cards sem modulo permitido sao ocultados ou ficam orientativos/desabilitados quando isso ajuda o estado vazio;
+- estados vazios foram tratados com texto de proximo passo, evitando "nenhum item encontrado" generico;
+- CSS criou cards premium dark responsivos para `Trabalho Hoje`;
+- mobile de `/gestao` recebeu correcao de overflow horizontal e cards empilhados;
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md` foi atualizado com escopo, comportamento por papel, estados vazios, estados sem permissao e QA requerido.
+
+O que nao foi alterado:
+
+- backend;
+- loaders;
+- policies/permissoes;
+- rotas publicas/legadas;
+- regras internas de cada modulo de local;
+- seletor `Jogador / Trabalho`.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso;
+- screenshots e diagnosticos finais de FLOW-03 capturados em `docs/screenshots/workflow-v3-flow03-work-today-2026-05-20/`;
+- capturas geradas para `mobile390`, `mobile430`, `desktop1366` e `desktopwide`;
+- `diagnostics-summary.json` sem eventos de console/rede em `/gestao`.
+
+Pendencias:
+
+- validar com contas reais isoladas de professor, recepcao, financeiro, caixa, organizador sem local, gestor e jogador puro;
+- clicar CTAs de cada papel com massa real variada;
+- FLOW-04 deve aprofundar o workspace de Professor sem reabrir o objetivo desta rodada.
+
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 
 Status: `[x]` concluido

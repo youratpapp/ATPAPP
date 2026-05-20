@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "work-profile",
+  "hash": "#/perfil?mode=work",
+  "screenshot": "desktop-work-profile.png",
+  "events": []
+}

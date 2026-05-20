@@ -125,17 +125,26 @@ Inicio | Jogar | Competir | Agenda | Perfil
 
 Management OS:
 
-- coach: `Hoje | Aulas | Turmas | Alunos | Perfil`;
+- coach: `Hoje | Agenda | Turmas | Alunos | Perfil`;
 - frontdesk: `Hoje | Reservas | Clientes | Aulas | Mais`;
 - finance: `Receber | Pagos | Despesas | Resumo | Perfil`;
 - cashier: `Vender | Hoje | Estoque | Produtos | Perfil`;
 - organizer sem local: `Hoje | Torneios | Ligas | Publicacao | Perfil`;
 - gestor/manager: `Hoje | Agenda | Aulas | Financeiro | Mais`.
 
+Desktop Trabalho:
+
+- grupo `Trabalho`: `Hoje`;
+- grupo `Locais`: `Agenda`, `Aulas`, `Clientes`, `Financeiro`, `Cantina`, conforme `primaryPlaceModules`;
+- grupo `Competicoes`: `Torneios`, `Ligas`, quando `hasCompetitionManagement`;
+- grupo `Administracao`: `Equipe`, `Ajustes`, conforme `primaryPlaceModules`;
+- `Relatorios` segue pendente porque nao existe rota/modulo seguro no roteador atual; nao foi exposto para evitar item sem destino real.
+
 Fallback seguro:
 
 - se nao houver `primaryPlaceId`, usar `/gestao`;
 - se o usuario tiver multiplos papeis conflitantes sem gestor, usar menu generico de trabalho para evitar exibir modulo proibido.
+- nao renderizar grupos vazios apos aplicar filtro de viewport e permissao.
 
 ## QA Required After FLOW-02
 
@@ -161,6 +170,12 @@ Casos:
 
 Executado:
 
+- `BottomNav` agora separa itens mobile por papel dominante e itens desktop por grupos (`Trabalho`, `Locais`, `Competicoes`, `Administracao`) sem duplicar loaders ou mexer em backend.
+- mobile de professor foi alinhado para `Hoje | Agenda | Turmas | Alunos | Perfil`.
+- mobile deixou de usar grade fixa de 6 colunas; o grid se ajusta ao numero real de botoes.
+- `Perfil` no modo Trabalho usa `/perfil?mode=work` para manter o seletor em Trabalho sem criar rota nova.
+- itens de desktop so aparecem quando o modulo existe em `primaryPlaceModules`; grupos vazios nao sao renderizados.
+- `Relatorios` nao foi exposto no desktop porque o codigo atual nao tem modulo/rota de relatorios equivalente.
 - `npm.cmd run build` passou com sucesso apos FLOW-02.
 - tentativa de auditoria visual com `scripts/capture-visual-audit.mjs` identificou erro real de React por keys duplicadas no `BottomNav` quando dois itens usavam `/gestao`; corrigido usando chave composta por grupo, label e path.
 
@@ -170,7 +185,25 @@ Bloqueios de ambiente:
 - captura smoke `workflow-v3-nav-smoke-2026-05-20` travou por timeout de login/rede;
 - artefatos parciais desta rodada e perfis temporarios `atp-visual-audit-*` foram removidos para recuperar espaco.
 
-Instrucoes para recaptura quando o ambiente estiver estavel:
+Validacao visual curta concluida depois da liberacao de espaco:
+
+- `docs/screenshots/workflow-v3-nav-flow02-2026-05-20/`
+  - `desktop-player-home.png`
+  - `mobile-player-home.png`
+  - `desktop-work-home.png`
+  - `mobile-work-home.png`
+  - `desktop-work-competitions.png`
+  - `mobile-work-competitions.png`
+  - `desktop-work-profile.png`
+  - `mobile-work-profile.png`
+- `docs/screenshots/workflow-v3-nav-flow02-viewports-2026-05-20/`
+  - mobile 390px: `mobile390-player-home.png`, `mobile390-work-home.png`
+  - mobile 430px: `mobile430-player-home.png`, `mobile430-work-home.png`
+  - desktop 1366px: `desktop1366-player-home.png`, `desktop1366-work-home.png`
+  - desktop amplo 1728px: `desktopwide-player-home.png`, `desktopwide-work-home.png`
+- diagnostics sem eventos de console/rede nas rotas capturadas.
+
+Instrucoes para recaptura ampliada:
 
 ```powershell
 $env:ATP_AUDIT_OUT_DIR='docs/screenshots/workflow-v3-nav-2026-05-20'
@@ -182,6 +215,100 @@ node scripts/capture-visual-audit.mjs
 
 Cobertura ainda pendente:
 
-- screenshots reais em 430px, 1366px e desktop amplo;
 - QA por persona com contas especificas de professor, recepcao, financeiro, caixa, organizador e jogador puro;
 - cliques seguros no bottom nav para confirmar destino por papel.
+- screenshots de `/gestao` mobile mostram overflow horizontal no conteudo da pagina, fora do escopo direto do `BottomNav`; registrar para proximo sprint de layout do Management Hub.
+
+## FLOW-03 - Trabalho Hoje Scope For This Sprint
+
+Objetivo: transformar `/gestao` na superficie `Trabalho Hoje`, uma fila operacional por papel que responde "o que precisa ser resolvido agora?" antes de mostrar workspaces, locais ou modulos.
+
+Implementacao permitida nesta rodada:
+
+- reorganizar a primeira dobra de `ManagementHubPage`;
+- usar apenas dados ja carregados por `fetchPlacesWorkspaceData`, `listOrganizingTournamentsForUser` e `listOrganizingLeaguesForUser`;
+- derivar cards por papel dominante ja calculado no workspace profissional;
+- manter rotas existentes por `buildPlaceAdminPath`, `/eventos?modo=organizing`, `/eventos/torneios?view=organizing` e `/eventos/ligas?view=organizing`;
+- ocultar cards cujo modulo nao existe para o papel/local atual;
+- explicar estados vazios dentro do proprio card quando a tarefa e permitida mas nao ha dados;
+- manter convites, workspaces e rows de locais abaixo da fila do dia.
+
+O que nao alterar:
+
+- backend;
+- loaders de dominio;
+- policies/permissoes;
+- regras de negocio;
+- rotas publicas ou legadas;
+- detalhes internos de cada modulo de local.
+
+Comportamento por papel:
+
+| Papel | Primeira dobra | CTAs principais | Modulos proibidos/fora da rotina |
+|---|---|---|---|
+| Professor | aulas de hoje, proxima chamada, reposicoes, turmas/alunos | Abrir aulas, Fazer chamada, Ver reposicoes, Abrir alunos | financeiro, cantina, equipe, ajustes |
+| Recepcao | reservas de hoje, check-ins, lista de espera, atendimento, aulas pendentes | Abrir reservas, Ver check-ins, Chamar espera, Atender clientes, Ver aulas | ajustes estruturais, equipe, financeiro amplo |
+| Financeiro | vencidos, recebiveis de hoje, pagamentos pendentes, despesas | Cobrar/marcar pago, Ver recebiveis, Revisar pagamentos, Ver despesas | chamada, cantina/PDV, agenda operacional como foco |
+| Caixa | venda rapida, vendas do dia, estoque baixo, produtos | Vender agora, Ver hoje, Repor estoque, Produtos | recebiveis amplos, clientes, ajustes |
+| Organizador | torneios/ligas, inscricoes, jogos sem resultado, publicacao | Resolver bloqueios, Revisar inscricoes, Abrir jogos, Publicar | gestao de local quando nao ha local |
+| Gestor | pendencias criticas, reservas, aulas, financeiro, clientes, estoque, equipe | Resolver agora, Abrir agenda, Abrir aulas, Cobrar, Atender, Repor, Abrir equipe | setup raro como card primario |
+
+Estados vazios definidos:
+
+- professor sem aulas hoje: informar que aulas vinculadas aparecem com horario, turma e alunos;
+- professor sem turma vinculada: orientar vinculo pelo gestor;
+- recepcao sem reservas/check-ins/espera: indicar agenda livre/lista limpa;
+- financeiro sem pendencias: informar cobrancas em dia, sem misturar financeiro pessoal;
+- caixa sem produtos: orientar criacao de produtos antes de operar o caixa;
+- organizador sem competicoes: explicar que torneios e ligas organizados aparecerao ali;
+- gestor sem pendencias: manter acesso a workspaces sem criar dashboard numerico vazio.
+
+Estados sem permissao:
+
+- cards dependentes de modulo usam `placeManagementModules` antes de renderizar destino;
+- quando o modulo nao existe para o papel, o card e ocultado na maior parte dos papeis;
+- professor pode ver card orientativo desabilitado quando nao ha vinculo operacional suficiente;
+- usuario sem workspace profissional continua recebendo estado neutro de acesso profissional indisponivel.
+
+## QA Required After FLOW-03
+
+Viewports:
+
+- mobile 390px;
+- mobile 430px;
+- desktop 1366px;
+- desktop amplo.
+
+Casos por persona:
+
+- professor: `/gestao` deve abrir `Trabalho Hoje` com aulas/chamada/reposicoes/turmas e sem financeiro/cantina/equipe/ajustes;
+- recepcao: deve ver reservas/check-ins/espera/clientes/aulas e nao setup estrutural;
+- financeiro: deve ver cobrancas/recebiveis/pagamentos/despesas e nao aula/cantina como tarefa principal;
+- caixa: deve ver PDV/vendas/estoque/produtos e nao recebiveis amplos;
+- organizador sem local: deve ver competicoes, inscricoes, jogos e publicacao por rotas de Competition OS;
+- gestor: deve ver pendencias consolidadas por area e cards com CTA claro;
+- jogador puro: ao acessar `/gestao` manualmente deve cair no estado sem area profissional, sem vazamento de ferramentas administrativas.
+
+## Validation Notes - FLOW-03 - 2026-05-20
+
+Executado:
+
+- `ManagementHubPage` agora calcula `workTodayPersona` para professor, recepcao, financeiro, caixa, organizador e gestor.
+- a primeira dobra de `/gestao` foi renomeada para `Trabalho Hoje` e deixou de ser uma lista generica de modulos.
+- a antiga fila agregada de pendencias foi substituida por cards acionaveis por papel, com CTA, valor, texto orientativo e destino real.
+- os cards usam apenas dados ja carregados; nenhum loader novo foi criado.
+- os destinos preservam rotas existentes via `buildPlaceAdminPath` e rotas atuais de competicoes em modo organizacao.
+- CSS criou `management-today-panel`, `management-today-grid` e `management-today-card` seguindo premium dark.
+- mobile recebeu grade de uma coluna para a fila do dia e correcao de overflow horizontal no hub de gestao.
+- `npm.cmd run build` passou com sucesso apos a implementacao.
+- screenshots de `/gestao` foram capturados em `docs/screenshots/workflow-v3-flow03-work-today-2026-05-20/`:
+  - `mobile390-work-today.png`;
+  - `mobile430-work-today.png`;
+  - `desktop1366-work-today.png`;
+  - `desktopwide-work-today.png`.
+- `diagnostics-summary.json` ficou sem eventos de console/rede nos quatro viewports capturados.
+
+Cobertura ainda pendente:
+
+- QA com contas reais isoladas de professor, recepcao, financeiro, caixa, organizador sem local, gestor e jogador puro;
+- validacao de clique em cada CTA com massa real variada.

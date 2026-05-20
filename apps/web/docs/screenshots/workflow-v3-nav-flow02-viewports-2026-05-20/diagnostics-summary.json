@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "player-home",
+    "hash": "#/inicio",
+    "screenshot": "mobile390-player-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "work-home",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-work-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "player-home",
+    "hash": "#/inicio",
+    "screenshot": "mobile430-player-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "work-home",
+    "hash": "#/gestao",
+    "screenshot": "mobile430-work-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "player-home",
+    "hash": "#/inicio",
+    "screenshot": "desktop1366-player-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "work-home",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-work-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "player-home",
+    "hash": "#/inicio",
+    "screenshot": "desktopwide-player-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "work-home",
+    "hash": "#/gestao",
+    "screenshot": "desktopwide-work-home.png",
+    "events": []
+  }
+]

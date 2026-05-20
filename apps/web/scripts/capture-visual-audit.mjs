@@ -20,11 +20,25 @@ const CHROME_PATHS = [
 
 const desktop = { name: "desktop", width: 1440, height: 980, deviceScaleFactor: 1, mobile: false };
 const mobile = { name: "mobile", width: 390, height: 844, deviceScaleFactor: 2, mobile: true };
+function customViewportsFromEnv() {
+  if (!process.env.ATP_AUDIT_CUSTOM_VIEWPORTS_JSON) return null;
+  const parsed = JSON.parse(process.env.ATP_AUDIT_CUSTOM_VIEWPORTS_JSON);
+  if (!Array.isArray(parsed)) throw new Error("ATP_AUDIT_CUSTOM_VIEWPORTS_JSON deve ser um array.");
+  return parsed.map((viewport) => ({
+    name: String(viewport.name || "").trim(),
+    width: Number(viewport.width),
+    height: Number(viewport.height),
+    deviceScaleFactor: Number(viewport.deviceScaleFactor || 1),
+    mobile: Boolean(viewport.mobile),
+  })).filter((viewport) => viewport.name && viewport.width > 0 && viewport.height > 0);
+}
+
+const availableViewports = customViewportsFromEnv() || [desktop, mobile];
 const viewportFilter = (process.env.ATP_AUDIT_VIEWPORTS || "desktop,mobile")
   .split(",")
   .map((item) => item.trim())
   .filter(Boolean);
-const viewports = [desktop, mobile].filter((viewport) => viewportFilter.includes(viewport.name));
+const viewports = availableViewports.filter((viewport) => viewportFilter.includes(viewport.name));
 
 const defaultRoutes = [
   { slug: "login", hash: "#/auth", public: true },
