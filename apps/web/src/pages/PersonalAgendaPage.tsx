@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
-import { AppDialog, AppSheet } from "../components/AppOverlays";
+import { AppSheet } from "../components/AppOverlays";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { friendlyToastMessage, useToast } from "../components/toast";
@@ -617,7 +617,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
   }, [requestedItem]);
 
   const items = useMemo<PersonalAgendaItem[]>(() => {
-    const bookingItems = state.bookings.map((booking) => {
+    const bookingItems = state.bookings.filter((booking) => booking.status !== "blocked").map((booking) => {
       const status = reservationStatus(booking);
       const history = booking.status === "cancelled" || Boolean(booking.endsAt && isPast(booking.endsAt));
       return {
@@ -966,17 +966,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
           >
             {detail}
           </AppSheet>
-        ) : (
-          <AppDialog
-            open={Boolean(selectedItem && false)}
-            eyebrow={selectedItem?.sourceName}
-            title={selectedItem?.title || "Detalhe"}
-            subtitle={selectedItem?.dateLabel}
-            onClose={closeItem}
-          >
-            {detail}
-          </AppDialog>
-        )}
+        ) : null}
       </main>
     </AppShell>
   );

@@ -11431,6 +11431,55 @@ Pendencias:
 - clicar CTAs de cada papel com massa real variada;
 - FLOW-04 deve aprofundar o workspace de Professor sem reabrir o objetivo desta rodada.
 
+### [x] SPRINT-2026-05-20 - FLOW-06 Agenda do jogador
+
+Status: `[x]` concluido no codigo, aguardando screenshots finais e QA expandido por massa real
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- criada a rota `/agenda` como superficie principal da agenda pessoal;
+- `/minhas-reservas`, `/minhas-partidas`, `/minhas-aulas` e `/meus-pagamentos` foram preservadas como entradas filtradas da nova agenda;
+- `PersonalAgendaPage` consolida reservas pessoais, lista de espera, aulas pessoais, partidas de torneios/ligas, pagamentos pessoais e historico;
+- reservas passadas entram em `Historico` com estado `Reserva passada`;
+- aulas futuras destacam turma, professor, horario e quadra quando o dado esta disponivel;
+- partidas tentam enriquecer torneios e ligas com adversario, competicao, status, agenda e resultado usando dados ja existentes;
+- pagamentos pessoais destacam mensalidade/pacote/reserva/inscricao conforme `targetType`, sem misturar com financeiro do local;
+- pagamento pendente antigo ou falho aparece como `Pagamento vencido`;
+- partida sem resultado aparece como `Partida pendente de resultado`;
+- cada item abre detalhe proprio dentro da agenda: sheet no mobile, painel lateral no desktop;
+- detalhe de reserva preserva cancelamento quando permitido;
+- reservas internas `blocked` nao sao exibidas como compromisso pessoal do jogador;
+- `BottomNav` de jogador agora aponta `Agenda` para `/agenda`;
+- atalhos pessoais da Home foram atualizados para `/agenda` e filtros;
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md` foi atualizado com escopo, rotas preservadas, estados e QA.
+
+O que nao foi alterado:
+
+- backend;
+- loaders de dominio existentes;
+- policies/permissoes;
+- financeiro do local;
+- rotas publicas/legadas de competicao;
+- arquivos das paginas antigas, que permanecem no repositorio.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow06-player-agenda-2026-05-20/`;
+- capturas cobrem `/agenda`, `/minhas-reservas`, `/minhas-partidas`, `/minhas-aulas` e `/meus-pagamentos`;
+- capturas cobrem `mobile390`, `mobile430`, `desktop1366` e `desktopwide`;
+- `diagnostics-summary.json` sem eventos de console/rede nas rotas capturadas.
+
+Pendencias:
+
+- validar com contas reais de jogador puro, aluno, socio/reservas e competitivo;
+- testar competicoes com partidas reais de torneio/liga contendo adversario, agenda e resultado.
+
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 
 Status: `[x]` concluido

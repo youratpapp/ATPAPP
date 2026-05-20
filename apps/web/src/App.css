@@ -10954,6 +10954,8 @@ button:disabled {
 .personal-agenda-detail dd {
   font-weight: 850;
   margin: 2px 0 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .place-public-manual-slot button {

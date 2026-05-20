@@ -312,3 +312,99 @@ Cobertura ainda pendente:
 
 - QA com contas reais isoladas de professor, recepcao, financeiro, caixa, organizador sem local, gestor e jogador puro;
 - validacao de clique em cada CTA com massa real variada.
+
+## FLOW-06 - Agenda Do Jogador Scope For This Sprint
+
+Objetivo: consolidar a experiencia pessoal do jogador/aluno/socio/competitivo em uma superficie `Agenda`, sem quebrar as rotas antigas nem misturar financeiro pessoal com financeiro do local.
+
+Implementacao permitida nesta rodada:
+
+- criar `/agenda` como destino principal de agenda pessoal;
+- preservar `/minhas-reservas`, `/minhas-partidas`, `/minhas-aulas` e `/meus-pagamentos` como entradas filtradas da agenda;
+- reutilizar loaders existentes de reservas, lista de espera, aulas, pagamentos, torneios e ligas;
+- abrir detalhes dentro da agenda: sheet no mobile e painel lateral no desktop;
+- manter CTAs para o detalhe original quando existir rota antiga ou sala de partida;
+- atualizar navegacao de jogador e atalhos da Home para apontarem para `/agenda`;
+- manter as paginas antigas no repositorio, sem remove-las.
+
+O que nao alterar:
+
+- backend;
+- RLS/policies/permissoes;
+- tabelas ou RPCs;
+- logica de gestao financeira de local;
+- rotas publicas de torneio/liga;
+- paginas antigas alem do roteamento como entrada filtrada.
+
+Estrutura alvo:
+
+| Superficie | Rota | Conteudo | Estado principal |
+|---|---|---|---|
+| Agenda completa | `/agenda` | reservas, partidas, aulas, pagamentos pessoais e historico | proximos compromissos primeiro |
+| Reservas | `/minhas-reservas` | alias filtrado para reservas/lista de espera | sem reservas ativas |
+| Partidas | `/minhas-partidas` | alias filtrado para torneios/ligas pessoais | partida pendente de resultado |
+| Aulas | `/minhas-aulas` | alias filtrado para turmas/aulas pessoais | sem aulas vinculadas |
+| Pagamentos | `/meus-pagamentos` | alias filtrado para pagamentos pessoais | sem pagamentos pessoais / pagamento vencido |
+
+Estados obrigatorios definidos:
+
+- sem compromissos futuros: orienta reservar quadra, entrar em aula ou competir;
+- sem aulas vinculadas: explica que turmas aprovadas aparecem com professor, horario e quadra;
+- sem reservas ativas: orienta reservar quadra ou entrar em lista de espera;
+- sem pagamentos pessoais: explica que mensalidades, pacotes, reservas e inscricoes vinculadas aparecerao ali;
+- pagamento vencido: pagamento pessoal pendente/failed recebe destaque danger;
+- reserva passada: entra em Historico com label `Reserva passada`;
+- partida pendente de resultado: torneio/liga sem resultado aparece com destaque danger.
+
+Rotas preservadas:
+
+- `/agenda` nova rota principal;
+- `/minhas-reservas` preservada como agenda filtrada por reservas;
+- `/minhas-partidas` preservada como agenda filtrada por partidas;
+- `/minhas-aulas` preservada como agenda filtrada por aulas;
+- `/meus-pagamentos` preservada como agenda filtrada por pagamentos.
+
+## QA Required After FLOW-06
+
+Viewports:
+
+- mobile 390px;
+- mobile 430px;
+- desktop 1366px;
+- desktop amplo.
+
+Casos por persona:
+
+- jogador puro: `/agenda` abre sem gestao e mostra estado vazio orientado se nao houver compromissos;
+- aluno: `/agenda?tipo=aulas` mostra turma, professor, horario e quadra quando vinculados;
+- socio/reservas: `/agenda?tipo=reservas` mostra reservas futuras e historico de reservas passadas;
+- competitivo: `/agenda?tipo=partidas` mostra torneios/ligas, adversario quando disponivel, status e resultado;
+- usuario com pendencia financeira pessoal: `/agenda?tipo=pagamentos` destaca vencidos sem mostrar recebiveis do local.
+
+## Validation Notes - FLOW-06 - 2026-05-20
+
+Executado:
+
+- criada `PersonalAgendaPage` como composicao frontend de agenda pessoal;
+- adicionada rota `/agenda`;
+- `/minhas-reservas`, `/minhas-partidas`, `/minhas-aulas` e `/meus-pagamentos` agora renderizam a agenda com filtro inicial correspondente;
+- `BottomNav` de jogador agora aponta `Agenda` para `/agenda` e mantem rotas antigas como active paths;
+- Home passou a apontar cards/atalhos pessoais para `/agenda` e filtros;
+- reservas futuras, lista de espera, aulas, partidas, pagamentos e historico sao reunidos na mesma linha do tempo;
+- detalhes abrem em sheet no mobile e painel lateral no desktop;
+- cancelamento de reserva pessoal foi preservado dentro do detalhe da agenda;
+- reservas internas com status `blocked` nao entram na agenda pessoal, evitando expor bloqueios operacionais/tecnicos como compromisso do jogador;
+- `npm.cmd run build` passou apos a implementacao.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow06-player-agenda-2026-05-20/` para:
+  - `/agenda`;
+  - `/minhas-reservas`;
+  - `/minhas-partidas`;
+  - `/minhas-aulas`;
+  - `/meus-pagamentos`;
+  - viewports `mobile390`, `mobile430`, `desktop1366` e `desktopwide`.
+- `diagnostics-summary.json` ficou sem eventos de console/rede nas rotas capturadas.
+
+Cobertura ainda pendente:
+
+- QA com contas reais separadas de jogador puro, aluno, socio/reservas e competitivo;
+- validar massa real com partida de torneio e liga que possua adversario, agenda e resultado.
