@@ -706,3 +706,71 @@ Evidencias capturadas:
 - personas auditadas: owner/admin e participante;
 - viewports: `mobile390`, `mobile430`, `desktop1366`, `desktopwide`;
 - diagnosticos: 24 arquivos `.diagnostics.json`, 0 erros e 0 warnings de console/rede.
+
+## FLOW-10 - Ajustes/Admin Fora Da Rotina Scope For This Sprint
+
+Objetivo: retirar setup raro, equipe, permissoes, backup, restore, reset, exclusao e configuracao estrutural da rotina diaria, mantendo owner/manager com acesso claro por Ajustes, Equipe, Administracao, Avancado ou Configuracao da competicao.
+
+Implementacao aplicada nesta rodada:
+
+- `/gestao` deixou de usar setup incompleto como criterio de ordenacao dos locais;
+- `/gestao` deixou de mostrar `Equipe` como card de primeira dobra para gestor;
+- rows de locais em `/gestao` mostram tarefas operacionais primeiro e movem `Ajustes`/`Equipe e permissoes` para um bloco recolhido de `Administracao`;
+- roteiro de implantacao na central foi renomeado para `Administracao` e continua recolhido, apontando para ajustes estruturais;
+- shell do admin do local so mostra barra de implantacao/proximo setup quando o modulo ativo e `Ajustes`;
+- torneio organizador deixou de exibir `Configuracao` no mapa de primeira dobra fora da fase `draft`;
+- no torneio, `Resetar sorteio/partidas`, `Reset total`, `Excluir torneio`, `Backup` e `Restore` foram movidos para `Avancado`, visivel apenas para owner;
+- no cockpit da liga, `Ajustes` saiu dos CTAs secundarios da primeira dobra quando a liga nao esta na fase de configuracao.
+
+Mapa de deslocamento:
+
+| Item removido da rotina | Onde ficava | Novo destino | Permissao |
+|---|---|---|---|
+| Equipe como card do gestor | `/gestao` primeira dobra | bloco recolhido `Administracao` -> `Equipe e permissoes` | manager/owner |
+| Setup incompleto como pulso do local | rows de `/gestao` | `Administracao`/`Ajustes` | manager/owner |
+| Barra de implantacao do local | todos os modulos do admin do local | somente modulo `Ajustes` | manager/owner |
+| Configuracao do torneio em fase operacional | mapa do organizador | apenas fase `draft` ou aba `Organizacao` | owner/organizer conforme atual |
+| Reset/backup/restore/exclusao do torneio | operacoes do torneio | `Avancado` dentro de Organizacao | owner |
+| Ajustes da liga em rodada ativa | CTAs do cockpit owner | aba `Ajustes`/`configuracao` owner-only | owner |
+
+Estados e permissao:
+
+- professor, recepcao, financeiro e caixa nao recebem atalhos de Equipe/Ajustes;
+- gestor/owner ainda ve `Ajustes` e `Equipe` pelos modulos e pelo bloco recolhido de Administracao;
+- owner de torneio ve Avancado; organizer/scorekeeper/media continuam sem reset, exclusao, backup ou restore;
+- participante de liga continua sem ferramentas administrativas;
+- rotas antigas de ajustes, equipe, organizacao, liga e local foram preservadas.
+
+## QA Required After FLOW-10
+
+Viewports:
+
+- mobile 390px;
+- mobile 430px;
+- desktop 1366px;
+- desktop amplo.
+
+Casos por papel:
+
+- professor: `/gestao` deve mostrar aulas/turmas/alunos e nao Ajustes/Equipe;
+- recepcao: `/gestao` deve mostrar reservas/check-ins/clientes/aulas, sem setup estrutural;
+- financeiro: deve ver recebiveis/despesas/resumo, sem equipe/cantina/setup;
+- caixa: deve ver venda/estoque/produtos, sem financeiro amplo/equipe/ajustes;
+- gestor: primeira dobra deve ter tarefas operacionais; Ajustes/Equipe ficam em Administracao ou sidebar;
+- owner de local: em Agenda/Aulas/Financeiro nao deve aparecer proximo setup; em Ajustes aparece checklist;
+- organizer/scorekeeper/media de torneio: nao devem ver reset, backup, restore ou excluir;
+- owner de torneio: encontra reset/backup/restore/excluir em Avancado;
+- participante de liga: nao ve configuracao;
+- owner de liga em rodada ativa: Ajustes fica na aba, nao nos CTAs da primeira dobra.
+
+## Validation Notes - FLOW-10 - 2026-05-20
+
+Executado:
+
+- `ManagementHubPage`, `PlaceAdminShell`, `TournamentPage`, `LeagueDetailsPage` e CSS de suporte atualizados;
+- `npm.cmd run build` passou apos a implementacao.
+
+Evidencias pendentes nesta nota:
+
+- capturar screenshots de `/gestao`, admin de local, torneio organizador e liga owner/participante apos a validacao visual;
+- validar contas reais de professor, recepcao, financeiro, caixa, gestor, owner e staff de torneio.

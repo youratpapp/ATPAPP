@@ -11613,6 +11613,52 @@ Pendencias:
 - QA com owner e participante reais em ligas nas fases variadas;
 - como o schema atual de `LeagueMatchSummary` nao traz quadra/local, o cockpit exibe `Local a combinar`/`Pendente` sem inventar backend.
 
+### [x] SPRINT-2026-05-20 - FLOW-10 Ajustes/admin fora da rotina
+
+Status: `[x]` concluido no codigo, aguardando screenshots e QA expandido por papel
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- `/gestao` deixou de promover setup incompleto como prioridade operacional;
+- card `Equipe` saiu da primeira dobra do gestor;
+- rows de local agora priorizam acoes rapidas de rotina e colocam `Ajustes`/`Equipe e permissoes` em bloco recolhido de `Administracao`;
+- roteiro de implantacao virou bloco administrativo recolhido, fora da fila do dia;
+- admin do local so mostra barra de implantacao/proximo setup dentro do modulo `Ajustes`;
+- mapa do organizador de torneio so exibe `Configuracao` como atalho de primeira dobra na fase `draft`;
+- reset, reset total, excluir torneio, backup e restore foram movidos para `Avancado`, visivel apenas para owner;
+- cockpit owner de liga remove `Ajustes` dos CTAs da primeira dobra fora da fase de configuracao.
+
+O que saiu da rotina:
+
+- setup de local;
+- equipe/permissoes;
+- configuracao estrutural;
+- backup/restore;
+- reset parcial e total;
+- exclusao de torneio;
+- ajustes de liga durante rodada ativa.
+
+Destino:
+
+- local: `Ajustes`, `Equipe`, bloco recolhido `Administracao`;
+- torneio: `Organizacao` -> `Avancado` para acoes destrutivas/backup;
+- liga: aba `Ajustes`/`configuracao` owner-only;
+- setup inicial de torneio: atalho de configuracao apenas em `draft`.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso.
+
+Pendencias:
+
+- capturar screenshots mobile e desktop;
+- QA com papeis reais: professor, recepcao, financeiro, caixa, gestor, owner de local, owner de torneio, staff de torneio e participante/owner de liga.
+
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 
 Status: `[x]` concluido
