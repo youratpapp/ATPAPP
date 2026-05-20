@@ -605,8 +605,8 @@ export function EventsHubPage({ user, profile }: Props) {
     <AppShell user={user} profile={profile} showHeader={false}>
       <div className={`page-header events-page-header mode-${activeMode}`} aria-label={pageTitle} data-intro={pageIntro}>
         <div>
-          <h1>Competições</h1>
-          <p className="page-intro">Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.</p>
+          <h1>{pageTitle}</h1>
+          <p className="page-intro">{pageIntro}</p>
         </div>
       </div>
 

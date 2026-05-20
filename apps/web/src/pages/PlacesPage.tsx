@@ -5169,10 +5169,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showFinanceExpenses = !showFinanceWorkspace;
         const canteenView = (canteenViewByPlace[p.id] || "sell") as CanteenManagementView;
         const showCanteenWorkspace = isManagementCockpit && canUseCanteenModule;
-        const showCanteenSummary = !showCanteenWorkspace || canteenView === "today";
-        const showCanteenSale = !showCanteenWorkspace || canteenView === "sell";
-        const showCanteenStock = !showCanteenWorkspace || canteenView === "stock";
-        const showCanteenProducts = !showCanteenWorkspace || canteenView === "products";
+        const showCanteenSummary = !showCanteenWorkspace;
+        const showCanteenSale = !showCanteenWorkspace;
+        const showCanteenStock = !showCanteenWorkspace;
+        const showCanteenProducts = !showCanteenWorkspace;
         const coachAcademyViews: AcademyManagementView[] = ["today", "classes", "students"];
         const academyViews: AcademyManagementView[] = isCoachMode
           ? coachAcademyViews

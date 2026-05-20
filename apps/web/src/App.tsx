@@ -408,9 +408,21 @@ function readNextFromUrl(): string {
   return "/inicio";
 }
 
+function buildAuthNextPath(pathname: string, routeSearch = ""): string {
+  const routePath = pathname || "/inicio";
+  const routeParams = new URLSearchParams(routeSearch || "");
+  const externalParams = new URLSearchParams(window.location.search || "");
+  ["next", "code", "error", "error_description", "app_reload"].forEach((key) => externalParams.delete(key));
+  externalParams.forEach((value, key) => {
+    if (!routeParams.has(key)) routeParams.set(key, value);
+  });
+  const mergedSearch = routeParams.toString();
+  return sanitizeNextPath(`${routePath}${mergedSearch ? `?${mergedSearch}` : ""}`);
+}
+
 function AuthRequiredRedirect() {
   const location = useLocation();
-  const next = sanitizeNextPath(`${location.pathname || "/inicio"}${location.search || ""}`);
+  const next = buildAuthNextPath(location.pathname, location.search);
   const query = new URLSearchParams();
   query.set("next", next);
   return <Navigate to={`/auth?${query.toString()}`} replace />;

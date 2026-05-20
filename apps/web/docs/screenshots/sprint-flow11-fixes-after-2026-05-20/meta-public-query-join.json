@@ -1,0 +1,80 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "public-query-join-admin-link",
+    "screenshot": "mobile390-public-query-join-admin-link.png",
+    "diagnosticsFile": "mobile390-public-query-join-admin-link.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 1,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Continuar com Google",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 195,
+        "y": 470,
+        "w": 328,
+        "h": 46
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/auth?next=%2Feventos%2Feee62a99-6929-49c6-b4b9-533e82a6c9da%2Forganizacao%3Fjoin%3Db8c8b854-4d51-4611-b638-b465e416a0b6",
+    "h1": [
+      "Entrar na ATP"
+    ],
+    "h2": [
+      "Sua jornada no tenis amador comeca aqui."
+    ],
+    "buttons": [
+      "Continuar com Google",
+      "Entrar",
+      "Criar conta"
+    ],
+    "cards": 1,
+    "textSample": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no evento que voce tentou abrir. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "public-query-join-admin-link",
+    "screenshot": "desktop1366-public-query-join-admin-link.png",
+    "diagnosticsFile": "desktop1366-public-query-join-admin-link.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 1,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Continuar com Google",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 1002,
+        "y": 451,
+        "w": 334,
+        "h": 52
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/auth?next=%2Feventos%2Feee62a99-6929-49c6-b4b9-533e82a6c9da%2Forganizacao%3Fjoin%3Db8c8b854-4d51-4611-b638-b465e416a0b6",
+    "h1": [
+      "Entrar na ATP"
+    ],
+    "h2": [
+      "Sua jornada no tenis amador comeca aqui."
+    ],
+    "buttons": [
+      "Continuar com Google",
+      "Entrar",
+      "Criar conta"
+    ],
+    "cards": 1,
+    "textSample": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no evento que voce tentou abrir. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+  }
+]

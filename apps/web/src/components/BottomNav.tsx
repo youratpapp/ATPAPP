@@ -195,6 +195,7 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
   const tournamentWorkPath = "/eventos/torneios?view=organizing";
   const leagueWorkPath = "/eventos/ligas?view=organizing";
   const todayItem = workItem(workEntryPath, "Hoje", ManagementIcon, [workEntryPath.split("?")[0], "/gestao"], true, "work", "mobile");
+  const moreItem = () => workItem("/gestao", "Mais", ManagementIcon, ["/__work-more__"], true, "admin", "mobile");
 
   if (!access.hasManagement && access.hasCompetitionManagement) {
     return [
@@ -222,7 +223,7 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
     if (hasPlaceModule(access, "bookings")) frontdeskItems.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
     if (hasPlaceModule(access, "clients")) frontdeskItems.push(workItem(placePath(access, "clients", "rotina"), "Clientes", PersonIcon, undefined, false, "place", "mobile"));
     if (hasPlaceModule(access, "academy")) frontdeskItems.push(workItem(placePath(access, "academy", "pendencias"), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
-    return [...frontdeskItems.slice(0, 4), workItem("/gestao", "Mais", ManagementIcon, ["/gestao"], true, "admin", "mobile")];
+    return [...frontdeskItems.slice(0, 4), moreItem()];
   }
 
   if (access.primaryWorkRole === "finance") {
@@ -269,7 +270,7 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
   if (hasPlaceModule(access, "bookings")) managerItems.push(workItem(placePath(access, "bookings", "hoje"), "Agenda", CalendarIcon, undefined, false, "place", "mobile"));
   if (hasPlaceModule(access, "academy")) managerItems.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
   if (hasPlaceModule(access, "finance")) managerItems.push(workItem(placePath(access, "finance", "recebiveis"), "Financeiro", ManagementIcon, undefined, false, "place", "mobile"));
-  return [...managerItems.slice(0, 4), workItem("/gestao", "Mais", PersonIcon, ["/gestao"], true, "admin", "mobile")];
+  return [...managerItems.slice(0, 4), { ...moreItem(), Icon: PersonIcon }];
 }
 
 function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: UserMode, workEntryPath: string): NavItem[] {

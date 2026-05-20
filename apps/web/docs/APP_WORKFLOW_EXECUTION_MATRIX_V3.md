@@ -785,3 +785,111 @@ Cobertura ainda pendente:
 
 - validar staff de torneio separado por `organizer`, `scorekeeper`, `checkin` e `media`;
 - validar owner/manager de local com setup incompleto real, para confirmar os atalhos de Administracao abrindo o item correto em Ajustes/Equipe.
+
+## FLOW-11 - QA Transversal - 2026-05-20
+
+Objetivo: validar se as melhorias por persona nao quebraram outras personas, rotas legadas, permissoes, estados vazios, menus mobile/sidebar desktop e links principais.
+
+Evidencias:
+
+- relatorio: `docs/FLOW_11_TRANSVERSAL_QA_REPORT_2026_05_20.md`;
+- screenshots: `docs/screenshots/workflow-v3-flow11-transversal-qa-2026-05-20`;
+- screenshots capturados: 169;
+- diagnosticos capturados: 169;
+- viewports: `mobile390`, `mobile430`, `desktop1366`, `desktopwide`;
+- interacoes em CTAs primarios: competitivo/liga, organizador, professor, financeiro e caixa;
+- build: `npm.cmd run build` passou;
+- console/rede: 0 erros e 0 warnings.
+
+Personas auditadas:
+
+- jogador puro;
+- aluno;
+- socio;
+- jogador competitivo;
+- organizador independente;
+- professor coach-only;
+- recepcao frontdesk;
+- financeiro;
+- caixa;
+- gestor owner/manager;
+- usuario multi-papel;
+- rotas publicas/legadas sem login.
+
+Passou:
+
+- Player App preserva wrappers de agenda pessoal;
+- jogador sem trabalho recebe estado de gestao indisponivel;
+- Trabalho Hoje muda primeira dobra por professor, recepcao, financeiro, caixa, gestor e organizador;
+- sidebar desktop de trabalho respeita papel nos modulos testados;
+- aliases de rotas antigas de local continuam funcionando;
+- permissoes sensiveis nao foram relaxadas nos testes;
+- liga participante e liga owner se separam por papel;
+- torneio owner/multi-papel abre cockpit operacional;
+- console e rede ficaram limpos.
+
+Falhas e ajustes recomendados:
+
+- URL com `?join=` perde token no redirect de auth;
+- rotas `/join`, `/t`, `/inscricao` e `/ligas` sem login caem em auth com `next`; precisa decisao se devem ser realmente publicas;
+- bottom nav mobile do jogador tem item extra icon-only antes de `Inicio`;
+- bottom nav mobile da recepcao marca `Hoje` e `Mais` ativos ao mesmo tempo;
+- organizador independente tem rota/CTA ambigua entre cockpit operacional, `#/eventos?modo=organizing` e `/jogadores`;
+- Cantina/POS desktop duplica bloco `Venda rapida`;
+- Modo professor desktop ainda tem pills claras;
+- Liga participante mobile ainda tem controles claros fora do DNA premium dark;
+- pagina publica de local desktop tem cards inativos com contraste baixo;
+- seed de jogador puro nao esta completamente vazia, entao o empty state puro precisa nova massa de dados.
+
+Decisoes pendentes:
+
+- confirmar se convites e inscricoes precisam preview publico sem login;
+- definir o alcance operacional do papel `organizer` independente;
+- decidir se rotas sem permissao devem redirecionar silenciosamente ou exibir estado explicito;
+- calibrar prioridade de papel para recepcao/gestor quando tambem possuem papel em competicao.
+
+## Validation Notes - Sprint pos-FLOW-11 - 2026-05-20
+
+Objetivo: executar os ajustes acionaveis derivados do QA transversal antes de avancar para novos fluxos.
+
+Entregue:
+
+- auth redirect preserva query externa dentro do `next`, incluindo `?join=...`;
+- Player App mobile mantem cinco destinos sem icone extra;
+- Recepcao mobile nao marca `Hoje` e `Mais` ao mesmo tempo;
+- `#/eventos?modo=organizing` usa titulo de trabalho para nao parecer descoberta publica;
+- Cantina/POS remove duplicacao de `Venda rapida` quando o workspace novo esta ativo;
+- professor/academia e liga participante receberam reforcos dark nos pills e filas;
+- pagina publica do local recebeu contraste reforcado em cards de acao.
+
+Validacao:
+
+- build: `npm.cmd run build` passou;
+- evidencias: `docs/screenshots/sprint-flow11-fixes-after-2026-05-20`;
+- screenshots focados: 19;
+- diagnosticos focados: 19;
+- console/rede: 0 erros e 0 warnings.
+
+Rotas preservadas/verificadas:
+
+- `#/inicio`;
+- `#/gestao`;
+- `#/gestao/:placeId/academy`;
+- `#/gestao/:placeId/canteen`;
+- `#/eventos?modo=organizing`;
+- `#/eventos/ligas/:leagueId`;
+- `#/locais/:placeId`;
+- deep link com `?join=...#/eventos/:tournamentId/organizacao`.
+
+Permissoes:
+
+- sem alteracao de backend;
+- sem relaxar permissoes;
+- sem duplicar loaders;
+- sem mover configuracao rara para rotina diaria.
+
+Pendencias que continuam como produto/dados:
+
+- decidir preview publico para `/join`, `/t`, `/inscricao` e `/ligas`;
+- definir alcance do cockpit completo para `organizer` independente;
+- criar seeds realmente vazias e seeds por fase de torneio/liga.

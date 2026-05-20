@@ -11665,6 +11665,91 @@ Pendencias:
 - QA com staff de torneio separado: organizer, scorekeeper, checkin e media;
 - validar owner/manager de local com setup incompleto real, para confirmar atalhos de Administracao em Ajustes/Equipe.
 
+### [x] SPRINT-2026-05-20 - FLOW-11 QA transversal
+
+Status: `[x]` concluido como auditoria transversal, sem mudancas de UI/backend nesta rodada
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- relatorio completo criado em `docs/FLOW_11_TRANSVERSAL_QA_REPORT_2026_05_20.md`;
+- 169 screenshots capturados em `docs/screenshots/workflow-v3-flow11-transversal-qa-2026-05-20`;
+- 169 arquivos de diagnostico de console/rede;
+- 17 metadados por persona/rota;
+- 6 arquivos de interacao com CTAs primarios;
+- validacao em `mobile390`, `mobile430`, `desktop1366` e `desktopwide`;
+- `npm.cmd run build` executado com sucesso;
+- console/rede com 0 erros e 0 warnings.
+
+Personas auditadas:
+
+- jogador puro;
+- aluno;
+- socio;
+- jogador competitivo;
+- organizador independente;
+- professor coach-only;
+- recepcao frontdesk;
+- financeiro;
+- caixa;
+- gestor owner/manager;
+- usuario multi-papel;
+- rotas publicas/legadas sem login.
+
+Passou:
+
+- wrappers de agenda pessoal preservados;
+- jogador sem trabalho bloqueado corretamente em `/gestao`;
+- Trabalho Hoje responde por papel nas primeiras dobras principais;
+- aliases de rotas antigas de local preservados;
+- permissoes sensiveis continuam sem relaxamento nos cenarios testados;
+- liga e torneio separam participante/owner melhor que antes;
+- build e console limpos.
+
+Bugs e proximos itens recomendados:
+
+- preservar `?join=` no redirect de login;
+- decidir se `/join`, `/t`, `/inscricao` e `/ligas` devem ser publicas sem login;
+- corrigir bottom nav mobile do jogador com item extra icon-only;
+- corrigir bottom nav mobile da recepcao com dois ativos;
+- ajustar hub/rotas do organizador independente;
+- remover duplicacao de `Venda rapida` em Cantina/POS desktop;
+- remover pills claras do Modo professor e da liga participante mobile;
+- melhorar contraste de cards inativos na pagina publica do local;
+- criar seed de jogador realmente vazio para QA de empty state.
+
+### [x] SPRINT-2026-05-20 - Correcoes pos-FLOW-11 em sequencia
+
+Status: `[x]` concluido
+
+Entregue:
+
+- preservacao de `?join=` e demais query params externos no redirect de auth;
+- bottom nav mobile do jogador corrigida para cinco destinos;
+- active state duplicado da recepcao corrigido;
+- hub de organizador separado semanticamente com titulo `Trabalho em competicoes`;
+- duplicacao de `Venda rapida` removida do workspace Cantina/POS;
+- pills claras do professor e da liga participante mobile escurecidas;
+- contraste da pagina publica de local reforcado;
+- docs de matriz e QA atualizados com o sprint.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso;
+- screenshots focados em `docs/screenshots/sprint-flow11-fixes-after-2026-05-20`;
+- 19 screenshots e 19 diagnosticos;
+- console/rede: 0 erros e 0 warnings.
+
+Ainda nao executado por depender de decisao ou massa de dados:
+
+- preview publico sem login para `/join`, `/t`, `/inscricao` e `/ligas`;
+- alcance exato do papel `organizer` independente;
+- seed de jogador totalmente vazio e seeds completas por fase de torneio/liga.
+
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 
 Status: `[x]` concluido

@@ -1,0 +1,46 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "int-competitive-league",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Voltar para competições",
+    "clicked": true,
+    "to": "#/eventos/ligas?view=participating",
+    "h1": [
+      "Ligas que jogo"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "int-competitive-league",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Classificacao",
+    "clicked": true,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=classificacao",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "int-competitive-league",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Chat",
+    "clicked": true,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "int-competitive-league",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Jogadores",
+    "clicked": true,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=jogadores",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ]
+  }
+]

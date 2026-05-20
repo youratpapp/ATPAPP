@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile430",
+  "route": "organizer-hub",
+  "hash": "#/eventos?modo=organizing",
+  "screenshot": "mobile430-organizer-hub.png",
+  "events": []
+}

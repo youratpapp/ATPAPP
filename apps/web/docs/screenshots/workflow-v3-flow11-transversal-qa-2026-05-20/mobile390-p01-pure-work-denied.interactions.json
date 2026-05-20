@@ -1,0 +1,46 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "p01-pure-work-denied",
+    "from": "#/gestao",
+    "label": "Voltar ao inicio",
+    "clicked": true,
+    "to": "#/inicio",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p01-pure-work-denied",
+    "from": "#/gestao",
+    "label": "Explorar locais",
+    "clicked": true,
+    "to": "#/locais",
+    "h1": [
+      "Locais"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p01-pure-work-denied",
+    "from": "#/gestao",
+    "label": "Inicio",
+    "clicked": true,
+    "to": "#/inicio",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p01-pure-work-denied",
+    "from": "#/gestao",
+    "label": "Competir",
+    "clicked": true,
+    "to": "#/eventos",
+    "h1": [
+      "Competições"
+    ]
+  }
+]

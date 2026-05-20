@@ -1,0 +1,86 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "p01-pure-home",
+    "hash": "#/inicio",
+    "screenshot": "mobile390-p01-pure-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p01-pure-agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile390-p01-pure-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p01-pure-work-denied",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-p01-pure-work-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p01-pure-home",
+    "hash": "#/inicio",
+    "screenshot": "mobile430-p01-pure-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p01-pure-agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile430-p01-pure-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p01-pure-work-denied",
+    "hash": "#/gestao",
+    "screenshot": "mobile430-p01-pure-work-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p01-pure-home",
+    "hash": "#/inicio",
+    "screenshot": "desktop1366-p01-pure-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p01-pure-agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktop1366-p01-pure-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p01-pure-work-denied",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-p01-pure-work-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p01-pure-home",
+    "hash": "#/inicio",
+    "screenshot": "desktopwide-p01-pure-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p01-pure-agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktopwide-p01-pure-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p01-pure-work-denied",
+    "hash": "#/gestao",
+    "screenshot": "desktopwide-p01-pure-work-denied.png",
+    "events": []
+  }
+]

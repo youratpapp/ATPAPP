@@ -1,0 +1,86 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "p09-cashier-work",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-p09-cashier-work.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p09-cashier-canteen",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile390-p09-cashier-canteen.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p09-cashier-finance-denied",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile390-p09-cashier-finance-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p09-cashier-work",
+    "hash": "#/gestao",
+    "screenshot": "mobile430-p09-cashier-work.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p09-cashier-canteen",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile430-p09-cashier-canteen.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p09-cashier-finance-denied",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile430-p09-cashier-finance-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p09-cashier-work",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-p09-cashier-work.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p09-cashier-canteen",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktop1366-p09-cashier-canteen.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p09-cashier-finance-denied",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktop1366-p09-cashier-finance-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p09-cashier-work",
+    "hash": "#/gestao",
+    "screenshot": "desktopwide-p09-cashier-work.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p09-cashier-canteen",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktopwide-p09-cashier-canteen.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p09-cashier-finance-denied",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktopwide-p09-cashier-finance-denied.png",
+    "events": []
+  }
+]

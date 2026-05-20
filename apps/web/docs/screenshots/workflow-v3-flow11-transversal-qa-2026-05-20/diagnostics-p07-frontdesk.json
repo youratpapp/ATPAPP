@@ -1,0 +1,86 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "p07-frontdesk-work",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-p07-frontdesk-work.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p07-frontdesk-bookings",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile390-p07-frontdesk-bookings.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "p07-frontdesk-settings-denied",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile390-p07-frontdesk-settings-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p07-frontdesk-work",
+    "hash": "#/gestao",
+    "screenshot": "mobile430-p07-frontdesk-work.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p07-frontdesk-bookings",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile430-p07-frontdesk-bookings.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "p07-frontdesk-settings-denied",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile430-p07-frontdesk-settings-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p07-frontdesk-work",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-p07-frontdesk-work.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p07-frontdesk-bookings",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktop1366-p07-frontdesk-bookings.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "p07-frontdesk-settings-denied",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktop1366-p07-frontdesk-settings-denied.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p07-frontdesk-work",
+    "hash": "#/gestao",
+    "screenshot": "desktopwide-p07-frontdesk-work.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p07-frontdesk-bookings",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktopwide-p07-frontdesk-bookings.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "p07-frontdesk-settings-denied",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktopwide-p07-frontdesk-settings-denied.png",
+    "events": []
+  }
+]

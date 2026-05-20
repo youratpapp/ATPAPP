@@ -1,0 +1,46 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "int-organizer-work",
+    "from": "#/gestao",
+    "label": "Torneios e ligasOperacao ativaCompeticoes sob sua responsabilidade, ordenadas para operacao.5Resolver bloqueios",
+    "clicked": true,
+    "to": "#/eventos?modo=organizing",
+    "h1": [
+      "Competições"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "int-organizer-work",
+    "from": "#/gestao",
+    "label": "Jogos sem resultadoAcompanhar resultadosJogos e rodadas em andamento para acompanhar resultado.3Abrir jogos",
+    "clicked": true,
+    "to": "#/eventos?modo=organizing",
+    "h1": [
+      "Competições"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "int-organizer-work",
+    "from": "#/gestao",
+    "label": "Ver mais 1 competicoes",
+    "clicked": true,
+    "to": "#/gestao",
+    "h1": [
+      "Trabalho Hoje"
+    ]
+  },
+  {
+    "viewport": "mobile390",
+    "route": "int-organizer-work",
+    "from": "#/gestao",
+    "label": "Torneios",
+    "clicked": true,
+    "to": "#/gestao",
+    "h1": [
+      "Trabalho Hoje"
+    ]
+  }
+]

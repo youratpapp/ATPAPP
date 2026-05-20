@@ -30933,6 +30933,96 @@ body:has(.app-shell--competition),
 }
 
 /* Sprint route/profile hardening after screenshot review. */
+
+/* FLOW-11 sprint fixes: navigation and residual light surfaces. */
+@media (max-width: 760px) {
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand {
+    display: none !important;
+  }
+}
+
+.app-shell--management .academy-workspace-tabs,
+.app-shell--management .coach-academy-routine {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.app-shell--management .academy-workspace-tabs button {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: transparent;
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--management .academy-workspace-tabs button.active {
+  background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
+  border-color: rgba(74, 222, 128, 0.38);
+  color: #ffffff;
+}
+
+.app-shell--management .academy-workspace-top span,
+.app-shell--management .coach-academy-routine span {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 12px;
+  color: var(--pdark-text-muted);
+  display: inline-flex;
+  padding: 8px 10px;
+}
+
+.app-shell--competition .status-badge.live,
+.app-shell--competition .status-badge.open,
+.app-shell--competition .status-badge.draft,
+.app-shell--competition .league-public-member-status {
+  background: rgba(34, 197, 94, 0.12) !important;
+  border-color: rgba(74, 222, 128, 0.3) !important;
+  color: #4ade80 !important;
+}
+
+.app-shell--competition .league-public-member-status strong {
+  color: var(--pdark-text-main) !important;
+}
+
+.app-shell--competition .league-public-member-status small {
+  color: var(--pdark-text-muted) !important;
+}
+
+.app-shell--competition .league-core-state-grid button,
+.app-shell--competition .league-core-state-grid button:not(.active) {
+  background: rgba(255, 255, 255, 0.055) !important;
+  border-color: var(--pdark-border-soft) !important;
+  color: var(--pdark-text-main) !important;
+}
+
+.app-shell--competition .league-core-state-grid button strong,
+.app-shell--competition .league-core-state-grid button span {
+  color: var(--pdark-text-main) !important;
+}
+
+.app-shell--competition .league-core-state-grid button small {
+  color: var(--pdark-text-muted) !important;
+}
+
+.app-shell--player .place-public-action-rail button span,
+.app-shell--player .place-public-overview-tile span,
+.app-shell--player .place-public-overview-list span {
+  color: #4ade80;
+}
+
+.app-shell--player .place-public-action-rail button strong,
+.app-shell--player .place-public-action-rail button:not(.active) strong,
+.app-shell--player .place-public-overview-tile strong,
+.app-shell--player .place-public-overview-list strong {
+  color: var(--pdark-text-main) !important;
+}
+
+.app-shell--player .place-public-action-rail button small,
+.app-shell--player .place-public-action-rail button:not(.active) small,
+.app-shell--player .place-public-overview-tile small,
+.app-shell--player .place-public-overview-list small {
+  color: var(--pdark-text-muted) !important;
+}
 .app-shell--competition .events-page-header.mode-discover > div {
   max-width: 620px;
   min-width: 360px;
@@ -32949,4 +33039,139 @@ body:has(.app-shell--competition),
     min-height: 46px !important;
     white-space: normal !important;
   }
+}
+
+/* Sprint FLOW-11 residual: participant league routes live in the player shell. */
+.app-shell--player .league-public-event,
+.app-shell--player .league-public-page,
+.app-shell--player .league-matches-page,
+.app-shell--player .my-matches-panel,
+.app-shell--player .my-match-row,
+.app-shell--player .league-match-card,
+.app-shell--player .league-match-main {
+  background:
+    linear-gradient(145deg, rgba(8, 22, 40, 0.92), rgba(5, 15, 29, 0.84)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 320px auto no-repeat !important;
+  border-color: rgba(128, 164, 197, 0.24) !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--player .my-match-summary,
+.app-shell--player .my-match-summary:hover {
+  background: transparent !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--player .my-match-summary strong,
+.app-shell--player .my-match-row strong,
+.app-shell--player .league-match-title,
+.app-shell--player .league-match-card strong {
+  color: #f8fafc !important;
+}
+
+.app-shell--player .my-match-summary small,
+.app-shell--player .my-match-row small,
+.app-shell--player .league-match-sub,
+.app-shell--player .league-match-status,
+.app-shell--player .league-match-next-state,
+.app-shell--player .league-match-card small {
+  color: rgba(220, 230, 240, 0.76) !important;
+}
+
+.app-shell--player .my-match-summary em,
+.app-shell--player .my-match-context .match-schedule-info,
+.app-shell--player .my-match-context .match-operational-state,
+.app-shell--player .my-match-context .match-confirmation-status,
+.app-shell--player .my-match-context .result-submission-status,
+.app-shell--player .league-match-state-pill,
+.app-shell--player .league-match-status,
+.app-shell--player .league-match-next-state {
+  background: rgba(5, 15, 29, 0.78) !important;
+  border: 1px solid rgba(128, 164, 197, 0.28) !important;
+  color: rgba(247, 250, 252, 0.94) !important;
+}
+
+.app-shell--player .my-match-actions button,
+.app-shell--player .league-match-actions button,
+.app-shell--player .league-match-pagination button {
+  background: rgba(13, 28, 48, 0.92) !important;
+  border: 1px solid rgba(128, 164, 197, 0.32) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--player .my-match-actions button:hover,
+.app-shell--player .league-match-actions button:hover,
+.app-shell--player .league-match-pagination button:hover {
+  border-color: rgba(74, 222, 128, 0.52) !important;
+}
+
+.app-shell--player .tournament-organizer-queue,
+.app-shell--player .tournament-organizer-task-row {
+  background:
+    linear-gradient(180deg, rgba(10, 24, 42, 0.94), rgba(5, 15, 29, 0.88)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border-color: rgba(128, 164, 197, 0.28) !important;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.26) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--player .tournament-organizer-task-row.attention,
+.app-shell--player .tournament-organizer-task-row.danger,
+.app-shell--player .tournament-organizer-task-row.ready {
+  background:
+    linear-gradient(135deg, rgba(12, 27, 45, 0.94), rgba(7, 20, 38, 0.9)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 280px auto no-repeat !important;
+}
+
+.app-shell--player .tournament-organizer-queue-head strong,
+.app-shell--player .tournament-organizer-task-main strong,
+.app-shell--player .tournament-organizer-task-actions button {
+  color: #f8fafc !important;
+}
+
+.app-shell--player .tournament-organizer-queue-head small,
+.app-shell--player .tournament-organizer-task-main span,
+.app-shell--player .tournament-organizer-task-main small,
+.app-shell--player .tournament-organizer-task-impact span {
+  color: rgba(220, 230, 240, 0.76) !important;
+}
+
+.app-shell--player .tournament-organizer-task-impact span,
+.app-shell--player .tournament-organizer-task-actions button:not(.primary):not(.danger) {
+  background: rgba(13, 28, 48, 0.9) !important;
+  border-color: rgba(128, 164, 197, 0.3) !important;
+}
+
+.league-round-queue .tournament-organizer-task-impact span,
+.league-round-queue .tournament-organizer-task-actions button:not(.primary):not(.danger) {
+  background: rgba(13, 28, 48, 0.94) !important;
+  border: 1px solid rgba(128, 164, 197, 0.24) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025) !important;
+  color: #f8fafc !important;
+  outline: 0 !important;
+  padding: 8px 10px !important;
+}
+
+.league-round-queue .tournament-organizer-task-impact span {
+  display: block !important;
+  width: 100%;
+}
+
+.league-round-queue .tournament-organizer-task-impact {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+.league-round-queue .tournament-organizer-task-main strong,
+.league-round-queue .tournament-organizer-task-status span {
+  color: #f8fafc !important;
+}
+
+.league-round-queue .tournament-organizer-task-main span,
+.league-round-queue .tournament-organizer-task-main small {
+  color: rgba(220, 230, 240, 0.78) !important;
 }
