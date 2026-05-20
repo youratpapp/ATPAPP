@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "places-match",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "desktop-places-match.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-match",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "mobile-places-match.png",
+    "events": []
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "protected-event",
+  "hash": "#/auth?next=%2Feventos%2Fdemo-event%2Fjogos",
+  "screenshot": "mobile-protected-event.png",
+  "events": []
+}

@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "protected-event",
+  "hash": "#/auth?next=%2Feventos%2Fdemo-event%2Fjogos",
+  "screenshot": "desktop-protected-event.png",
+  "events": []
+}

@@ -1,0 +1,100 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "management-hub",
+    "hash": "#/gestao",
+    "screenshot": "desktop-management-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management-academy",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+    "screenshot": "desktop-management-academy.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management-booking",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktop-management-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management-clients",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes",
+    "screenshot": "desktop-management-clients.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management-finance",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro",
+    "screenshot": "desktop-management-finance.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management-team",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe",
+    "screenshot": "desktop-management-team.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management-settings",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/ajustes",
+    "screenshot": "desktop-management-settings.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management-hub",
+    "hash": "#/gestao",
+    "screenshot": "mobile-management-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management-academy",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+    "screenshot": "mobile-management-academy.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management-booking",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile-management-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management-clients",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes",
+    "screenshot": "mobile-management-clients.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management-finance",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro",
+    "screenshot": "mobile-management-finance.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management-team",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe",
+    "screenshot": "mobile-management-team.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management-settings",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/ajustes",
+    "screenshot": "mobile-management-settings.png",
+    "events": []
+  }
+]

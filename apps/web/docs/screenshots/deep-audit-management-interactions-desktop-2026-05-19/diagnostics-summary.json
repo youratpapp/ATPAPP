@@ -1,0 +1,104 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "places",
+    "hash": "#/locais",
+    "screenshot": "desktop-places.png",
+    "events": [
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: place resources 36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: place resources 76547c0f-43ba-49fb-946d-c6dd7e9cefcd",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: place resources 487b9846-9739-4f42-bc5f-60ea0cb4d050",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: payments",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: payments",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: open matches",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: open matches",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "events-hub",
+    "hash": "#/eventos",
+    "screenshot": "desktop-events-hub.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-profile.png",
+    "events": []
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "protected-place",
+  "hash": "#/auth?next=%2Flocais%2Fdemo-place",
+  "screenshot": "mobile-protected-place.png",
+  "events": []
+}

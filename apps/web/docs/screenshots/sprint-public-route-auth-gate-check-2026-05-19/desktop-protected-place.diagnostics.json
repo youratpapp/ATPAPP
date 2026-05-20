@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "protected-place",
+  "hash": "#/auth?next=%2Flocais%2Fdemo-place",
+  "screenshot": "desktop-protected-place.png",
+  "events": []
+}

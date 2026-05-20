@@ -1,0 +1,64 @@
+{
+  "viewport": "desktop",
+  "route": "places",
+  "hash": "#/locais",
+  "screenshot": "desktop-places.png",
+  "events": [
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: place resources 36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: place resources 76547c0f-43ba-49fb-946d-c6dd7e9cefcd",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: place resources 487b9846-9739-4f42-bc5f-60ea0cb4d050",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: open matches",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: open matches",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    }
+  ]
+}

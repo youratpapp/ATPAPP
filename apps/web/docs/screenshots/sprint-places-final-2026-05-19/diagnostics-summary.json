@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "desktop-places-overview.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "places-lessons",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "desktop-places-lessons.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "places-match",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "desktop-places-match.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "places-reserve",
+    "hash": "#/locais?intent=places",
+    "screenshot": "desktop-places-reserve.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "mobile-places-overview.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-lessons",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "mobile-places-lessons.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-match",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "mobile-places-match.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-reserve",
+    "hash": "#/locais?intent=places",
+    "screenshot": "mobile-places-reserve.png",
+    "events": []
+  }
+]

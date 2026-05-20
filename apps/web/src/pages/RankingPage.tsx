@@ -35,6 +35,13 @@ function winRate(row: PublicRankingRow): number {
   return Math.round((row.wins / total) * 100);
 }
 
+function initialsFromName(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "AT";
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
+  return `${parts[0]![0]}${parts[parts.length - 1]![0]}`.toUpperCase();
+}
+
 function leagueTypeLabel(value: LeagueDetails["leagueType"] | LeagueSummary["leagueType"] | undefined): string {
   if (value === "dupla_fixa") return "Dupla fixa";
   if (value === "dupla_rotativa") return "Dupla rotativa";
@@ -195,6 +202,7 @@ export function RankingPage({ user, profile }: Props) {
   }, [classFilter, classOptions]);
 
   const visibleRows = filteredRows.slice(0, visibleLimit);
+  const podiumRows = filteredRows.slice(0, 3);
   const myRows = filteredRows.filter((row) => row.userId === user.id).slice(0, 3);
   const leader = filteredRows[0] || null;
   const myPrimaryRow = myRows[0] || null;
@@ -471,6 +479,28 @@ export function RankingPage({ user, profile }: Props) {
       {feedback ? <p className="feedback success">{feedback}</p> : null}
       {isInitialLoading ? <ScreenState kind="loading" icon="Ranking" title="Carregando ranking" detail="Buscando jogadores, ligas e recortes disponíveis." /> : null}
 
+      {!loading && podiumRows.length ? (
+        <section className="ranking-podium-strip" aria-label="Top 3 do ranking">
+          <div className="ranking-podium-headline">
+            <span>Em destaque</span>
+            <h2>Top 3 do recorte</h2>
+          </div>
+          <div className="ranking-podium-cards">
+            {podiumRows.map((row, index) => (
+              <article key={`ranking-podium:${row.leaguePlayerId}:${index}`} className={`ranking-podium-card rank-${index + 1}`}>
+                <span className="ranking-podium-position">#{row.position || index + 1}</span>
+                <span className="ranking-avatar" aria-hidden>{initialsFromName(row.displayName)}</span>
+                <div>
+                  <strong><PlayerProfileLink userId={row.userId} name={row.displayName} /></strong>
+                  <small>{row.leagueName}</small>
+                </div>
+                <b>{row.rankingPoints} pts</b>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       {!loading && !visibleRows.length ? (
         <ScreenState
           icon="Sem resultado"
@@ -513,9 +543,12 @@ export function RankingPage({ user, profile }: Props) {
             {visibleRows.map((row, index) => (
               <div key={`${row.leaguePlayerId}:${index}`} className={row.userId === user.id ? "ranking-row mine" : "ranking-row"}>
                 <span>{row.position || index + 1}</span>
-                <span>
-                  <strong><PlayerProfileLink userId={row.userId} name={row.displayName} /></strong>
-                  <small>{locationLabel(row)}</small>
+                <span className="ranking-player-cell">
+                  <span className="ranking-avatar" aria-hidden>{initialsFromName(row.displayName)}</span>
+                  <span>
+                    <strong><PlayerProfileLink userId={row.userId} name={row.displayName} /></strong>
+                    <small>{locationLabel(row)}</small>
+                  </span>
                 </span>
                 <span>
                   <strong>{row.leagueName}</strong>

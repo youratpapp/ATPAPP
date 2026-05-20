@@ -72,6 +72,10 @@ function placeInitials(name: string): string {
   return `${parts[0]![0]}${parts[parts.length - 1]![0]}`.toUpperCase();
 }
 
+function isGeneratedInitialsLogo(value: string | null | undefined): boolean {
+  return /dicebear\.com\/.+\/initials\/svg/i.test(String(value || ""));
+}
+
 function nextClassLabel(academyClass: AcademyClass): string {
   return `${WEEKDAY_LABELS[academyClass.weekday] || "Dia"} ${academyClass.startsAt.slice(0, 5)}-${academyClass.endsAt.slice(0, 5)}`;
 }
@@ -1039,7 +1043,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               style={{ "--place-cover-image": `url(${publicHeroBackgroundImage})` } as CSSProperties}
             >
               <div className="place-public-hero-logo" aria-hidden>
-                {place.logoUrl ? <img src={place.logoUrl} alt="" /> : placeInitials(place.name)}
+                {place.logoUrl && !isGeneratedInitialsLogo(place.logoUrl) ? <img src={place.logoUrl} alt="" /> : placeInitials(place.name)}
               </div>
               <div>
                 <span>{location || "Clube de esportes de raquete"}</span>

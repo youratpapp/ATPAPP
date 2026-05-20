@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "competitions",
+  "hash": "#/competicoes",
+  "screenshot": "mobile-competitions.png",
+  "events": []
+}

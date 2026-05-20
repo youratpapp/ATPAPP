@@ -76,17 +76,38 @@ export function formatMoneyFromCents(amountCents: number): string {
 
 export async function listMyPayments(targetType?: string): Promise<AppPayment[]> {
   if (!supabase) return [];
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw new Error(userError.message);
+  if (!userData.user) return [];
   let query = supabase
     .from("app_payments")
     .select("id,user_id,target_type,target_id,amount_cents,currency,status,provider,description,metadata,billing_period,paid_at,created_at,updated_at")
+    .eq("user_id", userData.user.id)
     .order("created_at", { ascending: false })
-    .limit(200);
+    .limit(80);
 
   if (targetType) {
     query = query.eq("target_type", targetType);
   }
 
   const { data, error } = await query;
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as PaymentRow[]).map(rowToPayment);
+}
+
+export async function listPaymentsForTargets(targetType: string, targetIds: string[]): Promise<AppPayment[]> {
+  if (!supabase) return [];
+  const uniqueTargetIds = Array.from(new Set(targetIds.filter(Boolean))).slice(0, 120);
+  if (!targetType || uniqueTargetIds.length === 0) return [];
+
+  const { data, error } = await supabase
+    .from("app_payments")
+    .select("id,user_id,target_type,target_id,amount_cents,currency,status,provider,description,metadata,billing_period,paid_at,created_at,updated_at")
+    .eq("target_type", targetType)
+    .in("target_id", uniqueTargetIds)
+    .order("created_at", { ascending: false })
+    .limit(160);
+
   if (error) throw new Error(error.message);
   return ((data ?? []) as PaymentRow[]).map(rowToPayment);
 }

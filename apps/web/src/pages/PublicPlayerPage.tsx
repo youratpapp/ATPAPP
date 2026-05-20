@@ -115,7 +115,7 @@ export function PublicPlayerPage({ user, profile }: Props) {
   const location = [player?.city, player?.state].filter(Boolean).join(" - ");
 
   return (
-    <AppShell user={user} profile={profile}>
+    <AppShell user={user} profile={profile} showHeader={false}>
       <div className="page-shell player-public-page">
         <Link className="back-link" to="/ranking">Voltar</Link>
 

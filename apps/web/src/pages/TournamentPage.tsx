@@ -51,7 +51,7 @@ import type {
   TournamentStaffRole,
 } from "../lib/types";
 import { listAllPlaces, listPlaceCourts } from "../lib/places";
-import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
+import { formatMoneyFromCents, listPaymentsForTargets, markStubPaymentPaidForParticipant } from "../lib/payments";
 import { syncTournamentMatchesToGoogleCalendar } from "../lib/google-calendar";
 import { gerarClasseData, type ClassData, type GroupMatch, type KnockoutMatch } from "../tournament-engine/core";
 import {
@@ -129,6 +129,13 @@ function resultSubmissionErrorMessage(error: unknown): string {
     return "Informe o placar antes de enviar.";
   }
   return message || "Falha ao enviar resultado.";
+}
+
+function tournamentRegistrationStatusLabel(status: TournamentRegistration["status"]): string {
+  if (status === "approved") return "Aprovada";
+  if (status === "waitlist") return "Lista de espera";
+  if (status === "rejected") return "Recusada";
+  return "Pendente";
 }
 
 type TournamentCourtLink = {
@@ -1306,6 +1313,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [duracaoMinInput, setDuracaoMinInput] = useState("45");
   const [registrations, setRegistrations] = useState<TournamentRegistration[]>([]);
   const [registrationFilter, setRegistrationFilter] = useState<"all" | "pending" | "approved" | "waitlist" | "rejected">("all");
+  const [showAllRegistrations, setShowAllRegistrations] = useState(false);
   const [selectedRegistrationIds, setSelectedRegistrationIds] = useState<string[]>([]);
   const [registrationBusy, setRegistrationBusy] = useState(false);
   const [configScopeCategoryId, setConfigScopeCategoryId] = useState("");
@@ -1540,6 +1548,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     if (registrationFilter === "all") return registrations;
     return registrations.filter((r) => r.status === registrationFilter);
   }, [registrationFilter, registrations]);
+  const visibleRegistrations = useMemo(
+    () => (showAllRegistrations ? filteredRegistrations : filteredRegistrations.slice(0, 12)),
+    [filteredRegistrations, showAllRegistrations]
+  );
+  const hiddenRegistrationCount = Math.max(0, filteredRegistrations.length - visibleRegistrations.length);
   const pendingVisibleIds = useMemo(
     () => filteredRegistrations.filter((r) => r.status === "pending").map((r) => r.id),
     [filteredRegistrations]
@@ -2527,16 +2540,20 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
         setAgenda(normalizeAgenda((raw.agenda as Partial<Agenda> | undefined) ?? null));
         setAgendaDirty(false);
         const detailsCaps = tournamentRoleCapabilities(details.role);
-        const [regs, submissions, confirmations, payments, staff, courtRequests] = await Promise.all([
+        const [regs, submissions, confirmations, staff, courtRequests] = await Promise.all([
           loadTournamentRegistrations(user, details.id, details.role),
           loadTournamentResultSubmissions(details.id).catch(() => [] as TournamentMatchResultSubmission[]),
           loadTournamentMatchConfirmations(details.id).catch(() => [] as TournamentMatchConfirmation[]),
-          details.role === "owner"
-            ? listMyPayments("tournament_registration").catch(() => [] as AppPayment[])
-            : Promise.resolve([] as AppPayment[]),
           detailsCaps.isOwner ? listTournamentStaff(details.id).catch(() => [] as TournamentStaffMember[]) : Promise.resolve([] as TournamentStaffMember[]),
           detailsCaps.canManageTournament ? listTournamentCourtUsageRequests(details.id).catch(() => [] as TournamentCourtUsageRequest[]) : Promise.resolve([] as TournamentCourtUsageRequest[]),
         ]);
+        const payments =
+          details.role === "owner"
+            ? await listPaymentsForTargets(
+                "tournament_registration",
+                regs.map((registration) => registration.id)
+              ).catch(() => [] as AppPayment[])
+            : [];
         if (!alive) return;
         setRegistrations(regs);
         setResultSubmissions(submissions);
@@ -2562,6 +2579,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   useEffect(() => {
     setSelectedRegistrationIds((prev) => prev.filter((id) => registrations.some((r) => r.id === id)));
   }, [registrations]);
+
+  useEffect(() => {
+    setShowAllRegistrations(false);
+  }, [registrationFilter]);
 
   useEffect(() => {
     if (!draftCategories.length) {
@@ -6271,8 +6292,11 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               ) : null}
 
               {activeClass?.data.grupos.map((g, gi) => (
-                <div key={`${activeClass.key}:g:${g.name}`} className="tournament-phase-section">
-                  <h3>{g.name}</h3>
+                <details key={`${activeClass.key}:g:${g.name}`} className="tournament-phase-section" open={g.matches.length <= 4}>
+                  <summary className="tournament-phase-summary">
+                    <span>{g.name}</span>
+                    <strong>{g.matches.length} {g.matches.length === 1 ? "jogo" : "jogos"}</strong>
+                  </summary>
                   {g.matches.length === 0 ? <p className="subtle">Sem partidas no grupo.</p> : null}
                   {g.matches.map((m, mi) => {
                     const confirmationKey = `${activeClass.key}:group:${g.name}:${mi}`;
@@ -6354,12 +6378,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       </div>
                     );
                   })}
-                </div>
+                </details>
               ))}
 
               {activeClass?.data.knockout?.rounds.map((round, ri) => (
-                <div key={`${activeClass.key}:ko:${ri}`} className="tournament-phase-section">
-                  <h3>{round.name}</h3>
+                <details key={`${activeClass.key}:ko:${ri}`} className="tournament-phase-section" open={round.matches.length <= 4}>
+                  <summary className="tournament-phase-summary">
+                    <span>{round.name}</span>
+                    <strong>{round.matches.length} {round.matches.length === 1 ? "jogo" : "jogos"}</strong>
+                  </summary>
                   {round.matches.length === 0 ? <p className="subtle">Sem partidas nesta fase.</p> : null}
                   {round.matches.map((m, mi) => {
                     const confirmationKey = `${activeClass.key}:ko:${ri}:${mi}`;
@@ -6441,7 +6468,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       </div>
                     );
                   })}
-                </div>
+                </details>
               ))}
 
               {!activeClass?.data.grupos.length && !activeClass?.data.knockout ? (
@@ -7394,7 +7421,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   </div>
                 ) : null}
                 {filteredRegistrations.length === 0 ? <p className="subtle">Nenhuma solicitacao neste filtro.</p> : null}
-                {filteredRegistrations.map((r) => (
+                <div className="registration-row-list">
+                {visibleRegistrations.map((r) => (
                   <div
                     key={r.id}
                     className="registration-row"
@@ -7403,8 +7431,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                       <div>
                         {r.playerName || "Sem nome"} - {r.categoryName} / {r.className}
                       </div>
-                      <div className="subtle">
-                        {r.phone || "Sem telefone"} | {new Date(r.createdAt || "").toLocaleString("pt-BR")} | {r.status}
+                      <div className="subtle registration-row-meta">
+                        <span>{r.phone || "Sem telefone"}</span>
+                        <span>{new Date(r.createdAt || "").toLocaleString("pt-BR")}</span>
+                        <span className={`registration-status-chip status-${r.status}`}>{tournamentRegistrationStatusLabel(r.status)}</span>
                       </div>
                       {paymentsByTarget[`tournament_registration:${r.id}`]?.status === "paid" ? (
                         <div className="payment-paid-label">Pagamento registrado</div>
@@ -7443,6 +7473,26 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     ) : null}
                   </div>
                 ))}
+                </div>
+                {hiddenRegistrationCount > 0 ? (
+                  <button
+                    type="button"
+                    className="secondary-action registration-expand-action"
+                    onClick={() => setShowAllRegistrations(true)}
+                    disabled={registrationBusy}
+                  >
+                    Mostrar mais {hiddenRegistrationCount} inscricoes
+                  </button>
+                ) : showAllRegistrations && filteredRegistrations.length > 12 ? (
+                  <button
+                    type="button"
+                    className="secondary-action registration-expand-action"
+                    onClick={() => setShowAllRegistrations(false)}
+                    disabled={registrationBusy}
+                  >
+                    Mostrar menos
+                  </button>
+                ) : null}
               </div>
 
               {canManageTournament ? (
@@ -7453,10 +7503,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 </p>
                 {playerClassesSummary.length === 0 ? <p className="subtle">Nenhuma classe cadastrada.</p> : null}
                 {playerClassesSummary.map((item) => (
-                  <div key={`players:${item.categoryId}:${item.classId}`} style={{ marginBottom: 10 }}>
-                    <h4 style={{ margin: "6px 0" }}>
-                      {item.categoryName} / {item.className} ({item.participantes.length})
-                    </h4>
+                  <details
+                    key={`players:${item.categoryId}:${item.classId}`}
+                    className="tournament-player-class-panel"
+                    open={item.participantes.length <= 8}
+                  >
+                    <summary>
+                      <span>{item.categoryName} / {item.className}</span>
+                      <strong>{item.participantes.length}</strong>
+                    </summary>
                     {item.participantes.length === 0 ? (
                       <p className="subtle" style={{ margin: "4px 0 8px 0" }}>
                         Nenhum jogador cadastrado.
@@ -7505,7 +7560,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </details>
                 ))}
               </div>
               ) : null}

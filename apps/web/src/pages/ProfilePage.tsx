@@ -726,7 +726,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       {/* Page header */}
-      <div className="page-header">
+      <div className="page-header profile-page-title">
         <h1>Perfil</h1>
         <div className="ph-actions">
           {!editing && (
@@ -773,6 +773,24 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           <span>{playingCount > 0 ? "Jogador ativo" : "Sem competicao ativa"}</span>
           <span>{notificationPrefs.matchReminders || notificationPrefs.bookingReminders ? "Lembretes ativos" : "Lembretes pausados"}</span>
         </div>
+        <div className="profile-hero-stats" aria-label="Resumo esportivo">
+          <span>
+            <strong>{playerLevel}</strong>
+            <small>Nivel</small>
+          </span>
+          <span>
+            <strong>{recentMatches.length}</strong>
+            <small>Partidas recentes</small>
+          </span>
+          <span>
+            <strong>{recentWinRate}%</strong>
+            <small>Aproveitamento</small>
+          </span>
+          <span>
+            <strong>{playingCount}</strong>
+            <small>Competições ativas</small>
+          </span>
+        </div>
       </div>
 
       {!editing ? (
@@ -791,7 +809,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
       ) : null}
 
       {editing ? (
-        <div className="card" style={{ marginBottom: 12 }}>
+        <div className="card profile-edit-card">
           <label>Nome de exibicao</label>
           <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Como aparece nos torneios" />
           <div className="row">
@@ -867,7 +885,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
               </span>
             </label>
           </div>
-          <div className="row" style={{ marginTop: 16 }}>
+          <div className="row profile-edit-actions">
             <button onClick={() => setEditing(false)} disabled={busy}>Cancelar</button>
             <button className="primary" onClick={onSave} disabled={busy}>Salvar</button>
           </div>

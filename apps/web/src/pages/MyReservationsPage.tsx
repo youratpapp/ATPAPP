@@ -143,7 +143,14 @@ export function MyReservationsPage({ user, profile }: Props) {
         </header>
 
         {loading ? <ScreenState title="Carregando reservas..." /> : null}
-        {error ? <ScreenState kind="error" title="Nao foi possivel carregar" detail={error} /> : null}
+        {error ? (
+          <ScreenState
+            kind="error"
+            title="Nao foi possivel carregar"
+            detail={error}
+            action={<button className="secondary" onClick={() => void load()}>Tentar novamente</button>}
+          />
+        ) : null}
         {!loading && !error && !bookings.length && !waitlist.length ? (
           <ScreenState
             title="Voce ainda nao tem reservas"

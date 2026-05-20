@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "ranking",
+  "hash": "#/ranking",
+  "screenshot": "mobile-ranking.png",
+  "events": []
+}

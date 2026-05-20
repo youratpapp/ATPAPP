@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "auth-callback",
+  "hash": "#/auth/callback",
+  "screenshot": "desktop-auth-callback.png",
+  "events": []
+}

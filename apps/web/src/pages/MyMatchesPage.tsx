@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
@@ -27,22 +27,23 @@ export function MyMatchesPage({ user, profile }: Props) {
   const activeTournaments = useMemo(() => tournaments.filter((tournament) => tournament.status !== "finished"), [tournaments]);
   const finishedTournaments = useMemo(() => tournaments.filter((tournament) => tournament.status === "finished"), [tournaments]);
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      setError("");
-      try {
-        const [dashboard, myLeagues] = await Promise.all([loadDashboardData(user), loadMyLeagues()]);
-        setTournaments(dashboard.participating);
-        setLeagues(myLeagues.filter((league) => league.role === "participant"));
-      } catch (err) {
-        setError(friendlyToastMessage(err, "Nao foi possivel carregar suas partidas."));
-      } finally {
-        setLoading(false);
-      }
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const [dashboard, myLeagues] = await Promise.all([loadDashboardData(user), loadMyLeagues()]);
+      setTournaments(dashboard.participating);
+      setLeagues(myLeagues.filter((league) => league.role === "participant"));
+    } catch (err) {
+      setError(friendlyToastMessage(err, "Nao foi possivel carregar suas partidas."));
+    } finally {
+      setLoading(false);
     }
-    void load();
   }, [user]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
 
   const renderTournament = (item: TournamentSummary) => (
     <Link key={item.id} className="personal-area-row" to={`/eventos/${encodeURIComponent(item.id)}/jogos`}>
@@ -73,7 +74,14 @@ export function MyMatchesPage({ user, profile }: Props) {
           <p>Atalho para suas ligas e torneios. As salas e resultados continuam no contexto de cada competicao.</p>
         </header>
         {loading ? <ScreenState kind="loading" title="Carregando partidas..." /> : null}
-        {error ? <ScreenState kind="error" title="Nao foi possivel carregar" detail={error} /> : null}
+        {error ? (
+          <ScreenState
+            kind="error"
+            title="Nao foi possivel carregar"
+            detail={error}
+            action={<button className="secondary" onClick={() => void load()}>Tentar novamente</button>}
+          />
+        ) : null}
         {!loading && !error && !activeLeagues.length && !activeTournaments.length && !finishedLeagues.length && !finishedTournaments.length ? (
           <ScreenState title="Nenhuma partida vinculada" detail="Quando voce entrar em torneios ou ligas, eles aparecem aqui." />
         ) : null}

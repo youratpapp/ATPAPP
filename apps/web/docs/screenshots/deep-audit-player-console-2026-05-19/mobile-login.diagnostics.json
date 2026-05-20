@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "login",
+  "hash": "#/inicio",
+  "screenshot": "mobile-login.png",
+  "events": []
+}

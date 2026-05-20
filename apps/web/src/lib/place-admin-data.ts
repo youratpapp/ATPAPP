@@ -239,13 +239,13 @@ function withWorkspaceFallback<T>(promise: Promise<T>, fallback: T, label: strin
   let timer: ReturnType<typeof setTimeout> | undefined;
   const timeout = new Promise<T>((resolve) => {
     timer = setTimeout(() => {
-      console.warn(`Workspace data timeout: ${label}`);
+      console.info(`Workspace data timeout: ${label}`);
       resolve(fallback);
     }, timeoutMs);
   });
   return Promise.race([
     promise.catch((err) => {
-      console.warn(`Workspace data fallback: ${label}`, err);
+      console.info(`Workspace data fallback: ${label}`, err);
       return fallback;
     }),
     timeout,
@@ -361,19 +361,23 @@ export async function fetchPlacesWorkspaceData(input: {
         ? listPlacesIFollow
         : listPlacesIAccess;
   const places = await fetcher(input.user);
-  const entries = await Promise.all(
-    places.map((place) =>
-      withWorkspaceFallback(
-        fetchPlaceAdminResources({ place, placeId: place.id, userId: input.user.id }),
-        emptyPlaceAdminResourceEntry(place.id),
-        `place resources ${place.id}`
+  const entries = input.isAdminRoute || input.tab === "mine"
+    ? await Promise.all(
+        places.map((place) =>
+          withWorkspaceFallback(
+            fetchPlaceAdminResources({ place, placeId: place.id, userId: input.user.id }),
+            emptyPlaceAdminResourceEntry(place.id),
+            `place resources ${place.id}`
+          )
+        )
       )
-    )
-  );
+    : places.map((place) => emptyPlaceAdminResourceEntry(place.id));
   const includeSupportData = input.includeSupportData ?? true;
   const [paymentsByTarget, openMatches] = includeSupportData
     ? await Promise.all([
-        withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", 4000),
+        input.isAdminRoute || input.tab === "mine"
+          ? withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", 4000)
+          : Promise.resolve({} as Record<string, AppPayment>),
         withWorkspaceFallback(listOpenMatches(input.user, places.map((place) => place.id)), [] as OpenMatch[], "open matches", 6000),
       ])
     : [{} as Record<string, AppPayment>, [] as OpenMatch[]];

@@ -43,7 +43,7 @@ import {
   submitLeagueMatchResult,
   updateLeagueSettings,
 } from "../lib/leagues";
-import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
+import { formatMoneyFromCents, listPaymentsForTargets, markStubPaymentPaidForParticipant } from "../lib/payments";
 import { syncLeagueMatchesToGoogleCalendar } from "../lib/google-calendar";
 import type {
   LeagueChatMessage,
@@ -1138,11 +1138,14 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       }
 
       if (details.ownerId === user.id) {
-        const [registrationRows, schedulerRows, paymentRows] = await Promise.all([
+        const [registrationRows, schedulerRows] = await Promise.all([
           loadLeagueRegistrations(id),
           loadLeagueSchedulerRuns(id).catch(() => [] as LeagueSchedulerRun[]),
-          listMyPayments("league_registration").catch(() => [] as AppPayment[]),
         ]);
+        const paymentRows = await listPaymentsForTargets(
+          "league_registration",
+          registrationRows.map((registration) => registration.id)
+        ).catch(() => [] as AppPayment[]);
         setRegistrations(registrationRows);
         setSchedulerRuns(schedulerRows);
         setPaymentsByTarget(Object.fromEntries(paymentRows.map((payment) => [`${payment.targetType}:${payment.targetId}`, payment])));
@@ -3527,7 +3530,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                               {r.playerName} {r.phone ? `| ${r.phone}` : ""}
                             </p>
                             <p className="li-meta">
-                              <span>Status: {r.status}</span>
+                              <span>Status: {leagueRegistrationStatusLabel(r.status)}</span>
                               <span>Origem: {r.source === "link" ? "Link" : r.source === "public" ? "Publica" : "Admin"}</span>
                               <span>Classe: {cls ? classLabel(cls) : "-"}</span>
                               {paymentsByTarget[`league_registration:${r.id}`]?.status === "paid" ? (

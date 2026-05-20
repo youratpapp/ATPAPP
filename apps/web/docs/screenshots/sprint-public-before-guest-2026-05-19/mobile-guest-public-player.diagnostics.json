@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "guest-public-player",
+  "hash": "#/auth?next=%2Fjogadores%2F7d2b98ab-4f6c-4a08-b684-e53dd73ccc74",
+  "screenshot": "mobile-guest-public-player.png",
+  "events": []
+}

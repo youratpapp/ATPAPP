@@ -394,6 +394,14 @@ export function EventsHubPage({ user, profile }: Props) {
   const recentResults = [...participatingTournaments, ...organizingTournaments]
     .filter((tournament) => tournament.status === "finished")
     .slice(0, 3);
+  const pageTitle =
+    activeMode === "discover" ? "Descobrir competicoes" : activeMode === "organizing" ? "Trabalho em competicoes" : "Competições";
+  const pageIntro =
+    activeMode === "discover"
+      ? "Encontre torneios, ligas e proximos desafios sem misturar com a sua fila de jogador."
+      : activeMode === "organizing"
+      ? "Acompanhe torneios e ligas que voce organiza pela central de trabalho."
+      : "Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.";
 
   useEffect(() => {
     if (loading || hasExplicitMode(location.search)) return;
@@ -415,7 +423,7 @@ export function EventsHubPage({ user, profile }: Props) {
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
-      <div className="page-header">
+      <div className={`page-header events-page-header mode-${activeMode}`} aria-label={pageTitle} data-intro={pageIntro}>
         <div>
           <h1>Competições</h1>
           <p className="page-intro">Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.</p>

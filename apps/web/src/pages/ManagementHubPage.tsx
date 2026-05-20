@@ -416,6 +416,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   const [inviteBusyId, setInviteBusyId] = useState("");
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [showAllManagedPlaces, setShowAllManagedPlaces] = useState(false);
+  const [showAllManagementCompetitions, setShowAllManagementCompetitions] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
@@ -677,6 +678,16 @@ export function ManagementHubPage({ user, profile }: Props) {
   }
 
   const competitionWorkspaceCount = organizingTournaments.length + organizingLeagues.length;
+  const managementCompetitionLimit = showAllManagementCompetitions ? competitionWorkspaceCount : 4;
+  const visibleOrganizingTournaments = organizingTournaments.slice(0, managementCompetitionLimit);
+  const visibleOrganizingLeagues = organizingLeagues.slice(
+    0,
+    Math.max(0, managementCompetitionLimit - visibleOrganizingTournaments.length)
+  );
+  const hiddenManagementCompetitionCount = Math.max(
+    0,
+    competitionWorkspaceCount - visibleOrganizingTournaments.length - visibleOrganizingLeagues.length
+  );
   const noManagementAccess = !loading && !places.length && !competitionWorkspaceCount && !professionalInviteCount && !canCreatePlaceAccess;
 
   return (
@@ -823,7 +834,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <p>{countLabel(competitionWorkspaceCount, "competicao ativa", "competicoes ativas")}</p>
                 </div>
                 <div className="management-competition-grid">
-                  {organizingTournaments.slice(0, 6).map((tournament) => (
+                  {visibleOrganizingTournaments.map((tournament) => (
                     <article key={`tournament:${tournament.id}`} className="management-competition-card">
                       <span>Torneio</span>
                       <strong>{tournament.name}</strong>
@@ -833,7 +844,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                       </button>
                     </article>
                   ))}
-                  {organizingLeagues.slice(0, 6).map((league) => (
+                  {visibleOrganizingLeagues.map((league) => (
                     <article key={`league:${league.id}`} className="management-competition-card">
                       <span>Liga</span>
                       <strong>{league.name}</strong>
@@ -844,9 +855,9 @@ export function ManagementHubPage({ user, profile }: Props) {
                     </article>
                   ))}
                 </div>
-                {competitionWorkspaceCount > 12 ? (
-                  <button className="secondary" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-                    Ver todas as competicoes
+                {hiddenManagementCompetitionCount || showAllManagementCompetitions ? (
+                  <button className="secondary management-expand-action" onClick={() => setShowAllManagementCompetitions((prev) => !prev)}>
+                    {showAllManagementCompetitions ? "Mostrar menos" : `Ver mais ${hiddenManagementCompetitionCount} competicoes`}
                   </button>
                 ) : null}
               </section>

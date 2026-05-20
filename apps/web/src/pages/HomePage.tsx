@@ -1345,18 +1345,19 @@ export function HomePage({ user, profile }: Props) {
       listMyTournamentStaffInvites(),
       listMyPlaceStaffInvites(),
     ])
-      .then(async ([publicRows, dashboard, leagues, staffInvites, placeInvites]) => {
-        const [
-          actions,
-          tournamentPlayerActions,
-          leagueOrgActions,
-          tournamentOrgActions,
-          bookingActions,
-          waitlistActions,
-          academyDailyActions,
-          playerHomeNotices,
-          operationalHomeNotices,
-        ] = await Promise.all([
+      .then(([publicRows, dashboard, leagues, staffInvites, placeInvites]) => {
+        if (!alive) return;
+        setUpcoming(publicRows);
+        setPlayingTournaments(dashboard.participating.filter(isActiveTournament).slice(0, 3));
+        setOrganizingTournaments(dashboard.organizing.filter((t) => t.status !== "finished").slice(0, 3));
+        setPlayingLeagues(leagues.filter((l) => l.role !== "owner" && isActiveLeague(l)).slice(0, 3));
+        setOrganizingLeagues(leagues.filter((l) => l.role === "owner" && l.status !== "finished").slice(0, 3));
+        setTournamentStaffInvites(staffInvites);
+        setPlaceStaffInvites(placeInvites);
+        setError("");
+        setLoading(false);
+
+        void Promise.all([
           loadLeagueActions(user.id, leagues),
           loadTournamentPlayerActions(user, dashboard.participating),
           loadOrganizerActions(leagues),
@@ -1372,31 +1373,37 @@ export function HomePage({ user, profile }: Props) {
             dashboard.organizing,
             leagues.filter((league) => league.role === "owner")
           ),
-        ]);
-        if (!alive) return;
-        setUpcoming(publicRows);
-        setPlayingTournaments(dashboard.participating.filter(isActiveTournament).slice(0, 3));
-        setOrganizingTournaments(dashboard.organizing.filter((t) => t.status !== "finished").slice(0, 3));
-        setPlayingLeagues(leagues.filter((l) => l.role !== "owner" && isActiveLeague(l)).slice(0, 3));
-        setOrganizingLeagues(leagues.filter((l) => l.role === "owner" && l.status !== "finished").slice(0, 3));
-        setLeagueActions(actions);
-        setTournamentActions(tournamentPlayerActions);
-        setOrganizerActions([...leagueOrgActions, ...tournamentOrgActions].slice(0, 8));
-        setCourtBookingActions(bookingActions);
-        setCourtWaitlistActions(waitlistActions);
-        setAcademyActions(academyDailyActions);
-        setTournamentStaffInvites(staffInvites);
-        setPlaceStaffInvites(placeInvites);
-        setPlayerNotices(playerHomeNotices);
-        setOperationalNotices(operationalHomeNotices);
-        setError("");
+        ])
+          .then(
+            ([
+              actions,
+              tournamentPlayerActions,
+              leagueOrgActions,
+              tournamentOrgActions,
+              bookingActions,
+              waitlistActions,
+              academyDailyActions,
+              playerHomeNotices,
+              operationalHomeNotices,
+            ]) => {
+              if (!alive) return;
+              setLeagueActions(actions);
+              setTournamentActions(tournamentPlayerActions);
+              setOrganizerActions([...leagueOrgActions, ...tournamentOrgActions].slice(0, 8));
+              setCourtBookingActions(bookingActions);
+              setCourtWaitlistActions(waitlistActions);
+              setAcademyActions(academyDailyActions);
+              setPlayerNotices(playerHomeNotices);
+              setOperationalNotices(operationalHomeNotices);
+            }
+          )
+          .catch(() => {
+            // Secondary widgets should never hold the home screen hostage.
+          });
       })
       .catch((err: unknown) => {
         if (!alive) return;
         setError(err instanceof Error ? err.message : "Falha ao carregar eventos.");
-      })
-      .finally(() => {
-        if (alive) setLoading(false);
       });
     return () => {
       alive = false;

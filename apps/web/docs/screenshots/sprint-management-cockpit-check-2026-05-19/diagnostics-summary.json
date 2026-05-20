@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-management.png",
+    "events": []
+  }
+]

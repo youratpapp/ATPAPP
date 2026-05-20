@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
+import { Link } from "react-router-dom";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { friendlyToastMessage } from "../components/toast";
@@ -29,29 +30,30 @@ export function MyLessonsPage({ user, profile }: Props) {
   const pending = useMemo(() => active.filter((item) => item.status === "pending"), [active]);
   const confirmed = useMemo(() => active.filter((item) => item.status === "active"), [active]);
 
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      setError("");
-      try {
-        const [myEnrollments, places] = await Promise.all([listMyAcademyEnrollments(), listAllPlaces(user).catch(() => [] as Place[])]);
-        setEnrollments(myEnrollments);
-        setPlacesById(Object.fromEntries(places.map((place) => [place.id, place])));
-        const placeIds = Array.from(new Set(myEnrollments.map((item) => item.placeId)));
-        const classLists = await Promise.all(placeIds.map((placeId) => listPlaceAcademyClasses(placeId).catch(() => [] as AcademyClass[])));
-        const classMap: Record<string, AcademyClass> = {};
-        classLists.flat().forEach((academyClass) => {
-          classMap[academyClass.id] = academyClass;
-        });
-        setClassesById(classMap);
-      } catch (err) {
-        setError(friendlyToastMessage(err, "Nao foi possivel carregar suas aulas."));
-      } finally {
-        setLoading(false);
-      }
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const [myEnrollments, places] = await Promise.all([listMyAcademyEnrollments(), listAllPlaces(user).catch(() => [] as Place[])]);
+      setEnrollments(myEnrollments);
+      setPlacesById(Object.fromEntries(places.map((place) => [place.id, place])));
+      const placeIds = Array.from(new Set(myEnrollments.map((item) => item.placeId)));
+      const classLists = await Promise.all(placeIds.map((placeId) => listPlaceAcademyClasses(placeId).catch(() => [] as AcademyClass[])));
+      const classMap: Record<string, AcademyClass> = {};
+      classLists.flat().forEach((academyClass) => {
+        classMap[academyClass.id] = academyClass;
+      });
+      setClassesById(classMap);
+    } catch (err) {
+      setError(friendlyToastMessage(err, "Nao foi possivel carregar suas aulas."));
+    } finally {
+      setLoading(false);
     }
-    void load();
   }, [user]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
 
   const renderEnrollment = (enrollment: AcademyEnrollment) => {
     const academyClass = classesById[enrollment.classId];
@@ -76,8 +78,21 @@ export function MyLessonsPage({ user, profile }: Props) {
           <p>Turmas, professores, horarios e solicitacoes de matricula em um lugar leve.</p>
         </header>
         {loading ? <ScreenState kind="loading" title="Carregando aulas..." /> : null}
-        {error ? <ScreenState kind="error" title="Nao foi possivel carregar" detail={error} /> : null}
-        {!loading && !error && !active.length ? <ScreenState title="Voce ainda nao tem aulas" detail="Entre em uma turma para acompanhar seu calendario por aqui." /> : null}
+        {error ? (
+          <ScreenState
+            kind="error"
+            title="Nao foi possivel carregar"
+            detail={error}
+            action={<button className="secondary" onClick={() => void load()}>Tentar novamente</button>}
+          />
+        ) : null}
+        {!loading && !error && !active.length ? (
+          <ScreenState
+            title="Voce ainda nao tem aulas"
+            detail="Entre em uma turma para acompanhar seu calendario por aqui."
+            action={<Link className="button-like primary" to="/locais?intent=classes">Encontrar aulas</Link>}
+          />
+        ) : null}
         {!loading && !error && active.length ? (
           <div className="personal-area-grid">
             <section className="personal-area-card">

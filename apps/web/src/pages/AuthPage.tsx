@@ -15,6 +15,38 @@ function GoogleIcon() {
   );
 }
 
+function friendlyAuthMessage(raw: string, fallback: string): string {
+  const text = String(raw || "").toLowerCase();
+  if (/invalid login|invalid credentials|email or password|login credentials/.test(text)) {
+    return "E-mail ou senha incorretos. Confira os dados e tente novamente.";
+  }
+  if (/already registered|already exists|user already/.test(text)) {
+    return "Este e-mail ja tem uma conta. Entre com a senha ou use Google.";
+  }
+  if (/password/.test(text) && /short|weak|six|6/.test(text)) {
+    return "Use uma senha com pelo menos 6 caracteres.";
+  }
+  if (/rate limit|too many|security purposes/.test(text)) {
+    return "Muitas tentativas em pouco tempo. Aguarde um instante e tente novamente.";
+  }
+  if (/network|fetch|failed/.test(text)) {
+    return "Nao conseguimos conectar agora. Verifique sua internet e tente novamente.";
+  }
+  return fallback;
+}
+
+function describeNextPath(path: string): string {
+  if (path.startsWith("/locais/")) return "no local ou quadra que voce tentou abrir";
+  if (path.startsWith("/jogadores/")) return "no perfil de jogador que voce tentou abrir";
+  if (path.startsWith("/inscricao/")) return "na inscricao do evento";
+  if (path.startsWith("/join/")) return "no convite do torneio";
+  if (path.startsWith("/eventos/ligas/inscricao/")) return "na inscricao da liga";
+  if (path.startsWith("/eventos/ligas/")) return "na liga que voce tentou abrir";
+  if (path.startsWith("/eventos/")) return "no evento que voce tentou abrir";
+  if (path.startsWith("/gestao")) return "na area de trabalho";
+  return "na area solicitada";
+}
+
 export function AuthPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,7 +69,7 @@ export function AuthPage() {
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
     if (error) {
-      setMsg({ kind: "error", text: error.message || "Falha no login." });
+      setMsg({ kind: "error", text: friendlyAuthMessage(error.message, "Nao foi possivel entrar agora.") });
       return;
     }
     navigate(nextPath, { replace: true });
@@ -51,7 +83,7 @@ export function AuthPage() {
     setBusy(false);
     setMsg(
       error
-        ? { kind: "error", text: error.message || "Falha ao criar conta." }
+        ? { kind: "error", text: friendlyAuthMessage(error.message, "Nao foi possivel criar sua conta agora.") }
         : { kind: "success", text: "Conta criada. Verifique seu e-mail e depois entre." }
     );
   };
@@ -77,7 +109,7 @@ export function AuthPage() {
     });
     setBusy(false);
     if (error) {
-      setMsg({ kind: "error", text: error.message || "Falha no login com Google." });
+      setMsg({ kind: "error", text: friendlyAuthMessage(error.message, "Nao foi possivel entrar com Google agora.") });
     }
   };
 
@@ -96,14 +128,27 @@ export function AuthPage() {
             <li><span>Ranking</span><small>Veja sua evolucao em quadra.</small></li>
           </ul>
         </aside>
-        <section className="auth-card">
+        <form
+          className="auth-card"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!busy && email.trim() && password.trim()) {
+              login();
+            }
+          }}
+        >
           <img src={logo} alt="ATP - Amateur Tennis Platform" className="auth-logo" />
           <h1>Entrar na ATP</h1>
           <p className="auth-sub">Torneios, ligas e ranking para tenistas amadores.</p>
+          {nextPath !== "/inicio" ? (
+            <p className="auth-return-note">
+              Entre para continuar {describeNextPath(nextPath)}.
+            </p>
+          ) : null}
 
-          <button className="auth-google-btn" disabled={busy} onClick={loginWithGoogle}>
+          <button type="button" className="auth-google-btn" disabled={busy} onClick={loginWithGoogle}>
             <GoogleIcon />
-            <span>Continuar com Google</span>
+            <span>{busy ? "Preparando acesso..." : "Continuar com Google"}</span>
           </button>
 
           <div className="auth-divider"><span>ou entre com e-mail</span></div>
@@ -127,15 +172,15 @@ export function AuthPage() {
             autoComplete="current-password"
           />
           <div className="auth-actions">
-            <button className="primary" disabled={busy || !email.trim() || !password.trim()} onClick={login}>
-              Entrar
+            <button type="submit" className="primary" disabled={busy || !email.trim() || !password.trim()}>
+              {busy ? "Entrando..." : "Entrar"}
             </button>
-            <button className="secondary" disabled={busy || !email.trim() || password.trim().length < 6} onClick={signUp}>
-              Criar conta
+            <button type="button" className="secondary" disabled={busy || !email.trim() || password.trim().length < 6} onClick={signUp}>
+              {busy ? "Aguarde..." : "Criar conta"}
             </button>
           </div>
           {msg ? <p className={`feedback ${msg.kind === "success" ? "success" : msg.kind === "error" ? "error" : ""}`}>{msg.text}</p> : null}
-        </section>
+        </form>
       </section>
     </main>
   );

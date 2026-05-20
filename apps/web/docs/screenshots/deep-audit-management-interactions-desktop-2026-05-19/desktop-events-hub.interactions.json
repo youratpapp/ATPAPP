@@ -1,0 +1,46 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "events-hub",
+    "from": "#/eventos",
+    "label": "Torneios",
+    "clicked": true,
+    "to": "#/eventos/torneios?view=participating",
+    "h1": [
+      "Torneios que jogo"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "events-hub",
+    "from": "#/eventos",
+    "label": "Ligas",
+    "clicked": true,
+    "to": "#/eventos/ligas?view=participating",
+    "h1": [
+      "Ligas que jogo"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "events-hub",
+    "from": "#/eventos",
+    "label": "Rankings",
+    "clicked": true,
+    "to": "#/ranking",
+    "h1": [
+      "Ranking ATP"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "events-hub",
+    "from": "#/eventos",
+    "label": "Descobrirtorneios e ligas",
+    "clicked": true,
+    "to": "#/eventos?modo=discover",
+    "h1": [
+      "Competições"
+    ]
+  }
+]

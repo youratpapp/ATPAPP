@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "places-lessons",
+  "hash": "#/locais?intent=classes",
+  "screenshot": "desktop-places-lessons.png",
+  "events": []
+}

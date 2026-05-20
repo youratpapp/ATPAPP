@@ -1,0 +1,816 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "login",
+    "hash": "#/inicio",
+    "screenshot": "desktop-login.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "desktop-places-overview.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A44.798Z",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A44.798Z",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A45.463Z",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A45.463Z",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A46.048Z",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A46.048Z",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A46.663Z",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=160&ends_at=gte.2026-05-18T23%3A46%3A46.663Z",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_attendance?select=id%2Cplace_id%2Cclass_id%2Cenrollment_id%2Cuser_id%2Cattended_on%2Cstatus%2Cnotes%2Cmarked_by%2Ccreated_at%2Cupdated_at&place_id=eq.487b9846-9739-4f42-bc5f-60ea0cb4d050&order=attended_on.desc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_attendance?select=id%2Cplace_id%2Cclass_id%2Cenrollment_id%2Cuser_id%2Cattended_on%2Cstatus%2Cnotes%2Cmarked_by%2Ccreated_at%2Cupdated_at&place_id=eq.487b9846-9739-4f42-bc5f-60ea0cb4d050&order=attended_on.desc&limit=200",
+        "line": null
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: place resources 36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: place resources 76547c0f-43ba-49fb-946d-c6dd7e9cefcd",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: place resources 487b9846-9739-4f42-bc5f-60ea0cb4d050",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: payments",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: payments",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "places-reserve",
+    "hash": "#/locais?intent=places",
+    "screenshot": "desktop-places-reserve.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "places-lessons",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "desktop-places-lessons.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "places-match",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "desktop-places-match.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "events-hub",
+    "hash": "#/eventos",
+    "screenshot": "desktop-events-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "leagues",
+    "hash": "#/eventos/ligas",
+    "screenshot": "desktop-leagues.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "tournaments",
+    "hash": "#/eventos/torneios",
+    "screenshot": "desktop-tournaments.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "ranking",
+    "hash": "#/ranking",
+    "screenshot": "desktop-ranking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "my-reservations",
+    "hash": "#/minhas-reservas",
+    "screenshot": "desktop-my-reservations.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "my-matches",
+    "hash": "#/minhas-partidas",
+    "screenshot": "desktop-my-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "my-lessons",
+    "hash": "#/minhas-aulas",
+    "screenshot": "desktop-my-lessons.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "my-payments",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "desktop-my-payments.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "screenshot": "desktop-league-detail.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-chat",
+    "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "screenshot": "desktop-league-chat.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "tournament-games",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "screenshot": "desktop-tournament-games.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "tournament-players",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "screenshot": "desktop-tournament-players.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "login",
+    "hash": "#/inicio",
+    "screenshot": "mobile-login.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "mobile-places-overview.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "warning",
+        "text": "400",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 400 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/rpc/app_list_place_staff",
+        "line": null
+      },
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: payments",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-reserve",
+    "hash": "#/locais?intent=places",
+    "screenshot": "mobile-places-reserve.png",
+    "events": [
+      {
+        "source": "console",
+        "type": "warning",
+        "level": "warning",
+        "text": "Workspace data timeout: payments",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 509
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-lessons",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "mobile-places-lessons.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "places-match",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "mobile-places-match.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "events-hub",
+    "hash": "#/eventos",
+    "screenshot": "mobile-events-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "leagues",
+    "hash": "#/eventos/ligas",
+    "screenshot": "mobile-leagues.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200&target_type=eq.court_booking",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "tournaments",
+    "hash": "#/eventos/torneios",
+    "screenshot": "mobile-tournaments.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "ranking",
+    "hash": "#/ranking",
+    "screenshot": "mobile-ranking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "my-reservations",
+    "hash": "#/minhas-reservas",
+    "screenshot": "mobile-my-reservations.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "my-matches",
+    "hash": "#/minhas-partidas",
+    "screenshot": "mobile-my-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "my-lessons",
+    "hash": "#/minhas-aulas",
+    "screenshot": "mobile-my-lessons.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "my-payments",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "mobile-my-payments.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/court_bookings?select=id%2Cplace_id%2Ccourt_id%2Cuser_id%2Cplayer_name%2Cphone%2Cstarts_at%2Cends_at%2Cstatus%2Cnotes%2Crecurrence_group_id%2Crecurrence_index%2Crecurrence_total%2Ccreated_at&order=starts_at.asc&limit=200",
+        "line": null
+      },
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "league-detail",
+    "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "screenshot": "mobile-league-detail.png",
+    "events": [
+      {
+        "source": "network",
+        "type": "http",
+        "level": "error",
+        "text": "500",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      },
+      {
+        "source": "log",
+        "type": "network",
+        "level": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()",
+        "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/app_payments?select=id%2Cuser_id%2Ctarget_type%2Ctarget_id%2Camount_cents%2Ccurrency%2Cstatus%2Cprovider%2Cdescription%2Cmetadata%2Cbilling_period%2Cpaid_at%2Ccreated_at%2Cupdated_at&order=created_at.desc&limit=200",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "league-chat",
+    "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "screenshot": "mobile-league-chat.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "tournament-games",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "screenshot": "mobile-tournament-games.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "tournament-players",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "screenshot": "mobile-tournament-players.png",
+    "events": []
+  }
+]

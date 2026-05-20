@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "public-player",
+    "hash": "#/jogadores/7d2b98ab-4f6c-4a08-b684-e53dd73ccc74",
+    "screenshot": "desktop-public-player.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "public-player",
+    "hash": "#/jogadores/7d2b98ab-4f6c-4a08-b684-e53dd73ccc74",
+    "screenshot": "mobile-public-player.png",
+    "events": []
+  }
+]

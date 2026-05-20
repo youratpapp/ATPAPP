@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "auth-normal",
+  "hash": "#/auth",
+  "screenshot": "mobile-auth-normal.png",
+  "events": []
+}

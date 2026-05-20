@@ -962,6 +962,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     status: "open",
   }));
   const [openMatchFilterExpanded, setOpenMatchFilterExpanded] = useState(false);
+  const [showAllOpenMatches, setShowAllOpenMatches] = useState(false);
   const [openMatchCommentsById, setOpenMatchCommentsById] = useState<Record<string, OpenMatchComment[]>>({});
   const [openMatchCommentDraftById, setOpenMatchCommentDraftById] = useState<Record<string, string>>({});
   const [staffDraftByPlace, setStaffDraftByPlace] = useState<Record<string, PlaceStaffDraft>>({});
@@ -2886,6 +2887,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       (!openMatchFilter.level.trim() || normalizeText(match.level).includes(normalizeText(openMatchFilter.level)))
     );
   });
+  const openMatchCards = showAllOpenMatches ? visibleOpenMatches : visibleOpenMatches.slice(0, 5);
+  const hiddenOpenMatchCount = Math.max(0, visibleOpenMatches.length - openMatchCards.length);
   const openMatchOpenCount = openMatches.filter((match) => match.status === "open").length;
   const hasOpenMatchDraft = Boolean(
     openMatchDraft.placeId || openMatchDraft.startsAt || openMatchDraft.level.trim() || openMatchDraft.notes.trim()
@@ -2900,6 +2903,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     openMatchFilter.level.trim(),
     openMatchFilter.status !== "open" ? openMatchFilter.status : "",
   ].filter(Boolean).length;
+  useEffect(() => {
+    setShowAllOpenMatches(false);
+  }, [
+    openMatchFilter.city,
+    openMatchFilter.date,
+    openMatchFilter.level,
+    openMatchFilter.period,
+    openMatchFilter.placeId,
+    openMatchFilter.query,
+    openMatchFilter.state,
+    openMatchFilter.status,
+  ]);
   const resetOpenMatchFilters = () => {
     setOpenMatchFilter({
       query: "",
@@ -2940,6 +2955,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
   const visiblePlaces = adminPlaceId ? places.filter((place) => place.id === adminPlaceId) : places;
   const adminRoutePlace = visiblePlaces[0] || null;
+  const adminAccessDenied = isAdminRoute && !loading && !adminRoutePlace;
   const activeCourtsCount = visiblePlaces.reduce(
     (sum, place) => sum + (courtsByPlace[place.id] || []).filter((court) => court.isActive).length,
     0
@@ -3446,7 +3462,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         : "Use cidade, data e hora para ver apenas quadras livres no horario desejado.";
 
   const pageContent = (
-    <>
+    <main className="page places-page">
       {!isAdminRoute ? (
         <div className="page-header">
           <h1>Locais</h1>
@@ -4047,7 +4063,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </div>
           ) : null}
           <div className="open-match-list">
-            {visibleOpenMatches.map((match) => (
+            {openMatchCards.map((match) => (
               <div key={match.id} className="open-match-row">
                 <div className="open-match-main">
                   <div>
@@ -4141,6 +4157,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ) : null}
               </div>
             ))}
+            {hiddenOpenMatchCount || showAllOpenMatches ? (
+              <button type="button" className="quiet open-match-expand-action" onClick={() => setShowAllOpenMatches((prev) => !prev)}>
+                {showAllOpenMatches ? "Mostrar menos" : `Ver mais ${hiddenOpenMatchCount} chamadas`}
+              </button>
+            ) : null}
             {!visibleOpenMatches.length ? (
               <div className="empty-state compact">
                 <strong>Nenhum jogo encontrado</strong>
@@ -7804,7 +7825,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </div>
       ) : null}
 
-    </>
+    </main>
   );
 
   if (isAdminRoute) {
@@ -7812,19 +7833,40 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       <ManagementShell
         user={user}
         profile={profile}
-        eyebrow="Gestao do local"
-        title={adminRoutePlace?.name || "Gestao do local"}
-        description="Workspace operacional do local. A página publica e a descoberta ficam fora desta tela."
+        eyebrow={adminAccessDenied ? "Acesso profissional" : "Gestao do local"}
+        title={adminAccessDenied ? "Gestao indisponivel" : adminRoutePlace?.name || "Gestao do local"}
+        description={
+          adminAccessDenied
+            ? "Este local nao esta liberado para o seu perfil atual."
+            : "Workspace operacional do local. A página publica e a descoberta ficam fora desta tela."
+        }
         actions={
           adminPlaceId ? (
             <>
               <button onClick={() => navigate("/gestao")}>Voltar para central</button>
-              <button onClick={() => navigate(`/locais/${encodeURIComponent(adminPlaceId)}`)}>Ver página publica</button>
+              <button onClick={() => navigate(adminAccessDenied ? "/locais?intent=directory" : `/locais/${encodeURIComponent(adminPlaceId)}`)}>
+                {adminAccessDenied ? "Explorar locais" : "Ver página publica"}
+              </button>
             </>
           ) : null
         }
       >
-        {pageContent}
+        {adminAccessDenied ? (
+          <section className="management-access-denied">
+            <span>Acesso restrito</span>
+            <h2>Entre com um perfil de gestao ou aceite um convite da equipe.</h2>
+            <p>
+              A rotina operacional, alunos, reservas, financeiro e configuracoes do local ficam visiveis apenas para donos,
+              gerentes ou equipe com permissao ativa.
+            </p>
+            <div>
+              <button className="primary" onClick={() => navigate("/inicio")}>Voltar ao inicio</button>
+              <button className="secondary" onClick={() => navigate("/locais?intent=directory")}>Explorar locais</button>
+            </div>
+          </section>
+        ) : (
+          pageContent
+        )}
       </ManagementShell>
     );
   }

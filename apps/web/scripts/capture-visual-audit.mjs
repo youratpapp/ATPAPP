@@ -1,14 +1,18 @@
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
 const ROOT = process.cwd();
 const APP_URL = process.env.APP_URL || "http://127.0.0.1:5173/";
-const OUT_DIR = path.join(ROOT, "docs", "screenshots", "visual-local-audit-2026-05-18");
+const OUT_DIR = process.env.ATP_AUDIT_OUT_DIR
+  ? path.resolve(ROOT, process.env.ATP_AUDIT_OUT_DIR)
+  : path.join(ROOT, "docs", "screenshots", "visual-local-audit-2026-05-18");
 const LOGIN_EMAIL = process.env.ATP_EMAIL || "escalao@gmail.com";
 const LOGIN_PASSWORD = process.env.ATP_PASSWORD || "Escalao@2026!";
+const SHOULD_LOGIN = process.env.ATP_AUDIT_SKIP_LOGIN !== "1";
+const SHOULD_CLEAN_OUT_DIR = process.env.ATP_AUDIT_CLEAN !== "0";
 const CHROME_PATHS = [
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
   "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
@@ -16,8 +20,13 @@ const CHROME_PATHS = [
 
 const desktop = { name: "desktop", width: 1440, height: 980, deviceScaleFactor: 1, mobile: false };
 const mobile = { name: "mobile", width: 390, height: 844, deviceScaleFactor: 2, mobile: true };
+const viewportFilter = (process.env.ATP_AUDIT_VIEWPORTS || "desktop,mobile")
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
+const viewports = [desktop, mobile].filter((viewport) => viewportFilter.includes(viewport.name));
 
-const routes = [
+const defaultRoutes = [
   { slug: "login", hash: "#/auth", public: true },
   { slug: "home", hash: "#/inicio" },
   { slug: "places-overview", hash: "#/locais" },
@@ -39,6 +48,10 @@ const routes = [
   { slug: "tournament-games", hash: "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos" },
   { slug: "tournament-players", hash: "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores" },
 ];
+
+const routes = process.env.ATP_AUDIT_ROUTES_JSON
+  ? JSON.parse(process.env.ATP_AUDIT_ROUTES_JSON)
+  : defaultRoutes;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -71,8 +84,14 @@ function makeCdp(wsUrl) {
   const ws = new WebSocket(wsUrl);
   let id = 0;
   const pending = new Map();
+  const listeners = new Map();
   ws.addEventListener("message", (event) => {
     const message = JSON.parse(event.data);
+    if (!message.id && message.method) {
+      const callbacks = listeners.get(message.method) || [];
+      callbacks.forEach((callback) => callback(message.params || {}));
+      return;
+    }
     if (!message.id) return;
     const callback = pending.get(message.id);
     if (!callback) return;
@@ -90,6 +109,11 @@ function makeCdp(wsUrl) {
       const callId = ++id;
       ws.send(JSON.stringify({ id: callId, method, params }));
       return new Promise((resolve, reject) => pending.set(callId, { resolve, reject }));
+    },
+    on(method, callback) {
+      const callbacks = listeners.get(method) || [];
+      callbacks.push(callback);
+      listeners.set(method, callbacks);
     },
     close() {
       ws.close();
@@ -184,6 +208,61 @@ async function capture(cdp, filePath) {
   await writeFile(filePath, Buffer.from(screenshot.data, "base64"));
 }
 
+function normalizeConsoleEvent(params) {
+  const args = (params.args || [])
+    .map((arg) => {
+      if (typeof arg.value !== "undefined") return String(arg.value);
+      if (arg.description) return String(arg.description);
+      if (arg.preview?.description) return String(arg.preview.description);
+      return "";
+    })
+    .filter(Boolean);
+  return {
+    source: "console",
+    type: params.type || "log",
+    level: params.type || "log",
+    text: args.join(" "),
+    url: params.stackTrace?.callFrames?.[0]?.url || "",
+    line: params.stackTrace?.callFrames?.[0]?.lineNumber ?? null,
+  };
+}
+
+function normalizeLogEntry(params) {
+  const entry = params.entry || {};
+  return {
+    source: "log",
+    type: entry.source || "browser",
+    level: entry.level || "info",
+    text: entry.text || "",
+    url: entry.url || "",
+    line: entry.lineNumber ?? null,
+  };
+}
+
+function normalizeNetworkFailure(params) {
+  return {
+    source: "network",
+    type: "loadingFailed",
+    level: "error",
+    text: `${params.errorText || "network failure"} ${params.blockedReason || ""}`.trim(),
+    url: params.requestId || "",
+    line: null,
+  };
+}
+
+function normalizeNetworkResponse(params) {
+  const status = params.response?.status;
+  if (!status || status < 400) return null;
+  return {
+    source: "network",
+    type: "http",
+    level: status >= 500 ? "error" : "warning",
+    text: `${status} ${params.response.statusText || ""}`.trim(),
+    url: params.response.url || "",
+    line: null,
+  };
+}
+
 async function collectMeta(cdp) {
   return evalJs(
     cdp,
@@ -201,7 +280,89 @@ async function collectMeta(cdp) {
   );
 }
 
+async function collectClickableSnapshot(cdp) {
+  return evalJs(
+    cdp,
+    `
+    (() => [...document.querySelectorAll("button,a,[role='button']")]
+      .map((el, index) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          index,
+          tag: el.tagName.toLowerCase(),
+          text: (el.textContent || "").replace(/\\s+/g, " ").trim(),
+          href: el.getAttribute("href") || "",
+          aria: el.getAttribute("aria-label") || "",
+          disabled: Boolean(el.disabled || el.getAttribute("aria-disabled") === "true"),
+          visible: rect.width > 0 && rect.height > 0,
+          x: Math.round(rect.left + rect.width / 2),
+          y: Math.round(rect.top + rect.height / 2),
+          w: Math.round(rect.width),
+          h: Math.round(rect.height),
+        };
+      })
+      .filter((item) => item.visible && !item.disabled)
+      .slice(0, 80))()
+    `
+  );
+}
+
+async function clickSafeTargets(cdp, route, viewport) {
+  if (process.env.ATP_AUDIT_INTERACTIONS !== "1") return [];
+  const deny = /(remover|excluir|apagar|cancelar|sair|logout|marcar pago|publicar|enviar|confirmar|salvar|criar conta|google|wo|limpar resultado|inscrever-se|entrar por codigo|entrar por código)/i;
+  const allow = /(inicio|competi|reservas|locais|perfil|explorar|ver |voltar|ranking|rankings|torneios|ligas|jogos|jogadores|classifica|chat|detalhes|abrir|ajustar filtros|limpar filtros)/i;
+  const beforeHash = await evalJs(cdp, "location.hash");
+  const targets = (await collectClickableSnapshot(cdp))
+    .filter((item) => {
+      const label = `${item.text} ${item.aria}`.trim();
+      return label && allow.test(label) && !deny.test(label);
+    })
+    .slice(0, Number(process.env.ATP_AUDIT_INTERACTION_LIMIT || 10));
+  const results = [];
+  for (const target of targets) {
+    const label = target.text || target.aria || `${target.tag}:${target.index}`;
+    const startHash = await evalJs(cdp, "location.hash");
+    const ok = await evalJs(
+      cdp,
+      `
+      (() => {
+        const el = [...document.querySelectorAll("button,a,[role='button']")][${target.index}];
+        if (!el) return false;
+        el.scrollIntoView({ block: "center", inline: "center" });
+        el.click();
+        return true;
+      })()
+      `
+    );
+    await sleep(900);
+    const endHash = await evalJs(cdp, "location.hash");
+    const h1 = await evalJs(
+      cdp,
+      `[...document.querySelectorAll("h1")].map((el) => el.textContent.trim()).filter(Boolean).slice(0, 2)`
+    );
+    results.push({
+      viewport: viewport.name,
+      route: route.slug,
+      from: startHash,
+      label,
+      clicked: Boolean(ok),
+      to: endHash,
+      h1,
+    });
+    if (endHash !== beforeHash) {
+      await navigate(cdp, route.hash);
+    }
+  }
+  return results;
+}
+
 async function main() {
+  if (!OUT_DIR.startsWith(path.join(ROOT, "docs", "screenshots"))) {
+    throw new Error(`Diretorio de auditoria fora de docs/screenshots: ${OUT_DIR}`);
+  }
+  if (SHOULD_CLEAN_OUT_DIR) {
+    await rm(OUT_DIR, { recursive: true, force: true });
+  }
   await mkdir(OUT_DIR, { recursive: true });
   const port = 9222 + Math.floor(Math.random() * 1000);
   const userDataDir = await mkdtemp(path.join(os.tmpdir(), "atp-visual-audit-"));
@@ -217,19 +378,34 @@ async function main() {
   ]);
 
   const meta = [];
+  const routeDiagnostics = [];
+  const interactionDiagnostics = [];
+  const browserEvents = [];
   try {
     const target = await waitForDebug(port);
     const cdp = makeCdp(target.webSocketDebuggerUrl);
     await cdp.ready;
     await cdp.send("Page.enable");
     await cdp.send("Runtime.enable");
+    await cdp.send("Log.enable");
+    await cdp.send("Network.enable");
+    cdp.on("Runtime.consoleAPICalled", (params) => browserEvents.push(normalizeConsoleEvent(params)));
+    cdp.on("Log.entryAdded", (params) => browserEvents.push(normalizeLogEntry(params)));
+    cdp.on("Network.loadingFailed", (params) => browserEvents.push(normalizeNetworkFailure(params)));
+    cdp.on("Network.responseReceived", (params) => {
+      const item = normalizeNetworkResponse(params);
+      if (item) browserEvents.push(item);
+    });
 
     await setViewport(cdp, desktop);
-    await login(cdp);
+    if (SHOULD_LOGIN) {
+      await login(cdp);
+    }
 
-    for (const viewport of [desktop, mobile]) {
+    for (const viewport of viewports) {
       await setViewport(cdp, viewport);
       for (const route of routes) {
+        const eventStart = browserEvents.length;
         if (route.slug === "login") {
           await navigate(cdp, route.hash);
         } else {
@@ -237,7 +413,28 @@ async function main() {
         }
         const fileName = `${viewport.name}-${route.slug}.png`;
         await capture(cdp, path.join(OUT_DIR, fileName));
-        meta.push({ viewport: viewport.name, route: route.slug, screenshot: fileName, ...(await collectMeta(cdp)) });
+        const clickable = await collectClickableSnapshot(cdp);
+        const pageEvents = browserEvents.slice(eventStart);
+        const interactionResults = await clickSafeTargets(cdp, route, viewport);
+        interactionDiagnostics.push(...interactionResults);
+        const metaEntry = {
+          viewport: viewport.name,
+          route: route.slug,
+          screenshot: fileName,
+          diagnosticsFile: `${viewport.name}-${route.slug}.diagnostics.json`,
+          interactionsFile: interactionResults.length ? `${viewport.name}-${route.slug}.interactions.json` : null,
+          consoleErrorCount: pageEvents.filter((event) => /error|warning/i.test(event.level || "")).length,
+          clickableCount: clickable.length,
+          clickables: clickable.slice(0, 40),
+          ...(await collectMeta(cdp)),
+        };
+        meta.push(metaEntry);
+        const diagnostics = { viewport: viewport.name, route: route.slug, hash: metaEntry.hash, screenshot: fileName, events: pageEvents };
+        routeDiagnostics.push(diagnostics);
+        await writeFile(path.join(OUT_DIR, metaEntry.diagnosticsFile), JSON.stringify(diagnostics, null, 2));
+        if (interactionResults.length) {
+          await writeFile(path.join(OUT_DIR, metaEntry.interactionsFile), JSON.stringify(interactionResults, null, 2));
+        }
       }
     }
     cdp.close();
@@ -245,6 +442,8 @@ async function main() {
     chrome.kill();
   }
   await writeFile(path.join(OUT_DIR, "meta.json"), JSON.stringify(meta, null, 2));
+  await writeFile(path.join(OUT_DIR, "diagnostics-summary.json"), JSON.stringify(routeDiagnostics, null, 2));
+  await writeFile(path.join(OUT_DIR, "interactions-summary.json"), JSON.stringify(interactionDiagnostics, null, 2));
   console.log(OUT_DIR);
 }
 

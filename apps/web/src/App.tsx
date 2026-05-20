@@ -323,6 +323,7 @@ function AppInner() {
         <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
         <Route path="/" element={<Navigate to="/inicio" replace />} />
         <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
+        <Route path="/competicoes" element={<Navigate to="/eventos" replace />} />
         <Route path="/eventos" element={<EventsHubPage user={authUser} profile={profile} />} />
         <Route path="/eventos/torneios" element={<EventsPage user={authUser} profile={profile} />} />
         <Route path="/eventos/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />

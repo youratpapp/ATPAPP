@@ -1,0 +1,66 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "league-chat",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "label": "Voltar",
+    "clicked": true,
+    "to": "#/eventos/ligas?view=organizing",
+    "h1": [
+      "Ligas que organizo"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-chat",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "label": "Inicio",
+    "clicked": true,
+    "to": "#/inicio",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-chat",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "label": "Competições",
+    "clicked": true,
+    "to": "#/minhas-reservas",
+    "h1": [
+      "Minhas reservas"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-chat",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "label": "Reservas",
+    "clicked": true,
+    "to": "#/locais",
+    "h1": [
+      "Locais"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-chat",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "label": "Locais",
+    "clicked": true,
+    "to": "#/perfil",
+    "h1": [
+      "Perfil"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-chat",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "label": "Perfil",
+    "clicked": false,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+    "h1": []
+  }
+]

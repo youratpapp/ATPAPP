@@ -1,0 +1,16 @@
+{
+  "viewport": "desktop",
+  "route": "protected-home-redirect",
+  "hash": "#/auth?next=%2Finicio",
+  "screenshot": "desktop-protected-home-redirect.png",
+  "events": [
+    {
+      "source": "log",
+      "type": "recommendation",
+      "level": "verbose",
+      "text": "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+      "url": "http://127.0.0.1:5173/#/auth?next=%2Finicio",
+      "line": null
+    }
+  ]
+}

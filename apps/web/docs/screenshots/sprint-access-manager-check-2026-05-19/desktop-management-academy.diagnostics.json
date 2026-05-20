@@ -1,0 +1,40 @@
+{
+  "viewport": "desktop",
+  "route": "management-academy",
+  "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+  "screenshot": "desktop-management-academy.png",
+  "events": [
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: open matches",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    },
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: open matches",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    }
+  ]
+}

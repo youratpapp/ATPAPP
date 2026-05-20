@@ -1,0 +1,86 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "public-player",
+    "screenshot": "desktop-public-player.png",
+    "diagnosticsFile": "desktop-public-player.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 1,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "a",
+        "text": "Voltar",
+        "href": "#/ranking",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 308,
+        "y": 77,
+        "w": 71,
+        "h": 41
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/jogadores/7d2b98ab-4f6c-4a08-b684-e53dd73ccc74",
+    "h1": [
+      "Escalao Admin"
+    ],
+    "h2": [
+      "Competicoes e rankings"
+    ],
+    "buttons": [
+      "Voltar",
+      "Inicio",
+      "Competições",
+      "Reservas",
+      "Locais",
+      "Perfil"
+    ],
+    "cards": 0,
+    "textSample": "Voltar EA PERFIL DO JOGADOR Escalao Admin Dourados - MS Partidas 0 Vitorias 0 Aproveitamento 0% Melhor pontuacao 0 HISTORICO Competicoes e rankings 0 recortes Sem historico publico ainda Quando este jogador participar de ligas com ranking, o resumo aparece aqui."
+  },
+  {
+    "viewport": "mobile",
+    "route": "public-player",
+    "screenshot": "mobile-public-player.png",
+    "diagnosticsFile": "mobile-public-player.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 1,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "a",
+        "text": "Voltar",
+        "href": "#/ranking",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 46,
+        "y": 49,
+        "w": 71,
+        "h": 41
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/jogadores/7d2b98ab-4f6c-4a08-b684-e53dd73ccc74",
+    "h1": [
+      "Escalao Admin"
+    ],
+    "h2": [
+      "Competicoes e rankings"
+    ],
+    "buttons": [
+      "Voltar",
+      "Inicio",
+      "Competições",
+      "Reservas",
+      "Locais",
+      "Perfil"
+    ],
+    "cards": 0,
+    "textSample": "Voltar EA PERFIL DO JOGADOR Escalao Admin Dourados - MS Partidas 0 Vitorias 0 Aproveitamento 0% Melhor pontuacao 0 HISTORICO Competicoes e rankings 0 recortes Sem historico publico ainda Quando este jogador participar de ligas com ranking, o resumo aparece aqui."
+  }
+]

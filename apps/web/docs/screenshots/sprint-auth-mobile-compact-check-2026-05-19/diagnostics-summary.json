@@ -1,0 +1,41 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "auth",
+    "hash": "#/auth",
+    "screenshot": "desktop-auth.png",
+    "events": [
+      {
+        "source": "console",
+        "type": "debug",
+        "level": "debug",
+        "text": "[vite] connecting...",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 826
+      },
+      {
+        "source": "console",
+        "type": "debug",
+        "level": "debug",
+        "text": "[vite] connected.",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 930
+      },
+      {
+        "source": "console",
+        "type": "info",
+        "level": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "url": "http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=5d525081",
+        "line": 14336
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "auth",
+    "hash": "#/auth",
+    "screenshot": "mobile-auth.png",
+    "events": []
+  }
+]

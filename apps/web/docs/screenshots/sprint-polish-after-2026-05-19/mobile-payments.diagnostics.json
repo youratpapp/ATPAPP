@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "payments",
+  "hash": "#/meus-pagamentos",
+  "screenshot": "mobile-payments.png",
+  "events": []
+}

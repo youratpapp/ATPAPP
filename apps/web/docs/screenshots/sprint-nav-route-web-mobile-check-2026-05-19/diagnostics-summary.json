@@ -1,0 +1,44 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "competitions",
+    "hash": "#/eventos",
+    "screenshot": "desktop-competitions.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "competitions",
+    "hash": "#/eventos",
+    "screenshot": "mobile-competitions.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-management.png",
+    "events": []
+  }
+]

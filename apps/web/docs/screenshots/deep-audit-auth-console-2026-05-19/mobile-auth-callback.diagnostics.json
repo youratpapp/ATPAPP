@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "auth-callback",
+  "hash": "#/auth/callback",
+  "screenshot": "mobile-auth-callback.png",
+  "events": []
+}

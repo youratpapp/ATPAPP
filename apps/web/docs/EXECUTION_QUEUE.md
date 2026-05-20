@@ -44,6 +44,425 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## [>] Sprint atual - Auditoria profunda visual, rotas e console
+
+Status: `[>]` prioridade atual criada em 2026-05-19
+
+Fonte primaria:
+
+- `docs/ATP_DEEP_APP_AUDIT_2026_05_19.md`
+- `m:/Downloads/Chrome/atp_premium_dark_design_playbook.md`
+- imagens premium dark anexadas pelo produto em 2026-05-19
+
+Evidencias:
+
+- `docs/screenshots/deep-audit-management-console-2026-05-19/`
+- `docs/screenshots/deep-audit-player-console-2026-05-19/`
+- `docs/screenshots/deep-audit-auth-console-2026-05-19/`
+- `docs/screenshots/deep-audit-management-interactions-desktop-2026-05-19/`
+- `docs/screenshots/deep-audit-player-interactions-desktop-2026-05-19/`
+- `docs/screenshots/sprint-global-web-mobile-check-2026-05-19/`
+- `docs/screenshots/sprint-route-compat-check-2026-05-19/`
+
+### [x] AUDIT-00 - Tornar a captura confiavel
+
+Entrega realizada:
+
+- `scripts/capture-visual-audit.mjs` agora limpa a pasta de saida por padrao.
+- Suporta `ATP_AUDIT_OUT_DIR`, `ATP_AUDIT_SKIP_LOGIN`, `ATP_AUDIT_ROUTES_JSON`, `ATP_AUDIT_VIEWPORTS`.
+- Captura `*.diagnostics.json` por pagina com console, logs do browser e rede.
+- Captura lista de clicaveis por pagina.
+- Suporta cliques seguros com `ATP_AUDIT_INTERACTIONS=1`.
+
+Aceite:
+
+- sem mistura de screenshots antigos;
+- login/cadastro capturados deslogados;
+- gestor e jogador puro capturados com credenciais corretas.
+
+### [x] P0-DATA-01 - Corrigir erro de `app_payments`
+
+Problema:
+
+- `app_payments` retorna HTTP 500 em paginas de jogador e gestor.
+- Aparece em `Meus pagamentos`, `Liga detalhe`, `Locais`, `Ligas` e estados relacionados.
+- Em alguns casos a UI exibe `Nao foi possivel carregar canceling statement due to statement timeout`.
+
+Acao:
+
+- localizar chamadas a `app_payments`;
+- ajustar query/limites/filtros para nao estourar timeout;
+- carregar pagamentos somente em paginas que realmente precisam;
+- isolar erro em estado amigavel premium dark.
+
+Aceite:
+
+- `diagnostics-summary.json` sem HTTP 500 de `app_payments`;
+- nenhuma tela exibe nomes tecnicos de tabela, RPC ou timeout;
+- `Meus pagamentos` tem estado vazio/erro bonito e util.
+
+Sprint 2026-05-19:
+
+- `listMyPayments` passou a filtrar pelo usuario autenticado e limitar volume inicial.
+- Recaptura `docs/screenshots/sprint-p0-player-check-2026-05-19/` e `docs/screenshots/sprint-p0-management-check-2026-05-19/` sem HTTP 500/app_payments nos pontos auditados.
+- UI de pagamentos nao mostra mais `statement timeout`.
+
+### [x] P0-DATA-02 - Corrigir erro de `court_bookings` para jogador puro
+
+Problema:
+
+- Jogador puro recebe HTTP 500 em `court_bookings`.
+- Impacta `Minhas reservas`, `Minhas aulas` e `Meus pagamentos`.
+
+Acao:
+
+- revisar filtros de reservas por usuario;
+- limitar historico inicial;
+- tratar estado vazio sem buscar dados desnecessarios;
+- remover dependencia de reservas em telas que nao precisam dela.
+
+Aceite:
+
+- jogador puro consegue abrir `Minhas reservas`, `Minhas aulas` e `Meus pagamentos` sem erro bruto;
+- lista vazia aparece como card premium dark com proxima acao.
+
+Sprint 2026-05-19:
+
+- `listMyCourtBookings` passou a filtrar pelo usuario autenticado e reduziu limite padrao.
+- `listMyAcademyEnrollments` passou a filtrar pelo usuario autenticado.
+- Recaptura mobile do jogador puro sem erro de `court_bookings` e sem texto tecnico.
+
+### [x] P0-DATA-03 - Remover RPC profissional da experiencia de jogador puro
+
+Problema:
+
+- `Locais` no jogador puro dispara `app_list_place_staff` com HTTP 400.
+- Isso indica vazamento de chamada de trabalho no modo jogador.
+
+Acao:
+
+- separar chamadas de workspace profissional de paginas de jogador;
+- condicionar `workspace-access`/staff summary apenas quando necessario;
+- garantir que `Locais` carregue descoberta sem depender de staff.
+
+Aceite:
+
+- jogador puro abre `Locais` sem chamadas `app_list_place_staff`;
+- console limpo para `Locais`, `Locais?intent=places/classes/matches`.
+
+Sprint 2026-05-19:
+
+- `fetchPlacesWorkspaceData` nao busca recursos administrativos para rotas de descoberta (`tab=all/following`) fora de area admin.
+- Pagamentos de apoio tambem ficam fora de descoberta publica de locais.
+- Recaptura mobile do jogador puro em `Locais` e `Locais?intent=matches` sem `app_list_place_staff`.
+
+### [x] P0-UX-01 - Remover erros tecnicos da UI
+
+Problema:
+
+- Textos como `canceling statement due to statement timeout` aparecem para usuario.
+
+Acao:
+
+- criar componente unico de erro/estado vazio premium dark;
+- substituir mensagens tecnicas por copy de produto;
+- manter detalhes tecnicos apenas no console/log interno.
+
+Aceite:
+
+- busca textual por `statement timeout`, `canceling statement`, `Failed to load`, `app_payments`, `court_bookings` nao aparece em screenshots/meta de UI.
+
+Sprint 2026-05-19:
+
+- `friendlyToastMessage` passou a sanitizar timeout, nomes de tabela/RPC, erros HTTP e mensagens Supabase tecnicas.
+- `ScreenState` recebeu tratamento premium dark para estados vazios/erro/loading.
+- Recaptura P0 sem textos tecnicos nos `textSample`.
+
+### [x] P0-MOBILE-01 - Redesenhar `tournament-players` mobile
+
+Problema:
+
+- A tela mobile de jogadores do torneio ainda usa uma lista/tabela branca longa dentro do dark.
+
+Acao:
+
+- substituir tabela por cards dark;
+- manter filtros/busca compactos;
+- adaptar acoes de organizador para menu/toolbar;
+- preservar funcoes de adicionar/importar/copiar link quando permitidas.
+
+Aceite:
+
+- nenhum bloco branco na lista;
+- texto legivel sem sobreposicao;
+- jogador e gestor veem acoes coerentes com papel.
+
+Sprint 2026-05-19:
+
+- Aplicada camada visual dark para formulários, linhas de inscrição, botões secundários, KPIs e lista de participantes em competição.
+- Ainda precisa de uma segunda rodada estrutural para trocar totalmente listas/tabelas por cards dedicados.
+- Segunda rodada aplicada em `App.css`: filtros, campos, inscrições, botões de pagamento/aprovação e cards passaram para superfície dark.
+- Recaptura `sprint-p0-tournament-visual-check-4-2026-05-19` removeu os principais blocos brancos; pendente reduzir a lista longa em experiência agrupada.
+
+### [x] P0-MOBILE-02 - Redesenhar `tournament-games` mobile
+
+Problema:
+
+- Jogos do torneio ainda apresentam controles claros, tabelas e densidade excessiva.
+
+Acao:
+
+- transformar partidas em cards com jogador A/B, horario, status e placar;
+- esconder acoes de organizador em menu contextual;
+- darkificar inputs/selects;
+- manter WO/resultado somente para quem pode operar.
+
+Aceite:
+
+- mobile sem inputs brancos;
+- cada partida cabe em card legivel;
+- abas nao esmagam texto.
+
+Sprint 2026-05-19:
+
+- Aplicada camada visual dark para match cards, disclosure de placar, inputs de placar, status, resumo e ações.
+- Recaptura mostra melhora técnica/contraste, mas ainda exige sprint estrutural para reduzir a densidade da operação de placar.
+- Segunda rodada aplicada em `App.css`: seletor de classe, tabs, nomes dos jogadores, BYE, status e placar ganharam superfície dark também fora do shell principal.
+- Build aprovado e console limpo na recaptura mobile/web; pendente compactar a operação de placar em cards com menus/accordions menos técnicos.
+
+### [x] P0-MOBILE-03 - Redesenhar `places-match` mobile
+
+Problema:
+
+- Tela de encontrar jogo vira lista longa com filtros e botoes verdes repetidos.
+
+Acao:
+
+- filtros em painel recolhivel;
+- cards de chamada com uma acao primaria;
+- secondary actions discretas;
+- reduzir repeticao de verde.
+
+Aceite:
+
+- primeira dobra mostra contexto + filtro compacto + primeiros resultados;
+- nenhum texto quebra ou sobrepoe.
+
+Sprint 2026-05-19:
+
+- Cards de chamadas receberam reforço dark, largura segura e ações empilhadas no mobile.
+- Console zerado para jogador puro e gestor no recorte validado.
+- Ainda precisa simplificar repetição de botões verdes e hierarquia dos filtros.
+
+### [x] P0-MOBILE-04 - Redesenhar `management` mobile
+
+Problema:
+
+- Gestao mobile esta escura, mas densa demais; parece lista operacional inteira, nao cockpit.
+
+Acao:
+
+- primeira dobra com prioridades reais;
+- agrupar competicoes, locais e modulos;
+- reduzir badges e botoes pequenos;
+- garantir navegacao para modulos sem poluir.
+
+Aceite:
+
+- mobile tem hierarquia semelhante as referencias;
+- gestor entende a proxima acao sem rolar muito.
+
+Sprint 2026-05-19:
+
+- Aplicada camada responsiva em KPIs, linhas de prioridade, ações, módulos e cards de gestão.
+- Ainda precisa de sprint de composição para transformar a primeira dobra em cockpit mais editorial.
+
+### [x] P1-DESKTOP-01 - Expandir Home desktop para cockpit premium
+
+Problema:
+
+- Home desktop segue o dark, mas fica estreita e com area vazia.
+
+Acao:
+
+- hero + proximas acoes + cards laterais;
+- usar largura do desktop como referencia premium;
+- remover loading persistente da primeira dobra.
+
+Aceite:
+
+- desktop se aproxima da referencia `Jogue por perto`;
+- primeira dobra contem conteudo real, nao `Preparando sua area`.
+
+Evidencia 2026-05-19:
+
+- `desktop-home.png` em `sprint-global-web-mobile-check-2026-05-19` confirma DNA dark correto, mas ainda capturou loading na area inferior.
+- Proxima sprint deve investigar se e apenas tempo de captura ou carregamento preso/lento antes de redesenhar o cockpit.
+
+Sprint 2026-05-19:
+
+- `HomePage` passou a liberar a primeira dobra com dados base e carregar pendencias/notificacoes em segundo plano.
+- Corrigido card `Trabalho / Acesso profissional`, que aparecia branco dentro da Home dark.
+- Compactada a marca do bottom nav na Home mobile para nao brigar com os icones.
+- Validado em `docs/screenshots/sprint-home-dark-work-card-check-2026-05-19/` com console limpo em desktop e mobile.
+
+### [x] P1-DESKTOP-02 - Expandir Perfil desktop
+
+Problema:
+
+- Perfil desktop esta correto em cor, mas pobre em composicao.
+
+Acao:
+
+- hero de perfil/ranking;
+- grid de estatisticas;
+- historico recente;
+- preferencias/conta em secoes claras.
+
+Aceite:
+
+- desktop deixa de parecer card unico centralizado;
+- mobile preserva qualidade atual e ganha estatisticas.
+
+### [x] P1-ROUTE-01 - Revisar `intent=venues`
+
+Problema:
+
+- `Ver locais` navega para `#/locais?intent=venues`, mas esse estado precisa ser confirmado como canonico.
+
+Acao:
+
+- se `venues` for valido, criar visual especifico;
+- se nao, trocar destino para intent existente.
+
+Aceite:
+
+- clique `Ver locais` abre estado visual correspondente e testado.
+
+### [x] P1-ROUTE-02 - Dar estado visual claro para `#/eventos?modo=discover`
+
+Problema:
+
+- O clique `Descobrir torneios e ligas` muda query, mas a tela continua com H1 generico `Competições`.
+
+Acao:
+
+- criar subestado visual de descoberta;
+- revisar H1/subtitulo/pills;
+- garantir cards de torneio/liga descobertos.
+
+Aceite:
+
+- usuario percebe que esta em modo descoberta.
+
+Sprint continuo 2026-05-19:
+
+- `tournament-players`: lista progressiva, `Mostrar mais` e classes em accordions.
+- `tournament-games`: fases/rodadas em accordions para reduzir densidade mobile.
+- `places-match`: chamadas limitadas a 5 cards iniciais, expansao e criacao/filtros compactos.
+- `management`: competicoes limitadas a 4 itens iniciais com expansao; cards mobile compactos.
+- `profile`: hero com metricas reais, layout desktop em composicao ampla e ajuste do titulo mobile por classe dedicada.
+- `intent=venues`: confirmado como estado `directory`; highlights e acoes dos cards reforcados em dark.
+- `eventos?modo=discover`: titulo/copy propria e correcao de quebra vertical por screenshot.
+- Evidencias: `sprint-tournament-collapse-check-2026-05-19/`, `sprint-management-cockpit-check-2026-05-19/`, `sprint-places-match-compact-check-2026-05-19/`, `sprint-profile-desktop-composition-check-2026-05-19/`, `sprint-route-polish-check-2026-05-19/`, `sprint-title-fix-final-check-2026-05-19/`.
+
+### [x] P1-ROUTE-04 - Compatibilizar `#/competicoes`
+
+Problema:
+
+- Auditoria web/mobile encontrou `#/competicoes` abrindo pagina nao encontrada.
+- O menu canonico usa `#/eventos`, mas links antigos, prompts e screenshots ainda usam o termo `competicoes`.
+
+Acao:
+
+- adicionar redirect autenticado de `/competicoes` para `/eventos`;
+- validar caminho legado e caminho canonico em desktop/mobile;
+- garantir console limpo.
+
+Aceite:
+
+- `#/competicoes` nao mostra 404;
+- usuario cai no hub premium de competicoes;
+- `diagnostics-summary.json` sem eventos.
+
+Sprint 2026-05-19:
+
+- `src/App.tsx` recebeu rota de compatibilidade `<Navigate to="/eventos" replace />`.
+- Validado em `docs/screenshots/sprint-route-compat-check-2026-05-19/` para desktop e mobile.
+
+### [x] P1-ROUTE-03 - Validar `Editar perfil`
+
+Problema:
+
+- Clique em `Editar perfil` permaneceu em `#/perfil` na auditoria interativa.
+
+Acao:
+
+- confirmar se deve abrir modal;
+- se sim, capturar/estilizar modal;
+- se nao, implementar rota/estado.
+
+Aceite:
+
+- botao tem feedback visual e permite editar dados esperados.
+
+Sprint 2026-05-19:
+
+- `src/pages/ProfilePage.tsx` separou o estado de edicao em `profile-edit-card`.
+- `src/App.css` recebeu tratamento premium dark para formulario, campos, seletores, radios de privacidade e acoes.
+- Validado com clique dirigido em `#/perfil`, screenshots e diagnosticos em `docs/screenshots/sprint-profile-edit-check-2026-05-19/`.
+- `diagnostics-summary.json` sem eventos de console/rede.
+
+### [x] P1-AUTH-01 - Redesenhar login/cadastro
+
+Problema:
+
+- Console limpo, mas visual ainda nao e uma entrada premium dark do app.
+
+Acao:
+
+- hero/auth com imagem esportiva;
+- estados de login, cadastro, erro, sucesso e loading;
+- copy sem termos tecnicos;
+- validar `next`.
+
+Aceite:
+
+- `#/auth` mobile e desktop seguem DNA das referencias;
+- cadastro tem fluxo claro.
+
+Sprint 2026-05-19:
+
+- `src/pages/AuthPage.tsx` passou a usar `<form>` real para login, com Enter funcional e sem alerta de senha fora de formulario.
+- Mensagens de erro de auth foram traduzidas para linguagem de produto, sem expor texto tecnico do provedor.
+- `src/App.css` redesenhou entrada premium dark com hero esportivo, logo legivel, card escuro, campos escuros, botoes e responsividade mobile.
+- Validado antes/depois em `docs/screenshots/sprint-auth-before-check-2026-05-19/`, `docs/screenshots/sprint-auth-premium-check-2026-05-19/` e `docs/screenshots/sprint-auth-mobile-compact-check-2026-05-19/`.
+- Build aprovado e diagnosticos sem erros/warnings de runtime; restam apenas mensagens informativas do Vite/React em desktop dev.
+
+### [x] P1-PUBLIC-01 - Decidir e estruturar rotas publicas
+
+Problema:
+
+- Rotas chamadas de publicas no codigo redirecionam deslogado para auth.
+
+Acao:
+
+- decidir se local/jogador/torneio/inscricao devem ser publicos;
+- se sim, criar shell publica premium;
+- se nao, documentar como paginas autenticadas.
+
+Aceite:
+
+- comportamento bate com expectativa de produto e nao surpreende usuario.
+
+Sprint 2026-05-19:
+
+- Decisao de produto desta rodada: rotas de local, jogador, torneio, liga, inscricao e gestao permanecem autenticadas porque as telas atuais dependem de perfil/usuario para permissoes, acoes e dados pessoais.
+- `AuthRequiredRedirect` ja preservava `next`; `src/pages/AuthPage.tsx` agora comunica o retorno esperado conforme tipo de rota protegida.
+- `#/auth?next=...` recebeu aviso premium dark para local, evento e perfil de jogador, evitando surpresa ao abrir links protegidos.
+- Validado em `docs/screenshots/sprint-public-route-auth-gate-check-2026-05-19/` com auth normal e rotas protegidas em desktop/mobile.
+- Build aprovado; diagnosticos sem erros/warnings de runtime fora mensagens informativas do ambiente dev.
+
 ## [x] Sprint atual - ATP Premium Dark global frontend
 
 Status: `[x]` concluido em 2026-05-19
@@ -400,6 +819,298 @@ Validacao sprint pagina-a-pagina:
 - `npm.cmd run build` passou.
 - `node scripts\capture-visual-audit.mjs` passou e atualizou `docs/screenshots/visual-local-audit-2026-05-18/`.
 - Screenshots revisadas: `mobile-events-hub.png`, `desktop-events-hub.png`, `mobile-tournaments.png`, `mobile-places-overview.png`, `mobile-profile.png`, `mobile-management.png`, `desktop-management.png`.
+
+## Sprint atual - Rastreamento visual completo e manual de correcao
+
+Status: `[>]` prioridade atual
+
+Fonte primaria:
+
+- `docs/ATP_VISUAL_CORRECTION_MANUAL_2026_05_19.md`
+
+Evidencias:
+
+- `docs/screenshots/visual-audit-management-2026-05-19/`
+- `docs/screenshots/visual-audit-player-pure-2026-05-19/`
+- `docs/screenshots/visual-local-audit-2026-05-18/`
+
+Contexto:
+
+- O criterio anterior estava permissivo demais: algumas telas foram consideradas "ok" por funcionarem tecnicamente, mesmo ainda estando fora do patamar visual da referencia.
+- A nova regra e comparar cada screenshot contra o DNA premium dark, avaliando composicao, cor, contraste, hierarquia, responsividade, contexto de perfil e estados de erro.
+- Foram capturados dois perfis: usuario com gestao (`escalao@gmail.com`) e usuario sem gestao (`qa.jogador.puro@demo.atp.local`).
+
+Nao fazer:
+
+- nao iniciar novo sprint visual sem antes corrigir a matriz de auditoria;
+- nao marcar item como concluido so por lint/build;
+- nao esconder erros crus com CSS; erro cru precisa virar estado de produto;
+- nao tratar usuario sem gestao como caso secundario.
+
+### [>] TRACK-00 - Corrigir auditoria visual e matriz de perfis
+
+Status: `[>]` prioridade atual
+
+Problemas:
+
+- `login` nao esta sendo capturado signed-out; o screenshot atual mostra Home logada.
+- O script sobrescreve a mesma pasta e depende de um unico perfil por execucao.
+- Nao existe manifest claro por perfil/viewport/rota.
+- Full-page screenshots dificultam avaliar nav fixa e header fixo.
+
+Acoes:
+
+1. Adicionar `ATP_AUDIT_OUT_DIR` ao `scripts/capture-visual-audit.mjs`.
+2. Separar rotas publicas signed-out de rotas autenticadas.
+3. Criar matriz minima:
+   - guest: `/auth`, `/completar-cadastro` quando possivel, paginas publicas;
+   - jogador puro: Home, Locais, Competicoes, Perfil, Reservas, Aulas, Pagamentos, Ranking, Gestao bloqueada;
+   - gestor owner: Home, Gestao hub, modulos de gestao, Competition OS completo;
+   - staff parcial quando viavel: recepcao/professor/financeiro.
+4. Gerar `visual-audit-manifest.json` com email, perfil, viewport, rota, screenshot e status.
+5. Capturar viewport-only para telas com header/bottom nav fixo.
+
+Criterios de aceite:
+
+- Existem pastas separadas para guest, jogador puro e gestor.
+- Login real aparece como login, nao como Home.
+- Usuario sem gestao tem evidencias de bloqueio em `/gestao` e rotas internas.
+
+### [x] P0-ACCESS - Bloquear/estilizar rotas de gestao para usuario sem gestao
+
+Status: `[ ]` pendente
+
+Evidencia:
+
+- `visual-audit-player-pure-2026-05-19/mobile-management.png` mostra hub bloqueado corretamente.
+- `visual-audit-player-pure-2026-05-19/mobile-management-academy.png` e rotas similares mostram telas operacionais diretas.
+
+Acoes:
+
+1. Revisar guard de `/gestao/:placeId`, `/gestao/:placeId/:module` e `/locais/:placeId/admin`.
+2. Renderizar estado premium dark de acesso indisponivel para usuario sem permissao.
+3. Preservar CTA `Voltar ao inicio` e `Explorar locais`.
+4. Validar desktop/mobile para jogador puro e gestor.
+
+Criterios de aceite:
+
+- Jogador puro nao ve dashboard, dados operacionais, tabs de local ou modulos internos.
+- Gestor continua acessando os mesmos modulos.
+
+Sprint 2026-05-19:
+
+- `src/pages/PlacesPage.tsx` agora detecta rota administrativa sem local acessivel e renderiza estado `Gestao indisponivel` em vez de montar workspace operacional.
+- O bloqueio cobre `/gestao/:placeId/:module` e `/locais/:placeId/admin`, com CTAs `Voltar ao inicio` e `Explorar locais`.
+- `src/App.css` recebeu estado premium dark `management-access-denied` e botoes escuros no header de `ManagementShell`.
+- `src/lib/place-admin-data.ts` rebaixou fallbacks opcionais de workspace de `console.warn` para `console.info`, evitando ruido de erro em QA quando dados opcionais expiram.
+- Validado jogador puro em `docs/screenshots/sprint-access-final-player-pure-check-2026-05-19/` e gestor em `docs/screenshots/sprint-access-final-manager-check-2026-05-19/`.
+- Build aprovado e `diagnostics-summary.json` sem eventos nas rotas finais validadas.
+
+### [x] P0-ERRORS - Remover erros crus de pagamentos/reservas
+
+Status: `[x]` concluido
+
+Evidencia:
+
+- `mobile-my-payments.png` mostra `canceling statement due to statement timeout`.
+- Perfil puro tambem expõe erro cru em reservas/pagamentos.
+
+Acoes:
+
+1. Mapear componentes de erro em `MyPaymentsPage`, `MyReservationsPage` e chamadas relacionadas.
+2. Trocar erro tecnico por `ScreenState` premium com mensagem de produto.
+3. Adicionar acao `Tentar novamente` quando houver refetch.
+4. Registrar erro tecnico apenas em console/log interno, nao no texto visivel.
+
+Criterios de aceite:
+
+- Nenhum screenshot exibe mensagem SQL/API crua.
+- Estados de erro mantem DNA dark e orientam proxima acao.
+
+Sprint 2026-05-19:
+
+- `MyPaymentsPage`, `MyReservationsPage`, `MyLessonsPage` e `MyMatchesPage` agora usam mensagens amigaveis via `ScreenState`, com acao `Tentar novamente` onde ha refetch.
+- A copia de pagamentos removeu referencia tecnica a gateway/simulacao e ficou orientada ao usuario.
+- Build aprovado.
+- Validado em `docs/screenshots/sprint-personal-errors-final-check-2026-05-19/` para jogador puro em desktop/mobile nas rotas `/meus-pagamentos`, `/minhas-reservas`, `/minhas-aulas` e `/minhas-partidas`.
+- `diagnostics-summary.json` sem eventos e `meta.json` sem SQL/API cru visivel.
+
+### [x] P0-COMP-INTERNAL - Refazer visual interno de torneio/liga
+
+Status: `[x]` concluido
+
+Evidencia:
+
+- `mobile-tournament-games.png` tem card claro em `Resumo por classe` e tabs claras.
+- `desktop-tournament-games.png` tem inputs/selects claros em jogos.
+- `mobile-tournament-players.png` e `desktop-tournament-players.png` mostram listas/tabelas brancas.
+- `mobile-league-detail.png` ainda tem status/pills brancas.
+
+Acoes:
+
+1. Unificar `CompetitionHeader`, tabs, class switcher e status strips em dark glass.
+2. Estilizar selects, inputs, score controls e filtros internos de Competition OS.
+3. Converter listas de inscritos/jogadores de tabela branca para rows/cards dark.
+4. Garantir mobile com resumo compacto, tabs contidas e acoes principais visiveis.
+5. Validar liga e torneio nos perfis jogador e gestor.
+
+Criterios de aceite:
+
+- Nenhum bloco interno de torneio/liga usa superficie branca sem justificativa.
+- Mobile nao tem tabs cortadas, campos esmagados ou tabela branca.
+
+Sprint 2026-05-19:
+
+- `TournamentPage` removeu status cru (`approved`) nas inscricoes e passou a exibir chips de produto (`Aprovada`, `Pendente`, `Lista de espera`, `Recusada`).
+- `LeagueDetailsPage` tambem traduz status de inscricao nos metadados administrativos.
+- `App.css` recebeu camada especifica para `league-matches-page`, filtros, cards de partida, chips de estado, sala da partida, availability/chat e rows de inscricoes em dark glass.
+- Mobile de liga/partidas agora empilha cada partida em card escaneavel, sem caixas brancas de disponibilidade e sem botao cinza quebrando o DNA.
+- Torneio/jogadores usa cards de inscricao com metadados em pills e pagamento destacado em verde, sem lista branca/tabela crua.
+- Build aprovado.
+- Evidencia antes/depois em `docs/screenshots/sprint-comp-internal-before-2026-05-19/` e `docs/screenshots/sprint-comp-internal-after-2026-05-19/`; diagnostics finais sem eventos.
+
+### [x] P1-MGMT-MODULES - Dark real em modulos internos de gestao
+
+Status: `[x]` concluido
+
+Evidencia:
+
+- `mobile-management-academy.png`, `booking`, `canteen`, `clients`, `finance`, `settings`, `team` ainda exibem botoes brancos, chips claros e forms mistos.
+- Desktop desses modulos ainda tem linguagem administrativa antiga.
+
+Acoes:
+
+1. Criar padrao unico de modulo: header compacto, tabs dark, painel principal, filas/metrics dark.
+2. Remover botoes brancos de `Ir para jogador`, `Voltar para central`, `Ver pagina publica` e similares.
+3. Padronizar chips de implantacao, pendencias, status e progresso.
+4. Reduzir excesso de chips visiveis em cards mobile.
+5. Validar owner, staff parcial e jogador sem gestao.
+
+Criterios de aceite:
+
+- Modulos internos parecem parte do mesmo Management OS premium.
+- Mobile fica escaneavel sem blocos claros quebrando a tela.
+
+Sprint 2026-05-19:
+
+- `App.css` recebeu camada especifica para Management OS removendo pills brancas do shell, resumo branco da academia e cards excessivamente amarelados de financeiro/CRM.
+- `place-module-summary`, status do `PlaceAdminShell`, barra de implantacao, features, estados de cobranca e botoes secundarios agora seguem dark glass com verde/ambar controlado.
+- Rotas de validacao corrigidas para segmentos reais: `/agenda` e `/ajustes`.
+- Build aprovado.
+- Evidencia antes/depois em `docs/screenshots/sprint-mgmt-modules-before-2026-05-19/` e `docs/screenshots/sprint-mgmt-modules-after-2026-05-19/`, cobrindo hub, academia, agenda, clientes, financeiro, equipe e ajustes em desktop/mobile.
+- `diagnostics-summary.json` final sem eventos.
+
+### [x] P1-PUBLIC - Corrigir paginas publicas
+
+Status: `[x]` concluido
+
+Evidencia:
+
+- `desktop-public-place-*` exibe lateral clara/bege.
+- `mobile-public-place-*` depende de placeholder amarelo `AD`.
+- `desktop-public-player.png` usa header autenticado e layout pouco publico.
+- `mobile-public-tournament-registration.png` tem alerta rosa claro.
+
+Acoes:
+
+1. Forcar fundo dark full-bleed em paginas publicas.
+2. Criar topbar publica compacta, mesmo com usuario logado.
+3. Substituir placeholders por avatar/logo dark integrado.
+4. Criar warning/danger dark para inscricao fechada ou indisponivel.
+5. Validar guest e usuario logado.
+
+Criterios de aceite:
+
+- Paginas publicas nao mostram bege/branco fora do card intencional.
+- Conteudo publico nao parece painel autenticado.
+
+Sprint 2026-05-19:
+
+- `PublicPlayerPage` agora renderiza sem header autenticado.
+- `App.css` oculta a navegação autenticada (`BottomNav`/rail desktop) em páginas públicas e fluxos de conversão: local público, perfil público, inscrição de torneio e painel de inscrição.
+- Topbar pública, hero, cards, inputs, feedbacks e warning/danger receberam acabamento dark full-bleed.
+- `PlacePublicPage` trata logos DiceBear de iniciais como placeholder e usa iniciais em bloco dark integrado ao hero, removendo o `AD` amarelo.
+- Build aprovado.
+- Evidencia em `docs/screenshots/sprint-public-final-logged-2026-05-19/`; guest validado em `docs/screenshots/sprint-public-after-guest-2026-05-19/` com redirecionamento contextual ao auth.
+- Diagnostics finais das rotas logadas sem eventos.
+
+### [x] P1-PLACES - Elevar Locais para o padrao da referencia
+
+Status: `[x]` concluido
+
+Evidencia:
+
+- `desktop-places-overview.png` fica pequeno e vazio na area util.
+- `places-lessons` e `places-match` ainda parecem formularios/filtros antigos.
+
+Acoes:
+
+1. Reestruturar desktop Locais com hero largo, tiles e area de resultados.
+2. Refinar tiles mobile 2x2 com icones e hierarquia mais premium.
+3. Transformar filtros de aulas/jogos em painel dark compacto.
+4. Evitar textos comprimidos em chips e botoes.
+
+Criterios de aceite:
+
+- Locais web e mobile lembram a referencia visual, nao apenas uma pagina de filtros.
+
+Sprint 2026-05-19:
+
+- `PlacesPage` recebeu wrapper `page places-page` para escopar corretamente a camada visual premium sem alterar regras de negocio.
+- `App.css` recebeu camada `P1-PLACES` com fundo dark full-bleed, hero largo de descoberta, tiles 2x2 mobile, intent strip desktop, filtros compactos dark para quadras/aulas/jogos e cards de resultado integrados.
+- Corrigido corte da faixa mobile, chips claros dentro dos filtros e heranca antiga de largura minima.
+- Build aprovado.
+- Evidencia final em `docs/screenshots/sprint-places-final-2026-05-19/`, cobrindo overview, aulas, jogos e reservas em desktop/mobile.
+- `diagnostics-summary.json` final sem eventos.
+
+### [x] P1-PROFILE-RANKING - Reforcar perfil, perfil publico e ranking
+
+Status: `[x]` concluido
+
+Acoes:
+
+1. Perfil desktop em layout 2 colunas com hero, stats e historico.
+2. Perfil publico com hero proprio e menos ruido de shell autenticado.
+3. Ranking com avatar placeholder dark, podium/top 3 e rows menos administrativos.
+4. Validar mobile/web.
+
+Criterios de aceite:
+
+- Perfil/ranking ficam proximos da referencia de perfil/ranking premium.
+
+Sprint 2026-05-19:
+
+- `RankingPage` recebeu bloco `ranking-podium-strip` com Top 3 do recorte usando os dados ja carregados.
+- Linhas do ranking agora exibem avatar dark com iniciais e posicao em badge escuro, removendo placeholders brancos no mobile.
+- `App.css` recebeu camada de polimento para pódio, avatares, badges, perfil e ranking, mantendo hero e filtros no padrao dark.
+- Perfil publico foi validado na rota real `/jogadores/:playerId`; rota incorreta anterior apenas comprovou fallback 404.
+- Build aprovado.
+- Evidencia em `docs/screenshots/sprint-profile-ranking-final-2026-05-19/`; refinamento mobile final em `docs/screenshots/sprint-profile-ranking-final-2-2026-05-19/`.
+- Diagnostics finais sem eventos.
+
+### [x] P2-POLISH-GLOBAL - Ajuste fino de densidade e componentes
+
+Status: `[x]` concluido
+
+Acoes:
+
+1. Revisar spacing, radius, pesos de fonte e icones.
+2. Remover variacoes redundantes de card glass.
+3. Garantir que todos os estados vazios tenham CTA claro.
+4. Revisar bottom nav/header em viewport-only.
+
+Criterios de aceite:
+
+- Nenhuma rota principal parece ter sido feita por uma familia visual diferente.
+
+Sprint 2026-05-19:
+
+- Varredura ampla em Home, Competicoes, Locais, Reservas, Aulas, Pagamentos, Gestao, Perfil e Ranking em desktop/mobile.
+- Estados vazios de `Meus pagamentos` e `Minhas aulas` receberam CTA claro para fluxos existentes (`Locais > quadras` e `Locais > aulas`).
+- Mantidos os ajustes globais de cards dark, bottom nav/header e estados vazios sem criar novas ferramentas ou regras.
+- Build aprovado.
+- Evidencia em `docs/screenshots/sprint-polish-before-2026-05-19/` e `docs/screenshots/sprint-polish-after-2026-05-19/`.
+- `diagnostics-summary.json` final sem eventos.
 
 ## Sprint atual - Referencias visuais ATP premium
 

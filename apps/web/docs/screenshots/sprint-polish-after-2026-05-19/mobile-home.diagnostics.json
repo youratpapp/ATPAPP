@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "home",
+  "hash": "#/inicio",
+  "screenshot": "mobile-home.png",
+  "events": []
+}

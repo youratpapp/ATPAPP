@@ -22328,6 +22328,37 @@ label {
   backdrop-filter: blur(10px);
 }
 
+.profile-hero-stats {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 760px;
+  width: 100%;
+}
+
+.profile-hero-stats span {
+  background: rgba(3, 9, 20, 0.46);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  display: grid;
+  gap: 3px;
+  padding: 12px;
+  text-align: center;
+}
+
+.profile-hero-stats strong {
+  color: #ffffff;
+  font-size: 1.45rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.profile-hero-stats small {
+  color: rgba(226, 232, 240, 0.78);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
 .profile-purpose-tabs,
 .profile-rows-card,
 .profile-activity-card {
@@ -22366,7 +22397,86 @@ label {
   font-weight: 950;
 }
 
+@media (min-width: 900px) {
+  .profile-photo-block {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 118px minmax(0, 1fr) minmax(320px, 0.82fr);
+    grid-template-rows: auto auto auto;
+    justify-items: start;
+    min-height: 300px;
+    padding: 34px;
+    text-align: left;
+  }
+
+  .profile-photo-block .profile-photo {
+    grid-row: 1 / 4;
+  }
+
+  .profile-name,
+  .profile-location {
+    text-align: left;
+  }
+
+  .profile-identity-pills {
+    justify-content: flex-start;
+    max-width: none;
+  }
+
+  .profile-hero-stats {
+    align-self: stretch;
+    grid-column: 3;
+    grid-row: 1 / 4;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
+  }
+
+  .profile-hero-stats span {
+    align-content: center;
+    min-height: 96px;
+    text-align: left;
+  }
+
+  .profile-rows-card:has(.profile-row:not(.tappable)) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .profile-rows-card:has(.profile-row:not(.tappable)) .profile-row {
+    border-bottom: 0;
+    border-right: 1px solid rgba(197, 210, 220, 0.52);
+  }
+
+  .profile-rows-card:has(.profile-row:not(.tappable)) .profile-row:last-child {
+    border-right: 0;
+  }
+}
+
 @media (max-width: 760px) {
+  .app-shell--player .page-header:has(+ .profile-photo-block) {
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .app-shell--player .page-header:has(+ .profile-photo-block) h1 {
+    font-size: 2.7rem !important;
+    line-height: 0.96;
+  }
+
+  .app-shell--player .page-header:has(+ .profile-photo-block) .ph-icon-btn {
+    height: 56px;
+    width: 56px;
+  }
+
+  .profile-hero-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profile-hero-stats span {
+    border-radius: 14px;
+    padding: 10px;
+  }
+
   .app-shell--competition {
     background:
       radial-gradient(circle at 86% 4%, rgba(216, 244, 73, 0.16), transparent 13rem),
@@ -24997,6 +25107,27 @@ label {
   color: var(--pdark-text-main);
 }
 
+.app-shell--player .place-card .place-public-highlights span {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--player .place-card .place-public-highlights strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--player .place-card .pc-actions {
+  border-top-color: var(--pdark-border-soft);
+}
+
+.app-shell--player .place-card .pc-actions button:not(.primary),
+.app-shell--player .place-card .pc-actions summary {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
 .app-shell--player .open-matches-panel > h2,
 .app-shell--player .open-matches-panel > p {
   color: var(--pdark-text-main);
@@ -25004,6 +25135,11 @@ label {
 
 .app-shell--player .open-match-list {
   gap: 10px;
+}
+
+.app-shell--player .open-match-expand-action {
+  min-height: 44px;
+  width: 100%;
 }
 
 .app-shell--player .open-match-row {
@@ -25110,6 +25246,37 @@ label {
   .app-shell--player .place-public-overview-card,
   .app-shell--player .place-public-about-card {
     border-radius: 20px;
+  }
+
+  .app-shell--player .open-match-create-intro {
+    align-items: stretch;
+    border-radius: 16px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .app-shell--player .open-match-create-intro small {
+    text-align: left;
+  }
+
+  .app-shell--player .open-match-create-intro button {
+    min-height: 42px;
+    width: 100%;
+  }
+
+  .app-shell--player .open-match-row {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .app-shell--player .open-match-main {
+    align-items: stretch;
+  }
+
+  .app-shell--player .open-match-actions {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -25649,6 +25816,11 @@ label {
   padding: 16px;
 }
 
+.app-shell--management .management-expand-action {
+  justify-self: stretch;
+  min-height: 46px;
+}
+
 .app-shell--management .management-place-list {
   gap: 14px;
 }
@@ -25849,6 +26021,28 @@ label {
   .app-shell--management .management-onboarding-panel,
   .app-shell--management .management-empty-state {
     border-radius: 18px;
+  }
+
+  .app-shell--management .management-competition-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--management .management-competition-card {
+    display: grid;
+    gap: 7px;
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .app-shell--management .management-competition-card strong {
+    font-size: 1rem;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .app-shell--management .management-competition-card button {
+    margin-top: 4px;
+    min-height: 42px;
   }
 
   .app-shell--management .management-priority-row {
@@ -28261,6 +28455,36 @@ body:has(.app-shell--competition),
   z-index: 1;
 }
 
+.app-shell--competition .events-page-header.mode-discover h1,
+.app-shell--competition .events-page-header.mode-discover .page-intro {
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  min-width: 0;
+  width: 100%;
+}
+
+.app-shell--competition .events-page-header.mode-discover h1::before {
+  color: #ffffff;
+  content: "Descobrir competicoes";
+  display: block;
+  font-size: 3.2rem;
+  line-height: 1;
+  overflow-wrap: normal;
+  white-space: normal;
+  word-break: normal;
+}
+
+.app-shell--competition .events-page-header.mode-discover .page-intro::before {
+  color: rgba(203, 213, 225, 0.82);
+  content: "Encontre torneios, ligas e proximos desafios sem misturar com a sua fila de jogador.";
+  display: block;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 10px;
+  max-width: 720px;
+}
+
 .app-shell--player:not(:has(.home-player-os--visual)) .profile-photo-block,
 .app-shell--player:not(:has(.home-player-os--visual)) .places-intent-panel,
 .app-shell--player:not(:has(.home-player-os--visual)) .personal-area-header,
@@ -28345,6 +28569,10 @@ body:has(.app-shell--competition),
 }
 
 @media (max-width: 760px) {
+  .app-shell--competition .events-page-header.mode-discover h1::before {
+    font-size: 2.35rem;
+  }
+
   .app-shell--player:not(:has(.home-player-os--visual)) .app-content,
   .app-shell--competition .app-content {
     background:
@@ -28642,5 +28870,2667 @@ body:has(.app-shell--competition),
 
   .app-shell--competition .competition-work-link {
     justify-content: space-between;
+  }
+}
+
+/* =====================================================================
+   ATP Premium Dark Sprint - rota critica mobile e estados tecnicos
+   ===================================================================== */
+
+.screen-state,
+.app-shell--player .screen-state,
+.app-shell--competition .screen-state,
+.app-shell--management .screen-state {
+  background:
+    linear-gradient(135deg, rgba(14, 29, 47, 0.92), rgba(5, 15, 29, 0.94)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border: 1px solid rgba(128, 164, 197, 0.28);
+  border-radius: 18px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  color: rgba(247, 250, 252, 0.96);
+}
+
+.screen-state h2,
+.screen-state h3,
+.screen-state strong {
+  color: #fff;
+}
+
+.screen-state p,
+.screen-state small {
+  color: rgba(220, 230, 240, 0.78);
+}
+
+.app-shell--competition input,
+.app-shell--competition select,
+.app-shell--competition textarea,
+.app-shell--player input,
+.app-shell--player select,
+.app-shell--player textarea {
+  background: rgba(5, 15, 29, 0.74) !important;
+  border-color: rgba(128, 164, 197, 0.26) !important;
+  color: #fff !important;
+}
+
+.app-shell--competition option,
+.app-shell--player option {
+  background: #071426;
+  color: #fff;
+}
+
+.app-shell--competition .registration-row,
+.app-shell--competition .organizer-pending-card,
+.app-shell--competition .organizer-pending-grid button,
+.app-shell--competition .league-public-class-filter,
+.app-shell--competition .league-public-class-filter.select-mode,
+.app-shell--competition .league-public-class-filter.chip-mode,
+.app-shell--competition .competition-overview-card,
+.app-shell--competition .competition-public-person-row,
+.app-shell--competition .my-matches-panel,
+.app-shell--competition .my-match-row,
+.app-shell--competition .tournament-chat-admin-tools,
+.app-shell--competition .tournament-chat-list,
+.app-shell--competition .tournament-court-agenda-panel,
+.app-shell--competition .tournament-podium-panel,
+.app-shell--competition .class-completion-list button,
+.app-shell--competition .staff-candidate-picker,
+.app-shell--competition .staff-candidate-option,
+.app-shell--competition .tournament-completion-guard,
+.app-shell--competition .tournament-completion-guard.ready {
+  background: rgba(7, 20, 38, 0.82) !important;
+  border-color: rgba(128, 164, 197, 0.24) !important;
+  color: #fff !important;
+}
+
+.app-shell--competition .card:not(.auth-card):not(.modal-card) {
+  background:
+    linear-gradient(145deg, rgba(8, 22, 40, 0.9), rgba(5, 15, 29, 0.84)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 340px auto no-repeat !important;
+  border-color: rgba(128, 164, 197, 0.22) !important;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24) !important;
+  color: #fff !important;
+}
+
+.app-shell--competition .card:not(.auth-card):not(.modal-card) h1,
+.app-shell--competition .card:not(.auth-card):not(.modal-card) h2,
+.app-shell--competition .card:not(.auth-card):not(.modal-card) h3,
+.app-shell--competition .card:not(.auth-card):not(.modal-card) h4,
+.app-shell--competition .card:not(.auth-card):not(.modal-card) strong,
+.app-shell--competition .league-public-class-filter strong,
+.app-shell--competition .league-public-class-filter label {
+  color: #fff !important;
+}
+
+.app-shell--competition .card:not(.auth-card):not(.modal-card) p,
+.app-shell--competition .card:not(.auth-card):not(.modal-card) small,
+.app-shell--competition .league-public-class-filter p,
+.app-shell--competition .league-public-class-filter small {
+  color: rgba(220, 230, 240, 0.74) !important;
+}
+
+.app-shell--competition .match-score-input,
+.app-shell--competition .my-match-result-tools input,
+.app-shell--competition .tournament-score-row input,
+.app-shell--competition .tournament-match-room-score input,
+.app-shell--competition .league-public-class-filter select,
+.app-shell--competition .tournament-public-class-filter select,
+.app-shell--competition .tournament-admin-ops select,
+.app-shell--competition .tournament-admin-ops input,
+.app-shell--competition .tournament-admin-ops textarea,
+.app-shell--competition .registration-row input,
+.app-shell--competition .registration-row select,
+.app-shell--competition .registration-row textarea,
+.app-shell--competition .registration-row input[type="checkbox"],
+.app-shell--competition .tournament-admin-ops input[type="checkbox"] {
+  background: rgba(5, 15, 29, 0.86) !important;
+  border: 1px solid rgba(128, 164, 197, 0.34) !important;
+  color: #fff !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.app-shell--competition .registration-row input[type="checkbox"],
+.app-shell--competition .tournament-admin-ops input[type="checkbox"] {
+  accent-color: #22c55e;
+}
+
+.app-shell--competition .match-score-disclosure,
+.app-shell--competition .my-match-score-fields,
+.app-shell--competition .tournament-match-room-score,
+.app-shell--competition .match-input-row,
+.app-shell--competition .tournament-score-row,
+.app-shell--competition .tournament-score-tiebreak-row,
+.app-shell--competition .match-status-legend,
+.app-shell--competition .tournament-public-match-summary,
+.app-shell--competition .tournament-public-match-list,
+.app-shell--competition .tournament-overview-kpi,
+.app-shell--competition .tournament-summary-context,
+.app-shell--competition .payment-paid-label,
+.app-shell--competition .match-operational-state,
+.app-shell--competition .match-confirmation-summary,
+.app-shell--competition .match-score-summary,
+.app-shell--competition .match-schedule-info,
+.app-shell--competition .match-card-origin,
+.app-shell--competition .match-card-status,
+.app-shell--competition .tournament-public-match-row,
+.app-shell--competition .tournament-phase-section > p,
+.app-shell--competition .tournament-admin-ops .subtle {
+  background: rgba(5, 15, 29, 0.72) !important;
+  border-color: rgba(128, 164, 197, 0.22) !important;
+  color: rgba(247, 250, 252, 0.92) !important;
+}
+
+.app-shell--competition .match-operational-state strong,
+.app-shell--competition .match-score-summary,
+.app-shell--competition .match-card-status.done,
+.app-shell--competition .match-card-status.pending {
+  color: #fff !important;
+}
+
+.app-shell--competition .match-operational-state span,
+.app-shell--competition .match-confirmation-summary {
+  color: rgba(220, 230, 240, 0.76) !important;
+}
+
+.app-shell--competition .match-score-disclosure summary {
+  background: rgba(10, 28, 48, 0.88) !important;
+  border: 1px solid rgba(128, 164, 197, 0.24);
+  border-radius: 12px;
+  color: #fff !important;
+}
+
+.app-shell--competition .match-score-disclosure summary small,
+.app-shell--competition .my-match-score-map,
+.app-shell--competition .my-match-score-map span {
+  color: rgba(220, 230, 240, 0.72) !important;
+}
+
+.app-shell--competition .my-match-score-map strong {
+  background: rgba(43, 212, 117, 0.14) !important;
+  border: 1px solid rgba(43, 212, 117, 0.24);
+  color: #8af2b1 !important;
+}
+
+.app-shell--competition .cluster > button:not(.primary):not(.danger),
+.app-shell--competition .match-admin-actions button:not(.danger),
+.app-shell--competition .registration-row button:not(.danger),
+.app-shell--competition .league-public-class-filter button:not(.active),
+.app-shell--competition .tournament-admin-ops > button:not(.primary):not(.danger) {
+  background: rgba(8, 24, 43, 0.86) !important;
+  border-color: rgba(128, 164, 197, 0.26) !important;
+  color: #fff !important;
+}
+
+.app-shell--competition .cluster > button.primary,
+.app-shell--competition .registration-row button.primary,
+.app-shell--competition .tournament-admin-ops button.primary {
+  background: linear-gradient(135deg, #22c55e, #0f9f5a) !important;
+  border-color: rgba(43, 212, 117, 0.34) !important;
+  color: #fff !important;
+}
+
+.app-shell--competition .tournament-chat-pinned {
+  background: linear-gradient(135deg, rgba(92, 62, 20, 0.64), rgba(7, 20, 38, 0.9));
+  border-color: rgba(245, 191, 89, 0.34);
+}
+
+.app-shell--competition .tournament-chat-pinned p,
+.app-shell--competition .tournament-chat-admin-tools h4,
+.app-shell--competition .tournament-chat-admin-tools strong,
+.app-shell--competition .tournament-court-agenda-head h3,
+.app-shell--competition .tournament-podium-head h3,
+.app-shell--competition .registration-row strong,
+.app-shell--competition .my-match-row strong,
+.app-shell--competition .organizer-pending-card strong,
+.app-shell--competition .class-completion-list strong {
+  color: #fff;
+}
+
+.app-shell--competition .tournament-chat-admin-tools small,
+.app-shell--competition .tournament-chat-admin-tools label,
+.app-shell--competition .tournament-court-agenda-row small,
+.app-shell--competition .tournament-court-agenda-row span,
+.app-shell--competition .tournament-podium-grid small,
+.app-shell--competition .registration-row small,
+.app-shell--competition .my-match-row small,
+.app-shell--competition .organizer-pending-card small,
+.app-shell--competition .class-completion-list small {
+  color: rgba(220, 230, 240, 0.72);
+}
+
+.app-shell--competition .tournament-podium-panel {
+  background:
+    linear-gradient(135deg, rgba(7, 20, 38, 0.86), rgba(12, 33, 43, 0.78)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") right center / 360px auto no-repeat;
+}
+
+.app-shell--player .personal-area-card {
+  background:
+    linear-gradient(145deg, rgba(8, 22, 40, 0.88), rgba(7, 20, 38, 0.76)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 320px auto no-repeat;
+  border-color: rgba(128, 164, 197, 0.24);
+}
+
+.app-shell--player .personal-area-row {
+  background: rgba(5, 15, 29, 0.72);
+  border-color: rgba(128, 164, 197, 0.22);
+}
+
+.app-shell--player .personal-area-row:hover,
+.app-shell--player .personal-area-row:focus-visible {
+  border-color: rgba(43, 212, 117, 0.48);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+}
+
+.app-shell--player .personal-area-row strong,
+.app-shell--player .personal-area-card h2 {
+  color: #fff;
+}
+
+.app-shell--player .personal-area-row small,
+.app-shell--player .personal-area-header p {
+  color: rgba(220, 230, 240, 0.74);
+}
+
+.app-shell--player .home-pro-workspace {
+  background:
+    linear-gradient(135deg, rgba(7, 20, 38, 0.92), rgba(6, 60, 42, 0.72)),
+    url("./assets/pdark-management-work-hero.png") center / cover no-repeat !important;
+  border: 1px solid rgba(43, 212, 117, 0.24) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24) !important;
+  color: #fff !important;
+}
+
+.app-shell--player .home-pro-workspace--compact {
+  border-style: solid !important;
+}
+
+.app-shell--player .home-pro-workspace .home-context-eyebrow,
+.app-shell--player .home-pro-workspace h2 {
+  color: #fff !important;
+}
+
+.app-shell--player .home-pro-workspace .home-pro-note {
+  color: rgba(220, 230, 240, 0.78) !important;
+}
+
+.app-shell--player .home-pro-workspace .section-title .link {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: #8af2b1 !important;
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .page,
+  .app-shell--player .page,
+  .app-shell--management .page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .app-shell--competition .tournament-panel-kpis,
+  .app-shell--management .management-hub-kpis,
+  .app-shell--management .management-shell-stats {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .tournament-panel-kpi,
+  .app-shell--management .management-hub-kpis article,
+  .app-shell--management .management-shell-stats article {
+    min-height: 82px;
+    padding: 12px;
+  }
+
+  .app-shell--competition .tournament-admin-ops,
+  .app-shell--competition .my-matches-panel,
+  .app-shell--competition .league-public-class-filter,
+  .app-shell--competition .tournament-chat-card,
+  .app-shell--competition .tournament-court-agenda-panel,
+  .app-shell--competition .tournament-podium-panel {
+    border-radius: 16px;
+    margin-left: 0;
+    margin-right: 0;
+    overflow: hidden;
+    padding: 12px;
+  }
+
+  .app-shell--competition .tournament-admin-ops {
+    display: grid;
+    gap: 10px;
+  }
+
+  .app-shell--competition .league-public-class-filter {
+    display: grid !important;
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--competition .league-public-class-filter select,
+  .app-shell--competition .league-public-class-filter button,
+  .app-shell--competition .tournament-admin-ops select,
+  .app-shell--competition .tournament-admin-ops input,
+  .app-shell--competition .tournament-admin-ops textarea {
+    border-radius: 12px !important;
+    min-height: 42px;
+    width: 100%;
+  }
+
+  .app-shell--competition .registration-row {
+    align-items: stretch;
+    border: 1px solid rgba(128, 164, 197, 0.22);
+    border-radius: 14px;
+    display: grid;
+    gap: 10px;
+    margin: 8px 0;
+    padding: 12px;
+  }
+
+  .app-shell--competition .registration-row > div,
+  .app-shell--competition .registration-row > label {
+    display: grid;
+    gap: 6px;
+  }
+
+  .app-shell--competition .registration-row > * {
+    min-width: 0;
+  }
+
+  .app-shell--competition .registration-row button,
+  .app-shell--competition .match-admin-actions button,
+  .app-shell--competition .my-match-actions button,
+  .app-shell--competition .tournament-chat-message-actions button {
+    min-height: 38px;
+    width: 100%;
+  }
+
+  .app-shell--competition .match-card {
+    background:
+      linear-gradient(145deg, rgba(8, 22, 40, 0.94), rgba(7, 20, 38, 0.82)),
+      url("./assets/pdark-empty-state-court-texture.png") right bottom / 260px auto no-repeat;
+    border-color: rgba(128, 164, 197, 0.24);
+    border-radius: 16px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    padding: 12px;
+  }
+
+  .app-shell--competition .tournament-games-card,
+  .app-shell--competition .tournament-games-card > *,
+  .app-shell--competition .tournament-phase-section {
+    min-width: 0;
+  }
+
+  .app-shell--competition .tournament-phase-section {
+    background: rgba(4, 14, 27, 0.58) !important;
+    border: 1px solid rgba(128, 164, 197, 0.16);
+    border-radius: 16px;
+    padding: 10px;
+  }
+
+  .app-shell--competition .match-status-legend {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .match-row-main,
+  .app-shell--competition .my-match-main {
+    align-items: stretch;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--competition .match-player-row {
+    display: grid;
+    gap: 6px;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .app-shell--competition .match-player-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .app-shell--competition .match-row-context,
+  .app-shell--competition .match-score-disclosure,
+  .app-shell--competition .match-admin-actions,
+  .app-shell--competition .my-match-actions,
+  .app-shell--competition .my-match-result-tools {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--competition .tournament-chat-compose,
+  .app-shell--competition .tournament-chat-message-meta,
+  .app-shell--competition .tournament-court-agenda-head,
+  .app-shell--competition .tournament-podium-head {
+    align-items: stretch;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--competition .tournament-court-agenda-grid,
+  .app-shell--competition .tournament-podium-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--competition .tournament-chat-list {
+    max-height: none;
+  }
+
+  .app-shell--player .personal-area-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player .personal-area-card {
+    border-radius: 18px;
+    padding: 14px;
+  }
+
+  .app-shell--player .personal-area-row {
+    align-items: stretch;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 74px;
+    padding: 12px;
+    text-align: left;
+  }
+
+  .app-shell--player .personal-area-row .status-pill {
+    justify-self: start;
+  }
+
+  .open-match-row {
+    background:
+      linear-gradient(145deg, rgba(8, 22, 40, 0.92), rgba(7, 20, 38, 0.8)),
+      url("./assets/pdark-empty-state-court-texture.png") right bottom / 260px auto no-repeat;
+    border-color: rgba(128, 164, 197, 0.24);
+    border-radius: 16px;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
+  }
+
+  .open-match-main,
+  .open-match-actions {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .open-match-actions button,
+  .open-match-actions .open-match-more,
+  .open-match-actions .open-match-more summary {
+    width: 100%;
+  }
+
+  .management-priority-row,
+  .management-place-row,
+  .management-competition-card,
+  .management-invite-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .management-row-tasks,
+  .management-row-actions,
+  .management-row-modules {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .management-row-task,
+  .management-row-actions button,
+  .management-row-modules button {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* Sprint hardening: tournament pages can render outside the themed shell in public/deep-link flows. */
+.league-public-class-filter,
+.league-public-class-filter.select-mode,
+.league-public-class-filter.chip-mode,
+.tournament-public-class-filter,
+.competition-scope-selector,
+.competition-tabs {
+  background:
+    linear-gradient(145deg, rgba(8, 22, 40, 0.94), rgba(5, 15, 29, 0.88)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 300px auto no-repeat !important;
+  border-color: rgba(128, 164, 197, 0.24) !important;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24) !important;
+  color: #fff !important;
+}
+
+.league-public-class-filter span,
+.league-public-class-filter strong,
+.league-public-class-filter label,
+.tournament-public-class-filter span,
+.tournament-public-class-filter strong,
+.tournament-public-class-filter label,
+.competition-scope-selector span,
+.competition-scope-selector strong,
+.competition-tabs span,
+.competition-tabs small {
+  color: #fff !important;
+}
+
+.league-public-class-filter small,
+.league-public-class-filter p,
+.tournament-public-class-filter small,
+.tournament-public-class-filter p {
+  color: rgba(220, 230, 240, 0.74) !important;
+}
+
+.league-public-class-filter select,
+.tournament-public-class-filter select,
+.competition-scope-selector select {
+  appearance: none;
+  background:
+    linear-gradient(135deg, rgba(5, 15, 29, 0.94), rgba(10, 28, 48, 0.92)) !important;
+  border: 1px solid rgba(128, 164, 197, 0.32) !important;
+  border-radius: 12px !important;
+  color: #fff !important;
+  font-weight: 900;
+  min-height: 42px;
+}
+
+.competition-tabs {
+  border-color: rgba(128, 164, 197, 0.22) !important;
+}
+
+.competition-tabs button {
+  background: rgba(8, 24, 43, 0.84) !important;
+  border-color: rgba(128, 164, 197, 0.18) !important;
+  color: rgba(220, 230, 240, 0.76) !important;
+}
+
+.competition-tabs button.active {
+  background: linear-gradient(135deg, #22c55e, #0f9f5a) !important;
+  border-color: rgba(43, 212, 117, 0.36) !important;
+  color: #fff !important;
+}
+
+.match-player-name,
+.match-schedule-info,
+.match-card-origin,
+.match-card-status,
+.match-score-summary,
+.match-confirmation-summary,
+.match-operational-state {
+  background: rgba(5, 15, 29, 0.78) !important;
+  border-color: rgba(128, 164, 197, 0.26) !important;
+  color: rgba(247, 250, 252, 0.94) !important;
+}
+
+.match-player-name.winner {
+  background: rgba(31, 211, 111, 0.12) !important;
+  border-color: rgba(43, 212, 117, 0.46) !important;
+  color: #dfffea !important;
+}
+
+.match-player-vs {
+  background: rgba(5, 15, 29, 0.9) !important;
+  border-color: rgba(128, 164, 197, 0.28) !important;
+  color: rgba(220, 230, 240, 0.8) !important;
+}
+
+.registration-row-list {
+  display: grid;
+  gap: 10px;
+}
+
+.registration-expand-action {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.tournament-player-class-panel {
+  background: rgba(5, 15, 29, 0.62);
+  border: 1px solid rgba(128, 164, 197, 0.22);
+  border-radius: 16px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.tournament-player-class-panel > summary {
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  list-style: none;
+  padding: 12px 14px;
+}
+
+.tournament-player-class-panel > summary::-webkit-details-marker {
+  display: none;
+}
+
+.tournament-player-class-panel > summary span {
+  color: #fff !important;
+  font-weight: 950;
+  overflow-wrap: anywhere;
+}
+
+.tournament-player-class-panel > summary strong {
+  background: rgba(43, 212, 117, 0.16);
+  border: 1px solid rgba(43, 212, 117, 0.28);
+  border-radius: 999px;
+  color: #8af2b1 !important;
+  min-width: 36px;
+  padding: 4px 10px;
+  text-align: center;
+}
+
+.tournament-phase-section > summary,
+.tournament-phase-summary {
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 4px 2px 12px;
+}
+
+.tournament-phase-section > summary::-webkit-details-marker {
+  display: none;
+}
+
+.tournament-phase-summary span {
+  color: #fff !important;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.tournament-phase-summary strong {
+  background: rgba(43, 212, 117, 0.14);
+  border: 1px solid rgba(43, 212, 117, 0.28);
+  border-radius: 999px;
+  color: #8af2b1 !important;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+.tournament-phase-section:not([open]) {
+  padding-bottom: 10px;
+}
+
+.tournament-player-class-panel > div {
+  border-top: 1px solid rgba(128, 164, 197, 0.14) !important;
+  margin: 0 12px !important;
+}
+
+@media (max-width: 760px) {
+  .league-public-class-filter,
+  .tournament-public-class-filter,
+  .competition-scope-selector {
+    align-items: stretch !important;
+    border-radius: 16px !important;
+    display: grid !important;
+    gap: 10px !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    margin-inline: 0 !important;
+    padding: 12px !important;
+  }
+
+  .competition-scope-selector select {
+    max-width: none !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .competition-tabs {
+    border-radius: 16px !important;
+    gap: 6px !important;
+    padding: 6px !important;
+  }
+
+  .competition-tabs button {
+    min-width: 86px !important;
+    padding: 8px 10px !important;
+  }
+
+  .tournament-public-class-filter label,
+  .league-public-class-filter.select-mode label {
+    display: grid !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+  }
+
+  .match-player-row {
+    gap: 6px !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+  }
+
+  .match-player-name {
+    border-radius: 10px !important;
+    font-size: 12px !important;
+    min-height: 36px !important;
+    overflow-wrap: anywhere;
+    padding: 8px !important;
+  }
+
+  .app-shell--competition .match-row-context {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .match-row-context > * {
+    align-content: center;
+    min-height: 34px;
+  }
+
+  .app-shell--competition .match-operational-state {
+    grid-column: 1 / -1;
+  }
+
+  .app-shell--competition .registration-row-list {
+    gap: 8px;
+  }
+
+  .app-shell--competition .tournament-player-class-panel > summary {
+    padding: 11px 12px;
+  }
+
+  .app-shell--competition .tournament-phase-summary {
+    padding: 2px 0 8px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand {
+    flex: 0 0 auto;
+    gap: 0;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand img {
+    height: 40px;
+    width: 40px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand span,
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-context,
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-group-label {
+    display: none !important;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav button {
+    min-width: 58px;
+    padding: 8px 8px;
+  }
+}
+
+/* Sprint route/profile hardening after screenshot review. */
+.app-shell--competition .events-page-header.mode-discover > div {
+  max-width: 620px;
+  min-width: 360px;
+  width: 44%;
+}
+
+.app-shell--competition .events-page-header.mode-discover .page-intro::before {
+  max-width: 560px;
+}
+
+.app-shell--competition .events-page-header.mode-discover .page-intro {
+  display: none !important;
+}
+
+.app-shell--competition .events-page-header.mode-discover > div::after {
+  color: rgba(203, 213, 225, 0.82);
+  content: "Encontre torneios, ligas e proximos desafios sem misturar com a sua fila de jogador.";
+  display: block;
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.4;
+  margin-top: 12px;
+  max-width: 560px;
+  width: 100%;
+}
+
+@media (max-width: 760px) {
+  .app-shell--player .profile-page-title h1 {
+    font-size: 2.6rem !important;
+    line-height: 0.98 !important;
+  }
+
+  .app-shell--player .profile-page-title .ph-icon-btn {
+    height: 56px;
+    width: 56px;
+  }
+
+  .app-shell--player .page-header:has(+ .profile-photo-block) h1 {
+    font-size: 2.6rem !important;
+    line-height: 0.98 !important;
+  }
+
+  .app-shell--competition .events-page-header.mode-discover > div {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* Sprint P1-ROUTE-03: premium edit profile state. */
+.app-shell--player .profile-edit-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.94), rgba(6, 17, 33, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  box-shadow: var(--pdark-card-shadow);
+  color: #ffffff;
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  padding: 22px;
+}
+
+.app-shell--player .profile-edit-card::before {
+  color: #4ade80;
+  content: "Dados do atleta";
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-shell--player .profile-edit-card label {
+  color: rgba(226, 232, 240, 0.86);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.app-shell--player .profile-edit-card input,
+.app-shell--player .profile-edit-card select {
+  background: rgba(3, 9, 20, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  color: #ffffff;
+  font-weight: 850;
+  min-height: 48px;
+}
+
+.app-shell--player .profile-edit-card input::placeholder {
+  color: rgba(203, 213, 225, 0.58);
+}
+
+.app-shell--player .profile-edit-card .row {
+  align-items: start;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.app-shell--player .profile-edit-card .row > div {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.app-shell--player .profile-edit-card .profile-visibility-control {
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.app-shell--player .profile-edit-card .profile-visibility-control label {
+  background: rgba(3, 9, 20, 0.44);
+  border-color: rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  min-width: 0;
+}
+
+.app-shell--player .profile-edit-card .profile-visibility-control label.active {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.34), rgba(7, 60, 85, 0.52));
+  border-color: rgba(74, 222, 128, 0.46);
+}
+
+.app-shell--player .profile-edit-card .profile-visibility-control strong {
+  color: #ffffff;
+}
+
+.app-shell--player .profile-edit-card .profile-visibility-control small {
+  color: rgba(203, 213, 225, 0.76);
+}
+
+.app-shell--player .profile-edit-actions {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 4px;
+  padding-top: 16px;
+}
+
+.app-shell--player .profile-edit-actions button:not(.primary) {
+  background: rgba(15, 28, 46, 0.9);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(241, 245, 249, 0.92);
+}
+
+.app-shell--player .profile-edit-actions button.primary {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(74, 222, 128, 0.5);
+  color: #ffffff;
+  box-shadow: 0 14px 34px rgba(34, 197, 94, 0.24);
+}
+
+@media (max-width: 760px) {
+  .app-shell--player .profile-page-title h1,
+  .app-shell--player .page-header.profile-page-title h1,
+  .app-shell--player .page-header:has(+ .profile-photo-block).profile-page-title h1 {
+    font-size: 2.15rem !important;
+    line-height: 1 !important;
+  }
+
+  .app-shell--player .profile-edit-card {
+    border-radius: 22px;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .app-shell--player .profile-edit-card .row,
+  .app-shell--player .profile-edit-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player .profile-edit-actions button {
+    width: 100%;
+  }
+}
+
+/* Sprint P1-AUTH-01: premium dark entry screen. */
+.auth-page {
+  align-items: center;
+  background:
+    radial-gradient(circle at 86% 8%, rgba(34, 197, 94, 0.22), transparent 24rem),
+    radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.1), transparent 22rem),
+    linear-gradient(90deg, rgba(3, 9, 20, 0.96), rgba(3, 9, 20, 0.58)),
+    url("./assets/pdark-onboarding-hero.png") center / cover no-repeat fixed,
+    #030914;
+  justify-items: center;
+  padding: clamp(20px, 4vw, 48px);
+}
+
+.auth-stage {
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.94) 0%, rgba(4, 14, 29, 0.72) 48%, rgba(4, 14, 29, 0.18) 100%),
+    var(--auth-image, url("./assets/pdark-onboarding-hero.png")) center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 28px;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.42);
+  gap: clamp(24px, 4vw, 64px);
+  min-height: min(720px, calc(100vh - 44px));
+  padding: clamp(28px, 5vw, 60px);
+}
+
+.auth-stage::after {
+  background:
+    linear-gradient(120deg, transparent 38%, rgba(255, 255, 255, 0.08) 38.4% 39%, transparent 39.4%),
+    radial-gradient(circle at 78% 20%, rgba(216, 244, 73, 0.14), transparent 14rem);
+}
+
+.auth-brand-logo,
+.auth-card .auth-logo {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 18px;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.22);
+  filter: none;
+  padding: 10px 14px;
+}
+
+.auth-brand-logo {
+  width: 172px;
+}
+
+.auth-brand-panel {
+  align-content: center;
+  background:
+    linear-gradient(180deg, rgba(8, 20, 36, 0.86), rgba(5, 14, 28, 0.72));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.auth-brand-panel h2 {
+  font-size: clamp(2.6rem, 4.8vw, 4.25rem);
+  max-width: 11ch;
+}
+
+.auth-brand-panel li {
+  background: rgba(15, 28, 46, 0.74);
+  border-color: rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+}
+
+.auth-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.94), rgba(6, 17, 33, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  box-shadow: var(--pdark-card-shadow);
+}
+
+.auth-card .auth-logo {
+  margin-bottom: 18px;
+  width: min(210px, 72%);
+}
+
+.auth-card h1 {
+  color: #ffffff;
+  font-size: 1.7rem;
+  font-weight: 950;
+}
+
+.auth-card .auth-sub {
+  color: rgba(203, 213, 225, 0.8);
+  font-weight: 760;
+}
+
+.auth-return-note {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  border-radius: 14px;
+  color: #bbf7d0;
+  font-size: 0.84rem;
+  font-weight: 850;
+  line-height: 1.35;
+  margin: -6px 0 18px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.auth-card label {
+  color: rgba(226, 232, 240, 0.82);
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.auth-card input {
+  background: rgba(3, 9, 20, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  color: #ffffff;
+  font-weight: 850;
+}
+
+.auth-card input::placeholder {
+  color: rgba(203, 213, 225, 0.58);
+}
+
+.auth-google-btn,
+.auth-card button.secondary {
+  background: rgba(15, 28, 46, 0.88);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(241, 245, 249, 0.94);
+}
+
+.auth-google-btn:hover:not(:disabled),
+.auth-card button.secondary:hover:not(:disabled) {
+  background: rgba(18, 58, 46, 0.9);
+  border-color: rgba(74, 222, 128, 0.34);
+  color: #ffffff;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.auth-card .feedback {
+  background: rgba(3, 9, 20, 0.48);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(241, 245, 249, 0.9);
+}
+
+.auth-card .feedback.success {
+  background: rgba(22, 163, 74, 0.16);
+  border-color: rgba(74, 222, 128, 0.32);
+  color: #bbf7d0;
+}
+
+.auth-card .feedback.error {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(248, 113, 113, 0.34);
+  color: #fecaca;
+}
+
+@media (max-width: 920px) {
+  .auth-page {
+    min-height: 100dvh;
+    padding: 0;
+  }
+
+  .auth-stage {
+    border: 0;
+    border-radius: 0;
+    gap: 18px;
+    min-height: 100dvh;
+    padding: max(18px, env(safe-area-inset-top)) 16px max(22px, env(safe-area-inset-bottom));
+  }
+
+  .auth-brand-panel {
+    align-content: end;
+    justify-items: start;
+    min-height: 248px;
+    padding: 18px;
+    text-align: left;
+  }
+
+  .auth-brand-logo {
+    width: 132px;
+  }
+
+  .auth-brand-panel h2 {
+    font-size: clamp(2.15rem, 10vw, 3.1rem);
+    line-height: 1;
+    max-width: 11ch;
+  }
+
+  .auth-brand-panel p {
+    display: block;
+    font-size: 0.95rem;
+    max-width: 30ch;
+  }
+
+  .auth-brand-panel ul {
+    display: none;
+  }
+
+  .auth-card {
+    padding: 22px;
+  }
+
+  .auth-card .auth-logo {
+    width: min(172px, 62%);
+  }
+}
+
+@media (max-width: 520px) {
+  .auth-stage {
+    gap: 12px;
+    grid-template-rows: auto auto;
+    padding: max(12px, env(safe-area-inset-top)) 12px max(16px, env(safe-area-inset-bottom));
+  }
+
+  .auth-brand-panel {
+    border-radius: 22px;
+    gap: 12px;
+    min-height: 168px;
+    padding: 16px;
+  }
+
+  .auth-brand-logo {
+    border-radius: 15px;
+    padding: 7px 10px;
+    width: 112px;
+  }
+
+  .auth-brand-panel h2 {
+    font-size: clamp(1.72rem, 8vw, 2.18rem);
+    max-width: 13ch;
+  }
+
+  .auth-brand-panel p {
+    display: none;
+  }
+
+  .auth-card {
+    border-radius: 24px;
+    padding: 18px;
+  }
+
+  .auth-card .auth-logo {
+    display: none;
+  }
+
+  .auth-card h1 {
+    font-size: 1.35rem;
+  }
+
+  .auth-card .auth-sub {
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+  }
+
+  .auth-card input,
+  .auth-card button.primary,
+  .auth-card button.secondary,
+  .auth-google-btn {
+    min-height: 46px;
+  }
+
+  .auth-divider {
+    margin-bottom: 8px;
+    margin-top: 12px;
+  }
+
+  .auth-actions {
+    gap: 8px;
+    margin-top: 10px;
+  }
+}
+
+/* Sprint P0-ACCESS: protected management routes for player-only users. */
+.management-access-denied {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.94), rgba(6, 17, 33, 0.9)),
+    url("./assets/pdark-management-work-hero.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 26px;
+  box-shadow: var(--pdark-card-shadow);
+  color: #ffffff;
+  display: grid;
+  gap: 16px;
+  margin: 0 auto;
+  max-width: 760px;
+  min-height: 360px;
+  overflow: hidden;
+  padding: clamp(24px, 4vw, 42px);
+  place-content: center;
+  position: relative;
+}
+
+.management-access-denied::before {
+  background: linear-gradient(90deg, rgba(3, 9, 20, 0.94), rgba(3, 9, 20, 0.52));
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.management-access-denied > * {
+  max-width: 560px;
+  position: relative;
+  z-index: 1;
+}
+
+.management-access-denied > span {
+  color: #4ade80;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.management-access-denied h2 {
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 950;
+  line-height: 1;
+  margin: 0;
+}
+
+.management-access-denied p {
+  color: rgba(203, 213, 225, 0.84);
+  font-weight: 760;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.management-access-denied div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.management-access-denied button {
+  min-width: 170px;
+}
+
+.app-shell--management .management-shell-actions > button,
+.app-shell--player .management-shell-actions > button {
+  background: rgba(15, 28, 46, 0.88);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(241, 245, 249, 0.94);
+}
+
+.app-shell--management .management-shell-actions > button:hover,
+.app-shell--management .management-shell-actions > button:focus-visible,
+.app-shell--player .management-shell-actions > button:hover,
+.app-shell--player .management-shell-actions > button:focus-visible {
+  background: rgba(18, 58, 46, 0.9);
+  border-color: rgba(74, 222, 128, 0.34);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .management-access-denied {
+    border-radius: 24px;
+    min-height: 420px;
+    padding: 22px;
+  }
+
+  .management-access-denied div {
+    display: grid;
+  }
+
+  .management-access-denied button {
+    width: 100%;
+  }
+}
+
+/* Sprint P0-COMP-INTERNAL: tournament and league internals with premium dark DNA. */
+.app-shell--competition .league-matches-page {
+  background:
+    linear-gradient(145deg, rgba(8, 22, 40, 0.94), rgba(5, 15, 29, 0.9)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 420px auto no-repeat !important;
+  border-color: rgba(128, 164, 197, 0.24) !important;
+  box-shadow: var(--pdark-card-shadow) !important;
+  color: #ffffff !important;
+}
+
+.app-shell--competition .league-match-filter-bar {
+  background: rgba(6, 18, 34, 0.72) !important;
+  border: 1px solid rgba(128, 164, 197, 0.2);
+  border-radius: 18px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  margin: 14px 0 18px;
+  padding: 14px;
+}
+
+.app-shell--competition .league-match-filter-bar label {
+  color: rgba(226, 232, 240, 0.78) !important;
+  display: grid;
+  font-size: 0.75rem;
+  font-weight: 950;
+  gap: 7px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.app-shell--competition .league-match-filter-bar select,
+.app-shell--competition .league-match-filter-bar button {
+  background: rgba(3, 9, 20, 0.72) !important;
+  border: 1px solid rgba(128, 164, 197, 0.26) !important;
+  border-radius: 13px !important;
+  color: #ffffff !important;
+  min-height: 44px;
+}
+
+.app-shell--competition .league-round-head {
+  background: rgba(15, 28, 46, 0.78) !important;
+  border: 1px solid rgba(128, 164, 197, 0.18);
+  border-radius: 16px;
+  color: #ffffff !important;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+}
+
+.app-shell--competition .league-round-head span {
+  color: rgba(203, 213, 225, 0.76) !important;
+}
+
+.app-shell--competition .league-match-card {
+  background:
+    linear-gradient(135deg, rgba(9, 24, 43, 0.94), rgba(5, 17, 31, 0.88)) !important;
+  border: 1px solid rgba(128, 164, 197, 0.22) !important;
+  border-left: 3px solid rgba(74, 222, 128, 0.5) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  color: #ffffff !important;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.app-shell--competition .league-match-card.state-warning {
+  border-left-color: rgba(250, 204, 21, 0.72) !important;
+}
+
+.app-shell--competition .league-match-card.state-danger {
+  border-left-color: rgba(248, 113, 113, 0.72) !important;
+}
+
+.app-shell--competition .league-match-main {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(260px, 1.25fr) minmax(320px, 1.5fr) auto;
+  padding: 14px;
+}
+
+.app-shell--competition .league-match-index {
+  background: rgba(34, 197, 94, 0.18) !important;
+  border: 1px solid rgba(74, 222, 128, 0.24);
+  border-radius: 999px;
+  color: #4ade80 !important;
+  display: inline-flex;
+  font-size: 0.74rem;
+  font-weight: 950;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+
+.app-shell--competition .league-match-title {
+  color: #ffffff !important;
+  font-size: 1rem;
+  font-weight: 950;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-shell--competition .league-match-sub {
+  color: rgba(203, 213, 225, 0.72) !important;
+  font-size: 0.82rem;
+  font-weight: 760;
+  margin: 4px 0 0;
+}
+
+.app-shell--competition .league-match-context {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, auto));
+}
+
+.app-shell--competition .league-match-state-pill,
+.app-shell--competition .league-match-status,
+.app-shell--competition .league-match-next-state {
+  background: rgba(5, 15, 29, 0.66) !important;
+  border: 1px solid rgba(128, 164, 197, 0.22) !important;
+  color: rgba(241, 245, 249, 0.94) !important;
+}
+
+.app-shell--competition .league-match-state-pill.ok,
+.app-shell--competition .league-match-state-pill.info {
+  background: rgba(34, 197, 94, 0.15) !important;
+  border-color: rgba(74, 222, 128, 0.3) !important;
+  color: #86efac !important;
+}
+
+.app-shell--competition .league-match-state-pill.warning {
+  background: rgba(245, 158, 11, 0.16) !important;
+  border-color: rgba(251, 191, 36, 0.32) !important;
+  color: #fde68a !important;
+}
+
+.app-shell--competition .league-match-state-pill.danger {
+  background: rgba(239, 68, 68, 0.16) !important;
+  border-color: rgba(248, 113, 113, 0.34) !important;
+  color: #fecaca !important;
+}
+
+.app-shell--competition .league-match-next-state {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.app-shell--competition .league-match-next-state span {
+  color: rgba(203, 213, 225, 0.78) !important;
+}
+
+.app-shell--competition .league-match-next-state strong {
+  color: #ffffff !important;
+}
+
+.app-shell--competition .league-match-actions .ghost,
+.app-shell--competition .league-match-pagination button {
+  background: rgba(15, 28, 46, 0.92) !important;
+  border-color: rgba(128, 164, 197, 0.26) !important;
+  color: #ffffff !important;
+  min-width: 120px;
+}
+
+.app-shell--competition .league-match-actions .ghost:hover,
+.app-shell--competition .league-match-pagination button:hover {
+  background: rgba(22, 163, 74, 0.82) !important;
+  border-color: rgba(74, 222, 128, 0.36) !important;
+}
+
+.app-shell--competition .league-match-pagination {
+  background: rgba(15, 28, 46, 0.72) !important;
+  border: 1px solid rgba(128, 164, 197, 0.18);
+  border-radius: 16px;
+  color: rgba(203, 213, 225, 0.78) !important;
+  padding: 12px;
+}
+
+.app-shell--competition .league-room-panel,
+.app-shell--competition .league-chat-box,
+.app-shell--competition .league-scheduler-run,
+.app-shell--competition .league-scheduler-run p,
+.app-shell--competition .league-common-availability,
+.app-shell--competition .league-chat-other p {
+  background: rgba(5, 15, 29, 0.76) !important;
+  border-color: rgba(128, 164, 197, 0.24) !important;
+  color: #ffffff !important;
+}
+
+.app-shell--competition .league-room-state.state-warning,
+.app-shell--competition .league-room-state.state-danger,
+.app-shell--competition .league-room-state.state-ok {
+  background: rgba(5, 15, 29, 0.8) !important;
+}
+
+.app-shell--competition .league-room-panel h4,
+.app-shell--competition .league-room-state strong,
+.app-shell--competition .league-common-availability strong,
+.app-shell--competition .league-scheduler-run strong,
+.app-shell--competition .league-chat-other p,
+.app-shell--competition .league-chat-me p {
+  color: #ffffff !important;
+}
+
+.app-shell--competition .league-room-state p,
+.app-shell--competition .league-room-state span,
+.app-shell--competition .league-common-availability span,
+.app-shell--competition .league-availability-list p,
+.app-shell--competition .league-scheduler-run span,
+.app-shell--competition .league-scheduler-run em,
+.app-shell--competition .league-chat-me span,
+.app-shell--competition .league-chat-other span {
+  color: rgba(203, 213, 225, 0.76) !important;
+}
+
+.app-shell--competition .league-chat-me p {
+  background: rgba(22, 163, 74, 0.22) !important;
+}
+
+.app-shell--competition .registration-row {
+  background: rgba(5, 15, 29, 0.68) !important;
+  border: 1px solid rgba(128, 164, 197, 0.2) !important;
+  border-radius: 16px !important;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 14px !important;
+}
+
+.app-shell--competition .registration-row > div:first-child > div:first-child {
+  color: #ffffff;
+  font-weight: 950;
+  overflow-wrap: anywhere;
+}
+
+.app-shell--competition .registration-row-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 6px;
+}
+
+.app-shell--competition .registration-row-meta > span {
+  background: rgba(15, 28, 46, 0.74);
+  border: 1px solid rgba(128, 164, 197, 0.18);
+  border-radius: 999px;
+  color: rgba(203, 213, 225, 0.78);
+  padding: 4px 8px;
+}
+
+.app-shell--competition .registration-status-chip {
+  color: #bbf7d0 !important;
+}
+
+.app-shell--competition .registration-status-chip.status-pending,
+.app-shell--competition .registration-status-chip.status-waitlist {
+  color: #fde68a !important;
+}
+
+.app-shell--competition .registration-status-chip.status-rejected {
+  color: #fecaca !important;
+}
+
+.app-shell--competition .payment-paid-label {
+  background: rgba(22, 163, 74, 0.14) !important;
+  border: 1px solid rgba(74, 222, 128, 0.26) !important;
+  border-radius: 999px !important;
+  color: #86efac !important;
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 5px 9px !important;
+  width: fit-content;
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .league-matches-page {
+    border-radius: 18px !important;
+    padding: 12px !important;
+  }
+
+  .app-shell--competition .league-match-filter-bar {
+    border-radius: 15px;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .app-shell--competition .league-match-main {
+    align-items: stretch;
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px;
+  }
+
+  .app-shell--competition .league-match-context {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--competition .league-match-card {
+    border-radius: 16px !important;
+    border-left-width: 2px !important;
+  }
+
+  .app-shell--competition .league-match-state-pill,
+  .app-shell--competition .league-match-status,
+  .app-shell--competition .league-match-next-state {
+    border-radius: 12px !important;
+    display: grid;
+    gap: 4px;
+    min-height: 34px;
+    padding: 7px 9px !important;
+    white-space: normal;
+  }
+
+  .app-shell--competition .league-match-actions .ghost {
+    width: 100%;
+  }
+
+  .app-shell--competition .registration-row {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px !important;
+  }
+
+  .app-shell--competition .registration-row .cluster {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Sprint P1-MGMT-MODULES: remove remaining light pills and mobile white blocks. */
+.app-shell--management .place-admin-shell-status span,
+.app-shell--management .place-module-context > small,
+.app-shell--management .place-setup-done {
+  background: rgba(5, 15, 29, 0.78) !important;
+  border: 1px solid rgba(74, 222, 128, 0.24) !important;
+  border-radius: 999px !important;
+  color: #bbf7d0 !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.app-shell--management .place-admin-shell-status span b,
+.app-shell--management .place-module-context > small b {
+  color: #4ade80 !important;
+}
+
+.app-shell--management .place-module-context {
+  background: rgba(3, 9, 20, 0.44);
+  border: 1px solid rgba(128, 164, 197, 0.16);
+  border-radius: 18px;
+  padding: 12px;
+}
+
+.app-shell--management .place-admin-shell-features span {
+  background: rgba(5, 15, 29, 0.74) !important;
+  border-color: rgba(74, 222, 128, 0.22) !important;
+  color: #bbf7d0 !important;
+}
+
+.app-shell--management .place-management-health {
+  background: rgba(226, 232, 240, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.app-shell--management .place-management-health span {
+  background: linear-gradient(90deg, #bbf7d0, #22c55e) !important;
+  border: 0 !important;
+  display: block;
+  height: 100%;
+}
+
+.app-shell--management .place-module-summary {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(5, 15, 29, 0.84)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border: 1px solid rgba(128, 164, 197, 0.22) !important;
+  border-radius: 20px !important;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 14px;
+  padding: 12px !important;
+}
+
+.app-shell--management .place-module-summary div {
+  background: rgba(5, 15, 29, 0.72) !important;
+  border: 1px solid rgba(128, 164, 197, 0.18) !important;
+  border-radius: 16px !important;
+  color: #ffffff !important;
+  min-height: 82px;
+  padding: 12px !important;
+}
+
+.app-shell--management .place-module-summary strong {
+  color: #4ade80 !important;
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.app-shell--management .place-module-summary span {
+  color: rgba(203, 213, 225, 0.78) !important;
+  font-weight: 850;
+}
+
+.app-shell--management .academy-workspace-row strong em,
+.app-shell--management .status-pill,
+.app-shell--management .place-staff-list em,
+.app-shell--management .settings-check em {
+  background: rgba(5, 15, 29, 0.72) !important;
+  border: 1px solid rgba(74, 222, 128, 0.22) !important;
+  color: #bbf7d0 !important;
+}
+
+.app-shell--management .finance-receivable-row.due,
+.app-shell--management .crm-contact-row.due,
+.app-shell--management .canteen-sale-note.danger,
+.app-shell--management .canteen-low-stock-strip b {
+  background:
+    linear-gradient(135deg, rgba(9, 24, 43, 0.94), rgba(22, 39, 34, 0.82)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border-color: rgba(245, 158, 11, 0.32) !important;
+  border-left: 3px solid rgba(245, 158, 11, 0.62) !important;
+  color: #ffffff !important;
+}
+
+.app-shell--management .finance-receivable-row.due span,
+.app-shell--management .finance-receivable-row.due small,
+.app-shell--management .crm-contact-row.due span,
+.app-shell--management .crm-contact-row.due small {
+  color: rgba(226, 232, 240, 0.78) !important;
+}
+
+.app-shell--management .finance-receivable-row.due .status-pill,
+.app-shell--management .crm-contact-row.due .status-pill {
+  background: rgba(245, 158, 11, 0.16) !important;
+  border-color: rgba(251, 191, 36, 0.34) !important;
+  color: #fde68a !important;
+}
+
+.app-shell--management .finance-priority-strip button:not(.active),
+.app-shell--management .crm-priority-list button:not(.active),
+.app-shell--management .place-action-queue button,
+.app-shell--management .academy-workspace-row button:not(.primary),
+.app-shell--management .academy-pending-actions button:not(.primary),
+.app-shell--management .crm-contact-row button:not(.primary),
+.app-shell--management .finance-receivable-row button:not(.primary) {
+  background: rgba(15, 28, 46, 0.9) !important;
+  border-color: rgba(128, 164, 197, 0.2) !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 760px) {
+  .app-shell--management .place-module-context {
+    gap: 10px;
+  }
+
+  .app-shell--management .place-admin-shell-status {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--management .place-admin-shell-status span,
+  .app-shell--management .place-module-context > small,
+  .app-shell--management .place-setup-done {
+    border-radius: 16px !important;
+    min-height: 42px;
+    padding: 10px 12px !important;
+    white-space: normal;
+  }
+
+  .app-shell--management .place-module-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--management .place-module-summary div {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    min-height: 58px;
+  }
+
+  .app-shell--management .finance-receivable-row,
+  .app-shell--management .crm-contact-row {
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .app-shell--management .finance-receivable-row button,
+  .app-shell--management .crm-contact-row button {
+    width: 100%;
+  }
+}
+
+/* Sprint P1-PUBLIC: make public/conversion pages feel public, not authenticated chrome. */
+.app-shell:has(.place-public-page) .bottom-nav,
+.app-shell:has(.player-public-page) .bottom-nav,
+.app-shell:has(.tournament-registration-layout) .bottom-nav,
+.app-shell:has(.competition-registration-panel) .bottom-nav {
+  display: none !important;
+}
+
+.app-shell:has(.place-public-page) .app-content,
+.app-shell:has(.player-public-page) .app-content,
+.app-shell:has(.tournament-registration-layout) .app-content,
+.app-shell:has(.competition-registration-panel) .app-content {
+  min-height: 100dvh;
+  padding-bottom: clamp(28px, 5vw, 64px) !important;
+}
+
+.app-shell--player .place-public-page,
+.app-shell--player .player-public-page {
+  margin-inline: auto;
+  max-width: 1180px;
+  width: min(100%, 1180px);
+}
+
+.app-shell--player .place-public-topbar {
+  align-items: center;
+  border-radius: 18px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+}
+
+.app-shell--player .place-public-topbar > div {
+  min-width: 0;
+  text-align: center;
+}
+
+.app-shell--player .place-public-topbar strong {
+  color: #ffffff;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--player .place-public-topbar span {
+  color: rgba(203, 213, 225, 0.72);
+  font-size: 0.76rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-shell--player .place-public-hero-logo {
+  background:
+    linear-gradient(145deg, rgba(5, 15, 29, 0.96), rgba(7, 35, 34, 0.9)) !important;
+  border: 1px solid rgba(74, 222, 128, 0.28) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  display: grid;
+  font-size: clamp(2rem, 4vw, 4rem) !important;
+  font-weight: 950 !important;
+  place-items: center;
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+}
+
+.app-shell--player .place-public-hero-logo img {
+  border-radius: inherit;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.app-shell--player .player-public-page {
+  padding-top: clamp(16px, 3vw, 32px);
+}
+
+.app-shell--player .player-public-page .back-link {
+  margin-bottom: 14px;
+}
+
+.app-shell--player .player-public-hero {
+  display: grid;
+  gap: clamp(18px, 3vw, 28px);
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.app-shell--player .player-public-avatar {
+  background:
+    linear-gradient(145deg, rgba(5, 15, 29, 0.94), rgba(7, 35, 34, 0.86)) !important;
+  border-color: rgba(74, 222, 128, 0.24) !important;
+  color: #ffffff !important;
+}
+
+.app-shell--player .player-public-stats {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.app-shell--competition .feedback.error,
+.app-shell--competition .form-error,
+.app-shell--competition .competition-registration-panel .feedback.error {
+  background: rgba(127, 29, 29, 0.34) !important;
+  border: 1px solid rgba(248, 113, 113, 0.36) !important;
+  border-radius: 14px !important;
+  color: #fecaca !important;
+}
+
+.app-shell--competition .tournament-registration-status span:first-child,
+.app-shell--competition .home-league-chip,
+.app-shell--player .place-public-match-status,
+.app-shell--player .place-public-class-status-chip {
+  background: rgba(5, 15, 29, 0.72) !important;
+  border: 1px solid rgba(74, 222, 128, 0.22) !important;
+  color: #bbf7d0 !important;
+}
+
+@media (max-width: 720px) {
+  .app-shell--player .place-public-page,
+  .app-shell--player .player-public-page {
+    width: 100%;
+  }
+
+  .app-shell--player .place-public-topbar {
+    grid-template-columns: auto 1fr;
+  }
+
+  .app-shell--player .place-public-topbar > div {
+    text-align: right;
+  }
+
+  .app-shell--player .place-public-topbar button:last-child {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .app-shell--player .place-public-hero-logo {
+    border-radius: 18px !important;
+    min-height: 86px;
+    min-width: 86px;
+  }
+
+  .app-shell--player .player-public-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player .player-public-avatar {
+    height: 112px;
+    width: 112px;
+  }
+
+  .app-shell--player .player-public-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Sprint P1-PLACES: discovery hub and filters aligned to ATP premium dark. */
+.app-shell--player:has(.places-page) .app-content {
+  background:
+    radial-gradient(circle at 82% 12%, rgba(36, 120, 74, 0.24), transparent 30%),
+    linear-gradient(180deg, rgba(3, 9, 20, 0.84), rgba(3, 9, 20, 0.98)),
+    url("./assets/pdark-club-public-hero.png") center top / cover fixed no-repeat,
+    #030914 !important;
+}
+
+.app-shell--player:has(.places-page) .page.places-page,
+.app-shell--player:has(.places-page) .places-page {
+  gap: clamp(14px, 2vw, 22px);
+  margin-inline: auto;
+  max-width: 1220px;
+  width: min(100%, 1220px);
+}
+
+.app-shell--player:has(.places-page) .places-intent-panel {
+  align-items: stretch;
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.82) 46%, rgba(6, 17, 31, 0.26)),
+    url("./assets/pdark-court-reservation-thumb.png") center / cover no-repeat !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 26px;
+  box-shadow: var(--pdark-card-shadow);
+  display: grid;
+  gap: clamp(20px, 3vw, 38px);
+  grid-template-columns: minmax(300px, 0.9fr) minmax(460px, 1.35fr);
+  min-height: clamp(360px, 38vw, 470px);
+  overflow: hidden;
+  padding: clamp(24px, 4vw, 46px);
+  position: relative;
+}
+
+.app-shell--player:has(.places-page) .places-intent-panel::before {
+  background: linear-gradient(180deg, rgba(74, 222, 128, 0.22), transparent);
+  content: "";
+  height: 2px;
+  inset: 0 18% auto 0;
+  opacity: 0.9;
+  position: absolute;
+}
+
+.app-shell--player:has(.places-page) .places-intent-panel::after {
+  background:
+    radial-gradient(circle at 78% 68%, rgba(132, 204, 22, 0.18), transparent 24%),
+    url("./assets/pdark-club-public-hero.png") center / cover no-repeat !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  content: "";
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 100%;
+  opacity: 0.78;
+  position: relative;
+  z-index: 0;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy,
+.app-shell--player:has(.places-page) .places-intent-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy {
+  align-content: center;
+  display: grid;
+  gap: 12px;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy h2 {
+  color: #ffffff;
+  font-size: clamp(2.65rem, 5vw, 4.9rem);
+  letter-spacing: 0;
+  line-height: 0.95;
+  max-width: 620px;
+  text-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy p {
+  color: rgba(226, 232, 240, 0.88);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.45;
+  max-width: 460px;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy span,
+.app-shell--player:has(.places-page) .places-filter-head span,
+.app-shell--player:has(.places-page) .court-discovery-kicker {
+  color: #4ade80 !important;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-shell--player:has(.places-page) .places-intent-actions {
+  align-content: end;
+  align-self: end;
+  display: grid;
+  gap: 12px;
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 620px;
+  justify-self: end;
+  width: 100%;
+}
+
+.app-shell--player:has(.places-page) .places-intent-card,
+.app-shell--player:has(.places-page) .places-intent-strip button {
+  background:
+    linear-gradient(180deg, rgba(13, 28, 47, 0.94), rgba(6, 17, 33, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  min-height: 116px;
+  overflow: hidden;
+  padding: 18px;
+  text-align: left;
+}
+
+.app-shell--player:has(.places-page) .places-intent-card:hover,
+.app-shell--player:has(.places-page) .places-intent-strip button:hover {
+  border-color: rgba(74, 222, 128, 0.38);
+  transform: translateY(-1px);
+}
+
+.app-shell--player:has(.places-page) .places-intent-card strong,
+.app-shell--player:has(.places-page) .places-intent-strip button strong {
+  color: #ffffff !important;
+  font-size: 1.02rem;
+  line-height: 1.08;
+}
+
+.app-shell--player:has(.places-page) .places-intent-card span,
+.app-shell--player:has(.places-page) .places-intent-strip button span {
+  color: rgba(203, 213, 225, 0.82) !important;
+  line-height: 1.25;
+}
+
+.app-shell--player:has(.places-page) .places-intent-card small {
+  color: #86efac !important;
+  font-weight: 950;
+}
+
+.app-shell--player:has(.places-page) .places-intent-card.active,
+.app-shell--player:has(.places-page) .places-intent-strip button.active {
+  background: linear-gradient(135deg, #22c55e, #15803d) !important;
+  border-color: rgba(134, 239, 172, 0.48);
+  box-shadow: 0 18px 42px rgba(34, 197, 94, 0.2);
+}
+
+.app-shell--player:has(.places-page) .places-intent-strip {
+  background: rgba(3, 9, 20, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: visible;
+  padding: 10px;
+}
+
+.app-shell--player:has(.places-page) .places-intent-strip button {
+  min-height: 76px;
+  padding: 14px;
+}
+
+.app-shell--player:has(.places-page) .places-discovery-filter,
+.app-shell--player:has(.places-page) .open-matches-panel,
+.app-shell--player:has(.places-page) .court-discovery-results,
+.app-shell--player:has(.places-page) .places-start-state,
+.app-shell--player:has(.places-page) .places-directory-toolbar {
+  background:
+    linear-gradient(180deg, rgba(10, 24, 42, 0.94), rgba(5, 14, 28, 0.88)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 24px;
+  box-shadow: var(--pdark-card-shadow);
+  color: #ffffff;
+}
+
+.app-shell--player:has(.places-page) .places-discovery-filter {
+  display: grid;
+  gap: 14px;
+  padding: clamp(14px, 2vw, 20px);
+}
+
+.app-shell--player:has(.places-page) .places-discovery-filter:not(.compact)::before {
+  border-radius: 18px;
+  min-height: 128px;
+}
+
+.app-shell--player:has(.places-page) .places-filter-head,
+.app-shell--player:has(.places-page) .places-filter-grid,
+.app-shell--player:has(.places-page) .places-filter-mobile-toggle {
+  background: rgba(255, 255, 255, 0.055) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  color: #ffffff;
+}
+
+.app-shell--player:has(.places-page) .places-filter-head {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 14px;
+}
+
+.app-shell--player:has(.places-page) .places-filter-head strong {
+  color: #ffffff !important;
+  font-size: 1.15rem;
+  line-height: 1.16;
+}
+
+.app-shell--player:has(.places-page) .places-filter-head small,
+.app-shell--player:has(.places-page) .places-filter-head b {
+  color: rgba(203, 213, 225, 0.8) !important;
+}
+
+.app-shell--player:has(.places-page) .places-filter-head b {
+  background: rgba(34, 197, 94, 0.12) !important;
+  border: 1px solid rgba(74, 222, 128, 0.28) !important;
+  border-radius: 999px;
+  color: #bbf7d0 !important;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1.15;
+  max-width: 100%;
+  padding: 8px 12px;
+  text-align: center;
+  white-space: normal;
+}
+
+.app-shell--player:has(.places-page) .places-filter-grid {
+  gap: 10px;
+  padding: 12px;
+}
+
+.app-shell--player:has(.places-page) .places-filter-grid input,
+.app-shell--player:has(.places-page) .places-filter-grid select {
+  background: rgba(3, 9, 20, 0.6) !important;
+  border-color: rgba(148, 163, 184, 0.24) !important;
+  color: #ffffff !important;
+  min-height: 44px;
+}
+
+.app-shell--player:has(.places-page) .places-filter-grid label,
+.app-shell--player:has(.places-page) .places-filter-grid legend {
+  color: rgba(203, 213, 225, 0.84) !important;
+  font-size: 0.74rem;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+}
+
+.app-shell--player:has(.places-page) .places-filter-grid button,
+.app-shell--player:has(.places-page) .places-filter-search-button,
+.app-shell--player:has(.places-page) .class-filter-submit,
+.app-shell--player:has(.places-page) .court-discovery-cta {
+  min-height: 44px;
+}
+
+.app-shell--player:has(.places-page) .court-discovery-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.app-shell--player:has(.places-page) .court-discovery-card,
+.app-shell--player:has(.places-page) .open-match-row,
+.app-shell--player:has(.places-page) .place-card {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.9), rgba(8, 20, 36, 0.82)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 18px;
+  color: #ffffff;
+}
+
+.app-shell--player:has(.places-page) .court-discovery-card strong,
+.app-shell--player:has(.places-page) .open-match-row strong,
+.app-shell--player:has(.places-page) .place-card .pc-name {
+  color: #ffffff !important;
+}
+
+.app-shell--player:has(.places-page) .court-discovery-card small,
+.app-shell--player:has(.places-page) .court-discovery-card em,
+.app-shell--player:has(.places-page) .open-match-row span,
+.app-shell--player:has(.places-page) .open-match-row small,
+.app-shell--player:has(.places-page) .place-card .pc-meta,
+.app-shell--player:has(.places-page) .place-public-description {
+  color: rgba(203, 213, 225, 0.82) !important;
+}
+
+@media (max-width: 980px) {
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel::after,
+  .app-shell--player:has(.places-page) .places-intent-actions {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel::after {
+    min-height: 180px;
+  }
+
+  .app-shell--player:has(.places-page) .court-discovery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--player:has(.places-page) .page.places-page,
+  .app-shell--player:has(.places-page) .places-page {
+    gap: 12px;
+    width: 100%;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    border-radius: 22px;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-copy h2 {
+    font-size: clamp(2.15rem, 11vw, 3.1rem);
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-copy p {
+    font-size: 0.92rem;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel::after {
+    min-height: 138px;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-actions,
+  .app-shell--player:has(.places-page) .places-intent-strip {
+    display: grid;
+    gap: 9px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 100%;
+    overflow: visible !important;
+    width: 100%;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-strip {
+    border-radius: 18px;
+    padding: 8px;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-card,
+  .app-shell--player:has(.places-page) .places-intent-strip button {
+    border-radius: 16px;
+    min-height: 78px;
+    min-width: 0 !important;
+    padding: 12px;
+    width: 100% !important;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-card strong,
+  .app-shell--player:has(.places-page) .places-intent-strip button strong {
+    font-size: 0.94rem;
+    overflow-wrap: anywhere;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-card span,
+  .app-shell--player:has(.places-page) .places-intent-card small,
+  .app-shell--player:has(.places-page) .places-intent-strip button span {
+    font-size: 0.72rem;
+    line-height: 1.18;
+  }
+
+  .app-shell--player:has(.places-page) .places-discovery-filter,
+  .app-shell--player:has(.places-page) .open-matches-panel,
+  .app-shell--player:has(.places-page) .court-discovery-results,
+  .app-shell--player:has(.places-page) .places-start-state {
+    border-radius: 20px;
+    padding: 12px;
+  }
+
+  .app-shell--player:has(.places-page) .places-discovery-filter:not(.compact)::before {
+    min-height: 96px;
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-head {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-head b {
+    justify-self: start;
+    padding: 7px 10px;
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-head strong {
+    font-size: 1rem;
+  }
+
+  .app-shell--player:has(.places-page) .places-start-state strong {
+    font-size: 1.18rem;
+    line-height: 1.18;
+  }
+
+  .app-shell--player:has(.places-page) .places-start-state p {
+    font-size: 0.92rem;
+    line-height: 1.38;
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-mobile-toggle {
+    align-items: start;
+    display: grid;
+    gap: 4px;
+    padding: 12px;
+    text-align: left;
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-mobile-toggle span {
+    color: #ffffff;
+    font-size: 0.92rem;
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-mobile-toggle small {
+    color: rgba(203, 213, 225, 0.74);
+    font-size: 0.72rem;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-grid.court,
+  .app-shell--player:has(.places-page) .places-filter-grid.classes,
+  .app-shell--player:has(.places-page) .places-filter-grid.matches {
+    grid-template-areas: none;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player:has(.places-page) .places-filter-grid.court > *,
+  .app-shell--player:has(.places-page) .places-filter-grid.classes > *,
+  .app-shell--player:has(.places-page) .places-filter-grid.matches > * {
+    grid-area: auto;
+  }
+
+  .app-shell--player:has(.places-page) .court-discovery-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .places-page .places-intent-strip {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    margin-inline: 0 !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    padding-inline: 8px !important;
+    width: 100% !important;
+  }
+
+  .places-page .places-intent-strip button {
+    flex: initial !important;
+    flex-basis: auto !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+}
+
+/* Sprint P1-PROFILE-RANKING: podium and public/player ranking polish. */
+.app-shell--player .ranking-podium-strip {
+  background:
+    linear-gradient(180deg, rgba(10, 24, 42, 0.94), rgba(5, 14, 28, 0.88)),
+    url("./assets/pdark-profile-ranking-hero.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 24px;
+  box-shadow: var(--pdark-card-shadow);
+  color: #ffffff;
+  display: grid;
+  gap: 16px;
+  padding: clamp(16px, 2vw, 22px);
+}
+
+.app-shell--player .ranking-podium-headline span {
+  color: #4ade80;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-shell--player .ranking-podium-headline h2 {
+  color: #ffffff;
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  line-height: 1.05;
+  margin: 4px 0 0;
+}
+
+.app-shell--player .ranking-podium-cards {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1.2fr 1fr 1fr;
+}
+
+.app-shell--player .ranking-podium-card {
+  align-items: center;
+  background:
+    linear-gradient(180deg, rgba(13, 28, 47, 0.94), rgba(6, 17, 33, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  min-height: 112px;
+  padding: 14px;
+}
+
+.app-shell--player .ranking-podium-card.rank-1 {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(250, 204, 21, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(13, 42, 47, 0.96), rgba(6, 17, 33, 0.9)),
+    url("./assets/pdark-ranking-desktop-hero.png") center / cover no-repeat;
+  border-color: rgba(250, 204, 21, 0.3);
+}
+
+.app-shell--player .ranking-podium-position {
+  color: #86efac;
+  font-size: 1.35rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.app-shell--player .ranking-avatar {
+  align-items: center;
+  background: linear-gradient(145deg, rgba(5, 15, 29, 0.96), rgba(7, 35, 34, 0.9));
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  border-radius: 16px;
+  color: #ffffff;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 0.82rem;
+  font-weight: 950;
+  height: 46px;
+  justify-content: center;
+  min-width: 46px;
+  width: 46px;
+}
+
+.app-shell--player .ranking-podium-card strong,
+.app-shell--player .ranking-player-cell strong {
+  color: #ffffff;
+}
+
+.app-shell--player .ranking-podium-card small,
+.app-shell--player .ranking-player-cell small {
+  color: rgba(203, 213, 225, 0.78);
+}
+
+.app-shell--player .ranking-podium-card b {
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  border-radius: 999px;
+  color: #bbf7d0;
+  font-weight: 950;
+  grid-column: 3;
+  justify-self: start;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+
+.app-shell--player .ranking-podium-card > div {
+  min-width: 0;
+}
+
+.app-shell--player .ranking-podium-card > div strong,
+.app-shell--player .ranking-podium-card > div small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--player .ranking-player-cell {
+  align-items: center;
+  display: grid !important;
+  gap: 10px;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.app-shell--player .ranking-row:not(.head) {
+  min-height: 72px;
+}
+
+.app-shell--player .ranking-table .ranking-row:not(.head) > span:first-child {
+  align-items: center;
+  background: rgba(34, 197, 94, 0.1) !important;
+  border: 1px solid rgba(74, 222, 128, 0.24) !important;
+  border-radius: 14px;
+  color: #86efac !important;
+  display: inline-flex;
+  font-weight: 950;
+  height: 42px;
+  justify-content: center;
+  min-width: 42px;
+  width: 42px;
+}
+
+.app-shell--player .profile-photo-block .profile-photo-inner {
+  background: linear-gradient(145deg, rgba(5, 15, 29, 0.96), rgba(7, 35, 34, 0.9));
+  border-color: rgba(74, 222, 128, 0.28);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .app-shell--player .ranking-podium-strip {
+    border-radius: 20px;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .app-shell--player .ranking-podium-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player .ranking-podium-card {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    min-height: 86px;
+  }
+
+  .app-shell--player .ranking-podium-card b {
+    grid-column: 2 / -1;
+    justify-self: start;
+  }
+
+  .app-shell--player .ranking-table .ranking-row:not(.head) {
+    gap: 10px;
+  }
+
+  .app-shell--player .ranking-player-cell {
+    align-items: start;
+  }
+
+  .app-shell--player .ranking-avatar {
+    border-radius: 12px;
+    height: 38px;
+    min-width: 38px;
+    width: 38px;
   }
 }

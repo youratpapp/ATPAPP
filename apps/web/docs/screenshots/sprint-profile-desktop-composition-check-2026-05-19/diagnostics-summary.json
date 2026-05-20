@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-profile.png",
+    "events": []
+  }
+]

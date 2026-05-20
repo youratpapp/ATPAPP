@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "login",
+  "hash": "#/inicio",
+  "screenshot": "desktop-login.png",
+  "events": []
+}

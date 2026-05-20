@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile",
+  "route": "protected-player",
+  "hash": "#/auth?next=%2Fjogadores%2Fdemo-player",
+  "screenshot": "mobile-protected-player.png",
+  "events": []
+}

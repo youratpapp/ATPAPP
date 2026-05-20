@@ -1,0 +1,29 @@
+{
+  "viewport": "desktop",
+  "route": "profile-edit",
+  "screenshot": "desktop-profile-edit.png",
+  "meta": {
+    "hash": "#/perfil",
+    "clicked": true,
+    "hasEditCard": true,
+    "h1": [
+      "Perfil"
+    ],
+    "labels": [
+      "Nome de exibicao",
+      "UF",
+      "Cidade",
+      "Telefone",
+      "Data de nascimento",
+      "Instagram",
+      "Perfil publicoFoto, cidade, bio e resumo competitivo aparecem para outros jogadores.",
+      "Perfil privadoDados pessoais ficam ocultos; confrontos e partidas necessarias continuam visiveis."
+    ],
+    "buttons": [
+      "Cancelar",
+      "Salvar"
+    ],
+    "textSample": "NOME DE EXIBICAO UF Selecione AC - Acre AL - Alagoas AP - Amapa AM - Amazonas BA - Bahia CE - Ceara DF - Distrito Federal ES - Espirito Santo GO - Goias MA - Maranhao MT - Mato Grosso MS - Mato Grosso do Sul MG - Minas Gerais PA - Para PB - Paraiba PR - Parana PE - Pernambuco PI - Piaui RJ - Rio de Janeiro RN - Rio Grande do Norte RS - Rio Grande do Sul RO - Rondonia RR - Roraima SC - Santa Catarina SP - Sao Paulo SE - Sergipe TO - Tocantins CIDADE Selecione o municipio Água Clara Alcinópolis Amambai Anastácio Anaurilândia Angélica Antônio João Aparecida do Taboado Aquidauana Aral Moreira Bandeirantes Bataguassu Batayporã Bela Vista Bodoquena Bonito Brasilândia Caarapó Camapuã Campo Grande Caracol Cassilândia Chapadão do Sul Corguinho Coronel Sapucaia Corumbá Costa Rica Coxim Deodápolis Do"
+  },
+  "events": []
+}

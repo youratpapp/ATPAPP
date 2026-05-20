@@ -22,7 +22,7 @@ export function friendlyToastMessage(message: unknown, fallback = "Nao foi possi
   if (!text) return fallback;
 
   const looksTechnical =
-    /column reference|violates row-level security|duplicate key|foreign key|syntax error|invalid input syntax|SQLSTATE|PGRST|supabase|rpc\(|relation .* does not exist/i.test(text) ||
+    /app_[a-z0-9_]+|canceling statement|statement timeout|failed to load|http \d{3}|column reference|violates row-level security|duplicate key|foreign key|syntax error|invalid input syntax|SQLSTATE|PGRST|supabase|rpc\(|relation .* does not exist|court_bookings|app_payments|place_staff/i.test(text) ||
     text.length > 180;
 
   if (looksTechnical) return fallback;

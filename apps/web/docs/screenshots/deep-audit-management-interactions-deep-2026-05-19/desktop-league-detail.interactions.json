@@ -1,0 +1,108 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Voltar",
+    "clicked": true,
+    "to": "#/eventos/ligas?view=organizing",
+    "h1": [
+      "Ligas que organizo"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Resolver agora",
+    "clicked": true,
+    "to": "#/inicio",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Abrir lista completa",
+    "clicked": true,
+    "to": "#/eventos",
+    "h1": [
+      "Competições"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Detalhes",
+    "clicked": true,
+    "to": "#/perfil",
+    "h1": [
+      "Perfil"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Detalhes",
+    "clicked": false,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "h1": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Detalhes",
+    "clicked": false,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "h1": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Rodada 4Ana Queiroz x Joao TeixeiraAdulto / Classe C | Em analise admO organizador precisa validar ou ajustar esta partida.30/01/2026, 10:00:09ResolverDetalhes",
+    "clicked": false,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Detalhes",
+    "clicked": false,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Rodada 4Yasmin Klein x Igor NascimentoAdulto / Classe B | Em analise admO organizador precisa validar ou ajustar esta partida.30/01/2026, 10:00:09ResolverDetalhes",
+    "clicked": false,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "league-detail",
+    "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "label": "Detalhes",
+    "clicked": false,
+    "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ]
+  }
+]

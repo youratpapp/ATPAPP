@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "places-match",
+  "hash": "#/locais?intent=matches",
+  "screenshot": "desktop-places-match.png",
+  "events": []
+}

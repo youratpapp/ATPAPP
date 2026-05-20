@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { User } from "@supabase/supabase-js";
+import { Link } from "react-router-dom";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { friendlyToastMessage } from "../components/toast";
@@ -30,13 +31,18 @@ export function MyPaymentsPage({ user, profile }: Props) {
   const pending = useMemo(() => payments.filter((payment) => payment.status === "pending" || payment.status === "failed"), [payments]);
   const history = useMemo(() => payments.filter((payment) => payment.status === "paid" || payment.status === "refunded"), [payments]);
 
-  useEffect(() => {
+  const load = useCallback(() => {
     setLoading(true);
+    setError("");
     listMyPayments()
       .then(setPayments)
       .catch((err) => setError(friendlyToastMessage(err, "Nao foi possivel carregar seus pagamentos.")))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const renderPayment = (payment: AppPayment) => {
     const status = paymentStatus(payment);
@@ -57,11 +63,24 @@ export function MyPaymentsPage({ user, profile }: Props) {
         <header className="personal-area-header">
           <span>Financeiro</span>
           <h1>Meus pagamentos</h1>
-          <p>Pagamentos de reservas, aulas, torneios e ligas. Gateways reais seguem desativados; aqui ficam pagamentos manuais/simulados.</p>
+          <p>Acompanhe cobrancas de reservas, aulas, torneios e ligas em um so lugar.</p>
         </header>
         {loading ? <ScreenState kind="loading" title="Carregando pagamentos..." /> : null}
-        {error ? <ScreenState kind="error" title="Nao foi possivel carregar" detail={error} /> : null}
-        {!loading && !error && !payments.length ? <ScreenState title="Nenhum pagamento encontrado" detail="Quando houver uma cobranca vinculada a sua conta, ela aparece aqui." /> : null}
+        {error ? (
+          <ScreenState
+            kind="error"
+            title="Nao foi possivel carregar"
+            detail={error}
+            action={<button className="secondary" onClick={load}>Tentar novamente</button>}
+          />
+        ) : null}
+        {!loading && !error && !payments.length ? (
+          <ScreenState
+            title="Nenhum pagamento encontrado"
+            detail="Quando houver uma cobranca vinculada a sua conta, ela aparece aqui."
+            action={<Link className="button-like primary" to="/locais?intent=places">Explorar quadras</Link>}
+          />
+        ) : null}
         {!loading && !error && payments.length ? (
           <div className="personal-area-grid">
             <section className="personal-area-card">

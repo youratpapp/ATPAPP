@@ -2078,11 +2078,15 @@ export async function listMyCourtBookingWaitlist(): Promise<CourtBookingWaitlist
 
 export async function listMyCourtBookings(options: { includeHistory?: boolean; limit?: number } = {}): Promise<CourtBooking[]> {
   if (!supabase) return [];
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw new Error(userError.message);
+  if (!userData.user) return [];
   let query = supabase
     .from(TABLE_BOOKINGS)
     .select("id,place_id,court_id,user_id,player_name,phone,starts_at,ends_at,status,notes,recurrence_group_id,recurrence_index,recurrence_total,created_at")
+    .eq("user_id", userData.user.id)
     .order("starts_at", { ascending: true })
-    .limit(options.limit || 160);
+    .limit(options.limit || 80);
 
   if (!options.includeHistory) {
     query = query.gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
@@ -2725,9 +2729,13 @@ export async function listPlaceAcademyEnrollments(placeId: string): Promise<Acad
 
 export async function listMyAcademyEnrollments(): Promise<AcademyEnrollment[]> {
   if (!supabase) return [];
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw new Error(userError.message);
+  if (!userData.user) return [];
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_ENROLLMENTS)
     .select(ACADEMY_ENROLLMENT_SELECT)
+    .eq("user_id", userData.user.id)
     .neq("status", "cancelled")
     .order("created_at", { ascending: false })
     .limit(80);

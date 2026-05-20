@@ -1,0 +1,127 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "auth-login",
+    "hash": "#/auth",
+    "screenshot": "desktop-auth-login.png",
+    "events": [
+      {
+        "source": "console",
+        "type": "debug",
+        "level": "debug",
+        "text": "[vite] connecting...",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 826
+      },
+      {
+        "source": "console",
+        "type": "debug",
+        "level": "debug",
+        "text": "[vite] connected.",
+        "url": "http://127.0.0.1:5173/@vite/client",
+        "line": 930
+      },
+      {
+        "source": "console",
+        "type": "info",
+        "level": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "url": "http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=5d525081",
+        "line": 14336
+      },
+      {
+        "source": "log",
+        "type": "recommendation",
+        "level": "verbose",
+        "text": "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+        "url": "http://127.0.0.1:5173/#/auth",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "auth-callback",
+    "hash": "#/auth/callback",
+    "screenshot": "desktop-auth-callback.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "protected-home-redirect",
+    "hash": "#/auth?next=%2Finicio",
+    "screenshot": "desktop-protected-home-redirect.png",
+    "events": [
+      {
+        "source": "log",
+        "type": "recommendation",
+        "level": "verbose",
+        "text": "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+        "url": "http://127.0.0.1:5173/#/auth?next=%2Finicio",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "desktop",
+    "route": "protected-register-redirect",
+    "hash": "#/auth?next=%2Fcompletar-cadastro",
+    "screenshot": "desktop-protected-register-redirect.png",
+    "events": [
+      {
+        "source": "log",
+        "type": "recommendation",
+        "level": "verbose",
+        "text": "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+        "url": "http://127.0.0.1:5173/#/auth?next=%2Fcompletar-cadastro",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "auth-login",
+    "hash": "#/auth",
+    "screenshot": "mobile-auth-login.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "auth-callback",
+    "hash": "#/auth/callback",
+    "screenshot": "mobile-auth-callback.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile",
+    "route": "protected-home-redirect",
+    "hash": "#/auth?next=%2Finicio",
+    "screenshot": "mobile-protected-home-redirect.png",
+    "events": [
+      {
+        "source": "log",
+        "type": "recommendation",
+        "level": "verbose",
+        "text": "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+        "url": "http://127.0.0.1:5173/#/auth?next=%2Finicio",
+        "line": null
+      }
+    ]
+  },
+  {
+    "viewport": "mobile",
+    "route": "protected-register-redirect",
+    "hash": "#/auth?next=%2Fcompletar-cadastro",
+    "screenshot": "mobile-protected-register-redirect.png",
+    "events": [
+      {
+        "source": "log",
+        "type": "recommendation",
+        "level": "verbose",
+        "text": "[DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o",
+        "url": "http://127.0.0.1:5173/#/auth?next=%2Fcompletar-cadastro",
+        "line": null
+      }
+    ]
+  }
+]

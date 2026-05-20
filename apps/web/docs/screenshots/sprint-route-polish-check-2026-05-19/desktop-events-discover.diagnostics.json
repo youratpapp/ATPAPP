@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "events-discover",
+  "hash": "#/eventos?modo=discover",
+  "screenshot": "desktop-events-discover.png",
+  "events": []
+}

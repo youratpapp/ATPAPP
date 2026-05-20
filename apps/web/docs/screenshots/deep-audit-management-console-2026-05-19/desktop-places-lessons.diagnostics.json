@@ -1,0 +1,16 @@
+{
+  "viewport": "desktop",
+  "route": "places-lessons",
+  "hash": "#/locais?intent=classes",
+  "screenshot": "desktop-places-lessons.png",
+  "events": [
+    {
+      "source": "console",
+      "type": "warning",
+      "level": "warning",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/@vite/client",
+      "line": 509
+    }
+  ]
+}
