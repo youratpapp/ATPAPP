@@ -11570,7 +11570,7 @@ Pendencias:
 
 ### [x] SPRINT-2026-05-20 - FLOW-09 Liga operacional
 
-Status: `[x]` concluido no codigo, aguardando QA expandido por fase real
+Status: `[x]` concluido no codigo, screenshots capturados e aguardando QA expandido por fase real
 
 Fonte primaria:
 
@@ -11602,10 +11602,14 @@ O que nao foi alterado:
 Validacao:
 
 - `npm.cmd run build` executado com sucesso.
+- screenshots capturados em `docs/screenshots/workflow-v3-flow09-league-operational-2026-05-20`;
+- rotas auditadas: `/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3`, `?tab=partidas`, `?tab=classificacao`;
+- personas auditadas: owner/admin e participante;
+- viewports auditados: `mobile390`, `mobile430`, `desktop1366`, `desktopwide`;
+- diagnosticos: 24 arquivos `.diagnostics.json`, 0 erros e 0 warnings de console/rede.
 
 Pendencias:
 
-- capturar screenshots mobile e desktop nesta rodada;
 - QA com owner e participante reais em ligas nas fases variadas;
 - como o schema atual de `LeagueMatchSummary` nao traz quadra/local, o cockpit exibe `Local a combinar`/`Pendente` sem inventar backend.
 

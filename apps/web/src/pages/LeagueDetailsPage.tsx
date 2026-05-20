@@ -2959,8 +2959,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           { label: "Partidas", onClick: () => goToTab("partidas") },
           { label: "Classificacao", onClick: () => goToTab("classificacao") },
           { label: "Comunicacao", onClick: () => goToTab("chat") },
-          { label: "Ajustes", onClick: () => goToTab("configuracao") },
-        ]
+          leagueOperationalPhase === "configuration" ? { label: "Configuracao", onClick: () => goToTab("configuracao") } : null,
+        ].filter((action): action is LeagueCockpitAction => Boolean(action))
       : [
           { label: "Partidas", onClick: () => goToTab("partidas") },
           { label: "Classificacao", onClick: () => goToTab("classificacao") },

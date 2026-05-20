@@ -6025,14 +6025,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   <span>Comunicacao</span>
                   <strong>Avisos e chat</strong>
                 </button>
-                <button
-                  type="button"
-                  className={organizerFocus === "config" ? "active" : ""}
-                  onClick={() => goToOrganizerSection("setup-basics")}
-                >
-                  <span>Configuracao</span>
-                  <strong>Dados e agenda</strong>
-                </button>
+                {operationalPhaseKey === "draft" ? (
+                  <button
+                    type="button"
+                    className={organizerFocus === "config" ? "active" : ""}
+                    onClick={() => goToOrganizerSection("setup-basics")}
+                  >
+                    <span>Configuracao</span>
+                    <strong>Dados e agenda</strong>
+                  </button>
+                ) : null}
               </div>
             ) : null}
             {canManageTournament ? (
@@ -6059,27 +6061,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             ) : null}
             {canManageMatches ? (
               <div className="tournament-admin-ops">
-                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Operacoes do torneio</h3>
+                <h3 style={{ marginTop: 0, marginBottom: 8 }}>Acoes operacionais</h3>
                 <div className="cluster" style={{ marginBottom: 8 }}>
-                  <button className="primary" onClick={() => void generateAllClasses()} disabled={saving}>
-                    Gerar campeonatos
-                  </button>
+                  {canManageTournament ? (
+                    <button className="primary" onClick={() => void generateAllClasses()} disabled={saving}>
+                      Gerar campeonatos
+                    </button>
+                  ) : null}
                   <button onClick={saveAllChanges} disabled={saving}>
                     Salvar tudo
-                  </button>
-                  <button onClick={() => void resetOnlyDraw()} disabled={saving}>
-                    Resetar sorteio/partidas
-                  </button>
-                  <button className="danger" onClick={resetAllTournament} disabled={saving}>
-                    Reset total
-                  </button>
-                  <button className="danger" onClick={() => void deleteCurrentTournament()} disabled={saving}>
-                    Excluir torneio
-                  </button>
-                </div>
-                <div className="cluster tournament-chat-head-actions">
-                  <button onClick={exportBackupJson} disabled={saving}>
-                    Backup
                   </button>
                   <button
                     className="brand-icon-btn"
@@ -6091,22 +6081,47 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     <WhatsAppAppIcon />
                     <span>WhatsApp</span>
                   </button>
-                  <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                    <span className="subtle">Restore:</span>
-                    <input
-                      type="file"
-                      accept=".json,application/json"
-                      onChange={(e) => {
-                        const f = e.currentTarget.files?.[0] ?? null;
-                        void restoreBackupJson(f);
-                        e.currentTarget.value = "";
-                      }}
-                    />
-                  </label>
                 </div>
                 <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
-                  Use "Salvar tudo" para persistir edicoes manuais. Resetar sorteio/partidas salva imediatamente.
+                  Use esta area para operacao corrente. Reset, backup, restore e exclusao ficam em Avancado.
                 </p>
+                {isOwner ? (
+                  <details className="tournament-admin-advanced">
+                    <summary>
+                      <span>Avancado</span>
+                      <strong>Backup, restore, reset e exclusao</strong>
+                    </summary>
+                    <div className="cluster" style={{ marginBottom: 8 }}>
+                      <button onClick={exportBackupJson} disabled={saving}>
+                        Backup
+                      </button>
+                      <button onClick={() => void resetOnlyDraw()} disabled={saving}>
+                        Resetar sorteio/partidas
+                      </button>
+                      <button className="danger" onClick={resetAllTournament} disabled={saving}>
+                        Reset total
+                      </button>
+                      <button className="danger" onClick={() => void deleteCurrentTournament()} disabled={saving}>
+                        Excluir torneio
+                      </button>
+                    </div>
+                    <label className="tournament-admin-restore">
+                      <span className="subtle">Restore de backup</span>
+                      <input
+                        type="file"
+                        accept=".json,application/json"
+                        onChange={(e) => {
+                          const f = e.currentTarget.files?.[0] ?? null;
+                          void restoreBackupJson(f);
+                          e.currentTarget.value = "";
+                        }}
+                      />
+                    </label>
+                    <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
+                      Acoes avancadas podem alterar ou remover dados do torneio. Use apenas fora da rotina do dia.
+                    </p>
+                  </details>
+                ) : null}
               </div>
             ) : null}
             {canManageTournament && tournamentAdminPhase.showCompletion ? (

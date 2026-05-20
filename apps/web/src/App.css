@@ -4178,6 +4178,41 @@ button.app-object-row:hover:not(:disabled) {
   background: #fff;
 }
 
+.tournament-admin-advanced {
+  background: rgba(15, 23, 42, 0.04);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-3);
+  padding: var(--space-2);
+}
+
+.tournament-admin-advanced summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+  list-style: none;
+}
+
+.tournament-admin-advanced summary::-webkit-details-marker {
+  display: none;
+}
+
+.tournament-admin-advanced summary span {
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.tournament-admin-restore {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
 .tournament-class-switcher {
   align-items: center;
   display: grid;
@@ -13013,6 +13048,24 @@ button:disabled {
 .management-row-setup.routine .management-semantic-actions button {
   border-color: rgba(134, 239, 172, 0.9);
   color: var(--color-primary-strong);
+}
+
+.management-row-setup.management-row-admin {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: var(--color-border);
+}
+
+.management-row-setup.management-row-admin span {
+  color: var(--color-text-subtle);
+}
+
+.management-row-setup.management-row-admin strong {
+  color: var(--color-text);
+}
+
+.management-row-setup.management-row-admin .management-semantic-actions button {
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .management-semantic-actions {
@@ -26846,6 +26899,11 @@ label {
   border-color: rgba(34, 197, 94, 0.22);
 }
 
+.app-shell--management .management-row-setup.management-row-admin {
+  background: rgba(148, 163, 184, 0.08);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
 .app-shell--management .management-row-setup.routine > span,
 .app-shell--management .management-row-setup.routine > strong {
   display: block;
@@ -26868,6 +26926,10 @@ label {
   color: #4ade80;
 }
 
+.app-shell--management .management-row-setup.management-row-admin span {
+  color: #94a3b8;
+}
+
 .app-shell--management .management-semantic-actions {
   gap: 8px;
   margin-top: 0;
@@ -26877,6 +26939,23 @@ label {
   background: rgba(255, 255, 255, 0.07);
   border-color: rgba(255, 255, 255, 0.12);
   color: var(--pdark-text-main);
+}
+
+.app-shell--competition .tournament-admin-advanced {
+  background: rgba(148, 163, 184, 0.08);
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+.app-shell--competition .tournament-admin-advanced summary span {
+  color: #f59e0b;
+}
+
+.app-shell--competition .tournament-admin-advanced summary strong {
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .tournament-admin-restore {
+  color: var(--pdark-text-muted);
 }
 
 .app-shell--management .management-row-actions .secondary,

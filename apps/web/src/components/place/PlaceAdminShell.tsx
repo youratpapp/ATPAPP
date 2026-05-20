@@ -85,26 +85,28 @@ export function PlaceAdminShell({
         )}
       </div>
 
-      <div className="place-admin-setup-strip">
-        <div className="place-management-health" aria-label={`Implantacao ${setupPercent}%`}>
-          <span style={{ width: `${setupPercent}%` }} />
+      {currentModule === "settings" ? (
+        <div className="place-admin-setup-strip">
+          <div className="place-management-health" aria-label={`Implantacao ${setupPercent}%`}>
+            <span style={{ width: `${setupPercent}%` }} />
+          </div>
+          <div className="place-admin-shell-features" aria-label="Modulos disponiveis">
+            {featureLabels.slice(0, 5).map((feature) => (
+              <span key={`${placeName}:feature:${feature}`}>{feature}</span>
+            ))}
+            {featureLabels.length > 5 ? <span>+{featureLabels.length - 5}</span> : null}
+            {!featureLabels.length ? <span>Operacao basica</span> : null}
+          </div>
+          {nextStep ? (
+            <button className="place-next-step" type="button" onClick={() => onModuleChange(nextStep.module, nextStep.viewSegment)}>
+              <strong>{nextStep.title}</strong>
+              <span>{nextStep.detail}</span>
+            </button>
+          ) : (
+            <span className="place-setup-done">Base operacional pronta</span>
+          )}
         </div>
-        <div className="place-admin-shell-features" aria-label="Modulos disponiveis">
-          {featureLabels.slice(0, 5).map((feature) => (
-            <span key={`${placeName}:feature:${feature}`}>{feature}</span>
-          ))}
-          {featureLabels.length > 5 ? <span>+{featureLabels.length - 5}</span> : null}
-          {!featureLabels.length ? <span>Operacao basica</span> : null}
-        </div>
-        {nextStep ? (
-          <button className="place-next-step" type="button" onClick={() => onModuleChange(nextStep.module, nextStep.viewSegment)}>
-            <strong>{nextStep.title}</strong>
-            <span>{nextStep.detail}</span>
-          </button>
-        ) : (
-          <span className="place-setup-done">Base operacional pronta</span>
-        )}
-      </div>
+      ) : null}
     </section>
   );
 }

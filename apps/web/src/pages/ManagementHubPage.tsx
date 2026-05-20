@@ -671,8 +671,6 @@ export function ManagementHubPage({ user, profile }: Props) {
         const bSummary = summariesByPlace[b.id];
         const byPending = (bSummary ? pendingTotal(bSummary) : 0) - (aSummary ? pendingTotal(aSummary) : 0);
         if (byPending !== 0) return byPending;
-        const bySetup = (aSummary?.setupProgress ?? 100) - (bSummary?.setupProgress ?? 100);
-        if (bySetup !== 0) return bySetup;
         return a.name.localeCompare(b.name, "pt-BR");
       }),
     [places, summariesByPlace]
@@ -692,7 +690,7 @@ export function ManagementHubPage({ user, profile }: Props) {
       return summary.lowStock ? "Estoque para revisar" : "Caixa e cantina";
     }
     if (summary.todayBookings) return `${summary.todayBookings} reserva(s) hoje`;
-    if (summary.setupGaps.length) return "Configure a base operacional";
+    if (summary.setupGaps.length) return "Sem pendencias operacionais";
     return access.staffRole === "frontdesk" && !access.canManagePlace ? "Atendimento em dia" : "Sem reservas para hoje";
   }
 
@@ -707,7 +705,7 @@ export function ManagementHubPage({ user, profile }: Props) {
       return "Use Registrar venda e Estoque para operar a cantina sem abrir a gestao completa.";
     }
     if (summary.todayBookings) return `${summary.todayBookings} reserva(s) programada(s) hoje`;
-    if (summary.setupGaps.length) return "Complete a base para liberar a rotina operacional";
+    if (summary.setupGaps.length) return "Base administrativa pendente em Ajustes";
     return access.staffRole === "frontdesk" && !access.canManagePlace ? "Sem pendencias de atendimento agora" : "Agenda livre para hoje";
   }
 
@@ -717,7 +715,7 @@ export function ManagementHubPage({ user, profile }: Props) {
     if (isFrontdeskOnlyHub) return "Nenhuma pendencia critica agora. Use Agenda e Aulas para revisar o atendimento do dia.";
     if (isFinanceOnlyHub) return "Nenhuma cobranca critica agora. Use Recebiveis e Despesas para revisar o caixa.";
     if (isCashierOnlyHub) return "Nenhuma pendencia critica agora. Use Registrar venda e Estoque para revisar a cantina.";
-    return "Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar agenda, setup ou pagina publica.";
+    return "Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar a operacao ou abra Ajustes quando precisar mexer na base administrativa.";
   }
 
   const competitionWorkspaceCount = organizingTournaments.length + organizingLeagues.length;
@@ -766,10 +764,6 @@ export function ManagementHubPage({ user, profile }: Props) {
         .filter((academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday)
         .map((academyClass) => ({ academyClass, place: context.place }))
     );
-    const pendingTeamInvites = contexts
-      .filter((context) => context.modules.includes("team"))
-      .reduce((sum, context) => sum + context.entry.staff.filter((member) => member.status === "pending").length, 0);
-
     if (workTodayPersona === "coach") {
       const coachContexts = contexts.filter(
         (context) => context.modules.includes("academy") && context.access.staffRole === "coach" && !context.access.canManagePlace
@@ -1124,16 +1118,6 @@ export function ManagementHubPage({ user, profile }: Props) {
         title: aggregate.lowStock ? "Estoque baixo" : "Estoque em dia",
         tone: cardTone(aggregate.lowStock),
         value: countValue(aggregate.lowStock),
-      },
-      {
-        cta: "Abrir equipe",
-        detail: pendingTeamInvites ? "Convites ou acessos da equipe aguardando revisao." : "Equipe sem convite pendente.",
-        eyebrow: "Equipe",
-        id: "manager-team",
-        path: firstPath("team", "equipe"),
-        title: pendingTeamInvites ? "Acessos pendentes" : "Equipe em dia",
-        tone: cardTone(pendingTeamInvites),
-        value: countValue(pendingTeamInvites),
       },
     ].filter((card) => Boolean(card.path));
   }, [
@@ -1496,33 +1480,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                         )}
                       </div>
 
-                      {summary.setupGaps.length ? (
-                        <details className="management-row-setup">
-                          <summary>
-                            <span>Base incompleta</span>
-                            <strong>{summary.setupGaps.slice(0, 2).join(" | ")}</strong>
-                          </summary>
-                          <div className="management-semantic-actions">
-                            {summary.setupActions.slice(0, 3).map((action) => (
-                              <button
-                                key={`${place.id}:setup:${action.label}`}
-                                type="button"
-                                onClick={() =>
-                                  navigate(
-                                    buildPlaceAdminPath(
-                                      place.id,
-                                      modules.includes(action.module) ? action.module : "dashboard",
-                                      action.viewSegment
-                                    )
-                                  )
-                                }
-                              >
-                                {action.label}
-                              </button>
-                            ))}
-                          </div>
-                        </details>
-                      ) : summary.routineActions.length ? (
+                      {summary.routineActions.length ? (
                         <div className="management-row-setup routine">
                           <span>Acoes rapidas</span>
                           <strong>{summary.routineActions.slice(0, 2).map((action) => action.label).join(" | ")}</strong>
@@ -1539,9 +1497,33 @@ export function ManagementHubPage({ user, profile }: Props) {
                                 >
                                   {action.label}
                                 </button>
-                              ))}
+                            ))}
                           </div>
                         </div>
+                      ) : null}
+
+                      {access.canManagePlace && (modules.includes("settings") || modules.includes("team")) ? (
+                        <details className="management-row-setup management-row-admin">
+                          <summary>
+                            <span>Administracao</span>
+                            <strong>{summary.setupGaps.length ? `${summary.setupGaps.length} ajuste(s) estrutural(is)` : "Ajustes e equipe fora da rotina"}</strong>
+                          </summary>
+                          <div className="management-semantic-actions">
+                            {modules.includes("settings") ? (
+                              <button
+                                type="button"
+                                onClick={() => navigate(buildPlaceAdminPath(place.id, "settings", summary.setupGaps.length ? "overview" : "publication"))}
+                              >
+                                Abrir ajustes
+                              </button>
+                            ) : null}
+                            {modules.includes("team") ? (
+                              <button type="button" onClick={() => navigate(buildPlaceAdminPath(place.id, "team", "overview"))}>
+                                Equipe e permissoes
+                              </button>
+                            ) : null}
+                          </div>
+                        </details>
                       ) : null}
 
                       <div className="management-row-actions">
@@ -1581,7 +1563,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <button type="button" className="secondary" onClick={() => setShowAllManagedPlaces(true)}>
                     Ver todos os {orderedManagedPlaces.length} locais
                   </button>
-                  <span>Os locais com pendencias e setup incompleto aparecem primeiro.</span>
+                  <span>Os locais com pendencias operacionais aparecem primeiro; setup fica em Administracao.</span>
                 </div>
               ) : showAllManagedPlaces && orderedManagedPlaces.length > 4 ? (
                 <div className="management-place-list-actions">
@@ -1612,11 +1594,11 @@ export function ManagementHubPage({ user, profile }: Props) {
             </section>
 
             {setupFocus ? (
-              <details className="management-onboarding-panel" aria-label="Roteiro de implantacao">
+              <details className="management-onboarding-panel" aria-label="Administracao fora da rotina">
                 <summary className="management-onboarding-summary">
                   <div>
-                    <span>Implantacao guiada</span>
-                    <h2>Complete a base de {setupFocus.place.name}</h2>
+                    <span>Administracao</span>
+                    <h2>Ajustes estruturais de {setupFocus.place.name}</h2>
                   </div>
                   <strong>{setupFocus.summary.setupProgress}% pronto</strong>
                 </summary>

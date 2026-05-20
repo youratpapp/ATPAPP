@@ -695,6 +695,14 @@ Executado:
 
 Cobertura ainda pendente:
 
-- capturar screenshots apos esta validacao;
+- QA expandido por fase real, usando ligas em configuracao, inscricoes, rodada ativa, entre rodadas, encerramento e historico;
 - QA com contas reais separadas de participante e owner em ligas com fases variadas;
 - schema atual da partida de liga nao possui campo explicito de local/quadra; o cockpit mostra `Local a combinar`/`Pendente` sem criar backend novo.
+
+Evidencias capturadas:
+
+- pasta: `docs/screenshots/workflow-v3-flow09-league-operational-2026-05-20`;
+- rotas: `/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3`, `?tab=partidas`, `?tab=classificacao`;
+- personas auditadas: owner/admin e participante;
+- viewports: `mobile390`, `mobile430`, `desktop1366`, `desktopwide`;
+- diagnosticos: 24 arquivos `.diagnostics.json`, 0 erros e 0 warnings de console/rede.
