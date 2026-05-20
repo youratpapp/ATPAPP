@@ -25040,6 +25040,218 @@ label {
   border-color: var(--pdark-border-soft);
 }
 
+.app-shell--competition .league-operational-cockpit {
+  background:
+    linear-gradient(120deg, rgba(3, 9, 20, 0.97), rgba(6, 31, 33, 0.88), rgba(6, 17, 31, 0.66)),
+    url("./assets/pdark-competitions-trophy-desktop-hero.png") right center / cover no-repeat;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: 24px;
+  box-shadow: var(--pdark-card-shadow);
+  color: var(--pdark-text-main);
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  margin-bottom: 14px;
+  overflow: hidden;
+  padding: 20px;
+  position: relative;
+}
+
+.app-shell--competition .league-operational-cockpit::before {
+  background: radial-gradient(circle at 82% 18%, rgba(216, 244, 73, 0.13), transparent 13rem);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.app-shell--competition .league-operational-cockpit > * {
+  position: relative;
+  z-index: 1;
+}
+
+.app-shell--competition .league-operational-title-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-shell--competition .league-operational-title-row span,
+.app-shell--competition .league-operational-focus span,
+.app-shell--competition .league-operational-blockers strong {
+  color: #4ade80;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.app-shell--competition .league-operational-title-row em {
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(74, 222, 128, 0.32);
+  border-radius: var(--radius-pill);
+  color: #bbf7d0;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  padding: 4px 9px;
+  text-transform: uppercase;
+}
+
+.app-shell--competition .league-operational-copy {
+  align-content: start;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.app-shell--competition .league-operational-copy h2 {
+  color: #ffffff;
+  font-size: clamp(1.45rem, 3vw, 2.35rem);
+  line-height: var(--line-title);
+  margin: 0;
+  max-width: 15ch;
+}
+
+.app-shell--competition .league-operational-copy p {
+  color: rgba(226, 232, 240, 0.84);
+  font-size: var(--font-size-sm);
+  font-weight: 820;
+  line-height: var(--line-normal);
+  margin: 0;
+  max-width: 68ch;
+}
+
+.app-shell--competition .league-operational-metrics {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.app-shell--competition .league-operational-metrics article,
+.app-shell--competition .league-operational-focus article,
+.app-shell--competition .league-operational-blockers,
+.app-shell--competition .league-operational-queue-slot {
+  background: rgba(8, 20, 36, 0.74);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-operational-metrics article {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.app-shell--competition .league-operational-metrics strong {
+  color: #ffffff;
+  font-size: var(--font-size-lg);
+  font-weight: 950;
+  line-height: 1;
+}
+
+.app-shell--competition .league-operational-metrics span,
+.app-shell--competition .league-operational-focus small,
+.app-shell--competition .league-operational-blockers li,
+.app-shell--competition .league-operational-blockers p {
+  color: rgba(203, 213, 225, 0.84);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  line-height: var(--line-normal);
+}
+
+.app-shell--competition .league-operational-focus {
+  display: grid;
+  gap: 10px;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.app-shell--competition .league-operational-focus article {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 12px;
+}
+
+.app-shell--competition .league-operational-focus article.attention {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.app-shell--competition .league-operational-focus article.danger {
+  border-color: rgba(239, 68, 68, 0.32);
+}
+
+.app-shell--competition .league-operational-focus article.ready {
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.app-shell--competition .league-operational-focus strong {
+  color: #ffffff;
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+  line-height: var(--line-tight);
+  min-width: 0;
+}
+
+.app-shell--competition .league-operational-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  grid-column: 1 / -1;
+}
+
+.app-shell--competition .league-operational-actions > button {
+  min-width: 220px;
+}
+
+.app-shell--competition .league-operational-actions > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-shell--competition .league-operational-actions > div button {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: var(--pdark-border-soft);
+  color: var(--pdark-text-main);
+}
+
+.app-shell--competition .league-operational-blockers {
+  display: grid;
+  gap: 8px;
+  grid-column: 1 / -1;
+  padding: 14px;
+}
+
+.app-shell--competition .league-operational-blockers ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.app-shell--competition .league-operational-blockers p {
+  margin: 0;
+}
+
+.app-shell--competition .league-operational-queue-slot {
+  grid-column: 1 / -1;
+  padding: 12px;
+}
+
+.app-shell--competition .league-operational-queue-slot .tournament-organizer-queue {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
 .app-shell--competition .league-operation-panel > div,
 .app-shell--competition .league-operation-panel article,
 .app-shell--competition .league-operation-panel .tournament-organizer-queue,
@@ -25278,6 +25490,46 @@ label {
 }
 
 @media (max-width: 760px) {
+  .app-shell--competition .league-operational-cockpit {
+    background:
+      linear-gradient(180deg, rgba(3, 9, 20, 0.97), rgba(6, 31, 33, 0.76)),
+      url("./assets/pdark-competitions-mobile-hero.png") center top / cover no-repeat;
+    border-radius: 22px;
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+
+  .app-shell--competition .league-operational-copy h2 {
+    font-size: 1.55rem;
+    max-width: none;
+  }
+
+  .app-shell--competition .league-operational-metrics,
+  .app-shell--competition .league-operational-focus {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .league-operational-actions {
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell--competition .league-operational-actions > button {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .app-shell--competition .league-operational-actions > div {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .league-operational-actions > div button {
+    min-width: 0;
+    padding-inline: 8px;
+  }
+
   .app-shell--competition .league-operation-panel {
     border-radius: 22px;
   }

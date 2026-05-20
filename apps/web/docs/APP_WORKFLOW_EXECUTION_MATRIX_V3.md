@@ -605,3 +605,96 @@ Cobertura ainda pendente:
 - QA com contas reais separadas de owner, organizer, checkin, scorekeeper, media e jogador;
 - validar torneios reais em todas as fases, porque a massa atual validada cobre principalmente inscricoes encerradas/em andamento com muitos jogos pendentes;
 - validar se o papel `media` deve ganhar CTA adicional dedicado no kit de publicacao em sprint futuro.
+
+## FLOW-09 - Liga Operacional Scope For This Sprint
+
+Objetivo: separar a experiencia da liga entre participante e owner, organizando a pagina por fase da temporada sem quebrar `/eventos/ligas/:leagueId`.
+
+Implementacao permitida nesta rodada:
+
+- reorganizar somente `LeagueDetailsPage` e CSS de suporte;
+- usar loaders existentes de liga, rodadas, partidas, inscricoes, ranking e chat;
+- preservar `configuracao` como owner-only;
+- manter participante longe de ferramentas administrativas;
+- manter owner em cockpit operacional, nao em descoberta;
+- priorizar rodada ativa quando houver partida aberta;
+- deixar historico/classificacao final em camada secundaria quando a liga estiver encerrada.
+
+O que nao alterar:
+
+- backend;
+- RLS/policies/permissoes;
+- rota `/eventos/ligas/:leagueId`;
+- geracao real de rodada;
+- regras de classificacao;
+- matchroom existente.
+
+Arquitetura por fase:
+
+| Fase operacional | Condicao derivada | Owner ve primeiro | Participante ve primeiro | CTA owner | CTA participante |
+|---|---|---|---|---|---|
+| Configuracao inicial | liga/temporada draft, sem classes ou sem base | checklist de temporada/classes/jogadores | liga em preparacao | Completar configuracao | Ver partidas ou aguardar |
+| Inscricoes/participantes | sem rodada e com inscritos/participantes | aprovar participantes e pagamentos | entrar/aguardar aprovacao | Aprovar participantes | Solicitar inscricao |
+| Rodada ativa | existe partida nao finalizada | pendencias da rodada, horarios, resultados e analise | adversario, horario, local, chat e resultado | Resolver proxima pendencia | Abrir minha partida |
+| Entre rodadas | sem partida aberta e temporada nao encerrada | validar classificacao e gerar proxima rodada | aguardar proxima rodada | Gerar proxima rodada | Ver classificacao/partidas |
+| Encerramento | rodadas alvo atingidas e temporada nao finalizada | ranking final e sobe/desce | classificacao e resultados | Aplicar sobe/desce | Ver classificacao |
+| Historico | liga/temporada finished/archived | historico e classificacao final | historico pessoal | Ver classificacao final | Ver classificacao |
+
+Estados e vazios definidos:
+
+- owner sem temporada/classe: cockpit aponta configuracao;
+- owner sem jogadores ativos: cockpit orienta aprovar/adicionar jogadores;
+- owner com inscricoes pendentes: primeira dobra prioriza participantes;
+- owner com partidas abertas: primeira dobra prioriza fila da rodada;
+- owner entre rodadas com bloqueios: CTA gerar rodada fica bloqueado e lista os motivos;
+- participante sem inscricao: primeira dobra orienta entrar na liga quando permitido;
+- participante com inscricao pendente: CTA bloqueado explica aprovacao;
+- participante sem rodada: cockpit explica que rodada ainda nao foi publicada;
+- participante com partida: mostra adversario, horario, local a combinar, status e abre matchroom;
+- liga finalizada: historico/classificacao ganham prioridade sem competir com operacao.
+
+Rotas preservadas:
+
+- `/eventos/ligas/:leagueId` permanece detalhe unico;
+- query `?tab=` continua funcionando;
+- `tab=configuracao` continua owner-only;
+- `room=:matchId` continua abrindo matchroom;
+- links publicos/convites de liga nao foram alterados.
+
+## QA Required After FLOW-09
+
+Viewports:
+
+- mobile 390px;
+- mobile 430px;
+- desktop 1366px;
+- desktop amplo.
+
+Casos por persona:
+
+- participante com partida pendente: primeira dobra mostra adversario, horario, local, status e CTA `Abrir minha partida`;
+- participante sem rodada: primeira dobra explica proxima etapa sem mostrar ferramentas admin;
+- participante sem inscricao em liga publica: CTA leva para inscricao;
+- owner com rodada ativa: primeira dobra mostra pendencias e fila de tarefas;
+- owner entre rodadas: CTA `Gerar proxima rodada` aparece e respeita bloqueios;
+- owner em configuracao: configuracao aparece como prioridade e continua owner-only;
+- owner em historico/finalizada: classificacao/historico aparecem como foco, operacao atual nao compete.
+
+## Validation Notes - FLOW-09 - 2026-05-20
+
+Executado:
+
+- adicionada fase operacional de liga em `LeagueDetailsPage`;
+- adicionada `LeagueOperationalCockpit` para owner e participante;
+- participante em `visao` passa a ver rodada/adversario/horario/local/status antes de conteudo institucional;
+- owner em `visao` passa a ver cockpit por fase com metricas, bloqueios, CTA e fila operacional;
+- tabs de owner agora sao priorizadas por fase e `configuracao` permanece owner-only;
+- matchroom, chat, classificacao, participantes e geracao de rodada continuam usando funcoes existentes;
+- CSS premium dark responsivo adicionado para mobile e desktop;
+- `npm.cmd run build` passou apos a implementacao.
+
+Cobertura ainda pendente:
+
+- capturar screenshots apos esta validacao;
+- QA com contas reais separadas de participante e owner em ligas com fases variadas;
+- schema atual da partida de liga nao possui campo explicito de local/quadra; o cockpit mostra `Local a combinar`/`Pendente` sem criar backend novo.

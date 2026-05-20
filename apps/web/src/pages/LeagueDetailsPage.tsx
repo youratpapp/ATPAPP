@@ -59,6 +59,7 @@ import type {
   LeagueResultSubmission,
   LeagueRoundSummary,
   LeagueSchedulerRun,
+  LeagueSeasonSummary,
   Profile,
   AppPayment,
 } from "../lib/types";
@@ -70,6 +71,13 @@ type Props = {
 };
 
 type PageTab = "visao" | "jogadores" | "classificacao" | "partidas" | "chat" | "configuracao";
+type LeagueOperationalPhaseKey =
+  | "configuration"
+  | "registration"
+  | "active_round"
+  | "between_rounds"
+  | "closing"
+  | "history";
 
 const PAGE_TABS: PageTab[] = ["visao", "jogadores", "classificacao", "partidas", "chat", "configuracao"];
 const LEAGUE_MATCH_PAGE_SIZE = 12;
@@ -82,6 +90,48 @@ function parsePageTab(value: string | null): PageTab {
 function normalizePageTab(tab: PageTab, isOwner: boolean): PageTab {
   if (!isOwner && tab === "configuracao") return "visao";
   return tab;
+}
+
+function preferredLeagueTabsFor(phase: LeagueOperationalPhaseKey, isOwner: boolean): PageTab[] {
+  if (!isOwner) return ["visao", "partidas", "classificacao", "chat", "jogadores", "configuracao"];
+  if (phase === "configuration") return ["configuracao", "jogadores", "visao", "classificacao", "partidas", "chat"];
+  if (phase === "registration") return ["jogadores", "visao", "chat", "classificacao", "partidas", "configuracao"];
+  if (phase === "between_rounds") return ["visao", "classificacao", "partidas", "jogadores", "chat", "configuracao"];
+  if (phase === "closing") return ["classificacao", "visao", "partidas", "chat", "jogadores", "configuracao"];
+  if (phase === "history") return ["classificacao", "partidas", "chat", "jogadores", "visao", "configuracao"];
+  return ["visao", "partidas", "jogadores", "classificacao", "chat", "configuracao"];
+}
+
+function leagueOperationalPhaseFor(input: {
+  approvedPlayers: number;
+  classesCount: number;
+  currentRoundNumber: number;
+  leagueStatus: LeagueDetails["status"];
+  pendingRegistrations: number;
+  roundsCount: number;
+  roundsTotal: number;
+  seasonStatus?: LeagueSeasonSummary["status"];
+  unfinishedMatches: number;
+}): LeagueOperationalPhaseKey {
+  if (input.leagueStatus === "finished" || input.seasonStatus === "finished" || input.seasonStatus === "archived") {
+    return "history";
+  }
+  if (input.leagueStatus === "draft" || input.seasonStatus === "draft" || input.classesCount === 0) {
+    return "configuration";
+  }
+  if (input.pendingRegistrations > 0 && input.roundsCount === 0) {
+    return "registration";
+  }
+  if (input.roundsCount === 0) {
+    return input.approvedPlayers > 0 ? "between_rounds" : "registration";
+  }
+  if (input.unfinishedMatches > 0) {
+    return "active_round";
+  }
+  if (input.roundsTotal > 0 && input.currentRoundNumber >= input.roundsTotal) {
+    return "closing";
+  }
+  return "between_rounds";
 }
 
 function leagueRegistrationStatusLabel(status: LeagueRegistration["status"]): string {
@@ -220,6 +270,109 @@ type LeagueOperationTask = {
   title: string;
   tone: "attention" | "danger" | "neutral" | "ready";
 };
+
+type LeagueCockpitAction = {
+  disabled?: boolean;
+  label: string;
+  onClick: () => void | Promise<void>;
+};
+
+type LeagueCockpitMetric = {
+  label: string;
+  value: string | number;
+};
+
+type LeagueCockpitFocusItem = {
+  detail?: string;
+  label: string;
+  tone?: "attention" | "danger" | "neutral" | "ready";
+  value: string | number;
+};
+
+type LeagueCockpitModel = {
+  audience: "owner" | "participant";
+  blockers: string[];
+  detail: string;
+  eyebrow: string;
+  focusItems: LeagueCockpitFocusItem[];
+  metrics: LeagueCockpitMetric[];
+  phase: LeagueOperationalPhaseKey;
+  primaryAction: LeagueCockpitAction;
+  roleLabel: string;
+  secondaryActions: LeagueCockpitAction[];
+  title: string;
+};
+
+function LeagueOperationalCockpit({ children, model }: { children?: ReactNode; model: LeagueCockpitModel }) {
+  return (
+    <section className={`league-operational-cockpit ${model.audience} phase-${model.phase}`} aria-label="Cockpit operacional da liga">
+      <div className="league-operational-copy">
+        <div className="league-operational-title-row">
+          <span>{model.eyebrow}</span>
+          <em>{model.roleLabel}</em>
+        </div>
+        <h2>{model.title}</h2>
+        <p>{model.detail}</p>
+      </div>
+
+      <div className="league-operational-metrics" aria-label="Indicadores da liga">
+        {model.metrics.map((metric) => (
+          <article key={metric.label}>
+            <strong>{metric.value}</strong>
+            <span>{metric.label}</span>
+          </article>
+        ))}
+      </div>
+
+      {model.focusItems.length ? (
+        <div className="league-operational-focus" aria-label="Foco da rodada">
+          {model.focusItems.map((item) => (
+            <article key={item.label} className={item.tone || "neutral"}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              {item.detail ? <small>{item.detail}</small> : null}
+            </article>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="league-operational-actions">
+        <button className="primary" type="button" onClick={() => invokeLeagueCockpitAction(model.primaryAction)} disabled={model.primaryAction.disabled}>
+          {model.primaryAction.label}
+        </button>
+        {model.secondaryActions.length ? (
+          <div>
+            {model.secondaryActions.map((action) => (
+              <button key={action.label} type="button" onClick={() => invokeLeagueCockpitAction(action)} disabled={action.disabled}>
+                {action.label}
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+
+      <div className={`league-operational-blockers ${model.blockers.length ? "has-blockers" : "ready"}`}>
+        <strong>{model.blockers.length ? "O que precisa de acao agora" : "Sem bloqueio critico agora"}</strong>
+        {model.blockers.length ? (
+          <ul>
+            {model.blockers.slice(0, 5).map((blocker) => (
+              <li key={blocker}>{blocker}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>Use a acao principal para seguir para a etapa mais provavel desta fase.</p>
+        )}
+      </div>
+
+      {children ? <div className="league-operational-queue-slot">{children}</div> : null}
+    </section>
+  );
+}
+
+function invokeLeagueCockpitAction(action: LeagueCockpitAction) {
+  if (action.disabled) return;
+  void Promise.resolve(action.onClick());
+}
 
 function invokeLeagueOperationTaskAction(action: LeagueOperationTaskAction) {
   if (action.disabled) return;
@@ -1930,6 +2083,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     void openMatchRoom(match, true);
   }
 
+  const leagueGenerationBlockers = (() => {
+    const blockers: string[] = [];
+    if (!selectedSeasonId) blockers.push("Selecione uma temporada.");
+    if (!classes.length) blockers.push("Crie ao menos uma classe.");
+    if (!standingsSummary.players) blockers.push("Aprove jogadores ativos.");
+    if (registrationStats.pending > 0) blockers.push("Resolva inscricoes pendentes antes de gerar a rodada.");
+    if (unfinishedLeagueMatchItems.length > 0) blockers.push("Finalize a rodada pendente antes de gerar a proxima.");
+    return blockers;
+  })();
+
   function renderLeagueMatchRoomDialog(entry: { match: LeagueMatchSummary; round: LeagueRoundSummary } | null) {
     if (!entry || !league) return null;
     const m = entry.match;
@@ -2554,6 +2717,304 @@ export function LeagueDetailsPage({ user, profile }: Props) {
 
   const visibleLeagueOperationTasks = leagueOperationTasks.slice(0, 6);
   const visiblePlayerLeagueTasks = playerLeagueTasks.slice(0, 4);
+  const leagueOperationalPhase = leagueOperationalPhaseFor({
+    approvedPlayers: standingsSummary.players,
+    classesCount: classes.length,
+    currentRoundNumber: Number(selectedSeason?.currentRoundNumber || roundsData.length || 0),
+    leagueStatus: league?.status || "draft",
+    pendingRegistrations: registrationStats.pending,
+    roundsCount: roundsData.length,
+    roundsTotal: Number(league?.roundsTotal || 0),
+    seasonStatus: selectedSeason?.status,
+    unfinishedMatches: unfinishedLeagueMatchItems.length,
+  });
+  const firstOwnerTask = leagueOperationTasks.find((task) => task.id !== "generate-round") ?? leagueOperationTasks[0] ?? null;
+  const firstPlayerTask = playerLeagueTasks[0] ?? null;
+  const nextPlayerMatch = myPendingLeagueMatches[0] ?? myLeagueMatches[0] ?? null;
+  const nextPlayerMatchMine = nextPlayerMatch?.match.participants.find((participant) => participant.userId === user.id) ?? null;
+  const nextPlayerOpponent = nextPlayerMatch
+    ? nextPlayerMatch.match.participants
+        .filter((participant) => participant.side !== nextPlayerMatchMine?.side)
+        .map((participant) => participant.displayName)
+        .filter(Boolean)
+        .join(" / ") || "Adversario a definir"
+    : "Rodada ainda nao publicada";
+  const activeOwnerRound = unfinishedLeagueMatchItems[0]?.round ?? roundsData[roundsData.length - 1]?.round ?? null;
+  const leagueOperationalCopy = (() => {
+    if (isOwner) {
+      if (leagueOperationalPhase === "configuration") {
+        return {
+          eyebrow: "Configuracao inicial",
+          title: "Complete regras, classes e base da temporada",
+          detail: "A liga ainda precisa de estrutura minima antes da operacao de rodada virar foco.",
+        };
+      }
+      if (leagueOperationalPhase === "registration") {
+        return {
+          eyebrow: "Inscricoes e participantes",
+          title: "Aprove participantes antes da primeira rodada",
+          detail: "Jogadores, pagamentos e classes precisam estar prontos para a rodada nascer limpa.",
+        };
+      }
+      if (leagueOperationalPhase === "between_rounds") {
+        return {
+          eyebrow: "Entre rodadas",
+          title: "Valide classificacao e gere a proxima rodada",
+          detail: "Sem partida aberta agora. Confira pendencias e avance a temporada quando estiver tudo pronto.",
+        };
+      }
+      if (leagueOperationalPhase === "closing") {
+        return {
+          eyebrow: "Encerramento",
+          title: "Feche a temporada com ranking validado",
+          detail: "Resultados, ranking e sobe/desce precisam estar coerentes antes do historico final.",
+        };
+      }
+      if (leagueOperationalPhase === "history") {
+        return {
+          eyebrow: "Historico",
+          title: "Consulte resultados e classificacao final",
+          detail: "A operacao atual terminou. Historico e relatorios ficam em primeiro plano.",
+        };
+      }
+      return {
+        eyebrow: "Rodada ativa",
+        title: "Resolva pendencias da rodada atual",
+        detail: "Partidas, horarios, resultados enviados e analises precisam aparecer antes de configuracoes raras.",
+      };
+    }
+
+    if (leagueOperationalPhase === "history" || league?.status === "finished") {
+      return {
+        eyebrow: "Historico da liga",
+        title: "Veja classificacao e resultados finais",
+        detail: "A temporada terminou. O foco agora e consultar ranking, partidas e mensagens.",
+      };
+    }
+    if (nextPlayerMatch) {
+      return {
+        eyebrow: nextPlayerMatch.roundLabel,
+        title: "Sua rodada atual",
+        detail: "Abra a sala da partida para combinar horario, ver chat, lancar resultado ou acompanhar confirmacao.",
+      };
+    }
+    if (myLeagueRegistration?.status === "pending") {
+      return {
+        eyebrow: "Inscricao em analise",
+        title: "Aguarde a aprovacao da organizacao",
+        detail: "Assim que sua entrada for aprovada, suas rodadas aparecem aqui com adversario, horario e resultado.",
+      };
+    }
+    if (!myLeagueRegistration && league?.publicJoinEnabled) {
+      return {
+        eyebrow: "Entrada aberta",
+        title: "Entre na liga para receber suas rodadas",
+        detail: "Depois da inscricao, esta tela vira sua area de rodada, chat, resultado e classificacao.",
+      };
+    }
+    return {
+      eyebrow: "Liga em preparacao",
+      title: "Rodada ainda nao publicada para voce",
+      detail: "Quando a organizacao gerar ou liberar partidas, seu adversario e proxima acao aparecem aqui.",
+    };
+  })();
+  const leagueOperationalBlockers = (() => {
+    if (isOwner) {
+      if (leagueOperationalPhase === "configuration") {
+        const blockers: string[] = [];
+        if (!selectedSeasonId) blockers.push("Selecionar ou criar temporada ativa.");
+        if (!classes.length) blockers.push("Criar ao menos uma classe.");
+        if (!standingsSummary.players) blockers.push("Aprovar jogadores ativos.");
+        return blockers;
+      }
+      if (leagueOperationalPhase === "registration") {
+        const blockers: string[] = [];
+        if (registrationStats.pending > 0) blockers.push(`${registrationStats.pending} inscricao(oes) aguardando decisao.`);
+        if ((league?.registrationFeeCents || 0) > 0 && registrationPaymentStats.paidCount < filteredRegistrations.length) {
+          blockers.push("Conferir pagamentos de participantes.");
+        }
+        return blockers;
+      }
+      if (leagueOperationalPhase === "active_round") {
+        return leagueOperationTasks
+          .filter((task) => task.id !== "generate-round")
+          .slice(0, 5)
+          .map((task) => `${task.eyebrow}: ${task.title}`);
+      }
+      if (leagueOperationalPhase === "between_rounds") return leagueGenerationBlockers;
+      if (leagueOperationalPhase === "closing") return leagueSeasonGuard.blockers;
+      return [];
+    }
+
+    if (nextPlayerMatch) {
+      const blockers: string[] = [];
+      if (!nextPlayerMatch.scheduledAt) blockers.push("Horario e local ainda precisam ser combinados.");
+      if (nextPlayerMatch.status === "aguardando_resultado") blockers.push("Resultado ainda nao foi lancado.");
+      if (nextPlayerMatch.status === "aguardando_confirmacao") blockers.push("Resultado aguardando confirmacao.");
+      if (nextPlayerMatch.status === "em_disputa" || nextPlayerMatch.status === "em_analise_adm") blockers.push("Partida em analise pela organizacao.");
+      return blockers;
+    }
+    if (myLeagueRegistration?.status === "pending") return ["A organizacao ainda precisa aprovar sua inscricao."];
+    if (!myLeagueRegistration && league?.publicJoinEnabled) return ["Escolha uma classe e envie sua inscricao para entrar nas proximas rodadas."];
+    return ["Nenhuma rodada pessoal publicada ainda."];
+  })();
+  const leagueOperationalModel: LeagueCockpitModel = {
+    ...leagueOperationalCopy,
+    audience: isOwner ? "owner" : "participant",
+    blockers: leagueOperationalBlockers,
+    focusItems: isOwner
+      ? [
+          {
+            detail: selectedSeason?.name || "Temporada a definir",
+            label: "Rodada",
+            tone: leagueOperationalPhase === "active_round" ? "attention" : "neutral",
+            value: activeOwnerRound ? `Rodada ${activeOwnerRound.roundNumber}` : "Sem rodada",
+          },
+          {
+            detail: selectedClassId ? selectedClassLabel : "Todas as classes",
+            label: "Pendencias",
+            tone: leagueOperationTasks.length ? "attention" : "ready",
+            value: leagueOperationTasks.length,
+          },
+          {
+            detail: leagueOverview.nextAction,
+            label: "Proxima acao",
+            value:
+              leagueOperationalPhase === "between_rounds"
+                ? "Gerar rodada"
+                : leagueOperationalPhase === "configuration"
+                  ? "Configurar"
+                  : "Resolver",
+          },
+        ]
+      : [
+          {
+            detail: nextPlayerMatch?.classLabel || selectedClassLabel,
+            label: "Adversario",
+            tone: nextPlayerMatch ? "attention" : "neutral",
+            value: nextPlayerOpponent,
+          },
+          {
+            detail: nextPlayerMatch?.roundLabel || "Aguardando rodada",
+            label: "Horario",
+            value: nextPlayerMatch?.scheduledAt ? formatDateTime(nextPlayerMatch.scheduledAt) : "A combinar",
+          },
+          {
+            detail: "Quadra/local ainda nao existe no schema da liga",
+            label: "Local",
+            value: nextPlayerMatch?.scheduledAt ? "Local a combinar" : "Pendente",
+          },
+          {
+            label: "Status",
+            tone: nextPlayerMatch?.status === "em_disputa" || nextPlayerMatch?.status === "em_analise_adm" ? "danger" : "neutral",
+            value: nextPlayerMatch ? matchStatusLabel(nextPlayerMatch.status) : myLeagueRegistration ? leagueRegistrationStatusLabel(myLeagueRegistration.status) : "Sem inscricao",
+          },
+        ],
+    metrics: isOwner
+      ? [
+          { label: "participantes", value: standingsSummary.players },
+          { label: "inscricoes pendentes", value: registrationStats.pending },
+          { label: "partidas pendentes", value: leagueOverview.pending },
+          { label: "rodadas", value: leagueOverview.rounds },
+        ]
+      : [
+          { label: "minhas pendentes", value: myPendingLeagueMatches.length },
+          { label: "finalizadas", value: myFinishedLeagueMatches.length },
+          { label: "rodadas", value: leagueOverview.rounds },
+          { label: "mensagens", value: leagueChat.length },
+        ],
+    phase: leagueOperationalPhase,
+    primaryAction: isOwner
+      ? leagueOperationalPhase === "configuration"
+        ? { label: "Completar configuracao", onClick: () => goToTab("configuracao") }
+        : leagueOperationalPhase === "registration"
+          ? { label: "Aprovar participantes", onClick: () => goToTab("jogadores") }
+          : leagueOperationalPhase === "between_rounds"
+            ? { disabled: busy || leagueGenerationBlockers.length > 0, label: "Gerar proxima rodada", onClick: onGenerateRound }
+            : leagueOperationalPhase === "closing"
+              ? {
+                  disabled: busy || !leagueSeasonGuard.ready || selectedSeason?.status === "finished",
+                  label: "Aplicar sobe/desce",
+                  onClick: onApplySeasonMovements,
+                }
+              : leagueOperationalPhase === "history"
+                ? { label: "Ver classificacao final", onClick: () => goToTab("classificacao") }
+                : {
+                    label: firstOwnerTask ? "Resolver proxima pendencia" : "Abrir partidas",
+                    onClick: () => (firstOwnerTask ? setSelectedLeagueTaskId(firstOwnerTask.id) : goToTab("partidas")),
+                  }
+      : firstPlayerTask
+        ? { label: "Abrir minha partida", onClick: () => setSelectedLeagueTaskId(firstPlayerTask.id) }
+        : publicLeagueCta.action === "join"
+          ? { disabled: publicLeagueCta.disabled, label: publicLeagueCta.label, onClick: onPublicLeagueCta }
+          : myLeagueRegistration?.status === "pending"
+            ? { disabled: true, label: "Inscricao em analise", onClick: () => undefined }
+            : leagueOperationalPhase === "history"
+              ? { label: "Ver classificacao", onClick: () => goToTab("classificacao") }
+              : { label: "Ver partidas", onClick: () => goToTab("partidas") },
+    roleLabel: isOwner ? "Owner" : myLeagueRegistration?.status === "approved" ? "Participante" : "Jogador",
+    secondaryActions: isOwner
+      ? [
+          { label: "Participantes", onClick: () => goToTab("jogadores") },
+          { label: "Partidas", onClick: () => goToTab("partidas") },
+          { label: "Classificacao", onClick: () => goToTab("classificacao") },
+          { label: "Comunicacao", onClick: () => goToTab("chat") },
+          { label: "Ajustes", onClick: () => goToTab("configuracao") },
+        ]
+      : [
+          { label: "Partidas", onClick: () => goToTab("partidas") },
+          { label: "Classificacao", onClick: () => goToTab("classificacao") },
+          { label: "Chat", onClick: () => goToTab("chat") },
+        ],
+  };
+  const leagueOwnerTabItems = (() => {
+    const order = preferredLeagueTabsFor(leagueOperationalPhase, true);
+    const items: Array<{ badge?: number; label: string; value: PageTab }> = [
+      {
+        value: "visao",
+        label: leagueOperationalPhase === "history" ? "Historico" : "Rodada",
+        badge: leagueOperationTasks.length > 0 ? leagueOperationTasks.length : undefined,
+      },
+      {
+        value: "jogadores",
+        label: "Participantes",
+        badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
+      },
+      {
+        value: "classificacao",
+        label: leagueOperationalPhase === "closing" || leagueOperationalPhase === "history" ? "Ranking final" : "Classificacao",
+      },
+      {
+        value: "partidas",
+        label: "Partidas",
+        badge: leagueOverview.pending > 0 ? leagueOverview.pending : undefined,
+      },
+      {
+        value: "chat",
+        label: "Comunicacao",
+      },
+      {
+        value: "configuracao",
+        label: leagueOperationalPhase === "configuration" ? "Configuracao" : "Ajustes",
+      },
+    ];
+    return items.sort((a, b) => order.indexOf(a.value) - order.indexOf(b.value));
+  })();
+  const leagueParticipantNavItems = preferredLeagueTabsFor(leagueOperationalPhase, false)
+    .filter((item) => item !== "configuracao")
+    .map((value) => ({
+      value,
+      label:
+        value === "visao"
+          ? "Rodada"
+          : value === "partidas"
+            ? "Partidas"
+            : value === "classificacao"
+              ? "Classificacao"
+              : value === "jogadores"
+                ? "Jogadores"
+                : "Chat",
+    }));
   const selectedLeagueTask =
     [...leagueOperationTasks, ...playerLeagueTasks].find((task) => task.id === selectedLeagueTaskId) ?? null;
   const pinnedLeagueMessage = leagueChat.find((message) => message.isPinned) ?? null;
@@ -2650,81 +3111,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               </div>
 
               <nav className="tournament-public-nav league-public-nav" aria-label="Navegacao publica da liga">
-                <button type="button" className={activeTab === "visao" ? "active" : ""} onClick={() => goToTab("visao")}>
-                  Liga
-                </button>
-                <button type="button" className={activeTab === "jogadores" ? "active" : ""} onClick={() => goToTab("jogadores")}>
-                  Jogadores
-                </button>
-                <button type="button" className={activeTab === "classificacao" ? "active" : ""} onClick={() => goToTab("classificacao")}>
-                  Classificação
-                </button>
-                <button type="button" className={activeTab === "partidas" ? "active" : ""} onClick={() => goToTab("partidas")}>
-                  Partidas
-                </button>
-                <button type="button" className={activeTab === "chat" ? "active" : ""} onClick={() => goToTab("chat")}>
-                  Chat
-                </button>
+                {leagueParticipantNavItems.map((item) => (
+                  <button key={`league-participant-nav:${item.value}`} type="button" className={activeTab === item.value ? "active" : ""} onClick={() => goToTab(item.value)}>
+                    {item.label}
+                  </button>
+                ))}
               </nav>
 
               {activeTab === "visao" ? (
                 <>
-                  <article id="league-public-event" className="tournament-public-hero league-public-hero">
-                    <div className="tournament-public-copy">
-                      <div className="tournament-public-title-row">
-                        <span>Liga</span>
-                        <span className={`status-badge ${league.status === "active" ? "live" : league.status === "finished" ? "finished" : "draft"}`}>
-                          {statusLabel(league.status)}
-                        </span>
-                      </div>
-                      <h2>{league.name}</h2>
-                      <div className="tournament-public-meta">
-                        <span>{typeLabel(league.leagueType)}</span>
-                        <span>{[league.category, league.classScope].filter(Boolean).join(" / ") || "Classe a definir"}</span>
-                        <span>{selectedSeason?.name || "Temporada a definir"}</span>
-                      </div>
-                      <div className="competition-public-action-rail" aria-label="Resumo público da liga">
-                        <button type="button" onClick={() => goToTab("classificacao")}>
-                          <span>Classes</span>
-                          <strong>{classes.length || "A definir"}</strong>
-                          <small>Use como filtro em jogadores, classificação e partidas.</small>
-                        </button>
-                        <button type="button" onClick={() => goToTab("jogadores")}>
-                          <span>Jogadores</span>
-                          <strong>{publicLeaguePlayers.length || registrationStats.approved || "A definir"}</strong>
-                          <small>Inscritos ativos na liga.</small>
-                        </button>
-                        <button type="button" onClick={() => goToTab("partidas")}>
-                          <span>Partidas</span>
-                          <strong>{leagueOverview.matches || "A definir"}</strong>
-                          <small>{leagueOverview.matches ? `${leagueOverview.rounds} rodadas` : "Rodada ainda não publicada."}</small>
-                        </button>
-                      </div>
-                      {myLeagueRegistration ? (
-                        <div className={`league-public-member-status ${myLeagueRegistration.status}`}>
-                          <span>{leagueRegistrationStatusLabel(myLeagueRegistration.status)}</span>
-                          <strong>
-                            {myLeagueRegistration.playerName} - {myLeagueRegistration.classId && classById[myLeagueRegistration.classId]
-                              ? classLabel(classById[myLeagueRegistration.classId])
-                              : "Classe a confirmar"}
-                          </strong>
-                          <small>{myLeagueRegistration.status === "approved" ? "Acompanhe partidas, ranking e avisos pelas abas." : "A organizacao ainda precisa revisar sua entrada."}</small>
-                        </div>
-                      ) : null}
-                      <div className="tournament-public-actions">
-                        <button className="primary tournament-public-main-cta" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
-                          <span>{publicLeagueCta.label}</span>
-                          <small>{publicLeagueCta.detail}</small>
-                        </button>
-                      </div>
-                    </div>
-                    <div className="tournament-public-media league-public-media" aria-label="Resumo visual da liga">
-                      <div>
-                        <span>{league.name.slice(0, 2).toUpperCase()}</span>
-                        <small>{league.roundsTotal} rodadas previstas</small>
-                      </div>
-                    </div>
-                  </article>
+                  <LeagueOperationalCockpit model={leagueOperationalModel} />
 
                   <div className="tournament-public-sticky-cta" aria-label="Acao principal da liga">
                     <button className="primary" type="button" onClick={onPublicLeagueCta} disabled={publicLeagueCta.disabled}>
@@ -2920,6 +3316,21 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           ) : null}
 
           {showOwnerLeagueFocus ? (
+            <LeagueOperationalCockpit model={leagueOperationalModel}>
+              <LeagueOperationTaskRows
+                ariaLabel="Fila operacional da liga"
+                emptyDetail="A liga nao tem inscricoes, partidas ou geracao de rodada aguardando acao nesta selecao."
+                emptyTitle="Nenhuma acao critica agora"
+                heading={leagueOperationalPhase === "between_rounds" ? "Entre rodadas" : leagueOperationalPhase === "history" ? "Historico" : "Rodada atual"}
+                onOpenAll={openOwnerLeagueTaskList}
+                onOpenTask={(task) => setSelectedLeagueTaskId(task.id)}
+                tasks={visibleLeagueOperationTasks}
+                totalCount={leagueOperationTasks.length}
+              />
+            </LeagueOperationalCockpit>
+          ) : null}
+
+          {false && showOwnerLeagueFocus ? (
             <section className="competition-focus-panel league-operation-panel">
               <div className="competition-focus-main">
                 <span>Operacao da liga</span>
@@ -2976,35 +3387,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               activeValue={activeTab}
               ariaLabel="Visoes da liga"
               onChange={(value) => goToTab(value as PageTab)}
-              items={[
-                {
-                  value: "visao",
-                  label: "Rodada",
-                  badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
-                },
-                {
-                  value: "jogadores",
-                  label: "Jogadores",
-                  badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
-                },
-                {
-                  value: "classificacao",
-                  label: "Classificação",
-                },
-                {
-                  value: "partidas",
-                  label: "Partidas",
-                  badge: leagueOverview.pending > 0 ? leagueOverview.pending : undefined,
-                },
-                {
-                  value: "chat",
-                  label: "Chat",
-                },
-                {
-                  value: "configuracao",
-                  label: "Configuracao",
-                },
-              ]}
+              items={leagueOwnerTabItems}
             />
           ) : null}
 

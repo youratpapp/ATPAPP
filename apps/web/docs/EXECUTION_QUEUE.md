@@ -11568,6 +11568,47 @@ Pendencias:
 - validar torneios reais em todas as fases;
 - calibrar CTA dedicado de media/publicacao caso a operacao real exija um atalho ainda mais direto.
 
+### [x] SPRINT-2026-05-20 - FLOW-09 Liga operacional
+
+Status: `[x]` concluido no codigo, aguardando QA expandido por fase real
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+
+Entregue:
+
+- `/eventos/ligas/:leagueId` passa a ter cockpit operacional por fase;
+- participante e owner deixam de compartilhar a mesma primeira dobra generica;
+- participante ve rodada atual, adversario, horario, local/status, chat, resultado e classificacao como proximas acoes;
+- owner ve pendencias da rodada, participantes, resultados pendentes, CTA de gerar proxima rodada, classificacao e ajustes owner-only;
+- fase operacional derivada no frontend para configuracao inicial, inscricoes/participantes, rodada ativa, entre rodadas, encerramento e historico;
+- configuracao continua owner-only;
+- participante nao ve ferramentas administrativas;
+- owner nao cai em descoberta publica;
+- rodada ativa passa a dominar a primeira dobra quando existe partida aberta;
+- historico/finalizacao deixam de competir com operacao atual.
+
+O que nao foi alterado:
+
+- backend;
+- loaders de dominio existentes;
+- RLS/policies/permissoes;
+- rota `/eventos/ligas/:leagueId`;
+- regras reais de geracao de rodada;
+- matchroom, chat e ranking existentes.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso.
+
+Pendencias:
+
+- capturar screenshots mobile e desktop nesta rodada;
+- QA com owner e participante reais em ligas nas fases variadas;
+- como o schema atual de `LeagueMatchSummary` nao traz quadra/local, o cockpit exibe `Local a combinar`/`Pendente` sem inventar backend.
+
 ### [x] SPRINT-2026-05-20 - Corrigir vazamento de tema claro na gestao de torneios
 
 Status: `[x]` concluido
