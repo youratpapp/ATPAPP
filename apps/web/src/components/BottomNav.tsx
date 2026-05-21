@@ -186,37 +186,49 @@ function workProfileItem(): NavItem {
   return accountItem("mobile", "/perfil?mode=work");
 }
 
-function placePath(access: WorkspaceAccessSummary, module: Parameters<typeof buildPlaceAdminPath>[1], view?: string): string {
-  return access.primaryPlaceId ? buildPlaceAdminPath(access.primaryPlaceId, module, view) : "/gestao";
+function activePlaceIdFromPath(pathname: string): string | null {
+  if (!pathname.startsWith("/gestao/")) return null;
+  const [, , rawPlaceId] = pathname.split("/");
+  if (!rawPlaceId) return null;
+  try {
+    return decodeURIComponent(rawPlaceId);
+  } catch {
+    return rawPlaceId;
+  }
+}
+
+function placePath(access: WorkspaceAccessSummary, module: Parameters<typeof buildPlaceAdminPath>[1], view?: string, activePlaceId?: string | null): string {
+  const placeId = activePlaceId || access.primaryPlaceId;
+  return placeId ? buildPlaceAdminPath(placeId, module, view) : "/gestao";
 }
 
 function hasPlaceModule(access: WorkspaceAccessSummary, module: Parameters<typeof buildPlaceAdminPath>[1]): boolean {
   return access.primaryPlaceModules.includes(module);
 }
 
-function buildDesktopWorkItems(access: WorkspaceAccessSummary, workEntryPath: string): NavItem[] {
+function buildDesktopWorkItems(access: WorkspaceAccessSummary, workEntryPath: string, activePlaceId?: string | null): NavItem[] {
   const items: NavItem[] = [
     workItem(workEntryPath, "Hoje", ManagementIcon, [workEntryPath.split("?")[0], "/gestao"], true, "work", "desktop"),
   ];
 
-  if (hasPlaceModule(access, "bookings")) items.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "desktop"));
-  if (hasPlaceModule(access, "academy")) items.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon, undefined, false, "place", "desktop"));
-  if (hasPlaceModule(access, "clients")) items.push(workItem(placePath(access, "clients", "rotina"), "Clientes", PersonIcon, undefined, false, "place", "desktop"));
-  if (hasPlaceModule(access, "finance")) items.push(workItem(placePath(access, "finance", "recebiveis"), "Financeiro", ManagementIcon, undefined, false, "place", "desktop"));
-  if (hasPlaceModule(access, "canteen")) items.push(workItem(placePath(access, "canteen", "vender"), "Cantina", ManagementIcon, undefined, false, "place", "desktop"));
+  if (hasPlaceModule(access, "bookings")) items.push(workItem(placePath(access, "bookings", "hoje", activePlaceId), "Reservas", CalendarIcon, undefined, false, "place", "desktop"));
+  if (hasPlaceModule(access, "academy")) items.push(workItem(placePath(access, "academy", "hoje", activePlaceId), "Aulas", TrophyIcon, undefined, false, "place", "desktop"));
+  if (hasPlaceModule(access, "clients")) items.push(workItem(placePath(access, "clients", "rotina", activePlaceId), "Clientes", PersonIcon, undefined, false, "place", "desktop"));
+  if (hasPlaceModule(access, "finance")) items.push(workItem(placePath(access, "finance", "recebiveis", activePlaceId), "Financeiro", ManagementIcon, undefined, false, "place", "desktop"));
+  if (hasPlaceModule(access, "canteen")) items.push(workItem(placePath(access, "canteen", "vender", activePlaceId), "Cantina", ManagementIcon, undefined, false, "place", "desktop"));
 
   if (access.hasCompetitionManagement) {
     items.push(workItem("/eventos/torneios?view=organizing", "Torneios", TrophyIcon, ["/eventos/torneios"], false, "competition", "desktop"));
     items.push(workItem("/eventos/ligas?view=organizing", "Ligas", TrophyIcon, ["/eventos/ligas"], false, "competition", "desktop"));
   }
 
-  if (hasPlaceModule(access, "team")) items.push(workItem(placePath(access, "team", "equipe"), "Equipe", PersonIcon, undefined, false, "admin", "desktop"));
-  if (hasPlaceModule(access, "settings")) items.push(workItem(placePath(access, "settings", "checklist"), "Ajustes", ManagementIcon, undefined, false, "admin", "desktop"));
+  if (hasPlaceModule(access, "team")) items.push(workItem(placePath(access, "team", "equipe", activePlaceId), "Equipe", PersonIcon, undefined, false, "admin", "desktop"));
+  if (hasPlaceModule(access, "settings")) items.push(workItem(placePath(access, "settings", "checklist", activePlaceId), "Ajustes", ManagementIcon, undefined, false, "admin", "desktop"));
 
   return items;
 }
 
-function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: string): NavItem[] {
+function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: string, activePlaceId?: string | null): NavItem[] {
   const competitionWorkPath = "/eventos?modo=organizing";
   const tournamentWorkPath = "/eventos/torneios?view=organizing";
   const leagueWorkPath = "/eventos/ligas?view=organizing";
@@ -237,28 +249,28 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
     if (!hasPlaceModule(access, "academy")) return [todayItem, workProfileItem()];
     return [
       todayItem,
-      workItem(placePath(access, "academy", "hoje"), "Agenda", CalendarIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "academy", "turmas"), "Turmas", TrophyIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "academy", "alunos"), "Alunos", PersonIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "academy", "hoje", activePlaceId), "Agenda", CalendarIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "academy", "turmas", activePlaceId), "Turmas", TrophyIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "academy", "alunos", activePlaceId), "Alunos", PersonIcon, undefined, false, "place", "mobile"),
       workProfileItem(),
     ];
   }
 
   if (access.primaryWorkRole === "frontdesk") {
     const frontdeskItems = [todayItem];
-    if (hasPlaceModule(access, "bookings")) frontdeskItems.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
-    if (hasPlaceModule(access, "clients")) frontdeskItems.push(workItem(placePath(access, "clients", "rotina"), "Clientes", PersonIcon, undefined, false, "place", "mobile"));
-    if (hasPlaceModule(access, "academy")) frontdeskItems.push(workItem(placePath(access, "academy", "pendencias"), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
+    if (hasPlaceModule(access, "bookings")) frontdeskItems.push(workItem(placePath(access, "bookings", "hoje", activePlaceId), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
+    if (hasPlaceModule(access, "clients")) frontdeskItems.push(workItem(placePath(access, "clients", "rotina", activePlaceId), "Clientes", PersonIcon, undefined, false, "place", "mobile"));
+    if (hasPlaceModule(access, "academy")) frontdeskItems.push(workItem(placePath(access, "academy", "pendencias", activePlaceId), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
     return [...frontdeskItems.slice(0, 4), moreItem()];
   }
 
   if (access.primaryWorkRole === "finance") {
     if (!hasPlaceModule(access, "finance")) return [todayItem, workProfileItem()];
     return [
-      workItem(placePath(access, "finance", "recebiveis"), "Receber", ManagementIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "finance", "pagos"), "Pagos", CalendarIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "finance", "despesas"), "Despesas", TrophyIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "finance", "resumo"), "Resumo", ManagementIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "finance", "recebiveis", activePlaceId), "Receber", ManagementIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "finance", "pagos", activePlaceId), "Pagos", CalendarIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "finance", "despesas", activePlaceId), "Despesas", TrophyIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "finance", "resumo", activePlaceId), "Resumo", ManagementIcon, undefined, false, "place", "mobile"),
       workProfileItem(),
     ];
   }
@@ -266,10 +278,10 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
   if (access.primaryWorkRole === "cashier") {
     if (!hasPlaceModule(access, "canteen")) return [todayItem, workProfileItem()];
     return [
-      workItem(placePath(access, "canteen", "vender"), "Vender", ManagementIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "canteen", "hoje"), "Hoje", CalendarIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "canteen", "estoque"), "Estoque", TrophyIcon, undefined, false, "place", "mobile"),
-      workItem(placePath(access, "canteen", "produtos"), "Produtos", ManagementIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "canteen", "vender", activePlaceId), "Vender", ManagementIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "canteen", "hoje", activePlaceId), "Hoje", CalendarIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "canteen", "estoque", activePlaceId), "Estoque", TrophyIcon, undefined, false, "place", "mobile"),
+      workItem(placePath(access, "canteen", "produtos", activePlaceId), "Produtos", ManagementIcon, undefined, false, "place", "mobile"),
       workProfileItem(),
     ];
   }
@@ -286,22 +298,23 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
 
   if (access.primaryWorkRole === "operator") {
     const operatorItems = [todayItem];
-    if (hasPlaceModule(access, "bookings")) operatorItems.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
-    if (hasPlaceModule(access, "academy")) operatorItems.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
+    if (hasPlaceModule(access, "bookings")) operatorItems.push(workItem(placePath(access, "bookings", "hoje", activePlaceId), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
+    if (hasPlaceModule(access, "academy")) operatorItems.push(workItem(placePath(access, "academy", "hoje", activePlaceId), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
     if (access.hasCompetitionManagement) operatorItems.push(workItem(competitionWorkPath, "Competir", TrophyIcon, ["/eventos"], false, "competition", "mobile"));
     return [...operatorItems.slice(0, 4), workProfileItem()];
   }
 
   const managerItems = [todayItem];
-  if (hasPlaceModule(access, "bookings")) managerItems.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
-  if (hasPlaceModule(access, "academy")) managerItems.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
-  if (hasPlaceModule(access, "finance")) managerItems.push(workItem(placePath(access, "finance", "recebiveis"), "Financeiro", ManagementIcon, undefined, false, "place", "mobile"));
+  if (hasPlaceModule(access, "bookings")) managerItems.push(workItem(placePath(access, "bookings", "hoje", activePlaceId), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
+  if (hasPlaceModule(access, "academy")) managerItems.push(workItem(placePath(access, "academy", "hoje", activePlaceId), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
+  if (hasPlaceModule(access, "finance")) managerItems.push(workItem(placePath(access, "finance", "recebiveis", activePlaceId), "Financeiro", ManagementIcon, undefined, false, "place", "mobile"));
   return [...managerItems.slice(0, 4), { ...moreItem(), Icon: PersonIcon }];
 }
 
 function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: UserMode, workEntryPath: string): NavItem[] {
   const visibility = getGlobalNavigationVisibility(access, pathname);
   const hasProfessionalEntry = visibility.showCompetitionManagement || visibility.showManagement;
+  const activePlaceId = activePlaceIdFromPath(pathname);
 
   if (mode === "player") return [...PLAYER_ITEMS];
 
@@ -309,7 +322,7 @@ function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: U
     return [accountItem()];
   }
 
-  return [...buildMobileWorkItems(access, workEntryPath), ...buildDesktopWorkItems(access, workEntryPath)];
+  return [...buildMobileWorkItems(access, workEntryPath, activePlaceId), ...buildDesktopWorkItems(access, workEntryPath, activePlaceId)];
 }
 
 function isActiveNavItem(item: NavItem, pathname: string, isDesktopNav: boolean): boolean {

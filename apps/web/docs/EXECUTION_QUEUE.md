@@ -44,6 +44,114 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## [x] Sprint concluido - QA-LABELS-01 Remover rotulos tecnicos de dados visiveis
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- `docs/QA_LABEL_CLEANUP_2026_05_21.md`
+
+Evidencias:
+
+- `docs/screenshots/qa-label-cleanup-2026-05-21/`
+- `node scripts/cleanup-qa-flow-labels.mjs`
+- `npx.cmd tsc -b --pretty false`
+
+Arquivos alterados:
+
+- `scripts/tournament-e2e-flow-audit.mjs`
+- `scripts/academy-e2e-flow-audit.mjs`
+- `scripts/league-e2e-flow-audit.mjs`
+- `scripts/cleanup-qa-flow-labels.mjs`
+- `src/pages/PlacesPage.tsx`
+- `docs/QA_LABEL_CLEANUP_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- Scripts de auditoria deixam de criar nomes com `QA`, `Fluxo`, `V4`, `E2E` ou `auditoria` em campos que aparecem no produto.
+- Registros existentes foram normalizados: torneios, ligas, academias, quadras, turmas, professores, notas de reserva/contrato/lista de espera e descricoes de pagamento.
+- Textos tecnicos remanescentes no UI de gestao foram normalizados: `Marcar pago por row` virou `Marcar recebivel como pago`; `Drawer na lista` virou `Lista e cadastro`.
+- Captura nova em mobile 390px e desktop 1366px nao encontrou os rotulos tecnicos antigos nas rotas verificadas.
+- Console/diagnosticos das capturas novas sem eventos.
+
+Evidencias adicionais:
+
+- `docs/screenshots/technical-label-cleanup-2026-05-21/`
+
+Pendencias:
+
+- `[ ] NAV-UX-06` Continuar varredura de menus/tabs/subtabs em gestao de local, torneio e liga para encontrar outras duplicidades de navegacao que ainda parecam duas formas de fazer a mesma coisa.
+
+## [x] Sprint concluido - NAV-DUP Menus locais duplicados em competicoes
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- `docs/NAVIGATION_DUPLICATION_AUDIT_2026_05_21.md`
+
+Evidencias:
+
+- `docs/screenshots/navigation-duplication-audit-2026-05-21-run3/`
+
+Arquivos alterados:
+
+- `src/pages/TournamentPage.tsx`
+- `src/pages/LeagueDetailsPage.tsx`
+- `src/App.css`
+- `docs/NAVIGATION_DUPLICATION_AUDIT_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- Torneio e liga nao renderizam mais a fileira de `secondaryActions` como segundo menu local.
+- O cockpit operacional ficou responsavel por contexto, bloqueio e CTA primario.
+- `CompetitionTabs` ficou como unica navegacao local oficial.
+- No torneio, as tabs foram movidas para o inicio da area interna, antes do conteudo da aba.
+- No mobile, `CompetitionTabs` passou de grade 2x2 para chips horizontais compactos.
+- Rechecagem em mobile 390px, mobile 430px, desktop 1366px e desktop amplo sem eventos de console.
+
+Pendencias:
+
+- `[x] NAV-UX-02` Revisar gestao de local quando existe mais de uma academia/local: menu externo, seletor de unidade, tabs de modulo e subtabs internas ainda podem criar tiers demais. Concluido no sprint `NAV-UX-02 Gestao de local com menos tiers`.
+- `[ ] NAV-UX-03` Manter regra permanente em competicoes: cockpit nao pode criar menu paralelo quando existir aba oficial.
+
+## [x] Sprint concluido - NAV-UX-02 Gestao de local com menos tiers
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- `docs/PLACE_NAVIGATION_SIMPLIFICATION_2026_05_21.md`
+
+Evidencias:
+
+- `docs/screenshots/place-navigation-simplification-2026-05-21-run2/`
+
+Arquivos alterados:
+
+- `src/components/place/PlaceAdminShell.tsx`
+- `src/components/BottomNav.tsx`
+- `src/App.css`
+- `docs/PLACE_NAVIGATION_SIMPLIFICATION_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- O shell de gestao de local nao repete mais uma fileira de tabs de modulo.
+- Desktop usa a sidebar de Trabalho como navegacao de modulo.
+- Mobile usa seletor compacto `Trocar area` dentro da unidade ativa.
+- Atalhos globais de Trabalho agora respeitam o `placeId` ativo em rotas `/gestao/:placeId/...`, reduzindo confusao em usuarios com multiplas academias.
+- Rotas antigas e parametros `visao` foram preservados.
+- `npx tsc -b --pretty false` passou.
+
+Pendencias:
+
+- `[ ] NAV-UX-04` Revisar subtabs internas dos workspaces de Academia/Reservas para reduzir labels sinonimos e tabs que parecem modulos.
+- `[ ] NAV-UX-05` Testar usuario com permissoes diferentes por unidade; a sidebar ainda usa os modulos da unidade primaria para decidir visibilidade global.
+
 ## [x] Sprint concluido - FLOW-V4 Academia E2E e Fluxo Real do Local
 
 Status: `[x]` auditoria concluida em 2026-05-21, com bloqueios registrados para sprint de correcao.
@@ -56,7 +164,8 @@ Fonte primaria:
 Evidencias finais:
 
 - `docs/screenshots/academy-e2e-flow-v1-2026-05-21-run3/`
-- Academia final: `QA Academia Fluxo 0521052052` (`49709592-173c-49c6-aa22-bacb6ec0b31b`)
+- Rechecagem SQL: `docs/screenshots/academy-e2e-flow-v1-2026-05-21-run4-after-sql-check/`
+- Academia final: `ATP Centro Dourados 0521052052` (`49709592-173c-49c6-aa22-bacb6ec0b31b`)
 - Diagnostico: `completed: true`, `failedRequests: []`, `pageErrors: []`
 - Console com erro funcional esperado/documentado em chamada: `column reference "id" is ambiguous`
 
@@ -100,8 +209,8 @@ Bloqueios encontrados:
 
 Pendencias novas:
 
-- `[!] ACADEMY-DB-01` Aplicar `supabase/migrations/0098_fix_academy_staff_invite_attendance_ambiguity.sql` no banco remoto e rerodar academia E2E sem fallback. Bloqueado no ambiente atual: nao ha Supabase CLI, `DATABASE_URL` ou service role; apenas anon key.
-- `[!] ACADEMY-DB-02` Revalidar chamada/presenca apos aplicar a mesma migration remota. Bloqueado pelo mesmo motivo de acesso ao banco remoto.
+- `[!] ACADEMY-DB-01` Aplicar `supabase/migrations/0098_fix_academy_staff_invite_attendance_ambiguity.sql` no banco remoto e rerodar academia E2E sem fallback. Rechecado em 2026-05-21: `npx supabase` existe e tem `db query`, mas o ambiente nao esta linkado/logado (`SUPABASE_ACCESS_TOKEN` ausente) e nao ha `DATABASE_URL`/senha Postgres; tentativa `supabase db query --linked` falhou por falta de project link. O E2E `run4-after-sql-check` confirma que o remoto ainda retorna `column reference "place_id" is ambiguous`.
+- `[!] ACADEMY-DB-02` Revalidar chamada/presenca apos aplicar a mesma migration remota. Rechecado em 2026-05-21: `run4-after-sql-check` ainda registrou no console `app_mark_academy_attendance` com `column reference "id" is ambiguous`.
 - `[ ] ACADEMY-UX-01` Reestruturar selecao de local/academia para usuarios com multiplos locais; evitar seletor longo dentro da primeira dobra do workspace.
 - `[ ] ACADEMY-UX-02` Reduzir tiers no mobile da academia: header/local/modulo/tabs/cards antes da tarefa real.
 - `[x] ACADEMY-UX-03` Em `Nova reserva`, formulario deve vir antes da lista de espera; corrigido em `CROSS-V4-E2E-01`.
@@ -289,7 +398,7 @@ Fonte primaria:
 Evidencias finais:
 
 - `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/`
-- Liga final: `QA Liga V4 044652` (`d5c32395-b466-4bb2-a97e-3b648da5c8ca`)
+- Liga final: `Liga ATP Dourados 044652` (`d5c32395-b466-4bb2-a97e-3b648da5c8ca`)
 - Diagnostico: `completed: true`, `failedRequests: []`, `pageErrors: []`
 
 ### [x] FLOW-V4-LIGA-E2E - Rodar liga do inicio ao fim e corrigir bloqueios
@@ -357,7 +466,7 @@ Fonte primaria:
 
 Contexto:
 
-- A auditoria criou e operou o torneio `QA Fluxo V4 010927` (`cd01cf82-31e3-4682-a64e-7f4db9d75387`).
+- A auditoria criou e operou o torneio `ATP Open Dourados 010927` (`cd01cf82-31e3-4682-a64e-7f4db9d75387`).
 - O fluxo passou por criacao, inscricoes seed, aprovacao, encerramento, geracao de jogos, tentativa de envio de resultado pelo jogador e tentativa de lancamento/finalizacao pelo admin.
 - O teste provou que a dor principal do torneio e fluxo: ha muitos tiers de menu e a acao principal da fase fica misturada com configuracao, pagina publica e sala de jogador.
 
@@ -459,7 +568,7 @@ Sprint 2026-05-20:
 - Corrigido bloqueio funcional do envio de resultado pelo jogador em `src/lib/tournaments.ts` com fallback para o erro remoto `column reference "tournament_id" is ambiguous`.
 - Criada migration `supabase/migrations/0092_fix_tournament_result_submission_rpc_return.sql` para corrigir a assinatura/retorno do RPC no banco.
 - `TournamentPage.tsx` voltou a expor `Configuracao` para owner/staff em torneio live/finalizado, evitando sumico de status/ajustes owner-only.
-- Torneio QA `QA Fluxo V4 010927` foi concluido: duas semifinais finalizadas, final finalizada, `status = finished`.
+- Torneio `ATP Open Dourados 010927` foi concluido: duas semifinais finalizadas, final finalizada, `status = finished`.
 - Evidencia final: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run10-final-match/`.
 
 Pendencia ainda aberta:
@@ -12361,7 +12470,7 @@ Entregue:
 Validacao:
 
 - `npm.cmd run build` passou;
-- torneio fresco criado e finalizado: `QA Fluxo V4 021743`;
+- torneio fresco criado e finalizado: `ATP Open Dourados 021743`;
 - ID do torneio: `a32cb410-0624-42f6-a051-6d397fb08149`;
 - diagnostico final: `completed = true`, `failedRequests = []`, `pageErrors = []`;
 - console sem erro de app, apenas logs esperados de ambiente dev;
@@ -12413,7 +12522,7 @@ Validacao:
 
 - `npm.cmd run build` passou;
 - run fresco final: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run20-final-sprint-pass/`;
-- torneio QA criado: `QA Fluxo V4 025536`;
+- torneio criado: `ATP Open Dourados 025536`;
 - ID: `688f0ba9-8278-4c39-ade0-1c3ec6e80f46`;
 - diagnostico final: `completed = true`, `failedRequests = []`, `pageErrors = []`;
 - result attempts confirmaram `admin-manual-score`, `apply-submitted-result` e `walkover-ui`.
@@ -12472,7 +12581,7 @@ Validacao:
 - rerun 1: `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run21-post-fixes/`;
 - rerun 2: `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run22-post-classification-fix/`;
 - run final aprovado: `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run23-final-post-fixes/`;
-- torneio final aprovado: `QA Fluxo V4 032025`;
+- torneio final aprovado: `ATP Open Dourados 032025`;
 - ID: `23fb0ac9-8436-4cd1-a68c-d23cf0129b56`;
 - diagnostico final: `completed = true`, `failedRequests = []`, `pageErrors = []`;
 - result attempts validaram:

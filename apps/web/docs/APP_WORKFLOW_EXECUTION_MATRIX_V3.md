@@ -734,7 +734,7 @@ Evidencia final:
 
 - pasta: `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/`;
 - diagnostico: `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/diagnostics.json`;
-- liga: `QA Liga V4 044652` (`d5c32395-b466-4bb2-a97e-3b648da5c8ca`);
+- liga: `Liga ATP Dourados 044652` (`d5c32395-b466-4bb2-a97e-3b648da5c8ca`);
 - resultado: `completed: true`, sem `failedRequests`, sem `pageErrors`.
 
 Fluxo validado:

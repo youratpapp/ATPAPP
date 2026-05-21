@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "academy-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "mobile390-academy-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "tournament-final",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "mobile390-tournament-final.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "league-final",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "mobile390-league-final.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "academy-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "desktop1366-academy-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "tournament-final",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "desktop1366-tournament-final.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "league-final",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "desktop1366-league-final.png",
+    "events": []
+  }
+]

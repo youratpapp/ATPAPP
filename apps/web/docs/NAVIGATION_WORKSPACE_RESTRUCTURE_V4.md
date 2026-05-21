@@ -1317,7 +1317,7 @@ A reestrutura V4 so pode ser considerada bem sucedida quando:
 
 Documento detalhado: `TOURNAMENT_E2E_FLOW_AUDIT_2026_05_20.md`.
 
-A auditoria criou e operou o torneio `QA Fluxo V4 010927` (`cd01cf82-31e3-4682-a64e-7f4db9d75387`) passando por:
+A auditoria criou e operou o torneio `ATP Open Dourados 010927` (`cd01cf82-31e3-4682-a64e-7f4db9d75387`) passando por:
 
 - criacao do torneio pelo owner;
 - pedidos de inscricao com jogadores seed;
@@ -1371,7 +1371,7 @@ Validado:
 - build de producao com `npm.cmd run build`.
 - build de producao apos o seletor de local ativo.
 - revalidacao final em `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run23-final-post-fixes/`:
-  - torneio `QA Fluxo V4 032025`;
+  - torneio `ATP Open Dourados 032025`;
   - ID `23fb0ac9-8436-4cd1-a68c-d23cf0129b56`;
   - criacao, inscricoes, aprovacao, encerramento, jogos, resultado jogador, placar admin, WO e finalizacao aprovados;
   - aba `Classificacao` em mata-mata finalizado agora comunica resultado/podio, nao pendencia falsa;

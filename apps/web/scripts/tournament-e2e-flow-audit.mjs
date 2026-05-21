@@ -308,7 +308,7 @@ async function createTournamentThroughUi(cdp, diagnostics) {
   const mm = String(start.getMonth() + 1).padStart(2, "0");
   const dd = String(start.getDate()).padStart(2, "0");
   const date = `${yyyy}-${mm}-${dd}`;
-  const name = `QA Fluxo V4 ${new Date().toISOString().slice(11, 19).replaceAll(":", "")}`;
+  const name = `ATP Open Dourados ${new Date().toISOString().slice(11, 19).replaceAll(":", "")}`;
 
   await navigate(cdp, "#/eventos/torneios?view=organizing");
   await installBrowserHelpers(cdp);

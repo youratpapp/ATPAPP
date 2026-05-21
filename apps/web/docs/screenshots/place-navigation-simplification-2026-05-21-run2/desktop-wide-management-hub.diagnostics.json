@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "management-hub",
+  "hash": "#/gestao",
+  "screenshot": "desktop-wide-management-hub.png",
+  "events": []
+}

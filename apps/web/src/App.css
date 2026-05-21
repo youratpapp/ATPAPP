@@ -13982,10 +13982,43 @@ button:disabled {
   padding: 0;
 }
 
-.place-module-context div {
+.place-module-context-copy {
   display: grid;
   gap: 3px;
   min-width: 0;
+}
+
+.place-module-picker {
+  display: grid;
+  flex: 0 1 220px;
+  gap: 5px;
+  min-width: min(220px, 100%);
+}
+
+.place-module-picker span {
+  color: var(--color-text-subtle);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.place-module-picker select {
+  appearance: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 900;
+  min-height: 38px;
+  padding: 7px 34px 7px 12px;
+}
+
+@media (min-width: 960px) {
+  .app-shell--management .place-module-picker {
+    display: none;
+  }
 }
 
 .place-module-context strong {
@@ -27534,6 +27567,19 @@ label {
   color: var(--pdark-text-main);
 }
 
+.app-shell--management .place-module-picker span {
+  color: var(--pdark-text-muted);
+}
+
+.app-shell--management .place-module-picker select {
+  background:
+    linear-gradient(135deg, rgba(5, 15, 29, 0.94), rgba(10, 28, 48, 0.9)),
+    url("./assets/pdark-empty-state-court-texture.png") right bottom / 180px auto no-repeat;
+  border-color: rgba(128, 164, 197, 0.24);
+  color: var(--pdark-text-main);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+}
+
 .app-shell--management .place-admin-shell-status,
 .app-shell--management .place-admin-setup-strip,
 .app-shell--management .place-management-health span,
@@ -32342,7 +32388,18 @@ body:has(.app-shell--competition),
   }
 
   .app-shell--management .place-module-context {
+    display: grid;
     gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--management .place-module-picker {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .app-shell--management .place-module-picker select {
+    width: 100%;
   }
 
   .app-shell--management .place-admin-shell-status {
@@ -33602,6 +33659,25 @@ body:has(.app-shell--competition),
   .app-shell--competition .competition-tabs button span {
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .app-shell--competition .competition-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px;
+    scroll-snap-type: x proximity;
+  }
+
+  .app-shell--competition .competition-tabs button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    min-width: max(104px, 34vw);
+    padding-inline: 14px;
+    scroll-snap-align: start;
+    white-space: nowrap;
+    width: auto;
   }
 
   .app-shell--competition .league-operational-cockpit {

@@ -20,7 +20,7 @@ Ambiente:
 
 Torneio principal auditado:
 
-- Nome: `QA Fluxo V4 010927`
+- Nome: `ATP Open Dourados 010927`
 - ID: `cd01cf82-31e3-4682-a64e-7f4db9d75387`
 - Rota de operacao: `/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/organizacao`
 - Status final observado no banco: `live`
@@ -669,7 +669,7 @@ Validacao executada:
 - Run pos-correcao em torneio existente: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run12-post-defect-fixes/`
   - Fluxo concluido sem `pageErrors` e sem `failedRequests`.
 - Run fresco completo: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run15-fresh-full-after-fixes/`
-  - Torneio criado: `QA Fluxo V4 021743`
+  - Torneio criado: `ATP Open Dourados 021743`
   - ID: `a32cb410-0624-42f6-a051-6d397fb08149`
   - Fluxo passou por criacao, inscricoes, aprovacao, encerramento, geracao de jogos, login de jogador, envio de resultado, aplicacao pelo owner, WOs, finalizacao e classificacao final.
   - Diagnostico: `completed = true`, `failedRequests = []`, `pageErrors = []`.
@@ -736,7 +736,7 @@ Validacao executada:
 - Run de diagnostico que revelou o mascaramento do fallback: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run18-admin-score-cta-required/`.
 - Run de continuidade validando placar manual admin: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run19-debug-admin-score/`.
 - Run fresco final: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run20-final-sprint-pass/`.
-  - Torneio criado: `QA Fluxo V4 025536`
+  - Torneio criado: `ATP Open Dourados 025536`
   - ID: `688f0ba9-8278-4c39-ade0-1c3ec6e80f46`
   - Resultado enviado pelo jogador aplicado pelo owner.
   - Placar manual admin salvo por `Salvar resultado oficial`.
@@ -769,15 +769,15 @@ Solicitacao: apos todas as correcoes, rodar torneio novamente procurando se tudo
 Reruns executados:
 
 - `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run21-post-fixes/`
-  - Torneio criado: `QA Fluxo V4 030841`
+  - Torneio criado: `ATP Open Dourados 030841`
   - ID: `e358a441-3678-431e-9e3c-79db8bb60a93`
   - Resultado: fluxo funcional passou, mas os prints revelaram copy ruim na aba de classificacao final de torneio mata-mata.
 - `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run22-post-classification-fix/`
-  - Torneio criado: `QA Fluxo V4 031559`
+  - Torneio criado: `ATP Open Dourados 031559`
   - ID: `cfb0bc0c-9ce6-4455-82a2-ae6a272dca16`
   - Resultado: fluxo funcional passou e a aba de classificacao passou a mostrar resultado final da classe, mas o card de podio ficou branco dentro do tema dark, com baixo contraste.
 - `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run23-final-post-fixes/`
-  - Torneio criado: `QA Fluxo V4 032025`
+  - Torneio criado: `ATP Open Dourados 032025`
   - ID: `23fb0ac9-8436-4cd1-a68c-d23cf0129b56`
   - Resultado: fluxo completo aprovado apos correcoes funcionais e visuais.
 
@@ -801,7 +801,7 @@ Validacao final:
 ```json
 {
   "tournamentId": "23fb0ac9-8436-4cd1-a68c-d23cf0129b56",
-  "name": "QA Fluxo V4 032025",
+  "name": "ATP Open Dourados 032025",
   "completed": true,
   "playerResultSubmit": true,
   "ownerAppliedSubmittedResult": true,

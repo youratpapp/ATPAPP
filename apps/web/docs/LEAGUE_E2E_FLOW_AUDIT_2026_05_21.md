@@ -10,7 +10,7 @@ Status: concluido.
 
 Liga final validada:
 
-- Nome: `QA Liga V4 044652`
+- Nome: `Liga ATP Dourados 044652`
 - ID: `d5c32395-b466-4bb2-a97e-3b648da5c8ca`
 - Pasta de evidencias final: `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/`
 - Diagnostico final: `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/diagnostics.json`

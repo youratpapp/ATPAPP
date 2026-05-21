@@ -340,15 +340,6 @@ function LeagueOperationalCockpit({ children, model }: { children?: ReactNode; m
         <button className="primary" type="button" onClick={() => invokeLeagueCockpitAction(model.primaryAction)} disabled={model.primaryAction.disabled}>
           {model.primaryAction.label}
         </button>
-        {model.secondaryActions.length ? (
-          <div>
-            {model.secondaryActions.map((action) => (
-              <button key={action.label} type="button" onClick={() => invokeLeagueCockpitAction(action)} disabled={action.disabled}>
-                {action.label}
-              </button>
-            ))}
-          </div>
-        ) : null}
       </div>
 
       <div className={`league-operational-blockers ${model.blockers.length ? "has-blockers" : "ready"}`}>

@@ -569,15 +569,6 @@ function TournamentOperationalCockpit({
         <button className="primary" type="button" onClick={model.primaryAction.onClick} disabled={model.primaryAction.disabled}>
           {model.primaryAction.label}
         </button>
-        {model.secondaryActions.length ? (
-          <div>
-            {model.secondaryActions.map((action) => (
-              <button key={action.label} type="button" onClick={action.onClick} disabled={action.disabled}>
-                {action.label}
-              </button>
-            ))}
-          </div>
-        ) : null}
       </div>
       <div className={`tournament-operational-blockers ${model.blockers.length ? "has-blockers" : "ready"}`}>
         <strong>{model.blockers.length ? "O que falta resolver agora" : "Sem bloqueio critico nesta fase"}</strong>
@@ -6022,6 +6013,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             <>
           <TournamentOperationalCockpit model={tournamentCockpitModel} roleLabel={tournamentRoleLabel} />
 
+          <CompetitionTabs
+            activeValue={tab}
+            ariaLabel="Visoes do torneio"
+            onChange={(value) => goToTab(value as TabKey)}
+            items={tournamentAdminTabItems}
+          />
+
           {showTournamentClassScope ? (
             <CompetitionScopeSelector
               eyebrow="Resumo por classe"
@@ -6423,15 +6421,6 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           </article>
           ) : null}
             </>
-          ) : null}
-
-          {!isPublicTournamentReader ? (
-          <CompetitionTabs
-            activeValue={tab}
-            ariaLabel="Visoes do torneio"
-            onChange={(value) => goToTab(value as TabKey)}
-            items={tournamentAdminTabItems}
-          />
           ) : null}
 
           {(!isPublicTournamentReader || publicActiveTab === "jogos") && tab === "jogos" ? (

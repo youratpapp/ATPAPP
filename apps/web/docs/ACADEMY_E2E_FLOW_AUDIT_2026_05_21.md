@@ -6,6 +6,7 @@ Fonte executiva:
 - `docs/EXECUTION_QUEUE.md`
 - Auditor: `scripts/academy-e2e-flow-audit.mjs`
 - Evidencia final: `docs/screenshots/academy-e2e-flow-v1-2026-05-21-run3/`
+- Rechecagem SQL/DB: `docs/screenshots/academy-e2e-flow-v1-2026-05-21-run4-after-sql-check/`
 
 ## Resultado resumido
 
@@ -22,21 +23,53 @@ Diagnostico final:
 - Staff invite bloqueado no backend remoto: `app_accept_place_staff_invite` retornou `column reference "place_id" is ambiguous`.
 - Typecheck: `npx.cmd tsc -b --pretty false` passou.
 
+## Rechecagem SQL - run4-after-sql-check
+
+Rodada executada em 2026-05-21 apos confirmar que o Supabase CLI esta disponivel via `npx supabase`.
+
+Resultado:
+
+- `completed: true`
+- `screenshots: 40`
+- `failedRequests: []`
+- `pageErrors: []`
+- `flowIssues: 4`, todos em aceite de convite de staff.
+- Console ainda registrou chamada quebrada em `app_mark_academy_attendance`.
+
+Conclusao:
+
+- A migration `supabase/migrations/0098_fix_academy_staff_invite_attendance_ambiguity.sql` existe localmente, mas ainda nao esta aplicada no banco remoto `xdopstommqojjofapzjl`.
+- O ambiente local tem Supabase CLI, mas nao tem projeto linkado, `SUPABASE_ACCESS_TOKEN`, `DATABASE_URL`, senha Postgres ou service role disponivel para aplicar DDL remoto.
+- A tentativa com `supabase db query --linked` falhou porque o projeto nao esta linkado/autenticado.
+
+Comando seguro quando houver credencial:
+
+```powershell
+npx.cmd supabase db query --db-url "$env:DATABASE_URL" --file supabase\migrations\0098_fix_academy_staff_invite_attendance_ambiguity.sql
+```
+
+Depois de aplicar:
+
+```powershell
+$env:ATP_ACADEMY_FLOW_OUT_DIR='docs/screenshots/academy-e2e-flow-v1-2026-05-21-run5-after-0098'
+node scripts\academy-e2e-flow-audit.mjs
+```
+
 ## Massa criada na rodada final
 
 Academia:
 
-- Nome: `QA Academia Fluxo 0521052052`
+- Nome: `ATP Centro Dourados 0521052052`
 - ID: `49709592-173c-49c6-aa22-bacb6ec0b31b`
 - Produto: `academy`
 - Cidade: `Dourados - MS`
 
 Recursos criados:
 
-- 3 quadras: `QA Quadra 1`, `QA Quadra 2`, `QA Quadra 3`
+- 3 quadras: `Quadra 1`, `Quadra 2`, `Quadra 3`
 - 1 regra operacional de reserva com aprovacao obrigatoria
-- 2 professores: `Renato Siqueira QA`, `Lais Monteiro QA`
-- 2 turmas: `QA Adulto Intermediario`, `QA Kids Iniciante`
+- 2 professores: `Renato Siqueira`, `Lais Monteiro`
+- 2 turmas: `Adulto Intermediario`, `Kids Iniciante`
 - 4 contratos de aluno
 - 5 matriculas vinculadas a logins seed
 - 1 reserva de quadra solicitada por jogador seed

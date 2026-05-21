@@ -40,9 +40,9 @@ export function PlaceAdminShell({
   onModuleChange,
   onPlaceChange,
 }: PlaceAdminShellProps) {
-  const modulePendingCount = moduleCounts[currentModule] || 0;
   const moduleOrder: PlaceManagementModule[] = ["dashboard", "bookings", "academy", "clients", "finance", "canteen", "team", "settings"];
   const visibleModules = moduleOrder.filter((module) => modules.includes(module));
+  const modulePendingCount = moduleCounts[currentModule] || 0;
   const activePlaceOption = placeOptions.find((option) => option.id === currentPlaceId);
 
   return (
@@ -81,26 +81,29 @@ export function PlaceAdminShell({
         </div>
       </div>
 
-      <div className="place-management-tabs" role="tablist" aria-label={`Modulos de ${placeName}`}>
-        {visibleModules.map((module) => (
-          <button
-            key={`${placeName}:module:${module}`}
-            className={currentModule === module ? "active" : ""}
-            onClick={() => onModuleChange(module)}
-            type="button"
-          >
-            <span>{PLACE_MANAGEMENT_MODULE_LABELS[module]}</span>
-            {moduleCounts[module] ? <em>{moduleCounts[module]}</em> : null}
-          </button>
-        ))}
-      </div>
-
       <div className="place-module-context">
-        <div>
+        <div className="place-module-context-copy">
           <span>Modulo ativo</span>
           <strong>{PLACE_MANAGEMENT_MODULE_LABELS[currentModule]}</strong>
           <span>{PLACE_MANAGEMENT_MODULE_DESCRIPTIONS[currentModule]}</span>
         </div>
+        {visibleModules.length > 1 ? (
+          <label className="place-module-picker">
+            <span>Trocar area</span>
+            <select
+              aria-label={`Trocar area de trabalho de ${placeName}`}
+              value={currentModule}
+              onChange={(event) => onModuleChange(event.target.value as PlaceManagementModule)}
+            >
+              {visibleModules.map((module) => (
+                <option key={`${placeName}:module-option:${module}`} value={module}>
+                  {PLACE_MANAGEMENT_MODULE_LABELS[module]}
+                  {moduleCounts[module] ? ` (${moduleCounts[module]})` : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
         {modulePendingCount ? (
           <small>{countLabel(modulePendingCount, "item para acompanhar", "itens para acompanhar")}</small>
         ) : (

@@ -310,7 +310,7 @@ function isoDate(offsetDays) {
 }
 
 async function createLeagueThroughUi(cdp, diagnostics) {
-  const name = `QA Liga V4 ${new Date().toISOString().slice(11, 19).replaceAll(":", "")}`;
+  const name = `Liga ATP Dourados ${new Date().toISOString().slice(11, 19).replaceAll(":", "")}`;
 
   await navigate(cdp, "#/eventos/ligas?view=organizing");
   await installBrowserHelpers(cdp);

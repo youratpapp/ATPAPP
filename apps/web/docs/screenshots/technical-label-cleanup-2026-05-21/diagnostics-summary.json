@@ -1,0 +1,30 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "finance-receivables",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "mobile390-finance-receivables.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "academy-students",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos",
+    "screenshot": "mobile390-academy-students.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "finance-receivables",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "desktop1366-finance-receivables.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "academy-students",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos",
+    "screenshot": "desktop1366-academy-students.png",
+    "events": []
+  }
+]

@@ -138,10 +138,10 @@ async function createAcademyDataset(diagnostics) {
   if (fallbackPlacesError) throw new Error(fallbackPlacesError.message);
 
   const placeRows = await rpc(ownerClient, "app_create_place", {
-    p_name: `QA Academia Fluxo ${suffix}`,
+    p_name: `ATP Centro Dourados ${suffix}`,
     p_city: "Dourados",
     p_state: "MS",
-    p_description: "Academia criada por auditoria E2E para validar fluxo completo de gestao, aulas, alunos e reservas.",
+    p_description: "Centro ATP em Dourados para aulas, reservas, alunos e atendimento.",
     p_logo_url: null,
     p_organization_id: null,
     p_product_plan: "academy",
@@ -153,7 +153,7 @@ async function createAcademyDataset(diagnostics) {
   for (const [index, surface] of ["hard", "saibro", "sintetica"].entries()) {
     const court = await insertOne(ownerClient, "place_courts", {
       place_id: place.id,
-      name: `QA Quadra ${index + 1}`,
+      name: `Quadra ${index + 1}`,
       surface,
       booking_fee_cents: 7000 + index * 1000,
       member_booking_fee_cents: 5200 + index * 500,
@@ -164,7 +164,7 @@ async function createAcademyDataset(diagnostics) {
 
   const bookingRule = await insertOne(ownerClient, "place_booking_rules", {
     place_id: place.id,
-    name: "QA Horario operacional",
+    name: "Horario operacional",
     profile_scope: "all",
     weekdays: [0, 1, 2, 3, 4, 5, 6],
     starts_at: "06:00",
@@ -180,7 +180,7 @@ async function createAcademyDataset(diagnostics) {
 
   const coaches = [];
   for (const [index, email] of COACH_EMAILS.entries()) {
-    const name = index === 0 ? "Renato Siqueira QA" : "Lais Monteiro QA";
+    const name = index === 0 ? "Renato Siqueira" : "Lais Monteiro";
     const coach = await insertOne(ownerClient, "place_coaches", {
       place_id: place.id,
       name,
@@ -189,8 +189,8 @@ async function createAcademyDataset(diagnostics) {
       commission_percent: index === 0 ? 35 : 40,
       specialties: index === 0 ? ["iniciante", "intermediario"] : ["kids", "feminino"],
       level_scopes: index === 0 ? ["iniciante", "intermediario"] : ["iniciante"],
-      public_bio: "Professor criado para auditoria E2E de academia.",
-      internal_notes: "Validar vinculo, aulas, alunos e chamada.",
+      public_bio: "Professor ATP com foco em evolucao tecnica, aulas em grupo e acompanhamento de alunos.",
+      internal_notes: "Acompanhar vinculo, aulas, alunos e chamada.",
       public_profile_enabled: true,
       is_active: true,
     }, "id,place_id,user_id,name,email,phone,commission_percent,is_active");
@@ -219,7 +219,7 @@ async function createAcademyDataset(diagnostics) {
 
   const classPayloads = [
     {
-      title: "QA Adulto Intermediario",
+      title: "Adulto Intermediario",
       coach: updatedCoaches.find((item) => String(item.email).includes("renato")) || updatedCoaches[0],
       court: courts[0],
       weekday: todayWeekday(),
@@ -231,7 +231,7 @@ async function createAcademyDataset(diagnostics) {
       monthly_fee_cents: 42000,
     },
     {
-      title: "QA Kids Iniciante",
+      title: "Kids Iniciante",
       coach: updatedCoaches.find((item) => String(item.email).includes("lais")) || updatedCoaches[1] || updatedCoaches[0],
       court: courts[1],
       weekday: addDaysWeekday(1),
@@ -277,7 +277,7 @@ async function createAcademyDataset(diagnostics) {
     p_weekly_lessons_count: 2,
     p_monthly_fee_cents: 64000,
     p_starts_on: dateKey(0),
-    p_notes: "Contrato ativo E2E com duas aulas semanais.",
+    p_notes: "Contrato ativo com duas aulas semanais.",
     p_class_ids: classes.map((academyClass) => academyClass.id),
     p_status: "active",
   });
@@ -292,7 +292,7 @@ async function createAcademyDataset(diagnostics) {
       p_weekly_lessons_count: 1,
       p_monthly_fee_cents: index === 0 ? 42000 : 38000,
       p_starts_on: dateKey(0),
-      p_notes: index === 2 ? "Contrato pendente E2E para validar fila." : "Contrato ativo E2E.",
+      p_notes: index === 2 ? "Contrato pendente para revisar atendimento." : "Contrato ativo.",
       p_class_ids: [classes[index === 0 ? 0 : 1].id],
       p_status: index === 2 ? "pending" : "active",
     });
@@ -312,7 +312,7 @@ async function createAcademyDataset(diagnostics) {
       p_target_type: "academy_enrollment",
       p_target_id: paidEnrollment.id,
       p_amount_cents: 42000,
-      p_description: "Mensalidade QA paga manualmente",
+      p_description: "Mensalidade paga manualmente",
       p_metadata: { place_id: place.id, source: "academy-e2e" },
       p_billing_period: dateKey(0).slice(0, 7),
     });
@@ -326,7 +326,7 @@ async function createAcademyDataset(diagnostics) {
     p_ends_at: localIso(1, "21:00"),
     p_player_name: RESERVATION_PLAYER.name,
     p_phone: RESERVATION_PLAYER.phone,
-    p_notes: "Reserva E2E feita por jogador seed.",
+    p_notes: "Reserva feita pelo jogador.",
   });
   const booking = Array.isArray(bookingRows) ? bookingRows[0] : bookingRows;
 
@@ -338,7 +338,7 @@ async function createAcademyDataset(diagnostics) {
     p_ends_at: localIso(1, "21:00"),
     p_player_name: WAITLIST_PLAYER.name,
     p_phone: WAITLIST_PLAYER.phone,
-    p_notes: "Lista de espera E2E no mesmo horario da reserva.",
+    p_notes: "Lista de espera no mesmo horario da reserva.",
   });
   const waitlist = Array.isArray(waitlistRows) ? waitlistRows[0] : waitlistRows;
 

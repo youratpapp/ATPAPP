@@ -6418,7 +6418,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       >
                         <span>Pagamento</span>
                         <strong>Registrar baixa</strong>
-                        <small>Marcar pago por row</small>
+                        <small>Marcar recebivel como pago</small>
                       </button>
                       <button
                         type="button"
@@ -7146,7 +7146,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         >
                           <span>Alunos</span>
                           <strong>Nova matricula</strong>
-                          <small>Drawer na lista</small>
+                          <small>Lista e cadastro</small>
                         </button>
                       ) : null}
                       {canManagePlace ? (

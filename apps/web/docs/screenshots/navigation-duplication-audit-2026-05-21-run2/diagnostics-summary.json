@@ -1,0 +1,114 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "tournament-final-menu-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "mobile-390-tournament-final-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "tournament-final-classification-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "mobile-390-tournament-final-classification-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "league-owner-menu-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "mobile-390-league-owner-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "league-owner-matches-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "mobile-390-league-owner-matches-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournament-final-menu-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "mobile-430-tournament-final-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournament-final-classification-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "mobile-430-tournament-final-classification-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "league-owner-menu-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "mobile-430-league-owner-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "league-owner-matches-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "mobile-430-league-owner-matches-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournament-final-menu-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "desktop-1366-tournament-final-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournament-final-classification-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "desktop-1366-tournament-final-classification-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "league-owner-menu-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "desktop-1366-league-owner-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "league-owner-matches-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "desktop-1366-league-owner-matches-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournament-final-menu-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "desktop-wide-tournament-final-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournament-final-classification-audit",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "desktop-wide-tournament-final-classification-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "league-owner-menu-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "desktop-wide-league-owner-menu-audit.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "league-owner-matches-audit",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "desktop-wide-league-owner-matches-audit.png",
+    "events": []
+  }
+]
