@@ -8,6 +8,7 @@ type Props = {
   busy: boolean;
   canManageBookings: boolean;
   entries: CourtBookingWaitlistEntry[];
+  getWhatsappHref: (entry: CourtBookingWaitlistEntry, promotable: boolean) => string;
   isPromotable: (entry: CourtBookingWaitlistEntry) => boolean;
   onPromoteEntry: (entryId: string) => void;
   onUpdateEntry: (entryId: string, status: CourtBookingWaitlistEntry["status"]) => void;
@@ -23,6 +24,7 @@ export function PlaceBookingWaitlistModule({
   busy,
   canManageBookings,
   entries,
+  getWhatsappHref,
   isPromotable,
   onPromoteEntry,
   onUpdateEntry,
@@ -92,6 +94,7 @@ export function PlaceBookingWaitlistModule({
       ) : null}
       {visibleEntries.map((entry) => {
         const promotable = isPromotable(entry);
+        const whatsappHref = getWhatsappHref(entry, promotable);
         return (
           <WorkspaceRow
             key={`booking-waitlist-summary:${entry.id}`}
@@ -113,6 +116,11 @@ export function PlaceBookingWaitlistModule({
                   <button onClick={() => onUpdateEntry(entry.id, "invited")} disabled={busy}>
                     Marcar avisado
                   </button>
+                ) : null}
+                {canManageBookings && !promotable && whatsappHref ? (
+                  <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">
+                    WhatsApp opcoes
+                  </a>
                 ) : null}
                 {canManageBookings && entry.status !== "cancelled" && entry.status !== "booked" ? (
                   <button className="danger" onClick={() => onUpdateEntry(entry.id, "cancelled")} disabled={busy}>

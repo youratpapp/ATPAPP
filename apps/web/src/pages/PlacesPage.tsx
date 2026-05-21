@@ -150,6 +150,7 @@ import {
   buildPlaceAdminPath,
   parsePlaceAdminModule,
 } from "../lib/place-admin-navigation";
+import { bookingWhatsappHref, buildBookingRescheduleAlternatives, waitlistWhatsappHref } from "../lib/bookingWhatsapp";
 import { createPaymentReminderForParticipant, formatMoneyFromCents, markStubPaymentPaidForParticipant } from "../lib/payments";
 import { usePlaceAdminResourceState } from "../hooks/usePlaceAdminResourceState";
 import { usePlaceAdminRouteSync } from "../hooks/usePlaceAdminRouteSync";
@@ -4384,6 +4385,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const bookingWaitlist = bookingWaitlistByPlace[p.id] || [];
         const waitlistEntryCanPromote = (entry: CourtBookingWaitlistEntry) =>
           !waitlistPromotionBlockedById[entry.id] && waitlistEntryIsPromotable(entry, bookings);
+        const bookingCommunicationContext = {
+          placeName: p.name,
+          senderName: profile?.displayName || user.email || "Equipe ATP",
+        };
+        const getBookingWhatsappHref = (booking: CourtBooking) =>
+          bookingWhatsappHref(booking, {
+            ...bookingCommunicationContext,
+            alternatives: buildBookingRescheduleAlternatives(booking, activeCourts, bookings, 3, booking.id),
+          });
+        const getWaitlistWhatsappHref = (entry: CourtBookingWaitlistEntry, promotable: boolean) =>
+          waitlistWhatsappHref(entry, {
+            ...bookingCommunicationContext,
+            alternatives: buildBookingRescheduleAlternatives(entry, activeCourts, bookings),
+            promotable,
+          });
         const tournamentCourtRequests = tournamentCourtRequestsByPlace[p.id] || [];
         const academyClasses = academyClassesByPlace[p.id] || [];
         const academyCoaches = academyCoachesByPlace[p.id] || [];
@@ -6868,6 +6884,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <PlaceBookingOperationalQueues
                       busy={busy}
                       canManageBookings={canManageBookings}
+                      getBookingWhatsappHref={getBookingWhatsappHref}
+                      getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                       isWaitlistPromotable={waitlistEntryCanPromote}
                       onOpenReservations={() => selectBookingView(p.id, "reservations")}
                       onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
@@ -6887,6 +6905,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       busy={busy}
                       canManageBookings={canManageBookings}
                       getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                      getWhatsappHref={getBookingWhatsappHref}
                       onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                     />
                   ) : null}
@@ -6896,6 +6915,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       busy={busy}
                       canManageBookings={canManageBookings}
                       getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                      getWhatsappHref={getBookingWhatsappHref}
                       onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                     />
                   ) : null}
@@ -6942,6 +6962,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       busy={busy}
                       canManageBookings={canManageBookings}
                       entries={bookingWaitlist}
+                      getWhatsappHref={getWaitlistWhatsappHref}
                       isPromotable={waitlistEntryCanPromote}
                       onPromoteEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
                       onUpdateEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
@@ -7000,6 +7021,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <PlaceBookingOperationalQueues
                   busy={busy}
                   canManageBookings={canManageBookings}
+                  getBookingWhatsappHref={getBookingWhatsappHref}
+                  getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                   isWaitlistPromotable={waitlistEntryCanPromote}
                   onOpenReservations={() => selectBookingView(p.id, "reservations")}
                   onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
@@ -7079,6 +7102,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 canManageBookings={canManageBookings}
                 currentUserId={user.id}
                 getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                getBookingWhatsappHref={getBookingWhatsappHref}
+                getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                 isWaitlistPromotable={waitlistEntryCanPromote}
                 onCancelSeries={(bookingId) => void onCancelBookingSeries(p.id, bookingId)}
                 onMarkPaid={(booking, payment) => void onAdminMarkCourtBookingPaid(booking, payment)}

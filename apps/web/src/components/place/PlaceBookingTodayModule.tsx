@@ -9,6 +9,7 @@ type Props = {
   busy: boolean;
   canManageBookings: boolean;
   getPaymentForBooking: (bookingId: string) => AppPayment | undefined;
+  getWhatsappHref: (booking: CourtBooking) => string;
   onUpdateBooking: (bookingId: string, status: CourtBooking["status"]) => void;
 };
 
@@ -29,7 +30,7 @@ function paymentStatusLabel(payment?: AppPayment): string {
   return "Sem pagamento";
 }
 
-export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, getPaymentForBooking, onUpdateBooking }: Props) {
+export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, getPaymentForBooking, getWhatsappHref, onUpdateBooking }: Props) {
   const [showAllTodayBookings, setShowAllTodayBookings] = useState(false);
   const orderedBookings = [...bookings].sort((a, b) => {
     if (a.status === "pending" && b.status !== "pending") return -1;
@@ -62,6 +63,7 @@ export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, get
       ) : null}
       {visibleBookings.map((booking) => {
         const bookingPayment = getPaymentForBooking(booking.id);
+        const whatsappHref = getWhatsappHref(booking);
         return (
           <WorkspaceRow
             key={`booking-today:${booking.id}`}
@@ -78,6 +80,11 @@ export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, get
                   <button className="danger" onClick={() => onUpdateBooking(booking.id, "cancelled")} disabled={busy}>
                     {booking.status === "blocked" ? "Liberar" : "Cancelar"}
                   </button>
+                ) : null}
+                {whatsappHref ? (
+                  <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">
+                    {booking.status === "cancelled" ? "WhatsApp cancelamento" : "WhatsApp reagendar"}
+                  </a>
                 ) : null}
               </>
             }

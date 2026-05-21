@@ -12839,4 +12839,28 @@ Validacao:
 - `npx.cmd tsc -b --pretty false` passou;
 - busca por rotulos antigos de lista de espera confirmou que `Marcar convidado`, `Aguardando convite` e `Convidado` nao aparecem mais nos componentes de reservas.
 
+### [x] SPRINT-2026-05-21 - WhatsApp operacional para reservas
+
+Status: `[x]` concluido no codigo e documentacao
+
+Decisao de fluxo:
+
+- reserva em horario livre nao precisa virar etapa de confirmacao manual por WhatsApp;
+- o caminho principal continua sendo reservar e pagar pelo app;
+- WhatsApp entra apenas como apoio operacional quando existe comunicacao humana: reagendar, cancelar ou oferecer alternativas para lista de espera.
+
+Entregue:
+
+- criado `src/lib/bookingWhatsapp.ts` com normalizacao de telefone, link `wa.me`, mensagens profissionais e calculo de horarios alternativos proximos;
+- reservas ativas exibem `WhatsApp reagendar` com opcoes proximas da agenda;
+- reservas canceladas exibem mensagem de cancelamento quando aparecem na lista de reservas;
+- lista de espera com horario ocupado exibe `WhatsApp opcoes` com horarios proximos, priorizando mesmo horario em outra quadra e horarios proximos na mesma quadra;
+- lista de espera com horario livre nao cria etapa extra de WhatsApp: a acao principal segue sendo `Criar reserva`;
+- o status `Marcar avisado` continua manual, porque abrir o WhatsApp nao garante envio real da mensagem.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- busca confirmou que nao foram adicionados textos de `WhatsApp reserva`, `Podemos confirmar` ou confirmacao manual de reserva nos componentes de reservas.
+
 

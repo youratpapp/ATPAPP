@@ -4,6 +4,8 @@ import { OperationalQueue } from "./PlaceWorkspaceUi";
 type Props = {
   busy: boolean;
   canManageBookings: boolean;
+  getBookingWhatsappHref: (booking: CourtBooking) => string;
+  getWaitlistWhatsappHref: (entry: CourtBookingWaitlistEntry, promotable: boolean) => string;
   isWaitlistPromotable: (entry: CourtBookingWaitlistEntry) => boolean;
   onPromoteWaitlistEntry: (entryId: string) => void;
   onOpenReservations?: () => void;
@@ -33,6 +35,8 @@ function shortDateTime(value: string): string {
 export function PlaceBookingOperationalQueues({
   busy,
   canManageBookings,
+  getBookingWhatsappHref,
+  getWaitlistWhatsappHref,
   isWaitlistPromotable,
   onPromoteWaitlistEntry,
   onOpenReservations,
@@ -86,6 +90,11 @@ export function PlaceBookingOperationalQueues({
               <button className="danger" onClick={() => onUpdateBooking(booking.id, "cancelled")} disabled={busy}>
                 Cancelar
               </button>
+              {getBookingWhatsappHref(booking) ? (
+                <a className="button-like compact whatsapp-action" href={getBookingWhatsappHref(booking)} target="_blank" rel="noreferrer">
+                  WhatsApp reagendar
+                </a>
+              ) : null}
             </span>
           ))}
           {pendingBookings.length > firstFoldLimit ? (
@@ -100,6 +109,7 @@ export function PlaceBookingOperationalQueues({
         <OperationalQueue title="Lista de espera" compact>
           {waitlistEntries.slice(0, firstFoldLimit).map((entry) => {
             const promotable = isWaitlistPromotable(entry);
+            const whatsappHref = getWaitlistWhatsappHref(entry, promotable);
             return (
               <span key={`waiting-entry:${entry.id}`}>
                 <strong>{entry.playerName}</strong>
@@ -120,6 +130,11 @@ export function PlaceBookingOperationalQueues({
                 <button onClick={() => onUpdateWaitlistEntry(entry.id, "invited")} disabled={busy}>
                   Marcar avisado
                 </button>
+                {!promotable && whatsappHref ? (
+                  <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">
+                    WhatsApp opcoes
+                  </a>
+                ) : null}
                 <button className="danger" onClick={() => onUpdateWaitlistEntry(entry.id, "cancelled")} disabled={busy}>
                   Remover
                 </button>
