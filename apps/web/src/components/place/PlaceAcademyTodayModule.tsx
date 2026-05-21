@@ -214,8 +214,8 @@ export function PlaceAcademyTodayModule({
                 {!selectedActiveEnrollments.length ? (
                   <WorkspaceEmptyState
                     title="Sem alunos ativos nesta turma"
-                    detail="Matricule alunos pela Grade para liberar chamada, faltas e evolucao operacional."
-                    action={onOpenClasses ? <button onClick={onOpenClasses}>Abrir grade</button> : null}
+                    detail="Matricule alunos pela aba Turmas para liberar chamada, faltas e evolucao operacional."
+                    action={onOpenClasses ? <button onClick={onOpenClasses}>Abrir turmas</button> : null}
                   />
                 ) : null}
               </div>

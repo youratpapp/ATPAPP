@@ -5960,8 +5960,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         title="Quadras e precos"
                         detail={`${countLabel(activeCourts.length, "quadra ativa", "quadras ativas")} · cadastro, superficie e preco por quadra`}
                         actions={
-                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "quadras"))} disabled={!managementModules.includes("bookings")}>
-                            Abrir quadras
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "ajustes"))} disabled={!managementModules.includes("bookings")}>
+                            Abrir ajustes
                           </button>
                         }
                       />
@@ -5969,17 +5969,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         title="Professores e horários"
                         detail={`${countLabel(academyCoaches.length, "professor", "professores")} · ${countLabel(academySlots.length, "horario aberto", "horários abertos")}`}
                         actions={
-                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "configuracao"))} disabled={!managementModules.includes("academy")}>
-                            Abrir configuracao
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "ajustes"))} disabled={!managementModules.includes("academy")}>
+                            Abrir ajustes
                           </button>
                         }
                       />
                       <WorkspaceRow
                         title="Turmas da academia"
-                        detail={`${countLabel(activeAcademyClasses.length, "turma ativa", "turmas ativas")} · grade e mensalidade ficam na Academia`}
+                        detail={`${countLabel(activeAcademyClasses.length, "turma ativa", "turmas ativas")} · horarios e mensalidade ficam em Turmas`}
                         actions={
                           <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "turmas"))} disabled={!managementModules.includes("academy")}>
-                            Abrir grade
+                            Abrir turmas
                           </button>
                         }
                       />
@@ -6000,7 +6000,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         title="Regras de reserva"
                         detail={`${countLabel(bookingRules.filter((rule) => rule.isActive).length, "regra ativa", "regras ativas")} · horários, antecedência, aprovacao e preco`}
                         actions={
-                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "quadras"))} disabled={!managementModules.includes("bookings")}>
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "ajustes"))} disabled={!managementModules.includes("bookings")}>
                             Editar regras
                           </button>
                         }
@@ -6009,7 +6009,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         title="Ausencia avisada e reposição"
                         detail={`Regra atual: ${academySettings.makeupNoticeHours}h de antecedência · ${academySettings.autoCreateMakeupCreditOnNotice ? "gera credito automatico" : "credito automatico desligado"}`}
                         actions={
-                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "configuracao"))} disabled={!managementModules.includes("academy")}>
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "ajustes"))} disabled={!managementModules.includes("academy")}>
                             Editar academia
                           </button>
                         }
@@ -6392,43 +6392,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     activeView={financeView}
                     onViewChange={(view) => selectFinanceView(p.id, view)}
                   >
-                    <div className="finance-priority-strip" aria-label="Atalhos financeiros">
-                      <button
-                        type="button"
-                        className={financeView === "receivables" ? "active urgent" : overdueFinanceReceivables.length ? "urgent" : ""}
-                        onClick={() => selectFinanceView(p.id, "receivables")}
-                      >
+                    <div className="finance-routine-summary" aria-label="Resumo financeiro">
+                      <article className={overdueFinanceReceivables.length ? "urgent" : ""}>
                         <span>Receber</span>
                         <strong>{formatMoneyFromCents(openReceivablesAmountCents)}</strong>
-                        <small>{countLabel(openReceivables.length, "pendencia aberta", "pendencias abertas")}</small>
-                      </button>
-                      <button
-                        type="button"
-                        className={financeView === "receivables" ? "active" : ""}
-                        onClick={() => selectFinanceView(p.id, "receivables")}
-                      >
+                        <small>{countLabel(openReceivables.length, "pendencia aberta", "pendencias abertas")} na aba Recebiveis</small>
+                      </article>
+                      <article className={overdueFinanceReceivables.length ? "urgent" : ""}>
                         <span>Vencidos</span>
                         <strong>{overdueFinanceReceivables.length}</strong>
                         <small>{todayFinanceReceivables.length} vencem hoje</small>
-                      </button>
-                      <button
-                        type="button"
-                        className={financeView === "receivables" ? "active" : ""}
-                        onClick={() => selectFinanceView(p.id, "receivables")}
-                      >
-                        <span>Pagamento</span>
+                      </article>
+                      <article>
+                        <span>Baixas</span>
                         <strong>Registrar baixa</strong>
-                        <small>Marcar recebivel como pago</small>
-                      </button>
-                      <button
-                        type="button"
-                        className={financeView === "expenses" ? "active" : ""}
-                        onClick={() => selectFinanceView(p.id, "expenses")}
-                      >
-                        <span>Despesa</span>
-                        <strong>Registrar despesa</strong>
-                        <small>Saida do caixa</small>
-                      </button>
+                        <small>Marcar recebivel como pago dentro de Recebiveis</small>
+                      </article>
+                      <article>
+                        <span>Despesas</span>
+                        <strong>{formatMoneyFromCents(operationalStats.expenseCents)}</strong>
+                        <small>Saidas e comprovantes ficam na aba Despesas</small>
+                      </article>
                     </div>
                     {financeView === "overview" ? (
                       <PlaceFinanceOverviewModule
@@ -6704,43 +6688,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     activeView={canteenView}
                     onViewChange={(view) => selectCanteenView(p.id, view)}
                   >
-                    <div className="canteen-priority-strip" aria-label="Atalhos da cantina">
-                      <button
-                        type="button"
-                        className={canteenView === "sell" ? "active" : ""}
-                        onClick={() => selectCanteenView(p.id, "sell")}
-                      >
+                    <div className="canteen-routine-summary" aria-label="Resumo da cantina">
+                      <article>
                         <span>Vender</span>
                         <strong>Venda rapida</strong>
-                        <small>{countLabel(posProducts.filter((product) => product.stockQuantity > 0).length, "produto disponivel", "produtos disponiveis")}</small>
-                      </button>
-                      <button
-                        type="button"
-                        className={canteenView === "stock" ? "active urgent" : lowStockProducts.length ? "urgent" : ""}
-                        onClick={() => selectCanteenView(p.id, "stock")}
-                      >
+                        <small>{countLabel(posProducts.filter((product) => product.stockQuantity > 0).length, "produto disponivel", "produtos disponiveis")} na aba Venda rapida</small>
+                      </article>
+                      <article className={lowStockProducts.length ? "urgent" : ""}>
                         <span>Estoque</span>
                         <strong>{countLabel(lowStockProducts.length, "item baixo", "itens baixos")}</strong>
                         <small>Reposicao e disponibilidade</small>
-                      </button>
-                      <button
-                        type="button"
-                        className={canteenView === "today" ? "active" : ""}
-                        onClick={() => selectCanteenView(p.id, "today")}
-                      >
+                      </article>
+                      <article>
                         <span>Hoje</span>
                         <strong>{formatMoneyFromCents(todayPosRevenueCents)}</strong>
                         <small>{countLabel(todayPosSales.length, "venda paga", "vendas pagas")}</small>
-                      </button>
-                      <button
-                        type="button"
-                        className={canteenView === "products" ? "active" : ""}
-                        onClick={() => selectCanteenView(p.id, "products")}
-                      >
+                      </article>
+                      <article>
                         <span>Produtos</span>
                         <strong>{posProducts.length}</strong>
-                        <small>Cadastro e tabela</small>
-                      </button>
+                        <small>Cadastro e tabela na aba Produtos</small>
+                      </article>
                     </div>
                     {canteenView === "today" ? (
                       <PlaceCanteenSummaryModule
@@ -6842,6 +6810,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     selectBookingView(p.id, view);
                   }}
                 >
+                  {canManageBookings && bookingView !== "new" ? (
+                    <div className="booking-workspace-cta" aria-label="Acao principal da agenda">
+                      <div>
+                        <span>Atendimento rapido</span>
+                        <strong>Criar reserva ou bloqueio</strong>
+                        <small>Use quando a recepcao precisa escolher quadra, horario, cliente ou lista de espera.</small>
+                      </div>
+                      <button type="button" className="primary" onClick={() => selectBookingView(p.id, "new")}>
+                        Nova reserva
+                      </button>
+                    </div>
+                  ) : null}
                   {isManagementCockpit && bookingView !== "new" ? (
                     <PlaceBookingOperationalQueues
                       busy={busy}
@@ -7117,48 +7097,32 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     </div>
                   ) : null}
                   {!coachWithoutAcademyProfile ? (
-                    <div className="academy-priority-strip" aria-label="Atalhos da rotina da academia">
-                      <button
-                        type="button"
-                        className={academyView === "today" ? "active" : ""}
-                        onClick={() => selectAcademyView(p.id, "today")}
-                      >
-                        <span>Hoje</span>
+                    <div className="academy-routine-summary" aria-label="Resumo da rotina da academia">
+                      <article>
+                        <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
                         <strong>{countLabel(todayClasses.length, "aula", "aulas")}</strong>
-                        <small>Chamada e faltas</small>
-                      </button>
+                        <small>{isCoachMode ? "Chamada e faltas na aba Aulas." : "Chamada, faltas e reposicoes na aba Hoje."}</small>
+                      </article>
                       {!isCoachMode ? (
-                        <button
-                          type="button"
-                          className={academyView === "requests" ? "active urgent" : pendingAcademyEnrollments.length + actionableLessonRequests.length > 0 ? "urgent" : ""}
-                          onClick={() => selectAcademyView(p.id, "requests")}
-                        >
+                        <article className={pendingAcademyEnrollments.length + actionableLessonRequests.length > 0 ? "urgent" : ""}>
                           <span>Pendencias</span>
                           <strong>{countLabel(pendingAcademyEnrollments.length + actionableLessonRequests.length, "item", "itens")}</strong>
-                          <small>Interesses e reposicoes</small>
-                        </button>
+                          <small>Interesses, reposicoes e matriculas ficam na aba Pendencias.</small>
+                        </article>
                       ) : null}
-                      {canManagePlace ? (
-                        <button
-                          type="button"
-                          className={academyView === "students" ? "active" : ""}
-                          onClick={() => selectAcademyView(p.id, "students")}
-                        >
-                          <span>Alunos</span>
-                          <strong>Nova matricula</strong>
-                          <small>Lista e cadastro</small>
-                        </button>
+                      {isCoachMode || canManagePlace ? (
+                        <article>
+                          <span>{isCoachMode ? "Meus alunos" : "Alunos ativos"}</span>
+                          <strong>{countLabel(visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length, "aluno", "alunos")}</strong>
+                          <small>{isCoachMode ? "Alunos vinculados as suas turmas." : "Lista completa e matricula manual na aba Alunos."}</small>
+                        </article>
                       ) : null}
-                      {canManagePlace ? (
-                        <button
-                          type="button"
-                          className={academyView === "classes" ? "active" : ""}
-                          onClick={() => selectAcademyView(p.id, "classes")}
-                        >
-                          <span>Grade</span>
-                          <strong>Nova turma</strong>
-                          <small>Horarios e vagas</small>
-                        </button>
+                      {isCoachMode || canManagePlace ? (
+                        <article>
+                          <span>{isCoachMode ? "Minhas turmas" : "Turmas"}</span>
+                          <strong>{countLabel(visibleAcademyClasses.length, "turma", "turmas")}</strong>
+                          <small>Horarios semanais e vagas ficam na aba Turmas.</small>
+                        </article>
                       ) : null}
                     </div>
                   ) : null}

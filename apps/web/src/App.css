@@ -14552,187 +14552,136 @@ button:disabled {
   margin: 0;
 }
 
-.academy-priority-strip {
+.academy-routine-summary {
   display: grid;
   gap: var(--space-2);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
 }
 
-.academy-priority-strip button {
+.academy-routine-summary article {
   align-items: flex-start;
   background: #fff;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-xs);
   color: var(--color-text);
-  cursor: pointer;
   display: grid;
   gap: 3px;
   min-height: 76px;
   padding: var(--space-3);
   text-align: left;
-  transition:
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    transform 140ms ease;
 }
 
-.academy-priority-strip button:hover,
-.academy-priority-strip button:focus-visible {
-  border-color: var(--color-green-200);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-
-.academy-priority-strip button.active {
-  background: var(--color-primary-soft);
-  border-color: var(--color-green-200);
-}
-
-.academy-priority-strip button.urgent:not(.active) {
+.academy-routine-summary article.urgent {
   border-color: #fed7aa;
   background: #fff7ed;
 }
 
-.academy-priority-strip span {
+.academy-routine-summary span {
   color: var(--color-primary-strong);
   font-size: var(--font-size-xs);
   font-weight: 900;
   text-transform: uppercase;
 }
 
-.academy-priority-strip strong {
+.academy-routine-summary strong {
   color: var(--color-text);
   font-size: var(--font-size-sm);
   font-weight: 950;
   line-height: var(--line-title);
 }
 
-.academy-priority-strip small {
+.academy-routine-summary small {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 800;
 }
 
-.finance-priority-strip {
+.finance-routine-summary {
   display: grid;
   gap: var(--space-2);
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.finance-priority-strip button {
+.finance-routine-summary article {
   align-items: flex-start;
   background: #fff;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-xs);
   color: var(--color-text);
-  cursor: pointer;
   display: grid;
   gap: 3px;
   min-height: 76px;
   padding: var(--space-3);
   text-align: left;
-  transition:
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    transform 140ms ease;
 }
 
-.finance-priority-strip button:hover,
-.finance-priority-strip button:focus-visible {
-  border-color: var(--color-green-200);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-
-.finance-priority-strip button.active {
-  background: var(--color-primary-soft);
-  border-color: var(--color-green-200);
-}
-
-.finance-priority-strip button.urgent:not(.active) {
+.finance-routine-summary article.urgent {
   border-color: #fed7aa;
   background: #fff7ed;
 }
 
-.finance-priority-strip span {
+.finance-routine-summary span {
   color: var(--color-primary-strong);
   font-size: var(--font-size-xs);
   font-weight: 900;
   text-transform: uppercase;
 }
 
-.finance-priority-strip strong {
+.finance-routine-summary strong {
   color: var(--color-text);
   font-size: var(--font-size-sm);
   font-weight: 950;
   line-height: var(--line-title);
 }
 
-.finance-priority-strip small {
+.finance-routine-summary small {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 800;
 }
 
-.canteen-priority-strip {
+.canteen-routine-summary {
   display: grid;
   gap: var(--space-2);
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.canteen-priority-strip button {
+.canteen-routine-summary article {
   align-items: flex-start;
   background: #fff;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-xs);
   color: var(--color-text);
-  cursor: pointer;
   display: grid;
   gap: 3px;
   min-height: 76px;
   padding: var(--space-3);
   text-align: left;
-  transition:
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    transform 140ms ease;
 }
 
-.canteen-priority-strip button:hover,
-.canteen-priority-strip button:focus-visible {
-  border-color: var(--color-green-200);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-
-.canteen-priority-strip button.active {
-  background: var(--color-primary-soft);
-  border-color: var(--color-green-200);
-}
-
-.canteen-priority-strip button.urgent:not(.active) {
+.canteen-routine-summary article.urgent {
   border-color: #fed7aa;
   background: #fff7ed;
 }
 
-.canteen-priority-strip span {
+.canteen-routine-summary span {
   color: var(--color-primary-strong);
   font-size: var(--font-size-xs);
   font-weight: 900;
   text-transform: uppercase;
 }
 
-.canteen-priority-strip strong {
+.canteen-routine-summary strong {
   color: var(--color-text);
   font-size: var(--font-size-sm);
   font-weight: 950;
   line-height: var(--line-title);
 }
 
-.canteen-priority-strip small {
+.canteen-routine-summary small {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 800;
@@ -14883,6 +14832,44 @@ button:disabled {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-weight: 850;
+}
+
+.booking-workspace-cta {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(5, 150, 105, 0.12), rgba(15, 23, 42, 0.04)),
+    var(--color-surface);
+  border: 1px solid var(--color-green-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  padding: var(--space-3);
+}
+
+.booking-workspace-cta > div {
+  display: grid;
+  gap: 3px;
+}
+
+.booking-workspace-cta span {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.booking-workspace-cta strong {
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  font-weight: 950;
+}
+
+.booking-workspace-cta small {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
 }
 
 .workspace-disclosure {
@@ -17856,6 +17843,11 @@ button:disabled {
     flex-direction: column;
   }
 
+  .booking-workspace-cta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
   .academy-workspace-tabs {
     justify-content: flex-start;
     overflow-x: auto;
@@ -17877,15 +17869,15 @@ button:disabled {
     min-width: 148px;
   }
 
-  .academy-priority-strip {
+  .academy-routine-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .finance-priority-strip {
+  .finance-routine-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .canteen-priority-strip {
+  .canteen-routine-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -27585,7 +27577,7 @@ label {
 .app-shell--management .place-management-health span,
 .app-shell--management .place-admin-shell-features span,
 .app-shell--management .academy-workspace-metrics span,
-.app-shell--management .academy-priority-strip button {
+.app-shell--management .academy-routine-summary article {
   background: rgba(34, 197, 94, 0.1);
   border-color: rgba(34, 197, 94, 0.24);
   color: var(--pdark-text-main);
@@ -27602,7 +27594,7 @@ label {
 .app-shell--management .place-admin-shell-status b,
 .app-shell--management .place-management-health b,
 .app-shell--management .academy-workspace-metrics strong,
-.app-shell--management .academy-priority-strip button strong {
+.app-shell--management .academy-routine-summary article strong {
   color: #4ade80;
 }
 
@@ -27621,8 +27613,7 @@ label {
 }
 
 .app-shell--management .place-management-tabs button.active,
-.app-shell--management .academy-workspace-tabs button.active,
-.app-shell--management .academy-priority-strip button.active {
+.app-shell--management .academy-workspace-tabs button.active {
   background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));
   border-color: rgba(74, 222, 128, 0.34);
   color: #ffffff;
@@ -27633,14 +27624,14 @@ label {
   color: rgba(255, 255, 255, 0.88);
 }
 
-.app-shell--management .academy-priority-strip {
+.app-shell--management .academy-routine-summary {
   background: rgba(3, 9, 20, 0.38);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
   padding: 8px;
 }
 
-.app-shell--management .academy-priority-strip button.urgent:not(.active),
+.app-shell--management .academy-routine-summary article.urgent,
 .app-shell--management .academy-workspace-row.due,
 .app-shell--management .academy-pending-actions[open] {
   background: linear-gradient(135deg, rgba(250, 204, 21, 0.15), rgba(34, 197, 94, 0.08));
@@ -27961,16 +27952,14 @@ label {
   }
 
   .app-shell--management .place-management-tabs,
-  .app-shell--management .academy-workspace-tabs,
-  .app-shell--management .academy-priority-strip {
+  .app-shell--management .academy-workspace-tabs {
     display: flex;
     overflow-x: auto;
     scrollbar-width: none;
   }
 
   .app-shell--management .place-management-tabs button,
-  .app-shell--management .academy-workspace-tabs button,
-  .app-shell--management .academy-priority-strip button {
+  .app-shell--management .academy-workspace-tabs button {
     flex: 0 0 auto;
   }
 
@@ -28004,6 +27993,7 @@ label {
 .app-shell--management .place-booking-head strong,
 .app-shell--management .place-booking-head h3,
 .app-shell--management .booking-results-summary strong,
+.app-shell--management .booking-workspace-cta strong,
 .app-shell--management .place-booking-row strong,
 .app-shell--management .court-calendar-column > strong,
 .app-shell--management .court-agenda-event header strong,
@@ -28016,6 +28006,7 @@ label {
 .app-shell--management .place-booking-head small,
 .app-shell--management .booking-results-summary span,
 .app-shell--management .booking-results-summary small,
+.app-shell--management .booking-workspace-cta small,
 .app-shell--management .place-booking-row span,
 .app-shell--management .place-booking-row small,
 .app-shell--management .court-calendar-column small,
@@ -28087,6 +28078,7 @@ label {
 }
 
 .app-shell--management .booking-results-summary,
+.app-shell--management .booking-workspace-cta,
 .app-shell--management .place-booking-row,
 .app-shell--management .place-court-price-row,
 .app-shell--management .booking-rule-list article,
@@ -28267,8 +28259,8 @@ label {
     url("./assets/pdark-finance-operation-texture.png") center / cover no-repeat;
 }
 
-.app-shell--management .finance-priority-strip,
-.app-shell--management .canteen-priority-strip,
+.app-shell--management .finance-routine-summary,
+.app-shell--management .canteen-routine-summary,
 .app-shell--management .crm-first-fold,
 .app-shell--management .crm-module-workspace,
 .app-shell--management .crm-relationship-workspace,
@@ -28280,8 +28272,8 @@ label {
   padding: 10px;
 }
 
-.app-shell--management .finance-priority-strip button,
-.app-shell--management .canteen-priority-strip button,
+.app-shell--management .finance-routine-summary article,
+.app-shell--management .canteen-routine-summary article,
 .app-shell--management .crm-priority-panel,
 .app-shell--management .crm-create-panel,
 .app-shell--management .crm-priority-list button,
@@ -28314,8 +28306,6 @@ label {
   color: var(--pdark-text-main);
 }
 
-.app-shell--management .finance-priority-strip button.active,
-.app-shell--management .canteen-priority-strip button.active,
 .app-shell--management .canteen-product-pick.active,
 .app-shell--management .staff-candidate-option.selected,
 .app-shell--management .staff-candidate-option:hover,
@@ -28326,8 +28316,8 @@ label {
   border-color: rgba(34, 197, 94, 0.28);
 }
 
-.app-shell--management .finance-priority-strip button.urgent:not(.active),
-.app-shell--management .canteen-priority-strip button.urgent:not(.active),
+.app-shell--management .finance-routine-summary article.urgent,
+.app-shell--management .canteen-routine-summary article.urgent,
 .app-shell--management .finance-receivable-row.due,
 .app-shell--management .crm-contact-row.due,
 .app-shell--management .canteen-sale-note.danger,
@@ -28337,8 +28327,8 @@ label {
   color: #fde68a;
 }
 
-.app-shell--management .finance-priority-strip span,
-.app-shell--management .canteen-priority-strip span,
+.app-shell--management .finance-routine-summary span,
+.app-shell--management .canteen-routine-summary span,
 .app-shell--management .crm-priority-panel span,
 .app-shell--management .crm-create-panel span,
 .app-shell--management .crm-contact-row span,
@@ -28363,8 +28353,8 @@ label {
   color: var(--pdark-text-muted);
 }
 
-.app-shell--management .finance-priority-strip strong,
-.app-shell--management .canteen-priority-strip strong,
+.app-shell--management .finance-routine-summary strong,
+.app-shell--management .canteen-routine-summary strong,
 .app-shell--management .crm-priority-panel strong,
 .app-shell--management .crm-create-panel strong,
 .app-shell--management .crm-contact-row strong,
@@ -28391,8 +28381,8 @@ label {
   min-height: 86px;
 }
 
-.app-shell--management .finance-priority-strip span,
-.app-shell--management .canteen-priority-strip span,
+.app-shell--management .finance-routine-summary span,
+.app-shell--management .canteen-routine-summary span,
 .app-shell--management .canteen-sale-head b,
 .app-shell--management .canteen-stock-summary strong {
   color: #4ade80;
@@ -28440,8 +28430,6 @@ label {
   color: rgba(226, 232, 240, 0.52);
 }
 
-.app-shell--management .finance-priority-strip button,
-.app-shell--management .canteen-priority-strip button,
 .app-shell--management .crm-priority-list button,
 .app-shell--management .crm-row-controls button,
 .app-shell--management .crm-drawer-form button,
@@ -28458,8 +28446,6 @@ label {
   color: var(--pdark-text-main);
 }
 
-.app-shell--management .finance-priority-strip button.active,
-.app-shell--management .canteen-priority-strip button.active,
 .app-shell--management .canteen-product-search button.active,
 .app-shell--management .segmented-control button.active,
 .app-shell--management .canteen-sale-fields button.primary,
@@ -28496,8 +28482,8 @@ label {
 }
 
 @media (max-width: 760px) {
-  .app-shell--management .finance-priority-strip,
-  .app-shell--management .canteen-priority-strip,
+  .app-shell--management .finance-routine-summary,
+  .app-shell--management .canteen-routine-summary,
   .app-shell--management .crm-first-fold,
   .app-shell--management .canteen-sale-workspace,
   .app-shell--management .place-staff-form,
@@ -32370,7 +32356,6 @@ body:has(.app-shell--competition),
   color: #fde68a !important;
 }
 
-.app-shell--management .finance-priority-strip button:not(.active),
 .app-shell--management .crm-priority-list button:not(.active),
 .app-shell--management .place-action-queue button,
 .app-shell--management .academy-workspace-row button:not(.primary),

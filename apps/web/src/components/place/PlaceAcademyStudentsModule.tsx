@@ -352,7 +352,7 @@ export function PlaceAcademyStudentsModule({
         {!enrollments.length ? (
           <WorkspaceEmptyState
             title="Nenhum aluno matriculado"
-            detail="Matricule alunos pela Grade ou aprove solicitacoes em Pendencias para iniciar a rotina da academia."
+            detail="Matricule alunos pela aba Turmas ou aprove solicitacoes em Pendencias para iniciar a rotina da academia."
           />
         ) : null}
         {enrollments.length && !visibleEnrollments.length ? (
@@ -511,7 +511,7 @@ export function PlaceAcademyStudentsModule({
         ) : (
           <WorkspaceEmptyState
             title="Nenhuma turma disponivel"
-            detail="Crie uma turma na Grade antes de matricular alunos."
+            detail="Crie uma turma na aba Turmas antes de matricular alunos."
           />
         )}
       </EntityDrawer>

@@ -3,13 +3,15 @@ import { PlaceWorkspaceShell } from "./PlaceWorkspaceShell";
 
 export type BookingManagementView = "today" | "reservations" | "calendar" | "new" | "waitlist" | "resources";
 
+const BOOKING_WORKSPACE_NAV_VIEWS: BookingManagementView[] = ["today", "reservations", "calendar", "waitlist", "resources"];
+
 const BOOKING_VIEW_LABELS: Record<BookingManagementView, string> = {
   today: "Hoje",
   reservations: "Reservas",
   calendar: "Calendario",
   new: "Nova reserva",
   waitlist: "Espera",
-  resources: "Quadras",
+  resources: "Ajustes",
 };
 
 const BOOKING_VIEW_DESCRIPTIONS: Record<BookingManagementView, string> = {
@@ -36,7 +38,8 @@ export function BookingWorkspaceShell({ activeView, children, onViewChange }: Bo
       descriptions={BOOKING_VIEW_DESCRIPTIONS}
       labels={BOOKING_VIEW_LABELS}
       onViewChange={onViewChange}
-      title="Central de agenda"
+      title={activeView === "new" ? "Nova reserva" : "Central de agenda"}
+      views={BOOKING_WORKSPACE_NAV_VIEWS}
     >
       {children}
     </PlaceWorkspaceShell>

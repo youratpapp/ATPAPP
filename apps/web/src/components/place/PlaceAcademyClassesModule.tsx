@@ -304,7 +304,7 @@ export function PlaceAcademyClassesModule({
 
       <EntityDrawer
         open={Boolean(selectedClass && editDraft)}
-        eyebrow="Grade da academia"
+        eyebrow="Turmas da academia"
         title={selectedClass?.title || "Turma"}
         subtitle={
           selectedClass

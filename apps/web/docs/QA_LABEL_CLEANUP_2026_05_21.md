@@ -57,6 +57,7 @@ Resultado:
   - `Drawer na lista` -> `Lista e cadastro`
 - Capturas extras em `docs/screenshots/technical-label-cleanup-2026-05-21/`.
 - Busca nas capturas extras nao encontrou `Drawer na lista`, `Marcar pago por row`, `row`, `drawer` ou os prefixos tecnicos antigos.
+- Consulta publica anonima em `tournaments`, `places` e `leagues` retornou `0` registros para `%Fluxo%` e `QA %`.
 
 ## Observacao
 

@@ -1,0 +1,30 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "booking-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=hoje",
+    "screenshot": "mobile390-booking-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "booking-new-legacy",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "mobile390-booking-new-legacy.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "booking-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=hoje",
+    "screenshot": "desktop1366-booking-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "booking-new-legacy",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "desktop1366-booking-new-legacy.png",
+    "events": []
+  }
+]

@@ -56,7 +56,7 @@ export const BOOKING_ADMIN_VIEW_SEGMENTS: Record<BookingManagementView, string> 
   calendar: "calendario",
   new: "nova-reserva",
   waitlist: "espera",
-  resources: "quadras",
+  resources: "ajustes",
 };
 
 export const BOOKING_ADMIN_SEGMENT_TO_VIEW: Record<string, BookingManagementView> = {
@@ -71,16 +71,17 @@ export const BOOKING_ADMIN_SEGMENT_TO_VIEW: Record<string, BookingManagementView
   espera: "waitlist",
   waitlist: "waitlist",
   quadras: "resources",
+  ajustes: "resources",
   resources: "resources",
 };
 
 export const ACADEMY_ADMIN_VIEW_SEGMENTS: Record<AcademyManagementView, string> = {
   today: "hoje",
-  classes: "grade",
+  classes: "turmas",
   students: "alunos",
   requests: "pendencias",
   coaches: "professores",
-  resources: "configuracao",
+  resources: "ajustes",
 };
 
 export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView> = {
@@ -95,6 +96,7 @@ export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView
   requests: "requests",
   professores: "coaches",
   coaches: "coaches",
+  ajustes: "resources",
   configuracao: "resources",
   recursos: "resources",
   resources: "resources",

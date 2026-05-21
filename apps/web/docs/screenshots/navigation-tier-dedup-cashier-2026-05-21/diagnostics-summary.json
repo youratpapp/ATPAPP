@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "cashier-gestao",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-cashier-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "cashier-gestao",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-cashier-gestao.png",
+    "events": []
+  }
+]

@@ -75,6 +75,7 @@ Resultado:
 - Textos tecnicos remanescentes no UI de gestao foram normalizados: `Marcar pago por row` virou `Marcar recebivel como pago`; `Drawer na lista` virou `Lista e cadastro`.
 - Captura nova em mobile 390px e desktop 1366px nao encontrou os rotulos tecnicos antigos nas rotas verificadas.
 - Console/diagnosticos das capturas novas sem eventos.
+- Consulta publica anonima em torneios, locais e ligas retornou `0` registros com `%Fluxo%` ou prefixo `QA %`.
 
 Evidencias adicionais:
 
@@ -82,7 +83,44 @@ Evidencias adicionais:
 
 Pendencias:
 
-- `[ ] NAV-UX-06` Continuar varredura de menus/tabs/subtabs em gestao de local, torneio e liga para encontrar outras duplicidades de navegacao que ainda parecam duas formas de fazer a mesma coisa.
+- `[x] NAV-UX-06` Varredura desta rodada concluida: gestao de local teve Academia, Financeiro, Cantina e Agenda corrigidas no sprint `NAV-TIER-DEDUP`; torneio/liga foram rechecados e `secondaryActions` ficaram restritas ao drawer contextual.
+
+## [x] Sprint concluido - NAV-TIER-DEDUP Workspaces sem menu duplicado interno
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- `docs/NAVIGATION_TIER_DEDUP_SPRINT_2026_05_21.md`
+
+Arquivos alterados:
+
+- `src/App.css`
+- `src/pages/PlacesPage.tsx`
+- `src/components/place/AcademyWorkspaceShell.tsx`
+- `src/components/place/BookingWorkspaceShell.tsx`
+- `src/components/place/PlaceAcademyClassesModule.tsx`
+- `src/components/place/PlaceAcademyStudentsModule.tsx`
+- `src/components/place/PlaceAcademyTodayModule.tsx`
+- `src/lib/place-admin-navigation.ts`
+- `docs/NAVIGATION_TIER_DEDUP_SPRINT_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- Academia, Financeiro e Cantina nao renderizam mais uma faixa de botoes que replica as tabs oficiais.
+- Esses blocos viraram resumo operacional nao clicavel (`academy-routine-summary`, `finance-routine-summary`, `canteen-routine-summary`).
+- `Grade` foi normalizado para `Turmas` nos fluxos de academia.
+- `Configuracao`/`Quadras` como destino de rotina virou `Ajustes` em tabs de workspace onde o uso e setup raro.
+- Novas rotas geradas usam `turmas`/`ajustes`, preservando aliases antigos `grade`/`configuracao`/`quadras`.
+- Professor comum continua vendo resumo de aulas, alunos e turmas sem receber ferramentas administrativas.
+- `npx.cmd tsc -b --pretty false` passou.
+- Evidencias: `docs/screenshots/navigation-tier-dedup-2026-05-21/`, `docs/screenshots/navigation-tier-dedup-cashier-2026-05-21/` e `docs/screenshots/navigation-booking-cta-2026-05-21/`.
+
+Pendencias:
+
+- `[x] NAV-UX-06A` Rechecado: `secondaryActions` em torneio/liga aparecem apenas no drawer de detalhe da tarefa operacional; cockpit e primeira dobra nao renderizam menu paralelo.
+- `[x] BOOKING-UX-02` `Nova reserva` saiu das tabs oficiais da agenda e virou CTA contextual do workspace. A view `new` e a rota antiga `?visao=nova-reserva` seguem funcionando por wrapper/estado interno.
 
 ## [x] Sprint concluido - NAV-DUP Menus locais duplicados em competicoes
 

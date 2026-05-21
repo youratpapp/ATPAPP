@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "mobile390-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "academy-classes",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas",
+    "screenshot": "mobile390-academy-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "finance-receivables",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "mobile390-finance-receivables.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "canteen-sell",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile390-canteen-sell.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "desktop1366-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "academy-classes",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas",
+    "screenshot": "desktop1366-academy-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "finance-receivables",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "desktop1366-finance-receivables.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "canteen-sell",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop1366-canteen-sell.png",
+    "events": []
+  }
+]

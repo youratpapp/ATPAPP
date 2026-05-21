@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "canteen-prime-sell",
+    "hash": "#/gestao/9a1d1935-d86e-4a3a-8f6b-0f7a263890ae/cantina?visao=vender",
+    "screenshot": "mobile390-canteen-prime-sell.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "canteen-prime-sell",
+    "hash": "#/gestao/9a1d1935-d86e-4a3a-8f6b-0f7a263890ae/cantina?visao=vender",
+    "screenshot": "desktop1366-canteen-prime-sell.png",
+    "events": []
+  }
+]
