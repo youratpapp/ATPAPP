@@ -59,6 +59,7 @@ export function AppShell({
   const displayName = profile?.displayName || user.email?.split("@")[0] || "Atleta";
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
+  const headerClassName = showHeader ? "app-header" : "app-header app-header--desktop-only";
 
   useEffect(() => {
     if (!userMode.isProfessional) return;
@@ -80,72 +81,70 @@ export function AppShell({
 
   return (
     <div className={`app-shell app-shell--${surfaceMode}`} data-surface={surfaceMode}>
-      {showHeader ? (
-        <header className="app-header">
-          <div className="app-header-inner">
-            <div className="app-header-greeting">
-              <div className="avatar" aria-hidden>
-                {photo ? <img src={photo} alt="" /> : initials}
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <p className="greeting-label">Ola,</p>
-                <p className="greeting-name">{displayName}</p>
-              </div>
+      <header className={headerClassName}>
+        <div className="app-header-inner">
+          <div className="app-header-greeting">
+            <div className="avatar" aria-hidden>
+              {photo ? <img src={photo} alt="" /> : initials}
             </div>
-            <div className="app-header-actions">
-              {userMode.isProfessional ? (
-                <div className="app-mode-switch" role="group" aria-label="Modo de uso">
-                  <button
-                    type="button"
-                    className={userMode.mode === "player" ? "active" : ""}
-                    onClick={() => {
-                      userMode.setMode("player");
-                      if (routeExperienceMode !== "player") navigate("/inicio");
-                    }}
-                  >
-                    Jogador
-                  </button>
-                  <button
-                    type="button"
-                    className={userMode.mode === "work" ? "active" : ""}
-                    onClick={() => {
-                      userMode.setMode("work");
-                      if (routeExperienceMode !== "work") navigate(userMode.workEntryPath);
-                    }}
-                  >
-                    Trabalho
-                  </button>
-                </div>
-              ) : null}
-              <img src={logoSymbol} alt="ATP" className="app-header-mark" />
-              {onBellClick ? (
-                <>
-                  <button
-                    className={`icon-btn app-bell-btn${bellOpen ? " active" : ""}`}
-                    onClick={onBellClick}
-                    aria-label="Notificacoes"
-                    aria-haspopup="dialog"
-                    aria-expanded={bellOpen}
-                    aria-controls={bellOpen ? "app-notification-panel" : undefined}
-                  >
-                    <BellIcon />
-                    {bellCount > 0 ? <span className="app-bell-badge">{Math.min(9, bellCount)}</span> : null}
-                  </button>
-                  <AppPopover
-                    id="app-notification-panel"
-                    open={Boolean(bellOpen && bellPanel)}
-                    label="Notificacoes"
-                    onClose={onBellClose ?? onBellClick}
-                    className="app-notification-popover"
-                  >
-                    {bellPanel}
-                  </AppPopover>
-                </>
-              ) : null}
+            <div style={{ minWidth: 0 }}>
+              <p className="greeting-label">Ola,</p>
+              <p className="greeting-name">{displayName}</p>
             </div>
           </div>
-        </header>
-      ) : null}
+          <div className="app-header-actions">
+            {userMode.isProfessional ? (
+              <div className="app-mode-switch" role="group" aria-label="Modo de uso">
+                <button
+                  type="button"
+                  className={userMode.mode === "player" ? "active" : ""}
+                  onClick={() => {
+                    userMode.setMode("player");
+                    if (routeExperienceMode !== "player") navigate("/inicio");
+                  }}
+                >
+                  Jogador
+                </button>
+                <button
+                  type="button"
+                  className={userMode.mode === "work" ? "active" : ""}
+                  onClick={() => {
+                    userMode.setMode("work");
+                    if (routeExperienceMode !== "work") navigate(userMode.workEntryPath);
+                  }}
+                >
+                  Trabalho
+                </button>
+              </div>
+            ) : null}
+            <img src={logoSymbol} alt="ATP" className="app-header-mark" />
+            {onBellClick ? (
+              <>
+                <button
+                  className={`icon-btn app-bell-btn${bellOpen ? " active" : ""}`}
+                  onClick={onBellClick}
+                  aria-label="Notificacoes"
+                  aria-haspopup="dialog"
+                  aria-expanded={bellOpen}
+                  aria-controls={bellOpen ? "app-notification-panel" : undefined}
+                >
+                  <BellIcon />
+                  {bellCount > 0 ? <span className="app-bell-badge">{Math.min(9, bellCount)}</span> : null}
+                </button>
+                <AppPopover
+                  id="app-notification-panel"
+                  open={Boolean(bellOpen && bellPanel)}
+                  label="Notificacoes"
+                  onClose={onBellClose ?? onBellClick}
+                  className="app-notification-popover"
+                >
+                  {bellPanel}
+                </AppPopover>
+              </>
+            ) : null}
+          </div>
+        </div>
+      </header>
       <main className="app-content">{children}</main>
       <BottomNav user={user} />
     </div>

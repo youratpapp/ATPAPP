@@ -1,6 +1,0 @@
-mobile390/admin: login ok url=http://127.0.0.1:4173/#/inicio
-mobile390/player: login ok url=http://127.0.0.1:4173/#/inicio
-mobile390/coach: login ok url=http://127.0.0.1:4173/#/inicio
-desktop1366/admin: login ok url=http://127.0.0.1:4173/#/inicio
-desktop1366/player: login ok url=http://127.0.0.1:4173/#/inicio
-desktop1366/coach: login ok url=http://127.0.0.1:4173/#/inicio

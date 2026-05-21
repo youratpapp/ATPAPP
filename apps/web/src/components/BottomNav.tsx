@@ -93,33 +93,16 @@ const PLAYER_ITEMS: NavItem[] = [
   {
     group: "player",
     path: "/agenda",
-    label: "Agenda",
+    label: "Rotina",
     activePaths: ["/agenda", "/minhas-reservas", "/minhas-partidas", "/minhas-aulas", "/meus-pagamentos"],
-    desktopActivePaths: ["/agenda", "/minhas-reservas", "/minhas-partidas"],
+    desktopActivePaths: ["/agenda", "/minhas-reservas", "/minhas-partidas", "/minhas-aulas", "/meus-pagamentos"],
     Icon: CalendarIcon,
-  },
-  {
-    group: "routine",
-    path: "/minhas-aulas",
-    label: "Aulas",
-    activePaths: ["/minhas-aulas"],
-    Icon: TrophyIcon,
-    visibility: "desktop",
-  },
-  {
-    group: "routine",
-    path: "/meus-pagamentos",
-    label: "Pagamentos",
-    activePaths: ["/meus-pagamentos"],
-    Icon: ManagementIcon,
-    visibility: "desktop",
   },
   { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon },
 ];
 
 const PLAYER_GROUPS: Array<{ id: NavGroupId; label: string }> = [
   { id: "player", label: "Jogar" },
-  { id: "routine", label: "Minha rotina" },
   { id: "account", label: "Conta" },
 ];
 
@@ -369,13 +352,15 @@ export function BottomNav({ user }: { user: User }) {
   const groups = useMemo(() => navGroupsForMode(mode), [mode]);
   const contextLabel = mode === "work" ? "Trabalho" : visibility.contextLabel;
   const navClassName = `bottom-nav is-${mode === "work" ? "management" : visibility.activeSurface}`;
-  const brandLabel = mode === "work" ? "ATP Trabalho" : visibility.activeSurface === "management" ? "Gestao esportiva" : "ATP";
+  const brandLabel = "ATP";
 
   return (
     <nav className={navClassName} aria-label="Navegacao principal">
       <div className="bottom-nav-brand" aria-label={`Area atual: ${contextLabel}`}>
-        <img src={logoSymbol} alt="" />
-        <span>{brandLabel}</span>
+        <div className="bottom-nav-brand-lockup">
+          <img src={logoSymbol} alt="" />
+          <span>{brandLabel}</span>
+        </div>
         <small className="bottom-nav-context">{contextLabel}</small>
       </div>
       {groups.map((group) => {

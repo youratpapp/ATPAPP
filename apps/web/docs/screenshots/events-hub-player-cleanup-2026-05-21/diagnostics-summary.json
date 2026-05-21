@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "events",
+    "hash": "#/eventos",
+    "screenshot": "mobile390-events.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "events",
+    "hash": "#/eventos",
+    "screenshot": "desktop1366-events.png",
+    "events": []
+  }
+]

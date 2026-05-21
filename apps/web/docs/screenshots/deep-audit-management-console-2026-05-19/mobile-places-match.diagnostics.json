@@ -1,7 +1,0 @@
-{
-  "viewport": "mobile",
-  "route": "places-match",
-  "hash": "#/locais?intent=matches",
-  "screenshot": "mobile-places-match.png",
-  "events": []
-}

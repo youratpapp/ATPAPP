@@ -3421,7 +3421,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       count: openMatchOpenCount,
       intent: "matches",
       label: "Encontrar jogo",
-      meta: "Chamadas abertas",
+      meta: "Partidas abertas",
       plural: "chamadas abertas",
       singular: "chamada aberta",
     },
@@ -3429,7 +3429,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       count: activeCourtsCount,
       intent: "places",
       label: "Reservar quadra",
-      meta: "Horarios livres",
+      meta: "Horários disponíveis",
       plural: "quadras ativas",
       singular: "quadra ativa",
     },
@@ -3445,7 +3445,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       count: visiblePlaces.length,
       intent: "directory",
       label: "Ver locais",
-      meta: "Proximos e seguindo",
+      meta: "Clubes e academias",
       plural: "locais",
       singular: "local",
     },
@@ -3477,11 +3477,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       ) : null}
 
       {isDiscoveryHub ? (
-        <section className="places-intent-panel" aria-label="Escolha o que você quer encontrar">
+        <section className="places-intent-panel" aria-label="Escolha como jogar">
           <div className="places-intent-copy">
-            <span>Descoberta</span>
-            <h2>O que você quer encontrar?</h2>
-            <p>Escolha um caminho e veja apenas o que ajuda nessa ação.</p>
+            <span>Jogar perto de você</span>
+            <h2>Escolha seu próximo jogo</h2>
+            <p>Reserve quadra, encontre parceiros ou entre em aulas perto de você.</p>
           </div>
           <div className="places-intent-actions">
             {discoveryIntentOptions.map((option) => (

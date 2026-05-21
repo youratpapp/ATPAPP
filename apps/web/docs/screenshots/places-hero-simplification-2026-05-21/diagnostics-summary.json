@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "places",
+    "hash": "#/locais",
+    "screenshot": "mobile390-places.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "places",
+    "hash": "#/locais",
+    "screenshot": "desktop1366-places.png",
+    "events": []
+  }
+]

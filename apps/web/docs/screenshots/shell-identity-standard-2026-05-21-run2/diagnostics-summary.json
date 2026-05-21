@@ -1,0 +1,30 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile430-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-management.png",
+    "events": []
+  }
+]

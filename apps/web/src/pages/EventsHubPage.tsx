@@ -67,15 +67,6 @@ function LeagueIcon() {
   );
 }
 
-function SettingsIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1A2 2 0 114.2 17l.1-.1A1.7 1.7 0 004.6 15a1.7 1.7 0 00-1.6-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1A2 2 0 117 4.2l.1.1A1.7 1.7 0 009 4.6a1.7 1.7 0 001-1.6V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.6 1.7 1.7 0 001.9-.3l.1-.1A2 2 0 1119.8 7l-.1.1a1.7 1.7 0 00-.3 1.9 1.7 1.7 0 001.6 1h.1a2 2 0 110 4H21a1.7 1.7 0 00-1.6 1z" />
-    </svg>
-  );
-}
-
 function SearchIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -582,7 +573,7 @@ export function EventsHubPage({ user, profile }: Props) {
     activeMode === "discover" ? "Competir" : activeMode === "organizing" ? "Trabalho em competicoes" : "Minhas competicoes";
   const pageIntro =
     activeMode === "discover"
-      ? "Encontre torneios, ligas e proximos desafios para jogar. A operacao de eventos fica no modo Trabalho."
+      ? "Encontre torneios, ligas e rankings para acompanhar seu jogo."
       : activeMode === "organizing"
       ? "Acompanhe torneios e ligas que voce organiza pela central de trabalho."
       : "Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.";
@@ -670,11 +661,6 @@ export function EventsHubPage({ user, profile }: Props) {
             active={activeMode === "discover"}
             onSelect={() => selectMode("discover")}
           />
-          {hasOrganizerContext ? (
-            <button className="competition-work-link" type="button" onClick={() => selectMode("organizing")}>
-              Trabalho <CountBadge value={organizerCount} />
-            </button>
-          ) : null}
         </section>
       ) : null}
 
@@ -871,7 +857,7 @@ export function EventsHubPage({ user, profile }: Props) {
 
       {activeMode === "discover" ? (
         <section id="competitions-discover" className="section-card flow-card competition-discovery">
-          <FlowHeader title="Descobrir" detail="Entrada leve para encontrar competições e locais, sem fila administrativa." />
+          <FlowHeader title="Descobrir" detail="Encontre eventos abertos e locais para competir perto de você." />
           <div className="competition-discovery-grid">
             <DiscoveryAction
               icon={<TrophyIcon />}
@@ -891,14 +877,6 @@ export function EventsHubPage({ user, profile }: Props) {
               detail="Veja clubes e academias publicas."
               onOpen={() => navigate("/locais")}
             />
-            {hasOrganizerContext ? (
-              <DiscoveryAction
-                icon={<SettingsIcon />}
-                title="Modo organizador"
-                detail="Crie torneios e ligas em uma area separada."
-                onOpen={() => selectMode("organizing")}
-              />
-            ) : null}
           </div>
           <div className="competition-discovery-section">
             <div className="competition-discovery-head">

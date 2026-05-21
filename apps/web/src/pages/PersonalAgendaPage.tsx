@@ -853,11 +853,11 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
       <main className="page personal-area-page personal-agenda-page">
         <header className="personal-area-header personal-agenda-hero">
           <div>
-            <span>Agenda pessoal</span>
-            <h1>Minha agenda</h1>
+            <span>Central pessoal</span>
+            <h1>Minha rotina</h1>
             <p>Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica.</p>
           </div>
-          <div className="personal-agenda-kpis" aria-label="Resumo da agenda">
+          <div className="personal-agenda-kpis" aria-label="Resumo da rotina">
             <article>
               <span>Proximos</span>
               <strong>{nextItems.length}</strong>
@@ -876,7 +876,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
           </div>
         </header>
 
-        <nav className="personal-agenda-tabs" aria-label="Filtros da agenda">
+        <nav className="personal-agenda-tabs" aria-label="Filtros da rotina">
           {AGENDA_SCOPES.map((scope) => (
             <button
               key={scope.key}

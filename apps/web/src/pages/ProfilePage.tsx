@@ -749,7 +749,7 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
 
       {/* Photo + name block */}
       <div className="profile-photo-block">
-        <div className="profile-photo" style={{ width: 100, height: 100 }}>
+        <div className="profile-photo">
           <div className="profile-photo-inner">
             {photoUrl ? <img src={photoUrl} alt="" /> : initials}
           </div>
@@ -764,13 +764,15 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
             />
           </label>
         </div>
-        <p className="profile-name">{profile?.displayName || user.email?.split("@")[0]}</p>
-        <p className="profile-location">{locationLine || "Adicione cidade e estado"}</p>
-        <div className="profile-identity-pills">
-          <span>{profileComplete ? "Perfil completo" : "Perfil incompleto"}</span>
-          <span>{profile?.profileVisibility === "private" ? "Perfil privado" : "Perfil publico"}</span>
-          <span>{playingCount > 0 ? "Jogador ativo" : "Sem competicao ativa"}</span>
-          <span>{notificationPrefs.matchReminders || notificationPrefs.bookingReminders ? "Lembretes ativos" : "Lembretes pausados"}</span>
+        <div className="profile-identity-main">
+          <p className="profile-name">{profile?.displayName || user.email?.split("@")[0]}</p>
+          <p className="profile-location">{locationLine || "Adicione cidade e estado"}</p>
+          <div className="profile-identity-pills">
+            <span>{profileComplete ? "Perfil completo" : "Perfil incompleto"}</span>
+            <span>{profile?.profileVisibility === "private" ? "Perfil privado" : "Perfil publico"}</span>
+            <span>{playingCount > 0 ? "Jogador ativo" : "Sem competicao ativa"}</span>
+            <span>{notificationPrefs.matchReminders || notificationPrefs.bookingReminders ? "Lembretes ativos" : "Lembretes pausados"}</span>
+          </div>
         </div>
         <div className="profile-hero-stats" aria-label="Resumo esportivo">
           <span>

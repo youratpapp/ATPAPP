@@ -33251,6 +33251,99 @@ body:has(.app-shell--competition),
   color: #ffffff;
 }
 
+/* SPRINT-2026-05-21 - Profile hero alignment */
+.app-shell--player .profile-photo-block {
+  gap: 18px;
+}
+
+.app-shell--player .profile-photo {
+  flex: 0 0 auto;
+}
+
+.app-shell--player .profile-photo .photo-edit {
+  bottom: -10px;
+  height: 30px;
+  right: -10px;
+  width: 30px;
+  z-index: 2;
+}
+
+.app-shell--player .profile-identity-main {
+  align-content: center;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  min-width: 0;
+}
+
+.app-shell--player .profile-identity-main .profile-name,
+.app-shell--player .profile-identity-main .profile-location {
+  margin: 0;
+}
+
+.app-shell--player .profile-row .pr-content,
+.app-shell--player .profile-row .pr-label,
+.app-shell--player .profile-row .pr-value {
+  min-width: 0;
+  text-align: left;
+}
+
+.app-shell--player .profile-row .pr-label,
+.app-shell--player .profile-row .pr-value {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.app-shell--player .profile-account-workspace .profile-row {
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .app-shell--player .profile-photo-block {
+    align-items: center;
+    column-gap: 28px;
+    display: grid;
+    grid-template-areas: "avatar identity stats";
+    grid-template-columns: 116px minmax(0, 1fr) minmax(320px, 0.78fr);
+    grid-template-rows: auto;
+    justify-items: stretch;
+  }
+
+  .app-shell--player .profile-photo-block .profile-photo {
+    align-self: center;
+    grid-area: avatar;
+    justify-self: center;
+  }
+
+  .app-shell--player .profile-identity-main {
+    grid-area: identity;
+    justify-items: start;
+  }
+
+  .app-shell--player .profile-identity-pills {
+    justify-content: flex-start;
+  }
+
+  .app-shell--player .profile-hero-stats {
+    align-self: stretch;
+    grid-area: stats;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--player .profile-photo .photo-edit {
+    bottom: -10px;
+    height: 30px;
+    right: -10px;
+    width: 30px;
+  }
+
+  .app-shell--player .profile-identity-main {
+    justify-items: start;
+    width: 100%;
+  }
+}
+
 @media (max-width: 760px) {
   .app-shell--player .ranking-podium-strip {
     border-radius: 20px;
@@ -33843,5 +33936,315 @@ body:has(.app-shell--competition),
   .app-shell--player .league-public-page,
   .app-shell--player .league-public-event {
     padding-bottom: calc(var(--bottom-nav-height, 76px) + env(safe-area-inset-bottom, 0px) + 96px);
+  }
+}
+
+/* SHELL-IDENTITY-01: unified logo/header/mode switch across app areas. */
+.app-header--desktop-only {
+  display: none;
+}
+
+.bottom-nav-brand-lockup {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+@media (min-width: 960px) {
+  .app-header--desktop-only {
+    display: block;
+  }
+
+  .app-header {
+    background:
+      linear-gradient(180deg, rgba(3, 9, 20, 0.96), rgba(3, 9, 20, 0.91)),
+      #030914;
+    border-bottom-color: rgba(255, 255, 255, 0.11);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.2);
+    min-height: 65px;
+    padding: 10px 20px;
+  }
+
+  .app-header-inner {
+    margin: 0;
+    max-width: none;
+    min-height: 44px;
+  }
+
+  .app-header-greeting {
+    gap: 12px;
+  }
+
+  .app-header-greeting .avatar {
+    border-radius: 14px;
+    height: 40px;
+    width: 40px;
+  }
+
+  .app-header-greeting .greeting-label,
+  .app-header-greeting .greeting-name {
+    color: #ffffff;
+  }
+
+  .app-header-greeting .greeting-name {
+    font-size: 0.92rem;
+    line-height: 1.08;
+    max-width: 220px;
+  }
+
+  .app-header-actions {
+    gap: 8px;
+  }
+
+  .app-mode-switch {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 10px 24px rgba(0, 0, 0, 0.18);
+    min-height: 38px;
+    padding: 3px;
+  }
+
+  .app-mode-switch button {
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 950;
+    min-height: 30px;
+    padding: 0 14px;
+  }
+
+  .app-mode-switch button:not(.active) {
+    background: transparent;
+    color: rgba(248, 250, 252, 0.78);
+  }
+
+  .app-mode-switch button.active {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(34, 197, 94, 0.26);
+  }
+
+  .app-header-mark,
+  .app-header .icon-btn {
+    height: 40px;
+    width: 40px;
+  }
+
+  .app-header-mark {
+    background: rgba(7, 18, 34, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 7px;
+  }
+
+  .bottom-nav {
+    background:
+      linear-gradient(180deg, rgba(3, 9, 20, 0.98), rgba(6, 17, 31, 0.96)),
+      url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+    border-right-color: rgba(255, 255, 255, 0.12);
+    gap: 18px;
+  }
+
+  .bottom-nav-brand,
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 0 10px 18px;
+  }
+
+  .bottom-nav-brand-lockup,
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand-lockup {
+    align-items: center;
+    display: inline-flex;
+    gap: 10px;
+  }
+
+  .bottom-nav-brand img,
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand img {
+    background: rgba(7, 18, 34, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    box-sizing: border-box;
+    display: block;
+    height: 38px;
+    padding: 5px;
+    width: 38px;
+  }
+
+  .bottom-nav-brand span,
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-brand span {
+    color: #f8fafc;
+    font-size: 1.22rem;
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .bottom-nav-context,
+  .app-shell--player:has(.home-player-os--visual) .bottom-nav-context {
+    align-self: flex-start;
+    background: transparent;
+    border: 0;
+    color: rgba(248, 250, 252, 0.72);
+    display: inline-flex;
+    flex-basis: auto;
+    margin-left: 48px;
+    padding: 0;
+  }
+
+  .management-shell-actions .app-mode-switch {
+    display: none;
+  }
+}
+
+@media (max-width: 959px) {
+  .app-header--desktop-only {
+    display: none !important;
+  }
+}
+
+/* PLACES-HERO-01: public copy, one image, no card/text collision. */
+.app-shell--player:has(.places-page) .places-intent-panel {
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(3, 9, 20, 0.98) 0%, rgba(3, 9, 20, 0.9) 47%, rgba(3, 9, 20, 0.5) 100%),
+    url("./assets/pdark-court-reservation-thumb.png") center / cover no-repeat !important;
+  gap: clamp(28px, 4vw, 56px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.85fr);
+  min-height: clamp(330px, 34vw, 430px);
+}
+
+.app-shell--player:has(.places-page) .places-intent-panel::after {
+  display: none;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy {
+  align-content: center;
+  max-width: 470px;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy h2 {
+  font-size: clamp(2.9rem, 4.6vw, 4.35rem);
+  line-height: 0.98;
+  max-width: 9.8ch;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy p {
+  color: rgba(226, 232, 240, 0.9);
+  font-size: 1.02rem;
+  line-height: 1.45;
+  max-width: 390px;
+}
+
+.app-shell--player:has(.places-page) .places-intent-actions {
+  align-self: center;
+  grid-column: 2;
+  justify-self: stretch;
+  max-width: 520px;
+}
+
+.app-shell--player:has(.places-page) .places-intent-card {
+  min-height: 106px;
+}
+
+@media (max-width: 980px) {
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-actions {
+    grid-column: 1;
+    max-width: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    gap: 16px;
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-copy {
+    max-width: 100%;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-copy h2 {
+    font-size: clamp(2.05rem, 10vw, 3rem);
+    max-width: 11ch;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-copy p {
+    font-size: 0.9rem;
+    max-width: 28ch;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-card {
+    min-height: 82px;
+  }
+}
+
+/* EVENTS-HUB-PLAYER-01: player discovery without work-mode leakage. */
+.app-shell--competition .events-page-header.mode-discover > div::after {
+  content: "Encontre torneios, ligas e rankings para acompanhar seu jogo.";
+}
+
+.app-shell--competition .competition-hub-tabs {
+  background: rgba(3, 9, 20, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  gap: 10px;
+  padding: 10px;
+}
+
+.app-shell--competition .competition-hub-tabs button {
+  background:
+    linear-gradient(180deg, rgba(13, 28, 47, 0.94), rgba(6, 17, 33, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 16px;
+  color: #ffffff !important;
+  min-height: 52px;
+}
+
+.app-shell--competition .competition-hub-tabs button:hover,
+.app-shell--competition .competition-hub-tabs button:focus-visible {
+  background:
+    linear-gradient(180deg, rgba(17, 82, 58, 0.92), rgba(8, 24, 40, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border-color: rgba(74, 222, 128, 0.44) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.app-shell--competition .competition-hub-tabs button span,
+.app-shell--competition .competition-hub-tabs button svg {
+  color: #ffffff !important;
+}
+
+.app-shell--competition .competition-hub-tabs button svg {
+  color: #4ade80 !important;
+}
+
+.app-shell--competition .competition-intent-strip {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.app-shell--competition .competition-discovery-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 760px) {
+  .app-shell--competition .competition-intent-strip,
+  .app-shell--competition .competition-discovery-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

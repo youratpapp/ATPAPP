@@ -1,0 +1,44 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile390-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "my-lessons-alias",
+    "hash": "#/minhas-aulas",
+    "screenshot": "mobile390-my-lessons-alias.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "my-payments-alias",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "mobile390-my-payments-alias.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktop1366-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "my-lessons-alias",
+    "hash": "#/minhas-aulas",
+    "screenshot": "desktop1366-my-lessons-alias.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "my-payments-alias",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "desktop1366-my-payments-alias.png",
+    "events": []
+  }
+]

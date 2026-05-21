@@ -1,7 +1,0 @@
-{
-  "viewport": "desktop",
-  "route": "protected-player",
-  "hash": "#/auth?next=%2Fjogadores%2Fdemo-player",
-  "screenshot": "desktop-protected-player.png",
-  "events": []
-}

@@ -1,5 +1,0 @@
-hash=#/locais?intent=booking
-loaded=true
-textLength=373
-
-{"hash":"#/locais?intent=booking","title":"ATP — Amateur Tennis Platform","body":"Locais\nDESCOBERTA\nO que você quer encontrar?\n\nEscolha um caminho e veja apenas o que ajuda nessa ação.\n\nEncontrar jogo\nChamadas abertas\n27 chamadas abertas\nReservar quadra\nHorarios livres\n18 quadras ativas\nEntrar em aula\nTurmas com vaga\n96 turmas ativas\nVer locais\nProximos e seguindo\n3 locais\nATP\nJogador\nJOGAR\nInicio\nCompetir\nLocais\nRanking\nTRABALHO\nTrabalho\nCONTA\nPerfil"}

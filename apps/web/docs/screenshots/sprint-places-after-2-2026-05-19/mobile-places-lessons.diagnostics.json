@@ -1,7 +1,0 @@
-{
-  "viewport": "mobile",
-  "route": "places-lessons",
-  "hash": "#/locais?intent=classes",
-  "screenshot": "mobile-places-lessons.png",
-  "events": []
-}

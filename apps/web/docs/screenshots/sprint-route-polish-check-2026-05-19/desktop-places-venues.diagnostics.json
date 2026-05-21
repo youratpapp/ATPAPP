@@ -1,7 +1,0 @@
-{
-  "viewport": "desktop",
-  "route": "places-venues",
-  "hash": "#/locais?intent=venues",
-  "screenshot": "desktop-places-venues.png",
-  "events": []
-}

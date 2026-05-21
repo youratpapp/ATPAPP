@@ -44,6 +44,107 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## [x] Sprint concluido - SHELL-IDENTITY-01 Padronizar logo, header e seletor web
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- Revisao por screenshot do padrao de `Inicio` vs demais paginas.
+
+Evidencias:
+
+- `docs/screenshots/shell-identity-standard-2026-05-21/`
+- `docs/screenshots/shell-identity-standard-2026-05-21-run2/`
+- `npx.cmd tsc -b --pretty false`
+- `git diff --check`
+
+Arquivos alterados:
+
+- `src/components/AppShell.tsx`
+- `src/components/BottomNav.tsx`
+- `src/App.css`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- O header padrao do shell agora tambem aparece no desktop em paginas que antes desligavam `showHeader`, mantendo o mobile sem header duplicado.
+- A marca lateral de desktop foi normalizada para `icone + ATP` com dimensoes iguais ao padrao aprovado da Home, em vez de renderizar o simbolo gigante.
+- O seletor `Jogador / Trabalho` ficou com tamanho, posicao e estado visual padronizados no header web.
+- O usuario/saudacao no web deixou de ficar preso ao centro do container e agora fica mais proximo do menu lateral.
+- O seletor interno duplicado da Gestao foi ocultado no desktop, mantendo o seletor local no mobile onde o header global nao aparece.
+- Capturas verificadas em `mobile390`, `mobile430`, `desktop1366` e `desktop-wide` para Home, Jogar/Locais, Competir/Eventos, Gestao e Perfil; diagnosticos sem eventos de console nas rotas capturadas.
+
+Observacao operacional:
+
+- A segunda rodada de screenshots encontrou disco cheio (`ENOSPC`). Foi removida apenas a pasta gerada antiga `docs/screenshots/visual-audit-management-2026-05-19/` para liberar espaco; nenhum codigo, asset de produto, documento-fonte ou banco foi removido.
+
+## [x] Sprint concluido - PLACES-HERO-01 Simplificar hero da pagina Jogar
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- Revisao por screenshot da pagina `Jogar` (`/locais`).
+
+Evidencias:
+
+- `docs/screenshots/places-hero-simplification-2026-05-21/`
+- `npx.cmd tsc -b --pretty false`
+- `git diff --check`
+
+Arquivos alterados:
+
+- `src/pages/PlacesPage.tsx`
+- `src/App.css`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- O hero de `Jogar` passou a usar uma unica imagem dominante; a segunda imagem sobreposta do pseudo-elemento foi removida.
+- O titulo deixou de invadir a area dos botoes/cards no desktop.
+- A copy interna foi substituida por texto publico e direto: `Escolha seu próximo jogo` e `Reserve quadra, encontre parceiros ou entre em aulas perto de você.`
+- Labels auxiliares dos cards foram simplificados para termos de usuario final: `Partidas abertas`, `Horários disponíveis`, `Turmas com vaga`, `Clubes e academias`.
+- Validado em `desktop1366` e `mobile390`, sem eventos de console na captura.
+
+Observacao operacional:
+
+- Para manter espaco de trabalho apos os PNGs, foi removida apenas a pasta antiga gerada `docs/screenshots/visual-local-audit-2026-05-18/`.
+
+## [x] Sprint concluido - EVENTS-HUB-PLAYER-01 Limpar vazamentos de Trabalho em Competir
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- Revisao por screenshot da pagina `Competir` (`/eventos`) em area de jogador.
+
+Evidencias:
+
+- `docs/screenshots/events-hub-player-cleanup-2026-05-21/`
+- Verificacao por browser/Playwright: `leaked = 0` para `.competition-work-link` e `Modo organizador`; hover de `Torneios` com texto branco.
+- `npx.cmd tsc -b --pretty false`
+- `git diff --check`
+
+Arquivos alterados:
+
+- `src/pages/EventsHubPage.tsx`
+- `src/App.css`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- O botao `Trabalho` deixou de aparecer dentro do hub do jogador em `Competir`.
+- O card `Modo organizador` deixou de aparecer na area `Descobrir` do jogador.
+- A copy do hero foi limpa para nao orientar sobre operacao de trabalho: `Encontre torneios, ligas e rankings para acompanhar seu jogo.`
+- A copy da secao `Descobrir` deixou de falar em `fila administrativa` e passou a usar linguagem publica.
+- Os botoes `Torneios`, `Ligas` e `Rankings` receberam hover/focus dark premium, mantendo texto legivel e sem virar bloco branco.
+- Validado em `desktop1366` e `mobile390`, sem eventos de console na captura.
+
+Observacao operacional:
+
+- O disco voltou a ficar sem espaco durante captura; foi removida apenas a pasta antiga gerada `docs/screenshots/workflow-v3-flow11-transversal-qa-2026-05-20/`.
+
 ## [x] Sprint concluido - QA-LABELS-01 Remover rotulos tecnicos de dados visiveis
 
 Status: `[x]` concluido em 2026-05-21.
@@ -12632,5 +12733,62 @@ Pendencias:
 
 - bottom nav mobile permanece fixa e pode aparecer sobre conteudo em screenshots full-page, mas nao bloqueou o fluxo testado;
 - proxima rodada de produto pode separar ainda mais as subviews por fase para reduzir densidade operacional.
+
+### [x] SPRINT-2026-05-21 - Consolidar Agenda, Aulas e Pagamentos em Rotina
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- a navegacao do Player App mostrava `Agenda` no menu principal e, ao mesmo tempo, expunha `Aulas` e `Pagamentos` como itens separados no desktop;
+- a pagina de agenda ja consolidava reservas, partidas, aulas, pagamentos pessoais e historico, gerando duplicidade de menu e duvida sobre onde cada rotina pessoal deveria ser consultada.
+
+Entregue:
+
+- o item visivel `Agenda` foi renomeado para `Rotina`;
+- `Aulas` e `Pagamentos` sairam do menu principal/desktop do jogador;
+- as rotas antigas `/minhas-aulas` e `/meus-pagamentos` continuam preservadas e agora destacam `Rotina` no menu;
+- a pagina `/agenda` passou a se apresentar como `Central pessoal` / `Minha rotina`;
+- os filtros internos continuam existindo para separar `Reservas`, `Partidas`, `Aulas`, `Pagamentos` e `Historico` sem duplicar a navegacao principal.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `git diff --check` passou, com apenas avisos CRLF do workspace Windows;
+- screenshots de `/agenda`, `/minhas-aulas` e `/meus-pagamentos` em mobile 390px e desktop 1366px foram gerados em `docs/screenshots/player-routine-nav-consolidation-2026-05-21/`;
+- diagnostico das capturas sem eventos de console.
+
+Pendencias:
+
+- avaliar em produto se o nome final deve permanecer `Rotina` ou evoluir para outro rotulo curto, desde que continue englobando agenda, aulas e pagamentos pessoais.
+
+### [x] SPRINT-2026-05-21 - Alinhamento do perfil do jogador
+
+Status: `[x]` concluido no codigo, screenshot e documentacao
+
+Problema:
+
+- o avatar gerado por iniciais no perfil ficava desalinhado em relacao ao bloco de nome/local;
+- o botao de camera invadia o avatar no mobile e atrapalhava a leitura das iniciais;
+- alguns textos de linhas e cards do perfil, especialmente em listas/conta, podiam parecer centralizados ou soltos demais.
+
+Entregue:
+
+- o hero do perfil passou a ter areas explicitas para avatar, identidade e metricas;
+- nome, local e chips ficam agrupados em `profile-identity-main`, alinhando corretamente com o avatar;
+- o botao de camera foi reposicionado para o canto externo do avatar;
+- textos de `profile-row` foram normalizados para alinhamento a esquerda e quebra segura;
+- o menu consolidado `Rotina` permanece preservado no perfil.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `git diff --check` passou, com apenas avisos CRLF do workspace Windows;
+- screenshots de `/perfil` em mobile 390px e desktop 1366px foram gerados em `docs/screenshots/profile-alignment-fix-2026-05-21/`;
+- diagnosticos individuais das capturas sem eventos de console.
+
+Observacao operacional:
+
+- durante a captura, o disco chegou a 0 bytes livres; foram removidas apenas pastas antigas de screenshots gerados em `docs/screenshots` para liberar espaco, sem tocar em codigo, assets ou documentos.
 
 

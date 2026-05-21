@@ -1,7 +1,0 @@
-{
-  "viewport": "desktop",
-  "route": "places-reserve",
-  "hash": "#/locais?intent=places",
-  "screenshot": "desktop-places-reserve.png",
-  "events": []
-}
