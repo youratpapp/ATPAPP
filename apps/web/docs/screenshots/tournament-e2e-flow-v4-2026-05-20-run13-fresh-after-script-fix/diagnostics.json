@@ -1,0 +1,46 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T02:12:48.229Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [],
+  "resultAttempts": [],
+  "screenshots": [
+    {
+      "name": "01-torneios-organizando-antes-criar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run13-fresh-after-script-fix/01-desktop-1366-01-torneios-organizando-antes-criar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "02-modal-criacao-basico",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run13-fresh-after-script-fix/02-desktop-1366-02-modal-criacao-basico.png",
+      "url": "http://127.0.0.1:5173/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run13-fresh-after-script-fix/03-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5173/#/eventos/torneios?view=organizing"
+    }
+  ],
+  "tournament": null,
+  "completed": false,
+  "error": "Error: cidade: {\"ok\":false,\"labelPattern\":\"Cidade\",\"value\":\"Dourados\",\"current\":\"\",\"options\":[\"\"]}\n    at must (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:266:11)\n    at async createTournamentThroughUi (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:322:3)\n    at async main (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:637:9)"
+}

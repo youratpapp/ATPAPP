@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-430",
+  "route": "places-booking",
+  "hash": "#/locais?intent=booking",
+  "screenshot": "mobile-430-places-booking.png",
+  "events": []
+}

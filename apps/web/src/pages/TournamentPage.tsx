@@ -1466,6 +1466,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [showFinishedMyMatches, setShowFinishedMyMatches] = useState(false);
   const [resultSubmissions, setResultSubmissions] = useState<TournamentMatchResultSubmission[]>([]);
   const [resultSubmitting, setResultSubmitting] = useState(false);
+  const [adminScoreDrafts, setAdminScoreDrafts] = useState<Record<string, MatchScoreDetail>>({});
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
   const [matchConfirming, setMatchConfirming] = useState(false);
@@ -2700,6 +2701,47 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   }, [user, tournamentId]);
 
   useEffect(() => {
+    if (!tournament || !(canManagePlayers || tab === "jogadores")) return;
+    let alive = true;
+
+    const refreshRegistrations = async () => {
+      try {
+        const regs = await loadTournamentRegistrations(user, tournament.id, tournament.role);
+        const payments =
+          tournament.role === "owner"
+            ? await listPaymentsForTargets(
+                "tournament_registration",
+                regs.map((registration) => registration.id)
+              ).catch(() => [] as AppPayment[])
+            : [];
+        if (!alive) return;
+        setRegistrations(regs);
+        if (tournament.role === "owner") {
+          setPaymentsByTarget((prev) => ({
+            ...prev,
+            ...Object.fromEntries(payments.map((payment) => [`${payment.targetType}:${payment.targetId}`, payment])),
+          }));
+        }
+      } catch {
+        // Mantem a tela atual se o refresh leve falhar; o carregamento principal continua responsavel pelo erro completo.
+      }
+    };
+
+    void refreshRegistrations();
+    const onFocus = () => void refreshRegistrations();
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") void refreshRegistrations();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      alive = false;
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [canManagePlayers, tab, tournament, user]);
+
+  useEffect(() => {
     setSelectedRegistrationIds((prev) => prev.filter((id) => registrations.some((r) => r.id === id)));
   }, [registrations]);
 
@@ -2875,6 +2917,12 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     } finally {
       setSaving(false);
     }
+  };
+
+  const transitionTournamentStatus = async (nextStatus: TournamentStatus, successText: string) => {
+    if (!tournament || !canManageTournament) return false;
+    setBasicStatus(nextStatus);
+    return persistTournamentData(tournament.data ?? {}, successText, activeClassKey, nextStatus);
   };
 
   const syncTournamentCourtUsageAfterSave = async (
@@ -4938,11 +4986,68 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     config: ClassData["config"],
     match: GroupMatch | KnockoutMatch,
     disabled: boolean,
-    onPatch: (updater: (detail: MatchScoreDetail) => MatchScoreDetail) => void
+    onPatch: (updater: (detail: MatchScoreDetail) => MatchScoreDetail) => void | Promise<void>,
+    options?: { draftKey?: string; manual?: boolean }
   ) => {
-    const detail = decodeMatchScoreDetail(match.scoreLabel, config, match.s1, match.s2);
+    const baseDetail = decodeMatchScoreDetail(match.scoreLabel, config, match.s1, match.s2);
+    const draftKey = options?.draftKey || "";
+    const manual = Boolean(options?.manual && draftKey);
+    const detail = manual ? normalizeMatchScoreDetail(adminScoreDrafts[draftKey] ?? baseDetail, config) : baseDetail;
     const visibleSets = visibleSetCount(detail, config);
     const setRows: ReactNode[] = [];
+    const setDisabled = saving || disabled;
+    const patchScoreDetail = (updater: (detail: MatchScoreDetail) => MatchScoreDetail) => {
+      if (!manual) {
+        void onPatch(updater);
+        return;
+      }
+      setAdminScoreDrafts((prev) => ({
+        ...prev,
+        [draftKey]: normalizeMatchScoreDetail(updater(detail), config),
+      }));
+    };
+    const clearDraft = () => {
+      if (!draftKey) return;
+      setAdminScoreDrafts((prev) => {
+        if (!prev[draftKey]) return prev;
+        const next = { ...prev };
+        delete next[draftKey];
+        return next;
+      });
+    };
+    const manualEvaluation = manual ? evaluateMatchScoreDetail(detail, config) : null;
+    const saveManualScore = () => {
+      if (!manual) return;
+      const normalized = normalizeMatchScoreDetail(detail, config);
+      const evaluated = evaluateMatchScoreDetail(normalized, config);
+      if (!evaluated.done || !evaluated.winner) {
+        setFeedback({ kind: "error", text: "Complete um placar valido antes de salvar como resultado oficial." });
+        return;
+      }
+      const result = onPatch(() => normalized);
+      if (result && typeof (result as Promise<void>).then === "function") {
+        void (result as Promise<void>).then(clearDraft);
+      } else {
+        clearDraft();
+      }
+    };
+    const wrapRows = (rows: ReactNode) => {
+      if (!manual) return rows;
+      return (
+        <>
+          {rows}
+          <div className="match-admin-actions">
+            <button className="primary" onClick={saveManualScore} disabled={setDisabled}>
+              {saving ? "Salvando..." : match.done ? "Salvar edicao do resultado" : "Salvar resultado oficial"}
+            </button>
+            <span className={manualEvaluation?.done ? "match-operational-state success" : "match-operational-state warning"}>
+              <span>{manualEvaluation?.done ? "Placar completo" : "Placar incompleto"}</span>
+              <strong>{manualEvaluation?.done ? "Pronto para salvar" : "Preencha todos os campos da regra"}</strong>
+            </span>
+          </div>
+        </>
+      );
+    };
     const pushSetField = (setIndex: number) => {
       const set = detail.sets[setIndex] ?? emptyScoreSet();
       const targetGames = config.tipoPontuacao === "fast4" ? 4 : config.tipoPontuacao === "pro_set" ? 8 : 6;
@@ -4961,14 +5066,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             value={set.a}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
-              onPatch((d) => {
+              patchScoreDetail((d) => {
                 const sets = d.sets.slice();
                 const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), a: value };
                 sets[setIndex] = nextSet;
                 return { ...d, sets };
               });
             }}
-            disabled={saving || disabled}
+            disabled={setDisabled}
           />
           <input
             className="match-score-input"
@@ -4979,14 +5084,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             value={set.b}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
-              onPatch((d) => {
+              patchScoreDetail((d) => {
                 const sets = d.sets.slice();
                 const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), b: value };
                 sets[setIndex] = nextSet;
                 return { ...d, sets };
               });
             }}
-            disabled={saving || disabled}
+            disabled={setDisabled}
           />
           {showTb ? (
             <div className="tournament-score-tiebreak-row">
@@ -5000,14 +5105,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 value={set.tbA}
                 onChange={(e) => {
                   const value = coerceScoreStringForSetInput(e.target.value);
-                  onPatch((d) => {
+                  patchScoreDetail((d) => {
                     const sets = d.sets.slice();
                     const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), tbA: value };
                     sets[setIndex] = nextSet;
                     return { ...d, sets };
                   });
                 }}
-                disabled={saving || disabled}
+                disabled={setDisabled}
               />
               <input
                 className="match-score-input"
@@ -5018,14 +5123,14 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 value={set.tbB}
                 onChange={(e) => {
                   const value = coerceScoreStringForSetInput(e.target.value);
-                  onPatch((d) => {
+                  patchScoreDetail((d) => {
                     const sets = d.sets.slice();
                     const nextSet = { ...(sets[setIndex] ?? emptyScoreSet()), tbB: value };
                     sets[setIndex] = nextSet;
                     return { ...d, sets };
                   });
                 }}
-                disabled={saving || disabled}
+                disabled={setDisabled}
               />
             </div>
           ) : null}
@@ -5034,7 +5139,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     };
 
     if (isSuperTieBreakPointsMode(config)) {
-      return (
+      return wrapRows(
         <div className="match-input-row tournament-score-row">
           <span className="subtle">Super Tie-Break</span>
           <input
@@ -5046,9 +5151,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             value={detail.superTbA}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
-              onPatch((d) => ({ ...d, superTbA: value }));
+              patchScoreDetail((d) => ({ ...d, superTbA: value }));
             }}
-            disabled={saving || disabled}
+            disabled={setDisabled}
           />
           <input
             className="match-score-input"
@@ -5059,9 +5164,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             value={detail.superTbB}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
-              onPatch((d) => ({ ...d, superTbB: value }));
+              patchScoreDetail((d) => ({ ...d, superTbB: value }));
             }}
-            disabled={saving || disabled}
+            disabled={setDisabled}
           />
         </div>
       );
@@ -5084,9 +5189,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             value={detail.superTbA}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
-              onPatch((d) => ({ ...d, superTbA: value }));
+              patchScoreDetail((d) => ({ ...d, superTbA: value }));
             }}
-            disabled={saving || disabled}
+            disabled={setDisabled}
           />
           <input
             className="match-score-input"
@@ -5097,15 +5202,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             value={detail.superTbB}
             onChange={(e) => {
               const value = coerceScoreStringForSetInput(e.target.value);
-              onPatch((d) => ({ ...d, superTbB: value }));
+              patchScoreDetail((d) => ({ ...d, superTbB: value }));
             }}
-            disabled={saving || disabled}
+            disabled={setDisabled}
           />
         </div>
       );
     }
 
-    return <>{setRows}</>;
+    return wrapRows(<>{setRows}</>);
   };
 
   const operationalPhaseKey = tournamentOperationalPhaseFor(
@@ -5210,7 +5315,17 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       return { label: "Completar configuracao", onClick: () => goToOrganizerSection(organizationProgress.basicsReady ? "setup-classes" : "setup-basics") };
     }
     if (operationalPhaseKey === "registration_open") {
-      return { label: canManagePlayers ? "Revisar inscritos" : "Abrir comunicacao", onClick: () => goToTab(canManagePlayers ? "jogadores" : "chat") };
+      if (canManagePlayers && tournamentOverview.pendingRegistrations > 0) {
+        return { label: "Revisar inscritos", onClick: () => goToTab("jogadores") };
+      }
+      if (canManageTournament) {
+        return {
+          disabled: saving,
+          label: "Encerrar inscricoes",
+          onClick: () => void transitionTournamentStatus("registration_closed", "Inscricoes encerradas. Agora gere os jogos."),
+        };
+      }
+      return { label: "Abrir comunicacao", onClick: () => goToTab("chat") };
     }
     if (operationalPhaseKey === "registration_closed") {
       return {
@@ -5229,6 +5344,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       return { label: "Publicar jogos", onClick: () => goToTab(canManageComms ? "chat" : "jogos") };
     }
     if (operationalPhaseKey === "live") {
+      if (tournamentCompletionBlockers.length === 0 && canManageTournament) {
+        return {
+          disabled: saving,
+          label: "Finalizar torneio",
+          onClick: () => void transitionTournamentStatus("finished", "Torneio finalizado com sucesso."),
+        };
+      }
       return { label: "Lancar resultado", onClick: () => goToTab("jogos") };
     }
     return { disabled: saving, label: "Publicar resultado final", onClick: () => void copyTournamentPodiumSummary() };
@@ -5987,69 +6109,71 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
               </strong>
             </button>
             {canManageTournament ? (
-              <div className="tournament-organizer-workspace-map" aria-label="Areas do organizador">
-                <button
-                  type="button"
-                  className={organizerFocus === "overview" ? "active" : ""}
-                  onClick={() => {
-                    setOrganizerFocus("overview");
-                    goToTab("organizacao");
-                  }}
-                >
-                  <span>Visao geral</span>
-                  <strong>Fila e publicacao</strong>
-                </button>
-                <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("jogadores"); }}>
-                  <span>Inscricoes</span>
-                  <strong>{tournamentOverview.pendingRegistrations} pendente(s)</strong>
-                </button>
-                <button
-                  type="button"
-                  className={organizerFocus === "classes" ? "active" : ""}
-                  onClick={() => goToOrganizerSection("setup-classes")}
-                >
-                  <span>Categorias</span>
-                  <strong>{classes.length} classe(s)</strong>
-                </button>
-                <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("jogos"); }}>
-                  <span>Jogos e agenda</span>
-                  <strong>{tournamentOverview.pendingMatches} pendente(s)</strong>
-                </button>
-                {canSeeClassificationTab ? (
-                  <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("classificacao"); }}>
-                    <span>Resultados</span>
-                    <strong>Classificacao</strong>
+              <details className="tournament-advanced-navigation">
+                <summary>
+                  <span>Mais navegacao do torneio</span>
+                  <strong>Areas completas, fases e configuracao</strong>
+                </summary>
+                <div className="tournament-organizer-workspace-map" aria-label="Areas do organizador">
+                  <button
+                    type="button"
+                    className={organizerFocus === "overview" ? "active" : ""}
+                    onClick={() => {
+                      setOrganizerFocus("overview");
+                      goToTab("organizacao");
+                    }}
+                  >
+                    <span>Visao geral</span>
+                    <strong>Fila e publicacao</strong>
                   </button>
-                ) : null}
-                <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("chat"); }}>
-                  <span>Comunicacao</span>
-                  <strong>Avisos e chat</strong>
-                </button>
-                {operationalPhaseKey === "draft" ? (
+                  <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("jogadores"); }}>
+                    <span>Inscricoes</span>
+                    <strong>{tournamentOverview.pendingRegistrations} pendente(s)</strong>
+                  </button>
+                  <button
+                    type="button"
+                    className={organizerFocus === "classes" ? "active" : ""}
+                    onClick={() => goToOrganizerSection("setup-classes")}
+                  >
+                    <span>Categorias</span>
+                    <strong>{classes.length} classe(s)</strong>
+                  </button>
+                  <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("jogos"); }}>
+                    <span>Jogos e agenda</span>
+                    <strong>{tournamentOverview.pendingMatches} pendente(s)</strong>
+                  </button>
+                  {canSeeClassificationTab ? (
+                    <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("classificacao"); }}>
+                      <span>Resultados</span>
+                      <strong>Classificacao</strong>
+                    </button>
+                  ) : null}
+                  <button type="button" onClick={() => { setOrganizerFocus("overview"); goToTab("chat"); }}>
+                    <span>Comunicacao</span>
+                    <strong>Avisos e chat</strong>
+                  </button>
                   <button
                     type="button"
                     className={organizerFocus === "config" ? "active" : ""}
                     onClick={() => goToOrganizerSection("setup-basics")}
                   >
                     <span>Configuracao</span>
-                    <strong>Dados e agenda</strong>
+                    <strong>Dados, status e agenda</strong>
                   </button>
-                ) : null}
-              </div>
-            ) : null}
-            {canManageTournament ? (
-              <div className="tournament-phase-flow">
-                {TOURNAMENT_ADMIN_PHASES.map((phase) => (
-                  <button
-                    key={phase.key}
-                    className={phase.key === tournamentAdminPhase.key ? "active" : ""}
-                    onClick={() => goToTab(phase.key === tournamentAdminPhase.key ? tournamentAdminPhase.primaryTab : primaryTournamentTabForPhase(phase.key, canSeeClassificationTab))}
-                  >
-                    <span>{phase.label}</span>
-                    <small>{phase.detail}</small>
-                  </button>
-                ))}
-              </div>
+                </div>
+                <div className="tournament-phase-flow">
+                  {TOURNAMENT_ADMIN_PHASES.map((phase) => (
+                    <button
+                      key={phase.key}
+                      className={phase.key === tournamentAdminPhase.key ? "active" : ""}
+                      onClick={() => goToTab(phase.key === tournamentAdminPhase.key ? tournamentAdminPhase.primaryTab : primaryTournamentTabForPhase(phase.key, canSeeClassificationTab))}
+                    >
+                      <span>{phase.label}</span>
+                      <small>{phase.detail}</small>
+                    </button>
+                  ))}
+                </div>
+              </details>
             ) : null}
             {(canManageTournament || canManagePlayers || canManageMatches) ? (
               <TournamentOrganizerTaskRows
@@ -6143,6 +6267,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                 ) : (
                   <p>Confira classificação e resultados oficiais antes de encerrar.</p>
                 )}
+                {tournamentCompletionBlockers.length === 0 && tournament?.status !== "finished" ? (
+                  <button
+                    className="primary"
+                    type="button"
+                    onClick={() => void transitionTournamentStatus("finished", "Torneio finalizado com sucesso.")}
+                    disabled={saving}
+                  >
+                    Finalizar torneio
+                  </button>
+                ) : null}
                 {classCompletionRows.length > 0 ? (
                   <div className="class-completion-list">
                     {classCompletionRows.slice(0, 6).map((row) => (
@@ -6647,9 +6781,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                               <span>{m.done ? "Editar placar" : "Lancar placar"}</span>
                               <small>Placar, WO e limpeza</small>
                             </summary>
-                            {renderScoreFields(activeClass.data.config, m, false, (updater) => {
-                              void onUpdateGroupScoreDetail(activeClass, gi, mi, updater);
-                            })}
+                            {renderScoreFields(
+                              activeClass.data.config,
+                              m,
+                              false,
+                              (updater) => onUpdateGroupScoreDetail(activeClass, gi, mi, updater),
+                              { draftKey: confirmationKey, manual: true }
+                            )}
                             <div className="match-admin-actions">
                               <button onClick={() => void onSetGroupWalkover(activeClass, gi, mi, "a")} disabled={saving || !m.a || !m.b}>
                                 WO {m.a || "A"}
@@ -6737,9 +6875,13 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                               <span>{m.done ? "Editar placar" : "Lancar placar"}</span>
                               <small>Placar, WO e limpeza</small>
                             </summary>
-                            {renderScoreFields(activeClass.data.config, m, !m.a || !m.b, (updater) => {
-                              void onUpdateKoScoreDetail(activeClass, ri, mi, updater);
-                            })}
+                            {renderScoreFields(
+                              activeClass.data.config,
+                              m,
+                              !m.a || !m.b,
+                              (updater) => onUpdateKoScoreDetail(activeClass, ri, mi, updater),
+                              { draftKey: confirmationKey, manual: true }
+                            )}
                             <div className="match-admin-actions">
                               <button onClick={() => void onSetKoWalkover(activeClass, ri, mi, "a")} disabled={saving || !m.a || !m.b}>
                                 WO {m.a || "A"}
@@ -6803,10 +6945,49 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   })
                 : null}
               {visibleClassificationClass && Object.keys(visibleClassificationClass.data.tabelaPorGrupo).length === 0 ? (
-                <div className="home-empty-panel compact">
-                  <strong>Classificacao ainda nao publicada</strong>
-                  <span>Quando houver fase de grupos com tabela gerada, os dados aparecem aqui.</span>
-                </div>
+                tournamentIsFinished && tournamentPodiumRows.some((row) => row.key === visibleClassificationClass.key && row.champion) ? (
+                  <div className="tournament-podium-panel tournament-podium-panel--classification">
+                    <div className="tournament-podium-head">
+                      <div>
+                        <span>Encerramento</span>
+                        <h3>Resultado final da classe</h3>
+                      </div>
+                      <button onClick={() => void copyTournamentPodiumSummary()} disabled={saving}>
+                        Copiar podio
+                      </button>
+                    </div>
+                    <div className="tournament-podium-grid">
+                      {tournamentPodiumRows
+                        .filter((row) => row.key === visibleClassificationClass.key)
+                        .map((row) => (
+                          <article key={`classification-podium:${row.key}`} className={row.champion ? "ready" : ""}>
+                            <span>{row.status}</span>
+                            <strong>{row.classLabel}</strong>
+                            {row.champion ? (
+                              <>
+                                <p><b>Campeao</b>{row.champion}</p>
+                                {row.runnerUp ? <p><b>Vice</b>{row.runnerUp}</p> : null}
+                              </>
+                            ) : (
+                              <p className="subtle">Campeao a definir conforme os resultados.</p>
+                            )}
+                            <small>{row.source}</small>
+                          </article>
+                        ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="home-empty-panel compact">
+                    <strong>
+                      {visibleClassificationClass.data.knockout ? "Classificacao por grupos nao se aplica" : "Classificacao ainda nao publicada"}
+                    </strong>
+                    <span>
+                      {visibleClassificationClass.data.knockout
+                        ? "Esta classe esta em mata-mata. Use Jogos para acompanhar a chave e o podio final quando houver campeao."
+                        : "Quando houver fase de grupos com tabela gerada, os dados aparecem aqui."}
+                    </span>
+                  </div>
+                )
               ) : null}
             </section>
           ) : null}

@@ -1,0 +1,34 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T01:05:33.457Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [],
+  "resultAttempts": [],
+  "screenshots": [
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run1/01-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5173/#/auth"
+    }
+  ],
+  "tournament": null,
+  "completed": false,
+  "error": "Error: preencher email: {\"ok\":false,\"reason\":\"not-found\",\"labelPattern\":\"e-mail|email\"}\n    at must (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:249:11)\n    at async login (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:258:3)\n    at async main (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:498:5)"
+}

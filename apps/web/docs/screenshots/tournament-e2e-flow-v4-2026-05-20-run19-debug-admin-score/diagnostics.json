@@ -1,0 +1,214 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T02:49:59.693Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "id": "e52e0a04-9a86-4a05-8ba5-596f2fa8dd66",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "a7951c28-f66d-4a8b-a707-79a14855e933",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "d77fd024-a46c-482c-a186-15e67d033fa9",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "a67533a3-e75a-4c92-9672-e47412eb119a",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique",
+      "status": "approved",
+      "source": "existing"
+    }
+  ],
+  "resultAttempts": [
+    {
+      "type": "apply-submitted-result",
+      "ok": false,
+      "reason": "no-submitted-result-to-apply"
+    },
+    {
+      "ok": true,
+      "type": "admin-manual-score-draft",
+      "text": "Jogo 2 Mariana Almeida x Nicolas Henrique Pendente 2026-06-11 | 08:00-09:00 | Quadra 1 Aguardando presenca Cobrar confirmacao Lancar placar Placar, WO e limpeza Set 1 Salvar result",
+      "button": "Salvar resultado oficial"
+    },
+    {
+      "ok": true,
+      "type": "admin-manual-score",
+      "text": "Jogo 2 Mariana Almeida x Nicolas Henrique Pendente 2026-06-11 | 08:00-09:00 | Quadra 1 Aguardando presenca Cobrar confirmacao Lancar placar Placar, WO e limpeza Set 1 Salvar result",
+      "button": "Salvar resultado oficial"
+    },
+    {
+      "ok": true,
+      "type": "walkover-ui",
+      "text": "Jogo 1 Lucas Yamamoto x Mariana Almeida Pendente 2026-06-11 | 09:00-10:00 | Quadra 2 Aguardando presenca Cobrar confirmacao Lancar placar Placar, WO e limpeza Set 1 Salvar resultad",
+      "button": "WO Lucas Yamamoto"
+    },
+    {
+      "ok": false,
+      "reason": "no-pending-editable-match",
+      "cards": [
+        {
+          "buttons": [
+            "Salvar edicao do resultado",
+            "WO Lucas Yamamoto",
+            "WO Karina Queiroz",
+            "Limpar resultado"
+          ],
+          "details": 1,
+          "inputs": 2,
+          "text": "Jogo 1 Lucas Yamamoto x Karina Queiroz Finalizado Jogador 2026-06-11 | 08:00-09:00 | Quadra 2 Partida finalizada Conferir chave 6/2 Editar p"
+        },
+        {
+          "buttons": [
+            "Salvar edicao do resultado",
+            "WO Mariana Almeida",
+            "WO Nicolas Henrique",
+            "Limpar resultado"
+          ],
+          "details": 1,
+          "inputs": 2,
+          "text": "Jogo 2 Mariana Almeida x Nicolas Henrique Finalizado Manual 2026-06-11 | 08:00-09:00 | Quadra 1 Partida finalizada Conferir chave 6/2 Editar"
+        },
+        {
+          "buttons": [
+            "Salvar edicao do resultado",
+            "WO Lucas Yamamoto",
+            "WO Mariana Almeida",
+            "Limpar resultado"
+          ],
+          "details": 1,
+          "inputs": 2,
+          "text": "Jogo 1 Lucas Yamamoto x Mariana Almeida Finalizado WO 2026-06-11 | 09:00-10:00 | Quadra 2 Finalizada por WO Conferir chave WO Editar placar "
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "10-jogos-ja-gerados-continuacao",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run19-debug-admin-score/01-desktop-1366-10-jogos-ja-gerados-continuacao.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ceba1c55-70b6-489f-b428-161090682e19/organizacao"
+    },
+    {
+      "name": "11a-player-login-jogos",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run19-debug-admin-score/02-desktop-1366-11a-player-login-jogos.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ceba1c55-70b6-489f-b428-161090682e19/jogos"
+    },
+    {
+      "name": "11d-owner-after-player-result",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run19-debug-admin-score/03-desktop-1366-11d-owner-after-player-result.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ceba1c55-70b6-489f-b428-161090682e19/jogos"
+    },
+    {
+      "name": "11-jogos-antes-resultados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run19-debug-admin-score/04-desktop-1366-11-jogos-antes-resultados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ceba1c55-70b6-489f-b428-161090682e19/jogos"
+    },
+    {
+      "name": "12-jogos-com-resultados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run19-debug-admin-score/05-desktop-1366-12-jogos-com-resultados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ceba1c55-70b6-489f-b428-161090682e19/jogos"
+    },
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run19-debug-admin-score/06-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ceba1c55-70b6-489f-b428-161090682e19/organizacao"
+    }
+  ],
+  "tournament": {
+    "id": "ceba1c55-70b6-489f-b428-161090682e19",
+    "name": "QA Fluxo V4 024629",
+    "status": "live",
+    "continuedAt": "2026-05-21T02:50:09.071Z"
+  },
+  "playerResultOpen": {
+    "ok": false,
+    "reason": "no-player-result-button",
+    "text": "Voltar para competições\nCompartilhar\nTORNEIO\nQA Fluxo V4 024629\nDourados - MS | 11 de jun de 2026 | Inscrições ate 11 de jun, 23:59\n\nÁrea do jogador. Inscrição, jogos e mensagens ficam separados por aba.\n\nEm andamento\nEvento\nInscritos\nJogos\nChat\nSUA CENTRAL NO TORNEIO\nMinhas partidas\n0 PENDENTES\nVer 1 finalizada\n31\nAGENDA\nLucas Yamamoto x Karina Queiroz\nTenis / Classe A - Semifinal\n6/2\n2026-06-11 | 08:00-09:00 | Quadra 2\nPartida finalizada\nConferir resultado\nEnviado por 1 lado.\nJOGOS DA CLASSE\nTenis / Classe A\nExportar chave\nSemifinal - Jogo 1\nLucas Yamamoto x Karina Queiroz\n2026-06-11 | 08:00-09:00 | Quadra 2\n6/2\nSemifinal - Jogo 2\nMariana Almeida x Nicolas Henrique\n2026-06-11 | 08:00-09:00 | Quadra 1\nPendente\nAGENDA DO TORNEIO\nPor quadra\nQuadra 1\n1 jogo\n2026-06-11 08:00-09:00\nTenis / Classe A | Semifinal (Semi)\nMariana Almeida x Nicolas Henrique\nQuadra 2\n2 jogos\n2026-06-11 08:00-09:00\nTenis / Classe A | Semifinal (Semi)\nLucas Yamamoto x Karina Queiroz\n2026-06-11 09:00-10:00\nTenis / Classe A | Final (Final)\nA definir x A definir\nVISAO GERAL\nChave da classe\n\nTenis / Classe A\n\nSemifinal\n2 jogos\nJogo 1\nLucas Yamamoto\nx\nKarina Queiroz\nFinalizado\nJogador\n2026-06-11 | 08:00-09:00 | Quadra 2\nPartida finalizada\nConferir resultado\n6/2\nJogo 2\nMariana Almeida\nx\nNicolas Henrique\nPendente\n2026-06-11 | 08:00-09:00 | Quadra 1\nAguardando presenca\nConfirmar presenca\nFinal\n1 jogo\nJogo 1\nLucas Yamamoto\nx\nA definir\nPendente\n2026-06-11 | 09:00-10:00 | Quadra 2\nAguardando presenca\nConfirmar presenca\nATP\nCompetições\nJOGAR\nInicio\nJogar\nCompetir\nAgenda\nMINHA ROTINA\nAulas\nPagamentos\nCONTA\nPerfil"
+  },
+  "completed": false,
+  "error": "Error: CTA Finalizar torneio indisponivel: {\"ok\":false,\"reason\":\"not-found\",\"pattern\":\"Finalizar torneio\",\"texts\":[\"Resetar sorteio/partidas\",\"Reset total\",\"Excluir torneio\",\"Restore de backup\",\"PRONTA Tenis / Classe A 3/3 jogos finalizados\",\"Exportar chave da classe\",\"Copiar link\",\"Link de inscricao\",\"WhatsApp\",\"Copiar publicacao\",\"Exportar arte PNG\",\"WHATSAPP\",\"Exportar PNG\",\"Copiar agenda\",\"Copiar podio\",\"Podio\",\"Jogos\",\"Chat\",\"Organizacao\",\"\",\"Hoje\",\"Reservas\",\"Aulas\",\"Clientes\",\"Financeiro\",\"Cantina\",\"Torneios\",\"Ligas\",\"Equipe\",\"Ajustes\"]}\n    at finishTournamentThroughUi (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:651:13)\n    at async main (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:737:5)"
+}

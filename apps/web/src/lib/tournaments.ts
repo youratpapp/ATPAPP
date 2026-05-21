@@ -1157,6 +1157,68 @@ export async function loadTournamentResultSubmissions(tournamentId: string): Pro
   return ((data ?? []) as TournamentResultSubmissionRow[]).map(resultSubmissionRowToModel);
 }
 
+function normalizeResultScoreText(scoreText: string): string {
+  return scoreText.trim().replace(/\s+/g, "").toLowerCase();
+}
+
+function isTournamentResultRpcAmbiguity(error: unknown): boolean {
+  const message = error && typeof error === "object" && "message" in error ? String((error as { message?: unknown }).message) : String(error ?? "");
+  return /column reference "tournament_id" is ambiguous/i.test(message);
+}
+
+async function submitTournamentMatchResultDirect(input: {
+  tournamentId: string;
+  classKey: string;
+  classLabel: string;
+  phaseKey: string;
+  phaseLabel: string;
+  matchIndex: number;
+  side: "a" | "b";
+  matchTitle: string;
+  scoreText: string;
+}): Promise<TournamentMatchResultSubmission[]> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const userRes = await supabase.auth.getUser();
+  const userId = userRes.data.user?.id;
+  if (userRes.error || !userId) throw new Error(userRes.error?.message || "Usuario nao autenticado.");
+
+  const normalizedScore = normalizeResultScoreText(input.scoreText);
+  if (!normalizedScore) throw new Error("Placar vazio.");
+
+  const payload = {
+    tournament_id: input.tournamentId,
+    submitted_by: userId,
+    class_key: input.classKey.trim(),
+    class_label: input.classLabel.trim(),
+    phase_key: input.phaseKey.trim(),
+    phase_label: input.phaseLabel.trim(),
+    match_index: Math.max(0, input.matchIndex),
+    side: input.side === "b" ? "b" : "a",
+    match_title: input.matchTitle.trim(),
+    score_text: input.scoreText.trim(),
+    normalized_score: normalizedScore,
+    status: "pending",
+  };
+
+  const { error } = await supabase.from(TABLE_RESULT_SUBMISSIONS).insert(payload);
+  if (error && !/duplicate key|uq_tournament_result_submission_user_match/i.test(error.message)) {
+    throw new Error(error.message);
+  }
+
+  const { data, error: selectError } = await supabase
+    .from(TABLE_RESULT_SUBMISSIONS)
+    .select(
+      "id,tournament_id,submitted_by,class_key,class_label,phase_key,phase_label,match_index,side,match_title,score_text,normalized_score,status,created_at,updated_at"
+    )
+    .eq("tournament_id", input.tournamentId)
+    .eq("class_key", payload.class_key)
+    .eq("phase_key", payload.phase_key)
+    .eq("match_index", payload.match_index)
+    .order("updated_at", { ascending: false });
+  if (selectError) throw new Error(selectError.message);
+  return ((data ?? []) as TournamentResultSubmissionRow[]).map(resultSubmissionRowToModel);
+}
+
 export async function submitTournamentMatchResult(input: {
   tournamentId: string;
   classKey: string;
@@ -1180,7 +1242,12 @@ export async function submitTournamentMatchResult(input: {
     p_match_title: input.matchTitle,
     p_score_text: input.scoreText,
   });
-  if (error) throw new Error(error.message);
+  if (error) {
+    if (isTournamentResultRpcAmbiguity(error)) {
+      return submitTournamentMatchResultDirect(input);
+    }
+    throw new Error(error.message);
+  }
   return ((data ?? []) as TournamentResultSubmissionRow[]).map(resultSubmissionRowToModel);
 }
 

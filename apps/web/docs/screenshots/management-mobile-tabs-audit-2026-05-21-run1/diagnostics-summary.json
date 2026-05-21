@@ -1,0 +1,86 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-390-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "academy-agenda-new",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "mobile-390-academy-agenda-new.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-430-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "academy-agenda-new",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "mobile-430-academy-agenda-new.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-1366-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "academy-agenda-new",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "desktop-1366-academy-agenda-new.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-wide-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "academy-agenda-new",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "desktop-wide-academy-agenda-new.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-management.png",
+    "events": []
+  }
+]

@@ -1,4 +1,4 @@
-# Execution Queue
+﻿# Execution Queue
 
 Fonte principal: `CURRENT_PRODUCT_STATE.md`.
 
@@ -43,6 +43,429 @@ Continue para o proximo item da Execution Queue.
 - Se surgir problema novo, registrar como item novo com prioridade.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
+
+## [x] Sprint concluido - FLOW-V4 Academia E2E e Fluxo Real do Local
+
+Status: `[x]` auditoria concluida em 2026-05-21, com bloqueios registrados para sprint de correcao.
+
+Fonte primaria:
+
+- `docs/APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `docs/ACADEMY_E2E_FLOW_AUDIT_2026_05_21.md`
+
+Evidencias finais:
+
+- `docs/screenshots/academy-e2e-flow-v1-2026-05-21-run3/`
+- Academia final: `QA Academia Fluxo 0521052052` (`49709592-173c-49c6-aa22-bacb6ec0b31b`)
+- Diagnostico: `completed: true`, `failedRequests: []`, `pageErrors: []`
+- Console com erro funcional esperado/documentado em chamada: `column reference "id" is ambiguous`
+
+### [x] FLOW-V4-ACADEMY-E2E - Criar academia, rodar fluxos e documentar friccoes
+
+Objetivo:
+
+- Criar academia real com quadras, regra de reserva, professores, turmas e alunos seed.
+- Matricular alunos por logins seed.
+- Criar reserva de quadra por jogador seed.
+- Criar lista de espera.
+- Confirmar reserva pela gestao.
+- Ativar matricula pendente pela gestao.
+- Abrir chamada e tentar registrar presenca.
+- Validar aluno em Home, Agenda, Minhas Aulas, Meus Pagamentos e local publico.
+- Validar professor, recepcao e financeiro com fallback seed quando convite novo falhar.
+- Capturar screenshots e console por fase.
+
+Arquivos alterados/criados:
+
+- `scripts/academy-e2e-flow-audit.mjs`
+- `docs/ACADEMY_E2E_FLOW_AUDIT_2026_05_21.md`
+- `supabase/migrations/0098_fix_academy_staff_invite_attendance_ambiguity.sql`
+- `docs/EXECUTION_QUEUE.md`
+
+O que passou:
+
+- Academia, quadras, regra, professores, turmas, contratos e matriculas foram criados.
+- Reserva pendente apareceu no workspace e foi confirmada pela UI.
+- Lista de espera apareceu no contexto de agenda.
+- Matricula pendente foi ativada pela UI.
+- Aluno viu aulas novas em `/agenda` e `/minhas-aulas`.
+- Reserva confirmada apareceu em `/minhas-reservas`.
+- Pagamentos pessoais continuaram separados do financeiro do local.
+
+Bloqueios encontrados:
+
+- `[!] ACADEMY-DB-01` `app_accept_place_staff_invite` quebra no banco remoto com `column reference "place_id" is ambiguous`; impede professor/recepcao/financeiro de aceitar convite em academia nova.
+- `[!] ACADEMY-DB-02` `app_mark_academy_attendance` quebra no banco remoto com `column reference "id" is ambiguous`; impede persistir chamada.
+
+
+Pendencias novas:
+
+- `[!] ACADEMY-DB-01` Aplicar `supabase/migrations/0098_fix_academy_staff_invite_attendance_ambiguity.sql` no banco remoto e rerodar academia E2E sem fallback. Bloqueado no ambiente atual: nao ha Supabase CLI, `DATABASE_URL` ou service role; apenas anon key.
+- `[!] ACADEMY-DB-02` Revalidar chamada/presenca apos aplicar a mesma migration remota. Bloqueado pelo mesmo motivo de acesso ao banco remoto.
+- `[ ] ACADEMY-UX-01` Reestruturar selecao de local/academia para usuarios com multiplos locais; evitar seletor longo dentro da primeira dobra do workspace.
+- `[ ] ACADEMY-UX-02` Reduzir tiers no mobile da academia: header/local/modulo/tabs/cards antes da tarefa real.
+- `[x] ACADEMY-UX-03` Em `Nova reserva`, formulario deve vir antes da lista de espera; corrigido em `CROSS-V4-E2E-01`.
+- `[x] ACADEMY-UX-04` `/locais/:placeId/reservar` deve abrir/focar o fluxo de reserva; corrigido em `CROSS-V4-E2E-01`.
+- `[x] ACADEMY-UX-05` Definir e corrigir financeiro para produto `academy`; modulo financeiro liberado para academias em `CROSS-V4-E2E-01`.
+- `[x] ACADEMY-UX-06` Reduzir agregacao excessiva no `Trabalho Hoje` do owner com muitos locais/eventos; corrigido com unidade em foco em `CROSS-V4-E2E-02`.
+
+## [x] Sprint concluido - CROSS-V4 Fluxos transversais, papeis e correcoes rapidas
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte primaria:
+
+- `docs/APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `docs/CROSS_APP_FLOW_AUDIT_2026_05_21.md`
+
+Evidencias:
+
+- `docs/screenshots/cross-app-flow-audit-2026-05-21-run1/`
+- `docs/screenshots/cross-app-role-audit-2026-05-21-professor/`
+- `docs/screenshots/cross-app-role-audit-2026-05-21-recepcao/`
+- `docs/screenshots/cross-app-role-audit-2026-05-21-financeiro/`
+- `docs/screenshots/cross-app-role-audit-2026-05-21-caixa/`
+
+### [x] CROSS-V4-E2E-01 - Validar Player App, Management OS e papeis de trabalho
+
+Objetivo:
+
+- Rodar screenshots e console nas principais rotas de jogador, agenda pessoal, locais, competicoes, perfil, ranking, gestao, academia, reservas e financeiro.
+- Validar professor, recepcao, financeiro e caixa com logins seed.
+- Corrigir problemas de fluxo que surgiram em academia e nas rotas publicas.
+
+Arquivos alterados/criados:
+
+- `src/lib/place-management.ts`
+- `src/pages/PlacePublicPage.tsx`
+- `src/pages/PlacesPage.tsx`
+- `docs/CROSS_APP_FLOW_AUDIT_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+O que foi corrigido:
+
+- Plano `academy` agora libera modulo `Financeiro`, preservando mensalidades/contratos sem misturar com financeiro pessoal.
+- `/locais/:placeId/reservar` e aliases relacionados agora abrem a intencao publica de reserva.
+- `Agenda > Nova reserva` prioriza o formulario de criacao; fila operacional/lista de espera nao aparece mais antes da tarefa principal.
+
+QA realizado:
+
+- `npx.cmd tsc -b --pretty false`
+- Owner/player: mobile 390, mobile 430, desktop 1366, desktop amplo.
+- Professor/recepcao/financeiro/caixa: mobile 390 e desktop 1366.
+- Console/rede: 0 erros ou warnings nas rotas auditadas.
+
+Resultado por papel:
+
+- Professor: ve Academia; tentativa de Financeiro redireciona para Academia.
+- Recepcao: ve Reservas/Clientes/Academia; tentativa de Financeiro redireciona para Agenda.
+- Financeiro: ve Financeiro; tentativa de Agenda redireciona para Financeiro.
+- Caixa: ve Cantina; tentativa de Financeiro redireciona para Cantina.
+
+### [x] CROSS-V4-E2E-02 - Foco por unidade no Trabalho Hoje do gestor
+
+Objetivo:
+
+- Corrigir a primeira dobra de `/gestao` para owner/manager com muitos locais, evitando uma fila global inflada e pouco acionavel.
+
+Arquivos alterados/criados:
+
+- `src/pages/ManagementHubPage.tsx`
+- `src/App.css`
+- `docs/MANAGEMENT_FOCUS_AUDIT_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+O que foi corrigido:
+
+- `Trabalho Hoje` agora usa uma unidade em foco para gestor.
+- Quando ha mais de uma unidade, aparece seletor `Unidade em foco`.
+- Cards de pendencias criticas, reservas, aulas, financeiro, clientes e estoque passaram a usar apenas a unidade ativa.
+- Totais globais continuam em contexto secundario/listagem, sem competir com a tarefa principal.
+
+QA realizado:
+
+- `npx.cmd tsc -b --pretty false`
+- `docs/screenshots/management-focus-audit-2026-05-21-run1/`
+- Viewports: mobile 390, mobile 430, desktop 1366, desktop amplo.
+- Rotas: `/gestao`, dashboard da academia QA e rota publica de reserva.
+- Console/rede: 0 eventos nos diagnostics.
+
+### [x] CROSS-V4-E2E-03 - Action rail publica do local no mobile
+
+Objetivo:
+
+- Corrigir a rail de acoes publicas do local em mobile para que reserva, aulas, jogos e sobre aparecam como escolhas claras de fluxo.
+
+Arquivos alterados/criados:
+
+- `src/App.css`
+- `docs/PUBLIC_PLACE_ACTION_RAIL_AUDIT_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+O que foi corrigido:
+
+- `.place-public-action-rail` deixou de se comportar como carrossel horizontal cortado em mobile.
+- A rail virou grade compacta de duas colunas, com fallback de uma coluna em telas muito estreitas.
+- Textos dos cards ganharam quebra segura e altura mais previsivel.
+
+QA realizado:
+
+- `npx.cmd tsc -b --pretty false`
+- `docs/screenshots/public-place-action-rail-audit-2026-05-21-run1/`
+- Viewports: mobile 390, mobile 430, desktop 1366, desktop amplo.
+- Rotas: local publico, reserva publica e aulas publicas da academia QA.
+- Console/rede: 0 eventos nos diagnostics.
+
+### [x] CROSS-V4-E2E-04 - Seletor multi-local dentro do workspace
+
+Objetivo:
+
+- Reduzir confusao de usuarios com muitos locais, mantendo `/gestao` como entrada de foco e deixando a troca de unidade dentro do workspace sob demanda.
+
+Arquivos alterados/criados:
+
+- `src/components/place/PlaceAdminShell.tsx`
+- `src/App.css`
+- `docs/MULTILOCAL_SWITCHER_AUDIT_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+O que foi corrigido:
+
+- O seletor longo de `Local ativo` no shell virou disclosure compacto de `Unidade ativa`.
+- A troca de unidade segue disponivel em `Trocar unidade`, preservando o select e as rotas.
+- Cards brancos remanescentes em `Sinais de suporte` e `Relatorios do local` foram convertidos para dark premium.
+
+QA realizado:
+
+- `npx.cmd tsc -b --pretty false`
+- `docs/screenshots/multilocal-switcher-audit-2026-05-21-run3/`
+- Viewports: mobile 390, mobile 430, desktop 1366, desktop amplo.
+- Rotas: `/gestao`, dashboard da academia QA e `Agenda > Nova reserva`.
+- Console/rede: 0 eventos nos diagnostics.
+
+### [x] CROSS-V4-E2E-05 - Densidade de menus no workspace mobile
+
+Objetivo:
+
+- Remover uma camada duplicada de menu no workspace de local mobile e reduzir altura do header antes da operacao.
+
+Arquivos alterados/criados:
+
+- `src/App.css`
+- `docs/MANAGEMENT_MOBILE_HEADER_TABS_AUDIT_2026_05_21.md`
+- `docs/EXECUTION_QUEUE.md`
+
+O que foi corrigido:
+
+- `.place-management-tabs` fica oculta no mobile, evitando duplicidade com o bottom nav de trabalho.
+- O contexto `Modulo ativo` continua visivel.
+- Header do Management OS recebeu ajuste responsivo de tamanho/gap para consumir menos primeira dobra.
+
+QA realizado:
+
+- `npx.cmd tsc -b --pretty false`
+- `docs/screenshots/management-mobile-header-audit-2026-05-21-run1/`
+- Viewports: mobile 390, mobile 430, desktop 1366, desktop amplo.
+- Rotas: `/gestao`, dashboard da academia QA e `Agenda > Nova reserva`.
+- Console/rede: 0 eventos nos diagnostics.
+
+Pendencias novas:
+
+- `[x] CROSS-UX-01` Reduzir agregacao do `Trabalho Hoje` para owner com muitos locais/competicoes; foco por unidade implementado.
+- `[x] CROSS-UX-02` Reavaliar action rail da pagina publica do local no mobile; corrigida com grade compacta em duas colunas.
+- `[x] CROSS-UX-03` Reestruturar selecao de unidade/local para usuarios multi-local antes de entrar no workspace, evitando seletor longo dentro do shell.
+- `[x] MANAGEMENT-UX-01` Reduzir densidade das abas internas de modulo no mobile quando a unidade tem muitos modulos; tabs internas ocultas no mobile e bottom nav mantido como troca principal.
+
+## [x] Sprint concluido - FLOW-V4 Liga E2E e Operacao Real
+
+Status: `[x]` concluido em 2026-05-21
+
+Fonte primaria:
+
+- `docs/APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `docs/APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+- `docs/LEAGUE_E2E_FLOW_AUDIT_2026_05_21.md`
+
+Evidencias finais:
+
+- `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/`
+- Liga final: `QA Liga V4 044652` (`d5c32395-b466-4bb2-a97e-3b648da5c8ca`)
+- Diagnostico: `completed: true`, `failedRequests: []`, `pageErrors: []`
+
+### [x] FLOW-V4-LIGA-E2E - Rodar liga do inicio ao fim e corrigir bloqueios
+
+Objetivo:
+
+- Criar uma liga real pelo fluxo de UI.
+- Gerar pedidos de inscricao com jogadores seed.
+- Aprovar inscricoes pela UI.
+- Gerar rodada pela UI.
+- Enviar resultado com login de jogador.
+- Confirmar resultado com login do adversario.
+- Resolver partida restante como admin.
+- Aplicar sobe/desce.
+- Revisar owner e participante em mobile e desktop.
+
+Arquivos alterados:
+
+- `scripts/league-e2e-flow-audit.mjs`
+- `src/lib/leagues.ts`
+- `src/pages/LeagueDetailsPage.tsx`
+- `src/App.css`
+- `supabase/migrations/0097_fix_league_generate_round_class_id_ambiguity.sql`
+- `docs/LEAGUE_E2E_FLOW_AUDIT_2026_05_21.md`
+- `docs/APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+- `docs/EXECUTION_QUEUE.md`
+
+O que foi corrigido:
+
+- Auditor de liga agora executa fluxo completo com screenshots por fase e console/rede.
+- Corrigida incompatibilidade do script com schema atual de `league_classes`.
+- Corrigida aprovacao automatizada para aguardar botoes habilitados e conferir pendencias no banco.
+- Criada migration fonte para corrigir `app_generate_next_league_round` com erro `column reference "class_id" is ambiguous`.
+- `generateNextLeagueRound` ganhou fallback autenticado/RLS enquanto a migration remota nao estiver aplicada.
+- Liga final/historico nao mostra mais acao indevida de `Gerar proxima rodada` quando o total planejado ja foi atingido.
+- Sala de partida deixou de sugerir placeholders `1`/`2` e usa `0`.
+- Cockpit mobile da liga passou a priorizar CTA antes de metricas/blocos secundarios.
+- Tabs e nav de liga no mobile deixaram de depender de carrossel cortado.
+- Owner mobile recebeu hero mais compacto.
+- Badge visual mostra `Temporada finalizada` quando a temporada selecionada terminou.
+- `league_rounds.status` passa para `finished` apos aplicar sobe/desce.
+
+QA realizado:
+
+- `npx.cmd tsc -b --pretty false`
+- `node scripts/league-e2e-flow-audit.mjs`
+- Viewports: desktop 1366, desktop amplo, mobile 390, mobile 430.
+- Personas: owner/admin, jogador que envia resultado, adversario que confirma, participante em final/historico.
+
+Pendencias novas:
+
+- `[ ] LEAGUE-DB-01` Aplicar `supabase/migrations/0097_fix_league_generate_round_class_id_ambiguity.sql` no banco remoto e depois avaliar remocao do fallback.
+- `[ ] LEAGUE-UX-01` Definir fluxo operacional de horario/local de partida da liga; hoje a UI mostra `Horario a combinar` e `Local pendente`.
+- `[ ] LEAGUE-UX-02` Reduzir ainda mais a primeira dobra mobile do participante, possivelmente transformando nav+cockpit em uma agenda compacta da rodada.
+
+## [>] Sprint atual - FLOW-V4 Torneio E2E e Cockpit Operacional
+
+Status: `[>]` prioridade atual criada em 2026-05-20
+
+Fonte primaria:
+
+- `docs/APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `docs/NAVIGATION_WORKSPACE_RESTRUCTURE_V4.md`
+- `docs/TOURNAMENT_E2E_FLOW_AUDIT_2026_05_20.md`
+
+Contexto:
+
+- A auditoria criou e operou o torneio `QA Fluxo V4 010927` (`cd01cf82-31e3-4682-a64e-7f4db9d75387`).
+- O fluxo passou por criacao, inscricoes seed, aprovacao, encerramento, geracao de jogos, tentativa de envio de resultado pelo jogador e tentativa de lancamento/finalizacao pelo admin.
+- O teste provou que a dor principal do torneio e fluxo: ha muitos tiers de menu e a acao principal da fase fica misturada com configuracao, pagina publica e sala de jogador.
+
+Evidencias:
+
+- `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run3/`
+- `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run5-continue/`
+- `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run6-continue-live/`
+- `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run7-admin-finish/`
+
+### [~] FLOW-V4-TORNEIO-E2E - Corrigir cockpit de torneio por fluxo real
+
+Objetivo:
+
+- Fazer o torneio ser operado de ponta a ponta com caminho claro para jogador e organizador.
+- Separar jogador participante de owner/staff sem remover rotas antigas.
+- Fazer a primeira dobra responder sempre: `o que falta resolver agora?`
+
+Arquivos provaveis:
+
+- `src/pages/TournamentPage.tsx`
+- `src/lib/tournaments.ts`
+- `src/App.tsx`
+- `supabase/migrations/*tournament*result*`
+- `docs/EXECUTION_QUEUE.md`
+
+O que alterar:
+
+- Corrigir RPC de envio de resultado pelo jogador (`app_submit_tournament_match_result`).
+- Criar CTA de fase para `Encerrar inscricoes`, `Gerar jogos`, `Publicar jogos`, `Lancar resultado`, `Finalizar torneio`.
+- Mudar o pos-criacao de torneio para cockpit de inscricoes/publicacao, nao `/jogos` vazio.
+- Refazer fetch de inscricoes ao entrar na aba, ao voltar foco e apos retorno de link externo.
+- Trocar autosave de placar por salvamento explicito e validado por partida.
+- Reduzir tiers da area de organizacao.
+- Separar configuracao estrutural de operacao diaria.
+
+O que nao alterar:
+
+- Nao alterar backend estrutural fora do bug de RPC/funcao ja existente.
+- Nao relaxar permissoes.
+- Nao quebrar `/join`, `/inscricao`, `/t` ou links publicos.
+- Nao remover funcoes de staff, WO, limpar resultado, revisao de envios ou configuracao.
+
+Permissoes envolvidas:
+
+- Owner: ve tudo.
+- Organizer: ve operacao ampla conforme permissao.
+- Scorekeeper: ve partidas/resultados.
+- Checkin: ve inscritos/credenciamento.
+- Media: ve comunicacao/publicacao.
+- Jogador: ve apenas participacao, jogo, classificacao, chat e acoes pessoais.
+
+Rotas envolvidas:
+
+- `/eventos`
+- `/eventos/torneios`
+- `/eventos/:tournamentId`
+- `/eventos/:tournamentId/jogos`
+- `/eventos/:tournamentId/classificacao`
+- `/eventos/:tournamentId/organizacao`
+- `/eventos/:tournamentId/jogadores`
+- `/eventos/:tournamentId/chat`
+- `/inscricao/:tournamentId`
+- `/join`
+- `/t/:tournamentId`
+
+CritÃ©rios de aceite:
+
+- Owner cria torneio, recebe inscricoes, aprova, encerra, gera jogos, lanca resultados e finaliza sem procurar status escondido.
+- Jogador inscrito abre partida e envia resultado sem erro de console.
+- Admin ve resultado enviado e consegue aplicar como oficial.
+- Placar incompleto nao mostra sucesso de resultado oficial.
+- Final com vencedores aparece automaticamente apos semifinais.
+- Finalizacao aparece apenas quando todos os jogos necessarios estao resolvidos.
+- Mobile 390 e desktop 1366 mantem CTA primario visivel.
+
+QA obrigatorio:
+
+- Owner desktop 1366: fluxo completo.
+- Owner mobile 390: aprovar e gerar jogos.
+- Jogador desktop 1366: enviar resultado.
+- Jogador mobile 390: abrir partida e enviar resultado.
+- Scorekeeper/staff: lancar resultado sem acesso a configuracao owner-only.
+
+Riscos:
+
+- `TournamentPage.tsx` e monolitica; mudancas grandes podem quebrar leitura publica.
+- Ha migration de correcao de ambiguidade (`0090_fix_tournament_result_submission_ambiguity.sql`), mas o ambiente auditado ainda retornou erro. Validar se a migration esta aplicada ou se a funcao continua ambigua no banco remoto.
+- Status operacional existe tanto em `tournaments.status` quanto em `data.tournamentStatus`; nao criar terceira fonte de verdade.
+
+Rollback:
+
+- Preservar rotas antigas como wrappers.
+- Manter select de status em configuracao avancada enquanto os CTAs de fase amadurecem.
+- Se o novo cockpit falhar, fallback para as abas atuais deve continuar acessivel.
+
+Sprint 2026-05-20:
+
+- Corrigido bloqueio funcional do envio de resultado pelo jogador em `src/lib/tournaments.ts` com fallback para o erro remoto `column reference "tournament_id" is ambiguous`.
+- Criada migration `supabase/migrations/0092_fix_tournament_result_submission_rpc_return.sql` para corrigir a assinatura/retorno do RPC no banco.
+- `TournamentPage.tsx` voltou a expor `Configuracao` para owner/staff em torneio live/finalizado, evitando sumico de status/ajustes owner-only.
+- Torneio QA `QA Fluxo V4 010927` foi concluido: duas semifinais finalizadas, final finalizada, `status = finished`.
+- Evidencia final: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run10-final-match/`.
+
+Pendencia ainda aberta:
+
+- Trocar lancamento manual de placar por admin de autosave por input para acao explicita `Salvar resultado oficial`.
+- Criar CTA operacional de fase para finalizar torneio sem depender do campo `Status`.
 
 ## [>] Sprint atual - Auditoria profunda visual, rotas e console
 
@@ -199,10 +622,10 @@ Aceite:
 
 Sprint 2026-05-19:
 
-- Aplicada camada visual dark para formulários, linhas de inscrição, botões secundários, KPIs e lista de participantes em competição.
+- Aplicada camada visual dark para formulÃ¡rios, linhas de inscriÃ§Ã£o, botÃµes secundÃ¡rios, KPIs e lista de participantes em competiÃ§Ã£o.
 - Ainda precisa de uma segunda rodada estrutural para trocar totalmente listas/tabelas por cards dedicados.
-- Segunda rodada aplicada em `App.css`: filtros, campos, inscrições, botões de pagamento/aprovação e cards passaram para superfície dark.
-- Recaptura `sprint-p0-tournament-visual-check-4-2026-05-19` removeu os principais blocos brancos; pendente reduzir a lista longa em experiência agrupada.
+- Segunda rodada aplicada em `App.css`: filtros, campos, inscriÃ§Ãµes, botÃµes de pagamento/aprovaÃ§Ã£o e cards passaram para superfÃ­cie dark.
+- Recaptura `sprint-p0-tournament-visual-check-4-2026-05-19` removeu os principais blocos brancos; pendente reduzir a lista longa em experiÃªncia agrupada.
 
 ### [x] P0-MOBILE-02 - Redesenhar `tournament-games` mobile
 
@@ -225,10 +648,10 @@ Aceite:
 
 Sprint 2026-05-19:
 
-- Aplicada camada visual dark para match cards, disclosure de placar, inputs de placar, status, resumo e ações.
-- Recaptura mostra melhora técnica/contraste, mas ainda exige sprint estrutural para reduzir a densidade da operação de placar.
-- Segunda rodada aplicada em `App.css`: seletor de classe, tabs, nomes dos jogadores, BYE, status e placar ganharam superfície dark também fora do shell principal.
-- Build aprovado e console limpo na recaptura mobile/web; pendente compactar a operação de placar em cards com menus/accordions menos técnicos.
+- Aplicada camada visual dark para match cards, disclosure de placar, inputs de placar, status, resumo e aÃ§Ãµes.
+- Recaptura mostra melhora tÃ©cnica/contraste, mas ainda exige sprint estrutural para reduzir a densidade da operaÃ§Ã£o de placar.
+- Segunda rodada aplicada em `App.css`: seletor de classe, tabs, nomes dos jogadores, BYE, status e placar ganharam superfÃ­cie dark tambÃ©m fora do shell principal.
+- Build aprovado e console limpo na recaptura mobile/web; pendente compactar a operaÃ§Ã£o de placar em cards com menus/accordions menos tÃ©cnicos.
 
 ### [x] P0-MOBILE-03 - Redesenhar `places-match` mobile
 
@@ -250,9 +673,9 @@ Aceite:
 
 Sprint 2026-05-19:
 
-- Cards de chamadas receberam reforço dark, largura segura e ações empilhadas no mobile.
+- Cards de chamadas receberam reforÃ§o dark, largura segura e aÃ§Ãµes empilhadas no mobile.
 - Console zerado para jogador puro e gestor no recorte validado.
-- Ainda precisa simplificar repetição de botões verdes e hierarquia dos filtros.
+- Ainda precisa simplificar repetiÃ§Ã£o de botÃµes verdes e hierarquia dos filtros.
 
 ### [x] P0-MOBILE-04 - Redesenhar `management` mobile
 
@@ -274,8 +697,8 @@ Aceite:
 
 Sprint 2026-05-19:
 
-- Aplicada camada responsiva em KPIs, linhas de prioridade, ações, módulos e cards de gestão.
-- Ainda precisa de sprint de composição para transformar a primeira dobra em cockpit mais editorial.
+- Aplicada camada responsiva em KPIs, linhas de prioridade, aÃ§Ãµes, mÃ³dulos e cards de gestÃ£o.
+- Ainda precisa de sprint de composiÃ§Ã£o para transformar a primeira dobra em cockpit mais editorial.
 
 ### [x] P1-DESKTOP-01 - Expandir Home desktop para cockpit premium
 
@@ -343,7 +766,7 @@ Aceite:
 
 Problema:
 
-- O clique `Descobrir torneios e ligas` muda query, mas a tela continua com H1 generico `Competições`.
+- O clique `Descobrir torneios e ligas` muda query, mas a tela continua com H1 generico `CompetiÃ§Ãµes`.
 
 Acao:
 
@@ -484,7 +907,7 @@ Objetivo:
 
 - reorganizar o frontend inteiro para o DNA premium dark definido no playbook;
 - contemplar todas as areas do app: Jogador, Trabalho, Login, Cadastro, paginas publicas, competicoes, reservas, locais, aulas, perfil, ranking, mensagens, gestao e estados auxiliares;
-- aproveitar as funcoes existentes sem reestruturação de backend;
+- aproveitar as funcoes existentes sem reestruturaÃ§Ã£o de backend;
 - mexer em pontos estruturais somente quando nao houver como aproveitar a UI atual com qualidade.
 
 Nao fazer:
@@ -500,8 +923,8 @@ Fila macro:
 2. `[x]` PDARK-01 - Shell global, navegacao e contexto Jogador/Trabalho.
 3. `[x]` PDARK-02 - Login, cadastro e estados de entrada.
 4. `[x]` PDARK-03 - Home Jogador premium.
-5. `[x]` PDARK-04 - Competições hub, torneios, ligas e rankings.
-6. `[x]` PDARK-05 - Detalhe de torneio, inscrição e convite.
+5. `[x]` PDARK-04 - CompetiÃ§Ãµes hub, torneios, ligas e rankings.
+6. `[x]` PDARK-05 - Detalhe de torneio, inscriÃ§Ã£o e convite.
 7. `[x]` PDARK-06 - Liga, rodada, chat e matchroom.
 8. `[x]` PDARK-07 - Areas pessoais: reservas, partidas, aulas e pagamentos.
 9. `[x]` PDARK-08 - Locais, detalhe do clube e reservar quadra.
@@ -621,7 +1044,7 @@ Entrega sprint 7 em 2026-05-19:
 
 1. `PDARK-08` concluido: `/locais`, discovery de quadras, discovery de aulas, jogos abertos e detalhe publico do clube receberam camada premium dark.
 2. Painel de descoberta ficou legivel, com tiles brancos premium sobre base deep navy e imagem de quadra/clube.
-3. Jogos abertos foram convertidos para cards dark/glass com CTAs verdes e detalhes secundários.
+3. Jogos abertos foram convertidos para cards dark/glass com CTAs verdes e detalhes secundÃ¡rios.
 4. Evidencias atualizadas: `desktop-places-overview.png`, `mobile-places-overview.png`, `desktop-places-match.png`, `mobile-places-match.png`, `desktop-places-lessons.png`.
 
 Validacao sprint 7:
@@ -808,7 +1231,7 @@ Proximo item:
 Entrega sprint pagina-a-pagina em 2026-05-19:
 
 1. Home jogador foi refinada para o mesmo DNA da referencia: hero escuro cinematografico, atalhos compactos, indicadores acionaveis e cards de proximos passos sem sobreposicao no mobile.
-2. Competições hub foi reorganizada com base no padrao da referencia desktop: hero + KPIs + atalhos + paineis funcionais, com mobile contido em grids verticais em vez de carrossel cortado.
+2. CompetiÃ§Ãµes hub foi reorganizada com base no padrao da referencia desktop: hero + KPIs + atalhos + paineis funcionais, com mobile contido em grids verticais em vez de carrossel cortado.
 3. Rotas internas de Torneios/Ligas, Ranking, Locais, Reservas, Perfil e Gestao receberam camada transversal para manter fundo deep navy, superficies glass, texto legivel e CTAs coerentes.
 4. Estados claros remanescentes foram neutralizados em botoes secundarios, alternadores Jogador/Trabalho, links de trabalho e acoes de descoberta, preservando verde apenas para CTAs primarios/ativos.
 5. Bottom nav, sidebar e shell continuam usando as mesmas rotas e funcoes, mas com contraste, hierarquia e espacamento alinhados ao app premium dark.
@@ -913,7 +1336,7 @@ Status: `[x]` concluido
 Evidencia:
 
 - `mobile-my-payments.png` mostra `canceling statement due to statement timeout`.
-- Perfil puro tambem expõe erro cru em reservas/pagamentos.
+- Perfil puro tambem expÃµe erro cru em reservas/pagamentos.
 
 Acoes:
 
@@ -1027,8 +1450,8 @@ Criterios de aceite:
 Sprint 2026-05-19:
 
 - `PublicPlayerPage` agora renderiza sem header autenticado.
-- `App.css` oculta a navegação autenticada (`BottomNav`/rail desktop) em páginas públicas e fluxos de conversão: local público, perfil público, inscrição de torneio e painel de inscrição.
-- Topbar pública, hero, cards, inputs, feedbacks e warning/danger receberam acabamento dark full-bleed.
+- `App.css` oculta a navegaÃ§Ã£o autenticada (`BottomNav`/rail desktop) em pÃ¡ginas pÃºblicas e fluxos de conversÃ£o: local pÃºblico, perfil pÃºblico, inscriÃ§Ã£o de torneio e painel de inscriÃ§Ã£o.
+- Topbar pÃºblica, hero, cards, inputs, feedbacks e warning/danger receberam acabamento dark full-bleed.
 - `PlacePublicPage` trata logos DiceBear de iniciais como placeholder e usa iniciais em bloco dark integrado ao hero, removendo o `AD` amarelo.
 - Build aprovado.
 - Evidencia em `docs/screenshots/sprint-public-final-logged-2026-05-19/`; guest validado em `docs/screenshots/sprint-public-after-guest-2026-05-19/` com redirecionamento contextual ao auth.
@@ -1082,7 +1505,7 @@ Sprint 2026-05-19:
 
 - `RankingPage` recebeu bloco `ranking-podium-strip` com Top 3 do recorte usando os dados ja carregados.
 - Linhas do ranking agora exibem avatar dark com iniciais e posicao em badge escuro, removendo placeholders brancos no mobile.
-- `App.css` recebeu camada de polimento para pódio, avatares, badges, perfil e ranking, mantendo hero e filtros no padrao dark.
+- `App.css` recebeu camada de polimento para pÃ³dio, avatares, badges, perfil e ranking, mantendo hero e filtros no padrao dark.
 - Perfil publico foi validado na rota real `/jogadores/:playerId`; rota incorreta anterior apenas comprovou fallback 404.
 - Build aprovado.
 - Evidencia em `docs/screenshots/sprint-profile-ranking-final-2026-05-19/`; refinamento mobile final em `docs/screenshots/sprint-profile-ranking-final-2-2026-05-19/`.
@@ -1370,7 +1793,7 @@ Entrega:
 2. Superficies repetidas player receberam branco mais consistente.
 3. Verde ATP ficou mais concentrado em CTAs, ativos e labels de estado.
 4. Mobile preservou navy forte no topo, com transicao mais limpa para superficies claras.
-5. Contraste de labels e botões em `Locais` e Home foi reforcado.
+5. Contraste de labels e botÃµes em `Locais` e Home foi reforcado.
 
 Validacao:
 
@@ -1422,7 +1845,7 @@ Fonte:
 - revisao visual por screenshots feita em 2026-05-19;
 - `docs/COMPETITIONS_PROFILE_VISUAL_SCREENSHOT_REVIEW_2026_05_19.md`;
 - capturas atuais em `docs/screenshots/visual-local-audit-2026-05-18/`;
-- pedido do usuario: Competições e Perfil ainda nao atingiram o patamar adequado, revisar por screenshot e executar a queue em sprint.
+- pedido do usuario: CompetiÃ§Ãµes e Perfil ainda nao atingiram o patamar adequado, revisar por screenshot e executar a queue em sprint.
 
 Objetivo:
 
@@ -1456,7 +1879,7 @@ Escopo:
 
 Criterios de conclusao:
 
-- desktop mostra hero esportivo na primeira dobra de Competições;
+- desktop mostra hero esportivo na primeira dobra de CompetiÃ§Ãµes;
 - mobile 390px fica legivel, compacto e integrado ao tema navy;
 - lint/build passam;
 - screenshots atualizados.
@@ -1464,7 +1887,7 @@ Criterios de conclusao:
 Entrega:
 
 1. `/eventos` ganhou hero esportivo com imagem de quadra/bola, usando navy profundo, verde ATP e branco como na ref2.
-2. Mobile de Competições foi recalibrado para composição de app: hero menor, tiles 2x2 e navegação inferior navy integrada.
+2. Mobile de CompetiÃ§Ãµes foi recalibrado para composiÃ§Ã£o de app: hero menor, tiles 2x2 e navegaÃ§Ã£o inferior navy integrada.
 3. Cards de descoberta deixaram de ser lista administrativa e passaram a funcionar visualmente como atalhos.
 4. Desktop preserva a densidade de dashboard premium com hero, intents e area de descoberta em uma primeira dobra limpa.
 
@@ -1505,7 +1928,7 @@ Criterios de conclusao:
 
 Entrega:
 
-1. Headers internos de Torneios/Ligas receberam o mesmo tratamento visual esportivo de Competições.
+1. Headers internos de Torneios/Ligas receberam o mesmo tratamento visual esportivo de CompetiÃ§Ãµes.
 2. Estados vazios agora usam painel navy com imagem, CTA verde e melhor contraste.
 3. KPIs ficaram com acabamento premium e leitura mais alinhada ao restante do modo jogador.
 4. Mobile preserva o DNA ref2 com fundo navy, bottom nav escuro e cards arredondados.
@@ -1585,7 +2008,7 @@ Criterios de conclusao:
 
 - Perfil desktop passa a comunicar atleta/ATP antes de formulario;
 - informacoes continuam claras e acionaveis;
-- visual alinha com Home, Locais e Competições;
+- visual alinha com Home, Locais e CompetiÃ§Ãµes;
 - lint/build passam.
 
 Entrega:
@@ -1612,7 +2035,7 @@ Status: `[x]` concluido em 2026-05-19
 Escopo:
 
 1. Rodar lint e build.
-2. Capturar screenshots de Competições, Torneios, Ligas e Perfil.
+2. Capturar screenshots de CompetiÃ§Ãµes, Torneios, Ligas e Perfil.
 3. Revisar screenshots gerados.
 4. Atualizar este MD com entrega, evidencias e validacao.
 5. Criar relatorio curto de sprint.
@@ -2443,7 +2866,7 @@ Evidencia:
 - relatorio: `CTX_QA_01_VALIDATION_2026_05_17.md`;
 - `npm.cmd run lint` e `npm.cmd run build` passaram.
 
-### [x] APP-DNA-01 - Consolidar DNA visual e gramática estrutural do app
+### [x] APP-DNA-01 - Consolidar DNA visual e gramÃ¡tica estrutural do app
 
 Status: `[x]` concluido em 2026-05-17
 
@@ -2459,13 +2882,13 @@ Fonte:
 
 Contexto:
 
-- o app ja tem muitas funcoes implementadas, mas ainda parece complexo porque as telas expõem inventario de modulos, listas longas e ferramentas internas antes da intencao do usuario;
+- o app ja tem muitas funcoes implementadas, mas ainda parece complexo porque as telas expÃµem inventario de modulos, listas longas e ferramentas internas antes da intencao do usuario;
 - prints carregados mostram que o problema se repete em Player App, Locais, competicoes e Management OS;
-- antes de continuar mudancas pontuais, precisamos fixar uma gramática visual e estrutural unica para evitar que cada area resolva o mesmo problema de um jeito diferente.
+- antes de continuar mudancas pontuais, precisamos fixar uma gramÃ¡tica visual e estrutural unica para evitar que cada area resolva o mesmo problema de um jeito diferente.
 
 Objetivo:
 
-Criar uma base comum para os proximos sprints de reestruturação:
+Criar uma base comum para os proximos sprints de reestruturaÃ§Ã£o:
 
 - uma tela deve ter uma intencao principal;
 - jogador ve tarefa e contexto pessoal, nao painel;
@@ -2476,7 +2899,7 @@ Criar uma base comum para os proximos sprints de reestruturação:
 
 Escopo:
 
-1. Formalizar e aplicar no codigo uma gramática minima reutilizavel, sem redesign total:
+1. Formalizar e aplicar no codigo uma gramÃ¡tica minima reutilizavel, sem redesign total:
    - `PageHeader`/cabecalho compacto;
    - `ActionPanel` para proxima acao ou fila curta;
    - `ObjectRow` para listas operacionais repetitivas;
@@ -2495,7 +2918,7 @@ Escopo:
    - uma acao primaria por tela.
 
 3. Revisar os componentes existentes antes de criar novos:
-   - reaproveitar padrões ja existentes quando estiverem bons;
+   - reaproveitar padrÃµes ja existentes quando estiverem bons;
    - nao introduzir biblioteca pesada;
    - nao alterar regras de negocio.
 
@@ -2867,7 +3290,7 @@ Criterios de aceite:
 
 - mobile de gestao nao empilha todos os locais com todos os detalhes;
 - agenda mostra pendencias primeiro e lista completa depois;
-- academia/clientes/financeiro/cantina seguem a mesma gramática;
+- academia/clientes/financeiro/cantina seguem a mesma gramÃ¡tica;
 - permissoes continuam preservadas.
 
 Entrega 2026-05-17:
@@ -2879,7 +3302,7 @@ Entrega 2026-05-17:
 - permissoes e atalhos por papel foram preservados, pois a mudanca reaproveita `placeManagementModules` e `placeResourceAccess`;
 - validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build` passaram.
 
-### [x] QA-DNA-01 - Auditoria visual carregada apos cada sprint de reestruturação
+### [x] QA-DNA-01 - Auditoria visual carregada apos cada sprint de reestruturaÃ§Ã£o
 
 Objetivo:
 
@@ -2912,7 +3335,7 @@ Entrega 2026-05-17:
 - nao foram encontrados P0 visuais bloqueadores nas telas auditadas;
 - validacao: `git diff --check`, `npm.cmd run lint` e `npm.cmd run build`.
 
-## P0 - Reestruturação tela por tela sem margem de interpretação
+## P0 - ReestruturaÃ§Ã£o tela por tela sem margem de interpretaÃ§Ã£o
 
 Fonte:
 
@@ -2927,7 +3350,7 @@ Regra desta subfila:
 - cada item representa uma tela, rota ou estado visual especifico;
 - nao substituir por um "ajuste geral";
 - nao encerrar item sem screenshot desktop e mobile;
-- se faltar backend, criar fallback seguro ou documentar gap no proprio item antes de avançar.
+- se faltar backend, criar fallback seguro ou documentar gap no proprio item antes de avanÃ§ar.
 
 ### Gate obrigatorio do manual para qualquer item `SCREEN-*`
 
@@ -4877,7 +5300,7 @@ Resultado:
 - locais sao filtrados por cidade/UF do torneio e suas quadras ativas podem ser adicionadas;
 - setup interno do torneio tambem permite adicionar quadras de academias cadastradas;
 - `agendaConfig.courtLinks` preserva `placeId`, `courtId`, nomes e label;
-- `agendaConfig.quadras` usa o label `Local · Quadra`, mantendo compatibilidade com o gerador atual;
+- `agendaConfig.quadras` usa o label `Local Â· Quadra`, mantendo compatibilidade com o gerador atual;
 - entrada manual continua disponivel para torneios fora de locais cadastrados.
 
 Validacao:
@@ -4907,7 +5330,7 @@ Contexto:
 - as quadras ja existem em `place_courts` e nao devem ser redigitadas quando o torneio acontece em local cadastrado;
 - se o organizador administra o local, a agenda do torneio deve bloquear as quadras automaticamente quando as partidas forem geradas;
 - se o organizador nao administra o local, a academia precisa receber um pedido de autorizacao com locais, quadras, dias e horarios antes do bloqueio;
-- jogador e organizador precisam entender a quadra da partida em leitura curta, como `Arena Pantanal Tennis · Quadra 2 · 16:00`.
+- jogador e organizador precisam entender a quadra da partida em leitura curta, como `Arena Pantanal Tennis Â· Quadra 2 Â· 16:00`.
 
 Sprint ja entregue em `COMP-COURTS-01`:
 
@@ -7793,7 +8216,7 @@ Implementado:
 Risco residual:
 
 - `Alunos` agora mostra creditos de reposicao no drawer, mas usar/agendar/baixar credito fica para a fila de `Pendencias`, onde a decisao operacional e o encaixe acontecem;
-- busca por email depende de haver email persistido/vinculado na matricula/perfil; o modelo atual de `place_academy_enrollments` nao expõe email direto na listagem.
+- busca por email depende de haver email persistido/vinculado na matricula/perfil; o modelo atual de `place_academy_enrollments` nao expÃµe email direto na listagem.
 
 ### [x] ACADEMY-V2-04 - Pendencias como fila e encaixe em drawer
 
@@ -7945,7 +8368,7 @@ Implementado/validado:
 
 - varredura de permissoes e acoes da Academia v2 confirmou que acoes financeiras seguem condicionadas a `canManageFinance`;
 - edicao de turma, aluno, professor, mensalidade, chamada, aula avulsa, reposicao e horario aberto usam services reais existentes;
-- cabeçalho legado `Academia e aulas` deixou de aparecer dentro do workspace de Gestao, evitando duplicidade depois da v2;
+- cabeÃ§alho legado `Academia e aulas` deixou de aparecer dentro do workspace de Gestao, evitando duplicidade depois da v2;
 - fluxo `Criar turma` a partir de horario aberto deixou de reportar falha total quando a turma foi criada mas a marcacao do slot como `assigned` falhou;
 - nesse caso, a UI informa explicitamente que a turma foi criada e que o horario precisa ser revisado em `Configuracao`;
 - `npm.cmd run lint` e `npm.cmd run build` passaram.
@@ -8487,7 +8910,7 @@ Risco de regressao:
 
 Criterios de conclusao:
 
-- seed split `web/supabase/seeds/qa_demo` atualizado para o modelo canônico de contratos;
+- seed split `web/supabase/seeds/qa_demo` atualizado para o modelo canÃ´nico de contratos;
 - `04_academy.sql` cria `place_academy_student_contracts`, `seed_contracts`, `seed_contract_classes`, matriculas com `contract_id`, planos 1x/2x/3x, configuracao de antecedencia e creditos por ausencia;
 - `05_bookings.sql` cria mensalidades em `app_payments` com `target_type = 'academy_student_contract'`, pagas, pendentes atuais e pendentes atrasadas;
 - `08_leagues.sql`, `09_cleanup_helpers.sql`, `01_cleanup.sql` e `README.md` atualizados para os novos helpers/alvos financeiros;
@@ -8882,14 +9305,14 @@ Criterios:
   - owner `escalao@gmail.com`;
   - place real quando aplicavel;
   - staff em `tournament_members`;
-  - inscrições com `auth.users`;
+  - inscriÃ§Ãµes com `auth.users`;
   - participantes aprovados em `tournament_members`;
   - pagamentos coerentes;
   - chat/announcement;
   - confirmacoes de partida;
   - resultado enviado/aplicado/conflito quando o status permitir;
 - dados em `tournaments.data` devem estar coerentes com `tournament_registrations`;
-- criar variação: aberto com vagas, aberto quase cheio, live com pendencias, finalizado com resultados.
+- criar variaÃ§Ã£o: aberto com vagas, aberto quase cheio, live com pendencias, finalizado com resultados.
 
 Risco de regressao:
 
@@ -8906,7 +9329,7 @@ Criterios de conclusao:
 Implementado:
 
 - `07_tournaments.sql` agora cobre os estados `draft`, `registration_open`, `registration_closed`, `live` e `finished`.
-- adicionado torneio publico `Prime Open Inscricoes Encerradas`, com inscrições já encerradas e evento futuro.
+- adicionado torneio publico `Prime Open Inscricoes Encerradas`, com inscriÃ§Ãµes jÃ¡ encerradas e evento futuro.
 - staff de torneio ficou mais completo, incluindo `organizer`, `checkin`, `scorekeeper` e `media`, alem do owner principal.
 - anuncios/chat passam a cobrir tambem torneios `registration_closed`.
 - pagamentos de torneio agora variam entre `paid`, `pending`, `failed` e `refunded` quando aplicavel, mantendo target real por `tournament_registration`.
@@ -8947,7 +9370,7 @@ Risco de regressao:
 - partida sem players;
 - rodada sem partida;
 - ranking sem players reais;
-- status de match incompatível com resultados/submissions.
+- status de match incompatÃ­vel com resultados/submissions.
 
 Criterios de conclusao:
 
@@ -9334,7 +9757,7 @@ Ganhos esperados:
 
 - percepcao premium mais forte;
 - menos sensacao de painel antigo;
-- menos ruído visual;
+- menos ruÃ­do visual;
 - primeira viewport mais orientada a tarefa;
 - mobile menos comprimido.
 
@@ -11265,7 +11688,7 @@ Ordem proposta:
 11. `FLOW-09` - mover ajustes/admin/destrutivos para fora da rotina;
 12. `FLOW-10` - QA transversal por persona, viewport e rotas primarias.
 
-Critério de aceite macro:
+CritÃ©rio de aceite macro:
 
 - cada papel entra e entende a proxima acao sem procurar ferramenta;
 - mobile tem no maximo cinco destinos principais por modo;
@@ -11841,7 +12264,7 @@ O que nao alterar:
 - `/join`, `/inscricao`, `/t`;
 - regras de negocio de torneios, ligas, reservas, aulas ou financeiro.
 
-Critérios de aceite:
+CritÃ©rios de aceite:
 
 - jogador nao ve caminho administrativo como rotina;
 - aluno/socio encontra aulas e pagamentos pessoais;
@@ -11903,3 +12326,164 @@ Entregue em 2026-05-13:
 - definidos viewports obrigatorios: 390px, 430px, 1366px e desktop amplo;
 - definido criterio de conclusao para futuras tarefas quando faltar massa real;
 - bloqueio deixa de travar a fila e vira checklist vivo de QA/demo.
+
+### [x] SPRINT-2026-05-20 - Corrigir defeitos do fluxo real de torneio E2E
+
+Status: `[x]` concluido no codigo, migration, auditoria e QA fresco
+
+Fonte primaria:
+
+- `TOURNAMENT_E2E_FLOW_AUDIT_2026_05_20.md`
+- screenshots e diagnosticos de `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run15-fresh-full-after-fixes/`
+
+Problemas citados pela analise:
+
+- resultado enviado pelo jogador quebrava com `column reference "tournament_id" is ambiguous`;
+- criacao do torneio levava o owner para uma pagina publica/operacional fraca, com sensacao de jogos vazios;
+- wizard de criacao bloqueava passos sem explicar claramente o que faltava;
+- inscricoes externas podiam exigir reload manual para aparecer no painel do owner;
+- encerramento de inscricoes e finalizacao do torneio ficavam escondidos demais em configuracao/status;
+- placar manual admin salvava campos parciais automaticamente e podia confundir o operador;
+- auditoria automatizada podia preencher filtros de fundo em vez de campos do modal ativo.
+
+Entregue:
+
+- fallback no envio de resultado por jogador em `src/lib/tournaments.ts`;
+- migration `0092_fix_tournament_result_submission_rpc_return.sql` para corrigir o RPC remoto;
+- placar admin com rascunho local, validacao e botao explicito `Salvar resultado oficial`;
+- CTA de fase `Encerrar inscricoes` no cockpit quando nao ha pendencias;
+- CTA de fase `Finalizar torneio` quando todos os jogos necessarios estao resolvidos;
+- pos-criacao de torneio indo para `/eventos/:id/organizacao`;
+- refetch de inscricoes ao entrar em `Jogadores`, voltar foco da janela ou reabrir a aba;
+- mensagens `blockedHint` no wizard de criacao;
+- auditoria E2E atualizada para modal ativo, novo destino pos-criacao, CTA de encerramento e resultado enviado por jogador.
+
+Validacao:
+
+- `npm.cmd run build` passou;
+- torneio fresco criado e finalizado: `QA Fluxo V4 021743`;
+- ID do torneio: `a32cb410-0624-42f6-a051-6d397fb08149`;
+- diagnostico final: `completed = true`, `failedRequests = []`, `pageErrors = []`;
+- console sem erro de app, apenas logs esperados de ambiente dev;
+- screenshots desktop e mobile em `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run15-fresh-full-after-fixes/`.
+
+Pendencias:
+
+- QA manual focado do novo placar digitado pelo admin, porque o run fresco concluiu jogos por resultado enviado por jogador e WOs;
+- sprint de arquitetura para simplificar menus/tabs/submenus do Competition OS;
+- mapeamento completo de fluxo quando o usuario possui mais de uma academia/local ativo.
+
+### [x] SPRINT-2026-05-20 - Reduzir tiers e validar placar admin real
+
+Status: `[x]` concluido no codigo, auditoria e documentacao
+
+Fonte primaria:
+
+- pendencias do `TOURNAMENT_E2E_FLOW_AUDIT_2026_05_20.md`;
+- `NAVIGATION_WORKSPACE_RESTRUCTURE_V4.md`;
+- pedido para corrigir os pontos da analise em sprint continuo.
+
+Problemas atacados:
+
+- organizacao de torneio ainda mostrava cockpit, mapa de areas, trilha de fases, fila, acoes, tabs e configuracao competindo na mesma leitura;
+- placar admin manual ainda precisava ser exercitado em QA real;
+- auditoria antiga podia finalizar torneio via select de status e mascarar ausencia de CTA/estado operacional correto;
+- central de trabalho com varios locais ainda deixava atalhos de modulos expostos como menu duplicado dentro de cada row;
+- rotas humanas propostas no V4 ainda nao existiam como aliases.
+
+Entregue:
+
+- aliases preservando rotas antigas:
+  - `/jogar` -> `/locais`;
+  - `/competir` -> `/eventos`;
+  - `/trabalho` -> `/gestao`;
+  - `/trabalho/competicoes` -> `/eventos?modo=organizing`;
+  - `/trabalho/atendimento` -> `/gestao`;
+- `TournamentPage` passou a recolher mapa completo e fases em `Mais navegacao do torneio`;
+- a primeira dobra de torneio fica mais dependente do cockpit e das acoes da fase, nao de uma arvore de menus;
+- `ManagementHubPage` passou a recolher atalhos de modulos por local em `Mais areas do local`;
+- `tournament-e2e-flow-audit.mjs` passou a testar:
+  - resultado enviado por jogador;
+  - aplicacao pelo owner;
+  - placar manual admin com `Salvar resultado oficial`;
+  - WO pela UI;
+  - finalizacao/estado final sem fallback silencioso por select de status.
+
+Validacao:
+
+- `npm.cmd run build` passou;
+- run fresco final: `docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run20-final-sprint-pass/`;
+- torneio QA criado: `QA Fluxo V4 025536`;
+- ID: `688f0ba9-8278-4c39-ade0-1c3ec6e80f46`;
+- diagnostico final: `completed = true`, `failedRequests = []`, `pageErrors = []`;
+- result attempts confirmaram `admin-manual-score`, `apply-submitted-result` e `walkover-ui`.
+
+Pendencias:
+
+- redesenhar subviews internas de torneio/liga por fase em uma rodada maior do Competition OS;
+- QA visual adicional das novas rotas alias em mobile 390 e desktop amplo.
+
+### [x] SPRINT-2026-05-21 - Local ativo em modulos profundos
+
+Status: `[x]` concluido no codigo e build
+
+Problema:
+
+- quando o usuario tem mais de uma academia/local, a rota profunda `/gestao/:placeId/...` mostrava o local no header, mas nao oferecia troca clara de escopo;
+- isso obrigava voltar para a central ou sidebar, aumentando a sensacao de menu externo desconectado.
+
+Entregue:
+
+- `PlaceAdminShell` recebeu seletor `Local ativo` quando ha mais de um local acessivel;
+- o seletor preserva o modulo atual ao trocar de local quando possivel;
+- `PlacesPage` passa para o shell apenas locais em que o usuario possui algum modulo de gestao acessivel;
+- estilos premium dark adicionados para o seletor dentro de Management OS.
+
+Validacao:
+
+- `npm.cmd run build` passou;
+- `git diff --check` sem erro, apenas avisos CRLF do workspace Windows.
+
+Pendencias:
+
+- QA visual clicando o seletor com uma conta que tenha dois ou mais locais reais;
+- desenhar uma camada futura de `workspace switcher` tambem para competicoes se houver muitas ligas/torneios ativos.
+
+### [x] SPRINT-2026-05-21 - Revalidar torneio completo pos-correcoes
+
+Status: `[x]` concluido no codigo, auditoria e documentacao
+
+Problema:
+
+- apos as correcoes de fluxo, era necessario criar e operar novo torneio do inicio ao fim para descobrir se ainda havia bloqueios funcionais, ambiguidades de UX ou quebras visuais;
+- a primeira revalidacao passou funcionalmente, mas revelou copy incorreto na aba de classificacao de mata-mata finalizado;
+- a segunda revalidacao passou funcionalmente, mas revelou card de podio branco com baixo contraste dentro do tema dark.
+
+Entregue:
+
+- `TournamentPage` passou a mostrar resultado final/podio na aba de classificacao quando o torneio mata-mata esta finalizado e tem campeao;
+- o estado vazio de classificacao agora diferencia torneio de grupos e mata-mata;
+- `App.css` corrigiu contraste do podio no Competition OS dark em desktop e mobile.
+
+Validacao:
+
+- `npm.cmd run build` passou;
+- `git diff --check` passou sem erro, apenas avisos CRLF do workspace Windows;
+- rerun 1: `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run21-post-fixes/`;
+- rerun 2: `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run22-post-classification-fix/`;
+- run final aprovado: `docs/screenshots/tournament-e2e-flow-v4-2026-05-21-run23-final-post-fixes/`;
+- torneio final aprovado: `QA Fluxo V4 032025`;
+- ID: `23fb0ac9-8436-4cd1-a68c-d23cf0129b56`;
+- diagnostico final: `completed = true`, `failedRequests = []`, `pageErrors = []`;
+- result attempts validaram:
+  - `apply-submitted-result`;
+  - `admin-manual-score-draft`;
+  - `admin-manual-score`;
+  - `walkover-ui`.
+
+Pendencias:
+
+- bottom nav mobile permanece fixa e pode aparecer sobre conteudo em screenshots full-page, mas nao bloqueou o fluxo testado;
+- proxima rodada de produto pode separar ainda mais as subviews por fase para reduzir densidade operacional.
+
+

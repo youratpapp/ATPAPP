@@ -1,0 +1,478 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile-390-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "mobile-390-places-overview.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "places-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "mobile-390-places-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "places-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "mobile-390-places-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "events-hub",
+    "hash": "#/eventos",
+    "screenshot": "mobile-390-events-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "personal-agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile-390-personal-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "my-reservations",
+    "hash": "#/minhas-reservas",
+    "screenshot": "mobile-390-my-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "my-lessons",
+    "hash": "#/minhas-aulas",
+    "screenshot": "mobile-390-my-lessons.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "my-payments",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "mobile-390-my-payments.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "ranking",
+    "hash": "#/ranking",
+    "screenshot": "mobile-390-ranking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-390-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-390-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "academy-new-booking",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "mobile-390-academy-new-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "academy-finance",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "mobile-390-academy-finance.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "mobile-390-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "academy-public-reservar",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "mobile-390-academy-public-reservar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile-430-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "mobile-430-places-overview.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "places-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "mobile-430-places-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "places-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "mobile-430-places-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "events-hub",
+    "hash": "#/eventos",
+    "screenshot": "mobile-430-events-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "personal-agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile-430-personal-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "my-reservations",
+    "hash": "#/minhas-reservas",
+    "screenshot": "mobile-430-my-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "my-lessons",
+    "hash": "#/minhas-aulas",
+    "screenshot": "mobile-430-my-lessons.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "my-payments",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "mobile-430-my-payments.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "ranking",
+    "hash": "#/ranking",
+    "screenshot": "mobile-430-ranking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-430-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-430-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "academy-new-booking",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "mobile-430-academy-new-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "academy-finance",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "mobile-430-academy-finance.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "mobile-430-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "academy-public-reservar",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "mobile-430-academy-public-reservar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop-1366-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "desktop-1366-places-overview.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "places-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "desktop-1366-places-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "places-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "desktop-1366-places-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "events-hub",
+    "hash": "#/eventos",
+    "screenshot": "desktop-1366-events-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "personal-agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktop-1366-personal-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "my-reservations",
+    "hash": "#/minhas-reservas",
+    "screenshot": "desktop-1366-my-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "my-lessons",
+    "hash": "#/minhas-aulas",
+    "screenshot": "desktop-1366-my-lessons.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "my-payments",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "desktop-1366-my-payments.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "ranking",
+    "hash": "#/ranking",
+    "screenshot": "desktop-1366-ranking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-1366-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-1366-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "academy-new-booking",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "desktop-1366-academy-new-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "academy-finance",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "desktop-1366-academy-finance.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "desktop-1366-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "academy-public-reservar",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "desktop-1366-academy-public-reservar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop-wide-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "places-overview",
+    "hash": "#/locais",
+    "screenshot": "desktop-wide-places-overview.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "places-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "desktop-wide-places-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "places-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "desktop-wide-places-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "events-hub",
+    "hash": "#/eventos",
+    "screenshot": "desktop-wide-events-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "personal-agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktop-wide-personal-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "my-reservations",
+    "hash": "#/minhas-reservas",
+    "screenshot": "desktop-wide-my-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "my-lessons",
+    "hash": "#/minhas-aulas",
+    "screenshot": "desktop-wide-my-lessons.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "my-payments",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "desktop-wide-my-payments.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "ranking",
+    "hash": "#/ranking",
+    "screenshot": "desktop-wide-ranking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-wide-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "academy-dashboard",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-wide-academy-dashboard.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "academy-new-booking",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "desktop-wide-academy-new-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "academy-finance",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+    "screenshot": "desktop-wide-academy-finance.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "desktop-wide-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "academy-public-reservar",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "desktop-wide-academy-public-reservar.png",
+    "events": []
+  }
+]

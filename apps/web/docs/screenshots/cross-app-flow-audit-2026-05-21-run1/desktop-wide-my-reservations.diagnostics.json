@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "my-reservations",
+  "hash": "#/minhas-reservas",
+  "screenshot": "desktop-wide-my-reservations.png",
+  "events": []
+}

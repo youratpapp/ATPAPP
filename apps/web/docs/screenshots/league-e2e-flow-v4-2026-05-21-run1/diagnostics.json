@@ -1,0 +1,79 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T03:39:38.607Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [],
+  "screenshots": [
+    {
+      "name": "01-ligas-organizando-antes-criar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/01-desktop-1366-01-ligas-organizando-antes-criar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "02-modal-liga-basico",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/02-desktop-1366-02-modal-liga-basico.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "03-modal-liga-jogadores",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/03-desktop-1366-03-modal-liga-jogadores.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "04-modal-liga-formato",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/04-desktop-1366-04-modal-liga-formato.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "05-modal-liga-agenda",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/05-desktop-1366-05-modal-liga-agenda.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "06-modal-liga-revisar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/06-desktop-1366-06-modal-liga-revisar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "07-liga-criada-visao-owner",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/07-desktop-1366-07-liga-criada-visao-owner.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/ce13a497-55e4-4232-8c3c-4f0a3f06e1d3"
+    },
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run1/08-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/ce13a497-55e4-4232-8c3c-4f0a3f06e1d3"
+    }
+  ],
+  "league": {
+    "id": "ce13a497-55e4-4232-8c3c-4f0a3f06e1d3",
+    "name": "QA Liga V4 033946",
+    "createdAt": "2026-05-21T03:40:18.581Z"
+  },
+  "completed": false,
+  "error": "[object Object]"
+}

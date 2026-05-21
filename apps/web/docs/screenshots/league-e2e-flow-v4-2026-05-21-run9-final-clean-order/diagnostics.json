@@ -1,0 +1,433 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T04:33:09.012Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "email": "jogador011@demo.atp.local",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz",
+      "status": "pending"
+    },
+    {
+      "email": "jogador012@demo.atp.local",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto",
+      "status": "pending"
+    },
+    {
+      "email": "jogador013@demo.atp.local",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida",
+      "status": "pending"
+    },
+    {
+      "email": "jogador014@demo.atp.local",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique",
+      "status": "pending"
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "01-ligas-organizando-antes-criar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/01-desktop-1366-01-ligas-organizando-antes-criar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "02-modal-liga-basico",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/02-desktop-1366-02-modal-liga-basico.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "03-modal-liga-jogadores",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/03-desktop-1366-03-modal-liga-jogadores.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "04-modal-liga-formato",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/04-desktop-1366-04-modal-liga-formato.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "05-modal-liga-agenda",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/05-desktop-1366-05-modal-liga-agenda.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "06-modal-liga-revisar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/06-desktop-1366-06-modal-liga-revisar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "07-liga-criada-visao-owner",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/07-desktop-1366-07-liga-criada-visao-owner.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "08-liga-inscricoes-pendentes",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/08-desktop-1366-08-liga-inscricoes-pendentes.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=jogadores"
+    },
+    {
+      "name": "09-liga-inscricoes-aprovadas",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/09-desktop-1366-09-liga-inscricoes-aprovadas.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=jogadores"
+    },
+    {
+      "name": "10-liga-antes-gerar-rodada",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/10-desktop-1366-10-liga-antes-gerar-rodada.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "11-liga-rodada-gerada",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/11-desktop-1366-11-liga-rodada-gerada.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "12-player-sala-da-partida",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/12-desktop-1366-12-player-sala-da-partida.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=partidas&room=70b987db-a04f-45ca-b2ea-9b9b8aba3083"
+    },
+    {
+      "name": "13-player-resultado-enviado",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/13-desktop-1366-13-player-resultado-enviado.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=partidas&room=70b987db-a04f-45ca-b2ea-9b9b8aba3083"
+    },
+    {
+      "name": "14-oponente-confirma-resultado",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/14-desktop-1366-14-oponente-confirma-resultado.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=partidas&room=70b987db-a04f-45ca-b2ea-9b9b8aba3083"
+    },
+    {
+      "name": "15-oponente-resultado-confirmado",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/15-desktop-1366-15-oponente-resultado-confirmado.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=partidas&room=70b987db-a04f-45ca-b2ea-9b9b8aba3083"
+    },
+    {
+      "name": "16-owner-apos-resultado-jogador",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/16-desktop-1366-16-owner-apos-resultado-jogador.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=partidas"
+    },
+    {
+      "name": "17-owner-partidas-resolvidas",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/17-desktop-1366-17-owner-partidas-resolvidas.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8?tab=partidas"
+    },
+    {
+      "name": "18-liga-pronta-para-fechamento",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/18-desktop-1366-18-liga-pronta-para-fechamento.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "19-liga-fechamento-pos-sobe-desce",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/19-desktop-1366-19-liga-fechamento-pos-sobe-desce.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "20-final-owner-desktop-1366",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/20-desktop-1366-20-final-owner-desktop-1366.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "21-final-owner-desktop-wide",
+      "viewport": "desktop-wide",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/21-desktop-wide-21-final-owner-desktop-wide.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "22-final-owner-mobile-390",
+      "viewport": "mobile-390",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/22-mobile-390-22-final-owner-mobile-390.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "23-final-owner-mobile-430",
+      "viewport": "mobile-430",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/23-mobile-430-23-final-owner-mobile-430.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "24-final-participante-mobile-390",
+      "viewport": "mobile-390",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/24-mobile-390-24-final-participante-mobile-390.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    },
+    {
+      "name": "25-final-participante-desktop-1366",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run9-final-clean-order/25-desktop-1366-25-final-participante-desktop-1366.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/9a036227-64ec-40ee-ad34-3ca06f7abee8"
+    }
+  ],
+  "league": {
+    "id": "9a036227-64ec-40ee-ad34-3ca06f7abee8",
+    "name": "QA Liga V4 043316",
+    "createdAt": "2026-05-21T04:33:48.092Z"
+  },
+  "matchesAfterGeneration": [
+    {
+      "id": "70b987db-a04f-45ca-b2ea-9b9b8aba3083",
+      "status": "aguardando_organizacao"
+    },
+    {
+      "id": "f8d4de0f-a004-4de3-8da3-3b651a4bbcac",
+      "status": "aguardando_organizacao"
+    }
+  ],
+  "playerResultSubmit": {
+    "matchId": "70b987db-a04f-45ca-b2ea-9b9b8aba3083",
+    "submitterEmail": "jogador011@demo.atp.local",
+    "confirmerEmail": "jogador012@demo.atp.local",
+    "submitted": true
+  },
+  "playerResultConfirm": {
+    "matchId": "70b987db-a04f-45ca-b2ea-9b9b8aba3083",
+    "confirmerEmail": "jogador012@demo.atp.local",
+    "confirmed": true
+  },
+  "adminResultAttempts": [
+    {
+      "matchId": "f8d4de0f-a004-4de3-8da3-3b651a4bbcac",
+      "resolved": true
+    }
+  ],
+  "applySeasonMovementsClick": {
+    "ok": true,
+    "text": "Aplicar sobe/desce"
+  },
+  "finalState": {
+    "rounds": [
+      {
+        "id": "6bc71430-55c3-4517-86c7-7d0ed0d5f1b9",
+        "round_number": 1,
+        "status": "open"
+      }
+    ],
+    "matches": [
+      {
+        "id": "70b987db-a04f-45ca-b2ea-9b9b8aba3083",
+        "status": "encerrada",
+        "round_id": "6bc71430-55c3-4517-86c7-7d0ed0d5f1b9",
+        "result_payload": {
+          "is_wo": false,
+          "summary": "Karina Queiroz 6/2 Lucas Yamamoto",
+          "sets_side1": 1,
+          "sets_side2": 0,
+          "games_side1": 6,
+          "games_side2": 2,
+          "winner_side": 1
+        },
+        "winner_side": 1,
+        "is_wo": false,
+        "created_at": "2026-05-21T04:34:31.70345+00:00",
+        "league_match_players": [
+          {
+            "side": 1,
+            "slot": 1,
+            "league_players": {
+              "id": "29433eb0-1092-4dcb-9c56-5ef3f618a31b",
+              "user_id": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+              "display_name": "Karina Queiroz"
+            },
+            "league_player_id": "29433eb0-1092-4dcb-9c56-5ef3f618a31b"
+          },
+          {
+            "side": 2,
+            "slot": 1,
+            "league_players": {
+              "id": "752f34f4-1e4e-4320-a810-a3c5c26644aa",
+              "user_id": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+              "display_name": "Lucas Yamamoto"
+            },
+            "league_player_id": "752f34f4-1e4e-4320-a810-a3c5c26644aa"
+          }
+        ]
+      },
+      {
+        "id": "f8d4de0f-a004-4de3-8da3-3b651a4bbcac",
+        "status": "encerrada",
+        "round_id": "6bc71430-55c3-4517-86c7-7d0ed0d5f1b9",
+        "result_payload": {
+          "is_wo": false,
+          "summary": "Mariana Almeida 6/3 Nicolas Henrique",
+          "sets_side1": 1,
+          "sets_side2": 0,
+          "games_side1": 6,
+          "games_side2": 3,
+          "winner_side": 1
+        },
+        "winner_side": 1,
+        "is_wo": false,
+        "created_at": "2026-05-21T04:34:32.306792+00:00",
+        "league_match_players": [
+          {
+            "side": 1,
+            "slot": 1,
+            "league_players": {
+              "id": "e1f5521f-8f42-4adc-b5ad-04c4fa7907ca",
+              "user_id": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+              "display_name": "Mariana Almeida"
+            },
+            "league_player_id": "e1f5521f-8f42-4adc-b5ad-04c4fa7907ca"
+          },
+          {
+            "side": 2,
+            "slot": 1,
+            "league_players": {
+              "id": "3a2de72d-012e-4f0c-9f76-398dba35735b",
+              "user_id": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+              "display_name": "Nicolas Henrique"
+            },
+            "league_player_id": "3a2de72d-012e-4f0c-9f76-398dba35735b"
+          }
+        ]
+      }
+    ]
+  },
+  "completed": true
+}

@@ -687,7 +687,7 @@ export function EventsPage({ user, profile }: Props) {
       });
       setShowCreate(false);
       resetCreateDraft();
-      navigate(buildTournamentUrl(id));
+      navigate(`/eventos/${encodeURIComponent(id)}/organizacao`);
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao criar." });
     } finally {
@@ -1069,6 +1069,7 @@ export function EventsPage({ user, profile }: Props) {
                   label: "Basico",
                   detail: "Nome, local e data",
                   canContinue: createBasicReady,
+                  blockedHint: "Preencha nome, data de inicio, UF e cidade para continuar.",
                   content: (
                     <div className="competition-setup-grid">
                       <label>
@@ -1183,6 +1184,7 @@ export function EventsPage({ user, profile }: Props) {
                   label: "Categorias",
                   detail: `${createClasses.length} criadas`,
                   canContinue: createClassesReady,
+                  blockedHint: "Adicione ao menos uma categoria/classe para montar a chave.",
                   content: (
                     <div className="competition-setup-stack">
                       <div className="competition-setup-grid">
@@ -1320,6 +1322,7 @@ export function EventsPage({ user, profile }: Props) {
                   label: "Agenda",
                   detail: `${createCourts.length} quadras`,
                   canContinue: createAgendaReady,
+                  blockedHint: "Informe duracao, ao menos uma quadra e um dia de agenda para continuar.",
                   content: (
                     <div className="competition-setup-grid">
                       <label>
@@ -1432,6 +1435,7 @@ export function EventsPage({ user, profile }: Props) {
                   label: "Revisar",
                   detail: "Criar rascunho",
                   canContinue: createBasicReady && createClassesReady && createAgendaReady,
+                  blockedHint: "Conclua as etapas Basico, Categorias e Agenda antes de criar o torneio.",
                   content: (
                     <div className="competition-setup-stack">
                       <div className="competition-setup-grid">

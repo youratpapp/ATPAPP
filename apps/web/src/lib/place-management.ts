@@ -28,7 +28,7 @@ export function placeProductFeatures(plan: PlaceProductPlan) {
   return {
     bookings: plan === "club_basic" || plan === "academy" || plan === "club_pro" || plan === "multi_unit",
     academy: plan === "academy" || plan === "club_pro" || plan === "multi_unit",
-    finance: plan === "club_pro" || plan === "multi_unit",
+    finance: plan === "academy" || plan === "club_pro" || plan === "multi_unit",
     crm: plan === "club_pro" || plan === "multi_unit",
     memberships: plan === "club_pro" || plan === "multi_unit",
     canteen: plan === "club_pro" || plan === "multi_unit",

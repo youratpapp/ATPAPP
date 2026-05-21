@@ -726,6 +726,53 @@ Evidencias capturadas:
 - viewports: `mobile390`, `mobile430`, `desktop1366`, `desktopwide`;
 - diagnosticos: 24 arquivos `.diagnostics.json`, 0 erros e 0 warnings de console/rede.
 
+## Validation Notes - FLOW-09 E2E Real - 2026-05-21
+
+Objetivo: validar liga do inicio ao fim com fluxo real de owner e jogadores, documentar bloqueios e corrigir o que impedisse continuidade.
+
+Evidencia final:
+
+- pasta: `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/`;
+- diagnostico: `docs/screenshots/league-e2e-flow-v4-2026-05-21-run10-final-round-status/diagnostics.json`;
+- liga: `QA Liga V4 044652` (`d5c32395-b466-4bb2-a97e-3b648da5c8ca`);
+- resultado: `completed: true`, sem `failedRequests`, sem `pageErrors`.
+
+Fluxo validado:
+
+- owner cria liga por UI;
+- pedidos de inscricao sao criados com jogadores seed;
+- owner aprova inscritos por UI;
+- owner gera rodada por UI;
+- jogador envia resultado na sala da partida;
+- adversario confirma resultado;
+- admin resolve partida restante;
+- owner aplica sobe/desce;
+- owner e participante sao revisados em desktop 1366, desktop amplo, mobile 390 e mobile 430.
+
+Bloqueio funcional encontrado:
+
+- RPC `app_generate_next_league_round` falhava no ambiente remoto com `column reference "class_id" is ambiguous`.
+- Foi criada a migration `supabase/migrations/0097_fix_league_generate_round_class_id_ambiguity.sql`.
+- `src/lib/leagues.ts` recebeu fallback temporario e autenticado para manter o produto operavel ate a migration remota ser aplicada.
+
+Correcoes de UX aplicadas depois dos screenshots:
+
+- fase final/historico nao sugere mais gerar proxima rodada quando a liga ja atingiu o total planejado;
+- placeholders de placar da sala de partida passaram para `0`, evitando parecer resultado preenchido;
+- participante recebeu copy mais clara de contexto;
+- tabs da liga no mobile passaram para grid, sem carrossel cortado;
+- cockpit mobile prioriza CTA antes de metricas e blocos secundarios;
+- owner mobile recebeu hero mais compacto;
+- slot de fila operacional fica depois de titulo/CTA, preservando leitura da fase.
+- header/badge passa a dizer `Temporada finalizada` quando a temporada selecionada terminou.
+- `league_rounds.status` termina como `finished` apos aplicar sobe/desce.
+
+Pendencias de produto/arquitetura:
+
+- aplicar a migration remota e revisar se o fallback deve permanecer;
+- definir fluxo real de horario/local/disponibilidade, porque a liga ainda mostra `Horario a combinar` e `Local pendente`;
+- reduzir ainda mais a primeira dobra mobile do participante em sprint futuro.
+
 ## FLOW-10 - Ajustes/Admin Fora Da Rotina Scope For This Sprint
 
 Objetivo: retirar setup raro, equipe, permissoes, backup, restore, reset, exclusao e configuracao estrutural da rotina diaria, mantendo owner/manager com acesso claro por Ajustes, Equipe, Administracao, Avancado ou Configuracao da competicao.

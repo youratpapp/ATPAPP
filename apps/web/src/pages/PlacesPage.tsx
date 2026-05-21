@@ -5392,6 +5392,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             {isManagementCockpit ? (
               <PlaceAdminShell
                 currentModule={currentManagementModule}
+                currentPlaceId={p.id}
                 featureLabels={enabledFeatures}
                 locationLabel={[p.city, p.state].filter(Boolean).join(" - ")}
                 moduleCounts={moduleCounts}
@@ -5405,9 +5406,24 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 }
                 planLabel={PLACE_PRODUCT_PLAN_LABELS[p.productPlan]}
                 placeName={p.name}
+                placeOptions={
+                  isAdminRoute
+                    ? places
+                        .filter((candidate) => {
+                          const candidateAccess = placeResourceAccess(candidate, user.id, (staffByPlace[candidate.id] || []) as PlaceStaffMember[]);
+                          return placeManagementModules(candidateAccess).length > 0;
+                        })
+                        .map((candidate) => ({
+                          detail: [candidate.city, candidate.state].filter(Boolean).join(" - "),
+                          id: candidate.id,
+                          label: candidate.name,
+                        }))
+                    : []
+                }
                 setupPercent={setupPercent}
                 staffRoleLabel={STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]]}
                 onModuleChange={(module, viewSegment) => selectManagementModule(p.id, module, viewSegment)}
+                onPlaceChange={(placeId) => navigate(buildPlaceAdminPath(placeId, currentManagementModule))}
               />
             ) : null}
             {showManagementModule("dashboard") && isManagementCockpit ? (
@@ -6826,7 +6842,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     selectBookingView(p.id, view);
                   }}
                 >
-                  {isManagementCockpit ? (
+                  {isManagementCockpit && bookingView !== "new" ? (
                     <PlaceBookingOperationalQueues
                       busy={busy}
                       canManageBookings={canManageBookings}

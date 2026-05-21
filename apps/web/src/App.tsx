@@ -319,6 +319,11 @@ function AppInner() {
         <Route path="/auth/callback" element={<AuthAlreadySignedInRedirect />} />
         <Route path="/completar-cadastro" element={<Navigate to="/inicio" replace />} />
         <Route path="/" element={<Navigate to="/inicio" replace />} />
+        <Route path="/jogar" element={<RedirectWithSearch to="/locais" />} />
+        <Route path="/competir" element={<RedirectWithSearch to="/eventos" />} />
+        <Route path="/trabalho" element={<RedirectWithSearch to="/gestao" />} />
+        <Route path="/trabalho/competicoes" element={<RedirectWithSearch to="/eventos" search="?modo=organizing" />} />
+        <Route path="/trabalho/atendimento" element={<RedirectWithSearch to="/gestao" />} />
         <Route path="/inicio" element={<HomePage user={authUser} profile={profile} />} />
         <Route path="/competicoes" element={<Navigate to="/eventos" replace />} />
         <Route path="/eventos" element={<EventsHubPage user={authUser} profile={profile} />} />
@@ -363,6 +368,13 @@ function AppInner() {
       </UserModeProvider>
     </Suspense>
   );
+}
+
+function RedirectWithSearch({ search = "", to }: { search?: string; to: string }) {
+  const location = useLocation();
+  const currentSearch = location.search || "";
+  const nextSearch = search || currentSearch;
+  return <Navigate to={`${to}${nextSearch}`} replace />;
 }
 
 function sanitizeNextPath(value: string | null | undefined): string {

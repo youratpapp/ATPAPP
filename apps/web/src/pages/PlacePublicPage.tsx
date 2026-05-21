@@ -233,6 +233,16 @@ function academyEnrollmentStatusLabel(status: AcademyEnrollment["status"]): stri
   return "Cancelada";
 }
 
+function publicPlaceIntentFromValue(value: string | null | undefined): PublicPlaceIntent | "" {
+  const normalized = normalizeSearchText(value || "");
+  if (["booking", "bookings", "reserva", "reservar", "quadra", "quadras", "court", "courts"].includes(normalized)) return "booking";
+  if (["academy", "academia", "aula", "aulas", "turma", "turmas", "classes"].includes(normalized)) return "academy";
+  if (["match", "matches", "jogo", "jogos", "partida", "partidas"].includes(normalized)) return "matches";
+  if (["plans", "planos", "plano", "socios", "socio", "mensalidade", "mensalidades"].includes(normalized)) return "plans";
+  if (["about", "sobre", "local"].includes(normalized)) return "about";
+  return "";
+}
+
 export function PlacePublicPage({ user, profile }: Props) {
   const { placeId, placeIntent } = useParams();
   const navigate = useNavigate();
@@ -310,7 +320,7 @@ export function PlacePublicPage({ user, profile }: Props) {
       setError("");
       try {
         const query = new URLSearchParams(routeLocation.search);
-        const intent = query.get("intent") || "";
+        const intent = publicPlaceIntentFromValue(placeIntent) || publicPlaceIntentFromValue(query.get("intent"));
         const requestedCourtId = query.get("courtId") || "";
         const requestedClassId = query.get("classId") || "";
         const requestedClassIds = (query.get("classIds") || "")
@@ -415,26 +425,13 @@ export function PlacePublicPage({ user, profile }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [placeId, routeLocation.search, user]);
+  }, [placeId, placeIntent, routeLocation.search, user]);
 
   const activeCourts = courts.filter((court) => court.isActive);
   const activeClasses = classes.filter((academyClass) => academyClass.isActive);
   const activePlans = plans.filter((plan) => plan.isActive);
   const rawPageIntent = (() => {
-    const intentFromPath =
-      placeIntent === "reserva"
-        ? "booking"
-        : placeIntent === "aulas"
-          ? "academy"
-          : placeIntent === "jogos"
-            ? "matches"
-            : placeIntent === "planos"
-              ? "plans"
-              : placeIntent === "sobre"
-                ? "about"
-                : "";
-    const raw = intentFromPath || new URLSearchParams(routeLocation.search).get("intent");
-    return raw === "booking" || raw === "academy" || raw === "matches" || raw === "plans" || raw === "about" ? raw : "overview";
+    return publicPlaceIntentFromValue(placeIntent) || publicPlaceIntentFromValue(new URLSearchParams(routeLocation.search).get("intent")) || "overview";
   })() as PublicPlaceIntent;
   const filteredAcademyClasses = activeClasses
     .filter((academyClass) => {

@@ -461,6 +461,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [showAllManagedPlaces, setShowAllManagedPlaces] = useState(false);
   const [showAllManagementCompetitions, setShowAllManagementCompetitions] = useState(false);
+  const [selectedManagementFocusPlaceId, setSelectedManagementFocusPlaceId] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [feedback, setFeedback] = useState<{ kind: "success" | "error"; text: string } | null>(null);
@@ -607,18 +608,6 @@ export function ManagementHubPage({ user, profile }: Props) {
       const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, []);
       return access.staffRole === "cashier" && !access.canManagePlace;
     });
-  const activeAggregateQueueRows = useMemo(
-    () =>
-      queueRows(aggregate).filter((row) => {
-        if (row.value <= 0) return false;
-        return places.some((place) => {
-          const summary = summariesByPlace[place.id];
-          const modules = placeManagementModules(accessByPlace[place.id] || placeResourceAccess(place, user.id, []));
-          return Boolean(summary && modules.includes(row.module) && queueRows(summary).some((item) => item.label === row.label && item.value > 0));
-        });
-      }),
-    [accessByPlace, aggregate, places, summariesByPlace, user.id]
-  );
   const setupPlaces = useMemo(
     () =>
       places
@@ -677,6 +666,11 @@ export function ManagementHubPage({ user, profile }: Props) {
   );
   const visibleManagedPlaces = showAllManagedPlaces ? orderedManagedPlaces : orderedManagedPlaces.slice(0, 4);
   const hiddenManagedPlacesCount = Math.max(0, orderedManagedPlaces.length - visibleManagedPlaces.length);
+  const activeManagementFocusPlaceId =
+    selectedManagementFocusPlaceId && orderedManagedPlaces.some((place) => place.id === selectedManagementFocusPlaceId)
+      ? selectedManagementFocusPlaceId
+      : orderedManagedPlaces[0]?.id || "";
+  const activeManagementFocusPlace = orderedManagedPlaces.find((place) => place.id === activeManagementFocusPlaceId) || null;
   const professionalInviteCount = tournamentStaffInvites.length + placeStaffInvites.length;
 
   function rowPulseText(summary: PlaceOperationSummary, access: PlaceAccess): string {
@@ -758,12 +752,6 @@ export function ManagementHubPage({ user, profile }: Props) {
       const target = contexts.find((context) => context.modules.includes(module) && (!predicate || predicate(context)));
       return target ? buildPlaceAdminPath(target.place.id, module, viewSegment) : undefined;
     };
-    const classContexts = contexts.filter((context) => context.modules.includes("academy"));
-    const todayClasses = classContexts.flatMap((context) =>
-      context.entry.academyClasses
-        .filter((academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday)
-        .map((academyClass) => ({ academyClass, place: context.place }))
-    );
     if (workTodayPersona === "coach") {
       const coachContexts = contexts.filter(
         (context) => context.modules.includes("academy") && context.access.staffRole === "coach" && !context.access.canManagePlace
@@ -1057,72 +1045,102 @@ export function ManagementHubPage({ user, profile }: Props) {
       ];
     }
 
-    const firstPending = activeAggregateQueueRows[0];
+    const managerContexts = activeManagementFocusPlaceId
+      ? contexts.filter((context) => context.place.id === activeManagementFocusPlaceId)
+      : contexts;
+    const managerAggregate = totalSummaries(managerContexts.map((context) => context.summary));
+    const managerQueueRows = queueRows(managerAggregate).filter((row) => {
+      if (row.value <= 0) return false;
+      return managerContexts.some((context) => {
+        return (
+          context.modules.includes(row.module) &&
+          queueRows(context.summary).some((item) => item.label === row.label && item.value > 0)
+        );
+      });
+    });
+    const managerFirstPath = (
+      module: PlaceManagementModule,
+      viewSegment?: string,
+      predicate?: (context: (typeof contexts)[number]) => boolean
+    ) => {
+      const target = managerContexts.find((context) => context.modules.includes(module) && (!predicate || predicate(context)));
+      return target ? buildPlaceAdminPath(target.place.id, module, viewSegment) : undefined;
+    };
+    const managerTodayClasses = managerContexts
+      .filter((context) => context.modules.includes("academy"))
+      .flatMap((context) =>
+        context.entry.academyClasses
+          .filter((academyClass) => academyClass.isActive && academyClass.weekday === todayWeekday)
+          .map((academyClass) => ({ academyClass, place: context.place }))
+      );
+    const firstPending = managerQueueRows[0];
     return [
       {
         cta: firstPending ? "Resolver agora" : "Abrir operacao",
-        detail: pendingTotal(aggregate) ? "Fila consolidada por area para atacar o que trava a rotina." : "Nenhuma pendencia critica agora; revise workspaces ou reservas do dia.",
+        detail: pendingTotal(managerAggregate)
+          ? "Fila da unidade em foco para atacar o que trava a rotina."
+          : "Nenhuma pendencia critica nesta unidade; revise reservas, aulas ou ajustes quando precisar.",
         eyebrow: "Pendencias criticas",
         id: "manager-critical",
-        path: firstPending ? firstPath(firstPending.module) : "/gestao",
-        title: pendingTotal(aggregate) ? "Operacao exige acao" : "Operacao em dia",
-        tone: cardTone(pendingTotal(aggregate)),
-        value: countValue(pendingTotal(aggregate)),
+        path: firstPending ? managerFirstPath(firstPending.module) : activeManagementFocusPlaceId ? buildPlaceAdminPath(activeManagementFocusPlaceId, "dashboard") : "/gestao",
+        title: pendingTotal(managerAggregate) ? "Operacao exige acao" : "Operacao em dia",
+        tone: cardTone(pendingTotal(managerAggregate)),
+        value: countValue(pendingTotal(managerAggregate)),
       },
       {
         cta: "Abrir reservas",
-        detail: aggregate.todayBookings || aggregate.waitlist || aggregate.pendingBookings ? "Reservas, fila e aprovacoes do dia." : "Reservas sem alerta critico agora.",
+        detail: managerAggregate.todayBookings || managerAggregate.waitlist || managerAggregate.pendingBookings ? "Reservas, fila e aprovacoes do dia nesta unidade." : "Reservas sem alerta critico agora.",
         eyebrow: "Reservas",
         id: "manager-bookings",
-        path: firstPath("bookings", "hoje"),
-        title: aggregate.todayBookings ? `${aggregate.todayBookings} reserva(s) hoje` : "Reservas em dia",
-        tone: cardTone(aggregate.todayBookings + aggregate.waitlist + aggregate.pendingBookings),
-        value: countValue(aggregate.todayBookings + aggregate.waitlist + aggregate.pendingBookings),
+        path: managerFirstPath("bookings", "hoje"),
+        title: managerAggregate.todayBookings ? `${managerAggregate.todayBookings} reserva(s) hoje` : "Reservas em dia",
+        tone: cardTone(managerAggregate.todayBookings + managerAggregate.waitlist + managerAggregate.pendingBookings),
+        value: countValue(managerAggregate.todayBookings + managerAggregate.waitlist + managerAggregate.pendingBookings),
       },
       {
         cta: "Abrir aulas",
-        detail: aggregate.pendingAcademy || todayClasses.length ? "Aulas de hoje, matriculas e reposicoes para acompanhar." : "Aulas sem pendencia operacional.",
+        detail: managerAggregate.pendingAcademy || managerTodayClasses.length ? "Aulas de hoje, matriculas e reposicoes desta unidade." : "Aulas sem pendencia operacional.",
         eyebrow: "Aulas",
         id: "manager-academy",
-        path: firstPath("academy", "hoje"),
-        title: todayClasses.length ? `${todayClasses.length} aula(s) hoje` : "Academia em dia",
-        tone: cardTone(aggregate.pendingAcademy + todayClasses.length),
-        value: countValue(aggregate.pendingAcademy + todayClasses.length),
+        path: managerFirstPath("academy", "hoje"),
+        title: managerTodayClasses.length ? `${managerTodayClasses.length} aula(s) hoje` : "Academia em dia",
+        tone: cardTone(managerAggregate.pendingAcademy + managerTodayClasses.length),
+        value: countValue(managerAggregate.pendingAcademy + managerTodayClasses.length),
       },
       {
         cta: "Cobrar",
-        detail: aggregate.pendingFinance ? "Recebiveis, pagamentos pendentes e cobrancas para revisar." : "Financeiro sem alerta critico.",
+        detail: managerAggregate.pendingFinance ? "Recebiveis, pagamentos pendentes e cobrancas desta unidade." : "Financeiro sem alerta critico.",
         eyebrow: "Financeiro",
         id: "manager-finance",
-        path: firstPath("finance", "recebiveis"),
-        title: aggregate.pendingFinance ? "Cobrancas pendentes" : "Financeiro em dia",
-        tone: cardTone(aggregate.pendingFinance),
-        value: countValue(aggregate.pendingFinance),
+        path: managerFirstPath("finance", "recebiveis"),
+        title: managerAggregate.pendingFinance ? "Cobrancas pendentes" : "Financeiro em dia",
+        tone: cardTone(managerAggregate.pendingFinance),
+        value: countValue(managerAggregate.pendingFinance),
       },
       {
         cta: "Atender",
-        detail: aggregate.contactsDue ? "Clientes e leads com retorno previsto ou atrasado." : "Relacionamento sem retorno pendente.",
+        detail: managerAggregate.contactsDue ? "Clientes e leads da unidade com retorno previsto ou atrasado." : "Relacionamento sem retorno pendente.",
         eyebrow: "Clientes",
         id: "manager-clients",
-        path: firstPath("clients", "rotina"),
-        title: aggregate.contactsDue ? "Clientes para contato" : "Clientes em dia",
-        tone: cardTone(aggregate.contactsDue),
-        value: countValue(aggregate.contactsDue),
+        path: managerFirstPath("clients", "rotina"),
+        title: managerAggregate.contactsDue ? "Clientes para contato" : "Clientes em dia",
+        tone: cardTone(managerAggregate.contactsDue),
+        value: countValue(managerAggregate.contactsDue),
       },
       {
         cta: "Repor",
-        detail: aggregate.lowStock ? "Itens de cantina abaixo do minimo operacional." : "Estoque sem alerta critico.",
+        detail: managerAggregate.lowStock ? "Itens de cantina da unidade abaixo do minimo operacional." : "Estoque sem alerta critico.",
         eyebrow: "Estoque",
         id: "manager-stock",
-        path: firstPath("canteen", "estoque"),
-        title: aggregate.lowStock ? "Estoque baixo" : "Estoque em dia",
-        tone: cardTone(aggregate.lowStock),
-        value: countValue(aggregate.lowStock),
+        path: managerFirstPath("canteen", "estoque"),
+        title: managerAggregate.lowStock ? "Estoque baixo" : "Estoque em dia",
+        tone: cardTone(managerAggregate.lowStock),
+        value: countValue(managerAggregate.lowStock),
       },
     ].filter((card) => Boolean(card.path));
   }, [
     accessByPlace,
-    activeAggregateQueueRows,
+    activeManagementFocusPlaceId,
     aggregate,
     competitionWorkspaceCount,
     entriesByPlace,
@@ -1184,9 +1202,34 @@ export function ManagementHubPage({ user, profile }: Props) {
                 <div>
                   <span>{WORK_TODAY_LABELS[workTodayPersona]}</span>
                   <h2>O que precisa ser resolvido agora?</h2>
-                  <p>Primeiro as tarefas acionaveis do papel atual, depois workspaces e contexto.</p>
+                  <p>
+                    {workTodayPersona === "manager" && activeManagementFocusPlace
+                      ? `Foco em ${activeManagementFocusPlace.name}. Troque a unidade para resolver outro contexto.`
+                      : "Primeiro as tarefas acionaveis do papel atual, depois workspaces e contexto."}
+                  </p>
                 </div>
-                <strong>{workTodayCards.length ? countLabel(workTodayCards.length, "acao em foco", "acoes em foco") : "Sem fila"}</strong>
+                <div className="management-focus-controls">
+                  {workTodayPersona === "manager" && orderedManagedPlaces.length > 1 ? (
+                    <label className="management-focus-select">
+                      <span>Unidade em foco</span>
+                      <select
+                        value={activeManagementFocusPlaceId}
+                        onChange={(event) => setSelectedManagementFocusPlaceId(event.target.value)}
+                      >
+                        {orderedManagedPlaces.map((place) => {
+                          const summary = summariesByPlace[place.id];
+                          const total = summary ? pendingTotal(summary) : 0;
+                          return (
+                            <option key={`management-focus:${place.id}`} value={place.id}>
+                              {place.name}{total ? ` - ${total} pend.` : " - em dia"}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </label>
+                  ) : null}
+                  <strong>{workTodayCards.length ? countLabel(workTodayCards.length, "acao em foco", "acoes em foco") : "Sem fila"}</strong>
+                </div>
               </div>
               {workTodayCards.length ? (
                 <div className="management-today-grid">
@@ -1547,13 +1590,21 @@ export function ManagementHubPage({ user, profile }: Props) {
                         ) : null}
                       </div>
 
-                      <div className="management-row-modules">
-                        {moduleShortcuts.map((module) => (
-                          <button className="quiet" key={`${place.id}:${module}`} onClick={() => navigate(buildPlaceAdminPath(place.id, module))}>
-                            {PLACE_MANAGEMENT_MODULE_LABELS[module]}
-                          </button>
-                        ))}
-                      </div>
+                      {moduleShortcuts.length ? (
+                        <details className="management-row-more">
+                          <summary>
+                            <span>Mais areas do local</span>
+                            <strong>{moduleShortcuts.map((module) => PLACE_MANAGEMENT_MODULE_LABELS[module]).join(" | ")}</strong>
+                          </summary>
+                          <div className="management-row-modules">
+                            {moduleShortcuts.map((module) => (
+                              <button className="quiet" key={`${place.id}:${module}`} onClick={() => navigate(buildPlaceAdminPath(place.id, module))}>
+                                {PLACE_MANAGEMENT_MODULE_LABELS[module]}
+                              </button>
+                            ))}
+                          </div>
+                        </details>
+                      ) : null}
                     </article>
                   );
                 })}

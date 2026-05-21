@@ -232,6 +232,17 @@ type GenerateRoundRow = {
   matches_created: number;
 };
 
+function isLeagueGenerateRoundRpcAmbiguity(error: unknown): boolean {
+  const message = error && typeof error === "object" && "message" in error ? String((error as { message?: unknown }).message) : String(error ?? "");
+  return /column reference "class_id" is ambiguous/i.test(message);
+}
+
+function addDaysIso(baseIso: string | null | undefined, days: number): string {
+  const base = baseIso ? new Date(baseIso) : new Date();
+  const time = Number.isNaN(base.getTime()) ? Date.now() : base.getTime();
+  return new Date(time + Math.max(1, days) * 24 * 60 * 60 * 1000).toISOString();
+}
+
 type CreateLeagueClassInput = {
   categoryName: string;
   className: string;
@@ -844,12 +855,131 @@ export async function generateNextLeagueRound(input: {
     p_season_id: input.seasonId,
     p_class_id: input.classId || null,
   });
-  if (error) throw new Error(error.message);
+  if (error) {
+    if (isLeagueGenerateRoundRpcAmbiguity(error)) {
+      return generateNextLeagueRoundDirect(input);
+    }
+    throw new Error(error.message);
+  }
   return ((data ?? []) as GenerateRoundRow[]).map((row) => ({
     roundId: row.round_id,
     classId: row.class_id,
     matchesCreated: Number(row.matches_created || 0),
   }));
+}
+
+async function generateNextLeagueRoundDirect(input: {
+  leagueId: string;
+  seasonId: string;
+  classId?: string | null;
+}): Promise<Array<{ roundId: string; classId: string; matchesCreated: number }>> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const leagueRes = await supabase
+    .from("leagues")
+    .select("id,league_type,match_format,no_ad_enabled,tie_break_rule,result_deadline_days,tolerance_days,round_interval_days")
+    .eq("id", input.leagueId)
+    .maybeSingle();
+  if (leagueRes.error || !leagueRes.data) throw new Error(leagueRes.error?.message || "Liga nao encontrada.");
+
+  let classQuery = supabase
+    .from("league_classes")
+    .select("id,level_order")
+    .eq("season_id", input.seasonId)
+    .order("level_order", { ascending: true });
+  if (input.classId) classQuery = classQuery.eq("id", input.classId);
+  const classRes = await classQuery;
+  if (classRes.error) throw new Error(classRes.error.message);
+
+  const out: Array<{ roundId: string; classId: string; matchesCreated: number }> = [];
+  const deadlineDays = Math.max(1, Number(leagueRes.data.result_deadline_days || 14));
+  const toleranceDays = Math.max(0, Number(leagueRes.data.tolerance_days || 7));
+  const intervalDays = Math.max(1, Number(leagueRes.data.round_interval_days || 14));
+
+  for (const cls of (classRes.data || []) as Array<{ id: string; level_order: number | null }>) {
+    const previousRound = await supabase
+      .from("league_rounds")
+      .select("round_number,starts_at")
+      .eq("season_id", input.seasonId)
+      .eq("class_id", cls.id)
+      .order("round_number", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (previousRound.error) throw new Error(previousRound.error.message);
+
+    const nextRoundNumber = Number(previousRound.data?.round_number || 0) + 1;
+    const startsAt = previousRound.data?.starts_at ? addDaysIso(previousRound.data.starts_at, intervalDays) : new Date().toISOString();
+    const endsAt = addDaysIso(startsAt, deadlineDays);
+    const toleranceEndsAt = addDaysIso(endsAt, toleranceDays || 1);
+
+    const roundRes = await supabase
+      .from("league_rounds")
+      .insert({
+        league_id: input.leagueId,
+        season_id: input.seasonId,
+        class_id: cls.id,
+        round_number: nextRoundNumber,
+        starts_at: startsAt,
+        ends_at: endsAt,
+        tolerance_ends_at: toleranceEndsAt,
+        status: "open",
+      })
+      .select("id")
+      .single();
+    if (roundRes.error || !roundRes.data) throw new Error(roundRes.error?.message || "Falha ao criar rodada da liga.");
+
+    const playerRes = await supabase
+      .from("league_players")
+      .select("id,ranking_points,wins,sets_for,sets_against,games_for,games_against,matches_played,display_name")
+      .eq("league_id", input.leagueId)
+      .eq("season_id", input.seasonId)
+      .eq("class_id", cls.id)
+      .eq("status", "active")
+      .order("ranking_points", { ascending: false })
+      .order("wins", { ascending: false })
+      .order("display_name", { ascending: true });
+    if (playerRes.error) throw new Error(playerRes.error.message);
+
+    const players = (playerRes.data || []) as Array<{ id: string }>;
+    let matchesCreated = 0;
+    for (let i = 0; i + 1 < players.length; i += 2) {
+      const matchRes = await supabase
+        .from("league_matches")
+        .insert({
+          league_id: input.leagueId,
+          season_id: input.seasonId,
+          class_id: cls.id,
+          round_id: roundRes.data.id,
+          mode: leagueRes.data.league_type || "simples",
+          status: "aguardando_organizacao",
+          format_snapshot: {
+            match_format: leagueRes.data.match_format,
+            no_ad_enabled: leagueRes.data.no_ad_enabled,
+            tie_break_rule: leagueRes.data.tie_break_rule,
+          },
+          source: "automatic",
+        })
+        .select("id")
+        .single();
+      if (matchRes.error || !matchRes.data) throw new Error(matchRes.error?.message || "Falha ao criar partida da liga.");
+
+      const matchPlayers = await supabase.from("league_match_players").insert([
+        { match_id: matchRes.data.id, league_player_id: players[i].id, side: 1, slot: 1 },
+        { match_id: matchRes.data.id, league_player_id: players[i + 1].id, side: 2, slot: 1 },
+      ]);
+      if (matchPlayers.error) throw new Error(matchPlayers.error.message);
+      matchesCreated += 1;
+    }
+
+    const seasonUpdate = await supabase
+      .from("league_seasons")
+      .update({ current_round_number: nextRoundNumber, updated_at: new Date().toISOString() })
+      .eq("id", input.seasonId);
+    if (seasonUpdate.error) throw new Error(seasonUpdate.error.message);
+
+    out.push({ roundId: roundRes.data.id, classId: cls.id, matchesCreated });
+  }
+
+  return out;
 }
 
 export async function loadSeasonRounds(seasonId: string, limit = 6): Promise<LeagueRoundSummary[]> {
@@ -1162,6 +1292,13 @@ export async function applyLeagueSeasonMovements(input: {
     to_class_id: string;
     movement: string;
   }>;
+  const roundUpdate = await supabase
+    .from("league_rounds")
+    .update({ status: "finished" })
+    .eq("league_id", input.leagueId)
+    .eq("season_id", input.seasonId)
+    .neq("status", "finished");
+  if (roundUpdate.error) throw new Error(roundUpdate.error.message);
   return rows.map((row) => ({
     leaguePlayerId: row.league_player_id,
     fromClassId: row.from_class_id,

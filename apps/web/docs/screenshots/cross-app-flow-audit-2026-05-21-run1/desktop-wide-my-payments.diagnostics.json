@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "my-payments",
+  "hash": "#/meus-pagamentos",
+  "screenshot": "desktop-wide-my-payments.png",
+  "events": []
+}

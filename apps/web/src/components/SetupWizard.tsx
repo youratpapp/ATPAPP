@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from "react";
 
 export type SetupWizardStep = {
+  blockedHint?: ReactNode;
   canContinue?: boolean;
   content: ReactNode;
   detail?: ReactNode;
@@ -67,7 +68,10 @@ export function SetupWizard({
         ))}
       </nav>
 
-      <section className="setup-wizard-body">{activeStep.content}</section>
+      <section className="setup-wizard-body">
+        {activeStep.content}
+        {!canContinue && activeStep.blockedHint ? <p className="feedback error">{activeStep.blockedHint}</p> : null}
+      </section>
 
       <footer className="setup-wizard-actions">
         <button className="ghost" onClick={onCancel} disabled={busy} type="button">

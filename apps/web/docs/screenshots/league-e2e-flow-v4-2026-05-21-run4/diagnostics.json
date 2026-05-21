@@ -1,0 +1,140 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T03:50:24.968Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "email": "jogador011@demo.atp.local",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz",
+      "status": "pending"
+    },
+    {
+      "email": "jogador012@demo.atp.local",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto",
+      "status": "pending"
+    },
+    {
+      "email": "jogador013@demo.atp.local",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida",
+      "status": "pending"
+    },
+    {
+      "email": "jogador014@demo.atp.local",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique",
+      "status": "pending"
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "01-ligas-organizando-antes-criar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/01-desktop-1366-01-ligas-organizando-antes-criar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "02-modal-liga-basico",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/02-desktop-1366-02-modal-liga-basico.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "03-modal-liga-jogadores",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/03-desktop-1366-03-modal-liga-jogadores.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "04-modal-liga-formato",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/04-desktop-1366-04-modal-liga-formato.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "05-modal-liga-agenda",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/05-desktop-1366-05-modal-liga-agenda.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "06-modal-liga-revisar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/06-desktop-1366-06-modal-liga-revisar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "07-liga-criada-visao-owner",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/07-desktop-1366-07-liga-criada-visao-owner.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/066fe787-5784-4968-9484-4c1845bb160d"
+    },
+    {
+      "name": "08-liga-inscricoes-pendentes",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/08-desktop-1366-08-liga-inscricoes-pendentes.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/066fe787-5784-4968-9484-4c1845bb160d?tab=jogadores"
+    },
+    {
+      "name": "09-liga-inscricoes-aprovadas",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/09-desktop-1366-09-liga-inscricoes-aprovadas.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/066fe787-5784-4968-9484-4c1845bb160d?tab=jogadores"
+    },
+    {
+      "name": "10-liga-antes-gerar-rodada",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/10-desktop-1366-10-liga-antes-gerar-rodada.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/066fe787-5784-4968-9484-4c1845bb160d"
+    },
+    {
+      "name": "11-liga-rodada-gerada",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/11-desktop-1366-11-liga-rodada-gerada.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/066fe787-5784-4968-9484-4c1845bb160d"
+    },
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/league-e2e-flow-v4-2026-05-21-run4/12-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ligas/066fe787-5784-4968-9484-4c1845bb160d"
+    }
+  ],
+  "league": {
+    "id": "066fe787-5784-4968-9484-4c1845bb160d",
+    "name": "QA Liga V4 035033",
+    "createdAt": "2026-05-21T03:51:04.713Z"
+  },
+  "completed": false,
+  "error": "Error: Rodada gerada sem partidas no banco.\n    at generateRoundThroughUi (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/league-e2e-flow-audit.mjs:527:36)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async main (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/league-e2e-flow-audit.mjs:730:7)"
+}

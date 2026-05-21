@@ -1,0 +1,86 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T01:16:43.452Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "id": "651a5599-569c-4bab-979a-7abd7f82a5c0",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "55497944-2a37-4358-9fff-c479702af2c8",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "31c528c2-75ae-409e-b07e-cd0b12a898a0",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "fe625b68-b16a-4cb3-bbb7-16a8cb5829c2",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique",
+      "status": "approved",
+      "source": "existing"
+    }
+  ],
+  "resultAttempts": [],
+  "screenshots": [
+    {
+      "name": "08-organizacao-antes-encerrar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run5-continue/01-desktop-1366-08-organizacao-antes-encerrar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/organizacao"
+    },
+    {
+      "name": "09-inscricoes-encerradas",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run5-continue/02-desktop-1366-09-inscricoes-encerradas.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/organizacao"
+    },
+    {
+      "name": "10-jogos-gerados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run5-continue/03-desktop-1366-10-jogos-gerados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/organizacao"
+    },
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run5-continue/04-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5173/#/inicio"
+    }
+  ],
+  "tournament": {
+    "id": "cd01cf82-31e3-4682-a64e-7f4db9d75387",
+    "name": "QA Fluxo V4 010927",
+    "status": "registration_open",
+    "continuedAt": "2026-05-21T01:16:52.040Z"
+  },
+  "completed": false,
+  "error": "Error: preencher email: {\"ok\":false,\"reason\":\"not-found\",\"labelPattern\":\"e-mail|email\"}\n    at must (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:268:11)\n    at async login (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:277:3)\n    at async submitPlayerResultThroughUi (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:495:3)\n    at async main (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:621:5)"
+}

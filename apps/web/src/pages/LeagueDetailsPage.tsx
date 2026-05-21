@@ -2205,7 +2205,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     <input
                       className="match-score-input"
                       inputMode="numeric"
-                      placeholder="1"
+                      placeholder="0"
                       aria-label={`${label} games lado 1`}
                       value={row.side1}
                       disabled={form.isWo}
@@ -2218,7 +2218,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                     <input
                       className="match-score-input"
                       inputMode="numeric"
-                      placeholder="2"
+                      placeholder="0"
                       aria-label={`${label} games lado 2`}
                       value={row.side2}
                       disabled={form.isWo}
@@ -2616,7 +2616,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     if (!standingsSummary.players) generationBlockers.push("Aprove jogadores ativos.");
     if (registrationStats.pending > 0) generationBlockers.push("Resolva inscrições pendentes antes de gerar a rodada.");
     if (unfinishedLeagueMatchItems.length > 0) generationBlockers.push("Finalize a rodada pendente antes de gerar a próxima.");
-    if (selectedSeason?.status !== "finished" && !unfinishedLeagueMatchItems.length) {
+    const generatedRounds = Number(selectedSeason?.currentRoundNumber || roundsData.length || 0);
+    const targetRounds = Number(league.roundsTotal || 0);
+    const reachedSeasonRoundTarget = targetRounds > 0 && generatedRounds >= targetRounds;
+    if (selectedSeason?.status !== "finished" && !unfinishedLeagueMatchItems.length && !reachedSeasonRoundTarget) {
       tasks.push({
         id: "generate-round",
         eyebrow: "Proxima rodada",
@@ -3064,6 +3067,18 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       </section>
     );
   };
+  const leagueDisplayStatusLabel = league
+    ? selectedSeason?.status === "finished"
+      ? "Temporada finalizada"
+      : statusLabel(league.status)
+    : null;
+  const leagueDisplayStatusClass = selectedSeason?.status === "finished"
+    ? "finished"
+    : league?.status === "active"
+      ? "live"
+      : league?.status === "finished"
+        ? "finished"
+        : "draft";
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
@@ -3071,7 +3086,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
         <CompetitionHeader
           title={league?.name || "Liga"}
           subtitle={league ? `${typeLabel(league.leagueType)} | ${league.visibility === "public" ? "Publica" : "Privada"}` : "Carregando competicao"}
-          status={league ? statusLabel(league.status) : null}
+          status={leagueDisplayStatusLabel}
           backLabel="Voltar para ligas"
           onBack={() => navigate(leagueBackPath)}
         />
@@ -3103,10 +3118,10 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   <span>Liga</span>
                   <h1>{league.name}</h1>
                   <small>{[typeLabel(league.leagueType), selectedSeason?.name].filter(Boolean).join(" | ") || "Temporada a definir"}</small>
-                  <p className="competition-public-context-note">Área do jogador. Rodada, jogadores e chat ficam separados por aba.</p>
+                  <p className="competition-public-context-note">Sua temporada ativa nesta liga.</p>
                 </div>
-                <span className={`status-badge ${league.status === "active" ? "live" : league.status === "finished" ? "finished" : "draft"}`}>
-                  {statusLabel(league.status)}
+                <span className={`status-badge ${leagueDisplayStatusClass}`}>
+                  {leagueDisplayStatusLabel}
                 </span>
               </div>
 

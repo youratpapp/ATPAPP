@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "profile",
+  "hash": "#/perfil",
+  "screenshot": "desktop-wide-profile.png",
+  "events": []
+}

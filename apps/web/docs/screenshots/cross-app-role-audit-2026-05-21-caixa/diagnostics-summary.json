@@ -1,0 +1,44 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "caixa-vender",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=vender",
+    "screenshot": "mobile-390-caixa-vender.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "caixa-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile-390-caixa-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "caixa-vender",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=vender",
+    "screenshot": "desktop-1366-caixa-vender.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "caixa-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktop-1366-caixa-finance-block.png",
+    "events": []
+  }
+]

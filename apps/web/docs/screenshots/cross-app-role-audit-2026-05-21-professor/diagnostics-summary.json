@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "prof-hoje",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "screenshot": "mobile-390-prof-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "prof-alunos",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+    "screenshot": "mobile-390-prof-alunos.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "prof-finance-block",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+    "screenshot": "mobile-390-prof-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "prof-hoje",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "screenshot": "desktop-1366-prof-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "prof-alunos",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+    "screenshot": "desktop-1366-prof-alunos.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "prof-finance-block",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+    "screenshot": "desktop-1366-prof-finance-block.png",
+    "events": []
+  }
+]

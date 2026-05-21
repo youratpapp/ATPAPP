@@ -1,0 +1,197 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-21T01:44:55.364Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "id": "651a5599-569c-4bab-979a-7abd7f82a5c0",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "55497944-2a37-4358-9fff-c479702af2c8",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "31c528c2-75ae-409e-b07e-cd0b12a898a0",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida",
+      "status": "approved",
+      "source": "existing"
+    },
+    {
+      "id": "fe625b68-b16a-4cb3-bbb7-16a8cb5829c2",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique",
+      "status": "approved",
+      "source": "existing"
+    }
+  ],
+  "resultAttempts": [
+    {
+      "type": "apply-submitted-result",
+      "ok": true,
+      "text": "Aplicar B 6/2"
+    },
+    {
+      "ok": false,
+      "reason": "no-pending-editable-match",
+      "cards": [
+        "Jogo 1 Lucas Yamamoto x Mariana Almeida Pendente 2026-06-11 | 08:00-09:00 | Quadra 2 Aguardando presenca Cobrar confirma",
+        "Jogo 2 Nicolas Henrique x Karina Queiroz Finalizado Jogador 2026-06-11 | 08:00-09:00 | Quadra 1 Partida finalizada Confe",
+        "Jogo 1 A definir x Nicolas Henrique Pendente 2026-06-11 | 09:00-10:00 | Quadra 2 Aguardando presenca Cobrar confirmacao "
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "10-jogos-ja-gerados-continuacao",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/01-desktop-1366-10-jogos-ja-gerados-continuacao.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/organizacao"
+    },
+    {
+      "name": "11a-player-login-jogos",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/02-desktop-1366-11a-player-login-jogos.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/jogos"
+    },
+    {
+      "name": "11b-player-match-room",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/03-desktop-1366-11b-player-match-room.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/jogos"
+    },
+    {
+      "name": "11c-player-result-submitted",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/04-desktop-1366-11c-player-result-submitted.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/jogos"
+    },
+    {
+      "name": "11d-owner-after-player-result",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/05-desktop-1366-11d-owner-after-player-result.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/jogos"
+    },
+    {
+      "name": "11-jogos-antes-resultados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/06-desktop-1366-11-jogos-antes-resultados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/jogos"
+    },
+    {
+      "name": "12-jogos-com-resultados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/07-desktop-1366-12-jogos-com-resultados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/jogos"
+    },
+    {
+      "name": "13-torneio-finalizado-organizacao",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/08-desktop-1366-13-torneio-finalizado-organizacao.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/organizacao"
+    },
+    {
+      "name": "14-classificacao-final",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/09-desktop-1366-14-classificacao-final.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/classificacao"
+    },
+    {
+      "name": "15-mobile-organizacao-final",
+      "viewport": "mobile-390",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/10-mobile-390-15-mobile-organizacao-final.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/classificacao"
+    },
+    {
+      "name": "16-mobile-jogos-final",
+      "viewport": "mobile-390",
+      "file": "docs/screenshots/tournament-e2e-flow-v4-2026-05-20-run8-fixed-complete/11-mobile-390-16-mobile-jogos-final.png",
+      "url": "http://127.0.0.1:5173/#/eventos/cd01cf82-31e3-4682-a64e-7f4db9d75387/jogos"
+    }
+  ],
+  "tournament": {
+    "id": "cd01cf82-31e3-4682-a64e-7f4db9d75387",
+    "name": "QA Fluxo V4 010927",
+    "status": "live",
+    "continuedAt": "2026-05-21T01:45:06.175Z"
+  },
+  "playerResultOpen": {
+    "ok": true,
+    "text": "Informar resultado"
+  },
+  "playerResultSubmit": {
+    "ok": true
+  },
+  "completed": true
+}

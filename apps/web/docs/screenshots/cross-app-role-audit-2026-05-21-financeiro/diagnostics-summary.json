@@ -1,0 +1,44 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "financeiro-receber",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+    "screenshot": "mobile-390-financeiro-receber.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "financeiro-agenda-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+    "screenshot": "mobile-390-financeiro-agenda-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "financeiro-receber",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+    "screenshot": "desktop-1366-financeiro-receber.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "financeiro-agenda-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+    "screenshot": "desktop-1366-financeiro-agenda-block.png",
+    "events": []
+  }
+]

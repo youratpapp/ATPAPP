@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "recepcao-nova-reserva",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=nova-reserva",
+    "screenshot": "mobile-390-recepcao-nova-reserva.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "recepcao-clientes",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+    "screenshot": "mobile-390-recepcao-clientes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "recepcao-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda",
+    "screenshot": "mobile-390-recepcao-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "gestao",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-gestao.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "recepcao-nova-reserva",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=nova-reserva",
+    "screenshot": "desktop-1366-recepcao-nova-reserva.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "recepcao-clientes",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+    "screenshot": "desktop-1366-recepcao-clientes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "recepcao-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda",
+    "screenshot": "desktop-1366-recepcao-finance-block.png",
+    "events": []
+  }
+]
