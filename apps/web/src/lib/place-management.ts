@@ -4,7 +4,7 @@ export type PlaceManagementModule = "dashboard" | "bookings" | "academy" | "clie
 
 export const PLACE_MANAGEMENT_MODULE_LABELS: Record<PlaceManagementModule, string> = {
   dashboard: "Painel",
-  bookings: "Agenda",
+  bookings: "Reservas",
   academy: "Academia",
   clients: "Clientes",
   finance: "Financeiro",

@@ -24035,17 +24035,24 @@ label {
 
 .app-shell--competition .competition-operation-toolbar button,
 .app-shell--competition .competition-operation-state span,
-.app-shell--competition .competition-work-archive summary {
+.app-shell--competition .competition-work-archive summary,
+.app-shell--competition .quick-action {
   background: rgba(12, 27, 45, 0.72);
   border-color: rgba(148, 163, 184, 0.22);
   color: var(--pdark-text-main);
 }
 
 .app-shell--competition .competition-operation-toolbar button:hover,
-.app-shell--competition .competition-operation-toolbar button:focus-visible {
+.app-shell--competition .competition-operation-toolbar button:focus-visible,
+.app-shell--competition .quick-action:hover,
+.app-shell--competition .quick-action:focus-visible {
   background: rgba(18, 58, 46, 0.9);
   border-color: rgba(74, 222, 128, 0.34);
   color: #ffffff;
+}
+
+.app-shell--competition .quick-action .qa-icon {
+  color: #4ade80;
 }
 
 .app-shell--competition .screen-state {
@@ -29585,7 +29592,7 @@ body:has(.app-shell--competition),
 
 .app-shell--competition .events-page-header.mode-discover h1::before {
   color: #ffffff;
-  content: "Descobrir competicoes";
+  content: "Competir";
   display: block;
   font-size: 3.2rem;
   line-height: 1;
@@ -29596,7 +29603,7 @@ body:has(.app-shell--competition),
 
 .app-shell--competition .events-page-header.mode-discover .page-intro::before {
   color: rgba(203, 213, 225, 0.82);
-  content: "Encontre torneios, ligas e proximos desafios sem misturar com a sua fila de jogador.";
+  content: "Encontre torneios, ligas e proximos desafios para jogar. A operacao de eventos fica no modo Trabalho.";
   display: block;
   font-size: 1rem;
   line-height: 1.4;
@@ -31039,7 +31046,7 @@ body:has(.app-shell--competition),
 
 .app-shell--competition .events-page-header.mode-discover > div::after {
   color: rgba(203, 213, 225, 0.82);
-  content: "Encontre torneios, ligas e proximos desafios sem misturar com a sua fila de jogador.";
+  content: "Encontre torneios, ligas e proximos desafios para jogar. A operacao de eventos fica no modo Trabalho.";
   display: block;
   font-size: 1rem;
   font-weight: 850;

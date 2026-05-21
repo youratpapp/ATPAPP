@@ -1,0 +1,142 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "trabalho-hoje",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-trabalho-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "reservas-local",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile390-reservas-local.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "competicoes-trabalho",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "mobile390-competicoes-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "torneios-trabalho",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "mobile390-torneios-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "perfil-multipapel",
+    "hash": "#/perfil",
+    "screenshot": "mobile390-perfil-multipapel.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "trabalho-hoje",
+    "hash": "#/gestao",
+    "screenshot": "mobile430-trabalho-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "reservas-local",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile430-reservas-local.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "competicoes-trabalho",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "mobile430-competicoes-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "torneios-trabalho",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "mobile430-torneios-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "perfil-multipapel",
+    "hash": "#/perfil",
+    "screenshot": "mobile430-perfil-multipapel.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "trabalho-hoje",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-trabalho-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "reservas-local",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktop1366-reservas-local.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "competicoes-trabalho",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "desktop1366-competicoes-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "torneios-trabalho",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "desktop1366-torneios-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "perfil-multipapel",
+    "hash": "#/perfil",
+    "screenshot": "desktop1366-perfil-multipapel.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "trabalho-hoje",
+    "hash": "#/gestao",
+    "screenshot": "desktopwide-trabalho-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "reservas-local",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktopwide-reservas-local.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "competicoes-trabalho",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "desktopwide-competicoes-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "torneios-trabalho",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "desktopwide-torneios-trabalho.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "perfil-multipapel",
+    "hash": "#/perfil",
+    "screenshot": "desktopwide-perfil-multipapel.png",
+    "events": []
+  }
+]

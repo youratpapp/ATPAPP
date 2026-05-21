@@ -15,6 +15,7 @@ import { isRealMatch } from "../lib/tournament-lifecycle";
 import { normalizePlayerName } from "../lib/tournament-page-utils";
 import { listLegacyClassesFromTournamentData } from "../tournament-engine/state-adapter";
 import type { GroupMatch, KnockoutMatch } from "../tournament-engine/core";
+import { useUserMode } from "../lib/user-mode-context";
 
 type Props = {
   user: User;
@@ -299,6 +300,7 @@ async function loadRecentLeagueMatches(user: User, leagues: LeagueSummary[]): Pr
 
 export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const navigate = useNavigate();
+  const { setMode } = useUserMode();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [editing, setEditing] = useState(false);
@@ -484,9 +486,6 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
   const playingCount = playingTournaments.length + playingLeagues.length;
   const organizingCount = organizingTournaments.length + organizingLeagues.length;
   const latestPlaying = [...playingTournaments, ...playingLeagues]
-    .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
-    .slice(0, 2);
-  const latestOrganizing = [...organizingTournaments, ...organizingLeagues]
     .sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""))
     .slice(0, 2);
   const playerActivityPath =
@@ -1229,26 +1228,23 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
         <div className="profile-rows-card">
           {organizingCount > 0 ? (
             <div className="profile-account-workspace">
-              <p className="profile-activity-heading">Area profissional</p>
-              <button className="profile-row tappable" onClick={() => navigate(organizerActivityPath)}>
+              <p className="profile-activity-heading">Trabalho disponivel</p>
+              <button
+                className="profile-row tappable"
+                onClick={() => {
+                  setMode("work");
+                  navigate(organizerActivityPath);
+                }}
+              >
                 <span className="pr-icon"><CalendarIcon /></span>
                 <div className="pr-content">
-                  <p className="pr-label">Eventos que organizo</p>
+                  <p className="pr-label">Abrir Trabalho em competicoes</p>
                   <p className="pr-value" style={{ fontSize: "var(--font-size-sm)", color: "var(--color-text-subtle)" }}>
-                    {organizingCount} competicao{organizingCount === 1 ? "" : "es"} ativa{organizingCount === 1 ? "" : "s"}.
+                    {organizingCount} competicao{organizingCount === 1 ? "" : "es"} ativa{organizingCount === 1 ? "" : "s"}. A operacao fica separada do seu perfil pessoal.
                   </p>
                 </div>
                 <span className="pr-chevron"><ChevronRight /></span>
               </button>
-              {latestOrganizing.length > 0 ? (
-                <div className="profile-account-sublist">
-                  {latestOrganizing.map((item) => (
-                    <button key={`profile-account-org:${item.id}`} onClick={() => navigate(profileCompetitionPath(item))}>
-                      {item.name}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
             </div>
           ) : null}
           <div

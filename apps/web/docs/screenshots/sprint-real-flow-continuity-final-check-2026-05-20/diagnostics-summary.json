@@ -1,0 +1,44 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "trabalho-hoje",
+    "hash": "#/gestao",
+    "screenshot": "mobile390-trabalho-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "reservas-local",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "mobile390-reservas-local.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "competir",
+    "hash": "#/eventos",
+    "screenshot": "mobile390-competir.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "trabalho-hoje",
+    "hash": "#/gestao",
+    "screenshot": "desktop1366-trabalho-hoje.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "reservas-local",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "screenshot": "desktop1366-reservas-local.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "competir",
+    "hash": "#/eventos",
+    "screenshot": "desktop1366-competir.png",
+    "events": []
+  }
+]

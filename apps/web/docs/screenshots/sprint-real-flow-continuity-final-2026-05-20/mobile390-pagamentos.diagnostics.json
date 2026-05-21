@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile390",
+  "route": "pagamentos",
+  "hash": "#/meus-pagamentos",
+  "screenshot": "mobile390-pagamentos.png",
+  "events": []
+}

@@ -224,8 +224,8 @@ Validacao:
 
 - build: `npm.cmd run build` passou;
 - screenshots focados: `docs/screenshots/sprint-flow11-fixes-after-2026-05-20`;
-- screenshots capturados: 19;
-- diagnosticos capturados: 19;
+- screenshots capturados: 35;
+- diagnosticos capturados: 35;
 - console/rede: 0 erros e 0 warnings nos diagnosticos focados.
 
 Rotas/personas rechecadas:

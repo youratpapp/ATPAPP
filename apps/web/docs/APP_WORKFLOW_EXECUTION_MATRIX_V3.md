@@ -41,6 +41,25 @@ Competition OS:
 - `src/lib/tournaments.ts`
 - `src/lib/types.ts`
 
+## Auditoria Complementar - Fluxo Real Do Usuario
+
+Fonte complementar:
+
+- `atp_audit.js`
+- `ATP_Auditoria_UX_2026.docx`
+- complemento obrigatorio de fluxo real do usuario, recebido em 2026-05-20
+
+Achados executaveis que passam a orientar as proximas sprints:
+
+| ID | Area | Risco | Correcao alvo | Arquivos provaveis | Criterio de QA |
+|---|---|---|---|---|---|
+| UX-FLOW-01 | `#/eventos` | transicao silenciosa entre jogador, competir e trabalho | titulo/contexto devem explicar `Competir` no Player App e `Trabalho em competicoes` no modo trabalho | `EventsHubPage`, `BottomNav` | jogador entende que esta competindo; organizador entende que esta no trabalho |
+| UX-FLOW-02 | `#/locais` | label `Jogar` abre pagina com titulo `Locais` | pagina publica deve se apresentar como `Jogar`, com `Locais` como contexto secundario | `PlacesPage` | menu, titulo e CTA contam a mesma historia |
+| UX-FLOW-03 | agendas | `Agenda` pessoal compete com agenda/reservas do local | Player App mantem `Agenda`; trabalho usa `Reservas` quando o assunto e quadra/local | `BottomNav`, modulos de local | pessoa nao confunde agenda pessoal com rotina de recepcao |
+| UX-FLOW-04 | jogador aluno/socio | `Aulas` e `Pagamentos` pessoais escondidos demais | desktop do Player App recebe atalhos diretos para `Aulas` e `Pagamentos`, preservando mobile de 5 itens | `BottomNav`, rotas wrapper existentes | aluno/socio acha aula e pagamento sem abrir terceira camada |
+| UX-FLOW-05 | perfil | `Area profissional` dentro da conta pessoal mistura Player App e Trabalho | perfil pessoal deve explicar que gestao fica no modo `Trabalho`, sem listar competicoes profissionais como se fossem dados pessoais | `ProfilePage` | multi-papel entende fronteira e nao perde caminho de acesso |
+| UX-FLOW-06 | gestao visual | gestao pode parecer app secundario | logo, header, hero, seletor, proporcao e espacamento devem ser comparados com Player App em cada tela alterada | `AppShell`, `BottomNav`, paginas de gestao | screenshots mobile/desktop confirmam mesmo DNA visual |
+
 ## FLOW-00A - Route Persona Permission CTA Matrix
 
 | Rota atual | Superficie futura | Persona principal | Permissoes | CTA primario | Estado vazio | Sem permissao | Risco principal | Alias/redirect | Arquivos provaveis | QA |
@@ -866,8 +885,8 @@ Validacao:
 
 - build: `npm.cmd run build` passou;
 - evidencias: `docs/screenshots/sprint-flow11-fixes-after-2026-05-20`;
-- screenshots focados: 19;
-- diagnosticos focados: 19;
+- screenshots focados: 35;
+- diagnosticos focados: 35;
 - console/rede: 0 erros e 0 warnings.
 
 Rotas preservadas/verificadas:

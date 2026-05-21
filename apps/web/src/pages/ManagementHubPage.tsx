@@ -211,7 +211,7 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: 
   const isAcademyLike = !place || place.productPlan === "academy" || place.productPlan === "club_pro" || place.productPlan === "multi_unit";
   const setupChecklist: SetupChecklistStep[] = [
     {
-      detail: "Libera agenda, reservas e bloqueios.",
+      detail: "Libera reservas, horarios e bloqueios.",
       done: entry.courts.length > 0,
       label: "Cadastrar quadra",
       module: "bookings",
@@ -273,7 +273,7 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: 
       ? { detail: "Converter lista de espera em horario real.", label: "Chamar espera", module: "bookings" as PlaceManagementModule, viewSegment: "espera" }
       : null,
     modules.includes("bookings") && todayBookings > 0
-      ? { detail: "Ver ocupacao e proximos horarios.", label: "Ver agenda", module: "bookings" as PlaceManagementModule, viewSegment: "hoje" }
+      ? { detail: "Ver ocupacao e proximos horarios.", label: "Ver reservas", module: "bookings" as PlaceManagementModule, viewSegment: "hoje" }
       : null,
     modules.includes("bookings") && entry.courts.length > 0
       ? { detail: "Buscar horario e criar uma reserva.", label: "Criar reserva", module: "bookings" as PlaceManagementModule, viewSegment: "nova-reserva" }
@@ -403,13 +403,13 @@ function operatorProfileFor(access: ReturnType<typeof placeResourceAccess>, plac
   if (access.staffRole === "frontdesk" && !access.canManagePlace) {
     return {
       moduleShortcuts: FRONTDESK_PRIORITY_MODULES,
-      primaryLabel: "Abrir agenda",
+      primaryLabel: "Abrir reservas",
       primaryModule: "bookings" as PlaceManagementModule,
       primaryView: "calendario",
       secondaryLabel: "Aulas",
       secondaryModule: "academy" as PlaceManagementModule,
       secondaryView: "hoje",
-      subtitle: "Recepcao e agenda",
+      subtitle: "Recepcao e reservas",
     };
   }
   if (access.staffRole === "finance" && !access.canManagePlace) {
@@ -706,13 +706,13 @@ export function ManagementHubPage({ user, profile }: Props) {
     }
     if (summary.todayBookings) return `${summary.todayBookings} reserva(s) programada(s) hoje`;
     if (summary.setupGaps.length) return "Base administrativa pendente em Ajustes";
-    return access.staffRole === "frontdesk" && !access.canManagePlace ? "Sem pendencias de atendimento agora" : "Agenda livre para hoje";
+    return access.staffRole === "frontdesk" && !access.canManagePlace ? "Sem pendencias de atendimento agora" : "Reservas sem alerta critico hoje";
   }
 
   function aggregateGoodStateText(): string {
     if (!places.length && competitionWorkspaceCount) return "Use os cards de competicao para operar torneios e ligas sem misturar com a area de jogador.";
     if (isCoachOnlyHub) return "Nenhuma aula pendente agora. Use Aulas, Turmas e Alunos para revisar sua rotina.";
-    if (isFrontdeskOnlyHub) return "Nenhuma pendencia critica agora. Use Agenda e Aulas para revisar o atendimento do dia.";
+    if (isFrontdeskOnlyHub) return "Nenhuma pendencia critica agora. Use Reservas e Aulas para revisar o atendimento do dia.";
     if (isFinanceOnlyHub) return "Nenhuma cobranca critica agora. Use Recebiveis e Despesas para revisar o caixa.";
     if (isCashierOnlyHub) return "Nenhuma pendencia critica agora. Use Registrar venda e Estoque para revisar a cantina.";
     return "Nenhuma pendencia critica agora. Use os atalhos dos locais para revisar a operacao ou abra Ajustes quando precisar mexer na base administrativa.";
@@ -842,11 +842,11 @@ export function ManagementHubPage({ user, profile }: Props) {
       return [
         {
           cta: "Abrir reservas",
-          detail: aggregate.todayBookings ? "Reservas do dia organizadas para atendimento rapido." : "Sem reservas para hoje; use a agenda para criar ou revisar horarios.",
+          detail: aggregate.todayBookings ? "Reservas do dia organizadas para atendimento rapido." : "Sem reservas para hoje; use Reservas para criar ou revisar horarios.",
           eyebrow: "Reservas de hoje",
           id: "frontdesk-bookings",
           path: firstPath("bookings", "hoje"),
-          title: aggregate.todayBookings ? "Agenda com movimento" : "Agenda livre",
+          title: aggregate.todayBookings ? "Reservas com movimento" : "Reservas livres",
           tone: cardTone(aggregate.todayBookings),
           value: countValue(aggregate.todayBookings),
         },
@@ -1061,7 +1061,7 @@ export function ManagementHubPage({ user, profile }: Props) {
     return [
       {
         cta: firstPending ? "Resolver agora" : "Abrir operacao",
-        detail: pendingTotal(aggregate) ? "Fila consolidada por area para atacar o que trava a rotina." : "Nenhuma pendencia critica agora; revise workspaces ou agenda do dia.",
+        detail: pendingTotal(aggregate) ? "Fila consolidada por area para atacar o que trava a rotina." : "Nenhuma pendencia critica agora; revise workspaces ou reservas do dia.",
         eyebrow: "Pendencias criticas",
         id: "manager-critical",
         path: firstPending ? firstPath(firstPending.module) : "/gestao",
@@ -1070,8 +1070,8 @@ export function ManagementHubPage({ user, profile }: Props) {
         value: countValue(pendingTotal(aggregate)),
       },
       {
-        cta: "Abrir agenda",
-        detail: aggregate.todayBookings || aggregate.waitlist || aggregate.pendingBookings ? "Reservas, fila e aprovacoes do dia." : "Agenda sem alerta critico agora.",
+        cta: "Abrir reservas",
+        detail: aggregate.todayBookings || aggregate.waitlist || aggregate.pendingBookings ? "Reservas, fila e aprovacoes do dia." : "Reservas sem alerta critico agora.",
         eyebrow: "Reservas",
         id: "manager-bookings",
         path: firstPath("bookings", "hoje"),

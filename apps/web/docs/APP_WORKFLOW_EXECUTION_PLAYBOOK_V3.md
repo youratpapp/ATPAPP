@@ -847,6 +847,83 @@ Antes de alterar qualquer tela, responder:
 19. Existe solucao mais simples usando wrapper/composicao antes de criar rota nova?
 20. Como testar com screenshot, console e clique real?
 
+## Mandatory Real User Flow Supplement
+
+Este complemento passa a ser regra executiva para qualquer sprint de fluxo. A navegacao deve nascer da jornada real, nao da arvore interna de modulos.
+
+Antes de alterar menu, pagina, tab, CTA ou card, responder tambem:
+
+1. Qual e a persona principal desta area?
+2. O que ela veio fazer aqui?
+3. A tarefa e diaria, semanal, eventual ou rara?
+4. Qual e o proximo passo natural depois que ela entra?
+5. O usuario precisa visualizar, decidir, executar ou configurar?
+6. A tela continua o fluxo anterior ou interrompe a pessoa?
+7. Algum botao, menu ou titulo quebra continuidade?
+8. Alguma funcao importante esta escondida em camada profunda?
+9. Alguma funcao rara aparece como rotina diaria?
+10. A pessoa conclui sem precisar descobrir onde clicar?
+
+Fluxos obrigatorios que guiam reestruturacao:
+
+| Persona | Comeco | Meio | Fim esperado | Nao pode ver como rotina |
+|---|---|---|---|---|
+| Jogador puro | `Inicio` com proxima acao | reservar, encontrar jogo, competir ou agenda | confirmacao e retorno para agenda/proximo passo | gestao, equipe, financeiro local, ajustes |
+| Aluno | aula evidente em `Inicio`/`Agenda` | professor, turma, horario, quadra, reposicao | aula confirmada ou reposicao solicitada | gestao de turma e financeiro de terceiros |
+| Socio/mensalista | plano/reserva pessoal | reservar com beneficio e ver regras | reserva em agenda e pagamento pessoal claro | financeiro do local |
+| Competitivo | proxima partida ou `Competir` | adversario, regras, chat, resultado | resultado informado ou classificacao acompanhada | ferramentas administrativas indevidas |
+| Organizador | modo `Trabalho`/competicoes organizadas | fase atual, bloqueio, inscritos, jogos, comunicacao | proxima fase destravada | descoberta publica como foco |
+| Professor | `Trabalho Hoje` | aulas de hoje, chamada, faltas, reposicoes | chamada/reposicao registrada | ERP, financeiro, cantina, equipe, ajustes sem permissao |
+| Recepcao | `Trabalho Hoje` | reservas, check-in, cliente, lista de espera | atendimento resolvido | ajustes estruturais como rotina |
+| Financeiro | financeiro do local | vencidos, recebiveis, cobrar, marcar pago | cobranca/pagamento registrado | aulas, cantina e perfil pessoal competindo |
+| Caixa | venda rapida | selecionar produtos, finalizar, estoque baixo | venda concluida | recebiveis amplos e configuracao de produto acima da venda |
+| Gestor | `Trabalho Hoje` | pendencias criticas por area | maior bloqueio aberto/resolvido | lista infinita de modulos |
+| Multi-papel | seletor `Jogador / Trabalho` | troca de contexto explicita | volta ao fluxo anterior sem misturar tarefas | CTAs pessoais e profissionais na mesma primeira dobra |
+
+Regra de continuidade:
+
+- todo fluxo precisa de comeco, meio e fim;
+- toda acao deve levar ao proximo passo natural;
+- toda tela de sucesso deve oferecer proximo passo;
+- todo detalhe deve permitir voltar sem perder contexto;
+- tarefa diaria aparece antes de pendencias, historico e configuracao;
+- configuracao rara, backup, reset, equipe, permissoes e acoes destrutivas ficam fora da rotina.
+
+Consistencia visual obrigatoria entre `Player App` e `Management OS`:
+
+- logo com mesma proporcao, respiro, nitidez e alinhamento;
+- header com hierarquia equivalente;
+- hero de gestao com qualidade estrutural comparavel ao jogador: titulo, contexto, CTA, pendencias, respiro e proporcao premium;
+- cards com ritmo, densidade e espacamento coerentes;
+- seletor `Jogador / Trabalho` consistente em posicao, tamanho, estado ativo, hover/focus e comportamento mobile/desktop;
+- gestao nao pode parecer painel legado, ERP generico ou app secundario.
+
+Checklist adicional por area alterada:
+
+1. O fluxo ficou mais direto?
+2. A funcao principal ficou mais facil de encontrar?
+3. Alguma funcao foi perdida?
+4. Alguma funcao importante ficou escondida?
+5. Alguma funcao rara continua aparecendo demais?
+6. A nomenclatura ficou mais clara?
+7. A hierarquia de menus ficou mais logica?
+8. O usuario sabe qual e o proximo passo?
+9. O usuario sabe em qual modo esta?
+10. Gestao esta visualmente no mesmo nivel do Jogador?
+11. Logo, hero e seletor estao consistentes?
+12. Mobile continua confortavel?
+13. Desktop usa bem o espaco?
+14. Permissoes continuam preservadas?
+15. Rotas antigas continuam funcionando?
+
+QA adicional obrigatorio:
+
+- Player App: Home, Jogar, Competir, Agenda, Aulas, Pagamentos e Perfil sem mistura profissional indevida;
+- Management OS: Trabalho Hoje, logo, hero, seletor, reservas, aulas, configuracoes raras fora da rotina e financeiro local separado;
+- Competition OS: contexto claro para jogador, organizador e staff autorizado;
+- mobile 390/430: sem excesso de tiers, CTA cedo, cards confortaveis;
+- desktop 1366/amplo: sidebar sem arvore infinita, hero e cards com proporcao premium, contexto ativo claro.
+
 ## Definition Of Ready For Code
 
 Uma tarefa so entra em sprint de codigo quando tiver:

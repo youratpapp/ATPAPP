@@ -1,0 +1,198 @@
+[
+  {
+    "viewport": "mobile390",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile390-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "jogar",
+    "hash": "#/locais",
+    "screenshot": "mobile390-jogar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "competir",
+    "hash": "#/eventos",
+    "screenshot": "mobile390-competir.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile390-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "aulas",
+    "hash": "#/minhas-aulas",
+    "screenshot": "mobile390-aulas.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "pagamentos",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "mobile390-pagamentos.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile390",
+    "route": "perfil",
+    "hash": "#/perfil",
+    "screenshot": "mobile390-perfil.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile430-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "jogar",
+    "hash": "#/locais",
+    "screenshot": "mobile430-jogar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "competir",
+    "hash": "#/eventos",
+    "screenshot": "mobile430-competir.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile430-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "aulas",
+    "hash": "#/minhas-aulas",
+    "screenshot": "mobile430-aulas.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "pagamentos",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "mobile430-pagamentos.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile430",
+    "route": "perfil",
+    "hash": "#/perfil",
+    "screenshot": "mobile430-perfil.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop1366-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "jogar",
+    "hash": "#/locais",
+    "screenshot": "desktop1366-jogar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "competir",
+    "hash": "#/eventos",
+    "screenshot": "desktop1366-competir.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktop1366-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "aulas",
+    "hash": "#/minhas-aulas",
+    "screenshot": "desktop1366-aulas.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "pagamentos",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "desktop1366-pagamentos.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop1366",
+    "route": "perfil",
+    "hash": "#/perfil",
+    "screenshot": "desktop1366-perfil.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktopwide-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "jogar",
+    "hash": "#/locais",
+    "screenshot": "desktopwide-jogar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "competir",
+    "hash": "#/eventos",
+    "screenshot": "desktopwide-competir.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktopwide-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "aulas",
+    "hash": "#/minhas-aulas",
+    "screenshot": "desktopwide-aulas.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "pagamentos",
+    "hash": "#/meus-pagamentos",
+    "screenshot": "desktopwide-pagamentos.png",
+    "events": []
+  },
+  {
+    "viewport": "desktopwide",
+    "route": "perfil",
+    "hash": "#/perfil",
+    "screenshot": "desktopwide-perfil.png",
+    "events": []
+  }
+]

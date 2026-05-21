@@ -73,6 +73,8 @@ function PersonIcon({ active }: { active: boolean }) {
 type NavItem = {
   activePath?: string;
   activePaths?: string[];
+  desktopActivePaths?: string[];
+  mobileActivePaths?: string[];
   exactActive?: boolean;
   group: NavGroupId;
   path: string;
@@ -81,7 +83,7 @@ type NavItem = {
   visibility?: NavVisibility;
 };
 
-type NavGroupId = "player" | "work" | "place" | "competition" | "admin" | "account";
+type NavGroupId = "player" | "routine" | "work" | "place" | "competition" | "admin" | "account";
 type NavVisibility = "all" | "mobile" | "desktop";
 
 const PLAYER_ITEMS: NavItem[] = [
@@ -93,13 +95,31 @@ const PLAYER_ITEMS: NavItem[] = [
     path: "/agenda",
     label: "Agenda",
     activePaths: ["/agenda", "/minhas-reservas", "/minhas-partidas", "/minhas-aulas", "/meus-pagamentos"],
+    desktopActivePaths: ["/agenda", "/minhas-reservas", "/minhas-partidas"],
     Icon: CalendarIcon,
+  },
+  {
+    group: "routine",
+    path: "/minhas-aulas",
+    label: "Aulas",
+    activePaths: ["/minhas-aulas"],
+    Icon: TrophyIcon,
+    visibility: "desktop",
+  },
+  {
+    group: "routine",
+    path: "/meus-pagamentos",
+    label: "Pagamentos",
+    activePaths: ["/meus-pagamentos"],
+    Icon: ManagementIcon,
+    visibility: "desktop",
   },
   { group: "account", path: "/perfil", label: "Perfil", Icon: PersonIcon },
 ];
 
 const PLAYER_GROUPS: Array<{ id: NavGroupId; label: string }> = [
   { id: "player", label: "Jogar" },
+  { id: "routine", label: "Minha rotina" },
   { id: "account", label: "Conta" },
 ];
 
@@ -113,24 +133,30 @@ const WORK_GROUPS: Array<{ id: NavGroupId; label: string }> = [
 
 function navItem({
   activePaths,
+  desktopActivePaths,
   exactActive = false,
   group,
   Icon,
   label,
+  mobileActivePaths,
   path,
   visibility = "all",
 }: {
   activePaths?: string[];
+  desktopActivePaths?: string[];
   exactActive?: boolean;
   group: NavGroupId;
   Icon: ComponentType<{ active: boolean }>;
   label: string;
+  mobileActivePaths?: string[];
   path: string;
   visibility?: NavVisibility;
 }): NavItem {
   return {
     activePath: path.split("?")[0],
     activePaths,
+    desktopActivePaths,
+    mobileActivePaths,
     exactActive,
     group,
     path,
@@ -173,7 +199,7 @@ function buildDesktopWorkItems(access: WorkspaceAccessSummary, workEntryPath: st
     workItem(workEntryPath, "Hoje", ManagementIcon, [workEntryPath.split("?")[0], "/gestao"], true, "work", "desktop"),
   ];
 
-  if (hasPlaceModule(access, "bookings")) items.push(workItem(placePath(access, "bookings", "hoje"), "Agenda", CalendarIcon, undefined, false, "place", "desktop"));
+  if (hasPlaceModule(access, "bookings")) items.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "desktop"));
   if (hasPlaceModule(access, "academy")) items.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon, undefined, false, "place", "desktop"));
   if (hasPlaceModule(access, "clients")) items.push(workItem(placePath(access, "clients", "rotina"), "Clientes", PersonIcon, undefined, false, "place", "desktop"));
   if (hasPlaceModule(access, "finance")) items.push(workItem(placePath(access, "finance", "recebiveis"), "Financeiro", ManagementIcon, undefined, false, "place", "desktop"));
@@ -260,14 +286,14 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
 
   if (access.primaryWorkRole === "operator") {
     const operatorItems = [todayItem];
-    if (hasPlaceModule(access, "bookings")) operatorItems.push(workItem(placePath(access, "bookings", "hoje"), "Agenda", CalendarIcon, undefined, false, "place", "mobile"));
+    if (hasPlaceModule(access, "bookings")) operatorItems.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
     if (hasPlaceModule(access, "academy")) operatorItems.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
     if (access.hasCompetitionManagement) operatorItems.push(workItem(competitionWorkPath, "Competir", TrophyIcon, ["/eventos"], false, "competition", "mobile"));
     return [...operatorItems.slice(0, 4), workProfileItem()];
   }
 
   const managerItems = [todayItem];
-  if (hasPlaceModule(access, "bookings")) managerItems.push(workItem(placePath(access, "bookings", "hoje"), "Agenda", CalendarIcon, undefined, false, "place", "mobile"));
+  if (hasPlaceModule(access, "bookings")) managerItems.push(workItem(placePath(access, "bookings", "hoje"), "Reservas", CalendarIcon, undefined, false, "place", "mobile"));
   if (hasPlaceModule(access, "academy")) managerItems.push(workItem(placePath(access, "academy", "hoje"), "Aulas", TrophyIcon, undefined, false, "place", "mobile"));
   if (hasPlaceModule(access, "finance")) managerItems.push(workItem(placePath(access, "finance", "recebiveis"), "Financeiro", ManagementIcon, undefined, false, "place", "mobile"));
   return [...managerItems.slice(0, 4), { ...moreItem(), Icon: PersonIcon }];
@@ -286,8 +312,9 @@ function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: U
   return [...buildMobileWorkItems(access, workEntryPath), ...buildDesktopWorkItems(access, workEntryPath)];
 }
 
-function isActiveNavItem(item: NavItem, pathname: string): boolean {
-  const candidates = item.activePaths || [item.activePath || item.path.split("?")[0] || item.path];
+function isActiveNavItem(item: NavItem, pathname: string, isDesktopNav: boolean): boolean {
+  const viewportActivePaths = isDesktopNav ? item.desktopActivePaths : item.mobileActivePaths;
+  const candidates = viewportActivePaths || item.activePaths || [item.activePath || item.path.split("?")[0] || item.path];
   if (item.exactActive) return candidates.some((activePath) => pathname === activePath);
   return candidates.some((activePath) => pathname === activePath || pathname.startsWith(`${activePath}/`));
 }
@@ -345,7 +372,7 @@ export function BottomNav({ user }: { user: User }) {
         <div className={`bottom-nav-group bottom-nav-group-${group.id}`} key={group.id}>
           <span className="bottom-nav-group-label">{group.label}</span>
           {groupItems.map((item) => {
-            const active = isActiveNavItem(item, pathname);
+            const active = isActiveNavItem(item, pathname, isDesktopNav);
             return (
               <button
                 key={`${item.group}:${item.label}:${item.path}`}

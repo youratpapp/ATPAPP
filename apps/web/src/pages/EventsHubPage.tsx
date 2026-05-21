@@ -579,10 +579,10 @@ export function EventsHubPage({ user, profile }: Props) {
     .filter((tournament) => tournament.status === "finished")
     .slice(0, 3);
   const pageTitle =
-    activeMode === "discover" ? "Descobrir competicoes" : activeMode === "organizing" ? "Trabalho em competicoes" : "Competições";
+    activeMode === "discover" ? "Competir" : activeMode === "organizing" ? "Trabalho em competicoes" : "Minhas competicoes";
   const pageIntro =
     activeMode === "discover"
-      ? "Encontre torneios, ligas e proximos desafios sem misturar com a sua fila de jogador."
+      ? "Encontre torneios, ligas e proximos desafios para jogar. A operacao de eventos fica no modo Trabalho."
       : activeMode === "organizing"
       ? "Acompanhe torneios e ligas que voce organiza pela central de trabalho."
       : "Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.";
@@ -613,7 +613,7 @@ export function EventsHubPage({ user, profile }: Props) {
       {loading ? (
         <ScreenState
           kind="loading"
-          title="Carregando competições"
+          title="Carregando competicoes"
           detail="Separando competicoes para jogar, descobrir ou organizar conforme seu perfil."
         />
       ) : null}

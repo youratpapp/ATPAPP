@@ -11741,7 +11741,7 @@ Validacao:
 
 - `npm.cmd run build` executado com sucesso;
 - screenshots focados em `docs/screenshots/sprint-flow11-fixes-after-2026-05-20`;
-- 19 screenshots e 19 diagnosticos;
+- 35 screenshots e 35 diagnosticos;
 - console/rede: 0 erros e 0 warnings.
 
 Ainda nao executado por depender de decisao ou massa de dados:
@@ -11804,6 +11804,79 @@ Ganho:
 - melhor densidade.
 
 ## Bloqueios conhecidos
+
+### [x] SPRINT-2026-05-20 - Complemento obrigatorio de fluxo real e consistencia Player/Trabalho
+
+Status: `[x]` concluido no codigo, docs e QA focado
+
+Fonte primaria:
+
+- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+- auditoria complementar `atp_audit.js` / `ATP_Auditoria_UX_2026.docx`
+- complemento obrigatorio de fluxo real do usuario
+
+Objetivo:
+
+- corrigir pontos onde a navegacao ainda esta organizada por modulo em vez de fluxo;
+- manter todas as funcoes e rotas;
+- reforcar a fronteira entre `Jogador`, `Competition OS` e `Trabalho`;
+- equalizar nomenclatura e consistencia visual entre Player App e Management OS.
+
+Itens deste sprint:
+
+- `[x] UX-FLOW-01`: ajustar contexto de `/eventos` para `Competir` no Player App e trabalho de competicoes no modo profissional;
+- `[x] UX-FLOW-02`: ajustar `/locais` para se apresentar como `Jogar`, nao como pagina generica de locais;
+- `[x] UX-FLOW-03`: renomear agenda operacional de trabalho para `Reservas` quando o contexto for quadra/local, preservando Agenda pessoal;
+- `[x] UX-FLOW-04`: dar atalhos diretos desktop para `Aulas` e `Pagamentos` pessoais sem quebrar bottom nav mobile de 5 itens;
+- `[x] UX-FLOW-05`: tirar listagem operacional de eventos organizados do perfil pessoal, mantendo caminho claro para o modo `Trabalho`;
+- `[x] UX-FLOW-06`: validar por screenshot logo, hero, seletor, espacamento e proporcao entre Player App e Trabalho.
+
+O que nao alterar:
+
+- backend;
+- permissoes;
+- loaders;
+- rotas publicas;
+- `/join`, `/inscricao`, `/t`;
+- regras de negocio de torneios, ligas, reservas, aulas ou financeiro.
+
+Critérios de aceite:
+
+- jogador nao ve caminho administrativo como rotina;
+- aluno/socio encontra aulas e pagamentos pessoais;
+- organizador entende quando esta em Competition OS de trabalho;
+- recepcao/gestor ve `Reservas` como operacao do local, sem confundir com Agenda pessoal;
+- perfil pessoal nao mistura dados profissionais na primeira camada;
+- build passa;
+- screenshots mobile 390, mobile 430, desktop 1366 e desktop amplo sem erros de console.
+
+Entregue:
+
+- complemento de fluxo real adicionado ao `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`;
+- achados `UX-FLOW-01` a `UX-FLOW-06` adicionados ao `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`;
+- Player desktop recebeu grupo `Minha rotina` com `Aulas` e `Pagamentos`, preservando bottom nav mobile com cinco itens;
+- `#/locais` passou a se apresentar como `Jogar`;
+- `#/eventos` em modo descoberta passou a se apresentar como `Competir`, com copy explicando que operacao de eventos fica no modo `Trabalho`;
+- cards claros remanescentes em `Competition OS` foram escurecidos no contexto premium dark;
+- `bookings` no trabalho/local passou a usar label `Reservas`;
+- `Trabalho Hoje` passou a usar `Abrir reservas`, `Ver reservas` e `Reservas` nos CTAs/atalhos operacionais;
+- perfil pessoal multi-papel deixou de listar competicoes organizadas e passou a direcionar para `Trabalho em competicoes` com fronteira explicita.
+
+Validacao:
+
+- `npm.cmd run build` executado com sucesso;
+- capturas completas de jogador em `docs/screenshots/sprint-real-flow-continuity-player-2026-05-20`;
+- capturas completas de trabalho em `docs/screenshots/sprint-real-flow-continuity-work-2026-05-20`;
+- verificacao final em `docs/screenshots/sprint-real-flow-continuity-verify-2026-05-20`;
+- verificacao focada final em `docs/screenshots/sprint-real-flow-continuity-final-check-2026-05-20`;
+- diagnosticos finais: 6 arquivos `.diagnostics.json`, 0 erros de console, 0 page errors, 0 failed requests.
+
+Pendencias:
+
+- QA manual clicando a aba `Conta` do perfil para conferir o CTA `Abrir Trabalho em competicoes` em fluxo real;
+- revisar nomenclatura `Agenda` dentro de configuracoes especificas de torneio/liga, onde o termo ainda pode ser correto por se tratar de agenda da competicao;
+- seguir varredura visual em rotas internas profundas de cada modulo para garantir que o padrao `Reservas` nao deixe resquicios em operacao de local.
 
 ### [x] DATA-01 - Alguns refinamentos dependem de dados reais variados
 

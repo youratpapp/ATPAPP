@@ -3465,7 +3465,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     <main className="page places-page">
       {!isAdminRoute ? (
         <div className="page-header">
-          <h1>Locais</h1>
+          <h1>Jogar</h1>
           <div className="ph-actions">
             {showCreatePlaceAction ? (
               <button className="ph-create-local-btn" onClick={() => setShowCreate(true)}>
