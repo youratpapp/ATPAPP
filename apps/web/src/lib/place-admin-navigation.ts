@@ -60,16 +60,16 @@ export const BOOKING_ADMIN_VIEW_SEGMENTS: Record<BookingManagementView, string> 
 };
 
 export const BOOKING_ADMIN_SEGMENT_TO_VIEW: Record<string, BookingManagementView> = {
-  hoje: "today",
-  today: "today",
+  hoje: "reservations",
+  today: "reservations",
   reservas: "reservations",
   reservations: "reservations",
   calendario: "calendar",
   calendar: "calendar",
   "nova-reserva": "new",
   new: "new",
-  espera: "waitlist",
-  waitlist: "waitlist",
+  espera: "reservations",
+  waitlist: "reservations",
   quadras: "resources",
   ajustes: "resources",
   resources: "resources",
@@ -121,12 +121,12 @@ export const CLIENTS_ADMIN_SEGMENT_TO_VIEW: Record<string, ClientsManagementView
   contatos_comerciais: "leads",
   contacts: "leads",
   leads: "leads",
-  socios: "members",
-  members: "members",
-  pendencias: "requests",
-  requests: "requests",
-  resumo: "overview",
-  overview: "overview",
+  socios: "relationship",
+  members: "relationship",
+  pendencias: "relationship",
+  requests: "relationship",
+  resumo: "relationship",
+  overview: "relationship",
 };
 
 export const FINANCE_ADMIN_VIEW_SEGMENTS: Record<FinanceManagementView, string> = {
@@ -145,6 +145,7 @@ export const FINANCE_ADMIN_SEGMENT_TO_VIEW: Record<string, FinanceManagementView
   despesas: "expenses",
   expenses: "expenses",
   planos: "packages",
+  pacotes: "packages",
   packages: "packages",
   resumo: "overview",
   overview: "overview",
@@ -171,6 +172,7 @@ export const CANTEEN_ADMIN_SEGMENT_TO_VIEW: Record<string, CanteenManagementView
 export const TEAM_ADMIN_VIEW_SEGMENTS: Record<TeamManagementView, string> = {
   overview: "resumo",
   staff: "equipe",
+  coaches: "professores",
   invites: "convites",
   roles: "papeis",
 };
@@ -180,6 +182,8 @@ export const TEAM_ADMIN_SEGMENT_TO_VIEW: Record<string, TeamManagementView> = {
   overview: "overview",
   equipe: "staff",
   staff: "staff",
+  professores: "coaches",
+  coaches: "coaches",
   convites: "invites",
   invites: "invites",
   papeis: "roles",

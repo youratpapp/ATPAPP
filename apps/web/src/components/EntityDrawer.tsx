@@ -5,6 +5,7 @@ import { AppSheet } from "./AppOverlays";
 type EntityDrawerProps = {
   actions?: ReactNode;
   children: ReactNode;
+  className?: string;
   eyebrow?: ReactNode;
   onClose: () => void;
   open: boolean;
@@ -12,7 +13,7 @@ type EntityDrawerProps = {
   title: ReactNode;
 };
 
-export function EntityDrawer({ actions, children, eyebrow, onClose, open, subtitle, title }: EntityDrawerProps) {
+export function EntityDrawer({ actions, children, className = "", eyebrow, onClose, open, subtitle, title }: EntityDrawerProps) {
   return (
     <AppSheet
       open={open}
@@ -20,7 +21,7 @@ export function EntityDrawer({ actions, children, eyebrow, onClose, open, subtit
       title={title}
       subtitle={subtitle}
       onClose={onClose}
-      className="entity-drawer entity-drawer--legacy"
+      className={`entity-drawer entity-drawer--legacy ${className}`.trim()}
       actions={actions ? <ActionBar className="entity-drawer-actions">{actions}</ActionBar> : null}
     >
       <div className="entity-drawer-body">{children}</div>

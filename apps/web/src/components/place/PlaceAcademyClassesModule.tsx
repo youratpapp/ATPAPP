@@ -501,7 +501,7 @@ export function PlaceAcademyClassesModule({
                         {canManageFinance && !paid ? (
                           <>
                             <button type="button" onClick={() => onMarkPaid(selectedClass, enrollment)} disabled={busy}>
-                              Marcar pago
+                              Pagar
                             </button>
                             <button type="button" className="secondary" onClick={() => onCreatePaymentReminder(enrollment, selectedClass)} disabled={busy}>
                               Lembrar

@@ -83,9 +83,12 @@ function compactTextList(items: Array<string | null | undefined | false>): strin
   return items.filter((item): item is string => Boolean(item));
 }
 
-function eventMatchesSlot(item: AgendaItem, slotStart: string): boolean {
-  const slotMinutes = timeToMinutes(slotStart);
-  return timeToMinutes(item.startsAt) <= slotMinutes && timeToMinutes(item.endsAt) > slotMinutes;
+function eventOverlapsSlot(item: AgendaItem, slotStart: string, slotDurationMinutes = 60): boolean {
+  const slotStartMinutes = timeToMinutes(slotStart);
+  const slotEndMinutes = slotStartMinutes + slotDurationMinutes;
+  const itemStartMinutes = timeToMinutes(item.startsAt);
+  const itemEndMinutes = timeToMinutes(item.endsAt);
+  return itemStartMinutes < slotEndMinutes && itemEndMinutes > slotStartMinutes;
 }
 
 export function PlaceBookingCalendarModule({
@@ -214,7 +217,7 @@ export function PlaceBookingCalendarModule({
     return true;
   });
   const visibleCourts = useMemo(() => activeCourts.filter((court) => !courtFilter || court.id === courtFilter), [activeCourts, courtFilter]);
-  const slotStarts = Array.from({ length: 35 }, (_, index) => minutesToTime(6 * 60 + index * 30));
+  const slotStarts = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
   const selectedMobileCourtId = mobileCourtId && visibleCourts.some((court) => court.id === mobileCourtId) ? mobileCourtId : visibleCourts[0]?.id || "";
 
   useEffect(() => {
@@ -304,7 +307,7 @@ export function PlaceBookingCalendarModule({
             >
               <strong>{court.name}</strong>
               {slotStarts.map((slot) => {
-                const slotItems = courtItems.filter((item) => eventMatchesSlot(item, slot));
+                const slotItems = courtItems.filter((item) => eventOverlapsSlot(item, slot));
                 return (
                   <details key={`slot:${court.id}:${slot}`} className={slotItems.length ? "court-calendar-slot occupied" : "court-calendar-slot"}>
                     <summary>

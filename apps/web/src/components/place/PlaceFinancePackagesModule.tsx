@@ -90,7 +90,7 @@ export function PlaceFinancePackagesModule({
               <small>{formatMoneyFromCents(plan.monthlyFeeCents)} / mes | quadras {plan.courtDiscountPercent}% | aulas {plan.academyDiscountPercent}%</small>
             </span>
           ))}
-          {!membershipPlans.length ? <span>Crie planos de socio na Central de Clientes.</span> : null}
+          {!membershipPlans.length ? <span>Crie planos de socio em Financeiro &gt; Planos.</span> : null}
         </WorkspaceList>
       </WorkspaceCard>
       <WorkspaceCard title="Turmas da academia" subtitle="Pacotes mensais por turma" value={academyClasses.length}>

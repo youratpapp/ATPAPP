@@ -189,7 +189,7 @@ export function PlaceAcademyFitModule({
                       </>
                     ) : canManageFinance && request.requestType === "drop_in" && !paid ? (
                       <button onClick={() => onMarkLessonRequestPaid(request)} disabled={busy}>
-                        Marcar pago
+                        Pagar
                       </button>
                     ) : (
                       <span>aprovado</span>

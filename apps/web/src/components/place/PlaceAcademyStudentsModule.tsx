@@ -366,6 +366,7 @@ export function PlaceAcademyStudentsModule({
 
       <EntityDrawer
         open={Boolean(selectedNewStudentClass && newStudentDraft)}
+        className="academy-student-entity-drawer"
         eyebrow="Nova matricula"
         title={selectedNewStudentClass?.title || "Matricular aluno"}
         subtitle={
@@ -518,6 +519,7 @@ export function PlaceAcademyStudentsModule({
 
       <EntityDrawer
         open={Boolean(selectedEnrollment && editDraft)}
+        className="academy-student-entity-drawer"
         eyebrow="Aluno da academia"
         title={selectedEnrollment?.playerName || "Aluno"}
         subtitle={
@@ -645,7 +647,7 @@ export function PlaceAcademyStudentsModule({
                 <div className="academy-student-inline-actions">
                   {!selectedPaid ? (
                     <button type="button" onClick={() => onMarkPaid(selectedClass, selectedEnrollment)} disabled={busy}>
-                      Marcar pago
+                      Pagar
                     </button>
                   ) : null}
                   {!selectedPaid ? (

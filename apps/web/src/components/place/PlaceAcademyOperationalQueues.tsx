@@ -108,7 +108,7 @@ export function PlaceAcademyOperationalQueues({
                 </>
               ) : request.paymentStatus !== "paid" ? (
                 <button onClick={() => onMarkLessonRequestPaid(request)} disabled={busy}>
-                  Marcar pago
+                  Pagar
                 </button>
               ) : null}
             </span>

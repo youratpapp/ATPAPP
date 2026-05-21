@@ -5,6 +5,7 @@ import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { friendlyToastMessage, useToast } from "../components/toast";
 import { ManagementShell } from "../components/management/ManagementShell";
+import { PaymentStubDialog, type PaymentStubDialogPayload } from "../components/PaymentStubDialog";
 import { AcademyWorkspaceShell, type AcademyManagementView } from "../components/place/AcademyWorkspaceShell";
 import { BookingWorkspaceShell, type BookingManagementView } from "../components/place/BookingWorkspaceShell";
 import { CanteenWorkspaceShell, type CanteenManagementView } from "../components/place/CanteenWorkspaceShell";
@@ -33,7 +34,6 @@ import { PlaceBookingDetailedListModule } from "../components/place/PlaceBooking
 import { PlaceBookingOperationalQueues } from "../components/place/PlaceBookingOperationalQueues";
 import { PlaceBookingReservationsModule } from "../components/place/PlaceBookingReservationsModule";
 import { PlaceBookingResourcesModule } from "../components/place/PlaceBookingResourcesModule";
-import { PlaceBookingTodayModule } from "../components/place/PlaceBookingTodayModule";
 import { PlaceBookingWaitlistModule } from "../components/place/PlaceBookingWaitlistModule";
 import { PlaceClientActionQueue } from "../components/place/PlaceClientActionQueue";
 import { PlaceClientRelationshipModule, type PlaceClientReceivable } from "../components/place/PlaceClientRelationshipModule";
@@ -200,6 +200,10 @@ type Props = {
   adminPlaceId?: string;
   user: User;
   profile: Profile | null;
+};
+
+type PaymentDialogState = PaymentStubDialogPayload & {
+  onConfirm: () => Promise<void> | void;
 };
 
 type TabKey = "all" | "following" | "mine";
@@ -822,6 +826,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ kind: "info" | "error" | "success"; text: string } | null>(null);
+  const [paymentDialog, setPaymentDialog] = useState<PaymentDialogState | null>(null);
+
+  const closePaymentDialog = () => {
+    if (!busy) setPaymentDialog(null);
+  };
+
+  const confirmPaymentDialog = async () => {
+    const intent = paymentDialog;
+    if (!intent) return;
+    await intent.onConfirm();
+    setPaymentDialog(null);
+  };
 
   useEffect(() => {
     if (!feedback) return;
@@ -2690,6 +2706,79 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     } finally {
       setBusy(false);
     }
+  };
+
+  const requestMembershipPayment = (plan: PlaceMembershipPlan, membership: PlaceMembership) => {
+    const billingPeriod = currentBillingPeriod();
+    setPaymentDialog({
+      title: "Pagar mensalidade de socio",
+      description: `${membership.memberName} - ${plan.name}`,
+      amountCents: plan.monthlyFeeCents,
+      details: [
+        { label: "Pessoa", value: membership.memberName },
+        { label: "Plano", value: plan.name },
+        { label: "Periodo", value: billingPeriod },
+      ],
+      onConfirm: () => onAdminMarkMembershipPaid(plan, membership),
+    });
+  };
+
+  const requestReceivablePayment = (receivable: PlaceClientReceivable) => {
+    setPaymentDialog({
+      title: "Pagar recebivel",
+      description: receivable.title,
+      amountCents: receivable.amountCents,
+      details: [
+        { label: "Origem", value: receivable.originLabel || receivable.targetType },
+        { label: "Referencia", value: receivable.subtitle || receivable.targetId },
+        { label: "Periodo", value: receivable.billingPeriod || "Sem periodo" },
+      ],
+      onConfirm: () => onMarkReceivablePaid(receivable),
+    });
+  };
+
+  const requestCourtBookingPayment = (booking: CourtBooking, payment: AppPayment) => {
+    setPaymentDialog({
+      title: "Pagar reserva de quadra",
+      description: booking.playerName,
+      amountCents: payment.amountCents,
+      details: [
+        { label: "Quadra", value: booking.courtName || "Quadra" },
+        { label: "Horario", value: new Date(booking.startsAt).toLocaleString("pt-BR") },
+        { label: "Periodo", value: payment.billingPeriod || "Sem periodo" },
+      ],
+      onConfirm: () => onAdminMarkCourtBookingPaid(booking, payment),
+    });
+  };
+
+  const requestEnrollmentPayment = (academyClass: AcademyClass, enrollment: AcademyEnrollment, contract?: AcademyStudentContract | null) => {
+    const billingPeriod = currentBillingPeriod();
+    const target = academyStudentBillingTarget(academyClass, enrollment, contract || null, billingPeriod);
+    setPaymentDialog({
+      title: contract ? "Pagar mensalidade do contrato" : "Pagar mensalidade da turma",
+      description: target.title,
+      amountCents: target.amountCents,
+      details: [
+        { label: "Aluno", value: target.title },
+        { label: "Turma", value: academyClass.title },
+        { label: "Periodo", value: billingPeriod },
+      ],
+      onConfirm: () => onAdminMarkEnrollmentPaid(academyClass, enrollment, contract),
+    });
+  };
+
+  const requestLessonPayment = (placeId: string, request: AcademyLessonRequest) => {
+    setPaymentDialog({
+      title: request.requestType === "drop_in" ? "Pagar aula avulsa" : "Pagar reposicao",
+      description: request.playerName,
+      amountCents: request.amountCents,
+      details: [
+        { label: "Aluno", value: request.playerName },
+        { label: "Data", value: request.requestedOn },
+        { label: "Tipo", value: request.requestType === "drop_in" ? "Aula avulsa" : "Reposicao" },
+      ],
+      onConfirm: () => onMarkLessonRequestPaid(placeId, request),
+    });
   };
 
   const onSaveAcademyClassPrice = async (placeId: string, academyClass: AcademyClass) => {
@@ -5201,7 +5290,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ? `${countLabel(academyCoaches.length, "professor cadastrado", "professores cadastrados")}`
                 : "Cadastre professores para liberar grade, chamada e aulas."
               : "Modulo desativado no plano.",
-            module: "academy" as PlaceManagementModule,
+            module: "team" as PlaceManagementModule,
             viewSegment: "professores",
           },
           {
@@ -5225,8 +5314,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 ? `${countLabel(activeMembershipPlans.length, "plano ativo", "planos ativos")}`
                 : "Crie um plano antes de divulgar mensalistas."
               : "Modulo desativado no plano.",
-            module: "clients" as PlaceManagementModule,
-            viewSegment: "sócios",
+            module: "finance" as PlaceManagementModule,
+            viewSegment: "planos",
           },
           {
             key: "canteen",
@@ -5260,10 +5349,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const isManagementCockpit = isAdminRoute && Boolean(staffRole);
         const isPublicDiscoveryCard = !isAdminRoute;
         const showManagementModule = (module: PlaceManagementModule) => !isPublicDiscoveryCard && (!isManagementCockpit || currentManagementModule === module);
-        const clientsView = (clientsViewByPlace[p.id] || "relationship") as ClientsManagementView;
-        const showClientsWorkspace = isManagementCockpit && (showMembershipTools || (canUseCrm && canManagePlace));
-        const showClientsOverview = !showClientsWorkspace || clientsView === "overview";
-        const showClientsMembers = !showClientsWorkspace || clientsView === "members";
+        const requestedClientsView = (clientsViewByPlace[p.id] || "relationship") as ClientsManagementView;
+        const clientsView: ClientsManagementView =
+          requestedClientsView === "members" || requestedClientsView === "requests" || requestedClientsView === "overview"
+            ? "relationship"
+            : requestedClientsView;
+        const showClientsWorkspace = isManagementCockpit && canUseCrm;
+        const showClientsMembers = !showClientsWorkspace;
         const showClientsLeads = !showClientsWorkspace || clientsView === "leads";
         const showClientsRelationship = !showClientsWorkspace || clientsView === "relationship";
         const crmDrawerContact = crmContacts.find((contact) => contact.id === crmHistoryDrawerContactId) || null;
@@ -5282,13 +5374,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const settingsView = (settingsViewByPlace[p.id] || "overview") as SettingsManagementView;
         const showSettingsWorkspace = isManagementCockpit && canManagePlace;
         const showSettingsDetails = !showSettingsWorkspace;
-        const bookingView = (bookingViewByPlace[p.id] || "today") as BookingManagementView;
+        const requestedBookingView = (bookingViewByPlace[p.id] || "calendar") as BookingManagementView;
+        const bookingView: BookingManagementView =
+          requestedBookingView === "today" || requestedBookingView === "waitlist" ? "reservations" : requestedBookingView;
         const showBookingWorkspace = isManagementCockpit && showBookingTools;
         const showBookingResources = !showBookingWorkspace || bookingView === "resources";
         const showBookingCreate = !showBookingWorkspace || bookingView === "new";
         const showBookingCalendar = !showBookingWorkspace || bookingView === "calendar";
         const showBookingReservations = !showBookingWorkspace || bookingView === "reservations";
-        const showBookingWaitlist = !showBookingWorkspace || bookingView === "waitlist";
+        const showBookingWaitlist = !showBookingWorkspace || bookingView === "reservations";
         const financeView = (financeViewByPlace[p.id] || "receivables") as FinanceManagementView;
         const showFinanceWorkspace = isManagementCockpit && canManageFinance;
         const showFinanceOverview = !showFinanceWorkspace;
@@ -5307,6 +5401,24 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           : ["today", "calendar", "classes", "students", "requests", "coaches", "resources"];
         const requestedAcademyView = (academyViewByPlace[p.id] || (isCoachMode ? "calendar" : "today")) as AcademyManagementView;
         const academyView = academyViews.includes(requestedAcademyView) ? requestedAcademyView : academyViews[0];
+        const academyWorkspaceTitle =
+          academyView === "calendar"
+            ? isCoachMode
+              ? "Agenda do professor"
+              : "Agenda de aulas"
+            : academyView === "classes"
+              ? "Turmas"
+              : academyView === "requests"
+                ? "Pendencias de aulas"
+                : academyView === "students"
+                  ? "Alunos"
+                  : academyView === "coaches"
+                    ? "Professores"
+                    : academyView === "resources"
+                      ? "Ajustes de aulas"
+                      : isCoachMode
+                        ? "Minhas aulas"
+                        : "Aulas";
         const coachAgendaPreview = isCoachMode
           ? visibleAcademyClasses
               .slice()
@@ -5638,7 +5750,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 </div>
                 <OperationalQueue title="Fila de trabalho">
                     {bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => (
-                      <button key={`queue-booking:${booking.id}`} type="button" onClick={() => selectManagementModule(p.id, "bookings")}>
+                      <button key={`queue-booking:${booking.id}`} type="button" onClick={() => selectManagementModule(p.id, "bookings", "reservas")}>
                         Reserva pendente Â· {booking.courtName || "Quadra"} Â· {new Date(booking.startsAt).toLocaleString("pt-BR")}
                       </button>
                     ))}
@@ -5829,6 +5941,30 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       <WorkspaceCard title="Gestao de acesso" subtitle="Adicione pessoas pelo email e acompanhe a equipe abaixo." value={staff.length} />
                       <WorkspaceCard title="Boa pratica" subtitle="Use o menor papel suficiente para cada rotina operacional." value={staff.filter((member) => member.status === "pending").length} />
                     </WorkspaceGrid>
+                  ) : null}
+                  {teamView === "coaches" ? (
+                    <PlaceAcademyCoachesModule
+                      busy={busy}
+                      canManageFinance={canManageFinance}
+                      canManagePlace={canManagePlace}
+                      coachCommissionDraftByCoach={coachCommissionDraftByCoach}
+                      classes={visibleAcademyClasses}
+                      coachDraft={coachDraft}
+                      coachLinkDraftByCoach={coachLinkDraftByCoach}
+                      coaches={displayedCoaches}
+                      enrollments={academyEnrollments}
+                      onChangeCoachCommissionDraft={(coachId, value) => setCoachCommissionDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
+                      onChangeCoachDraft={(draft) => setCoachDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                      onChangeCoachLinkDraft={(coachId, value) => setCoachLinkDraftByCoach((prev) => ({ ...prev, [coachId]: value }))}
+                      onAdjustAgenda={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "resources" }))}
+                      onCreateCoach={() => void onCreateCoach(p)}
+                      onLinkCoachLogin={(coach) => void onLinkCoachLogin(p.id, coach)}
+                      onSaveCoachCommission={(coach) => void onSaveCoachCommission(p.id, coach)}
+                      onUpdateCoach={(coach, patch) => void onUpdateCoachDetails(p.id, coach.id, patch)}
+                      slots={academySlots}
+                      todayClasses={todayClasses}
+                      weekdayLabels={WEEKDAY_LABELS}
+                    />
                   ) : null}
                   {teamView === "roles" ? (
                     <WorkspaceGrid>
@@ -6095,11 +6231,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         }
                       />
                       <WorkspaceRow
-                        title="Professores e horários"
-                        detail={`${countLabel(academyCoaches.length, "professor", "professores")} · ${countLabel(academySlots.length, "horario aberto", "horários abertos")}`}
+                        title="Professores"
+                        detail={`${countLabel(academyCoaches.length, "professor", "professores")} · vinculo de equipe, login e comissao`}
                         actions={
-                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "ajustes"))} disabled={!managementModules.includes("academy")}>
-                            Abrir ajustes
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "team", "professores"))} disabled={!managementModules.includes("team")}>
+                            Abrir equipe
                           </button>
                         }
                       />
@@ -6138,8 +6274,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         title="Ausencia avisada e reposição"
                         detail={`Regra atual: ${academySettings.makeupNoticeHours}h de antecedência · ${academySettings.autoCreateMakeupCreditOnNotice ? "gera credito automatico" : "credito automatico desligado"}`}
                         actions={
-                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "academy", "ajustes"))} disabled={!managementModules.includes("academy")}>
-                            Editar academia
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "settings", "regras"))} disabled={!managementModules.includes("settings")}>
+                            Editar regras
                           </button>
                         }
                       />
@@ -6147,8 +6283,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         title="Lista de espera"
                         detail={`${countLabel(waitingCourtEntries.length, "pessoa aguardando", "pessoas aguardando")} · operacao diaria fica na Agenda`}
                         actions={
-                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "espera"))} disabled={!managementModules.includes("bookings")}>
-                            Ver espera
+                          <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "bookings", "reservas"))} disabled={!managementModules.includes("bookings")}>
+                            Ver reservas
                           </button>
                         }
                       />
@@ -6197,7 +6333,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         </WorkspaceCard>
                       </WorkspaceGrid>
                       <div className="cluster">
-                        <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "clients", "sócios"))} disabled={!managementModules.includes("clients")}>
+                        <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "finance", "planos"))} disabled={!managementModules.includes("finance")}>
                           Editar planos de sócio
                         </button>
                         <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "finance", "pacotes"))} disabled={!managementModules.includes("finance")}>
@@ -6303,71 +6439,32 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   activeView={clientsView}
                   onViewChange={(view) => selectClientsView(p.id, view)}
                 >
-                  {clientsView === "overview" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard
-                        title="Base de relacionamento"
-                        subtitle="Sócios, leads e alunos em acompanhamento"
-                        value={operationalStats.activeMembers}
-                        metrics={[
-                          countLabel(activeMembershipPlans.length, "plano ativo", "planos ativos"),
-                          `${countLabel(operationalStats.pendingMemberships, "solicitacao", "solicitacoes")} de sócio`,
-                          countLabel(operationalStats.crmLeads, "lead aberto", "leads abertos"),
-                        ]}
+                  {showClientsRelationship ? (
+                    <>
+                      <PlaceClientRelationshipModule
+                        busy={busy}
+                        countLabel={countLabel}
+                        followUpContacts={crmFollowUpContacts}
+                        leadContacts={crmLeadContacts}
+                        relationshipSegments={crmRelationshipSegments}
+                        staleContacts={crmStaleContacts}
+                        onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
                       />
-                      <WorkspaceCard
-                        title="Funil comercial"
-                        subtitle="Entrada, contato e conversao"
-                        value={`${crmConversionRate}%`}
-                        metrics={[
-                          `${crmStageCounts.lead} novos`,
-                          `${crmStageCounts.contacted} contatados`,
-                          `${crmStageCounts.converted} convertidos`,
-                        ]}
+                      <PlaceClientActionQueue
+                        academyEnrollments={academyEnrollments}
+                        busy={busy}
+                        compact
+                        contacts={crmContacts}
+                        memberships={memberships}
+                        onActivateEnrollment={(enrollment) => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")}
+                        onActivateMembership={(membership) => void onUpdateMembership(p.id, membership.id, "active")}
+                        onCancelMembership={(membership) => void onUpdateMembership(p.id, membership.id, "cancelled")}
+                        onMarkContactContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
+                        onMarkContactConverted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "converted")}
                       />
-                      <WorkspaceCard title="Atendimento pendente" subtitle="Fila para responder antes que o cliente esfrie" value={pendingClientActions.length}>
-                        <WorkspaceList>
-                          {pendingClientActions.slice(0, 4).map((action) => (
-                            <span key={`client-overview:${action.id}`}>
-                              <strong>{action.title}</strong>
-                              <small>{action.text}</small>
-                            </span>
-                          ))}
-                          {!pendingClientActions.length ? <span>Tudo em dia na central de clientes.</span> : null}
-                        </WorkspaceList>
-                      </WorkspaceCard>
-                    </WorkspaceGrid>
+                    </>
                   ) : null}
-                  {clientsView === "members" ? (
-                    <WorkspaceGrid>
-                      <WorkspaceCard title="Planos ativos" subtitle="Oferta de recorrencia para sócios do local" value={activeMembershipPlans.length}>
-                        <WorkspaceList>
-                          {activeMembershipPlans.slice(0, 4).map((plan) => (
-                            <span key={`plan-summary:${plan.id}`}>
-                              <strong>{plan.name}</strong>
-                              <small>{formatMoneyFromCents(plan.monthlyFeeCents)} / mes | quadras {plan.courtDiscountPercent}% | aulas {plan.academyDiscountPercent}%</small>
-                            </span>
-                          ))}
-                          {!activeMembershipPlans.length ? <span>Cadastre planos para vender recorrencia.</span> : null}
-                        </WorkspaceList>
-                      </WorkspaceCard>
-                      <WorkspaceCard title="Sócios ativos" subtitle="Pagamentos e situacao do mes" value={operationalStats.activeMembers}>
-                        <WorkspaceList>
-                          {memberships.filter((membership) => membership.status === "active").slice(0, 4).map((membership) => {
-                            const paid = paymentsByTarget[paymentMapKey("place_membership", membership.id, currentBillingPeriod())]?.status === "paid";
-                            return (
-                              <span key={`member-summary:${membership.id}`}>
-                                <strong>{membership.memberName}</strong>
-                                <small>{paid ? "Mensalidade paga" : "Mensalidade em aberto"}</small>
-                              </span>
-                            );
-                          })}
-                          {!memberships.some((membership) => membership.status === "active") ? <span>Nenhum sócio ativo ainda.</span> : null}
-                        </WorkspaceList>
-                      </WorkspaceCard>
-                    </WorkspaceGrid>
-                  ) : null}
-                  {clientsView === "leads" ? (
+                  {clientsView === "leads" || showClientsRelationship ? (
                     <PlaceCrmModule
                       busy={busy}
                       contactCountLabel={countLabel(crmContacts.length, "contato", "contatos")}
@@ -6386,55 +6483,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onOpenHistory={(contact) => setCrmHistoryDrawerContactId(contact.id)}
                     />
                   ) : null}
-                  {showClientsRelationship ? (
-                    <PlaceClientRelationshipModule
-                      busy={busy}
-                      countLabel={countLabel}
-                      followUpContacts={crmFollowUpContacts}
-                      leadContacts={crmLeadContacts}
-                      relationshipSegments={crmRelationshipSegments}
-                      staleContacts={crmStaleContacts}
-                      onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
-                    />
-                  ) : null}
-                  {clientsView === "requests" ? (
-                    <PlaceClientActionQueue
-                      academyEnrollments={academyEnrollments}
-                      busy={busy}
-                      contacts={crmContacts}
-                      memberships={memberships}
-                      onActivateEnrollment={(enrollment) => void onUpdateAcademyEnrollment(p.id, enrollment.id, "active")}
-                      onActivateMembership={(membership) => void onUpdateMembership(p.id, membership.id, "active")}
-                      onCancelMembership={(membership) => void onUpdateMembership(p.id, membership.id, "cancelled")}
-                      onMarkContactContacted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "contacted")}
-                      onMarkContactConverted={(contact) => void onUpdateCrmContactStatus(p.id, contact.id, "converted")}
-                    />
-                  ) : null}
                 </ClientsWorkspaceShell>
               </div>
             ) : null}
-            {showManagementModule("clients") && showClientsMembers && (showMembershipTools || (myMembership && isPlayerView)) ? (
+            {showManagementModule("clients") && !showClientsWorkspace && showClientsMembers && (showMembershipTools || (myMembership && isPlayerView)) ? (
             <div className="place-booking-panel">
-              {isManagementCockpit && showClientsOverview ? (
-                <div className="place-module-summary">
-                  <div>
-                    <strong>{operationalStats.activeMembers}</strong>
-                    <span>Sócios ativos</span>
-                  </div>
-                  <div>
-                    <strong>{operationalStats.pendingMemberships}</strong>
-                    <span>Solicitacoes pendentes</span>
-                  </div>
-                  <div>
-                    <strong>{operationalStats.crmLeads}</strong>
-                    <span>Leads em aberto</span>
-                  </div>
-                  <div>
-                    <strong>{pendingClientActions.length}</strong>
-                    <span>Acoes de cliente</span>
-                  </div>
-                </div>
-              ) : null}
               {isManagementCockpit && pendingClientActions.length ? (
                 <PlaceClientActionQueue
                   academyEnrollments={academyEnrollments}
@@ -6466,7 +6519,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
                 onCreatePlan={() => void onCreateMembershipPlan(p)}
                 onDraftChange={(draft) => setMembershipPlanDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
-                onMarkPaid={(plan, membership) => void onAdminMarkMembershipPaid(plan, membership)}
+                onMarkPaid={(plan, membership) => requestMembershipPayment(plan, membership)}
                 onMembershipNoteChange={(planId, value) => setMembershipNoteByPlan((prev) => ({ ...prev, [planId]: value }))}
                 onRequestMembership={(plan) => void onRequestMembership(p, plan)}
                 onUpdateMembership={(membershipId, status) => void onUpdateMembership(p.id, membershipId, status)}
@@ -6569,7 +6622,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         receivables={openReceivables}
                         onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
                         onCreatePaymentReminderBatch={(receivables) => void onCreatePaymentReminderBatch(receivables)}
-                        onMarkReceivablePaid={(receivable) => void onMarkReceivablePaid(receivable)}
+                        onMarkReceivablePaid={(receivable) => requestReceivablePayment(receivable)}
                       />
                     ) : null}
                     {financeView === "paid" ? (
@@ -6579,6 +6632,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       />
                     ) : null}
                     {financeView === "packages" ? (
+                      <>
                       <PlaceFinancePackagesModule
                         academyClasses={activeAcademyClasses}
                         academyLessonRequests={academyLessonRequests}
@@ -6606,6 +6660,32 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         onRecordCreditPurchase={() => void onRecordCreditPurchase(p)}
                         onToggleCreditPackage={(creditPackage) => void onToggleCreditPackage(p.id, creditPackage)}
                       />
+                      <div className="place-booking-panel">
+                        <PlaceMembershipModule
+                          activePlans={activeMembershipPlans}
+                          allPlans={membershipPlans}
+                          billingPeriod={currentBillingPeriod()}
+                          busy={busy}
+                          canManageFinance={canManageFinance}
+                          countLabel={countLabel}
+                          draft={membershipDraft}
+                          formatMoneyFromCents={formatMoneyFromCents}
+                          memberships={memberships}
+                          membershipNotesByPlan={membershipNoteByPlan}
+                          myMembership={myMembership}
+                          paymentsByTarget={paymentsByTarget}
+                          staffRole={Boolean(staffRole)}
+                          onCreatePaymentReminder={(targetType, targetId, billingPeriod, message) => void onCreatePaymentReminder(targetType, targetId, billingPeriod, message)}
+                          onCreatePlan={() => void onCreateMembershipPlan(p)}
+                          onDraftChange={(draft) => setMembershipPlanDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
+                          onMarkPaid={(plan, membership) => requestMembershipPayment(plan, membership)}
+                          onMembershipNoteChange={(planId, value) => setMembershipNoteByPlan((prev) => ({ ...prev, [planId]: value }))}
+                          onRequestMembership={(plan) => void onRequestMembership(p, plan)}
+                          onUpdateMembership={(membershipId, status) => void onUpdateMembership(p.id, membershipId, status)}
+                          paymentMapKey={paymentMapKey}
+                        />
+                      </div>
+                      </>
                     ) : null}
                     {financeView === "expenses" ? (
                       <PlaceFinanceExpensesModule
@@ -6677,8 +6757,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           <small>Mensalidade de sócio em aberto</small>
                         </div>
                         <span>
-                          <button onClick={() => void onAdminMarkMembershipPaid(plan, membership)} disabled={busy}>
-                            Marcar pago
+                          <button onClick={() => requestMembershipPayment(plan, membership)} disabled={busy}>
+                            Pagar
                           </button>
                           <button
                             onClick={() =>
@@ -6706,8 +6786,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           <small>{receivable.targetType === "academy_student_contract" ? "Mensalidade do contrato em aberto" : "Mensalidade da turma em aberto"}</small>
                         </div>
                         <span>
-                          <button onClick={() => void onMarkReceivablePaid(receivable)} disabled={busy}>
-                            Marcar pago
+                          <button onClick={() => requestReceivablePayment(receivable)} disabled={busy}>
+                            Pagar
                           </button>
                           <button
                             onClick={() =>
@@ -6951,14 +7031,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </button>
                     </div>
                   ) : null}
-                  {isManagementCockpit && bookingView !== "new" ? (
+                  {isManagementCockpit && bookingView === "calendar" ? (
                     <PlaceBookingOperationalQueues
                       busy={busy}
                       canManageBookings={canManageBookings}
                       getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                       isWaitlistPromotable={waitlistEntryCanPromote}
                       onOpenReservations={() => selectBookingView(p.id, "reservations")}
-                      onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
+                      onOpenWaitlist={() => selectBookingView(p.id, "reservations")}
                       onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
                       onReviewTournamentCourtRequest={(requestId, status) => void onReviewTournamentCourtRequest(p.id, requestId, status)}
                       onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
@@ -6969,29 +7049,32 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       waitlistEntries={waitingCourtEntries}
                     />
                   ) : null}
-                    {bookingView === "today" ? (
-                    <PlaceBookingTodayModule
-                      bookings={todayBookings}
-                      busy={busy}
-                      canManageBookings={canManageBookings}
-                      getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
-                      getWhatsappHref={getBookingWhatsappHref}
-                      onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
-                      onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
-                    />
-                  ) : null}
                   {bookingView === "reservations" ? (
-                    <PlaceBookingReservationsModule
-                      activeCourts={activeCourts}
-                      bookings={bookings}
-                      busy={busy}
-                      canManageBookings={canManageBookings}
-                      getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
-                      getWhatsappHref={getBookingWhatsappHref}
-                      onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
-                      onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
-                      onUpdateBookingDetails={(booking, patch) => void onUpdateBookingDetails(p.id, booking, patch)}
-                    />
+                    <>
+                      <PlaceBookingReservationsModule
+                        activeCourts={activeCourts}
+                        bookings={bookings}
+                        busy={busy}
+                        canManageBookings={canManageBookings}
+                        getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                        getWhatsappHref={getBookingWhatsappHref}
+                        onMarkPaid={(booking, payment) => requestCourtBookingPayment(booking, payment)}
+                        onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
+                        onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                        onUpdateBookingDetails={(booking, patch) => void onUpdateBookingDetails(p.id, booking, patch)}
+                      />
+                      <PlaceBookingWaitlistModule
+                        busy={busy}
+                        canManageBookings={canManageBookings}
+                        entries={bookingWaitlist}
+                        getWhatsappHref={getWaitlistWhatsappHref}
+                        isPromotable={waitlistEntryCanPromote}
+                        onPromoteEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                        onUpdateEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
+                        statusLabel={courtWaitlistStatusLabel}
+                        waitingSinceLabel={waitingSinceLabel}
+                      />
+                    </>
                   ) : null}
                   {bookingView === "calendar" ? (
                     <PlaceBookingCalendarModule
@@ -7030,19 +7113,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     ) : (
                       <p className="subtle">Cadastre uma quadra antes de criar reservas.</p>
                     )
-                  ) : null}
-                  {bookingView === "waitlist" ? (
-                    <PlaceBookingWaitlistModule
-                      busy={busy}
-                      canManageBookings={canManageBookings}
-                      entries={bookingWaitlist}
-                      getWhatsappHref={getWaitlistWhatsappHref}
-                      isPromotable={waitlistEntryCanPromote}
-                      onPromoteEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
-                      onUpdateEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
-                      statusLabel={courtWaitlistStatusLabel}
-                      waitingSinceLabel={waitingSinceLabel}
-                    />
                   ) : null}
                   {bookingView === "resources" ? (
                     <PlaceBookingResourcesModule
@@ -7098,7 +7168,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                   isWaitlistPromotable={waitlistEntryCanPromote}
                   onOpenReservations={() => selectBookingView(p.id, "reservations")}
-                  onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
+                  onOpenWaitlist={() => selectBookingView(p.id, "reservations")}
                   onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
                   onReviewTournamentCourtRequest={(requestId, status) => void onReviewTournamentCourtRequest(p.id, requestId, status)}
                   onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
@@ -7179,7 +7249,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                 isWaitlistPromotable={waitlistEntryCanPromote}
                 onCancelSeries={(bookingId) => void onCancelBookingSeries(p.id, bookingId)}
-                onMarkPaid={(booking, payment) => void onAdminMarkCourtBookingPaid(booking, payment)}
+                onMarkPaid={(booking, payment) => requestCourtBookingPayment(booking, payment)}
                 onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
                 onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
                 onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
@@ -7198,7 +7268,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               {showAcademyWorkspace ? (
                 <AcademyWorkspaceShell
                   activeView={academyView}
-                  title={isCoachMode ? "Modo professor" : "Central da academia"}
+                  title={academyWorkspaceTitle}
                   viewDescriptions={
                     isCoachMode
                       ? {
@@ -7210,7 +7280,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       : undefined
                   }
                   viewLabels={isCoachMode ? { calendar: "Agenda", today: "Aulas", classes: "Turmas", students: "Alunos" } : undefined}
-                  views={academyViews}
+                  views={[academyView]}
                   onViewChange={(view) => selectAcademyView(p.id, view)}
                 >
                   {coachWithoutAcademyProfile ? (
@@ -7244,20 +7314,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       <article>
                         <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
                         <strong>{countLabel(todayClasses.length, "aula", "aulas")}</strong>
-                        <small>{isCoachMode ? "Chamada e faltas na aba Aulas." : "Chamada, faltas e reposicoes na aba Hoje."}</small>
+                        <small>{isCoachMode ? "Chamada e faltas ficam no fluxo da aula." : "Chamada, faltas e reposicoes ficam na rotina de Aulas."}</small>
                       </article>
                       {!isCoachMode ? (
                         <article className={pendingAcademyEnrollments.length + actionableLessonRequests.length > 0 ? "urgent" : ""}>
                           <span>Pendencias</span>
                           <strong>{countLabel(pendingAcademyEnrollments.length + actionableLessonRequests.length, "item", "itens")}</strong>
-                          <small>Interesses, reposicoes e matriculas ficam na aba Pendencias.</small>
+                          <small>Interesses, reposicoes e matriculas ficam no fluxo de Aulas.</small>
                         </article>
                       ) : null}
                       {isCoachMode || canManagePlace ? (
                         <article>
                           <span>{isCoachMode ? "Meus alunos" : "Alunos ativos"}</span>
                           <strong>{countLabel(visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length, "aluno", "alunos")}</strong>
-                          <small>{isCoachMode ? "Alunos vinculados as suas turmas." : "Lista completa e matricula manual na aba Alunos."}</small>
+                          <small>{isCoachMode ? "Alunos vinculados as suas turmas." : "Base completa fica em Clientes."}</small>
                         </article>
                       ) : null}
                       {isCoachMode || canManagePlace ? (
@@ -7275,7 +7345,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       academyClasses={visibleAcademyClasses}
                       busy={busy}
                       canManageAcademy={!isCoachMode && canManageAcademy}
-                      onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                      onMarkLessonRequestPaid={(request) => requestLessonPayment(p.id, request)}
                       onOpenRequests={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "requests" }))}
                       onOpenToday={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }))}
                       onOpenTodayClass={(academyClassId) => {
@@ -7360,7 +7430,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                           return void onCreatePaymentReminder(target.targetType, target.targetId, academyBillingPeriod, target.reminder);
                         }}
                         onCreateStudent={(academyClass) => void onCreateAcademyStudentByAdmin(p, academyClass)}
-                        onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment, getAcademyStudentContract(enrollment))}
+                        onMarkPaid={(academyClass, enrollment) => requestEnrollmentPayment(academyClass, enrollment, getAcademyStudentContract(enrollment))}
                         onSaveClassPrice={(academyClass) => void onSaveAcademyClassPrice(p.id, academyClass)}
                         onUpdateClass={(academyClass, patch) => void onUpdateAcademyClass(p.id, academyClass, patch)}
                         onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
@@ -7398,7 +7468,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         return void onCreatePaymentReminder(target.targetType, target.targetId, academyBillingPeriod, target.reminder);
                       }}
                       onMarkAttendance={(enrollmentId, status) => void onMarkAcademyAttendance(p.id, enrollmentId, status)}
-                      onMarkPaid={(academyClass, enrollment) => void onAdminMarkEnrollmentPaid(academyClass, enrollment, getAcademyStudentContract(enrollment))}
+                      onMarkPaid={(academyClass, enrollment) => requestEnrollmentPayment(academyClass, enrollment, getAcademyStudentContract(enrollment))}
                       onReportAbsence={(enrollmentId) => void onReportAcademyAbsence(p.id, enrollmentId)}
                       onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
                       onUpdateEnrollmentDetails={(enrollmentId, patch) => void onUpdateAcademyEnrollmentDetails(p.id, enrollmentId, patch)}
@@ -7438,7 +7508,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             makeups={academyMakeups}
                             onChangeFitSearch={(search) => setAcademyFitSearchByPlace((prev) => ({ ...prev, [p.id]: search }))}
                             onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
-                            onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                            onMarkLessonRequestPaid={(request) => requestLessonPayment(p.id, request)}
                             onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
                             onScheduleMakeupCredit={(creditId, slot) => void onScheduleAcademyMakeupCredit(p.id, creditId, slot)}
                             onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
@@ -7450,7 +7520,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             weekdayLabels={WEEKDAY_LABELS}
                           />
                         }
-                        onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                        onMarkLessonRequestPaid={(request) => requestLessonPayment(p.id, request)}
                         onOpenFit={(creditId) => {
                           setAcademySelectedMakeupCreditByPlace((prev) => ({ ...prev, [p.id]: creditId || "" }));
                           void onSearchAcademyFitSlots(p.id);
@@ -7619,7 +7689,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   makeups={academyMakeups}
                   onChangeFitSearch={(search) => setAcademyFitSearchByPlace((prev) => ({ ...prev, [p.id]: search }))}
                   onChangeLessonRequestDraft={(classId, draft) => setAcademyLessonRequestDraftByClass((prev) => ({ ...prev, [classId]: draft }))}
-                  onMarkLessonRequestPaid={(request) => void onMarkLessonRequestPaid(p.id, request)}
+                  onMarkLessonRequestPaid={(request) => requestLessonPayment(p.id, request)}
                   onRequestFit={(slot) => void onRequestAcademyLessonFit(p.id, slot)}
                   onScheduleMakeupCredit={(creditId, slot) => void onScheduleAcademyMakeupCredit(p.id, creditId, slot)}
                   onSearchFitSlots={() => void onSearchAcademyFitSlots(p.id)}
@@ -7766,8 +7836,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                               ) : enrollment.status === "active" ? (
                                 <>
                                     {canManageFinance && !enrollmentPaid ? (
-                                      <button onClick={() => void onAdminMarkEnrollmentPaid(academyClass, enrollment, getAcademyStudentContract(enrollment))} disabled={busy}>
-                                        Marcar pago
+                                      <button onClick={() => requestEnrollmentPayment(academyClass, enrollment, getAcademyStudentContract(enrollment))} disabled={busy}>
+                                        Pagar
                                       </button>
                                     ) : null}
                                     {canManageFinance && !enrollmentPaid ? (
@@ -7966,6 +8036,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
     </main>
   );
+  const paymentDialogElement = (
+    <PaymentStubDialog
+      open={Boolean(paymentDialog)}
+      title={paymentDialog?.title}
+      description={paymentDialog?.description}
+      amountCents={paymentDialog?.amountCents || 0}
+      details={paymentDialog?.details}
+      busy={busy}
+      onClose={closePaymentDialog}
+      onConfirm={() => void confirmPaymentDialog()}
+    />
+  );
 
   if (isAdminRoute) {
     return (
@@ -8006,6 +8088,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         ) : (
           pageContent
         )}
+        {paymentDialogElement}
       </ManagementShell>
     );
   }
@@ -8013,6 +8096,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       {pageContent}
+      {paymentDialogElement}
     </AppShell>
   );
 }

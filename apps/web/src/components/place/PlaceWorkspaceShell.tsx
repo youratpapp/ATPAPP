@@ -23,7 +23,7 @@ export function PlaceWorkspaceShell<View extends string>({
   title,
   views,
 }: PlaceWorkspaceShellProps<View>) {
-  const visibleViews = views?.length ? views : (Object.keys(labels) as View[]);
+  const visibleViews = views ? views : (Object.keys(labels) as View[]);
 
   return (
     <div className={`place-workspace ${className}`.trim()}>
@@ -32,13 +32,15 @@ export function PlaceWorkspaceShell<View extends string>({
           <strong>{title}</strong>
           <span>{descriptions[activeView]}</span>
         </div>
-        <div className="academy-workspace-tabs" role="tablist" aria-label={ariaLabel}>
-          {visibleViews.map((view) => (
-            <button key={view} type="button" className={activeView === view ? "active" : ""} onClick={() => onViewChange(view)}>
-              {labels[view]}
-            </button>
-          ))}
-        </div>
+        {visibleViews.length > 1 ? (
+          <div className="academy-workspace-tabs" role="tablist" aria-label={ariaLabel}>
+            {visibleViews.map((view) => (
+              <button key={view} type="button" className={activeView === view ? "active" : ""} onClick={() => onViewChange(view)}>
+                {labels[view]}
+              </button>
+            ))}
+          </div>
+        ) : null}
       </div>
       {children}
     </div>

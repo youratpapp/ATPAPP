@@ -98,7 +98,7 @@ export function PlaceFinanceReceivablesModule({
               onClick={() => onMarkReceivablePaid(receivable)}
               disabled={busy}
             >
-              Marcar pago
+              Pagar
             </button>
           }
           actions={

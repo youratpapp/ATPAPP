@@ -3,9 +3,10 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppSheet } from "../components/AppOverlays";
 import { AppShell } from "../components/AppShell";
+import { PaymentStubDialog, type PaymentStubDialogPayload } from "../components/PaymentStubDialog";
 import { ScreenState } from "../components/ScreenState";
 import { friendlyToastMessage, useToast } from "../components/toast";
-import { formatMoneyFromCents, listMyPayments } from "../lib/payments";
+import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
 import {
   listAllPlaces,
   listMyAcademyEnrollments,
@@ -58,6 +59,10 @@ type Props = {
   initialScope?: AgendaScope;
   profile: Profile | null;
   user: User;
+};
+
+type PaymentDialogState = PaymentStubDialogPayload & {
+  onConfirm: () => Promise<void> | void;
 };
 
 type AgendaScope = "todos" | "reservas" | "partidas" | "aulas" | "pagamentos" | "historico";
@@ -555,6 +560,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
   const [error, setError] = useState("");
   const [warning, setWarning] = useState("");
   const [busyId, setBusyId] = useState("");
+  const [paymentDialog, setPaymentDialog] = useState<PaymentDialogState | null>(null);
   const queryScope = parseScope(searchParams.get("tipo"), initialScope);
   const requestedItem =
     searchParams.get("item") ||
@@ -711,7 +717,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
       const status = paymentStatus(payment);
       const targetLabel = paymentTargetLabel(payment.targetType);
       return {
-        actionLabel: status.history ? "Ver comprovante" : "Resolver pagamento",
+        actionLabel: status.history ? "Ver comprovante" : "Pagar",
         dateLabel: payment.paidAt ? formatDateOnly(payment.paidAt) : formatDateOnly(payment.createdAt),
         detail: `${targetLabel} - ${formatMoneyFromCents(payment.amountCents)}`,
         detailRows: [
@@ -814,6 +820,65 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
     }
   }
 
+  function closePaymentDialog() {
+    if (!busyId) setPaymentDialog(null);
+  }
+
+  async function confirmPaymentDialog() {
+    const intent = paymentDialog;
+    if (!intent) return;
+    await intent.onConfirm();
+    setPaymentDialog(null);
+  }
+
+  function requestPersonalPayment(item: PersonalAgendaItem) {
+    const payment = state.payments.find((entry) => entry.id === item.sourceId);
+    if (!payment || payment.status === "paid" || payment.status === "refunded") return;
+    const targetLabel = paymentTargetLabel(payment.targetType);
+    setPaymentDialog({
+      title: "Pagar item pessoal",
+      description: payment.description || targetLabel,
+      amountCents: payment.amountCents,
+      details: [
+        { label: "Origem", value: targetLabel },
+        { label: "Periodo", value: payment.billingPeriod || "Sem periodo" },
+        { label: "Status", value: paymentStatus(payment).label },
+      ],
+      onConfirm: async () => {
+        setBusyId(item.id);
+        try {
+          const updatedPayment = await markStubPaymentPaidForParticipant({
+            targetType: payment.targetType,
+            targetId: payment.targetId,
+            amountCents: payment.amountCents,
+            description: payment.description || targetLabel,
+            billingPeriod: payment.billingPeriod,
+            metadata: { ...payment.metadata, source: "player_personal_payment_stub" },
+          });
+          setState((prev) => {
+            let replaced = false;
+            const nextPayments = prev.payments.map((entry) => {
+              const samePayment =
+                entry.id === payment.id ||
+                (entry.targetType === payment.targetType &&
+                  entry.targetId === payment.targetId &&
+                  (entry.billingPeriod || "") === (payment.billingPeriod || ""));
+              if (!samePayment) return entry;
+              replaced = true;
+              return updatedPayment;
+            });
+            return { ...prev, payments: replaced ? nextPayments : [updatedPayment, ...nextPayments] };
+          });
+          showToast({ kind: "success", text: "Pagamento registrado." });
+        } catch (err) {
+          showToast({ kind: "error", text: friendlyToastMessage(err, "Nao foi possivel pagar.") });
+        } finally {
+          setBusyId("");
+        }
+      },
+    });
+  }
+
   const emptyTitle = queryScope === "aulas"
     ? "Sem aulas vinculadas"
     : queryScope === "reservas"
@@ -844,6 +909,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
       onCancelReservation={() => void cancelReservation(detailItem)}
       onClose={closeItem}
       onOpenPath={() => navigate(detailItem.path)}
+      onPayPayment={() => requestPersonalPayment(detailItem)}
       reservationCanCancel={detailItem.kind === "reservation" && Boolean(state.bookings.find((booking) => booking.id === detailItem.sourceId && canCancelReservation(booking)))}
     />
   ) : null;
@@ -967,6 +1033,16 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
             {detail}
           </AppSheet>
         ) : null}
+        <PaymentStubDialog
+          open={Boolean(paymentDialog)}
+          title={paymentDialog?.title}
+          description={paymentDialog?.description}
+          amountCents={paymentDialog?.amountCents || 0}
+          details={paymentDialog?.details}
+          busy={Boolean(busyId)}
+          onClose={closePaymentDialog}
+          onConfirm={() => void confirmPaymentDialog()}
+        />
       </main>
     </AppShell>
   );
@@ -988,6 +1064,7 @@ function AgendaDetail({
   onCancelReservation,
   onClose,
   onOpenPath,
+  onPayPayment,
   reservationCanCancel,
 }: {
   busy: boolean;
@@ -995,6 +1072,7 @@ function AgendaDetail({
   onCancelReservation: () => void;
   onClose: () => void;
   onOpenPath: () => void;
+  onPayPayment: () => void;
   reservationCanCancel: boolean;
 }) {
   return (
@@ -1013,7 +1091,13 @@ function AgendaDetail({
         ))}
       </dl>
       <div className="modal-actions">
-        <button type="button" className="primary" onClick={onOpenPath}>{item.actionLabel}</button>
+        {item.kind === "payment" && !item.history ? (
+          <button type="button" className="primary" onClick={onPayPayment} disabled={busy}>
+            {busy ? "Processando..." : "Pagar"}
+          </button>
+        ) : (
+          <button type="button" className="primary" onClick={onOpenPath}>{item.actionLabel}</button>
+        )}
         {reservationCanCancel ? (
           <button type="button" className="danger" onClick={onCancelReservation} disabled={busy}>
             {busy ? "Cancelando..." : "Cancelar reserva"}

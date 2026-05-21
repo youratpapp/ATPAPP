@@ -129,7 +129,7 @@ export function PlaceMembershipModule({
                   ) : null}
                   {membership.status === "active" && plan && !paid ? (
                     <button type="button" onClick={() => onMarkPaid(plan, membership)} disabled={busy}>
-                      Marcar pago
+                      Pagar
                     </button>
                   ) : null}
                   {!paid ? (

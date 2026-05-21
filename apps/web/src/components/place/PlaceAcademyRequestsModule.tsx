@@ -262,7 +262,7 @@ export function PlaceAcademyRequestsModule({
                     </button>
                   ) : unpaid ? (
                     <button type="button" onClick={() => onMarkLessonRequestPaid(request)} disabled={busy}>
-                      Marcar pago
+                      Pagar
                     </button>
                   ) : (
                     <span>Resolvido</span>

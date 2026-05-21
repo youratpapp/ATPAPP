@@ -884,11 +884,11 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
         if ((role === "owner" || role === "manager") && pendingMemberships > 0) {
           actions.push({
             id: `membership-owner:${place.id}:pending`,
-            targetPath: buildPlaceAdminPath(place.id, "clients", "members"),
+            targetPath: buildPlaceAdminPath(place.id, "finance", "planos"),
             sourceName: place.name,
             title: `${pendingMemberships} solicitacao${pendingMemberships === 1 ? "" : "es"} de sócio`,
             detail: "Ative planos e acompanhe mensalidades do clube.",
-            label: "Sócios",
+            label: "Financeiro",
             tone: "urgent",
             order: 7,
           });

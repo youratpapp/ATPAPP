@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 import { PlaceWorkspaceShell } from "./PlaceWorkspaceShell";
 
-export type TeamManagementView = "overview" | "staff" | "invites" | "roles";
+export type TeamManagementView = "overview" | "staff" | "coaches" | "invites" | "roles";
 
 const TEAM_VIEW_LABELS: Record<TeamManagementView, string> = {
   staff: "Equipe",
+  coaches: "Professores",
   invites: "Convites",
   roles: "Papeis",
   overview: "Resumo",
@@ -12,6 +13,7 @@ const TEAM_VIEW_LABELS: Record<TeamManagementView, string> = {
 
 const TEAM_VIEW_DESCRIPTIONS: Record<TeamManagementView, string> = {
   staff: "Busca de usuario, convite e acompanhamento da equipe ativa.",
+  coaches: "Professores, vinculo de login, contato, agenda e comissao.",
   invites: "Convites pendentes para novos operadores do local.",
   roles: "Permissoes por perfil para manter a operacao organizada.",
   overview: "Quem opera o local e quais acessos precisam de atencao.",

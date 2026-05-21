@@ -5,6 +5,7 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { AppDialog } from "../components/AppOverlays";
 import { CompetitionHeader, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
+import { PaymentStubDialog, type PaymentStubDialogPayload } from "../components/PaymentStubDialog";
 import { PlayerProfileLink } from "../components/PlayerProfileLink";
 import { ScreenState } from "../components/ScreenState";
 import { StatusBadge } from "../components/StatusBadge";
@@ -160,6 +161,10 @@ type Props = {
   user: User;
   profile: Profile | null;
   forcedTab?: TabKey;
+};
+
+type PaymentDialogState = PaymentStubDialogPayload & {
+  onConfirm: () => Promise<void> | void;
 };
 
 type TabKey = TournamentTabKey;
@@ -1460,6 +1465,7 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const [adminScoreDrafts, setAdminScoreDrafts] = useState<Record<string, MatchScoreDetail>>({});
   const [matchConfirmations, setMatchConfirmations] = useState<TournamentMatchConfirmation[]>([]);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
+  const [paymentDialog, setPaymentDialog] = useState<PaymentDialogState | null>(null);
   const [matchConfirming, setMatchConfirming] = useState(false);
   const [selectedOrganizerTaskId, setSelectedOrganizerTaskId] = useState("");
   const [calendarSyncing, setCalendarSyncing] = useState(false);
@@ -4726,6 +4732,32 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     }
   };
 
+  const requestTournamentRegistrationPayment = (registration: TournamentRegistration) => {
+    if (!tournament) return;
+    setPaymentDialog({
+      title: "Pagar inscricao do torneio",
+      description: `${tournament.name} - ${registration.playerName || "Sem nome"}`,
+      amountCents: tournament.registrationFeeCents,
+      details: [
+        { label: "Atleta", value: registration.playerName || "Sem nome" },
+        { label: "Classe", value: `${registration.categoryName} / ${registration.className}` },
+        { label: "Torneio", value: tournament.name },
+      ],
+      onConfirm: () => markTournamentRegistrationPaid(registration),
+    });
+  };
+
+  const closePaymentDialog = () => {
+    if (!saving && !registrationBusy) setPaymentDialog(null);
+  };
+
+  const confirmPaymentDialog = async () => {
+    const intent = paymentDialog;
+    if (!intent) return;
+    await intent.onConfirm();
+    setPaymentDialog(null);
+  };
+
   const toggleRegistrationSelection = (registrationId: string, checked: boolean) => {
     setSelectedRegistrationIds((prev) => {
       if (checked) {
@@ -5575,8 +5607,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
             primaryAction: {
               disabled: saving || registrationBusy,
               kind: "primary",
-              label: "Marcar pago",
-              onClick: () => markTournamentRegistrationPaid(registration),
+              label: "Pagar",
+              onClick: () => requestTournamentRegistrationPayment(registration),
             },
             secondaryActions: [
               {
@@ -7901,8 +7933,8 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     {r.status === "pending" || r.status === "waitlist" || (isOwner && paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid") ? (
                       <div className="cluster">
                         {isOwner && paymentsByTarget[`tournament_registration:${r.id}`]?.status !== "paid" ? (
-                          <button onClick={() => void markTournamentRegistrationPaid(r)} disabled={saving || registrationBusy}>
-                            Marcar pago
+                          <button onClick={() => requestTournamentRegistrationPayment(r)} disabled={saving || registrationBusy}>
+                            Pagar
                           </button>
                         ) : null}
                         {r.status === "pending" ? (
@@ -8164,6 +8196,16 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
           <SaveDiskIcon />
         </button>
       ) : null}
+      <PaymentStubDialog
+        open={Boolean(paymentDialog)}
+        title={paymentDialog?.title}
+        description={paymentDialog?.description}
+        amountCents={paymentDialog?.amountCents || 0}
+        details={paymentDialog?.details}
+        busy={saving || registrationBusy}
+        onClose={closePaymentDialog}
+        onConfirm={() => void confirmPaymentDialog()}
+      />
     </AppShell>
   );
 }

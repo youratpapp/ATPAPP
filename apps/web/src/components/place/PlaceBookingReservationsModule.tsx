@@ -11,6 +11,7 @@ type Props = {
   canManageBookings: boolean;
   getPaymentForBooking: (bookingId: string) => AppPayment | undefined;
   getWhatsappHref: (booking: CourtBooking) => string;
+  onMarkPaid?: (booking: CourtBooking, payment: AppPayment) => void;
   onShareBookingChange?: (booking: CourtBooking) => void;
   onUpdateBooking: (bookingId: string, status: CourtBooking["status"]) => void;
   onUpdateBookingDetails?: (
@@ -60,6 +61,7 @@ export function PlaceBookingReservationsModule({
   canManageBookings,
   getPaymentForBooking,
   getWhatsappHref,
+  onMarkPaid,
   onShareBookingChange,
   onUpdateBooking,
   onUpdateBookingDetails,
@@ -167,6 +169,11 @@ export function PlaceBookingReservationsModule({
                 {canManageBookings && booking.status !== "cancelled" && onUpdateBookingDetails ? (
                   <button type="button" onClick={() => (isEditing ? setEditingBookingId("") : startEditing(booking))} disabled={busy}>
                     {isEditing ? "Fechar edicao" : "Editar"}
+                  </button>
+                ) : null}
+                {canManageBookings && payment?.status === "pending" && onMarkPaid ? (
+                  <button type="button" onClick={() => onMarkPaid(booking, payment)} disabled={busy}>
+                    Pagar
                   </button>
                 ) : null}
                 {booking.status !== "cancelled" && onShareBookingChange ? (

@@ -96,7 +96,7 @@ export function PlaceBookingDetailedListModule({
                     ) : null}
                     {bookingPayment?.status === "pending" ? (
                       <button onClick={() => onMarkPaid(booking, bookingPayment)} disabled={busy}>
-                        Marcar pago
+                        Pagar
                       </button>
                     ) : null}
                     {booking.status !== "cancelled" && onShareBookingChange ? (

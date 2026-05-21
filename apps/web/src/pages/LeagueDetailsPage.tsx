@@ -4,6 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
 import { AppDialog } from "../components/AppOverlays";
 import { CompetitionHeader, CompetitionPublishingPanel, CompetitionScopeSelector, CompetitionTabs } from "../components/competition/CompetitionWorkspace";
+import { PaymentStubDialog, type PaymentStubDialogPayload } from "../components/PaymentStubDialog";
 import { PlayerProfileLink } from "../components/PlayerProfileLink";
 import { ResponsiveFilterSheet } from "../components/ResponsiveFilterSheet";
 import { ScreenState } from "../components/ScreenState";
@@ -68,6 +69,10 @@ import { buildLeagueMatchOperationalState, summarizeLeagueMatchStatuses } from "
 type Props = {
   user: User;
   profile: Profile | null;
+};
+
+type PaymentDialogState = PaymentStubDialogPayload & {
+  onConfirm: () => Promise<void> | void;
 };
 
 type PageTab = "visao" | "jogadores" | "classificacao" | "partidas" | "chat" | "configuracao";
@@ -888,6 +893,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [myAvailabilityByMatch, setMyAvailabilityByMatch] = useState<Record<string, string[]>>({});
   const [settingsDraft, setSettingsDraft] = useState<LeagueSettingsDraft | null>(null);
   const [paymentsByTarget, setPaymentsByTarget] = useState<Record<string, AppPayment>>({});
+  const [paymentDialog, setPaymentDialog] = useState<PaymentDialogState | null>(null);
 
   useEffect(() => {
     if (!feedback) return;
@@ -1666,6 +1672,33 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     }
   }
 
+  function requestLeagueRegistrationPayment(registration: LeagueRegistration) {
+    if (!league) return;
+    const cls = registration.classId ? classById[registration.classId] : null;
+    setPaymentDialog({
+      title: "Pagar inscricao da liga",
+      description: `${league.name} - ${registration.playerName || "Sem nome"}`,
+      amountCents: league.registrationFeeCents,
+      details: [
+        { label: "Participante", value: registration.playerName || "Sem nome" },
+        { label: "Classe", value: cls ? classLabel(cls) : "Classe a definir" },
+        { label: "Liga", value: league.name },
+      ],
+      onConfirm: () => onMarkLeagueRegistrationPaid(registration),
+    });
+  }
+
+  function closePaymentDialog() {
+    if (!busy) setPaymentDialog(null);
+  }
+
+  async function confirmPaymentDialog() {
+    const intent = paymentDialog;
+    if (!intent) return;
+    await intent.onConfirm();
+    setPaymentDialog(null);
+  }
+
   async function onCreateClass() {
     if (!selectedSeasonId) return;
     setBusy(true);
@@ -2441,9 +2474,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
             ...(payment?.status !== "paid" && league.registrationFeeCents > 0
               ? [
                   {
-                    label: "Marcar pago",
+                    label: "Pagar",
                     disabled: busy,
-                    onClick: () => onMarkLeagueRegistrationPaid(registration),
+                    onClick: () => requestLeagueRegistrationPayment(registration),
                   } satisfies LeagueOperationTaskAction,
                 ]
               : []),
@@ -2501,9 +2534,9 @@ export function LeagueDetailsPage({ user, profile }: Props) {
           impact: "Evita jogador confirmado com cobranca solta.",
           tone: "attention",
           primaryAction: {
-            label: "Marcar pago",
+            label: "Pagar",
             disabled: busy,
-            onClick: () => onMarkLeagueRegistrationPaid(registration),
+            onClick: () => requestLeagueRegistrationPayment(registration),
           },
           secondaryActions: [
             {
@@ -3930,8 +3963,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                           {r.status === "pending" ? (
                             <div className="li-actions">
                               {paymentsByTarget[`league_registration:${r.id}`]?.status !== "paid" ? (
-                                <button onClick={() => void onMarkLeagueRegistrationPaid(r)} disabled={busy}>
-                                  Marcar pago
+                                <button onClick={() => requestLeagueRegistrationPayment(r)} disabled={busy}>
+                                  Pagar
                                 </button>
                               ) : null}
                               <button onClick={() => onApproveRegistration(r.id, "approved")} disabled={busy}>
@@ -3943,8 +3976,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                             </div>
                           ) : paymentsByTarget[`league_registration:${r.id}`]?.status !== "paid" ? (
                             <div className="li-actions">
-                              <button onClick={() => void onMarkLeagueRegistrationPaid(r)} disabled={busy}>
-                                Marcar pago
+                              <button onClick={() => requestLeagueRegistrationPayment(r)} disabled={busy}>
+                                Pagar
                               </button>
                             </div>
                           ) : null}
@@ -4223,6 +4256,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
       <LeagueOperationTaskDrawer
         onClose={() => setSelectedLeagueTaskId("")}
         task={selectedLeagueTask}
+      />
+      <PaymentStubDialog
+        open={Boolean(paymentDialog)}
+        title={paymentDialog?.title}
+        description={paymentDialog?.description}
+        amountCents={paymentDialog?.amountCents || 0}
+        details={paymentDialog?.details}
+        busy={busy}
+        onClose={closePaymentDialog}
+        onConfirm={() => void confirmPaymentDialog()}
       />
     </AppShell>
   );

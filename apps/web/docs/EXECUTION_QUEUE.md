@@ -8001,7 +8001,7 @@ Entregue:
 - Rows de CRM deixaram de carregar formulario inline por contato; a acao primaria abre drawer curto para registrar retorno, salvar responsavel, agendar proximo contato, converter ou arquivar.
 - WhatsApp permanece como acao secundaria, sem competir com a tarefa principal de relacionamento.
 - Cobranca saiu da fila de relacionamento e permanece no modulo `Financeiro`, reduzindo duplicidade entre Clientes e Financeiro.
-- A navegacao canonica de Clientes usa `rotina`, `contatos`, `socios`, `pendencias` e `resumo`, com aliases legados preservados.
+- A navegacao canonica de Clientes usa `rotina` e `contatos`; `socios`, `pendencias` e `resumo` ficaram como aliases legados sem submenu visivel.
 - Fila de pendencias de clientes deixou de cortar leads/matriculas/socios silenciosamente.
 
 Impacto UX/produto:
@@ -12880,6 +12880,7 @@ Entregue:
 Validacao:
 
 - `npx.cmd tsc -b --pretty false` passou.
+- `npm.cmd run build` passou.
 
 Pendencias:
 
@@ -12950,6 +12951,186 @@ Entregue:
 - cada aula mostra turma, quadra, nivel, alunos ativos, faltas avisadas e alunos extras/reposicao aprovados;
 - a acao `Chamada` leva para a aba `Aulas` com a turma selecionada;
 - gestores tambem podem abrir `Agenda diaria de aulas`, sem trocar o calendario de reservas por quadra.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `npm.cmd run build` passou.
+
+### [x] SPRINT-2026-05-21 - Modal unico de pagamento stub
+
+Status: `[x]` concluido no codigo
+
+Problema:
+
+- pontos diferentes do app marcavam pagamento direto, com labels e fluxos diferentes;
+- a proxima fase de checkout precisa de um ponto de entrada unico para substituir o stub sem redesenhar cada tela;
+- pagamentos pessoais antigos e a nova Agenda precisavam usar a mesma experiencia de valor + confirmar pagamento.
+
+Entregue:
+
+- criado `PaymentStubDialog` como modal compartilhado com valor, descricao, detalhes e CTA `Pagar`;
+- gestao de local passou a abrir o modal em mensalidade de socio, recebiveis, reserva de quadra, matriculas/contratos de aula e aula avulsa/reposicao;
+- torneio operacional passou a abrir o modal para inscricoes aprovadas ou pendentes sem pagamento;
+- liga operacional passou a abrir o modal para inscricoes sem pagamento;
+- Agenda pessoal passou a abrir o modal em pagamentos pessoais pendentes ou vencidos;
+- rota legada `Meus pagamentos` tambem passou a usar o mesmo modal;
+- labels antigos `Marcar pago`/`Resolver pagamento` foram trocados por `Pagar`, preservando as acoes existentes.
+
+Guardrails:
+
+- sem alteracao de backend;
+- sem relaxar permissoes;
+- sem misturar financeiro pessoal com financeiro do local;
+- sem quebrar rotas antigas;
+- o botao `Pagar` ainda usa o stub atual `markStubPaymentPaidForParticipant`, preparando a troca futura pelo gateway.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou.
+
+### [x] SPRINT-2026-05-21 - Simplificar Clientes e separar Socios
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- `Clientes` misturava rotina de relacionamento, cadastro de contatos, socios, planos, mensalidades, pendencias e resumo;
+- a mesma area virava CRM e financeiro ao mesmo tempo, dificultando saber onde mexer;
+- rotas antigas como `clientes?visao=socios`, `pendencias` e `resumo` mantinham submenus que ja nao deveriam ser destinos principais.
+
+Decisao:
+
+- `Clientes` passa a responder por relacionamento, atendimento e cadastro/busca de contatos;
+- planos de socio, socios ativos, mensalidades e recorrencia passam para `Financeiro > Planos`;
+- solicitacoes de cliente continuam aparecendo em Clientes como atendimento, mas a gestao financeira do socio fica fora da rotina de Clientes.
+
+Entregue:
+
+- `ClientsWorkspaceShell` deixou de renderizar tabs internas e agora mostra apenas a visao ativa;
+- aliases antigos de `socios`, `members`, `pendencias`, `requests`, `resumo` e `overview` em Clientes caem na rotina de Clientes;
+- `contatos` segue preservado para abrir cadastro/busca de contatos;
+- a gestao de planos e socios foi adicionada em `Financeiro > Planos`;
+- checklist e links de ajustes que apontavam para `Clientes > Socios` agora apontam para `Financeiro > Planos`;
+- atalhos da Home para solicitacoes de socio agora abrem `Financeiro > Planos`;
+- a mensagem vazia de planos foi atualizada para orientar o usuario a usar Financeiro.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `npm.cmd run build` passou;
+- `git diff --check` passou sem erro.
+
+### [ ] SPRINT-2026-05-21 - Financeiro como fluxo operacional
+
+Status: `[ ]` estudado e pronto para execucao
+
+Fonte:
+
+- `docs/ATP_FINANCE_WORKFLOW_STUDY_2026_05_21.md`
+
+Problema:
+
+- `Financeiro` ainda mistura rotina diaria, conferencia, relatorio e configuracao/oferta em uma percepcao de abas internas;
+- `Receber` deve ser a primeira tarefa natural, mas o topo atual aparece igual em `Recebiveis`, `Pagos`, `Despesas`, `Planos` e `Resumo`;
+- `Planos` ficou correto como destino de socios, mas agora precisa ser organizado para nao duplicar informacao entre `PlaceFinancePackagesModule` e `PlaceMembershipModule`;
+- `pending_approval` em recebiveis precisa de microcopy/CTA mais claro para nao parecer uma cobranca comum.
+
+Escopo proposto:
+
+- preservar todas as rotas de `Financeiro`;
+- manter `Receber`, `Pagos`, `Despesas`, `Planos` e `Resumo` como visoes tecnicas;
+- substituir a tabbar interna por navegacao contextual ou esconder tabs quando a rota ja define a visao;
+- criar primeira dobra contextual por visao;
+- reorganizar `Planos` para separar socios, turmas, pacotes e creditos sem duplicidade;
+- melhorar `Recebiveis` para vencidos, hoje, abertos, origem e status pendente;
+- reforcar `Pagos` com filtros/totais e `Despesas` com resumo do periodo.
+
+Guardrails:
+
+- nao misturar pagamentos pessoais com financeiro do local;
+- nao colocar Cantina dentro de Financeiro;
+- nao colocar relacionamento de Clientes dentro de Financeiro;
+- nao deixar `Planos` competir com `Receber` como primeira tela;
+- nao remover rotas existentes;
+- nao relaxar `canManageFinance`;
+- nao criar backend novo.
+
+QA obrigatorio:
+
+- papel financeiro em mobile 390px e 430px;
+- gestor owner/manager em desktop 1366px e amplo;
+- jogador vendo pagamentos pessoais em Agenda;
+- recepcao sem acesso ao financeiro amplo;
+- caixa permanecendo em Cantina;
+- rotas `recebiveis`, `pagos`, `despesas`, `planos`, `pacotes` e `resumo` preservadas.
+
+### [x] SPRINT-2026-05-21 - Calendario operacional em hora cheia
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- o mapa operacional das quadras ainda renderizava slots de 30 em 30 minutos;
+- isso deixava a agenda mais densa do que o necessario e inconsistente com o padrao diario definido para professores.
+
+Entregue:
+
+- `PlaceBookingCalendarModule` passou a renderizar blocos de hora cheia, de 06:00 a 22:00;
+- a deteccao de ocupacao passou a considerar sobreposicao com a hora inteira, evitando mostrar como livre um horario parcialmente ocupado;
+- o CTA `Reservar` em slot livre continua criando uma reserva de 60 minutos a partir da hora selecionada.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `npm.cmd run build` passou.
+
+### [x] SPRINT-2026-05-21 - Simplificar reservas sem submenu
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- a area de agenda/reservas ainda expunha submenus internos (`Hoje`, `Reservas`, `Espera`, `Ajustes`) que competiam com funcoes ja existentes;
+- `Hoje` duplicava o papel da lista de reservas;
+- `Espera` era uma etapa da rotina de reservas, nao um destino principal;
+- `Ajustes` e configuracao rara nao devem disputar espaco com a rotina diaria;
+- o calendario deve funcionar como Agenda externa/principal, nao como subaba de Reservas.
+
+Entregue:
+
+- `BookingWorkspaceShell` deixou de renderizar tabs quando existe apenas uma visao ativa;
+- rotas antigas `?visao=hoje` e `?visao=espera` continuam funcionando, mas agora caem em `Reservas`;
+- `Reservas` passou a mostrar tambem a lista de espera na mesma tela operacional;
+- `Agenda/calendario` permanece como tela propria do calendario operacional;
+- `Nova reserva` segue como CTA contextual, nao submenu;
+- `Ajustes` deixou de aparecer como aba da rotina de reservas; links antigos continuam preservados.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `npm.cmd run build` passou.
+
+### [x] SPRINT-2026-05-21 - Simplificar Aulas sem submenu
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- a superficie de `Aulas` ainda parecia uma central com submenus internos (`Agenda`, `Turmas`, `Alunos`, `Pendencias`, `Professores`, `Ajustes`);
+- calendario deve ser tratado como Agenda externa;
+- alunos/clientes devem ficar na area de Clientes;
+- professores e vinculos devem ficar na area de Equipe;
+- ajustes e configuracoes raras devem ficar em Ajustes/Regras, fora da rotina diaria de aulas.
+
+Entregue:
+
+- `Aulas` deixou de renderizar barra de submenus visivel;
+- a tela usa um titulo contextual por rota legada, mas sem competir com navegacao principal;
+- `Professores` foi adicionado como visao da area `Equipe`;
+- checklist e links de configuracao passaram a abrir professores em `Equipe`;
+- textos de resumo de Aulas deixam claro que base completa fica em Clientes e que regras ficam em Ajustes;
+- rotas antigas de academia continuam preservadas para compatibilidade.
 
 Validacao:
 
