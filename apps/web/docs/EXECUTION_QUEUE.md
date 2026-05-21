@@ -44,6 +44,74 @@ Continue para o proximo item da Execution Queue.
 - MDs antigos devem preservar inventario funcional, nao arquitetura visual antiga.
 - Quando houver conflito entre uma estrutura legada e uma especificacao v2, preservar a funcao e seguir a especificacao v2.
 
+## [x] Sprint concluido - NAV-AGENDA-01 Promover calendario para Agenda principal
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- Revisao de fluxo operacional: calendario nao pertence apenas a reservas; ele tambem mostra aulas, turmas, bloqueios e ocupacao das quadras.
+
+Arquivos alterados:
+
+- `src/lib/place-management.ts`
+- `src/lib/place-admin-navigation.ts`
+- `src/components/BottomNav.tsx`
+- `src/components/place/BookingWorkspaceShell.tsx`
+- `src/components/place/PlaceBookingTodayModule.tsx`
+- `src/pages/PlacesPage.tsx`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- O modulo principal antes rotulado como `Reservas` agora aparece como `Agenda`.
+- Atalhos mobile e desktop de trabalho entram direto em `Agenda > Mapa do dia` (`/gestao/:placeId/agenda?visao=calendario`).
+- A rota antiga `/gestao/:placeId/agenda` segue funcionando e agora cai por padrao no calendario operacional.
+- A lista de `Reservas` continua como uma aba dentro da Agenda, preservando filtros, cancelamento, remarcacao, lista de espera e ajustes.
+- O calendario passa a ser apresentado como mapa operacional de reservas, bloqueios, turmas e aulas, reduzindo a sensacao de que ele e uma subfuncao exclusiva de reservas.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`
+- `npm.cmd run build`
+
+## [x] Sprint concluido - BOOKING-OPS-03 Remarcacao operacional por link unico
+
+Status: `[x]` concluido em 2026-05-21.
+
+Fonte:
+
+- Revisao do fluxo de reservas, lista de espera e comunicacao por WhatsApp.
+- Decisao de produto: reserva em horario livre nao exige confirmacao manual da gestao; a reserva sera efetivada pelo pagamento quando o pagamento entrar no produto.
+
+Arquivos alterados:
+
+- `src/lib/types.ts`
+- `src/lib/places.ts`
+- `src/lib/bookingWhatsapp.ts`
+- `src/components/place/PlaceBookingReservationsModule.tsx`
+- `src/components/place/PlaceBookingTodayModule.tsx`
+- `src/components/place/PlaceBookingDetailedListModule.tsx`
+- `src/pages/PlacesPage.tsx`
+- `src/pages/BookingChangeConfirmPage.tsx`
+- `src/App.tsx`
+- `src/App.css`
+- `supabase/migrations/0096_court_booking_change_requests_v1.sql`
+- `docs/EXECUTION_QUEUE.md`
+
+Resultado:
+
+- Staff autorizado agora consegue editar manualmente uma reserva pelo modulo `Reservas`, alterando quadra, inicio, fim e observacao sem expor essa funcao ao jogador.
+- `pending` continua sendo tratado como `Aguardando pagamento`, sem botao de confirmacao manual.
+- WhatsApp de troca usa um link unico de remarcacao. O jogador abre a pagina, escolhe data/horario, consulta quadras livres em tempo real e confirma uma opcao valida.
+- O link de remarcacao nao mostra ferramentas administrativas e nao expõe agenda completa de outros usuarios; ele usa disponibilidade calculada para a janela escolhida.
+- A remarcacao preserva a reserva e seu status/pagamento original; nao cria nova cobranca.
+- Links antigos/publicos seguem preservados; nova rota protegida: `/reservas/alteracao/:token`.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false`
+
 ## [x] Sprint concluido - SHELL-IDENTITY-01 Padronizar logo, header e seletor web
 
 Status: `[x]` concluido em 2026-05-21.
@@ -12852,15 +12920,40 @@ Decisao de fluxo:
 Entregue:
 
 - criado `src/lib/bookingWhatsapp.ts` com normalizacao de telefone, link `wa.me`, mensagens profissionais e calculo de horarios alternativos proximos;
-- reservas ativas exibem `WhatsApp reagendar` com opcoes proximas da agenda;
+- reservas ativas exibem `Avisar troca` com opcoes proximas da agenda apenas como comunicacao operacional;
 - reservas canceladas exibem mensagem de cancelamento quando aparecem na lista de reservas;
 - lista de espera com horario ocupado exibe `WhatsApp opcoes` com horarios proximos, priorizando mesmo horario em outra quadra e horarios proximos na mesma quadra;
 - lista de espera com horario livre nao cria etapa extra de WhatsApp: a acao principal segue sendo `Criar reserva`;
 - o status `Marcar avisado` continua manual, porque abrir o WhatsApp nao garante envio real da mensagem.
+- os botoes e textos de `Confirmar` reserva foram removidos dos componentes de reserva; `pending` agora aparece como `Aguardando pagamento`, preservando o modelo definido de reserva efetivada por pagamento.
 
 Validacao:
 
 - `npx.cmd tsc -b --pretty false` passou;
-- busca confirmou que nao foram adicionados textos de `WhatsApp reserva`, `Podemos confirmar` ou confirmacao manual de reserva nos componentes de reservas.
+- busca confirmou que nao ficaram textos de `Confirmar`, `WhatsApp reserva`, `WhatsApp reagendar`, `Podemos confirmar` ou confirmacao manual de reserva nos componentes de reservas.
+
+### [x] SPRINT-2026-05-21 - Agenda diaria do professor
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- o calendario promovido para Agenda do local era correto para recepcao/gestao, mas ainda era organizado por quadra;
+- para professor, a tarefa diaria nao e escolher uma quadra, e sim entender seu dia por horario: turma, alunos, quadra, faltas e reposicoes;
+- o menu mobile do professor apontava para academia, mas precisava cair em uma agenda diaria mais clara antes da chamada.
+
+Entregue:
+
+- Academia ganhou a view `Agenda` (`/gestao/:placeId/academia/calendario`);
+- no papel professor, `Agenda` abre por padrao antes de `Aulas`, `Turmas` e `Alunos`, tanto no mobile quanto no desktop;
+- criada uma linha do tempo diaria de 06:00 a 22:00 com cada aula posicionada no horario;
+- cada aula mostra turma, quadra, nivel, alunos ativos, faltas avisadas e alunos extras/reposicao aprovados;
+- a acao `Chamada` leva para a aba `Aulas` com a turma selecionada;
+- gestores tambem podem abrir `Agenda diaria de aulas`, sem trocar o calendario de reservas por quadra.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `npm.cmd run build` passou.
 
 

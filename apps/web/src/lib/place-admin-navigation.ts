@@ -77,6 +77,7 @@ export const BOOKING_ADMIN_SEGMENT_TO_VIEW: Record<string, BookingManagementView
 
 export const ACADEMY_ADMIN_VIEW_SEGMENTS: Record<AcademyManagementView, string> = {
   today: "hoje",
+  calendar: "calendario",
   classes: "turmas",
   students: "alunos",
   requests: "pendencias",
@@ -87,6 +88,9 @@ export const ACADEMY_ADMIN_VIEW_SEGMENTS: Record<AcademyManagementView, string> 
 export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView> = {
   hoje: "today",
   today: "today",
+  agenda: "calendar",
+  calendario: "calendar",
+  calendar: "calendar",
   grade: "classes",
   turmas: "classes",
   classes: "classes",
@@ -226,7 +230,7 @@ const PLACE_ADMIN_VIEW_CONFIGS: {
   [K in PlaceAdminViewModule]: PlaceAdminViewConfig;
 } = {
   bookings: {
-    defaultView: "today",
+    defaultView: "calendar",
     segmentToView: BOOKING_ADMIN_SEGMENT_TO_VIEW as Record<string, PlaceAdminRoutableView>,
     viewSegments: BOOKING_ADMIN_VIEW_SEGMENTS,
   },

@@ -14,6 +14,7 @@ const LAST_HASH_ROUTE_KEY = "atp:last-hash-route";
 const CHUNK_RECOVERY_KEY = "atp:chunk-recovery-attempt";
 
 const AuthPage = lazy(() => import("./pages/AuthPage").then((module) => ({ default: module.AuthPage })));
+const BookingChangeConfirmPage = lazy(() => import("./pages/BookingChangeConfirmPage").then((module) => ({ default: module.BookingChangeConfirmPage })));
 const CompleteProfilePage = lazy(() => import("./pages/CompleteProfilePage").then((module) => ({ default: module.CompleteProfilePage })));
 const EventsHubPage = lazy(() => import("./pages/EventsHubPage").then((module) => ({ default: module.EventsHubPage })));
 const EventsPage = lazy(() => import("./pages/EventsPage").then((module) => ({ default: module.EventsPage })));
@@ -331,6 +332,7 @@ function AppInner() {
         <Route path="/eventos/ligas" element={<LeaguesPage user={authUser} profile={profile} />} />
         <Route path="/eventos/ligas/:leagueId" element={<LeagueDetailsPage user={authUser} profile={profile} />} />
         <Route path="/eventos/ligas/inscricao/:token" element={<LeagueJoinPage user={authUser} profile={profile} />} />
+        <Route path="/reservas/alteracao/:token" element={<BookingChangeConfirmPage user={authUser} profile={profile} />} />
         <Route path="/agenda" element={<PersonalAgendaPage user={authUser} profile={profile} />} />
         <Route path="/minhas-reservas" element={<PersonalAgendaPage user={authUser} profile={profile} initialScope="reservas" />} />
         <Route path="/minhas-partidas" element={<PersonalAgendaPage user={authUser} profile={profile} initialScope="partidas" />} />

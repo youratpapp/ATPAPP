@@ -257,6 +257,27 @@ export type CourtBookingWaitlistEntry = {
   createdAt: string;
 };
 
+export type CourtBookingChangeRequest = {
+  id: string;
+  bookingId: string;
+  placeId: string;
+  token: string;
+  status: "pending" | "confirmed" | "cancelled" | "expired";
+  playerName: string;
+  placeName: string;
+  currentCourtId: string;
+  currentCourtName: string;
+  currentStartsAt: string;
+  currentEndsAt: string;
+  proposedCourtId: string;
+  proposedCourtName: string;
+  proposedStartsAt: string;
+  proposedEndsAt: string;
+  expiresAt: string;
+  createdAt: string;
+  confirmedAt: string;
+};
+
 export type TournamentCourtUsageRequest = {
   id: string;
   placeId: string;

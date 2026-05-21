@@ -13,6 +13,7 @@ type Props = {
   onCancelSeries: (bookingId: string) => void;
   onMarkPaid: (booking: CourtBooking, payment: AppPayment) => void;
   onPromoteWaitlistEntry: (entryId: string) => void;
+  onShareBookingChange?: (booking: CourtBooking) => void;
   onUpdateBooking: (bookingId: string, status: CourtBooking["status"]) => void;
   onUpdateWaitlistEntry: (entryId: string, status: CourtBookingWaitlistEntry["status"]) => void;
   showReservations: boolean;
@@ -33,7 +34,7 @@ function dateTime(value: string): string {
 function bookingStatusLabel(status: CourtBooking["status"]): string {
   if (status === "blocked") return "Bloqueio";
   if (status === "confirmed") return "Confirmada";
-  if (status === "pending") return "Pendente";
+  if (status === "pending") return "Aguardando pagamento";
   return "Cancelada";
 }
 
@@ -49,6 +50,7 @@ export function PlaceBookingDetailedListModule({
   onCancelSeries,
   onMarkPaid,
   onPromoteWaitlistEntry,
+  onShareBookingChange,
   onUpdateBooking,
   onUpdateWaitlistEntry,
   showReservations,
@@ -87,11 +89,6 @@ export function PlaceBookingDetailedListModule({
                 </div>
                 {canManageBookings ? (
                   <span>
-                    {booking.status === "pending" ? (
-                      <button onClick={() => onUpdateBooking(booking.id, "confirmed")} disabled={busy}>
-                        Confirmar
-                      </button>
-                    ) : null}
                     {booking.status !== "cancelled" ? (
                       <button className="danger" onClick={() => onUpdateBooking(booking.id, "cancelled")} disabled={busy}>
                         {booking.status === "blocked" ? "Liberar" : "Cancelar"}
@@ -102,9 +99,13 @@ export function PlaceBookingDetailedListModule({
                         Marcar pago
                       </button>
                     ) : null}
-                    {whatsappHref ? (
+                    {booking.status !== "cancelled" && onShareBookingChange ? (
+                      <button className="button-like compact whatsapp-action" type="button" onClick={() => onShareBookingChange(booking)} disabled={busy}>
+                        Avisar troca
+                      </button>
+                    ) : whatsappHref ? (
                       <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">
-                        {booking.status === "cancelled" ? "WhatsApp cancelamento" : "WhatsApp reagendar"}
+                        {booking.status === "cancelled" ? "Avisar cancelamento" : "Avisar troca"}
                       </a>
                     ) : null}
                     {booking.status !== "cancelled" && booking.recurrenceGroupId ? (
@@ -123,11 +124,6 @@ export function PlaceBookingDetailedListModule({
                       <button className="danger" onClick={() => onCancelSeries(booking.id)} disabled={busy}>
                         Cancelar serie
                       </button>
-                    ) : null}
-                    {whatsappHref ? (
-                      <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">
-                        WhatsApp reagendar
-                      </a>
                     ) : null}
                   </span>
                 ) : null}

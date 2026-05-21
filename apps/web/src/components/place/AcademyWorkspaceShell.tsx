@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 import { PlaceWorkspaceShell } from "./PlaceWorkspaceShell";
 
-export type AcademyManagementView = "today" | "classes" | "students" | "requests" | "coaches" | "resources";
+export type AcademyManagementView = "today" | "calendar" | "classes" | "students" | "requests" | "coaches" | "resources";
 
 const ACADEMY_MANAGEMENT_VIEW_LABELS: Record<AcademyManagementView, string> = {
   today: "Hoje",
+  calendar: "Agenda",
   classes: "Turmas",
   students: "Alunos",
   requests: "Pendencias",
@@ -14,6 +15,7 @@ const ACADEMY_MANAGEMENT_VIEW_LABELS: Record<AcademyManagementView, string> = {
 
 const ACADEMY_MANAGEMENT_VIEW_DESCRIPTIONS: Record<AcademyManagementView, string> = {
   today: "Aulas do dia, presenca, faltas e reposicoes imediatas.",
+  calendar: "Grade visual por horario, quadra, turma e alunos.",
   classes: "Turmas, grade semanal, vagas, mensalidade e matricula manual.",
   students: "Aluno por aluno: status, pagamento, falta e evolucao.",
   requests: "Fila para resolver matriculas, avulsas, reposicoes e pagamentos.",

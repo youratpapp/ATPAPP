@@ -1,15 +1,31 @@
 import type { CourtBooking, CourtBookingWaitlistEntry, PlaceCourt } from "./types";
 
 type BookingWhatsappContext = {
-  alternatives?: string[];
+  alternatives?: BookingWhatsappAlternative[];
+  changeUrl?: string;
   placeName: string;
   senderName: string;
 };
 
 type WaitlistWhatsappContext = BookingWhatsappContext & {
-  alternatives: string[];
+  alternatives: BookingWhatsappAlternative[];
   promotable: boolean;
 };
+
+export type BookingRescheduleOption = {
+  courtId: string;
+  courtName: string;
+  endsAt: string;
+  label: string;
+  startsAt: string;
+};
+
+export type BookingWhatsappAlternative =
+  | string
+  | {
+      label: string;
+      url?: string;
+    };
 
 function onlyDigits(value: string): string {
   return value.replace(/\D/g, "");
@@ -61,6 +77,16 @@ export function buildBookingRescheduleAlternatives(
   limit = 3,
   ignoredBookingId = ""
 ): string[] {
+  return buildBookingRescheduleOptions(entry, courts, bookings, limit, ignoredBookingId).map((option) => option.label);
+}
+
+export function buildBookingRescheduleOptions(
+  entry: BookingSlotLike,
+  courts: PlaceCourt[],
+  bookings: CourtBooking[],
+  limit = 3,
+  ignoredBookingId = ""
+): BookingRescheduleOption[] {
   const startMs = new Date(entry.startsAt).getTime();
   const endMs = new Date(entry.endsAt).getTime();
   if (Number.isNaN(startMs) || Number.isNaN(endMs) || endMs <= startMs) return [];
@@ -118,7 +144,25 @@ export function buildBookingRescheduleAlternatives(
   return options
     .sort((a, b) => a.priority - b.priority)
     .slice(0, limit)
-    .map((option) => formatOption(option.courtName, option.startsAt, option.endsAt));
+    .map((option) => ({
+      courtId: option.courtId,
+      courtName: option.courtName,
+      startsAt: option.startsAt,
+      endsAt: option.endsAt,
+      label: formatOption(option.courtName, option.startsAt, option.endsAt),
+    }));
+}
+
+function alternativesMessageBlock(alternatives: BookingWhatsappAlternative[]): string {
+  if (!alternatives.length) return "Ainda vamos consultar as melhores opcoes para reagendar.";
+  return `Temos estas opcoes proximas:\n${alternatives
+    .map((item, index) => {
+      const alternative = typeof item === "string" ? { label: item, url: "" } : item;
+      const lines = [`${index + 1}. ${alternative.label}`];
+      if (alternative.url) lines.push(`   Confirmar alteracao: ${alternative.url}`);
+      return lines.join("\n");
+    })
+    .join("\n")}`;
 }
 
 export function bookingWhatsappHref(booking: CourtBooking, context: BookingWhatsappContext): string {
@@ -129,9 +173,8 @@ export function bookingWhatsappHref(booking: CourtBooking, context: BookingWhats
   const playerName = booking.playerName || "jogador";
   const isCancelled = booking.status === "cancelled";
   const alternatives = context.alternatives || [];
-  const alternativesBlock = alternatives.length
-    ? `Temos estas opcoes proximas:\n${alternatives.map((item, index) => `${index + 1}. ${item}`).join("\n")}`
-    : "Ainda vamos consultar as melhores opcoes para reagendar.";
+  const alternativesBlock = alternativesMessageBlock(alternatives);
+  const changeUrl = context.changeUrl || "";
 
   const message = isCancelled
     ? [
@@ -152,9 +195,16 @@ export function bookingWhatsappHref(booking: CourtBooking, context: BookingWhats
         `- Quadra: ${courtName}`,
         `- Horario atual: ${slot}`,
         "",
-        alternativesBlock,
+        changeUrl
+          ? [
+              "Use este link para abrir a agenda atual das quadras, escolher um horario livre e confirmar a alteracao:",
+              changeUrl,
+              "",
+              "A alteracao nao gera uma nova cobrança e mantem a reserva vinculada ao pagamento original.",
+            ].join("\n")
+          : alternativesBlock,
         "",
-        "Qual opcao funciona melhor para voce? Assim que voce escolher, atualizamos a reserva no ATP.",
+        changeUrl ? "Se nenhum horario servir, responda por aqui para combinarmos outra opcao." : "Qual opcao funciona melhor para voce? Assim que voce escolher, atualizamos a reserva no ATP.",
       ].join("\n");
 
   return whatsappHref(booking.phone, message);
@@ -185,7 +235,7 @@ export function waitlistWhatsappHref(entry: CourtBookingWaitlistEntry, context: 
         `- Horario desejado: ${requestedSlot}`,
         "",
         context.alternatives.length
-          ? `Encontramos estas opcoes proximas:\n${context.alternatives.map((item, index) => `${index + 1}. ${item}`).join("\n")}`
+          ? alternativesMessageBlock(context.alternatives).replace("Temos estas opcoes proximas:", "Encontramos estas opcoes proximas:")
           : "No momento nao encontramos uma alternativa proxima na agenda carregada. Podemos consultar outro dia ou horario por aqui.",
         "",
         "Qual opcao funciona melhor para voce?",

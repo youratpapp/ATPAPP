@@ -15,6 +15,7 @@ import type {
   AcademyStudentContract,
   AvailableCourt,
   CourtBooking,
+  CourtBookingChangeRequest,
   CourtBookingWaitlistEntry,
   OpenMatch,
   OpenMatchComment,
@@ -367,6 +368,27 @@ type BookingWaitlistRow = {
   status: "waiting" | "invited" | "cancelled" | "booked";
   notes: string | null;
   created_at: string | null;
+};
+
+type BookingChangeRequestRow = {
+  id: string;
+  booking_id: string;
+  place_id: string;
+  token: string;
+  status: CourtBookingChangeRequest["status"];
+  player_name: string | null;
+  place_name: string | null;
+  current_court_id: string;
+  current_court_name: string | null;
+  current_starts_at: string;
+  current_ends_at: string;
+  proposed_court_id: string | null;
+  proposed_court_name: string | null;
+  proposed_starts_at: string | null;
+  proposed_ends_at: string | null;
+  expires_at: string;
+  created_at: string | null;
+  confirmed_at: string | null;
 };
 
 type TournamentCourtUsageRequestRow = {
@@ -911,6 +933,29 @@ function rowToBookingWaitlist(row: BookingWaitlistRow, courtName = "", placeName
     status: row.status,
     notes: row.notes || "",
     createdAt: row.created_at || "",
+  };
+}
+
+function rowToBookingChangeRequest(row: BookingChangeRequestRow): CourtBookingChangeRequest {
+  return {
+    id: row.id,
+    bookingId: row.booking_id,
+    placeId: row.place_id,
+    token: row.token,
+    status: row.status,
+    playerName: row.player_name || "Jogador",
+    placeName: row.place_name || "",
+    currentCourtId: row.current_court_id,
+    currentCourtName: row.current_court_name || "Quadra",
+    currentStartsAt: row.current_starts_at,
+    currentEndsAt: row.current_ends_at,
+    proposedCourtId: row.proposed_court_id || "",
+    proposedCourtName: row.proposed_court_name || "Quadra",
+    proposedStartsAt: row.proposed_starts_at || "",
+    proposedEndsAt: row.proposed_ends_at || "",
+    expiresAt: row.expires_at,
+    createdAt: row.created_at || "",
+    confirmedAt: row.confirmed_at || "",
   };
 }
 
@@ -2355,6 +2400,81 @@ export async function updateCourtBookingStatus(bookingId: string, status: CourtB
   if (!supabase) throw new Error("Supabase nao configurado.");
   const { error } = await supabase.from(TABLE_BOOKINGS).update({ status }).eq("id", bookingId);
   if (error) throw new Error(error.message);
+}
+
+export async function updateCourtBookingDetails(input: {
+  bookingId: string;
+  courtId: string;
+  startsAt: string;
+  endsAt: string;
+  notes?: string;
+}): Promise<CourtBooking> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_update_court_booking_admin", {
+    p_booking_id: input.bookingId,
+    p_court_id: input.courtId,
+    p_starts_at: input.startsAt,
+    p_ends_at: input.endsAt,
+    p_notes: input.notes ?? null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as BookingRow[])[0];
+  if (!row) throw new Error("Reserva nao atualizada.");
+  const courts = await listPlaceCourts(row.place_id);
+  const courtName = courts.find((court) => court.id === row.court_id)?.name || "";
+  return rowToBooking(row, courtName);
+}
+
+export async function createCourtBookingChangeRequest(input: {
+  bookingId: string;
+  courtId?: string;
+  startsAt?: string;
+  endsAt?: string;
+}): Promise<CourtBookingChangeRequest> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_create_court_booking_change_request", {
+    p_booking_id: input.bookingId,
+    p_court_id: input.courtId || null,
+    p_starts_at: input.startsAt || null,
+    p_ends_at: input.endsAt || null,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as BookingChangeRequestRow[])[0];
+  if (!row) throw new Error("Link de alteracao nao criado.");
+  return rowToBookingChangeRequest(row);
+}
+
+export async function getCourtBookingChangeRequest(token: string): Promise<CourtBookingChangeRequest | null> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_get_court_booking_change_request", {
+    p_token: token,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as BookingChangeRequestRow[])[0];
+  return row ? rowToBookingChangeRequest(row) : null;
+}
+
+export async function confirmCourtBookingChangeRequest(
+  token: string,
+  input: {
+    courtId: string;
+    startsAt: string;
+    endsAt: string;
+  }
+): Promise<CourtBooking> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+  const { data, error } = await supabase.rpc("app_confirm_court_booking_change_request", {
+    p_token: token,
+    p_court_id: input.courtId,
+    p_starts_at: input.startsAt,
+    p_ends_at: input.endsAt,
+  });
+  if (error) throw new Error(error.message);
+  const row = ((data ?? []) as BookingRow[])[0];
+  if (!row) throw new Error("Alteracao nao confirmada.");
+  const courts = await listPlaceCourts(row.place_id);
+  const courtName = courts.find((court) => court.id === row.court_id)?.name || "";
+  return rowToBooking(row, courtName);
 }
 
 export async function cancelCourtBookingSeries(bookingId: string): Promise<number> {

@@ -18,6 +18,7 @@ import { PlaceAcademyOperationalQueues } from "../components/place/PlaceAcademyO
 import { PlaceAcademyRequestsModule } from "../components/place/PlaceAcademyRequestsModule";
 import { PlaceAcademyResourcesModule, type PlaceAcademySlotDraft } from "../components/place/PlaceAcademyResourcesModule";
 import { PlaceAcademyStudentsModule } from "../components/place/PlaceAcademyStudentsModule";
+import { PlaceAcademyTeacherCalendarModule } from "../components/place/PlaceAcademyTeacherCalendarModule";
 import { PlaceAcademyTodayModule } from "../components/place/PlaceAcademyTodayModule";
 import { PlaceCanteenProductsModule } from "../components/place/PlaceCanteenProductsModule";
 import { PlaceCanteenProductForm, type PlacePosProductDraft } from "../components/place/PlaceCanteenProductForm";
@@ -57,6 +58,7 @@ import {
   cancelPlaceExpense,
   cancelPlacePosSale,
   cancelCourtBookingSeries,
+  createCourtBookingChangeRequest,
   createAcademyEnrollment,
   createAcademyProgressNote,
   createCourtBlock,
@@ -107,6 +109,7 @@ import {
   recordPlaceCreditPurchase,
   recordPlacePosSale,
   toggleOpenMatchReaction,
+  updateCourtBookingDetails,
   updateCourtBookingStatus,
   updateCourtBookingWaitlistStatus,
   updatePlaceCoach,
@@ -150,7 +153,11 @@ import {
   buildPlaceAdminPath,
   parsePlaceAdminModule,
 } from "../lib/place-admin-navigation";
-import { bookingWhatsappHref, buildBookingRescheduleAlternatives, waitlistWhatsappHref } from "../lib/bookingWhatsapp";
+import {
+  bookingWhatsappHref,
+  buildBookingRescheduleAlternatives,
+  waitlistWhatsappHref,
+} from "../lib/bookingWhatsapp";
 import { createPaymentReminderForParticipant, formatMoneyFromCents, markStubPaymentPaidForParticipant } from "../lib/payments";
 import { usePlaceAdminResourceState } from "../hooks/usePlaceAdminResourceState";
 import { usePlaceAdminRouteSync } from "../hooks/usePlaceAdminRouteSync";
@@ -393,6 +400,11 @@ function friendlyError(err: unknown, fallback: string): string {
     return text;
   }
   return text || fallback;
+}
+
+function bookingChangeConfirmationUrl(token: string): string {
+  const base = `${window.location.origin}${window.location.pathname}`;
+  return `${base}#/reservas/alteracao/${encodeURIComponent(token)}`;
 }
 
 function todayDateInputValue(): string {
@@ -1861,6 +1873,64 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setFeedback({ kind: "success", text: status === "confirmed" ? "Reserva confirmada." : "Reserva cancelada." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar reserva.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onUpdateBookingDetails = async (
+    placeId: string,
+    booking: CourtBooking,
+    patch: { courtId: string; endsAt: string; notes?: string; startsAt: string }
+  ) => {
+    setBusy(true);
+    setFeedback(null);
+    try {
+      await updateCourtBookingDetails({
+        bookingId: booking.id,
+        courtId: patch.courtId,
+        startsAt: patch.startsAt,
+        endsAt: patch.endsAt,
+        notes: patch.notes,
+      });
+      await refreshPlaceResources(placeId);
+      setFeedback({ kind: "success", text: "Reserva alterada pela gestao." });
+    } catch (err) {
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao alterar reserva.") });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onShareBookingChange = async (place: Place, booking: CourtBooking) => {
+    if (!booking.phone.trim()) {
+      setFeedback({ kind: "info", text: "Esta reserva não tem telefone cadastrado para WhatsApp." });
+      return;
+    }
+
+    const popup = window.open("about:blank", "_blank");
+    setBusy(true);
+    setFeedback(null);
+    try {
+      const request = await createCourtBookingChangeRequest({ bookingId: booking.id });
+
+      const href = bookingWhatsappHref(booking, {
+        placeName: place.name,
+        senderName: profile?.displayName || user.email || "Equipe ATP",
+        changeUrl: bookingChangeConfirmationUrl(request.token),
+      });
+      if (popup) {
+        popup.location.href = href;
+      } else {
+        window.open(href, "_blank", "noopener,noreferrer");
+      }
+      setFeedback({
+        kind: "success",
+        text: "WhatsApp aberto com link unico para o jogador escolher um horario livre.",
+      });
+    } catch (err) {
+      popup?.close();
+      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao preparar WhatsApp de alteracao.") });
     } finally {
       setBusy(false);
     }
@@ -5231,11 +5301,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const showCanteenSale = !showCanteenWorkspace;
         const showCanteenStock = !showCanteenWorkspace;
         const showCanteenProducts = !showCanteenWorkspace;
-        const coachAcademyViews: AcademyManagementView[] = ["today", "classes", "students"];
+        const coachAcademyViews: AcademyManagementView[] = ["calendar", "today", "classes", "students"];
         const academyViews: AcademyManagementView[] = isCoachMode
           ? coachAcademyViews
-          : ["today", "classes", "students", "requests", "coaches", "resources"];
-        const requestedAcademyView = (academyViewByPlace[p.id] || "today") as AcademyManagementView;
+          : ["today", "calendar", "classes", "students", "requests", "coaches", "resources"];
+        const requestedAcademyView = (academyViewByPlace[p.id] || (isCoachMode ? "calendar" : "today")) as AcademyManagementView;
         const academyView = academyViews.includes(requestedAcademyView) ? requestedAcademyView : academyViews[0];
         const coachAgendaPreview = isCoachMode
           ? visibleAcademyClasses
@@ -5488,7 +5558,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               <PlaceOperationsDashboard
                 balanceText={formatMoneyFromCents(operationalStats.paidBookingAmountCents + (canUseCanteenModule ? operationalStats.posRevenueCents : 0) - operationalStats.expenseCents)}
                 metrics={[
-                  { disabled: !managementModules.includes("bookings"), label: "Reservas para revisar", module: "bookings", value: operationalStats.pendingBookings },
+                  { disabled: !managementModules.includes("bookings"), label: "Agenda e reservas", module: "bookings", value: operationalStats.pendingBookings },
                   {
                     disabled: !managementModules.includes("academy"),
                     label: "Aulas e encaixes pendentes",
@@ -5518,6 +5588,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         id: `queue-booking:${booking.id}`,
                         label: `Reserva pendente | ${booking.courtName || "Quadra"} | ${new Date(booking.startsAt).toLocaleString("pt-BR")}`,
                         module: "bookings" as PlaceManagementModule,
+                        viewSegment: "reservas",
                       }))
                     : []),
                   ...(managementModules.includes("academy")
@@ -5546,9 +5617,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <span>{formatMoneyFromCents(operationalStats.paidBookingAmountCents + (canUseCanteenModule ? operationalStats.posRevenueCents : 0) - operationalStats.expenseCents)} saldo</span>
                 </div>
                 <div className="place-operations-grid">
-                  <button type="button" onClick={() => selectManagementModule(p.id, "bookings")} disabled={!managementModules.includes("bookings")}>
+                  <button type="button" onClick={() => selectManagementModule(p.id, "bookings", "calendario")} disabled={!managementModules.includes("bookings")}>
                     <strong>{operationalStats.pendingBookings}</strong>
-                    <span>Reservas para revisar</span>
+                    <span>Agenda e reservas</span>
                   </button>
                   <button type="button" onClick={() => selectManagementModule(p.id, "academy")} disabled={!managementModules.includes("academy")}>
                     <strong>{operationalStats.pendingLessonRequests + operationalStats.pendingEnrollments}</strong>
@@ -6884,7 +6955,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <PlaceBookingOperationalQueues
                       busy={busy}
                       canManageBookings={canManageBookings}
-                      getBookingWhatsappHref={getBookingWhatsappHref}
                       getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                       isWaitlistPromotable={waitlistEntryCanPromote}
                       onOpenReservations={() => selectBookingView(p.id, "reservations")}
@@ -6906,17 +6976,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       canManageBookings={canManageBookings}
                       getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
                       getWhatsappHref={getBookingWhatsappHref}
+                      onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
                       onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                     />
                   ) : null}
                   {bookingView === "reservations" ? (
                     <PlaceBookingReservationsModule
+                      activeCourts={activeCourts}
                       bookings={bookings}
                       busy={busy}
                       canManageBookings={canManageBookings}
                       getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
                       getWhatsappHref={getBookingWhatsappHref}
+                      onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
                       onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                      onUpdateBookingDetails={(booking, patch) => void onUpdateBookingDetails(p.id, booking, patch)}
                     />
                   ) : null}
                   {bookingView === "calendar" ? (
@@ -7005,7 +7079,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </div>
                   <div>
                     <strong>{pendingBookings.length}</strong>
-                    <span>Pendentes</span>
+                    <span>Aguardando pagamento</span>
                   </div>
                   <div>
                     <strong>{waitingCourtEntries.length}</strong>
@@ -7021,7 +7095,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <PlaceBookingOperationalQueues
                   busy={busy}
                   canManageBookings={canManageBookings}
-                  getBookingWhatsappHref={getBookingWhatsappHref}
                   getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                   isWaitlistPromotable={waitlistEntryCanPromote}
                   onOpenReservations={() => selectBookingView(p.id, "reservations")}
@@ -7108,6 +7181,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 onCancelSeries={(bookingId) => void onCancelBookingSeries(p.id, bookingId)}
                 onMarkPaid={(booking, payment) => void onAdminMarkCourtBookingPaid(booking, payment)}
                 onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
+                onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
                 onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                 onUpdateWaitlistEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
                 showReservations={showBookingReservations}
@@ -7128,13 +7202,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   viewDescriptions={
                     isCoachMode
                       ? {
-                          today: "Suas aulas de hoje, chamada, faltas e observacoes rapidas.",
+                          calendar: "Seu dia em linha do tempo, com horario, turma, alunos e quadra.",
+                          today: "Chamada, faltas e observacoes rapidas da aula selecionada.",
                           classes: "Sua grade semanal, ocupacao e alunos por turma.",
                           students: "Alunos das suas turmas, presença, faltas e evolução.",
                         }
                       : undefined
                   }
-                  viewLabels={isCoachMode ? { today: "Aulas", classes: "Turmas", students: "Alunos" } : undefined}
+                  viewLabels={isCoachMode ? { calendar: "Agenda", today: "Aulas", classes: "Turmas", students: "Alunos" } : undefined}
                   views={academyViews}
                   onViewChange={(view) => selectAcademyView(p.id, view)}
                 >
@@ -7194,7 +7269,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       ) : null}
                     </div>
                   ) : null}
-                  {isManagementCockpit && academyView !== "today" && academyView !== "requests" ? (
+                  {isManagementCockpit && academyView !== "calendar" && academyView !== "today" && academyView !== "requests" ? (
                     <PlaceAcademyOperationalQueues
                       actionableLessonRequests={actionableLessonRequests}
                       academyClasses={visibleAcademyClasses}
@@ -7211,6 +7286,22 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
                       pendingEnrollments={pendingAcademyEnrollments}
                       todayClasses={todayClasses}
+                    />
+                  ) : null}
+                  {!coachWithoutAcademyProfile && academyView === "calendar" ? (
+                    <PlaceAcademyTeacherCalendarModule
+                      absences={academyAbsences}
+                      activeCourts={activeCourts}
+                      classes={visibleAcademyClasses}
+                      day={courtCalendarDay}
+                      enrollments={visibleAcademyEnrollments}
+                      lessonRequests={academyLessonRequests}
+                      title={isCoachMode ? "Minha agenda do dia" : "Agenda diaria de aulas"}
+                      onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
+                      onOpenTodayClass={(academyClassId) => {
+                        setAcademyTodayClassByPlace((prev) => ({ ...prev, [p.id]: academyClassId }));
+                        setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }));
+                      }}
                     />
                   ) : null}
                   {!coachWithoutAcademyProfile && academyView === "today" ? (

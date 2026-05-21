@@ -4,7 +4,7 @@ export type PlaceManagementModule = "dashboard" | "bookings" | "academy" | "clie
 
 export const PLACE_MANAGEMENT_MODULE_LABELS: Record<PlaceManagementModule, string> = {
   dashboard: "Painel",
-  bookings: "Reservas",
+  bookings: "Agenda",
   academy: "Academia",
   clients: "Clientes",
   finance: "Financeiro",
@@ -15,7 +15,7 @@ export const PLACE_MANAGEMENT_MODULE_LABELS: Record<PlaceManagementModule, strin
 
 export const PLACE_MANAGEMENT_MODULE_DESCRIPTIONS: Record<PlaceManagementModule, string> = {
   dashboard: "Prioridades do dia, pendencias e saude da operacao.",
-  bookings: "Reservas, bloqueios, calendario das quadras e lista de espera.",
+  bookings: "Calendario do local com reservas, bloqueios, turmas, aulas e lista de espera.",
   academy: "Turmas, professores, matriculas, chamadas, reposicoes e evolucao.",
   clients: "Socios, leads, interessados e relacionamento com alunos.",
   finance: "Mensalidades, pagamentos, lembretes e despesas operacionais.",
@@ -57,7 +57,7 @@ export function placeResourceAccess(place: Place, userId: string, staff: PlaceSt
 
 export function featureList(access: ReturnType<typeof placeResourceAccess>): string[] {
   return [
-    access.canUseBookings ? "Reservas" : "",
+    access.canUseBookings ? "Agenda" : "",
     access.canUseAcademy ? "Academia" : "",
     access.canUseMemberships ? "Socios" : "",
     access.canUseCrm ? "CRM" : "",

@@ -10,6 +10,7 @@ type Props = {
   canManageBookings: boolean;
   getPaymentForBooking: (bookingId: string) => AppPayment | undefined;
   getWhatsappHref: (booking: CourtBooking) => string;
+  onShareBookingChange?: (booking: CourtBooking) => void;
   onUpdateBooking: (bookingId: string, status: CourtBooking["status"]) => void;
 };
 
@@ -20,7 +21,7 @@ function shortTime(value: string): string {
 function bookingStatusLabel(status: CourtBooking["status"]): string {
   if (status === "blocked") return "Bloqueio";
   if (status === "confirmed") return "Confirmada";
-  if (status === "pending") return "Pendente";
+  if (status === "pending") return "Aguardando pagamento";
   return "Cancelada";
 }
 
@@ -30,7 +31,7 @@ function paymentStatusLabel(payment?: AppPayment): string {
   return "Sem pagamento";
 }
 
-export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, getPaymentForBooking, getWhatsappHref, onUpdateBooking }: Props) {
+export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, getPaymentForBooking, getWhatsappHref, onShareBookingChange, onUpdateBooking }: Props) {
   const [showAllTodayBookings, setShowAllTodayBookings] = useState(false);
   const orderedBookings = [...bookings].sort((a, b) => {
     if (a.status === "pending" && b.status !== "pending") return -1;
@@ -45,8 +46,8 @@ export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, get
     <WorkspaceList>
       {pendingCount ? (
         <div className="booking-results-summary urgent">
-          <strong>{pendingCount} pendente(s) para decidir hoje.</strong>
-          <span>Confirme ou cancele antes de operar a lista completa do dia.</span>
+          <strong>{pendingCount} reserva(s) aguardando pagamento hoje.</strong>
+          <span>Sem confirmacao manual: cancele apenas se precisar liberar o horario.</span>
         </div>
       ) : null}
       {orderedBookings.length ? (
@@ -71,19 +72,18 @@ export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, get
             detail={`${booking.status === "blocked" ? "Bloqueio operacional" : booking.playerName} | ${bookingStatusLabel(booking.status)}`}
             actions={
               <>
-                {canManageBookings && booking.status === "pending" ? (
-                  <button className="primary" onClick={() => onUpdateBooking(booking.id, "confirmed")} disabled={busy}>
-                    Confirmar
-                  </button>
-                ) : null}
                 {canManageBookings && booking.status !== "cancelled" ? (
                   <button className="danger" onClick={() => onUpdateBooking(booking.id, "cancelled")} disabled={busy}>
                     {booking.status === "blocked" ? "Liberar" : "Cancelar"}
                   </button>
                 ) : null}
-                {whatsappHref ? (
+                {booking.status !== "cancelled" && onShareBookingChange ? (
+                  <button className="button-like compact whatsapp-action" type="button" onClick={() => onShareBookingChange(booking)} disabled={busy}>
+                    Avisar troca
+                  </button>
+                ) : whatsappHref ? (
                   <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">
-                    {booking.status === "cancelled" ? "WhatsApp cancelamento" : "WhatsApp reagendar"}
+                    {booking.status === "cancelled" ? "Avisar cancelamento" : "Avisar troca"}
                   </a>
                 ) : null}
               </>
@@ -101,7 +101,7 @@ export function PlaceBookingTodayModule({ bookings, busy, canManageBookings, get
           </WorkspaceRow>
         );
       })}
-      {!bookings.length ? <p className="subtle">Nenhuma reserva hoje. Use Nova reserva ou Calendario para operar o proximo horario.</p> : null}
+      {!bookings.length ? <p className="subtle">Nenhuma reserva hoje. Use Nova reserva ou o Mapa do dia para operar o proximo horario.</p> : null}
     </WorkspaceList>
   );
 }

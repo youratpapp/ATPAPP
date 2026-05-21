@@ -14395,6 +14395,237 @@ button:disabled {
   white-space: nowrap;
 }
 
+.booking-edit-panel {
+  background: rgba(7, 16, 31, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(150px, 1fr) minmax(180px, 1fr) minmax(180px, 1fr);
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+}
+
+.booking-edit-panel label {
+  color: rgba(226, 232, 240, 0.72);
+  display: grid;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  gap: 6px;
+}
+
+.booking-edit-panel input,
+.booking-edit-panel select {
+  background: rgba(2, 8, 23, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: var(--radius-sm);
+  color: #f8fafc;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.booking-edit-panel-wide,
+.booking-edit-actions {
+  grid-column: 1 / -1;
+}
+
+.booking-edit-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.booking-change-page {
+  display: grid;
+  min-height: calc(100vh - var(--header-height, 72px));
+  place-items: center;
+  padding: clamp(24px, 5vw, 64px);
+}
+
+.booking-change-card {
+  background:
+    linear-gradient(135deg, rgba(2, 8, 23, 0.92), rgba(9, 33, 48, 0.82)),
+    url("./assets/pdark-court-management-hero.png");
+  background-position: center;
+  background-size: cover;
+  border: 1px solid rgba(94, 234, 212, 0.22);
+  border-radius: 24px;
+  box-shadow: 0 24px 80px rgba(2, 8, 23, 0.42);
+  color: #f8fafc;
+  display: grid;
+  gap: var(--space-4);
+  max-width: 920px;
+  padding: clamp(22px, 4vw, 42px);
+  width: min(100%, 920px);
+}
+
+.booking-change-card .eyebrow {
+  color: #34d399;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.booking-change-card h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  line-height: 1;
+  margin: 0;
+}
+
+.booking-change-card p {
+  color: rgba(226, 232, 240, 0.82);
+  font-weight: 800;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 680px;
+}
+
+.booking-change-summary,
+.booking-change-comparison,
+.booking-change-picker {
+  background: rgba(2, 8, 23, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 18px;
+}
+
+.booking-change-summary {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: var(--space-3);
+}
+
+.booking-change-summary div,
+.booking-change-comparison article {
+  display: grid;
+  gap: 6px;
+}
+
+.booking-change-summary span,
+.booking-change-comparison span,
+.booking-change-picker label {
+  color: rgba(148, 163, 184, 0.94);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+}
+
+.booking-change-summary strong,
+.booking-change-comparison strong {
+  color: #fff;
+  font-size: var(--font-size-lg);
+}
+
+.booking-change-comparison {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: var(--space-3);
+}
+
+.booking-change-comparison small {
+  color: rgba(226, 232, 240, 0.82);
+  font-weight: 800;
+}
+
+.booking-change-comparison .proposed {
+  border-left: 3px solid #22c55e;
+  padding-left: var(--space-3);
+}
+
+.booking-change-picker {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.booking-change-picker-fields {
+  align-items: end;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(130px, 1fr) minmax(120px, 0.8fr) minmax(120px, 0.8fr) auto;
+}
+
+.booking-change-picker-fields label {
+  display: grid;
+  gap: 6px;
+}
+
+.booking-change-picker input,
+.booking-change-picker select {
+  background: rgba(2, 8, 23, 0.74);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: var(--radius-sm);
+  color: #f8fafc;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.booking-change-availability {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.booking-change-availability button {
+  align-items: start;
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 16px;
+  color: #f8fafc;
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  text-align: left;
+}
+
+.booking-change-availability button.active {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(74, 222, 128, 0.74);
+}
+
+.booking-change-availability button span,
+.booking-change-availability p {
+  color: rgba(226, 232, 240, 0.78);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  margin: 0;
+}
+
+.booking-change-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .booking-edit-panel,
+  .booking-change-summary,
+  .booking-change-comparison,
+  .booking-change-picker-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-change-page {
+    padding: 16px;
+    place-items: start center;
+  }
+
+  .booking-change-card {
+    border-radius: 18px;
+  }
+
+  .booking-change-comparison .proposed {
+    border-left: 0;
+    border-top: 3px solid #22c55e;
+    padding-left: 0;
+    padding-top: var(--space-3);
+  }
+}
+
 .booking-availability-status {
   align-items: center;
   background: #f8fafc;
@@ -27649,6 +27880,161 @@ label {
 .app-shell--management .academy-pending-actions[open] {
   background: linear-gradient(135deg, rgba(250, 204, 21, 0.15), rgba(34, 197, 94, 0.08));
   border-color: rgba(250, 204, 21, 0.28);
+}
+
+.teacher-day-calendar {
+  display: grid;
+  gap: 14px;
+}
+
+.teacher-day-calendar-head,
+.teacher-next-class-card,
+.teacher-day-slot {
+  background:
+    linear-gradient(180deg, rgba(12, 27, 45, 0.92), rgba(8, 20, 36, 0.8)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+  border: 1px solid var(--pdark-border-soft);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2);
+  color: var(--pdark-text-main);
+}
+
+.teacher-day-calendar-head {
+  align-items: end;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.teacher-day-calendar-head > div,
+.teacher-next-class-card {
+  display: grid;
+  gap: 6px;
+}
+
+.teacher-day-calendar-head span,
+.teacher-next-class-card span,
+.teacher-day-class-card header span {
+  color: #4ade80;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.teacher-day-calendar-head strong,
+.teacher-next-class-card strong,
+.teacher-day-class-card strong {
+  color: var(--pdark-text-main);
+}
+
+.teacher-day-calendar-head strong {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+}
+
+.teacher-day-calendar-head small,
+.teacher-next-class-card small,
+.teacher-day-class-card small,
+.teacher-day-students span,
+.teacher-day-students em,
+.teacher-day-free-slot {
+  color: var(--pdark-text-muted);
+  font-weight: 800;
+}
+
+.teacher-day-calendar-head input {
+  background: rgba(3, 9, 20, 0.76);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 12px;
+  color: var(--pdark-text-main);
+  font-weight: 900;
+  min-height: 42px;
+  padding: 0 12px;
+}
+
+.teacher-next-class-card {
+  padding: 16px;
+}
+
+.teacher-next-class-card button,
+.teacher-day-class-card button {
+  justify-self: start;
+}
+
+.teacher-day-timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.teacher-day-slot {
+  align-items: start;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 76px minmax(0, 1fr);
+  padding: 12px;
+}
+
+.teacher-day-slot.empty {
+  opacity: 0.72;
+}
+
+.teacher-day-slot time {
+  color: #86efac;
+  font-weight: 900;
+  padding-top: 12px;
+}
+
+.teacher-day-class-card {
+  background: rgba(3, 9, 20, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 16px;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.teacher-day-class-card header {
+  align-items: start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.teacher-day-class-card header > div,
+.teacher-day-students {
+  display: grid;
+  gap: 5px;
+}
+
+.teacher-day-students em {
+  color: #bbf7d0;
+  font-style: normal;
+}
+
+.teacher-day-free-slot {
+  display: block;
+  padding: 12px 0;
+}
+
+@media (max-width: 720px) {
+  .teacher-day-calendar-head,
+  .teacher-day-class-card header {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .teacher-day-calendar-head input {
+    width: 100%;
+  }
+
+  .teacher-day-slot {
+    grid-template-columns: 1fr;
+  }
+
+  .teacher-day-slot time {
+    padding-top: 0;
+  }
 }
 
 .app-shell--management .academy-workspace-grid {

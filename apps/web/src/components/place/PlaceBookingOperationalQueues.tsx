@@ -4,7 +4,6 @@ import { OperationalQueue } from "./PlaceWorkspaceUi";
 type Props = {
   busy: boolean;
   canManageBookings: boolean;
-  getBookingWhatsappHref: (booking: CourtBooking) => string;
   getWaitlistWhatsappHref: (entry: CourtBookingWaitlistEntry, promotable: boolean) => string;
   isWaitlistPromotable: (entry: CourtBookingWaitlistEntry) => boolean;
   onPromoteWaitlistEntry: (entryId: string) => void;
@@ -35,7 +34,6 @@ function shortDateTime(value: string): string {
 export function PlaceBookingOperationalQueues({
   busy,
   canManageBookings,
-  getBookingWhatsappHref,
   getWaitlistWhatsappHref,
   isWaitlistPromotable,
   onPromoteWaitlistEntry,
@@ -77,30 +75,25 @@ export function PlaceBookingOperationalQueues({
         </OperationalQueue>
       ) : null}
       {canManageBookings && pendingBookings.length ? (
-        <OperationalQueue title="Reservas aguardando confirmacao" compact>
-          {pendingBookings.slice(0, firstFoldLimit).map((booking) => (
-            <span key={`pending-booking:${booking.id}`}>
-              <strong>{booking.courtName || "Quadra"}</strong>
-              <small>
-                {booking.playerName} - {shortDateTime(booking.startsAt)}
-              </small>
-              <button onClick={() => onUpdateBooking(booking.id, "confirmed")} disabled={busy}>
-                Confirmar
-              </button>
-              <button className="danger" onClick={() => onUpdateBooking(booking.id, "cancelled")} disabled={busy}>
-                Cancelar
-              </button>
-              {getBookingWhatsappHref(booking) ? (
-                <a className="button-like compact whatsapp-action" href={getBookingWhatsappHref(booking)} target="_blank" rel="noreferrer">
-                  WhatsApp reagendar
-                </a>
-              ) : null}
-            </span>
-          ))}
+        <OperationalQueue title="Reservas aguardando pagamento" compact>
+          {pendingBookings.slice(0, firstFoldLimit).map((booking) => {
+            return (
+              <span key={`pending-booking:${booking.id}`}>
+                <strong>{booking.courtName || "Quadra"}</strong>
+                <small>
+                  {booking.playerName} - {shortDateTime(booking.startsAt)}
+                </small>
+                <em>Sem confirmacao manual: a reserva sera efetivada pelo pagamento.</em>
+                <button className="danger" onClick={() => onUpdateBooking(booking.id, "cancelled")} disabled={busy}>
+                  Cancelar
+                </button>
+              </span>
+            );
+          })}
           {pendingBookings.length > firstFoldLimit ? (
             <button type="button" onClick={onOpenReservations} disabled={!onOpenReservations}>
-              <strong>Ver todas as pendentes</strong>
-              <small>Mais {pendingBookings.length - firstFoldLimit} reserva(s) aguardando decisao.</small>
+              <strong>Ver reservas aguardando pagamento</strong>
+              <small>Mais {pendingBookings.length - firstFoldLimit} reserva(s) sem pagamento efetivado.</small>
             </button>
           ) : null}
         </OperationalQueue>
