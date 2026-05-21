@@ -681,8 +681,8 @@ function customRangeDayCount(startDate: string, endDate: string): number {
 }
 
 function courtWaitlistStatusLabel(status: CourtBookingWaitlistEntry["status"]): string {
-  if (status === "waiting") return "Aguardando convite";
-  if (status === "invited") return "Convidado";
+  if (status === "waiting") return "Na lista de espera";
+  if (status === "invited") return "Contato feito";
   if (status === "booked") return "Reserva criada";
   return "Cancelado";
 }
@@ -871,6 +871,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [bookingRuleDraftByPlace, setBookingRuleDraftByPlace] = useState<Record<string, BookingRuleDraft>>({});
   const [availableCourtsByPlace, setAvailableCourtsByPlace] = useState<Record<string, AvailableCourt[]>>({});
   const [bookingAvailabilityFeedbackByPlace, setBookingAvailabilityFeedbackByPlace] = useState<Record<string, { kind: "info" | "error" | "success"; text: string } | null>>({});
+  const [waitlistPromotionBlockedById, setWaitlistPromotionBlockedById] = useState<Record<string, boolean>>({});
   const [academyClassPriceDraftByClass, setAcademyClassPriceDraftByClass] = useState<Record<string, string>>({});
   const [coachCommissionDraftByCoach, setCoachCommissionDraftByCoach] = useState<Record<string, string>>({});
   const [coachLinkDraftByCoach, setCoachLinkDraftByCoach] = useState<Record<string, string>>({});
@@ -1934,7 +1935,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     try {
       await updateCourtBookingWaitlistStatus(waitlistId, status);
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: status === "invited" ? "Jogador marcado como convidado." : "Lista de espera atualizada." });
+      setFeedback({ kind: "success", text: status === "invited" ? "Contato registrado na lista de espera." : "Lista de espera atualizada." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar lista de espera.") });
     } finally {
@@ -1943,14 +1944,53 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   };
 
   const onPromoteBookingWaitlist = async (placeId: string, waitlistId: string) => {
+    const availabilityMessage = "Horario ainda ocupado. Mantenha o jogador na lista de espera ou escolha outro horario.";
     setBusy(true);
     setFeedback(null);
     try {
+      const entry = (bookingWaitlistByPlace[placeId] || []).find((item) => item.id === waitlistId);
+      if (entry) {
+        const localBookings = bookingsByPlace[placeId] || [];
+
+        if (!waitlistEntryIsPromotable(entry, localBookings)) {
+          setWaitlistPromotionBlockedById((prev) => ({ ...prev, [waitlistId]: true }));
+          await refreshPlaceResources(placeId);
+          setFeedback({ kind: "info", text: availabilityMessage });
+          return;
+        }
+
+        const availableCourts = await searchAvailableCourts({
+          placeId,
+          startsAt: entry.startsAt,
+          endsAt: entry.endsAt,
+        });
+        const courtAvailable = availableCourts.some((court) => court.id === entry.courtId);
+
+        if (!courtAvailable) {
+          setWaitlistPromotionBlockedById((prev) => ({ ...prev, [waitlistId]: true }));
+          await refreshPlaceResources(placeId);
+          setFeedback({ kind: "info", text: availabilityMessage });
+          return;
+        }
+      }
+
       await promoteCourtBookingWaitlist(waitlistId);
       await refreshPlaceResources(placeId);
+      setWaitlistPromotionBlockedById((prev) => {
+        const next = { ...prev };
+        delete next[waitlistId];
+        return next;
+      });
       setFeedback({ kind: "success", text: "Reserva criada a partir da lista de espera." });
     } catch (err) {
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao criar reserva pela lista de espera.") });
+      const message = friendlyError(err, "Falha ao criar reserva pela lista de espera.");
+      if (/horario.*reservad|horário.*reservad|already.*booked/i.test(message)) {
+        setWaitlistPromotionBlockedById((prev) => ({ ...prev, [waitlistId]: true }));
+        await refreshPlaceResources(placeId);
+        setFeedback({ kind: "info", text: availabilityMessage });
+        return;
+      }
+      setFeedback({ kind: "error", text: message });
     } finally {
       setBusy(false);
     }
@@ -4342,6 +4382,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const activeCourts = courts.filter((court) => court.isActive);
         const bookings = bookingsByPlace[p.id] || [];
         const bookingWaitlist = bookingWaitlistByPlace[p.id] || [];
+        const waitlistEntryCanPromote = (entry: CourtBookingWaitlistEntry) =>
+          !waitlistPromotionBlockedById[entry.id] && waitlistEntryIsPromotable(entry, bookings);
         const tournamentCourtRequests = tournamentCourtRequestsByPlace[p.id] || [];
         const academyClasses = academyClassesByPlace[p.id] || [];
         const academyCoaches = academyCoachesByPlace[p.id] || [];
@@ -6826,7 +6868,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <PlaceBookingOperationalQueues
                       busy={busy}
                       canManageBookings={canManageBookings}
-                      isWaitlistPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
+                      isWaitlistPromotable={waitlistEntryCanPromote}
                       onOpenReservations={() => selectBookingView(p.id, "reservations")}
                       onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
                       onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
@@ -6900,7 +6942,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       busy={busy}
                       canManageBookings={canManageBookings}
                       entries={bookingWaitlist}
-                      isPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
+                      isPromotable={waitlistEntryCanPromote}
                       onPromoteEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
                       onUpdateEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
                       statusLabel={courtWaitlistStatusLabel}
@@ -6958,7 +7000,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <PlaceBookingOperationalQueues
                   busy={busy}
                   canManageBookings={canManageBookings}
-                  isWaitlistPromotable={(entry) => waitlistEntryIsPromotable(entry, bookings)}
+                  isWaitlistPromotable={waitlistEntryCanPromote}
                   onOpenReservations={() => selectBookingView(p.id, "reservations")}
                   onOpenWaitlist={() => selectBookingView(p.id, "waitlist")}
                   onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
@@ -7037,6 +7079,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 canManageBookings={canManageBookings}
                 currentUserId={user.id}
                 getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                isWaitlistPromotable={waitlistEntryCanPromote}
                 onCancelSeries={(bookingId) => void onCancelBookingSeries(p.id, bookingId)}
                 onMarkPaid={(booking, payment) => void onAdminMarkCourtBookingPaid(booking, payment)}
                 onPromoteWaitlistEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}

@@ -107,13 +107,18 @@ export function PlaceBookingOperationalQueues({
                   {entry.courtName || "Quadra"} - {dateTime(entry.startsAt)}
                 </small>
                 <em>
-                  {waitingSinceLabel(entry.createdAt)} - {promotable ? "horario livre" : "aguardando vaga"}
+                  {waitingSinceLabel(entry.createdAt)} - {promotable ? "horario livre" : "horario ocupado"}
                 </em>
-                <button className="primary" onClick={() => onPromoteWaitlistEntry(entry.id)} disabled={busy || !promotable}>
-                  Criar reserva
+                <button
+                  className={promotable ? "primary" : undefined}
+                  onClick={() => onPromoteWaitlistEntry(entry.id)}
+                  disabled={busy || !promotable}
+                  title={promotable ? "Criar a reserva neste horario" : "Este horario ainda esta ocupado. Crie a reserva quando a quadra for liberada."}
+                >
+                  {promotable ? "Criar reserva" : "Horario ocupado"}
                 </button>
                 <button onClick={() => onUpdateWaitlistEntry(entry.id, "invited")} disabled={busy}>
-                  Marcar convidado
+                  Marcar avisado
                 </button>
                 <button className="danger" onClick={() => onUpdateWaitlistEntry(entry.id, "cancelled")} disabled={busy}>
                   Remover

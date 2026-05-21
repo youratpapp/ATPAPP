@@ -1993,7 +1993,7 @@ export async function listPlaceBookings(placeId: string): Promise<CourtBooking[]
     .eq("place_id", placeId)
     .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
     .order("starts_at", { ascending: true })
-    .limit(80);
+    .limit(500);
   if (error) throw new Error(error.message);
   return ((data ?? []) as BookingRow[]).map((row) => rowToBooking(row, courtNameById.get(row.court_id) || ""));
 }
@@ -2009,7 +2009,7 @@ export async function listPlaceBookingWaitlist(placeId: string): Promise<CourtBo
     .neq("status", "cancelled")
     .gte("ends_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
     .order("starts_at", { ascending: true })
-    .limit(80);
+    .limit(500);
   if (error) throw new Error(error.message);
   return ((data ?? []) as BookingWaitlistRow[]).map((row) => rowToBookingWaitlist(row, courtNameById.get(row.court_id) || ""));
 }

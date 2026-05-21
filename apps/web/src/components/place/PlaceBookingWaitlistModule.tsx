@@ -59,7 +59,7 @@ export function PlaceBookingWaitlistModule({
         <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as CourtBookingWaitlistEntry["status"] | "all")}>
           <option value="all">Todos os status</option>
           <option value="waiting">Aguardando</option>
-          <option value="invited">Convidados</option>
+          <option value="invited">Avisados</option>
           <option value="booked">Convertidos</option>
           <option value="cancelled">Cancelados</option>
         </select>
@@ -100,13 +100,18 @@ export function PlaceBookingWaitlistModule({
             actions={
               <>
                 {canManageBookings && (entry.status === "waiting" || entry.status === "invited") ? (
-                  <button className="primary" onClick={() => onPromoteEntry(entry.id)} disabled={busy || !promotable}>
-                    Criar reserva
+                  <button
+                    className={promotable ? "primary" : undefined}
+                    onClick={() => onPromoteEntry(entry.id)}
+                    disabled={busy || !promotable}
+                    title={promotable ? "Criar a reserva neste horario" : "Este horario ainda esta ocupado. Crie a reserva quando a quadra for liberada."}
+                  >
+                    {promotable ? "Criar reserva" : "Horario ocupado"}
                   </button>
                 ) : null}
                 {canManageBookings && entry.status === "waiting" ? (
                   <button onClick={() => onUpdateEntry(entry.id, "invited")} disabled={busy}>
-                    Marcar convidado
+                    Marcar avisado
                   </button>
                 ) : null}
                 {canManageBookings && entry.status !== "cancelled" && entry.status !== "booked" ? (
@@ -119,7 +124,7 @@ export function PlaceBookingWaitlistModule({
           >
             <WorkspaceMetrics
               items={[
-                promotable ? "Horario livre para promover" : "Aguardando vaga",
+                promotable ? "Horario livre para reserva" : "Horario ocupado",
                 waitingSinceLabel(entry.createdAt),
                 entry.phone ? `Contato ${entry.phone}` : "Sem telefone",
                 entry.notes || "Sem observacao",

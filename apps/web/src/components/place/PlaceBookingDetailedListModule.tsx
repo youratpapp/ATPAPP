@@ -7,6 +7,7 @@ type Props = {
   canManageBookings: boolean;
   currentUserId: string;
   getPaymentForBooking: (bookingId: string) => AppPayment | undefined;
+  isWaitlistPromotable: (entry: CourtBookingWaitlistEntry) => boolean;
   onCancelSeries: (bookingId: string) => void;
   onMarkPaid: (booking: CourtBooking, payment: AppPayment) => void;
   onPromoteWaitlistEntry: (entryId: string) => void;
@@ -40,6 +41,7 @@ export function PlaceBookingDetailedListModule({
   canManageBookings,
   currentUserId,
   getPaymentForBooking,
+  isWaitlistPromotable,
   onCancelSeries,
   onMarkPaid,
   onPromoteWaitlistEntry,
@@ -121,40 +123,49 @@ export function PlaceBookingDetailedListModule({
       {showWaitlist && waitlistEntries.length ? (
         <div className="place-booking-list">
           <strong>Lista de espera</strong>
-          {waitlistEntries.slice(0, 5).map((entry) => (
-            <div key={entry.id} className={`place-booking-row ${entry.status}`}>
-              <div>
-                <strong>{entry.courtName || "Quadra"}</strong>
-                <span>
-                  {dateTime(entry.startsAt)} - {shortTime(entry.endsAt)}
-                </span>
-                <small>
-                  {entry.playerName} | {statusLabel(entry.status)} | {waitingSinceLabel(entry.createdAt)}
-                </small>
-              </div>
-              {canManageBookings ? (
-                <span>
-                  {entry.status === "waiting" || entry.status === "invited" ? (
-                    <button className="primary" onClick={() => onPromoteWaitlistEntry(entry.id)} disabled={busy}>
-                      Criar reserva
+          {waitlistEntries.slice(0, 5).map((entry) => {
+            const promotable = isWaitlistPromotable(entry);
+            return (
+              <div key={entry.id} className={`place-booking-row ${entry.status}`}>
+                <div>
+                  <strong>{entry.courtName || "Quadra"}</strong>
+                  <span>
+                    {dateTime(entry.startsAt)} - {shortTime(entry.endsAt)}
+                  </span>
+                  <small>
+                    {entry.playerName} | {statusLabel(entry.status)} | {waitingSinceLabel(entry.createdAt)}
+                  </small>
+                  <small>{promotable ? "Horario livre para reserva" : "Horario ocupado"}</small>
+                </div>
+                {canManageBookings ? (
+                  <span>
+                    {entry.status === "waiting" || entry.status === "invited" ? (
+                      <button
+                        className={promotable ? "primary" : undefined}
+                        onClick={() => onPromoteWaitlistEntry(entry.id)}
+                        disabled={busy || !promotable}
+                        title={promotable ? "Criar a reserva neste horario" : "Este horario ainda esta ocupado. Crie a reserva quando a quadra for liberada."}
+                      >
+                        {promotable ? "Criar reserva" : "Horario ocupado"}
+                      </button>
+                    ) : null}
+                    {entry.status === "waiting" ? (
+                      <button onClick={() => onUpdateWaitlistEntry(entry.id, "invited")} disabled={busy}>
+                        Marcar avisado
+                      </button>
+                    ) : null}
+                    <button className="danger" onClick={() => onUpdateWaitlistEntry(entry.id, "cancelled")} disabled={busy}>
+                      Remover
                     </button>
-                  ) : null}
-                  {entry.status === "waiting" ? (
-                    <button onClick={() => onUpdateWaitlistEntry(entry.id, "invited")} disabled={busy}>
-                      Convidar
-                    </button>
-                  ) : null}
+                  </span>
+                ) : entry.userId === currentUserId && entry.status !== "cancelled" ? (
                   <button className="danger" onClick={() => onUpdateWaitlistEntry(entry.id, "cancelled")} disabled={busy}>
-                    Remover
+                    Sair da espera
                   </button>
-                </span>
-              ) : entry.userId === currentUserId && entry.status !== "cancelled" ? (
-                <button className="danger" onClick={() => onUpdateWaitlistEntry(entry.id, "cancelled")} disabled={busy}>
-                  Sair da espera
-                </button>
-              ) : null}
-            </div>
-          ))}
+                ) : null}
+              </div>
+            );
+          })}
         </div>
       ) : null}
     </>

@@ -12791,4 +12791,52 @@ Observacao operacional:
 
 - durante a captura, o disco chegou a 0 bytes livres; foram removidas apenas pastas antigas de screenshots gerados em `docs/screenshots` para liberar espaco, sem tocar em codigo, assets ou documentos.
 
+### [x] SPRINT-2026-05-21 - Clareza da lista de espera de reservas
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- a lista de espera mostrava `Criar reserva` desativado mesmo quando o horario ainda estava ocupado, sem explicar a causa;
+- `Marcar convidado` parecia enviar um convite real, mas a acao atual apenas muda o status interno da fila para `invited`;
+- uma lista legada ainda permitia tentar criar reserva da espera sem validar se o horario estava livre.
+
+Entregue:
+
+- quando o horario esta ocupado, o botao agora aparece como `Horario ocupado` com explicacao em `title`;
+- quando o horario esta livre, a acao segue como `Criar reserva`;
+- `Marcar convidado` foi renomeado para `Marcar avisado`;
+- status visual `Aguardando convite`/`Convidado` virou `Na lista de espera`/`Contato feito`;
+- a lista detalhada tambem recebeu a mesma regra de bloqueio por disponibilidade.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou.
+
+Pendencias:
+
+- se no futuro houver envio real de WhatsApp/push, a acao pode virar `Enviar convite` com canal explicito.
+
+### [x] SPRINT-2026-05-21 - Disponibilidade real ao promover lista de espera
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- a tela podia mostrar `Criar reserva` para uma pessoa na lista de espera quando a lista local de reservas estava incompleta;
+- ao clicar, o backend fazia a validacao definitiva e retornava `horario ja reservado`, gerando uma acao aparentemente disponivel que falhava depois;
+- a refresh da pagina nem sempre resolvia, porque a consulta de reservas do local estava limitada demais para operacoes com muitos registros futuros.
+
+Entregue:
+
+- a busca administrativa de reservas e lista de espera do local passou de 80 para 500 registros futuros;
+- antes de promover alguem da espera, a tela agora faz uma checagem real em `searchAvailableCourts` para confirmar que a quadra ainda esta livre naquele intervalo;
+- se a quadra estiver ocupada, a acao nao chama a promocao, atualiza os dados do local e informa que o horario continua ocupado;
+- se houver corrida de dados e o backend ainda devolver conflito, a UI bloqueia aquela promocao na sessao e mostra mensagem operacional em vez de erro bruto.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- busca por rotulos antigos de lista de espera confirmou que `Marcar convidado`, `Aguardando convite` e `Convidado` nao aparecem mais nos componentes de reservas.
+
 

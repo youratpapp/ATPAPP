@@ -455,6 +455,12 @@ async function main() {
     cdp.close();
   } finally {
     chrome.kill();
+    await sleep(1000);
+    try {
+      await rm(userDataDir, { recursive: true, force: true });
+    } catch (error) {
+      console.warn(`Nao foi possivel remover perfil temporario do Chrome: ${userDataDir}`, error);
+    }
   }
   await writeFile(path.join(OUT_DIR, "meta.json"), JSON.stringify(meta, null, 2));
   await writeFile(path.join(OUT_DIR, "diagnostics-summary.json"), JSON.stringify(routeDiagnostics, null, 2));
