@@ -5380,9 +5380,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const setupDoneCount = setupChecklist.filter((item) => item.done).length;
         const setupPercent = Math.round((setupDoneCount / setupChecklist.length) * 100);
         const nextSetupItem = setupChecklist.find((item) => !item.done && managementModules.includes(item.module)) || null;
-        const currentManagementModule = managementModules.includes(managementModuleByPlace[p.id] || "dashboard")
-          ? managementModuleByPlace[p.id] || "dashboard"
-          : managementModules[0] || "dashboard";
+        const routeManagementModule =
+          isAdminRoute && adminModule && managementModules.includes(adminModule) ? adminModule : null;
+        const currentManagementModule = routeManagementModule
+          ? routeManagementModule
+          : managementModules.includes(managementModuleByPlace[p.id] || "dashboard")
+            ? managementModuleByPlace[p.id] || "dashboard"
+            : managementModules[0] || "dashboard";
         const moduleCounts: Record<PlaceManagementModule, number> = {
           dashboard: operationalStats.pendingBookings + operationalStats.pendingEnrollments + operationalStats.pendingLessonRequests + operationalStats.pendingMemberships + openReceivables.length,
           bookings: pendingBookings.length + waitingCourtEntries.length + pendingTournamentCourtRequests.length,
