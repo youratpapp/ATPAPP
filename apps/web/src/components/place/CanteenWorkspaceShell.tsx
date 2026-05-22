@@ -34,7 +34,7 @@ export function CanteenWorkspaceShell({ activeView, children, onViewChange }: Ca
       descriptions={CANTEEN_VIEW_DESCRIPTIONS}
       labels={CANTEEN_VIEW_LABELS}
       onViewChange={onViewChange}
-      title="POS / Cantina"
+      title="Loja / POS"
       views={CANTEEN_VIEW_ORDER}
     >
       {children}

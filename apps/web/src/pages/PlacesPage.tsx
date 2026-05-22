@@ -27,12 +27,12 @@ import { PlaceCanteenSaleForm, type PlacePosSaleDraft } from "../components/plac
 import { PlaceCanteenSummaryModule } from "../components/place/PlaceCanteenSummaryModule";
 import { PlaceCanteenStockModule } from "../components/place/PlaceCanteenStockModule";
 import { PlaceCreateWizard } from "../components/place/PlaceCreateWizard";
+import { PlaceActiveClientsModule } from "../components/place/PlaceActiveClientsModule";
 import { PlaceAnalyticsPanel, type AnalyticsReportPeriod } from "../components/place/PlaceAnalyticsPanel";
 import { PlaceBookingCalendarModule } from "../components/place/PlaceBookingCalendarModule";
 import { PlaceBookingCreateModule } from "../components/place/PlaceBookingCreateModule";
 import { PlaceBookingDetailedListModule } from "../components/place/PlaceBookingDetailedListModule";
 import { PlaceBookingOperationalQueues } from "../components/place/PlaceBookingOperationalQueues";
-import { PlaceBookingReservationsModule } from "../components/place/PlaceBookingReservationsModule";
 import { PlaceBookingResourcesModule } from "../components/place/PlaceBookingResourcesModule";
 import { PlaceBookingWaitlistModule } from "../components/place/PlaceBookingWaitlistModule";
 import { PlaceClientActionQueue } from "../components/place/PlaceClientActionQueue";
@@ -4694,6 +4694,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const calendarBookings = bookings
           .filter((booking) => booking.status !== "cancelled" && dateInputValue(booking.startsAt) === courtCalendarDay)
           .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+        const reservationCalendarBookings = bookings
+          .filter((booking) => dateInputValue(booking.startsAt) === courtCalendarDay)
+          .sort((a, b) => a.startsAt.localeCompare(b.startsAt));
         const calendarReservedMinutes = calendarBookings
           .filter((booking) => booking.status !== "blocked")
           .reduce((sum, booking) => sum + minutesBetween(booking.startsAt, booking.endsAt), 0);
@@ -5144,6 +5147,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const crmLeadContacts = crmContacts
           .filter((contact) => contact.status === "lead")
           .sort((a, b) => a.name.localeCompare(b.name));
+        const crmProspectContacts = crmContacts
+          .filter((contact) => contact.status === "lead" || contact.status === "contacted")
+          .sort((a, b) => a.name.localeCompare(b.name));
+        const crmActiveClientContacts = crmContacts
+          .filter((contact) => contact.status === "converted")
+          .sort((a, b) => a.name.localeCompare(b.name));
+        const crmProspectStageCounts = {
+          lead: crmProspectContacts.filter((contact) => contact.status === "lead").length,
+          contacted: crmProspectContacts.filter((contact) => contact.status === "contacted").length,
+          converted: 0,
+        };
         const crmFollowUpsDue = crmContacts.filter(
           (contact) => contact.status !== "converted" && contact.status !== "archived" && contact.nextContactOn && contact.nextContactOn <= todayDateInputValue()
         ).length;
@@ -5364,13 +5378,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const isManagementCockpit = isAdminRoute && Boolean(staffRole);
         const isPublicDiscoveryCard = !isAdminRoute;
         const showManagementModule = (module: PlaceManagementModule) => !isPublicDiscoveryCard && (!isManagementCockpit || currentManagementModule === module);
-        const requestedClientsView = (clientsViewByPlace[p.id] || "relationship") as ClientsManagementView;
+        const requestedClientsView = (clientsViewByPlace[p.id] || "members") as ClientsManagementView;
         const clientsView: ClientsManagementView =
-          requestedClientsView === "members" || requestedClientsView === "requests" || requestedClientsView === "overview"
+          requestedClientsView === "requests" || requestedClientsView === "overview"
             ? "relationship"
             : requestedClientsView;
         const showClientsWorkspace = isManagementCockpit && canUseCrm;
-        const showClientsMembers = !showClientsWorkspace;
+        const showClientsMembers = !showClientsWorkspace || clientsView === "members";
         const showClientsLeads = !showClientsWorkspace || clientsView === "leads";
         const showClientsRelationship = !showClientsWorkspace || clientsView === "relationship";
         const crmDrawerContact = crmContacts.find((contact) => contact.id === crmHistoryDrawerContactId) || null;
@@ -5389,7 +5403,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const settingsView = (settingsViewByPlace[p.id] || "overview") as SettingsManagementView;
         const showSettingsWorkspace = isManagementCockpit && canManagePlace;
         const showSettingsDetails = !showSettingsWorkspace;
-        const requestedBookingView = (bookingViewByPlace[p.id] || "calendar") as BookingManagementView;
+        const requestedBookingView = (bookingViewByPlace[p.id] || "reservations") as BookingManagementView;
         const bookingView: BookingManagementView =
           requestedBookingView === "today" || requestedBookingView === "waitlist" ? "reservations" : requestedBookingView;
         const showBookingWorkspace = isManagementCockpit && showBookingTools;
@@ -6456,13 +6470,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   activeView={clientsView}
                   onViewChange={(view) => selectClientsView(p.id, view)}
                 >
+                  {showClientsMembers ? (
+                    <PlaceActiveClientsModule
+                      activeContacts={crmActiveClientContacts}
+                      activeEnrollments={academyEnrollments}
+                      activeMemberships={memberships}
+                      academyClasses={academyClasses}
+                      busy={busy}
+                      countLabel={countLabel}
+                      membershipPlans={membershipPlans}
+                      onOpenAcademyStudents={() => selectAcademyView(p.id, "students")}
+                      onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
+                      onOpenFinancePlans={() => selectFinanceView(p.id, "packages")}
+                    />
+                  ) : null}
                   {showClientsRelationship ? (
                     <>
                       <PlaceClientRelationshipModule
                         busy={busy}
                         countLabel={countLabel}
                         followUpContacts={crmFollowUpContacts}
-                        leadContacts={crmLeadContacts}
+                        leadContacts={[]}
                         relationshipSegments={crmRelationshipSegments}
                         staleContacts={crmStaleContacts}
                         onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
@@ -6481,19 +6509,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       />
                     </>
                   ) : null}
-                  {clientsView === "leads" || showClientsRelationship ? (
+                  {clientsView === "leads" ? (
                     <PlaceCrmModule
                       busy={busy}
-                      contactCountLabel={countLabel(crmContacts.length, "contato", "contatos")}
-                      contacts={crmContacts}
+                      contactCountLabel={countLabel(crmProspectContacts.length, "lead", "leads")}
+                      contacts={crmProspectContacts}
                       conversionRate={crmConversionRate}
                       draft={crmDraft}
                       embedded
                       followUpsDue={crmFollowUpsDue}
+                      headingTitle="Leads e oportunidades"
                       interactionsByContact={crmInteractionsByContact}
                       ownerListId={`crm-owners-${p.id}`}
                       ownerOptions={crmOwnerOptions}
-                      stageCounts={crmStageCounts}
+                      stageCounts={crmProspectStageCounts}
                       todayDate={todayDateInputValue()}
                       onChangeDraft={(draft) => setCrmDraftByPlace((prev) => ({ ...prev, [p.id]: draft }))}
                       onCreateContact={() => void onCreateCrmContact(p)}
@@ -7068,17 +7097,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                   {bookingView === "reservations" ? (
                     <>
-                      <PlaceBookingReservationsModule
+                      <PlaceBookingCalendarModule
+                        academyClasses={[]}
+                        academyEnrollments={[]}
+                        academyPlannedAbsences={[]}
                         activeCourts={activeCourts}
-                        bookings={bookings}
-                        busy={busy}
+                        blockedMinutes={calendarBlockedMinutes}
+                        bookings={reservationCalendarBookings}
                         canManageBookings={canManageBookings}
+                        day={courtCalendarDay}
                         getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
                         getWhatsappHref={getBookingWhatsappHref}
+                        lessonRequests={[]}
+                        occupancyPct={calendarOccupancyPct}
+                        onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
+                        onCreateFromSlot={openNewBookingFromCalendarSlot}
                         onMarkPaid={(booking, payment) => requestCourtBookingPayment(booking, payment)}
                         onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
                         onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
                         onUpdateBookingDetails={(booking, patch) => void onUpdateBookingDetails(p.id, booking, patch)}
+                        reservedMinutes={calendarReservedMinutes}
+                        variant="reservations"
                       />
                       <PlaceBookingWaitlistModule
                         busy={busy}
@@ -7103,11 +7142,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       bookings={calendarBookings}
                       canManageBookings={canManageBookings}
                       day={courtCalendarDay}
+                      getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                      getWhatsappHref={getBookingWhatsappHref}
                       lessonRequests={academyLessonRequests}
                       occupancyPct={calendarOccupancyPct}
                       onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
                       onCreateFromSlot={openNewBookingFromCalendarSlot}
+                      onMarkPaid={(booking, payment) => requestCourtBookingPayment(booking, payment)}
                       onOpenReservations={() => selectBookingView(p.id, "reservations")}
+                      onShareBookingChange={(booking) => void onShareBookingChange(p, booking)}
+                      onUpdateBooking={(bookingId, status) => void onUpdateBooking(p.id, bookingId, status)}
+                      onUpdateBookingDetails={(booking, patch) => void onUpdateBookingDetails(p.id, booking, patch)}
                       reservedMinutes={calendarReservedMinutes}
                     />
                   ) : null}

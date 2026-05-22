@@ -6,7 +6,7 @@ export type BookingManagementView = "today" | "reservations" | "calendar" | "new
 const BOOKING_VIEW_LABELS: Record<BookingManagementView, string> = {
   today: "Hoje",
   reservations: "Reservas",
-  calendar: "Mapa do dia",
+  calendar: "Calendario",
   new: "Nova reserva",
   waitlist: "Espera",
   resources: "Ajustes",
@@ -14,8 +14,8 @@ const BOOKING_VIEW_LABELS: Record<BookingManagementView, string> = {
 
 const BOOKING_VIEW_DESCRIPTIONS: Record<BookingManagementView, string> = {
   today: "Reservas recentes, pagamento, lista de espera, remarcacao e cancelamento.",
-  reservations: "Reservas recentes, pagamento, lista de espera, remarcacao e cancelamento.",
-  calendar: "Calendario operacional com reservas, bloqueios, turmas e aulas.",
+  reservations: "Calendario clicavel com reservas, edicao, cancelamento e WhatsApp de remarcacao.",
+  calendar: "Mapa de tempo do local com reservas, bloqueios, turmas e aulas.",
   new: "Busca de disponibilidade, reserva, bloqueio e lista de espera.",
   waitlist: "Reservas recentes, pagamento, lista de espera, remarcacao e cancelamento.",
   resources: "Quadras, precos e configuracoes operacionais fora da rotina diaria.",
@@ -30,7 +30,9 @@ type BookingWorkspaceShellProps = {
 export function BookingWorkspaceShell({ activeView, children, onViewChange }: BookingWorkspaceShellProps) {
   const title =
     activeView === "calendar"
-      ? "Agenda do local"
+      ? "Calendario do local"
+      : activeView === "reservations"
+        ? "Reservas"
       : activeView === "new"
         ? "Nova reserva"
         : activeView === "resources"

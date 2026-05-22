@@ -46,25 +46,41 @@ Nao use MDs antigos para:
 
 ## Documentos De Arquitetura Atuais
 
-Para a reestruturacao da area Trabalho/Gestao como SaaS profissional, os documentos mais recentes governam a nova direcao.
+Para a reestruturacao da area Trabalho/Gestao como SaaS profissional, a V4 passa a governar a nova direcao.
+
+Motivo da mudanca:
+
+- a V3 tinha bom conteudo, mas misturou status de sprint concluida com aceitacao real do produto;
+- parte da implementacao preservou estrutura antiga, especialmente no mobile Trabalho;
+- o objetivo atual nao e corrigir sintomas, e sim entregar um produto organizado como SaaS web + mobile operacional;
+- nenhuma proxima mudanca estrutural deve ser feita sem seguir a V4.
 
 Ordem executiva atual:
 
-- `WORK_SAAS_FINAL_HANDOFF_2026_05_21.md`;
-- `WORK_SAAS_MASTER_EXECUTION_QUEUE_V3_COMPLETE.md`;
-- `WORK_SAAS_QUEUE_V3_EXECUTION_CONTRACTS.md`;
-- `WORK_SAAS_DATABASE_MIGRATION_QUEUE.md`;
-- `WORK_SAAS_ROUTE_COMPATIBILITY_CONTRACT_V3.md`;
-- `WORK_SAAS_PERMISSION_CONTRACT_V3.md`;
-- `WORK_SAAS_SCREENSHOT_BASELINE_INDEX_2026_05_21.md`;
-- `WORK_SAAS_FINAL_SCREEN_AUDIT_2026_05_21.md`;
-- `WORK_SAAS_FINAL_DELIVERY_BLUEPRINT_2026_05_21.md`;
-- `WORK_AREA_FUNCTION_INVENTORY.md`;
-- `WORK_SAAS_INFORMATION_ARCHITECTURE.md`;
-- `WORK_MOBILE_OPERATIONAL_SCOPE.md`;
-- `WORK_SAAS_PAGE_RESPONSIBILITIES.md`.
+1. `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`;
+2. `WORK_SAAS_UX_ORGANIZATION_EXECUTION_QUEUE_V4_2026_05_22.md`;
+3. `WORK_SAAS_ROUTE_COMPATIBILITY_CONTRACT_V3.md`;
+4. `WORK_SAAS_PERMISSION_CONTRACT_V3.md`;
+5. `WORK_AREA_FUNCTION_INVENTORY.md`;
+6. `WORK_SAAS_DETAILED_USER_FLOWS.md`;
+7. `WORK_MOBILE_OPERATIONAL_SCOPE.md`;
+8. `WORK_SAAS_PAGE_RESPONSIBILITIES.md`;
+9. `WORK_SAAS_REAL_USER_FLOW_TEST_REPORT_2026_05_21.md`;
+10. `WORK_SAAS_FINAL_SCREEN_AUDIT_2026_05_21.md`.
 
-`WORK_SAAS_IMPLEMENTATION_QUEUE_V2_FINAL.md` continua como historico/base da queue final. Quando houver conflito, a V3 vence.
+Documentos V3/V2 continuam uteis como historico, inventario, evidencias e contratos parciais. Eles nao devem vencer a V4 quando houver conflito de:
+
+- prioridade;
+- ordem de execucao;
+- mobile Trabalho;
+- divisao SaaS web vs mobile operacional;
+- page responsibility;
+- navegacao;
+- criterio de aceite final.
+
+`WORK_SAAS_MASTER_EXECUTION_QUEUE_V3_COMPLETE.md` nao deve mais ser lido como "produto completo". Ele registra uma fila anterior e sprints parciais, mas a aceitacao final passa pela V4.
+
+`WORK_SAAS_IMPLEMENTATION_QUEUE_V2_FINAL.md` continua como historico/base. Quando houver conflito, a V4 vence.
 
 Antes de iniciar implementacao visual ou estrutural, concluir obrigatoriamente:
 

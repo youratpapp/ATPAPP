@@ -111,7 +111,7 @@ export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView
 export const CLIENTS_ADMIN_VIEW_SEGMENTS: Record<ClientsManagementView, string> = {
   relationship: "rotina",
   leads: "contatos",
-  members: "socios",
+  members: "clientes-ativos",
   requests: "pendencias",
   overview: "resumo",
 };
@@ -123,8 +123,11 @@ export const CLIENTS_ADMIN_SEGMENT_TO_VIEW: Record<string, ClientsManagementView
   contatos_comerciais: "leads",
   contacts: "leads",
   leads: "leads",
-  socios: "relationship",
-  members: "relationship",
+  "clientes-ativos": "members",
+  clientes: "members",
+  ativos: "members",
+  socios: "members",
+  members: "members",
   pendencias: "relationship",
   requests: "relationship",
   resumo: "relationship",
@@ -236,7 +239,7 @@ const PLACE_ADMIN_VIEW_CONFIGS: {
   [K in PlaceAdminViewModule]: PlaceAdminViewConfig;
 } = {
   bookings: {
-    defaultView: "calendar",
+    defaultView: "reservations",
     segmentToView: BOOKING_ADMIN_SEGMENT_TO_VIEW as Record<string, PlaceAdminRoutableView>,
     viewSegments: BOOKING_ADMIN_VIEW_SEGMENTS,
   },
@@ -246,7 +249,7 @@ const PLACE_ADMIN_VIEW_CONFIGS: {
     viewSegments: ACADEMY_ADMIN_VIEW_SEGMENTS,
   },
   clients: {
-    defaultView: "relationship",
+    defaultView: "members",
     segmentToView: CLIENTS_ADMIN_SEGMENT_TO_VIEW as Record<string, PlaceAdminRoutableView>,
     viewSegments: CLIENTS_ADMIN_VIEW_SEGMENTS,
   },

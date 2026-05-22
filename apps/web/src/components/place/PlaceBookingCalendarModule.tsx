@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest, AcademyPlannedAbsence, CourtBooking, PlaceCourt } from "../../lib/types";
+import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest, AcademyPlannedAbsence, AppPayment, CourtBooking, PlaceCourt } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 
 type AgendaItemType = "reservation" | "block" | "class" | "drop_in";
 
 type AgendaItem = {
+  booking?: CourtBooking;
   classId?: string;
   coachId?: string | null;
   coachName?: string;
@@ -29,12 +30,22 @@ type Props = {
   bookings: CourtBooking[];
   canManageBookings: boolean;
   day: string;
+  getPaymentForBooking?: (bookingId: string) => AppPayment | undefined;
+  getWhatsappHref?: (booking: CourtBooking) => string;
   lessonRequests: AcademyLessonRequest[];
   occupancyPct: number;
   onChangeDay: (day: string) => void;
   onCreateFromSlot?: (slot: { courtId: string; endsAt: string; startsAt: string }) => void;
+  onMarkPaid?: (booking: CourtBooking, payment: AppPayment) => void;
   onOpenReservations?: () => void;
+  onShareBookingChange?: (booking: CourtBooking) => void;
+  onUpdateBooking?: (bookingId: string, status: CourtBooking["status"]) => void;
+  onUpdateBookingDetails?: (
+    booking: CourtBooking,
+    patch: { courtId: string; endsAt: string; notes?: string; startsAt: string }
+  ) => void;
   reservedMinutes: number;
+  variant?: "all" | "reservations";
 };
 
 const TYPE_LABELS: Record<AgendaItemType | "all", string> = {
@@ -79,6 +90,36 @@ function bookingLabel(booking: CourtBooking): string {
   return booking.status === "blocked" ? "Bloqueio operacional" : booking.playerName;
 }
 
+function bookingStatusLabel(status: CourtBooking["status"]): string {
+  if (status === "blocked") return "Bloqueio";
+  if (status === "confirmed") return "Confirmada";
+  if (status === "pending") return "Aguardando pagamento";
+  return "Cancelada";
+}
+
+function paymentStatusLabel(payment?: AppPayment): string {
+  if (payment?.status === "paid") return "Pago";
+  if (payment?.status === "pending") return "Pagamento pendente";
+  if (payment?.status === "failed") return "Pagamento falhou";
+  if (payment?.status === "refunded") return "Estornado";
+  return "Sem pagamento";
+}
+
+function dateTimeLocalValue(value: string): string {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return localDate.toISOString().slice(0, 16);
+}
+
+type EditDraft = {
+  courtId: string;
+  endsAt: string;
+  notes: string;
+  startsAt: string;
+};
+
 function compactTextList(items: Array<string | null | undefined | false>): string[] {
   return items.filter((item): item is string => Boolean(item));
 }
@@ -100,20 +141,54 @@ export function PlaceBookingCalendarModule({
   bookings,
   canManageBookings,
   day,
+  getPaymentForBooking,
+  getWhatsappHref,
   lessonRequests,
   occupancyPct,
   onChangeDay,
   onCreateFromSlot,
+  onMarkPaid,
   onOpenReservations,
+  onShareBookingChange,
+  onUpdateBooking,
+  onUpdateBookingDetails,
   reservedMinutes,
+  variant = "all",
 }: Props) {
-  const [typeFilter, setTypeFilter] = useState<AgendaItemType | "all">("all");
+  const [typeFilter, setTypeFilter] = useState<AgendaItemType | "all">(variant === "reservations" ? "reservation" : "all");
   const [courtFilter, setCourtFilter] = useState("");
   const [coachFilter, setCoachFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [studentFilter, setStudentFilter] = useState("");
   const [mobileCourtId, setMobileCourtId] = useState("");
+  const [editingBookingId, setEditingBookingId] = useState("");
+  const [editDraft, setEditDraft] = useState<EditDraft>({ courtId: "", endsAt: "", notes: "", startsAt: "" });
   const selectedWeekday = weekdayFromDate(day);
+
+  useEffect(() => {
+    setTypeFilter((current) => (variant === "reservations" && current === "all" ? "reservation" : current));
+  }, [variant]);
+
+  const startEditing = (booking: CourtBooking) => {
+    setEditingBookingId(booking.id);
+    setEditDraft({
+      courtId: booking.courtId,
+      startsAt: dateTimeLocalValue(booking.startsAt),
+      endsAt: dateTimeLocalValue(booking.endsAt),
+      notes: booking.notes || "",
+    });
+  };
+
+  const submitEdit = (booking: CourtBooking) => {
+    if (!editDraft.courtId || !editDraft.startsAt || !editDraft.endsAt) return;
+    onUpdateBookingDetails?.(booking, {
+      courtId: editDraft.courtId,
+      startsAt: new Date(editDraft.startsAt).toISOString(),
+      endsAt: new Date(editDraft.endsAt).toISOString(),
+      notes: editDraft.notes,
+    });
+    setEditingBookingId("");
+  };
   const activeEnrollmentsByClass = useMemo(() => {
     return academyEnrollments.reduce<Record<string, AcademyEnrollment[]>>((acc, enrollment) => {
       if (enrollment.status !== "active") return acc;
@@ -135,13 +210,14 @@ export function PlaceBookingCalendarModule({
 
   const agendaItems = useMemo<AgendaItem[]>(() => {
     const bookingItems = bookings.map((booking) => ({
+      booking,
       courtId: booking.courtId,
       detail: booking.notes || (booking.status === "blocked" ? "Horario bloqueado para operacao." : "Reserva de quadra."),
       endsAt: booking.endsAt,
       id: `booking:${booking.id}`,
       meta: compactTextList([booking.courtName || "Quadra", booking.phone, booking.recurrenceTotal > 1 ? `Serie ${booking.recurrenceIndex}/${booking.recurrenceTotal}` : ""]),
       startsAt: booking.startsAt,
-      status: booking.status === "blocked" ? "Bloqueio" : booking.status === "confirmed" ? "Confirmada" : booking.status === "pending" ? "Pendente" : "Cancelada",
+      status: bookingStatusLabel(booking.status),
       studentNames: [booking.playerName],
       title: bookingLabel(booking),
       type: booking.status === "blocked" ? "block" : "reservation",
@@ -234,8 +310,12 @@ export function PlaceBookingCalendarModule({
     <div className="court-calendar-panel">
       <div className="place-booking-head">
         <div>
-          <strong>Agenda completa das quadras</strong>
-          <span>Reservas, bloqueios, turmas e aulas avulsas no mesmo mapa.</span>
+          <strong>{variant === "reservations" ? "Calendario de reservas" : "Agenda completa das quadras"}</strong>
+          <span>
+            {variant === "reservations"
+              ? "Clique em um horario para editar a reserva, cancelar ou enviar WhatsApp com link de remarcacao."
+              : "Reservas, bloqueios, turmas e aulas avulsas no mesmo mapa."}
+          </span>
         </div>
         <input type="date" value={day} onChange={(event) => onChangeDay(event.target.value)} />
       </div>
@@ -308,36 +388,111 @@ export function PlaceBookingCalendarModule({
               <strong>{court.name}</strong>
               {slotStarts.map((slot) => {
                 const slotItems = courtItems.filter((item) => eventOverlapsSlot(item, slot));
+                const firstBooking = slotItems.find((item) => item.booking)?.booking;
+                const summaryLabel = firstBooking
+                  ? `${firstBooking.playerName} | ${bookingStatusLabel(firstBooking.status)}`
+                  : slotItems.length
+                    ? countLabel(slotItems.length, "ocupacao", "ocupacoes")
+                    : "Livre";
                 return (
                   <details key={`slot:${court.id}:${slot}`} className={slotItems.length ? "court-calendar-slot occupied" : "court-calendar-slot"}>
                     <summary>
                       <span>{slot}</span>
-                      <b>{slotItems.length ? countLabel(slotItems.length, "ocupacao", "ocupacoes") : "Livre"}</b>
+                      <b>{summaryLabel}</b>
                     </summary>
                     {slotItems.length ? (
-                      slotItems.map((item) => (
-                        <article key={item.id} className={`court-agenda-event ${item.type}`}>
-                          <header>
-                            <strong>
-                              {shortTime(item.startsAt)}-{shortTime(item.endsAt)} | {item.title}
-                            </strong>
-                            <span>{item.status}</span>
-                          </header>
-                          <p>{item.detail}</p>
-                          {item.meta.length ? <small>{item.meta.join(" | ")}</small> : null}
-                          {item.studentNames.length ? (
-                            <details className="court-agenda-students">
-                              <summary>{countLabel(item.studentNames.length, "participante", "participantes")}</summary>
-                              <span>{item.studentNames.join(", ")}</span>
-                            </details>
-                          ) : null}
-                          {canManageBookings && onOpenReservations && item.id.startsWith("booking:") ? (
-                            <button className="quiet court-calendar-slot-action" type="button" onClick={onOpenReservations}>
-                              Ver reservas
-                            </button>
-                          ) : null}
-                        </article>
-                      ))
+                      slotItems.map((item) => {
+                        const booking = item.booking;
+                        const payment = booking ? getPaymentForBooking?.(booking.id) : undefined;
+                        const whatsappHref = booking ? getWhatsappHref?.(booking) : "";
+                        const isEditing = booking ? editingBookingId === booking.id : false;
+                        return (
+                          <article key={item.id} className={`court-agenda-event ${item.type}`}>
+                            <header>
+                              <strong>
+                                {shortTime(item.startsAt)}-{shortTime(item.endsAt)} | {item.title}
+                              </strong>
+                              <span>{item.status}</span>
+                            </header>
+                            <p>{item.detail}</p>
+                            {item.meta.length ? <small>{item.meta.join(" | ")}</small> : null}
+                            {booking ? <small>{paymentStatusLabel(payment)}</small> : null}
+                            {item.studentNames.length ? (
+                              <details className="court-agenda-students">
+                                <summary>{countLabel(item.studentNames.length, "participante", "participantes")}</summary>
+                                <span>{item.studentNames.join(", ")}</span>
+                              </details>
+                            ) : null}
+                            {canManageBookings && booking ? (
+                              <div className="court-calendar-booking-actions">
+                                {booking.status !== "cancelled" && onUpdateBooking ? (
+                                  <button className="danger compact" type="button" onClick={() => onUpdateBooking(booking.id, "cancelled")}>
+                                    {booking.status === "blocked" ? "Liberar" : "Cancelar"}
+                                  </button>
+                                ) : null}
+                                {booking.status !== "cancelled" && onUpdateBookingDetails ? (
+                                  <button className="compact" type="button" onClick={() => (isEditing ? setEditingBookingId("") : startEditing(booking))}>
+                                    {isEditing ? "Fechar edicao" : "Editar"}
+                                  </button>
+                                ) : null}
+                                {payment?.status === "pending" && onMarkPaid ? (
+                                  <button className="compact" type="button" onClick={() => onMarkPaid(booking, payment)}>
+                                    Pagar
+                                  </button>
+                                ) : null}
+                                {booking.status !== "cancelled" && onShareBookingChange ? (
+                                  <button className="button-like compact whatsapp-action" type="button" onClick={() => onShareBookingChange(booking)}>
+                                    WhatsApp troca
+                                  </button>
+                                ) : whatsappHref ? (
+                                  <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">
+                                    WhatsApp
+                                  </a>
+                                ) : null}
+                              </div>
+                            ) : null}
+                            {booking && isEditing ? (
+                              <div className="booking-edit-panel court-calendar-edit-panel">
+                                <label>
+                                  Quadra
+                                  <select value={editDraft.courtId} onChange={(event) => setEditDraft((prev) => ({ ...prev, courtId: event.target.value }))}>
+                                    {activeCourts.map((courtOption) => (
+                                      <option key={courtOption.id} value={courtOption.id}>
+                                        {courtOption.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </label>
+                                <label>
+                                  Inicio
+                                  <input type="datetime-local" value={editDraft.startsAt} onChange={(event) => setEditDraft((prev) => ({ ...prev, startsAt: event.target.value }))} />
+                                </label>
+                                <label>
+                                  Fim
+                                  <input type="datetime-local" value={editDraft.endsAt} onChange={(event) => setEditDraft((prev) => ({ ...prev, endsAt: event.target.value }))} />
+                                </label>
+                                <label className="booking-edit-panel-wide">
+                                  Observacao
+                                  <input value={editDraft.notes} onChange={(event) => setEditDraft((prev) => ({ ...prev, notes: event.target.value }))} placeholder="Ex.: remarcada pela recepcao" />
+                                </label>
+                                <div className="booking-edit-actions">
+                                  <button type="button" onClick={() => setEditingBookingId("")}>
+                                    Cancelar edicao
+                                  </button>
+                                  <button className="primary" type="button" onClick={() => submitEdit(booking)} disabled={!editDraft.courtId || !editDraft.startsAt || !editDraft.endsAt}>
+                                    Salvar alteracao
+                                  </button>
+                                </div>
+                              </div>
+                            ) : null}
+                            {canManageBookings && onOpenReservations && item.id.startsWith("booking:") && variant !== "reservations" ? (
+                              <button className="quiet court-calendar-slot-action" type="button" onClick={onOpenReservations}>
+                                Ver reservas
+                              </button>
+                            ) : null}
+                          </article>
+                        );
+                      })
                     ) : (
                       <div className="court-calendar-empty-slot">
                         <p>Horario livre nesta quadra.</p>

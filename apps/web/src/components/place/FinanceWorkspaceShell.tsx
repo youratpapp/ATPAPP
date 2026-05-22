@@ -19,6 +19,14 @@ const FINANCE_VIEW_DESCRIPTIONS: Record<FinanceManagementView, string> = {
   overview: "Resumo e relatorio secundario da receita do periodo.",
 };
 
+const FINANCE_VIEW_TITLES: Record<FinanceManagementView, string> = {
+  receivables: "Receber",
+  paid: "Pagos",
+  expenses: "Despesas",
+  packages: "Planos",
+  overview: "Resumo financeiro",
+};
+
 type FinanceWorkspaceShellProps = {
   activeView: FinanceManagementView;
   children: ReactNode;
@@ -34,7 +42,8 @@ export function FinanceWorkspaceShell({ activeView, children, onViewChange }: Fi
       descriptions={FINANCE_VIEW_DESCRIPTIONS}
       labels={FINANCE_VIEW_LABELS}
       onViewChange={onViewChange}
-      title="Receita"
+      title={FINANCE_VIEW_TITLES[activeView]}
+      views={[activeView]}
     >
       {children}
     </PlaceWorkspaceShell>

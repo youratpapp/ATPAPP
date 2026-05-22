@@ -1,0 +1,40 @@
+{
+  "viewport": "mobile-390",
+  "route": "booking-reservations",
+  "hash": "#/gestao/f0184d92-7909-4d34-9abe-47f16ab053a3/agenda?visao=reservas",
+  "screenshot": "mobile-390-booking-reservations.png",
+  "events": [
+    {
+      "source": "console",
+      "type": "info",
+      "level": "info",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779449194504",
+      "line": 109
+    },
+    {
+      "source": "console",
+      "type": "info",
+      "level": "info",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779449194504",
+      "line": 109
+    },
+    {
+      "source": "console",
+      "type": "info",
+      "level": "info",
+      "text": "Workspace data timeout: open matches",
+      "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779449194504",
+      "line": 109
+    },
+    {
+      "source": "console",
+      "type": "info",
+      "level": "info",
+      "text": "Workspace data timeout: open matches",
+      "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779449194504",
+      "line": 109
+    }
+  ]
+}

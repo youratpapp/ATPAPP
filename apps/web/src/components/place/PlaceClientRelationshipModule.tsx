@@ -83,6 +83,12 @@ export function PlaceClientRelationshipModule({
 
   const visibleRows = showAll ? relationshipRows : relationshipRows.slice(0, 12);
   const hiddenCount = relationshipRows.length - visibleRows.length;
+  const filters = [
+    { key: "all" as const, label: "Todos" },
+    { key: "followups" as const, label: "Follow-ups" },
+    ...(leadContacts.length ? [{ key: "leads" as const, label: "Leads" }] : []),
+    { key: "stale" as const, label: "Parados" },
+  ];
 
   return (
     <div className="crm-relationship-workspace">
@@ -92,46 +98,19 @@ export function PlaceClientRelationshipModule({
       </div>
       <WorkspaceMetrics items={relationshipSegments.map((item) => `${item.value} ${item.label.toLowerCase()}`)} />
       <div className="billing-quick-actions secondary" aria-label="Filtros de relacionamento">
-        <button
-          type="button"
-          className={segment === "all" ? "primary" : ""}
-          onClick={() => {
-            setSegment("all");
-            setShowAll(false);
-          }}
-        >
-          Todos
-        </button>
-        <button
-          type="button"
-          className={segment === "followups" ? "primary" : ""}
-          onClick={() => {
-            setSegment("followups");
-            setShowAll(false);
-          }}
-        >
-          Follow-ups
-        </button>
-        <button
-          type="button"
-          className={segment === "leads" ? "primary" : ""}
-          onClick={() => {
-            setSegment("leads");
-            setShowAll(false);
-          }}
-        >
-          Leads
-        </button>
-        <button
-          type="button"
-          className={segment === "stale" ? "primary" : ""}
-          onClick={() => {
-            setSegment("stale");
-            setShowAll(false);
-          }}
-        >
-          Parados
-        </button>
+        {filters.map((filter) => (
+          <button
+            key={filter.key}
+            type="button"
+            className={segment === filter.key ? "primary" : ""}
+            onClick={() => {
+              setSegment(filter.key);
+              setShowAll(false);
+            }}
+          >
+            {filter.label}
+          </button>
+        ))}
       </div>
       <div className="place-booking-list">
         {visibleRows.map(({ contact, detail, status, type }) => (

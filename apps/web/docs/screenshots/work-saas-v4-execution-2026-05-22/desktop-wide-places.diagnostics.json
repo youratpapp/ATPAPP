@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "places",
+  "hash": "#/locais",
+  "screenshot": "desktop-wide-places.png",
+  "events": []
+}

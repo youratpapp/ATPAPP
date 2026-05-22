@@ -4,18 +4,18 @@ import { PlaceWorkspaceShell } from "./PlaceWorkspaceShell";
 export type ClientsManagementView = "relationship" | "leads" | "members" | "requests" | "overview";
 
 const CLIENTS_VIEW_LABELS: Record<ClientsManagementView, string> = {
-  relationship: "Relacionamento",
-  leads: "CRM",
-  members: "Socios",
+  relationship: "Atendimento",
+  leads: "Leads",
+  members: "Clientes ativos",
   requests: "Atendimento",
   overview: "Resumo",
 };
 
 const CLIENTS_VIEW_DESCRIPTIONS: Record<ClientsManagementView, string> = {
-  relationship: "Fila de relacionamento com pessoas que precisam de acao agora.",
-  leads: "Busca, historico e cadastro de contatos comerciais.",
-  members: "Socios ativos e solicitacoes ficam conectados a Receita > Planos.",
-  requests: "Atendimentos pendentes ficam dentro da rotina de pessoas.",
+  relationship: "Follow-ups, retornos e pendencias de relacionamento.",
+  leads: "Interessados e contatos comerciais que ainda nao viraram cliente ativo.",
+  members: "Alunos, socios e contatos convertidos separados dos leads.",
+  requests: "Atendimentos pendentes ficam dentro da rotina de pessoas, nao espalhados em submenus.",
   overview: "Base ativa, oportunidades e leitura resumida de relacionamento.",
 };
 
@@ -26,7 +26,7 @@ type ClientsWorkspaceShellProps = {
 };
 
 export function ClientsWorkspaceShell({ activeView, children, onViewChange }: ClientsWorkspaceShellProps) {
-  const title = activeView === "leads" ? "CRM" : activeView === "members" ? "Socios" : "Pessoas";
+  const title = activeView === "leads" ? "Leads" : activeView === "members" ? "Clientes ativos" : "Atendimento";
 
   return (
     <PlaceWorkspaceShell
@@ -37,7 +37,7 @@ export function ClientsWorkspaceShell({ activeView, children, onViewChange }: Cl
       labels={CLIENTS_VIEW_LABELS}
       onViewChange={onViewChange}
       title={title}
-      views={[activeView]}
+      views={["members", "leads", "relationship"]}
     >
       {children}
     </PlaceWorkspaceShell>

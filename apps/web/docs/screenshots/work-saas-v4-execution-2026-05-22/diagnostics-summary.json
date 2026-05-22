@@ -1,0 +1,142 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "places",
+    "hash": "#/locais",
+    "screenshot": "mobile-390-places.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "events",
+    "hash": "#/eventos",
+    "screenshot": "mobile-390-events.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile-390-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-390-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-management.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "places",
+    "hash": "#/locais",
+    "screenshot": "mobile-430-places.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "events",
+    "hash": "#/eventos",
+    "screenshot": "mobile-430-events.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "mobile-430-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-430-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "places",
+    "hash": "#/locais",
+    "screenshot": "desktop-1366-places.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "events",
+    "hash": "#/eventos",
+    "screenshot": "desktop-1366-events.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktop-1366-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-1366-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "management",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-management.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "places",
+    "hash": "#/locais",
+    "screenshot": "desktop-wide-places.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "events",
+    "hash": "#/eventos",
+    "screenshot": "desktop-wide-events.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "agenda",
+    "hash": "#/agenda",
+    "screenshot": "desktop-wide-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-wide-profile.png",
+    "events": []
+  }
+]

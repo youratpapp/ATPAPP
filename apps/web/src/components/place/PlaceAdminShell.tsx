@@ -46,7 +46,7 @@ export function PlaceAdminShell({
   const activePlaceOption = placeOptions.find((option) => option.id === currentPlaceId);
 
   return (
-    <section className="place-admin-shell" aria-label={`Gestao de ${placeName}`}>
+    <section className={`place-admin-shell place-admin-shell--${currentModule}`} aria-label={`Gestao de ${placeName}`}>
       <div className="place-admin-shell-head">
         <div className="place-admin-place-context">
           <span>{staffRoleLabel} | {planLabel}</span>
@@ -83,13 +83,13 @@ export function PlaceAdminShell({
 
       <div className="place-module-context">
         <div className="place-module-context-copy">
-          <span>Modulo ativo</span>
+          <span>Area de trabalho</span>
           <strong>{PLACE_MANAGEMENT_MODULE_LABELS[currentModule]}</strong>
           <span>{PLACE_MANAGEMENT_MODULE_DESCRIPTIONS[currentModule]}</span>
         </div>
         {visibleModules.length > 1 ? (
           <label className="place-module-picker">
-            <span>Trocar area</span>
+            <span>Ir para area</span>
             <select
               aria-label={`Trocar area de trabalho de ${placeName}`}
               value={currentModule}

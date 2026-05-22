@@ -1,0 +1,296 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "clients-active-club",
+    "screenshot": "mobile-390-clients-active-club.png",
+    "diagnosticsFile": "mobile-390-clients-active-club.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 3,
+    "clickableCount": 2,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Sair",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 105,
+        "y": 673,
+        "w": 172,
+        "h": 46
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "text": "Salvar e continuar",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 285,
+        "y": 673,
+        "w": 172,
+        "h": 46
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/completar-cadastro",
+    "h1": [
+      "Complete seu cadastro"
+    ],
+    "h2": [],
+    "buttons": [
+      "Sair",
+      "Salvar e continuar"
+    ],
+    "cards": 1,
+    "textSample": "Complete seu cadastro Precisamos de Nome, E-mail, Telefone, Data de nascimento, Cidade e Estado para liberar o acesso. NOME E-MAIL TELEFONE DATA DE NASCIMENTO ESTADO (UF) Selecione AC - Acre AL - Alagoas AP - Amapa AM - Amazonas BA - Bahia CE - Ceara DF - Distrito Federal ES - Espirito Santo GO - Goias MA - Maranhao MT - Mato Grosso MS - Mato Grosso do Sul MG - Minas Gerais PA - Para PB - Paraiba PR - Parana PE - Pernambuco PI - Piaui RJ - Rio de Janeiro RN - Rio Grande do Norte RS - Rio Grande do Sul RO - Rondonia RR - Roraima SC - Santa Catarina SP - Sao Paulo SE - Sergipe TO - Tocantins CIDADE Selecione o estado primeiro Sair Salvar e continuar"
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "clients-leads-club",
+    "screenshot": "mobile-390-clients-leads-club.png",
+    "diagnosticsFile": "mobile-390-clients-leads-club.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 2,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Sair",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 105,
+        "y": 673,
+        "w": 172,
+        "h": 46
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "text": "Salvar e continuar",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 285,
+        "y": 673,
+        "w": 172,
+        "h": 46
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/completar-cadastro",
+    "h1": [
+      "Complete seu cadastro"
+    ],
+    "h2": [],
+    "buttons": [
+      "Sair",
+      "Salvar e continuar"
+    ],
+    "cards": 1,
+    "textSample": "Complete seu cadastro Precisamos de Nome, E-mail, Telefone, Data de nascimento, Cidade e Estado para liberar o acesso. NOME E-MAIL TELEFONE DATA DE NASCIMENTO ESTADO (UF) Selecione AC - Acre AL - Alagoas AP - Amapa AM - Amazonas BA - Bahia CE - Ceara DF - Distrito Federal ES - Espirito Santo GO - Goias MA - Maranhao MT - Mato Grosso MS - Mato Grosso do Sul MG - Minas Gerais PA - Para PB - Paraiba PR - Parana PE - Pernambuco PI - Piaui RJ - Rio de Janeiro RN - Rio Grande do Norte RS - Rio Grande do Sul RO - Rondonia RR - Roraima SC - Santa Catarina SP - Sao Paulo SE - Sergipe TO - Tocantins CIDADE Selecione o estado primeiro Sair Salvar e continuar"
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "clients-service-club",
+    "screenshot": "mobile-390-clients-service-club.png",
+    "diagnosticsFile": "mobile-390-clients-service-club.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 3,
+    "clickableCount": 2,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Sair",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 105,
+        "y": 673,
+        "w": 172,
+        "h": 46
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "text": "Salvar e continuar",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 285,
+        "y": 673,
+        "w": 172,
+        "h": 46
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/completar-cadastro",
+    "h1": [
+      "Complete seu cadastro"
+    ],
+    "h2": [],
+    "buttons": [
+      "Sair",
+      "Salvar e continuar"
+    ],
+    "cards": 1,
+    "textSample": "Complete seu cadastro Precisamos de Nome, E-mail, Telefone, Data de nascimento, Cidade e Estado para liberar o acesso. NOME E-MAIL TELEFONE DATA DE NASCIMENTO ESTADO (UF) Selecione AC - Acre AL - Alagoas AP - Amapa AM - Amazonas BA - Bahia CE - Ceara DF - Distrito Federal ES - Espirito Santo GO - Goias MA - Maranhao MT - Mato Grosso MS - Mato Grosso do Sul MG - Minas Gerais PA - Para PB - Paraiba PR - Parana PE - Pernambuco PI - Piaui RJ - Rio de Janeiro RN - Rio Grande do Norte RS - Rio Grande do Sul RO - Rondonia RR - Roraima SC - Santa Catarina SP - Sao Paulo SE - Sergipe TO - Tocantins CIDADE Selecione o estado primeiro Sair Salvar e continuar"
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "clients-active-club",
+    "screenshot": "desktop-1366-clients-active-club.png",
+    "diagnosticsFile": "desktop-1366-clients-active-club.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 2,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Sair",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 1023,
+        "y": 719,
+        "w": 163,
+        "h": 52
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "text": "Salvar e continuar",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 1194,
+        "y": 719,
+        "w": 163,
+        "h": 52
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/completar-cadastro",
+    "h1": [
+      "Complete seu cadastro"
+    ],
+    "h2": [],
+    "buttons": [
+      "Sair",
+      "Salvar e continuar"
+    ],
+    "cards": 1,
+    "textSample": "Complete seu cadastro Precisamos de Nome, E-mail, Telefone, Data de nascimento, Cidade e Estado para liberar o acesso. NOME E-MAIL TELEFONE DATA DE NASCIMENTO ESTADO (UF) Selecione AC - Acre AL - Alagoas AP - Amapa AM - Amazonas BA - Bahia CE - Ceara DF - Distrito Federal ES - Espirito Santo GO - Goias MA - Maranhao MT - Mato Grosso MS - Mato Grosso do Sul MG - Minas Gerais PA - Para PB - Paraiba PR - Parana PE - Pernambuco PI - Piaui RJ - Rio de Janeiro RN - Rio Grande do Norte RS - Rio Grande do Sul RO - Rondonia RR - Roraima SC - Santa Catarina SP - Sao Paulo SE - Sergipe TO - Tocantins CIDADE Selecione o estado primeiro Sair Salvar e continuar"
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "clients-leads-club",
+    "screenshot": "desktop-1366-clients-leads-club.png",
+    "diagnosticsFile": "desktop-1366-clients-leads-club.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 2,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Sair",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 1023,
+        "y": 719,
+        "w": 163,
+        "h": 52
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "text": "Salvar e continuar",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 1194,
+        "y": 719,
+        "w": 163,
+        "h": 52
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/completar-cadastro",
+    "h1": [
+      "Complete seu cadastro"
+    ],
+    "h2": [],
+    "buttons": [
+      "Sair",
+      "Salvar e continuar"
+    ],
+    "cards": 1,
+    "textSample": "Complete seu cadastro Precisamos de Nome, E-mail, Telefone, Data de nascimento, Cidade e Estado para liberar o acesso. NOME E-MAIL TELEFONE DATA DE NASCIMENTO ESTADO (UF) Selecione AC - Acre AL - Alagoas AP - Amapa AM - Amazonas BA - Bahia CE - Ceara DF - Distrito Federal ES - Espirito Santo GO - Goias MA - Maranhao MT - Mato Grosso MS - Mato Grosso do Sul MG - Minas Gerais PA - Para PB - Paraiba PR - Parana PE - Pernambuco PI - Piaui RJ - Rio de Janeiro RN - Rio Grande do Norte RS - Rio Grande do Sul RO - Rondonia RR - Roraima SC - Santa Catarina SP - Sao Paulo SE - Sergipe TO - Tocantins CIDADE Selecione o estado primeiro Sair Salvar e continuar"
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "clients-service-club",
+    "screenshot": "desktop-1366-clients-service-club.png",
+    "diagnosticsFile": "desktop-1366-clients-service-club.diagnostics.json",
+    "interactionsFile": null,
+    "consoleErrorCount": 0,
+    "clickableCount": 2,
+    "clickables": [
+      {
+        "index": 0,
+        "tag": "button",
+        "text": "Sair",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 1023,
+        "y": 719,
+        "w": 163,
+        "h": 52
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "text": "Salvar e continuar",
+        "href": "",
+        "aria": "",
+        "disabled": false,
+        "visible": true,
+        "x": 1194,
+        "y": 719,
+        "w": 163,
+        "h": 52
+      }
+    ],
+    "title": "ATP — Amateur Tennis Platform",
+    "hash": "#/completar-cadastro",
+    "h1": [
+      "Complete seu cadastro"
+    ],
+    "h2": [],
+    "buttons": [
+      "Sair",
+      "Salvar e continuar"
+    ],
+    "cards": 1,
+    "textSample": "Complete seu cadastro Precisamos de Nome, E-mail, Telefone, Data de nascimento, Cidade e Estado para liberar o acesso. NOME E-MAIL TELEFONE DATA DE NASCIMENTO ESTADO (UF) Selecione AC - Acre AL - Alagoas AP - Amapa AM - Amazonas BA - Bahia CE - Ceara DF - Distrito Federal ES - Espirito Santo GO - Goias MA - Maranhao MT - Mato Grosso MS - Mato Grosso do Sul MG - Minas Gerais PA - Para PB - Paraiba PR - Parana PE - Pernambuco PI - Piaui RJ - Rio de Janeiro RN - Rio Grande do Norte RS - Rio Grande do Sul RO - Rondonia RR - Roraima SC - Santa Catarina SP - Sao Paulo SE - Sergipe TO - Tocantins CIDADE Selecione o estado primeiro Sair Salvar e continuar"
+  }
+]

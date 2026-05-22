@@ -3,23 +3,23 @@ import type { Place, PlaceProductPlan, PlaceStaffMember } from "./types";
 export type PlaceManagementModule = "dashboard" | "bookings" | "academy" | "clients" | "finance" | "canteen" | "team" | "settings";
 
 export const PLACE_MANAGEMENT_MODULE_LABELS: Record<PlaceManagementModule, string> = {
-  dashboard: "Painel",
-  bookings: "Agenda",
-  academy: "Academia",
+  dashboard: "Hoje",
+  bookings: "Reservas",
+  academy: "Aulas",
   clients: "Pessoas",
   finance: "Receita",
-  canteen: "Cantina",
+  canteen: "Loja/POS",
   team: "Equipe",
   settings: "Ajustes",
 };
 
 export const PLACE_MANAGEMENT_MODULE_DESCRIPTIONS: Record<PlaceManagementModule, string> = {
-  dashboard: "Prioridades do dia, pendencias e saude da operacao.",
-  bookings: "Calendario do local com reservas, bloqueios, turmas, aulas e lista de espera.",
+  dashboard: "Fila operacional do dia, pendencias e decisoes que precisam de acao.",
+  bookings: "Calendario operacional de reservas, bloqueios, remarcacoes e lista de espera.",
   academy: "Turmas, professores, matriculas, avisos, reposicoes e evolucao.",
   clients: "Pessoas, relacionamento, contatos, interessados e atendimento.",
   finance: "Recebiveis, pagamentos, lembretes, despesas e planos.",
-  canteen: "Produtos, estoque, vendas rapidas e caixa da cantina.",
+  canteen: "Venda rapida, produtos, estoque e caixa da operacao.",
   team: "Convites, papeis e acessos da equipe.",
   settings: "Plano, estrutura e checklist para deixar o local pronto.",
 };
@@ -58,11 +58,11 @@ export function placeResourceAccess(place: Place, userId: string, staff: PlaceSt
 export function featureList(access: ReturnType<typeof placeResourceAccess>): string[] {
   return [
     access.canUseBookings ? "Agenda" : "",
-    access.canUseAcademy ? "Academia" : "",
+    access.canUseAcademy ? "Aulas" : "",
     access.canUseMemberships ? "Planos de socio" : "",
     access.canUseCrm ? "CRM" : "",
-    access.canUseFinance ? "Financeiro" : "",
-    access.canUseCanteen ? "Cantina" : "",
+    access.canUseFinance ? "Receita" : "",
+    access.canUseCanteen ? "Loja/POS" : "",
   ].filter(Boolean);
 }
 

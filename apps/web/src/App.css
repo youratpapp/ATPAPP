@@ -16883,6 +16883,24 @@ button:disabled {
   padding-top: 4px;
 }
 
+.court-calendar-booking-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.court-calendar-booking-actions button,
+.court-calendar-booking-actions a {
+  min-height: 28px;
+  padding: 4px 9px;
+}
+
+.court-calendar-edit-panel {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 6px;
+}
+
 .place-booking-row {
   align-items: center;
   background: #f8fafc;
@@ -28787,6 +28805,8 @@ label {
 .app-shell--management .place-booking-secondary-actions button,
 .app-shell--management .booking-list-toolbar button,
 .app-shell--management .place-booking-row button,
+.app-shell--management .court-calendar-booking-actions button,
+.app-shell--management .court-calendar-booking-actions a,
 .app-shell--management .court-calendar-slot-action,
 .app-shell--management .place-court-create button,
 .app-shell--management .place-court-price-fields button,
@@ -28858,6 +28878,7 @@ label {
   .app-shell--management .place-booking-primary-fields,
   .app-shell--management .place-booking-advanced-grid,
   .app-shell--management .booking-list-toolbar,
+  .app-shell--management .court-calendar-edit-panel,
   .app-shell--management .court-calendar-filters,
   .app-shell--management .place-court-price-fields {
     grid-template-columns: 1fr;
@@ -35032,6 +35053,126 @@ body:has(.app-shell--competition),
 @media (max-width: 760px) {
   .app-shell--competition .competition-intent-strip,
   .app-shell--competition .competition-discovery-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* WORK-SAAS-V4-01: reduce duplicate management tiers on mobile while preserving desktop SaaS depth. */
+.app-shell--management .place-admin-shell {
+  background:
+    linear-gradient(135deg, rgba(5, 14, 29, 0.96), rgba(5, 34, 31, 0.78)),
+    url("./assets/pdark-management-work-hero.png") center / cover no-repeat;
+}
+
+.app-shell--management .management-cockpit-card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.app-shell--management .management-cockpit-card > div:first-child,
+.app-shell--management .management-cockpit-card > .pc-logo,
+.app-shell--management .management-cockpit-card > .pc-actions {
+  display: none;
+}
+
+.app-shell--management .place-module-context {
+  background: rgba(3, 9, 20, 0.64);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.app-shell--management .place-module-context-copy > span:first-child,
+.app-shell--management .place-admin-place-context > span,
+.app-shell--management .academy-workspace-top > div > span {
+  color: rgba(203, 213, 225, 0.78);
+}
+
+.app-header .greeting-name-line > span {
+  display: none;
+}
+
+.app-shell--management .academy-workspace-tabs button,
+.app-shell--management .place-module-picker select {
+  background: rgba(8, 20, 36, 0.86);
+  border-color: rgba(148, 163, 184, 0.2);
+  color: rgba(241, 245, 249, 0.88);
+}
+
+.app-shell--management .academy-workspace-tabs button:hover,
+.app-shell--management .academy-workspace-tabs button:focus-visible {
+  background: rgba(15, 43, 61, 0.92);
+  color: #ffffff;
+}
+
+.app-shell--management .academy-workspace-tabs button.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(134, 239, 172, 0.55);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .app-shell--management .place-admin-shell {
+    gap: 10px;
+    margin: 0 0 12px;
+    padding: 12px;
+  }
+
+  .app-shell--management .place-admin-shell-head {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .app-shell--management .place-admin-place-context strong {
+    font-size: 1rem;
+  }
+
+  .app-shell--management .place-active-switcher {
+    width: 100%;
+  }
+
+  .app-shell--management .place-active-switcher summary {
+    min-height: 48px;
+  }
+
+  .app-shell--management .place-admin-shell-status,
+  .app-shell--management .place-module-context {
+    display: none;
+  }
+
+  .app-shell--management .place-workspace {
+    border-radius: 20px;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .app-shell--management .academy-workspace-top {
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    gap: 8px;
+    margin: -2px 0 4px;
+    padding: 0 0 10px;
+  }
+
+  .app-shell--management .academy-workspace-top > div {
+    min-width: 0;
+  }
+
+  .app-shell--management .academy-workspace-top strong {
+    font-size: 1.15rem;
+    line-height: 1.15;
+  }
+
+  .app-shell--management .academy-workspace-top > div > span {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .app-shell--management .academy-workspace-tabs {
+    display: none;
+  }
+
+  .app-shell--management .place-admin-setup-strip {
     grid-template-columns: minmax(0, 1fr);
   }
 }

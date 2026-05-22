@@ -1,0 +1,32 @@
+{
+  "viewport": "mobile-390",
+  "route": "clients-service-club",
+  "hash": "#/completar-cadastro",
+  "screenshot": "mobile-390-clients-service-club.png",
+  "events": [
+    {
+      "source": "network",
+      "type": "loadingFailed",
+      "level": "error",
+      "text": "net::ERR_NAME_NOT_RESOLVED",
+      "url": "B97C5F22E9FAB2C04FD592927CBCBDFD",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "loadingFailed",
+      "level": "error",
+      "text": "net::ERR_NAME_NOT_RESOLVED",
+      "url": "41300.44",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: net::ERR_NAME_NOT_RESOLVED",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/profiles?select=user_id%2Cdisplay_name%2Cphoto_url%2Ccity%2Cstate%2Cphone%2Cbirth_date%2Cinstagram%2Cbio%2Cprofile_visibility&user_id=eq.7d2b98ab-4f6c-4a08-b684-e53dd73ccc74",
+      "line": null
+    }
+  ]
+}

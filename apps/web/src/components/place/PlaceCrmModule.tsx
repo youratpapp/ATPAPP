@@ -18,6 +18,7 @@ type PlaceCrmModuleProps = {
   draft: PlaceCrmContactDraft;
   embedded?: boolean;
   followUpsDue: number;
+  headingTitle?: string;
   interactionsByContact: Record<string, PlaceCrmInteraction[]>;
   ownerListId: string;
   ownerOptions: string[];
@@ -65,6 +66,7 @@ export function PlaceCrmModule({
   draft,
   embedded = false,
   followUpsDue,
+  headingTitle = "Contatos e leads",
   interactionsByContact,
   ownerListId,
   ownerOptions,
@@ -118,7 +120,7 @@ export function PlaceCrmModule({
   return (
     <div className={embedded ? "crm-module-workspace" : "place-booking-panel"}>
       <div className="place-booking-head">
-        <strong>Contatos e leads</strong>
+        <strong>{headingTitle}</strong>
         <span>{contactCountLabel} | {conversionRate}% conversao | {activeWorkCount} em rotina</span>
       </div>
       <div className="crm-first-fold">

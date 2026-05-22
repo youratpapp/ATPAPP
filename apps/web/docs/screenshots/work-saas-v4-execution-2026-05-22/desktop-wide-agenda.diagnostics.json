@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "agenda",
+  "hash": "#/agenda",
+  "screenshot": "desktop-wide-agenda.png",
+  "events": []
+}
