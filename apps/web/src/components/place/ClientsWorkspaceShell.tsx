@@ -31,7 +31,7 @@ export function ClientsWorkspaceShell({ activeView, children, onViewChange }: Cl
   return (
     <PlaceWorkspaceShell
       activeView={activeView}
-      ariaLabel="Visoes de pessoas"
+      ariaLabel="Visoes de clientes"
       className="clients-workspace"
       descriptions={CLIENTS_VIEW_DESCRIPTIONS}
       labels={CLIENTS_VIEW_LABELS}

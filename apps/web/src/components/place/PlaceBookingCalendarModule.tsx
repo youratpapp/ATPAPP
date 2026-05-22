@@ -146,6 +146,13 @@ function eventOverlapsSlot(item: AgendaItem, slotStart: string, slotDurationMinu
   return itemStartMinutes < slotEndMinutes && itemEndMinutes > slotStartMinutes;
 }
 
+function eventStartsInSlot(item: AgendaItem, slotStart: string, slotDurationMinutes = 60): boolean {
+  const slotStartMinutes = timeToMinutes(slotStart);
+  const slotEndMinutes = slotStartMinutes + slotDurationMinutes;
+  const itemStartMinutes = timeToMinutes(item.startsAt);
+  return itemStartMinutes >= slotStartMinutes && itemStartMinutes < slotEndMinutes;
+}
+
 export function PlaceBookingCalendarModule({
   academyClasses,
   academyEnrollments,
@@ -175,6 +182,7 @@ export function PlaceBookingCalendarModule({
   const [classFilter, setClassFilter] = useState("");
   const [studentFilter, setStudentFilter] = useState("");
   const [mobileCourtId, setMobileCourtId] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState("");
   const [editingBookingId, setEditingBookingId] = useState("");
   const [editDraft, setEditDraft] = useState<EditDraft>({ courtId: "", endDate: "", endTime: "", notes: "", startDate: "", startTime: "" });
   const selectedWeekday = weekdayFromDate(day);
@@ -312,10 +320,11 @@ export function PlaceBookingCalendarModule({
     if (normalizedStudentFilter && !item.studentNames.some((name) => name.toLowerCase().includes(normalizedStudentFilter))) return false;
     return true;
   });
+  const selectedItem = filteredItems.find((item) => item.id === selectedItemId) || null;
   const visibleCourts = useMemo(() => activeCourts.filter((court) => !courtFilter || court.id === courtFilter), [activeCourts, courtFilter]);
   const slotStarts = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
   const selectedMobileCourtId = mobileCourtId && visibleCourts.some((court) => court.id === mobileCourtId) ? mobileCourtId : visibleCourts[0]?.id || "";
-  const activeEditingBooking = editingBookingId ? bookings.find((booking) => booking.id === editingBookingId) : undefined;
+  const activeEditingBooking = (editingBookingId ? bookings.find((booking) => booking.id === editingBookingId) : bookings[0]) as CourtBooking;
   const courtColumnMin = visibleCourts.length > 6 ? "112px" : "0px";
 
   useEffect(() => {
@@ -327,6 +336,362 @@ export function PlaceBookingCalendarModule({
       setMobileCourtId(visibleCourts[0]?.id || "");
     }
   }, [mobileCourtId, visibleCourts]);
+
+  useEffect(() => {
+    if (selectedItemId && !filteredItems.some((item) => item.id === selectedItemId)) {
+      setSelectedItemId("");
+      setEditingBookingId("");
+    }
+  }, [filteredItems, selectedItemId]);
+
+  useEffect(() => {
+    if (!selectedItemId && filteredItems.length) {
+      setSelectedItemId(filteredItems[0].id);
+    }
+  }, [filteredItems, selectedItemId]);
+
+  const selectedBooking = selectedItem?.booking;
+  const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
+  const selectedWhatsappHref = selectedBooking ? getWhatsappHref?.(selectedBooking) : "";
+  const isReservationsView = variant === "reservations";
+
+  return (
+    <section className={`court-calendar-panel court-calendar-panel--saas${isReservationsView ? " reservations-focus" : ""}`}>
+      <header className="saas-domain-header">
+        <div>
+          <span>OPERACAO</span>
+          <h2>{isReservationsView ? "Reservas" : "Agenda"}</h2>
+          <p>
+            {isReservationsView
+              ? "Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral."
+              : "Reservas, aulas, bloqueios e uso das quadras em um calendario unico."}
+          </p>
+        </div>
+        {canManageBookings && onCreateFromSlot && visibleCourts[0] ? (
+          <button
+            className="primary"
+            type="button"
+            onClick={() =>
+              onCreateFromSlot({
+                courtId: visibleCourts[0].id,
+                startsAt: `${day}T${slotStarts[0]}`,
+                endsAt: addMinutesToDateTime(day, slotStarts[0], 60),
+              })
+            }
+          >
+            Nova reserva
+          </button>
+        ) : null}
+      </header>
+
+      <nav className="court-calendar-view-tabs" aria-label="Visoes da agenda">
+        {["Dia", "Semana", "Lista", "Remarcacoes", "Canceladas", "Conflitos"].map((label, index) => (
+          <button key={label} className={index === 0 ? "active" : ""} type="button">
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      <div className={`court-calendar-filters${isReservationsView ? " reservations-only" : ""}`} aria-label="Filtros da agenda">
+        <input type="date" value={day} onChange={(event) => onChangeDay(event.target.value)} />
+        {isReservationsView ? null : (
+          <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value as AgendaItemType | "all")}>
+            {(Object.keys(TYPE_LABELS) as Array<AgendaItemType | "all">).map((type) => (
+              <option key={`agenda-type:${type}`} value={type}>
+                {TYPE_LABELS[type]}
+              </option>
+            ))}
+          </select>
+        )}
+        <select value={courtFilter} onChange={(event) => setCourtFilter(event.target.value)}>
+          <option value="">Todas as quadras</option>
+          {activeCourts.map((court) => (
+            <option key={`agenda-court:${court.id}`} value={court.id}>
+              {court.name}
+            </option>
+          ))}
+        </select>
+        {isReservationsView ? null : (
+          <>
+            <select value={coachFilter} onChange={(event) => setCoachFilter(event.target.value)}>
+              <option value="">Todos os professores</option>
+              {coachOptions.map(([coachId, coachName]) => (
+                <option key={`agenda-coach:${coachId}`} value={coachId}>
+                  {coachName}
+                </option>
+              ))}
+            </select>
+            <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
+              <option value="">Todas as turmas</option>
+              {classOptions.map((academyClass) => (
+                <option key={`agenda-class:${academyClass.id}`} value={academyClass.id}>
+                  {academyClass.title}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+        <input value={studentFilter} onChange={(event) => setStudentFilter(event.target.value)} placeholder={isReservationsView ? "Cliente da reserva" : "Cliente, aluno ou professor"} />
+        <button type="button">Filtros</button>
+      </div>
+
+      {visibleCourts.length > 1 ? (
+        <div className="court-calendar-mobile-picker">
+          <label>
+            Quadra no mobile
+            <select value={selectedMobileCourtId} onChange={(event) => setMobileCourtId(event.target.value)}>
+              {visibleCourts.map((court) => (
+                <option key={`agenda-mobile-court:${court.id}`} value={court.id}>
+                  {court.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <span>{countLabel(visibleCourts.length, "quadra disponivel", "quadras disponiveis")} neste filtro.</span>
+        </div>
+      ) : null}
+
+      <div className="court-calendar-workbench">
+        <div
+          className="court-calendar-board"
+          style={
+            {
+              "--court-column-min": courtColumnMin,
+              "--court-count": visibleCourts.length,
+            } as CSSProperties
+          }
+        >
+          <div className="court-calendar-time-rail" aria-hidden>
+            <span>Hora</span>
+            {slotStarts.map((slot) => (
+              <strong key={`slot-label:${slot}`}>{slot}</strong>
+            ))}
+          </div>
+          {visibleCourts.map((court) => {
+            const courtItems = filteredItems.filter((item) => item.courtId === court.id);
+            return (
+              <div
+                key={`calendar:${court.id}`}
+                className={`court-calendar-column${selectedMobileCourtId && court.id !== selectedMobileCourtId ? " mobile-secondary-court" : ""}`}
+              >
+                <strong>{court.name}</strong>
+                {slotStarts.map((slot) => {
+                  const slotItems = courtItems.filter((item) => eventStartsInSlot(item, slot));
+                  return (
+                    <div key={`slot:${court.id}:${slot}`} className={slotItems.length ? "court-calendar-slot occupied" : "court-calendar-slot"}>
+                      {slotItems.length ? (
+                        slotItems.map((item) => {
+                          const booking = item.booking;
+                          const payment = booking ? getPaymentForBooking?.(booking.id) : undefined;
+                          return (
+                            <button
+                              key={item.id}
+                              className={`court-agenda-event-button ${item.type} payment-${payment?.status || "none"}${selectedItemId === item.id ? " active" : ""}`}
+                              type="button"
+                              onClick={() => {
+                                setSelectedItemId(item.id);
+                                setEditingBookingId("");
+                              }}
+                            >
+                              <span>
+                                {shortTime(item.startsAt)}-{shortTime(item.endsAt)}
+                              </span>
+                              <strong>{item.title}</strong>
+                              <small>{booking ? paymentStatusLabel(payment) : item.status}</small>
+                            </button>
+                          );
+                        })
+                      ) : (
+                        <button
+                          className="court-calendar-free-slot"
+                          type="button"
+                          onClick={() =>
+                            canManageBookings && onCreateFromSlot
+                              ? onCreateFromSlot({
+                                  courtId: court.id,
+                                  startsAt: `${day}T${slot}`,
+                                  endsAt: addMinutesToDateTime(day, slot, 60),
+                                })
+                              : undefined
+                          }
+                        >
+                          <span>{slot}</span>
+                          <b>Livre</b>
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+
+        <aside className="court-calendar-detail-drawer" aria-label="Detalhe da agenda">
+          {selectedItem ? (
+            <>
+              <header>
+                <button type="button" aria-label="Fechar detalhe" onClick={() => setSelectedItemId("")}>
+                  x
+                </button>
+                <span>{selectedBooking ? "Detalhe da reserva" : selectedItem.type === "class" ? "Detalhe da aula" : "Detalhe do bloqueio"}</span>
+                <strong>{selectedItem.title}</strong>
+                <small>
+                  {shortTime(selectedItem.startsAt)} - {shortTime(selectedItem.endsAt)}
+                </small>
+              </header>
+
+              <dl className="court-calendar-detail-list">
+                <div>
+                  <dt>Status</dt>
+                  <dd>{selectedItem.status}</dd>
+                </div>
+                <div>
+                  <dt>Quadra</dt>
+                  <dd>{activeCourts.find((court) => court.id === selectedItem.courtId)?.name || selectedBooking?.courtName || "Quadra"}</dd>
+                </div>
+                {selectedBooking ? (
+                  <>
+                    <div>
+                      <dt>Cliente</dt>
+                      <dd>{selectedBooking.playerName}</dd>
+                    </div>
+                    <div>
+                      <dt>Telefone</dt>
+                      <dd>{selectedBooking.phone || "Sem telefone"}</dd>
+                    </div>
+                    <div>
+                      <dt>Pagamento</dt>
+                      <dd>{paymentStatusLabel(selectedPayment)}</dd>
+                    </div>
+                    <div>
+                      <dt>Observacao</dt>
+                      <dd>{selectedBooking.notes || "Sem observacao"}</dd>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div>
+                      <dt>Resumo</dt>
+                      <dd>{selectedItem.detail || "Sem detalhe adicional"}</dd>
+                    </div>
+                    <div>
+                      <dt>Participantes</dt>
+                      <dd>{selectedItem.studentNames.length ? selectedItem.studentNames.join(", ") : "Nao informado"}</dd>
+                    </div>
+                  </>
+                )}
+              </dl>
+
+              {selectedBooking && canManageBookings ? (
+                <div className="court-calendar-detail-actions">
+                  {selectedPayment?.status === "pending" && onMarkPaid ? (
+                    <button className="primary" type="button" onClick={() => onMarkPaid(selectedBooking, selectedPayment)}>
+                      Pagar
+                    </button>
+                  ) : null}
+                  {selectedBooking.status !== "cancelled" && onUpdateBookingDetails ? (
+                    <button type="button" onClick={() => (editingBookingId === selectedBooking.id ? setEditingBookingId("") : startEditing(selectedBooking))}>
+                      {editingBookingId === selectedBooking.id ? "Fechar edicao" : "Editar"}
+                    </button>
+                  ) : null}
+                  {selectedBooking.status !== "cancelled" && onShareBookingChange ? (
+                    <button className="whatsapp-action" type="button" onClick={() => onShareBookingChange(selectedBooking)}>
+                      WhatsApp troca
+                    </button>
+                  ) : selectedWhatsappHref ? (
+                    <a className="button-like whatsapp-action" href={selectedWhatsappHref} target="_blank" rel="noreferrer">
+                      WhatsApp
+                    </a>
+                  ) : null}
+                  {selectedBooking.status !== "cancelled" && onUpdateBooking ? (
+                    <button className="danger" type="button" onClick={() => onUpdateBooking(selectedBooking.id, "cancelled")}>
+                      {selectedBooking.status === "blocked" ? "Liberar bloqueio" : "Cancelar reserva"}
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {selectedBooking && editingBookingId === selectedBooking.id ? (
+                <div className="booking-edit-panel court-calendar-edit-panel">
+                  <label>
+                    Quadra
+                    <select value={editDraft.courtId} onChange={(event) => setEditDraft((prev) => ({ ...prev, courtId: event.target.value }))}>
+                      {activeCourts.map((courtOption) => (
+                        <option key={courtOption.id} value={courtOption.id}>
+                          {courtOption.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Inicio
+                    <input type="date" value={editDraft.startDate} onChange={(event) => setEditDraft((prev) => ({ ...prev, startDate: event.target.value, endDate: prev.endDate || event.target.value }))} />
+                  </label>
+                  <label>
+                    Hora
+                    <input type="time" step={3600} value={editDraft.startTime} onChange={(event) => setEditDraft((prev) => ({ ...prev, startTime: event.target.value }))} />
+                  </label>
+                  <label>
+                    Fim
+                    <input type="date" value={editDraft.endDate} onChange={(event) => setEditDraft((prev) => ({ ...prev, endDate: event.target.value }))} />
+                  </label>
+                  <label>
+                    Hora fim
+                    <input type="time" step={3600} value={editDraft.endTime} onChange={(event) => setEditDraft((prev) => ({ ...prev, endTime: event.target.value }))} />
+                  </label>
+                  <label className="booking-edit-panel-wide">
+                    Observacao
+                    <input value={editDraft.notes} onChange={(event) => setEditDraft((prev) => ({ ...prev, notes: event.target.value }))} placeholder="Ex.: remarcada pela recepcao" />
+                  </label>
+                  <div className="booking-edit-actions">
+                    <button type="button" onClick={() => setEditingBookingId("")}>
+                      Cancelar edicao
+                    </button>
+                    <button className="primary" type="button" onClick={() => submitEdit(selectedBooking)} disabled={!editDraft.courtId || !editDraft.startDate || !editDraft.startTime || !editDraft.endDate || !editDraft.endTime}>
+                      Salvar alteracao
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="court-calendar-detail-history">
+                <strong>Historico</strong>
+                <span>Reserva criada no calendario.</span>
+                {selectedBooking ? <span>{paymentStatusLabel(selectedPayment)}</span> : null}
+              </div>
+            </>
+          ) : (
+            <div className="court-calendar-detail-empty">
+              <strong>Selecione um horario</strong>
+              <span>Slots livres criam reserva. Eventos ocupados abrem detalhe e acoes.</span>
+            </div>
+          )}
+        </aside>
+      </div>
+
+      {canManageBookings ? (
+        <div className="court-calendar-footer-metrics" aria-label="Resumo da agenda filtrada">
+          <span>
+            <strong>{filteredItems.length}</strong>
+            {countLabel(filteredItems.length, "item no filtro", "itens no filtro")}
+          </span>
+          <span>
+            <strong>{bookings.filter((booking) => booking.status !== "blocked").length}</strong>
+            {countLabel(bookings.filter((booking) => booking.status !== "blocked").length, "reserva no dia", "reservas no dia")}
+          </span>
+          <span>
+            <strong>{(reservedMinutes / 60).toFixed(1)}h</strong>
+            reservadas
+          </span>
+          <span>
+            <strong>{occupancyPct}%</strong>
+            ocupacao
+          </span>
+        </div>
+      ) : null}
+    </section>
+  );
 
   return (
     <div className="court-calendar-panel">

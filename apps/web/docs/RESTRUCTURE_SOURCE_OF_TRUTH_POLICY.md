@@ -21,12 +21,12 @@ Se houver conflito entre um documento legado e a nova base SaaS:
 
 ## Uso da base atual do app
 
-A base atual do app e fonte tecnica, nao limite conceitual.
+A base atual do app e fonte tecnica, nao limite conceitual nem limite visual.
 
 Ela deve ser usada para:
 
 - identificar funcoes existentes;
-- reaproveitar loaders, RPCs, componentes e dados;
+- reaproveitar loaders, RPCs, componentes e dados somente quando isso nao comprometer o contrato final;
 - preservar rotas;
 - evitar recriar backend sem necessidade.
 
@@ -36,6 +36,32 @@ Ela nao deve ser usada para:
 - manter abas duplicadas;
 - justificar web com formato de mobile;
 - impedir criacao de paginas 360, workspaces ou dominios SaaS quando necessarios.
+- manter hero, card, tabela, popup, submenu ou layout antigo quando a tela alvo exige outra estrutura.
+
+## Contrato duro de entrega
+
+O resultado final definido por blueprint, contratos de tela e referencias de SaaS profissional vence qualquer tentativa de reaproveitamento.
+
+Se a estrutura antiga produzir:
+
+- primeira dobra vazia ou tomada por cards sem acao;
+- menu e submenu competindo;
+- drawer que vira popup interno quebrado;
+- calendario sem detalhe lateral;
+- pagina web parecendo mobile esticado;
+- blocos aleatorios com proporcoes inconsistentes;
+- funcao importante escondida por heranca do layout antigo;
+
+entao a implementacao deve reconstruir a tela, nao adaptar.
+
+Reaproveitamento e permitido apenas nesta ordem:
+
+1. Dados, regras e rotas.
+2. Funcoes utilitarias e loaders.
+3. Componentes atomicos que mantem o contrato visual.
+4. Componentes grandes somente se ja entregarem a estrutura alvo.
+
+Componentes grandes antigos nao sao obrigatorios. Se atrapalham a entrega, devem ser substituidos.
 
 ## Criterio para backend novo
 
@@ -59,3 +85,5 @@ Toda mudanca estrutural precisa responder:
 - O que nao pode quebrar?
 - Qual estado vazio e de erro?
 - Qual criterio de aceite?
+- Qual screenshot prova que a tela ficou no padrao alvo?
+- A tela final parece um SaaS profissional ou uma adaptacao da estrutura antiga?

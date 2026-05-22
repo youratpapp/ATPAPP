@@ -34,7 +34,6 @@ import { PlaceBookingCreateModule } from "../components/place/PlaceBookingCreate
 import { PlaceBookingDetailedListModule } from "../components/place/PlaceBookingDetailedListModule";
 import { PlaceBookingOperationalQueues } from "../components/place/PlaceBookingOperationalQueues";
 import { PlaceBookingResourcesModule } from "../components/place/PlaceBookingResourcesModule";
-import { PlaceBookingWaitlistModule } from "../components/place/PlaceBookingWaitlistModule";
 import { PlaceClientActionQueue } from "../components/place/PlaceClientActionQueue";
 import { PlaceClientRelationshipModule, type PlaceClientReceivable } from "../components/place/PlaceClientRelationshipModule";
 import type { PlaceCrmContactDraft } from "../components/place/PlaceCrmContactForm";
@@ -5572,6 +5571,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             : p.description;
         return (
           <article key={p.id} className={isManagementCockpit ? "place-card management-cockpit-card" : "place-card"}>
+            {isManagementCockpit ? null : (
+              <>
             <div>
               <p className="pc-name">{p.name}</p>
               <div className="pc-meta">
@@ -5679,6 +5680,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 </>
               ) : null}
             </div>
+              </>
+            )}
             {isManagementCockpit ? (
               <PlaceAdminShell
                 currentModule={currentManagementModule}
@@ -7084,19 +7087,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     selectBookingView(p.id, view);
                   }}
                 >
-                  {canManageBookings && bookingView !== "new" ? (
-                    <div className="booking-workspace-cta" aria-label="Acao principal da agenda">
-                      <div>
-                        <span>Atendimento rapido</span>
-                        <strong>Criar reserva ou bloqueio</strong>
-                        <small>Use quando a recepcao precisa escolher quadra, horario, cliente ou lista de espera.</small>
-                      </div>
-                      <button type="button" className="primary" onClick={() => selectBookingView(p.id, "new")}>
-                        Nova reserva
-                      </button>
-                    </div>
-                  ) : null}
-                  {isManagementCockpit && bookingView === "calendar" ? (
+                  {isManagementCockpit && false ? (
                     <PlaceBookingOperationalQueues
                       busy={busy}
                       canManageBookings={canManageBookings}
@@ -7137,17 +7128,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         onUpdateBookingDetails={(booking, patch) => void onUpdateBookingDetails(p.id, booking, patch)}
                         reservedMinutes={calendarReservedMinutes}
                         variant="reservations"
-                      />
-                      <PlaceBookingWaitlistModule
-                        busy={busy}
-                        canManageBookings={canManageBookings}
-                        entries={bookingWaitlist}
-                        getWhatsappHref={getWaitlistWhatsappHref}
-                        isPromotable={waitlistEntryCanPromote}
-                        onPromoteEntry={(entryId) => void onPromoteBookingWaitlist(p.id, entryId)}
-                        onUpdateEntry={(entryId, status) => void onUpdateBookingWaitlist(p.id, entryId, status)}
-                        statusLabel={courtWaitlistStatusLabel}
-                        waitingSinceLabel={waitingSinceLabel}
                       />
                     </>
                   ) : null}
@@ -8157,6 +8137,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       <ManagementShell
         user={user}
         profile={profile}
+        compact={!adminAccessDenied}
         breadcrumbs={[
           { label: "Trabalho", path: "/gestao" },
           { label: adminRoutePlace?.name || "Local" },

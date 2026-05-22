@@ -19,6 +19,7 @@ type ManagementShellProps = {
   actions?: ReactNode;
   breadcrumbs?: ManagementBreadcrumb[];
   children: ReactNode;
+  compact?: boolean;
   description?: string;
   eyebrow?: string;
   profile: Profile | null;
@@ -32,6 +33,7 @@ export function ManagementShell({
   actions,
   breadcrumbs = [],
   children,
+  compact = false,
   description,
   eyebrow = "Gestao",
   mode = "management",
@@ -44,7 +46,8 @@ export function ManagementShell({
 
   return (
     <AppShell user={user} profile={profile} showHeader mode={mode}>
-      <div className="management-shell-page">
+      <div className={`management-shell-page${compact ? " management-shell-page--compact" : ""}`}>
+        {compact ? null : (
         <header className="management-shell-header">
           <div className="management-shell-title">
             {breadcrumbs.length ? (
@@ -76,6 +79,7 @@ export function ManagementShell({
           ) : null}
           {actions ? <div className="management-shell-actions">{actions}</div> : null}
         </header>
+        )}
         {children}
       </div>
     </AppShell>

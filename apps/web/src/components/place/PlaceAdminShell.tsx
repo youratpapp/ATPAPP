@@ -44,6 +44,10 @@ export function PlaceAdminShell({
   const modulePendingCount = moduleCounts[currentModule] || 0;
   const activePlaceOption = placeOptions.find((option) => option.id === currentPlaceId);
 
+  if (currentModule !== "settings") {
+    return null;
+  }
+
   return (
     <section className={`place-admin-shell place-admin-shell--${currentModule}`} aria-label={`Gestao de ${placeName}`}>
       <div className="place-admin-shell-head">

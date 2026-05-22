@@ -18,21 +18,26 @@ Ao executar:
 3. Se aparecer bloqueio tecnico nao previsto, corrigir o menor necessario para destravar o fluxo.
 4. Verificar a correcao antes de passar para o proximo item.
 5. Preservar rotas publicas, legadas e aliases.
-6. Nao recriar backend se composicao/reuso resolver.
+6. Nao recriar backend se composicao/reuso resolver sem comprometer a tela alvo.
 7. Nao relaxar permissoes para simplificar.
 8. Nao implementar uma tela isolada que contradiga o blueprint.
 9. Atualizar esta queue com status quando cada sprint terminar.
 10. Validar web primeiro; mobile trabalho vem depois da estrutura web.
+11. Nao preservar layout, menu, card, popup, hero ou componente antigo para economizar trabalho quando ele nao entrega o contrato SaaS final.
+12. Cada entrega visual precisa de screenshot e revisao contra a referencia/contrato antes de ser considerada concluida.
 
 ## 1. Regras de bloqueio
 
 Se uma etapa travar por falta de dado, RPC, rota, componente ou migracao:
 
 - Identificar causa.
-- Verificar se existe funcao atual reaproveitavel.
-- Se existir, adaptar chamada/composicao.
-- Se nao existir, criar o menor ajuste tecnico necessario.
+- Confirmar primeiro qual e a experiencia final exigida para a tela.
+- Verificar se existe funcao atual reaproveitavel sem prejudicar essa experiencia.
+- Se existir, reaproveitar apenas dados/regras/chamadas que respeitam o contrato final.
+- Se o componente antigo gerar adaptacao ruim, substituir a estrutura visual/UX.
+- Se nao existir suporte tecnico, criar o menor ajuste necessario para fechar o fluxo.
 - Rodar verificacao local.
+- Capturar screenshot da tela alterada e comparar com o contrato.
 - Registrar a mudanca no item da queue.
 - Continuar para o proximo item.
 
@@ -112,7 +117,7 @@ Status em 2026-05-22:
 Em execucao. Ja foram aplicados os segmentos canonicos novos (`inicio`, `clientes`, `financeiro`, `loja-pos`, `administracao`) com aliases antigos preservados, a sidebar desktop passou a operar por dominios SaaS e o seletor interno duplicado de modulos foi removido do shell de gestao.
 
 Objetivo:
-Transformar Trabalho web em estrutura SaaS, sem ainda refazer profundamente todos os fluxos.
+Transformar Trabalho web em estrutura SaaS real. Este sprint nao pode terminar com aparencia de menu antigo, pagina generica ou painel adaptado. Se shell, sidebar, topbar ou proporcoes herdadas impedirem o resultado alvo, eles devem ser substituidos.
 
 O que fazer:
 
@@ -146,7 +151,7 @@ Arquivos provaveis:
 - `web/src/lib/workspace-access.ts`
 
 Criterio de aceite:
-Area Trabalho web deixa de parecer lista de modulos e passa a ter dominios SaaS claros.
+Area Trabalho web deixa de parecer lista de modulos e passa a ter dominios SaaS claros, topbar compacta, unidade ativa evidente e primeira dobra util. A tela precisa ser comprovada por screenshot.
 
 QA:
 
@@ -187,7 +192,7 @@ QA:
 ### SPRINT-03 - Agenda como centro operacional
 
 Objetivo:
-Transformar Agenda em calendario central de trabalho.
+Transformar Agenda em calendario central de trabalho, com proporcao de SaaS profissional. A agenda nao pode abrir com hero grande, cards aleatorios, fila empilhada ou formulario interno quebrado.
 
 O que fazer:
 
@@ -202,6 +207,10 @@ O que fazer:
 - Ajustar colunas para usar espaco do monitor; nada de quadra cair para baixo com espaco disponivel.
 - Slots em hora cheia.
 - Slot clicavel.
+- Drawer lateral fixo para detalhe no desktop.
+- Sheet/drawer responsivo no mobile.
+- Tabs compactas no topo da area, nao menus duplicados.
+- Primeira dobra deve mostrar o calendario e o detalhe, nao resumos decorativos.
 
 Arquivos provaveis:
 
@@ -210,7 +219,7 @@ Arquivos provaveis:
 - `web/src/lib/places.ts`
 
 Criterio de aceite:
-Recepcao consegue entender ocupacao do dia e clicar em horario sem procurar submenus.
+Recepcao consegue entender ocupacao do dia e clicar em horario sem procurar submenus. O resultado visual deve se aproximar do mock alvo de Agenda SaaS: calendario amplo, eventos por status, detalhe lateral e acoes claras.
 
 QA:
 

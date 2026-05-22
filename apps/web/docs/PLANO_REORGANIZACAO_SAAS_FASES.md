@@ -36,7 +36,7 @@ Nenhum imediato.
 ## Fase 1 - Shell SaaS web e navegacao por dominios
 
 Objetivo:
-Transformar Trabalho web em plataforma SaaS, sem ainda refazer cada fluxo profundo.
+Transformar Trabalho web em plataforma SaaS. Esta fase nao deve ser interpretada como ajuste superficial: paginas que ainda parecerem adaptacao do app antigo devem ser reconstruidas no contrato final, mesmo que isso exija substituir componentes grandes.
 
 Entregaveis:
 - Topbar com unidade/local ativo.

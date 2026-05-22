@@ -9,6 +9,24 @@ Os documentos em `Legado/` nao sao fonte de decisao de produto, arquitetura, UX 
 
 A nova base ativa da reorganizacao SaaS e composta pelos documentos abaixo.
 
+## Regra dura adicionada em 2026-05-22
+
+A implementacao nao deve tentar economizar trabalho preservando estruturas antigas quando elas contradizem o SaaS alvo.
+
+O alvo de produto, UX, proporcao, hierarquia, menus, pagina, drawer, tabela, calendario, detalhe e fluxo vence a estrutura atual.
+
+Reaproveitar codigo, loaders, RPCs, componentes ou dados so e permitido quando isso nao prejudicar o resultado final definido nos contratos. Se a tela existente parecer adaptacao, painel improvisado, menu empilhado, mobile ampliado para web ou composicao sem hierarquia SaaS, ela deve ser reconstruida na estrutura correta.
+
+Antes de qualquer sprint, a pergunta nao e "o que consigo aproveitar?", e sim:
+
+1. Qual e a tela final que um SaaS profissional precisa entregar?
+2. O usuario encontra a tarefa principal na primeira dobra?
+3. A proporcao esta correta ou cards/hero estao roubando a area nobre?
+4. Existe menu, submenu, card ou popup herdado que prejudica clareza?
+5. A solucao atual replica o contrato alvo ou apenas aproxima?
+
+Se a resposta for aproximacao, a sprint nao esta concluida.
+
 ## Base conceitual e operacional ativa
 
 0. `SAAS_MASTER_BLUEPRINT_COMPLETO.md`
@@ -72,16 +90,19 @@ Antes de implementar qualquer mudanca estrutural:
 
 1. Confirmar qual persona e fluxo a mudanca atende.
 2. Confirmar em qual dominio SaaS a funcao pertence.
-3. Verificar se a funcao ja existe e pode ser reaproveitada.
-4. Confirmar se a solucao e web, mobile ou ambos.
-5. Proteger rotas publicas e legadas.
-6. Documentar lacuna tecnica apenas quando a base atual nao fechar o fluxo.
+3. Confirmar o contrato final da tela, incluindo proporcao, primeira dobra, painel de detalhe, menus, CTA e estados.
+4. Verificar se a funcao ja existe e pode ser reaproveitada sem comprometer o contrato final.
+5. Confirmar se a solucao e web, mobile ou ambos.
+6. Proteger rotas publicas e legadas.
+7. Documentar lacuna tecnica apenas quando a base atual nao fechar o fluxo.
 
 ## Proibido
 
 - Usar MD legado como fonte principal.
 - Reorganizar apenas o menu atual sem repensar fluxo.
 - Copiar o formato mobile para web SaaS.
+- Preservar componente antigo para economizar trabalho quando ele impede o resultado alvo.
+- Entregar uma tela "proxima" do mock alvo em vez da tela realmente contratada.
 - Colocar configuracao rara na rotina diaria.
 - Misturar Player App com Trabalho.
 - Recriar backend sem provar necessidade operacional e tecnica.
