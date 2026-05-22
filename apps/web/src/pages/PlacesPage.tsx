@@ -5425,7 +5425,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const settingsView = (settingsViewByPlace[p.id] || "overview") as SettingsManagementView;
         const showSettingsWorkspace = isManagementCockpit && canManagePlace;
         const showSettingsDetails = !showSettingsWorkspace;
-        const requestedBookingView = (bookingViewByPlace[p.id] || "reservations") as BookingManagementView;
+        const requestedBookingView = (bookingViewByPlace[p.id] || (isAdminRoute && adminModule === "bookings" ? "calendar" : "reservations")) as BookingManagementView;
         const bookingView: BookingManagementView =
           requestedBookingView === "today" || requestedBookingView === "waitlist" ? "reservations" : requestedBookingView;
         const showBookingWorkspace = isManagementCockpit && showBookingTools;

@@ -13816,7 +13816,6 @@ button:disabled {
   padding: 0;
 }
 
-.management-cockpit-card > div:first-child,
 .management-cockpit-card > .pc-logo,
 .management-cockpit-card > .pc-actions {
   display: none;
@@ -29018,7 +29017,13 @@ label {
 }
 
 .app-shell--management .court-calendar-panel--saas .court-calendar-filters:not(.reservations-only) {
-  grid-template-columns: 142px 132px 150px 160px 160px minmax(220px, 1.3fr) 92px;
+  grid-template-columns: 130px 120px 150px 150px 150px minmax(150px, 1fr) 78px;
+  min-width: 0;
+  width: 100%;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters > * {
+  min-width: 0;
 }
 
 .app-shell--management .court-calendar-workbench {
@@ -29213,6 +29218,19 @@ label {
   width: 100%;
 }
 
+.app-shell--management .court-calendar-detail-actions button:not(.primary):not(.danger),
+.app-shell--management .court-calendar-detail-actions a {
+  background: rgba(8, 20, 36, 0.92) !important;
+  border: 1px solid rgba(166, 198, 229, 0.2) !important;
+  color: var(--pdark-text-main) !important;
+}
+
+.app-shell--management .court-calendar-detail-actions button.danger {
+  background: rgba(127, 29, 29, 0.28) !important;
+  border-color: rgba(248, 113, 113, 0.42) !important;
+  color: #fecaca !important;
+}
+
 .app-shell--management .court-calendar-detail-history,
 .app-shell--management .court-calendar-detail-empty {
   border-top: 1px solid rgba(166, 198, 229, 0.12);
@@ -29247,6 +29265,392 @@ label {
 .app-shell--management .court-calendar-footer-metrics strong {
   color: var(--pdark-accent);
   font-size: 1.15rem;
+}
+
+/* SaaS hard-target: Agenda is a working surface, not a stacked legacy card. */
+.app-shell--management .management-shell-page--compact {
+  padding-top: 18px;
+}
+
+/* SaaS hard-target: Trabalho Hoje is an operational console, not a card stack. */
+.app-shell--management .management-saas-home {
+  display: grid;
+  gap: 12px;
+  max-width: 1280px;
+  width: min(1280px, calc(100vw - 320px));
+}
+
+.app-shell--management .management-saas-head {
+  align-items: end;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  min-height: 72px;
+}
+
+.app-shell--management .management-saas-head span,
+.app-shell--management .management-saas-alert span {
+  color: #22c55e;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.app-shell--management .management-saas-head h1 {
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 0.96;
+  margin: 6px 0;
+}
+
+.app-shell--management .management-saas-head p,
+.app-shell--management .management-saas-alert p {
+  color: rgba(226, 232, 240, 0.82);
+  font-weight: 700;
+  margin: 0;
+}
+
+.app-shell--management .management-saas-focus {
+  background: rgba(11, 23, 39, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  min-width: 250px;
+  padding: 10px 12px;
+}
+
+.app-shell--management .management-saas-focus select {
+  background: transparent;
+  border: 0;
+  color: #f8fafc;
+  font-weight: 900;
+  outline: 0;
+}
+
+.app-shell--management .management-saas-alert,
+.app-shell--management .management-saas-kpis button,
+.app-shell--management .management-saas-panel {
+  background:
+    linear-gradient(180deg, rgba(12, 25, 42, 0.94), rgba(8, 20, 34, 0.88)),
+    var(--pdark-surface-image, none);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+.app-shell--management .management-saas-alert {
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(6, 13, 24, 0.88), rgba(7, 26, 35, 0.62)),
+    url("/assets/atp-court-night.jpg") center / cover;
+  display: flex;
+  justify-content: space-between;
+  min-height: 104px;
+  overflow: hidden;
+  padding: 18px;
+}
+
+.app-shell--management .management-saas-alert h2 {
+  color: #f8fafc;
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+  line-height: 1.05;
+  margin: 6px 0;
+}
+
+.app-shell--management .management-saas-alert-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: end;
+}
+
+.app-shell--management .management-saas-alert-actions strong {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #f8fafc;
+  padding: 8px 12px;
+}
+
+.app-shell--management .management-saas-kpis {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.app-shell--management .management-saas-kpis button {
+  cursor: pointer;
+  display: grid;
+  gap: 5px;
+  min-height: 86px;
+  padding: 12px;
+  text-align: left;
+}
+
+.app-shell--management .management-saas-kpis button:hover {
+  border-color: rgba(34, 197, 94, 0.42);
+}
+
+.app-shell--management .management-saas-kpis span,
+.app-shell--management .management-saas-panel header h2 {
+  color: #f8fafc;
+  font-weight: 900;
+}
+
+.app-shell--management .management-saas-kpis strong {
+  color: #f8fafc;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.app-shell--management .management-saas-kpis small {
+  color: rgba(203, 213, 225, 0.82);
+  font-weight: 800;
+}
+
+.app-shell--management .management-saas-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1.2fr 1fr 0.9fr;
+}
+
+.app-shell--management .management-saas-panel {
+  display: grid;
+  gap: 10px;
+  min-height: 190px;
+  padding: 12px;
+}
+
+.app-shell--management .management-saas-agenda {
+  grid-row: span 2;
+}
+
+.app-shell--management .management-saas-panel header {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.app-shell--management .management-saas-panel header h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.app-shell--management .management-saas-panel header button,
+.app-shell--management .management-saas-task-list button em,
+.app-shell--management .management-saas-client-list button,
+.app-shell--management .management-saas-shortcuts button {
+  background: rgba(15, 23, 42, 0.86);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 7px;
+  color: #e5f9ee;
+  cursor: pointer;
+  font-weight: 900;
+  padding: 8px 10px;
+}
+
+.app-shell--management .management-saas-timeline,
+.app-shell--management .management-saas-task-list,
+.app-shell--management .management-saas-client-list,
+.app-shell--management .management-saas-competition-list,
+.app-shell--management .management-saas-shortcuts {
+  display: grid;
+  gap: 8px;
+}
+
+.app-shell--management .management-saas-timeline article,
+.app-shell--management .management-saas-task-list button,
+.app-shell--management .management-saas-client-list article,
+.app-shell--management .management-saas-competition-list button {
+  align-items: center;
+  background: rgba(15, 23, 42, 0.64);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 7px;
+  color: #f8fafc;
+  display: grid;
+  gap: 3px;
+  min-height: 54px;
+  padding: 10px;
+  text-align: left;
+}
+
+.app-shell--management .management-saas-timeline article {
+  grid-template-columns: 56px minmax(0, 1fr);
+}
+
+.app-shell--management .management-saas-timeline time {
+  color: #f8fafc;
+  font-weight: 900;
+  grid-row: span 2;
+}
+
+.app-shell--management .management-saas-timeline span,
+.app-shell--management .management-saas-task-list small,
+.app-shell--management .management-saas-client-list span,
+.app-shell--management .management-saas-competition-list span,
+.app-shell--management .management-saas-panel p {
+  color: rgba(203, 213, 225, 0.78);
+  font-weight: 700;
+}
+
+.app-shell--management .management-saas-task-list button {
+  cursor: pointer;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.app-shell--management .management-saas-task-list button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.app-shell--management .management-saas-client-list article {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.app-shell--management .management-saas-client-list article span {
+  grid-column: 1;
+}
+
+.app-shell--management .management-saas-client-list article strong {
+  grid-column: 1;
+}
+
+.app-shell--management .management-saas-client-list article button {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.app-shell--management .management-saas-competition-list button {
+  cursor: pointer;
+}
+
+.app-shell--management .management-saas-shortcuts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+  .app-shell--management .management-saas-home {
+    width: 100%;
+  }
+
+  .app-shell--management .management-saas-grid,
+  .app-shell--management .management-saas-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell--management .management-saas-head,
+  .app-shell--management .management-saas-alert {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .app-shell--management .management-saas-grid,
+  .app-shell--management .management-saas-kpis,
+  .app-shell--management .management-saas-shortcuts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.app-shell--management .page.places-page {
+  max-width: none;
+}
+
+.app-shell--management .management-cockpit-card {
+  max-width: 100%;
+  width: 100%;
+}
+
+@media (min-width: 960px) {
+  .app-shell--management .management-cockpit-card {
+    max-width: 1280px;
+    width: min(1280px, calc(100vw - 320px));
+  }
+}
+
+.app-shell--management .place-booking-panel:has(.court-calendar-panel--saas) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  gap: 0;
+  padding: 0 !important;
+}
+
+.app-shell--management .place-booking-panel:has(.court-calendar-panel--saas) + .place-module-summary {
+  display: none;
+}
+
+.app-shell--management .court-calendar-panel--saas {
+  background: transparent !important;
+  border-radius: 0;
+  min-width: 0;
+  overflow: visible;
+  width: 100%;
+}
+
+.app-shell--management .court-calendar-panel--saas .saas-domain-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-bottom: 12px;
+  min-width: 0;
+  width: 100%;
+}
+
+.app-shell--management .court-calendar-panel--saas .saas-domain-header h2 {
+  font-size: clamp(1.8rem, 2.15vw, 2.4rem);
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-view-tabs,
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters,
+.app-shell--management .court-calendar-panel--saas .court-calendar-board,
+.app-shell--management .court-calendar-detail-drawer {
+  border-radius: 8px;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-view-tabs {
+  border-bottom-color: rgba(34, 197, 94, 0.32);
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters button {
+  background: rgba(8, 20, 36, 0.92) !important;
+  border: 1px solid rgba(166, 198, 229, 0.2) !important;
+  color: var(--pdark-text-main) !important;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters button:hover {
+  background: rgba(16, 36, 58, 0.96) !important;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-board {
+  grid-template-columns: 50px repeat(var(--court-count, 1), minmax(96px, 1fr));
+  min-width: 0;
+  min-height: calc(100vh - 278px);
+}
+
+.app-shell--management .court-calendar-workbench {
+  grid-template-columns: minmax(0, 1fr) 286px;
+  min-width: 0;
+  width: 100%;
+}
+
+.app-shell--management .court-calendar-detail-drawer {
+  max-height: calc(100vh - 152px);
+  min-width: 0;
+  top: 96px;
+}
+
+.app-shell--management .court-agenda-event-button:hover,
+.app-shell--management .court-calendar-free-slot:hover,
+.app-shell--management .court-agenda-event-button:focus-visible,
+.app-shell--management .court-calendar-free-slot:focus-visible {
+  background: rgba(18, 41, 66, 0.94) !important;
+  color: var(--pdark-text-main) !important;
 }
 
 .app-shell--management .court-calendar-time-rail {
@@ -35557,7 +35961,6 @@ body:has(.app-shell--competition),
   padding: 0;
 }
 
-.app-shell--management .management-cockpit-card > div:first-child,
 .app-shell--management .management-cockpit-card > .pc-logo,
 .app-shell--management .management-cockpit-card > .pc-actions {
   display: none;

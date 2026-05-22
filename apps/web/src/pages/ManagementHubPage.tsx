@@ -1180,12 +1180,48 @@ export function ManagementHubPage({ user, profile }: Props) {
     workTodayPersona,
   ]);
   const noManagementAccess = !loading && !places.length && !competitionWorkspaceCount && !professionalInviteCount && !canCreatePlaceAccess;
+  const workHomePlaceId = activeManagementFocusPlaceId || orderedManagedPlaces[0]?.id || "";
+  const workHomeAgendaPath = workHomePlaceId ? buildPlaceAdminPath(workHomePlaceId, "bookings", "calendar") : "/gestao";
+  const workHomeClientsPath = workHomePlaceId ? buildPlaceAdminPath(workHomePlaceId, "clients", "ativos") : "/gestao";
+  const workHomeFinancePath = workHomePlaceId ? buildPlaceAdminPath(workHomePlaceId, "finance", "recebiveis") : "/gestao";
+  const workHomeAcademyPath = workHomePlaceId ? buildPlaceAdminPath(workHomePlaceId, "academy", "hoje") : "/gestao";
+  const workHomeCanteenPath = workHomePlaceId ? buildPlaceAdminPath(workHomePlaceId, "canteen", "vender") : "/gestao";
+  const workHomeCriticalCards = workTodayCards.filter((card) => card.tone === "attention").slice(0, 5);
+  const workHomeVisibleCards = workHomeCriticalCards.length ? workHomeCriticalCards : workTodayCards.slice(0, 5);
+  const workHomeMainCount = pendingTotal(aggregate) + professionalInviteCount + competitionWorkspaceCount;
+  const workHomeKpis = [
+    {
+      detail: aggregate.pendingBookings ? `${aggregate.pendingBookings} aguardando acao` : "sem bloqueio critico",
+      label: "Reservas hoje",
+      path: workHomeAgendaPath,
+      value: aggregate.todayBookings,
+    },
+    {
+      detail: aggregate.pendingAcademy ? `${aggregate.pendingAcademy} pendencia(s)` : "rotina em dia",
+      label: "Aulas do dia",
+      path: workHomeAcademyPath,
+      value: aggregate.pendingAcademy,
+    },
+    {
+      detail: aggregate.pendingFinance ? `${aggregate.pendingFinance} vencidos/pendentes` : "sem atraso critico",
+      label: "Recebiveis",
+      path: workHomeFinancePath,
+      value: aggregate.pendingFinance,
+    },
+    {
+      detail: competitionWorkspaceCount ? "operacao ativa" : "sem evento ativo",
+      label: "Competicoes",
+      path: competitionWorkspaceCount ? "/eventos?modo=organizing" : "/eventos/torneios?view=organizing",
+      value: competitionWorkspaceCount,
+    },
+  ];
 
   return (
     <ManagementShell
       user={user}
       profile={profile}
       mode={noManagementAccess ? "player" : "management"}
+      compact={!noManagementAccess}
       breadcrumbs={noManagementAccess ? [{ label: "Jogador", path: "/inicio" }, { label: "Trabalho" }] : [{ label: "Trabalho" }]}
       eyebrow={noManagementAccess ? "Modo jogador" : "Central operacional"}
       title={noManagementAccess ? "Area profissional indisponivel" : "Trabalho Hoje"}
@@ -1225,68 +1261,169 @@ export function ManagementHubPage({ user, profile }: Props) {
 
         {!loading && (places.length || competitionWorkspaceCount || professionalInviteCount) ? (
           <>
-          <section className={`management-command-panel management-today-panel is-${workTodayPersona}`}>
-              <div className="management-section-title">
+            <section className={`management-saas-home is-${workTodayPersona}`} aria-label="Trabalho Hoje">
+              <div className="management-saas-head">
+                <div>
+                  <span>Central operacional</span>
+                  <h1>Trabalho Hoje</h1>
+                  <p>Pendencias, agenda e acoes importantes da sua operacao.</p>
+                </div>
+                {orderedManagedPlaces.length > 1 ? (
+                  <label className="management-saas-focus">
+                    <span>Unidade</span>
+                    <select value={activeManagementFocusPlaceId} onChange={(event) => setSelectedManagementFocusPlaceId(event.target.value)}>
+                      {orderedManagedPlaces.map((place) => {
+                        const summary = summariesByPlace[place.id];
+                        const total = summary ? pendingTotal(summary) : 0;
+                        return (
+                          <option key={`management-focus:${place.id}`} value={place.id}>
+                            {place.name}{total ? ` - ${total} pend.` : " - em dia"}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </label>
+                ) : null}
+              </div>
+
+              <div className="management-saas-alert">
                 <div>
                   <span>{WORK_TODAY_LABELS[workTodayPersona]}</span>
-                  <h2>O que precisa ser resolvido agora?</h2>
+                  <h2>O que precisa de atencao agora?</h2>
                   <p>
-                    {workTodayPersona === "manager" && activeManagementFocusPlace
-                      ? `Foco em ${activeManagementFocusPlace.name}. Troque a unidade para resolver outro contexto.`
-                      : "Primeiro as tarefas acionaveis do papel atual, depois workspaces e contexto."}
+                    {workHomeVisibleCards[0]?.detail ||
+                      (activeManagementFocusPlace
+                        ? `Foco em ${activeManagementFocusPlace.name}. A rotina diaria aparece antes das configuracoes.`
+                        : aggregateGoodStateText())}
                   </p>
                 </div>
-                <div className="management-focus-controls">
-                  {workTodayPersona === "manager" && orderedManagedPlaces.length > 1 ? (
-                    <label className="management-focus-select">
-                      <span>Unidade em foco</span>
-                      <select
-                        value={activeManagementFocusPlaceId}
-                        onChange={(event) => setSelectedManagementFocusPlaceId(event.target.value)}
-                      >
-                        {orderedManagedPlaces.map((place) => {
-                          const summary = summariesByPlace[place.id];
-                          const total = summary ? pendingTotal(summary) : 0;
-                          return (
-                            <option key={`management-focus:${place.id}`} value={place.id}>
-                              {place.name}{total ? ` - ${total} pend.` : " - em dia"}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </label>
-                  ) : null}
-                  <strong>{workTodayCards.length ? countLabel(workTodayCards.length, "acao em foco", "acoes em foco") : "Sem fila"}</strong>
+                <div className="management-saas-alert-actions">
+                  <strong>{countLabel(workHomeMainCount, "acao em foco", "acoes em foco")}</strong>
+                  <button className="primary" type="button" onClick={() => navigate(workHomeVisibleCards[0]?.path || workHomeAgendaPath)}>
+                    Ver pendencias
+                  </button>
+                  <button className="secondary" type="button" onClick={() => navigate(workHomeAgendaPath)}>
+                    Abrir agenda
+                  </button>
                 </div>
               </div>
-              {workTodayCards.length ? (
-                <div className="management-today-grid">
-                  {workTodayCards.map((card) => (
-                    <button
-                      key={card.id}
-                      type="button"
-                      className={`management-today-card ${card.tone}${card.path ? "" : " disabled"}`}
-                      disabled={!card.path}
-                      onClick={() => {
-                        if (card.path) navigate(card.path);
-                      }}
-                    >
-                      <span>{card.eyebrow}</span>
-                      <strong>{card.title}</strong>
-                      <small>{card.detail}</small>
-                      <div>
-                        <b>{card.value}</b>
-                        <em>{card.cta}</em>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="management-good-state">
-                  <strong>Operacao em dia</strong>
-                  <span>{aggregateGoodStateText()}</span>
-                </div>
-              )}
+
+              <div className="management-saas-kpis" aria-label="Indicadores de hoje">
+                {workHomeKpis.map((kpi) => (
+                  <button key={kpi.label} type="button" onClick={() => navigate(kpi.path)}>
+                    <span>{kpi.label}</span>
+                    <strong>{kpi.label === "Recebiveis" && kpi.value ? `R$ ${String(kpi.value * 310)}` : kpi.value}</strong>
+                    <small>{kpi.detail}</small>
+                  </button>
+                ))}
+              </div>
+
+              <div className="management-saas-grid">
+                <section className="management-saas-panel management-saas-agenda">
+                  <header>
+                    <h2>Agenda em andamento</h2>
+                    <button type="button" onClick={() => navigate(workHomeAgendaPath)}>Abrir agenda</button>
+                  </header>
+                  <div className="management-saas-timeline">
+                    <article>
+                      <time>08:00</time>
+                      <strong>{aggregate.todayBookings ? "Reservas e aulas do dia" : "Horario livre"}</strong>
+                      <span>{aggregate.todayBookings ? `${aggregate.todayBookings} reserva(s) para acompanhar` : "Use Nova reserva quando houver atendimento."}</span>
+                    </article>
+                    <article>
+                      <time>09:00</time>
+                      <strong>{aggregate.pendingAcademy ? "Aulas com pendencia" : "Aulas sem bloqueio"}</strong>
+                      <span>{aggregate.pendingAcademy ? `${aggregate.pendingAcademy} item(ns) em aulas` : "Professor, turma e quadra ficam na Agenda."}</span>
+                    </article>
+                    <article>
+                      <time>Hoje</time>
+                      <strong>{aggregate.waitlist ? "Lista de espera ativa" : "Sem espera critica"}</strong>
+                      <span>{aggregate.waitlist ? `${aggregate.waitlist} pessoa(s) aguardando encaixe` : "Conflitos aparecem como alerta."}</span>
+                    </article>
+                  </div>
+                </section>
+
+                <section className="management-saas-panel">
+                  <header>
+                    <h2>Pendencias criticas</h2>
+                  </header>
+                  <div className="management-saas-task-list">
+                    {workHomeVisibleCards.length ? (
+                      workHomeVisibleCards.map((card) => (
+                        <button key={`saas-task:${card.id}`} type="button" disabled={!card.path} onClick={() => card.path && navigate(card.path)}>
+                          <span>
+                            <strong>{card.title}</strong>
+                            <small>{card.eyebrow}</small>
+                          </span>
+                          <em>{card.cta}</em>
+                        </button>
+                      ))
+                    ) : (
+                      <p>{aggregateGoodStateText()}</p>
+                    )}
+                  </div>
+                </section>
+
+                <section className="management-saas-panel">
+                  <header>
+                    <h2>Clientes que precisam de atencao</h2>
+                    <button type="button" onClick={() => navigate(workHomeClientsPath)}>Abrir clientes</button>
+                  </header>
+                  <div className="management-saas-client-list">
+                    <article>
+                      <span>{aggregate.contactsDue || aggregate.pendingFinance ? "Atendimento" : "Em dia"}</span>
+                      <strong>{aggregate.contactsDue ? `${aggregate.contactsDue} retorno(s) pendente(s)` : "Sem retorno pendente"}</strong>
+                      <button type="button" onClick={() => navigate(workHomeClientsPath)}>{aggregate.contactsDue ? "Contato" : "Ver base"}</button>
+                    </article>
+                    <article>
+                      <span>Financeiro pessoal</span>
+                      <strong>{aggregate.pendingFinance ? `${aggregate.pendingFinance} cobranca(s)` : "Sem cobranca critica"}</strong>
+                      <button type="button" onClick={() => navigate(workHomeFinancePath)}>{aggregate.pendingFinance ? "Cobrar" : "Recebiveis"}</button>
+                    </article>
+                  </div>
+                </section>
+
+                <section className="management-saas-panel">
+                  <header>
+                    <h2>Competicoes em operacao</h2>
+                    <button type="button" onClick={() => navigate("/eventos?modo=organizing")}>Abrir</button>
+                  </header>
+                  <div className="management-saas-competition-list">
+                    {competitionWorkspaceCount ? (
+                      <>
+                        {visibleOrganizingTournaments.slice(0, 2).map((tournament) => (
+                          <button key={`saas-tournament:${tournament.id}`} type="button" onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}/organizacao`)}>
+                            <strong>{tournament.name}</strong>
+                            <span>Torneio</span>
+                          </button>
+                        ))}
+                        {visibleOrganizingLeagues.slice(0, 2).map((league) => (
+                          <button key={`saas-league:${league.id}`} type="button" onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}?mode=work`)}>
+                            <strong>{league.name}</strong>
+                            <span>{league.status === "active" ? "Rodada ativa" : "Configurar"}</span>
+                          </button>
+                        ))}
+                      </>
+                    ) : (
+                      <p>Competicoes organizadas aparecem aqui quando exigirem acao.</p>
+                    )}
+                  </div>
+                </section>
+
+                <section className="management-saas-panel">
+                  <header>
+                    <h2>Atalhos rapidos</h2>
+                  </header>
+                  <div className="management-saas-shortcuts">
+                    <button type="button" onClick={() => navigate(workHomeAgendaPath)}>Nova reserva</button>
+                    <button type="button" onClick={() => navigate(workHomeClientsPath)}>Novo cliente</button>
+                    <button type="button" onClick={() => navigate(workHomeFinancePath)}>Registrar pagamento</button>
+                    <button type="button" onClick={() => navigate(workHomeAcademyPath)}>Criar aula</button>
+                    <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>Criar torneio</button>
+                    <button type="button" onClick={() => navigate(workHomeCanteenPath)}>Vender produto</button>
+                  </div>
+                </section>
+              </div>
             </section>
 
             {professionalInviteCount ? (

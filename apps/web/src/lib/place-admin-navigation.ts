@@ -245,7 +245,7 @@ const PLACE_ADMIN_VIEW_CONFIGS: {
   [K in PlaceAdminViewModule]: PlaceAdminViewConfig;
 } = {
   bookings: {
-    defaultView: "reservations",
+    defaultView: "calendar",
     segmentToView: BOOKING_ADMIN_SEGMENT_TO_VIEW as Record<string, PlaceAdminRoutableView>,
     viewSegments: BOOKING_ADMIN_VIEW_SEGMENTS,
   },
