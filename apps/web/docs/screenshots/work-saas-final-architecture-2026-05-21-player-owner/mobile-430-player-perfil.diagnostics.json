@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-430",
+  "route": "player-perfil",
+  "hash": "#/perfil",
+  "screenshot": "mobile-430-player-perfil.png",
+  "events": []
+}

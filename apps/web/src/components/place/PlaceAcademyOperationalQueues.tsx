@@ -15,6 +15,7 @@ type Props = {
   onUpdateEnrollment: (enrollmentId: string, status: AcademyEnrollment["status"]) => void;
   onUpdateLessonRequest: (request: AcademyLessonRequest, status: AcademyLessonRequest["status"]) => void;
   pendingEnrollments: AcademyEnrollment[];
+  requireAttendanceCall: boolean;
   todayClasses: AcademyClass[];
 };
 
@@ -30,6 +31,7 @@ export function PlaceAcademyOperationalQueues({
   onUpdateEnrollment,
   onUpdateLessonRequest,
   pendingEnrollments,
+  requireAttendanceCall,
   todayClasses,
 }: Props) {
   const [showAllToday, setShowAllToday] = useState(false);
@@ -57,7 +59,7 @@ export function PlaceAcademyOperationalQueues({
                   {academyClass.coachName || "Professor"} | {academyClass.level || "nivel livre"}
                 </small>
                 <button type="button" onClick={() => onOpenTodayClass(academyClass.id)} disabled={busy}>
-                  Abrir chamada
+                  {requireAttendanceCall ? "Abrir chamada" : "Abrir aula"}
                 </button>
               </span>
             ))

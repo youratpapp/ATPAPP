@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-390",
+  "route": "player-jogar-aulas",
+  "hash": "#/locais?intent=classes",
+  "screenshot": "mobile-390-player-jogar-aulas.png",
+  "events": []
+}

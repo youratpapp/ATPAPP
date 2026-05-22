@@ -82,6 +82,7 @@ type Props = {
   onUpdateEnrollmentDetails: (enrollmentId: string, patch: StudentEditPatch) => void;
   progress: AcademyProgressNote[];
   progressDraftByEnrollment: Record<string, ProgressDraft>;
+  requireAttendanceCall: boolean;
   studentDraftByClass: Record<string, StudentDraft>;
   todayAttendance: AcademyAttendance[];
   visibleClasses: AcademyClass[];
@@ -157,6 +158,7 @@ export function PlaceAcademyStudentsModule({
   onUpdateEnrollmentDetails,
   progress,
   progressDraftByEnrollment,
+  requireAttendanceCall,
   studentDraftByClass,
   todayAttendance,
   visibleClasses,
@@ -173,6 +175,12 @@ export function PlaceAcademyStudentsModule({
   useEffect(() => {
     setVisibleLimit(DEFAULT_VISIBLE_LIMIT);
   }, [filter.attendance, filter.classId, filter.payment, filter.query, filter.status]);
+
+  useEffect(() => {
+    if (!requireAttendanceCall && (filter.attendance === "present_today" || filter.attendance === "absent_today" || filter.attendance === "pending_today")) {
+      onChangeFilter({ ...filter, attendance: "" });
+    }
+  }, [filter, onChangeFilter, requireAttendanceCall]);
 
   useEffect(() => {
     if (!selectedEnrollment) {
@@ -222,6 +230,7 @@ export function PlaceAcademyStudentsModule({
     : { level: "", focus: "", notes: "" };
   const selectedPresentCount = selectedAttendance.filter((item) => item.status === "present").length;
   const selectedAbsentCount = selectedAttendance.filter((item) => item.status === "absent").length;
+  const hasVisibleOperationalHistory = selectedMakeups.length > 0 || selectedAbsences.length > 0 || (requireAttendanceCall && selectedAttendance.length > 0);
   const newStudentDraft = selectedNewStudentClass ? studentDraftByClass[selectedNewStudentClass.id] || defaultStudentDraft(selectedNewStudentClass) : null;
 
   return (
@@ -256,13 +265,17 @@ export function PlaceAcademyStudentsModule({
           <select
             value={filter.attendance}
             onChange={(event) => onChangeFilter({ ...filter, attendance: event.target.value as PlaceAcademyStudentFilter["attendance"] })}
-            aria-label="Filtrar alunos por presenca e reposicao"
+            aria-label={requireAttendanceCall ? "Filtrar alunos por presenca e reposicao" : "Filtrar alunos por avisos e reposicao"}
           >
-            <option value="">Presenca/reposicao</option>
-            <option value="pending_today">Chamada pendente hoje</option>
-            <option value="present_today">Presente hoje</option>
-            <option value="absent_today">Falta hoje</option>
-            <option value="has_absence">Com ausencia avisada</option>
+            <option value="">{requireAttendanceCall ? "Presenca/reposicao" : "Avisos/reposicao"}</option>
+            {requireAttendanceCall ? (
+              <>
+                <option value="pending_today">Chamada pendente hoje</option>
+                <option value="present_today">Presente hoje</option>
+                <option value="absent_today">Nao compareceu hoje</option>
+              </>
+            ) : null}
+            <option value="has_absence">Com aviso previo</option>
             <option value="has_makeup">Com reposicao aberta</option>
           </select>
           <span>
@@ -294,11 +307,13 @@ export function PlaceAcademyStudentsModule({
           const todayGroupAttendance = todayAttendance.filter((item) => groupEnrollmentIds.has(item.enrollmentId));
           const hasPresentToday = todayGroupAttendance.some((item) => item.status === "present");
           const hasAbsentToday = todayGroupAttendance.some((item) => item.status === "absent");
-          const attendanceLabel = hasPresentToday
-            ? "Presente hoje"
-            : hasAbsentToday
-              ? "Falta hoje"
-            : "Chamada pendente";
+          const attendanceLabel = requireAttendanceCall
+            ? hasPresentToday
+              ? "Presente hoje"
+              : hasAbsentToday
+                ? "Nao compareceu hoje"
+              : "Chamada pendente"
+            : "";
           const paymentLabel = contract
             ? paid
               ? "Mensalidade do contrato paga"
@@ -331,9 +346,8 @@ export function PlaceAcademyStudentsModule({
               </small>
               <WorkspaceMetrics
                 items={[
-                  countLabel(attendedCount, "presenca", "presencas"),
-                  countLabel(missedCount, "falta", "faltas"),
-                  countLabel(openAbsenceCount, "falta avisada", "faltas avisadas"),
+                  ...(requireAttendanceCall ? [countLabel(attendedCount, "presenca", "presencas"), countLabel(missedCount, "nao compareceu", "nao compareceram")] : []),
+                  countLabel(openAbsenceCount, "aviso previo", "avisos previos"),
                   countLabel(openMakeupCount, "reposicao aberta", "reposicoes abertas"),
                   `Competencia ${billingPeriod}`,
                   countLabel(groupEnrollments.length, "horario semanal", "horarios semanais"),
@@ -663,27 +677,38 @@ export function PlaceAcademyStudentsModule({
 
             <section>
               <header>
-                <strong>Presenca e faltas</strong>
-                <span>{selectedTodayAttendance ? (selectedTodayAttendance.status === "present" ? "Presente hoje" : "Falta hoje") : "Chamada pendente"}</span>
+                <strong>{requireAttendanceCall ? "Presenca e chamada" : "Avisos e reposicoes"}</strong>
+                <span>
+                  {requireAttendanceCall
+                    ? selectedTodayAttendance
+                      ? selectedTodayAttendance.status === "present"
+                        ? "Presente hoje"
+                        : "Nao compareceu hoje"
+                      : "Chamada pendente"
+                    : "Sem chamada obrigatoria"}
+                </span>
               </header>
               <WorkspaceMetrics
                 items={[
-                  countLabel(selectedPresentCount, "presenca", "presencas"),
-                  countLabel(selectedAbsentCount, "falta", "faltas"),
-                  countLabel(selectedAbsences.filter((item) => item.status === "open").length, "ausencia avisada", "ausencias avisadas"),
+                  ...(requireAttendanceCall ? [countLabel(selectedPresentCount, "presenca", "presencas"), countLabel(selectedAbsentCount, "nao compareceu", "nao compareceram")] : []),
+                  countLabel(selectedAbsences.filter((item) => item.status === "open").length, "aviso previo", "avisos previos"),
                 ]}
               />
-              <div className="academy-student-inline-actions">
-                <button type="button" onClick={() => onMarkAttendance(selectedEnrollment.id, "present")} disabled={busy || selectedTodayAttendance?.status === "present"}>
-                  Check-in
-                </button>
-                <button type="button" className="secondary" onClick={() => onMarkAttendance(selectedEnrollment.id, "absent")} disabled={busy || selectedTodayAttendance?.status === "absent"}>
-                  Marcar falta
-                </button>
-              </div>
+              {requireAttendanceCall ? (
+                <div className="academy-student-inline-actions">
+                  <button type="button" onClick={() => onMarkAttendance(selectedEnrollment.id, "present")} disabled={busy || selectedTodayAttendance?.status === "present"}>
+                    Presente
+                  </button>
+                  <button type="button" className="secondary" onClick={() => onMarkAttendance(selectedEnrollment.id, "absent")} disabled={busy || selectedTodayAttendance?.status === "absent"}>
+                    Nao compareceu
+                  </button>
+                </div>
+              ) : (
+                <small>Esta academia nao exige chamada. Reposicao so nasce de aviso previo registrado dentro da regra.</small>
+              )}
               <div className="academy-drawer-form compact">
                 <label>
-                  <span>Data da ausencia</span>
+                  <span>Data avisada</span>
                   <input
                     type="date"
                     value={selectedAbsenceDraft.absenceOn}
@@ -699,7 +724,7 @@ export function PlaceAcademyStudentsModule({
                   />
                 </label>
                 <button type="button" onClick={() => onReportAbsence(selectedEnrollment.id)} disabled={busy || !selectedAbsenceDraft.absenceOn}>
-                  Avisou falta
+                  Registrar aviso previo
                 </button>
               </div>
             </section>
@@ -762,26 +787,28 @@ export function PlaceAcademyStudentsModule({
               <div className="academy-student-history">
                 {selectedMakeups.map((credit) => (
                   <article key={`student-makeup:${credit.id}`}>
-                    <strong>{credit.sourceAbsenceId ? "Reposicao por ausencia avisada" : credit.sourceAttendanceId ? "Reposicao por falta marcada" : "Reposicao aberta"}</strong>
+                    <strong>{credit.sourceAbsenceId ? "Reposicao por aviso previo" : credit.sourceAttendanceId ? "Reposicao legada por chamada" : "Reposicao aberta"}</strong>
                     <span>{credit.notes || "Credito disponivel para encaixe."}</span>
                     <small>{formatDateValue(credit.createdAt)}</small>
                   </article>
                 ))}
                 {selectedAbsences.slice(0, 4).map((absence) => (
                   <article key={`student-absence:${absence.id}`}>
-                    <strong>Ausencia avisada</strong>
+                    <strong>Aviso previo de ausencia</strong>
                     <span>{absence.notes || "Sem observacao"}</span>
                     <small>{formatDateValue(absence.absenceOn)} | {absence.status}</small>
                   </article>
                 ))}
-                {selectedAttendance.slice(0, 5).map((item) => (
-                  <article key={`student-attendance:${item.id}`}>
-                    <strong>{item.status === "present" ? "Presenca" : "Falta"}</strong>
-                    <span>{item.notes || "Sem observacao"}</span>
-                    <small>{formatDateValue(item.attendedOn)}</small>
-                  </article>
-                ))}
-                {!selectedMakeups.length && !selectedAbsences.length && !selectedAttendance.length ? <small>Nenhum historico operacional ainda.</small> : null}
+                {requireAttendanceCall
+                  ? selectedAttendance.slice(0, 5).map((item) => (
+                      <article key={`student-attendance:${item.id}`}>
+                        <strong>{item.status === "present" ? "Presenca" : "Nao compareceu"}</strong>
+                        <span>{item.notes || "Sem observacao"}</span>
+                        <small>{formatDateValue(item.attendedOn)}</small>
+                      </article>
+                    ))
+                  : null}
+                {!hasVisibleOperationalHistory ? <small>Nenhum historico operacional ainda.</small> : null}
               </div>
             </section>
           </div>

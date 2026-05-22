@@ -17,7 +17,7 @@ const CANTEEN_VIEW_DESCRIPTIONS: Record<CanteenManagementView, string> = {
   products: "Cadastrar produtos e manter a tabela de venda organizada.",
 };
 
-const CANTEEN_VIEW_ORDER: CanteenManagementView[] = ["sell", "stock", "today", "products"];
+const CANTEEN_VIEW_ORDER: CanteenManagementView[] = ["sell", "today", "stock", "products"];
 
 type CanteenWorkspaceShellProps = {
   activeView: CanteenManagementView;
@@ -34,7 +34,7 @@ export function CanteenWorkspaceShell({ activeView, children, onViewChange }: Ca
       descriptions={CANTEEN_VIEW_DESCRIPTIONS}
       labels={CANTEEN_VIEW_LABELS}
       onViewChange={onViewChange}
-      title="Cantina / POS"
+      title="POS / Cantina"
       views={CANTEEN_VIEW_ORDER}
     >
       {children}

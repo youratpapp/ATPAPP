@@ -17,13 +17,14 @@ type Props = {
   onOpenClasses?: () => void;
   onOpenSetup?: () => void;
   onReportAbsence: (enrollmentId: string) => void;
+  requireAttendanceCall: boolean;
 };
 
 type AttendanceNoteDraft = Record<string, string>;
 
 function attendanceLabel(attendance?: AcademyAttendance): string {
   if (!attendance) return "Pendente";
-  return attendance.status === "present" ? "Presente" : "Falta";
+  return attendance.status === "present" ? "Presente" : "Nao compareceu";
 }
 
 export function PlaceAcademyTodayModule({
@@ -39,6 +40,7 @@ export function PlaceAcademyTodayModule({
   onOpenClasses,
   onOpenSetup,
   onReportAbsence,
+  requireAttendanceCall,
 }: Props) {
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
   const [attendanceNotes, setAttendanceNotes] = useState<AttendanceNoteDraft>({});
@@ -92,18 +94,19 @@ export function PlaceAcademyTodayModule({
               detail={[academyClass.coachName || "Professor", classCourt?.name, academyClass.level].filter(Boolean).join(" | ")}
               primaryAction={
                 <button type="button" onClick={() => setSelectedClassId(academyClass.id)}>
-                  {callComplete ? "Revisar chamada" : "Fazer chamada"}
+                  {requireAttendanceCall ? (callComplete ? "Revisar chamada" : "Fazer chamada") : "Abrir aula"}
                 </button>
               }
-              status={pendingCount ? countLabel(pendingCount, "pendente", "pendentes") : "Chamada feita"}
+              status={requireAttendanceCall ? (pendingCount ? countLabel(pendingCount, "pendente", "pendentes") : "Chamada feita") : countLabel(activeEnrollments.length, "aluno", "alunos")}
               title={academyClass.title}
             >
               <WorkspaceMetrics
                 items={[
                   `${activeEnrollments.length}/${academyClass.capacity} alunos`,
-                  countLabel(presentCount, "presente", "presentes"),
-                  countLabel(absentCount, "falta", "faltas"),
-                  countLabel(plannedAbsences.length, "falta avisada", "faltas avisadas"),
+                  ...(requireAttendanceCall
+                    ? [countLabel(presentCount, "presente", "presentes"), countLabel(absentCount, "nao compareceu", "nao compareceram")]
+                    : []),
+                  countLabel(plannedAbsences.length, "aviso previo", "avisos previos"),
                   countLabel(classMakeups.length, "reposicao aberta", "reposicoes abertas"),
                 ]}
               />
@@ -145,14 +148,21 @@ export function PlaceAcademyTodayModule({
             <section>
               <header>
                 <strong>Resumo da aula</strong>
-                <span>{selectedRow.pendingCount ? countLabel(selectedRow.pendingCount, "chamada pendente", "chamadas pendentes") : "Chamada feita"}</span>
+                <span>
+                  {requireAttendanceCall
+                    ? selectedRow.pendingCount
+                      ? countLabel(selectedRow.pendingCount, "chamada pendente", "chamadas pendentes")
+                      : "Chamada feita"
+                    : "Sem chamada obrigatoria"}
+                </span>
               </header>
               <WorkspaceMetrics
                 items={[
                   `${selectedActiveEnrollments.length}/${selectedClass.capacity} alunos`,
-                  countLabel(selectedRow.presentCount, "presente", "presentes"),
-                  countLabel(selectedRow.absentCount, "falta", "faltas"),
-                  countLabel(selectedRow.plannedAbsences.length, "ausencia avisada", "ausencias avisadas"),
+                  ...(requireAttendanceCall
+                    ? [countLabel(selectedRow.presentCount, "presente", "presentes"), countLabel(selectedRow.absentCount, "nao compareceu", "nao compareceram")]
+                    : []),
+                  countLabel(selectedRow.plannedAbsences.length, "aviso previo", "avisos previos"),
                   countLabel(selectedRow.classMakeups.length, "reposicao aberta", "reposicoes abertas"),
                 ]}
               />
@@ -162,7 +172,7 @@ export function PlaceAcademyTodayModule({
                     const enrollment = enrollments.find((item) => item.id === absence.enrollmentId);
                     return (
                       <span key={`today-absence:${absence.id}`}>
-                        {enrollment?.playerName || "Aluno"} avisou falta em {absence.absenceOn}
+                        {enrollment?.playerName || "Aluno"} avisou ausencia em {absence.absenceOn}
                       </span>
                     );
                   })}
@@ -172,9 +182,12 @@ export function PlaceAcademyTodayModule({
 
             <section>
               <header>
-                <strong>Chamada</strong>
+                <strong>{requireAttendanceCall ? "Chamada" : "Alunos da aula"}</strong>
                 <span>{countLabel(selectedActiveEnrollments.length, "aluno ativo", "alunos ativos")}</span>
               </header>
+              {!requireAttendanceCall ? (
+                <small>Esta academia nao exige chamada. Use avisos previos apenas quando o aluno avisar antes da aula.</small>
+              ) : null}
               <div className="academy-lesson-student-list">
                 {selectedActiveEnrollments.map((enrollment) => {
                   const studentAttendance = selectedClassAttendance.find((item) => item.enrollmentId === enrollment.id);
@@ -186,26 +199,37 @@ export function PlaceAcademyTodayModule({
                       <div>
                         <strong>{enrollment.playerName}</strong>
                         <small>
-                          {[enrollment.phone, attendanceLabel(studentAttendance), countLabel(studentMakeups.length, "reposicao", "reposicoes"), countLabel(studentAbsences.length, "falta avisada", "faltas avisadas")]
+                          {[
+                            enrollment.phone,
+                            requireAttendanceCall ? attendanceLabel(studentAttendance) : "",
+                            countLabel(studentMakeups.length, "reposicao", "reposicoes"),
+                            countLabel(studentAbsences.length, "aviso previo", "avisos previos"),
+                          ]
                             .filter(Boolean)
                             .join(" | ")}
                         </small>
                       </div>
-                      <input
-                        value={note}
-                        onChange={(event) => setAttendanceNotes((prev) => ({ ...prev, [enrollment.id]: event.target.value }))}
-                        placeholder="Observacao curta"
-                        aria-label={`Observacao da chamada de ${enrollment.playerName}`}
-                      />
+                      {requireAttendanceCall ? (
+                        <input
+                          value={note}
+                          onChange={(event) => setAttendanceNotes((prev) => ({ ...prev, [enrollment.id]: event.target.value }))}
+                          placeholder="Observacao curta"
+                          aria-label={`Observacao da chamada de ${enrollment.playerName}`}
+                        />
+                      ) : null}
                       <div>
-                        <button type="button" onClick={() => onMarkAttendance(enrollment.id, "present", note)} disabled={busy || studentAttendance?.status === "present"}>
-                          Presente
-                        </button>
-                        <button type="button" className="secondary" onClick={() => onMarkAttendance(enrollment.id, "absent", note)} disabled={busy || studentAttendance?.status === "absent"}>
-                          Falta
-                        </button>
+                        {requireAttendanceCall ? (
+                          <>
+                            <button type="button" onClick={() => onMarkAttendance(enrollment.id, "present", note)} disabled={busy || studentAttendance?.status === "present"}>
+                              Presente
+                            </button>
+                            <button type="button" className="secondary" onClick={() => onMarkAttendance(enrollment.id, "absent", note)} disabled={busy || studentAttendance?.status === "absent"}>
+                              Nao compareceu
+                            </button>
+                          </>
+                        ) : null}
                         <button type="button" className="secondary" onClick={() => onReportAbsence(enrollment.id)} disabled={busy}>
-                          Avisou falta
+                          Registrar aviso previo
                         </button>
                       </div>
                     </article>
@@ -214,7 +238,7 @@ export function PlaceAcademyTodayModule({
                 {!selectedActiveEnrollments.length ? (
                   <WorkspaceEmptyState
                     title="Sem alunos ativos nesta turma"
-                    detail="Matricule alunos pela aba Turmas para liberar chamada, faltas e evolucao operacional."
+                    detail={requireAttendanceCall ? "Matricule alunos pela aba Turmas para liberar chamada, avisos e evolucao operacional." : "Matricule alunos pela aba Turmas para acompanhar agenda, avisos e evolucao operacional."}
                     action={onOpenClasses ? <button onClick={onOpenClasses}>Abrir turmas</button> : null}
                   />
                 ) : null}

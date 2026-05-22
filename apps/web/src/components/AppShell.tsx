@@ -60,6 +60,7 @@ export function AppShell({
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
   const headerClassName = showHeader ? "app-header" : "app-header app-header--desktop-only";
+  const experienceLabel = routeExperienceMode === "work" ? "Trabalho" : "Jogador";
 
   useEffect(() => {
     if (!userMode.isProfessional) return;
@@ -89,7 +90,10 @@ export function AppShell({
             </div>
             <div style={{ minWidth: 0 }}>
               <p className="greeting-label">Ola,</p>
-              <p className="greeting-name">{displayName}</p>
+              <div className="greeting-name-line">
+                <p className="greeting-name">{displayName}</p>
+                <span>{experienceLabel}</span>
+              </div>
             </div>
           </div>
           <div className="app-header-actions">

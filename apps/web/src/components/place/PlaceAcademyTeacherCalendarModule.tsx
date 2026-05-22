@@ -9,6 +9,7 @@ type Props = {
   day: string;
   enrollments: AcademyEnrollment[];
   lessonRequests: AcademyLessonRequest[];
+  requireAttendanceCall: boolean;
   title?: string;
   onChangeDay: (day: string) => void;
   onOpenTodayClass?: (classId: string) => void;
@@ -60,6 +61,7 @@ export function PlaceAcademyTeacherCalendarModule({
   day,
   enrollments,
   lessonRequests,
+  requireAttendanceCall,
   title = "Agenda do professor",
   onChangeDay,
   onOpenTodayClass,
@@ -143,11 +145,11 @@ export function PlaceAcademyTeacherCalendarModule({
           </strong>
           <small>
             {nextItem.courtName} | {countLabel(nextItem.studentNames.length, "aluno", "alunos")}
-            {nextItem.absentNames.length ? ` | ${countLabel(nextItem.absentNames.length, "falta avisada", "faltas avisadas")}` : ""}
+            {nextItem.absentNames.length ? ` | ${countLabel(nextItem.absentNames.length, "aviso previo", "avisos previos")}` : ""}
           </small>
           {onOpenTodayClass ? (
             <button type="button" className="primary" onClick={() => onOpenTodayClass(nextItem.classId)}>
-              Abrir chamada
+              {requireAttendanceCall ? "Abrir chamada" : "Abrir aula"}
             </button>
           ) : null}
         </div>
@@ -177,14 +179,14 @@ export function PlaceAcademyTeacherCalendarModule({
                         </div>
                         {onOpenTodayClass ? (
                           <button type="button" onClick={() => onOpenTodayClass(item.classId)}>
-                            Chamada
+                            {requireAttendanceCall ? "Chamada" : "Aula"}
                           </button>
                         ) : null}
                       </header>
                       <div className="teacher-day-students">
                         <span>{item.studentNames.length ? item.studentNames.join(", ") : "Sem alunos ativos nesta turma."}</span>
                         {item.dropInNames.length ? <em>Extras: {item.dropInNames.join(", ")}</em> : null}
-                        {item.absentNames.length ? <em>Faltas avisadas: {item.absentNames.join(", ")}</em> : null}
+                        {item.absentNames.length ? <em>Avisos previos: {item.absentNames.join(", ")}</em> : null}
                       </div>
                     </section>
                   ))

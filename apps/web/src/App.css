@@ -167,6 +167,25 @@
   white-space: nowrap;
 }
 
+.greeting-name-line {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
+.greeting-name-line > span {
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: var(--radius-pill);
+  color: var(--color-primary-strong);
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  font-weight: 950;
+  line-height: 1;
+  padding: 4px 7px;
+}
+
 .app-header-actions {
   display: flex;
   align-items: center;
@@ -11799,6 +11818,7 @@ button:disabled {
   font-weight: 850;
 }
 
+.place-public-hero h1,
 .place-public-hero h2 {
   color: #fff;
   font-size: var(--font-size-3xl);
@@ -12325,6 +12345,37 @@ button:disabled {
   gap: 4px;
 }
 
+.management-shell-breadcrumb {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.management-shell-breadcrumb button,
+.management-shell-breadcrumb span {
+  background: rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-subtle);
+  font-size: 0.68rem;
+  font-weight: 950;
+  line-height: 1;
+  min-height: 24px;
+  padding: 5px 8px;
+  text-transform: uppercase;
+}
+
+.management-shell-breadcrumb button {
+  cursor: pointer;
+}
+
+.management-shell-breadcrumb button:hover {
+  border-color: rgba(34, 197, 94, 0.45);
+  color: var(--color-primary-strong);
+}
+
 .management-shell-title span {
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
@@ -12604,11 +12655,50 @@ button:disabled {
   font-weight: 750;
 }
 
+.management-invite-row.compact {
+  padding: var(--space-2) var(--space-3);
+}
+
 .management-invite-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
   justify-content: flex-end;
+}
+
+.management-invite-more {
+  background: rgba(8, 20, 36, 0.62);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-2);
+}
+
+.management-invite-more > summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+  list-style: none;
+  min-height: 42px;
+}
+
+.management-invite-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.management-invite-more > summary span {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.management-invite-more > summary strong {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
 }
 
 .competition-work-link {
@@ -18975,7 +19065,12 @@ button:disabled {
 .app-sheet.entity-drawer.academy-student-entity-drawer {
   max-height: calc(100dvh - 32px);
   max-width: none;
+  min-height: min(720px, calc(100dvh - 32px));
   width: min(1120px, calc(100vw - 48px));
+}
+
+.app-sheet.entity-drawer.academy-student-entity-drawer .app-overlay-header {
+  min-width: 0;
 }
 
 .app-sheet.entity-drawer.academy-student-entity-drawer .app-overlay-body {
@@ -18989,6 +19084,7 @@ button:disabled {
   overflow-x: hidden;
   overflow-y: auto;
   padding: 20px;
+  scrollbar-color: rgba(166, 198, 229, 0.48) rgba(8, 18, 32, 0.92);
 }
 
 .app-sheet.entity-drawer.academy-student-entity-drawer .app-overlay-actions {
@@ -18996,6 +19092,7 @@ button:disabled {
     linear-gradient(180deg, rgba(7, 18, 32, 0.98), rgba(4, 12, 24, 0.98)),
     var(--pdark-surface-texture);
   border-top-color: rgba(166, 198, 229, 0.16);
+  box-shadow: 0 -18px 38px rgba(0, 0, 0, 0.22);
   padding: 12px 18px;
 }
 
@@ -19048,6 +19145,13 @@ button:disabled {
 .academy-student-entity-drawer .academy-student-inline-actions,
 .academy-student-entity-drawer .academy-contract-linked-classes {
   flex-wrap: wrap;
+}
+
+.academy-student-entity-drawer .academy-workspace-metrics span,
+.academy-student-entity-drawer .academy-contract-linked-classes small {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 @media (max-width: 760px) {
@@ -19157,6 +19261,7 @@ button:disabled {
 
   .app-sheet.entity-drawer.academy-student-entity-drawer {
     max-height: min(92dvh, 760px);
+    min-height: 0;
     width: 100%;
   }
 
@@ -19164,11 +19269,19 @@ button:disabled {
     padding: var(--space-3);
   }
 
+  .app-sheet.entity-drawer.academy-student-entity-drawer .app-overlay-header {
+    gap: var(--space-2);
+  }
+
   .app-sheet.entity-drawer.academy-student-entity-drawer .academy-student-drawer,
   .app-sheet.entity-drawer.academy-student-entity-drawer .academy-drawer-form,
   .app-sheet.entity-drawer.academy-student-entity-drawer .academy-drawer-form.compact,
   .app-sheet.entity-drawer.academy-student-entity-drawer .academy-drawer-form.progress {
     grid-template-columns: 1fr;
+  }
+
+  .app-sheet.entity-drawer.academy-student-entity-drawer .academy-student-drawer section {
+    padding: var(--space-3);
   }
 
   .app-sheet.entity-drawer.academy-student-entity-drawer .app-overlay-actions {
@@ -20703,6 +20816,7 @@ button,
   min-width: 0;
 }
 
+.place-public-hero h1,
 .place-public-hero h2 {
   color: #fff;
   font-size: var(--font-size-3xl);
@@ -21896,6 +22010,7 @@ button.app-object-row:hover:not(:disabled) {
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
 }
 
+.place-public-hero--visual h1,
 .place-public-hero--visual h2,
 .place-public-hero--visual p,
 .place-public-hero--visual span,
@@ -21908,6 +22023,7 @@ button.app-object-row:hover:not(:disabled) {
   max-width: 620px;
 }
 
+.place-public-hero--visual h1,
 .place-public-hero--visual h2 {
   max-width: 580px;
   font-size: clamp(2rem, 4vw, 3.6rem);
@@ -24676,6 +24792,7 @@ label {
 .app-shell--management .management-onboarding-panel,
 .app-shell--management .management-support-strip,
 .app-shell--management .management-invite-row,
+.app-shell--management .management-invite-more,
 .app-shell--management .coach-operation-row,
 .app-shell--management .management-good-state {
   background:
@@ -26432,6 +26549,7 @@ label {
 .app-shell--player .open-matches-panel .place-booking-head strong,
 .app-shell--player .open-match-create-intro strong,
 .app-shell--player .open-match-row strong,
+.app-shell--player .place-public-hero h1,
 .app-shell--player .place-public-hero h2,
 .app-shell--player .place-public-overview-header h3,
 .app-shell--player .place-public-overview-tile strong,
@@ -29109,6 +29227,7 @@ label {
   z-index: 1;
 }
 
+.app-shell--player .place-public-hero h1,
 .app-shell--player .place-public-hero h2,
 .app-shell--player .player-public-hero h1,
 .app-shell--competition .tournament-registration-hero h2,
@@ -31595,6 +31714,10 @@ body:has(.app-shell--competition),
 .competition-tabs span,
 .competition-tabs small {
   color: #fff !important;
+}
+
+.competition-tab-label-compact {
+  display: none;
 }
 
 .league-public-class-filter small,
@@ -34509,6 +34632,94 @@ body:has(.app-shell--competition),
   }
 }
 
+/* Sprint 2026-05-22: real-use follow-up for compact competition operation on mobile. */
+@media (max-width: 760px) {
+  .competition-tabs .competition-tab-label-full {
+    display: none;
+  }
+
+  .competition-tabs .competition-tab-label-compact {
+    display: inline;
+  }
+
+  .app-shell--competition .competition-tabs,
+  .app-shell--player .competition-tabs {
+    display: grid !important;
+    gap: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    padding: 8px;
+  }
+
+  .app-shell--competition .competition-tabs button,
+  .app-shell--player .competition-tabs button {
+    min-height: 42px;
+    min-width: 0;
+    padding-inline: 10px;
+    white-space: normal;
+    width: 100%;
+  }
+
+  .app-shell--competition .competition-tabs button span,
+  .app-shell--player .competition-tabs button span,
+  .app-shell--competition .league-public-nav button,
+  .app-shell--player .league-public-nav button {
+    overflow-wrap: anywhere;
+  }
+
+  .tournament-operational-cockpit {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .tournament-operational-copy {
+    order: 1;
+  }
+
+  .tournament-operational-copy h2 {
+    font-size: clamp(1.32rem, 7.2vw, 1.72rem);
+    line-height: 1.06;
+  }
+
+  .tournament-operational-copy p {
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  .tournament-operational-action {
+    order: 2;
+  }
+
+  .tournament-operational-side {
+    order: 3;
+  }
+
+  .tournament-operational-metrics {
+    gap: 8px;
+  }
+
+  .tournament-operational-metrics article {
+    border-radius: 14px;
+    min-height: 62px;
+    padding: 10px;
+  }
+
+  .tournament-operational-blockers {
+    order: 4;
+  }
+
+  .tournament-operational-blockers ul {
+    gap: 4px;
+  }
+
+  .app-shell--competition .league-operational-metrics article,
+  .app-shell--competition .league-operational-focus article,
+  .app-shell--player .league-operational-metrics article,
+  .app-shell--player .league-operational-focus article {
+    min-height: 58px;
+  }
+}
+
 /* SHELL-IDENTITY-01: unified logo/header/mode switch across app areas. */
 .app-header--desktop-only {
   display: none;
@@ -34555,6 +34766,12 @@ body:has(.app-shell--competition),
   .app-header-greeting .greeting-label,
   .app-header-greeting .greeting-name {
     color: #ffffff;
+  }
+
+  .greeting-name-line > span {
+    background: rgba(34, 197, 94, 0.16);
+    border-color: rgba(134, 239, 172, 0.32);
+    color: #bbf7d0;
   }
 
   .app-header-greeting .greeting-name {

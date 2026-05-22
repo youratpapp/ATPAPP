@@ -19,6 +19,7 @@ export type CompetitionQueueItem = {
 
 export type CompetitionTabItem = {
   badge?: ReactNode;
+  compactLabel?: ReactNode;
   hidden?: boolean;
   label: ReactNode;
   value: string;
@@ -148,7 +149,8 @@ export function CompetitionTabs({ activeValue, ariaLabel, items, onChange }: Com
     <nav className="competition-tabs" aria-label={ariaLabel}>
       {visibleItems.map((item) => (
         <button key={item.value} className={activeValue === item.value ? "active" : ""} onClick={() => onChange(item.value)} type="button">
-          <span>{item.label}</span>
+          <span className={item.compactLabel ? "competition-tab-label-full" : undefined}>{item.label}</span>
+          {item.compactLabel ? <span className="competition-tab-label-compact">{item.compactLabel}</span> : null}
           {item.badge ? <small>{item.badge}</small> : null}
         </button>
       ))}

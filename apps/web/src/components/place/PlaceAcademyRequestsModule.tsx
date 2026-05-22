@@ -63,8 +63,8 @@ function kindLabel(kind: PendingRow["kind"]): string {
 }
 
 function makeupCreditContext(credit: AcademyMakeupCredit): string {
-  if (credit.sourceAbsenceId) return "Reposicao aberta por ausencia avisada";
-  if (credit.sourceAttendanceId) return "Reposicao aberta por falta marcada";
+  if (credit.sourceAbsenceId) return "Reposicao aberta por aviso previo";
+  if (credit.sourceAttendanceId) return "Reposicao legada por chamada";
   return "Reposicao aberta manual";
 }
 

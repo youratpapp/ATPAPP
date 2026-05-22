@@ -62,7 +62,7 @@ export function PlaceAcademyClassSetupModule({
     <WorkspaceCard
       title="Montagem de turma"
       subtitle="Crie a turma completa ou abra um horario para preencher depois."
-      detail="Defina professor, quadra, dia, horario, perfil dos alunos e mensalidade em um unico fluxo."
+      detail="Defina professor, quadra, dia, horario, perfil dos alunos e mensalidade em um unico cadastro."
     >
       <SetupWizard
         title="Criar turma"

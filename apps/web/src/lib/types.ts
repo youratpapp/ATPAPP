@@ -471,6 +471,7 @@ export type AcademySettings = {
   placeId: string;
   makeupNoticeHours: number;
   autoCreateMakeupCreditOnNotice: boolean;
+  requireAttendanceCall: boolean;
   updatedBy: string | null;
   createdAt: string;
   updatedAt: string;

@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-430",
+  "route": "player-tournaments-context-check",
+  "hash": "#/eventos/torneios?view=participating",
+  "screenshot": "mobile-430-player-tournaments-context-check.png",
+  "events": []
+}

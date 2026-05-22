@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "player-home",
+  "hash": "#/inicio",
+  "screenshot": "desktop-wide-player-home.png",
+  "events": []
+}

@@ -277,7 +277,7 @@ export function PlaceBookingResourcesModule({
                 checked={bookingRuleDraft.requiresApproval}
                 onChange={(event) => onChangeRuleDraft({ ...bookingRuleDraft, requiresApproval: event.target.checked })}
               />
-              Exigir aprovacao
+              Exigir revisao manual excepcional
             </label>
             <button className="primary" onClick={onCreateRule} disabled={busy || !bookingRuleDraft.name.trim() || !selectedWeekdays.length}>
               Criar regra
@@ -299,7 +299,7 @@ export function PlaceBookingResourcesModule({
                     {rule.minMinutes}-{rule.maxMinutes} min
                   </span>
                   <span>{rule.advanceDays}d</span>
-                  <span>{rule.requiresApproval ? "aprovar" : "auto"}</span>
+                  <span>{rule.requiresApproval ? "revisao manual" : "pagamento direto"}</span>
                   <button onClick={() => onToggleRule(rule)} disabled={busy}>
                     {rule.isActive ? "Pausar" : "Ativar"}
                   </button>

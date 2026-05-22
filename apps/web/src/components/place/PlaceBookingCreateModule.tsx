@@ -223,7 +223,7 @@ export function PlaceBookingCreateModule({
               {court.name} | {formatMoneyFromCents(court.effectiveFeeCents)}
               {court.isMemberPrice ? " mensalista" : ""}
               {court.ruleName ? ` | ${court.ruleName}` : ""}
-              {court.requiresApproval ? " | aprovar" : " | auto"}
+              {court.requiresApproval ? " | revisao manual" : " | pagamento direto"}
             </button>
           ))}
         </div>

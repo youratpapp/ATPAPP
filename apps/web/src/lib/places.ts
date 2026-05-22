@@ -80,7 +80,7 @@ const ACADEMY_COACH_SELECT =
 const ACADEMY_ENROLLMENT_SELECT = "id,place_id,class_id,contract_id,user_id,player_name,phone,status,notes,source,created_at";
 const ACADEMY_STUDENT_CONTRACT_SELECT =
   "id,place_id,user_id,invite_email,student_name,phone,status,weekly_lessons_count,monthly_fee_cents,starts_on,ends_on,notes,created_by,created_at,updated_at";
-const ACADEMY_SETTINGS_SELECT = "place_id,makeup_notice_hours,auto_create_makeup_credit_on_notice,updated_by,created_at,updated_at";
+const ACADEMY_SETTINGS_SELECT = "*";
 
 type PlaceRow = {
   id: string;
@@ -494,6 +494,7 @@ type AcademySettingsRow = {
   place_id: string;
   makeup_notice_hours: number | null;
   auto_create_makeup_credit_on_notice: boolean | null;
+  require_attendance_call?: boolean | null;
   updated_by: string | null;
   created_at: string | null;
   updated_at: string | null;
@@ -1079,10 +1080,16 @@ function rowToAcademySettings(row: AcademySettingsRow): AcademySettings {
     placeId: row.place_id,
     makeupNoticeHours: Number(row.makeup_notice_hours ?? 12),
     autoCreateMakeupCreditOnNotice: row.auto_create_makeup_credit_on_notice !== false,
+    requireAttendanceCall: row.require_attendance_call === true,
     updatedBy: row.updated_by || null,
     createdAt: row.created_at || "",
     updatedAt: row.updated_at || "",
   };
+}
+
+function isMissingAttendanceCallColumnError(message?: string | null): boolean {
+  const normalized = String(message || "").toLowerCase();
+  return normalized.includes("require_attendance_call") || normalized.includes("schema cache");
 }
 
 function rowToAcademyAttendance(row: AcademyAttendanceRow): AcademyAttendance {
@@ -2878,7 +2885,7 @@ export async function listPlaceAcademyStudentContracts(placeId: string): Promise
 
 export async function getPlaceAcademySettings(placeId: string): Promise<AcademySettings> {
   if (!supabase) {
-    return { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" };
+    return { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, requireAttendanceCall: false, updatedBy: null, createdAt: "", updatedAt: "" };
   }
   const { data, error } = await supabase
     .from(TABLE_ACADEMY_SETTINGS)
@@ -2887,7 +2894,7 @@ export async function getPlaceAcademySettings(placeId: string): Promise<AcademyS
     .maybeSingle();
   if (error) throw new Error(error.message);
   if (!data) {
-    return { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" };
+    return { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, requireAttendanceCall: false, updatedBy: null, createdAt: "", updatedAt: "" };
   }
   return rowToAcademySettings(data as AcademySettingsRow);
 }
@@ -2896,20 +2903,36 @@ export async function updatePlaceAcademySettings(input: {
   placeId: string;
   makeupNoticeHours: number;
   autoCreateMakeupCreditOnNotice: boolean;
+  requireAttendanceCall: boolean;
 }): Promise<AcademySettings> {
   if (!supabase) throw new Error("Supabase nao configurado.");
-  const { data, error } = await supabase
+  const basePayload = {
+    place_id: input.placeId,
+    makeup_notice_hours: Math.max(0, Math.min(168, Math.floor(input.makeupNoticeHours || 0))),
+    auto_create_makeup_credit_on_notice: input.autoCreateMakeupCreditOnNotice !== false,
+  };
+  const primary = await supabase
     .from(TABLE_ACADEMY_SETTINGS)
     .upsert(
       {
-        place_id: input.placeId,
-        makeup_notice_hours: Math.max(0, Math.min(168, Math.floor(input.makeupNoticeHours || 0))),
-        auto_create_makeup_credit_on_notice: input.autoCreateMakeupCreditOnNotice !== false,
+        ...basePayload,
+        require_attendance_call: input.requireAttendanceCall === true,
       },
       { onConflict: "place_id" }
     )
     .select(ACADEMY_SETTINGS_SELECT)
     .single();
+  let data = primary.data;
+  let error = primary.error;
+  if (error && isMissingAttendanceCallColumnError(error.message)) {
+    const fallback = await supabase
+      .from(TABLE_ACADEMY_SETTINGS)
+      .upsert(basePayload, { onConflict: "place_id" })
+      .select(ACADEMY_SETTINGS_SELECT)
+      .single();
+    data = fallback.data;
+    error = fallback.error;
+  }
   if (error) throw new Error(error.message);
   return rowToAcademySettings(data as AcademySettingsRow);
 }

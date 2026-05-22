@@ -1,0 +1,24 @@
+{
+  "viewport": "mobile-430",
+  "route": "manager-panel",
+  "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+  "screenshot": "mobile-430-manager-panel.png",
+  "events": [
+    {
+      "source": "console",
+      "type": "info",
+      "level": "info",
+      "text": "Workspace data timeout: payments",
+      "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779415302171",
+      "line": 109
+    },
+    {
+      "source": "console",
+      "type": "info",
+      "level": "info",
+      "text": "Workspace data timeout: open matches",
+      "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779415302171",
+      "line": 109
+    }
+  ]
+}

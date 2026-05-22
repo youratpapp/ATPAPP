@@ -16,7 +16,7 @@ const FINANCE_VIEW_DESCRIPTIONS: Record<FinanceManagementView, string> = {
   paid: "Pagamentos registrados no periodo e comprovacao operacional.",
   expenses: "Lancamentos, despesas recentes e cancelamentos.",
   packages: "Planos, pacotes recorrentes e ofertas vendaveis.",
-  overview: "Resumo e relatorio secundario do periodo.",
+  overview: "Resumo e relatorio secundario da receita do periodo.",
 };
 
 type FinanceWorkspaceShellProps = {
@@ -29,12 +29,12 @@ export function FinanceWorkspaceShell({ activeView, children, onViewChange }: Fi
   return (
     <PlaceWorkspaceShell
       activeView={activeView}
-      ariaLabel="Visoes financeiras"
+      ariaLabel="Visoes de receita"
       className="finance-workspace"
       descriptions={FINANCE_VIEW_DESCRIPTIONS}
       labels={FINANCE_VIEW_LABELS}
       onViewChange={onViewChange}
-      title="Central financeira"
+      title="Receita"
     >
       {children}
     </PlaceWorkspaceShell>

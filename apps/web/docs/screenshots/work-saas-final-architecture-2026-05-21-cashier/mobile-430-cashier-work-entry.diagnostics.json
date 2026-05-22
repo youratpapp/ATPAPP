@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-430",
+  "route": "cashier-work-entry",
+  "hash": "#/gestao",
+  "screenshot": "mobile-430-cashier-work-entry.png",
+  "events": []
+}

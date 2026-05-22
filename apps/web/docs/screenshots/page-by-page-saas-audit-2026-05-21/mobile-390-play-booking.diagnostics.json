@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-390",
+  "route": "play-booking",
+  "hash": "#/locais?intent=booking",
+  "screenshot": "mobile-390-play-booking.png",
+  "events": []
+}

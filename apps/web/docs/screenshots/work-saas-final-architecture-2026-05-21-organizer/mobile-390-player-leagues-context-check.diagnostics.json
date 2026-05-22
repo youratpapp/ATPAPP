@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-390",
+  "route": "player-leagues-context-check",
+  "hash": "#/eventos/ligas?view=participating",
+  "screenshot": "mobile-390-player-leagues-context-check.png",
+  "events": []
+}

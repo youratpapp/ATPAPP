@@ -572,7 +572,7 @@ function LegacyRedirectPage() {
     <main className="auth-page">
       <section className="auth-card">
         <h1>Abrindo torneio...</h1>
-        <p className="auth-sub">Redirecionando para o novo fluxo.</p>
+        <p className="auth-sub">Redirecionando para o novo caminho.</p>
       </section>
     </main>
   );

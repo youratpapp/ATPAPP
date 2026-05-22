@@ -4,15 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { AppShell } from "../AppShell";
 import type { Profile } from "../../lib/types";
 import type { AppSurfaceMode } from "../../lib/role-visibility";
-import { useUserMode } from "../../lib/user-mode-context";
 
 type ManagementShellStat = {
   label: string;
   value: string | number;
 };
 
+type ManagementBreadcrumb = {
+  label: string;
+  path?: string;
+};
+
 type ManagementShellProps = {
   actions?: ReactNode;
+  breadcrumbs?: ManagementBreadcrumb[];
   children: ReactNode;
   description?: string;
   eyebrow?: string;
@@ -25,6 +30,7 @@ type ManagementShellProps = {
 
 export function ManagementShell({
   actions,
+  breadcrumbs = [],
   children,
   description,
   eyebrow = "Gestao",
@@ -35,14 +41,25 @@ export function ManagementShell({
   user,
 }: ManagementShellProps) {
   const navigate = useNavigate();
-  const userMode = useUserMode();
-  const showModeSwitch = userMode.isProfessional;
 
   return (
-    <AppShell user={user} profile={profile} showHeader={false} mode={mode}>
+    <AppShell user={user} profile={profile} showHeader mode={mode}>
       <div className="management-shell-page">
         <header className="management-shell-header">
           <div className="management-shell-title">
+            {breadcrumbs.length ? (
+              <nav className="management-shell-breadcrumb" aria-label="Contexto da area de trabalho">
+                {breadcrumbs.map((item, index) =>
+                  item.path ? (
+                    <button key={`${item.label}:${index}`} type="button" onClick={() => navigate(item.path!)}>
+                      {item.label}
+                    </button>
+                  ) : (
+                    <span key={`${item.label}:${index}`}>{item.label}</span>
+                  )
+                )}
+              </nav>
+            ) : null}
             <span>{eyebrow}</span>
             <h1>{title}</h1>
             {description ? <p>{description}</p> : null}
@@ -57,34 +74,7 @@ export function ManagementShell({
               ))}
             </div>
           ) : null}
-          {actions || showModeSwitch ? (
-            <div className="management-shell-actions">
-              {showModeSwitch ? (
-                <div className="app-mode-switch" role="group" aria-label="Modo de uso">
-                  <button
-                    type="button"
-                    className={userMode.mode === "player" ? "active" : ""}
-                    onClick={() => {
-                      userMode.setMode("player");
-                      navigate("/inicio");
-                    }}
-                  >
-                    Jogador
-                  </button>
-                  <button
-                    type="button"
-                    className={userMode.mode === "work" ? "active" : ""}
-                    onClick={() => {
-                      userMode.setMode("work");
-                    }}
-                  >
-                    Trabalho
-                  </button>
-                </div>
-              ) : null}
-              {actions}
-            </div>
-          ) : null}
+          {actions ? <div className="management-shell-actions">{actions}</div> : null}
         </header>
         {children}
       </div>

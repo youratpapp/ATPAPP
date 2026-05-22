@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { AppShell } from "../components/AppShell";
@@ -76,7 +76,7 @@ function splitCourtNames(value: string): string[] {
 }
 
 function buildTournamentCourtLabel(placeName: string, courtName: string): string {
-  return [placeName, courtName].map((part) => part.trim()).filter(Boolean).join(" Â· ");
+  return [placeName, courtName].map((part) => part.trim()).filter(Boolean).join("  |  ");
 }
 
 function buildAgendaDays(startDate: string, endDate: string, startTime: string, endTime: string) {
@@ -1252,7 +1252,7 @@ export function EventsPage({ user, profile }: Props) {
                             <div>
                               <strong>{item.categoryName} - {item.className}</strong>
                               <span>
-                                {item.gender === "male" ? "Masculino" : item.gender === "female" ? "Feminino" : "Aberto"} Â· {item.maxParticipants || "16"} vagas
+                                {item.gender === "male" ? "Masculino" : item.gender === "female" ? "Feminino" : "Aberto"}  |  {item.maxParticipants || "16"} vagas
                               </span>
                             </div>
                             <button
@@ -1451,22 +1451,22 @@ export function EventsPage({ user, profile }: Props) {
                         <article>
                           <span>Torneio</span>
                           <strong>{newName || "Novo torneio"}</strong>
-                          <small>{[newCity, normalizedNewUf].filter(Boolean).join(" - ")} Â· {newVisibility === "public" ? "Público" : "Privado"}</small>
+                          <small>{[newCity, normalizedNewUf].filter(Boolean).join(" - ")}  |  {newVisibility === "public" ? "Público" : "Privado"}</small>
                         </article>
                         <article>
                           <span>Inscrições</span>
                           <strong>{newRegistrationCloseOn || "Prazo a definir"}</strong>
-                          <small>{formatCurrencyPreview(newRegistrationFee)} Â· {newRegistrationApproval === "manual" ? "aprovacao manual" : "aprovacao automatica"}</small>
+                          <small>{formatCurrencyPreview(newRegistrationFee)}  |  {newRegistrationApproval === "manual" ? "aprovacao manual" : "aprovacao automatica"}</small>
                         </article>
                         <article>
                           <span>Categorias</span>
                           <strong>{createClasses.length} classe(s)</strong>
-                          <small>{newMatchType === "simples" ? "Simples" : "Duplas"} Â· {newCompetitionModel === "grupos_mata_mata" ? "grupos + mata-mata" : "formato escolhido"}</small>
+                          <small>{newMatchType === "simples" ? "Simples" : "Duplas"}  |  {newCompetitionModel === "grupos_mata_mata" ? "grupos + mata-mata" : "formato escolhido"}</small>
                         </article>
                         <article>
                           <span>Agenda</span>
                           <strong>{createCourts.length} quadra(s), {createAgendaDays.length} dia(s)</strong>
-                          <small>{newMatchDuration || "60"} min por jogo Â· {newAgendaStartTime}-{newAgendaEndTime}</small>
+                          <small>{newMatchDuration || "60"} min por jogo  |  {newAgendaStartTime}-{newAgendaEndTime}</small>
                         </article>
                       </div>
                     </div>

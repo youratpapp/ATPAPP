@@ -1,0 +1,356 @@
+[
+    {
+        "folder":  "work-saas-sprint-final-smoke-after-fallback-2026-05-21",
+        "route":  "routine",
+        "hash":  "#/agenda",
+        "h1":  "Minha rotina"
+    },
+    {
+        "folder":  "work-saas-sprint-final-smoke-2026-05-21",
+        "route":  "compete",
+        "hash":  "#/eventos",
+        "h1":  "Competir"
+    },
+    {
+        "folder":  "sprint-p0-tournament-visual-check-2026-05-19",
+        "route":  "tournament-players",
+        "hash":  "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+        "h1":  "Open ADT Dourados - Maio"
+    },
+    {
+        "folder":  "sprint-p0-management-check-2026-05-19",
+        "route":  "tournament-games",
+        "hash":  "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1":  "Open ADT Dourados - Maio"
+    },
+    {
+        "folder":  "navigation-duplication-audit-2026-05-21-run3",
+        "route":  "tournament-final-classification-audit",
+        "hash":  "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+        "h1":  "QA Fluxo V4 032025"
+    },
+    {
+        "folder":  "navigation-duplication-audit-2026-05-21-run3",
+        "route":  "tournament-final-menu-audit",
+        "hash":  "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+        "h1":  "QA Fluxo V4 032025"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-player-owner",
+        "route":  "player-ligas",
+        "hash":  "#/eventos/ligas",
+        "h1":  "Ligas que jogo"
+    },
+    {
+        "folder":  "sprint-p0-management-check-2026-05-19",
+        "route":  "league-detail",
+        "hash":  "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1":  "Liga ADT Simples 2026"
+    },
+    {
+        "folder":  "navigation-duplication-audit-2026-05-21-run3",
+        "route":  "league-owner-menu-audit",
+        "hash":  "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+        "h1":  "QA Liga V4 044652"
+    },
+    {
+        "folder":  "navigation-duplication-audit-2026-05-21-run2",
+        "route":  "league-owner-matches-audit",
+        "hash":  "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+        "h1":  "QA Liga V4 044652"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-organizer",
+        "route":  "organizer-leagues",
+        "hash":  "#/eventos/ligas?view=organizing",
+        "h1":  "Ligas que organizo"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-organizer",
+        "route":  "player-leagues-context-check",
+        "hash":  "#/eventos/ligas?view=participating",
+        "h1":  "Ligas que jogo"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-player-owner",
+        "route":  "player-torneios",
+        "hash":  "#/eventos/torneios",
+        "h1":  "Torneios que jogo"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-organizer",
+        "route":  "organizer-tournaments",
+        "hash":  "#/eventos/torneios?view=organizing",
+        "h1":  "Torneios que organizo"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-organizer",
+        "route":  "player-tournaments-context-check",
+        "hash":  "#/eventos/torneios?view=participating",
+        "h1":  "Torneios que jogo"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-organizer",
+        "route":  "organizer-competitions-hub",
+        "hash":  "#/eventos?modo=organizing",
+        "h1":  "Trabalho em competicoes"
+    },
+    {
+        "folder":  "place-navigation-simplification-2026-05-21-run2",
+        "route":  "management-hub",
+        "hash":  "#/gestao",
+        "h1":  "Trabalho Hoje"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-coach",
+        "route":  "coach-finance-block",
+        "hash":  "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+        "h1":  "ADT Dourados"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-coach",
+        "route":  "coach-students",
+        "hash":  "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+        "h1":  "ADT Dourados"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-coach",
+        "route":  "coach-calendar",
+        "hash":  "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+        "h1":  "ADT Dourados"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-coach",
+        "route":  "coach-today",
+        "hash":  "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "h1":  "ADT Dourados"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-coach",
+        "route":  "coach-classes",
+        "hash":  "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "h1":  "ADT Dourados"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-frontdesk",
+        "route":  "frontdesk-academy-today",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-frontdesk",
+        "route":  "frontdesk-finance-block",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-frontdesk",
+        "route":  "frontdesk-calendar",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-frontdesk",
+        "route":  "frontdesk-new-reservation",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=nova-reserva",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-frontdesk",
+        "route":  "frontdesk-reservations",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "cross-app-role-audit-2026-05-21-caixa",
+        "route":  "caixa-finance-block",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-cashier",
+        "route":  "cashier-stock",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=estoque",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-cashier",
+        "route":  "cashier-today",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=hoje",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-cashier",
+        "route":  "cashier-products",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=produtos",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "cross-app-role-audit-2026-05-21-caixa",
+        "route":  "caixa-vender",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=vender",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-frontdesk",
+        "route":  "frontdesk-clients",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-finance",
+        "route":  "finance-canteen-block",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-finance",
+        "route":  "finance-expenses",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-finance",
+        "route":  "finance-paid",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "cross-app-role-audit-2026-05-21-financeiro",
+        "route":  "financeiro-receber",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-finance",
+        "route":  "finance-summary",
+        "hash":  "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+        "h1":  "Clube Racket Prime"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-manager",
+        "route":  "manager-academy-students",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-manager",
+        "route":  "manager-academy-calendar",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "place-navigation-simplification-2026-05-21-run2",
+        "route":  "place-academy-today",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+        "h1":  "QA Academia Fluxo 0521052052"
+    },
+    {
+        "folder":  "navigation-tier-dedup-2026-05-21",
+        "route":  "academy-classes",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-manager",
+        "route":  "manager-calendar",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "place-navigation-simplification-2026-05-21-run2",
+        "route":  "place-bookings-today",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=hoje",
+        "h1":  "QA Academia Fluxo 0521052052"
+    },
+    {
+        "folder":  "management-mobile-tabs-audit-2026-05-21-run1",
+        "route":  "academy-agenda-new",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+        "h1":  "QA Academia Fluxo 0521052052"
+    },
+    {
+        "folder":  "qa-label-cleanup-2026-05-21",
+        "route":  "academy-reservations",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-manager",
+        "route":  "manager-settings",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-manager",
+        "route":  "manager-team",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "place-navigation-simplification-2026-05-21-run1",
+        "route":  "place-finance-receivables",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/financeiro?visao=recebiveis",
+        "h1":  "QA Academia Fluxo 0521052052"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-manager",
+        "route":  "manager-place-panel",
+        "hash":  "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+        "h1":  "ATP Centro Dourados 0521052052"
+    },
+    {
+        "folder":  "navigation-tier-dedup-canteen-2026-05-21",
+        "route":  "canteen-prime-sell",
+        "hash":  "#/gestao/9a1d1935-d86e-4a3a-8f6b-0f7a263890ae/cantina?visao=vender",
+        "h1":  "Gestao indisponivel"
+    },
+    {
+        "folder":  "work-saas-sprint-final-smoke-after-fallback-2026-05-21",
+        "route":  "play",
+        "hash":  "#/locais",
+        "h1":  "Jogar"
+    },
+    {
+        "folder":  "public-place-action-rail-audit-2026-05-21-run1",
+        "route":  "academy-public-overview",
+        "hash":  "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+        "h1":  ""
+    },
+    {
+        "folder":  "public-place-action-rail-audit-2026-05-21-run1",
+        "route":  "academy-public-aulas",
+        "hash":  "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas",
+        "h1":  ""
+    },
+    {
+        "folder":  "public-place-action-rail-audit-2026-05-21-run1",
+        "route":  "academy-public-reservar",
+        "hash":  "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+        "h1":  ""
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-player-owner",
+        "route":  "player-jogar-reservar",
+        "hash":  "#/locais?intent=booking",
+        "h1":  "Jogar"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-player-owner",
+        "route":  "player-jogar-aulas",
+        "hash":  "#/locais?intent=classes",
+        "h1":  "Jogar"
+    },
+    {
+        "folder":  "sprint-p0-player-check-2026-05-19",
+        "route":  "places-match",
+        "hash":  "#/locais?intent=matches",
+        "h1":  "Locais"
+    },
+    {
+        "folder":  "work-saas-final-architecture-2026-05-21-player-owner",
+        "route":  "player-perfil",
+        "hash":  "#/perfil",
+        "h1":  "Perfil"
+    }
+]

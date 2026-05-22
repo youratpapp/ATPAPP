@@ -190,7 +190,7 @@ async function createAcademyDataset(diagnostics) {
       specialties: index === 0 ? ["iniciante", "intermediario"] : ["kids", "feminino"],
       level_scopes: index === 0 ? ["iniciante", "intermediario"] : ["iniciante"],
       public_bio: "Professor ATP com foco em evolucao tecnica, aulas em grupo e acompanhamento de alunos.",
-      internal_notes: "Acompanhar vinculo, aulas, alunos e chamada.",
+      internal_notes: "Acompanhar vinculo, aulas, alunos e reposicoes.",
       public_profile_enabled: true,
       is_active: true,
     }, "id,place_id,user_id,name,email,phone,commission_percent,is_active");
@@ -654,10 +654,21 @@ async function ownerUxPass(cdp, diagnostics, dataset) {
 
   await navigate(cdp, `#/gestao/${placeId}/agenda?visao=reservas`);
   await snapshot(cdp, "07-owner-agenda-reservas-pendente", diagnostics, desktop);
-  const confirmed = await tryClick(cdp, "^Confirmar$", "confirmar reserva pendente pela agenda", diagnostics);
-  if (!confirmed) diagnostics.flowIssues.push({ note: "Reserva pendente nao teve CTA Confirmar visivel na lista de reservas." });
-  await waitForPageReady(cdp);
-  await snapshot(cdp, "08-owner-agenda-reservas-apos-confirmar", diagnostics, desktop);
+  const reservationPolicyOk = await evalJs(
+    cdp,
+    `/Aguardando pagamento|Sem pagamento/i.test(document.body.innerText || "") && /Editar/i.test(document.body.innerText || "") && /Avisar troca|WhatsApp opcoes/i.test(document.body.innerText || "")`
+  );
+  diagnostics.interactions.push({
+    at: new Date().toISOString(),
+    note: "validar reserva sem confirmacao manual obrigatoria",
+    result: { ok: Boolean(reservationPolicyOk) },
+  });
+  if (!reservationPolicyOk) {
+    diagnostics.flowIssues.push({
+      note: "Reserva pendente nao exibiu estado de pagamento + acoes de editar/avisar troca conforme fluxo atual.",
+    });
+  }
+  await snapshot(cdp, "08-owner-agenda-reservas-politica-atual", diagnostics, desktop);
 
   await navigate(cdp, `#/gestao/${placeId}/agenda?visao=espera`);
   await snapshot(cdp, "09-owner-agenda-espera", diagnostics, desktop);
@@ -678,14 +689,18 @@ async function ownerUxPass(cdp, diagnostics, dataset) {
 
   await navigate(cdp, `#/gestao/${placeId}/academia?visao=hoje`);
   await snapshot(cdp, "15-owner-academia-hoje", diagnostics, desktop);
-  const openedAttendance = await tryClick(cdp, "(Fazer chamada|Abrir chamada)", "abrir chamada da aula de hoje", diagnostics);
-  if (!openedAttendance) diagnostics.flowIssues.push({ note: "CTA Fazer/Abrir chamada nao apareceu na aula de hoje." });
+  const openedLesson = await tryClick(cdp, "Abrir aula", "abrir aula do dia sem chamada obrigatoria", diagnostics);
+  if (!openedLesson) diagnostics.flowIssues.push({ note: "CTA Abrir aula nao apareceu na aula de hoje." });
   await waitForPageReady(cdp);
-  await snapshot(cdp, "16-owner-academia-hoje-chamada-aberta", diagnostics, desktop);
-  const present = await tryClick(cdp, "^Presente$", "registrar presenca no Hoje da academia", diagnostics);
-  if (!present) diagnostics.flowIssues.push({ note: "CTA Presente nao apareceu depois de abrir a chamada." });
-  await waitForPageReady(cdp);
-  await snapshot(cdp, "17-owner-academia-hoje-apos-presenca", diagnostics, desktop);
+  await snapshot(cdp, "16-owner-academia-hoje-aula-aberta", diagnostics, desktop);
+  const attendanceNotRequired = await evalJs(cdp, `!/Fazer chamada|Abrir chamada|Presente/i.test(document.body.innerText || "")`);
+  diagnostics.interactions.push({
+    at: new Date().toISOString(),
+    note: "validar chamada opcional desligada por padrao",
+    result: { ok: Boolean(attendanceNotRequired) },
+  });
+  if (!attendanceNotRequired) diagnostics.flowIssues.push({ note: "Chamada/presenca ainda apareceu como obrigatoria no fluxo padrao." });
+  await snapshot(cdp, "17-owner-academia-hoje-sem-chamada-obrigatoria", diagnostics, desktop);
 
   await navigate(cdp, `#/gestao/${placeId}/academia?visao=pendencias`);
   await snapshot(cdp, "18-owner-academia-pendencias", diagnostics, desktop);

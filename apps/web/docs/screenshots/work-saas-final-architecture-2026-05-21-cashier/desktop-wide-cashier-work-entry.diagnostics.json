@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "cashier-work-entry",
+  "hash": "#/gestao",
+  "screenshot": "desktop-wide-cashier-work-entry.png",
+  "events": []
+}

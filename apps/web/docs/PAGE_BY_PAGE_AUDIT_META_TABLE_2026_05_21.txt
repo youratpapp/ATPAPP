@@ -1,0 +1,146 @@
+
+viewport     route                    h1                               hash                                                                    clickableCount
+--------     -----                    --                               ----                                                                    --------------
+desktop-1366 compete                  {Competir}                       #/eventos                                                                           24
+desktop-wide compete                  {Competir}                       #/eventos                                                                           24
+mobile-390   compete                  {Competir}                       #/eventos                                                                           22
+mobile-430   compete                  {Competir}                       #/eventos                                                                           22
+desktop-1366 home                     {Encontre seu proximo jogo}      #/inicio                                                                            17
+desktop-wide home                     {Encontre seu proximo jogo}      #/inicio                                                                            17
+mobile-390   home                     {Encontre seu proximo jogo}      #/inicio                                                                            29
+mobile-430   home                     {Encontre seu proximo jogo}      #/inicio                                                                            17
+desktop-1366 league-matches           {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas                   16
+desktop-wide league-matches           {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas                   16
+mobile-390   league-matches           {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas                   15
+mobile-430   league-matches           {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas                   15
+desktop-1366 league-owner             {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca                                18
+desktop-wide league-owner             {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca                                18
+mobile-390   league-owner             {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca                                16
+mobile-430   league-owner             {Liga ATP Dourados 044652}       #/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca                                16
+desktop-1366 leagues-organizer        {Ligas que organizo}             #/eventos/ligas?view=organizing                                                     15
+desktop-wide leagues-organizer        {Ligas que organizo}             #/eventos/ligas?view=organizing                                                     15
+mobile-390   leagues-organizer        {Ligas que organizo}             #/eventos/ligas?view=organizing                                                      7
+mobile-430   leagues-organizer        {Ligas que organizo}             #/eventos/ligas?view=organizing                                                      7
+desktop-1366 leagues-player           {Ligas que jogo}                 #/eventos/ligas                                                                      9
+desktop-wide leagues-player           {Ligas que jogo}                 #/eventos/ligas                                                                      9
+mobile-390   leagues-player           {Ligas que jogo}                 #/eventos/ligas                                                                      7
+mobile-430   leagues-player           {Ligas que jogo}                 #/eventos/ligas                                                                      7
+desktop-1366 manager-academy-calendar {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario             18
+desktop-wide manager-academy-calendar {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario             18
+mobile-390   manager-academy-calendar {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario             12
+mobile-430   manager-academy-calendar {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario             12
+desktop-1366 manager-academy-classes  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas                 21
+desktop-wide manager-academy-classes  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas                 21
+mobile-390   manager-academy-classes  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas                 15
+mobile-430   manager-academy-classes  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas                 15
+desktop-1366 manager-academy-students {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos                 22
+desktop-wide manager-academy-students {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos                 22
+mobile-390   manager-academy-students {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos                 16
+mobile-430   manager-academy-students {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos                 16
+desktop-1366 manager-academy-today    {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje                   17
+desktop-wide manager-academy-today    {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje                   17
+mobile-390   manager-academy-today    {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje                   11
+mobile-430   manager-academy-today    {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje                   11
+desktop-1366 manager-calendar         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario               70
+desktop-wide manager-calendar         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario               70
+mobile-390   manager-calendar         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario               30
+mobile-430   manager-calendar         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario               30
+desktop-1366 manager-new-reservation  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva             16
+desktop-wide manager-new-reservation  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva             16
+mobile-390   manager-new-reservation  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva             10
+mobile-430   manager-new-reservation  {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva             10
+desktop-1366 manager-panel            {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                22
+desktop-wide manager-panel            {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                22
+mobile-390   manager-panel            {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                16
+mobile-430   manager-panel            {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                16
+desktop-1366 manager-people           {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                22
+desktop-wide manager-people           {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                22
+mobile-390   manager-people           {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                16
+mobile-430   manager-people           {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                16
+desktop-1366 manager-pos              {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                22
+desktop-wide manager-pos              {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                22
+mobile-390   manager-pos              {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                16
+mobile-430   manager-pos              {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel                                16
+desktop-1366 manager-reservations     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas                 23
+desktop-wide manager-reservations     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas                 23
+mobile-390   manager-reservations     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas                 17
+mobile-430   manager-reservations     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas                 17
+desktop-1366 manager-revenue          {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis              33
+desktop-wide manager-revenue          {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis              33
+mobile-390   manager-revenue          {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis              27
+mobile-430   manager-revenue          {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis              27
+desktop-1366 manager-revenue-paid     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos                   21
+desktop-wide manager-revenue-paid     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos                   21
+mobile-390   manager-revenue-paid     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos                   15
+mobile-430   manager-revenue-paid     {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos                   15
+desktop-1366 manager-settings         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes                               29
+desktop-wide manager-settings         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes                               29
+mobile-390   manager-settings         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes                               23
+mobile-430   manager-settings         {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes                               23
+desktop-1366 manager-team             {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe                                21
+desktop-wide manager-team             {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe                                21
+mobile-390   manager-team             {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe                                15
+mobile-430   manager-team             {ATP Centro Dourados 0521052052} #/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe                                15
+desktop-1366 play                     {Jogar}                          #/locais                                                                            11
+desktop-wide play                     {Jogar}                          #/locais                                                                            11
+mobile-390   play                     {Jogar}                          #/locais                                                                             9
+mobile-430   play                     {Jogar}                          #/locais                                                                             9
+desktop-1366 play-booking             {Jogar}                          #/locais?intent=booking                                                             13
+desktop-wide play-booking             {Jogar}                          #/locais?intent=booking                                                             13
+mobile-390   play-booking             {Jogar}                          #/locais?intent=booking                                                             11
+mobile-430   play-booking             {Jogar}                          #/locais?intent=booking                                                             11
+desktop-1366 play-classes             {Jogar}                          #/locais?intent=classes                                                             21
+desktop-wide play-classes             {Jogar}                          #/locais?intent=classes                                                             21
+mobile-390   play-classes             {Jogar}                          #/locais?intent=classes                                                             11
+mobile-430   play-classes             {Jogar}                          #/locais?intent=classes                                                             11
+desktop-1366 play-matches             {Jogar}                          #/locais?intent=matches                                                             27
+desktop-wide play-matches             {Jogar}                          #/locais?intent=matches                                                             27
+mobile-390   play-matches             {Jogar}                          #/locais?intent=matches                                                             25
+mobile-430   play-matches             {Jogar}                          #/locais?intent=matches                                                             25
+desktop-1366 profile                  {Perfil}                         #/perfil                                                                            12
+desktop-wide profile                  {Perfil}                         #/perfil                                                                            12
+mobile-390   profile                  {Perfil}                         #/perfil                                                                            10
+mobile-430   profile                  {Perfil}                         #/perfil                                                                            10
+desktop-1366 public-place             {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b                                       21
+desktop-wide public-place             {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b                                       21
+mobile-390   public-place             {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b                                       20
+mobile-430   public-place             {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b                                       20
+desktop-1366 public-place-classes     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas                                 26
+desktop-wide public-place-classes     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas                                 26
+mobile-390   public-place-classes     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas                                 25
+mobile-430   public-place-classes     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas                                 25
+desktop-1366 public-place-reserve     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar                              17
+desktop-wide public-place-reserve     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar                              17
+mobile-390   public-place-reserve     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar                              16
+mobile-430   public-place-reserve     {}                               #/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar                              16
+desktop-1366 routine                  {Minha rotina}                   #/agenda                                                                            18
+desktop-wide routine                  {Minha rotina}                   #/agenda                                                                            18
+mobile-390   routine                  {Minha rotina}                   #/agenda                                                                            18
+mobile-430   routine                  {Minha rotina}                   #/agenda                                                                            18
+desktop-1366 tournament-games         {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos                                25
+desktop-wide tournament-games         {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos                                25
+mobile-390   tournament-games         {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos                                23
+mobile-430   tournament-games         {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos                                23
+desktop-1366 tournament-ops           {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao                          51
+desktop-wide tournament-ops           {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao                          51
+mobile-390   tournament-ops           {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao                          43
+mobile-430   tournament-ops           {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao                          43
+desktop-1366 tournaments-organizer    {Torneios que organizo}          #/eventos/torneios?view=organizing                                                  43
+desktop-wide tournaments-organizer    {Torneios que organizo}          #/eventos/torneios?view=organizing                                                  43
+mobile-390   tournaments-organizer    {Torneios que organizo}          #/eventos/torneios?view=organizing                                                  35
+mobile-430   tournaments-organizer    {Torneios que organizo}          #/eventos/torneios?view=organizing                                                  35
+desktop-1366 tournaments-player       {Torneios que jogo}              #/eventos/torneios                                                                  10
+desktop-wide tournaments-player       {Torneios que jogo}              #/eventos/torneios                                                                  10
+mobile-390   tournaments-player       {Torneios que jogo}              #/eventos/torneios                                                                   8
+mobile-430   tournaments-player       {Torneios que jogo}              #/eventos/torneios                                                                   8
+desktop-1366 tournament-standings     {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao                        14
+desktop-wide tournament-standings     {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao                        14
+mobile-390   tournament-standings     {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao                        12
+mobile-430   tournament-standings     {ATP Open Dourados 032025}       #/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao                        12
+desktop-1366 work-hub                 {Trabalho Hoje}                  #/gestao                                                                            61
+desktop-wide work-hub                 {Trabalho Hoje}                  #/gestao                                                                            61
+mobile-390   work-hub                 {Trabalho Hoje}                  #/gestao                                                                            55
+mobile-430   work-hub                 {Trabalho Hoje}                  #/gestao                                                                            55
+
+
+

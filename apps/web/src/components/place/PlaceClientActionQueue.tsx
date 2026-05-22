@@ -32,7 +32,7 @@ export function PlaceClientActionQueue({
   const hasItems = pendingMemberships.length || leadContacts.length || pendingEnrollments.length;
 
   return (
-    <OperationalQueue title="Atendimento e relacionamento" compact={compact} emptyLabel="Sem pendencias de clientes no momento.">
+    <OperationalQueue title="Atendimento de pessoas" compact={compact} emptyLabel="Sem pendencias de pessoas no momento.">
       {hasItems ? (
         <>
           {pendingMemberships.map((membership) => (

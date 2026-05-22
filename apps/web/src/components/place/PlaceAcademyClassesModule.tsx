@@ -523,7 +523,7 @@ export function PlaceAcademyClassesModule({
                 <div className="academy-drawer-form compact">
                   <header className="academy-contract-form-header">
                     <strong>Novo aluno com plano</strong>
-                    <span>Usuario, mensalidade e horarios semanais no mesmo fluxo.</span>
+                    <span>Usuario, mensalidade e horarios semanais no mesmo cadastro.</span>
                   </header>
                   <label>
                     <span>Nome do aluno</span>

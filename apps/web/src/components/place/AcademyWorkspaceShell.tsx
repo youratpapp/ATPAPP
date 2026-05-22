@@ -14,10 +14,10 @@ const ACADEMY_MANAGEMENT_VIEW_LABELS: Record<AcademyManagementView, string> = {
 };
 
 const ACADEMY_MANAGEMENT_VIEW_DESCRIPTIONS: Record<AcademyManagementView, string> = {
-  today: "Aulas do dia, presenca, faltas e reposicoes imediatas.",
+  today: "Aulas do dia, alunos, avisos previos e reposicoes imediatas.",
   calendar: "Grade visual por horario, quadra, turma e alunos.",
   classes: "Turmas, grade semanal, vagas, mensalidade e matricula manual.",
-  students: "Aluno por aluno: status, pagamento, falta e evolucao.",
+  students: "Aluno por aluno: status, pagamento, avisos, reposicao e evolucao.",
   requests: "Fila para resolver matriculas, avulsas, reposicoes e pagamentos.",
   coaches: "Agenda, alunos, contato e comissao por professor.",
   resources: "Quadras, horarios abertos, disponibilidade e bloqueios.",

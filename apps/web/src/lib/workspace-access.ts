@@ -16,6 +16,7 @@ export type WorkspaceAccessSummary = {
   hasCompetitionManagement: boolean;
   hasManagement: boolean;
   hasMixedOperationalRoles: boolean;
+  placeModulesById: Record<string, PlaceManagementModule[]>;
   placeCount: number;
   primaryPlaceId: string | null;
   primaryPlaceModules: PlaceManagementModule[];
@@ -27,6 +28,7 @@ export const EMPTY_WORKSPACE_ACCESS: WorkspaceAccessSummary = {
   hasCompetitionManagement: false,
   hasManagement: false,
   hasMixedOperationalRoles: false,
+  placeModulesById: {},
   placeCount: 0,
   primaryPlaceId: null,
   primaryPlaceModules: [],
@@ -98,27 +100,29 @@ export async function loadWorkspaceAccessSummary(user: User): Promise<WorkspaceA
   const managerPlace = placeAccess.find((entry) => entry.role === "owner" || entry.role === "manager");
   const primaryPlaceAccess = managerPlace || placeAccess[0] || null;
   const primaryPlaceId = primaryPlaceAccess?.id || places[0]?.id || null;
-  const primaryPlace = primaryPlaceId ? places.find((place) => place.id === primaryPlaceId) || null : null;
-  const primaryPlaceModules =
-    primaryPlace && primaryPlaceAccess
-      ? placeManagementModules(
-          placeResourceAccess(
-            primaryPlace,
-            user.id,
-            primaryPlaceAccess.role === "owner"
-              ? []
-              : [
-                  {
-                    createdAt: "",
-                    email: "",
-                    placeId: primaryPlace.id,
-                    role: primaryPlaceAccess.role,
-                    userId: user.id,
-                  },
-                ]
-          )
-        )
-      : [];
+  const placeModulesById = placeAccess.reduce<Record<string, PlaceManagementModule[]>>((acc, entry) => {
+    const place = places.find((candidate) => candidate.id === entry.id);
+    if (!place) return acc;
+    acc[entry.id] = placeManagementModules(
+      placeResourceAccess(
+        place,
+        user.id,
+        entry.role === "owner"
+          ? []
+          : [
+              {
+                createdAt: "",
+                email: "",
+                placeId: place.id,
+                role: entry.role,
+                userId: user.id,
+              },
+            ]
+      )
+    );
+    return acc;
+  }, {});
+  const primaryPlaceModules = primaryPlaceId ? placeModulesById[primaryPlaceId] || [] : [];
   const { hasMixedOperationalRoles, primaryWorkRole } = resolvePrimaryWorkRole({
     hasCompetitionManagement: competitionCount > 0,
     placeRoles: placeAccess.map((entry) => entry.role),
@@ -129,6 +133,7 @@ export async function loadWorkspaceAccessSummary(user: User): Promise<WorkspaceA
     hasCompetitionManagement: competitionCount > 0,
     hasManagement: places.length > 0,
     hasMixedOperationalRoles,
+    placeModulesById,
     placeCount: places.length,
     primaryPlaceId,
     primaryPlaceModules,

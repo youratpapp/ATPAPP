@@ -200,7 +200,7 @@ export function bookingWhatsappHref(booking: CourtBooking, context: BookingWhats
               "Use este link para abrir a agenda atual das quadras, escolher um horario livre e confirmar a alteracao:",
               changeUrl,
               "",
-              "A alteracao nao gera uma nova cobrança e mantem a reserva vinculada ao pagamento original.",
+              "A alteracao nao gera uma nova cobranca e mantem a reserva vinculada ao pagamento original.",
             ].join("\n")
           : alternativesBlock,
         "",

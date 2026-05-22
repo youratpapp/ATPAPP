@@ -1,0 +1,107 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "tournament-operational",
+    "hash": "#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao",
+    "screenshot": "mobile-390-tournament-operational.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "league-owner",
+    "hash": "#/eventos/ligas/cd0289a5-edae-45a4-8ef1-17a2aa443bbb?mode=work",
+    "screenshot": "mobile-390-league-owner.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "management-home",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-management-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "place-reservations",
+    "hash": "#/gestao/b2440482-06a8-4bf1-b149-b623c2e2cb38/agenda?visao=reservas",
+    "screenshot": "mobile-390-place-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "booking-settings",
+    "hash": "#/gestao/b2440482-06a8-4bf1-b149-b623c2e2cb38/agenda?visao=ajustes",
+    "screenshot": "mobile-390-booking-settings.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournament-operational",
+    "hash": "#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao",
+    "screenshot": "mobile-430-tournament-operational.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "league-owner",
+    "hash": "#/eventos/ligas/cd0289a5-edae-45a4-8ef1-17a2aa443bbb?mode=work",
+    "screenshot": "mobile-430-league-owner.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "management-home",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-management-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "place-reservations",
+    "hash": "#/gestao/b2440482-06a8-4bf1-b149-b623c2e2cb38/agenda?visao=reservas",
+    "screenshot": "mobile-430-place-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "booking-settings",
+    "hash": "#/gestao/b2440482-06a8-4bf1-b149-b623c2e2cb38/agenda?visao=ajustes",
+    "screenshot": "mobile-430-booking-settings.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournament-operational",
+    "hash": "#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao",
+    "screenshot": "desktop-1366-tournament-operational.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "league-owner",
+    "hash": "#/eventos/ligas/cd0289a5-edae-45a4-8ef1-17a2aa443bbb?mode=work",
+    "screenshot": "desktop-1366-league-owner.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "management-home",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-management-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "place-reservations",
+    "hash": "#/gestao/b2440482-06a8-4bf1-b149-b623c2e2cb38/agenda?visao=reservas",
+    "screenshot": "desktop-1366-place-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "booking-settings",
+    "hash": "#/gestao/b2440482-06a8-4bf1-b149-b623c2e2cb38/agenda?visao=ajustes",
+    "screenshot": "desktop-1366-booking-settings.png",
+    "events": []
+  }
+]

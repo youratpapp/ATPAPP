@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "player-jogar-reservar",
+  "hash": "#/locais?intent=booking",
+  "screenshot": "desktop-wide-player-jogar-reservar.png",
+  "events": []
+}

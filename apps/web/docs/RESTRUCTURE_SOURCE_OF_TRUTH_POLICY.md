@@ -46,7 +46,33 @@ Nao use MDs antigos para:
 
 ## Documentos De Arquitetura Atuais
 
-Estes documentos governam a nova direcao:
+Para a reestruturacao da area Trabalho/Gestao como SaaS profissional, os documentos mais recentes governam a nova direcao.
+
+Ordem executiva atual:
+
+- `WORK_SAAS_FINAL_HANDOFF_2026_05_21.md`;
+- `WORK_SAAS_MASTER_EXECUTION_QUEUE_V3_COMPLETE.md`;
+- `WORK_SAAS_QUEUE_V3_EXECUTION_CONTRACTS.md`;
+- `WORK_SAAS_DATABASE_MIGRATION_QUEUE.md`;
+- `WORK_SAAS_ROUTE_COMPATIBILITY_CONTRACT_V3.md`;
+- `WORK_SAAS_PERMISSION_CONTRACT_V3.md`;
+- `WORK_SAAS_SCREENSHOT_BASELINE_INDEX_2026_05_21.md`;
+- `WORK_SAAS_FINAL_SCREEN_AUDIT_2026_05_21.md`;
+- `WORK_SAAS_FINAL_DELIVERY_BLUEPRINT_2026_05_21.md`;
+- `WORK_AREA_FUNCTION_INVENTORY.md`;
+- `WORK_SAAS_INFORMATION_ARCHITECTURE.md`;
+- `WORK_MOBILE_OPERATIONAL_SCOPE.md`;
+- `WORK_SAAS_PAGE_RESPONSIBILITIES.md`.
+
+`WORK_SAAS_IMPLEMENTATION_QUEUE_V2_FINAL.md` continua como historico/base da queue final. Quando houver conflito, a V3 vence.
+
+Antes de iniciar implementacao visual ou estrutural, concluir obrigatoriamente:
+
+- Phase 0A da V3: documentacao, rotas e contratos;
+- Phase 0B da V3: fechamento de migrations/banco;
+- `WORK_SAAS_DATABASE_MIGRATION_CLOSURE_REPORT.md`.
+
+Estes documentos anteriores continuam validos como base v2 geral, desde que nao conflitem com os documentos Work SaaS finais acima:
 
 - `ROLE_BASED_RESTRUCTURE_IMPLEMENTATION_SPEC.md`;
 - `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`;
@@ -57,7 +83,7 @@ Estes documentos governam a nova direcao:
 - `COMPETITION_OS_V2_UX_PLAN.md`;
 - `MANAGEMENT_OS_V2_UX_PLAN.md`.
 
-Documentos como `ACADEMY_MODULE_FUNCTION_MAP.md`, `AGENDA_MODULE_FUNCTION_MAP.md`, `SCREEN_RESPONSIBILITIES.md`, `COMPONENT_GRAMMAR.md`, `CURRENT_PRODUCT_STATE.md` e `EXECUTION_QUEUE.md` devem ser consultados, mas interpretados pela lente v2 acima.
+Documentos como `ACADEMY_MODULE_FUNCTION_MAP.md`, `AGENDA_MODULE_FUNCTION_MAP.md`, `SCREEN_RESPONSIBILITIES.md`, `COMPONENT_GRAMMAR.md`, `CURRENT_PRODUCT_STATE.md` e `EXECUTION_QUEUE.md` devem ser consultados, mas interpretados pela lente V3 acima.
 
 ## Decisoes Antigas Que Nao Devem Voltar
 

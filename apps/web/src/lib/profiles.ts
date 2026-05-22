@@ -1,4 +1,4 @@
-import type { User } from "@supabase/supabase-js";
+﻿import type { User } from "@supabase/supabase-js";
 import { supabase } from "./supabase";
 import type { Profile } from "./types";
 
@@ -90,7 +90,7 @@ export async function fetchPrivatePlayerNote(user: User, targetUserId: string): 
 }
 
 export async function savePrivatePlayerNote(user: User, targetUserId: string, notes: string): Promise<void> {
-  if (!supabase) throw new Error("Supabase nÃ£o configurado.");
+  if (!supabase) throw new Error("Supabase nao configurado.");
   if (!targetUserId || targetUserId === user.id) return;
   const { error } = await supabase
     .from("player_private_notes")

@@ -124,7 +124,7 @@ const WORK_TODAY_LABELS: Record<WorkTodayPersona, string> = {
 
 const WORK_TODAY_DESCRIPTIONS: Record<WorkTodayPersona, string> = {
   cashier: "Venda rapida, vendas do dia e estoque baixo antes de qualquer relatorio.",
-  coach: "Aulas, chamada, reposicoes e alunos que precisam de atencao hoje.",
+  coach: "Aulas, reposicoes e alunos que precisam de atencao hoje.",
   finance: "Cobrancas, recebiveis e pagamentos pendentes sem misturar financeiro pessoal.",
   frontdesk: "Reservas, check-ins, lista de espera e atendimento do dia em primeiro lugar.",
   manager: "Pendencias criticas por area, com acesso rapido para resolver o que trava a operacao.",
@@ -227,7 +227,7 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: 
     ...(isAcademyLike
       ? [
           {
-            detail: "Libera grade, aulas e chamada.",
+            detail: "Libera grade, aulas, alunos e reposicoes.",
             done: entry.academyCoaches.length > 0,
             label: "Cadastrar professor",
             module: "academy" as PlaceManagementModule,
@@ -282,7 +282,12 @@ function summarizePlace(entry: PlaceAdminResourceEntry, place?: Place, access?: 
       ? { detail: "Resolver matriculas, encaixes ou reposicoes.", label: "Resolver aulas", module: "academy" as PlaceManagementModule, viewSegment: "pendencias" }
       : null,
     modules.includes("academy") && todayClasses.length > 0
-      ? { detail: "Abrir chamada e aulas do dia.", label: "Fazer chamada", module: "academy" as PlaceManagementModule, viewSegment: "hoje" }
+      ? {
+          detail: entry.academySettings.requireAttendanceCall ? "Abrir chamada e aulas do dia." : "Abrir aula, alunos e avisos do dia.",
+          label: entry.academySettings.requireAttendanceCall ? "Fazer chamada" : "Abrir aulas",
+          module: "academy" as PlaceManagementModule,
+          viewSegment: "hoje",
+        }
       : null,
     modules.includes("clients") && contactsDue > 0
       ? { detail: "Fazer retornos e acompanhar leads.", label: "Fazer follow-up", module: "clients" as PlaceManagementModule, viewSegment: "rotina" }
@@ -364,7 +369,7 @@ function queueRows(summary: PlaceOperationSummary) {
     { label: "Reservas pendentes", value: summary.pendingBookings, module: "bookings" as PlaceManagementModule },
     { label: "Lista de espera", value: summary.waitlist, module: "bookings" as PlaceManagementModule },
     { label: "Academia", value: summary.pendingAcademy, module: "academy" as PlaceManagementModule },
-    { label: "Clientes/CRM", value: summary.contactsDue, module: "clients" as PlaceManagementModule },
+    { label: "Pessoas/CRM", value: summary.contactsDue, module: "clients" as PlaceManagementModule },
     { label: "Financeiro", value: summary.pendingFinance, module: "finance" as PlaceManagementModule },
     { label: "Estoque baixo", value: summary.lowStock, module: "canteen" as PlaceManagementModule },
   ];
@@ -461,6 +466,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   const [canCreatePlaceAccess, setCanCreatePlaceAccess] = useState(false);
   const [showAllManagedPlaces, setShowAllManagedPlaces] = useState(false);
   const [showAllManagementCompetitions, setShowAllManagementCompetitions] = useState(false);
+  const [showAllCoachWorkspaces, setShowAllCoachWorkspaces] = useState(false);
   const [selectedManagementFocusPlaceId, setSelectedManagementFocusPlaceId] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -672,10 +678,32 @@ export function ManagementHubPage({ user, profile }: Props) {
       : orderedManagedPlaces[0]?.id || "";
   const activeManagementFocusPlace = orderedManagedPlaces.find((place) => place.id === activeManagementFocusPlaceId) || null;
   const professionalInviteCount = tournamentStaffInvites.length + placeStaffInvites.length;
+  const professionalInviteRows = [
+    ...placeStaffInvites.map((invite) => ({
+      id: invite.id,
+      kind: "Local",
+      title: invite.placeName,
+      detail: `${ROLE_LABELS[invite.role] || "Equipe"} aguardando aceite`,
+      onAccept: () => void acceptPlaceInvite(invite),
+      onDecline: () => void declinePlaceInvite(invite),
+    })),
+    ...tournamentStaffInvites.map((invite) => ({
+      id: invite.id,
+      kind: "Torneio",
+      title: invite.tournamentName,
+      detail: `${TOURNAMENT_STAFF_ROLE_LABELS[invite.role]} aguardando aceite`,
+      onAccept: () => void acceptTournamentInvite(invite),
+      onDecline: () => void declineTournamentInvite(invite),
+    })),
+  ];
+  const visibleProfessionalInviteRows = professionalInviteRows.slice(0, professionalInviteCount > 3 ? 3 : professionalInviteRows.length);
+  const hiddenProfessionalInviteRows = professionalInviteRows.slice(visibleProfessionalInviteRows.length);
+  const visibleCoachWorkspaces = showAllCoachWorkspaces ? coachWorkspaces : coachWorkspaces.slice(0, 3);
+  const hiddenCoachWorkspaceCount = Math.max(0, coachWorkspaces.length - visibleCoachWorkspaces.length);
 
   function rowPulseText(summary: PlaceOperationSummary, access: PlaceAccess): string {
     if (access.staffRole === "coach" && !access.canManagePlace) {
-      return summary.routineActions.some((action) => action.label === "Fazer chamada") ? "Aulas para chamar hoje" : "Rotina de professor";
+      return summary.routineActions.some((action) => action.module === "academy" && action.viewSegment === "hoje") ? "Aulas para conduzir hoje" : "Rotina de professor";
     }
     if (access.staffRole === "finance" && !access.canManagePlace) {
       return summary.pendingFinance ? "Cobrancas para revisar" : "Recebiveis e despesas";
@@ -782,7 +810,7 @@ export function ManagementHubPage({ user, profile }: Props) {
       return [
         {
           cta: "Abrir aulas",
-          detail: totalTodayClasses ? "Entre direto na rotina de chamada das aulas de hoje." : "Quando houver aula hoje, ela aparece aqui com horario, turma e alunos.",
+          detail: totalTodayClasses ? "Entre direto na rotina das aulas de hoje." : "Quando houver aula hoje, ela aparece aqui com horario, turma e alunos.",
           eyebrow: "Aulas de hoje",
           id: "coach-today-classes",
           path: firstPath("academy", "hoje"),
@@ -791,12 +819,12 @@ export function ManagementHubPage({ user, profile }: Props) {
           value: countValue(totalTodayClasses),
         },
         {
-          cta: "Fazer chamada",
-          detail: nextClass ? `${nextClass.place.name} - ${nextClass.academyClass.title} - ${classTimeLabel(nextClass.academyClass)}` : "A proxima chamada aparece aqui assim que existir aula vinculada a voce hoje.",
-          eyebrow: "Proxima chamada",
+          cta: "Abrir aula",
+          detail: nextClass ? `${nextClass.place.name} - ${nextClass.academyClass.title} - ${classTimeLabel(nextClass.academyClass)}` : "A proxima aula aparece aqui assim que existir horario vinculado a voce hoje.",
+          eyebrow: "Proxima aula",
           id: "coach-next-call",
           path: firstPath("academy", "hoje"),
-          title: nextClass ? nextClass.academyClass.title : "Nenhuma chamada pendente",
+          title: nextClass ? nextClass.academyClass.title : "Nenhuma aula pendente",
           tone: nextClass ? "attention" : "ready",
           value: nextClass?.academyClass.startsAt || "--",
         },
@@ -854,7 +882,7 @@ export function ManagementHubPage({ user, profile }: Props) {
           eyebrow: "Lista de espera",
           id: "frontdesk-waitlist",
           path: firstPath("bookings", "espera"),
-          title: aggregate.waitlist ? "Clientes aguardando" : "Sem espera",
+          title: aggregate.waitlist ? "Pessoas aguardando" : "Sem espera",
           tone: cardTone(aggregate.waitlist),
           value: countValue(aggregate.waitlist),
         },
@@ -864,7 +892,7 @@ export function ManagementHubPage({ user, profile }: Props) {
           eyebrow: "Atendimento",
           id: "frontdesk-clients",
           path: firstPath("clients", "rotina"),
-          title: aggregate.contactsDue ? "Clientes para responder" : "Clientes em dia",
+          title: aggregate.contactsDue ? "Pessoas para responder" : "Pessoas em dia",
           tone: cardTone(aggregate.contactsDue),
           value: countValue(aggregate.contactsDue),
         },
@@ -1119,11 +1147,11 @@ export function ManagementHubPage({ user, profile }: Props) {
       },
       {
         cta: "Atender",
-        detail: managerAggregate.contactsDue ? "Clientes e leads da unidade com retorno previsto ou atrasado." : "Relacionamento sem retorno pendente.",
-        eyebrow: "Clientes",
+        detail: managerAggregate.contactsDue ? "Pessoas e leads da unidade com retorno previsto ou atrasado." : "Relacionamento sem retorno pendente.",
+        eyebrow: "Pessoas",
         id: "manager-clients",
         path: managerFirstPath("clients", "rotina"),
-        title: managerAggregate.contactsDue ? "Clientes para contato" : "Clientes em dia",
+        title: managerAggregate.contactsDue ? "Pessoas para contato" : "Pessoas em dia",
         tone: cardTone(managerAggregate.contactsDue),
         value: countValue(managerAggregate.contactsDue),
       },
@@ -1147,7 +1175,6 @@ export function ManagementHubPage({ user, profile }: Props) {
     orderedManagedPlaces,
     organizingLeagues,
     organizingTournaments,
-    places.length,
     summariesByPlace,
     user.id,
     workTodayPersona,
@@ -1159,6 +1186,7 @@ export function ManagementHubPage({ user, profile }: Props) {
       user={user}
       profile={profile}
       mode={noManagementAccess ? "player" : "management"}
+      breadcrumbs={noManagementAccess ? [{ label: "Jogador", path: "/inicio" }, { label: "Trabalho" }] : [{ label: "Trabalho" }]}
       eyebrow={noManagementAccess ? "Modo jogador" : "Central operacional"}
       title={noManagementAccess ? "Area profissional indisponivel" : "Trabalho Hoje"}
       description={
@@ -1267,44 +1295,55 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <div>
                     <span>Convites</span>
                     <h2>Entradas profissionais pendentes</h2>
+                    <p>Convites ficam agrupados para nao disputar espaco com a rotina do dia.</p>
                   </div>
                   <strong>{professionalInviteCount}</strong>
                 </div>
                 <div className="management-invite-list">
-                  {tournamentStaffInvites.map((invite) => (
-                    <article className="management-invite-row" key={`tournament-invite:${invite.id}`}>
+                  {visibleProfessionalInviteRows.map((invite) => (
+                    <article className="management-invite-row" key={`professional-invite:${invite.id}`}>
                       <div>
-                        <span>Torneio</span>
-                        <strong>{invite.tournamentName}</strong>
-                        <small>{TOURNAMENT_STAFF_ROLE_LABELS[invite.role]} aguardando aceite</small>
+                        <span>{invite.kind}</span>
+                        <strong>{invite.title}</strong>
+                        <small>{invite.detail}</small>
                       </div>
                       <div className="management-invite-actions">
-                        <button className="primary" disabled={inviteBusyId === invite.id} onClick={() => void acceptTournamentInvite(invite)}>
+                        <button className="primary" disabled={inviteBusyId === invite.id} onClick={invite.onAccept}>
                           Aceitar
                         </button>
-                        <button className="quiet" disabled={inviteBusyId === invite.id} onClick={() => void declineTournamentInvite(invite)}>
+                        <button className="quiet" disabled={inviteBusyId === invite.id} onClick={invite.onDecline}>
                           Recusar
                         </button>
                       </div>
                     </article>
                   ))}
-                  {placeStaffInvites.map((invite) => (
-                    <article className="management-invite-row" key={`place-invite:${invite.id}`}>
-                      <div>
-                        <span>Local</span>
-                        <strong>{invite.placeName}</strong>
-                        <small>{ROLE_LABELS[invite.role] || "Equipe"} aguardando aceite</small>
+                  {hiddenProfessionalInviteRows.length ? (
+                    <details className="management-invite-more">
+                      <summary>
+                        <span>{hiddenProfessionalInviteRows.length} convite(s) adicionais</span>
+                        <strong>Ver todos os convites profissionais</strong>
+                      </summary>
+                      <div className="management-invite-list">
+                        {hiddenProfessionalInviteRows.map((invite) => (
+                          <article className="management-invite-row compact" key={`professional-invite-hidden:${invite.id}`}>
+                            <div>
+                              <span>{invite.kind}</span>
+                              <strong>{invite.title}</strong>
+                              <small>{invite.detail}</small>
+                            </div>
+                            <div className="management-invite-actions">
+                              <button className="primary" disabled={inviteBusyId === invite.id} onClick={invite.onAccept}>
+                                Aceitar
+                              </button>
+                              <button className="quiet" disabled={inviteBusyId === invite.id} onClick={invite.onDecline}>
+                                Recusar
+                              </button>
+                            </div>
+                          </article>
+                        ))}
                       </div>
-                      <div className="management-invite-actions">
-                        <button className="primary" disabled={inviteBusyId === invite.id} onClick={() => void acceptPlaceInvite(invite)}>
-                          Aceitar
-                        </button>
-                        <button className="quiet" disabled={inviteBusyId === invite.id} onClick={() => void declinePlaceInvite(invite)}>
-                          Recusar
-                        </button>
-                      </div>
-                    </article>
-                  ))}
+                    </details>
+                  ) : null}
                 </div>
               </section>
             ) : null}
@@ -1358,7 +1397,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                   <strong>{countLabel(coachWorkspaces.length, "local vinculado", "locais vinculados")}</strong>
                 </div>
                 <div className="coach-operation-list">
-                  {coachWorkspaces.map(({ activeClasses, activeStudents, hasCoachLink, place, todayClasses }) => (
+                  {visibleCoachWorkspaces.map(({ activeClasses, activeStudents, hasCoachLink, place, todayClasses }) => (
                     <article key={`coach:${place.id}`} className="coach-operation-row">
                       <div>
                         <span>{place.name}</span>
@@ -1383,7 +1422,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                         ) : (
                           <>
                             <b>Revise suas turmas</b>
-                            <small>Acesse chamada, alunos e reposicoes sem abrir a gestao completa.</small>
+                            <small>Acesse aulas, alunos e reposicoes sem abrir a gestao completa.</small>
                           </>
                         )}
                       </div>
@@ -1401,10 +1440,15 @@ export function ManagementHubPage({ user, profile }: Props) {
                     </article>
                   ))}
                 </div>
+                {hiddenCoachWorkspaceCount || showAllCoachWorkspaces ? (
+                  <button className="secondary management-expand-action" onClick={() => setShowAllCoachWorkspaces((prev) => !prev)}>
+                    {showAllCoachWorkspaces ? "Mostrar menos locais" : `Ver mais ${hiddenCoachWorkspaceCount} local(is)`}
+                  </button>
+                ) : null}
               </section>
             ) : null}
 
-            {places.length ? (
+            {places.length && !isCoachOnlyHub ? (
             <section className="management-workspace" aria-label="Locais em gestao">
               <div className="management-workspace-head">
                 <div>
@@ -1449,6 +1493,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                           placeId: place.id,
                           makeupNoticeHours: 12,
                           autoCreateMakeupCreditOnNotice: true,
+                          requireAttendanceCall: false,
                           updatedBy: null,
                           createdAt: "",
                           updatedAt: "",

@@ -51,7 +51,7 @@ type Props = {
   coaches: AcademyCoach[];
   onChangeAcademyDraftFromSlot: (patch: PlaceAcademyClassDraftPatch) => void;
   onCreateSlot: (draft: PlaceAcademySlotDraft, status: AcademySlot["status"]) => void;
-  onUpdateSettings: (draft: { autoCreateMakeupCreditOnNotice: boolean; makeupNoticeHours: string }) => void;
+  onUpdateSettings: (draft: { autoCreateMakeupCreditOnNotice: boolean; makeupNoticeHours: string; requireAttendanceCall: boolean }) => void;
   onUpdateSlotStatus: (slot: AcademySlot, status: AcademySlot["status"]) => void;
   settings: AcademySettings;
   slots: AcademySlot[];
@@ -118,14 +118,16 @@ export function PlaceAcademyResourcesModule({
   const [settingsDraft, setSettingsDraft] = useState({
     autoCreateMakeupCreditOnNotice: settings.autoCreateMakeupCreditOnNotice,
     makeupNoticeHours: String(settings.makeupNoticeHours),
+    requireAttendanceCall: settings.requireAttendanceCall,
   });
 
   useEffect(() => {
     setSettingsDraft({
       autoCreateMakeupCreditOnNotice: settings.autoCreateMakeupCreditOnNotice,
       makeupNoticeHours: String(settings.makeupNoticeHours),
+      requireAttendanceCall: settings.requireAttendanceCall,
     });
-  }, [settings.autoCreateMakeupCreditOnNotice, settings.makeupNoticeHours]);
+  }, [settings.autoCreateMakeupCreditOnNotice, settings.makeupNoticeHours, settings.requireAttendanceCall]);
 
   const resourceEvents = useMemo<ResourceEvent[]>(() => {
     const classEvents = classes
@@ -190,10 +192,21 @@ export function PlaceAcademyResourcesModule({
       <div className="academy-resource-create academy-makeup-rule-card">
         <header>
           <div>
-            <strong>Regra de reposicao por ausencia avisada</strong>
-            <span>Define quando uma falta avisada libera credito automatico de reposicao.</span>
+            <strong>Regras operacionais de aulas</strong>
+            <span>Chamada do professor e reposicao por aviso previo ficam configuradas aqui.</span>
           </div>
         </header>
+        <label className="academy-drawer-toggle">
+          <input
+            type="checkbox"
+            checked={settingsDraft.requireAttendanceCall}
+            onChange={(event) => setSettingsDraft((prev) => ({ ...prev, requireAttendanceCall: event.target.checked }))}
+          />
+          Exigir chamada do professor nas aulas
+        </label>
+        <small>
+          Padrao atual: {settings.requireAttendanceCall ? "professor registra presenca e nao comparecimento" : "sem chamada obrigatoria; a rotina usa agenda, alunos e avisos previos"}.
+        </small>
         <label>
           <span>Antecedencia minima</span>
           <input
@@ -212,7 +225,7 @@ export function PlaceAcademyResourcesModule({
           Gerar credito automaticamente quando o aviso estiver no prazo
         </label>
         <button type="button" onClick={() => onUpdateSettings(settingsDraft)} disabled={busy}>
-          Salvar regra
+          Salvar regras
         </button>
         <small>
           Regra atual: {settings.makeupNoticeHours}h de antecedencia. Fora do prazo, a ausencia fica registrada sem credito automatico.

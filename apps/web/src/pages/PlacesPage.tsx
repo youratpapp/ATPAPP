@@ -294,7 +294,7 @@ const DEFAULT_BOOKING_RULE_DRAFT: BookingRuleDraft = {
   minMinutes: "60",
   maxMinutes: "120",
   advanceDays: "14",
-  requiresApproval: true,
+  requiresApproval: false,
 };
 const PLACE_PRODUCT_PLAN_LABELS: Record<PlaceProductPlan, string> = {
   club_basic: "Clube: reservas",
@@ -2386,7 +2386,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
 
   const onUpdateAcademySettings = async (
     placeId: string,
-    draft: { autoCreateMakeupCreditOnNotice: boolean; makeupNoticeHours: string }
+    draft: { autoCreateMakeupCreditOnNotice: boolean; makeupNoticeHours: string; requireAttendanceCall: boolean }
   ) => {
     setBusy(true);
     setFeedback(null);
@@ -2395,9 +2395,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         placeId,
         autoCreateMakeupCreditOnNotice: draft.autoCreateMakeupCreditOnNotice,
         makeupNoticeHours: Number(draft.makeupNoticeHours) || 0,
+        requireAttendanceCall: draft.requireAttendanceCall,
       });
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: "Regra de reposição por ausencia avisada atualizada." });
+      setFeedback({ kind: "success", text: "Regras da academia atualizadas." });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao atualizar regra de reposição.") });
     } finally {
@@ -2464,6 +2465,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       placeId,
       makeupNoticeHours: 12,
       autoCreateMakeupCreditOnNotice: true,
+      requireAttendanceCall: false,
       updatedBy: null,
       createdAt: "",
       updatedAt: "",
@@ -2482,10 +2484,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setFeedback({
         kind: "success",
         text: shouldCreateCredit
-          ? "Ausencia avisada. Credito de reposição criado e vaga liberada."
+          ? "Aviso previo registrado. Credito de reposição criado e vaga liberada."
           : settings.autoCreateMakeupCreditOnNotice
-            ? `Ausencia registrada. Fora da regra de ${settings.makeupNoticeHours}h, não gerou credito automatico.`
-            : "Ausencia registrada. Credito automatico esta desativado na configuracao da academia.",
+            ? `Aviso registrado, mas fora da regra de ${settings.makeupNoticeHours}h; não gerou credito automatico.`
+            : "Aviso registrado. Credito automatico esta desativado na configuracao da academia.",
       });
     } catch (err) {
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao avisar ausencia.") });
@@ -2545,7 +2547,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         ),
       }));
       await refreshPlaceResources(placeId);
-      setFeedback({ kind: "success", text: status === "present" ? "Presença registrada." : "Falta registrada." });
+      setFeedback({
+        kind: "success",
+        text:
+          status === "present"
+            ? "Presença registrada."
+            : "Nao comparecimento registrado. Reposicao so e liberada quando o aluno avisa antes dentro da regra da academia.",
+      });
     } catch (err) {
       setAcademyAttendanceByPlace((prev) => ({ ...prev, [placeId]: previousRows }));
       setFeedback({ kind: "error", text: friendlyError(err, "Falha ao registrar chamada.") });
@@ -3658,7 +3666,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       : discoveryIntent === "directory"
         ? "Locais próximos, seguindo ou gerenciados por você. Use a ficha publica para ver detalhes."
       : courtDiscoveryHasAvailability
-        ? "Escolha diretamente uma quadra livre no horario pesquisado. Planos, aulas e outros dados ficam fora deste fluxo."
+        ? "Escolha diretamente uma quadra livre no horario pesquisado. Planos, aulas e outros dados ficam fora desta reserva."
         : "Use cidade, data e hora para ver apenas quadras livres no horario desejado.";
 
   const pageContent = (
@@ -4219,7 +4227,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           <div className="open-match-create-intro">
             <div>
               <strong>Não encontrou um jogo bom?</strong>
-              <small>Crie uma chamada. A reserva da quadra continua no fluxo de quadras.</small>
+              <small>Crie uma chamada. A reserva da quadra continua na area de quadras.</small>
             </div>
             <button type="button" className="quiet" onClick={() => setShowOpenMatchCreate((prev) => !prev)}>
               {showOpenMatchCreate || hasOpenMatchDraft ? "Fechar criacao" : "Criar chamada"}
@@ -4446,8 +4454,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     <b>{formatMoneyFromCents((court.effectiveFeeCents || court.bookingFeeCents || 0) * (courtDiscoveryDuration / 60))}</b>
                   </div>
                   <em>{courtDiscoveryFilter.date.split("-").reverse().join("/")} as {court.discoveryTime} | {courtDiscoveryDurationLabel}</em>
-                  <em>{court.requiresApproval ? "Sujeita a confirmacao" : "Confirmacao imediata"}</em>
-                  <span className="court-discovery-cta">Solicitar esta quadra</span>
+                  <em>{court.requiresApproval ? "Revisao manual excepcional" : "Reserva mediante pagamento"}</em>
+                  <span className="court-discovery-cta">Reservar esta quadra</span>
                 </button>
               ))}
             </div>
@@ -4597,20 +4605,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           placeId: p.id,
           makeupNoticeHours: 12,
           autoCreateMakeupCreditOnNotice: true,
+          requireAttendanceCall: false,
           updatedBy: null,
           createdAt: "",
           updatedAt: "",
         };
+        const requireAttendanceCall = academySettings.requireAttendanceCall === true;
         const academyStudentContracts = academyStudentContractsByPlace[p.id] || [];
         const pendingAcademyEnrollments = visibleAcademyEnrollments.filter((item) => item.status === "pending");
         const openAcademyMakeups = academyMakeups.filter((item) => item.status === "open" && (!isCoachMode || visibleAcademyClassIds.has(item.classId)));
         const storedAcademyStudentFilter = academyStudentFilterByPlace[p.id];
+        const storedAcademyAttendanceFilter = storedAcademyStudentFilter?.attendance || "";
+        const academyAttendanceFilter =
+          requireAttendanceCall || storedAcademyAttendanceFilter === "has_absence" || storedAcademyAttendanceFilter === "has_makeup"
+            ? storedAcademyAttendanceFilter
+            : "";
         const academyStudentFilter: AcademyStudentFilter = {
           query: storedAcademyStudentFilter?.query || "",
           classId: storedAcademyStudentFilter?.classId || "",
           status: storedAcademyStudentFilter?.status ?? "active",
           payment: storedAcademyStudentFilter?.payment || "",
-          attendance: storedAcademyStudentFilter?.attendance || "",
+          attendance: academyAttendanceFilter,
         };
         const academyBillingPeriod = currentBillingPeriod();
         const getAcademyStudentContract = (enrollment: AcademyEnrollment) => findAcademyStudentContract(enrollment, academyStudentContracts);
@@ -5222,7 +5237,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           { label: "Espera de quadra", value: operationalStats.bookingWaitlist },
           { label: "Turmas", value: operationalStats.academyClasses },
           { label: "Alunos ativos", value: activeStudentCount },
-          { label: "Chamada no periodo", value: reportAttendance.length },
+          { label: "Registros de presenca", value: reportAttendance.length },
           { label: "Presença no periodo", value: `${reportAttendanceRate}%` },
           { label: "Interesses em aula", value: operationalStats.pendingEnrollments },
           { label: "Sócios ativos", value: operationalStats.activeMembers },
@@ -5288,7 +5303,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             detail: access.canUseAcademy
               ? academyCoaches.length
                 ? `${countLabel(academyCoaches.length, "professor cadastrado", "professores cadastrados")}`
-                : "Cadastre professores para liberar grade, chamada e aulas."
+                : "Cadastre professores para liberar grade, agenda e aulas."
               : "Modulo desativado no plano.",
             module: "team" as PlaceManagementModule,
             viewSegment: "professores",
@@ -5399,7 +5414,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const academyViews: AcademyManagementView[] = isCoachMode
           ? coachAcademyViews
           : ["today", "calendar", "classes", "students", "requests", "coaches", "resources"];
-        const requestedAcademyView = (academyViewByPlace[p.id] || (isCoachMode ? "calendar" : "today")) as AcademyManagementView;
+        const requestedAcademyView = (academyViewByPlace[p.id] || (isCoachMode || !requireAttendanceCall ? "calendar" : "today")) as AcademyManagementView;
         const academyView = academyViews.includes(requestedAcademyView) ? requestedAcademyView : academyViews[0];
         const academyWorkspaceTitle =
           academyView === "calendar"
@@ -5418,7 +5433,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       ? "Ajustes de aulas"
                       : isCoachMode
                         ? "Minhas aulas"
-                        : "Aulas";
+                        : requireAttendanceCall
+                          ? "Chamada de aulas"
+                          : "Aulas do dia";
         const coachAgendaPreview = isCoachMode
           ? visibleAcademyClasses
               .slice()
@@ -5538,7 +5555,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 {organization ? <span className="pc-meta-row">Unidade de {organization.name}</span> : null}
                 {isAdminRoute ? (
                   <span className="pc-meta-row">
-                    {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]} Â· {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
+                    {PLACE_PRODUCT_PLAN_LABELS[p.productPlan]}  |  {STAFF_ROLE_LABELS[staffRole as "owner" | PlaceStaffMember["role"]] || "Jogador"}
                   </span>
                 ) : null}
                 {discoveryIntent === "places" && courtDiscoverySummary ? (
@@ -5679,7 +5696,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   },
                   {
                     disabled: !managementModules.includes("clients"),
-                    label: "Clientes para acionar",
+                    label: "Pessoas para acionar",
                     module: "clients",
                     value: operationalStats.pendingMemberships + operationalStats.crmLeads,
                   },
@@ -5739,7 +5756,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </button>
                   <button type="button" onClick={() => selectManagementModule(p.id, "clients")} disabled={!managementModules.includes("clients")}>
                     <strong>{operationalStats.pendingMemberships + operationalStats.crmLeads}</strong>
-                    <span>Clientes para acionar</span>
+                    <span>Pessoas para acionar</span>
                   </button>
                   {canUseCanteenModule ? (
                     <button type="button" onClick={() => selectManagementModule(p.id, "canteen")}>
@@ -5751,17 +5768,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 <OperationalQueue title="Fila de trabalho">
                     {bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => (
                       <button key={`queue-booking:${booking.id}`} type="button" onClick={() => selectManagementModule(p.id, "bookings", "reservas")}>
-                        Reserva pendente Â· {booking.courtName || "Quadra"} Â· {new Date(booking.startsAt).toLocaleString("pt-BR")}
+                        Reserva pendente  |  {booking.courtName || "Quadra"}  |  {new Date(booking.startsAt).toLocaleString("pt-BR")}
                       </button>
                     ))}
                     {actionableLessonRequests.slice(0, 3).map((request) => (
                       <button key={`queue-lesson:${request.id}`} type="button" onClick={() => selectManagementModule(p.id, "academy")}>
-                        Encaixe pendente Â· {request.playerName} Â· {request.requestedOn}
+                        Encaixe pendente  |  {request.playerName}  |  {request.requestedOn}
                       </button>
                     ))}
                     {openReceivables.slice(0, 3).map((receivable) => (
                       <button key={`queue-receivable:${receivable.id}`} type="button" onClick={() => selectManagementModule(p.id, "finance", "recebiveis")}>
-                        Recebimento pendente Â· {receivable.title} Â· {formatMoneyFromCents(receivable.amountCents)}
+                        Recebimento pendente  |  {receivable.title}  |  {formatMoneyFromCents(receivable.amountCents)}
                       </button>
                     ))}
                     {!bookings.some((booking) => booking.status === "pending") && !actionableLessonRequests.length && !openReceivables.length ? (
@@ -5968,9 +5985,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                   {teamView === "roles" ? (
                     <WorkspaceGrid>
-                      <WorkspaceCard title="Gerente" subtitle="Administra operacao, clientes, agenda, financeiro e configuracoes do local." />
+                      <WorkspaceCard title="Gerente" subtitle="Administra operacao, pessoas, agenda, financeiro e configuracoes do local." />
                       <WorkspaceCard title="Recepcao" subtitle="Cuida de reservas, check-in, fila de espera e atendimento diario." />
-                      <WorkspaceCard title="Professor" subtitle="Acessa turmas, chamada, faltas, reposicoes e evolução dos alunos." />
+                      <WorkspaceCard title="Professor" subtitle="Acessa agenda, turmas, alunos, avisos previos, reposicoes e evolução." />
                       <WorkspaceCard title="Financeiro" subtitle="Acessa recebiveis, lembretes, baixas e despesas sem operar agenda, academia ou equipe." />
                       <WorkspaceCard title="Caixa/POS" subtitle="Acessa venda rapida, vendas do dia, estoque e produtos da cantina sem abrir gestao completa." />
                     </WorkspaceGrid>
@@ -6089,9 +6106,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <p className="subtle">Sem equipe adicional.</p>
                 )}
                 <div className="place-role-guide">
-                  <span><strong>Gerente</strong> administra operacao, clientes, agenda e financeiro.</span>
+                  <span><strong>Gerente</strong> administra operacao, pessoas, agenda e financeiro.</span>
                   <span><strong>Recepcao</strong> cuida de reservas, check-in e rotina de atendimento.</span>
-                  <span><strong>Professor</strong> acessa turmas, chamada, faltas e evolução de alunos.</span>
+                  <span><strong>Professor</strong> acessa agenda, turmas, avisos previos e evolução de alunos.</span>
                   <span><strong>Financeiro</strong> acessa recebiveis, lembretes, baixas e despesas sem virar gerente.</span>
                   <span><strong>Caixa/POS</strong> acessa venda rapida, vendas do dia e estoque da cantina.</span>
                 </div>
@@ -6271,8 +6288,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         }
                       />
                       <WorkspaceRow
-                        title="Ausencia avisada e reposição"
-                        detail={`Regra atual: ${academySettings.makeupNoticeHours}h de antecedência · ${academySettings.autoCreateMakeupCreditOnNotice ? "gera credito automatico" : "credito automatico desligado"}`}
+                        title="Aulas, avisos e reposição"
+                        detail={`Chamada ${requireAttendanceCall ? "obrigatoria" : "desligada por padrao"} · reposicao com ${academySettings.makeupNoticeHours}h de antecedência · ${academySettings.autoCreateMakeupCreditOnNotice ? "gera credito automatico" : "credito automatico desligado"}`}
                         actions={
                           <button type="button" onClick={() => navigate(buildPlaceAdminPath(p.id, "settings", "regras"))} disabled={!managementModules.includes("settings")}>
                             Editar regras
@@ -6406,7 +6423,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onClick={() => navigate(buildPlaceAdminPath(p.id, item.module, item.viewSegment))}
                       disabled={!managementModules.includes(item.module)}
                     >
-                      <strong>{item.done ? "OK" : "Pendente"} Â· {item.title}</strong>
+                      <strong>{item.done ? "OK" : "Pendente"}  |  {item.title}</strong>
                       <span>{item.detail}</span>
                     </button>
                   ))}
@@ -7273,13 +7290,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     isCoachMode
                       ? {
                           calendar: "Seu dia em linha do tempo, com horario, turma, alunos e quadra.",
-                          today: "Chamada, faltas e observacoes rapidas da aula selecionada.",
+                          today: requireAttendanceCall
+                            ? "Chamada e nao comparecimentos ficam na rotina da aula."
+                            : "Resumo da aula, alunos e avisos previos, sem chamada obrigatoria.",
                           classes: "Sua grade semanal, ocupacao e alunos por turma.",
-                          students: "Alunos das suas turmas, presença, faltas e evolução.",
+                          students: requireAttendanceCall
+                            ? "Alunos das suas turmas, presenca, nao comparecimento e evolucao."
+                            : "Alunos das suas turmas, avisos previos, reposicoes e evolucao.",
                         }
                       : undefined
                   }
-                  viewLabels={isCoachMode ? { calendar: "Agenda", today: "Aulas", classes: "Turmas", students: "Alunos" } : undefined}
+                  viewLabels={isCoachMode ? { calendar: "Agenda", today: requireAttendanceCall ? "Chamada" : "Aula", classes: "Turmas", students: "Alunos" } : undefined}
                   views={[academyView]}
                   onViewChange={(view) => selectAcademyView(p.id, view)}
                 >
@@ -7314,20 +7335,26 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       <article>
                         <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
                         <strong>{countLabel(todayClasses.length, "aula", "aulas")}</strong>
-                        <small>{isCoachMode ? "Chamada e faltas ficam no fluxo da aula." : "Chamada, faltas e reposicoes ficam na rotina de Aulas."}</small>
+                        <small>
+                          {requireAttendanceCall
+                            ? isCoachMode
+                              ? "Chamada e nao comparecimentos ficam na rotina da aula."
+                              : "Chamada, avisos e reposicoes ficam na rotina de Aulas."
+                            : "Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos."}
+                        </small>
                       </article>
                       {!isCoachMode ? (
                         <article className={pendingAcademyEnrollments.length + actionableLessonRequests.length > 0 ? "urgent" : ""}>
                           <span>Pendencias</span>
                           <strong>{countLabel(pendingAcademyEnrollments.length + actionableLessonRequests.length, "item", "itens")}</strong>
-                          <small>Interesses, reposicoes e matriculas ficam no fluxo de Aulas.</small>
+                          <small>Interesses, reposicoes e matriculas ficam na rotina de Aulas.</small>
                         </article>
                       ) : null}
                       {isCoachMode || canManagePlace ? (
                         <article>
                           <span>{isCoachMode ? "Meus alunos" : "Alunos ativos"}</span>
                           <strong>{countLabel(visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length, "aluno", "alunos")}</strong>
-                          <small>{isCoachMode ? "Alunos vinculados as suas turmas." : "Base completa fica em Clientes."}</small>
+                          <small>{isCoachMode ? "Alunos vinculados as suas turmas." : "Base completa fica em Pessoas."}</small>
                         </article>
                       ) : null}
                       {isCoachMode || canManagePlace ? (
@@ -7355,6 +7382,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
                       onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
                       pendingEnrollments={pendingAcademyEnrollments}
+                      requireAttendanceCall={requireAttendanceCall}
                       todayClasses={todayClasses}
                     />
                   ) : null}
@@ -7366,6 +7394,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       day={courtCalendarDay}
                       enrollments={visibleAcademyEnrollments}
                       lessonRequests={academyLessonRequests}
+                      requireAttendanceCall={requireAttendanceCall}
                       title={isCoachMode ? "Minha agenda do dia" : "Agenda diaria de aulas"}
                       onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}
                       onOpenTodayClass={(academyClassId) => {
@@ -7388,6 +7417,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onOpenClasses={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}
                       onOpenSetup={!isCoachMode ? () => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" })) : undefined}
                       onReportAbsence={(enrollmentId) => void onReportAcademyAbsence(p.id, enrollmentId)}
+                      requireAttendanceCall={requireAttendanceCall}
                     />
                   ) : null}
                   {!coachWithoutAcademyProfile && academyView === "classes" ? (
@@ -7474,6 +7504,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onUpdateEnrollmentDetails={(enrollmentId, patch) => void onUpdateAcademyEnrollmentDetails(p.id, enrollmentId, patch)}
                       progress={academyProgress}
                       progressDraftByEnrollment={academyProgressDraftByEnrollment}
+                      requireAttendanceCall={requireAttendanceCall}
                       studentDraftByClass={academyStudentDraftByClass}
                       todayAttendance={todayAttendance}
                       visibleClasses={visibleAcademyClasses}
@@ -7819,10 +7850,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                             return (
                             <small key={enrollment.id} className="place-enrollment-chip">
                               {enrollment.playerName} ({enrollment.status})
-                              {enrollmentPaid ? " Â· pago no mes" : ""}
-                              {latestProgress ? ` Â· evolução: ${latestProgress.levelLabel || latestProgress.focus || "registrada"}` : ""}
-                              {todayEnrollmentAttendance ? (
-                                <> Â· {todayEnrollmentAttendance.status === "present" ? "check-in hoje" : "falta hoje"}</>
+                              {enrollmentPaid ? "  |  pago no mes" : ""}
+                              {latestProgress ? `  |  evolução: ${latestProgress.levelLabel || latestProgress.focus || "registrada"}` : ""}
+                              {requireAttendanceCall && todayEnrollmentAttendance ? (
+                                <>  |  {todayEnrollmentAttendance.status === "present" ? "presente hoje" : "nao compareceu hoje"}</>
                               ) : null}
                               {enrollment.status === "pending" ? (
                                 <>
@@ -7856,20 +7887,24 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                       </button>
                                     ) : null}
                                   <button onClick={() => void onReportAcademyAbsence(p.id, enrollment.id)} disabled={busy}>
-                                    Avisou falta
+                                    Registrar aviso previo
                                   </button>
-                                  <button
-                                    onClick={() => void onMarkAcademyAttendance(p.id, enrollment.id, "present")}
-                                    disabled={busy || todayEnrollmentAttendance?.status === "present"}
-                                  >
-                                    Check-in
-                                  </button>
-                                  <button
-                                    onClick={() => void onMarkAcademyAttendance(p.id, enrollment.id, "absent")}
-                                    disabled={busy || todayEnrollmentAttendance?.status === "absent"}
-                                  >
-                                    Falta
-                                  </button>
+                                  {requireAttendanceCall ? (
+                                    <>
+                                      <button
+                                        onClick={() => void onMarkAcademyAttendance(p.id, enrollment.id, "present")}
+                                        disabled={busy || todayEnrollmentAttendance?.status === "present"}
+                                      >
+                                        Presente
+                                      </button>
+                                      <button
+                                        onClick={() => void onMarkAcademyAttendance(p.id, enrollment.id, "absent")}
+                                        disabled={busy || todayEnrollmentAttendance?.status === "absent"}
+                                      >
+                                        Nao compareceu
+                                      </button>
+                                    </>
+                                  ) : null}
                                   <input
                                     value={progressDraft.level}
                                     onChange={(event) =>
@@ -7939,8 +7974,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                 </header>
                                 <div className="academy-player-metrics">
                                   <span><strong>{openMakeups.length}</strong> reposicoes</span>
-                                  <span><strong>{presentTotal}</strong> presenças</span>
-                                  <span><strong>{absentTotal}</strong> faltas</span>
+                                  {requireAttendanceCall ? (
+                                    <>
+                                      <span><strong>{presentTotal}</strong> presencas</span>
+                                      <span><strong>{absentTotal}</strong> nao compareceu</span>
+                                    </>
+                                  ) : null}
                                 </div>
                                 <small>
                                   {myProgress
@@ -7960,7 +7999,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                         [myEnrollment.id]: { ...absenceDraft, absenceOn: event.target.value },
                                       }));
                                     }}
-                                    aria-label="Data da falta"
+                                    aria-label="Data do aviso previo"
                                   />
                                   <input
                                     value={absenceDraft.notes}
@@ -7973,7 +8012,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                                     placeholder="Aviso opcional"
                                   />
                                   <button onClick={() => void onReportAcademyAbsence(p.id, myEnrollment.id)} disabled={busy || !academyClass.allowMakeup}>
-                                    Avisar falta
+                                    Registrar aviso previo
                                   </button>
                                   <button className="danger" onClick={() => void onUpdateAcademyEnrollment(p.id, myEnrollment.id, "cancelled")} disabled={busy}>
                                     Sair da turma
@@ -8054,6 +8093,10 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       <ManagementShell
         user={user}
         profile={profile}
+        breadcrumbs={[
+          { label: "Trabalho", path: "/gestao" },
+          { label: adminRoutePlace?.name || "Local" },
+        ]}
         eyebrow={adminAccessDenied ? "Acesso profissional" : "Gestao do local"}
         title={adminAccessDenied ? "Gestao indisponivel" : adminRoutePlace?.name || "Gestao do local"}
         description={

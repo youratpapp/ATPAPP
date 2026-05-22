@@ -1,0 +1,198 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "cashier-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-cashier-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "cashier-sell",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=vender",
+    "screenshot": "mobile-390-cashier-sell.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "cashier-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=hoje",
+    "screenshot": "mobile-390-cashier-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "cashier-stock",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=estoque",
+    "screenshot": "mobile-390-cashier-stock.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "cashier-products",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=produtos",
+    "screenshot": "mobile-390-cashier-products.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "cashier-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile-390-cashier-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "cashier-agenda-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile-390-cashier-agenda-block.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "cashier-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-cashier-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "cashier-sell",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=vender",
+    "screenshot": "mobile-430-cashier-sell.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "cashier-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=hoje",
+    "screenshot": "mobile-430-cashier-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "cashier-stock",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=estoque",
+    "screenshot": "mobile-430-cashier-stock.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "cashier-products",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=produtos",
+    "screenshot": "mobile-430-cashier-products.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "cashier-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile-430-cashier-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "cashier-agenda-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "mobile-430-cashier-agenda-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "cashier-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-cashier-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "cashier-sell",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=vender",
+    "screenshot": "desktop-1366-cashier-sell.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "cashier-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=hoje",
+    "screenshot": "desktop-1366-cashier-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "cashier-stock",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=estoque",
+    "screenshot": "desktop-1366-cashier-stock.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "cashier-products",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=produtos",
+    "screenshot": "desktop-1366-cashier-products.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "cashier-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktop-1366-cashier-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "cashier-agenda-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktop-1366-cashier-agenda-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "cashier-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-cashier-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "cashier-sell",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=vender",
+    "screenshot": "desktop-wide-cashier-sell.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "cashier-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=hoje",
+    "screenshot": "desktop-wide-cashier-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "cashier-stock",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=estoque",
+    "screenshot": "desktop-wide-cashier-stock.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "cashier-products",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina?visao=produtos",
+    "screenshot": "desktop-wide-cashier-products.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "cashier-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktop-wide-cashier-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "cashier-agenda-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/cantina",
+    "screenshot": "desktop-wide-cashier-agenda-block.png",
+    "events": []
+  }
+]

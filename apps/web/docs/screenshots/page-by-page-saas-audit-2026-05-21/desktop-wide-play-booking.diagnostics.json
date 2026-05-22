@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "play-booking",
+  "hash": "#/locais?intent=booking",
+  "screenshot": "desktop-wide-play-booking.png",
+  "events": []
+}

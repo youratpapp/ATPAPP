@@ -164,7 +164,7 @@ export function PlaceClientRelationshipModule({
         {!relationshipRows.length ? (
           <WorkspaceEmptyState
             title="Nenhuma pendencia de relacionamento"
-            detail={segment === "all" ? "A rotina de clientes esta em dia agora." : "Este filtro nao tem contatos aguardando acao."}
+            detail={segment === "all" ? "A rotina de pessoas esta em dia agora." : "Este filtro nao tem contatos aguardando acao."}
             action={
               segment === "all" ? null : (
                 <button type="button" onClick={() => setSegment("all")}>

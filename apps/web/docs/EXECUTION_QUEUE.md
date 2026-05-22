@@ -1,5 +1,25 @@
 ﻿# Execution Queue
 
+## Fonte Executiva Atual - Work SaaS V3
+
+Para a reestruturacao da area Trabalho/Gestao como SaaS profissional, a fila continua deste arquivo nao deve ser usada como fonte principal.
+
+Use primeiro:
+
+- `WORK_SAAS_FINAL_HANDOFF_2026_05_21.md`
+- `WORK_SAAS_MASTER_EXECUTION_QUEUE_V3_COMPLETE.md`
+- `WORK_SAAS_QUEUE_V3_EXECUTION_CONTRACTS.md`
+- `WORK_SAAS_DATABASE_MIGRATION_QUEUE.md`
+- `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
+
+Antes de qualquer implementacao estrutural do Work SaaS, concluir:
+
+- Phase 0A da V3;
+- Phase 0B da V3;
+- `WORK_SAAS_DATABASE_MIGRATION_CLOSURE_REPORT.md`.
+
+Os itens antigos deste arquivo continuam como historico de sprints ja executados e referencia de decisoes, mas nao governam a nova migracao SaaS.
+
 Fonte principal: `CURRENT_PRODUCT_STATE.md`.
 
 Fonte de reestruturacao v2:
@@ -13131,6 +13151,32 @@ Entregue:
 - checklist e links de configuracao passaram a abrir professores em `Equipe`;
 - textos de resumo de Aulas deixam claro que base completa fica em Clientes e que regras ficam em Ajustes;
 - rotas antigas de academia continuam preservadas para compatibilidade.
+
+Validacao:
+
+- `npx.cmd tsc -b --pretty false` passou;
+- `npm.cmd run build` passou.
+
+### [x] SPRINT-2026-05-21 - Chamada de aulas opcional por academia
+
+Status: `[x]` concluido no codigo e documentacao
+
+Problema:
+
+- para aulas de tenis, chamada obrigatoria nao deve ser regra geral;
+- falta simples por nao comparecimento nao deve gerar reposicao;
+- reposicao deve nascer de aviso previo do aluno, conforme regra da academia;
+- professor precisa conseguir trabalhar pela agenda e pelos alunos sem ser forçado a marcar presença.
+
+Entregue:
+
+- `place_academy_settings` ganhou a opcao `require_attendance_call`, com padrao `false`;
+- a configuracao de Aulas permite ligar/desligar a exigencia de chamada do professor;
+- a Agenda do professor troca `Abrir chamada` por `Abrir aula` quando a chamada nao e exigida;
+- a tela de aula mostra alunos, avisos previos e reposicoes sem obrigar chamada quando a opcao esta desligada;
+- a ficha do aluno remove acoes de presença/nao comparecimento quando chamada nao e exigida;
+- textos de falta foram reposicionados para `aviso previo` e `nao compareceu`, evitando sugerir reposicao automatica por falta simples;
+- foi criada migracao para impedir geracao de reposicao a partir de chamada/falta marcada; credito de reposicao fica vinculado a aviso previo.
 
 Validacao:
 

@@ -159,7 +159,7 @@ export function PlaceBookingCalendarModule({
           courtId: academyClass.courtId || "",
           detail: compactTextList([
             countLabel(students.length, "aluno ativo", "alunos ativos"),
-            absentStudents.length ? countLabel(absentStudents.length, "falta avisada", "faltas avisadas") : "",
+            absentStudents.length ? countLabel(absentStudents.length, "aviso previo", "avisos previos") : "",
             academyClass.level || "nivel livre",
           ]).join(" | "),
           endsAt: academyClass.endsAt,
@@ -168,7 +168,7 @@ export function PlaceBookingCalendarModule({
             academyClass.coachName || "Professor a definir",
             academyClass.level,
             `${students.length}/${academyClass.capacity} alunos`,
-            absentStudents.length ? `${absentStudents.length} desmarcou` : "",
+            absentStudents.length ? `${absentStudents.length} aviso(s)` : "",
           ]),
           startsAt: academyClass.startsAt,
           status: "Turma fixa",

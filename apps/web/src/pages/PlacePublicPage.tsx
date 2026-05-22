@@ -1044,7 +1044,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               </div>
               <div>
                 <span>{location || "Clube de esportes de raquete"}</span>
-                <h2>{place.name}</h2>
+                <h1>{place.name}</h1>
                 <p>{place.description || "Reserve quadra, entre em aula ou encontre uma atividade aberta neste local."}</p>
                 <div className="place-public-offer-strip" aria-label="Ofertas do local">
                   <strong>{heroOffer}</strong>
@@ -1124,7 +1124,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                     <div>
                       <span>Visao geral</span>
                       <h3>Escolha uma acao neste local</h3>
-                      <p className="subtle">Aqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas para evitar mistura de fluxos.</p>
+                      <p className="subtle">Aqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas para evitar mistura de contextos.</p>
                     </div>
                     <button className="secondary" onClick={sharePlace}>Compartilhar</button>
                   </div>

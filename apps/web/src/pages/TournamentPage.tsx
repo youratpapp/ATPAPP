@@ -5401,28 +5401,33 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
       {
         value: "jogos" as TabKey,
         label: operationalPhaseKey === "live" ? "Resultados" : "Jogos",
+        compactLabel: operationalPhaseKey === "live" ? "Resultado" : "Jogos",
         badge: activeClassMatchStats.pendingMatches > 0 ? activeClassMatchStats.pendingMatches : undefined,
         hidden: canManageTournament ? tournamentAdminPhase.key === "setup" : false,
       },
       {
         value: "classificacao" as TabKey,
         label: operationalPhaseKey === "finished" ? "Podio" : "Classificacao",
+        compactLabel: operationalPhaseKey === "finished" ? "Podio" : "Tabela",
         hidden: !canSeeClassificationTab,
       },
       {
         value: "organizacao" as TabKey,
         label: "Organizacao",
+        compactLabel: "Ajustes",
         hidden: !canManageTournament,
       },
       {
         value: "jogadores" as TabKey,
         label: tournament?.role === "checkin" ? "Check-in" : "Jogadores",
+        compactLabel: tournament?.role === "checkin" ? "Check-in" : "Inscritos",
         badge: tournamentOverview.pendingRegistrations > 0 ? tournamentOverview.pendingRegistrations : undefined,
         hidden: !canManagePlayers || tournamentAdminPhase.key === "finished",
       },
       {
         value: "chat" as TabKey,
         label: tournament?.role === "media" ? "Publicacao" : "Chat",
+        compactLabel: tournament?.role === "media" ? "Avisos" : "Chat",
         hidden: !canUseChatTab,
       },
     ];

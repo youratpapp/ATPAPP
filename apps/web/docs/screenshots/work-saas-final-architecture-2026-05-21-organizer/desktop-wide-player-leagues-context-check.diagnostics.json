@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "player-leagues-context-check",
+  "hash": "#/eventos/ligas?view=participating",
+  "screenshot": "desktop-wide-player-leagues-context-check.png",
+  "events": []
+}

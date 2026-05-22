@@ -1,0 +1,198 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "organizer-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-organizer-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "organizer-competitions-hub",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "mobile-390-organizer-competitions-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "organizer-tournaments",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "mobile-390-organizer-tournaments.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "organizer-leagues",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "mobile-390-organizer-leagues.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "player-competitions-context-check",
+    "hash": "#/eventos",
+    "screenshot": "mobile-390-player-competitions-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "player-tournaments-context-check",
+    "hash": "#/eventos/torneios?view=participating",
+    "screenshot": "mobile-390-player-tournaments-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "player-leagues-context-check",
+    "hash": "#/eventos/ligas?view=participating",
+    "screenshot": "mobile-390-player-leagues-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "organizer-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-organizer-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "organizer-competitions-hub",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "mobile-430-organizer-competitions-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "organizer-tournaments",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "mobile-430-organizer-tournaments.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "organizer-leagues",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "mobile-430-organizer-leagues.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "player-competitions-context-check",
+    "hash": "#/eventos",
+    "screenshot": "mobile-430-player-competitions-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "player-tournaments-context-check",
+    "hash": "#/eventos/torneios?view=participating",
+    "screenshot": "mobile-430-player-tournaments-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "player-leagues-context-check",
+    "hash": "#/eventos/ligas?view=participating",
+    "screenshot": "mobile-430-player-leagues-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "organizer-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-organizer-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "organizer-competitions-hub",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "desktop-1366-organizer-competitions-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "organizer-tournaments",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "desktop-1366-organizer-tournaments.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "organizer-leagues",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "desktop-1366-organizer-leagues.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "player-competitions-context-check",
+    "hash": "#/eventos",
+    "screenshot": "desktop-1366-player-competitions-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "player-tournaments-context-check",
+    "hash": "#/eventos/torneios?view=participating",
+    "screenshot": "desktop-1366-player-tournaments-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "player-leagues-context-check",
+    "hash": "#/eventos/ligas?view=participating",
+    "screenshot": "desktop-1366-player-leagues-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "organizer-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-organizer-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "organizer-competitions-hub",
+    "hash": "#/eventos?modo=organizing",
+    "screenshot": "desktop-wide-organizer-competitions-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "organizer-tournaments",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "desktop-wide-organizer-tournaments.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "organizer-leagues",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "desktop-wide-organizer-leagues.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "player-competitions-context-check",
+    "hash": "#/eventos",
+    "screenshot": "desktop-wide-player-competitions-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "player-tournaments-context-check",
+    "hash": "#/eventos/torneios?view=participating",
+    "screenshot": "desktop-wide-player-tournaments-context-check.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "player-leagues-context-check",
+    "hash": "#/eventos/ligas?view=participating",
+    "screenshot": "desktop-wide-player-leagues-context-check.png",
+    "events": []
+  }
+]

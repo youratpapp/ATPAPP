@@ -1,0 +1,302 @@
+{
+  "appUrl": "http://127.0.0.1:5173/",
+  "at": "2026-05-22T03:11:33.326Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "email": "jogador011@demo.atp.local",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz"
+    },
+    {
+      "email": "jogador012@demo.atp.local",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto"
+    },
+    {
+      "email": "jogador013@demo.atp.local",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida"
+    },
+    {
+      "email": "jogador014@demo.atp.local",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique"
+    }
+  ],
+  "resultAttempts": [
+    {
+      "type": "apply-submitted-result",
+      "ok": true,
+      "text": "Aplicar B 6/2"
+    },
+    {
+      "ok": true,
+      "type": "admin-manual-score-draft",
+      "text": "Jogo 2 Nicolas Henrique x Lucas Yamamoto Pendente 2026-06-12 | 08:00-09:00 | Quadra 2 Aguardando presenca Cobrar confirmacao Lancar placar Placar, WO e limpeza Set 1 Salvar resulta",
+      "button": "Salvar resultado oficial"
+    },
+    {
+      "ok": true,
+      "type": "admin-manual-score",
+      "text": "Jogo 2 Nicolas Henrique x Lucas Yamamoto Pendente 2026-06-12 | 08:00-09:00 | Quadra 2 Aguardando presenca Cobrar confirmacao Lancar placar Placar, WO e limpeza Set 1 Salvar resulta",
+      "button": "Salvar resultado oficial"
+    },
+    {
+      "ok": true,
+      "type": "walkover-ui",
+      "text": "Jogo 1 Mariana Almeida x Nicolas Henrique Pendente 2026-06-12 | 09:00-10:00 | Quadra 1 Aguardando presenca Cobrar confirmacao Lancar placar Placar, WO e limpeza Set 1 Salvar result",
+      "button": "WO Mariana Almeida"
+    },
+    {
+      "ok": false,
+      "reason": "no-pending-editable-match",
+      "cards": [
+        {
+          "buttons": [
+            "Salvar edicao do resultado",
+            "WO Mariana Almeida",
+            "WO Karina Queiroz",
+            "Limpar resultado"
+          ],
+          "details": 1,
+          "inputs": 2,
+          "text": "Jogo 1 Mariana Almeida x Karina Queiroz Finalizado Jogador 2026-06-12 | 08:00-09:00 | Quadra 1 Partida finalizada Conferir chave 6/2 Editar "
+        },
+        {
+          "buttons": [
+            "Salvar edicao do resultado",
+            "WO Nicolas Henrique",
+            "WO Lucas Yamamoto",
+            "Limpar resultado"
+          ],
+          "details": 1,
+          "inputs": 2,
+          "text": "Jogo 2 Nicolas Henrique x Lucas Yamamoto Finalizado Manual 2026-06-12 | 08:00-09:00 | Quadra 2 Partida finalizada Conferir chave 6/2 Editar "
+        },
+        {
+          "buttons": [
+            "Salvar edicao do resultado",
+            "WO Mariana Almeida",
+            "WO Nicolas Henrique",
+            "Limpar resultado"
+          ],
+          "details": 1,
+          "inputs": 2,
+          "text": "Jogo 1 Mariana Almeida x Nicolas Henrique Finalizado WO 2026-06-12 | 09:00-10:00 | Quadra 1 Finalizada por WO Conferir chave WO Editar placa"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "01-torneios-organizando-antes-criar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/01-desktop-1366-01-torneios-organizando-antes-criar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "02-modal-criacao-basico",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/02-desktop-1366-02-modal-criacao-basico.png",
+      "url": "http://127.0.0.1:5173/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "03-modal-criacao-categorias",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/03-desktop-1366-03-modal-criacao-categorias.png",
+      "url": "http://127.0.0.1:5173/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "04-modal-criacao-revisar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/04-desktop-1366-04-modal-criacao-revisar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "05-torneio-criado-organizacao",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/05-desktop-1366-05-torneio-criado-organizacao.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao"
+    },
+    {
+      "name": "06-inscricoes-pendentes",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/06-desktop-1366-06-inscricoes-pendentes.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogadores"
+    },
+    {
+      "name": "07-inscricoes-aprovadas",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/07-desktop-1366-07-inscricoes-aprovadas.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogadores"
+    },
+    {
+      "name": "08-organizacao-antes-encerrar",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/08-desktop-1366-08-organizacao-antes-encerrar.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao"
+    },
+    {
+      "name": "09-inscricoes-encerradas",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/09-desktop-1366-09-inscricoes-encerradas.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao"
+    },
+    {
+      "name": "10-jogos-gerados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/10-desktop-1366-10-jogos-gerados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao"
+    },
+    {
+      "name": "11a-player-login-jogos",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/11-desktop-1366-11a-player-login-jogos.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogos"
+    },
+    {
+      "name": "11b-player-match-room",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/12-desktop-1366-11b-player-match-room.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogos"
+    },
+    {
+      "name": "11c-player-result-submitted",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/13-desktop-1366-11c-player-result-submitted.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogos"
+    },
+    {
+      "name": "11d-owner-after-player-result",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/14-desktop-1366-11d-owner-after-player-result.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogos"
+    },
+    {
+      "name": "11-jogos-antes-resultados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/15-desktop-1366-11-jogos-antes-resultados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogos"
+    },
+    {
+      "name": "12-jogos-com-resultados",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/16-desktop-1366-12-jogos-com-resultados.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogos"
+    },
+    {
+      "name": "13-torneio-finalizado-organizacao",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/17-desktop-1366-13-torneio-finalizado-organizacao.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/organizacao"
+    },
+    {
+      "name": "14-classificacao-final",
+      "viewport": "desktop-1366",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/18-desktop-1366-14-classificacao-final.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/classificacao"
+    },
+    {
+      "name": "15-mobile-organizacao-final",
+      "viewport": "mobile-390",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/19-mobile-390-15-mobile-organizacao-final.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/classificacao"
+    },
+    {
+      "name": "16-mobile-jogos-final",
+      "viewport": "mobile-390",
+      "file": "docs/screenshots/real-use-tournament-flow-2026-05-21/20-mobile-390-16-mobile-jogos-final.png",
+      "url": "http://127.0.0.1:5173/#/eventos/ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6/jogos"
+    }
+  ],
+  "tournament": {
+    "id": "ff8bd9e5-956d-444b-a5a5-6c6e91f9dca6",
+    "name": "ATP Open Dourados 031141",
+    "createdAt": "2026-05-22T03:12:10.630Z"
+  },
+  "playerResultOpen": {
+    "ok": true,
+    "text": "Informar resultado"
+  },
+  "playerResultSubmit": {
+    "ok": true
+  },
+  "completed": true
+}

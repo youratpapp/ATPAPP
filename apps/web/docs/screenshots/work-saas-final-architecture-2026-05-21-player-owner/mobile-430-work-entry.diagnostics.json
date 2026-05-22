@@ -1,0 +1,232 @@
+{
+  "viewport": "mobile-430",
+  "route": "work-entry",
+  "hash": "#/gestao",
+  "screenshot": "mobile-430-work-entry.png",
+  "events": [
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.685ed52f-5e11-4f19-9de0-865b0a06b48b",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.685ed52f-5e11-4f19-9de0-865b0a06b48b",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.02eb67b4-9062-4199-8a67-9d1daa13dc7c",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.02eb67b4-9062-4199-8a67-9d1daa13dc7c",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.5f264923-5473-4d7d-801b-75dd5ea15ea7",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.5f264923-5473-4d7d-801b-75dd5ea15ea7",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.487b9846-9739-4f42-bc5f-60ea0cb4d050",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.487b9846-9739-4f42-bc5f-60ea0cb4d050",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.49709592-173c-49c6-aa22-bacb6ec0b31b",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.49709592-173c-49c6-aa22-bacb6ec0b31b",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.02eb67b4-9062-4199-8a67-9d1daa13dc7c",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.02eb67b4-9062-4199-8a67-9d1daa13dc7c",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.76547c0f-43ba-49fb-946d-c6dd7e9cefcd",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.76547c0f-43ba-49fb-946d-c6dd7e9cefcd",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.5f264923-5473-4d7d-801b-75dd5ea15ea7",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.5f264923-5473-4d7d-801b-75dd5ea15ea7",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.487b9846-9739-4f42-bc5f-60ea0cb4d050",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.487b9846-9739-4f42-bc5f-60ea0cb4d050",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.685ed52f-5e11-4f19-9de0-865b0a06b48b",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.685ed52f-5e11-4f19-9de0-865b0a06b48b",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.76547c0f-43ba-49fb-946d-c6dd7e9cefcd",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.76547c0f-43ba-49fb-946d-c6dd7e9cefcd",
+      "line": null
+    },
+    {
+      "source": "network",
+      "type": "http",
+      "level": "warning",
+      "text": "400",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.49709592-173c-49c6-aa22-bacb6ec0b31b",
+      "line": null
+    },
+    {
+      "source": "log",
+      "type": "network",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 400 ()",
+      "url": "https://xdopstommqojjofapzjl.supabase.co/rest/v1/place_academy_settings?select=place_id%2Cmakeup_notice_hours%2Cauto_create_makeup_credit_on_notice%2Crequire_attendance_call%2Cupdated_by%2Ccreated_at%2Cupdated_at&place_id=eq.49709592-173c-49c6-aa22-bacb6ec0b31b",
+      "line": null
+    }
+  ]
+}

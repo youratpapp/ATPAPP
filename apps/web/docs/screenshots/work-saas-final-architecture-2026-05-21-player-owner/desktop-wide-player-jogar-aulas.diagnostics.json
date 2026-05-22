@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "player-jogar-aulas",
+  "hash": "#/locais?intent=classes",
+  "screenshot": "desktop-wide-player-jogar-aulas.png",
+  "events": []
+}

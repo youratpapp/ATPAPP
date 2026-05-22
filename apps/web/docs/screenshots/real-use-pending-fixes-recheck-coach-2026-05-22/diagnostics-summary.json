@@ -1,0 +1,9 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "coach-management-home",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-coach-management-home.png",
+    "events": []
+  }
+]

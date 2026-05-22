@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-390",
+  "route": "player-agenda",
+  "hash": "#/agenda",
+  "screenshot": "mobile-390-player-agenda.png",
+  "events": []
+}

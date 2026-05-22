@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "player-tournaments-context-check",
+  "hash": "#/eventos/torneios?view=participating",
+  "screenshot": "desktop-wide-player-tournaments-context-check.png",
+  "events": []
+}

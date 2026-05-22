@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "leagues-organizer",
+  "hash": "#/eventos/ligas?view=organizing",
+  "screenshot": "desktop-wide-leagues-organizer.png",
+  "events": []
+}

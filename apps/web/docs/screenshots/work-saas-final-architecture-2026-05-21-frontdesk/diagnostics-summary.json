@@ -1,0 +1,226 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-frontdesk-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-calendar",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+    "screenshot": "mobile-390-frontdesk-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-reservations",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "mobile-390-frontdesk-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-new-reservation",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=nova-reserva",
+    "screenshot": "mobile-390-frontdesk-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-waitlist",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "mobile-390-frontdesk-waitlist.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-clients",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+    "screenshot": "mobile-390-frontdesk-clients.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-academy-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+    "screenshot": "mobile-390-frontdesk-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "frontdesk-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda",
+    "screenshot": "mobile-390-frontdesk-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-frontdesk-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-calendar",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+    "screenshot": "mobile-430-frontdesk-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-reservations",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "mobile-430-frontdesk-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-new-reservation",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=nova-reserva",
+    "screenshot": "mobile-430-frontdesk-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-waitlist",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "mobile-430-frontdesk-waitlist.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-clients",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+    "screenshot": "mobile-430-frontdesk-clients.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-academy-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+    "screenshot": "mobile-430-frontdesk-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "frontdesk-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda",
+    "screenshot": "mobile-430-frontdesk-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-frontdesk-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-calendar",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+    "screenshot": "desktop-1366-frontdesk-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-reservations",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "desktop-1366-frontdesk-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-new-reservation",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=nova-reserva",
+    "screenshot": "desktop-1366-frontdesk-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-waitlist",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "desktop-1366-frontdesk-waitlist.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-clients",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+    "screenshot": "desktop-1366-frontdesk-clients.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-academy-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+    "screenshot": "desktop-1366-frontdesk-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "frontdesk-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda",
+    "screenshot": "desktop-1366-frontdesk-finance-block.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-work-entry",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-frontdesk-work-entry.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-calendar",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+    "screenshot": "desktop-wide-frontdesk-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-reservations",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "desktop-wide-frontdesk-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-new-reservation",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=nova-reserva",
+    "screenshot": "desktop-wide-frontdesk-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-waitlist",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "desktop-wide-frontdesk-waitlist.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-clients",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+    "screenshot": "desktop-wide-frontdesk-clients.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-academy-today",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+    "screenshot": "desktop-wide-frontdesk-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "frontdesk-finance-block",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda",
+    "screenshot": "desktop-wide-frontdesk-finance-block.png",
+    "events": []
+  }
+]

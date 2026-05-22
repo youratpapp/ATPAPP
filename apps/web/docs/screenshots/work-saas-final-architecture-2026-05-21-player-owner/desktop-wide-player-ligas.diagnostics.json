@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "player-ligas",
+  "hash": "#/eventos/ligas",
+  "screenshot": "desktop-wide-player-ligas.png",
+  "events": []
+}

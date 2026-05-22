@@ -2561,7 +2561,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 </div>
               </dl>
               <ul>
-                <li>O registro usa o fluxo de pagamento manual/stub ja existente.</li>
+                <li>O registro usa o pagamento manual/stub ja existente.</li>
                 <li>Se o pagamento não foi recebido, mantenha a pendência visivel na lista de jogadores.</li>
               </ul>
             </div>
@@ -2996,33 +2996,39 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   };
   const leagueOwnerTabItems = (() => {
     const order = preferredLeagueTabsFor(leagueOperationalPhase, true);
-    const items: Array<{ badge?: number; label: string; value: PageTab }> = [
+    const items: Array<{ badge?: number; compactLabel?: string; label: string; value: PageTab }> = [
       {
         value: "visao",
         label: leagueOperationalPhase === "history" ? "Historico" : "Rodada",
+        compactLabel: leagueOperationalPhase === "history" ? "Historico" : "Rodada",
         badge: leagueOperationTasks.length > 0 ? leagueOperationTasks.length : undefined,
       },
       {
         value: "jogadores",
         label: "Participantes",
+        compactLabel: "Pessoas",
         badge: registrationStats.pending > 0 ? registrationStats.pending : undefined,
       },
       {
         value: "classificacao",
         label: leagueOperationalPhase === "closing" || leagueOperationalPhase === "history" ? "Ranking final" : "Classificacao",
+        compactLabel: leagueOperationalPhase === "closing" || leagueOperationalPhase === "history" ? "Ranking" : "Tabela",
       },
       {
         value: "partidas",
         label: "Partidas",
+        compactLabel: "Jogos",
         badge: leagueOverview.pending > 0 ? leagueOverview.pending : undefined,
       },
       {
         value: "chat",
         label: "Comunicacao",
+        compactLabel: "Chat",
       },
       {
         value: "configuracao",
         label: leagueOperationalPhase === "configuration" ? "Configuracao" : "Ajustes",
+        compactLabel: "Ajustes",
       },
     ];
     return items.sort((a, b) => order.indexOf(a.value) - order.indexOf(b.value));
@@ -3040,6 +3046,16 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               ? "Classificacao"
               : value === "jogadores"
                 ? "Jogadores"
+                : "Chat",
+      compactLabel:
+        value === "visao"
+          ? "Rodada"
+          : value === "partidas"
+            ? "Jogos"
+            : value === "classificacao"
+              ? "Tabela"
+              : value === "jogadores"
+                ? "Pessoas"
                 : "Chat",
     }));
   const selectedLeagueTask =
@@ -3152,7 +3168,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
               <nav className="tournament-public-nav league-public-nav" aria-label="Navegacao publica da liga">
                 {leagueParticipantNavItems.map((item) => (
                   <button key={`league-participant-nav:${item.value}`} type="button" className={activeTab === item.value ? "active" : ""} onClick={() => goToTab(item.value)}>
-                    {item.label}
+                    {item.compactLabel ?? item.label}
                   </button>
                 ))}
               </nav>
@@ -3367,45 +3383,6 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                 totalCount={leagueOperationTasks.length}
               />
             </LeagueOperationalCockpit>
-          ) : null}
-
-          {false && showOwnerLeagueFocus ? (
-            <section className="competition-focus-panel league-operation-panel">
-              <div className="competition-focus-main">
-                <span>Operacao da liga</span>
-                <strong>{leagueOverview.nextAction}</strong>
-                <small>
-                  {selectedSeason?.name || "Temporada"} | {selectedClassId ? classes.find((item) => item.id === selectedClassId)?.className || "Classe" : "Todas as classes"}
-                </small>
-              </div>
-              <div className="competition-focus-metrics">
-                <span>
-                  <strong>{leagueOverview.pending}</strong>
-                  partidas pendentes
-                </span>
-                <span>
-                  <strong>{registrationStats.pending}</strong>
-                  inscrições pendentes
-                </span>
-                <span>
-                  <strong>{leagueOverview.attention}</strong>
-                  em analise
-                </span>
-              </div>
-              <button className="primary" type="button" onClick={() => goToTab(leagueOverview.nextTab)}>
-                Resolver agora
-              </button>
-              <LeagueOperationTaskRows
-                ariaLabel="Fila operacional da liga"
-                emptyDetail="A liga não tem inscrições, partidas ou geracao de rodada aguardando acao nesta selecao."
-                emptyTitle="Nenhuma acao critica agora"
-                heading="Rodada atual"
-                onOpenAll={openOwnerLeagueTaskList}
-                onOpenTask={(task) => setSelectedLeagueTaskId(task.id)}
-                tasks={visibleLeagueOperationTasks}
-                totalCount={leagueOperationTasks.length}
-              />
-            </section>
           ) : null}
 
           {!isOwner && activeTab === "visao" && visiblePlayerLeagueTasks.length > 0 ? (
@@ -3916,7 +3893,7 @@ export function LeagueDetailsPage({ user, profile }: Props) {
                   <>
                   <p className="subtle" style={{ marginTop: 0 }}>
                     Classe: {selectedClassLabel} | Pendentes: {registrationStats.pending} | Aprovadas: {registrationStats.approved} | Rejeitadas:{" "}
-                    {registrationStats.rejected} | Pagas: {registrationPaymentStats.paidCount}/{filteredRegistrations.length} Â·{" "}
+                    {registrationStats.rejected} | Pagas: {registrationPaymentStats.paidCount}/{filteredRegistrations.length}  | {" "}
                     {formatMoneyFromCents(registrationPaymentStats.paidAmountCents)}
                   </p>
                   <div className="league-owner-registration-summary" aria-label="Resumo das inscricoes da liga">

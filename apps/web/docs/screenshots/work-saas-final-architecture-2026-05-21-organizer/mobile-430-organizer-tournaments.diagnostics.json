@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-430",
+  "route": "organizer-tournaments",
+  "hash": "#/eventos/torneios?view=organizing",
+  "screenshot": "mobile-430-organizer-tournaments.png",
+  "events": []
+}

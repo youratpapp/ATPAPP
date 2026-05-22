@@ -213,7 +213,7 @@ function emptyPlaceAdminResourceEntry(placeId: string): PlaceAdminResourceEntry 
     academyLessonRequests: [],
     academyMakeups: [],
     academyProgress: [],
-    academySettings: { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" },
+    academySettings: { placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, requireAttendanceCall: false, updatedBy: null, createdAt: "", updatedAt: "" },
     academySlots: [],
     academyStudentContracts: [],
     bookingRules: [],
@@ -312,7 +312,7 @@ export async function fetchPlaceAdminResources(input: {
     access.canUseAcademy ? listPlaceAcademyLessonRequests(input.placeId).catch(() => [] as AcademyLessonRequest[]) : Promise.resolve([] as AcademyLessonRequest[]),
     access.canUseAcademy ? listPlaceAcademyMakeupCredits(input.placeId).catch(() => [] as AcademyMakeupCredit[]) : Promise.resolve([] as AcademyMakeupCredit[]),
     access.canUseAcademy ? listPlaceAcademyProgressNotes(input.placeId).catch(() => [] as AcademyProgressNote[]) : Promise.resolve([] as AcademyProgressNote[]),
-    access.canManageAcademy ? getPlaceAcademySettings(input.placeId).catch(() => ({ placeId: input.placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" }) as AcademySettings) : Promise.resolve({ placeId: input.placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, updatedBy: null, createdAt: "", updatedAt: "" } as AcademySettings),
+    access.canManageAcademy ? getPlaceAcademySettings(input.placeId).catch(() => ({ placeId: input.placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, requireAttendanceCall: false, updatedBy: null, createdAt: "", updatedAt: "" }) as AcademySettings) : Promise.resolve({ placeId: input.placeId, makeupNoticeHours: 12, autoCreateMakeupCreditOnNotice: true, requireAttendanceCall: false, updatedBy: null, createdAt: "", updatedAt: "" } as AcademySettings),
     access.canUseAcademy ? listPlaceAcademyStudentContracts(input.placeId).catch(() => [] as AcademyStudentContract[]) : Promise.resolve([] as AcademyStudentContract[]),
   ]);
   return {

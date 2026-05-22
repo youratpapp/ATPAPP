@@ -1,0 +1,170 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "mobile-390-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "mobile-390-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "mobile-390-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "mobile-390-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-390-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-390-manager-pos.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "mobile-430-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "mobile-430-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "mobile-430-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "mobile-430-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-430-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-430-manager-pos.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "desktop-1366-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "desktop-1366-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "desktop-1366-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "desktop-1366-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-1366-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-1366-manager-pos.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "desktop-wide-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "desktop-wide-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "desktop-wide-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "desktop-wide-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-wide-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-wide-manager-pos.png",
+    "events": []
+  }
+]

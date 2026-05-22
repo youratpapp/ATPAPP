@@ -256,7 +256,7 @@ export function PlaceAcademyCoachesModule({
         {!coaches.length ? (
           <WorkspaceEmptyState
             title="Nenhum professor cadastrado"
-            detail="Cadastre o primeiro professor aqui para liberar turmas, chamada e agenda."
+            detail="Cadastre o primeiro professor aqui para liberar turmas, agenda e alunos."
             action={
               canManagePlace ? (
                 <button className="primary" onClick={onCreateCoach} disabled={busy || !coachDraft.name.trim()}>

@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "tournaments-organizer",
+  "hash": "#/eventos/torneios?view=organizing",
+  "screenshot": "desktop-wide-tournaments-organizer.png",
+  "events": []
+}

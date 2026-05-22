@@ -38,7 +38,7 @@ export function PaymentStubDialog({
       open={open}
       eyebrow="Pagamento"
       title={title}
-      subtitle="Fluxo temporario ate a integracao do gateway"
+      subtitle="Pagamento temporario ate a integracao do gateway"
       className="payment-stub-dialog"
       onClose={onClose}
       actions={

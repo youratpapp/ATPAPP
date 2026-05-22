@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-430",
+  "route": "play-matches",
+  "hash": "#/locais?intent=matches",
+  "screenshot": "mobile-430-play-matches.png",
+  "events": []
+}

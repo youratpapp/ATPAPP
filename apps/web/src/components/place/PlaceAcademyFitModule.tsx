@@ -110,7 +110,7 @@ export function PlaceAcademyFitModule({
 
   return (
     <WorkspaceList>
-      <WorkspaceCard title="Buscar encaixe" subtitle="Encontre horario real para aula avulsa ou reposicao." detail="Use poucos filtros e deixe o sistema retornar as turmas com vaga ou ausencia avisada.">
+      <WorkspaceCard title="Buscar encaixe" subtitle="Encontre horario real para aula avulsa ou reposicao." detail="Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo.">
         {selectedMakeupCredit ? (
           <div className="academy-fit-context">
             <strong>Reposicao selecionada</strong>
@@ -234,7 +234,7 @@ export function PlaceAcademyFitModule({
                   </span>
                   <span>
                     {slot.coachName || "Professor"} | {slot.level || "nivel livre"} | {countLabel(slot.availableSpots, "vaga", "vagas")} |{" "}
-                    {slot.openAbsences ? countLabel(slot.openAbsences, "ausencia avisada", "ausencias avisadas") : "capacidade disponivel"} | avulsa estimada{" "}
+                    {slot.openAbsences ? countLabel(slot.openAbsences, "aviso previo", "avisos previos") : "capacidade disponivel"} | avulsa estimada{" "}
                     {formatMoneyFromCents(Math.round(slot.monthlyFeeCents / 4))}
                     {requestDraft.requestType === "makeup" ? ` | reposicoes abertas: ${selectedMakeupCredit ? 1 : openMakeupCredits.length}` : ""}
                   </span>
@@ -295,7 +295,7 @@ export function PlaceAcademyFitModule({
       ) : (
         <WorkspaceEmptyState
           title="Nenhum encaixe listado"
-          detail="Defina data e filtros para encontrar turmas com vaga, ausencia avisada ou capacidade disponivel."
+          detail="Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel."
           action={
             <button onClick={onSearchFitSlots} disabled={busy || !fitSearch.requestedOn}>
               Buscar encaixes

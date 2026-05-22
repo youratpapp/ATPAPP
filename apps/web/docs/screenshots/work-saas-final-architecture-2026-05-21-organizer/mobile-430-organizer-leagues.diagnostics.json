@@ -1,0 +1,7 @@
+{
+  "viewport": "mobile-430",
+  "route": "organizer-leagues",
+  "hash": "#/eventos/ligas?view=organizing",
+  "screenshot": "mobile-430-organizer-leagues.png",
+  "events": []
+}

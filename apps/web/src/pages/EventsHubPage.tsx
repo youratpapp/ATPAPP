@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+﻿import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
@@ -77,8 +77,8 @@ function SearchIcon() {
 }
 
 function statusLabel(status: TournamentSummary["status"] | LeagueSummary["status"]): string {
-  if (status === "registration_open") return "Inscrições abertas";
-  if (status === "registration_closed") return "Inscrições encerradas";
+  if (status === "registration_open") return "Inscricoes abertas";
+  if (status === "registration_closed") return "Inscricoes encerradas";
   if (status === "live") return "Em andamento";
   if (status === "finished") return "Finalizada";
   if (status === "active") return "Ativa";
@@ -647,10 +647,10 @@ export function EventsHubPage({ user, profile }: Props) {
       ) : null}
 
       {!loading && !error && activeMode !== "organizing" ? (
-        <section className="competition-intent-strip" aria-label="Modo de competições">
+        <section className="competition-intent-strip" aria-label="Modo de competicoes">
           <IntentPill
             label="Jogando"
-            detail="partidas e inscrições"
+            detail="partidas e inscricoes"
             count={playerCount}
             active={activeMode === "playing"}
             onSelect={() => selectMode("playing")}
@@ -776,9 +776,9 @@ export function EventsHubPage({ user, profile }: Props) {
               <span>
                 {hasOrganizerContext
                   ? "Suas competicoes estao sem acoes visiveis. Abra torneios ou ligas para revisar detalhes, publicar ajustes ou consultar historico."
-                  : "Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro de cada fluxo."}
+                  : "Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro da configuracao de cada competicao."}
               </span>
-              <ActionBar className="home-empty-actions" label="Acoes de organizador em competições">
+              <ActionBar className="home-empty-actions" label="Acoes de organizador em competicoes">
                 <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
                   Criar torneio
                 </button>

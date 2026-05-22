@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-wide",
+  "route": "play-matches",
+  "hash": "#/locais?intent=matches",
+  "screenshot": "desktop-wide-play-matches.png",
+  "events": []
+}

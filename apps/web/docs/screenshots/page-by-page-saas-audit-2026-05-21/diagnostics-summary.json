@@ -1,0 +1,999 @@
+[
+  {
+    "viewport": "mobile-390",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile-390-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "play",
+    "hash": "#/locais",
+    "screenshot": "mobile-390-play.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "play-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "mobile-390-play-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "play-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "mobile-390-play-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "play-matches",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "mobile-390-play-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "mobile-390-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "public-place-reserve",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "mobile-390-public-place-reserve.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "public-place-classes",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas",
+    "screenshot": "mobile-390-public-place-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "compete",
+    "hash": "#/eventos",
+    "screenshot": "mobile-390-compete.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "tournaments-player",
+    "hash": "#/eventos/torneios",
+    "screenshot": "mobile-390-tournaments-player.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "tournaments-organizer",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "mobile-390-tournaments-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "leagues-player",
+    "hash": "#/eventos/ligas",
+    "screenshot": "mobile-390-leagues-player.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "leagues-organizer",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "mobile-390-leagues-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "mobile-390-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "tournament-games",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos",
+    "screenshot": "mobile-390-tournament-games.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "tournament-standings",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "mobile-390-tournament-standings.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "league-owner",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "mobile-390-league-owner.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "league-matches",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "mobile-390-league-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "routine",
+    "hash": "#/agenda",
+    "screenshot": "mobile-390-routine.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-390-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "work-hub",
+    "hash": "#/gestao",
+    "screenshot": "mobile-390-work-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-panel",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-390-manager-panel.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "mobile-390-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "mobile-390-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-new-reservation",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "mobile-390-manager-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "mobile-390-manager-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-academy-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario",
+    "screenshot": "mobile-390-manager-academy-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-academy-classes",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas",
+    "screenshot": "mobile-390-manager-academy-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-academy-students",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos",
+    "screenshot": "mobile-390-manager-academy-students.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-390-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-revenue",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis",
+    "screenshot": "mobile-390-manager-revenue.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-revenue-paid",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos",
+    "screenshot": "mobile-390-manager-revenue-paid.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-390-manager-pos.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-team",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe",
+    "screenshot": "mobile-390-manager-team.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-390",
+    "route": "manager-settings",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes",
+    "screenshot": "mobile-390-manager-settings.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "mobile-430-home.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "play",
+    "hash": "#/locais",
+    "screenshot": "mobile-430-play.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "play-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "mobile-430-play-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "play-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "mobile-430-play-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "play-matches",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "mobile-430-play-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "mobile-430-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "public-place-reserve",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "mobile-430-public-place-reserve.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "public-place-classes",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas",
+    "screenshot": "mobile-430-public-place-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "compete",
+    "hash": "#/eventos",
+    "screenshot": "mobile-430-compete.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournaments-player",
+    "hash": "#/eventos/torneios",
+    "screenshot": "mobile-430-tournaments-player.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournaments-organizer",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "mobile-430-tournaments-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "leagues-player",
+    "hash": "#/eventos/ligas",
+    "screenshot": "mobile-430-leagues-player.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "leagues-organizer",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "mobile-430-leagues-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "mobile-430-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournament-games",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos",
+    "screenshot": "mobile-430-tournament-games.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "tournament-standings",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "mobile-430-tournament-standings.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "league-owner",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "mobile-430-league-owner.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "league-matches",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "mobile-430-league-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "routine",
+    "hash": "#/agenda",
+    "screenshot": "mobile-430-routine.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "mobile-430-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "work-hub",
+    "hash": "#/gestao",
+    "screenshot": "mobile-430-work-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-panel",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-430-manager-panel.png",
+    "events": [
+      {
+        "source": "console",
+        "type": "info",
+        "level": "info",
+        "text": "Workspace data timeout: payments",
+        "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779415302171",
+        "line": 109
+      },
+      {
+        "source": "console",
+        "type": "info",
+        "level": "info",
+        "text": "Workspace data timeout: open matches",
+        "url": "http://127.0.0.1:5173/src/lib/place-admin-data.ts?t=1779415302171",
+        "line": 109
+      }
+    ]
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "mobile-430-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "mobile-430-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-new-reservation",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "mobile-430-manager-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "mobile-430-manager-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-academy-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario",
+    "screenshot": "mobile-430-manager-academy-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-academy-classes",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas",
+    "screenshot": "mobile-430-manager-academy-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-academy-students",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos",
+    "screenshot": "mobile-430-manager-academy-students.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-430-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-revenue",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis",
+    "screenshot": "mobile-430-manager-revenue.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-revenue-paid",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos",
+    "screenshot": "mobile-430-manager-revenue-paid.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "mobile-430-manager-pos.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-team",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe",
+    "screenshot": "mobile-430-manager-team.png",
+    "events": []
+  },
+  {
+    "viewport": "mobile-430",
+    "route": "manager-settings",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes",
+    "screenshot": "mobile-430-manager-settings.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop-1366-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "play",
+    "hash": "#/locais",
+    "screenshot": "desktop-1366-play.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "play-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "desktop-1366-play-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "play-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "desktop-1366-play-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "play-matches",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "desktop-1366-play-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "desktop-1366-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "public-place-reserve",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "desktop-1366-public-place-reserve.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "public-place-classes",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas",
+    "screenshot": "desktop-1366-public-place-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "compete",
+    "hash": "#/eventos",
+    "screenshot": "desktop-1366-compete.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournaments-player",
+    "hash": "#/eventos/torneios",
+    "screenshot": "desktop-1366-tournaments-player.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournaments-organizer",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "desktop-1366-tournaments-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "leagues-player",
+    "hash": "#/eventos/ligas",
+    "screenshot": "desktop-1366-leagues-player.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "leagues-organizer",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "desktop-1366-leagues-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "desktop-1366-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournament-games",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos",
+    "screenshot": "desktop-1366-tournament-games.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "tournament-standings",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "desktop-1366-tournament-standings.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "league-owner",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "desktop-1366-league-owner.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "league-matches",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "desktop-1366-league-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "routine",
+    "hash": "#/agenda",
+    "screenshot": "desktop-1366-routine.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-1366-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "work-hub",
+    "hash": "#/gestao",
+    "screenshot": "desktop-1366-work-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-panel",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-1366-manager-panel.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "desktop-1366-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "desktop-1366-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-new-reservation",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "desktop-1366-manager-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "desktop-1366-manager-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-academy-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario",
+    "screenshot": "desktop-1366-manager-academy-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-academy-classes",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas",
+    "screenshot": "desktop-1366-manager-academy-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-academy-students",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos",
+    "screenshot": "desktop-1366-manager-academy-students.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-1366-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-revenue",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis",
+    "screenshot": "desktop-1366-manager-revenue.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-revenue-paid",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos",
+    "screenshot": "desktop-1366-manager-revenue-paid.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-1366-manager-pos.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-team",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe",
+    "screenshot": "desktop-1366-manager-team.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "manager-settings",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes",
+    "screenshot": "desktop-1366-manager-settings.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "home",
+    "hash": "#/inicio",
+    "screenshot": "desktop-wide-home.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "play",
+    "hash": "#/locais",
+    "screenshot": "desktop-wide-play.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "play-booking",
+    "hash": "#/locais?intent=booking",
+    "screenshot": "desktop-wide-play-booking.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "play-classes",
+    "hash": "#/locais?intent=classes",
+    "screenshot": "desktop-wide-play-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "play-matches",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "desktop-wide-play-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "public-place",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b",
+    "screenshot": "desktop-wide-public-place.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "public-place-reserve",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/reservar",
+    "screenshot": "desktop-wide-public-place-reserve.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "public-place-classes",
+    "hash": "#/locais/49709592-173c-49c6-aa22-bacb6ec0b31b/aulas",
+    "screenshot": "desktop-wide-public-place-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "compete",
+    "hash": "#/eventos",
+    "screenshot": "desktop-wide-compete.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournaments-player",
+    "hash": "#/eventos/torneios",
+    "screenshot": "desktop-wide-tournaments-player.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournaments-organizer",
+    "hash": "#/eventos/torneios?view=organizing",
+    "screenshot": "desktop-wide-tournaments-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "leagues-player",
+    "hash": "#/eventos/ligas",
+    "screenshot": "desktop-wide-leagues-player.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "leagues-organizer",
+    "hash": "#/eventos/ligas?view=organizing",
+    "screenshot": "desktop-wide-leagues-organizer.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournament-ops",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/organizacao",
+    "screenshot": "desktop-wide-tournament-ops.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournament-games",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/jogos",
+    "screenshot": "desktop-wide-tournament-games.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "tournament-standings",
+    "hash": "#/eventos/23fb0ac9-8436-4cd1-a68c-d23cf0129b56/classificacao",
+    "screenshot": "desktop-wide-tournament-standings.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "league-owner",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca",
+    "screenshot": "desktop-wide-league-owner.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "league-matches",
+    "hash": "#/eventos/ligas/d5c32395-b466-4bb2-a97e-3b648da5c8ca?tab=partidas",
+    "screenshot": "desktop-wide-league-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "routine",
+    "hash": "#/agenda",
+    "screenshot": "desktop-wide-routine.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-wide-profile.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "work-hub",
+    "hash": "#/gestao",
+    "screenshot": "desktop-wide-work-hub.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-panel",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-wide-manager-panel.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=calendario",
+    "screenshot": "desktop-wide-manager-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-reservations",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=reservas",
+    "screenshot": "desktop-wide-manager-reservations.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-new-reservation",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/agenda?visao=nova-reserva",
+    "screenshot": "desktop-wide-manager-new-reservation.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-academy-today",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=hoje",
+    "screenshot": "desktop-wide-manager-academy-today.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-academy-calendar",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=calendario",
+    "screenshot": "desktop-wide-manager-academy-calendar.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-academy-classes",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=turmas",
+    "screenshot": "desktop-wide-manager-academy-classes.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-academy-students",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/academia?visao=alunos",
+    "screenshot": "desktop-wide-manager-academy-students.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-people",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-wide-manager-people.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-revenue",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=recebiveis",
+    "screenshot": "desktop-wide-manager-revenue.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-revenue-paid",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/receita?visao=pagos",
+    "screenshot": "desktop-wide-manager-revenue-paid.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-pos",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/painel",
+    "screenshot": "desktop-wide-manager-pos.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-team",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/equipe",
+    "screenshot": "desktop-wide-manager-team.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-wide",
+    "route": "manager-settings",
+    "hash": "#/gestao/49709592-173c-49c6-aa22-bacb6ec0b31b/ajustes",
+    "screenshot": "desktop-wide-manager-settings.png",
+    "events": []
+  }
+]
