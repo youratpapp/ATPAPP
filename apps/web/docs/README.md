@@ -1,18 +1,35 @@
-# ATP Docs - Fonte Atual
+# ATP Docs
 
-Este diretorio foi saneado em 2026-05-22 para evitar conflito entre MDs antigos e a arquitetura atual do produto.
+Esta pasta contem a documentacao ativa e historica do produto.
 
-## Leia Primeiro
+## Fonte atual
 
-1. `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md`
-2. `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
-3. `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`
-4. `WORK_SAAS_UX_ORGANIZATION_EXECUTION_QUEUE_V4_2026_05_22.md`
-5. `EXECUTION_QUEUE.md`
+Leia primeiro:
 
-## Regra
+- `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md`
 
-A V4 governa organizacao, UX, navegacao, mobile Trabalho, SaaS web e page responsibilities.
+## Nova base SaaS ativa
 
-Documentos arquivados em `Legado/2026-05-22_pre_v4_archived/` podem ser consultados como historico, inventario ou evidencia, mas nao devem vencer a V4 quando houver conflito.
+- `SAAS_MASTER_BLUEPRINT_COMPLETO.md`
+- `SAAS_EMPRESARIAL_ORGANIZACAO_MANUAL.md`
+- `APP_FUNCOES_EXISTENTES_MAPA.md`
+- `PERSONAS_OPERACIONAIS_E_FUNCOES.md`
+- `MATRIZ_PERSONAS_FUNCOES.md`
+- `EXPANSAO_FUNCIONAL_SAAS.md`
+- `NOVA_ARQUITETURA_NAVEGACAO_SAAS.md`
+- `FLUXOS_TRABALHO_POR_PERSONA.md`
+- `DIAGNOSTICO_ATUAL_SAAS.md`
+- `PLANO_REORGANIZACAO_SAAS_FASES.md`
+- `SAAS_IMPLEMENTATION_QUEUE_COMPLETA.md`
+- `SAAS_TARGET_ARCHITECTURE_IMPLEMENTATION_MAP.md`
+- `SAAS_EXECUTION_GUARDRAILS_ANTI_PATTERNS.md`
+- `SAAS_SCREEN_CONTRACTS_DETAILED.md`
+- `SAAS_PAGE_BY_PAGE_COMPLETION_REVIEW.md`
 
+## Legado
+
+Documentos antigos ficam em `Legado/` apenas como historico. Eles nao devem orientar novas decisoes de UX, produto, arquitetura SaaS ou prioridades.
+
+## Regra de trabalho
+
+Primeiro documentar e validar produto. Depois implementar em fases. A base atual do app deve ser reaproveitada quando fizer sentido, mas nao limita o SaaS alvo.

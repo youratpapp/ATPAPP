@@ -19,17 +19,18 @@ export type PlaceAdminRoutableView =
   | TeamManagementView;
 
 export const PLACE_ADMIN_MODULE_SEGMENTS: Record<PlaceManagementModule, string> = {
-  dashboard: "painel",
+  dashboard: "inicio",
   bookings: "agenda",
   academy: "academia",
-  clients: "pessoas",
-  finance: "receita",
-  canteen: "cantina",
+  clients: "clientes",
+  finance: "financeiro",
+  canteen: "loja-pos",
   team: "equipe",
-  settings: "ajustes",
+  settings: "administracao",
 };
 
 const PLACE_ADMIN_SEGMENT_TO_MODULE: Record<string, PlaceManagementModule> = {
+  inicio: "dashboard",
   painel: "dashboard",
   dashboard: "dashboard",
   agenda: "bookings",
@@ -42,10 +43,15 @@ const PLACE_ADMIN_SEGMENT_TO_MODULE: Record<string, PlaceManagementModule> = {
   financeiro: "finance",
   receita: "finance",
   finance: "finance",
+  "loja-pos": "canteen",
+  loja: "canteen",
+  pos: "canteen",
   cantina: "canteen",
   canteen: "canteen",
   equipe: "team",
   team: "team",
+  administracao: "settings",
+  admin: "settings",
   ajustes: "settings",
   settings: "settings",
 };
@@ -110,7 +116,7 @@ export const ACADEMY_ADMIN_SEGMENT_TO_VIEW: Record<string, AcademyManagementView
 
 export const CLIENTS_ADMIN_VIEW_SEGMENTS: Record<ClientsManagementView, string> = {
   relationship: "rotina",
-  leads: "contatos",
+  leads: "leads",
   members: "clientes-ativos",
   requests: "pendencias",
   overview: "resumo",

@@ -1,89 +1,87 @@
-# Docs Source Of Truth Index - 2026-05-22
+# Indice de Fonte Atual
 
-Status: indice executivo atual da documentacao do ATP.
+Status: ativo
+Data: 2026-05-22
 
-Objetivo: reduzir conflito entre MDs antigos e as normativas atuais de produto, UX e arquitetura de informacao.
+## Regra principal
 
-## 1. Fonte Executiva Atual
+Os documentos em `Legado/` nao sao fonte de decisao de produto, arquitetura, UX ou prioridade. Eles podem ser consultados apenas como historico.
 
-Use estes arquivos para qualquer decisao estrutural nova:
+A nova base ativa da reorganizacao SaaS e composta pelos documentos abaixo.
 
-1. `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
-2. `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`
-3. `WORK_SAAS_UX_ORGANIZATION_EXECUTION_QUEUE_V4_2026_05_22.md`
-4. `EXECUTION_QUEUE.md`
-5. `WORK_SAAS_V4_EXECUTION_REPORT_2026_05_22.md`
+## Base conceitual e operacional ativa
 
-## 2. Contratos E Mapas Ativos
+0. `SAAS_MASTER_BLUEPRINT_COMPLETO.md`
+   - Documento-mae. Define a arquitetura completa alvo antes de qualquer implementacao estrutural.
 
-Use estes arquivos para entender funcoes, permissoes, rotas, mobile e responsabilidades:
+1. `SAAS_EMPRESARIAL_ORGANIZACAO_MANUAL.md`
+   - Manual de principios, papel do SaaS, web vs mobile e padrao de organizacao.
 
-- `WORK_AREA_FUNCTION_INVENTORY.md`
-- `WORK_SAAS_DETAILED_USER_FLOWS.md`
-- `WORK_SAAS_INFORMATION_ARCHITECTURE.md`
-- `WORK_MOBILE_OPERATIONAL_SCOPE.md`
-- `WORK_SAAS_PAGE_RESPONSIBILITIES.md`
-- `WORK_SAAS_RESTRUCTURE_ROADMAP.md`
-- `WORK_SAAS_ROUTE_COMPATIBILITY_CONTRACT_V3.md`
-- `WORK_SAAS_PERMISSION_CONTRACT_V3.md`
-- `WORK_MOBILE_AND_SAAS_RESTRUCTURE_EXECUTION_PLAN_2026_05_22.md`
+2. `APP_FUNCOES_EXISTENTES_MAPA.md`
+   - Inventario das funcoes ja existentes no app e destino recomendado.
 
-## 3. Evidencias Ativas
+3. `PERSONAS_OPERACIONAIS_E_FUNCOES.md`
+   - Personas reais da operacao e o que cada uma precisa fazer.
 
-Use estes arquivos como prova de teste, nao como nova direcao de produto:
+4. `MATRIZ_PERSONAS_FUNCOES.md`
+   - Cruzamento inicial entre funcoes e personas, sem implementar permissoes.
 
-- `WORK_SAAS_REAL_USER_FLOW_TEST_REPORT_2026_05_21.md`
-- `WORK_SAAS_FINAL_SCREEN_AUDIT_2026_05_21.md`
-- `WORK_SAAS_QA_ACCEPTANCE_MATRIX.md`
-- `TOURNAMENT_E2E_FLOW_AUDIT_2026_05_20.md`
-- `LEAGUE_E2E_FLOW_AUDIT_2026_05_21.md`
-- `ACADEMY_E2E_FLOW_AUDIT_2026_05_21.md`
-- `WORK_SAAS_SCREENSHOT_BASELINE_INDEX_2026_05_21.md`
-- `WORK_SAAS_SCREENSHOT_ARCHIVE_POLICY_2026_05_21.md`
+5. `EXPANSAO_FUNCIONAL_SAAS.md`
+   - Lacunas e expansoes necessarias para maturidade SaaS.
 
-## 4. Banco E SQL
+6. `NOVA_ARQUITETURA_NAVEGACAO_SAAS.md`
+   - Arquitetura alvo de navegacao, workspaces e separacao web/mobile.
 
-Use estes arquivos para estado de migrations e aplicacao SQL:
+7. `FLUXOS_TRABALHO_POR_PERSONA.md`
+   - Fluxos reais por papel, do inicio ao fim.
 
-- `WORK_SAAS_DATABASE_MIGRATION_CLOSURE_REPORT.md`
-- `WORK_SAAS_DATABASE_MIGRATION_QUEUE.md`
-- `SUPABASE_SQL_APPLICATION_RUNBOOK_2026_05_21.md`
+8. `DIAGNOSTICO_ATUAL_SAAS.md`
+   - Diagnostico honesto da estrutura atual.
 
-## 5. Estudos De Apoio
+9. `PLANO_REORGANIZACAO_SAAS_FASES.md`
+   - Plano em fases para sair do estado atual ate o SaaS alvo.
 
-Estes documentos ainda podem apoiar decisoes especificas, mas nao substituem a V4:
+10. `SAAS_IMPLEMENTATION_QUEUE_COMPLETA.md`
+   - Ordem executiva completa para implantacao sprint a sprint ate o final.
 
-- `ATP_FINANCE_WORKFLOW_STUDY_2026_05_21.md`
-- `NAVIGATION_WORKSPACE_RESTRUCTURE_V4.md`
+11. `SAAS_TARGET_ARCHITECTURE_IMPLEMENTATION_MAP.md`
+   - Mapa alvo de menus, paginas, rotas, dominios e conexoes entre sprints.
 
-## 6. Legado
+12. `SAAS_EXECUTION_GUARDRAILS_ANTI_PATTERNS.md`
+   - Regras obrigatorias, anti-padroes proibidos e checklists de execucao.
 
-Documentos antigos, queues V1/V2/V3, auditorias intermediarias e relatorios de sprint foram movidos para:
+13. `SAAS_SCREEN_CONTRACTS_DETAILED.md`
+   - Contratos detalhados de tela para guiar implementacao sem inferencia.
 
-`Legado/2026-05-22_pre_v4_archived/`
+14. `SAAS_PAGE_BY_PAGE_COMPLETION_REVIEW.md`
+   - Revisao pagina por pagina das lacunas corrigidas antes da implementacao.
 
-Use legado apenas para:
+## Documentos tecnicos ainda uteis
 
-- confirmar historico;
-- recuperar inventario antigo;
-- entender por que uma decisao foi abandonada;
-- consultar evidencias que nao existam nos docs ativos.
+Estes documentos podem continuar ativos porque nao definem arquitetura de produto antiga; eles registram limites tecnicos ou runbooks:
 
-Nao use legado para:
+- `SUPABASE_SQL_APPLICATION_RUNBOOK_2026_05_21.md`, se existir no repositorio.
+- `TECH_PERMISSION_BOUNDARY_CONTRACT_2026_05_22.md`, se existir no repositorio.
+- `TECH_ROUTE_COMPATIBILITY_CONTRACT_2026_05_22.md`, se existir no repositorio.
+- `WORK_SAAS_DATABASE_MIGRATION_CLOSURE_REPORT.md`, se existir no repositorio.
+- `WORK_SAAS_DATABASE_MIGRATION_QUEUE.md`, se existir no repositorio.
 
-- definir menu atual;
-- definir ordem de implementacao;
-- justificar mobile Trabalho pesado;
-- reabrir UX antiga;
-- concluir que uma area esta aprovada porque uma sprint antiga foi marcada como completa.
+## Como usar esta base
 
-## 7. Regra De Conflito
+Antes de implementar qualquer mudanca estrutural:
 
-Quando dois MDs discordarem:
+1. Confirmar qual persona e fluxo a mudanca atende.
+2. Confirmar em qual dominio SaaS a funcao pertence.
+3. Verificar se a funcao ja existe e pode ser reaproveitada.
+4. Confirmar se a solucao e web, mobile ou ambos.
+5. Proteger rotas publicas e legadas.
+6. Documentar lacuna tecnica apenas quando a base atual nao fechar o fluxo.
 
-1. V4 Master Spec vence.
-2. V4 Execution Queue vence.
-3. Contratos ativos de rota/permissao vencem docs antigos.
-4. Evidencias recentes vencem auditorias antigas.
-5. O codigo real vence suposicoes documentais, mas nao deve virar desculpa para preservar UX ruim.
+## Proibido
 
+- Usar MD legado como fonte principal.
+- Reorganizar apenas o menu atual sem repensar fluxo.
+- Copiar o formato mobile para web SaaS.
+- Colocar configuracao rara na rotina diaria.
+- Misturar Player App com Trabalho.
+- Recriar backend sem provar necessidade operacional e tecnica.

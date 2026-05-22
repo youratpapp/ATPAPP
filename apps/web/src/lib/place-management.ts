@@ -3,25 +3,25 @@ import type { Place, PlaceProductPlan, PlaceStaffMember } from "./types";
 export type PlaceManagementModule = "dashboard" | "bookings" | "academy" | "clients" | "finance" | "canteen" | "team" | "settings";
 
 export const PLACE_MANAGEMENT_MODULE_LABELS: Record<PlaceManagementModule, string> = {
-  dashboard: "Hoje",
-  bookings: "Reservas",
-  academy: "Aulas",
-  clients: "Pessoas",
-  finance: "Receita",
+  dashboard: "Inicio",
+  bookings: "Agenda",
+  academy: "Academia",
+  clients: "Clientes",
+  finance: "Financeiro",
   canteen: "Loja/POS",
   team: "Equipe",
-  settings: "Ajustes",
+  settings: "Administracao",
 };
 
 export const PLACE_MANAGEMENT_MODULE_DESCRIPTIONS: Record<PlaceManagementModule, string> = {
   dashboard: "Fila operacional do dia, pendencias e decisoes que precisam de acao.",
-  bookings: "Calendario operacional de reservas, bloqueios, remarcacoes e lista de espera.",
-  academy: "Turmas, professores, matriculas, avisos, reposicoes e evolucao.",
-  clients: "Pessoas, relacionamento, contatos, interessados e atendimento.",
-  finance: "Recebiveis, pagamentos, lembretes, despesas e planos.",
+  bookings: "Calendario operacional unico para reservas, aulas, bloqueios, remarcacoes e conflitos.",
+  academy: "Turmas, professores, matriculas, reposicoes, aulas e evolucao dos alunos.",
+  clients: "Clientes ativos, leads, relacionamento, atendimento, historico e comunicacao.",
+  finance: "Recebiveis, pagamentos, inadimplencia, despesas, planos e resumo financeiro.",
   canteen: "Venda rapida, produtos, estoque e caixa da operacao.",
   team: "Convites, papeis e acessos da equipe.",
-  settings: "Plano, estrutura e checklist para deixar o local pronto.",
+  settings: "Configuracoes estruturais, equipe, regras, publicacao e recursos avancados.",
 };
 
 export function placeProductFeatures(plan: PlaceProductPlan) {
@@ -58,10 +58,10 @@ export function placeResourceAccess(place: Place, userId: string, staff: PlaceSt
 export function featureList(access: ReturnType<typeof placeResourceAccess>): string[] {
   return [
     access.canUseBookings ? "Agenda" : "",
-    access.canUseAcademy ? "Aulas" : "",
+    access.canUseAcademy ? "Academia" : "",
     access.canUseMemberships ? "Planos de socio" : "",
-    access.canUseCrm ? "CRM" : "",
-    access.canUseFinance ? "Receita" : "",
+    access.canUseCrm ? "Clientes" : "",
+    access.canUseFinance ? "Financeiro" : "",
     access.canUseCanteen ? "Loja/POS" : "",
   ].filter(Boolean);
 }

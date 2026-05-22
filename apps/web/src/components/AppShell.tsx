@@ -5,6 +5,7 @@ import type { Profile } from "../lib/types";
 import { BottomNav } from "./BottomNav";
 import { AppPopover } from "./AppOverlays";
 import logoSymbol from "../assets/logo-atp-symbol.svg";
+import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import { getRouteExperienceMode, getRouteSurfaceMode, type AppSurfaceMode } from "../lib/role-visibility";
 import { useUserMode } from "../lib/user-mode-context";
 
@@ -38,6 +39,17 @@ function BellIcon() {
   );
 }
 
+function activePlaceIdFromPath(pathname: string): string | null {
+  if (!pathname.startsWith("/gestao/")) return null;
+  const [, , rawPlaceId] = pathname.split("/");
+  if (!rawPlaceId) return null;
+  try {
+    return decodeURIComponent(rawPlaceId);
+  } catch {
+    return rawPlaceId;
+  }
+}
+
 export function AppShell({
   user,
   profile,
@@ -56,6 +68,8 @@ export function AppShell({
   const routeSurfaceMode = getRouteSurfaceMode(pathname);
   const routeExperienceMode = getRouteExperienceMode(pathname, search);
   const surfaceMode = mode ?? routeSurfaceMode;
+  const activePlaceId = activePlaceIdFromPath(pathname) || userMode.access.primaryPlaceId;
+  const activePlace = activePlaceId ? userMode.access.placeOptions.find((place) => place.id === activePlaceId) : null;
   const displayName = profile?.displayName || user.email?.split("@")[0] || "Atleta";
   const photo = profile?.photoUrl || "";
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
@@ -97,6 +111,40 @@ export function AppShell({
             </div>
           </div>
           <div className="app-header-actions">
+            {routeExperienceMode === "work" && userMode.access.hasManagement ? (
+              <div className="work-saas-topbar-context" aria-label="Contexto da unidade ativa">
+                <label className="work-unit-select">
+                  <span>Unidade</span>
+                  <select
+                    value={activePlaceId || ""}
+                    onChange={(event) => {
+                      const nextPlaceId = event.target.value;
+                      if (nextPlaceId) navigate(buildPlaceAdminPath(nextPlaceId, "dashboard"));
+                    }}
+                  >
+                    {userMode.access.placeOptions.map((place) => (
+                      <option key={`work-unit:${place.id}`} value={place.id}>
+                        {place.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="work-global-search" aria-label="Busca global">
+                  <span>Buscar cliente, reserva, aula, pagamento...</span>
+                </div>
+                <button
+                  className="work-create-btn"
+                  type="button"
+                  onClick={() => {
+                    const targetPlaceId = activePlaceId || userMode.access.primaryPlaceId;
+                    if (targetPlaceId) navigate(buildPlaceAdminPath(targetPlaceId, "bookings", "nova-reserva"));
+                  }}
+                >
+                  + Criar
+                </button>
+                {activePlace?.detail ? <small>{activePlace.detail}</small> : null}
+              </div>
+            ) : null}
             {userMode.isProfessional ? (
               <div className="app-mode-switch" role="group" aria-label="Modo de uso">
                 <button

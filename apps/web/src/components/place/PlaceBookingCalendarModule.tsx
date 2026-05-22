@@ -316,7 +316,7 @@ export function PlaceBookingCalendarModule({
   const slotStarts = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
   const selectedMobileCourtId = mobileCourtId && visibleCourts.some((court) => court.id === mobileCourtId) ? mobileCourtId : visibleCourts[0]?.id || "";
   const activeEditingBooking = editingBookingId ? bookings.find((booking) => booking.id === editingBookingId) : undefined;
-  const courtColumnMin = visibleCourts.length >= 7 ? "112px" : visibleCourts.length >= 6 ? "126px" : visibleCourts.length >= 5 ? "140px" : "150px";
+  const courtColumnMin = visibleCourts.length > 6 ? "112px" : "0px";
 
   useEffect(() => {
     if (!visibleCourts.length) {
@@ -453,7 +453,15 @@ export function PlaceBookingCalendarModule({
         </div>
       ) : null}
 
-      <div className="court-calendar-board" style={{ "--court-column-min": courtColumnMin, "--court-count": visibleCourts.length } as CSSProperties}>
+      <div
+        className="court-calendar-board"
+        style={
+          {
+            "--court-column-min": courtColumnMin,
+            "--court-count": visibleCourts.length,
+          } as CSSProperties
+        }
+      >
         <div className="court-calendar-time-rail" aria-hidden>
           <span />
           {slotStarts.map((slot) => (

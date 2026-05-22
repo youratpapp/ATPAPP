@@ -1,77 +1,82 @@
-# Execution Queue Atual - 2026-05-22
+# Execution Queue
 
-Status: fila executiva saneada apos arquivamento das queues antigas.
+Status: queue de implementacao ativa definida
+Data: 2026-05-22
 
-Arquivo legado original arquivado em:
+## Situacao atual
 
-`Legado/2026-05-22_pre_v4_archived/EXECUTION_QUEUE.md`
+A queue completa de implantacao esta definida em `SAAS_IMPLEMENTATION_QUEUE_COMPLETA.md`.
 
-## Fonte Principal
+Regra:
+Executar em ordem, sem pedir autorizacao entre sprints. Se houver bloqueio tecnico nao previsto, corrigir o menor necessario, validar e continuar.
 
-A fila estrutural atual e:
+## Queue ativa agora
 
-`WORK_SAAS_UX_ORGANIZATION_EXECUTION_QUEUE_V4_2026_05_22.md`
+### DOC-00 - Validar base SaaS
 
-O relatorio de execucao atual e:
+Objetivo:
+Revisar os documentos ativos e confirmar que a direcao de produto esta correta.
 
-`WORK_SAAS_V4_EXECUTION_REPORT_2026_05_22.md`
+Arquivos:
+- `SAAS_MASTER_BLUEPRINT_COMPLETO.md`
+- `SAAS_EMPRESARIAL_ORGANIZACAO_MANUAL.md`
+- `APP_FUNCOES_EXISTENTES_MAPA.md`
+- `PERSONAS_OPERACIONAIS_E_FUNCOES.md`
+- `MATRIZ_PERSONAS_FUNCOES.md`
+- `EXPANSAO_FUNCIONAL_SAAS.md`
+- `NOVA_ARQUITETURA_NAVEGACAO_SAAS.md`
+- `FLUXOS_TRABALHO_POR_PERSONA.md`
+- `DIAGNOSTICO_ATUAL_SAAS.md`
+- `PLANO_REORGANIZACAO_SAAS_FASES.md`
 
-## Status Da Queue V4
+Criterio de aceite:
+O produto alvo esta claro, separado entre SaaS web, mobile trabalho e Player App.
 
-- V4-00 a V4-16: executados em primeira camada e registrados no MD da queue V4.
-- Correcoes posteriores registradas no relatorio V4:
-  - Reservas como calendario operacional.
-  - WhatsApp/edicao/pagamento em reservas.
-  - Calendario operacional em hora cheia.
-  - Aulas sem submenu pesado.
-  - Chamada opcional por academia, desligada por padrao.
-  - Clientes ativos e Leads separados em abas.
+### DOC-01 - Revisar decisoes fechadas do blueprint
 
-## Backlog Atual Nao Bloqueante
+Objetivo:
+Revisar as decisoes ja fechadas no `SAAS_MASTER_BLUEPRINT_COMPLETO.md` antes da primeira sprint de implementacao.
 
-Estes itens nao sao queues antigas obrigatorias. Sao proximos refinamentos reais, derivados dos testes recentes:
+Decisoes fechadas:
+- Menu de relacionamento: `Clientes`.
+- Entidade conceitual interna: `Pessoa`.
+- Menu de calendario: `Agenda`.
+- Player App: menu `Rotina`, titulo `Minha rotina`.
+- Seletor de unidade/local entra na primeira fase web.
+- Implementar web SaaS antes do mobile trabalho.
+- Pagamento provisorio: modal padrao com botao `Pagar`/`Marcar como pago` que converte como pago via stub.
+- WhatsApp: abrir template profissional e registrar interacao simples quando houver estrutura.
+- Cliente 360: cadastro progressivo, apenas nome + telefone/e-mail + tipo inicial como minimo.
+- Relatorios MVP: cards e listas filtradas primeiro; dashboards avancados depois.
 
-### BACKLOG-01 - Mobile Trabalho Progressivo Para Multiunidade
+Criterio de aceite:
+Nao restar duvida de nomenclatura, dominio e primeira fase pratica.
 
-Problema: gestor com muitos locais ainda pode receber informacao demais no mobile.
+### DOC-02 - Validar templates e Cliente 360
 
-Direcao: agrupar por unidade, alerta e acao principal; empurrar configuracao e relatorio para SaaS web.
+Objetivo:
+Revisar a secao 16 do blueprint antes da implementacao para confirmar que os templates e o Cliente 360 estao no tom correto.
 
-### BACKLOG-02 - Financeiro Como Fluxo Operacional Completo
+Criterio de aceite:
+Cadastro nao fica pesado, WhatsApp cobre os pontos operacionais principais e relatorios nao roubam foco dos fluxos centrais.
 
-Problema: Receita ja foi reorganizada em primeira camada, mas ainda precisa de polimento de fluxo ponta a ponta.
+## Proxima queue candidata, apos validacao
 
-Direcao: receber, pagos, despesas, resumo, baixa manual, modal de pagamento stub e relacao clara com mensalidades/reservas/aulas.
+### FASE-01 - Shell SaaS web e navegacao por dominios
 
-### BACKLOG-03 - Liga Com Agenda Operacional De Rodada
+Objetivo:
+Criar a estrutura web de Trabalho como SaaS profissional, com topbar, unidade ativa, sidebar por dominios e rotas antigas preservadas.
 
-Problema: algumas partidas de liga ainda aparecem com horario/local pendente quando o schema nao traz agenda suficiente.
+Nao iniciar antes de:
+- validar Fase 0;
+- definir labels finais de dominio;
+- confirmar o tratamento de multiunidade/local ativo;
+- confirmar quais dados entram no `Cliente 360` da primeira entrega.
 
-Direcao: definir fluxo de proposta/confirmacao de horario/local para liga sem inventar dado.
+## Regra
 
-### BACKLOG-04 - QA De Permissao Por Unidade
+Nao usar queues antigas em `Legado/`.
 
-Problema: usuarios com permissoes diferentes por local precisam de varredura dedicada.
+## Queue operacional
 
-Direcao: validar sidebar, bottom nav e acesso por unidade ativa.
-
-### BACKLOG-05 - Continuar Remocao De Tiers Redundantes
-
-Problema: alguns modulos ainda podem gerar menu externo + shell + tabs + filtros em telas pequenas.
-
-Direcao: manter uma navegacao principal, usar contexto e sheets/drawers, remover sinonimos.
-
-## Regra Para Novas Entradas
-
-Toda nova queue precisa declarar:
-
-- persona;
-- fluxo;
-- rota;
-- permissao;
-- mobile/web;
-- funcao preservada;
-- criterio de aceite;
-- QA esperado;
-- documentos ativos impactados.
-
+Ver `SAAS_IMPLEMENTATION_QUEUE_COMPLETA.md`.

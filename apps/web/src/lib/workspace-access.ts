@@ -17,8 +17,11 @@ export type WorkspaceAccessSummary = {
   hasManagement: boolean;
   hasMixedOperationalRoles: boolean;
   placeModulesById: Record<string, PlaceManagementModule[]>;
+  placeOptions: Array<{ detail: string; id: string; label: string }>;
   placeCount: number;
+  placeLabelById: Record<string, string>;
   primaryPlaceId: string | null;
+  primaryPlaceLabel: string;
   primaryPlaceModules: PlaceManagementModule[];
   primaryWorkRole: WorkNavigationRole;
 };
@@ -29,8 +32,11 @@ export const EMPTY_WORKSPACE_ACCESS: WorkspaceAccessSummary = {
   hasManagement: false,
   hasMixedOperationalRoles: false,
   placeModulesById: {},
+  placeOptions: [],
   placeCount: 0,
+  placeLabelById: {},
   primaryPlaceId: null,
+  primaryPlaceLabel: "",
   primaryPlaceModules: [],
   primaryWorkRole: "none",
 };
@@ -100,6 +106,15 @@ export async function loadWorkspaceAccessSummary(user: User): Promise<WorkspaceA
   const managerPlace = placeAccess.find((entry) => entry.role === "owner" || entry.role === "manager");
   const primaryPlaceAccess = managerPlace || placeAccess[0] || null;
   const primaryPlaceId = primaryPlaceAccess?.id || places[0]?.id || null;
+  const manageablePlaceIds = new Set(placeAccess.map((entry) => entry.id));
+  const placeOptions = places
+    .filter((place) => manageablePlaceIds.has(place.id))
+    .map((place) => ({
+      detail: [place.city, place.state].filter(Boolean).join(" - "),
+      id: place.id,
+      label: place.name,
+    }));
+  const placeLabelById = Object.fromEntries(placeOptions.map((place) => [place.id, place.label]));
   const placeModulesById = placeAccess.reduce<Record<string, PlaceManagementModule[]>>((acc, entry) => {
     const place = places.find((candidate) => candidate.id === entry.id);
     if (!place) return acc;
@@ -134,8 +149,11 @@ export async function loadWorkspaceAccessSummary(user: User): Promise<WorkspaceA
     hasManagement: places.length > 0,
     hasMixedOperationalRoles,
     placeModulesById,
+    placeOptions,
     placeCount: places.length,
+    placeLabelById,
     primaryPlaceId,
+    primaryPlaceLabel: primaryPlaceId ? placeLabelById[primaryPlaceId] || "" : "",
     primaryPlaceModules,
     primaryWorkRole,
   };
