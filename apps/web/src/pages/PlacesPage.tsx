@@ -1945,8 +1945,27 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         text: "WhatsApp aberto com link unico para o jogador escolher um horario livre.",
       });
     } catch (err) {
-      popup?.close();
-      setFeedback({ kind: "error", text: friendlyError(err, "Falha ao preparar WhatsApp de alteracao.") });
+      const activeCourts = (courtsByPlace[place.id] || []).filter((court) => court.isActive);
+      const placeBookings = bookingsByPlace[place.id] || [];
+      const fallbackHref = bookingWhatsappHref(booking, {
+        placeName: place.name,
+        senderName: profile?.displayName || user.email || "Equipe ATP",
+        alternatives: buildBookingRescheduleAlternatives(booking, activeCourts, placeBookings, 4, booking.id),
+      });
+      if (fallbackHref) {
+        if (popup) {
+          popup.location.href = fallbackHref;
+        } else {
+          window.open(fallbackHref, "_blank", "noopener,noreferrer");
+        }
+        setFeedback({
+          kind: "info",
+          text: "WhatsApp aberto com sugestoes de horario. O link automatico de remarcacao depende da migration de reservas estar aplicada no banco.",
+        });
+      } else {
+        popup?.close();
+        setFeedback({ kind: "error", text: friendlyError(err, "Falha ao preparar WhatsApp de alteracao.") });
+      }
     } finally {
       setBusy(false);
     }

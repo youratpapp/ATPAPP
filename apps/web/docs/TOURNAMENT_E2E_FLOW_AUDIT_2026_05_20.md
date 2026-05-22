@@ -1,6 +1,8 @@
 # Tournament E2E Flow Audit - 2026-05-20
 
-Fonte principal: `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md` e `NAVIGATION_WORKSPACE_RESTRUCTURE_V4.md`.
+Nota 2026-05-22: este arquivo e evidencia de QA, nao fonte executiva atual. A fonte atual e `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md` + `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`.
+
+Fonte historica usada na rodada original: `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md` e `NAVIGATION_WORKSPACE_RESTRUCTURE_V4.md`.
 
 Objetivo desta rodada: criar e operar um torneio real do inicio ao fim, passando pelas fases de criacao, inscricoes, aprovacao, encerramento, geracao de jogos, envio de resultado pelo jogador, lancamento de resultado pelo admin e tentativa de finalizacao. O foco foi UX de fluxo, menus, continuidade, entendimento da tela e preservacao das funcoes existentes.
 
@@ -512,7 +514,7 @@ Arquivos provaveis:
 - `src/lib/tournaments.ts`
 - `src/App.tsx`
 - `supabase/migrations/*tournament*result*`
-- `docs/EXECUTION_QUEUE.md`
+- `docs/Legado/2026-05-22_pre_v4_archived/EXECUTION_QUEUE.md`
 
 O que alterar:
 

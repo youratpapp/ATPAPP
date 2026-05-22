@@ -2,13 +2,13 @@
 
 Data: 2026-05-20
 
-Status: mapeamento executivo de fluxo, navegacao e workspaces. Este documento nao autoriza implementacao visual automatica sem sprint propria.
+Status: apoio historico recente de fluxo, navegacao e workspaces. A partir de 2026-05-22, a fonte executiva atual e `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md` + `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`.
 
 Documento anterior relacionado:
 
-- `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
-- `APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
-- `EXECUTION_QUEUE.md`
+- `Legado/2026-05-22_pre_v4_archived/APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `Legado/2026-05-22_pre_v4_archived/APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+- `Legado/2026-05-22_pre_v4_archived/EXECUTION_QUEUE.md`
 
 Fonte de decisao desta versao:
 

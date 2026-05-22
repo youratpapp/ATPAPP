@@ -30,15 +30,17 @@ Esta V4 corrige a governanca:
 
 Usar como documentos executivos atuais:
 
-1. `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`
-2. `WORK_SAAS_UX_ORGANIZATION_EXECUTION_QUEUE_V4_2026_05_22.md`
-3. `WORK_SAAS_ROUTE_COMPATIBILITY_CONTRACT_V3.md`
-4. `WORK_SAAS_PERMISSION_CONTRACT_V3.md`
-5. `WORK_AREA_FUNCTION_INVENTORY.md`
-6. `WORK_SAAS_DETAILED_USER_FLOWS.md`
-7. `WORK_MOBILE_OPERATIONAL_SCOPE.md`
-8. `WORK_SAAS_PAGE_RESPONSIBILITIES.md`
-9. `WORK_SAAS_REAL_USER_FLOW_TEST_REPORT_2026_05_21.md`
+1. `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md`
+2. `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
+3. `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`
+4. `WORK_SAAS_UX_ORGANIZATION_EXECUTION_QUEUE_V4_2026_05_22.md`
+5. `WORK_SAAS_ROUTE_COMPATIBILITY_CONTRACT_V3.md`
+6. `WORK_SAAS_PERMISSION_CONTRACT_V3.md`
+7. `WORK_AREA_FUNCTION_INVENTORY.md`
+8. `WORK_SAAS_DETAILED_USER_FLOWS.md`
+9. `WORK_MOBILE_OPERATIONAL_SCOPE.md`
+10. `WORK_SAAS_PAGE_RESPONSIBILITIES.md`
+11. `WORK_SAAS_REAL_USER_FLOW_TEST_REPORT_2026_05_21.md`
 
 Usar como referencia de apoio:
 
@@ -49,14 +51,13 @@ Usar como referencia de apoio:
 - `ACADEMY_E2E_FLOW_AUDIT_2026_05_21.md`
 - `TOURNAMENT_E2E_FLOW_AUDIT_2026_05_20.md`
 - `LEAGUE_E2E_FLOW_AUDIT_2026_05_21.md`
-- `WORK_SAAS_PERFECT_SAAS_CHANGE_QUEUE_2026_05_21.md`
 
 Usar como historico, nao como comando atual:
 
-- `WORK_SAAS_MASTER_EXECUTION_QUEUE_V3_COMPLETE.md`
-- `WORK_SAAS_FINAL_HANDOFF_2026_05_21.md`
-- `WORK_SAAS_IMPLEMENTATION_QUEUE_V2_FINAL.md`
-- `EXECUTION_QUEUE.md`
+- `Legado/2026-05-22_pre_v4_archived/WORK_SAAS_MASTER_EXECUTION_QUEUE_V3_COMPLETE.md`
+- `Legado/2026-05-22_pre_v4_archived/WORK_SAAS_FINAL_HANDOFF_2026_05_21.md`
+- `Legado/2026-05-22_pre_v4_archived/WORK_SAAS_IMPLEMENTATION_QUEUE_V2_FINAL.md`
+- `Legado/2026-05-22_pre_v4_archived/EXECUTION_QUEUE.md`
 - documentos de sprints antigos que registram o que foi feito, mas nao devem preservar layouts antigos.
 
 Regra dura:
@@ -812,4 +813,3 @@ O produto sera considerado bem organizado quando:
 8. Nenhuma persona foi melhorada quebrando outra.
 9. Rota publica e legado continuam funcionando.
 10. Configuracao, relatorio, operacao e comunicacao nao competem na mesma primeira dobra.
-

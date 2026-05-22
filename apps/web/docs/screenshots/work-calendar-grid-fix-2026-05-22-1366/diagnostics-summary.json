@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "calendar-racket-prime",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+    "screenshot": "desktop-calendar-racket-prime.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "calendar-adt",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "screenshot": "desktop-calendar-adt.png",
+    "events": []
+  }
+]

@@ -1,9 +1,11 @@
 # Academy E2E Flow Audit - 2026-05-21
 
-Fonte executiva:
+Nota 2026-05-22: este arquivo e evidencia de QA, nao fonte executiva atual. A fonte atual e `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md` + `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`.
 
-- `docs/APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
-- `docs/EXECUTION_QUEUE.md`
+Fonte historica usada na rodada original:
+
+- `docs/Legado/2026-05-22_pre_v4_archived/APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`
+- `docs/Legado/2026-05-22_pre_v4_archived/EXECUTION_QUEUE.md`
 - Auditor: `scripts/academy-e2e-flow-audit.mjs`
 - Evidencia final: `docs/screenshots/academy-e2e-flow-v1-2026-05-21-run3/`
 - Rechecagem SQL/DB: `docs/screenshots/academy-e2e-flow-v1-2026-05-21-run4-after-sql-check/`

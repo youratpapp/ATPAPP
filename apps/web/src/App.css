@@ -14496,6 +14496,31 @@ button:disabled {
   padding: var(--space-3);
 }
 
+.booking-edit-panel header {
+  align-items: center;
+  display: flex;
+  gap: var(--space-2);
+  grid-column: 1 / -1;
+  justify-content: space-between;
+}
+
+.booking-edit-panel header div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.booking-edit-panel header strong {
+  color: #f8fafc;
+  font-size: var(--font-size-lg);
+}
+
+.booking-edit-panel header span {
+  color: rgba(226, 232, 240, 0.68);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+}
+
 .booking-edit-panel label {
   color: rgba(226, 232, 240, 0.72);
   display: grid;
@@ -16727,7 +16752,7 @@ button:disabled {
   padding: var(--space-2);
 }
 
-.court-calendar-panel input[type="date"] {
+.place-booking-head input[type="date"] {
   max-width: 170px;
 }
 
@@ -16737,6 +16762,10 @@ button:disabled {
   grid-template-columns: 140px 160px 180px 180px minmax(180px, 1fr);
 }
 
+.court-calendar-filters.reservations-only {
+  grid-template-columns: minmax(160px, 220px) minmax(240px, 1fr);
+}
+
 .court-calendar-mobile-picker {
   display: none;
 }
@@ -16744,7 +16773,7 @@ button:disabled {
 .court-calendar-board {
   display: grid;
   gap: var(--space-2);
-  grid-template-columns: 56px repeat(auto-fit, minmax(190px, 1fr));
+  grid-template-columns: 56px repeat(var(--court-count, 1), minmax(var(--court-column-min, 150px), 1fr));
   overflow-x: auto;
   padding-bottom: 2px;
 }
@@ -16897,7 +16926,7 @@ button:disabled {
 }
 
 .court-calendar-edit-panel {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(180px, 1.2fr) repeat(4, minmax(120px, 0.9fr));
   margin-top: 6px;
 }
 
@@ -28694,7 +28723,11 @@ label {
 .app-shell--management .booking-list-toolbar input,
 .app-shell--management .booking-list-toolbar select,
 .app-shell--management .court-calendar-panel input[type="date"],
+.app-shell--management .court-calendar-panel input[type="time"],
+.app-shell--management .booking-edit-panel input,
+.app-shell--management .booking-edit-panel select,
 .app-shell--management .court-calendar-filters select,
+.app-shell--management .court-calendar-filters input,
 .app-shell--management .court-calendar-mobile-picker select,
 .app-shell--management .booking-rule-form input,
 .app-shell--management .booking-rule-form select,
@@ -28808,6 +28841,7 @@ label {
 .app-shell--management .court-calendar-booking-actions button,
 .app-shell--management .court-calendar-booking-actions a,
 .app-shell--management .court-calendar-slot-action,
+.app-shell--management .booking-edit-panel button,
 .app-shell--management .place-court-create button,
 .app-shell--management .place-court-price-fields button,
 .app-shell--management .booking-rule-form button,
@@ -28820,6 +28854,7 @@ label {
 
 .app-shell--management .place-booking-main-actions button.primary,
 .app-shell--management .place-booking-row button.primary,
+.app-shell--management .booking-edit-panel button.primary,
 .app-shell--management .booking-rule-form button.primary,
 .app-shell--management .booking-rule-weekdays label.active {
   background: linear-gradient(135deg, var(--pdark-green-main), var(--pdark-green-strong));

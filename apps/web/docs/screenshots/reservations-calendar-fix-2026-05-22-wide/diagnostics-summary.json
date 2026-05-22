@@ -1,0 +1,23 @@
+[
+  {
+    "viewport": "wide",
+    "route": "reservas-racket-prime",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+    "screenshot": "wide-reservas-racket-prime.png",
+    "events": []
+  },
+  {
+    "viewport": "wide",
+    "route": "reservas-adt",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+    "screenshot": "wide-reservas-adt.png",
+    "events": []
+  },
+  {
+    "viewport": "wide",
+    "route": "reservas-current",
+    "hash": "#/gestao/f0184d92-7909-4d34-9abe-47f16ab053a3/agenda?visao=reservas",
+    "screenshot": "wide-reservas-current.png",
+    "events": []
+  }
+]

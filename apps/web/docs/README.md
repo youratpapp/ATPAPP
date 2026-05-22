@@ -1,51 +1,18 @@
-# ATP App Docs Index
+# ATP Docs - Fonte Atual
 
-Data: 2026-05-15
+Este diretorio foi saneado em 2026-05-22 para evitar conflito entre MDs antigos e a arquitetura atual do produto.
 
-## Ordem De Leitura Atual
+## Leia Primeiro
 
-Para qualquer sprint de reestruturacao, leia nesta ordem:
+1. `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md`
+2. `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
+3. `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`
+4. `WORK_SAAS_UX_ORGANIZATION_EXECUTION_QUEUE_V4_2026_05_22.md`
+5. `EXECUTION_QUEUE.md`
 
-1. `RESTRUCTURE_SOURCE_OF_TRUTH_POLICY.md`
-2. `EXECUTION_QUEUE.md`
-3. `ROLE_BASED_RESTRUCTURE_QUEUE.md`
-4. `ROLE_VISIBILITY_MATRIX.md`
-5. `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`
-6. Spec da superficie:
-   - `PLAYER_APP_V2_IMPLEMENTATION_SPEC.md`
-   - `COMPETITION_OS_V2_IMPLEMENTATION_SPEC.md`
-   - `MANAGEMENT_OS_V2_IMPLEMENTATION_SPEC.md`
-7. Plano UX da superficie:
-   - `PLAYER_APP_V2_UX_PLAN.md`
-   - `COMPETITION_OS_V2_UX_PLAN.md`
-   - `MANAGEMENT_OS_V2_UX_PLAN.md`
-8. MD funcional especifico da area:
-   - `ACADEMY_MODULE_FUNCTION_MAP.md`
-   - `ACADEMY_V2_UX_PLAN.md`
-   - `AGENDA_MODULE_FUNCTION_MAP.md`
-   - outros `*_MODULE_FUNCTION_MAP.md`
-9. Codigo real.
+## Regra
 
-## Politica
+A V4 governa organizacao, UX, navegacao, mobile Trabalho, SaaS web e page responsibilities.
 
-Os MDs antigos continuam validos como inventario de funcoes, regras e backend. Eles nao devem ser usados para trazer de volta:
+Documentos arquivados em `Legado/2026-05-22_pre_v4_archived/` podem ser consultados como historico, inventario ou evidencia, mas nao devem vencer a V4 quando houver conflito.
 
-- dashboards pesados para jogador;
-- cards empilhados sem acao;
-- formularios longos de setup;
-- menus profissionais para perfil errado;
-- duplicidades entre areas;
-- tabs escondidas;
-- KPIs sem utilidade operacional.
-
-Quando houver conflito, preserve a funcao e siga a arquitetura v2.
-
-## Docs De Sprint
-
-- `ROLE_BASED_RESTRUCTURE_SPRINT_GUIDE.md`: como executar sprint.
-- `ROLE_BASED_RESTRUCTURE_SPRINT_BACKLOG.md`: backlog por sprint.
-- `ROLE_BASED_RESTRUCTURE_TASK_SPECS.md`: briefing de produto/UX/engenharia por task.
-
-## Pasta `LEGADO UTIL`
-
-Mantida como espelho e historico util. Nao deve ter prioridade maior que os specs v2.

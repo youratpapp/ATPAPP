@@ -2409,6 +2409,71 @@ export async function updateCourtBookingStatus(bookingId: string, status: CourtB
   if (error) throw new Error(error.message);
 }
 
+function isMissingRpcFunctionError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : typeof error === "object" && error && "message" in error ? String((error as { message?: unknown }).message || "") : "";
+  const lower = message.toLowerCase();
+  return lower.includes("could not find the function") || lower.includes("schema cache") || lower.includes("function public.");
+}
+
+async function updateCourtBookingDetailsDirect(input: {
+  bookingId: string;
+  courtId: string;
+  startsAt: string;
+  endsAt: string;
+  notes?: string;
+}): Promise<CourtBooking> {
+  if (!supabase) throw new Error("Supabase nao configurado.");
+
+  const startsAt = new Date(input.startsAt);
+  const endsAt = new Date(input.endsAt);
+  if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime()) || endsAt <= startsAt) {
+    throw new Error("Horario invalido.");
+  }
+
+  const bookingResult = await supabase.from(TABLE_BOOKINGS).select("*").eq("id", input.bookingId).single();
+  if (bookingResult.error || !bookingResult.data) throw new Error(bookingResult.error?.message || "Reserva nao encontrada.");
+  const current = bookingResult.data as BookingRow;
+  if (current.status === "cancelled") throw new Error("Reserva cancelada.");
+
+  const courtResult = await supabase
+    .from(TABLE_COURTS)
+    .select("id, place_id, name, is_active")
+    .eq("id", input.courtId)
+    .eq("place_id", current.place_id)
+    .single();
+  if (courtResult.error || !courtResult.data || courtResult.data.is_active === false) {
+    throw new Error(courtResult.error?.message || "Quadra indisponivel.");
+  }
+
+  const conflictResult = await supabase
+    .from(TABLE_BOOKINGS)
+    .select("id")
+    .eq("court_id", input.courtId)
+    .neq("id", input.bookingId)
+    .neq("status", "cancelled")
+    .lt("starts_at", input.endsAt)
+    .gt("ends_at", input.startsAt)
+    .limit(1);
+  if (conflictResult.error) throw new Error(conflictResult.error.message);
+  if ((conflictResult.data || []).length) throw new Error("Horario ja reservado.");
+
+  const updateResult = await supabase
+    .from(TABLE_BOOKINGS)
+    .update({
+      court_id: input.courtId,
+      starts_at: input.startsAt,
+      ends_at: input.endsAt,
+      notes: input.notes?.trim() || null,
+    })
+    .eq("id", input.bookingId)
+    .select("*")
+    .single();
+  if (updateResult.error || !updateResult.data) throw new Error(updateResult.error?.message || "Reserva nao atualizada.");
+
+  const courtName = (courtResult.data as { name?: string | null }).name || "";
+  return rowToBooking(updateResult.data as BookingRow, courtName);
+}
+
 export async function updateCourtBookingDetails(input: {
   bookingId: string;
   courtId: string;
@@ -2424,7 +2489,12 @@ export async function updateCourtBookingDetails(input: {
     p_ends_at: input.endsAt,
     p_notes: input.notes ?? null,
   });
-  if (error) throw new Error(error.message);
+  if (error) {
+    if (isMissingRpcFunctionError(new Error(error.message))) {
+      return updateCourtBookingDetailsDirect(input);
+    }
+    throw new Error(error.message);
+  }
   const row = ((data ?? []) as BookingRow[])[0];
   if (!row) throw new Error("Reserva nao atualizada.");
   const courts = await listPlaceCourts(row.place_id);

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest, AcademyPlannedAbsence, AppPayment, CourtBooking, PlaceCourt } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 
@@ -113,11 +113,25 @@ function dateTimeLocalValue(value: string): string {
   return localDate.toISOString().slice(0, 16);
 }
 
+function datePart(value: string): string {
+  return dateTimeLocalValue(value).slice(0, 10);
+}
+
+function timePart(value: string): string {
+  return dateTimeLocalValue(value).slice(11, 16);
+}
+
+function combineDateAndTime(date: string, time: string): string {
+  return new Date(`${date}T${time || "00:00"}`).toISOString();
+}
+
 type EditDraft = {
+  endDate: string;
+  endTime: string;
   courtId: string;
-  endsAt: string;
   notes: string;
-  startsAt: string;
+  startDate: string;
+  startTime: string;
 };
 
 function compactTextList(items: Array<string | null | undefined | false>): string[] {
@@ -155,36 +169,42 @@ export function PlaceBookingCalendarModule({
   reservedMinutes,
   variant = "all",
 }: Props) {
-  const [typeFilter, setTypeFilter] = useState<AgendaItemType | "all">(variant === "reservations" ? "reservation" : "all");
+  const [typeFilter, setTypeFilter] = useState<AgendaItemType | "all">("all");
   const [courtFilter, setCourtFilter] = useState("");
   const [coachFilter, setCoachFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [studentFilter, setStudentFilter] = useState("");
   const [mobileCourtId, setMobileCourtId] = useState("");
   const [editingBookingId, setEditingBookingId] = useState("");
-  const [editDraft, setEditDraft] = useState<EditDraft>({ courtId: "", endsAt: "", notes: "", startsAt: "" });
+  const [editDraft, setEditDraft] = useState<EditDraft>({ courtId: "", endDate: "", endTime: "", notes: "", startDate: "", startTime: "" });
   const selectedWeekday = weekdayFromDate(day);
 
   useEffect(() => {
-    setTypeFilter((current) => (variant === "reservations" && current === "all" ? "reservation" : current));
+    if (variant === "reservations") {
+      setTypeFilter("all");
+      setCoachFilter("");
+      setClassFilter("");
+    }
   }, [variant]);
 
   const startEditing = (booking: CourtBooking) => {
     setEditingBookingId(booking.id);
     setEditDraft({
       courtId: booking.courtId,
-      startsAt: dateTimeLocalValue(booking.startsAt),
-      endsAt: dateTimeLocalValue(booking.endsAt),
+      startDate: datePart(booking.startsAt) || day,
+      startTime: timePart(booking.startsAt),
+      endDate: datePart(booking.endsAt) || day,
+      endTime: timePart(booking.endsAt),
       notes: booking.notes || "",
     });
   };
 
   const submitEdit = (booking: CourtBooking) => {
-    if (!editDraft.courtId || !editDraft.startsAt || !editDraft.endsAt) return;
+    if (!editDraft.courtId || !editDraft.startDate || !editDraft.startTime || !editDraft.endDate || !editDraft.endTime) return;
     onUpdateBookingDetails?.(booking, {
       courtId: editDraft.courtId,
-      startsAt: new Date(editDraft.startsAt).toISOString(),
-      endsAt: new Date(editDraft.endsAt).toISOString(),
+      startsAt: combineDateAndTime(editDraft.startDate, editDraft.startTime),
+      endsAt: combineDateAndTime(editDraft.endDate, editDraft.endTime),
       notes: editDraft.notes,
     });
     setEditingBookingId("");
@@ -295,6 +315,8 @@ export function PlaceBookingCalendarModule({
   const visibleCourts = useMemo(() => activeCourts.filter((court) => !courtFilter || court.id === courtFilter), [activeCourts, courtFilter]);
   const slotStarts = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
   const selectedMobileCourtId = mobileCourtId && visibleCourts.some((court) => court.id === mobileCourtId) ? mobileCourtId : visibleCourts[0]?.id || "";
+  const activeEditingBooking = editingBookingId ? bookings.find((booking) => booking.id === editingBookingId) : undefined;
+  const courtColumnMin = visibleCourts.length >= 7 ? "112px" : visibleCourts.length >= 6 ? "126px" : visibleCourts.length >= 5 ? "140px" : "150px";
 
   useEffect(() => {
     if (!visibleCourts.length) {
@@ -320,14 +342,16 @@ export function PlaceBookingCalendarModule({
         <input type="date" value={day} onChange={(event) => onChangeDay(event.target.value)} />
       </div>
 
-      <div className="court-calendar-filters" aria-label="Filtros da agenda">
-        <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value as AgendaItemType | "all")}>
-          {(Object.keys(TYPE_LABELS) as Array<AgendaItemType | "all">).map((type) => (
-            <option key={`agenda-type:${type}`} value={type}>
-              {TYPE_LABELS[type]}
-            </option>
-          ))}
-        </select>
+      <div className={`court-calendar-filters${variant === "reservations" ? " reservations-only" : ""}`} aria-label="Filtros da agenda">
+        {variant === "reservations" ? null : (
+          <select value={typeFilter} onChange={(event) => setTypeFilter(event.target.value as AgendaItemType | "all")}>
+            {(Object.keys(TYPE_LABELS) as Array<AgendaItemType | "all">).map((type) => (
+              <option key={`agenda-type:${type}`} value={type}>
+                {TYPE_LABELS[type]}
+              </option>
+            ))}
+          </select>
+        )}
         <select value={courtFilter} onChange={(event) => setCourtFilter(event.target.value)}>
           <option value="">Todas as quadras</option>
           {activeCourts.map((court) => (
@@ -336,23 +360,27 @@ export function PlaceBookingCalendarModule({
             </option>
           ))}
         </select>
-        <select value={coachFilter} onChange={(event) => setCoachFilter(event.target.value)}>
-          <option value="">Todos os professores</option>
-          {coachOptions.map(([coachId, coachName]) => (
-            <option key={`agenda-coach:${coachId}`} value={coachId}>
-              {coachName}
-            </option>
-          ))}
-        </select>
-        <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
-          <option value="">Todas as turmas</option>
-          {classOptions.map((academyClass) => (
-            <option key={`agenda-class:${academyClass.id}`} value={academyClass.id}>
-              {academyClass.title}
-            </option>
-          ))}
-        </select>
-        <input value={studentFilter} onChange={(event) => setStudentFilter(event.target.value)} placeholder="Aluno ou jogador" />
+        {variant === "reservations" ? null : (
+          <>
+            <select value={coachFilter} onChange={(event) => setCoachFilter(event.target.value)}>
+              <option value="">Todos os professores</option>
+              {coachOptions.map(([coachId, coachName]) => (
+                <option key={`agenda-coach:${coachId}`} value={coachId}>
+                  {coachName}
+                </option>
+              ))}
+            </select>
+            <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
+              <option value="">Todas as turmas</option>
+              {classOptions.map((academyClass) => (
+                <option key={`agenda-class:${academyClass.id}`} value={academyClass.id}>
+                  {academyClass.title}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+        <input value={studentFilter} onChange={(event) => setStudentFilter(event.target.value)} placeholder={variant === "reservations" ? "Cliente da reserva" : "Aluno ou jogador"} />
       </div>
 
       {visibleCourts.length > 1 ? (
@@ -371,7 +399,61 @@ export function PlaceBookingCalendarModule({
         </div>
       ) : null}
 
-      <div className="court-calendar-board">
+      {activeEditingBooking ? (
+        <div className="booking-edit-panel court-calendar-edit-panel">
+          <header>
+            <div>
+              <strong>Editar reserva</strong>
+              <span>
+                {activeEditingBooking.playerName} · {activeEditingBooking.courtName || "Quadra"} · {shortTime(activeEditingBooking.startsAt)}-{shortTime(activeEditingBooking.endsAt)}
+              </span>
+            </div>
+            <button type="button" onClick={() => setEditingBookingId("")}>
+              Fechar
+            </button>
+          </header>
+          <label>
+            Quadra
+            <select value={editDraft.courtId} onChange={(event) => setEditDraft((prev) => ({ ...prev, courtId: event.target.value }))}>
+              {activeCourts.map((courtOption) => (
+                <option key={courtOption.id} value={courtOption.id}>
+                  {courtOption.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Data inicio
+            <input type="date" value={editDraft.startDate} onChange={(event) => setEditDraft((prev) => ({ ...prev, startDate: event.target.value, endDate: prev.endDate || event.target.value }))} />
+          </label>
+          <label>
+            Hora inicio
+            <input type="time" step={3600} value={editDraft.startTime} onChange={(event) => setEditDraft((prev) => ({ ...prev, startTime: event.target.value }))} />
+          </label>
+          <label>
+            Data fim
+            <input type="date" value={editDraft.endDate} onChange={(event) => setEditDraft((prev) => ({ ...prev, endDate: event.target.value }))} />
+          </label>
+          <label>
+            Hora fim
+            <input type="time" step={3600} value={editDraft.endTime} onChange={(event) => setEditDraft((prev) => ({ ...prev, endTime: event.target.value }))} />
+          </label>
+          <label className="booking-edit-panel-wide">
+            Observacao
+            <input value={editDraft.notes} onChange={(event) => setEditDraft((prev) => ({ ...prev, notes: event.target.value }))} placeholder="Ex.: remarcada pela recepcao" />
+          </label>
+          <div className="booking-edit-actions">
+            <button type="button" onClick={() => setEditingBookingId("")}>
+              Cancelar edicao
+            </button>
+            <button className="primary" type="button" onClick={() => submitEdit(activeEditingBooking)} disabled={!editDraft.courtId || !editDraft.startDate || !editDraft.startTime || !editDraft.endDate || !editDraft.endTime}>
+              Salvar alteracao
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      <div className="court-calendar-board" style={{ "--court-column-min": courtColumnMin, "--court-count": visibleCourts.length } as CSSProperties}>
         <div className="court-calendar-time-rail" aria-hidden>
           <span />
           {slotStarts.map((slot) => (
@@ -392,7 +474,9 @@ export function PlaceBookingCalendarModule({
                 const summaryLabel = firstBooking
                   ? `${firstBooking.playerName} | ${bookingStatusLabel(firstBooking.status)}`
                   : slotItems.length
-                    ? countLabel(slotItems.length, "ocupacao", "ocupacoes")
+                    ? variant === "reservations"
+                      ? "Ocupado"
+                      : countLabel(slotItems.length, "ocupacao", "ocupacoes")
                     : "Livre";
                 return (
                   <details key={`slot:${court.id}:${slot}`} className={slotItems.length ? "court-calendar-slot occupied" : "court-calendar-slot"}>
@@ -449,40 +533,6 @@ export function PlaceBookingCalendarModule({
                                     WhatsApp
                                   </a>
                                 ) : null}
-                              </div>
-                            ) : null}
-                            {booking && isEditing ? (
-                              <div className="booking-edit-panel court-calendar-edit-panel">
-                                <label>
-                                  Quadra
-                                  <select value={editDraft.courtId} onChange={(event) => setEditDraft((prev) => ({ ...prev, courtId: event.target.value }))}>
-                                    {activeCourts.map((courtOption) => (
-                                      <option key={courtOption.id} value={courtOption.id}>
-                                        {courtOption.name}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </label>
-                                <label>
-                                  Inicio
-                                  <input type="datetime-local" value={editDraft.startsAt} onChange={(event) => setEditDraft((prev) => ({ ...prev, startsAt: event.target.value }))} />
-                                </label>
-                                <label>
-                                  Fim
-                                  <input type="datetime-local" value={editDraft.endsAt} onChange={(event) => setEditDraft((prev) => ({ ...prev, endsAt: event.target.value }))} />
-                                </label>
-                                <label className="booking-edit-panel-wide">
-                                  Observacao
-                                  <input value={editDraft.notes} onChange={(event) => setEditDraft((prev) => ({ ...prev, notes: event.target.value }))} placeholder="Ex.: remarcada pela recepcao" />
-                                </label>
-                                <div className="booking-edit-actions">
-                                  <button type="button" onClick={() => setEditingBookingId("")}>
-                                    Cancelar edicao
-                                  </button>
-                                  <button className="primary" type="button" onClick={() => submitEdit(booking)} disabled={!editDraft.courtId || !editDraft.startsAt || !editDraft.endsAt}>
-                                    Salvar alteracao
-                                  </button>
-                                </div>
                               </div>
                             ) : null}
                             {canManageBookings && onOpenReservations && item.id.startsWith("booking:") && variant !== "reservations" ? (

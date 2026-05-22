@@ -1,6 +1,8 @@
 # League E2E Flow Audit - 2026-05-21
 
-Fonte principal: `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`.
+Nota 2026-05-22: este arquivo e evidencia de QA, nao fonte executiva atual. A fonte atual e `DOCS_SOURCE_OF_TRUTH_INDEX_2026_05_22.md` + `WORK_SAAS_UX_ORGANIZATION_MASTER_SPEC_V4_2026_05_22.md`.
+
+Fonte historica usada na rodada original: `APP_WORKFLOW_EXECUTION_PLAYBOOK_V3.md`, hoje arquivado em `Legado/2026-05-22_pre_v4_archived/`.
 
 Objetivo da rodada: executar uma liga do inicio ao fim, documentando fluxo real, bloqueios funcionais, dificuldade de localizar menus, volume de informacao, comportamento de owner e participante, console/rede e qualidade mobile/desktop. A criacao de pedidos de inscricao foi automatizada via RPC/seed para acelerar a massa; todo o restante foi operado pela UI.
 
@@ -217,8 +219,8 @@ Viewports:
 - `src/App.css`
 - `supabase/migrations/0097_fix_league_generate_round_class_id_ambiguity.sql`
 - `docs/LEAGUE_E2E_FLOW_AUDIT_2026_05_21.md`
-- `docs/EXECUTION_QUEUE.md`
-- `docs/APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
+- `docs/Legado/2026-05-22_pre_v4_archived/EXECUTION_QUEUE.md`
+- `docs/Legado/2026-05-22_pre_v4_archived/APP_WORKFLOW_EXECUTION_MATRIX_V3.md`
 
 ## QA Executado
 
