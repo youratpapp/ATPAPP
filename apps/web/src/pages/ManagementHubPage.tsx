@@ -1312,7 +1312,7 @@ export function ManagementHubPage({ user, profile }: Props) {
                 {workHomeKpis.map((kpi) => (
                   <button key={kpi.label} type="button" onClick={() => navigate(kpi.path)}>
                     <span>{kpi.label}</span>
-                    <strong>{kpi.label === "Recebiveis" && kpi.value ? `R$ ${String(kpi.value * 310)}` : kpi.value}</strong>
+                    <strong>{kpi.value}</strong>
                     <small>{kpi.detail}</small>
                   </button>
                 ))}

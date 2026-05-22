@@ -29344,7 +29344,7 @@ label {
   align-items: center;
   background:
     linear-gradient(90deg, rgba(6, 13, 24, 0.88), rgba(7, 26, 35, 0.62)),
-    url("/assets/atp-court-night.jpg") center / cover;
+    url("./assets/hero-management-premium.png") center / cover;
   display: flex;
   justify-content: space-between;
   min-height: 104px;
@@ -29500,6 +29500,18 @@ label {
 .app-shell--management .management-saas-task-list button {
   cursor: pointer;
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.app-shell--management .management-saas-task-list button span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.app-shell--management .management-saas-task-list button strong,
+.app-shell--management .management-saas-client-list article strong,
+.app-shell--management .management-saas-competition-list button strong {
+  overflow-wrap: anywhere;
 }
 
 .app-shell--management .management-saas-task-list button:disabled {
