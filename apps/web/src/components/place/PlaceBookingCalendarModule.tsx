@@ -3,6 +3,7 @@ import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest, AcademyPlan
 import { countLabel } from "../../lib/place-management";
 
 type AgendaItemType = "reservation" | "block" | "class" | "drop_in";
+type CalendarView = "day" | "week" | "list" | "reschedules" | "cancelled" | "conflicts";
 
 type AgendaItem = {
   booking?: CourtBooking;
@@ -26,6 +27,7 @@ type Props = {
   academyEnrollments: AcademyEnrollment[];
   academyPlannedAbsences: AcademyPlannedAbsence[];
   activeCourts: PlaceCourt[];
+  allBookings?: CourtBooking[];
   blockedMinutes: number;
   bookings: CourtBooking[];
   canManageBookings: boolean;
@@ -56,6 +58,17 @@ const TYPE_LABELS: Record<AgendaItemType | "all", string> = {
   drop_in: "Aulas avulsas",
 };
 
+const CALENDAR_VIEWS: Array<{ label: string; value: CalendarView }> = [
+  { label: "Dia", value: "day" },
+  { label: "Semana", value: "week" },
+  { label: "Lista", value: "list" },
+  { label: "Remarcacoes", value: "reschedules" },
+  { label: "Canceladas", value: "cancelled" },
+  { label: "Conflitos", value: "conflicts" },
+];
+
+const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
+
 function shortTime(value: string): string {
   if (/^\d{2}:\d{2}/.test(value)) return value.slice(0, 5);
   return new Date(value).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
@@ -84,6 +97,28 @@ function addMinutesToDateTime(day: string, time: string, minutes: number): strin
 function weekdayFromDate(date: string): number {
   const [year, month, day] = date.split("-").map(Number);
   return new Date(year, (month || 1) - 1, day || 1).getDay();
+}
+
+function dateInputPart(value: string): string {
+  return dateTimeLocalValue(value).slice(0, 10);
+}
+
+function addDays(date: string, days: number): string {
+  const [year, month, day] = date.split("-").map(Number);
+  const value = new Date(year || 2000, (month || 1) - 1, day || 1);
+  value.setDate(value.getDate() + days);
+  const pad = (part: number) => String(part).padStart(2, "0");
+  return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`;
+}
+
+function startOfWeek(date: string): string {
+  const weekday = weekdayFromDate(date);
+  return addDays(date, -weekday);
+}
+
+function shortDate(value: string): string {
+  const [, month, day] = value.split("-");
+  return `${day}/${month}`;
 }
 
 function bookingLabel(booking: CourtBooking): string {
@@ -190,6 +225,7 @@ export function PlaceBookingCalendarModule({
   academyEnrollments,
   academyPlannedAbsences,
   activeCourts,
+  allBookings,
   blockedMinutes,
   bookings,
   canManageBookings,
@@ -208,6 +244,7 @@ export function PlaceBookingCalendarModule({
   reservedMinutes,
   variant = "all",
 }: Props) {
+  const [activeView, setActiveView] = useState<CalendarView>("day");
   const [typeFilter, setTypeFilter] = useState<AgendaItemType | "all">("all");
   const [courtFilter, setCourtFilter] = useState("");
   const [coachFilter, setCoachFilter] = useState("");
@@ -219,6 +256,7 @@ export function PlaceBookingCalendarModule({
   const [editingBookingId, setEditingBookingId] = useState("");
   const [editDraft, setEditDraft] = useState<EditDraft>({ courtId: "", endDate: "", endTime: "", notes: "", startDate: "", startTime: "" });
   const selectedWeekday = weekdayFromDate(day);
+  const sourceBookings = allBookings || bookings;
 
   useEffect(() => {
     if (variant === "reservations") {
@@ -278,8 +316,8 @@ export function PlaceBookingCalendarModule({
       }, {});
   }, [academyPlannedAbsences, day]);
 
-  const agendaItems = useMemo<AgendaItem[]>(() => {
-    const bookingItems = bookings.map((booking) => ({
+  const allBookingItems = useMemo<AgendaItem[]>(() => {
+    return sourceBookings.map((booking) => ({
       booking,
       courtId: booking.courtId,
       detail: booking.notes || (booking.status === "blocked" ? "Horario bloqueado para operacao." : "Reserva de quadra."),
@@ -292,9 +330,11 @@ export function PlaceBookingCalendarModule({
       title: bookingLabel(booking),
       type: booking.status === "blocked" ? "block" : "reservation",
     })) satisfies AgendaItem[];
+  }, [sourceBookings]);
 
-    const classItems = academyClasses
-      .filter((academyClass) => academyClass.isActive && academyClass.courtId && academyClass.weekday === selectedWeekday)
+  const classItemsForWeekday = (weekday: number): AgendaItem[] =>
+    academyClasses
+      .filter((academyClass) => academyClass.isActive && academyClass.courtId && academyClass.weekday === weekday)
       .map((academyClass) => {
         const students = activeEnrollmentsByClass[academyClass.id] || [];
         const absentStudents = students.filter((student) => plannedAbsencesByEnrollment[student.id]);
@@ -326,6 +366,10 @@ export function PlaceBookingCalendarModule({
         } satisfies AgendaItem;
       });
 
+  const agendaItems = useMemo<AgendaItem[]>(() => {
+    const bookingItems = allBookingItems.filter((item) => dateInputPart(item.startsAt) === day);
+    const classItems = classItemsForWeekday(selectedWeekday);
+
     const dropInItems = lessonRequests
       .filter((request) => request.status === "approved" && request.requestedOn === day)
       .map((request) => {
@@ -349,7 +393,7 @@ export function PlaceBookingCalendarModule({
       .filter((item) => item.courtId);
 
     return [...bookingItems, ...classItems, ...dropInItems].sort((a, b) => timeToMinutes(a.startsAt) - timeToMinutes(b.startsAt));
-  }, [academyClasses, activeEnrollmentsByClass, bookings, day, lessonRequests, plannedAbsencesByEnrollment, selectedWeekday]);
+  }, [allBookingItems, academyClasses, activeEnrollmentsByClass, day, lessonRequests, plannedAbsencesByEnrollment, selectedWeekday]);
 
   const coachOptions = Array.from(new Map(agendaItems.filter((item) => item.coachId).map((item) => [item.coachId || "", item.coachName || "Professor"])).entries());
   const classOptions = academyClasses.filter((academyClass) => academyClass.isActive);
@@ -362,7 +406,7 @@ export function PlaceBookingCalendarModule({
     if (normalizedStudentFilter && !item.studentNames.some((name) => name.toLowerCase().includes(normalizedStudentFilter))) return false;
     return true;
   });
-  const selectedItem = filteredItems.find((item) => item.id === selectedItemId) || null;
+  const selectedItem = filteredItems.find((item) => item.id === selectedItemId) || allBookingItems.find((item) => item.id === selectedItemId) || null;
   const visibleCourts = useMemo(() => activeCourts.filter((court) => !courtFilter || court.id === courtFilter), [activeCourts, courtFilter]);
   const slotStarts = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
   const firstVisibleMinute = timeToMinutes(slotStarts[0] || "06:00");
@@ -403,6 +447,71 @@ export function PlaceBookingCalendarModule({
   const selectedPaymentAction = selectedBooking ? paymentForBookingAction(selectedBooking, activeCourts, selectedPayment) : undefined;
   const selectedWhatsappHref = selectedBooking ? getWhatsappHref?.(selectedBooking) : "";
   const isReservationsView = variant === "reservations";
+  const weekStart = startOfWeek(day);
+  const weekDays = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index));
+  const selectedWeekCourtId = selectedMobileCourtId || visibleCourts[0]?.id || "";
+  const selectedWeekCourt = activeCourts.find((court) => court.id === selectedWeekCourtId) || visibleCourts[0] || activeCourts[0];
+  const listSourceItems = useMemo(() => {
+    const baseItems =
+      activeView === "cancelled"
+        ? allBookingItems.filter((item) => item.booking?.status === "cancelled")
+        : activeView === "reschedules"
+          ? allBookingItems.filter((item) => /remarc|troca|alter/i.test(item.detail) || /remarc|troca|alter/i.test(item.booking?.notes || ""))
+          : activeView === "conflicts"
+            ? allBookingItems.filter((item) => {
+                const sameCourt = allBookingItems.filter((other) => other.id !== item.id && other.courtId === item.courtId && dateInputPart(other.startsAt) === dateInputPart(item.startsAt));
+                return sameCourt.some((other) => eventOverlapsSlot(other, shortTime(item.startsAt), Math.max(60, timeToMinutes(item.endsAt) - timeToMinutes(item.startsAt))));
+              })
+            : agendaItems;
+    return baseItems.filter((item) => {
+      if (typeFilter !== "all" && item.type !== typeFilter) return false;
+      if (courtFilter && item.courtId !== courtFilter) return false;
+      if (normalizedStudentFilter && !item.studentNames.some((name) => name.toLowerCase().includes(normalizedStudentFilter))) return false;
+      return true;
+    });
+  }, [activeView, agendaItems, allBookingItems, courtFilter, normalizedStudentFilter, typeFilter]);
+
+  const renderAgendaList = (title: string, emptyTitle: string, emptyDetail: string) => (
+    <section className="court-calendar-list-view" aria-label={title}>
+      <header>
+        <div>
+          <strong>{title}</strong>
+          <span>{countLabel(listSourceItems.length, "item encontrado", "itens encontrados")} nos filtros atuais.</span>
+        </div>
+      </header>
+      {listSourceItems.length ? (
+        <div className="court-calendar-list-rows">
+          {listSourceItems.map((item) => {
+            const booking = item.booking;
+            const payment = booking ? getPaymentForBooking?.(booking.id) : undefined;
+            return (
+              <button
+                key={`agenda-list:${item.id}`}
+                className={`court-calendar-list-row ${item.type}${selectedItemId === item.id ? " active" : ""}`}
+                type="button"
+                onClick={() => {
+                  setSelectedItemId(item.id);
+                  setEditingBookingId("");
+                }}
+              >
+                <span>
+                  <strong>{item.title}</strong>
+                  <small>{[shortDate(dateInputPart(item.startsAt)), shortTime(item.startsAt), activeCourts.find((court) => court.id === item.courtId)?.name || item.booking?.courtName].filter(Boolean).join(" | ")}</small>
+                </span>
+                <em>{agendaItemBadgeLabel(item, payment)}</em>
+                <b>{item.detail}</b>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="court-calendar-empty-panel">
+          <strong>{emptyTitle}</strong>
+          <span>{emptyDetail}</span>
+        </div>
+      )}
+    </section>
+  );
 
   return (
     <section className={`court-calendar-panel court-calendar-panel--saas${isReservationsView ? " reservations-focus" : ""}`}>
@@ -434,8 +543,8 @@ export function PlaceBookingCalendarModule({
       </header>
 
       <nav className="court-calendar-view-tabs" aria-label="Visoes da agenda">
-        {["Dia", "Semana", "Lista", "Remarcacoes", "Canceladas", "Conflitos"].map((label, index) => (
-          <button key={label} className={index === 0 ? "active" : ""} type="button">
+        {CALENDAR_VIEWS.map(({ label, value }) => (
+          <button key={value} className={activeView === value ? "active" : ""} type="button" onClick={() => setActiveView(value)}>
             {label}
           </button>
         ))}
@@ -485,9 +594,9 @@ export function PlaceBookingCalendarModule({
       </div>
 
       {visibleCourts.length > 1 ? (
-        <div className="court-calendar-mobile-picker">
+        <div className={`court-calendar-mobile-picker${activeView === "week" ? " week-court-picker" : ""}`}>
           <label>
-            Quadra no mobile
+            {activeView === "week" ? "Quadra da semana" : "Quadra no mobile"}
             <select value={selectedMobileCourtId} onChange={(event) => setMobileCourtId(event.target.value)}>
               {visibleCourts.map((court) => (
                 <option key={`agenda-mobile-court:${court.id}`} value={court.id}>
@@ -500,6 +609,102 @@ export function PlaceBookingCalendarModule({
         </div>
       ) : null}
 
+      {activeView === "week" ? (
+        <div className="court-calendar-workbench court-calendar-workbench--week">
+          <section className="court-calendar-week-view" aria-label="Semana da quadra">
+            <header>
+              <div>
+                <strong>{selectedWeekCourt?.name || "Quadra"}</strong>
+                <span>Semana mostra uma quadra por vez para manter a agenda legivel.</span>
+              </div>
+            </header>
+            <div className="court-calendar-week-grid">
+              {weekDays.map((weekDay) => {
+                const weekday = weekdayFromDate(weekDay);
+                const bookingItems = allBookingItems.filter((item) => item.courtId === selectedWeekCourtId && dateInputPart(item.startsAt) === weekDay);
+                const classItems = isReservationsView ? [] : classItemsForWeekday(weekday).filter((item) => item.courtId === selectedWeekCourtId);
+                const dayItems = [...bookingItems, ...classItems].sort((a, b) => timeToMinutes(a.startsAt) - timeToMinutes(b.startsAt));
+                return (
+                  <article key={`week:${weekDay}`} className={weekDay === day ? "active" : ""}>
+                    <button type="button" onClick={() => onChangeDay(weekDay)}>
+                      <strong>{WEEKDAY_LABELS[weekday]}</strong>
+                      <span>{shortDate(weekDay)}</span>
+                    </button>
+                    <div>
+                      {dayItems.length ? (
+                        dayItems.slice(0, 5).map((item) => {
+                          const payment = item.booking ? getPaymentForBooking?.(item.booking.id) : undefined;
+                          return (
+                            <button
+                              key={`week-item:${item.id}`}
+                              className={`court-calendar-week-item ${item.type}${selectedItemId === item.id ? " active" : ""}`}
+                              type="button"
+                              onClick={() => {
+                                setSelectedItemId(item.id);
+                                setEditingBookingId("");
+                              }}
+                            >
+                              <span>{shortTime(item.startsAt)}</span>
+                              <strong>{item.title}</strong>
+                              <small>{agendaItemBadgeLabel(item, payment)}</small>
+                            </button>
+                          );
+                        })
+                      ) : (
+                        <span className="court-calendar-week-empty">Sem ocupacao</span>
+                      )}
+                      {dayItems.length > 5 ? <em>+{dayItems.length - 5} itens</em> : null}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+          <aside className="court-calendar-detail-drawer" aria-label="Detalhe da agenda">
+            {selectedItem ? (
+              <>
+                <header>
+                  <button type="button" aria-label="Fechar detalhe" onClick={() => setSelectedItemId("")}>
+                    x
+                  </button>
+                  <span>{selectedBooking ? "Detalhe da reserva" : selectedItem.type === "class" ? "Detalhe da aula" : "Detalhe do bloqueio"}</span>
+                  <strong>{selectedItem.title}</strong>
+                  <small>
+                    {shortTime(selectedItem.startsAt)} - {shortTime(selectedItem.endsAt)}
+                  </small>
+                </header>
+                <dl className="court-calendar-detail-list">
+                  <div>
+                    <dt>Status</dt>
+                    <dd>{selectedItem.status}</dd>
+                  </div>
+                  <div>
+                    <dt>Quadra</dt>
+                    <dd>{activeCourts.find((court) => court.id === selectedItem.courtId)?.name || selectedBooking?.courtName || "Quadra"}</dd>
+                  </div>
+                  <div>
+                    <dt>Resumo</dt>
+                    <dd>{selectedItem.detail || "Sem detalhe adicional"}</dd>
+                  </div>
+                </dl>
+              </>
+            ) : (
+              <div className="court-calendar-detail-empty">
+                <strong>Selecione um item</strong>
+                <span>A semana usa uma quadra por vez para evitar poluicao visual.</span>
+              </div>
+            )}
+          </aside>
+        </div>
+      ) : activeView === "list" ? (
+        renderAgendaList("Lista da agenda", "Nenhum item nesta lista", "Ajuste data, quadra ou filtros para encontrar reservas, aulas e bloqueios.")
+      ) : activeView === "reschedules" ? (
+        renderAgendaList("Remarcacoes", "Nenhuma remarcacao encontrada", "Pedidos e reservas com indicio de troca aparecem aqui para acompanhamento.")
+      ) : activeView === "cancelled" ? (
+        renderAgendaList("Canceladas", "Nenhuma reserva cancelada", "Cancelamentos ficam aqui como historico operacional.")
+      ) : activeView === "conflicts" ? (
+        renderAgendaList("Conflitos", "Sem conflitos nos filtros atuais", "Sobreposicoes e horarios que exigem revisao aparecem nesta visao.")
+      ) : (
       <div className="court-calendar-workbench">
         <div
           className="court-calendar-board"
@@ -715,6 +920,7 @@ export function PlaceBookingCalendarModule({
           )}
         </aside>
       </div>
+      )}
 
       {canManageBookings ? (
         <div className="court-calendar-footer-metrics" aria-label="Resumo da agenda filtrada">

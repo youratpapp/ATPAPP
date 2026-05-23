@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest, AcademyPlannedAbsence, PlaceCourt } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 
@@ -9,6 +9,7 @@ type Props = {
   day: string;
   enrollments: AcademyEnrollment[];
   lessonRequests: AcademyLessonRequest[];
+  mode?: "academy" | "teacher";
   requireAttendanceCall: boolean;
   title?: string;
   onChangeDay: (day: string) => void;
@@ -19,6 +20,8 @@ type TeacherAgendaItem = {
   absentNames: string[];
   classId: string;
   courtName: string;
+  courtId: string;
+  coachName: string;
   dropInNames: string[];
   endsAt: string;
   level: string;
@@ -61,6 +64,7 @@ export function PlaceAcademyTeacherCalendarModule({
   day,
   enrollments,
   lessonRequests,
+  mode = "teacher",
   requireAttendanceCall,
   title = "Agenda do professor",
   onChangeDay,
@@ -107,6 +111,8 @@ export function PlaceAcademyTeacherCalendarModule({
         return {
           absentNames,
           classId: academyClass.id,
+          coachName: academyClass.coachName || "Professor a definir",
+          courtId: academyClass.courtId || "",
           courtName: academyClass.courtId ? courtById.get(academyClass.courtId)?.name || "Quadra a definir" : "Quadra a definir",
           dropInNames,
           endsAt: academyClass.endsAt,
@@ -121,23 +127,27 @@ export function PlaceAcademyTeacherCalendarModule({
   const hours = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
   const nowMinutes = timeToMinutes(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
   const nextItem = day === todayDateInputValue() ? agendaItems.find((item) => timeToMinutes(item.endsAt) >= nowMinutes) || agendaItems[0] || null : agendaItems[0] || null;
+  const isAcademyMode = mode === "academy";
+  const visibleCourts = activeCourts.filter((court) => court.isActive !== false);
 
   return (
-    <section className="teacher-day-calendar" aria-label={title}>
+    <section className={`teacher-day-calendar${isAcademyMode ? " academy-day-matrix" : ""}`} aria-label={title}>
       <div className="teacher-day-calendar-head">
         <div>
-          <span>Agenda diaria</span>
+          <span>{isAcademyMode ? "Agenda da academia" : "Agenda diaria"}</span>
           <strong>{title}</strong>
           <small>
             {agendaItems.length
-              ? `${countLabel(agendaItems.length, "aula no dia", "aulas no dia")} com turma, quadra e alunos.`
+              ? isAcademyMode
+                ? `${countLabel(agendaItems.length, "aula no dia", "aulas no dia")} distribuidas por horario e quadra.`
+                : `${countLabel(agendaItems.length, "aula no dia", "aulas no dia")} com turma, quadra e alunos.`
               : "Nenhuma aula vinculada para este dia."}
           </small>
         </div>
         <input type="date" value={day} onChange={(event) => onChangeDay(event.target.value)} />
       </div>
 
-      {nextItem ? (
+      {!isAcademyMode && nextItem ? (
         <div className="teacher-next-class-card">
           <span>Proxima aula</span>
           <strong>
@@ -155,6 +165,55 @@ export function PlaceAcademyTeacherCalendarModule({
         </div>
       ) : null}
 
+      {isAcademyMode ? (
+        <div
+          className="academy-day-matrix-grid"
+          style={{ "--academy-court-count": Math.max(visibleCourts.length, 1) } as CSSProperties}
+        >
+          <div className="academy-day-matrix-time" aria-hidden>
+            <span>Hora</span>
+            {hours.map((hour) => (
+              <strong key={`academy-hour-label:${hour}`}>{hour}</strong>
+            ))}
+          </div>
+          {visibleCourts.map((court) => {
+            const courtItems = agendaItems.filter((item) => item.courtId === court.id);
+            return (
+              <div key={`academy-court:${court.id}`} className="academy-day-matrix-court">
+                <strong>{court.name}</strong>
+                {hours.map((hour) => {
+                  const hourStart = timeToMinutes(hour);
+                  const hourEnd = hourStart + 60;
+                  const hourItems = courtItems.filter((item) => timeToMinutes(item.startsAt) >= hourStart && timeToMinutes(item.startsAt) < hourEnd);
+                  return (
+                    <div key={`academy-slot:${court.id}:${hour}`} className={`academy-day-matrix-slot${hourItems.length > 1 ? " conflict" : ""}`}>
+                      {hourItems.length ? (
+                        hourItems.map((item) => (
+                          <button
+                            key={`academy-grid:${item.classId}:${item.startsAt}`}
+                            type="button"
+                            className="academy-day-matrix-class"
+                            onClick={() => onOpenTodayClass?.(item.classId)}
+                          >
+                            <strong>{item.title}</strong>
+                            <span>{item.coachName}</span>
+                            <small>
+                              {countLabel(item.studentNames.length, "aluno", "alunos")}
+                              {item.absentNames.length ? ` | ${countLabel(item.absentNames.length, "aviso", "avisos")}` : ""}
+                            </small>
+                          </button>
+                        ))
+                      ) : (
+                        <span className="academy-day-matrix-free">Livre</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
       <div className="teacher-day-timeline">
         {hours.map((hour) => {
           const hourStart = timeToMinutes(hour);
@@ -198,6 +257,7 @@ export function PlaceAcademyTeacherCalendarModule({
           );
         })}
       </div>
+      )}
     </section>
   );
 }

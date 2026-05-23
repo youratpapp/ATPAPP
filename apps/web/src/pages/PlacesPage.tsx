@@ -7086,6 +7086,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         academyEnrollments={[]}
                         academyPlannedAbsences={[]}
                         activeCourts={activeCourts}
+                        allBookings={bookings}
                         blockedMinutes={calendarBlockedMinutes}
                         bookings={reservationCalendarBookings}
                         canManageBookings={canManageBookings}
@@ -7111,6 +7112,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       academyEnrollments={academyEnrollments}
                       academyPlannedAbsences={academyAbsences}
                       activeCourts={activeCourts}
+                      allBookings={bookings}
                       blockedMinutes={calendarBlockedMinutes}
                       bookings={calendarBookings}
                       canManageBookings={canManageBookings}
@@ -7261,6 +7263,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   academyEnrollments={academyEnrollments}
                   academyPlannedAbsences={academyAbsences}
                   activeCourts={activeCourts}
+                  allBookings={bookings}
                   blockedMinutes={calendarBlockedMinutes}
                   bookings={calendarBookings}
                   canManageBookings={canManageBookings}
@@ -7420,6 +7423,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       day={courtCalendarDay}
                       enrollments={visibleAcademyEnrollments}
                       lessonRequests={academyLessonRequests}
+                      mode={isCoachMode ? "teacher" : "academy"}
                       requireAttendanceCall={requireAttendanceCall}
                       title={isCoachMode ? "Minha agenda do dia" : "Agenda diaria de aulas"}
                       onChangeDay={(day) => setCourtCalendarDayByPlace((prev) => ({ ...prev, [p.id]: day || todayDateInputValue() }))}

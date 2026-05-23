@@ -971,6 +971,8 @@ Atualizacao 2026-05-23: build passou novamente apos os ajustes finais de respons
 
 Atualizacao 2026-05-23: aplicado endurecimento visual compacto `WORK-SAAS-COMPACT-V1` para aproximar a area Trabalho das referencias SaaS: topbar mais baixa e alinhada, botoes com altura consistente, cards/listas com menor raio, filtros menores, Agenda em grade mais reta, eventos sem repetir horario dentro do bloco e detalhe lateral preservado no desktop. Clientes tambem foi revalidado como tabela densa com Cliente 360 lateral. QA: build aprovado, Agenda 1366/1600 sem erro de console, Clientes 1366 sem erro de console e Agenda mobile 390 sem erro de console. Evidencias: `sprint-77-compact-agenda-1366.png`, `sprint-77-compact-agenda-1600.png`, `sprint-78-compact-clientes-1366.png`, `sprint-79-compact-agenda-mobile-390.png`.
 
+Atualizacao 2026-05-23: as abas da Agenda deixaram de ser botoes apenas visuais. `Semana` agora abre visao semanal com uma quadra por vez, `Lista` abre lista operacional, `Remarcacoes`, `Canceladas` e `Conflitos` abrem listas/estados filtrados. QA Playwright clicou em `Semana`, `Lista`, `Remarcacoes`, `Canceladas`, `Conflitos` e voltou para `Dia` sem erro de console. Evidencias: `sprint-80-agenda-tabs-semana.png`, `sprint-80-agenda-tabs-lista.png`, `sprint-80-agenda-tabs-remarcacoes.png`, `sprint-80-agenda-tabs-canceladas.png`, `sprint-80-agenda-tabs-conflitos.png`, `sprint-80-agenda-tabs-dia.png`.
+
 Objetivo:
 Corrigir tudo que o QA transversal encontrou.
 

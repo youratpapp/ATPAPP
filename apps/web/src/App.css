@@ -39441,6 +39441,192 @@ body:has(.app-shell--competition),
   padding: 8px 10px;
 }
 
+.app-shell--management .court-calendar-workbench--week {
+  align-items: stretch;
+}
+
+.app-shell--management .court-calendar-week-view,
+.app-shell--management .court-calendar-list-view {
+  background: rgba(6, 18, 31, 0.78);
+  border: 1px solid rgba(125, 151, 181, 0.16);
+  border-radius: 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.app-shell--management .court-calendar-week-view > header,
+.app-shell--management .court-calendar-list-view > header {
+  align-items: center;
+  background: rgba(11, 29, 48, 0.86);
+  border-bottom: 1px solid rgba(125, 151, 181, 0.14);
+  display: flex;
+  justify-content: space-between;
+  min-height: 46px;
+  padding: 10px 12px;
+}
+
+.app-shell--management .court-calendar-week-view > header strong,
+.app-shell--management .court-calendar-list-view > header strong {
+  color: #f8fafc;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.app-shell--management .court-calendar-week-view > header span,
+.app-shell--management .court-calendar-list-view > header span {
+  color: rgba(203, 213, 225, 0.72);
+  display: block;
+  font-size: 0.72rem;
+  margin-top: 2px;
+}
+
+.app-shell--management .court-calendar-week-grid {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(7, minmax(96px, 1fr));
+  min-height: 520px;
+}
+
+.app-shell--management .court-calendar-week-grid article {
+  border-right: 1px solid rgba(125, 151, 181, 0.12);
+  min-width: 0;
+}
+
+.app-shell--management .court-calendar-week-grid article:last-child {
+  border-right: 0;
+}
+
+.app-shell--management .court-calendar-week-grid article > button {
+  align-items: center;
+  background: rgba(10, 26, 44, 0.92);
+  border: 0;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.14);
+  color: #f8fafc;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.app-shell--management .court-calendar-week-grid article.active > button {
+  box-shadow: inset 0 -2px 0 #21c762;
+}
+
+.app-shell--management .court-calendar-week-grid article > div {
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+}
+
+.app-shell--management .court-calendar-week-item {
+  background: rgba(15, 35, 58, 0.82);
+  border: 1px solid rgba(125, 151, 181, 0.17);
+  border-radius: 6px;
+  color: #f8fafc;
+  cursor: pointer;
+  display: grid;
+  gap: 1px;
+  min-height: 48px;
+  padding: 6px;
+  text-align: left;
+}
+
+.app-shell--management .court-calendar-week-item.active,
+.app-shell--management .court-calendar-week-item:hover {
+  border-color: rgba(34, 197, 94, 0.72);
+}
+
+.app-shell--management .court-calendar-week-item span,
+.app-shell--management .court-calendar-week-item small,
+.app-shell--management .court-calendar-week-empty,
+.app-shell--management .court-calendar-week-grid em {
+  color: rgba(203, 213, 225, 0.74);
+  font-size: 0.62rem;
+  font-style: normal;
+}
+
+.app-shell--management .court-calendar-week-item strong {
+  font-size: 0.68rem;
+  line-height: 1.05;
+}
+
+.app-shell--management .court-calendar-list-view {
+  min-height: 360px;
+}
+
+.app-shell--management .court-calendar-list-rows {
+  display: grid;
+  gap: 1px;
+}
+
+.app-shell--management .court-calendar-list-row {
+  align-items: center;
+  background: rgba(10, 26, 44, 0.74);
+  border: 0;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+  color: #f8fafc;
+  cursor: pointer;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(220px, 1.5fr) 110px minmax(180px, 1fr);
+  min-height: 48px;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.app-shell--management .court-calendar-list-row:hover,
+.app-shell--management .court-calendar-list-row.active {
+  background: rgba(18, 75, 55, 0.48);
+}
+
+.app-shell--management .court-calendar-list-row span,
+.app-shell--management .court-calendar-list-row b {
+  min-width: 0;
+}
+
+.app-shell--management .court-calendar-list-row strong,
+.app-shell--management .court-calendar-list-row small,
+.app-shell--management .court-calendar-list-row b {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--management .court-calendar-list-row small,
+.app-shell--management .court-calendar-list-row b {
+  color: rgba(203, 213, 225, 0.74);
+  font-size: 0.72rem;
+}
+
+.app-shell--management .court-calendar-list-row em {
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 999px;
+  color: #bbf7d0;
+  font-size: 0.68rem;
+  font-style: normal;
+  justify-self: start;
+  padding: 3px 8px;
+}
+
+.app-shell--management .court-calendar-empty-panel {
+  align-items: center;
+  color: rgba(203, 213, 225, 0.78);
+  display: grid;
+  justify-items: center;
+  min-height: 260px;
+  padding: 28px;
+  text-align: center;
+}
+
+.app-shell--management .court-calendar-empty-panel strong {
+  color: #f8fafc;
+  font-size: 1rem;
+}
+
 .app-shell--management .clients-360-table-row,
 .app-shell--management .finance-receivables-row,
 .app-shell--management .academy-day-table__row,
@@ -39484,5 +39670,23 @@ body:has(.app-shell--competition),
     border-radius: 6px;
     min-height: 31px;
     padding-inline: 9px;
+  }
+
+  .app-shell--management .court-calendar-week-grid {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .app-shell--management .court-calendar-week-grid article {
+    border-right: 0;
+    border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+  }
+
+  .app-shell--management .court-calendar-list-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .app-shell--management .court-calendar-list-row b {
+    grid-column: 1 / 3;
   }
 }
