@@ -29849,6 +29849,7 @@ label {
 .app-shell--management .court-agenda-event-button,
 .app-shell--management .court-calendar-free-slot {
   align-items: start;
+  align-content: center;
   background: rgba(15, 33, 54, 0.82);
   border: 1px solid rgba(166, 198, 229, 0.15);
   border-radius: 8px;
@@ -29858,6 +29859,7 @@ label {
   height: 100%;
   justify-items: start;
   min-height: 34px;
+  overflow: hidden;
   padding: 4px 7px;
   text-align: left;
   width: 100%;
@@ -29873,8 +29875,11 @@ label {
 }
 
 .app-shell--management .court-agenda-event-button strong {
+  display: -webkit-box;
   font-size: 0.7rem;
   line-height: 1.03;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -32390,8 +32395,9 @@ label {
 
 .app-shell--management .court-calendar-panel--saas .court-calendar-board {
   grid-template-columns: 52px repeat(var(--court-count, 1), minmax(118px, 1fr));
-  min-width: max-content;
+  min-width: 0;
   min-height: calc(100vh - 278px);
+  width: 100%;
 }
 
 .app-shell--management .court-calendar-workbench {

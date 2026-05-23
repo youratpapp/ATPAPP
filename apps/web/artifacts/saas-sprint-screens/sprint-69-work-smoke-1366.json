@@ -1,0 +1,128 @@
+[
+  {
+    "route": "inicio",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536805886#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "O que precisa de atencao agora",
+      "Agenda em andamento",
+      "Pendencias criticas"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCENTRAL OPERACIONAL\nTrabalho Hoje\n\nPendencias, agenda e acoes importantes da sua operacao.\n\nO que precisa de atencao agora?\n\nResolva reservas, pagamentos, aulas e competicoes em poucos cliques.\n\nVer pendencias\nAbrir agenda\n101 acoes em foco\n0\nAgenda e reservas\n75\nAulas e encaixes pendentes\n20\nPessoas para acionar\nR$ 2.304,00\nVendas da cantina\nR$ 0,00\nSald"
+  },
+  {
+    "route": "agenda",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536814346#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Detalhe da reserva",
+      "Detalhe da aula",
+      "Detalhe do bloqueio"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloqueios\nTurmas\nAulas avulsas\nTodas as quadras\nQuadra 1\nQuadra 2\nQuadra 3\nQuadra 4\nQuadra 5\nQuadra 6\nTodos os professores\nRenato Siqueira\nTodas as turmas\nKids Iniciante 1\nAvancado Ranking 1\nIn"
+  },
+  {
+    "route": "academia",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536820787#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Aulas do dia",
+      "HORARIO",
+      "DETALHE DA AULA"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nHoje\nAgenda\nTurmas\nAlunos\nPendencias\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma\nAULAS HOJE\n4\nOrdenadas por horario\nALUNOS\n13\nMatriculas ativas nas aulas de hoje\nAVISOS PREVIOS\n0\nAusencias avisadas antes da aula\nREPOSICOES\n3\nCreditos abertos vinculados\nHORARIO\nTURMA"
+  },
+  {
+    "route": "clientes",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536826654#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Clientes ativos",
+      "Cliente 360",
+      "Novo cliente"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nClientes ativos\nLeads\nAtendimento\nGERENCIAMENTO\nClientes\n\nLeads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.\n\nNovo cliente\nTodos os tipos\nAlunos\nSocios\nCRM\nAtivos\nTodos\n143 clientes ativos\nNOME\nSTATUS\nCATEGORIA\nCONTATO\nPROXIMO PASSO\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\nAulas\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\n"
+  },
+  {
+    "route": "financeiro",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536833018#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Recebiveis",
+      "Pagar",
+      "Cobrar"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 25.566,00\n118 recebivel(is) no filtro\nVENCIDOS\nR$ 25.566,00\n118 cobranca(s)\nVENCE HOJE\n0\nacao recomendada hoje\nTodos\n118\nVencidos\n118\nHoje\n0\nAulas\n59\nPlanos\n59\nCobrar planos\nCobrar alunos\nCLIENTE\nORIGEM\nVENCIMENTO\nSTATUS\n"
+  },
+  {
+    "route": "loja-pos",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536838868#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=vender",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Venda",
+      "Produto",
+      "Vender"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nLoja / POS\nRegistrar venda rapida para aluno, jogador ou cliente avulso.\nVenda rapida\nVendas do dia\nEstoque baixo\nProdutos\nVenda rapida\nEscolha um produto cadastrado ou registre uma venda avulsa.\nR$ 0,00\nBUSCAR PRODUTO\nVenda avulsa\nAgua sem gas\nBebidas\nR$ 5,00 | 40 em estoque\nAluguel raquete\nServicos\nR$ 20,00 | 5 em estoque\nBarra de proteina\nLanches\nR$ 15"
+  },
+  {
+    "route": "comunicacao",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536844760#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Comunicacao",
+      "WhatsApp",
+      "Mensagens"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao"
+  },
+  {
+    "route": "relatorios",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536847183#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Relatorios",
+      "Ocupacao",
+      "Receita"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao"
+  },
+  {
+    "route": "administracao",
+    "loaded": true,
+    "url": "http://127.0.0.1:5175/?v=1779536849565#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "markers": [
+      "Administracao",
+      "Checklist",
+      "Equipe"
+    ],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao"
+  }
+]

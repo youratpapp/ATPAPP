@@ -192,7 +192,7 @@ QA:
 ### SPRINT-03 - Agenda como centro operacional
 
 Status em 2026-05-23:
-Em execucao avancada. A Agenda web foi movida para calendario operacional com tabs compactas, filtros, hora cheia, slot clicavel, drawer lateral no desktop e sheet no mobile. O horario deixou de ser repetido dentro dos blocos, ficando no eixo do calendario e no detalhe lateral. Foi corrigido o carregamento frio em cascata da area Trabalho: organizacoes, unidades, pagamentos, recursos profundos e jogos abertos agora carregam em paralelo, rotas diretas priorizam o local aberto e timeouts secundarios nao seguram a primeira dobra. QA Playwright em `#/gestao/:placeId/agenda` carregou o calendario em aproximadamente 6,3s, sem erro de console. Screenshot: `sprint-33-work-load-agenda-1366.png`. Pendencia: reduzir ainda mais o tempo percebido com loader progressivo/skeleton e separar dados secundarios da renderizacao inicial.
+Em execucao avancada. A Agenda web foi movida para calendario operacional com tabs compactas, filtros, hora cheia, slot clicavel, drawer lateral no desktop e sheet no mobile. O horario deixou de ser repetido dentro dos blocos, ficando no eixo do calendario e no detalhe lateral. Foi corrigido o carregamento frio em cascata da area Trabalho: organizacoes, unidades, pagamentos, recursos profundos e jogos abertos agora carregam em paralelo, rotas diretas priorizam o local aberto e timeouts secundarios nao seguram a primeira dobra. Em 2026-05-23, a grade foi endurecida para seguir a referencia SaaS: colunas com largura minima profissional, rolagem interna quando houver muitas quadras, drawer lateral sempre preservado, badges compactos por status (`Pendente`, `Pago`, `Aula`, `Bloqueio`) e selecao automatica do primeiro item visivel. QA Playwright em `#/gestao/:placeId/agenda` carregou o calendario sem erro de console. Screenshots: `sprint-33-work-load-agenda-1366.png`, `sprint-61-agenda-visible-autodetail-1600.png`, `sprint-66-agenda-contained-drawer-1600.png`. Pendencia: reduzir ainda mais o tempo percebido com loader progressivo/skeleton e separar dados secundarios da renderizacao inicial.
 
 Objetivo:
 Transformar Agenda em calendario central de trabalho, com proporcao de SaaS profissional. A agenda nao pode abrir com hero grande, cards aleatorios, fila empilhada ou formulario interno quebrado.
@@ -233,7 +233,7 @@ QA:
 ### SPRINT-04 - Reserva drawer completo
 
 Status em 2026-05-23:
-Em execucao avancada. O clique em reserva abre detalhe lateral no desktop, nao mais formulario estreito dentro do calendario. A edicao fica dentro do drawer em coluna legivel, sem listas/historico competindo durante a edicao. O pagamento aparece como acao do drawer e a validacao visual foi registrada em screenshot. A migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo, o schema do PostgREST foi recarregado e as RPCs `app_update_court_booking_admin`, `app_create_court_booking_change_request`, `app_get_court_booking_change_request` e `app_confirm_court_booking_change_request` foram confirmadas no catalogo. Validacao via Supabase JS confirmou que `app_create_court_booking_change_request` nao retorna mais erro de schema cache. QA Playwright no calendario carregado confirmou drawer com `Detalhe da reserva`, `Pagar`, `Editar`, `WhatsApp` e `Cancelar reserva`, sem erros de console. Screenshot: `sprint-34-reservation-drawer-1366.png`.
+Em execucao avancada. O clique em reserva abre detalhe lateral no desktop, nao mais formulario estreito dentro do calendario. A edicao fica dentro do drawer em coluna legivel, sem listas/historico competindo durante a edicao. O pagamento aparece como acao do drawer e a validacao visual foi registrada em screenshot. A migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo, o schema do PostgREST foi recarregado e as RPCs `app_update_court_booking_admin`, `app_create_court_booking_change_request`, `app_get_court_booking_change_request` e `app_confirm_court_booking_change_request` foram confirmadas no catalogo. Validacao via Supabase JS confirmou que `app_create_court_booking_change_request` nao retorna mais erro de schema cache. QA Playwright no calendario carregado confirmou drawer com `Detalhe da reserva`, `Pagar`, `Editar`, `WhatsApp troca` e `Cancelar reserva`, sem erros de console. Screenshots: `sprint-34-reservation-drawer-1366.png`, `sprint-65-agenda-adt-professional-grid-1600.png`, `sprint-66-agenda-contained-drawer-1600.png`.
 
 Objetivo:
 Criar fluxo operacional completo de reserva.
@@ -585,8 +585,8 @@ QA:
 
 ### SPRINT-13 - Competicoes trabalho hub
 
-Status em 2026-05-22:
-Em execucao avancada. O modo Trabalho em Competicoes deixou de usar sidebar paralela Torneios/Ligas/Resultados no desktop e passou a usar o dominio global `Competicoes`. O hub foi recriado como console SaaS com hero operacional unico, KPIs, fila por fase, linhas de acao e painel lateral de detalhe. Descoberta publica permanece separada do modo Trabalho.
+Status em 2026-05-23:
+Em execucao avancada. O modo Trabalho em Competicoes deixou de usar sidebar paralela Torneios/Ligas/Resultados no desktop e passou a usar o dominio global `Competicoes`. O hub foi recriado como console SaaS com hero operacional unico, KPIs, fila por fase, linhas de acao e painel lateral de detalhe. Descoberta publica permanece separada do modo Trabalho. Em 2026-05-23, a rota legada/profissional `/gestao/:placeId/competicoes` ganhou alias seguro para o hub de organizacao (`/eventos?modo=organizing&placeId=:placeId`), preservando links antigos sem cair silenciosamente em `Inicio`. QA Playwright confirmou `COMPETITION OS` e `Quais competicoes precisam de acao?` sem erro de console. Screenshot: `sprint-63-competitions-work-alias-1600.png`.
 
 Objetivo:
 Separar organizador de jogador.
@@ -953,7 +953,7 @@ Relatorio final com aprovado/falhou/corrigido/pendente.
 ### SPRINT-23 - Correcoes finais e polimento
 
 Status em 2026-05-23:
-Em execucao. Polimentos aplicados nesta rodada: blocos da Agenda deixam de repetir horario dentro do card, loading administrativo usa linguagem de Trabalho, busca global nao corta placeholder no desktop 1366, Relatorios/Comunicacao usam listas com drawer e estilos de botao isolados do CSS global. Tambem foi corrigido o encaixe das metricas da Central Operacional mobile, a fila critica da Home de Trabalho deixou de quebrar em colunas estreitas e botoes brancos foram bloqueados nessa superficie. Build passou apos as correcoes. Artefatos adicionais: `sprint-52-work-home-queue-grid-1366.png` e `sprint-53-work-home-dark-buttons-1366.png`.
+Em execucao. Polimentos aplicados nesta rodada: blocos da Agenda deixam de repetir horario dentro do card, loading administrativo usa linguagem de Trabalho, busca global nao corta placeholder no desktop 1366, Relatorios/Comunicacao usam listas com drawer e estilos de botao isolados do CSS global. Tambem foi corrigido o encaixe das metricas da Central Operacional mobile, a fila critica da Home de Trabalho deixou de quebrar em colunas estreitas e botoes brancos foram bloqueados nessa superficie. Em 2026-05-23, a agenda recebeu novo endurecimento de proporcao: cards mais lineares, bordas menos arredondadas, status visivel por cor/badge, drawer lateral preservado, rolagem interna da grade e topbar com placeholder compacto. Build passou apos as correcoes. Artefatos adicionais: `sprint-52-work-home-queue-grid-1366.png`, `sprint-53-work-home-dark-buttons-1366.png`, `sprint-66-agenda-contained-drawer-1600.png`.
 
 Objetivo:
 Corrigir tudo que o QA transversal encontrou.

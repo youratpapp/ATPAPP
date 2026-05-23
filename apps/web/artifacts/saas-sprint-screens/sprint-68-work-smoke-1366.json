@@ -1,0 +1,74 @@
+[
+  {
+    "route": "inicio",
+    "url": "http://127.0.0.1:5175/?v=1779536725269#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "agenda",
+    "url": "http://127.0.0.1:5175/?v=1779536730735#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "academia",
+    "url": "http://127.0.0.1:5175/?v=1779536733113#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "clientes",
+    "url": "http://127.0.0.1:5175/?v=1779536735994#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "financeiro",
+    "url": "http://127.0.0.1:5175/?v=1779536738883#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "loja-pos",
+    "url": "http://127.0.0.1:5175/?v=1779536743298#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=vender",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "comunicacao",
+    "url": "http://127.0.0.1:5175/?v=1779536746199#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "relatorios",
+    "url": "http://127.0.0.1:5175/?v=1779536749111#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  },
+  {
+    "route": "administracao",
+    "url": "http://127.0.0.1:5175/?v=1779536752009#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+    "hasRestricted": false,
+    "hasLoading": false,
+    "logs": [],
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, cl"
+  }
+]
