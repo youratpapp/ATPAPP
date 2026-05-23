@@ -4,7 +4,7 @@ import { ACADEMY_LEVEL_OPTIONS } from "../../lib/academy-levels";
 import type { AcademyClass, AcademyCoach, AcademyEnrollment, PlaceCourt } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 import { formatMoneyFromCents } from "../../lib/payments";
-import { EntityActionRow, WorkspaceEmptyState, WorkspaceList, WorkspaceMetrics } from "./PlaceWorkspaceUi";
+import { WorkspaceEmptyState, WorkspaceList } from "./PlaceWorkspaceUi";
 
 export type AcademyClassEditPatch = {
   ageGroup: AcademyClass["ageGroup"];
@@ -242,33 +242,41 @@ export function PlaceAcademyClassesModule({
         </span>
       </div>
 
+      <div className="academy-entity-table-head academy-classes-table-head" aria-hidden>
+        <span>Turma</span>
+        <span>Horario</span>
+        <span>Professor / quadra</span>
+        <span>Ocupacao</span>
+        <span>Status</span>
+      </div>
+
       <WorkspaceList>
-        {visibleClasses.map(({ academyClass, activeCount, classCourt, classEnrollments, pendingCount }) => {
+        {visibleClasses.map(({ academyClass, activeCount, classCourt, pendingCount }) => {
           const classTime = `${weekdayLabels[academyClass.weekday] || "Dia"} ${academyClass.startsAt.slice(0, 5)}-${academyClass.endsAt.slice(0, 5)}`;
           const capacityLabel = `${activeCount}/${academyClass.capacity}`;
           const isFull = activeCount >= academyClass.capacity;
           return (
-            <EntityActionRow
+            <button
+              type="button"
               key={`academy-class-dashboard:${academyClass.id}`}
-              context={classTime}
-              detail={[academyClass.coachName || "Professor a definir", classCourt?.name, academyClass.level || "nivel livre"].filter(Boolean).join(" | ")}
-              primaryAction={
-                <button type="button" onClick={() => setSelectedClassId(academyClass.id)}>
-                  Abrir turma
-                </button>
-              }
-              status={pendingCount > 0 ? countLabel(pendingCount, "pendente", "pendentes") : isFull ? "Lotada" : "Com vagas"}
-              title={academyClass.title}
+              className={`academy-class-row academy-directory-row${selectedClassId === academyClass.id ? " selected" : ""}`}
+              onClick={() => setSelectedClassId(academyClass.id)}
             >
-              <WorkspaceMetrics
-                items={[
-                  `${capacityLabel} alunos`,
-                  formatMoneyFromCents(academyClass.monthlyFeeCents),
-                  academyClass.allowMakeup ? "Reposicao permitida" : "Sem reposicao",
-                  countLabel(classEnrollments.length, "matricula", "matriculas"),
-                ]}
-              />
-            </EntityActionRow>
+              <span>
+                <strong>{academyClass.title}</strong>
+                <small>{academyClass.level || "Nivel livre"}</small>
+              </span>
+              <span>{classTime}</span>
+              <span>
+                <strong>{academyClass.coachName || "Professor a definir"}</strong>
+                <small>{classCourt?.name || "Quadra a definir"}</small>
+              </span>
+              <span>
+                <strong>{capacityLabel}</strong>
+                <small>{formatMoneyFromCents(academyClass.monthlyFeeCents)}</small>
+              </span>
+              <em>{pendingCount > 0 ? countLabel(pendingCount, "pendente", "pendentes") : isFull ? "Lotada" : "Com vagas"}</em>
+            </button>
           );
         })}
         {enrichedClasses.length > visibleLimit ? (

@@ -12,7 +12,7 @@ import type {
 } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 import { formatMoneyFromCents } from "../../lib/payments";
-import { EntityActionRow, WorkspaceEmptyState, WorkspaceList, WorkspaceMetrics } from "./PlaceWorkspaceUi";
+import { WorkspaceEmptyState, WorkspaceList, WorkspaceMetrics } from "./PlaceWorkspaceUi";
 
 export type PlaceAcademyStudentFilter = {
   attendance: "" | "present_today" | "absent_today" | "pending_today" | "has_absence" | "has_makeup";
@@ -292,6 +292,14 @@ export function PlaceAcademyStudentsModule({
           ) : null}
         </div>
 
+        <div className="academy-entity-table-head academy-students-table-head" aria-hidden>
+          <span>Aluno</span>
+          <span>Status</span>
+          <span>Turma / plano</span>
+          <span>Contato</span>
+          <span>Proximo passo</span>
+        </div>
+
         {listedStudentGroups.map(({ contract, enrollments: groupEnrollments, key, representative: enrollment }) => {
           const academyClass = classes.find((item) => item.id === enrollment.classId);
           const contractClasses = groupEnrollments
@@ -302,8 +310,6 @@ export function PlaceAcademyStudentsModule({
           const groupEnrollmentIds = new Set(groupEnrollments.map((item) => item.id));
           const openMakeupCount = makeups.filter((item) => groupEnrollmentIds.has(item.enrollmentId)).length;
           const openAbsenceCount = absences.filter((item) => groupEnrollmentIds.has(item.enrollmentId) && item.status === "open").length;
-          const attendedCount = attendance.filter((item) => groupEnrollmentIds.has(item.enrollmentId) && item.status === "present").length;
-          const missedCount = attendance.filter((item) => groupEnrollmentIds.has(item.enrollmentId) && item.status === "absent").length;
           const todayGroupAttendance = todayAttendance.filter((item) => groupEnrollmentIds.has(item.enrollmentId));
           const hasPresentToday = todayGroupAttendance.some((item) => item.status === "present");
           const hasAbsentToday = todayGroupAttendance.some((item) => item.status === "absent");
@@ -321,39 +327,46 @@ export function PlaceAcademyStudentsModule({
             : paid
               ? "Mensalidade paga"
               : "Mensalidade pendente";
+          const nextStep = !paid
+            ? "Cobrar"
+            : openMakeupCount > 0
+              ? "Reposicao"
+              : openAbsenceCount > 0
+                ? "Aviso"
+                : "Aulas";
+          const classSummary = contractClasses.length
+            ? contractClasses.map((item) => item.title).join(" | ")
+            : academyClass?.title || "Turma";
           return (
-            <EntityActionRow
+            <button
+              type="button"
               key={`academy-student:${key}`}
-              className={!paid && enrollment.status === "active" ? "due academy-student-row" : "academy-student-row"}
-              context={contract ? `Plano ${contract.weeklyLessonsCount}x/semana` : academyClass?.title || "Turma"}
-              detail={[enrollment.phone, paymentLabel, attendanceLabel].filter(Boolean).join(" | ")}
-              primaryAction={
-                <button type="button" onClick={() => setSelectedEnrollmentId(enrollment.id)}>
-                  Abrir aluno
-                </button>
-              }
-              status={statusLabel(enrollment.status)}
-              title={contract?.studentName || enrollment.playerName}
+              className={`academy-student-row academy-directory-row${!paid && enrollment.status === "active" ? " due" : ""}${selectedEnrollmentId === enrollment.id ? " selected" : ""}`}
+              onClick={() => setSelectedEnrollmentId(enrollment.id)}
             >
-              <small>
-                {contractClasses.length > 1
-                  ? contractClasses
-                      .map((item) => `${item.title} ${item.startsAt.slice(0, 5)}`)
-                      .join(" | ")
-                  : latestProgress
+              <span>
+                <strong>{contract?.studentName || enrollment.playerName}</strong>
+                <small>
+                  {latestProgress
                     ? `Evolucao: ${latestProgress.levelLabel || latestProgress.focus || latestProgress.notes}`
-                    : "Sem evolucao registrada"}
-              </small>
-              <WorkspaceMetrics
-                items={[
-                  ...(requireAttendanceCall ? [countLabel(attendedCount, "presenca", "presencas"), countLabel(missedCount, "nao compareceu", "nao compareceram")] : []),
-                  countLabel(openAbsenceCount, "aviso previo", "avisos previos"),
-                  countLabel(openMakeupCount, "reposicao aberta", "reposicoes abertas"),
-                  `Competencia ${billingPeriod}`,
-                  countLabel(groupEnrollments.length, "horario semanal", "horarios semanais"),
-                ]}
-              />
-            </EntityActionRow>
+                    : `${countLabel(groupEnrollments.length, "horario semanal", "horarios semanais")} | Competencia ${billingPeriod}`}
+                </small>
+              </span>
+              <em>{statusLabel(enrollment.status)}</em>
+              <span>
+                <strong>{contract ? `Plano ${contract.weeklyLessonsCount}x/semana` : classSummary}</strong>
+                <small>{paymentLabel}</small>
+              </span>
+              <span>{enrollment.phone || "Sem telefone"}</span>
+              <span>
+                <strong>{nextStep}</strong>
+                <small>
+                  {[attendanceLabel, countLabel(openAbsenceCount, "aviso previo", "avisos previos"), countLabel(openMakeupCount, "reposicao aberta", "reposicoes abertas")]
+                    .filter(Boolean)
+                    .join(" | ")}
+                </small>
+              </span>
+            </button>
           );
         })}
 

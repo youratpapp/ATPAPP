@@ -1,0 +1,25 @@
+{
+  "errors": [],
+  "results": [
+    {
+      "view": "students",
+      "hasRoutineSummary": 0,
+      "hasOperationalQueues": 0,
+      "headCount": 1,
+      "rowCount": 24,
+      "drawerOpen": 1,
+      "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-100-academy-students-directory-1366.png",
+      "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Alunos Aluno por aluno: status, pagamento, avisos, reposicao e evolucao. Hoje Agenda Turmas Alunos Pendencias Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Intermediario Manha 1 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 TESTE TURMA Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 F"
+    },
+    {
+      "view": "classes",
+      "hasRoutineSummary": 0,
+      "hasOperationalQueues": 0,
+      "headCount": 1,
+      "rowCount": 20,
+      "drawerOpen": 1,
+      "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-100-academy-classes-directory-1366.png",
+      "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Turmas Turmas, grade semanal, vagas, mensalidade e matricula manual. Hoje Agenda Turmas Alunos Pendencias Nova turma ou horario aberto Todos os dias Dom Seg Ter Qua Qui Sex Sab Todas Com vagas Lotadas Com pendencias Exibindo 20 de 27 TURMA HORARIO PROFESSOR / QUADRA OCUPACAO STATUS Kids Iniciante 1 Iniciante Seg 06:00-07:00 Caio Ferraz Quadra 1 8/8 R$ 420,00 Lotada Avancado Ranking 1 Avancado Seg 07:00-08:00 Caio Ferraz Quadra 1 4/4 R$ 420,00 Lotada Intermediario Manha "
+    }
+  ]
+}

@@ -20089,6 +20089,25 @@ button:disabled {
 }
 
 @media (max-width: 760px) {
+  .app-shell--management .academy-entity-table-head {
+    display: none;
+  }
+
+  .app-shell--management .academy-students-table-head,
+  .app-shell--management .academy-student-row.academy-directory-row,
+  .app-shell--management .academy-classes-table-head,
+  .app-shell--management .academy-class-row.academy-directory-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .app-shell--management .academy-directory-row > span:nth-of-type(n + 3) {
+    grid-column: 1 / -1;
+  }
+
+  .app-shell--management .academy-directory-row em {
+    justify-self: end;
+  }
+
   .academy-grade-toolbar,
   .crm-first-fold,
   .crm-drawer-form,
@@ -29458,6 +29477,101 @@ label {
   border-radius: 16px;
   gap: 12px;
   padding: 12px 14px;
+}
+
+.app-shell--management .academy-entity-table-head,
+.app-shell--management .academy-directory-row {
+  align-items: center;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+}
+
+.app-shell--management .academy-entity-table-head {
+  background: rgba(5, 14, 28, 0.88);
+  border: 1px solid rgba(166, 198, 229, 0.14);
+  color: rgba(203, 213, 225, 0.72);
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 9px 12px;
+  text-transform: uppercase;
+}
+
+.app-shell--management .academy-students-table-head,
+.app-shell--management .academy-student-row.academy-directory-row {
+  grid-template-columns: minmax(180px, 1.2fr) 96px minmax(180px, 1fr) minmax(150px, 0.8fr) minmax(140px, 0.8fr);
+}
+
+.app-shell--management .academy-classes-table-head,
+.app-shell--management .academy-class-row.academy-directory-row {
+  grid-template-columns: minmax(200px, 1.1fr) minmax(150px, 0.9fr) minmax(190px, 1fr) minmax(120px, 0.65fr) 108px;
+}
+
+.app-shell--management .academy-directory-row {
+  background: rgba(8, 20, 36, 0.82);
+  border: 1px solid rgba(166, 198, 229, 0.11);
+  color: var(--pdark-text-main);
+  cursor: pointer;
+  min-height: 48px;
+  padding: 8px 12px;
+  text-align: left;
+  width: 100%;
+}
+
+.app-shell--management .academy-directory-row:hover,
+.app-shell--management .academy-directory-row:focus-visible,
+.app-shell--management .academy-directory-row.selected {
+  background: rgba(10, 49, 42, 0.62);
+  border-color: rgba(34, 197, 94, 0.54);
+  outline: none;
+}
+
+.app-shell--management .academy-directory-row.due {
+  border-color: rgba(234, 179, 8, 0.42);
+  box-shadow: inset 3px 0 0 rgba(234, 179, 8, 0.74);
+}
+
+.app-shell--management .academy-directory-row > span {
+  color: rgba(226, 232, 240, 0.82);
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.app-shell--management .academy-directory-row strong {
+  color: var(--pdark-text-main);
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 900;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--management .academy-directory-row small {
+  color: var(--pdark-text-muted);
+  font-size: 0.72rem;
+  font-weight: 780;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--management .academy-directory-row em {
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  border-radius: 999px;
+  color: #bbf7d0;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+  justify-self: start;
+  line-height: 1;
+  padding: 6px 9px;
+  white-space: nowrap;
 }
 
 .app-shell--management .academy-workspace-row > div {

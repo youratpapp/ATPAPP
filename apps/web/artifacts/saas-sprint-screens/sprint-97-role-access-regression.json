@@ -1,0 +1,62 @@
+[
+  {
+    "name": "coach-academia",
+    "state": "auth-coach.json",
+    "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "width": 430,
+    "height": 932,
+    "durationMs": 137,
+    "title": "Carregando...",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [],
+    "textStart": "Carregando...",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-97-role-coach-academia-430.png"
+  },
+  {
+    "name": "frontdesk-agenda",
+    "state": "auth-frontdesk.json",
+    "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "width": 430,
+    "height": 932,
+    "durationMs": 126,
+    "title": "Carregando...",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [],
+    "textStart": "Carregando...",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-97-role-frontdesk-agenda-430.png"
+  },
+  {
+    "name": "finance-prime",
+    "state": "auth-finance.json",
+    "route": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+    "width": 1366,
+    "height": 768,
+    "durationMs": 151,
+    "title": "Carregando...",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [],
+    "textStart": "Carregando...",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-97-role-finance-prime-1366.png"
+  },
+  {
+    "name": "cashier-prime",
+    "state": "auth-cashier.json",
+    "route": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos",
+    "width": 1366,
+    "height": 768,
+    "durationMs": 132,
+    "title": "Carregando...",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [],
+    "textStart": "Carregando...",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-97-role-cashier-prime-1366.png"
+  }
+]

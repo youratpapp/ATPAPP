@@ -454,6 +454,8 @@ Atualizacao 2026-05-23: a aba `Academia > Agenda` deixou de ser uma linha do tem
 
 Atualizacao 2026-05-23: os cards de resumo de Academia deixaram de ser passivos. `Aulas hoje`, `Pendencias`, `Alunos ativos` e `Turmas` agora abrem diretamente a visao correspondente, evitando numero sem caminho operacional. QA Playwright clicou em `Pendencias`, abriu `#/gestao/:placeId/academia?visao=pendencias` com lista real e console limpo. Evidencia: `sprint-82-academy-pending-card-opens-list-1366.png`.
 
+Atualizacao 2026-05-23: removida a mistura de responsabilidades dentro de `Academia > Turmas` e `Academia > Alunos`. Aulas do dia ficam na visao `Hoje`; interesses, reposicoes e matriculas ficam em `Pendencias`; `Turmas` e `Alunos` passam a ser diretorios compactos com filtros, cabecalho de colunas, linhas selecionaveis e detalhe lateral, no mesmo raciocinio de tabela + 360 usado em Clientes. QA Playwright confirmou ausencia de `academy-routine-summary` e `place-action-queue` nessas duas abas, com drawer lateral abrindo ao selecionar linha, sem erros de console. Evidencias: `sprint-100-academy-directory-refactor.json`, `sprint-100-academy-students-directory-1366.png`, `sprint-100-academy-classes-directory-1366.png`.
+
 Objetivo:
 Reorganizar aulas/turmas/alunos/professores sem tabs confusas.
 
@@ -877,6 +879,8 @@ Atualizacao 2026-05-23: Academia mobile tambem foi corrigida para comportamento 
 
 Atualizacao 2026-05-23: revalidacao mobile ampliada em 390px e 430px percorreu `inicio`, `agenda`, `academia`, `clientes`, `financeiro`, `loja-pos`, `competicoes`, `comunicacao`, `relatorios` e `administracao` com login real, sem erros de console e sem queda para login. Evidencias: `sprint-89-mobile-390-audit.json`, `sprint-89-mobile-430-audit.json` e screenshots `sprint-89-mobile-390-*.png` / `sprint-89-mobile-430-*.png`. Pendencia de produto permanece: criar auth states/dados separados para professor, recepcao, financeiro e caixa quando a massa de seed estiver estabilizada, para validar menu por papel estrito e nao apenas usuario admin multi-papel.
 
+Atualizacao 2026-05-23: auth states por papel foram validados em rotas reais. Professor (`auth-coach`) abre Academia mobile sem cair em `Gestao indisponivel`, Recepcao (`auth-frontdesk`) abre Agenda mobile, Financeiro (`auth-finance`) abre Financeiro web e Caixa (`auth-cashier`) abre Loja/POS web, todos sem erros de console. Para reduzir espera indevida no trabalho diario, a carga profissional deixou de buscar pagamentos pessoais do usuario logado e passa a buscar pagamentos por alvo operacional; em areas que nao dependem de dinheiro como rotina primaria, o fallback de pagamentos por alvo e curto para nao bloquear aulas/POS. Evidencia: `sprint-99-role-access-regression.json` e screenshots `sprint-99-role-*.png`.
+
 Objetivo:
 Depois do web, reorganizar mobile trabalho por papel.
 
@@ -946,6 +950,8 @@ Em execucao avancada. QA automatizado com Playwright validou desktop 1366 e mobi
 Atualizacao 2026-05-23: smoke desktop 1366 com marcadores especificos confirmou conteudo real em `comunicacao`, `relatorios`, `administracao`, `academia` e `agenda`. Os falsos positivos anteriores por texto de sidebar foram substituidos por marcadores internos de pagina. Artefatos: `sprint-74-route-smoke-1366.json` e screenshots `sprint-74-route-*.png`. Os timeouts secundarios de workspace (`payments`/`focused place`) foram rebaixados para `console.debug`, pois sao fallback de dados nao criticos e nao erro de produto. Nova validacao da Agenda 1366 ficou com console relevante zerado: `sprint-76-agenda-console-clean-1366.json`.
 
 Atualizacao 2026-05-23: auditoria transversal ampliada executada em 4 viewports (`390x844`, `430x932`, `1366x768`, `1600x900`) nas 10 rotas principais de Trabalho: `inicio`, `agenda`, `academia`, `clientes`, `financeiro`, `loja-pos`, `competicoes`, `comunicacao`, `relatorios` e `administracao`. Resultado: 40 carregamentos com 0 erros de console e 0 quedas para login. Evidencia consolidada: `sprint-89-cross-route-audit-summary.json`; evidencias por viewport: `sprint-89-mobile-390-audit.json`, `sprint-89-mobile-430-audit.json`, `sprint-89-desktop-1366-audit.json`, `sprint-89-desktop-1600-audit.json`.
+
+Atualizacao 2026-05-23: QA transversal por papel executado com storage states dedicados. Professor, recepcao, financeiro e caixa carregaram suas superficies esperadas sem erro de console e sem bloqueio de permissao indevido. Foi corrigida a dependencia de pagamentos pessoais na primeira carga da area profissional; `src/lib/place-admin-data.ts` agora diferencia pagamento pessoal de pagamento por alvo operacional, preservando persistencia de pagamento de reserva sem travar rotinas de aula/POS. Evidencia: `sprint-99-role-access-regression.json`.
 
 Objetivo:
 Validar que nenhuma persona melhorou quebrando outra.

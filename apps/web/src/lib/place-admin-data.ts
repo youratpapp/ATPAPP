@@ -34,7 +34,7 @@ import {
   listPlacesIFollow,
   getPlaceById,
 } from "./places";
-import { placeResourceAccess } from "./place-management";
+import { placeResourceAccess, type PlaceManagementModule } from "./place-management";
 import type {
   AcademyAttendance,
   AcademyClass,
@@ -381,6 +381,7 @@ export async function fetchPlaceAdminResources(input: {
 }
 
 export async function fetchPlacesWorkspaceData(input: {
+  adminModule?: PlaceManagementModule;
   focusPlaceId?: string;
   includeSupportData?: boolean;
   isAdminRoute: boolean;
@@ -400,15 +401,15 @@ export async function fetchPlacesWorkspaceData(input: {
     fetcher(input.user),
     [] as Place[],
     "places",
-    input.isAdminRoute && input.focusPlaceId ? 4500 : 7000
+    input.isAdminRoute && input.focusPlaceId ? 10000 : 7000
   );
   const focusedPlacePromise =
     input.isAdminRoute && input.focusPlaceId
-      ? withWorkspaceFallback(getPlaceById(input.user, input.focusPlaceId), null as Place | null, "focused place", 3500)
+      ? withWorkspaceFallback(getPlaceById(input.user, input.focusPlaceId), null as Place | null, "focused place", 10000)
       : Promise.resolve(null as Place | null);
   const ownPaymentsPromise =
-    includeSupportData && (input.isAdminRoute || input.tab === "mine")
-      ? withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", input.isAdminRoute ? 3000 : 4000)
+    includeSupportData && !input.isAdminRoute && input.tab === "mine"
+      ? withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", 4000)
       : Promise.resolve({} as Record<string, AppPayment>);
 
   const [organizations, listedPlaces, focusedPlace] = await Promise.all([organizationsPromise, placesPromise, focusedPlacePromise]);
@@ -441,9 +442,11 @@ export async function fetchPlacesWorkspaceData(input: {
       )
     : Promise.resolve([] as OpenMatch[]);
   const [entries, ownPaymentsByTarget, openMatches] = await Promise.all([entriesPromise, ownPaymentsPromise, openMatchesPromise]);
+  const targetPaymentTimeoutMs =
+    input.adminModule === "finance" || input.adminModule === "bookings" || input.adminModule === "clients" ? 4500 : 1500;
   const targetPaymentsByTarget =
     includeSupportData && (input.isAdminRoute || input.tab === "mine")
-      ? await withWorkspaceFallback(fetchPlacePaymentsByTarget(collectPaymentTargets(entries)), {}, "target payments", input.isAdminRoute ? 4500 : 6000)
+      ? await withWorkspaceFallback(fetchPlacePaymentsByTarget(collectPaymentTargets(entries)), {}, "target payments", input.isAdminRoute ? targetPaymentTimeoutMs : 6000)
       : {};
   const paymentsByTarget = { ...ownPaymentsByTarget, ...targetPaymentsByTarget };
   return { entries, openMatches, organizations, paymentsByTarget, places };

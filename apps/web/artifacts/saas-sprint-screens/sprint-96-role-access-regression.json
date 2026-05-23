@@ -1,0 +1,58 @@
+[
+  {
+    "name": "coach-academia",
+    "state": "auth-coach.json",
+    "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "width": 430,
+    "height": 932,
+    "durationMs": 17202,
+    "title": "",
+    "blocked": false,
+    "loading": true,
+    "errors": [],
+    "textStart": "Renato Siqueira Jogador Trabalho Carregando area de trabalho Preparando agenda, aulas, clientes, financeiro e operacao do local. Hoje Agenda Turmas Alunos Perfil",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-96-role-coach-academia-430.png"
+  },
+  {
+    "name": "frontdesk-agenda",
+    "state": "auth-frontdesk.json",
+    "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "width": 430,
+    "height": 932,
+    "durationMs": 17205,
+    "title": "",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "textStart": "Paula Nogueira Jogador Trabalho OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Todos os professores Renato Siqueira Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Intermediario Manha 1 Profissional Treino 1 Feminino Performance 2 Kids Iniciante",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-96-role-frontdesk-agenda-430.png"
+  },
+  {
+    "name": "finance-prime",
+    "state": "auth-finance.json",
+    "route": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+    "width": 1366,
+    "height": 768,
+    "durationMs": 17273,
+    "title": "",
+    "blocked": false,
+    "loading": true,
+    "errors": [],
+    "textStart": "Ola, Clara Financeiro UNIDADE ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Carregando area de trabalho Preparando agenda, aulas, clientes, financeiro e operacao do local. ATP Trabalho TRABALHO Inicio FINANCEIRO Financeiro",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-96-role-finance-prime-1366.png"
+  },
+  {
+    "name": "cashier-prime",
+    "state": "auth-cashier.json",
+    "route": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos",
+    "width": 1366,
+    "height": 768,
+    "durationMs": 17310,
+    "title": "",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Jogador Trabalho Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ ",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-96-role-cashier-prime-1366.png"
+  }
+]

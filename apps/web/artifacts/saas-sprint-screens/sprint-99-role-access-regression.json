@@ -1,0 +1,68 @@
+[
+  {
+    "name": "coach-academia",
+    "state": "auth-coach.json",
+    "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "width": 430,
+    "height": 932,
+    "durationMs": 11513,
+    "title": "",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [
+      "debug: Workspace data timeout: target payments",
+      "debug: Workspace data timeout: target payments"
+    ],
+    "textStart": "Renato Siqueira Jogador Trabalho Professor Renato Siqueira 4 aulas hoje | 26 alunos ativos Sab 06:30 | Duplas Competitivo 1 Sab 12:00 | Adulto Iniciante 2 Sab 16:00 | Intermediario Noite 3 Sab 18:00 | Primeira Classe 2 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 4 Ordenadas por horario ALUNOS 13 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 0 Ausencias avisadas antes da aula REPOSICOES 2 Creditos abertos vinculados 06:30 - 07:30 Duplas Competitivo 1 Renato Siqueira Quadra 6 4/4 Em agenda Detalhar 12:0",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-99-role-coach-academia-430.png"
+  },
+  {
+    "name": "frontdesk-agenda",
+    "state": "auth-frontdesk.json",
+    "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "width": 430,
+    "height": 932,
+    "durationMs": 9069,
+    "title": "",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [],
+    "textStart": "Paula Nogueira Jogador Trabalho OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Todos os professores Renato Siqueira Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Intermediario Manha 1 Profissional Treino 1 Feminino Performance 2 Kids Iniciante",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-99-role-frontdesk-agenda-430.png"
+  },
+  {
+    "name": "finance-prime",
+    "state": "auth-finance.json",
+    "route": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+    "width": 1366,
+    "height": 768,
+    "durationMs": 9512,
+    "title": "",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [],
+    "textStart": "Ola, Clara Financeiro UNIDADE ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 21.715,00 129 recebivel(is) no filtro VENCIDOS R$ 21.715,00 129 cobranca(s) VENCE HOJE 0 acao recomendada hoje Todos 129 Vencidos 129 Hoje 0 Aulas 119 Planos 10 Cobrar planos Cobrar alunos CLIENTE ORIGEM VENCIMENTO STATUS VALOR Beatriz Esteves Plano 1x/semana | Kids Iniciante 5 Mensalidade de acade",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-99-role-finance-prime-1366.png"
+  },
+  {
+    "name": "cashier-prime",
+    "state": "auth-cashier.json",
+    "route": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos",
+    "width": 1366,
+    "height": 768,
+    "durationMs": 13198,
+    "title": "",
+    "blocked": false,
+    "loading": false,
+    "errors": [],
+    "timeoutLogs": [
+      "debug: Workspace data timeout: target payments",
+      "debug: Workspace data timeout: target payments"
+    ],
+    "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Jogador Trabalho Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ ",
+    "screenshot": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens\\sprint-99-role-cashier-prime-1366.png"
+  }
+]

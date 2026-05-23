@@ -15,7 +15,6 @@ import { PlaceAcademyClassSetupModule } from "../components/place/PlaceAcademyCl
 import { PlaceAcademyClassesModule, type AcademyClassEditPatch } from "../components/place/PlaceAcademyClassesModule";
 import { PlaceAcademyCoachesModule } from "../components/place/PlaceAcademyCoachesModule";
 import { PlaceAcademyFitModule } from "../components/place/PlaceAcademyFitModule";
-import { PlaceAcademyOperationalQueues } from "../components/place/PlaceAcademyOperationalQueues";
 import { PlaceAcademyRequestsModule } from "../components/place/PlaceAcademyRequestsModule";
 import { PlaceAcademyResourcesModule, type PlaceAcademySlotDraft } from "../components/place/PlaceAcademyResourcesModule";
 import { PlaceAcademyStudentsModule } from "../components/place/PlaceAcademyStudentsModule";
@@ -1056,7 +1055,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 4000)),
       ]);
       const [data, createPlaceAccess] = await Promise.all([
-        fetchPlacesWorkspaceData({ focusPlaceId: adminPlaceId, isAdminRoute, tab, user }),
+        fetchPlacesWorkspaceData({ adminModule, focusPlaceId: adminPlaceId, isAdminRoute, tab, user }),
         createPlaceAccessPromise,
       ]);
       const maps = entriesToPlaceAdminResourceMaps(data.entries);
@@ -7362,7 +7361,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </div>
                     </div>
                   ) : null}
-                  {!coachWithoutAcademyProfile && academyView !== "today" ? (
+                  {!coachWithoutAcademyProfile && academyView === "calendar" ? (
                     <div className="academy-routine-summary" aria-label="Resumo da rotina da academia">
                       <button type="button" onClick={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }))}>
                         <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
@@ -7401,26 +7400,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         </button>
                       ) : null}
                     </div>
-                  ) : null}
-                  {isManagementCockpit && academyView !== "calendar" && academyView !== "today" && academyView !== "requests" ? (
-                    <PlaceAcademyOperationalQueues
-                      actionableLessonRequests={actionableLessonRequests}
-                      academyClasses={visibleAcademyClasses}
-                      busy={busy}
-                      canManageAcademy={!isCoachMode && canManageAcademy}
-                      onMarkLessonRequestPaid={(request) => requestLessonPayment(p.id, request)}
-                      onOpenRequests={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "requests" }))}
-                      onOpenToday={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }))}
-                      onOpenTodayClass={(academyClassId) => {
-                        setAcademyTodayClassByPlace((prev) => ({ ...prev, [p.id]: academyClassId }));
-                        setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }));
-                      }}
-                      onUpdateEnrollment={(enrollmentId, status) => void onUpdateAcademyEnrollment(p.id, enrollmentId, status)}
-                      onUpdateLessonRequest={(request, status) => void onUpdateAcademyLessonRequest(p.id, request, status)}
-                      pendingEnrollments={pendingAcademyEnrollments}
-                      requireAttendanceCall={requireAttendanceCall}
-                      todayClasses={todayClasses}
-                    />
                   ) : null}
                   {!coachWithoutAcademyProfile && academyView === "calendar" ? (
                     <PlaceAcademyTeacherCalendarModule
