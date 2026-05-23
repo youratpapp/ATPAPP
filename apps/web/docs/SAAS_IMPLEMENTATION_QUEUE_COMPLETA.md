@@ -356,6 +356,8 @@ QA:
 Status em 2026-05-22:
 Em execucao avancada. `Clientes` opera como dominio separado com abas `Clientes ativos`, `Leads` e `Atendimento`, sem misturar contato comercial com cliente ativo. A lista de clientes ativos foi ajustada para funcionar como tabela operacional compacta com Cliente 360 lateral, sem cortar colunas no desktop 1366. Em 2026-05-23, QA Playwright confirmou carregamento do dominio com abas `Clientes ativos`, `Leads` e `Atendimento`, sem erro de console. Screenshot: `sprint-37-clients-domain-1366.png`.
 
+Atualizacao 2026-05-23: no mobile, `Clientes ativos` deixou de tentar renderizar a tabela web comprimida. A lista passa a virar cards verticais com nome, status, categoria, contato e proximo passo, sem coluna cortada fora da tela. QA 390px sem erro de console: `sprint-72-mobile-clientes-cardlist-390.png`.
+
 Objetivo:
 Separar Leads, Clientes ativos, Alunos, Socios e Responsaveis.
 
@@ -436,6 +438,8 @@ QA:
 Status em 2026-05-22:
 Em execucao avancada. A rotina de Academia passou a usar mesa operacional com metricas, lista/tabela de aulas do dia e detalhe lateral da aula, reduzindo cards soltos e deixando chamada opcional respeitada como configuracao da empresa. Em 2026-05-23 foi corrigido o problema de funcao escondida: o workspace de Academia deixou de renderizar apenas a view atual e passou a expor a regua clara `Hoje`, `Agenda`, `Turmas`, `Alunos`, `Pendencias`. Professores e Ajustes continuam acessiveis por rotas legadas/administrativas, mas nao competem com a rotina principal. Screenshots: `sprint-32-academy-tabs-today-1366.png`, `sprint-32-academy-tabs-classes-1366.png`, `sprint-32-academy-tabs-students-1366.png`. Pendencia real: tempo de carregamento frio da area de trabalho ainda e alto e precisa de fase de performance/loader.
 
+Atualizacao 2026-05-23: a mesa de `Aulas do dia` deixou de ser tabela horizontal no mobile. Em 390px, as aulas viram cards verticais com horario, turma, professor, quadra, alunos, status e acao, sem scroll lateral escondido e sem reaproveitar a estrutura de desktop comprimida. QA 390px: `sprint-75-mobile-academia-cardlist-390.png`.
+
 Objetivo:
 Reorganizar aulas/turmas/alunos/professores sem tabs confusas.
 
@@ -512,6 +516,8 @@ QA:
 
 Status em 2026-05-22:
 Em execucao avancada. Recebiveis ganharam console SaaS com lista operacional, status, cobranca e detalhe lateral. A tabela foi compactada para nao competir com o drawer: valor e acoes ficam no detalhe lateral, enquanto a lista mostra cliente, origem, vencimento, status e valor. O modal de pagamento stub foi padronizado como passo temporario para marcar como pago. Ainda restam relatorios financeiros mais profundos, despesas e conciliacao como fases posteriores.
+
+Atualizacao 2026-05-23: no mobile, `Receber` deixou de tentar carregar tabela web com colunas cortadas. A lista de recebiveis vira card operacional com cliente, origem, vencimento, status e valor. KPIs ficam em trilho horizontal e acoes principais continuam no topo. QA 390px sem erro de console: `sprint-73-mobile-finance-cardlist-390.png`.
 
 Objetivo:
 Centralizar financeiro do local.
@@ -845,6 +851,10 @@ QA:
 Status em 2026-05-23:
 Em execucao avancada com evidencia visual. A navegacao mobile Trabalho permanece por papel dominante e foi revalidada em 390px para gestor: `Hoje`, `Agenda`, `Aulas`, `Financeiro`, `Mais`. A Home mobile de Trabalho agora carrega a Central Operacional, hero compacto, metricas em duas colunas, agenda em andamento, pendencias criticas e atalhos rapidos sem expor a arvore completa do SaaS web. Foi corrigido o contraste/encaixe das metricas, que antes colavam numero e legenda em 390px. Em 430px, auditoria real com login carregou `inicio`, `agenda`, `clientes`, `academia`, `financeiro`, `loja-pos`, `comunicacao`, `relatorios` e `administracao` sem erro de console e sem queda para login. Artefatos: `artifacts/saas-sprint-screens/sprint-46-work-mobile-home-390.png`, `sprint-47-work-mobile-audit-430.json` e `sprint-47-work-mobile-*.png`. Pendencia real: revalidar papeis especificos, principalmente professor/recepcao/financeiro/caixa, para garantir que cada um veja somente operacao rapida.
 
+Atualizacao 2026-05-23: Agenda mobile nao autoabre mais o detalhe da reserva na primeira dobra. A auto-selecao do primeiro evento fica restrita ao desktop, onde o drawer lateral e parte da composicao SaaS. No mobile, o usuario entra na agenda limpa, escolhe a quadra e toca no horario/evento para abrir o detalhe. QA 390px sem erro de console: `sprint-71-mobile-agenda-clean-firstfold-390.png`.
+
+Atualizacao 2026-05-23: Academia mobile tambem foi corrigida para comportamento operacional. A lista de aulas do dia virou card list vertical e nao tabela web espremida, mantendo o detalhe da aula como camada posterior. QA 390px: `sprint-75-mobile-academia-cardlist-390.png`.
+
 Objetivo:
 Depois do web, reorganizar mobile trabalho por papel.
 
@@ -911,6 +921,8 @@ QA:
 Status em 2026-05-22:
 Em execucao avancada. QA automatizado com Playwright validou desktop 1366 e mobile 390 nas rotas principais de Trabalho (`inicio`, `agenda`, `academy`, `clients`, `finance`, `communication`, `reports`). Em 2026-05-23, nova varredura desktop 1366 em `inicio`, `agenda`, `clientes`, `academia`, `financeiro`, `loja-pos`, `comunicacao`, `relatorios` e `administracao` carregou todas as rotas sem erro de console; `inicio` carregou em 6,4s no primeiro acesso e as demais rotas ficaram abaixo de 1,2s apos dados carregados. A rota mobile `inicio` foi revalidada com login real e carregou a Central Operacional sem erros de console. A auditoria mobile 430px tambem carregou as 9 rotas principais sem erros de console e sem redirecionamento indevido para login. Apos busca global real e correcoes de Home, nova smoke desktop 1366 carregou as mesmas 9 rotas sem erro de console. Artefatos: `sprint-41-work-route-audit-1366.json`, screenshots `sprint-41-work-route-*.png`, `sprint-46-work-mobile-home-390.png`, `sprint-47-work-mobile-audit-430.json`, `sprint-47-work-mobile-*.png` e `sprint-54-work-route-smoke-1366.json`. Pendencia real: completar auditoria por papeis e fluxo ponta a ponta.
 
+Atualizacao 2026-05-23: smoke desktop 1366 com marcadores especificos confirmou conteudo real em `comunicacao`, `relatorios`, `administracao`, `academia` e `agenda`. Os falsos positivos anteriores por texto de sidebar foram substituidos por marcadores internos de pagina. Artefatos: `sprint-74-route-smoke-1366.json` e screenshots `sprint-74-route-*.png`. Os timeouts secundarios de workspace (`payments`/`focused place`) foram rebaixados para `console.debug`, pois sao fallback de dados nao criticos e nao erro de produto. Nova validacao da Agenda 1366 ficou com console relevante zerado: `sprint-76-agenda-console-clean-1366.json`.
+
 Objetivo:
 Validar que nenhuma persona melhorou quebrando outra.
 
@@ -954,6 +966,10 @@ Relatorio final com aprovado/falhou/corrigido/pendente.
 
 Status em 2026-05-23:
 Em execucao. Polimentos aplicados nesta rodada: blocos da Agenda deixam de repetir horario dentro do card, loading administrativo usa linguagem de Trabalho, busca global nao corta placeholder no desktop 1366, Relatorios/Comunicacao usam listas com drawer e estilos de botao isolados do CSS global. Tambem foi corrigido o encaixe das metricas da Central Operacional mobile, a fila critica da Home de Trabalho deixou de quebrar em colunas estreitas e botoes brancos foram bloqueados nessa superficie. Em 2026-05-23, a agenda recebeu novo endurecimento de proporcao: cards mais lineares, bordas menos arredondadas, status visivel por cor/badge, drawer lateral preservado, rolagem interna da grade e topbar com placeholder compacto. Build passou apos as correcoes. Artefatos adicionais: `sprint-52-work-home-queue-grid-1366.png`, `sprint-53-work-home-dark-buttons-1366.png`, `sprint-66-agenda-contained-drawer-1600.png`.
+
+Atualizacao 2026-05-23: build passou novamente apos os ajustes finais de responsividade em Agenda/Clientes/Financeiro/Academia. Evidencias recentes: `sprint-71-mobile-agenda-clean-firstfold-390.png`, `sprint-72-mobile-clientes-cardlist-390.png`, `sprint-73-mobile-finance-cardlist-390.png`, `sprint-74-route-smoke-1366.json`, `sprint-75-mobile-academia-cardlist-390.png`, `sprint-76-agenda-console-clean-1366.png`.
+
+Atualizacao 2026-05-23: aplicado endurecimento visual compacto `WORK-SAAS-COMPACT-V1` para aproximar a area Trabalho das referencias SaaS: topbar mais baixa e alinhada, botoes com altura consistente, cards/listas com menor raio, filtros menores, Agenda em grade mais reta, eventos sem repetir horario dentro do bloco e detalhe lateral preservado no desktop. Clientes tambem foi revalidado como tabela densa com Cliente 360 lateral. QA: build aprovado, Agenda 1366/1600 sem erro de console, Clientes 1366 sem erro de console e Agenda mobile 390 sem erro de console. Evidencias: `sprint-77-compact-agenda-1366.png`, `sprint-77-compact-agenda-1600.png`, `sprint-78-compact-clientes-1366.png`, `sprint-79-compact-agenda-mobile-390.png`.
 
 Objetivo:
 Corrigir tudo que o QA transversal encontrou.

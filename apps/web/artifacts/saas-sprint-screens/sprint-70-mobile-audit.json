@@ -1,0 +1,58 @@
+[
+  {
+    "width": 390,
+    "route": "agenda",
+    "loaded": true,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloqueios\nTurmas\nAulas avulsas\nTodas as quadras\nQuadra 1\nQuadra 2\nQuadra 3\nQuadra 4\nQuadra 5\nQuadra 6\nTodos os professores\nRenato Siqueira\nTodas as turmas\nKids Iniciante 1\nAvancado Ranking 1\nIntermedi"
+  },
+  {
+    "width": 390,
+    "route": "academia",
+    "loaded": true,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma\nAULAS HOJE\n4\nOrdenadas por horario\nALUNOS\n13\nMatriculas ativas nas aulas de hoje\nAVISOS PREVIOS\n0\nAusencias avisadas antes da aula\nREPOSICOES\n3\nCreditos abertos vinculados\nHORARIO\nTURMA\nPROFESSOR\nQUADRA\nALUNOS\nSTATUS\nACOES\n06:30 "
+  },
+  {
+    "width": 390,
+    "route": "clientes",
+    "loaded": false,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nGERENCIAMENTO\nClientes\n\nLeads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.\n\nNovo cliente\nTodos os tipos\nAlunos\nSocios\nCRM\nAtivos\nTodos\n143 clientes ativos\nNOME\nSTATUS\nCATEGORIA\nCONTATO\nPROXIMO PASSO\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\nAulas\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\nAulas\nAG\nAna Gomes\nAtivo\nSocio Performanc"
+  },
+  {
+    "width": 390,
+    "route": "financeiro",
+    "loaded": true,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 25.566,00\n118 recebivel(is) no filtro\nVENCIDOS\nR$ 25.566,00\n118 cobranca(s)\nVENCE HOJE\n0\nacao recomendada hoje\nTodos\n118\nVencidos\n118\nHoje\n0\nAulas\n59\nPlanos\n59\nCobrar planos\nCobrar alunos\nCLIENTE\nORIGEM\nVENCIMENTO\nSTATUS\nVALOR\nA"
+  },
+  {
+    "width": 430,
+    "route": "agenda",
+    "loaded": true,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloqueios\nTurmas\nAulas avulsas\nTodas as quadras\nQuadra 1\nQuadra 2\nQuadra 3\nQuadra 4\nQuadra 5\nQuadra 6\nTodos os professores\nRenato Siqueira\nTodas as turmas\nKids Iniciante 1\nAvancado Ranking 1\nIntermedi"
+  },
+  {
+    "width": 430,
+    "route": "academia",
+    "loaded": true,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma\nAULAS HOJE\n4\nOrdenadas por horario\nALUNOS\n13\nMatriculas ativas nas aulas de hoje\nAVISOS PREVIOS\n0\nAusencias avisadas antes da aula\nREPOSICOES\n3\nCreditos abertos vinculados\nHORARIO\nTURMA\nPROFESSOR\nQUADRA\nALUNOS\nSTATUS\nACOES\n06:30 "
+  },
+  {
+    "width": 430,
+    "route": "clientes",
+    "loaded": false,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nGERENCIAMENTO\nClientes\n\nLeads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.\n\nNovo cliente\nTodos os tipos\nAlunos\nSocios\nCRM\nAtivos\nTodos\n143 clientes ativos\nNOME\nSTATUS\nCATEGORIA\nCONTATO\nPROXIMO PASSO\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\nAulas\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\nAulas\nAG\nAna Gomes\nAtivo\nSocio Performanc"
+  },
+  {
+    "width": 430,
+    "route": "financeiro",
+    "loaded": true,
+    "logs": [],
+    "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 25.566,00\n118 recebivel(is) no filtro\nVENCIDOS\nR$ 25.566,00\n118 cobranca(s)\nVENCE HOJE\n0\nacao recomendada hoje\nTodos\n118\nVencidos\n118\nHoje\n0\nAulas\n59\nPlanos\n59\nCobrar planos\nCobrar alunos\nCLIENTE\nORIGEM\nVENCIMENTO\nSTATUS\nVALOR\nA"
+  }
+]

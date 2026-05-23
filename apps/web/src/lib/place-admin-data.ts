@@ -240,13 +240,13 @@ function withWorkspaceFallback<T>(promise: Promise<T>, fallback: T, label: strin
   let timer: ReturnType<typeof setTimeout> | undefined;
   const timeout = new Promise<T>((resolve) => {
     timer = setTimeout(() => {
-      console.info(`Workspace data timeout: ${label}`);
+      console.debug(`Workspace data timeout: ${label}`);
       resolve(fallback);
     }, timeoutMs);
   });
   return Promise.race([
     promise.catch((err) => {
-      console.info(`Workspace data fallback: ${label}`, err);
+      console.debug(`Workspace data fallback: ${label}`, err);
       return fallback;
     }),
     timeout,

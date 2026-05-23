@@ -1,0 +1,77 @@
+{
+  "results": [
+    {
+      "name": "comunicacao",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "ok": true,
+      "ms": 10932,
+      "markers": [
+        "Central de mensagens",
+        "Modelos"
+      ],
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCOMUNICACAO\nCentral de mensagens\n\nWhatsApp, publicacao e avisos conectados aos pontos reais da operacao.\n\nEditar dados publicos\nVer pagina publica\nQUADRAS\n6\nUso publico e agenda\nAULAS\n24\nTurmas visiveis\nPLANOS\n2\nOfertas recorrentes\nPAGINA PUBLICA\nOK\nPronta para divulgar\nPONTO\nSTATUS\nMENSAGEM\nACAO\nReservas\nEm dia\nAgenda sem reserva pendente agora.\nRevisar "
+    },
+    {
+      "name": "relatorios",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "ok": true,
+      "ms": 204,
+      "markers": [
+        "Visao da operacao",
+        "Picos e alertas"
+      ],
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nRELATORIOS\nVisao da operacao\n\nIndicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva.\n\nTudo\nPeriodo\nEste mes\nHoje\nExportar CSV\nPLANO ATUAL\nPro: completo\nReservas, academia, sócios, CRM e financeiro.\nClube: reservas\nAcademia: turmas\nPro: completo\nMultiunidade\nQUADRAS\n6\nRESERVAS NO PERIODO\n196\nOCUPACAO ESTIMADA\n8%\nTAXA CONFI"
+    },
+    {
+      "name": "administracao",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao",
+      "ok": true,
+      "ms": 264,
+      "markers": [
+        "Central administrativa",
+        "Checklist estrutural"
+      ],
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nADMINISTRACAO\nCentral administrativa\n\nEstrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria.\n\nEditar dados publicos\nVer pagina publica\nIMPLANTACAO\n100%\n7/7 itens prontos\nPLANO\nPro: completo\nAgenda + Academia\nRECURSOS\n6\nquadras ativas\nEQUIPE\n6\n0 convite(s) pendente(s)\nChecklist estrutural\nADT Dourados · Dourados - MS\nRegras operacionais"
+    },
+    {
+      "name": "academia",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+      "ok": true,
+      "ms": 314,
+      "markers": [
+        "Aulas do dia",
+        "Aulas hoje"
+      ],
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nHoje\nAgenda\nTurmas\nAlunos\nPendencias\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma\nAULAS HOJE\n4\nOrdenadas por horario\nALUNOS\n13\nMatriculas ativas nas aulas de hoje\nAVISOS PREVIOS\n0\nAusencias avisadas antes da aula\nREPOSICOES\n3\nCreditos abertos vinculados\nHORARIO\nTURMA"
+    },
+    {
+      "name": "agenda",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+      "ok": true,
+      "ms": 396,
+      "markers": [
+        "Agenda",
+        "Calendario do local"
+      ],
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloqueios\nTurmas\nAulas avulsas\nTodas as quadras\nQuadra 1\nQuadra 2\nQuadra 3\nQuadra 4\nQuadra 5\nQuadra 6\nTodos os professores\nRenato Siqueira\nTodas as turmas\nKids Iniciante 1\nAvancado Ranking 1\nIn"
+    }
+  ],
+  "console": [
+    {
+      "type": "info",
+      "text": "Workspace data timeout: payments"
+    },
+    {
+      "type": "info",
+      "text": "Workspace data timeout: payments"
+    },
+    {
+      "type": "info",
+      "text": "Workspace data timeout: focused place"
+    },
+    {
+      "type": "info",
+      "text": "Workspace data timeout: focused place"
+    }
+  ]
+}

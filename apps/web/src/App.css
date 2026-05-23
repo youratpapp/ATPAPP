@@ -30824,11 +30824,46 @@ label {
   }
 
   .app-shell--management .clients-360-table {
-    overflow-x: auto;
+    gap: 8px;
+    overflow: visible;
+    padding: 8px;
   }
 
   .app-shell--management .clients-360-table-row {
-    min-width: 900px;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 12px;
+    display: grid;
+    gap: 6px 10px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 0;
+    min-width: 0;
+    padding: 12px;
+  }
+
+  .app-shell--management .clients-360-table-row.head {
+    display: none;
+  }
+
+  .app-shell--management .clients-360-name {
+    grid-column: 1 / 2;
+  }
+
+  .app-shell--management .clients-360-pill {
+    grid-column: 2 / 3;
+    grid-row: 1;
+  }
+
+  .app-shell--management .clients-360-table-row:not(.head) > span:nth-child(3),
+  .app-shell--management .clients-360-table-row:not(.head) > span:nth-child(4),
+  .app-shell--management .clients-360-table-row em {
+    color: rgba(226, 232, 240, 0.74);
+    font-size: 0.78rem;
+    grid-column: 1 / 3;
+    white-space: normal;
+  }
+
+  .app-shell--management .clients-360-table-row em {
+    color: #bbf7d0;
   }
 }
 
@@ -31177,12 +31212,71 @@ label {
   }
 
   .academy-day-table {
-    overflow-x: auto;
+    overflow: hidden;
   }
 
-  .academy-day-table__head,
+  .academy-day-table__head {
+    display: none;
+  }
+
+  .academy-day-table__rows {
+    max-height: none;
+    overflow: visible;
+    padding: 8px;
+  }
+
   .academy-day-table__row {
-    min-width: 760px;
+    display: grid;
+    gap: 6px;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding: 12px;
+    border: 1px solid rgba(125, 151, 181, 0.16);
+    border-radius: 12px;
+    background: rgba(13, 29, 49, 0.8);
+  }
+
+  .academy-day-table__row + .academy-day-table__row {
+    margin-top: 8px;
+  }
+
+  .academy-day-table__row.selected {
+    border-color: rgba(31, 194, 101, 0.72);
+    box-shadow: inset 3px 0 0 #24d46b;
+  }
+
+  .academy-day-table__row span,
+  .academy-day-table__row strong,
+  .academy-day-table__row em {
+    justify-self: start;
+  }
+
+  .academy-day-table__row span:first-child {
+    color: #34f27a;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+  }
+
+  .academy-day-table__row span:nth-of-type(2)::before {
+    content: "Prof. ";
+    color: #7f91ac;
+  }
+
+  .academy-day-table__row span:nth-of-type(3)::before {
+    content: "Quadra: ";
+    color: #7f91ac;
+  }
+
+  .academy-day-table__row span:nth-of-type(4)::before {
+    content: "Alunos: ";
+    color: #7f91ac;
+  }
+
+  .academy-day-table__row span:last-child {
+    border-top: 1px solid rgba(125, 151, 181, 0.14);
+    margin-top: 2px;
+    padding-top: 8px;
+    width: 100%;
   }
 }
 
@@ -32320,6 +32414,78 @@ label {
 
   .app-shell--management .finance-receivable-drawer {
     position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--management .finance-console-head,
+  .app-shell--management .finance-console-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--management .finance-console-kpis {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scroll-snap-type: x proximity;
+  }
+
+  .app-shell--management .finance-console-kpis article {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+
+  .app-shell--management .finance-receivables-table {
+    gap: 8px;
+    max-height: none;
+    overflow: visible;
+    padding: 8px;
+  }
+
+  .app-shell--management .finance-receivables-row.head {
+    display: none;
+  }
+
+  .app-shell--management .finance-receivables-row {
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 12px;
+    display: grid;
+    gap: 7px 10px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 0;
+    padding: 12px;
+  }
+
+  .app-shell--management .finance-receivables-row > div {
+    grid-column: 1 / 2;
+    min-width: 0;
+  }
+
+  .app-shell--management .finance-status-pill {
+    grid-column: 2 / 3;
+    grid-row: 1;
+  }
+
+  .app-shell--management .finance-receivables-row > span:nth-of-type(1),
+  .app-shell--management .finance-receivables-row > span:nth-of-type(2),
+  .app-shell--management .finance-receivables-row > span:nth-of-type(4),
+  .app-shell--management .finance-receivables-row em {
+    color: rgba(226, 232, 240, 0.76);
+    font-size: 0.78rem;
+    grid-column: 1 / 3;
+    white-space: normal;
+  }
+
+  .app-shell--management .finance-receivables-row > span:nth-of-type(4) {
+    color: #f8fafc;
+    font-size: 1rem;
+    font-weight: 950;
+  }
+
+  .app-shell--management .finance-receivable-drawer {
+    max-height: none;
+    min-height: 0;
   }
 }
 
@@ -39005,5 +39171,318 @@ body:has(.app-shell--competition),
   .app-shell--management .work-home-shortcuts button {
     min-height: 44px;
     padding-inline: 8px;
+  }
+}
+
+/* WORK-SAAS-COMPACT-V1: professional SaaS density, straighter blocks and aligned topbar. */
+.app-shell--management {
+  --mode-card-radius: 8px;
+  --mode-row-radius: 7px;
+  --mode-surface-padding: 12px;
+  --mode-card-padding: 12px;
+  --mode-row-padding: 9px;
+  --mode-section-gap: 12px;
+}
+
+.app-shell--management .app-header {
+  padding: 7px 12px;
+}
+
+@media (min-width: 960px) {
+  .app-shell--management .app-header-inner {
+    align-items: center;
+    gap: 12px;
+    max-width: none;
+    min-height: 44px;
+  }
+
+  .app-shell--management .app-header-greeting {
+    flex: 0 0 196px;
+    gap: 9px;
+  }
+
+  .app-shell--management .app-header-greeting .avatar {
+    border-radius: 8px;
+    height: 34px;
+    width: 34px;
+  }
+
+  .app-shell--management .app-header-greeting .greeting-label {
+    font-size: 0.68rem;
+    line-height: 1;
+  }
+
+  .app-shell--management .app-header-greeting .greeting-name {
+    font-size: 0.82rem;
+    line-height: 1.1;
+  }
+
+  .app-shell--management .app-header-actions {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .app-shell--management .work-saas-topbar-context {
+    align-items: center;
+    gap: 8px;
+    grid-template-columns: minmax(190px, 250px) minmax(260px, 1fr) 82px;
+    max-width: min(760px, calc(100vw - 650px));
+  }
+
+  .app-shell--management .work-saas-topbar-context > small {
+    display: none;
+  }
+
+  .app-shell--management .work-unit-select,
+  .app-shell--management .work-global-search,
+  .app-shell--management .work-create-btn,
+  .app-shell--management .app-mode-switch {
+    border-radius: 7px;
+    min-height: 38px;
+  }
+
+  .app-shell--management .work-unit-select {
+    gap: 1px;
+    padding: 5px 9px;
+  }
+
+  .app-shell--management .work-unit-select span {
+    font-size: 0.62rem;
+  }
+
+  .app-shell--management .work-unit-select select,
+  .app-shell--management .work-global-search input {
+    font-size: 0.8rem;
+  }
+
+  .app-shell--management .work-global-search {
+    padding-inline: 11px;
+  }
+
+  .app-shell--management .work-create-btn {
+    min-width: 82px;
+    padding: 0 12px;
+  }
+
+  .app-shell--management .app-mode-switch {
+    gap: 0;
+    padding: 2px;
+  }
+
+  .app-shell--management .app-mode-switch button {
+    border-radius: 6px;
+    font-size: 0.78rem;
+    min-height: 32px;
+    padding: 5px 10px;
+  }
+
+  .app-shell--management .app-header-mark,
+  .app-shell--management .icon-btn {
+    border-radius: 7px;
+    height: 36px;
+    width: 36px;
+  }
+
+  .app-shell--management .app-content {
+    padding-top: 18px;
+  }
+}
+
+.app-shell--management .booking-workspace-domain-tabs,
+.app-shell--management .court-calendar-view-tabs,
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters,
+.app-shell--management .court-calendar-panel--saas .court-calendar-board,
+.app-shell--management .court-calendar-detail-drawer,
+.app-shell--management .clients-360-workspace,
+.app-shell--management .clients-360-toolbar,
+.app-shell--management .clients-360-table,
+.app-shell--management .clients-360-drawer,
+.app-shell--management .finance-console,
+.app-shell--management .finance-receivable-drawer,
+.app-shell--management .academy-day-console,
+.app-shell--management .academy-day-table,
+.app-shell--management .academy-day-detail,
+.app-shell--management .reports-console,
+.app-shell--management .communication-console,
+.app-shell--management .admin-console {
+  border-radius: 8px !important;
+}
+
+.app-shell--management .court-calendar-view-tabs {
+  gap: 4px;
+  min-height: 40px;
+  padding: 4px;
+}
+
+.app-shell--management .court-calendar-view-tabs button {
+  border-radius: 6px;
+  font-size: 0.78rem;
+  min-height: 32px;
+  padding: 0 14px;
+}
+
+.app-shell--management .court-calendar-panel--saas {
+  gap: 10px;
+}
+
+.app-shell--management .court-calendar-panel--saas .saas-domain-header {
+  align-items: end;
+  min-height: 68px;
+}
+
+.app-shell--management .court-calendar-panel--saas .saas-domain-header h2 {
+  font-size: clamp(1.7rem, 2.2vw, 2.35rem);
+  margin-bottom: 3px;
+}
+
+.app-shell--management .court-calendar-panel--saas .saas-domain-header p {
+  font-size: 0.86rem;
+}
+
+.app-shell--management .court-calendar-panel--saas .saas-domain-header .primary {
+  border-radius: 7px;
+  min-height: 38px;
+  min-width: 118px;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters {
+  gap: 7px;
+  padding: 6px;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters input,
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters select,
+.app-shell--management .court-calendar-panel--saas .court-calendar-filters button {
+  border-radius: 7px;
+  min-height: 36px;
+}
+
+.app-shell--management .court-calendar-workbench {
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 330px);
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-board {
+  grid-template-columns: 48px repeat(var(--court-count, 1), minmax(var(--court-column-min, 112px), 1fr));
+  min-height: 560px;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-time-rail,
+.app-shell--management .court-calendar-panel--saas .court-calendar-column {
+  padding: 0;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-time-rail > span,
+.app-shell--management .court-calendar-panel--saas .court-calendar-column > strong {
+  min-height: 36px;
+  padding: 0 8px;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-time-rail strong {
+  min-height: 36px;
+  padding: 5px 5px 0 0;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-slot {
+  min-height: 36px;
+  padding: 3px;
+}
+
+.app-shell--management .court-agenda-event-button,
+.app-shell--management .court-calendar-free-slot {
+  border-radius: 6px;
+  gap: 1px;
+  min-height: 29px;
+  padding: 3px 6px;
+}
+
+.app-shell--management .court-agenda-event-button strong {
+  font-size: 0.66rem;
+  line-height: 1;
+}
+
+.app-shell--management .court-agenda-event-button span {
+  display: none;
+}
+
+.app-shell--management .court-agenda-event-button small,
+.app-shell--management .court-calendar-free-slot b {
+  font-size: 0.62rem;
+}
+
+.app-shell--management .court-calendar-detail-drawer {
+  gap: 10px;
+  max-height: calc(100vh - 104px);
+  padding: 12px;
+  top: 70px;
+}
+
+.app-shell--management .court-calendar-detail-list div {
+  grid-template-columns: 96px minmax(0, 1fr);
+  padding: 7px 0;
+}
+
+.app-shell--management .court-calendar-detail-actions {
+  gap: 6px;
+}
+
+.app-shell--management .court-calendar-detail-actions button,
+.app-shell--management .court-calendar-detail-actions a {
+  border-radius: 7px;
+  min-height: 36px;
+}
+
+.app-shell--management .court-calendar-footer-metrics {
+  gap: 6px;
+}
+
+.app-shell--management .court-calendar-footer-metrics span {
+  border-radius: 7px;
+  padding: 8px 10px;
+}
+
+.app-shell--management .clients-360-table-row,
+.app-shell--management .finance-receivables-row,
+.app-shell--management .academy-day-table__row,
+.app-shell--management .communication-row,
+.app-shell--management .reports-table-row {
+  border-radius: 6px !important;
+  min-height: 44px;
+  padding-block: 8px;
+}
+
+@media (min-width: 761px) {
+  .app-shell--management .clients-360-table-row,
+  .app-shell--management .finance-receivables-row {
+    min-height: 40px;
+    padding-block: 7px;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--management {
+    --mode-card-radius: 10px;
+    --mode-row-radius: 8px;
+  }
+
+  .app-shell--management .app-header {
+    padding: 7px 10px;
+  }
+
+  .app-shell--management .app-header-greeting .avatar {
+    border-radius: 8px;
+    height: 34px;
+    width: 34px;
+  }
+
+  .app-shell--management .app-mode-switch {
+    border-radius: 8px;
+    padding: 2px;
+  }
+
+  .app-shell--management .app-mode-switch button {
+    border-radius: 6px;
+    min-height: 31px;
+    padding-inline: 9px;
   }
 }

@@ -214,6 +214,7 @@ export function PlaceBookingCalendarModule({
   const [classFilter, setClassFilter] = useState("");
   const [studentFilter, setStudentFilter] = useState("");
   const [mobileCourtId, setMobileCourtId] = useState("");
+  const [isCompactViewport, setIsCompactViewport] = useState(() => (typeof window === "undefined" ? false : window.matchMedia("(max-width: 760px)").matches));
   const [selectedItemId, setSelectedItemId] = useState("");
   const [editingBookingId, setEditingBookingId] = useState("");
   const [editDraft, setEditDraft] = useState<EditDraft>({ courtId: "", endDate: "", endTime: "", notes: "", startDate: "", startTime: "" });
@@ -226,6 +227,15 @@ export function PlaceBookingCalendarModule({
       setClassFilter("");
     }
   }, [variant]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const query = window.matchMedia("(max-width: 760px)");
+    const syncViewport = () => setIsCompactViewport(query.matches);
+    syncViewport();
+    query.addEventListener("change", syncViewport);
+    return () => query.removeEventListener("change", syncViewport);
+  }, []);
 
   const startEditing = (booking: CourtBooking) => {
     setEditingBookingId(booking.id);
@@ -383,10 +393,10 @@ export function PlaceBookingCalendarModule({
   }, [filteredItems, selectedItemId]);
 
   useEffect(() => {
-    if (!selectedItemId && timelineItems.length) {
+    if (!isCompactViewport && !selectedItemId && timelineItems.length) {
       setSelectedItemId(timelineItems[0].id);
     }
-  }, [selectedItemId, timelineItems]);
+  }, [isCompactViewport, selectedItemId, timelineItems]);
 
   const selectedBooking = selectedItem?.booking;
   const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
