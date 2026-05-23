@@ -15756,7 +15756,8 @@ button:disabled {
   grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
 }
 
-.academy-routine-summary article {
+.academy-routine-summary article,
+.academy-routine-summary button {
   align-items: flex-start;
   background: #fff;
   border: 1px solid var(--color-border);
@@ -15768,9 +15769,23 @@ button:disabled {
   min-height: 76px;
   padding: var(--space-3);
   text-align: left;
+  width: 100%;
 }
 
-.academy-routine-summary article.urgent {
+.academy-routine-summary button {
+  cursor: pointer;
+  font: inherit;
+}
+
+.academy-routine-summary button:hover,
+.academy-routine-summary button:focus-visible {
+  border-color: var(--color-green-200);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+  outline: none;
+}
+
+.academy-routine-summary article.urgent,
+.academy-routine-summary button.urgent {
   border-color: #fed7aa;
   background: #fff7ed;
 }
@@ -28933,7 +28948,8 @@ label {
 .app-shell--management .place-management-health span,
 .app-shell--management .place-admin-shell-features span,
 .app-shell--management .academy-workspace-metrics span,
-.app-shell--management .academy-routine-summary article {
+.app-shell--management .academy-routine-summary article,
+.app-shell--management .academy-routine-summary button {
   background: rgba(34, 197, 94, 0.1);
   border-color: rgba(34, 197, 94, 0.24);
   color: var(--pdark-text-main);
@@ -28950,7 +28966,8 @@ label {
 .app-shell--management .place-admin-shell-status b,
 .app-shell--management .place-management-health b,
 .app-shell--management .academy-workspace-metrics strong,
-.app-shell--management .academy-routine-summary article strong {
+.app-shell--management .academy-routine-summary article strong,
+.app-shell--management .academy-routine-summary button strong {
   color: #4ade80;
 }
 
@@ -28988,6 +29005,7 @@ label {
 }
 
 .app-shell--management .academy-routine-summary article.urgent,
+.app-shell--management .academy-routine-summary button.urgent,
 .app-shell--management .academy-workspace-row.due,
 .app-shell--management .academy-pending-actions[open] {
   background: linear-gradient(135deg, rgba(250, 204, 21, 0.15), rgba(34, 197, 94, 0.08));
@@ -29129,6 +29147,129 @@ label {
   padding: 12px 0;
 }
 
+.academy-day-matrix {
+  gap: 10px;
+}
+
+.academy-day-matrix .teacher-day-calendar-head {
+  border-radius: 8px;
+  box-shadow: none;
+  min-height: 58px;
+  padding: 10px 12px;
+}
+
+.academy-day-matrix-grid {
+  background: rgba(6, 18, 31, 0.78);
+  border: 1px solid rgba(125, 151, 181, 0.16);
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 48px repeat(var(--academy-court-count, 1), minmax(118px, 1fr));
+  min-height: 560px;
+  overflow: auto;
+}
+
+.academy-day-matrix-time,
+.academy-day-matrix-court {
+  display: grid;
+  grid-template-rows: 36px repeat(17, minmax(40px, auto));
+  min-width: 0;
+}
+
+.academy-day-matrix-time {
+  background: rgba(4, 13, 25, 0.94);
+  border-right: 1px solid rgba(125, 151, 181, 0.14);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.academy-day-matrix-time > span,
+.academy-day-matrix-court > strong {
+  align-items: center;
+  background: rgba(10, 26, 44, 0.94);
+  border-bottom: 1px solid rgba(125, 151, 181, 0.14);
+  color: #f8fafc;
+  display: flex;
+  font-size: 0.74rem;
+  font-weight: 950;
+  padding: 0 8px;
+}
+
+.academy-day-matrix-time strong {
+  align-items: start;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.1);
+  color: rgba(248, 250, 252, 0.94);
+  display: flex;
+  font-size: 0.72rem;
+  font-weight: 950;
+  justify-content: flex-end;
+  padding: 6px 5px 0 0;
+}
+
+.academy-day-matrix-court {
+  border-right: 1px solid rgba(125, 151, 181, 0.12);
+}
+
+.academy-day-matrix-slot {
+  border-bottom: 1px solid rgba(125, 151, 181, 0.1);
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 3px;
+}
+
+.academy-day-matrix-slot.conflict {
+  background: rgba(250, 204, 21, 0.08);
+}
+
+.academy-day-matrix-class {
+  background: rgba(12, 53, 74, 0.86);
+  border: 1px solid rgba(34, 211, 238, 0.54);
+  border-radius: 6px;
+  color: #f8fafc;
+  cursor: pointer;
+  display: grid;
+  gap: 1px;
+  min-height: 32px;
+  padding: 4px 6px;
+  text-align: left;
+}
+
+.academy-day-matrix-class:hover,
+.academy-day-matrix-class:focus-visible {
+  border-color: rgba(34, 197, 94, 0.82);
+  outline: none;
+}
+
+.academy-day-matrix-class strong,
+.academy-day-matrix-class span,
+.academy-day-matrix-class small {
+  display: block;
+  line-height: 1.05;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.academy-day-matrix-class strong {
+  font-size: 0.66rem;
+  font-weight: 950;
+}
+
+.academy-day-matrix-class span,
+.academy-day-matrix-class small,
+.academy-day-matrix-free {
+  color: rgba(203, 213, 225, 0.78);
+  font-size: 0.6rem;
+  font-weight: 850;
+}
+
+.academy-day-matrix-free {
+  align-self: center;
+  justify-self: center;
+}
+
 @media (max-width: 720px) {
   .teacher-day-calendar-head,
   .teacher-day-class-card header {
@@ -29146,6 +29287,10 @@ label {
 
   .teacher-day-slot time {
     padding-top: 0;
+  }
+
+  .academy-day-matrix-grid {
+    grid-template-columns: 42px repeat(var(--academy-court-count, 1), minmax(132px, 1fr));
   }
 }
 
@@ -30686,6 +30831,62 @@ label {
 
 .app-shell--management .clients-360-drawer section article span {
   color: rgba(226, 232, 240, 0.78);
+}
+
+.app-shell--management .clients-360-section-title {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.app-shell--management .clients-360-section-title button {
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 6px;
+  color: #bbf7d0;
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 900;
+  min-height: 28px;
+  padding: 5px 9px;
+}
+
+.app-shell--management .clients-360-history-item {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.app-shell--management .clients-360-history-item span,
+.app-shell--management .clients-360-history-empty span {
+  grid-column: 1 / -1;
+}
+
+.app-shell--management .clients-360-status {
+  align-self: start;
+  border-radius: 999px;
+  font-size: 0.64rem;
+  font-style: normal;
+  font-weight: 950;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+
+.app-shell--management .clients-360-status--confirmed,
+.app-shell--management .clients-360-status--paid {
+  background: rgba(34, 197, 94, 0.16);
+  color: #bbf7d0;
+}
+
+.app-shell--management .clients-360-status--pending {
+  background: rgba(250, 204, 21, 0.16);
+  color: #fde68a;
+}
+
+.app-shell--management .clients-360-status--cancelled,
+.app-shell--management .clients-360-status--failed,
+.app-shell--management .clients-360-status--refunded {
+  background: rgba(248, 113, 113, 0.14);
+  color: #fecaca;
 }
 
 @media (max-width: 1180px) {

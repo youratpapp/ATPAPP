@@ -440,6 +440,8 @@ Em execucao avancada. A rotina de Academia passou a usar mesa operacional com me
 
 Atualizacao 2026-05-23: a mesa de `Aulas do dia` deixou de ser tabela horizontal no mobile. Em 390px, as aulas viram cards verticais com horario, turma, professor, quadra, alunos, status e acao, sem scroll lateral escondido e sem reaproveitar a estrutura de desktop comprimida. QA 390px: `sprint-75-mobile-academia-cardlist-390.png`.
 
+Atualizacao 2026-05-23: a aba `Academia > Agenda` deixou de ser uma linha do tempo unica quando usada por gestor/secretaria. A visao web agora cruza `hora x quadra`, exibindo professor, turma e quantidade de alunos dentro do card. Turmas no mesmo horario em quadras diferentes ficam lado a lado por coluna; turmas no mesmo horario e mesma quadra ficam empilhadas na mesma celula, com destaque visual de conflito. Para professor, a visao continua como linha do tempo pessoal do dia. Build aprovado e QA 1366 sem erro de console: `sprint-81-academy-agenda-court-matrix-1366.png`.
+
 Objetivo:
 Reorganizar aulas/turmas/alunos/professores sem tabs confusas.
 

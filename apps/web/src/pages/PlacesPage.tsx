@@ -6515,9 +6515,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       activeEnrollments={academyEnrollments}
                       activeMemberships={memberships}
                       academyClasses={academyClasses}
+                      bookings={bookings}
                       busy={busy}
                       countLabel={countLabel}
                       membershipPlans={membershipPlans}
+                      payments={Object.values(paymentsByTarget)}
                       onOpenAcademyStudents={() => selectAcademyView(p.id, "students")}
                       onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
                       onOpenFinancePlans={() => selectFinanceView(p.id, "packages")}
@@ -7361,7 +7363,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                   {!coachWithoutAcademyProfile && academyView !== "today" ? (
                     <div className="academy-routine-summary" aria-label="Resumo da rotina da academia">
-                      <article>
+                      <button type="button" onClick={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "today" }))}>
                         <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
                         <strong>{countLabel(todayClasses.length, "aula", "aulas")}</strong>
                         <small>
@@ -7371,27 +7373,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                               : "Chamada, avisos e reposicoes ficam na rotina de Aulas."
                             : "Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos."}
                         </small>
-                      </article>
+                      </button>
                       {!isCoachMode ? (
-                        <article className={pendingAcademyEnrollments.length + actionableLessonRequests.length > 0 ? "urgent" : ""}>
+                        <button
+                          type="button"
+                          className={pendingAcademyEnrollments.length + actionableLessonRequests.length > 0 ? "urgent" : ""}
+                          onClick={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "requests" }))}
+                        >
                           <span>Pendencias</span>
                           <strong>{countLabel(pendingAcademyEnrollments.length + actionableLessonRequests.length, "item", "itens")}</strong>
                           <small>Interesses, reposicoes e matriculas ficam na rotina de Aulas.</small>
-                        </article>
+                        </button>
                       ) : null}
                       {isCoachMode || canManagePlace ? (
-                        <article>
+                        <button type="button" onClick={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "students" }))}>
                           <span>{isCoachMode ? "Meus alunos" : "Alunos ativos"}</span>
                           <strong>{countLabel(visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length, "aluno", "alunos")}</strong>
                           <small>{isCoachMode ? "Alunos vinculados as suas turmas." : "Base completa fica em Pessoas."}</small>
-                        </article>
+                        </button>
                       ) : null}
                       {isCoachMode || canManagePlace ? (
-                        <article>
+                        <button type="button" onClick={() => setAcademyViewByPlace((prev) => ({ ...prev, [p.id]: "classes" }))}>
                           <span>{isCoachMode ? "Minhas turmas" : "Turmas"}</span>
                           <strong>{countLabel(visibleAcademyClasses.length, "turma", "turmas")}</strong>
                           <small>Horarios semanais e vagas ficam na aba Turmas.</small>
-                        </article>
+                        </button>
                       ) : null}
                     </div>
                   ) : null}

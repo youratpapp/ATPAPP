@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { AcademyClass, AcademyEnrollment, PlaceCrmContact, PlaceMembership, PlaceMembershipPlan } from "../../lib/types";
+import type { AcademyClass, AcademyEnrollment, AppPayment, CourtBooking, PlaceCrmContact, PlaceMembership, PlaceMembershipPlan } from "../../lib/types";
 import { WorkspaceEmptyState } from "./PlaceWorkspaceUi";
 
 type PlaceActiveClientsModuleProps = {
@@ -7,9 +7,11 @@ type PlaceActiveClientsModuleProps = {
   activeEnrollments: AcademyEnrollment[];
   activeMemberships: PlaceMembership[];
   academyClasses: AcademyClass[];
+  bookings: CourtBooking[];
   busy: boolean;
   countLabel: (count: number, singular: string, plural: string) => string;
   membershipPlans: PlaceMembershipPlan[];
+  payments: AppPayment[];
   onOpenAcademyStudents: () => void;
   onOpenContact: (contact: PlaceCrmContact) => void;
   onOpenFinancePlans: () => void;
@@ -45,14 +47,49 @@ function initials(name: string): string {
     .join("");
 }
 
+function normalizeText(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function normalizePhone(value: string): string {
+  return value.replace(/\D/g, "");
+}
+
+function formatMoneyFromCents(value: number): string {
+  return new Intl.NumberFormat("pt-BR", { currency: "BRL", style: "currency" }).format((value || 0) / 100);
+}
+
+function formatDate(value: string): string {
+  if (!value) return "Sem data";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value.slice(0, 10);
+  return date.toLocaleDateString("pt-BR");
+}
+
+function bookingStatusLabel(status: CourtBooking["status"]): string {
+  if (status === "confirmed") return "Confirmada";
+  if (status === "pending") return "Pendente";
+  if (status === "cancelled") return "Cancelada";
+  return "Bloqueio";
+}
+
+function paymentStatusLabel(status: AppPayment["status"]): string {
+  if (status === "paid") return "Pago";
+  if (status === "pending") return "Pendente";
+  if (status === "refunded") return "Estornado";
+  return "Falhou";
+}
+
 export function PlaceActiveClientsModule({
   activeContacts,
   activeEnrollments,
   activeMemberships,
   academyClasses,
+  bookings,
   busy,
   countLabel,
   membershipPlans,
+  payments,
   onOpenAcademyStudents,
   onOpenContact,
   onOpenFinancePlans,
@@ -118,6 +155,33 @@ export function PlaceActiveClientsModule({
   });
   const selected = filteredRows.find((row) => row.id === selectedId) || filteredRows[0] || null;
   const href = selected ? whatsappLink(selected.phone) : "";
+  const selectedBookings = useMemo(() => {
+    if (!selected) return [];
+    const phone = normalizePhone(selected.phone);
+    const name = normalizeText(selected.name);
+    return bookings
+      .filter((booking) => {
+        const bookingPhone = normalizePhone(booking.phone);
+        const bookingName = normalizeText(booking.playerName);
+        return (phone && bookingPhone && bookingPhone.endsWith(phone.slice(-8))) || (name && bookingName === name);
+      })
+      .sort((a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime())
+      .slice(0, 4);
+  }, [bookings, selected]);
+  const selectedPayments = useMemo(() => {
+    if (!selected) return [];
+    const sourceId = "id" in selected.source ? String(selected.source.id) : "";
+    const relatedTargetIds = new Set([sourceId, ...selectedBookings.map((booking) => booking.id)].filter(Boolean));
+    const name = normalizeText(selected.name);
+    return payments
+      .filter((payment) => {
+        const metadata = normalizeText(JSON.stringify(payment.metadata || {}));
+        const description = normalizeText(payment.description || "");
+        return relatedTargetIds.has(payment.targetId) || (name && (metadata.includes(name) || description.includes(name)));
+      })
+      .sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime())
+      .slice(0, 4);
+  }, [payments, selected, selectedBookings]);
 
   return (
     <div className="clients-360-workspace">
@@ -246,6 +310,52 @@ export function PlaceActiveClientsModule({
                     <strong>Proximo passo</strong>
                     <span>{selected.kind === "contact" ? "Registrar atendimento ou retorno." : "Consultar vinculos, pagamentos e agenda."}</span>
                   </article>
+                </section>
+                <section className="clients-360-history-section">
+                  <div className="clients-360-section-title">
+                    <h4>Reservas recentes</h4>
+                    <button type="button" onClick={onOpenReservations} disabled={busy}>
+                      Abrir agenda
+                    </button>
+                  </div>
+                  {selectedBookings.length ? (
+                    selectedBookings.map((booking) => (
+                      <article key={booking.id} className="clients-360-history-item">
+                        <strong>{booking.courtName || "Quadra"}</strong>
+                        <span>
+                          {formatDate(booking.startsAt)} · {new Date(booking.startsAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                        <em className={`clients-360-status clients-360-status--${booking.status}`}>{bookingStatusLabel(booking.status)}</em>
+                      </article>
+                    ))
+                  ) : (
+                    <article className="clients-360-history-empty">
+                      <strong>Sem reservas neste local</strong>
+                      <span>Crie uma reserva pela agenda mantendo o cliente selecionado como referencia operacional.</span>
+                    </article>
+                  )}
+                </section>
+                <section className="clients-360-history-section">
+                  <div className="clients-360-section-title">
+                    <h4>Pagamentos</h4>
+                    <button type="button" onClick={onOpenFinancePlans} disabled={busy}>
+                      Abrir receita
+                    </button>
+                  </div>
+                  {selectedPayments.length ? (
+                    selectedPayments.map((payment) => (
+                      <article key={payment.id} className="clients-360-history-item">
+                        <strong>{formatMoneyFromCents(payment.amountCents)}</strong>
+                        <span>{payment.description || payment.targetType}</span>
+                        <em className={`clients-360-status clients-360-status--${payment.status}`}>{paymentStatusLabel(payment.status)}</em>
+                      </article>
+                    ))
+                  ) : (
+                    <article className="clients-360-history-empty">
+                      <strong>Sem pagamentos vinculados</strong>
+                      <span>Quando houver mensalidade, pacote ou reserva paga, o historico aparece aqui.</span>
+                    </article>
+                  )}
                 </section>
               </>
             ) : null}
