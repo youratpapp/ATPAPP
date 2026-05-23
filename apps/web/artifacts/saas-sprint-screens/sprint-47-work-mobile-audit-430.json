@@ -1,0 +1,87 @@
+{
+  "viewport": "430x932",
+  "results": [
+    {
+      "route": "inicio",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/inicio",
+      "elapsedMs": 3180,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nCENTRAL OPERACIONAL\nTrabalho Hoje\n\nPendencias, agenda e acoes importantes da sua operacao.\n\nO que precisa de atencao agora?\n\nResolva reservas, pagamentos, aulas e competicoes em poucos cliques.\n\nVer pendencias\nAbrir agenda\n166 acoes em foco\n0\nAgenda e reservas\n139\nAulas e encaixes pendentes\n21\nPessoas para aciona"
+    },
+    {
+      "route": "agenda",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "elapsedMs": 976,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloqueios\nTurmas\nAulas avulsas\nTodas as quadras\nQuadra 1\nQuadra 2\nQuadra 3\nQuadra 4\nQuadra 5\nQuadra 6\nQuadra 7\nQuadra 8\nTodos os professores\nVitor Lea"
+    },
+    {
+      "route": "clientes",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "elapsedMs": 403,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nGERENCIAMENTO\nClientes\n\nLeads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.\n\nNovo cliente\nTodos os tipos\nAlunos\nSocios\nCRM\nAtivos\nTodos\n222 clientes ativos\nNOME\nSTATUS\nCATEGORIA\nCONTATO\nPROXIMO PASSO\nAB\nAna Borges\nAtivo\nAluno\n+55 65 990027537\nAulas\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 "
+    },
+    {
+      "route": "academia",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+      "elapsedMs": 257,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma\nAULAS HOJE\n7\nOrdenadas por horario\nALUNOS\n25\nMatriculas ativas nas aulas de hoje\nAVISOS PREVIOS\n1\nAusencias avisadas antes da aula\nREPOSICOES\n14\nCreditos abertos vinculados\nHORARI"
+    },
+    {
+      "route": "financeiro",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "elapsedMs": 268,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 48.946,00\n181 recebivel(is) no filtro\nVENCIDOS\nR$ 48.946,00\n181 cobranca(s)\nVENCE HOJE\n0\nacao recomendada hoje\nTodos\n181\nVencidos\n181\nHoje\n0\nAulas\n112\nPlanos\n69\nCobrar planos\nCob"
+    },
+    {
+      "route": "loja-pos",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "elapsedMs": 232,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nLoja / POS\nRegistrar venda rapida para aluno, jogador ou cliente avulso.\nVenda rapida\nEscolha um produto cadastrado ou registre uma venda avulsa.\nR$ 0,00\nBUSCAR PRODUTO\nVenda avulsa\nAgua sem gas\nBebidas\nR$ 5,00 | 40 em estoque\nAluguel raquete\nServicos\nR$ 20,00 | 5 em estoque\nBarra de proteina\nLanches\nR$ 15,00 | 9"
+    },
+    {
+      "route": "comunicacao",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/comunicacao",
+      "elapsedMs": 120,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nCOMUNICACAO\nCentral de mensagens\n\nWhatsApp, publicacao e avisos conectados aos pontos reais da operacao.\n\nEditar dados publicos\nVer pagina publica\nQUADRAS\n8\nUso publico e agenda\nAULAS\n42\nTurmas visiveis\nPLANOS\n2\nOfertas recorrentes\nPAGINA PUBLICA\nOK\nPronta para divulgar\nPONTO\nSTATUS\nMENSAGEM\nACAO\nReservas\nEm dia\n"
+    },
+    {
+      "route": "relatorios",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/relatorios",
+      "elapsedMs": 145,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nRELATORIOS\nVisao da operacao\n\nIndicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva.\n\nTudo\nPeriodo\nEste mes\nHoje\nExportar CSV\nPLANO ATUAL\nMultiunidade\nPacote completo para rede com unidades.\nClube: reservas\nAcademia: turmas\nPro: completo\nMultiunidade\nQUADRAS\n8\nRESERVAS NO PERIODO"
+    },
+    {
+      "route": "administracao",
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/administracao?visao=checklist",
+      "elapsedMs": 179,
+      "loaded": true,
+      "hasAuth": false,
+      "hasWork": true,
+      "excerpt": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nADMINISTRACAO\nCentral administrativa\n\nEstrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria.\n\nEditar dados publicos\nVer pagina publica\nIMPLANTACAO\n100%\n7/7 itens prontos\nPLANO\nMultiunidade\nAgenda + Academia\nRECURSOS\n8\nquadras ativas\nEQUIPE\n8\n0 convite(s) pendente(s)\nChecklist estrutural\nClube "
+    }
+  ],
+  "logs": []
+}

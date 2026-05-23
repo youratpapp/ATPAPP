@@ -1,0 +1,50 @@
+[
+  {
+    "name": "inicio",
+    "status": "timeout",
+    "elapsedMs": 30852,
+    "matched": [],
+    "hasAccessDenied": false,
+    "newErrors": []
+  },
+  {
+    "name": "agenda",
+    "status": "loaded",
+    "elapsedMs": 6205,
+    "matched": [
+      "Agenda"
+    ],
+    "hasAccessDenied": false,
+    "newErrors": []
+  },
+  {
+    "name": "academia",
+    "status": "loaded",
+    "elapsedMs": 242,
+    "matched": [
+      "Academia"
+    ],
+    "hasAccessDenied": false,
+    "newErrors": []
+  },
+  {
+    "name": "clientes",
+    "status": "loaded",
+    "elapsedMs": 418,
+    "matched": [
+      "Clientes"
+    ],
+    "hasAccessDenied": false,
+    "newErrors": []
+  },
+  {
+    "name": "financeiro",
+    "status": "loaded",
+    "elapsedMs": 279,
+    "matched": [
+      "Financeiro"
+    ],
+    "hasAccessDenied": false,
+    "newErrors": []
+  }
+]

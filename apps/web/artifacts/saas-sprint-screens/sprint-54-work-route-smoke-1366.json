@@ -1,0 +1,60 @@
+{
+  "viewport": "1366x768",
+  "results": [
+    {
+      "route": "inicio",
+      "elapsedMs": 5618,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "agenda",
+      "elapsedMs": 561,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "clientes",
+      "elapsedMs": 132,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "academia",
+      "elapsedMs": 79,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "financeiro",
+      "elapsedMs": 89,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "loja-pos",
+      "elapsedMs": 38,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "comunicacao",
+      "elapsedMs": 29,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "relatorios",
+      "elapsedMs": 45,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    },
+    {
+      "route": "administracao",
+      "elapsedMs": 65,
+      "loaded": true,
+      "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados"
+    }
+  ],
+  "logs": []
+}

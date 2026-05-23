@@ -1,0 +1,62 @@
+[
+  {
+    "route": "inicio",
+    "ms": 1225,
+    "excerpt": "Carregando...",
+    "logs": []
+  },
+  {
+    "route": "agenda",
+    "ms": 1113,
+    "excerpt": "Carregando...",
+    "logs": []
+  },
+  {
+    "route": "clientes",
+    "ms": 5700,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nTRABALHO\nLOCAL\nACESSO PROFISSIONAL\nGestao indisponivel\n\nEste local nao esta liberado para o seu perfil atual.\n\nVoltar para central\nExplorar locais\nACESSO RESTRITO\nEntre com um perfil de gestao ou aceite um convite da equipe.\n\nA rotina operacional, alunos, reservas, financeiro e configuracoes do local ficam visiveis apenas para donos, gerentes ou equipe com permissao ativa.\n\nVoltar ao inicio\nExplorar locais\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao",
+    "logs": []
+  },
+  {
+    "route": "academia",
+    "ms": 1089,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nHoje\nAgenda\nTurmas\nAlunos\nPendencias\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma\nAULAS HOJE\n7\nOrdenadas por horario\nALUNOS\n25\nMatriculas ativas nas aulas de hoje\nAVISOS PREVIOS\n1\nAusencias avisadas antes da aula\nREPOSICOES\n14\nCreditos abertos vinculados\nHORARIO\nTURMA\nPROFESSOR\nQUADRA\nALUNOS\nSTATUS\nACOES\n06:30 - 07:30\nDuplas Competitivo 1\nVitor Leal\nQuadra 6\n4/4\nEm agenda\nDetalhar\n07:30 - 08:30\nAdulto Iniciante 2\nVitor Leal\nQuadra 4\n4/4\nEm agenda\nDetalhar\n08:30 - 09:30\nPrimeira Classe 2\nVitor Leal\nQuadra 2\n4/4\nEm agenda\nDetalhar\n16:00 - 17:00\nIntermediario Noite ",
+    "logs": []
+  },
+  {
+    "route": "financeiro",
+    "ms": 1148,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 48.946,00\n181 recebivel(is) no filtro\nVENCIDOS\nR$ 48.946,00\n181 cobranca(s)\nVENCE HOJE\n0\nacao recomendada hoje\nTodos\n181\nVencidos\n181\nHoje\n0\nAulas\n112\nPlanos\n69\nCobrar planos\nCobrar alunos\nCLIENTE\nORIGEM\nVENCIMENTO\nSTATUS\nVALOR\nAna Queiroz\nSocio Performance\nPlano de sócio\nVencido em 05/05\nVencido\nR$ 349,00\nAndre Castro\nSocio Essencial\nPlano de sócio\nVencido em 05/05\nVencido\nR$ 219,00\nAndre Rocha\nSocio Essencial\nPlano de sócio\nVencido em 05/05\nVencido\nR$ 219,00\nBeatriz Esteves\nSocio Performance\nPlano de sócio\nVencido e",
+    "logs": []
+  },
+  {
+    "route": "competicoes",
+    "ms": 1102,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nCENTRAL OPERACIONAL\nTrabalho Hoje\n\nPendencias, agenda e acoes importantes da sua operacao.\n\nO que precisa de atencao agora?\n\nResolva reservas, pagamentos, aulas e competicoes em poucos cliques.\n\nVer pendencias\nAbrir agenda\n166 acoes em foco\n0\nAgenda e reservas\n139\nAulas e encaixes pendentes\n21\nPessoas para acionar\nR$ 2.304,00\nVendas da cantina\nR$ 0,00\nSaldo operacional\nAgenda em andamento\nAbrir agenda\nEncaixe pendente\nPatricia Dias | 2026-05-15\nAbrir aulas\nEncaixe pendente\nRafael Araujo | 2026-05-15\nAbrir aulas\nEncaixe pendente\nCaue Barbosa | 2026-05-15\nAbrir aulas\nRecebimento pendente\nAna Queiroz | R$ 349,00\nCobrar\nPendencias criticas\nEncaixe pendent",
+    "logs": []
+  },
+  {
+    "route": "loja-pos",
+    "ms": 1085,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nLoja / POS\nRegistrar venda rapida para aluno, jogador ou cliente avulso.\nVenda rapida\nVendas do dia\nEstoque baixo\nProdutos\nVenda rapida\nEscolha um produto cadastrado ou registre uma venda avulsa.\nR$ 0,00\nBUSCAR PRODUTO\nVenda avulsa\nAgua sem gas\nBebidas\nR$ 5,00 | 40 em estoque\nAluguel raquete\nServicos\nR$ 20,00 | 5 em estoque\nBarra de proteina\nLanches\nR$ 15,00 | 9 em estoque\nBola tubo\nPro shop\nR$ 52,00 | 7 em estoque\nCafe espresso\nBebidas\nR$ 7,00 | 60 em estoque\nIsotonico\nBebidas\nR$ 9,00 | 22 em estoque\nMunhequeira\nPro shop\nR$ 39,00 | 4 em estoque\nOvergrip\nPro shop\nR$ 25,00 | 18 em estoque\nSanduiche natural\nLanches\nR$ 18,00 | 12 em estoque\nSuco natural\n",
+    "logs": []
+  },
+  {
+    "route": "comunicacao",
+    "ms": 1041,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nCOMUNICACAO\nCentral de mensagens\n\nWhatsApp, publicacao e avisos conectados aos pontos reais da operacao.\n\nEditar dados publicos\nVer pagina publica\nQUADRAS\n8\nUso publico e agenda\nAULAS\n42\nTurmas visiveis\nPLANOS\n2\nOfertas recorrentes\nPAGINA PUBLICA\nOK\nPronta para divulgar\nPONTO\nSTATUS\nMENSAGEM\nACAO\nReservas\nEm dia\nAgenda sem reserva pendente agora.\nRevisar agenda\nLista de espera\n107 pessoa(s)\nClientes em espera precisam de retorno quando liberar horario.\nAvisar espera\nAulas\n133 pedido(s)\nPedidos de aula e reposicao precisam de resposta clara.\nAbrir clientes\nFinanceiro\n181 em aberto\nRecebiveis em aberto pedem lembrete profissional.\nCobrar\nPublicacao\nPron",
+    "logs": []
+  },
+  {
+    "route": "relatorios",
+    "ms": 1053,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nRELATORIOS\nVisao da operacao\n\nIndicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva.\n\nTudo\nPeriodo\nEste mes\nHoje\nExportar CSV\nPLANO ATUAL\nMultiunidade\nPacote completo para rede com unidades.\nClube: reservas\nAcademia: turmas\nPro: completo\nMultiunidade\nQUADRAS\n8\nRESERVAS NO PERIODO\n444\nOCUPACAO ESTIMADA\n8%\nTAXA CONFIRMACAO GERAL\n64%\nMODULO\nINDICADOR\nLEITURA\nAgenda\n444\n8% de ocupacao estimada, 265 confirmadas\nAcademia\n151\n76% de presença, 151 alunos ativos\nFinanceiro\nR$ 0,00\nentradas R$ 2.304,00 menos despesas R$ 5.350,00\nCRM\n15%\n18 leads, origem principal Instagram\nCantina\nR$ 2.304,00\nSanduiche natural lídera com 36 un.",
+    "logs": []
+  },
+  {
+    "route": "administracao",
+    "ms": 1095,
+    "excerpt": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nCuiaba - MT\nJogador\nTrabalho\nADMINISTRACAO\nCentral administrativa\n\nEstrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria.\n\nEditar dados publicos\nVer pagina publica\nIMPLANTACAO\n100%\n7/7 itens prontos\nPLANO\nMultiunidade\nAgenda + Academia\nRECURSOS\n8\nquadras ativas\nEQUIPE\n8\n0 convite(s) pendente(s)\nChecklist estrutural\nClube Racket Prime · Cuiaba - MT\nRegras operacionais\nAREA\nSTATUS\nDESCRICAO\nACAO\nDados do local\nPronto\nDescricao preenchida\nAbrir\nCadastrar quadra\nPronto\n8 quadras cadastradas\nAbrir\nEquipe\nPronto\n8 membros ou convites\nAbrir\nCadastrar professor\nPronto\n3 professores cadastrados\nAbrir\nCriar turma\nPronto\n42 turmas ativas\nAbrir\nConfigurar plano\nPronto\n2 p",
+    "logs": []
+  }
+]

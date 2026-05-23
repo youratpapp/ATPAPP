@@ -342,6 +342,7 @@ function AppInner() {
         <Route path="/ligas/:leagueId" element={<LegacyLeagueDetailsRedirect />} />
         <Route path="/ligas/inscricao/:token" element={<LegacyLeagueJoinRedirect />} />
         <Route path="/gestao" element={<ManagementHubPage user={authUser} profile={profile} />} />
+        <Route path="/gestao/:placeId/competicoes" element={<PlaceCompetitionsRedirect />} />
         <Route path="/gestao/:placeId" element={<PlaceAdminPage user={authUser} profile={profile} />} />
         <Route path="/gestao/:placeId/:module" element={<PlaceAdminPage user={authUser} profile={profile} />} />
         <Route path="/locais" element={<PlacesPage user={authUser} profile={profile} />} />
@@ -377,6 +378,15 @@ function RedirectWithSearch({ search = "", to }: { search?: string; to: string }
   const currentSearch = location.search || "";
   const nextSearch = search || currentSearch;
   return <Navigate to={`${to}${nextSearch}`} replace />;
+}
+
+function PlaceCompetitionsRedirect() {
+  const { placeId } = useParams();
+  const params = new URLSearchParams();
+  params.set("modo", "organizing");
+  const safePlaceId = String(placeId || "").trim();
+  if (safePlaceId) params.set("placeId", safePlaceId);
+  return <Navigate to={`/eventos?${params.toString()}`} replace />;
 }
 
 function sanitizeNextPath(value: string | null | undefined): string {

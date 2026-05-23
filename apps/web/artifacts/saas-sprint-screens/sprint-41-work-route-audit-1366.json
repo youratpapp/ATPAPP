@@ -1,0 +1,103 @@
+[
+  {
+    "name": "inicio",
+    "status": "loaded",
+    "elapsedMs": 6473,
+    "matched": [
+      "Trabalho Hoje",
+      "Atalhos rapidos"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "agenda",
+    "status": "loaded",
+    "elapsedMs": 1142,
+    "matched": [
+      "Agenda",
+      "Quadra 1",
+      "Nova reserva"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "clientes",
+    "status": "loaded",
+    "elapsedMs": 887,
+    "matched": [
+      "Clientes",
+      "Clientes ativos",
+      "Leads"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "academia",
+    "status": "loaded",
+    "elapsedMs": 422,
+    "matched": [
+      "Academia",
+      "Hoje",
+      "Turmas",
+      "Alunos"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "financeiro",
+    "status": "loaded",
+    "elapsedMs": 385,
+    "matched": [
+      "Financeiro",
+      "Recebiveis",
+      "Receber",
+      "Vencidos"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "loja-pos",
+    "status": "loaded",
+    "elapsedMs": 390,
+    "matched": [
+      "Loja",
+      "POS",
+      "Venda",
+      "Estoque"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "comunicacao",
+    "status": "loaded",
+    "elapsedMs": 369,
+    "matched": [
+      "Comunicacao",
+      "WhatsApp",
+      "Mensagens"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "relatorios",
+    "status": "loaded",
+    "elapsedMs": 362,
+    "matched": [
+      "Relatorios",
+      "Ocupacao",
+      "Receita"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "administracao",
+    "status": "loaded",
+    "elapsedMs": 310,
+    "matched": [
+      "Administracao",
+      "Equipe",
+      "Configuracao"
+    ],
+    "newErrors": []
+  }
+]

@@ -114,7 +114,7 @@ QA:
 ### SPRINT-01 - Shell SaaS web por dominios
 
 Status em 2026-05-22:
-Em execucao avancada. Ja foram aplicados os segmentos canonicos novos (`inicio`, `clientes`, `financeiro`, `loja-pos`, `administracao`) com aliases antigos preservados, a sidebar desktop passou a operar por dominios SaaS e o seletor interno duplicado de modulos foi removido do shell de gestao. A topbar Work agora tem busca global navegavel e menu `+ Criar` com acoes rapidas, sem depender de submenu lateral ou card empilhado.
+Em execucao avancada. Ja foram aplicados os segmentos canonicos novos (`inicio`, `clientes`, `financeiro`, `loja-pos`, `administracao`) com aliases antigos preservados, a sidebar desktop passou a operar por dominios SaaS e o seletor interno duplicado de modulos foi removido do shell de gestao. A topbar Work agora tem busca global navegavel e menu `+ Criar` com acoes rapidas, sem depender de submenu lateral ou card empilhado. Em 2026-05-23, o `Inicio` deixou de usar o card legado `Hoje e prioridades` e passou para `Trabalho Hoje`, com hero operacional, metricas, fila acionavel e atalhos rapidos no padrao SaaS. Screenshot: `sprint-40-work-home-dashboard-1366.png`.
 
 Objetivo:
 Transformar Trabalho web em estrutura SaaS real. Este sprint nao pode terminar com aparencia de menu antigo, pagina generica ou painel adaptado. Se shell, sidebar, topbar ou proporcoes herdadas impedirem o resultado alvo, eles devem ser substituidos.
@@ -191,8 +191,8 @@ QA:
 
 ### SPRINT-03 - Agenda como centro operacional
 
-Status em 2026-05-22:
-Em execucao avancada. A Agenda web foi movida para calendario operacional com tabs compactas, filtros, hora cheia, slot clicavel, drawer lateral no desktop e sheet no mobile. O horario deixou de ser repetido dentro dos blocos, ficando no eixo do calendario e no detalhe lateral. Corrigido tambem o carregamento lento em `/gestao/:placeId/...`: rotas diretas agora carregam recursos profundos apenas do local aberto, mantendo a lista de unidades para o seletor.
+Status em 2026-05-23:
+Em execucao avancada. A Agenda web foi movida para calendario operacional com tabs compactas, filtros, hora cheia, slot clicavel, drawer lateral no desktop e sheet no mobile. O horario deixou de ser repetido dentro dos blocos, ficando no eixo do calendario e no detalhe lateral. Foi corrigido o carregamento frio em cascata da area Trabalho: organizacoes, unidades, pagamentos, recursos profundos e jogos abertos agora carregam em paralelo, rotas diretas priorizam o local aberto e timeouts secundarios nao seguram a primeira dobra. QA Playwright em `#/gestao/:placeId/agenda` carregou o calendario em aproximadamente 6,3s, sem erro de console. Screenshot: `sprint-33-work-load-agenda-1366.png`. Pendencia: reduzir ainda mais o tempo percebido com loader progressivo/skeleton e separar dados secundarios da renderizacao inicial.
 
 Objetivo:
 Transformar Agenda em calendario central de trabalho, com proporcao de SaaS profissional. A agenda nao pode abrir com hero grande, cards aleatorios, fila empilhada ou formulario interno quebrado.
@@ -232,8 +232,8 @@ QA:
 
 ### SPRINT-04 - Reserva drawer completo
 
-Status em 2026-05-22:
-Em execucao avancada. O clique em reserva abre detalhe lateral no desktop, nao mais formulario estreito dentro do calendario. A edicao fica dentro do drawer em coluna legivel, sem listas/historico competindo durante a edicao. O pagamento aparece como acao do drawer e a validacao visual foi registrada em screenshot. Em 2026-05-23 a migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo, o schema do PostgREST foi recarregado e as RPCs `app_update_court_booking_admin`, `app_create_court_booking_change_request`, `app_get_court_booking_change_request` e `app_confirm_court_booking_change_request` foram confirmadas no catalogo. Validacao via Supabase JS confirmou que `app_create_court_booking_change_request` nao retorna mais erro de schema cache.
+Status em 2026-05-23:
+Em execucao avancada. O clique em reserva abre detalhe lateral no desktop, nao mais formulario estreito dentro do calendario. A edicao fica dentro do drawer em coluna legivel, sem listas/historico competindo durante a edicao. O pagamento aparece como acao do drawer e a validacao visual foi registrada em screenshot. A migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo, o schema do PostgREST foi recarregado e as RPCs `app_update_court_booking_admin`, `app_create_court_booking_change_request`, `app_get_court_booking_change_request` e `app_confirm_court_booking_change_request` foram confirmadas no catalogo. Validacao via Supabase JS confirmou que `app_create_court_booking_change_request` nao retorna mais erro de schema cache. QA Playwright no calendario carregado confirmou drawer com `Detalhe da reserva`, `Pagar`, `Editar`, `WhatsApp` e `Cancelar reserva`, sem erros de console. Screenshot: `sprint-34-reservation-drawer-1366.png`.
 
 Objetivo:
 Criar fluxo operacional completo de reserva.
@@ -274,7 +274,7 @@ QA:
 ### SPRINT-05 - Pagamento stub padrao
 
 Status em 2026-05-22:
-Em execucao avancada. O modal `PaymentStubDialog` foi padronizado em dark SaaS e aplicado tambem em reserva sem registro previo de pagamento, criando payload temporario por `court_booking`. O botao `Pagar` continua sendo stub para marcar como pago ate a integracao futura do gateway/webhook.
+Em execucao avancada. O modal `PaymentStubDialog` foi padronizado em dark SaaS e aplicado tambem em reserva sem registro previo de pagamento, criando payload temporario por `court_booking`. O botao `Pagar` continua sendo stub para marcar como pago ate a integracao futura do gateway/webhook. Em 2026-05-23, QA Playwright confirmou que o botao `Pagar` no drawer de reserva abre o modal unico com valor, cliente, quadra, horario e acao de pagamento, sem erro de console. Screenshot: `sprint-35-payment-stub-dialog-1366.png`.
 
 Objetivo:
 Unificar todo ponto de pagamento com modal simples.
@@ -309,8 +309,8 @@ QA:
 
 ### SPRINT-06 - WhatsApp operacional
 
-Status em 2026-05-22:
-Em execucao avancada. Templates de reserva/remarcacao usam nome do cliente, local, remetente, horario, contexto e mensagem profissional. Em 2026-05-23 a migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo e a RPC `app_create_court_booking_change_request` foi validada sem erro de schema cache. Proximo fechamento: acionar o fluxo real pela UI com reserva futura, abrir WhatsApp com link `/remarcar-reserva/:token` e confirmar a tela de escolha de novo horario pelo jogador.
+Status em 2026-05-23:
+Em execucao avancada. Templates de reserva/remarcacao usam nome do cliente, local, remetente, horario, contexto e mensagem profissional. A migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo e a RPC `app_create_court_booking_change_request` foi validada sem erro de schema cache. QA Playwright acionou `WhatsApp troca` pela UI, abriu `api.whatsapp.com` com telefone do cliente, mensagem profissional e link de agenda para alteracao de reserva, sem erro de schema cache ou console. Screenshot: `sprint-36-whatsapp-change-action-1366.png`. Pendencia: validar o fluxo do jogador na tela publica `/reservas/alteracao/:token` em mobile.
 
 Objetivo:
 Adicionar mensagens profissionais nos pontos definidos no blueprint.
@@ -354,7 +354,7 @@ QA:
 ### SPRINT-07 - Clientes dominio e listas
 
 Status em 2026-05-22:
-Em execucao avancada. `Clientes` opera como dominio separado com abas `Clientes ativos`, `Leads` e `Atendimento`, sem misturar contato comercial com cliente ativo. A lista de clientes ativos foi ajustada para funcionar como tabela operacional compacta com Cliente 360 lateral, sem cortar colunas no desktop 1366.
+Em execucao avancada. `Clientes` opera como dominio separado com abas `Clientes ativos`, `Leads` e `Atendimento`, sem misturar contato comercial com cliente ativo. A lista de clientes ativos foi ajustada para funcionar como tabela operacional compacta com Cliente 360 lateral, sem cortar colunas no desktop 1366. Em 2026-05-23, QA Playwright confirmou carregamento do dominio com abas `Clientes ativos`, `Leads` e `Atendimento`, sem erro de console. Screenshot: `sprint-37-clients-domain-1366.png`.
 
 Objetivo:
 Separar Leads, Clientes ativos, Alunos, Socios e Responsaveis.
@@ -391,7 +391,7 @@ QA:
 ### SPRINT-08 - Cliente 360
 
 Status em 2026-05-22:
-Em execucao avancada. Cliente 360 abre ao lado da lista, mostra status, categoria, telefone, email, responsavel, resumo e acoes principais (`WhatsApp`, `Abrir aulas` ou `Abrir receita`) sem tirar a recepcao da tabela. Ainda falta enriquecer historico profundo e pagamentos por cliente em fase posterior.
+Em execucao avancada. Cliente 360 abre ao lado da lista, mostra status, categoria, telefone, email, responsavel, resumo e acoes principais sem tirar a recepcao da tabela. Em 2026-05-23, o drawer recebeu acoes diretas de recepcao (`Nova reserva`, `Cobrar`, `WhatsApp`, `Abrir aulas`/`Abrir receita`) e resumo operacional de agenda/receita, para nao ser apenas um painel passivo. QA DOM confirmou o drawer `.clients-360-drawer` com essas acoes em desktop 1366. Screenshot: `sprint-38-client-360-actions-1366.png`. Ainda falta enriquecer historico profundo, pagamentos detalhados e reservas por cliente em fase posterior.
 
 Objetivo:
 Criar tela/drawer central do cliente.
@@ -434,7 +434,7 @@ QA:
 ### SPRINT-09 - Academia web profissional
 
 Status em 2026-05-22:
-Em execucao avancada. A rotina de Academia passou a usar mesa operacional com metricas, lista/tabela de aulas do dia e detalhe lateral da aula, reduzindo cards soltos e deixando chamada opcional respeitada como configuracao da empresa. Ainda restam contratos profundos para Turmas, Alunos e agenda semanal antes de considerar o dominio inteiro concluido.
+Em execucao avancada. A rotina de Academia passou a usar mesa operacional com metricas, lista/tabela de aulas do dia e detalhe lateral da aula, reduzindo cards soltos e deixando chamada opcional respeitada como configuracao da empresa. Em 2026-05-23 foi corrigido o problema de funcao escondida: o workspace de Academia deixou de renderizar apenas a view atual e passou a expor a regua clara `Hoje`, `Agenda`, `Turmas`, `Alunos`, `Pendencias`. Professores e Ajustes continuam acessiveis por rotas legadas/administrativas, mas nao competem com a rotina principal. Screenshots: `sprint-32-academy-tabs-today-1366.png`, `sprint-32-academy-tabs-classes-1366.png`, `sprint-32-academy-tabs-students-1366.png`. Pendencia real: tempo de carregamento frio da area de trabalho ainda e alto e precisa de fase de performance/loader.
 
 Objetivo:
 Reorganizar aulas/turmas/alunos/professores sem tabs confusas.
@@ -842,8 +842,8 @@ QA:
 
 ### SPRINT-20 - Work Mobile operacional
 
-Status em 2026-05-22:
-Em execucao avancada. A navegacao mobile Trabalho ja muda por papel dominante e foi revalidada em 390px para gestor: `Hoje`, `Agenda`, `Aulas`, `Financeiro`, `Mais`. A Agenda mobile usa seletor de quadra, abas enxutas e CTA `Nova reserva`, sem tentar carregar a grade web inteira. Tambem foi ajustado o estado de loading da rota administrativa para dizer `Carregando area de trabalho`, evitando a mensagem incorreta `Buscando locais` no modo Trabalho. Pendencia: melhorar tempo percebido de carregamento, pois o mobile pode levar varios segundos ate a grade real aparecer.
+Status em 2026-05-23:
+Em execucao avancada com evidencia visual. A navegacao mobile Trabalho permanece por papel dominante e foi revalidada em 390px para gestor: `Hoje`, `Agenda`, `Aulas`, `Financeiro`, `Mais`. A Home mobile de Trabalho agora carrega a Central Operacional, hero compacto, metricas em duas colunas, agenda em andamento, pendencias criticas e atalhos rapidos sem expor a arvore completa do SaaS web. Foi corrigido o contraste/encaixe das metricas, que antes colavam numero e legenda em 390px. Em 430px, auditoria real com login carregou `inicio`, `agenda`, `clientes`, `academia`, `financeiro`, `loja-pos`, `comunicacao`, `relatorios` e `administracao` sem erro de console e sem queda para login. Artefatos: `artifacts/saas-sprint-screens/sprint-46-work-mobile-home-390.png`, `sprint-47-work-mobile-audit-430.json` e `sprint-47-work-mobile-*.png`. Pendencia real: revalidar papeis especificos, principalmente professor/recepcao/financeiro/caixa, para garantir que cada um veja somente operacao rapida.
 
 Objetivo:
 Depois do web, reorganizar mobile trabalho por papel.
@@ -874,8 +874,8 @@ QA:
 
 ### SPRINT-21 - Busca global e criar rapido
 
-Status em 2026-05-22:
-Em execucao avancada. A topbar de Trabalho possui busca global por dominios operacionais e menu `+ Criar` com acoes rapidas: nova reserva, novo cliente, registrar pagamento, criar aula/turma, criar torneio e vender produto. O placeholder foi encurtado para nao quebrar no desktop 1366. Proxima fase: conectar busca real por entidade individual quando houver indice/consulta agregada mais robusta.
+Status em 2026-05-23:
+Em execucao avancada. A topbar de Trabalho possui busca global por dominios operacionais e menu `+ Criar` com acoes rapidas: nova reserva, novo cliente, registrar pagamento, criar aula/turma, criar torneio e vender produto. A busca deixou de ser apenas atalho de menu: quando o usuario digita 2+ caracteres, ela consulta entidades reais da unidade (`Clientes`, `Reservas`, `Turmas`, `Alunos` e `Pagamentos`) e mistura esses resultados com atalhos de area. As consultas possuem timeout curto para nao travar a topbar. QA com busca `Ana` retornou clientes e reservas reais sem erro de console. Artefato: `artifacts/saas-sprint-screens/sprint-51-work-global-search-1366.png`. Proxima fase: criar indice/consulta agregada dedicada para ordenar resultados por relevancia e permissao de forma mais robusta.
 
 Objetivo:
 Reduzir dependencia de menus.
@@ -909,7 +909,7 @@ QA:
 ### SPRINT-22 - QA transversal completo
 
 Status em 2026-05-22:
-Em execucao avancada. QA automatizado com Playwright validou desktop 1366 e mobile 390 nas rotas principais de Trabalho (`inicio`, `agenda`, `academy`, `clients`, `finance`, `communication`, `reports`). Desktop passou sem erros de console. Mobile passou em carregamento real; os apontamentos iniciais de Comunicacao/Relatorios foram falso negativo do script por capitalizacao/alias de rota, e as capturas confirmaram conteudo carregado. Pendencia real: tempo percebido de loading no mobile ainda e alto e deve virar frente de performance/loader.
+Em execucao avancada. QA automatizado com Playwright validou desktop 1366 e mobile 390 nas rotas principais de Trabalho (`inicio`, `agenda`, `academy`, `clients`, `finance`, `communication`, `reports`). Em 2026-05-23, nova varredura desktop 1366 em `inicio`, `agenda`, `clientes`, `academia`, `financeiro`, `loja-pos`, `comunicacao`, `relatorios` e `administracao` carregou todas as rotas sem erro de console; `inicio` carregou em 6,4s no primeiro acesso e as demais rotas ficaram abaixo de 1,2s apos dados carregados. A rota mobile `inicio` foi revalidada com login real e carregou a Central Operacional sem erros de console. A auditoria mobile 430px tambem carregou as 9 rotas principais sem erros de console e sem redirecionamento indevido para login. Apos busca global real e correcoes de Home, nova smoke desktop 1366 carregou as mesmas 9 rotas sem erro de console. Artefatos: `sprint-41-work-route-audit-1366.json`, screenshots `sprint-41-work-route-*.png`, `sprint-46-work-mobile-home-390.png`, `sprint-47-work-mobile-audit-430.json`, `sprint-47-work-mobile-*.png` e `sprint-54-work-route-smoke-1366.json`. Pendencia real: completar auditoria por papeis e fluxo ponta a ponta.
 
 Objetivo:
 Validar que nenhuma persona melhorou quebrando outra.
@@ -952,8 +952,8 @@ Relatorio final com aprovado/falhou/corrigido/pendente.
 
 ### SPRINT-23 - Correcoes finais e polimento
 
-Status em 2026-05-22:
-Em execucao. Polimentos aplicados nesta rodada: blocos da Agenda deixam de repetir horario dentro do card, loading administrativo usa linguagem de Trabalho, busca global nao corta placeholder no desktop 1366, Relatorios/Comunicacao usam listas com drawer e estilos de botao isolados do CSS global. Build passou apos as correcoes.
+Status em 2026-05-23:
+Em execucao. Polimentos aplicados nesta rodada: blocos da Agenda deixam de repetir horario dentro do card, loading administrativo usa linguagem de Trabalho, busca global nao corta placeholder no desktop 1366, Relatorios/Comunicacao usam listas com drawer e estilos de botao isolados do CSS global. Tambem foi corrigido o encaixe das metricas da Central Operacional mobile, a fila critica da Home de Trabalho deixou de quebrar em colunas estreitas e botoes brancos foram bloqueados nessa superficie. Build passou apos as correcoes. Artefatos adicionais: `sprint-52-work-home-queue-grid-1366.png` e `sprint-53-work-home-dark-buttons-1366.png`.
 
 Objetivo:
 Corrigir tudo que o QA transversal encontrou.

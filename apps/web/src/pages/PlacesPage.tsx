@@ -6521,6 +6521,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       onOpenAcademyStudents={() => selectAcademyView(p.id, "students")}
                       onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
                       onOpenFinancePlans={() => selectFinanceView(p.id, "packages")}
+                      onOpenReservations={() => navigate(buildPlaceAdminPath(p.id, "bookings", "reservas"))}
                     />
                   ) : null}
                   {showClientsRelationship ? (
@@ -7318,7 +7319,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       : undefined
                   }
                   viewLabels={isCoachMode ? { calendar: "Agenda", today: requireAttendanceCall ? "Chamada" : "Aula", classes: "Turmas", students: "Alunos" } : undefined}
-                  views={[academyView]}
+                  views={
+                    academyView === "coaches" || academyView === "resources"
+                      ? isCoachMode
+                        ? ["today", "calendar", "classes", "students", academyView]
+                        : ["today", "calendar", "classes", "students", "requests", academyView]
+                      : isCoachMode
+                        ? ["today", "calendar", "classes", "students"]
+                        : ["today", "calendar", "classes", "students", "requests"]
+                  }
                   onViewChange={(view) => selectAcademyView(p.id, view)}
                 >
                   {coachWithoutAcademyProfile ? (

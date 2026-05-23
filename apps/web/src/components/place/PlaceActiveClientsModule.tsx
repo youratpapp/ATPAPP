@@ -13,6 +13,7 @@ type PlaceActiveClientsModuleProps = {
   onOpenAcademyStudents: () => void;
   onOpenContact: (contact: PlaceCrmContact) => void;
   onOpenFinancePlans: () => void;
+  onOpenReservations: () => void;
 };
 
 type ClientRow = {
@@ -55,6 +56,7 @@ export function PlaceActiveClientsModule({
   onOpenAcademyStudents,
   onOpenContact,
   onOpenFinancePlans,
+  onOpenReservations,
 }: PlaceActiveClientsModuleProps) {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState("");
@@ -201,6 +203,12 @@ export function PlaceActiveClientsModule({
                   <dd>{selected.detail}</dd>
                 </dl>
                 <div className="clients-360-actions">
+                  <button type="button" className="primary" onClick={onOpenReservations} disabled={busy}>
+                    Nova reserva
+                  </button>
+                  <button type="button" onClick={onOpenFinancePlans} disabled={busy}>
+                    Cobrar
+                  </button>
                   {href ? (
                     <button type="button" className="secondary" onClick={() => window.open(href, "_blank", "noopener,noreferrer")} disabled={busy}>
                       WhatsApp
@@ -211,17 +219,25 @@ export function PlaceActiveClientsModule({
                       Abrir historico
                     </button>
                   ) : selected.kind === "member" ? (
-                    <button type="button" className="primary" onClick={onOpenFinancePlans} disabled={busy}>
+                    <button type="button" onClick={onOpenFinancePlans} disabled={busy}>
                       Abrir receita
                     </button>
                   ) : (
-                    <button type="button" className="primary" onClick={onOpenAcademyStudents} disabled={busy}>
+                    <button type="button" onClick={onOpenAcademyStudents} disabled={busy}>
                       Abrir aulas
                     </button>
                   )}
                 </div>
                 <section>
                   <h4>Resumo operacional</h4>
+                  <article>
+                    <strong>Agenda</strong>
+                    <span>Use Nova reserva para criar ou ajustar compromisso sem sair do cliente.</span>
+                  </article>
+                  <article>
+                    <strong>Receita</strong>
+                    <span>Cobranças e mensalidades ficam no financeiro do local.</span>
+                  </article>
                   <article>
                     <strong>Ultima atividade</strong>
                     <span>{selected.updatedAt ? new Date(selected.updatedAt).toLocaleDateString("pt-BR") : "Sem historico recente"}</span>

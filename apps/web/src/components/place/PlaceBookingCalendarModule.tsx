@@ -102,7 +102,18 @@ function paymentStatusLabel(payment?: AppPayment): string {
   if (payment?.status === "pending") return "Pagamento pendente";
   if (payment?.status === "failed") return "Pagamento falhou";
   if (payment?.status === "refunded") return "Estornado";
-  return "Sem pagamento";
+  return "Pagamento pendente";
+}
+
+function agendaItemBadgeLabel(item: AgendaItem, payment?: AppPayment): string {
+  if (item.booking?.status === "blocked") return "Bloqueio";
+  if (item.booking) {
+    if (payment?.status === "paid") return "Pago";
+    return "Pendente";
+  }
+  if (item.type === "class") return "Aula";
+  if (item.type === "drop_in") return item.status;
+  return item.status;
 }
 
 function paymentForBookingAction(booking: CourtBooking, courts: PlaceCourt[], payment?: AppPayment): AppPayment {
@@ -344,6 +355,12 @@ export function PlaceBookingCalendarModule({
   const selectedItem = filteredItems.find((item) => item.id === selectedItemId) || null;
   const visibleCourts = useMemo(() => activeCourts.filter((court) => !courtFilter || court.id === courtFilter), [activeCourts, courtFilter]);
   const slotStarts = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
+  const firstVisibleMinute = timeToMinutes(slotStarts[0] || "06:00");
+  const lastVisibleMinute = timeToMinutes(slotStarts[slotStarts.length - 1] || "22:00") + 60;
+  const timelineItems = filteredItems.filter((item) => {
+    const itemStart = timeToMinutes(item.startsAt);
+    return itemStart >= firstVisibleMinute && itemStart < lastVisibleMinute;
+  });
   const selectedMobileCourtId = mobileCourtId && visibleCourts.some((court) => court.id === mobileCourtId) ? mobileCourtId : visibleCourts[0]?.id || "";
   const activeEditingBooking = (editingBookingId ? bookings.find((booking) => booking.id === editingBookingId) : bookings[0]) as CourtBooking;
   const courtColumnMin = visibleCourts.length > 6 ? "112px" : "0px";
@@ -364,6 +381,12 @@ export function PlaceBookingCalendarModule({
       setEditingBookingId("");
     }
   }, [filteredItems, selectedItemId]);
+
+  useEffect(() => {
+    if (!selectedItemId && timelineItems.length) {
+      setSelectedItemId(timelineItems[0].id);
+    }
+  }, [selectedItemId, timelineItems]);
 
   const selectedBooking = selectedItem?.booking;
   const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
@@ -499,6 +522,7 @@ export function PlaceBookingCalendarModule({
                         slotItems.map((item) => {
                           const booking = item.booking;
                           const payment = booking ? getPaymentForBooking?.(booking.id) : undefined;
+                          const badgeLabel = agendaItemBadgeLabel(item, payment);
                           return (
                             <button
                               key={item.id}
@@ -510,7 +534,7 @@ export function PlaceBookingCalendarModule({
                               }}
                             >
                               <strong>{item.title}</strong>
-                              <small>{booking ? paymentStatusLabel(payment) : item.status}</small>
+                              <small>{badgeLabel}</small>
                             </button>
                           );
                         })

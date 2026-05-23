@@ -1,0 +1,109 @@
+[
+  {
+    "name": "inicio",
+    "status": "timeout",
+    "elapsedMs": 35948,
+    "matched": [],
+    "newErrors": []
+  },
+  {
+    "name": "agenda",
+    "status": "loaded",
+    "elapsedMs": 959,
+    "matched": [
+      "Agenda",
+      "Quadra 1",
+      "Nova reserva"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "clientes",
+    "status": "loaded",
+    "elapsedMs": 891,
+    "matched": [
+      "Clientes",
+      "Clientes ativos",
+      "Leads"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "academia",
+    "status": "loaded",
+    "elapsedMs": 397,
+    "matched": [
+      "Academia",
+      "Hoje",
+      "Turmas",
+      "Alunos"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "financeiro",
+    "status": "loaded",
+    "elapsedMs": 426,
+    "matched": [
+      "Financeiro",
+      "Recebiveis",
+      "Receber",
+      "Vencidos"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "competicoes",
+    "status": "loaded",
+    "elapsedMs": 266,
+    "matched": [
+      "Competicoes"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "loja-pos",
+    "status": "loaded",
+    "elapsedMs": 379,
+    "matched": [
+      "Loja",
+      "POS",
+      "Venda",
+      "Estoque"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "comunicacao",
+    "status": "loaded",
+    "elapsedMs": 317,
+    "matched": [
+      "Comunicacao",
+      "WhatsApp",
+      "Mensagens"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "relatorios",
+    "status": "loaded",
+    "elapsedMs": 356,
+    "matched": [
+      "Relatorios",
+      "Ocupacao",
+      "Receita"
+    ],
+    "newErrors": []
+  },
+  {
+    "name": "administracao",
+    "status": "loaded",
+    "elapsedMs": 311,
+    "matched": [
+      "Administracao",
+      "Equipe",
+      "Configuracao"
+    ],
+    "newErrors": []
+  }
+]

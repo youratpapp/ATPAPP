@@ -7,6 +7,7 @@ import { AppPopover } from "./AppOverlays";
 import logoSymbol from "../assets/logo-atp-symbol.svg";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import { getRouteExperienceMode, getRouteSurfaceMode, type AppSurfaceMode } from "../lib/role-visibility";
+import { supabase } from "../lib/supabase";
 import { useUserMode } from "../lib/user-mode-context";
 
 type Props = {
@@ -50,6 +51,14 @@ function activePlaceIdFromPath(pathname: string): string | null {
   }
 }
 
+type WorkSearchItem = {
+  detail: string;
+  id: string;
+  label: string;
+  path: string;
+  source?: string;
+};
+
 export function AppShell({
   user,
   profile,
@@ -78,27 +87,29 @@ export function AppShell({
   const [workSearch, setWorkSearch] = useState("");
   const [workSearchOpen, setWorkSearchOpen] = useState(false);
   const [workCreateOpen, setWorkCreateOpen] = useState(false);
+  const [workEntityResults, setWorkEntityResults] = useState<WorkSearchItem[]>([]);
+  const [workEntitySearchLoading, setWorkEntitySearchLoading] = useState(false);
   const targetPlaceId = activePlaceId || userMode.access.primaryPlaceId || "";
-  const workSearchItems = useMemo(() => {
+  const workSearchItems = useMemo<WorkSearchItem[]>(() => {
     if (!targetPlaceId) return [];
     return [
-      { label: "Agenda", detail: "Reservas, aulas, bloqueios e remarcacoes", path: buildPlaceAdminPath(targetPlaceId, "bookings", "calendar") },
-      { label: "Reservas", detail: "Calendario clicavel e detalhe lateral", path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas") },
-      { label: "Clientes", detail: "Leads, ativos, alunos e socios", path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos") },
-      { label: "Aulas", detail: "Turmas, matriculas e reposicoes", path: buildPlaceAdminPath(targetPlaceId, "academy", "hoje") },
-      { label: "Financeiro", detail: "Recebiveis, vencidos e pagos", path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis") },
-      { label: "Loja/POS", detail: "Venda rapida, estoque e produtos", path: buildPlaceAdminPath(targetPlaceId, "canteen", "vender") },
-      { label: "Competicoes", detail: "Torneios, ligas e resultados pendentes", path: "/eventos?modo=organizing" },
-      { label: "Comunicacao", detail: "WhatsApp, avisos e publicacao", path: buildPlaceAdminPath(targetPlaceId, "communication") },
-      { label: "Relatorios", detail: "Ocupacao, receita e indicadores", path: buildPlaceAdminPath(targetPlaceId, "reports") },
-      { label: "Administracao", detail: "Regras, equipe e ajustes estruturais", path: buildPlaceAdminPath(targetPlaceId, "settings") },
+      { id: "area-agenda", label: "Agenda", detail: "Reservas, aulas, bloqueios e remarcacoes", path: buildPlaceAdminPath(targetPlaceId, "bookings", "calendar") },
+      { id: "area-reservas", label: "Reservas", detail: "Calendario clicavel e detalhe lateral", path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas") },
+      { id: "area-clientes", label: "Clientes", detail: "Leads, ativos, alunos e socios", path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos") },
+      { id: "area-aulas", label: "Aulas", detail: "Turmas, matriculas e reposicoes", path: buildPlaceAdminPath(targetPlaceId, "academy", "hoje") },
+      { id: "area-financeiro", label: "Financeiro", detail: "Recebiveis, vencidos e pagos", path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis") },
+      { id: "area-pos", label: "Loja/POS", detail: "Venda rapida, estoque e produtos", path: buildPlaceAdminPath(targetPlaceId, "canteen", "vender") },
+      { id: "area-competicoes", label: "Competicoes", detail: "Torneios, ligas e resultados pendentes", path: "/eventos?modo=organizing" },
+      { id: "area-comunicacao", label: "Comunicacao", detail: "WhatsApp, avisos e publicacao", path: buildPlaceAdminPath(targetPlaceId, "communication") },
+      { id: "area-relatorios", label: "Relatorios", detail: "Ocupacao, receita e indicadores", path: buildPlaceAdminPath(targetPlaceId, "reports") },
+      { id: "area-administracao", label: "Administracao", detail: "Regras, equipe e ajustes estruturais", path: buildPlaceAdminPath(targetPlaceId, "settings") },
     ];
   }, [targetPlaceId]);
   const filteredWorkSearchItems = useMemo(() => {
     const query = workSearch.trim().toLowerCase();
-    if (!query) return workSearchItems.slice(0, 6);
-    return workSearchItems.filter((item) => `${item.label} ${item.detail}`.toLowerCase().includes(query)).slice(0, 8);
-  }, [workSearch, workSearchItems]);
+    const areaItems = !query ? workSearchItems.slice(0, 6) : workSearchItems.filter((item) => `${item.label} ${item.detail}`.toLowerCase().includes(query)).slice(0, 6);
+    return query.length >= 2 ? [...workEntityResults, ...areaItems].slice(0, 10) : areaItems;
+  }, [workEntityResults, workSearch, workSearchItems]);
   const quickCreateItems = useMemo(() => {
     if (!targetPlaceId) return [];
     return [
@@ -116,6 +127,147 @@ export function AppShell({
     setWorkSearchOpen(false);
     navigate(path);
   };
+
+  useEffect(() => {
+    const query = workSearch.trim();
+    const client = supabase;
+    if (!client || routeExperienceMode !== "work" || !targetPlaceId || query.length < 2) {
+      setWorkEntityResults([]);
+      setWorkEntitySearchLoading(false);
+      return undefined;
+    }
+
+    let cancelled = false;
+    const normalizedQuery = query.replace(/[%_,]/g, " ").replace(/\s+/g, " ").trim();
+    const pattern = `%${normalizedQuery}%`;
+    const abortController = new AbortController();
+    setWorkEntitySearchLoading(true);
+
+    const timer = window.setTimeout(() => {
+      const abortTimer = window.setTimeout(() => abortController.abort(), 2200);
+      void Promise.allSettled([
+        client
+          .from("place_crm_contacts")
+          .select("id,name,phone,email,status,interest")
+          .eq("place_id", targetPlaceId)
+          .or(`name.ilike.${pattern},phone.ilike.${pattern},email.ilike.${pattern},interest.ilike.${pattern}`)
+          .abortSignal(abortController.signal)
+          .limit(4),
+        client
+          .from("court_bookings")
+          .select("id,player_name,phone,starts_at,status")
+          .eq("place_id", targetPlaceId)
+          .or(`player_name.ilike.${pattern},phone.ilike.${pattern},notes.ilike.${pattern}`)
+          .order("starts_at", { ascending: false })
+          .abortSignal(abortController.signal)
+          .limit(4),
+        client
+          .from("place_academy_classes")
+          .select("id,title,coach_name,level,weekday,starts_at")
+          .eq("place_id", targetPlaceId)
+          .or(`title.ilike.${pattern},coach_name.ilike.${pattern},level.ilike.${pattern}`)
+          .abortSignal(abortController.signal)
+          .limit(4),
+        client
+          .from("place_academy_enrollments")
+          .select("id,player_name,phone,status")
+          .eq("place_id", targetPlaceId)
+          .or(`player_name.ilike.${pattern},phone.ilike.${pattern},notes.ilike.${pattern}`)
+          .abortSignal(abortController.signal)
+          .limit(4),
+        client
+          .from("app_payments")
+          .select("id,target_type,target_id,amount_cents,status,description,billing_period")
+          .or(`description.ilike.${pattern},target_type.ilike.${pattern},billing_period.ilike.${pattern}`)
+          .order("created_at", { ascending: false })
+          .abortSignal(abortController.signal)
+          .limit(4),
+      ]).then((results) => {
+        if (cancelled) return;
+        const [contacts, bookings, classes, enrollments, payments] = results;
+        const items: WorkSearchItem[] = [];
+        if (contacts.status === "fulfilled" && !contacts.value.error) {
+          for (const contact of contacts.value.data || []) {
+            items.push({
+              id: `contact:${contact.id}`,
+              source: "Cliente",
+              label: contact.name || "Cliente",
+              detail: [contact.status, contact.interest, contact.phone || contact.email].filter(Boolean).join(" · "),
+              path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos"),
+            });
+          }
+        }
+        if (bookings.status === "fulfilled" && !bookings.value.error) {
+          for (const booking of bookings.value.data || []) {
+            const dateLabel = booking.starts_at ? new Date(booking.starts_at).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "";
+            items.push({
+              id: `booking:${booking.id}`,
+              source: "Reserva",
+              label: booking.player_name || "Reserva",
+              detail: [dateLabel, booking.status, booking.phone].filter(Boolean).join(" · "),
+              path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas"),
+            });
+          }
+        }
+        if (classes.status === "fulfilled" && !classes.value.error) {
+          for (const academyClass of classes.value.data || []) {
+            items.push({
+              id: `class:${academyClass.id}`,
+              source: "Turma",
+              label: academyClass.title || "Turma",
+              detail: [academyClass.coach_name, academyClass.level, academyClass.starts_at?.slice(0, 5)].filter(Boolean).join(" · "),
+              path: buildPlaceAdminPath(targetPlaceId, "academy", "turmas"),
+            });
+          }
+        }
+        if (enrollments.status === "fulfilled" && !enrollments.value.error) {
+          for (const enrollment of enrollments.value.data || []) {
+            items.push({
+              id: `enrollment:${enrollment.id}`,
+              source: "Aluno",
+              label: enrollment.player_name || "Aluno",
+              detail: [enrollment.status, enrollment.phone].filter(Boolean).join(" · "),
+              path: buildPlaceAdminPath(targetPlaceId, "academy", "alunos"),
+            });
+          }
+        }
+        if (payments.status === "fulfilled" && !payments.value.error) {
+          for (const payment of payments.value.data || []) {
+            const amount = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(Number(payment.amount_cents || 0) / 100);
+            items.push({
+              id: `payment:${payment.id}`,
+              source: "Pagamento",
+              label: payment.description || payment.target_type || "Pagamento",
+              detail: [amount, payment.status, payment.billing_period].filter(Boolean).join(" · "),
+              path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis"),
+            });
+          }
+        }
+        setWorkEntityResults(items.slice(0, 8));
+      }).finally(() => {
+        window.clearTimeout(abortTimer);
+        if (!cancelled) setWorkEntitySearchLoading(false);
+      });
+    }, 260);
+
+    return () => {
+      cancelled = true;
+      abortController.abort();
+      window.clearTimeout(timer);
+    };
+  }, [routeExperienceMode, targetPlaceId, workSearch]);
+
+  useEffect(() => {
+    if (!workSearchOpen) return undefined;
+    const onDocumentMouseDown = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target?.closest(".work-global-search")) {
+        setWorkSearchOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onDocumentMouseDown);
+    return () => document.removeEventListener("mousedown", onDocumentMouseDown);
+  }, [workSearchOpen]);
 
   useEffect(() => {
     if (!userMode.isProfessional) return;
@@ -178,15 +330,16 @@ export function AppShell({
                       setWorkSearchOpen(true);
                     }}
                     onFocus={() => setWorkSearchOpen(true)}
-                    placeholder="Buscar cliente, reserva ou aula..."
+                    placeholder="Buscar cliente, reserva, aula..."
                   />
                   {workSearchOpen ? (
                     <div className="work-global-search-panel" role="listbox" aria-label="Resultados da busca global">
+                      {workEntitySearchLoading ? <span>Buscando dados da unidade...</span> : null}
                       {filteredWorkSearchItems.length ? (
                         filteredWorkSearchItems.map((item) => (
-                          <button key={`work-search:${item.label}`} type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => navigateAndClose(item.path)}>
+                          <button key={`work-search:${item.id}`} type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => navigateAndClose(item.path)}>
                             <strong>{item.label}</strong>
-                            <span>{item.detail}</span>
+                            <span>{item.source ? `${item.source} · ${item.detail}` : item.detail}</span>
                           </button>
                         ))
                       ) : (

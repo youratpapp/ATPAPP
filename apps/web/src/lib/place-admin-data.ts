@@ -32,6 +32,7 @@ import {
   listPlaceStaff,
   listPlacesIAccess,
   listPlacesIFollow,
+  getPlaceById,
 } from "./places";
 import { placeResourceAccess } from "./place-management";
 import type {
@@ -353,7 +354,8 @@ export async function fetchPlacesWorkspaceData(input: {
   tab: PlacesTabKey;
   user: User;
 }): Promise<PlacesWorkspaceData> {
-  const organizations = await withWorkspaceFallback(listMyPlaceOrganizations(input.user), [] as PlaceOrganization[], "organizations", 5000);
+  const includeSupportData = input.includeSupportData ?? true;
+  const organizationsPromise = withWorkspaceFallback(listMyPlaceOrganizations(input.user), [] as PlaceOrganization[], "organizations", 5000);
   const fetcher = input.isAdminRoute
     ? listPlacesIAccess
     : input.tab === "all"
@@ -361,29 +363,50 @@ export async function fetchPlacesWorkspaceData(input: {
       : input.tab === "following"
         ? listPlacesIFollow
         : listPlacesIAccess;
-  const places = await withWorkspaceFallback(fetcher(input.user), [] as Place[], "places", 7000);
+  const placesPromise = withWorkspaceFallback(
+    fetcher(input.user),
+    [] as Place[],
+    "places",
+    input.isAdminRoute && input.focusPlaceId ? 4500 : 7000
+  );
+  const focusedPlacePromise =
+    input.isAdminRoute && input.focusPlaceId
+      ? withWorkspaceFallback(getPlaceById(input.user, input.focusPlaceId), null as Place | null, "focused place", 3500)
+      : Promise.resolve(null as Place | null);
+  const paymentsPromise =
+    includeSupportData && (input.isAdminRoute || input.tab === "mine")
+      ? withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", input.isAdminRoute ? 3000 : 4000)
+      : Promise.resolve({} as Record<string, AppPayment>);
+
+  const [organizations, listedPlaces, focusedPlace] = await Promise.all([organizationsPromise, placesPromise, focusedPlacePromise]);
+  const places =
+    focusedPlace && !listedPlaces.some((place) => place.id === focusedPlace.id)
+      ? [focusedPlace, ...listedPlaces]
+      : listedPlaces;
   const resourcePlaces = input.isAdminRoute && input.focusPlaceId
     ? places.filter((place) => place.id === input.focusPlaceId)
     : places;
-  const entries = input.isAdminRoute || input.tab === "mine"
-    ? await Promise.all(
+  const resourceTimeoutMs = input.isAdminRoute && input.focusPlaceId ? 9000 : 12000;
+  const entriesPromise = input.isAdminRoute || input.tab === "mine"
+    ? Promise.all(
         resourcePlaces.map((place) =>
           withWorkspaceFallback(
             fetchPlaceAdminResources({ place, placeId: place.id, userId: input.user.id }),
             emptyPlaceAdminResourceEntry(place.id),
-            `place resources ${place.id}`
+            `place resources ${place.id}`,
+            resourceTimeoutMs
           )
         )
       )
     : places.map((place) => emptyPlaceAdminResourceEntry(place.id));
-  const includeSupportData = input.includeSupportData ?? true;
-  const [paymentsByTarget, openMatches] = includeSupportData
-    ? await Promise.all([
-        input.isAdminRoute || input.tab === "mine"
-          ? withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", 4000)
-          : Promise.resolve({} as Record<string, AppPayment>),
-        withWorkspaceFallback(listOpenMatches(input.user, places.map((place) => place.id)), [] as OpenMatch[], "open matches", 6000),
-      ])
-    : [{} as Record<string, AppPayment>, [] as OpenMatch[]];
+  const openMatchesPromise = includeSupportData
+    ? withWorkspaceFallback(
+        listOpenMatches(input.user, places.map((place) => place.id)),
+        [] as OpenMatch[],
+        "open matches",
+        input.isAdminRoute ? 3500 : 6000
+      )
+    : Promise.resolve([] as OpenMatch[]);
+  const [entries, paymentsByTarget, openMatches] = await Promise.all([entriesPromise, paymentsPromise, openMatchesPromise]);
   return { entries, openMatches, organizations, paymentsByTarget, places };
 }
