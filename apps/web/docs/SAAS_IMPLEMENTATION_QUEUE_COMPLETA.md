@@ -114,7 +114,7 @@ QA:
 ### SPRINT-01 - Shell SaaS web por dominios
 
 Status em 2026-05-22:
-Em execucao. Ja foram aplicados os segmentos canonicos novos (`inicio`, `clientes`, `financeiro`, `loja-pos`, `administracao`) com aliases antigos preservados, a sidebar desktop passou a operar por dominios SaaS e o seletor interno duplicado de modulos foi removido do shell de gestao.
+Em execucao avancada. Ja foram aplicados os segmentos canonicos novos (`inicio`, `clientes`, `financeiro`, `loja-pos`, `administracao`) com aliases antigos preservados, a sidebar desktop passou a operar por dominios SaaS e o seletor interno duplicado de modulos foi removido do shell de gestao. A topbar Work agora tem busca global navegavel e menu `+ Criar` com acoes rapidas, sem depender de submenu lateral ou card empilhado.
 
 Objetivo:
 Transformar Trabalho web em estrutura SaaS real. Este sprint nao pode terminar com aparencia de menu antigo, pagina generica ou painel adaptado. Se shell, sidebar, topbar ou proporcoes herdadas impedirem o resultado alvo, eles devem ser substituidos.
@@ -162,7 +162,7 @@ QA:
 ### SPRINT-02 - Unidade/local ativo e contexto
 
 Status em 2026-05-22:
-Em execucao. O contexto global de trabalho agora carrega unidades acessiveis, nomes e labels por ID; a topbar Work com unidade ativa, busca global preparada e criar rapido foi iniciada sem alterar backend.
+Em execucao avancada. O contexto global de trabalho agora carrega unidades acessiveis, nomes e labels por ID; a topbar Work mostra unidade ativa, busca global navegavel e criar rapido sem alterar backend.
 
 Objetivo:
 Resolver confusao quando usuario tem mais de uma academia/local.
@@ -232,6 +232,9 @@ QA:
 
 ### SPRINT-04 - Reserva drawer completo
 
+Status em 2026-05-22:
+Em execucao avancada. O clique em reserva abre detalhe lateral no desktop, nao mais formulario estreito dentro do calendario. A edicao fica dentro do drawer em coluna legivel, sem listas/historico competindo durante a edicao. O pagamento aparece como acao do drawer e a validacao visual foi registrada em screenshot. Em 2026-05-23 a migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo, o schema do PostgREST foi recarregado e as RPCs `app_update_court_booking_admin`, `app_create_court_booking_change_request`, `app_get_court_booking_change_request` e `app_confirm_court_booking_change_request` foram confirmadas no catalogo. Validacao via Supabase JS confirmou que `app_create_court_booking_change_request` nao retorna mais erro de schema cache.
+
 Objetivo:
 Criar fluxo operacional completo de reserva.
 
@@ -270,6 +273,9 @@ QA:
 
 ### SPRINT-05 - Pagamento stub padrao
 
+Status em 2026-05-22:
+Em execucao avancada. O modal `PaymentStubDialog` foi padronizado em dark SaaS e aplicado tambem em reserva sem registro previo de pagamento, criando payload temporario por `court_booking`. O botao `Pagar` continua sendo stub para marcar como pago ate a integracao futura do gateway/webhook.
+
 Objetivo:
 Unificar todo ponto de pagamento com modal simples.
 
@@ -302,6 +308,9 @@ QA:
 - marcar inscricao como paga.
 
 ### SPRINT-06 - WhatsApp operacional
+
+Status em 2026-05-22:
+Em execucao avancada. Templates de reserva/remarcacao usam nome do cliente, local, remetente, horario, contexto e mensagem profissional. Em 2026-05-23 a migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo e a RPC `app_create_court_booking_change_request` foi validada sem erro de schema cache. Proximo fechamento: acionar o fluxo real pela UI com reserva futura, abrir WhatsApp com link `/remarcar-reserva/:token` e confirmar a tela de escolha de novo horario pelo jogador.
 
 Objetivo:
 Adicionar mensagens profissionais nos pontos definidos no blueprint.
@@ -344,6 +353,9 @@ QA:
 
 ### SPRINT-07 - Clientes dominio e listas
 
+Status em 2026-05-22:
+Em execucao avancada. `Clientes` opera como dominio separado com abas `Clientes ativos`, `Leads` e `Atendimento`, sem misturar contato comercial com cliente ativo. A lista de clientes ativos foi ajustada para funcionar como tabela operacional compacta com Cliente 360 lateral, sem cortar colunas no desktop 1366.
+
 Objetivo:
 Separar Leads, Clientes ativos, Alunos, Socios e Responsaveis.
 
@@ -377,6 +389,9 @@ QA:
 - abrir detalhe.
 
 ### SPRINT-08 - Cliente 360
+
+Status em 2026-05-22:
+Em execucao avancada. Cliente 360 abre ao lado da lista, mostra status, categoria, telefone, email, responsavel, resumo e acoes principais (`WhatsApp`, `Abrir aulas` ou `Abrir receita`) sem tirar a recepcao da tabela. Ainda falta enriquecer historico profundo e pagamentos por cliente em fase posterior.
 
 Objetivo:
 Criar tela/drawer central do cliente.
@@ -457,6 +472,9 @@ QA:
 
 ### SPRINT-10 - Professor e chamada opcional
 
+Status em 2026-05-22:
+Concluido para comportamento base. A configuracao `requireAttendanceCall` existe, vem desligada por padrao e altera a rotina: quando desligada, a tela fala em aula/avisos/reposicoes, nao obriga chamada e mostra apenas `Aviso previo`; quando ligada, libera chamada/presenca/ausencia.
+
 Objetivo:
 Tornar rotina do professor simples e remover chamada obrigatoria por padrao.
 
@@ -493,7 +511,7 @@ QA:
 ### SPRINT-11 - Financeiro dominio
 
 Status em 2026-05-22:
-Em execucao avancada. Recebiveis ganharam console SaaS com lista operacional, status, cobranca e detalhe lateral. O modal de pagamento stub foi padronizado como passo temporario para marcar como pago. Ainda restam relatorios financeiros mais profundos, despesas e conciliacao como fases posteriores.
+Em execucao avancada. Recebiveis ganharam console SaaS com lista operacional, status, cobranca e detalhe lateral. A tabela foi compactada para nao competir com o drawer: valor e acoes ficam no detalhe lateral, enquanto a lista mostra cliente, origem, vencimento, status e valor. O modal de pagamento stub foi padronizado como passo temporario para marcar como pago. Ainda restam relatorios financeiros mais profundos, despesas e conciliacao como fases posteriores.
 
 Objetivo:
 Centralizar financeiro do local.
@@ -533,7 +551,7 @@ QA:
 ### SPRINT-12 - Relatorios MVP por listas filtradas
 
 Status em 2026-05-22:
-Em execucao avancada. Relatorios ganharam console inicial com filtros, indicadores e tabelas por area, sem ocupar a rotina operacional como card diario. Relatorios avancados seguem documentados como expansao posterior.
+Em execucao avancada. Relatorios ganharam console inicial com filtros, indicadores, tabela por area e drawer lateral de leitura. A lista agora segue o padrao SaaS validado: linhas escuras compactas, item selecionado com acento verde e detalhe lateral, sem blocos verdes gigantes competindo com a leitura. Relatorios avancados seguem documentados como expansao posterior.
 
 Objetivo:
 Planejar relatorios sem tirar foco da operacao.
@@ -717,7 +735,7 @@ QA:
 ### SPRINT-17 - Comunicacao dominio
 
 Status em 2026-05-22:
-Em execucao avancada. Comunicacao ganhou console separado para mensagens, templates e filas contextuais, evitando que WhatsApp fique espalhado sem padrao. Ainda falta ligar todos os pontos de mensagem em uma matriz final de templates.
+Em execucao avancada. Comunicacao ganhou console separado para mensagens, templates e filas contextuais, evitando que WhatsApp fique espalhado sem padrao. A fila agora tambem segue o padrao SaaS com selecao de linha, status compacto e drawer lateral com CTA dominante; clicar na linha seleciona contexto, e a acao principal fica no painel lateral. Ainda falta ligar todos os pontos de mensagem em uma matriz final de templates.
 
 Objetivo:
 Centralizar comunicacao sem tirar contexto dos fluxos.
@@ -785,6 +803,9 @@ QA:
 
 ### SPRINT-19 - Player App alinhado
 
+Status em 2026-05-22:
+Em execucao avancada. Player foi revalidado apos as mudancas do Work SaaS: Jogar esta com hero simplificado e cards encaixados, Perfil esta alinhado, Rotina consolidada, e Competir recebeu endurecimento visual para impedir cards/botoes brancos ilegíveis nos resultados recentes. O seletor Jogador/Trabalho permanece apenas como troca oficial de modo, sem transformar a primeira dobra em gestao.
+
 Objetivo:
 Garantir que Player nao foi prejudicado.
 
@@ -821,6 +842,9 @@ QA:
 
 ### SPRINT-20 - Work Mobile operacional
 
+Status em 2026-05-22:
+Em execucao avancada. A navegacao mobile Trabalho ja muda por papel dominante e foi revalidada em 390px para gestor: `Hoje`, `Agenda`, `Aulas`, `Financeiro`, `Mais`. A Agenda mobile usa seletor de quadra, abas enxutas e CTA `Nova reserva`, sem tentar carregar a grade web inteira. Tambem foi ajustado o estado de loading da rota administrativa para dizer `Carregando area de trabalho`, evitando a mensagem incorreta `Buscando locais` no modo Trabalho. Pendencia: melhorar tempo percebido de carregamento, pois o mobile pode levar varios segundos ate a grade real aparecer.
+
 Objetivo:
 Depois do web, reorganizar mobile trabalho por papel.
 
@@ -849,6 +873,9 @@ QA:
 - papeis principais.
 
 ### SPRINT-21 - Busca global e criar rapido
+
+Status em 2026-05-22:
+Em execucao avancada. A topbar de Trabalho possui busca global por dominios operacionais e menu `+ Criar` com acoes rapidas: nova reserva, novo cliente, registrar pagamento, criar aula/turma, criar torneio e vender produto. O placeholder foi encurtado para nao quebrar no desktop 1366. Proxima fase: conectar busca real por entidade individual quando houver indice/consulta agregada mais robusta.
 
 Objetivo:
 Reduzir dependencia de menus.
@@ -880,6 +907,9 @@ QA:
 - mobile.
 
 ### SPRINT-22 - QA transversal completo
+
+Status em 2026-05-22:
+Em execucao avancada. QA automatizado com Playwright validou desktop 1366 e mobile 390 nas rotas principais de Trabalho (`inicio`, `agenda`, `academy`, `clients`, `finance`, `communication`, `reports`). Desktop passou sem erros de console. Mobile passou em carregamento real; os apontamentos iniciais de Comunicacao/Relatorios foram falso negativo do script por capitalizacao/alias de rota, e as capturas confirmaram conteudo carregado. Pendencia real: tempo percebido de loading no mobile ainda e alto e deve virar frente de performance/loader.
 
 Objetivo:
 Validar que nenhuma persona melhorou quebrando outra.
@@ -921,6 +951,9 @@ Criterio de aceite:
 Relatorio final com aprovado/falhou/corrigido/pendente.
 
 ### SPRINT-23 - Correcoes finais e polimento
+
+Status em 2026-05-22:
+Em execucao. Polimentos aplicados nesta rodada: blocos da Agenda deixam de repetir horario dentro do card, loading administrativo usa linguagem de Trabalho, busca global nao corta placeholder no desktop 1366, Relatorios/Comunicacao usam listas com drawer e estilos de botao isolados do CSS global. Build passou apos as correcoes.
 
 Objetivo:
 Corrigir tudo que o QA transversal encontrou.

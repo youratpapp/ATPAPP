@@ -105,6 +105,27 @@ function paymentStatusLabel(payment?: AppPayment): string {
   return "Sem pagamento";
 }
 
+function paymentForBookingAction(booking: CourtBooking, courts: PlaceCourt[], payment?: AppPayment): AppPayment {
+  if (payment) return payment;
+  const court = courts.find((item) => item.id === booking.courtId);
+  return {
+    id: `stub:${booking.id}`,
+    userId: booking.userId,
+    targetType: "court_booking",
+    targetId: booking.id,
+    amountCents: court?.bookingFeeCents || 0,
+    currency: "BRL",
+    status: "pending",
+    provider: "stub",
+    description: `Reserva de quadra - ${booking.playerName}`,
+    metadata: { bookingId: booking.id, placeId: booking.placeId, source: "court_booking_admin_manual_stub" },
+    billingPeriod: "",
+    paidAt: "",
+    createdAt: booking.createdAt,
+    updatedAt: booking.createdAt,
+  };
+}
+
 function dateTimeLocalValue(value: string): string {
   if (!value) return "";
   const date = new Date(value);
@@ -346,6 +367,7 @@ export function PlaceBookingCalendarModule({
 
   const selectedBooking = selectedItem?.booking;
   const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
+  const selectedPaymentAction = selectedBooking ? paymentForBookingAction(selectedBooking, activeCourts, selectedPayment) : undefined;
   const selectedWhatsappHref = selectedBooking ? getWhatsappHref?.(selectedBooking) : "";
   const isReservationsView = variant === "reservations";
 
@@ -575,8 +597,8 @@ export function PlaceBookingCalendarModule({
 
               {selectedBooking && canManageBookings ? (
                 <div className="court-calendar-detail-actions">
-                  {selectedPayment?.status === "pending" && onMarkPaid ? (
-                    <button className="primary" type="button" onClick={() => onMarkPaid(selectedBooking, selectedPayment)}>
+                  {selectedPaymentAction?.status === "pending" && onMarkPaid ? (
+                    <button className="primary" type="button" onClick={() => onMarkPaid(selectedBooking, selectedPaymentAction)}>
                       Pagar
                     </button>
                   ) : null}
@@ -844,7 +866,6 @@ export function PlaceBookingCalendarModule({
                 return (
                   <details key={`slot:${court.id}:${slot}`} className={slotItems.length ? "court-calendar-slot occupied" : "court-calendar-slot"}>
                     <summary>
-                      <span>{slot}</span>
                       <b>{summaryLabel}</b>
                     </summary>
                     {slotItems.length ? (
@@ -856,9 +877,7 @@ export function PlaceBookingCalendarModule({
                         return (
                           <article key={item.id} className={`court-agenda-event ${item.type}`}>
                             <header>
-                              <strong>
-                                {shortTime(item.startsAt)}-{shortTime(item.endsAt)} | {item.title}
-                              </strong>
+                              <strong>{item.title}</strong>
                               <span>{item.status}</span>
                             </header>
                             <p>{item.detail}</p>
@@ -908,7 +927,7 @@ export function PlaceBookingCalendarModule({
                       })
                     ) : (
                       <div className="court-calendar-empty-slot">
-                        <p>Horario livre nesta quadra.</p>
+                        <p>Livre nesta quadra.</p>
                         {canManageBookings && onCreateFromSlot ? (
                           <button
                             className="quiet court-calendar-slot-action"

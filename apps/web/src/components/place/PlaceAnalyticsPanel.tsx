@@ -1,4 +1,5 @@
 import type { PlaceProductPlan } from "../../lib/types";
+import { useState } from "react";
 
 type AnalyticsMetric = {
   label: string;
@@ -68,7 +69,8 @@ export function PlaceAnalyticsPanel({
 }: PlaceAnalyticsPanelProps) {
   const primaryMetrics = metrics.slice(0, 4);
   const secondaryMetrics = metrics.slice(4);
-  const selectedModule = moduleRows[0] || null;
+  const [selectedModuleTitle, setSelectedModuleTitle] = useState<string | null>(moduleRows[0]?.title || null);
+  const selectedModule = moduleRows.find((row) => row.title === selectedModuleTitle) || moduleRows[0] || null;
 
   return (
     <section className="reports-console" aria-label="Relatorios do local">
@@ -139,7 +141,13 @@ export function PlaceAnalyticsPanel({
           </div>
           <div className="reports-console__table-rows">
             {moduleRows.map((row) => (
-              <button key={`module-report:${row.title}`} type="button" className="reports-console__table-row" role="row">
+              <button
+                key={`module-report:${row.title}`}
+                type="button"
+                className={`reports-console__table-row ${selectedModule?.title === row.title ? "active" : ""}`.trim()}
+                onClick={() => setSelectedModuleTitle(row.title)}
+                role="row"
+              >
                 <strong>{row.title}</strong>
                 <span>{row.value}</span>
                 <small>{row.detail}</small>

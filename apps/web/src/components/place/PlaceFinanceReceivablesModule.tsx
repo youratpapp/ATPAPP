@@ -117,7 +117,6 @@ export function PlaceFinanceReceivablesModule({
             <span>Vencimento</span>
             <span>Status</span>
             <span>Valor</span>
-            <span>Acoes</span>
           </div>
           {filteredReceivables.slice(0, 120).map((receivable) => (
             <button
@@ -135,7 +134,6 @@ export function PlaceFinanceReceivablesModule({
               <span>{receivable.dueLabel || "Sem vencimento"}</span>
               <span className={`finance-status-pill ${receivable.dueStatus || "open"}`}>{receivableStatusLabel(receivable)}</span>
               <span>{formatMoneyFromCents(receivable.amountCents)}</span>
-              <em>{receivable.status === "pending_approval" ? "Revisar" : "Pagar"}</em>
             </button>
           ))}
           {!filteredReceivables.length ? <p className="subtle">Nenhum recebivel neste filtro.</p> : null}

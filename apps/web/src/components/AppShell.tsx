@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { Profile } from "../lib/types";
@@ -75,6 +75,47 @@ export function AppShell({
   const initials = initialsFromName(profile?.displayName ?? "", user.email ?? "AT");
   const headerClassName = showHeader ? "app-header" : "app-header app-header--desktop-only";
   const experienceLabel = routeExperienceMode === "work" ? "Trabalho" : "Jogador";
+  const [workSearch, setWorkSearch] = useState("");
+  const [workSearchOpen, setWorkSearchOpen] = useState(false);
+  const [workCreateOpen, setWorkCreateOpen] = useState(false);
+  const targetPlaceId = activePlaceId || userMode.access.primaryPlaceId || "";
+  const workSearchItems = useMemo(() => {
+    if (!targetPlaceId) return [];
+    return [
+      { label: "Agenda", detail: "Reservas, aulas, bloqueios e remarcacoes", path: buildPlaceAdminPath(targetPlaceId, "bookings", "calendar") },
+      { label: "Reservas", detail: "Calendario clicavel e detalhe lateral", path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas") },
+      { label: "Clientes", detail: "Leads, ativos, alunos e socios", path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos") },
+      { label: "Aulas", detail: "Turmas, matriculas e reposicoes", path: buildPlaceAdminPath(targetPlaceId, "academy", "hoje") },
+      { label: "Financeiro", detail: "Recebiveis, vencidos e pagos", path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis") },
+      { label: "Loja/POS", detail: "Venda rapida, estoque e produtos", path: buildPlaceAdminPath(targetPlaceId, "canteen", "vender") },
+      { label: "Competicoes", detail: "Torneios, ligas e resultados pendentes", path: "/eventos?modo=organizing" },
+      { label: "Comunicacao", detail: "WhatsApp, avisos e publicacao", path: buildPlaceAdminPath(targetPlaceId, "communication") },
+      { label: "Relatorios", detail: "Ocupacao, receita e indicadores", path: buildPlaceAdminPath(targetPlaceId, "reports") },
+      { label: "Administracao", detail: "Regras, equipe e ajustes estruturais", path: buildPlaceAdminPath(targetPlaceId, "settings") },
+    ];
+  }, [targetPlaceId]);
+  const filteredWorkSearchItems = useMemo(() => {
+    const query = workSearch.trim().toLowerCase();
+    if (!query) return workSearchItems.slice(0, 6);
+    return workSearchItems.filter((item) => `${item.label} ${item.detail}`.toLowerCase().includes(query)).slice(0, 8);
+  }, [workSearch, workSearchItems]);
+  const quickCreateItems = useMemo(() => {
+    if (!targetPlaceId) return [];
+    return [
+      { label: "Nova reserva", detail: "Abrir calendario no fluxo de reserva", path: buildPlaceAdminPath(targetPlaceId, "bookings", "nova-reserva") },
+      { label: "Novo cliente", detail: "Cadastro progressivo de atendimento", path: buildPlaceAdminPath(targetPlaceId, "clients", "leads") },
+      { label: "Registrar pagamento", detail: "Recebivel ou pagamento manual", path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis") },
+      { label: "Criar aula/turma", detail: "Configurar turma ou aula recorrente", path: buildPlaceAdminPath(targetPlaceId, "academy", "turmas") },
+      { label: "Criar torneio", detail: "Abrir Competition OS", path: "/eventos/torneios?view=organizing" },
+      { label: "Vender produto", detail: "Abrir POS", path: buildPlaceAdminPath(targetPlaceId, "canteen", "vender") },
+    ];
+  }, [targetPlaceId]);
+
+  const navigateAndClose = (path: string) => {
+    setWorkCreateOpen(false);
+    setWorkSearchOpen(false);
+    navigate(path);
+  };
 
   useEffect(() => {
     if (!userMode.isProfessional) return;
@@ -130,18 +171,51 @@ export function AppShell({
                   </select>
                 </label>
                 <div className="work-global-search" aria-label="Busca global">
-                  <span>Buscar cliente, reserva, aula, pagamento...</span>
+                  <input
+                    value={workSearch}
+                    onChange={(event) => {
+                      setWorkSearch(event.target.value);
+                      setWorkSearchOpen(true);
+                    }}
+                    onFocus={() => setWorkSearchOpen(true)}
+                    placeholder="Buscar cliente, reserva ou aula..."
+                  />
+                  {workSearchOpen ? (
+                    <div className="work-global-search-panel" role="listbox" aria-label="Resultados da busca global">
+                      {filteredWorkSearchItems.length ? (
+                        filteredWorkSearchItems.map((item) => (
+                          <button key={`work-search:${item.label}`} type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => navigateAndClose(item.path)}>
+                            <strong>{item.label}</strong>
+                            <span>{item.detail}</span>
+                          </button>
+                        ))
+                      ) : (
+                        <span>Nenhuma area encontrada para esta busca.</span>
+                      )}
+                    </div>
+                  ) : null}
                 </div>
                 <button
                   className="work-create-btn"
                   type="button"
                   onClick={() => {
-                    const targetPlaceId = activePlaceId || userMode.access.primaryPlaceId;
-                    if (targetPlaceId) navigate(buildPlaceAdminPath(targetPlaceId, "bookings", "nova-reserva"));
+                    setWorkCreateOpen((current) => !current);
+                    setWorkSearchOpen(false);
                   }}
+                  aria-expanded={workCreateOpen}
                 >
                   + Criar
                 </button>
+                {workCreateOpen ? (
+                  <div className="work-create-menu" role="menu" aria-label="Criar rapido">
+                    {quickCreateItems.map((item) => (
+                      <button key={`work-create:${item.label}`} type="button" role="menuitem" onClick={() => navigateAndClose(item.path)}>
+                        <strong>{item.label}</strong>
+                        <span>{item.detail}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
                 {activePlace?.detail ? <small>{activePlace.detail}</small> : null}
               </div>
             ) : null}

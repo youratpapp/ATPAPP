@@ -4079,8 +4079,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       {loading ? (
         <ScreenState
           kind="loading"
-          title="Buscando locais"
-          detail="Carregando quadras, aulas e jogos disponíveis para o seu contexto."
+          title={isAdminRoute ? "Carregando area de trabalho" : "Buscando locais"}
+          detail={
+            isAdminRoute
+              ? "Preparando agenda, aulas, clientes, financeiro e operacao do local."
+              : "Carregando quadras, aulas e jogos disponíveis para o seu contexto."
+          }
         />
       ) : null}
 
@@ -5761,23 +5765,29 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ...(managementModules.includes("bookings")
                     ? bookings.filter((booking) => booking.status === "pending").slice(0, 3).map((booking) => ({
                         id: `queue-booking:${booking.id}`,
-                        label: `Reserva pendente | ${booking.courtName || "Quadra"} | ${new Date(booking.startsAt).toLocaleString("pt-BR")}`,
+                        label: "Reserva pendente",
+                        detail: `${booking.courtName || "Quadra"} | ${new Date(booking.startsAt).toLocaleString("pt-BR")}`,
                         module: "bookings" as PlaceManagementModule,
+                        status: "Resolver",
                         viewSegment: "reservas",
                       }))
                     : []),
                   ...(managementModules.includes("academy")
                     ? actionableLessonRequests.slice(0, 3).map((request) => ({
                         id: `queue-lesson:${request.id}`,
-                        label: `Encaixe pendente | ${request.playerName} | ${request.requestedOn}`,
+                        label: "Encaixe pendente",
+                        detail: `${request.playerName} | ${request.requestedOn}`,
                         module: "academy" as PlaceManagementModule,
+                        status: "Abrir aulas",
                       }))
                     : []),
                   ...(managementModules.includes("finance")
                     ? openReceivables.slice(0, 3).map((receivable) => ({
                         id: `queue-receivable:${receivable.id}`,
-                        label: `Recebimento pendente | ${receivable.title} | ${formatMoneyFromCents(receivable.amountCents)}`,
+                        label: "Recebimento pendente",
+                        detail: `${receivable.title} | ${formatMoneyFromCents(receivable.amountCents)}`,
                         module: "finance" as PlaceManagementModule,
+                        status: "Cobrar",
                         viewSegment: "recebiveis",
                       }))
                     : []),

@@ -206,7 +206,6 @@ Calendario:
 
 Conteudo do slot reserva:
 
-- horario;
 - nome cliente;
 - status: pago, pendente, confirmada, remarcacao;
 - quadra;
@@ -214,11 +213,13 @@ Conteudo do slot reserva:
 
 Conteudo do slot aula:
 
-- horario;
 - turma;
 - professor;
 - alunos;
 - quadra.
+
+Observacao:
+O horario pertence ao eixo do calendario e ao drawer de detalhe. Nao repetir o horario dentro do bloco do calendario, para evitar ruido visual e duplicidade.
 
 Detalhe ao clicar:
 
@@ -839,18 +840,26 @@ Persona primaria:
 Recepcao/gestor/organizador/financeiro.
 
 Pergunta:
-Quais modelos e historicos de comunicacao existem?
+Qual comunicacao precisa de acao agora e qual modelo deve ser usado?
 
 Views:
 
-- Modelos.
-- Historico.
-- Avisos.
-- Notificacoes.
+- Fila de comunicacao por ponto operacional.
+- Drawer lateral com proxima acao.
+- Modelos padrao de WhatsApp.
+- Publicacao/dados publicos.
+
+Padrao:
+
+- Linha seleciona contexto.
+- CTA dominante fica no drawer.
+- Status deve ser pill compacto, nao bloco grande.
+- Texto longo deve truncar na lista e abrir completo no drawer/modelo.
 
 Proibido:
 
 - Remover WhatsApp contextual dos fluxos.
+- Linha da fila navegar sem antes preservar contexto no drawer.
 
 ## 18. Relatorios
 
@@ -862,8 +871,10 @@ O que esta acontecendo e onde devo agir?
 
 Primeira entrega:
 
-- Cards simples.
-- Cada card abre lista filtrada.
+- KPIs executivos.
+- Tabela compacta por area.
+- Drawer lateral com leitura do item selecionado.
+- Exportacao CSV.
 
 Views:
 
@@ -879,6 +890,8 @@ Proibido:
 
 - Grafico sem destino.
 - Dashboard avancado antes dos fluxos centrais.
+- Linha inteira verde ou bloco chamativo sem significado de status.
+- Relatorio ocupar o papel de operacao diaria.
 
 ## 19. Administracao
 

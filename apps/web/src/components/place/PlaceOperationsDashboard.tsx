@@ -10,9 +10,11 @@ type OperationMetric = {
 };
 
 type QueueItem = {
+  detail?: string;
   id: string;
   label: string;
   module: PlaceManagementModule;
+  status?: string;
   viewSegment?: string;
 };
 

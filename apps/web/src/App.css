@@ -191,6 +191,7 @@
     flex: 1;
     max-width: 820px;
     min-width: 0;
+    position: relative;
   }
 
   .work-saas-topbar-context > small {
@@ -250,9 +251,85 @@
     color: rgba(221, 231, 244, 0.72);
     font-size: 0.86rem;
     font-weight: 800;
+    position: relative;
   }
 
-  .work-global-search span {
+  .work-global-search input {
+    background: transparent;
+    border: 0;
+    color: #f8fafc;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 850;
+    min-width: 0;
+    outline: none;
+    width: 100%;
+  }
+
+  .work-global-search input::placeholder {
+    color: rgba(221, 231, 244, 0.72);
+  }
+
+  .work-global-search-panel,
+  .work-create-menu {
+    background:
+      linear-gradient(180deg, rgba(12, 27, 45, 0.98), rgba(7, 16, 31, 0.98)),
+      url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat;
+    border: 1px solid rgba(128, 164, 197, 0.28);
+    border-radius: 14px;
+    box-shadow: 0 24px 58px rgba(0, 0, 0, 0.46);
+    display: grid;
+    gap: 4px;
+    max-height: min(430px, calc(100vh - 90px));
+    overflow: auto;
+    padding: 8px;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    width: min(420px, 92vw);
+    z-index: 90;
+  }
+
+  .work-global-search-panel {
+    left: 0;
+    right: auto;
+  }
+
+  .work-global-search-panel > button,
+  .work-create-menu > button {
+    background: rgba(15, 28, 46, 0.9);
+    border: 1px solid rgba(128, 164, 197, 0.18);
+    border-radius: 10px;
+    color: #f8fafc;
+    cursor: pointer;
+    display: grid;
+    gap: 3px;
+    min-height: 52px;
+    padding: 10px 12px;
+    text-align: left;
+  }
+
+  .work-global-search-panel > button:hover,
+  .work-global-search-panel > button:focus-visible,
+  .work-create-menu > button:hover,
+  .work-create-menu > button:focus-visible {
+    background: rgba(34, 197, 94, 0.14);
+    border-color: rgba(34, 197, 94, 0.35);
+    outline: none;
+  }
+
+  .work-global-search-panel strong,
+  .work-create-menu strong {
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 950;
+  }
+
+  .work-global-search-panel span,
+  .work-create-menu span {
+    color: rgba(203, 213, 225, 0.75);
+    font-size: 0.74rem;
+    font-weight: 800;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -260,11 +337,28 @@
 
   .work-create-btn {
     padding: 0 18px;
-    border-color: rgba(44, 214, 109, 0.4);
-    background: linear-gradient(180deg, #26cf66 0%, #12a24c 100%);
-    color: #ffffff;
+    border-color: rgba(44, 214, 109, 0.4) !important;
+    background: linear-gradient(180deg, #26cf66 0%, #12a24c 100%) !important;
+    color: #ffffff !important;
     font-weight: 950;
     cursor: pointer;
+    position: relative;
+  }
+
+  .work-create-btn:hover,
+  .work-create-btn:focus-visible,
+  .work-create-btn[aria-expanded="true"] {
+    border-color: rgba(74, 222, 128, 0.64) !important;
+    background: linear-gradient(180deg, #31dd73 0%, #16a34a 100%) !important;
+    box-shadow: 0 14px 34px rgba(34, 197, 94, 0.2);
+    color: #ffffff !important;
+    outline: none;
+  }
+
+  .work-create-menu {
+    right: 0;
+    top: calc(100% + 8px);
+    width: min(320px, 86vw);
   }
 }
 
@@ -28854,6 +28948,10 @@ label {
   background: rgba(255, 255, 255, 0.065);
   border-color: rgba(255, 255, 255, 0.12);
   color: var(--pdark-text-main);
+  display: grid;
+  gap: 3px 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 56px;
 }
 
 .app-shell--management .place-action-queue button:not(.danger) {
@@ -28864,11 +28962,49 @@ label {
 
 .app-shell--management .place-action-queue span strong {
   color: var(--pdark-text-main);
+  grid-column: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .app-shell--management .place-action-queue span small,
 .app-shell--management .place-action-queue span em {
   color: var(--pdark-text-muted);
+}
+
+.app-shell--management .place-action-queue button strong,
+.app-shell--management .place-action-queue button small,
+.app-shell--management .place-action-queue span small {
+  grid-column: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-shell--management .place-action-queue button small,
+.app-shell--management .place-action-queue span small {
+  color: rgba(203, 213, 225, 0.74);
+  line-height: 1.25;
+  margin-top: 0;
+}
+
+.app-shell--management .place-action-queue button em,
+.app-shell--management .place-action-queue span em {
+  align-self: center;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.26);
+  border-radius: 999px;
+  color: #bbf7d0;
+  font-size: 11px;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-self: end;
+  line-height: 1;
+  margin-top: 0;
+  max-width: 92px;
+  overflow: hidden;
+  padding: 7px 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .app-shell--management .place-operations-grid button,
@@ -29626,8 +29762,21 @@ label {
 }
 
 .app-shell--management .court-calendar-panel--saas .court-calendar-edit-panel {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
   margin-top: 0;
+}
+
+.app-shell--management .court-calendar-detail-drawer:has(.court-calendar-edit-panel) .court-calendar-detail-list,
+.app-shell--management .court-calendar-detail-drawer:has(.court-calendar-edit-panel) .court-calendar-detail-history {
+  display: none;
+}
+
+.app-shell--management .court-calendar-detail-drawer:has(.court-calendar-edit-panel) .court-calendar-edit-panel {
+  order: 2;
+}
+
+.app-shell--management .court-calendar-detail-drawer:has(.court-calendar-edit-panel) .court-calendar-detail-actions {
+  order: 3;
 }
 
 .app-shell--management .court-calendar-footer-metrics {
@@ -30091,7 +30240,7 @@ label {
   color: rgba(226, 232, 240, 0.84);
   display: grid;
   gap: 10px;
-  grid-template-columns: minmax(210px, 1.3fr) 95px 150px minmax(150px, 1fr) 150px 100px;
+  grid-template-columns: minmax(180px, 1.25fr) 86px 130px minmax(140px, 1fr) 104px;
   min-height: 50px;
   padding: 0 12px;
   text-align: left;
@@ -31179,6 +31328,163 @@ label {
   font-size: 1.1rem;
 }
 
+.reports-console,
+.communication-console {
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.reports-console__header,
+.communication-console__header {
+  padding: 4px 2px 12px;
+}
+
+.reports-console__header h2,
+.communication-console__header h2 {
+  font-size: clamp(1.45rem, 2vw, 2.15rem);
+}
+
+.reports-console__plan {
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.reports-console__metrics,
+.communication-console__metrics {
+  gap: 8px;
+  margin: 10px 0 12px;
+}
+
+.reports-console__metrics article,
+.communication-console__metrics article {
+  border-radius: 8px;
+  min-height: 86px;
+  padding: 10px 12px;
+}
+
+.reports-console__metrics strong,
+.communication-console__metrics strong {
+  margin-top: 6px;
+  font-size: 1.42rem;
+}
+
+.reports-console__body,
+.communication-console__body {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 340px);
+  gap: 10px;
+}
+
+.reports-console__table,
+.reports-console__drawer,
+.communication-console__table,
+.communication-console__drawer {
+  border-radius: 9px;
+}
+
+.reports-console__table-head,
+.reports-console__table-row {
+  grid-template-columns: minmax(150px, 1fr) 104px minmax(180px, 1.05fr);
+}
+
+.reports-console__table-row,
+.communication-console__row {
+  position: relative;
+  display: grid !important;
+  min-height: 52px;
+  padding: 9px 12px;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12) !important;
+  background: rgba(8, 21, 36, 0.78) !important;
+  box-shadow: none;
+}
+
+.reports-console__table-row.active,
+.communication-console__row.active {
+  background: linear-gradient(90deg, rgba(19, 166, 86, 0.24), rgba(8, 21, 36, 0.92)) !important;
+  box-shadow: inset 3px 0 0 #22c861;
+}
+
+.reports-console__table-row:hover,
+.communication-console__row:hover {
+  background: linear-gradient(90deg, rgba(19, 166, 86, 0.15), rgba(8, 21, 36, 0.92)) !important;
+}
+
+.reports-console__table-row strong,
+.communication-console__row strong {
+  font-size: 0.9rem;
+  line-height: 1.1;
+}
+
+.reports-console__table-row span,
+.reports-console__table-row small,
+.communication-console__row span,
+.communication-console__row small,
+.communication-console__row em {
+  font-size: 0.78rem;
+  line-height: 1.22;
+}
+
+.reports-console__table-row span {
+  justify-self: start;
+  border: 1px solid rgba(52, 242, 122, 0.28);
+  border-radius: 999px;
+  background: rgba(9, 92, 51, 0.26);
+  color: #c4ffd9;
+  padding: 5px 9px;
+  line-height: 1;
+}
+
+.reports-console__table-row small,
+.communication-console__row span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.reports-console__drawer header,
+.reports-console__drawer section,
+.communication-console__drawer header,
+.communication-console__drawer section {
+  padding: 14px;
+}
+
+.reports-console__secondary {
+  grid-template-columns: 1fr;
+  padding: 12px;
+}
+
+.communication-console__table-head,
+.communication-console__row {
+  grid-template-columns: 112px 108px minmax(150px, 1fr) 82px;
+  gap: 8px;
+}
+
+.communication-console__row.attention:not(.active) {
+  background: rgba(35, 28, 11, 0.34) !important;
+}
+
+.communication-console__row small {
+  justify-self: end;
+  border: 1px solid rgba(125, 151, 181, 0.24);
+  border-radius: 999px;
+  padding: 5px 9px;
+  color: #f7fbff;
+  line-height: 1;
+}
+
+.communication-console__templates article {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.communication-console__templates small {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 .administration-console {
   width: min(100%, 1080px);
   min-height: 680px;
@@ -31584,7 +31890,7 @@ label {
   color: rgba(226, 232, 240, 0.84);
   display: grid;
   gap: 10px;
-  grid-template-columns: minmax(210px, 1.4fr) 150px 130px 150px 120px 90px;
+  grid-template-columns: minmax(190px, 1.45fr) 132px 122px 120px 104px;
   min-height: 56px;
   padding: 0 12px;
   text-align: left;
@@ -32782,6 +33088,28 @@ label {
 .payment-stub-body {
   display: grid;
   gap: 14px;
+}
+
+.payment-stub-dialog .app-overlay-actions {
+  background:
+    linear-gradient(180deg, rgba(7, 18, 32, 0.98), rgba(4, 12, 24, 0.98)),
+    var(--pdark-surface-texture);
+  border-top-color: rgba(166, 198, 229, 0.16);
+  box-shadow: 0 -18px 38px rgba(0, 0, 0, 0.22);
+}
+
+.payment-stub-dialog .app-overlay-actions button.secondary {
+  border-color: rgba(166, 198, 229, 0.2) !important;
+  background: linear-gradient(180deg, rgba(24, 38, 58, 0.94), rgba(13, 27, 44, 0.94)) !important;
+  color: rgba(247, 251, 255, 0.94) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+.payment-stub-dialog .app-overlay-actions button.primary {
+  border-color: rgba(74, 222, 128, 0.44) !important;
+  background: linear-gradient(180deg, #27d468, #15984d) !important;
+  color: #ffffff !important;
+  box-shadow: 0 18px 40px rgba(34, 197, 94, 0.24) !important;
 }
 
 .payment-stub-amount {

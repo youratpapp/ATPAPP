@@ -153,8 +153,7 @@ export function PlaceActiveClientsModule({
               <span>Status</span>
               <span>Categoria</span>
               <span>Contato</span>
-              <span>Responsavel</span>
-              <span>Acao</span>
+              <span>Proximo passo</span>
             </div>
             {filteredRows.slice(0, 80).map((row) => (
               <button
@@ -171,7 +170,6 @@ export function PlaceActiveClientsModule({
                 <span className="clients-360-pill">{row.status}</span>
                 <span>{row.category}</span>
                 <span>{row.phone || row.email || "Sem contato"}</span>
-                <span>{row.owner}</span>
                 <em>{row.kind === "contact" ? "Abrir 360" : row.kind === "member" ? "Receita" : "Aulas"}</em>
               </button>
             ))}

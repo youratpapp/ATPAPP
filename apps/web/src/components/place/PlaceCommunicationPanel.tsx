@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type CommunicationQueueItem = {
   action: string;
   detail: string;
@@ -50,7 +52,7 @@ export function PlaceCommunicationPanel({
   const queue: CommunicationQueueItem[] = [
     {
       action: pendingBookingCount ? "Abrir agenda" : "Revisar agenda",
-      detail: pendingBookingCount ? "Reservas aguardando acao podem exigir confirmacao, troca ou mensagem." : "Agenda sem reserva pendente agora.",
+      detail: pendingBookingCount ? "Reservas aguardando acao exigem WhatsApp, remarcacao ou cobranca." : "Agenda sem reserva pendente agora.",
       id: "booking",
       label: "Reservas",
       status: pendingBookingCount ? `${pendingBookingCount} pendente(s)` : "Em dia",
@@ -74,7 +76,7 @@ export function PlaceCommunicationPanel({
     },
     {
       action: openReceivableCount ? "Cobrar" : "Sem cobranca",
-      detail: openReceivableCount ? "Recebiveis em aberto devem gerar lembrete profissional." : "Sem cobranca pendente no filtro atual.",
+      detail: openReceivableCount ? "Recebiveis em aberto pedem lembrete profissional." : "Sem cobranca pendente no filtro atual.",
       id: "finance",
       label: "Financeiro",
       status: openReceivableCount ? `${openReceivableCount} em aberto` : "Em dia",
@@ -92,26 +94,28 @@ export function PlaceCommunicationPanel({
 
   const templates: CommunicationTemplate[] = [
     {
-      body: `Olá, {nome}. Aqui é {remetente}, da ${placeName}. Sua reserva foi atualizada. Confira data, horário e quadra antes de ir ao clube.`,
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Sua reserva foi atualizada. Confira data, horario e quadra antes de ir ao clube.`,
       id: "booking-change",
       title: "Remarcacao de reserva",
       trigger: "Reserva alterada, cancelada ou reagendada",
     },
     {
-      body: `Olá, {nome}. Identificamos uma pendência de pagamento em ${placeName}. Quando puder, acesse o app ou fale com a recepção para regularizar.`,
+      body: `Ola, {nome}. Identificamos uma pendencia de pagamento em ${placeName}. Quando puder, acesse o app ou fale com a recepcao para regularizar.`,
       id: "payment",
       title: "Lembrete de pagamento",
-      trigger: "Mensalidade, plano, reserva ou inscrição em aberto",
+      trigger: "Mensalidade, plano, reserva ou inscricao em aberto",
     },
     {
-      body: `Olá, {nome}. Temos uma atualização sobre sua aula em ${placeName}. Veja a turma, professor, horário e observações no app.`,
+      body: `Ola, {nome}. Temos uma atualizacao sobre sua aula em ${placeName}. Veja a turma, professor, horario e observacoes no app.`,
       id: "lesson",
       title: "Aviso de aula",
-      trigger: "Reposição, encaixe, aviso prévio ou troca de turma",
+      trigger: "Reposicao, encaixe, aviso previo ou troca de turma",
     },
   ];
 
-  const selected = queue.find((item) => item.tone === "attention") || queue[0];
+  const firstAttention = queue.find((item) => item.tone === "attention") || queue[0];
+  const [selectedId, setSelectedId] = useState(firstAttention.id);
+  const selected = queue.find((item) => item.id === selectedId) || firstAttention;
 
   const actionFor = (item: CommunicationQueueItem) => {
     if (item.id === "booking" || item.id === "waitlist") return onOpenAgenda;
@@ -168,7 +172,13 @@ export function PlaceCommunicationPanel({
           </div>
           <div>
             {queue.map((item) => (
-              <button key={item.id} type="button" className={`communication-console__row ${item.tone || ""}`.trim()} onClick={actionFor(item)} role="row">
+              <button
+                key={item.id}
+                type="button"
+                className={`communication-console__row ${item.tone || ""} ${selected.id === item.id ? "active" : ""}`.trim()}
+                onClick={() => setSelectedId(item.id)}
+                role="row"
+              >
                 <strong>{item.label}</strong>
                 <em>{item.status}</em>
                 <span>{item.detail}</span>
