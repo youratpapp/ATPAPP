@@ -1,9 +1,4 @@
-import {
-  PLACE_MANAGEMENT_MODULE_DESCRIPTIONS,
-  PLACE_MANAGEMENT_MODULE_LABELS,
-  type PlaceManagementModule,
-  countLabel,
-} from "../../lib/place-management";
+import type { PlaceManagementModule } from "../../lib/place-management";
 
 type PlaceAdminShellProps = {
   currentModule: PlaceManagementModule;
@@ -23,102 +18,6 @@ type PlaceAdminShellProps = {
   onPlaceChange?: (placeId: string) => void;
 };
 
-export function PlaceAdminShell({
-  currentModule,
-  currentPlaceId,
-  featureLabels,
-  locationLabel,
-  moduleCounts,
-  modules,
-  nextStep,
-  pendingCount,
-  planLabel,
-  placeName,
-  placeOptions = [],
-  setupPercent,
-  staffRoleLabel,
-  onModuleChange,
-  onPlaceChange,
-}: PlaceAdminShellProps) {
-  void modules;
-  const modulePendingCount = moduleCounts[currentModule] || 0;
-  const activePlaceOption = placeOptions.find((option) => option.id === currentPlaceId);
-
-  if (currentModule !== "settings") {
-    return null;
-  }
-
-  return (
-    <section className={`place-admin-shell place-admin-shell--${currentModule}`} aria-label={`Gestao de ${placeName}`}>
-      <div className="place-admin-shell-head">
-        <div className="place-admin-place-context">
-          <span>{staffRoleLabel} | {planLabel}</span>
-          <strong>{placeName}</strong>
-          <small>{locationLabel || "Local sem cidade definida"}</small>
-        </div>
-        {placeOptions.length > 1 && currentPlaceId && onPlaceChange ? (
-          <details className="place-active-switcher">
-            <summary>
-              <span>Unidade ativa</span>
-              <strong>{activePlaceOption?.label || placeName}</strong>
-              <small>Trocar unidade</small>
-            </summary>
-            <select aria-label="Trocar unidade" value={currentPlaceId} onChange={(event) => onPlaceChange(event.target.value)}>
-              {placeOptions.map((option) => (
-                <option key={`place-switch:${option.id}`} value={option.id}>
-                  {option.label} - {option.detail || "Sem cidade"}
-                </option>
-              ))}
-            </select>
-          </details>
-        ) : null}
-        <div className="place-admin-shell-status">
-          <span>
-            <b>{pendingCount}</b>
-            {pendingCount === 1 ? "pendencia" : "pendencias"}
-          </span>
-          <span>
-            <b>{setupPercent}%</b>
-            implantado
-          </span>
-        </div>
-      </div>
-
-      <div className="place-module-context">
-        <div className="place-module-context-copy">
-          <span>Area de trabalho</span>
-          <strong>{PLACE_MANAGEMENT_MODULE_LABELS[currentModule]}</strong>
-          <span>{PLACE_MANAGEMENT_MODULE_DESCRIPTIONS[currentModule]}</span>
-        </div>
-        {modulePendingCount ? (
-          <small>{countLabel(modulePendingCount, "item para acompanhar", "itens para acompanhar")}</small>
-        ) : (
-          <small>Sem pendencias neste modulo</small>
-        )}
-      </div>
-
-      {currentModule === "settings" ? (
-        <div className="place-admin-setup-strip">
-          <div className="place-management-health" aria-label={`Implantacao ${setupPercent}%`}>
-            <span style={{ width: `${setupPercent}%` }} />
-          </div>
-          <div className="place-admin-shell-features" aria-label="Modulos disponiveis">
-            {featureLabels.slice(0, 5).map((feature) => (
-              <span key={`${placeName}:feature:${feature}`}>{feature}</span>
-            ))}
-            {featureLabels.length > 5 ? <span>+{featureLabels.length - 5}</span> : null}
-            {!featureLabels.length ? <span>Operacao basica</span> : null}
-          </div>
-          {nextStep ? (
-            <button className="place-next-step" type="button" onClick={() => onModuleChange(nextStep.module, nextStep.viewSegment)}>
-              <strong>{nextStep.title}</strong>
-              <span>{nextStep.detail}</span>
-            </button>
-          ) : (
-            <span className="place-setup-done">Base operacional pronta</span>
-          )}
-        </div>
-      ) : null}
-    </section>
-  );
+export function PlaceAdminShell(_props: PlaceAdminShellProps) {
+  return null;
 }

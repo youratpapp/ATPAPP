@@ -198,24 +198,6 @@ function hasPlaceModule(access: WorkspaceAccessSummary, module: Parameters<typeo
   return placeModulesForAccess(access, activePlaceId).includes(module);
 }
 
-function isCompetitionWorkPath(pathname: string): boolean {
-  return pathname === "/eventos" || pathname.startsWith("/eventos/");
-}
-
-function buildCompetitionWorkItems(workEntryPath: string): NavItem[] {
-  const competitionWorkPath = "/eventos?modo=organizing";
-  const tournamentWorkPath = "/eventos/torneios?view=organizing";
-  const leagueWorkPath = "/eventos/ligas?view=organizing";
-  const todayItem = workItem(workEntryPath, "Inicio", ManagementIcon, [workEntryPath.split("?")[0], "/gestao"], true, "work");
-  return [
-    todayItem,
-    workItem(tournamentWorkPath, "Torneios", TrophyIcon, ["/eventos/torneios"], false, "competition"),
-    workItem(leagueWorkPath, "Ligas", TrophyIcon, ["/eventos/ligas"], false, "competition"),
-    workItem(competitionWorkPath, "Resultados", ManagementIcon, [competitionWorkPath], true, "competition"),
-    workProfileItem(),
-  ];
-}
-
 function buildDesktopWorkItems(access: WorkspaceAccessSummary, workEntryPath: string, activePlaceId?: string | null): NavItem[] {
   const dashboardPath = activePlaceId || access.primaryPlaceId ? placePath(access, "dashboard", undefined, activePlaceId) : workEntryPath;
   const items: NavItem[] = [
@@ -238,12 +220,12 @@ function buildDesktopWorkItems(access: WorkspaceAccessSummary, workEntryPath: st
 
   if (hasPlaceModule(access, "canteen", activePlaceId)) items.push(workItem(placePath(access, "canteen", "vender", activePlaceId), "Loja/POS", ManagementIcon, undefined, false, "operation", "desktop"));
 
-  if (hasPlaceModule(access, "settings", activePlaceId)) {
-    items.push(workItem(placePath(access, "settings", "publicacao", activePlaceId), "Comunicacao", ManagementIcon, undefined, false, "communication", "desktop"));
+  if (hasPlaceModule(access, "communication", activePlaceId)) {
+    items.push(workItem(placePath(access, "communication", undefined, activePlaceId), "Comunicacao", ManagementIcon, undefined, false, "communication", "desktop"));
   }
 
-  if (hasPlaceModule(access, "finance", activePlaceId)) {
-    items.push(workItem(placePath(access, "finance", "resumo", activePlaceId), "Relatorios", ManagementIcon, undefined, false, "reports", "desktop"));
+  if (hasPlaceModule(access, "reports", activePlaceId)) {
+    items.push(workItem(placePath(access, "reports", undefined, activePlaceId), "Relatorios", ManagementIcon, undefined, false, "reports", "desktop"));
   }
 
   if (hasPlaceModule(access, "settings", activePlaceId)) items.push(workItem(placePath(access, "settings", "checklist", activePlaceId), "Administracao", ManagementIcon, undefined, false, "admin", "desktop"));
@@ -344,10 +326,6 @@ function buildNavItems(access: WorkspaceAccessSummary, pathname: string, mode: U
 
   if (!hasProfessionalEntry) {
     return [accountItem()];
-  }
-
-  if (access.hasCompetitionManagement && isCompetitionWorkPath(pathname)) {
-    return buildCompetitionWorkItems(workEntryPath);
   }
 
   return [...buildMobileWorkItems(access, workEntryPath, activePlaceId), ...buildDesktopWorkItems(access, workEntryPath, activePlaceId)];

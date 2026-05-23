@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import type { PlaceClientReceivable } from "./PlaceClientRelationshipModule";
-import { EntityActionRow, WorkspaceList } from "./PlaceWorkspaceUi";
 
 type PlaceFinanceReceivablesModuleProps = {
   academyReceivables: PlaceClientReceivable[];
@@ -33,7 +32,8 @@ export function PlaceFinanceReceivablesModule({
   onMarkReceivablePaid,
 }: PlaceFinanceReceivablesModuleProps) {
   const [segment, setSegment] = useState<FinanceReceivableSegment>("all");
-  const [showAll, setShowAll] = useState(false);
+  const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState("");
   const overdueReceivables = useMemo(() => receivables.filter((receivable) => receivable.dueStatus === "overdue"), [receivables]);
   const todayReceivables = useMemo(() => receivables.filter((receivable) => receivable.dueStatus === "today"), [receivables]);
   const segmentReceivables = useMemo(() => {
@@ -43,85 +43,144 @@ export function PlaceFinanceReceivablesModule({
     if (segment === "membership") return membershipReceivables;
     return receivables;
   }, [academyReceivables, membershipReceivables, overdueReceivables, receivables, segment, todayReceivables]);
-  const visibleReceivables = showAll ? segmentReceivables : segmentReceivables.slice(0, 16);
-  const hiddenCount = Math.max(0, segmentReceivables.length - visibleReceivables.length);
-  const receivableLabel = `${receivables.length} ${receivables.length === 1 ? "pendencia aberta" : "pendencias abertas"}`;
+  const filteredReceivables = segmentReceivables.filter((receivable) => {
+    const haystack = [receivable.title, receivable.originLabel, receivable.subtitle, receivable.billingPeriod, receivable.dueLabel].join(" ").toLowerCase();
+    return haystack.includes(query.trim().toLowerCase());
+  });
+  const selectedReceivable = filteredReceivables.find((receivable) => receivable.id === selectedId) || filteredReceivables[0] || null;
+  const totalOpenCents = filteredReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
+  const totalOverdueCents = overdueReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
+
+  const tabs: Array<{ id: FinanceReceivableSegment; label: string; count: number }> = [
+    { id: "all", label: "Todos", count: receivables.length },
+    { id: "overdue", label: "Vencidos", count: overdueReceivables.length },
+    { id: "today", label: "Hoje", count: todayReceivables.length },
+    { id: "academy", label: "Aulas", count: academyReceivables.length },
+    { id: "membership", label: "Planos", count: membershipReceivables.length },
+  ];
 
   return (
-    <WorkspaceList>
-      {receivables.length ? (
-        <div className="billing-quick-actions">
-          <div>
-            <strong>Cobranca recorrente</strong>
-            <span>{receivableLabel} | {overdueReceivables.length} vencidas | {todayReceivables.length} vencem hoje</span>
-          </div>
-          <button className={segment === "overdue" ? "primary" : "quiet"} type="button" onClick={() => { setSegment("overdue"); setShowAll(false); }} disabled={!overdueReceivables.length}>
-            Vencidos
-          </button>
-          <button className={segment === "today" ? "primary" : "quiet"} type="button" onClick={() => { setSegment("today"); setShowAll(false); }} disabled={!todayReceivables.length}>
-            Vence hoje
-          </button>
-          <button className={segment === "all" ? "primary" : "quiet"} type="button" onClick={() => { setSegment("all"); setShowAll(false); }}>
-            Todos
-          </button>
+    <div className="finance-receivables-console">
+      <header className="finance-console-head">
+        <div>
+          <span>Receita</span>
+          <h2>Receber</h2>
+          <p>Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.</p>
         </div>
-      ) : null}
-      {receivables.length ? (
-        <div className="billing-quick-actions secondary">
-          <div>
-            <strong>Acoes de lote</strong>
-            <span>Lembretes ficam registrados no historico financeiro.</span>
-          </div>
-          <button className="primary" type="button" onClick={() => onCreatePaymentReminderBatch(segmentReceivables)} disabled={busy || !segmentReceivables.length}>
-            Lembrar lista atual
-          </button>
-          <button className="quiet" type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy || !membershipReceivables.length}>
-            Cobrar socios
-          </button>
-          <button className="quiet" type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy || !academyReceivables.length}>
-            Cobrar alunos
-          </button>
-        </div>
-      ) : null}
-      {visibleReceivables.map((receivable) => (
-        <EntityActionRow
-          key={`finance-open:${receivable.id}`}
-          className={`finance-receivable-row ${receivable.status} ${receivable.dueStatus === "overdue" || receivable.dueStatus === "today" ? "due" : ""}`.trim()}
-          title={receivable.title}
-          context={[receivable.originLabel, receivable.subtitle].filter(Boolean).join(" | ")}
-          detail={formatMoneyFromCents(receivable.amountCents)}
-          status={receivableStatusLabel(receivable)}
-          primaryAction={
-            <button
-              className="primary"
-              type="button"
-              onClick={() => onMarkReceivablePaid(receivable)}
-              disabled={busy}
-            >
-              Pagar
-            </button>
-          }
-          actions={
-            <button
-              className="quiet"
-              type="button"
-              onClick={() => onCreatePaymentReminder(receivable.targetType, receivable.targetId, receivable.billingPeriod, receivable.reminder)}
-              disabled={busy}
-            >
-              Enviar lembrete
-            </button>
-          }
-        >
-          <small>{[receivable.dueLabel, receivable.billingPeriod ? `Periodo ${receivable.billingPeriod}` : ""].filter(Boolean).join(" | ") || "Pagamento em aberto"}</small>
-        </EntityActionRow>
-      ))}
-      {hiddenCount ? (
-        <button type="button" className="secondary" onClick={() => setShowAll(true)}>
-          Ver {hiddenCount} recebivel{hiddenCount === 1 ? "" : "s"} restante{hiddenCount === 1 ? "" : "s"}
+        <button type="button" className="primary" onClick={() => onCreatePaymentReminderBatch(filteredReceivables)} disabled={busy || !filteredReceivables.length}>
+          Lembrar lista atual
         </button>
-      ) : null}
-      {receivables.length && !segmentReceivables.length ? <p className="subtle">Nenhum recebivel neste filtro. Volte para Todos ou selecione outra origem.</p> : null}
-      {!receivables.length ? <p className="subtle">Sem recebiveis em aberto.</p> : null}
-    </WorkspaceList>
+      </header>
+
+      <div className="finance-console-kpis">
+        <article>
+          <span>Em aberto</span>
+          <strong>{formatMoneyFromCents(totalOpenCents)}</strong>
+          <small>{filteredReceivables.length} recebivel(is) no filtro</small>
+        </article>
+        <article>
+          <span>Vencidos</span>
+          <strong>{formatMoneyFromCents(totalOverdueCents)}</strong>
+          <small>{overdueReceivables.length} cobranca(s)</small>
+        </article>
+        <article>
+          <span>Vence hoje</span>
+          <strong>{todayReceivables.length}</strong>
+          <small>acao recomendada hoje</small>
+        </article>
+      </div>
+
+      <div className="finance-console-tabs">
+        {tabs.map((tab) => (
+          <button key={tab.id} type="button" className={segment === tab.id ? "active" : ""} onClick={() => setSegment(tab.id)}>
+            {tab.label}
+            <span>{tab.count}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="finance-console-toolbar">
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar cliente, origem, periodo..." />
+        <button type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy || !membershipReceivables.length}>
+          Cobrar planos
+        </button>
+        <button type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy || !academyReceivables.length}>
+          Cobrar alunos
+        </button>
+      </div>
+
+      <div className="finance-console-layout">
+        <div className="finance-receivables-table" role="table" aria-label="Recebiveis">
+          <div className="finance-receivables-row head" role="row">
+            <span>Cliente</span>
+            <span>Origem</span>
+            <span>Vencimento</span>
+            <span>Status</span>
+            <span>Valor</span>
+            <span>Acoes</span>
+          </div>
+          {filteredReceivables.slice(0, 120).map((receivable) => (
+            <button
+              key={`finance-open:${receivable.id}`}
+              type="button"
+              className={selectedReceivable?.id === receivable.id ? "finance-receivables-row selected" : "finance-receivables-row"}
+              onClick={() => setSelectedId(receivable.id)}
+              role="row"
+            >
+              <span>
+                <strong>{receivable.title}</strong>
+                <small>{receivable.subtitle || receivable.billingPeriod || "Sem subtitulo"}</small>
+              </span>
+              <span>{receivable.originLabel}</span>
+              <span>{receivable.dueLabel || "Sem vencimento"}</span>
+              <span className={`finance-status-pill ${receivable.dueStatus || "open"}`}>{receivableStatusLabel(receivable)}</span>
+              <span>{formatMoneyFromCents(receivable.amountCents)}</span>
+              <em>{receivable.status === "pending_approval" ? "Revisar" : "Pagar"}</em>
+            </button>
+          ))}
+          {!filteredReceivables.length ? <p className="subtle">Nenhum recebivel neste filtro.</p> : null}
+        </div>
+
+        <aside className="finance-receivable-drawer" aria-label="Detalhe do recebivel">
+          {selectedReceivable ? (
+            <>
+              <header>
+                <span>Recebivel</span>
+                <h3>{selectedReceivable.title}</h3>
+                <p>{selectedReceivable.originLabel}</p>
+              </header>
+              <strong className="finance-receivable-amount">{formatMoneyFromCents(selectedReceivable.amountCents)}</strong>
+              <dl>
+                <dt>Status</dt>
+                <dd>{receivableStatusLabel(selectedReceivable)}</dd>
+                <dt>Vencimento</dt>
+                <dd>{selectedReceivable.dueLabel || "Sem vencimento"}</dd>
+                <dt>Periodo</dt>
+                <dd>{selectedReceivable.billingPeriod || "Nao informado"}</dd>
+                <dt>Descricao</dt>
+                <dd>{selectedReceivable.subtitle || "Sem descricao adicional"}</dd>
+              </dl>
+              <div className="finance-receivable-actions">
+                <button type="button" className="primary" onClick={() => onMarkReceivablePaid(selectedReceivable)} disabled={busy}>
+                  Pagar
+                </button>
+                <button
+                  type="button"
+                  className="secondary"
+                  onClick={() => onCreatePaymentReminder(selectedReceivable.targetType, selectedReceivable.targetId, selectedReceivable.billingPeriod, selectedReceivable.reminder)}
+                  disabled={busy}
+                >
+                  Enviar lembrete
+                </button>
+              </div>
+              <section>
+                <h4>Proximo passo</h4>
+                <p>{selectedReceivable.dueStatus === "overdue" ? "Cobrar agora ou marcar como pago se o pagamento ja foi recebido." : "Acompanhar vencimento e enviar lembrete quando necessario."}</p>
+              </section>
+            </>
+          ) : null}
+        </aside>
+      </div>
+    </div>
   );
 }

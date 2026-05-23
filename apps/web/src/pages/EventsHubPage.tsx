@@ -146,11 +146,12 @@ function tournamentWorkOperationInfo(tournament: TournamentSummary): { action: s
 }
 
 function leagueWorkOperationInfo(league: LeagueSummary): { action: string; detail: string; targetPath: string; tone: WorkCompetitionTone } {
+  const workTargetPath = `/eventos/ligas/${encodeURIComponent(league.id)}?mode=work`;
   if (league.status === "draft") {
     return {
       action: "Resolver proximo bloqueio",
       detail: "Finalize temporada, classes e regras antes de ativar.",
-      targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+      targetPath: workTargetPath,
       tone: "urgent",
     };
   }
@@ -158,7 +159,7 @@ function leagueWorkOperationInfo(league: LeagueSummary): { action: string; detai
     return {
       action: "Abrir cockpit da fase",
       detail: "Acompanhe partidas, disponibilidade, resultados e ranking.",
-      targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+      targetPath: workTargetPath,
       tone: "urgent",
     };
   }
@@ -166,14 +167,14 @@ function leagueWorkOperationInfo(league: LeagueSummary): { action: string; detai
     return {
       action: "Resolver proximo bloqueio",
       detail: "Liga entre rodadas. Ajuste pendencias, valide resultados ou comunique a proxima etapa.",
-      targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+      targetPath: workTargetPath,
       tone: "neutral",
     };
   }
   return {
     action: "Ver historico",
     detail: "Liga encerrada. Consulte ranking e partidas finalizadas.",
-    targetPath: `/eventos/ligas/${encodeURIComponent(league.id)}`,
+    targetPath: workTargetPath,
     tone: "done",
   };
 }
@@ -379,76 +380,6 @@ function DiscoveryTournamentCard({ tournament, onOpen }: { tournament: Tournamen
   );
 }
 
-function CompetitionOperationRow({
-  kind,
-  title,
-  meta,
-  status,
-  action,
-  detail,
-  tone,
-  onOpen,
-}: {
-  kind: WorkCompetitionKind;
-  title: string;
-  meta: string;
-  status: string;
-  action: string;
-  detail: string;
-  tone: WorkCompetitionTone;
-  onOpen: () => void;
-}) {
-  return (
-    <article className={`competition-operation-row ${tone}`}>
-      <div className="competition-operation-main">
-        <span>{kind}</span>
-        <strong>{title}</strong>
-        <small>{meta}</small>
-      </div>
-      <div className="competition-operation-state">
-        <span>{status}</span>
-        <small>{detail}</small>
-      </div>
-      <button className={tone === "urgent" ? "primary" : "secondary"} type="button" onClick={onOpen}>
-        {action}
-      </button>
-    </article>
-  );
-}
-
-function WorkPhaseSection({ group, onOpen }: { group: WorkCompetitionGroup; onOpen: (targetPath: string) => void }) {
-  return (
-    <section className={`competition-work-phase phase-${group.key}`} aria-label={group.label}>
-      <header>
-        <div>
-          <span>{group.items.length}</span>
-          <strong>{group.label}</strong>
-          <small>{group.detail}</small>
-        </div>
-      </header>
-      {group.items.length ? (
-        <div className="competition-operation-list">
-          {group.items.map((item) => (
-            <CompetitionOperationRow
-              key={item.id}
-              kind={item.kind}
-              title={item.title}
-              meta={`${item.meta} · ${formatUpdatedAt(item.updatedAt)}`}
-              status={item.status}
-              action={item.action}
-              detail={item.detail}
-              tone={item.tone}
-              onOpen={() => onOpen(item.targetPath)}
-            />
-          ))}
-        </div>
-      ) : (
-        <p className="competition-work-empty">{group.empty}</p>
-      )}
-    </section>
-  );
-}
-
 function DiscoveryAction({
   icon,
   title,
@@ -560,6 +491,7 @@ export function EventsHubPage({ user, profile }: Props) {
   );
   const finishedWorkGroup = workCompetitionGroups.find((group) => group.key === "finished");
   const urgentWorkCount = activeWorkCompetitionItems.filter((item) => item.tone === "urgent").length;
+  const selectedWorkItem = activeWorkCompetitionItems[0] ?? workCompetitionItems[0] ?? null;
   const openRegistrationCount = publicTournaments.filter((tournament) => tournament.status === "registration_open").length;
   const activeLeagueCount = leagues.filter((league) => league.status === "active").length;
   const featuredLeague = [...playingLeagues, ...organizingLeagues].find((league) => league.status === "active") || leagues[0] || null;
@@ -570,12 +502,12 @@ export function EventsHubPage({ user, profile }: Props) {
     .filter((tournament) => tournament.status === "finished")
     .slice(0, 3);
   const pageTitle =
-    activeMode === "discover" ? "Competir" : activeMode === "organizing" ? "Trabalho em competicoes" : "Minhas competicoes";
+    activeMode === "discover" ? "Competir" : activeMode === "organizing" ? "Competicoes" : "Minhas competicoes";
   const pageIntro =
     activeMode === "discover"
       ? "Encontre torneios, ligas e rankings para acompanhar seu jogo."
       : activeMode === "organizing"
-      ? "Acompanhe torneios e ligas que voce organiza pela central de trabalho."
+      ? "Operacao de torneios e ligas por fase, bloqueio e proxima acao."
       : "Torneios e ligas em um unico lugar, separados pelo seu papel em cada uma.";
 
   useEffect(() => {
@@ -594,12 +526,14 @@ export function EventsHubPage({ user, profile }: Props) {
 
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
+      {activeMode !== "organizing" ? (
       <div className={`page-header events-page-header mode-${activeMode}`} aria-label={pageTitle} data-intro={pageIntro}>
         <div>
           <h1>{pageTitle}</h1>
           <p className="page-intro">{pageIntro}</p>
         </div>
       </div>
+      ) : null}
 
       {loading ? (
         <ScreenState
@@ -722,72 +656,150 @@ export function EventsHubPage({ user, profile }: Props) {
       ) : null}
 
       {activeMode === "organizing" ? (
-        <section id="competitions-organizing" className="section-card flow-card primary-flow">
-          <FlowHeader
-            title="Quais competicoes precisam de acao agora?"
-            detail="Hub de trabalho para organizador: fases, bloqueios e cockpit ficam aqui. Descoberta publica segue separada em /eventos."
-          />
-          <div className="competition-work-summary" aria-label="Resumo operacional de competicoes">
+        <section id="competitions-organizing" className="competition-saas-console" aria-label="Central de competicoes de trabalho">
+          <header className="competition-saas-hero">
+            <div>
+              <span>Competition OS</span>
+              <h2>Quais competicoes precisam de acao?</h2>
+              <p>Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho.</p>
+            </div>
+            <ActionBar className="competition-saas-actions" label="Acoes principais de competicoes">
+              <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+                Criar torneio
+              </button>
+              <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
+                Criar liga
+              </button>
+            </ActionBar>
+          </header>
+
+          <div className="competition-saas-kpis" aria-label="Resumo operacional de competicoes">
             <article>
-              <span>{urgentWorkCount}</span>
-              <strong>bloqueios</strong>
+              <strong>{urgentWorkCount}</strong>
+              <span>Bloqueios</span>
               <small>precisam de acao</small>
             </article>
             <article>
-              <span>{activeWorkCompetitionItems.length}</span>
-              <strong>ativas</strong>
-              <small>em operacao</small>
+              <strong>{activeWorkCompetitionItems.length}</strong>
+              <span>Em operacao</span>
+              <small>torneios e ligas ativos</small>
             </article>
             <article>
-              <span>{finishedWorkGroup?.items.length ?? 0}</span>
-              <strong>finalizadas</strong>
-              <small>historico secundario</small>
+              <strong>{organizingTournaments.length}</strong>
+              <span>Torneios</span>
+              <small>no seu workspace</small>
+            </article>
+            <article>
+              <strong>{organizingLeagues.length}</strong>
+              <span>Ligas</span>
+              <small>temporadas e rodadas</small>
             </article>
           </div>
-          <div className="competition-operation-toolbar" aria-label="Acessos de organizador">
-            <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-              Torneios <CountBadge value={organizingTournaments.length} />
-            </button>
-            <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
-              Ligas <CountBadge value={organizingLeagues.length} />
-            </button>
-          </div>
-          {hasOrganizerContext ? (
-            <div className="competition-work-board">
-              {workPhaseGroups.length ? (
-                workPhaseGroups.map((group) => <WorkPhaseSection key={group.key} group={group} onOpen={navigate} />)
+
+          <div className="competition-saas-layout">
+            <div className="competition-saas-main">
+              <div className="competition-saas-tabs" role="tablist" aria-label="Filas de competicoes">
+                <button className="active" type="button">Todos</button>
+                <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>Torneios</button>
+                <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>Ligas</button>
+                <button type="button">Pendencias</button>
+                <button type="button">Historico</button>
+              </div>
+
+              {hasOrganizerContext && workPhaseGroups.length ? (
+                <div className="competition-saas-table" role="table" aria-label="Competicoes por fase">
+                  <div className="competition-saas-table-head" role="row">
+                    <span>Competicao</span>
+                    <span>Fase</span>
+                    <span>Proxima acao</span>
+                    <span>Atualizacao</span>
+                  </div>
+                  {workPhaseGroups.map((group) => (
+                    <section className="competition-saas-phase" key={group.key} aria-label={group.label}>
+                      <header>
+                        <strong>{group.label}</strong>
+                        <span>{group.items.length}</span>
+                      </header>
+                      {group.items.map((item) => (
+                        <button
+                          className={`competition-saas-row ${item.tone}`}
+                          key={item.id}
+                          type="button"
+                          onClick={() => navigate(item.targetPath)}
+                        >
+                          <span>
+                            <strong>{item.title}</strong>
+                            <small>{item.kind} · {item.meta}</small>
+                          </span>
+                          <span>{item.status}</span>
+                          <span>{item.action}</span>
+                          <span>{formatUpdatedAt(item.updatedAt)}</span>
+                        </button>
+                      ))}
+                    </section>
+                  ))}
+                </div>
               ) : (
-                <div className="home-empty-panel compact">
-                  <strong>Nenhuma competicao ativa agora</strong>
-                  <span>Quando um torneio ou liga exigir acao, ele entra nesta fila pela fase correta.</span>
+                <div className="home-empty-panel competition-saas-empty">
+                  <strong>{hasOrganizerContext ? "Nenhum bloqueio operacional agora" : "Comece criando uma competicao"}</strong>
+                  <span>
+                    {hasOrganizerContext
+                      ? "Suas competicoes estao sem acoes visiveis. Use Torneios ou Ligas para revisar detalhes e historico."
+                      : "Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro da competicao."}
+                  </span>
                 </div>
               )}
             </div>
-          ) : null}
-          {finishedWorkGroup?.items.length ? (
-            <details className="competition-work-archive">
-              <summary>Finalizadas e historico ({finishedWorkGroup.items.length})</summary>
-              <WorkPhaseSection group={finishedWorkGroup} onOpen={navigate} />
-            </details>
-          ) : null}
-          {activeWorkCompetitionItems.length === 0 ? (
-            <div className="home-empty-panel">
-              <strong>{hasOrganizerContext ? "Nenhum bloqueio operacional agora" : "Comece pelo tipo de competicao"}</strong>
-              <span>
-                {hasOrganizerContext
-                  ? "Suas competicoes estao sem acoes visiveis. Abra torneios ou ligas para revisar detalhes, publicar ajustes ou consultar historico."
-                  : "Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro da configuracao de cada competicao."}
-              </span>
-              <ActionBar className="home-empty-actions" label="Acoes de organizador em competicoes">
-                <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
-                  Criar torneio
-                </button>
-                <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
-                  Criar liga
-                </button>
-              </ActionBar>
-            </div>
-          ) : null}
+
+            <aside className="competition-saas-detail" aria-label="Detalhe operacional">
+              <header>
+                <span>Detalhe da acao</span>
+                <strong>{selectedWorkItem?.title ?? "Selecione uma competicao"}</strong>
+                <small>{selectedWorkItem ? `${selectedWorkItem.kind} · ${selectedWorkItem.status}` : "A fila operacional abre aqui sem tirar voce do contexto."}</small>
+              </header>
+              {selectedWorkItem ? (
+                <>
+                  <dl>
+                    <div>
+                      <dt>Fase</dt>
+                      <dd>{selectedWorkItem.status}</dd>
+                    </div>
+                    <div>
+                      <dt>Contexto</dt>
+                      <dd>{selectedWorkItem.meta}</dd>
+                    </div>
+                    <div>
+                      <dt>Proxima acao</dt>
+                      <dd>{selectedWorkItem.action}</dd>
+                    </div>
+                    <div>
+                      <dt>Orientacao</dt>
+                      <dd>{selectedWorkItem.detail}</dd>
+                    </div>
+                  </dl>
+                  <button className="primary" type="button" onClick={() => navigate(selectedWorkItem.targetPath)}>
+                    Abrir cockpit da fase
+                  </button>
+                </>
+              ) : (
+                <ActionBar className="home-empty-actions" label="Acoes de organizador em competicoes">
+                  <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>
+                    Criar torneio
+                  </button>
+                  <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>
+                    Criar liga
+                  </button>
+                </ActionBar>
+              )}
+              {finishedWorkGroup?.items.length ? (
+                <div className="competition-saas-history">
+                  <span>Historico</span>
+                  <strong>{finishedWorkGroup.items.length} finalizada(s)</strong>
+                  <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>Ver arquivo</button>
+                </div>
+              ) : null}
+            </aside>
+          </div>
         </section>
       ) : null}
 

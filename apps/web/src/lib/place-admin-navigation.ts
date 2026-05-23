@@ -8,7 +8,7 @@ import type { TeamManagementView } from "../components/place/TeamWorkspaceShell"
 import type { PlaceManagementModule } from "./place-management";
 
 export const PLACE_ADMIN_VIEW_PARAM = "visao";
-export type PlaceAdminViewModule = Exclude<PlaceManagementModule, "dashboard">;
+export type PlaceAdminViewModule = Exclude<PlaceManagementModule, "dashboard" | "communication" | "reports">;
 export type PlaceAdminRoutableView =
   | AcademyManagementView
   | BookingManagementView
@@ -25,6 +25,8 @@ export const PLACE_ADMIN_MODULE_SEGMENTS: Record<PlaceManagementModule, string> 
   clients: "clientes",
   finance: "financeiro",
   canteen: "loja-pos",
+  communication: "comunicacao",
+  reports: "relatorios",
   team: "equipe",
   settings: "administracao",
 };
@@ -48,6 +50,15 @@ const PLACE_ADMIN_SEGMENT_TO_MODULE: Record<string, PlaceManagementModule> = {
   pos: "canteen",
   cantina: "canteen",
   canteen: "canteen",
+  comunicacao: "communication",
+  comunicação: "communication",
+  communication: "communication",
+  publicacao: "communication",
+  publication: "communication",
+  relatorios: "reports",
+  reports: "reports",
+  analytics: "reports",
+  indicadores: "reports",
   equipe: "team",
   team: "team",
   administracao: "settings",
@@ -301,7 +312,7 @@ export function resolvePlaceAdminView(module: PlaceManagementModule | undefined,
   replacementSegment?: string;
   shouldReplace: boolean;
 } | null {
-  if (!module || module === "dashboard") return null;
+  if (!module || module === "dashboard" || module === "communication" || module === "reports") return null;
   const config = PLACE_ADMIN_VIEW_CONFIGS[module];
   const parsedView = config.segmentToView[value];
   const view = parsedView || config.defaultView;
@@ -310,7 +321,7 @@ export function resolvePlaceAdminView(module: PlaceManagementModule | undefined,
     module,
     view,
     canonicalSegment,
-    replacementSegment: parsedView ? canonicalSegment : undefined,
-    shouldReplace: Boolean(value) && (!parsedView || canonicalSegment !== value),
+    replacementSegment: canonicalSegment,
+    shouldReplace: !value || !parsedView || canonicalSegment !== value,
   };
 }

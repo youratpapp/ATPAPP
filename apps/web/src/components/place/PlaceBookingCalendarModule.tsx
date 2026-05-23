@@ -344,12 +344,6 @@ export function PlaceBookingCalendarModule({
     }
   }, [filteredItems, selectedItemId]);
 
-  useEffect(() => {
-    if (!selectedItemId && filteredItems.length) {
-      setSelectedItemId(filteredItems[0].id);
-    }
-  }, [filteredItems, selectedItemId]);
-
   const selectedBooking = selectedItem?.booking;
   const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
   const selectedWhatsappHref = selectedBooking ? getWhatsappHref?.(selectedBooking) : "";
@@ -493,9 +487,6 @@ export function PlaceBookingCalendarModule({
                                 setEditingBookingId("");
                               }}
                             >
-                              <span>
-                                {shortTime(item.startsAt)}-{shortTime(item.endsAt)}
-                              </span>
                               <strong>{item.title}</strong>
                               <small>{booking ? paymentStatusLabel(payment) : item.status}</small>
                             </button>
@@ -515,7 +506,6 @@ export function PlaceBookingCalendarModule({
                               : undefined
                           }
                         >
-                          <span>{slot}</span>
                           <b>Livre</b>
                         </button>
                       )}

@@ -26,7 +26,9 @@ import { PlaceCanteenProductForm, type PlacePosProductDraft } from "../component
 import { PlaceCanteenSaleForm, type PlacePosSaleDraft } from "../components/place/PlaceCanteenSaleForm";
 import { PlaceCanteenSummaryModule } from "../components/place/PlaceCanteenSummaryModule";
 import { PlaceCanteenStockModule } from "../components/place/PlaceCanteenStockModule";
+import { PlaceCommunicationPanel } from "../components/place/PlaceCommunicationPanel";
 import { PlaceCreateWizard } from "../components/place/PlaceCreateWizard";
+import { PlaceAdministrationPanel } from "../components/place/PlaceAdministrationPanel";
 import { PlaceActiveClientsModule } from "../components/place/PlaceActiveClientsModule";
 import { PlaceAnalyticsPanel, type AnalyticsReportPeriod } from "../components/place/PlaceAnalyticsPanel";
 import { PlaceBookingCalendarModule } from "../components/place/PlaceBookingCalendarModule";
@@ -1049,9 +1051,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      const [data, createPlaceAccess] = await Promise.all([
-        fetchPlacesWorkspaceData({ isAdminRoute, tab, user }),
+      const createPlaceAccessPromise = Promise.race([
         canCreatePlace().catch(() => false),
+        new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 4000)),
+      ]);
+      const [data, createPlaceAccess] = await Promise.all([
+        fetchPlacesWorkspaceData({ focusPlaceId: adminPlaceId, isAdminRoute, tab, user }),
+        createPlaceAccessPromise,
       ]);
       const maps = entriesToPlaceAdminResourceMaps(data.entries);
       setOrganizations(data.organizations);
@@ -1066,7 +1072,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     } finally {
       setLoading(false);
     }
-  }, [isAdminRoute, replaceAllPlaceAdminResources, setPaymentsByTarget, tab, user]);
+  }, [adminPlaceId, isAdminRoute, replaceAllPlaceAdminResources, setPaymentsByTarget, tab, user]);
 
   useEffect(() => {
     refresh();
@@ -5045,8 +5051,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         const openAcademyReceivables = openReceivables.filter(
           (item) => item.targetType === "academy_enrollment" || item.targetType === "academy_student_contract" || item.targetType === "academy_lesson_request"
         );
-        const overdueFinanceReceivables = openReceivables.filter((item) => item.dueStatus === "overdue");
-        const todayFinanceReceivables = openReceivables.filter((item) => item.dueStatus === "today");
         const openReceivablesAmountCents = openReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
         const activeAcademyRevenueCents =
           academyStudentContracts
@@ -5394,6 +5398,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           clients: pendingClientActions.length,
           finance: openReceivables.length + expenses.filter((expense) => expense.status === "posted").length,
           canteen: lowStockProducts.length + todayPosSales.length,
+          communication: pendingBookings.length + waitingCourtEntries.length + actionableLessonRequests.length + openReceivables.length + (p.description && activeCourts.length ? 0 : 1),
+          reports: reportPeakRows.length + reportModuleRows.length,
           team: staff.filter((member) => member.status === "pending").length,
           settings: setupChecklist.length - setupDoneCount,
         };
@@ -5827,7 +5833,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 </OperationalQueue>
               </div>
             ) : null}
-            {showManagementModule("dashboard") && isOwner ? (
+            {showManagementModule("reports") && isOwner ? (
               <PlaceAnalyticsPanel
                 busy={busy}
                 canManagePlan={canManagePlace}
@@ -5851,6 +5857,24 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 onPlanChange={(plan) => void onUpdatePlaceProductPlan(p, plan)}
                 onReportRangeChange={(range) => setReportRangeByPlace((prev) => ({ ...prev, [p.id]: range }))}
                 onReportPeriodChange={(period) => setReportPeriodByPlace((prev) => ({ ...prev, [p.id]: period }))}
+              />
+            ) : null}
+            {showManagementModule("communication") && canManagePlace ? (
+              <PlaceCommunicationPanel
+                activeClassCount={activeAcademyClasses.length}
+                activeCourtCount={activeCourts.length}
+                activeMembershipPlanCount={activeMembershipPlans.length}
+                lessonRequestCount={actionableLessonRequests.length}
+                openReceivableCount={openReceivables.length}
+                pendingBookingCount={pendingBookings.length}
+                placeName={p.name}
+                publicPageReady={Boolean(p.description && activeCourts.length)}
+                waitlistCount={waitingCourtEntries.length}
+                onOpenAgenda={() => navigate(buildPlaceAdminPath(p.id, "bookings", "calendario"))}
+                onOpenClients={() => navigate(buildPlaceAdminPath(p.id, "clients", "clientes-ativos"))}
+                onOpenFinance={() => navigate(buildPlaceAdminPath(p.id, "finance", "recebiveis"))}
+                onOpenPublicData={() => navigate(buildPlaceAdminPath(p.id, "settings", "dados-publicos"))}
+                onOpenPublicPage={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}
               />
             ) : null}
             {currentManagementModule === ("__legacy_analytics__" as PlaceManagementModule) ? (
@@ -6167,56 +6191,35 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   onViewChange={(view) => selectSettingsView(p.id, view)}
                 >
                   {settingsView === "overview" ? (
-                    <>
-                      <WorkspaceGrid>
-                        <WorkspaceCard
-                          title="Prontidao estrutural"
-                          subtitle="O que precisa estar pronto antes de divulgar ou operar com equipe"
-                          value={`${setupDoneCount}/${setupChecklist.length}`}
-                          metrics={[
-                            `${setupPercent}% concluido`,
-                            PLACE_PRODUCT_PLAN_LABELS[p.productPlan],
-                            countLabel(setupChecklist.length - setupDoneCount, "pendência", "pendências"),
-                          ]}
-                        />
-                        <WorkspaceCard
-                          title="Modulos liberados"
-                          subtitle="Plano atual define as superficies de trabalho"
-                          value={enabledFeatures.length}
-                          metrics={enabledFeatures.slice(0, 4)}
-                        />
-                        <WorkspaceCard title="Proximo ajuste" subtitle="Atalho para o item estrutural mais importante" value={nextSetupItem ? "1" : "OK"}>
-                          <WorkspaceList>
-                            {nextSetupItem ? (
-                              <span>
-                                <strong>{nextSetupItem.title}</strong>
-                                <small>{nextSetupItem.detail}</small>
-                              </span>
-                            ) : (
-                              <span>Configuracao essencial pronta.</span>
-                            )}
-                          </WorkspaceList>
-                        </WorkspaceCard>
-                      </WorkspaceGrid>
-                      <WorkspaceList>
-                        {setupChecklist.map((item) => (
-                          <WorkspaceRow
-                            key={`${p.id}:settings-check:${item.key}`}
-                            title={`${item.done ? "OK" : "Pendente"} · ${item.title}`}
-                            detail={item.detail}
-                            actions={
-                              <button
-                                type="button"
-                                onClick={() => navigate(buildPlaceAdminPath(p.id, item.module, item.viewSegment))}
-                                disabled={!managementModules.includes(item.module)}
-                              >
-                                Abrir
-                              </button>
-                            }
-                          />
-                        ))}
-                      </WorkspaceList>
-                    </>
+                    <PlaceAdministrationPanel
+                      activeClassCount={activeAcademyClasses.length}
+                      activeCourtCount={activeCourts.length}
+                      activeMembershipPlanCount={activeMembershipPlans.length}
+                      activeStaffCount={staff.filter((member) => member.status !== "pending").length}
+                      checklist={setupChecklist.map((item) => ({
+                        detail: item.detail,
+                        done: item.done,
+                        key: item.key,
+                        title: item.title,
+                        onOpen: () => navigate(buildPlaceAdminPath(p.id, item.module, item.viewSegment)),
+                      }))}
+                      enabledFeatures={enabledFeatures}
+                      locationLabel={[p.city, p.state].filter(Boolean).join(" - ")}
+                      nextStep={nextSetupItem ? { title: nextSetupItem.title, detail: nextSetupItem.detail } : null}
+                      pendingInviteCount={staff.filter((member) => member.status === "pending").length}
+                      planHint={PLACE_PRODUCT_PLAN_HINTS[p.productPlan]}
+                      planLabel={PLACE_PRODUCT_PLAN_LABELS[p.productPlan]}
+                      placeName={p.name}
+                      productCount={posProducts.length}
+                      setupDoneCount={setupDoneCount}
+                      setupPercent={setupPercent}
+                      setupTotalCount={setupChecklist.length}
+                      onOpenFinance={() => navigate(buildPlaceAdminPath(p.id, "finance", "planos"))}
+                      onOpenPublicData={() => selectSettingsView(p.id, "public")}
+                      onOpenPublicPage={() => navigate(`/locais/${encodeURIComponent(p.id)}`)}
+                      onOpenRules={() => selectSettingsView(p.id, "rules")}
+                      onOpenTeam={() => navigate(buildPlaceAdminPath(p.id, "team", "equipe"))}
+                    />
                   ) : null}
                   {settingsView === "public" ? (
                     <>
@@ -6646,28 +6649,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     activeView={financeView}
                     onViewChange={(view) => selectFinanceView(p.id, view)}
                   >
-                    <div className="finance-routine-summary" aria-label="Resumo financeiro">
-                      <article className={overdueFinanceReceivables.length ? "urgent" : ""}>
-                        <span>Receber</span>
-                        <strong>{formatMoneyFromCents(openReceivablesAmountCents)}</strong>
-                        <small>{countLabel(openReceivables.length, "pendencia aberta", "pendencias abertas")} na aba Recebiveis</small>
-                      </article>
-                      <article className={overdueFinanceReceivables.length ? "urgent" : ""}>
-                        <span>Vencidos</span>
-                        <strong>{overdueFinanceReceivables.length}</strong>
-                        <small>{todayFinanceReceivables.length} vencem hoje</small>
-                      </article>
-                      <article>
-                        <span>Baixas</span>
-                        <strong>Registrar baixa</strong>
-                        <small>Marcar recebivel como pago dentro de Recebiveis</small>
-                      </article>
-                      <article>
-                        <span>Despesas</span>
-                        <strong>{formatMoneyFromCents(operationalStats.expenseCents)}</strong>
-                        <small>Saidas e comprovantes ficam na aba Despesas</small>
-                      </article>
-                    </div>
                     {financeView === "overview" ? (
                       <PlaceFinanceOverviewModule
                         activeAcademyClassCount={activeAcademyClasses.length}
@@ -6969,28 +6950,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     activeView={canteenView}
                     onViewChange={(view) => selectCanteenView(p.id, view)}
                   >
-                    <div className="canteen-routine-summary" aria-label="Resumo da cantina">
-                      <article>
-                        <span>Vender</span>
-                        <strong>Venda rapida</strong>
-                        <small>{countLabel(posProducts.filter((product) => product.stockQuantity > 0).length, "produto disponivel", "produtos disponiveis")} na aba Venda rapida</small>
-                      </article>
-                      <article className={lowStockProducts.length ? "urgent" : ""}>
-                        <span>Estoque</span>
-                        <strong>{countLabel(lowStockProducts.length, "item baixo", "itens baixos")}</strong>
-                        <small>Reposicao e disponibilidade</small>
-                      </article>
-                      <article>
-                        <span>Hoje</span>
-                        <strong>{formatMoneyFromCents(todayPosRevenueCents)}</strong>
-                        <small>{countLabel(todayPosSales.length, "venda paga", "vendas pagas")}</small>
-                      </article>
-                      <article>
-                        <span>Produtos</span>
-                        <strong>{posProducts.length}</strong>
-                        <small>Cadastro e tabela na aba Produtos</small>
-                      </article>
-                    </div>
                     {canteenView === "today" ? (
                       <PlaceCanteenSummaryModule
                         busy={busy}
@@ -7378,7 +7337,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </div>
                     </div>
                   ) : null}
-                  {!coachWithoutAcademyProfile ? (
+                  {!coachWithoutAcademyProfile && academyView !== "today" ? (
                     <div className="academy-routine-summary" aria-label="Resumo da rotina da academia">
                       <article>
                         <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
@@ -7695,7 +7654,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                 </AcademyWorkspaceShell>
               ) : null}
-              {isManagementCockpit ? (
+              {isManagementCockpit && academyView !== "today" ? (
                 <div className="place-module-summary">
                   <div>
                     <strong>{todayClasses.length}</strong>

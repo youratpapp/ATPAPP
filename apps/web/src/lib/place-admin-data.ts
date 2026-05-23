@@ -347,12 +347,13 @@ export async function fetchPlaceAdminResources(input: {
 }
 
 export async function fetchPlacesWorkspaceData(input: {
+  focusPlaceId?: string;
   includeSupportData?: boolean;
   isAdminRoute: boolean;
   tab: PlacesTabKey;
   user: User;
 }): Promise<PlacesWorkspaceData> {
-  const organizations = await listMyPlaceOrganizations(input.user).catch(() => [] as PlaceOrganization[]);
+  const organizations = await withWorkspaceFallback(listMyPlaceOrganizations(input.user), [] as PlaceOrganization[], "organizations", 5000);
   const fetcher = input.isAdminRoute
     ? listPlacesIAccess
     : input.tab === "all"
@@ -360,10 +361,13 @@ export async function fetchPlacesWorkspaceData(input: {
       : input.tab === "following"
         ? listPlacesIFollow
         : listPlacesIAccess;
-  const places = await fetcher(input.user);
+  const places = await withWorkspaceFallback(fetcher(input.user), [] as Place[], "places", 7000);
+  const resourcePlaces = input.isAdminRoute && input.focusPlaceId
+    ? places.filter((place) => place.id === input.focusPlaceId)
+    : places;
   const entries = input.isAdminRoute || input.tab === "mine"
     ? await Promise.all(
-        places.map((place) =>
+        resourcePlaces.map((place) =>
           withWorkspaceFallback(
             fetchPlaceAdminResources({ place, placeId: place.id, userId: input.user.id }),
             emptyPlaceAdminResourceEntry(place.id),

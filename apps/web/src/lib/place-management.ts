@@ -1,6 +1,6 @@
 import type { Place, PlaceProductPlan, PlaceStaffMember } from "./types";
 
-export type PlaceManagementModule = "dashboard" | "bookings" | "academy" | "clients" | "finance" | "canteen" | "team" | "settings";
+export type PlaceManagementModule = "dashboard" | "bookings" | "academy" | "clients" | "finance" | "canteen" | "communication" | "reports" | "team" | "settings";
 
 export const PLACE_MANAGEMENT_MODULE_LABELS: Record<PlaceManagementModule, string> = {
   dashboard: "Inicio",
@@ -9,6 +9,8 @@ export const PLACE_MANAGEMENT_MODULE_LABELS: Record<PlaceManagementModule, strin
   clients: "Clientes",
   finance: "Financeiro",
   canteen: "Loja/POS",
+  communication: "Comunicacao",
+  reports: "Relatorios",
   team: "Equipe",
   settings: "Administracao",
 };
@@ -20,6 +22,8 @@ export const PLACE_MANAGEMENT_MODULE_DESCRIPTIONS: Record<PlaceManagementModule,
   clients: "Clientes ativos, leads, relacionamento, atendimento, historico e comunicacao.",
   finance: "Recebiveis, pagamentos, inadimplencia, despesas, planos e resumo financeiro.",
   canteen: "Venda rapida, produtos, estoque e caixa da operacao.",
+  communication: "Avisos, WhatsApp, publicacao, links e mensagens operacionais.",
+  reports: "Leitura executiva de ocupacao, receita, clientes, aulas e picos da operacao.",
   team: "Convites, papeis e acessos da equipe.",
   settings: "Configuracoes estruturais, equipe, regras, publicacao e recursos avancados.",
 };
@@ -79,7 +83,7 @@ export function placeManagementModules(access: ReturnType<typeof placeResourceAc
   if ((access.canUseMemberships || access.canUseCrm) && (access.canManagePlace || access.staffRole === "frontdesk")) modules.push("clients");
   if (access.canUseFinance && access.canManagePlace) modules.push("finance");
   if (access.canManageCanteen) modules.push("canteen");
-  if (access.canManagePlace) modules.push("team", "settings");
+  if (access.canManagePlace) modules.push("communication", "reports", "team", "settings");
   return modules;
 }
 

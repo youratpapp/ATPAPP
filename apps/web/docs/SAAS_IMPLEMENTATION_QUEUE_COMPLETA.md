@@ -191,6 +191,9 @@ QA:
 
 ### SPRINT-03 - Agenda como centro operacional
 
+Status em 2026-05-22:
+Em execucao avancada. A Agenda web foi movida para calendario operacional com tabs compactas, filtros, hora cheia, slot clicavel, drawer lateral no desktop e sheet no mobile. O horario deixou de ser repetido dentro dos blocos, ficando no eixo do calendario e no detalhe lateral. Corrigido tambem o carregamento lento em `/gestao/:placeId/...`: rotas diretas agora carregam recursos profundos apenas do local aberto, mantendo a lista de unidades para o seletor.
+
 Objetivo:
 Transformar Agenda em calendario central de trabalho, com proporcao de SaaS profissional. A agenda nao pode abrir com hero grande, cards aleatorios, fila empilhada ou formulario interno quebrado.
 
@@ -415,6 +418,9 @@ QA:
 
 ### SPRINT-09 - Academia web profissional
 
+Status em 2026-05-22:
+Em execucao avancada. A rotina de Academia passou a usar mesa operacional com metricas, lista/tabela de aulas do dia e detalhe lateral da aula, reduzindo cards soltos e deixando chamada opcional respeitada como configuracao da empresa. Ainda restam contratos profundos para Turmas, Alunos e agenda semanal antes de considerar o dominio inteiro concluido.
+
 Objetivo:
 Reorganizar aulas/turmas/alunos/professores sem tabs confusas.
 
@@ -486,6 +492,9 @@ QA:
 
 ### SPRINT-11 - Financeiro dominio
 
+Status em 2026-05-22:
+Em execucao avancada. Recebiveis ganharam console SaaS com lista operacional, status, cobranca e detalhe lateral. O modal de pagamento stub foi padronizado como passo temporario para marcar como pago. Ainda restam relatorios financeiros mais profundos, despesas e conciliacao como fases posteriores.
+
 Objetivo:
 Centralizar financeiro do local.
 
@@ -523,6 +532,9 @@ QA:
 
 ### SPRINT-12 - Relatorios MVP por listas filtradas
 
+Status em 2026-05-22:
+Em execucao avancada. Relatorios ganharam console inicial com filtros, indicadores e tabelas por area, sem ocupar a rotina operacional como card diario. Relatorios avancados seguem documentados como expansao posterior.
+
 Objetivo:
 Planejar relatorios sem tirar foco da operacao.
 
@@ -554,6 +566,9 @@ QA:
 - filtros aplicados.
 
 ### SPRINT-13 - Competicoes trabalho hub
+
+Status em 2026-05-22:
+Em execucao avancada. O modo Trabalho em Competicoes deixou de usar sidebar paralela Torneios/Ligas/Resultados no desktop e passou a usar o dominio global `Competicoes`. O hub foi recriado como console SaaS com hero operacional unico, KPIs, fila por fase, linhas de acao e painel lateral de detalhe. Descoberta publica permanece separada do modo Trabalho.
 
 Objetivo:
 Separar organizador de jogador.
@@ -588,6 +603,9 @@ QA:
 - staff.
 
 ### SPRINT-14 - Torneio cockpit por fase
+
+Status em 2026-05-22:
+Em execucao avancada. O cockpit de torneio ja responde por fase com CTA dominante, bloqueio atual, metricas e abas internas compactas. Nesta rodada as abas de competicao foram endurecidas para nao virarem segundo menu branco/ilegivel e para funcionar como regua de subareas da pagina atual.
 
 Objetivo:
 Transformar admin de torneio em cockpit operacional.
@@ -630,6 +648,9 @@ QA:
 
 ### SPRINT-15 - Liga cockpit por fase
 
+Status em 2026-05-22:
+Em execucao avancada. A liga owner ja possui cockpit por fase, mas havia vazamento de experiencia Player ao abrir liga pelo hub profissional. Corrigido o fluxo do Hub de Competicoes para abrir ligas com `mode=work`, mantendo a rota publica preservada e usando sidebar/topbar do Work SaaS quando a entrada e profissional.
+
 Objetivo:
 Separar participante e owner em liga.
 
@@ -664,6 +685,9 @@ QA:
 
 ### SPRINT-16 - Loja/POS
 
+Status em 2026-05-22:
+Em execucao avancada. Loja/POS carrega como dominio de trabalho com venda rapida, produtos, estoque e vendas do dia em abas compactas. Validado visualmente em desktop apos aguardar dados reais. Ainda deve receber a mesma logica final de detalhe lateral/checkout quando o fluxo de pagamento definitivo substituir o modal stub.
+
 Objetivo:
 Organizar POS como fluxo rapido.
 
@@ -692,6 +716,9 @@ QA:
 
 ### SPRINT-17 - Comunicacao dominio
 
+Status em 2026-05-22:
+Em execucao avancada. Comunicacao ganhou console separado para mensagens, templates e filas contextuais, evitando que WhatsApp fique espalhado sem padrao. Ainda falta ligar todos os pontos de mensagem em uma matriz final de templates.
+
 Objetivo:
 Centralizar comunicacao sem tirar contexto dos fluxos.
 
@@ -719,6 +746,9 @@ QA:
 - cliente sem telefone.
 
 ### SPRINT-18 - Administracao e configuracoes
+
+Status em 2026-05-22:
+Em execucao avancada. Administracao passou a concentrar setup, equipe, permissoes futuras e configuracoes estruturais fora da rotina diaria. A tela usa console com checklist e detalhe lateral, separando operacao de configuracao rara.
 
 Objetivo:
 Tirar setup raro da rotina diaria.

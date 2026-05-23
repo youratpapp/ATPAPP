@@ -6998,6 +6998,391 @@ button:disabled {
   white-space: nowrap;
 }
 
+.competition-saas-console {
+  display: grid;
+  gap: 12px;
+  max-width: 1280px;
+}
+
+.competition-saas-hero,
+.competition-saas-kpis article,
+.competition-saas-main,
+.competition-saas-detail {
+  background: linear-gradient(135deg, rgba(9, 24, 39, 0.96), rgba(8, 18, 31, 0.92));
+  border: 1px solid rgba(116, 147, 178, 0.22);
+  border-radius: 10px;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.26);
+}
+
+.competition-saas-hero {
+  align-items: center;
+  background-image:
+    linear-gradient(90deg, rgba(6, 15, 27, 0.96), rgba(7, 20, 34, 0.86)),
+    var(--asset-court-night);
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  min-height: 128px;
+  padding: 20px 22px;
+}
+
+.competition-saas-hero span,
+.competition-saas-detail > header span,
+.competition-saas-history span {
+  color: #3ff28b;
+  font-size: 0.74rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.competition-saas-hero h2 {
+  color: #f8fafc;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 0.95;
+  margin: 6px 0 8px;
+}
+
+.competition-saas-hero p {
+  color: #c9d5e7;
+  font-size: var(--font-size-sm);
+  font-weight: 760;
+  margin: 0;
+  max-width: 620px;
+}
+
+.competition-saas-actions {
+  justify-content: flex-end;
+  min-width: max-content;
+}
+
+.competition-saas-actions button,
+.competition-saas-detail > button {
+  min-height: 42px;
+}
+
+.competition-saas-actions button:first-child,
+.competition-saas-detail > button.primary {
+  background: linear-gradient(135deg, #23c55e, #13a95c);
+  border: 0;
+  color: #ffffff;
+  box-shadow: 0 14px 30px rgba(35, 197, 94, 0.22);
+}
+
+.competition-saas-actions button:not(:first-child) {
+  background: rgba(8, 20, 34, 0.9);
+  border: 1px solid rgba(116, 147, 178, 0.28);
+  color: #f8fafc;
+}
+
+.competition-saas-kpis {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.competition-saas-kpis article {
+  display: grid;
+  gap: 2px;
+  min-height: 86px;
+  padding: 14px;
+}
+
+.competition-saas-kpis strong {
+  color: #f8fafc;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.competition-saas-kpis span {
+  color: #f8fafc;
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+}
+
+.competition-saas-kpis small {
+  color: #aebbd0;
+  font-size: var(--font-size-xs);
+  font-weight: 780;
+}
+
+.competition-saas-layout {
+  align-items: start;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 320px;
+}
+
+.competition-saas-main,
+.competition-saas-detail {
+  padding: 12px;
+}
+
+.competition-saas-tabs {
+  align-items: center;
+  background: rgba(4, 12, 23, 0.78);
+  border: 1px solid rgba(116, 147, 178, 0.18);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-bottom: 12px;
+  padding: 6px;
+}
+
+.competition-saas-tabs button {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: #aebbd0;
+  font-size: var(--font-size-xs);
+  font-weight: 900;
+  min-height: 34px;
+}
+
+.competition-saas-tabs button.active,
+.competition-saas-tabs button:hover {
+  background: rgba(35, 193, 99, 0.18);
+  color: #f8fafc;
+}
+
+.competition-saas-table {
+  display: grid;
+  gap: 10px;
+}
+
+.competition-saas-table-head,
+.competition-saas-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(220px, 1.25fr) minmax(120px, 0.58fr) minmax(160px, 0.9fr) minmax(120px, 0.62fr);
+}
+
+.competition-saas-table-head {
+  color: #95a4bb;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  padding: 0 12px 4px;
+  text-transform: uppercase;
+}
+
+.competition-saas-phase {
+  display: grid;
+  gap: 6px;
+}
+
+.competition-saas-phase > header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px 2px;
+}
+
+.competition-saas-phase > header strong {
+  color: #f8fafc;
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+}
+
+.competition-saas-phase > header span {
+  align-items: center;
+  background: rgba(35, 193, 99, 0.14);
+  border: 1px solid rgba(35, 193, 99, 0.34);
+  border-radius: 999px;
+  color: var(--color-primary-strong);
+  display: inline-flex;
+  font-size: var(--font-size-xs);
+  font-weight: 950;
+  min-width: 28px;
+  justify-content: center;
+  padding: 3px 8px;
+}
+
+.competition-saas-row {
+  align-items: center;
+  background: rgba(12, 27, 45, 0.82);
+  border: 1px solid rgba(116, 147, 178, 0.2);
+  border-radius: 8px;
+  color: #f8fafc;
+  min-height: 64px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.competition-saas-row:hover {
+  background: rgba(18, 40, 63, 0.94);
+  border-color: rgba(35, 193, 99, 0.46);
+}
+
+.competition-saas-row.urgent {
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.competition-saas-row.done {
+  opacity: 0.72;
+}
+
+.competition-saas-row span {
+  color: #c9d5e7;
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+  min-width: 0;
+}
+
+.competition-saas-row strong,
+.competition-saas-row small {
+  display: block;
+}
+
+.competition-saas-row strong {
+  color: #f8fafc;
+  font-size: var(--font-size-sm);
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.competition-saas-row small {
+  color: #9eacc1;
+  font-size: var(--font-size-xs);
+  font-weight: 760;
+  margin-top: 2px;
+}
+
+.competition-saas-detail {
+  display: grid;
+  gap: 14px;
+  position: sticky;
+  top: 88px;
+}
+
+.competition-saas-detail > header {
+  border-bottom: 1px solid rgba(116, 147, 178, 0.2);
+  display: grid;
+  gap: 4px;
+  padding-bottom: 12px;
+}
+
+.competition-saas-detail > header strong {
+  color: #f8fafc;
+  font-size: 1.18rem;
+  line-height: 1.15;
+}
+
+.competition-saas-detail > header small {
+  color: #aebbd0;
+  font-size: var(--font-size-xs);
+  font-weight: 760;
+}
+
+.competition-saas-detail dl {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.competition-saas-detail dl div {
+  border-bottom: 1px solid rgba(116, 147, 178, 0.14);
+  display: grid;
+  gap: 4px;
+  padding: 10px 0;
+}
+
+.competition-saas-detail dt {
+  color: #95a4bb;
+  font-size: var(--font-size-xs);
+  font-weight: 850;
+}
+
+.competition-saas-detail dd {
+  color: #f8fafc;
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  margin: 0;
+}
+
+.competition-saas-history {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(116, 147, 178, 0.18);
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+}
+
+.competition-saas-history strong {
+  color: #f8fafc;
+  font-size: var(--font-size-sm);
+}
+
+.competition-saas-history button {
+  justify-self: start;
+  min-height: 32px;
+}
+
+.competition-saas-empty {
+  margin: 0;
+}
+
+@media (max-width: 1180px) {
+  .competition-saas-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .competition-saas-detail {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .competition-saas-console {
+    gap: 10px;
+  }
+
+  .competition-saas-hero {
+    align-items: stretch;
+    flex-direction: column;
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .competition-saas-hero h2 {
+    font-size: 2rem;
+  }
+
+  .competition-saas-actions {
+    justify-content: stretch;
+  }
+
+  .competition-saas-actions button {
+    flex: 1;
+  }
+
+  .competition-saas-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .competition-saas-tabs {
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .competition-saas-tabs button {
+    min-width: max-content;
+    padding-inline: 12px;
+  }
+
+  .competition-saas-table-head {
+    display: none;
+  }
+
+  .competition-saas-row {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+}
+
 .competition-discovery-action {
   align-items: flex-start;
   background: var(--color-surface);
@@ -29569,6 +29954,1775 @@ label {
   }
 }
 
+/* SaaS hard-target: Clientes uses table + Cliente 360 drawer, not stacked action cards. */
+.app-shell--management .place-booking-panel:has(.clients-360-workspace) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.app-shell--management .clients-workspace:has(.clients-360-workspace) {
+  display: grid;
+  gap: 12px;
+}
+
+.app-shell--management .clients-workspace:has(.clients-360-workspace) > .academy-workspace-top {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.app-shell--management .clients-workspace:has(.clients-360-workspace) > .academy-workspace-top > div:first-child {
+  display: none;
+}
+
+.app-shell--management .clients-workspace:has(.clients-360-workspace) .place-workspace-tabs {
+  background: rgba(8, 18, 31, 0.86);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.app-shell--management .clients-workspace:has(.clients-360-workspace) .place-workspace-tabs button {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: rgba(226, 232, 240, 0.78);
+  flex: 0 0 auto;
+  min-width: 150px;
+  padding: 14px 18px;
+}
+
+.app-shell--management .clients-workspace:has(.clients-360-workspace) .place-workspace-tabs button.active {
+  background: rgba(34, 197, 94, 0.08);
+  border-bottom-color: #22c55e;
+  color: #f8fafc;
+}
+
+.app-shell--management .clients-360-workspace {
+  display: grid;
+  gap: 12px;
+  max-width: 1280px;
+  width: 100%;
+}
+
+.app-shell--management .clients-360-head {
+  align-items: end;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  min-height: 80px;
+}
+
+.app-shell--management .clients-360-head span {
+  color: #22c55e;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.app-shell--management .clients-360-head h2 {
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.app-shell--management .clients-360-head p {
+  color: rgba(226, 232, 240, 0.78);
+  font-weight: 700;
+  margin: 0;
+}
+
+.app-shell--management .clients-360-toolbar,
+.app-shell--management .clients-360-table,
+.app-shell--management .clients-360-drawer {
+  background: rgba(8, 18, 31, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+}
+
+.app-shell--management .clients-360-toolbar {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(260px, 1fr) 170px 140px auto;
+  padding: 10px;
+}
+
+.app-shell--management .clients-360-toolbar input,
+.app-shell--management .clients-360-toolbar select {
+  background: rgba(3, 7, 18, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 7px;
+  color: #f8fafc;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 0 12px;
+}
+
+.app-shell--management .clients-360-toolbar strong {
+  color: #bbf7d0;
+  justify-self: end;
+}
+
+.app-shell--management .clients-360-layout {
+  align-items: start;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 304px;
+}
+
+.app-shell--management .clients-360-table {
+  display: grid;
+  overflow: hidden;
+}
+
+.app-shell--management .clients-360-table-row {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  color: rgba(226, 232, 240, 0.84);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(210px, 1.3fr) 95px 150px minmax(150px, 1fr) 150px 100px;
+  min-height: 50px;
+  padding: 0 12px;
+  text-align: left;
+}
+
+.app-shell--management .clients-360-table-row:not(.head) {
+  cursor: pointer;
+}
+
+.app-shell--management .clients-360-table-row:not(.head):hover,
+.app-shell--management .clients-360-table-row.selected {
+  background: rgba(20, 83, 45, 0.26);
+  box-shadow: inset 3px 0 #22c55e;
+}
+
+.app-shell--management .clients-360-table-row.head {
+  color: rgba(148, 163, 184, 0.9);
+  font-size: 0.74rem;
+  font-weight: 900;
+  min-height: 42px;
+  text-transform: uppercase;
+}
+
+.app-shell--management .clients-360-name {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-shell--management .clients-360-name b,
+.app-shell--management .clients-360-avatar {
+  align-items: center;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.24), rgba(59, 130, 246, 0.16));
+  border: 1px solid rgba(34, 197, 94, 0.34);
+  border-radius: 999px;
+  color: #f8fafc;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-weight: 900;
+  height: 30px;
+  justify-content: center;
+  width: 30px;
+}
+
+.app-shell--management .clients-360-name strong,
+.app-shell--management .clients-360-table-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--management .clients-360-pill {
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.24);
+  border-radius: 999px;
+  color: #bbf7d0;
+  justify-self: start;
+  padding: 4px 9px;
+}
+
+.app-shell--management .clients-360-table-row em {
+  color: #bbf7d0;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.app-shell--management .clients-360-drawer {
+  display: grid;
+  gap: 14px;
+  min-height: 520px;
+  padding: 14px;
+  position: sticky;
+  top: 86px;
+}
+
+.app-shell--management .clients-360-drawer header {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.app-shell--management .clients-360-avatar {
+  font-size: 1.2rem;
+  height: 56px;
+  width: 56px;
+}
+
+.app-shell--management .clients-360-drawer header span {
+  color: rgba(148, 163, 184, 0.92);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.app-shell--management .clients-360-drawer h3,
+.app-shell--management .clients-360-drawer h4 {
+  color: #f8fafc;
+  margin: 0;
+}
+
+.app-shell--management .clients-360-drawer p {
+  color: rgba(226, 232, 240, 0.72);
+  margin: 2px 0 0;
+}
+
+.app-shell--management .clients-360-badges,
+.app-shell--management .clients-360-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-shell--management .clients-360-badges span {
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid rgba(34, 197, 94, 0.26);
+  border-radius: 999px;
+  color: #bbf7d0;
+  font-weight: 900;
+  padding: 6px 10px;
+}
+
+.app-shell--management .clients-360-drawer dl {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 92px minmax(0, 1fr);
+  margin: 0;
+}
+
+.app-shell--management .clients-360-drawer dt {
+  color: rgba(148, 163, 184, 0.9);
+  font-weight: 900;
+}
+
+.app-shell--management .clients-360-drawer dd {
+  color: #f8fafc;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-shell--management .clients-360-drawer section {
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.app-shell--management .clients-360-drawer section article {
+  background: rgba(15, 23, 42, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 7px;
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+}
+
+.app-shell--management .clients-360-drawer section article span {
+  color: rgba(226, 232, 240, 0.78);
+}
+
+@media (max-width: 1180px) {
+  .app-shell--management .clients-360-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--management .clients-360-drawer {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--management .court-calendar-panel--saas .saas-domain-header {
+    gap: 18px;
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .saas-domain-header h2 {
+    font-size: 2.35rem;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .saas-domain-header .primary {
+    width: 100%;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-view-tabs,
+  .app-shell--management .court-calendar-panel--saas .court-calendar-filters {
+    display: flex;
+    overflow-x: auto;
+    padding: 8px;
+    scroll-snap-type: x proximity;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-view-tabs > *,
+  .app-shell--management .court-calendar-panel--saas .court-calendar-filters > * {
+    flex: 0 0 auto;
+    min-width: 150px;
+    scroll-snap-align: start;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-filters input,
+  .app-shell--management .court-calendar-panel--saas .court-calendar-filters select {
+    height: 46px;
+  }
+
+  .app-shell--management .court-calendar-workbench {
+    display: block;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-board {
+    display: block;
+    min-height: auto;
+    overflow-x: visible;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-time-rail {
+    display: none !important;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-column {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-column > strong {
+    min-height: 48px;
+    padding: 0 16px;
+  }
+
+  .app-shell--management .court-calendar-panel--saas .court-calendar-slot {
+    min-height: 70px;
+    padding: 5px 10px;
+  }
+
+  .app-shell--management .court-agenda-event-button,
+  .app-shell--management .court-calendar-free-slot {
+    min-height: 60px;
+    padding: 8px 12px;
+  }
+
+  .app-shell--management .court-calendar-detail-drawer:has(.court-calendar-detail-empty) {
+    display: none;
+  }
+
+  .app-shell--management .court-calendar-detail-drawer {
+    position: fixed;
+    inset: auto 14px 92px 14px;
+    z-index: 80;
+    max-height: 64vh;
+    overflow: auto;
+    border-radius: 16px;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+  }
+
+  .administration-console {
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .administration-console__hero,
+  .administration-console__metrics,
+  .administration-console__body,
+  .administration-console__resource-grid,
+  .administration-console__section-head {
+    grid-template-columns: 1fr;
+  }
+
+  .administration-console__hero h1 {
+    font-size: 2.55rem;
+  }
+
+  .administration-console__hero-actions {
+    display: grid;
+  }
+
+  .administration-console__row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .administration-console__row--head {
+    display: none;
+  }
+
+  .administration-console__drawer {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell--management .clients-360-head,
+  .app-shell--management .clients-360-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--management .clients-360-table {
+    overflow-x: auto;
+  }
+
+  .app-shell--management .clients-360-table-row {
+    min-width: 900px;
+  }
+}
+
+/* SaaS hard-target: Financeiro is a receivables console with drawer detail. */
+.app-shell--management .place-booking-panel:has(.finance-receivables-console) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.app-shell--management .finance-workspace:has(.finance-receivables-console) > .academy-workspace-top {
+  display: none;
+}
+
+.app-shell--management .academy-workspace:has(.academy-day-console) > .academy-workspace-top {
+  display: none;
+}
+
+.academy-day-console {
+  border: 1px solid rgba(125, 151, 181, 0.22);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(9, 24, 42, 0.96), rgba(6, 16, 28, 0.98)),
+    var(--surface-strong);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+  padding: 14px;
+}
+
+.academy-day-console__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 4px 14px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.18);
+}
+
+.academy-day-console__header span,
+.academy-day-console__metrics span,
+.academy-day-table__head,
+.academy-day-detail header span,
+.academy-day-detail__section-title span {
+  color: #34f27a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.academy-day-console__header h3 {
+  margin: 4px 0 3px;
+  color: #fff;
+  font-size: clamp(1.55rem, 2vw, 2.2rem);
+  line-height: 1.02;
+}
+
+.academy-day-console__header p,
+.academy-day-detail header p,
+.academy-day-detail__note,
+.academy-day-notices small {
+  margin: 0;
+  color: #aebbd0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.academy-day-console__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.academy-day-console__actions button,
+.academy-day-students__actions button,
+.academy-day-console button.primary {
+  border: 1px solid rgba(125, 151, 181, 0.28);
+  border-radius: 10px;
+  background: rgba(15, 31, 52, 0.9);
+  color: #f6f8fc;
+  min-height: 36px;
+  padding: 0 14px;
+  font-weight: 900;
+}
+
+.academy-day-console button.primary,
+.academy-day-students__actions button:first-child {
+  border-color: rgba(31, 194, 101, 0.72);
+  background: linear-gradient(180deg, #22c861, #109849);
+  color: #fff;
+}
+
+.academy-day-console__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.academy-day-console__metrics article {
+  border: 1px solid rgba(125, 151, 181, 0.18);
+  border-radius: 10px;
+  background: rgba(13, 29, 49, 0.9);
+  min-height: 76px;
+  padding: 12px;
+}
+
+.academy-day-console__metrics article.attention {
+  border-color: rgba(238, 203, 80, 0.42);
+  background: linear-gradient(135deg, rgba(48, 40, 13, 0.55), rgba(13, 29, 49, 0.92));
+}
+
+.academy-day-console__metrics strong {
+  display: block;
+  margin-top: 6px;
+  color: #fff;
+  font-size: 1.75rem;
+  line-height: 0.95;
+}
+
+.academy-day-console__metrics small {
+  display: block;
+  margin-top: 6px;
+  color: #aebbd0;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.academy-day-console__body {
+  display: grid;
+  grid-template-columns: minmax(620px, 1fr) minmax(320px, 380px);
+  gap: 12px;
+  align-items: start;
+}
+
+.academy-day-table,
+.academy-day-detail {
+  border: 1px solid rgba(125, 151, 181, 0.2);
+  border-radius: 14px;
+  background: rgba(8, 21, 36, 0.92);
+  overflow: hidden;
+}
+
+.academy-day-table__head,
+.academy-day-table__row {
+  display: grid;
+  grid-template-columns: 104px 1.3fr 1fr 0.8fr 72px 1fr 86px;
+  gap: 10px;
+  align-items: center;
+}
+
+.academy-day-table__head {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.16);
+  color: #8ba0bc;
+}
+
+.academy-day-table__rows {
+  max-height: 560px;
+  overflow: auto;
+}
+
+.academy-day-table__row {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+  background: transparent;
+  color: #dce5f3;
+  min-height: 58px;
+  padding: 11px 14px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.academy-day-table__row:hover,
+.academy-day-table__row.selected {
+  background: linear-gradient(90deg, rgba(30, 198, 101, 0.18), rgba(11, 29, 50, 0.82));
+}
+
+.academy-day-table__row.selected {
+  box-shadow: inset 3px 0 0 #24d46b;
+}
+
+.academy-day-table__row strong {
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.academy-day-table__row span,
+.academy-day-table__row em {
+  color: #b7c4d6;
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.academy-day-table__row em {
+  justify-self: start;
+  border: 1px solid rgba(32, 196, 101, 0.34);
+  border-radius: 999px;
+  background: rgba(14, 95, 55, 0.34);
+  color: #99f2bd;
+  padding: 5px 9px;
+}
+
+.academy-day-table__row em.warning,
+.academy-day-table__row em.attention {
+  border-color: rgba(238, 203, 80, 0.42);
+  background: rgba(91, 69, 12, 0.38);
+  color: #ffe391;
+}
+
+.academy-day-detail {
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 110px);
+  overflow: auto;
+}
+
+.academy-day-detail header {
+  padding: 18px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.16);
+}
+
+.academy-day-detail h4 {
+  margin: 5px 0 4px;
+  color: #fff;
+  font-size: 1.35rem;
+}
+
+.academy-day-detail__summary,
+.academy-day-detail section {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+}
+
+.academy-day-detail__section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.academy-day-detail__section-title strong {
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.academy-day-students,
+.academy-day-notices {
+  display: grid;
+  gap: 8px;
+}
+
+.academy-day-students article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  border: 1px solid rgba(125, 151, 181, 0.16);
+  border-radius: 12px;
+  background: rgba(13, 29, 49, 0.78);
+  padding: 11px;
+}
+
+.academy-day-students strong {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.academy-day-students small {
+  display: block;
+  margin-top: 2px;
+  color: #aebbd0;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.academy-day-students input {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid rgba(125, 151, 181, 0.24);
+  border-radius: 9px;
+  background: rgba(3, 12, 22, 0.74);
+  color: #fff;
+  padding: 0 10px;
+  font-weight: 800;
+}
+
+.academy-day-students__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.academy-day-students__actions button {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 0.78rem;
+}
+
+.academy-day-students__actions button.secondary {
+  background: rgba(15, 31, 52, 0.9);
+}
+
+.academy-day-notices span {
+  border: 1px solid rgba(125, 151, 181, 0.16);
+  border-radius: 10px;
+  background: rgba(13, 29, 49, 0.74);
+  color: #dce5f3;
+  padding: 9px 10px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+@media (max-width: 1180px) {
+  .academy-day-console__body {
+    grid-template-columns: 1fr;
+  }
+
+  .academy-day-detail {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .academy-day-console__header,
+  .academy-day-console__actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .academy-day-console__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .academy-day-table {
+    overflow-x: auto;
+  }
+
+  .academy-day-table__head,
+  .academy-day-table__row {
+    min-width: 760px;
+  }
+}
+
+.reports-console {
+  border: 1px solid rgba(125, 151, 181, 0.22);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(9, 24, 42, 0.96), rgba(5, 14, 25, 0.98));
+  padding: 16px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+}
+
+.reports-console__header,
+.reports-console__plan,
+.reports-console__body,
+.reports-console__section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.reports-console__header {
+  padding: 8px 2px 16px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.18);
+}
+
+.reports-console__header span,
+.reports-console__plan span,
+.reports-console__metrics span,
+.reports-console__table-head,
+.reports-console__drawer header span,
+.reports-console__section-title span,
+.reports-console__peaks span,
+.reports-console__secondary span {
+  color: #34f27a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.reports-console__header h2,
+.reports-console__drawer h3 {
+  margin: 5px 0 4px;
+  color: #fff;
+  line-height: 1.04;
+}
+
+.reports-console__header h2 {
+  font-size: clamp(1.8rem, 2.6vw, 3rem);
+}
+
+.reports-console__drawer h3 {
+  font-size: 1.35rem;
+}
+
+.reports-console__header p,
+.reports-console__drawer p,
+.reports-console__plan small,
+.reports-console__peaks small {
+  margin: 0;
+  color: #aebbd0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.reports-console__controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.reports-console select,
+.reports-console input,
+.reports-console button {
+  min-height: 38px;
+  border: 1px solid rgba(125, 151, 181, 0.26);
+  border-radius: 10px;
+  background: rgba(8, 18, 32, 0.88);
+  color: #f7fbff;
+  padding: 0 12px;
+  font-weight: 900;
+}
+
+.reports-console button {
+  background: linear-gradient(180deg, #22c861, #109849);
+  border-color: rgba(33, 203, 101, 0.74);
+}
+
+.reports-console__plan {
+  margin-top: 12px;
+  border: 1px solid rgba(125, 151, 181, 0.18);
+  border-radius: 12px;
+  background: rgba(13, 29, 49, 0.84);
+  padding: 12px;
+}
+
+.reports-console__plan strong {
+  display: block;
+  margin-top: 3px;
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.reports-console__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.reports-console__metrics article,
+.reports-console__secondary article,
+.reports-console__peaks article {
+  border: 1px solid rgba(125, 151, 181, 0.18);
+  border-radius: 10px;
+  background: rgba(13, 29, 49, 0.82);
+  padding: 12px;
+}
+
+.reports-console__metrics strong {
+  display: block;
+  margin-top: 8px;
+  color: #fff;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.reports-console__body {
+  align-items: start;
+  display: grid;
+  grid-template-columns: minmax(620px, 1fr) minmax(320px, 380px);
+}
+
+.reports-console__table,
+.reports-console__drawer {
+  border: 1px solid rgba(125, 151, 181, 0.2);
+  border-radius: 14px;
+  background: rgba(8, 21, 36, 0.9);
+  overflow: hidden;
+}
+
+.reports-console__table-head,
+.reports-console__table-row {
+  display: grid;
+  grid-template-columns: 1fr 140px 1.3fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.reports-console__table-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.16);
+  color: #8ba0bc;
+}
+
+.reports-console__table-row {
+  width: 100%;
+  min-height: 58px;
+  border: 0;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+  background: transparent;
+  color: #dce5f3;
+  padding: 11px 14px;
+  text-align: left;
+  font: inherit;
+}
+
+.reports-console__table-row:hover {
+  background: linear-gradient(90deg, rgba(30, 198, 101, 0.16), rgba(11, 29, 50, 0.78));
+}
+
+.reports-console__table-row strong,
+.reports-console__section-title strong,
+.reports-console__peaks strong,
+.reports-console__secondary strong {
+  color: #fff;
+}
+
+.reports-console__table-row span,
+.reports-console__table-row small {
+  color: #b7c4d6;
+  font-weight: 800;
+}
+
+.communication-console {
+  border: 1px solid rgba(125, 151, 181, 0.22);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(9, 24, 42, 0.96), rgba(5, 14, 25, 0.98));
+  padding: 16px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.22);
+}
+
+.communication-console__header,
+.communication-console__section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.communication-console__header {
+  padding: 8px 2px 16px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.18);
+}
+
+.communication-console__header span,
+.communication-console__metrics span,
+.communication-console__table-head,
+.communication-console__drawer header span,
+.communication-console__section-title span,
+.communication-console__templates span {
+  color: #34f27a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.communication-console__header h2,
+.communication-console__drawer h3 {
+  margin: 5px 0 4px;
+  color: #fff;
+  line-height: 1.04;
+}
+
+.communication-console__header h2 {
+  font-size: clamp(1.8rem, 2.6vw, 3rem);
+}
+
+.communication-console__header p,
+.communication-console__drawer p,
+.communication-console__metrics small,
+.communication-console__templates small {
+  margin: 0;
+  color: #aebbd0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.communication-console__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.communication-console button {
+  min-height: 38px;
+  border: 1px solid rgba(125, 151, 181, 0.26);
+  border-radius: 10px;
+  background: rgba(8, 18, 32, 0.88);
+  color: #f7fbff;
+  padding: 0 12px;
+  font-weight: 900;
+}
+
+.communication-console button.primary,
+.communication-console__actions button.primary {
+  background: linear-gradient(180deg, #22c861, #109849);
+  border-color: rgba(33, 203, 101, 0.74);
+}
+
+.communication-console__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.communication-console__metrics article {
+  border: 1px solid rgba(125, 151, 181, 0.18);
+  border-radius: 10px;
+  background: rgba(13, 29, 49, 0.82);
+  padding: 12px;
+}
+
+.communication-console__metrics article.attention {
+  border-color: rgba(238, 203, 80, 0.42);
+  background: linear-gradient(135deg, rgba(48, 40, 13, 0.55), rgba(13, 29, 49, 0.92));
+}
+
+.communication-console__metrics strong {
+  display: block;
+  margin-top: 8px;
+  color: #fff;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.communication-console__body {
+  display: grid;
+  grid-template-columns: minmax(620px, 1fr) minmax(320px, 380px);
+  gap: 14px;
+  align-items: start;
+}
+
+.communication-console__table,
+.communication-console__drawer {
+  border: 1px solid rgba(125, 151, 181, 0.2);
+  border-radius: 14px;
+  background: rgba(8, 21, 36, 0.9);
+  overflow: hidden;
+}
+
+.communication-console__table-head,
+.communication-console__row {
+  display: grid;
+  grid-template-columns: 150px 130px 1fr 120px;
+  gap: 12px;
+  align-items: center;
+}
+
+.communication-console__table-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.16);
+  color: #8ba0bc;
+}
+
+.communication-console__row {
+  width: 100%;
+  min-height: 64px;
+  border: 0;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+  background: transparent;
+  color: #dce5f3;
+  padding: 11px 14px;
+  text-align: left;
+  font: inherit;
+}
+
+.communication-console__row:hover,
+.communication-console__row.attention {
+  background: linear-gradient(90deg, rgba(30, 198, 101, 0.13), rgba(11, 29, 50, 0.78));
+}
+
+.communication-console__row strong,
+.communication-console__section-title strong,
+.communication-console__templates strong {
+  color: #fff;
+}
+
+.communication-console__row em {
+  justify-self: start;
+  border: 1px solid rgba(32, 196, 101, 0.34);
+  border-radius: 999px;
+  background: rgba(14, 95, 55, 0.34);
+  color: #99f2bd;
+  padding: 5px 9px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.communication-console__row.attention em {
+  border-color: rgba(238, 203, 80, 0.42);
+  background: rgba(91, 69, 12, 0.38);
+  color: #ffe391;
+}
+
+.communication-console__row span,
+.communication-console__row small {
+  color: #b7c4d6;
+  font-weight: 800;
+}
+
+.communication-console__drawer {
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 110px);
+  overflow: auto;
+  padding-bottom: 16px;
+}
+
+.communication-console__drawer header,
+.communication-console__drawer section {
+  padding: 16px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+}
+
+.communication-console__drawer > button {
+  width: calc(100% - 32px);
+  margin: 16px;
+}
+
+.communication-console__templates {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.communication-console__templates article {
+  border: 1px solid rgba(125, 151, 181, 0.18);
+  border-radius: 10px;
+  background: rgba(13, 29, 49, 0.82);
+  padding: 12px;
+}
+
+.communication-console__templates strong {
+  display: block;
+  margin: 4px 0;
+}
+
+.reports-console__drawer {
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 110px);
+  overflow: auto;
+}
+
+.reports-console__drawer header,
+.reports-console__drawer section {
+  padding: 16px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+}
+
+.reports-console__secondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(125, 151, 181, 0.12);
+}
+
+.reports-console__peaks {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.reports-console__peaks strong,
+.reports-console__secondary strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1.1rem;
+}
+
+.administration-console {
+  width: min(100%, 1080px);
+  min-height: 680px;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(8, 19, 34, 0.95), rgba(7, 21, 31, 0.88)),
+    var(--surface-court-lines);
+  background-size: cover;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+}
+
+.administration-console__hero,
+.administration-console__metrics,
+.administration-console__section-head,
+.administration-console__body,
+.administration-console__resource-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.administration-console__hero {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.administration-console__hero span,
+.administration-console__metrics span,
+.administration-console__drawer-card span,
+.administration-console__resource-grid span {
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.administration-console__hero h1 {
+  margin: 4px 0;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.95;
+}
+
+.administration-console__hero p,
+.administration-console__drawer-card p,
+.administration-console__section-head span,
+.administration-console__resource-grid small,
+.administration-console__metrics small {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.72);
+  font-weight: 750;
+}
+
+.administration-console__hero-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.administration-console button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #f8fafc;
+  font-weight: 900;
+}
+
+.administration-console button.primary {
+  border-color: rgba(34, 197, 94, 0.74);
+  background: linear-gradient(180deg, #24c65d, #109447);
+  color: #fff;
+  box-shadow: 0 18px 34px rgba(34, 197, 94, 0.26);
+}
+
+.administration-console__metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 14px 0;
+}
+
+.administration-console__metrics article,
+.administration-console__resource-grid article,
+.administration-console__drawer-card {
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  background: rgba(15, 30, 48, 0.74);
+}
+
+.administration-console__metrics strong {
+  display: block;
+  margin: 5px 0 2px;
+  color: #fff;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.administration-console__body {
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+}
+
+.administration-console__main,
+.administration-console__drawer {
+  min-width: 0;
+}
+
+.administration-console__section-head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.administration-console__section-head strong {
+  display: block;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.administration-console__table {
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+}
+
+.administration-console__row {
+  display: grid;
+  grid-template-columns: 1.05fr 0.64fr 1.6fr 0.46fr;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 58px;
+  padding: 10px 12px;
+  border: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0;
+  background: rgba(9, 22, 36, 0.74);
+  text-align: left;
+}
+
+.administration-console__row:last-child {
+  border-bottom: 0;
+}
+
+.administration-console__row--head {
+  min-height: 36px;
+  background: rgba(15, 23, 42, 0.94);
+  color: rgba(148, 163, 184, 0.95);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.administration-console__row:not(.administration-console__row--head) span:first-child {
+  color: #f8fafc;
+  font-weight: 900;
+}
+
+.administration-console__row:not(.administration-console__row--head) span:nth-child(2) {
+  justify-self: start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.administration-console__row.is-done span:nth-child(2) {
+  background: rgba(34, 197, 94, 0.18);
+  color: #86efac;
+}
+
+.administration-console__row.is-pending span:nth-child(2) {
+  background: rgba(234, 179, 8, 0.16);
+  color: #fde68a;
+}
+
+.administration-console__row span:nth-child(3) {
+  color: rgba(203, 213, 225, 0.78);
+  font-weight: 750;
+}
+
+.administration-console__row span:last-child {
+  color: #bbf7d0;
+  font-weight: 900;
+}
+
+.administration-console__resource-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.administration-console__resource-grid strong {
+  display: block;
+  margin: 5px 0 3px;
+  color: #fff;
+}
+
+.administration-console__drawer {
+  display: grid;
+  gap: 12px;
+  position: sticky;
+  top: 92px;
+}
+
+.administration-console__drawer-card {
+  display: grid;
+  gap: 9px;
+}
+
+.administration-console__drawer-card strong {
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.administration-console__drawer-card button {
+  justify-content: center;
+}
+
+.settings-workspace:has(.administration-console) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.settings-workspace:has(.administration-console) > .place-workspace-nav,
+.settings-workspace:has(.administration-console) > .academy-workspace-top {
+  display: none;
+}
+
+.place-settings-panel:has(.administration-console) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+@media (max-width: 1180px) {
+  .reports-console__body {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-console__drawer {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .reports-console__header,
+  .reports-console__plan,
+  .reports-console__controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reports-console__metrics,
+  .reports-console__secondary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reports-console__table {
+    overflow-x: auto;
+  }
+
+  .reports-console__table-head,
+  .reports-console__table-row {
+    min-width: 720px;
+  }
+}
+
+.app-shell--management .finance-receivables-console {
+  display: grid;
+  gap: 12px;
+  max-width: 1280px;
+}
+
+.app-shell--management .finance-console-head {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  min-height: 82px;
+}
+
+.app-shell--management .finance-console-head span,
+.app-shell--management .finance-console-kpis span {
+  color: #22c55e;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.app-shell--management .finance-console-head h2 {
+  color: #f8fafc;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  margin: 4px 0;
+}
+
+.app-shell--management .finance-console-head p {
+  color: rgba(226, 232, 240, 0.78);
+  font-weight: 700;
+  margin: 0;
+}
+
+.app-shell--management .finance-console-kpis {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.app-shell--management .finance-console-kpis article,
+.app-shell--management .finance-console-tabs,
+.app-shell--management .finance-console-toolbar,
+.app-shell--management .finance-receivables-table,
+.app-shell--management .finance-receivable-drawer {
+  background: rgba(8, 18, 31, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+}
+
+.app-shell--management .finance-console-kpis article {
+  display: grid;
+  gap: 5px;
+  min-height: 84px;
+  padding: 12px;
+}
+
+.app-shell--management .finance-console-kpis strong {
+  color: #f8fafc;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.app-shell--management .finance-console-kpis small,
+.app-shell--management .finance-console-head p {
+  color: rgba(203, 213, 225, 0.78);
+}
+
+.app-shell--management .finance-console-tabs,
+.app-shell--management .finance-console-toolbar {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+}
+
+.app-shell--management .finance-console-tabs button,
+.app-shell--management .finance-console-toolbar button {
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 7px;
+  color: #e2e8f0;
+  cursor: pointer;
+  font-weight: 900;
+  padding: 9px 12px;
+}
+
+.app-shell--management .finance-console-tabs button.active {
+  background: #22c55e;
+  color: #052e16;
+}
+
+.app-shell--management .finance-console-tabs button span {
+  margin-left: 8px;
+}
+
+.app-shell--management .finance-console-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto auto;
+}
+
+.app-shell--management .finance-console-toolbar input {
+  background: rgba(3, 7, 18, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 7px;
+  color: #f8fafc;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 0 12px;
+}
+
+.app-shell--management .finance-console-layout {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 304px;
+}
+
+.app-shell--management .finance-receivables-table {
+  display: grid;
+  max-height: min(680px, calc(100vh - 300px));
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.app-shell--management .finance-receivables-row {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  color: rgba(226, 232, 240, 0.84);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(210px, 1.4fr) 150px 130px 150px 120px 90px;
+  min-height: 56px;
+  padding: 0 12px;
+  text-align: left;
+}
+
+.app-shell--management .finance-receivables-row:not(.head) {
+  cursor: pointer;
+}
+
+.app-shell--management .finance-receivables-row:not(.head):hover,
+.app-shell--management .finance-receivables-row.selected {
+  background: rgba(20, 83, 45, 0.22);
+  box-shadow: inset 3px 0 #22c55e;
+}
+
+.app-shell--management .finance-receivables-row.head {
+  color: rgba(148, 163, 184, 0.9);
+  font-size: 0.74rem;
+  font-weight: 900;
+  min-height: 42px;
+  text-transform: uppercase;
+}
+
+.app-shell--management .finance-receivables-row strong {
+  color: #f8fafc;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell--management .finance-receivables-row small {
+  color: rgba(203, 213, 225, 0.72);
+}
+
+.app-shell--management .finance-status-pill {
+  border-radius: 999px;
+  justify-self: start;
+  padding: 5px 9px;
+}
+
+.app-shell--management .finance-status-pill.overdue {
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  color: #fecaca;
+}
+
+.app-shell--management .finance-status-pill.today {
+  background: rgba(250, 204, 21, 0.14);
+  border: 1px solid rgba(250, 204, 21, 0.28);
+  color: #fde68a;
+}
+
+.app-shell--management .finance-status-pill.open,
+.app-shell--management .finance-status-pill.none {
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.24);
+  color: #bbf7d0;
+}
+
+.app-shell--management .finance-receivables-row em {
+  color: #bbf7d0;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.app-shell--management .finance-receivable-drawer {
+  align-content: start;
+  display: grid;
+  gap: 14px;
+  grid-auto-rows: max-content;
+  max-height: min(680px, calc(100vh - 300px));
+  min-height: 520px;
+  overflow-y: auto;
+  padding: 14px;
+  position: sticky;
+  top: 86px;
+}
+
+.app-shell--management .finance-receivable-drawer header span {
+  color: rgba(148, 163, 184, 0.92);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.app-shell--management .finance-receivable-drawer h3,
+.app-shell--management .finance-receivable-drawer h4 {
+  color: #f8fafc;
+  margin: 0;
+}
+
+.app-shell--management .finance-receivable-drawer p {
+  color: rgba(226, 232, 240, 0.76);
+}
+
+.app-shell--management .finance-receivable-amount {
+  color: #f8fafc;
+  font-size: 2rem;
+}
+
+.app-shell--management .finance-receivable-drawer dl {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  margin: 0;
+}
+
+.app-shell--management .finance-receivable-drawer dt {
+  color: rgba(148, 163, 184, 0.9);
+  font-weight: 900;
+}
+
+.app-shell--management .finance-receivable-drawer dd {
+  color: #f8fafc;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-shell--management .finance-receivable-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.app-shell--management .finance-receivable-actions button {
+  min-height: 42px;
+}
+
+@media (max-width: 1180px) {
+  .app-shell--management .finance-console-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--management .finance-receivable-drawer {
+    position: static;
+  }
+}
+
 .app-shell--management .page.places-page {
   max-width: none;
 }
@@ -29640,7 +31794,7 @@ label {
 }
 
 .app-shell--management .court-calendar-panel--saas .court-calendar-board {
-  grid-template-columns: 50px repeat(var(--court-count, 1), minmax(96px, 1fr));
+  grid-template-columns: 50px repeat(var(--court-count, 1), minmax(74px, 1fr));
   min-width: 0;
   min-height: calc(100vh - 278px);
 }
@@ -35097,6 +37251,43 @@ body:has(.app-shell--competition),
   color: #dfffea !important;
 }
 
+.app-shell--competition .competition-tabs {
+  background: rgba(5, 14, 27, 0.92) !important;
+  border: 1px solid rgba(128, 164, 197, 0.22) !important;
+  border-radius: 16px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+  gap: 8px !important;
+  margin: 0 0 14px !important;
+  padding: 8px !important;
+}
+
+.app-shell--competition .competition-tabs button {
+  background: rgba(13, 28, 48, 0.74) !important;
+  border: 1px solid rgba(128, 164, 197, 0.2) !important;
+  border-radius: 12px !important;
+  color: rgba(226, 232, 240, 0.86) !important;
+  min-height: 42px !important;
+  padding: 9px 14px !important;
+}
+
+.app-shell--competition .competition-tabs button:hover,
+.app-shell--competition .competition-tabs button:focus-visible {
+  background: rgba(20, 184, 109, 0.18) !important;
+  border-color: rgba(74, 222, 128, 0.42) !important;
+  color: #f8fafc !important;
+}
+
+.app-shell--competition .competition-tabs button.active {
+  background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+  border-color: rgba(134, 239, 172, 0.48) !important;
+  box-shadow: 0 12px 24px rgba(34, 197, 94, 0.18) !important;
+  color: #ffffff !important;
+}
+
+.app-shell--competition .competition-tabs button span {
+  color: inherit !important;
+}
+
 .app-shell--competition .competition-tabs button.active small {
   background: rgba(255, 255, 255, 0.16) !important;
   border-color: rgba(255, 255, 255, 0.24) !important;
@@ -35942,6 +38133,34 @@ body:has(.app-shell--competition),
 
 .app-shell--competition .competition-hub-tabs button svg {
   color: #4ade80 !important;
+}
+
+.app-shell--competition .competition-feature-panel > button,
+.app-shell--competition .competition-feature-panel header button {
+  background:
+    linear-gradient(180deg, rgba(13, 28, 47, 0.92), rgba(6, 17, 33, 0.88)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border-color: rgba(148, 163, 184, 0.24) !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+.app-shell--competition .competition-feature-panel > button:hover,
+.app-shell--competition .competition-feature-panel > button:focus-visible,
+.app-shell--competition .competition-feature-panel header button:hover,
+.app-shell--competition .competition-feature-panel header button:focus-visible {
+  background:
+    linear-gradient(180deg, rgba(17, 82, 58, 0.88), rgba(8, 24, 40, 0.9)),
+    url("./assets/pdark-messages-chat-bg.png") center / cover no-repeat !important;
+  border-color: rgba(74, 222, 128, 0.42) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.app-shell--competition .competition-feature-panel > button strong,
+.app-shell--competition .competition-feature-panel > button small,
+.app-shell--competition .competition-feature-panel header button {
+  color: inherit !important;
 }
 
 .app-shell--competition .competition-intent-strip {
