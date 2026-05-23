@@ -1,0 +1,11 @@
+{
+  "found": 1,
+  "paidAfter": true,
+  "paidAfterReload": true,
+  "cancelAfter": true,
+  "cancelList": true,
+  "errors": [],
+  "initialDrawer": "x\nDetalhe da reserva\nCliente QA Pagamento\n22:00 - 23:00\nStatus\nAguardando pagamento\nQuadra\nQuadra 1\nCliente\nCliente QA Pagamento\nTelefone\n+55 67 990000092\nPagamento\nPagamento pendente\nObservacao\nQA sprint-92 pagamento/cancelamento\nPagar\nEditar\nWhatsApp troca\nCancelar reserva\nHistorico\nReserva criada no calendario.\nPagamento pendente",
+  "reloadDrawer": "x\nDetalhe da reserva\nCliente QA Pagamento\n22:00 - 23:00\nStatus\nAguardando pagamento\nQuadra\nQuadra 1\nCliente\nCliente QA Pagamento\nTelefone\n+55 67 990000092\nPagamento\nPago\nObservacao\nQA sprint-92 pagamento/cancelamento\nEditar\nWhatsApp troca\nCancelar reserva\nHistorico\nReserva criada no calendario.\nPago",
+  "cancelDrawer": "x\nDetalhe da reserva\nCliente QA Pagamento\n22:00 - 23:00\nStatus\nCancelada\nQuadra\nQuadra 1\nCliente\nCliente QA Pagamento\nTelefone\n+55 67 990000092\nPagamento\nReserva cancelada\nObservacao\nQA sprint-92 pagamento/cancelamento\nWhatsApp\nHistorico\nReserva criada no calendario.\nReserva cancelada e mantida no historico operacional.\nReserva cancelada"
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "inicio",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "durationMs": 8996,
+    "errors": [],
+    "title": "Trabalho Hoje",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nCENTRAL OPERACIONAL\nTrabalho Hoje\n\nPendencias, agenda e acoes importantes da sua operacao.\n\nO que precisa de atencao agora?\n\nResolva reservas, pagamentos, aulas e competicoes em poucos cliques.\n\nVer pendencias\nAbrir agenda\n98 acoes em foco\n0\nAgenda e reservas\n72\nAulas e encaixes pendentes\n20\nPessoas para acionar\nR$ 2.304,00\nVendas da cantina\nR$ 0,00\nSaldo operacional\nAgenda em andamento\nAbrir agenda\nIgor Yamamoto | 2026-05-16\nAbrir aulas\nOlivia Esteves | 2026-"
+  },
+  {
+    "name": "agenda",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "durationMs": 1470,
+    "errors": [],
+    "title": "Agenda",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloqueios\nTurmas\nAulas avulsas\nTodas as quadras\nQuadra 1\nQuadra 2\nQuadra 3\nQuadra 4\nQuadra 5\nQuadra 6\nTodos os professores\nRenato Siqueira\nTodas as turmas\nKids Iniciante 1\nAvancado Ranking 1\nIntermediario Manha 2\nProfissional Treino 2\nTESTE TURMA\nAdulto Iniciante 1\nPrimeira Classe 1\nIntermediario No"
+  },
+  {
+    "name": "academia",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+    "durationMs": 1469,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma\nAULAS HOJE\n4\nOrdenadas por horario\nALUNOS\n13\nMatriculas ativas nas aulas de hoje\nAVISOS PREVIOS\n0\nAusencias avisadas antes da aula\nREPOSICOES\n2\nCreditos abertos vinculados\n06:30 - 07:30\nDuplas Competitivo 1\nRenato Siqueira\nQuadra 6\n4/4\nEm agenda\nDetalhar\n12:00 - 13:00\nAdulto Iniciante 2\nRenato Siqueira\nQuadra 6\n3/4\nEm agenda\nDe"
+  },
+  {
+    "name": "clientes",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes",
+    "durationMs": 1472,
+    "errors": [],
+    "title": "Clientes",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nGERENCIAMENTO\nClientes\n\nLeads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.\n\nNovo cliente\nTodos os tipos\nAlunos\nSocios\nCRM\nAtivos\nTodos\n145 clientes ativos\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\nAulas\nAG\nAna Gomes\nAtivo\nAluno\n+55 67 990000137\nAulas\nAG\nAna Gomes\nAtivo\nSocio Performance\n+55 67 990000137\nReceita\nAQ\nAna Queiroz\nAtivo\nAluno\n+55 67 990005617\nAulas\nAQ\nAna Queiroz\nAtivo\nSocio Performance\n+55 67 990005617\nReceita\nAQ\n"
+  },
+  {
+    "name": "financeiro",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro",
+    "durationMs": 1461,
+    "errors": [],
+    "title": "Receber",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 25.566,00\n118 recebivel(is) no filtro\nVENCIDOS\nR$ 25.566,00\n118 cobranca(s)\nVENCE HOJE\n0\nacao recomendada hoje\nTodos\n118\nVencidos\n118\nHoje\n0\nAulas\n59\nPlanos\n59\nCobrar planos\nCobrar alunos\nAna Gomes\nSocio Performance\nPlano de sócio\nVencido em 05/05\nVencido\nR$ 259,00\nAna Queiroz\nSocio Performance\nPlano de sócio\nVencido em 05/05\n"
+  },
+  {
+    "name": "loja-pos",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos",
+    "durationMs": 1493,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nLoja / POS\nRegistrar venda rapida para aluno, jogador ou cliente avulso.\nVenda rapida\nEscolha um produto cadastrado ou registre uma venda avulsa.\nR$ 0,00\nBUSCAR PRODUTO\nVenda avulsa\nAgua sem gas\nBebidas\nR$ 5,00 | 40 em estoque\nAluguel raquete\nServicos\nR$ 20,00 | 5 em estoque\nBarra de proteina\nLanches\nR$ 15,00 | 9 em estoque\nBola tubo\nPro shop\nR$ 52,00 | 7 em estoque\nCafe espresso\nBebidas\nR$ 7,00 | 60 em estoque\nIsotonico\nBebidas\nR$ 9,00 | 22 em estoque\nMunhequ"
+  },
+  {
+    "name": "competicoes",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/competicoes",
+    "durationMs": 1492,
+    "errors": [],
+    "title": "Quais competicoes precisam de acao?",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": false,
+    "hasLogin": false,
+    "textStart": "Carregando competicoes\n\nSeparando competicoes para jogar, descobrir ou organizar conforme seu perfil.\n\nCOMPETITION OS\nQuais competicoes precisam de acao?\n\nTorneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho.\n\nCriar torneio\nCriar liga\n0\nBloqueios\nprecisam de acao\n0\nEm operacao\ntorneios e ligas ativos\n0\nTorneios\nno seu workspace\n0\nLigas\ntemporadas e rodadas\nTodos\nTorneios\nLigas\nPendencias\nHistorico\nComece criando uma competicao\nCrie torneio para evento pon"
+  },
+  {
+    "name": "comunicacao",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "durationMs": 1470,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nAgenda\nAulas\nFinanceiro\nMais"
+  },
+  {
+    "name": "relatorios",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "durationMs": 1467,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nAgenda\nAulas\nFinanceiro\nMais"
+  },
+  {
+    "name": "administracao",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao",
+    "durationMs": 1466,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nEscalao Admin\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nAgenda\nAulas\nFinanceiro\nMais"
+  }
+]

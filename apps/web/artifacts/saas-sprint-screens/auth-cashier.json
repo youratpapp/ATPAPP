@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5175",
+      "localStorage": [
+        {
+          "name": "sb-xdopstommqojjofapzjl-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6ImJlY2M3ZmZmLTA0MmEtNDkwMC1hOTUzLTYxZmMzZTkwZDNmYyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3hkb3BzdG9tbXFvampvZmFwempsLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI2M2UyOWJiYi1jZmFhLTQ0YmEtYmU3Zi0xNmJkYThjNDY1MmYiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc5NTcxODU1LCJpYXQiOjE3Nzk1NjgyNTUsImVtYWlsIjoiY2FpeGEucHJpbWVAZGVtby5hdHAubG9jYWwiLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImRpc3BsYXlfbmFtZSI6IkJydW5vIENhaXhhIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3Nzk1NjgyNTV9XSwic2Vzc2lvbl9pZCI6ImI3ODY4M2ZmLWJjODUtNGE1OS04YjhkLWM3MGQ1YTViOGExYiIsImlzX2Fub255bW91cyI6ZmFsc2V9.z1Oq9p4oS11zbAz4yQQsSNHCbHctqRYvTNh13GpHqSNmb4RaC6Lntte7h7q58Df3IzLwVcp7MIETzNqfiZduRA\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1779571855,\"refresh_token\":\"5xp4edoih7w5\",\"user\":{\"id\":\"63e29bbb-cfaa-44ba-be7f-16bda8c4652f\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"caixa.prime@demo.atp.local\",\"email_confirmed_at\":\"2025-11-26T15:55:10.253589Z\",\"phone\":\"\",\"confirmed_at\":\"2025-11-26T15:55:10.253589Z\",\"last_sign_in_at\":\"2026-05-23T20:30:55.579860026Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"display_name\":\"Bruno Caixa\"},\"identities\":[{\"identity_id\":\"cfe3b9b9-fbf9-43ba-84f0-4f5df4201d47\",\"id\":\"63e29bbb-cfaa-44ba-be7f-16bda8c4652f\",\"user_id\":\"63e29bbb-cfaa-44ba-be7f-16bda8c4652f\",\"identity_data\":{\"email\":\"caixa.prime@demo.atp.local\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"63e29bbb-cfaa-44ba-be7f-16bda8c4652f\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-05-15T15:55:10.253589Z\",\"created_at\":\"2026-05-15T15:55:10.253589Z\",\"updated_at\":\"2026-05-15T15:55:10.253589Z\",\"email\":\"caixa.prime@demo.atp.local\"}],\"created_at\":\"2025-11-15T15:55:10.253589Z\",\"updated_at\":\"2026-05-23T20:30:55.587331Z\",\"is_anonymous\":false},\"weak_password\":null}"
+        }
+      ]
+    }
+  ]
+}

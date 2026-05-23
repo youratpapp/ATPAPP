@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5175",
+      "localStorage": [
+        {
+          "name": "sb-xdopstommqojjofapzjl-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6ImJlY2M3ZmZmLTA0MmEtNDkwMC1hOTUzLTYxZmMzZTkwZDNmYyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3hkb3BzdG9tbXFvampvZmFwempsLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNmM1NDhkZS1iMzU2LTQxYjgtOWUxYy01Y2RhYjBjOWRkNWYiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc5NTcxODY0LCJpYXQiOjE3Nzk1NjgyNjQsImVtYWlsIjoib3JnYW5pemFkb3IuY2lyY3VpdG9AZGVtby5hdHAubG9jYWwiLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImRpc3BsYXlfbmFtZSI6Ik90YXZpbyBDaXJjdWl0byJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzc5NTY4MjY0fV0sInNlc3Npb25faWQiOiI3NTFhNTg4NS1mNWNhLTQxMjctOTk1My0wN2VmOTYxM2IxMTgiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.bXqsmT6SBpRpgZGK6BbGBXNHZeKi6NrLv-Sdh6PyoaAPzCcYb-8C5gYGB96BsBFpDYbysX4rfkYen2s_OVzkCQ\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1779571864,\"refresh_token\":\"6d4athfmzsw6\",\"user\":{\"id\":\"36c548de-b356-41b8-9e1c-5cdab0c9dd5f\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"organizador.circuito@demo.atp.local\",\"email_confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"phone\":\"\",\"confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"last_sign_in_at\":\"2026-05-23T20:31:04.071370629Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"display_name\":\"Otavio Circuito\"},\"identities\":[{\"identity_id\":\"beb0537d-6839-45b4-86ee-96f6fe1cf532\",\"id\":\"36c548de-b356-41b8-9e1c-5cdab0c9dd5f\",\"user_id\":\"36c548de-b356-41b8-9e1c-5cdab0c9dd5f\",\"identity_data\":{\"email\":\"organizador.circuito@demo.atp.local\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"36c548de-b356-41b8-9e1c-5cdab0c9dd5f\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-05-15T15:55:10.253589Z\",\"created_at\":\"2026-05-15T15:55:10.253589Z\",\"updated_at\":\"2026-05-15T15:55:10.253589Z\",\"email\":\"organizador.circuito@demo.atp.local\"}],\"created_at\":\"2025-11-04T19:00:02.879222Z\",\"updated_at\":\"2026-05-23T20:31:04.090133Z\",\"is_anonymous\":false},\"weak_password\":null}"
+        }
+      ]
+    }
+  ]
+}

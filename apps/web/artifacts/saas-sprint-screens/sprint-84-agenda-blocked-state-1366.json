@@ -1,0 +1,30 @@
+{
+  "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+  "bodyText": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloqueios\nTurmas\nAulas avulsas\nTodas as quadras\nQuadra 1\nQuadra 2\nQuadra 3\nQuadra 4\nQuadra 5\nQuadra 6\nTodos os professores\nRenato Siqueira\nTodas as turmas\nKids Iniciante 1\nAvancado Ranking 1\nIntermediario Manha 2\nProfissional Treino 2\nAdulto Iniciante 1\nPrimeira Classe 1\nIntermediario Noite 2\nKids Performance 2\nIntermediario Manha 1\nProfissional Treino 1\nFeminino Performance 2\nKids Iniciante 3\nIntermediario Noite 1\nKids Performance 1\nDuplas Competitivo 2\nAdulto Iniciante 3\nFeminino Performance 1\nKids Iniciante 2\nAvancado Ranking 2\nIntermediario Manha 3\nDuplas Competitivo 1\nAdulto Iniciante 2\nPrimeira Classe 2\nIntermediario Noite 3\nFiltros\nHora\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\nQuadra 1\nPedro Vieira\nPendente\nLivre\nLivre\nDaniela Ishikawa\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nRodrigo Araujo\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nQuadra 2\nMariana Klein\nPendente\nLivre\nLivre\nAndre Castro\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nManuela Oliveira\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nQuadra 3\nJoao Farias\nPendente\nLivre\nLivre\nValentina Queiroz\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nIgor Duarte\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nQuadra 4\nGabriela Silva\nPendente\nLivre\nLivre\nRafael Ferreira\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nFernanda Xavier\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nQuadra 5\nDiego Henrique\nPendente\nLivre\nLivre\nOlivia Zanetti\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nCaue Lopes\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nQuadra 6\nAna Borges\nPendente\nDuplas Competitivo 1\nAula\nAdulto Iniciante 2\nAula\nPrimeira Classe 2\nAula\nLucas Nascimento\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nLivre\nIntermediario Noite 3\nAula\nYasmin Almeida\nPendente\nLivre\nLivre\nLivre\nLivre\nLivre\nx\nDetalhe da reserva\nGabriela Silva\n06:00 - 07:00\nStatus\nConfirmada\nQuadra\nQuadra 4\nCliente\nGabriela Silva\nTelefone\n+55 67 990017399\nPagamento\nPagamento pendente\nObservacao\nReserva demo confirmada.\nPagar\nEditar\nWhatsApp troca\nCancelar reserva\nHistorico\nReserva criada no calendario.\nPagamento pendente\n27\n27 itens no filtro\n22\n22 reservas no dia\n24.0h\nreservadas\n29%\nocupacao\n23\nReservas hoje\n0\nAguardando pagamento\n52\nNa espera\n29%\nOcupacao do dia\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao",
+  "hasCalendar": 1,
+  "hasDetail": 0,
+  "hasRows": 102,
+  "consoleCount": 5,
+  "messages": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "debug",
+      "text": "Workspace data timeout: payments"
+    },
+    {
+      "type": "debug",
+      "text": "Workspace data timeout: payments"
+    },
+    {
+      "type": "debug",
+      "text": "Workspace data timeout: focused place"
+    }
+  ]
+}

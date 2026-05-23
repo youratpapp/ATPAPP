@@ -15555,6 +15555,34 @@ button:disabled {
   gap: var(--space-2);
 }
 
+.booking-change-picker-fields button,
+.booking-change-actions .button-like,
+.booking-change-actions button {
+  background: rgba(8, 20, 36, 0.92);
+  border: 1px solid rgba(166, 198, 229, 0.22);
+  border-radius: 8px;
+  color: #f8fafc;
+  font-weight: 950;
+  min-height: 42px;
+  padding: 10px 14px;
+}
+
+.booking-change-picker-fields button,
+.booking-change-actions .primary {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(74, 222, 128, 0.42);
+  color: #ffffff;
+}
+
+.booking-change-actions .secondary {
+  background: rgba(8, 20, 36, 0.92);
+  color: #f8fafc;
+}
+
+.app-shell--player:has(.booking-change-page) .bottom-nav {
+  display: none;
+}
+
 @media (max-width: 720px) {
   .booking-edit-panel,
   .booking-change-summary,
@@ -15564,7 +15592,7 @@ button:disabled {
   }
 
   .booking-change-page {
-    padding: 16px;
+    padding: 16px 16px calc(var(--bottom-nav-height, 76px) + 28px);
     place-items: start center;
   }
 
@@ -30050,6 +30078,13 @@ label {
   box-shadow: inset 3px 0 0 rgba(34, 197, 94, 0.88);
 }
 
+.app-shell--management .court-agenda-event-button.status-cancelled {
+  background: rgba(48, 18, 27, 0.76);
+  border-color: rgba(248, 113, 113, 0.56);
+  box-shadow: inset 3px 0 0 rgba(248, 113, 113, 0.72);
+  opacity: 0.84;
+}
+
 .app-shell--management .court-agenda-event-button.payment-pending {
   border-color: rgba(234, 179, 8, 0.78);
   box-shadow: inset 3px 0 0 rgba(234, 179, 8, 0.9);
@@ -30077,6 +30112,10 @@ label {
 
 .app-shell--management .court-agenda-event-button.payment-paid small {
   color: #bbf7d0;
+}
+
+.app-shell--management .court-agenda-event-button.status-cancelled small {
+  color: #fecaca;
 }
 
 .app-shell--management .court-agenda-event-button.block small {
@@ -30889,6 +30928,61 @@ label {
   color: #fecaca;
 }
 
+.app-shell--management .finance-overview-console {
+  display: grid;
+  gap: 12px;
+}
+
+.app-shell--management .finance-overview-ledger {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.app-shell--management .finance-overview-ledger article {
+  background: rgba(8, 18, 31, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.app-shell--management .finance-overview-ledger header,
+.app-shell--management .finance-overview-ledger div {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.app-shell--management .finance-overview-ledger header {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  padding-bottom: 8px;
+}
+
+.app-shell--management .finance-overview-ledger span,
+.app-shell--management .finance-overview-ledger p {
+  color: rgba(226, 232, 240, 0.76);
+  font-weight: 850;
+  margin: 0;
+}
+
+.app-shell--management .finance-overview-ledger strong {
+  color: #f8fafc;
+  font-weight: 950;
+}
+
+.app-shell--management .finance-overview-ledger header strong {
+  color: #4ade80;
+}
+
+@media (max-width: 880px) {
+  .app-shell--management .finance-overview-ledger {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1180px) {
   .app-shell--management .clients-360-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -31691,7 +31785,8 @@ label {
 .communication-console__table-head,
 .communication-console__drawer header span,
 .communication-console__section-title span,
-.communication-console__templates span {
+.communication-console__templates span,
+.communication-console__templates em {
   color: #34f27a;
   font-size: 0.72rem;
   font-weight: 900;
@@ -31876,6 +31971,18 @@ label {
   border-radius: 10px;
   background: rgba(13, 29, 49, 0.82);
   padding: 12px;
+}
+
+.communication-console__templates em {
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 6px;
+  border: 1px solid rgba(32, 196, 101, 0.26);
+  border-radius: 999px;
+  background: rgba(10, 75, 45, 0.32);
+  padding: 3px 8px;
+  color: #9bf3bd;
+  font-style: normal;
 }
 
 .communication-console__templates strong {

@@ -6515,6 +6515,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       activeEnrollments={academyEnrollments}
                       activeMemberships={memberships}
                       academyClasses={academyClasses}
+                      academyStudentContracts={academyStudentContracts}
                       bookings={bookings}
                       busy={busy}
                       countLabel={countLabel}

@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import { listMyPayments } from "./payments";
+import { listMyPayments, listPaymentsForTargets } from "./payments";
 import {
   listAllPlaces,
   listMyPlaceOrganizations,
@@ -191,17 +191,50 @@ export function mergePlaceAdminResourceEntry<T>(previous: Record<string, T>, pla
   return { ...previous, [placeId]: value };
 }
 
-export async function fetchPlacePaymentsByTarget(): Promise<Record<string, AppPayment>> {
-  const paymentRows = (
-    await Promise.all([
-      listMyPayments("court_booking").catch(() => [] as AppPayment[]),
-      listMyPayments("academy_enrollment").catch(() => [] as AppPayment[]),
-      listMyPayments("academy_student_contract").catch(() => [] as AppPayment[]),
-      listMyPayments("academy_lesson_request").catch(() => [] as AppPayment[]),
-      listMyPayments("place_membership").catch(() => [] as AppPayment[]),
-    ])
-  ).flat();
-  return Object.fromEntries(paymentRows.map((payment) => [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod), payment]));
+type PaymentTargetMap = Partial<Record<"court_booking" | "academy_enrollment" | "academy_student_contract" | "academy_lesson_request" | "place_membership", string[]>>;
+
+function mergePaymentRows(rows: AppPayment[]): Record<string, AppPayment> {
+  return Object.fromEntries(rows.map((payment) => [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod), payment]));
+}
+
+function collectPaymentTargets(entries: PlaceAdminResourceEntry[]): PaymentTargetMap {
+  const targets: PaymentTargetMap = {
+    court_booking: [],
+    academy_enrollment: [],
+    academy_student_contract: [],
+    academy_lesson_request: [],
+    place_membership: [],
+  };
+  for (const entry of entries) {
+    targets.court_booking?.push(...entry.bookings.map((item) => item.id));
+    targets.academy_enrollment?.push(...entry.academyEnrollments.map((item) => item.id));
+    targets.academy_student_contract?.push(...entry.academyStudentContracts.map((item) => item.id));
+    targets.academy_lesson_request?.push(...entry.academyLessonRequests.map((item) => item.id));
+    targets.place_membership?.push(...entry.memberships.map((item) => item.id));
+  }
+  return Object.fromEntries(
+    Object.entries(targets).map(([key, value]) => [key, Array.from(new Set((value || []).filter(Boolean))).slice(0, 250)])
+  ) as PaymentTargetMap;
+}
+
+export async function fetchPlacePaymentsByTarget(targets?: PaymentTargetMap): Promise<Record<string, AppPayment>> {
+  const ownPaymentsPromise = Promise.all([
+    listMyPayments("court_booking").catch(() => [] as AppPayment[]),
+    listMyPayments("academy_enrollment").catch(() => [] as AppPayment[]),
+    listMyPayments("academy_student_contract").catch(() => [] as AppPayment[]),
+    listMyPayments("academy_lesson_request").catch(() => [] as AppPayment[]),
+    listMyPayments("place_membership").catch(() => [] as AppPayment[]),
+  ]);
+  const targetPaymentsPromise = targets
+    ? Promise.all(
+        Object.entries(targets).map(([targetType, targetIds]) =>
+          listPaymentsForTargets(targetType, targetIds || []).catch(() => [] as AppPayment[])
+        )
+      )
+    : Promise.resolve([] as AppPayment[][]);
+  const [ownPayments, targetPayments] = await Promise.all([ownPaymentsPromise, targetPaymentsPromise]);
+  const paymentRows = [...ownPayments.flat(), ...targetPayments.flat()];
+  return mergePaymentRows(paymentRows);
 }
 
 function emptyPlaceAdminResourceEntry(placeId: string): PlaceAdminResourceEntry {
@@ -373,7 +406,7 @@ export async function fetchPlacesWorkspaceData(input: {
     input.isAdminRoute && input.focusPlaceId
       ? withWorkspaceFallback(getPlaceById(input.user, input.focusPlaceId), null as Place | null, "focused place", 3500)
       : Promise.resolve(null as Place | null);
-  const paymentsPromise =
+  const ownPaymentsPromise =
     includeSupportData && (input.isAdminRoute || input.tab === "mine")
       ? withWorkspaceFallback(fetchPlacePaymentsByTarget(), {}, "payments", input.isAdminRoute ? 3000 : 4000)
       : Promise.resolve({} as Record<string, AppPayment>);
@@ -407,6 +440,11 @@ export async function fetchPlacesWorkspaceData(input: {
         input.isAdminRoute ? 3500 : 6000
       )
     : Promise.resolve([] as OpenMatch[]);
-  const [entries, paymentsByTarget, openMatches] = await Promise.all([entriesPromise, paymentsPromise, openMatchesPromise]);
+  const [entries, ownPaymentsByTarget, openMatches] = await Promise.all([entriesPromise, ownPaymentsPromise, openMatchesPromise]);
+  const targetPaymentsByTarget =
+    includeSupportData && (input.isAdminRoute || input.tab === "mine")
+      ? await withWorkspaceFallback(fetchPlacePaymentsByTarget(collectPaymentTargets(entries)), {}, "target payments", input.isAdminRoute ? 4500 : 6000)
+      : {};
+  const paymentsByTarget = { ...ownPaymentsByTarget, ...targetPaymentsByTarget };
   return { entries, openMatches, organizations, paymentsByTarget, places };
 }

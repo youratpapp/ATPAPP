@@ -192,7 +192,7 @@ QA:
 ### SPRINT-03 - Agenda como centro operacional
 
 Status em 2026-05-23:
-Em execucao avancada. A Agenda web foi movida para calendario operacional com tabs compactas, filtros, hora cheia, slot clicavel, drawer lateral no desktop e sheet no mobile. O horario deixou de ser repetido dentro dos blocos, ficando no eixo do calendario e no detalhe lateral. Foi corrigido o carregamento frio em cascata da area Trabalho: organizacoes, unidades, pagamentos, recursos profundos e jogos abertos agora carregam em paralelo, rotas diretas priorizam o local aberto e timeouts secundarios nao seguram a primeira dobra. Em 2026-05-23, a grade foi endurecida para seguir a referencia SaaS: colunas com largura minima profissional, rolagem interna quando houver muitas quadras, drawer lateral sempre preservado, badges compactos por status (`Pendente`, `Pago`, `Aula`, `Bloqueio`) e selecao automatica do primeiro item visivel. QA Playwright em `#/gestao/:placeId/agenda` carregou o calendario sem erro de console. Screenshots: `sprint-33-work-load-agenda-1366.png`, `sprint-61-agenda-visible-autodetail-1600.png`, `sprint-66-agenda-contained-drawer-1600.png`. Pendencia: reduzir ainda mais o tempo percebido com loader progressivo/skeleton e separar dados secundarios da renderizacao inicial.
+Em execucao avancada. A Agenda web foi movida para calendario operacional com tabs compactas, filtros, hora cheia, slot clicavel, drawer lateral no desktop e sheet no mobile. O horario deixou de ser repetido dentro dos blocos, ficando no eixo do calendario e no detalhe lateral. Foi corrigido o carregamento frio em cascata da area Trabalho: organizacoes, unidades, pagamentos, recursos profundos e jogos abertos agora carregam em paralelo, rotas diretas priorizam o local aberto e timeouts secundarios nao seguram a primeira dobra. Em 2026-05-23, a grade foi endurecida para seguir a referencia SaaS: colunas com largura minima profissional, rolagem interna quando houver muitas quadras, drawer lateral sempre preservado, badges compactos por status (`Pendente`, `Pago`, `Aula`, `Bloqueio`) e selecao automatica do primeiro item visivel. QA Playwright em `#/gestao/:placeId/agenda` carregou o calendario sem erro de console. Screenshots: `sprint-33-work-load-agenda-1366.png`, `sprint-61-agenda-visible-autodetail-1600.png`, `sprint-66-agenda-contained-drawer-1600.png`. Em 2026-05-23, as abas `Semana` e `Lista` foram revalidadas: `Semana` abre uma quadra por vez com seletor de quadra e agora limpa detalhe antigo ao trocar de visao, evitando drawer stale; `Lista` abre lista operacional com linhas clicaveis. Evidencias: `sprint-86-agenda-week-clears-stale-detail-final-1600.png`, `sprint-86-agenda-week-clears-stale-detail-final-1600.json` e `sprint-86-agenda-list-tab-1600.png`. Pendencia: reduzir ainda mais o tempo percebido com loader progressivo/skeleton e separar dados secundarios da renderizacao inicial.
 
 Objetivo:
 Transformar Agenda em calendario central de trabalho, com proporcao de SaaS profissional. A agenda nao pode abrir com hero grande, cards aleatorios, fila empilhada ou formulario interno quebrado.
@@ -235,6 +235,8 @@ QA:
 Status em 2026-05-23:
 Em execucao avancada. O clique em reserva abre detalhe lateral no desktop, nao mais formulario estreito dentro do calendario. A edicao fica dentro do drawer em coluna legivel, sem listas/historico competindo durante a edicao. O pagamento aparece como acao do drawer e a validacao visual foi registrada em screenshot. A migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo, o schema do PostgREST foi recarregado e as RPCs `app_update_court_booking_admin`, `app_create_court_booking_change_request`, `app_get_court_booking_change_request` e `app_confirm_court_booking_change_request` foram confirmadas no catalogo. Validacao via Supabase JS confirmou que `app_create_court_booking_change_request` nao retorna mais erro de schema cache. QA Playwright no calendario carregado confirmou drawer com `Detalhe da reserva`, `Pagar`, `Editar`, `WhatsApp troca` e `Cancelar reserva`, sem erros de console. Screenshots: `sprint-34-reservation-drawer-1366.png`, `sprint-65-agenda-adt-professional-grid-1600.png`, `sprint-66-agenda-contained-drawer-1600.png`.
 
+Atualizacao 2026-05-23: corrigido comportamento de cancelamento. Reserva cancelada nao ocupa mais a grade operacional de `Dia`, `Semana` ou `Lista`; ela libera visualmente o horario para nova reserva e permanece rastreavel na aba `Canceladas`, no historico do drawer e no Cliente 360. O drawer de reserva cancelada mostra `Reserva cancelada`, remove a acao de pagar e preserva WhatsApp/historico. QA real criou uma reserva pendente, marcou pagamento, recarregou a pagina, cancelou e validou que ela saiu do dia e apareceu em `Canceladas`, sem erros de console. Evidencias: `sprint-92-payment-persist-cancel-qa-1600.json`, `sprint-92-payment-persist-cancel-qa-1600.png`, `sprint-94-cancelled-hidden-from-day-visible-history-1600.json` e `sprint-94-cancelled-hidden-from-day-visible-history-1600.png`.
+
 Objetivo:
 Criar fluxo operacional completo de reserva.
 
@@ -276,6 +278,8 @@ QA:
 Status em 2026-05-22:
 Em execucao avancada. O modal `PaymentStubDialog` foi padronizado em dark SaaS e aplicado tambem em reserva sem registro previo de pagamento, criando payload temporario por `court_booking`. O botao `Pagar` continua sendo stub para marcar como pago ate a integracao futura do gateway/webhook. Em 2026-05-23, QA Playwright confirmou que o botao `Pagar` no drawer de reserva abre o modal unico com valor, cliente, quadra, horario e acao de pagamento, sem erro de console. Screenshot: `sprint-35-payment-stub-dialog-1366.png`.
 
+Atualizacao 2026-05-23: corrigida a persistencia do pagamento de reserva no workspace. O carregamento administrativo agora busca pagamentos vinculados aos alvos da unidade (`court_booking`, `academy_enrollment`, `academy_student_contract`, `academy_lesson_request`, `place_membership`) em vez de depender apenas de pagamentos do usuario logado. QA confirmou que uma reserva pendente marcada como paga continua `Pago` apos reload. Evidencia: `sprint-92-payment-persist-cancel-qa-1600.json`.
+
 Objetivo:
 Unificar todo ponto de pagamento com modal simples.
 
@@ -311,6 +315,8 @@ QA:
 
 Status em 2026-05-23:
 Em execucao avancada. Templates de reserva/remarcacao usam nome do cliente, local, remetente, horario, contexto e mensagem profissional. A migration `0096_court_booking_change_requests_v1.sql` foi aplicada no Supabase ativo e a RPC `app_create_court_booking_change_request` foi validada sem erro de schema cache. QA Playwright acionou `WhatsApp troca` pela UI, abriu `api.whatsapp.com` com telefone do cliente, mensagem profissional e link de agenda para alteracao de reserva, sem erro de schema cache ou console. Screenshot: `sprint-36-whatsapp-change-action-1366.png`. Pendencia: validar o fluxo do jogador na tela publica `/reservas/alteracao/:token` em mobile.
+
+Atualizacao 2026-05-23: pendencia mobile do link publico validada. O token foi gerado pelo fluxo real da Agenda (`WhatsApp troca`) e aberto em `/reservas/alteracao/:token` em viewport 390px. A tela carregou `Confirmar troca de horario`, mostrou academia, jogador, horario atual, campos de data/hora/duracao e CTA `Ver quadras livres`, sem erro de console. Tambem foi corrigido o padrao visual: botoes brancos foram removidos desta tela e a bottom nav foi ocultada nesse fluxo publico para nao sobrepor o formulario. Build aprovado. Evidencias: `sprint-84-booking-change-public-mobile-final-390.png` e `sprint-84-booking-change-public-mobile-final-390.json`.
 
 Objetivo:
 Adicionar mensagens profissionais nos pontos definidos no blueprint.
@@ -395,6 +401,10 @@ QA:
 Status em 2026-05-22:
 Em execucao avancada. Cliente 360 abre ao lado da lista, mostra status, categoria, telefone, email, responsavel, resumo e acoes principais sem tirar a recepcao da tabela. Em 2026-05-23, o drawer recebeu acoes diretas de recepcao (`Nova reserva`, `Cobrar`, `WhatsApp`, `Abrir aulas`/`Abrir receita`) e resumo operacional de agenda/receita, para nao ser apenas um painel passivo. QA DOM confirmou o drawer `.clients-360-drawer` com essas acoes em desktop 1366. Screenshot: `sprint-38-client-360-actions-1366.png`. Ainda falta enriquecer historico profundo, pagamentos detalhados e reservas por cliente em fase posterior.
 
+Atualizacao 2026-05-23: o Cliente 360 passou a receber reservas e pagamentos reais da unidade. O drawer agora mostra resumo operacional derivado dos vinculos encontrados, lista de `Reservas recentes` com status e acesso para agenda, e lista de `Pagamentos` com status/valor quando houver dados. Foi corrigida uma alteracao parcial que quebrava o build por props nao conectadas. QA Playwright em `/gestao/:placeId/clientes` confirmou drawer, historico, pagamentos e console limpo. Evidencias: `sprint-83-client-360-history-final-1366.png` e `sprint-83-client-360-history-final-1366.json`.
+
+Atualizacao 2026-05-23: Cliente 360 foi elevado para central de vinculo cliente x academia. Ao clicar em um cliente, o drawer mostra dados pessoais, metodo/status de pagamento, plano de socio, contrato de aulas, turmas/matriculas, reservas recentes, pagamentos e resumo operacional. Decisao de produto registrada: Academia e Financeiro podem mostrar listas contextuais de trabalho, mas a ficha consolidada do cliente deve ser uma unica experiencia de consulta e edicao progressiva no Cliente 360. QA: `sprint-93-client-360-academy-relationship-1366.json` e `sprint-93-client-360-academy-relationship-1366.png`.
+
 Objetivo:
 Criar tela/drawer central do cliente.
 
@@ -441,6 +451,8 @@ Em execucao avancada. A rotina de Academia passou a usar mesa operacional com me
 Atualizacao 2026-05-23: a mesa de `Aulas do dia` deixou de ser tabela horizontal no mobile. Em 390px, as aulas viram cards verticais com horario, turma, professor, quadra, alunos, status e acao, sem scroll lateral escondido e sem reaproveitar a estrutura de desktop comprimida. QA 390px: `sprint-75-mobile-academia-cardlist-390.png`.
 
 Atualizacao 2026-05-23: a aba `Academia > Agenda` deixou de ser uma linha do tempo unica quando usada por gestor/secretaria. A visao web agora cruza `hora x quadra`, exibindo professor, turma e quantidade de alunos dentro do card. Turmas no mesmo horario em quadras diferentes ficam lado a lado por coluna; turmas no mesmo horario e mesma quadra ficam empilhadas na mesma celula, com destaque visual de conflito. Para professor, a visao continua como linha do tempo pessoal do dia. Build aprovado e QA 1366 sem erro de console: `sprint-81-academy-agenda-court-matrix-1366.png`.
+
+Atualizacao 2026-05-23: os cards de resumo de Academia deixaram de ser passivos. `Aulas hoje`, `Pendencias`, `Alunos ativos` e `Turmas` agora abrem diretamente a visao correspondente, evitando numero sem caminho operacional. QA Playwright clicou em `Pendencias`, abriu `#/gestao/:placeId/academia?visao=pendencias` com lista real e console limpo. Evidencia: `sprint-82-academy-pending-card-opens-list-1366.png`.
 
 Objetivo:
 Reorganizar aulas/turmas/alunos/professores sem tabs confusas.
@@ -520,6 +532,8 @@ Status em 2026-05-22:
 Em execucao avancada. Recebiveis ganharam console SaaS com lista operacional, status, cobranca e detalhe lateral. A tabela foi compactada para nao competir com o drawer: valor e acoes ficam no detalhe lateral, enquanto a lista mostra cliente, origem, vencimento, status e valor. O modal de pagamento stub foi padronizado como passo temporario para marcar como pago. Ainda restam relatorios financeiros mais profundos, despesas e conciliacao como fases posteriores.
 
 Atualizacao 2026-05-23: no mobile, `Receber` deixou de tentar carregar tabela web com colunas cortadas. A lista de recebiveis vira card operacional com cliente, origem, vencimento, status e valor. KPIs ficam em trilho horizontal e acoes principais continuam no topo. QA 390px sem erro de console: `sprint-73-mobile-finance-cardlist-390.png`.
+
+Atualizacao 2026-05-23: `Financeiro > Resumo` recebeu console executivo com saldo operacional, recebiveis em aberto, despesas recentes, planos/pacotes, quebra de recebiveis por origem, despesas/conciliacao e projecao operacional. A visao foi validada em `/gestao/:placeId/financeiro?visao=resumo` com Playwright 1366px, carregando `.finance-overview-console`, `.finance-overview-ledger`, `Recebiveis por origem` e `Despesas e conciliacao` sem erros de console. Evidencias: `sprint-85-finance-overview-ledger-final-1366.png` e `sprint-85-finance-overview-ledger-final-1366.json`.
 
 Objetivo:
 Centralizar financeiro do local.
@@ -714,6 +728,8 @@ QA:
 Status em 2026-05-22:
 Em execucao avancada. Loja/POS carrega como dominio de trabalho com venda rapida, produtos, estoque e vendas do dia em abas compactas. Validado visualmente em desktop apos aguardar dados reais. Ainda deve receber a mesma logica final de detalhe lateral/checkout quando o fluxo de pagamento definitivo substituir o modal stub.
 
+Atualizacao 2026-05-23: QA de Loja/POS revalidado em `/gestao/:placeId/loja-pos` 1366px. A tela abre direto em `Venda rapida`, mostra produtos cadastrados, venda avulsa, campos `Item/Qtd/Valor unitario/Cliente`, CTA `Registrar venda`, aba `Vendas do dia`, `Estoque baixo` e `Produtos`, sem erro de console. Evidencias: `sprint-88-pos-smoke-1366.png` e `sprint-88-pos-smoke-1366.json`. Pendencia de produto mantida: checkout/detalhe lateral final quando pagamento real substituir o stub.
+
 Objetivo:
 Organizar POS como fluxo rapido.
 
@@ -743,7 +759,9 @@ QA:
 ### SPRINT-17 - Comunicacao dominio
 
 Status em 2026-05-22:
-Em execucao avancada. Comunicacao ganhou console separado para mensagens, templates e filas contextuais, evitando que WhatsApp fique espalhado sem padrao. A fila agora tambem segue o padrao SaaS com selecao de linha, status compacto e drawer lateral com CTA dominante; clicar na linha seleciona contexto, e a acao principal fica no painel lateral. Ainda falta ligar todos os pontos de mensagem em uma matriz final de templates.
+Em execucao avancada. Comunicacao ganhou console separado para mensagens, templates e filas contextuais, evitando que WhatsApp fique espalhado sem padrao. A fila agora tambem segue o padrao SaaS com selecao de linha, status compacto e drawer lateral com CTA dominante; clicar na linha seleciona contexto, e a acao principal fica no painel lateral. A matriz inicial de templates padrao foi adicionada na atualizacao abaixo.
+
+Atualizacao 2026-05-23: a matriz final inicial de templates foi adicionada ao dominio Comunicacao com 10 modelos categorizados: reserva confirmada, cancelamento, remarcacao com link, lista de espera com alternativas, cobranca, aviso de aula, ausencia/reposicao, inscricao em competicao, comunicado de rodada e divulgacao da pagina publica. Os modelos usam placeholders estaveis (`{nome}`, `{remetente}`, `{data}`, `{quadra}`, `{link_remarcacao}`, `{opcoes}` etc.) para permitir troca futura de texto sem mudar o fluxo. QA Playwright em `/gestao/:placeId/comunicacao` confirmou `.communication-console`, 10 templates, categorias e console limpo. Evidencias: `sprint-87-communication-template-matrix-1366.png` e `sprint-87-communication-template-matrix-1366.json`.
 
 Objetivo:
 Centralizar comunicacao sem tirar contexto dos fluxos.
@@ -857,6 +875,8 @@ Atualizacao 2026-05-23: Agenda mobile nao autoabre mais o detalhe da reserva na 
 
 Atualizacao 2026-05-23: Academia mobile tambem foi corrigida para comportamento operacional. A lista de aulas do dia virou card list vertical e nao tabela web espremida, mantendo o detalhe da aula como camada posterior. QA 390px: `sprint-75-mobile-academia-cardlist-390.png`.
 
+Atualizacao 2026-05-23: revalidacao mobile ampliada em 390px e 430px percorreu `inicio`, `agenda`, `academia`, `clientes`, `financeiro`, `loja-pos`, `competicoes`, `comunicacao`, `relatorios` e `administracao` com login real, sem erros de console e sem queda para login. Evidencias: `sprint-89-mobile-390-audit.json`, `sprint-89-mobile-430-audit.json` e screenshots `sprint-89-mobile-390-*.png` / `sprint-89-mobile-430-*.png`. Pendencia de produto permanece: criar auth states/dados separados para professor, recepcao, financeiro e caixa quando a massa de seed estiver estabilizada, para validar menu por papel estrito e nao apenas usuario admin multi-papel.
+
 Objetivo:
 Depois do web, reorganizar mobile trabalho por papel.
 
@@ -925,6 +945,8 @@ Em execucao avancada. QA automatizado com Playwright validou desktop 1366 e mobi
 
 Atualizacao 2026-05-23: smoke desktop 1366 com marcadores especificos confirmou conteudo real em `comunicacao`, `relatorios`, `administracao`, `academia` e `agenda`. Os falsos positivos anteriores por texto de sidebar foram substituidos por marcadores internos de pagina. Artefatos: `sprint-74-route-smoke-1366.json` e screenshots `sprint-74-route-*.png`. Os timeouts secundarios de workspace (`payments`/`focused place`) foram rebaixados para `console.debug`, pois sao fallback de dados nao criticos e nao erro de produto. Nova validacao da Agenda 1366 ficou com console relevante zerado: `sprint-76-agenda-console-clean-1366.json`.
 
+Atualizacao 2026-05-23: auditoria transversal ampliada executada em 4 viewports (`390x844`, `430x932`, `1366x768`, `1600x900`) nas 10 rotas principais de Trabalho: `inicio`, `agenda`, `academia`, `clientes`, `financeiro`, `loja-pos`, `competicoes`, `comunicacao`, `relatorios` e `administracao`. Resultado: 40 carregamentos com 0 erros de console e 0 quedas para login. Evidencia consolidada: `sprint-89-cross-route-audit-summary.json`; evidencias por viewport: `sprint-89-mobile-390-audit.json`, `sprint-89-mobile-430-audit.json`, `sprint-89-desktop-1366-audit.json`, `sprint-89-desktop-1600-audit.json`.
+
 Objetivo:
 Validar que nenhuma persona melhorou quebrando outra.
 
@@ -974,6 +996,8 @@ Atualizacao 2026-05-23: build passou novamente apos os ajustes finais de respons
 Atualizacao 2026-05-23: aplicado endurecimento visual compacto `WORK-SAAS-COMPACT-V1` para aproximar a area Trabalho das referencias SaaS: topbar mais baixa e alinhada, botoes com altura consistente, cards/listas com menor raio, filtros menores, Agenda em grade mais reta, eventos sem repetir horario dentro do bloco e detalhe lateral preservado no desktop. Clientes tambem foi revalidado como tabela densa com Cliente 360 lateral. QA: build aprovado, Agenda 1366/1600 sem erro de console, Clientes 1366 sem erro de console e Agenda mobile 390 sem erro de console. Evidencias: `sprint-77-compact-agenda-1366.png`, `sprint-77-compact-agenda-1600.png`, `sprint-78-compact-clientes-1366.png`, `sprint-79-compact-agenda-mobile-390.png`.
 
 Atualizacao 2026-05-23: as abas da Agenda deixaram de ser botoes apenas visuais. `Semana` agora abre visao semanal com uma quadra por vez, `Lista` abre lista operacional, `Remarcacoes`, `Canceladas` e `Conflitos` abrem listas/estados filtrados. QA Playwright clicou em `Semana`, `Lista`, `Remarcacoes`, `Canceladas`, `Conflitos` e voltou para `Dia` sem erro de console. Evidencias: `sprint-80-agenda-tabs-semana.png`, `sprint-80-agenda-tabs-lista.png`, `sprint-80-agenda-tabs-remarcacoes.png`, `sprint-80-agenda-tabs-canceladas.png`, `sprint-80-agenda-tabs-conflitos.png`, `sprint-80-agenda-tabs-dia.png`.
+
+Atualizacao 2026-05-23: refinamento posterior da Agenda corrigiu selecao stale ao trocar para `Semana`/`Lista`. A visao semanal limpa o drawer antigo, mostra uma quadra por vez com seletor e instrucao de legibilidade, e a lista permanece operacional. Build aprovado e QA Playwright sem erro de console. Evidencia: `sprint-86-agenda-week-clears-stale-detail-final-1600.png` e `.json`.
 
 Objetivo:
 Corrigir tudo que o QA transversal encontrou.

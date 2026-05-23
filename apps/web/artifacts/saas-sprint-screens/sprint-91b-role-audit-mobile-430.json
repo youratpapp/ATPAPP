@@ -1,0 +1,290 @@
+[
+  {
+    "id": "player-pure",
+    "stateExists": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/inicio",
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Finicio",
+        "title": "Entrar na ATP",
+        "screenshot": "sprint-91b-role-mobile-430-player-pure-inicio.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": false,
+        "hasPlayerNav": false,
+        "hasWorkNav": false,
+        "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      },
+      {
+        "name": "rotina",
+        "route": "/agenda",
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Fagenda",
+        "title": "Entrar na ATP",
+        "screenshot": "sprint-91b-role-mobile-430-player-pure-rotina.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": false,
+        "hasPlayerNav": false,
+        "hasWorkNav": false,
+        "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      },
+      {
+        "name": "gestao",
+        "route": "/gestao",
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Fgestao",
+        "title": "Entrar na ATP",
+        "screenshot": "sprint-91b-role-mobile-430-player-pure-gestao.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": false,
+        "hasPlayerNav": false,
+        "hasWorkNav": false,
+        "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area de trabalho. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    ]
+  },
+  {
+    "id": "coach",
+    "stateExists": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-coach-inicio.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Renato Siqueira Jogador Trabalho Professor Renato Siqueira 4 aulas hoje | 26 alunos ativos Sab 06:30 | Duplas Competitivo 1 Sab 12:00 | Adulto Iniciante 2 Sab 16:00 | Intermediario Noite 3 Sab 18:00 | Primeira Classe 2 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 4 Ordenadas por horario ALUNOS 13 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 0 Ausencias avisadas antes da aula REPOSICOES 2 Creditos abertos vinculados 06:30 - 07:30 Duplas Competitivo 1 Renato Siqueira Quadra 6 4/4 Em agenda Detalhar 12:00 - 13:00 Adulto Iniciante 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 16:00 - 17:00 Intermediario Noite 3 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 18:00 - 19:00 Primeira Classe 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar DETALHE DA AULA Duplas Competitivo 1 06:30 - 07:30 | Quadra"
+      },
+      {
+        "name": "academia",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-coach-academia.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Renato Siqueira Jogador Trabalho Professor Renato Siqueira 4 aulas hoje | 26 alunos ativos Sab 06:30 | Duplas Competitivo 1 Sab 12:00 | Adulto Iniciante 2 Sab 16:00 | Intermediario Noite 3 Sab 18:00 | Primeira Classe 2 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 4 Ordenadas por horario ALUNOS 13 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 0 Ausencias avisadas antes da aula REPOSICOES 2 Creditos abertos vinculados 06:30 - 07:30 Duplas Competitivo 1 Renato Siqueira Quadra 6 4/4 Em agenda Detalhar 12:00 - 13:00 Adulto Iniciante 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 16:00 - 17:00 Intermediario Noite 3 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 18:00 - 19:00 Primeira Classe 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar DETALHE DA AULA Duplas Competitivo 1 06:30 - 07:30 | Quadra"
+      },
+      {
+        "name": "agenda",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-coach-agenda.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Renato Siqueira Jogador Trabalho Professor Renato Siqueira 4 aulas hoje | 26 alunos ativos Sab 06:30 | Duplas Competitivo 1 Sab 12:00 | Adulto Iniciante 2 Sab 16:00 | Intermediario Noite 3 Sab 18:00 | Primeira Classe 2 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 4 Ordenadas por horario ALUNOS 13 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 0 Ausencias avisadas antes da aula REPOSICOES 2 Creditos abertos vinculados 06:30 - 07:30 Duplas Competitivo 1 Renato Siqueira Quadra 6 4/4 Em agenda Detalhar 12:00 - 13:00 Adulto Iniciante 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 16:00 - 17:00 Intermediario Noite 3 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 18:00 - 19:00 Primeira Classe 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar DETALHE DA AULA Duplas Competitivo 1 06:30 - 07:30 | Quadra"
+      }
+    ]
+  },
+  {
+    "id": "frontdesk",
+    "stateExists": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-frontdesk-inicio.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Paula Nogueira Jogador Trabalho OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Todos os professores Renato Siqueira Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Intermediario Manha 1 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 TESTE TURMA Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2 Filtros QUADRA NO MOBILE Quadra"
+      },
+      {
+        "name": "agenda",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-frontdesk-agenda.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Paula Nogueira Jogador Trabalho OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Todos os professores Renato Siqueira Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Intermediario Manha 1 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 TESTE TURMA Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2 Filtros QUADRA NO MOBILE Quadra"
+      },
+      {
+        "name": "clientes",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes",
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-frontdesk-clientes.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Paula Nogueira Jogador Trabalho GERENCIAMENTO Clientes Leads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista. Novo cliente Todos os tipos Alunos Socios CRM Ativos Todos 0 clientes ativos Nenhum cliente ativo encontrado Ajuste a busca ou converta um lead, aprove uma matricula ou ative um socio para aparecer nesta lista. Hoje Reservas Aulas Clientes Mais"
+      }
+    ]
+  },
+  {
+    "id": "finance",
+    "stateExists": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/inicio",
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-finance-inicio.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Clara Financeiro Jogador Trabalho RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 48.946,00 181 recebivel(is) no filtro VENCIDOS R$ 48.946,00 181 cobranca(s) VENCE HOJE 0 acao recomendada hoje Todos 181 Vencidos 181 Hoje 0 Aulas 112 Planos 69 Cobrar planos Cobrar alunos Ana Queiroz Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Andre Castro Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Andre Rocha Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Beatriz Esteves Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Beatriz Zanetti Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Bruno Yamamoto Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Camila Almeida Socio Performance Plano de sócio Vencido e"
+      },
+      {
+        "name": "financeiro",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-finance-financeiro.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Clara Financeiro Jogador Trabalho RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 48.946,00 181 recebivel(is) no filtro VENCIDOS R$ 48.946,00 181 cobranca(s) VENCE HOJE 0 acao recomendada hoje Todos 181 Vencidos 181 Hoje 0 Aulas 112 Planos 69 Cobrar planos Cobrar alunos Ana Queiroz Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Andre Castro Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Andre Rocha Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Beatriz Esteves Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Beatriz Zanetti Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Bruno Yamamoto Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Camila Almeida Socio Performance Plano de sócio Vencido e"
+      },
+      {
+        "name": "loja-pos",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos",
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-finance-loja-pos.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Clara Financeiro Jogador Trabalho RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 48.946,00 181 recebivel(is) no filtro VENCIDOS R$ 48.946,00 181 cobranca(s) VENCE HOJE 0 acao recomendada hoje Todos 181 Vencidos 181 Hoje 0 Aulas 112 Planos 69 Cobrar planos Cobrar alunos Ana Queiroz Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Andre Castro Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Andre Rocha Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Beatriz Esteves Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Beatriz Zanetti Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 349,00 Bruno Yamamoto Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 219,00 Camila Almeida Socio Performance Plano de sócio Vencido e"
+      }
+    ]
+  },
+  {
+    "id": "cashier",
+    "stateExists": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/inicio",
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-cashier-inicio.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Bruno Caixa Jogador Trabalho Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ 39,00 | 4 em estoque Overgrip Pro shop R$ 25,00 | 18 em estoque Sanduiche natural Lanches R$ 18,00 | 12 em estoque Suco natural Bebidas R$ 12,00 | 16 em estoque ITEM QTD VALOR UNITARIO CLIENTE Registrar venda Atencao de estoque Sem produtos em estoque baixo agora. Vender Hoje Estoque Produtos Perfil"
+      },
+      {
+        "name": "loja-pos",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos",
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-cashier-loja-pos.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Bruno Caixa Jogador Trabalho Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ 39,00 | 4 em estoque Overgrip Pro shop R$ 25,00 | 18 em estoque Sanduiche natural Lanches R$ 18,00 | 12 em estoque Suco natural Bebidas R$ 12,00 | 16 em estoque ITEM QTD VALOR UNITARIO CLIENTE Registrar venda Atencao de estoque Sem produtos em estoque baixo agora. Vender Hoje Estoque Produtos Perfil"
+      },
+      {
+        "name": "financeiro",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-cashier-financeiro.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "Bruno Caixa Jogador Trabalho Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ 39,00 | 4 em estoque Overgrip Pro shop R$ 25,00 | 18 em estoque Sanduiche natural Lanches R$ 18,00 | 12 em estoque Suco natural Bebidas R$ 12,00 | 16 em estoque ITEM QTD VALOR UNITARIO CLIENTE Registrar venda Atencao de estoque Sem produtos em estoque baixo agora. Vender Hoje Estoque Produtos Perfil"
+      }
+    ]
+  },
+  {
+    "id": "organizer",
+    "stateExists": true,
+    "routes": [
+      {
+        "name": "competicoes-work",
+        "route": "/eventos?modo=organizing",
+        "href": "http://127.0.0.1:5175/#/eventos?modo=organizing",
+        "title": "",
+        "screenshot": "sprint-91b-role-mobile-430-organizer-competicoes-work.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": false,
+        "hasPlayerNav": false,
+        "hasWorkNav": true,
+        "textStart": "COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 4 Bloqueios precisam de acao 4 Em operacao torneios e ligas ativos 5 Torneios no seu workspace 0 Ligas temporadas e rodadas Todos Torneios Ligas Pendencias Historico Inscricoes abertas 1 Festival Feminino Pantanal Torneio · Campo Grande - MS Inscricoes abertas Abrir cockpit da fase atualizado em 14 de mai. Jogos em andamento / resultados pendentes 3 Prime Open Inscricoes Encerradas Torneio · Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 20 de mai. Open ADT Dourados - Maio Torneio · Dourados - MS Em andamento Abrir cockpit da fase atualizado em 15 de mai. Prime Cup Noturna Torneio · Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 14 de mai. DETALHE DA ACAO Prime Open Inscricoes Encerradas Torn"
+      },
+      {
+        "name": "competicoes-player",
+        "route": "/eventos",
+        "href": "http://127.0.0.1:5175/#/eventos",
+        "title": "Competir",
+        "screenshot": "sprint-91b-role-mobile-430-organizer-competicoes-player.png",
+        "errors": [],
+        "isLoading": false,
+        "hasLogin": false,
+        "hasModeSwitch": false,
+        "hasPlayerNav": true,
+        "hasWorkNav": true,
+        "textStart": "Competir Inscricoes abertas1 torneios publicos agora Ligas ativas0 temporadas em andamento Seu jogo0 torneios e ligas vinculados Torneios Ligas Rankings Jogando Descobrir PROXIMOS TORNEIOS Ver todos Festival Feminino Pantanal Campo Grande - MS LIGA EM DESTAQUE Ligas Entre em uma liga para acompanhar rodadas e ranking. RESULTADOS RECENTES Ranking Torneio Ranking Outono Finalizada Descobrir Encontre eventos abertos e locais para competir perto de você. Torneios Ligas Encontrar locais DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. Inicio Jogar Competir Rotina Perfil"
+      },
+      {
+        "name": "gestao",
+        "route": "/gestao",
+        "href": "http://127.0.0.1:5175/#/gestao",
+        "title": "Trabalho Hoje",
+        "screenshot": "sprint-91b-role-mobile-430-organizer-gestao.png",
+        "errors": [],
+        "isLoading": true,
+        "hasLogin": false,
+        "hasModeSwitch": true,
+        "hasPlayerNav": true,
+        "hasWorkNav": false,
+        "textStart": "Otavio Circuito Jogador Trabalho Carregando central de gestao... Inicio Jogar Competir Rotina Perfil"
+      }
+    ]
+  }
+]

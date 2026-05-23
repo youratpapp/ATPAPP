@@ -142,6 +142,7 @@ function paymentStatusLabel(payment?: AppPayment): string {
 
 function agendaItemBadgeLabel(item: AgendaItem, payment?: AppPayment): string {
   if (item.booking?.status === "blocked") return "Bloqueio";
+  if (item.booking?.status === "cancelled") return "Cancelada";
   if (item.booking) {
     if (payment?.status === "paid") return "Pago";
     return "Pendente";
@@ -170,6 +171,11 @@ function paymentForBookingAction(booking: CourtBooking, courts: PlaceCourt[], pa
     createdAt: booking.createdAt,
     updatedAt: booking.createdAt,
   };
+}
+
+function bookingPaymentStatusLabel(booking: CourtBooking, payment?: AppPayment): string {
+  if (booking.status === "cancelled") return "Reserva cancelada";
+  return paymentStatusLabel(payment);
 }
 
 function dateTimeLocalValue(value: string): string {
@@ -367,7 +373,7 @@ export function PlaceBookingCalendarModule({
       });
 
   const agendaItems = useMemo<AgendaItem[]>(() => {
-    const bookingItems = allBookingItems.filter((item) => dateInputPart(item.startsAt) === day);
+    const bookingItems = allBookingItems.filter((item) => item.booking?.status !== "cancelled" && dateInputPart(item.startsAt) === day);
     const classItems = classItemsForWeekday(selectedWeekday);
 
     const dropInItems = lessonRequests
@@ -437,10 +443,15 @@ export function PlaceBookingCalendarModule({
   }, [filteredItems, selectedItemId]);
 
   useEffect(() => {
-    if (!isCompactViewport && !selectedItemId && timelineItems.length) {
+    if (activeView === "day" && !isCompactViewport && !selectedItemId && timelineItems.length) {
       setSelectedItemId(timelineItems[0].id);
     }
-  }, [isCompactViewport, selectedItemId, timelineItems]);
+  }, [activeView, isCompactViewport, selectedItemId, timelineItems]);
+
+  useEffect(() => {
+    setSelectedItemId("");
+    setEditingBookingId("");
+  }, [activeView]);
 
   const selectedBooking = selectedItem?.booking;
   const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
@@ -621,7 +632,7 @@ export function PlaceBookingCalendarModule({
             <div className="court-calendar-week-grid">
               {weekDays.map((weekDay) => {
                 const weekday = weekdayFromDate(weekDay);
-                const bookingItems = allBookingItems.filter((item) => item.courtId === selectedWeekCourtId && dateInputPart(item.startsAt) === weekDay);
+                const bookingItems = allBookingItems.filter((item) => item.booking?.status !== "cancelled" && item.courtId === selectedWeekCourtId && dateInputPart(item.startsAt) === weekDay);
                 const classItems = isReservationsView ? [] : classItemsForWeekday(weekday).filter((item) => item.courtId === selectedWeekCourtId);
                 const dayItems = [...bookingItems, ...classItems].sort((a, b) => timeToMinutes(a.startsAt) - timeToMinutes(b.startsAt));
                 return (
@@ -741,7 +752,7 @@ export function PlaceBookingCalendarModule({
                           return (
                             <button
                               key={item.id}
-                              className={`court-agenda-event-button ${item.type} payment-${payment?.status || "none"}${selectedItemId === item.id ? " active" : ""}`}
+                              className={`court-agenda-event-button ${item.type} status-${item.booking?.status || item.type} payment-${payment?.status || "none"}${selectedItemId === item.id ? " active" : ""}`}
                               type="button"
                               onClick={() => {
                                 setSelectedItemId(item.id);
@@ -813,7 +824,7 @@ export function PlaceBookingCalendarModule({
                     </div>
                     <div>
                       <dt>Pagamento</dt>
-                      <dd>{paymentStatusLabel(selectedPayment)}</dd>
+                      <dd>{bookingPaymentStatusLabel(selectedBooking, selectedPayment)}</dd>
                     </div>
                     <div>
                       <dt>Observacao</dt>
@@ -836,7 +847,7 @@ export function PlaceBookingCalendarModule({
 
               {selectedBooking && canManageBookings ? (
                 <div className="court-calendar-detail-actions">
-                  {selectedPaymentAction?.status === "pending" && onMarkPaid ? (
+                  {selectedBooking.status !== "cancelled" && selectedPaymentAction?.status === "pending" && onMarkPaid ? (
                     <button className="primary" type="button" onClick={() => onMarkPaid(selectedBooking, selectedPaymentAction)}>
                       Pagar
                     </button>
@@ -909,7 +920,8 @@ export function PlaceBookingCalendarModule({
               <div className="court-calendar-detail-history">
                 <strong>Historico</strong>
                 <span>Reserva criada no calendario.</span>
-                {selectedBooking ? <span>{paymentStatusLabel(selectedPayment)}</span> : null}
+                {selectedBooking?.status === "cancelled" ? <span>Reserva cancelada e mantida no historico operacional.</span> : null}
+                {selectedBooking ? <span>{bookingPaymentStatusLabel(selectedBooking, selectedPayment)}</span> : null}
               </div>
             </>
           ) : (
@@ -929,8 +941,8 @@ export function PlaceBookingCalendarModule({
             {countLabel(filteredItems.length, "item no filtro", "itens no filtro")}
           </span>
           <span>
-            <strong>{bookings.filter((booking) => booking.status !== "blocked").length}</strong>
-            {countLabel(bookings.filter((booking) => booking.status !== "blocked").length, "reserva no dia", "reservas no dia")}
+            <strong>{bookings.filter((booking) => booking.status !== "blocked" && booking.status !== "cancelled").length}</strong>
+            {countLabel(bookings.filter((booking) => booking.status !== "blocked" && booking.status !== "cancelled").length, "reserva no dia", "reservas no dia")}
           </span>
           <span>
             <strong>{(reservedMinutes / 60).toFixed(1)}h</strong>
@@ -1141,7 +1153,7 @@ export function PlaceBookingCalendarModule({
                                     {isEditing ? "Fechar edicao" : "Editar"}
                                   </button>
                                 ) : null}
-                                {payment?.status === "pending" && onMarkPaid ? (
+                                {booking.status !== "cancelled" && payment?.status === "pending" && onMarkPaid ? (
                                   <button className="compact" type="button" onClick={() => onMarkPaid(booking, payment)}>
                                     Pagar
                                   </button>
@@ -1200,8 +1212,8 @@ export function PlaceBookingCalendarModule({
             <span>{countLabel(filteredItems.length, "item no filtro", "itens no filtro")}</span>
           </div>
           <div>
-            <strong>{bookings.filter((booking) => booking.status !== "blocked").length}</strong>
-            <span>{countLabel(bookings.filter((booking) => booking.status !== "blocked").length, "reserva no dia", "reservas no dia")}</span>
+            <strong>{bookings.filter((booking) => booking.status !== "blocked" && booking.status !== "cancelled").length}</strong>
+            <span>{countLabel(bookings.filter((booking) => booking.status !== "blocked" && booking.status !== "cancelled").length, "reserva no dia", "reservas no dia")}</span>
           </div>
           <div>
             <strong>{(reservedMinutes / 60).toFixed(1)}h</strong>

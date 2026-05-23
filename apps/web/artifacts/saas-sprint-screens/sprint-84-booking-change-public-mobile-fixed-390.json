@@ -1,0 +1,20 @@
+{
+  "hasCard": 1,
+  "hasSearchButton": 1,
+  "searchButtonBox": {
+    "x": 62,
+    "y": 952.109375,
+    "width": 266,
+    "height": 42
+  },
+  "bottomNavBox": {
+    "x": 0,
+    "y": 779,
+    "width": 390,
+    "height": 65
+  },
+  "buttonOverlapsBottomNav": true,
+  "whiteButtonCount": 0,
+  "consoleCount": 0,
+  "messages": []
+}

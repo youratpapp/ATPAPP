@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5175",
+      "localStorage": [
+        {
+          "name": "sb-xdopstommqojjofapzjl-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6ImJlY2M3ZmZmLTA0MmEtNDkwMC1hOTUzLTYxZmMzZTkwZDNmYyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3hkb3BzdG9tbXFvampvZmFwempsLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJmM2Q1Y2U1MC00MjJhLTQ3YjktOWJjYi1jYTExNjNiNzU1NTAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc5NTcxODQ3LCJpYXQiOjE3Nzk1NjgyNDcsImVtYWlsIjoiZmluYW5jZWlyby5wcmltZUBkZW1vLmF0cC5sb2NhbCIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZGlzcGxheV9uYW1lIjoiQ2xhcmEgRmluYW5jZWlybyJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzc5NTY4MjQ3fV0sInNlc3Npb25faWQiOiJkM2NlYjcxMS0xOGRiLTRkYzQtOTdkOC1jYTFiYzQ4NTVjM2EiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.c-B4TXJV_Dflz3hsDXVsPmAK8mm6kbCR3dqNZ0ZbcytjRO871DQc9ui-Bn-mHW3moSHH2bTXgGTkynnMXoIorA\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1779571847,\"refresh_token\":\"zmvfqhozgnhy\",\"user\":{\"id\":\"f3d5ce50-422a-47b9-9bcb-ca1163b75550\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"financeiro.prime@demo.atp.local\",\"email_confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"phone\":\"\",\"confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"last_sign_in_at\":\"2026-05-23T20:30:47.102023293Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"display_name\":\"Clara Financeiro\"},\"identities\":[{\"identity_id\":\"e36cd501-8ae2-4b0b-823b-9c4dbc5421bd\",\"id\":\"f3d5ce50-422a-47b9-9bcb-ca1163b75550\",\"user_id\":\"f3d5ce50-422a-47b9-9bcb-ca1163b75550\",\"identity_data\":{\"email\":\"financeiro.prime@demo.atp.local\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f3d5ce50-422a-47b9-9bcb-ca1163b75550\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-05-15T15:55:10.253589Z\",\"created_at\":\"2026-05-15T15:55:10.253589Z\",\"updated_at\":\"2026-05-15T15:55:10.253589Z\",\"email\":\"financeiro.prime@demo.atp.local\"}],\"created_at\":\"2025-11-01T19:00:02.879222Z\",\"updated_at\":\"2026-05-23T20:30:47.11012Z\",\"is_anonymous\":false},\"weak_password\":null}"
+        }
+      ]
+    }
+  ]
+}

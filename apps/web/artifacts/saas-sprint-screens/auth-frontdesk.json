@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5175",
+      "localStorage": [
+        {
+          "name": "sb-xdopstommqojjofapzjl-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6ImJlY2M3ZmZmLTA0MmEtNDkwMC1hOTUzLTYxZmMzZTkwZDNmYyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3hkb3BzdG9tbXFvampvZmFwempsLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhOTgzOWVlYS02ODlhLTRlYjgtOTU0ZC0xMTgyMGUxMmYxN2IiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc5NTcxODM4LCJpYXQiOjE3Nzk1NjgyMzgsImVtYWlsIjoicmVjZXBjYW8uZG91cmFkb3NAZGVtby5hdHAubG9jYWwiLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImRpc3BsYXlfbmFtZSI6IlBhdWxhIE5vZ3VlaXJhIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3Nzk1NjgyMzh9XSwic2Vzc2lvbl9pZCI6IjZhODQ0YjNlLTQ5ZWMtNGUzYS1iZmVhLWJkMDFiZjc3YmU2ZiIsImlzX2Fub255bW91cyI6ZmFsc2V9.KJMpM8CzEKR6d_AWsMKTMQougSUsZOCqhI9pHVYxzHd3mC_mzRNjPkxn-uJ0nj_pg6O95abkCIKrEdPJslCGWw\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1779571838,\"refresh_token\":\"rmnjrn7cog7p\",\"user\":{\"id\":\"a9839eea-689a-4eb8-954d-11820e12f17b\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"recepcao.dourados@demo.atp.local\",\"email_confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"phone\":\"\",\"confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"last_sign_in_at\":\"2026-05-23T20:30:38.651933366Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"display_name\":\"Paula Nogueira\"},\"identities\":[{\"identity_id\":\"3c0adc57-5afc-450a-a47d-a6365f70fc57\",\"id\":\"a9839eea-689a-4eb8-954d-11820e12f17b\",\"user_id\":\"a9839eea-689a-4eb8-954d-11820e12f17b\",\"identity_data\":{\"email\":\"recepcao.dourados@demo.atp.local\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"a9839eea-689a-4eb8-954d-11820e12f17b\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-05-14T19:00:02.879222Z\",\"created_at\":\"2026-05-14T19:00:02.879222Z\",\"updated_at\":\"2026-05-14T19:00:02.879222Z\",\"email\":\"recepcao.dourados@demo.atp.local\"}],\"created_at\":\"2025-11-03T19:00:02.879222Z\",\"updated_at\":\"2026-05-23T20:30:38.659834Z\",\"is_anonymous\":false},\"weak_password\":null}"
+        }
+      ]
+    }
+  ]
+}

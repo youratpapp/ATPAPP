@@ -1,0 +1,9 @@
+{
+  "route": "/gestao/:placeId/clientes",
+  "hasDrawer": 1,
+  "hasReservations": 1,
+  "hasPayments": 3,
+  "hasRows": 80,
+  "consoleCount": 0,
+  "messages": []
+}

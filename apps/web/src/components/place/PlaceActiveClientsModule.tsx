@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { AcademyClass, AcademyEnrollment, AppPayment, CourtBooking, PlaceCrmContact, PlaceMembership, PlaceMembershipPlan } from "../../lib/types";
+import type { AcademyClass, AcademyEnrollment, AcademyStudentContract, AppPayment, CourtBooking, PlaceCrmContact, PlaceMembership, PlaceMembershipPlan } from "../../lib/types";
 import { WorkspaceEmptyState } from "./PlaceWorkspaceUi";
 
 type PlaceActiveClientsModuleProps = {
@@ -7,6 +7,7 @@ type PlaceActiveClientsModuleProps = {
   activeEnrollments: AcademyEnrollment[];
   activeMemberships: PlaceMembership[];
   academyClasses: AcademyClass[];
+  academyStudentContracts: AcademyStudentContract[];
   bookings: CourtBooking[];
   busy: boolean;
   countLabel: (count: number, singular: string, plural: string) => string;
@@ -80,11 +81,29 @@ function paymentStatusLabel(status: AppPayment["status"]): string {
   return "Falhou";
 }
 
+function membershipStatusLabel(status: PlaceMembership["status"] | AcademyStudentContract["status"] | AcademyEnrollment["status"]): string {
+  if (status === "active") return "Ativo";
+  if (status === "pending") return "Pendente";
+  return "Cancelado";
+}
+
+function shortClassTime(value?: string): string {
+  if (!value) return "";
+  return value.slice(0, 5);
+}
+
+function paymentMethodLabel(payment?: AppPayment): string {
+  if (!payment) return "Ainda sem pagamento registrado";
+  if (payment.provider === "stub") return payment.status === "paid" ? "Stub interno - pago" : "Stub interno - pendente";
+  return payment.provider || "Pagamento registrado";
+}
+
 export function PlaceActiveClientsModule({
   activeContacts,
   activeEnrollments,
   activeMemberships,
   academyClasses,
+  academyStudentContracts,
   bookings,
   busy,
   countLabel,
@@ -182,6 +201,41 @@ export function PlaceActiveClientsModule({
       .sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime())
       .slice(0, 4);
   }, [payments, selected, selectedBookings]);
+  const selectedEnrollments = useMemo(() => {
+    if (!selected) return [];
+    const phone = normalizePhone(selected.phone);
+    const name = normalizeText(selected.name);
+    return activeEnrollmentRows.filter((enrollment) => {
+      const enrollmentPhone = normalizePhone(enrollment.phone);
+      return (phone && enrollmentPhone && enrollmentPhone.endsWith(phone.slice(-8))) || normalizeText(enrollment.playerName) === name;
+    });
+  }, [activeEnrollmentRows, selected]);
+  const selectedMemberships = useMemo(() => {
+    if (!selected) return [];
+    const phone = normalizePhone(selected.phone);
+    const name = normalizeText(selected.name);
+    return activeMembershipRows.filter((membership) => {
+      const membershipPhone = normalizePhone(membership.phone);
+      return (phone && membershipPhone && membershipPhone.endsWith(phone.slice(-8))) || normalizeText(membership.memberName) === name;
+    });
+  }, [activeMembershipRows, selected]);
+  const selectedContracts = useMemo(() => {
+    if (!selected) return [];
+    const phone = normalizePhone(selected.phone);
+    const name = normalizeText(selected.name);
+    return academyStudentContracts.filter((contract) => {
+      const contractPhone = normalizePhone(contract.phone);
+      return contract.status !== "cancelled" && ((phone && contractPhone && contractPhone.endsWith(phone.slice(-8))) || normalizeText(contract.studentName) === name);
+    });
+  }, [academyStudentContracts, selected]);
+  const selectedClassLinks = useMemo(() => {
+    return selectedEnrollments.map((enrollment) => ({
+      enrollment,
+      academyClass: academyClasses.find((item) => item.id === enrollment.classId),
+      contract: selectedContracts.find((contract) => contract.id === enrollment.contractId) || null,
+    }));
+  }, [academyClasses, selectedContracts, selectedEnrollments]);
+  const primaryPayment = selectedPayments[0];
 
   return (
     <div className="clients-360-workspace">
@@ -249,7 +303,7 @@ export function PlaceActiveClientsModule({
                   <div>
                     <span>Cliente 360</span>
                     <h3>{selected.name}</h3>
-                    <p>{selected.category}</p>
+                    <p>{selected.category} na academia</p>
                   </div>
                 </header>
                 <div className="clients-360-badges">
@@ -263,7 +317,9 @@ export function PlaceActiveClientsModule({
                   <dd>{selected.email || "Sem email"}</dd>
                   <dt>Responsavel</dt>
                   <dd>{selected.owner}</dd>
-                  <dt>Resumo</dt>
+                  <dt>Metodo de pagamento</dt>
+                  <dd>{paymentMethodLabel(primaryPayment)}</dd>
+                  <dt>Resumo do vinculo</dt>
                   <dd>{selected.detail}</dd>
                 </dl>
                 <div className="clients-360-actions">
@@ -293,14 +349,70 @@ export function PlaceActiveClientsModule({
                   )}
                 </div>
                 <section>
+                  <h4>Vinculo com a academia</h4>
+                  {selectedMemberships.length ? (
+                    selectedMemberships.map((membership) => {
+                      const plan = membershipPlans.find((item) => item.id === membership.planId);
+                      const payment = payments.find((item) => item.targetType === "place_membership" && item.targetId === membership.id);
+                      return (
+                        <article key={`client-membership:${membership.id}`}>
+                          <strong>{plan?.name || "Plano de socio"}</strong>
+                          <span>
+                            {formatMoneyFromCents(plan?.monthlyFeeCents || 0)} / mes - {membershipStatusLabel(membership.status)}
+                          </span>
+                          <em>{payment ? paymentStatusLabel(payment.status) : "Pagamento nao registrado"}</em>
+                        </article>
+                      );
+                    })
+                  ) : (
+                    <article>
+                      <strong>Sem plano de socio ativo</strong>
+                      <span>Planos e mensalidades vinculados ao cliente aparecem aqui.</span>
+                    </article>
+                  )}
+                  {selectedContracts.length ? (
+                    selectedContracts.map((contract) => {
+                      const payment = payments.find((item) => item.targetType === "academy_student_contract" && item.targetId === contract.id);
+                      return (
+                        <article key={`client-contract:${contract.id}`}>
+                          <strong>Contrato de aulas</strong>
+                          <span>
+                            {contract.weeklyLessonsCount}x/semana - {formatMoneyFromCents(contract.monthlyFeeCents)} / mes
+                          </span>
+                          <em>{payment ? paymentStatusLabel(payment.status) : "Pagamento nao registrado"}</em>
+                        </article>
+                      );
+                    })
+                  ) : null}
+                </section>
+                <section>
+                  <h4>Turmas e aulas</h4>
+                  {selectedClassLinks.length ? (
+                    selectedClassLinks.map(({ enrollment, academyClass, contract }) => (
+                      <article key={`client-class:${enrollment.id}`}>
+                        <strong>{academyClass?.title || "Turma"}</strong>
+                        <span>
+                          {[academyClass?.coachName, academyClass?.courtId ? "Quadra vinculada" : "", academyClass?.startsAt && academyClass?.endsAt ? `${shortClassTime(academyClass.startsAt)}-${shortClassTime(academyClass.endsAt)}` : ""].filter(Boolean).join(" | ") || "Dados da turma"}
+                        </span>
+                        <em>{contract ? `${contract.weeklyLessonsCount} horario(s)/semana` : membershipStatusLabel(enrollment.status)}</em>
+                      </article>
+                    ))
+                  ) : (
+                    <article>
+                      <strong>Sem turma ativa</strong>
+                      <span>Matriculas e turmas do aluno aparecem neste bloco.</span>
+                    </article>
+                  )}
+                </section>
+                <section>
                   <h4>Resumo operacional</h4>
                   <article>
                     <strong>Agenda</strong>
-                    <span>Use Nova reserva para criar ou ajustar compromisso sem sair do cliente.</span>
+                    <span>{selectedBookings.length ? `${selectedBookings.length} reserva(s) recente(s) vinculada(s).` : "Sem reserva vinculada neste local."}</span>
                   </article>
                   <article>
                     <strong>Receita</strong>
-                    <span>Cobranças e mensalidades ficam no financeiro do local.</span>
+                    <span>{selectedPayments.length ? `${selectedPayments.length} pagamento(s) encontrado(s).` : "Sem pagamento pessoal localizado."}</span>
                   </article>
                   <article>
                     <strong>Ultima atividade</strong>
@@ -308,7 +420,7 @@ export function PlaceActiveClientsModule({
                   </article>
                   <article>
                     <strong>Proximo passo</strong>
-                    <span>{selected.kind === "contact" ? "Registrar atendimento ou retorno." : "Consultar vinculos, pagamentos e agenda."}</span>
+                    <span>{selected.kind === "contact" ? "Registrar atendimento ou retorno." : "Acompanhar vinculos, pagamentos e proximos compromissos."}</span>
                   </article>
                 </section>
                 <section className="clients-360-history-section">

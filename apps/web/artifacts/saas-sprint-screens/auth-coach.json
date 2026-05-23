@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5175",
+      "localStorage": [
+        {
+          "name": "sb-xdopstommqojjofapzjl-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6ImJlY2M3ZmZmLTA0MmEtNDkwMC1hOTUzLTYxZmMzZTkwZDNmYyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3hkb3BzdG9tbXFvampvZmFwempsLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI2OGViMzNiZi03ZTFlLTRlNmQtYjUwNC1lMDk2YjYyODI2ZTEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc5NTcxODMwLCJpYXQiOjE3Nzk1NjgyMzAsImVtYWlsIjoicHJvZi5yZW5hdG9AZGVtby5hdHAubG9jYWwiLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImRpc3BsYXlfbmFtZSI6IlJlbmF0byBTaXF1ZWlyYSJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzc5NTY4MjMwfV0sInNlc3Npb25faWQiOiI5NDZhN2MzYS0yYzVlLTQyZjAtOGFhOS1iNDk5YWNmNTU1ZWYiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.Wl-NYrIzPwpw_EpwbVkdpjIpqn4w4kcRSPaQWSJkjqoeyJ2FBEUN3GFG5y3--ymTRcx6cmzD5EuIN4iPd5S9ug\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1779571830,\"refresh_token\":\"v442lodplg5s\",\"user\":{\"id\":\"68eb33bf-7e1e-4e6d-b504-e096b62826e1\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"prof.renato@demo.atp.local\",\"email_confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"phone\":\"\",\"confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"last_sign_in_at\":\"2026-05-23T20:30:30.200846075Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"display_name\":\"Renato Siqueira\"},\"identities\":[{\"identity_id\":\"5e8ea4bb-bb3e-4ff1-805d-28f6d100029f\",\"id\":\"68eb33bf-7e1e-4e6d-b504-e096b62826e1\",\"user_id\":\"68eb33bf-7e1e-4e6d-b504-e096b62826e1\",\"identity_data\":{\"email\":\"prof.renato@demo.atp.local\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"68eb33bf-7e1e-4e6d-b504-e096b62826e1\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-05-14T19:00:02.879222Z\",\"created_at\":\"2026-05-14T19:00:02.879222Z\",\"updated_at\":\"2026-05-14T19:00:02.879222Z\",\"email\":\"prof.renato@demo.atp.local\"}],\"created_at\":\"2025-11-02T19:00:02.879222Z\",\"updated_at\":\"2026-05-23T20:30:30.22116Z\",\"is_anonymous\":false},\"weak_password\":null}"
+        }
+      ]
+    }
+  ]
+}

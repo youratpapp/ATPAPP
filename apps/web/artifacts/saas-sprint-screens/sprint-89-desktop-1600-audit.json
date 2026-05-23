@@ -1,0 +1,122 @@
+[
+  {
+    "name": "inicio",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "durationMs": 10714,
+    "errors": [],
+    "title": "Trabalho Hoje",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nCENTRAL OPERACIONAL\nTrabalho Hoje\n\nPendencias, agenda e acoes importantes da sua operacao.\n\nO que precisa de atencao agora?\n\nResolva reservas, pagamentos, aulas e competic"
+  },
+  {
+    "name": "agenda",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "durationMs": 1570,
+    "errors": [],
+    "title": "Agenda",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloquei"
+  },
+  {
+    "name": "academia",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+    "durationMs": 1581,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nHoje\nAgenda\nTurmas\nAlunos\nPendencias\nACADEMIA\nAulas do dia\n\nRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.\n\nGrade e turmas\nNova turma"
+  },
+  {
+    "name": "clientes",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes",
+    "durationMs": 1523,
+    "errors": [],
+    "title": "Clientes",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nClientes ativos\nLeads\nAtendimento\nGERENCIAMENTO\nClientes\n\nLeads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.\n\nNovo cliente\nTodos os tipos"
+  },
+  {
+    "name": "financeiro",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro",
+    "durationMs": 1571,
+    "errors": [],
+    "title": "Receber",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 25.566,00\n118 recebivel(is) no filt"
+  },
+  {
+    "name": "loja-pos",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos",
+    "durationMs": 1606,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nLoja / POS\nRegistrar venda rapida para aluno, jogador ou cliente avulso.\nVenda rapida\nVendas do dia\nEstoque baixo\nProdutos\nVenda rapida\nEscolha um produto cadastrado ou re"
+  },
+  {
+    "name": "competicoes",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/competicoes",
+    "durationMs": 1647,
+    "errors": [],
+    "title": "Quais competicoes precisam de acao?",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando competicoes\n\nSeparando competicoes para jogar, descobrir ou organizar conforme seu perfil.\n\nCOMPETITION OS\nQuais competicoes precisam de acao?\n\nTo"
+  },
+  {
+    "name": "comunicacao",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "durationMs": 1658,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nC"
+  },
+  {
+    "name": "relatorios",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "durationMs": 1674,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nC"
+  },
+  {
+    "name": "administracao",
+    "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao",
+    "durationMs": 1660,
+    "errors": [],
+    "title": "",
+    "hasBottomNav": 1,
+    "hasSidebar": 0,
+    "hasModeSwitch": true,
+    "hasLogin": false,
+    "textStart": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nC"
+  }
+]

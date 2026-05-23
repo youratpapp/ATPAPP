@@ -1,0 +1,19 @@
+{
+  "hasConsole": 1,
+  "templateCount": 10,
+  "categories": [
+    "Reserva",
+    "Reserva",
+    "Reserva",
+    "Reserva",
+    "Financeiro",
+    "Academia",
+    "Academia",
+    "Competicoes",
+    "Competicoes",
+    "Publicacao"
+  ],
+  "hasBookingCancel": true,
+  "hasPublic": true,
+  "consoleErrors": []
+}

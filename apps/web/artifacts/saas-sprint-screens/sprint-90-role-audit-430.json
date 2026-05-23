@@ -1,0 +1,242 @@
+[
+  {
+    "id": "player-pure",
+    "email": "qa.jogador.puro@demo.atp.local",
+    "loginOk": false,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/inicio",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/inicio",
+        "title": "Carregando...",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Carregando..."
+      },
+      {
+        "name": "agenda",
+        "route": "/agenda",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/agenda",
+        "title": "Minha rotina",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "LP\n\nOla,\n\nLivia Jogadora Pura\n\nCENTRAL PESSOAL\nMinha rotina\n\nReservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica.\n\nPROXIMOS\n0\ncompromissos e pendencias\nVENCIDOS\n0\npagamentos pessoais\nRESULTADOS\n0\npartidas pendentes\nTudo\nReservas\nPartidas\nAulas\nPagamentos\nHistorico\nCarregando agenda...\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      },
+      {
+        "name": "gestao",
+        "route": "/gestao",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao",
+        "title": "",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "LP\n\nLivia Jogadora Pura\n\nCarregando central de gestao...\n\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      }
+    ]
+  },
+  {
+    "id": "coach",
+    "email": "prof.renato@demo.atp.local",
+    "loginOk": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "title": "",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Renato Siqueira\n\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      },
+      {
+        "name": "academia",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Renato Siqueira\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nAgenda\nTurmas\nAlunos\nPerfil"
+      },
+      {
+        "name": "agenda",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Renato Siqueira\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nAgenda\nTurmas\nAlunos\nPerfil"
+      }
+    ]
+  },
+  {
+    "id": "frontdesk",
+    "email": "recepcao.dourados@demo.atp.local",
+    "loginOk": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "title": "",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Paula Nogueira\n\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      },
+      {
+        "name": "agenda",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Paula Nogueira\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nReservas\nAulas\nClientes\nMais"
+      },
+      {
+        "name": "clientes",
+        "route": "/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Paula Nogueira\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nReservas\nAulas\nClientes\nMais"
+      }
+    ]
+  },
+  {
+    "id": "finance",
+    "email": "financeiro.prime@demo.atp.local",
+    "loginOk": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/inicio",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/inicio",
+        "title": "",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Clara Financeiro\n\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      },
+      {
+        "name": "financeiro",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Clara Financeiro\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nReceber\nPagos\nDespesas\nResumo\nPerfil"
+      },
+      {
+        "name": "loja-pos",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Clara Financeiro\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nReceber\nPagos\nDespesas\nResumo\nPerfil"
+      }
+    ]
+  },
+  {
+    "id": "cashier",
+    "email": "caixa.prime@demo.atp.local",
+    "loginOk": true,
+    "routes": [
+      {
+        "name": "inicio",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/inicio",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/inicio",
+        "title": "",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Bruno Caixa\n\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      },
+      {
+        "name": "loja-pos",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Bruno Caixa\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nVender\nHoje\nEstoque\nProdutos\nPerfil"
+      },
+      {
+        "name": "financeiro",
+        "route": "/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Bruno Caixa\n\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nVender\nHoje\nEstoque\nProdutos\nPerfil"
+      }
+    ]
+  },
+  {
+    "id": "organizer",
+    "email": "organizador.circuito@demo.atp.local",
+    "loginOk": true,
+    "routes": [
+      {
+        "name": "competicoes",
+        "route": "/eventos?modo=organizing",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/eventos?modo=organizing",
+        "title": "Quais competicoes precisam de acao?",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Carregando competicoes\n\nSeparando competicoes para jogar, descobrir ou organizar conforme seu perfil.\n\nCOMPETITION OS\nQuais competicoes precisam de acao?\n\nTorneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho.\n\nCriar torneio\nCriar liga\n0\nBloqueios\nprecisam de acao\n0\nEm operacao\ntorneios e ligas ativos\n0\nTorneios\nno seu workspace\n0\nLigas\ntemporadas e rodadas\nTodos\nTorneios\nLigas\nPendencias\nHistorico\nComece criando uma competicao\nCrie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro da competicao.\nDETALHE DA ACAO\nSelecione uma competicao\nA fila operacional abre aqui sem tirar voce do contexto.\nCriar torneio\nCriar liga\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      },
+      {
+        "name": "eventos",
+        "route": "/eventos",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/eventos",
+        "title": "Competir",
+        "hasModeSwitch": false,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Competir\nInscricoes abertas1\ntorneios publicos agora\nLigas ativas0\ntemporadas em andamento\nSeu jogo0\ntorneios e ligas vinculados\nTorneios\nLigas\nRankings\nJogando\nDescobrir\nPROXIMOS TORNEIOS\nVer todos\nFestival Feminino Pantanal\nCampo Grande - MS\nLIGA EM DESTAQUE\nLigas\n\nEntre em uma liga para acompanhar rodadas e ranking.\n\nRESULTADOS RECENTES\nRanking\nTorneio Ranking Outono\nFinalizada\nDescobrir\n\nEncontre eventos abertos e locais para competir perto de você.\n\nTorneios\nLigas\nEncontrar locais\nDESCOBERTA\nEventos perto de voce\nVer todos\nNenhum evento publico proximo agora\nUse torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas.\nInicio\nJogar\nCompetir\nRotina\nPerfil"
+      },
+      {
+        "name": "gestao",
+        "route": "/gestao",
+        "errors": [],
+        "href": "http://127.0.0.1:5175/#/gestao",
+        "title": "",
+        "hasModeSwitch": true,
+        "hasManagementNav": false,
+        "hasLogin": false,
+        "textStart": "Otavio Circuito\n\nJogador\nTrabalho\n\nCarregando central de gestao...\n\nHoje\nTorneios\nLigas\nResultados\nPerfil"
+      }
+    ]
+  }
+]

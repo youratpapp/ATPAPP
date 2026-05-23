@@ -11,6 +11,7 @@ type CommunicationQueueItem = {
 
 type CommunicationTemplate = {
   body: string;
+  category: string;
   id: string;
   title: string;
   trigger: string;
@@ -94,22 +95,74 @@ export function PlaceCommunicationPanel({
 
   const templates: CommunicationTemplate[] = [
     {
-      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Sua reserva foi atualizada. Confira data, horario e quadra antes de ir ao clube.`,
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Sua reserva esta confirmada para {data}, das {inicio} as {fim}, na {quadra}. Se precisar de apoio, fale com a recepcao.`,
+      category: "Reserva",
+      id: "booking-confirmed",
+      title: "Reserva confirmada",
+      trigger: "Reserva criada ou pagamento confirmado",
+    },
+    {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Precisamos cancelar sua reserva de {data}, {inicio}-{fim}, na {quadra}. Se desejar, podemos encontrar o proximo horario disponivel.`,
+      category: "Reserva",
+      id: "booking-cancelled",
+      title: "Cancelamento de reserva",
+      trigger: "Reserva cancelada pela unidade",
+    },
+    {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Para alterar sua reserva, acesse o link seguro abaixo, escolha uma quadra/horario livre e confirme a troca. Pagamento ja vinculado a reserva original: {link_remarcacao}`,
+      category: "Reserva",
       id: "booking-change",
       title: "Remarcacao de reserva",
       trigger: "Reserva alterada, cancelada ou reagendada",
     },
     {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. O horario solicitado ainda esta ocupado. Encontramos estas opcoes proximas: {opcoes}. Se uma delas funcionar, responda esta mensagem ou acesse {link_agenda}.`,
+      category: "Reserva",
+      id: "waitlist-alternatives",
+      title: "Lista de espera com alternativas",
+      trigger: "Cliente em espera sem horario livre exato",
+    },
+    {
       body: `Ola, {nome}. Identificamos uma pendencia de pagamento em ${placeName}. Quando puder, acesse o app ou fale com a recepcao para regularizar.`,
+      category: "Financeiro",
       id: "payment",
       title: "Lembrete de pagamento",
       trigger: "Mensalidade, plano, reserva ou inscricao em aberto",
     },
     {
-      body: `Ola, {nome}. Temos uma atualizacao sobre sua aula em ${placeName}. Veja a turma, professor, horario e observacoes no app.`,
+      body: `Ola, {nome}. Sua aula em ${placeName} esta marcada para {data}, {inicio}-{fim}, com {professor}, na {quadra}. Turma: {turma}.`,
+      category: "Academia",
       id: "lesson",
       title: "Aviso de aula",
-      trigger: "Reposicao, encaixe, aviso previo ou troca de turma",
+      trigger: "Aula do dia, encaixe ou troca de turma",
+    },
+    {
+      body: `Ola, {nome}. Recebemos seu aviso de ausencia em ${placeName}. A reposicao ficara disponivel conforme as regras do seu plano. Acompanhe as opcoes pelo app ou fale com a recepcao.`,
+      category: "Academia",
+      id: "lesson-makeup",
+      title: "Ausencia e reposicao",
+      trigger: "Aluno avisou ausencia antes do prazo",
+    },
+    {
+      body: `Ola, {nome}. Sua inscricao em {competicao} foi registrada em ${placeName}. Proximo passo: acompanhe pagamentos, tabela e comunicados pelo app.`,
+      category: "Competicoes",
+      id: "competition-registration",
+      title: "Inscricao em competicao",
+      trigger: "Inscricao/pedido aprovado em torneio ou liga",
+    },
+    {
+      body: `Ola, {nome}. Ha uma atualizacao em {competicao}: {resumo}. Confira jogos, horario, resultado ou classificacao pelo app.`,
+      category: "Competicoes",
+      id: "competition-update",
+      title: "Comunicado de rodada",
+      trigger: "Tabela publicada, rodada gerada ou resultado pendente",
+    },
+    {
+      body: `Ola! A pagina publica de ${placeName} esta atualizada com reservas, aulas, planos e eventos. Acesse: {link_publico}`,
+      category: "Publicacao",
+      id: "public-page",
+      title: "Divulgacao da pagina publica",
+      trigger: "Pagina pronta para campanha ou envio manual",
     },
   ];
 
@@ -197,12 +250,13 @@ export function PlaceCommunicationPanel({
           <button type="button" className="primary" onClick={actionFor(selected)}>{selected.action}</button>
           <section>
             <div className="communication-console__section-title">
-              <strong>Modelos padrao</strong>
+              <strong>Matriz de modelos</strong>
               <span>{templates.length}</span>
             </div>
             <div className="communication-console__templates">
               {templates.map((template) => (
                 <article key={template.id}>
+                  <em>{template.category}</em>
                   <span>{template.trigger}</span>
                   <strong>{template.title}</strong>
                   <small>{template.body}</small>
