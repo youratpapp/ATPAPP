@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { EntityDrawer } from "../EntityDrawer";
 import { ACADEMY_LEVEL_OPTIONS } from "../../lib/academy-levels";
 import type { AcademyClass, AcademyCoach, AcademyEnrollment, PlaceCourt } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
@@ -220,7 +219,8 @@ export function PlaceAcademyClassesModule({
   const selectedStudentDraft = selectedClass ? studentDraftByClass[selectedClass.id] || defaultStudentDraft(selectedClass) : null;
 
   return (
-    <>
+    <div className="academy-classes-workbench">
+      <div className="academy-classes-directory">
       <div className="academy-grade-toolbar">
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar turma, professor, quadra, nivel ou aluno" aria-label="Buscar turmas" />
         <select value={weekdayFilter} onChange={(event) => setWeekdayFilter(event.target.value)} aria-label="Filtrar turmas por dia da semana">
@@ -309,32 +309,24 @@ export function PlaceAcademyClassesModule({
           />
         ) : null}
       </WorkspaceList>
+      </div>
 
-      <EntityDrawer
-        open={Boolean(selectedClass && editDraft)}
-        eyebrow="Turmas da academia"
-        title={selectedClass?.title || "Turma"}
-        subtitle={
-          selectedClass
-            ? `${weekdayLabels[selectedClass.weekday] || "Dia"} ${selectedClass.startsAt.slice(0, 5)}-${selectedClass.endsAt.slice(0, 5)} | ${selectedActiveCount}/${selectedClass.capacity} alunos`
-            : undefined
-        }
-        onClose={() => setSelectedClassId(null)}
-        actions={
-          selectedClass && editDraft ? (
-            <>
-              <button type="button" className="secondary" onClick={() => setSelectedClassId(null)}>
-                Fechar
+      <aside className="academy-class-side-drawer" aria-label="Detalhe da turma">
+        {selectedClass && editDraft ? (
+          <>
+            <header>
+              <div>
+                <span>Turmas da academia</span>
+                <strong>{selectedClass.title}</strong>
+                <small>
+                  {weekdayLabels[selectedClass.weekday] || "Dia"} {selectedClass.startsAt.slice(0, 5)}-{selectedClass.endsAt.slice(0, 5)} | {selectedActiveCount}/{selectedClass.capacity} alunos
+                </small>
+              </div>
+              <button type="button" className="quiet" onClick={() => setSelectedClassId(null)} aria-label="Fechar detalhe da turma">
+                x
               </button>
-              {canManagePlace ? (
-                <button type="button" onClick={() => onUpdateClass(selectedClass, draftToPatch(editDraft))} disabled={busy || !editDraft.title.trim()}>
-                  Salvar alteracoes
-                </button>
-              ) : null}
-            </>
-          ) : null
-        }
-      >
+            </header>
+            <div className="academy-class-side-body">
         {selectedClass && editDraft ? (
           <div className="academy-class-drawer">
             <section>
@@ -652,7 +644,25 @@ export function PlaceAcademyClassesModule({
             </section>
           </div>
         ) : null}
-      </EntityDrawer>
-    </>
+            </div>
+            <footer className="academy-class-side-actions">
+              <button type="button" className="secondary" onClick={() => setSelectedClassId(null)}>
+                Fechar
+              </button>
+              {canManagePlace ? (
+                <button type="button" onClick={() => onUpdateClass(selectedClass, draftToPatch(editDraft))} disabled={busy || !editDraft.title.trim()}>
+                  Salvar alteracoes
+                </button>
+              ) : null}
+            </footer>
+          </>
+        ) : (
+          <div className="academy-class-side-empty">
+            <strong>Selecione uma turma</strong>
+            <span>Os dados da turma, alunos, mensalidade e historico aparecem aqui sem tirar voce da lista.</span>
+          </div>
+        )}
+      </aside>
+    </div>
   );
 }

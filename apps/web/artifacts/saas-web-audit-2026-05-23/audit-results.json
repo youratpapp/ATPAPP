@@ -1,0 +1,3211 @@
+{
+  "createdAt": "2026-05-24T00:12:53.245Z",
+  "base": "http://127.0.0.1:5175/",
+  "results": [
+    {
+      "id": "player-inicio",
+      "route": "#/inicio",
+      "url": "http://127.0.0.1:5175/#/inicio",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-inicio.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Finicio",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 3,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-jogar",
+      "route": "#/jogar",
+      "url": "http://127.0.0.1:5175/#/jogar",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-jogar.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Fjogar",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-competir",
+      "route": "#/eventos",
+      "url": "http://127.0.0.1:5175/#/eventos",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-competir.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Feventos",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-torneios",
+      "route": "#/eventos/torneios",
+      "url": "http://127.0.0.1:5175/#/eventos/torneios",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-torneios.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Feventos%2Ftorneios",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no evento que voce tentou abrir. Continuar com Google OU ENTRE COM E-MAIL E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no evento que voce tentou abrir. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-ligas",
+      "route": "#/eventos/ligas",
+      "url": "http://127.0.0.1:5175/#/eventos/ligas",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-ligas.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Feventos%2Fligas",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no evento que voce tentou abrir. Continuar com Google OU ENTRE COM E-MAIL E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no evento que voce tentou abrir. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-agenda",
+      "route": "#/agenda",
+      "url": "http://127.0.0.1:5175/#/agenda",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-agenda.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Fagenda",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-locais",
+      "route": "#/locais",
+      "url": "http://127.0.0.1:5175/#/locais",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-locais.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Flocais",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-ranking",
+      "route": "#/ranking",
+      "url": "http://127.0.0.1:5175/#/ranking",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-ranking.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Franking",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-perfil",
+      "route": "#/perfil",
+      "url": "http://127.0.0.1:5175/#/perfil",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-perfil.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Fperfil",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA E"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area solicitada. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "player-local-publico",
+      "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "url": "http://127.0.0.1:5175/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "mode": "player",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/player-local-publico.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/auth?next=%2Flocais%2F36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 972
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Entrar na ATP"
+        ],
+        "h2": [
+          "Sua jornada no tenis amador comeca aqui."
+        ],
+        "navItems": [],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": null,
+        "firstMain": {
+          "selector": "main",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 972,
+          "bottom": 972,
+          "right": 1600,
+          "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores."
+        },
+        "counts": {
+          "buttons": 3,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 2,
+          "inputs": 2,
+          "headings": [
+            "Sua jornada no tenis amador comeca aqui.",
+            "Entrar na ATP"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "auth-stage",
+            "y": 48,
+            "h": 876,
+            "w": 1180,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-brand-panel",
+            "y": 109,
+            "h": 754,
+            "w": 540,
+            "text": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel"
+          },
+          {
+            "className": "auth-card",
+            "y": 109,
+            "h": 754,
+            "w": 420,
+            "text": "Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no local ou quadra que voce tentou abrir. Continuar com Google OU ENTRE COM"
+          }
+        ],
+        "bodyHead": "Sua jornada no tenis amador comeca aqui. Torneios, ligas, reservas e ranking em uma experiencia simples para jogar mais. Torneios Encontre disputas no seu nivel. Ligas Acompanhe rodadas e resultados. Ranking Veja sua evolucao em quadra. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar no local ou quadra que voce tentou abrir. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+      }
+    },
+    {
+      "id": "work-central",
+      "route": "#/gestao",
+      "url": "http://127.0.0.1:5175/#/gestao",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-central.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 3123
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Trabalho Hoje"
+        ],
+        "h2": [
+          "O que precisa de atencao agora?",
+          "Agenda em andamento",
+          "Pendencias criticas",
+          "Clientes que precisam de atencao",
+          "Competicoes em operacao",
+          "Atalhos rapidos",
+          "Torneios e ligas que voce organiza",
+          "Locais sob sua gestao",
+          "Clube Racket Prime",
+          "ADT Dourados",
+          "Arena Pantanal Tennis",
+          "ATP Centro Dourados 0521051426"
+        ],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 3029,
+          "bottom": 3123,
+          "right": 1528,
+          "text": "CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE Clube Racket Prime - 276 pend. ADT Dourados - 162 pend. Arena Pantanal Tennis - 151 pend. ATP Centro Dourados 0521051426 - 3 pend. ATP Centro Dourados 0522031908 - 3 pend. ATP Centro Dourados 0522033757"
+        },
+        "counts": {
+          "buttons": 106,
+          "inputs": 3,
+          "tables": 0,
+          "cards": 11,
+          "rows": 48,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 50,
+          "inputs": 3,
+          "headings": [
+            "Trabalho Hoje",
+            "O que precisa de atencao agora?",
+            "Agenda em andamento",
+            "Pendencias criticas",
+            "Clientes que precisam de atencao",
+            "Competicoes em operacao",
+            "Atalhos rapidos",
+            "Torneios e ligas que voce organiza",
+            "Locais sob sua gestao",
+            "Clube Racket Prime",
+            "ADT Dourados",
+            "Arena Pantanal Tennis",
+            "ATP Centro Dourados 0521051426",
+            "Ajustes estruturais de ATP Centro Dourados 0521051204"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 2987,
+            "w": 1232,
+            "text": "CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE Clube Racket Prime - 276 pend. ADT Dourados - 162 pend. Arena "
+          },
+          {
+            "className": "management-saas-home is-manager",
+            "y": 130,
+            "h": 979,
+            "w": 1280,
+            "text": "CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE Clube Racket Prime - 276 pend. ADT Dourados - 162 pend. Arena "
+          },
+          {
+            "className": "management-saas-panel management-saas-agenda",
+            "y": 501,
+            "h": 608,
+            "w": 488,
+            "text": "Agenda em andamento Abrir agenda 08:00 Reservas e aulas do dia 161 reserva(s) para acompanhar 09:00 Aulas com pendencia 313 item(ns) em aulas Hoje Lista de espe"
+          },
+          {
+            "className": "management-saas-panel",
+            "y": 501,
+            "h": 391,
+            "w": 406,
+            "text": "Pendencias criticas Operacao exige acao Pendencias criticas Resolver agora 120 reserva(s) hoje Reservas Abrir reservas 7 aula(s) hoje Aulas Abrir aulas Cobranca"
+          },
+          {
+            "className": "management-saas-panel",
+            "y": 501,
+            "h": 391,
+            "w": 366,
+            "text": "Clientes que precisam de atencao Abrir clientes Atendimento 66 retorno(s) pendente(s) Contato Financeiro pessoal 24 cobranca(s) Cobrar"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE Clube Racket Prime - 276 pend. ADT Dourados - 162 pend. Arena Pantanal Tennis - 151 pend. ATP Centro Dourados 0521051426 - 3 pend. ATP Centro Dourados 0522031908 - 3 pend. ATP Centro Dourados 0522033757 - 3 pend. ATP Centro Dourados 0522115554 - 3 pend. ATP Centro Dourados 0521052052 - 2 pend. ATP Centro Dourados 0521094911 - 2 pend. ATP Centro Dourados 0521051204 - em dia GESTOR O que precisa de atencao agora? Fila da unidade em foco para atacar o que trava a rotina. 639 acoes em foco Ver pendencias Abrir agenda Reservas hoje 161 3 aguardando acao Aulas do dia 313 313 pendencia(s) Recebiveis 24 24 vencidos/pendentes Competicoes 34 operacao ativa Agenda em andamento Abrir agenda 08:00 Reservas e aulas do dia 161 reserva(s) para acompanhar 09:00 Aulas com pendencia 313 item(ns) em aulas Hoje Lista de espera ativa 199 pessoa(s) aguardando encaixe Pendencias criticas Operacao exige acao Pendencias criticas Resolver agora 120 reserva(s) hoje Reservas Abrir reservas 7 aula(s) hoje Aulas Abrir aulas Cobrancas pendentes Financeiro Cobrar Pessoas para contato Pessoas Atender Clientes que precisam de atencao Abrir clientes Atendimento 66 retorno(s) pendente(s) Contat"
+      }
+    },
+    {
+      "id": "work-local-inicio",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-local-inicio.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 806,
+          "bottom": 900,
+          "right": 1528,
+          "text": "Carregando area de trabalho Preparando agenda, aulas, clientes, financeiro e operacao do local."
+        },
+        "counts": {
+          "buttons": 13,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 0,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 11,
+          "inputs": 2,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Carregando area de trabalho Preparando agenda, aulas, clientes, financeiro e operacao do local. ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-agenda-calendario",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-agenda-calendario.png",
+      "detailScreenshot": "artifacts/saas-web-audit-2026-05-23/work-agenda-calendario-detail.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1269
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [
+          "Agenda"
+        ],
+        "navItems": [
+          "Dia",
+          "Semana",
+          "Lista",
+          "Remarcacoes",
+          "Canceladas",
+          "Conflitos",
+          "x",
+          "Pagar",
+          "Editar",
+          "WhatsApp troca",
+          "Cancelar reserva",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": {
+          "selector": ".saas-domain-header",
+          "x": 272,
+          "y": 128,
+          "w": 1308,
+          "h": 87,
+          "bottom": 215,
+          "right": 1580,
+          "text": "OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva"
+        },
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1175,
+          "bottom": 1269,
+          "right": 1528,
+          "text": "OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Todos os professores Renato Siqueira"
+        },
+        "counts": {
+          "buttons": 128,
+          "inputs": 9,
+          "tables": 0,
+          "cards": 5,
+          "rows": 0,
+          "drawer": 1,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 74,
+          "inputs": 9,
+          "headings": [
+            "Agenda"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1133,
+            "w": 1232,
+            "text": "OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reserva"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1107,
+            "w": 1308,
+            "text": "OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reserva"
+          },
+          {
+            "className": "place-booking-panel",
+            "y": 128,
+            "h": 1107,
+            "w": 1308,
+            "text": "OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reserva"
+          },
+          {
+            "className": "court-calendar-panel court-calendar-panel--saas",
+            "y": 128,
+            "h": 985,
+            "w": 1308,
+            "text": "OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reserva"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Todos os professores Renato Siqueira Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Intermediario Manha 1 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 TESTE TURMA Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2 Filtros Hora 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 Quadra 1 Pedro Vieira Pendente Livre Livre Daniela Ishikawa Pendente Livre Livre Livre Livre Livre Livre Livre Rodrigo Araujo Pendente Livre Livre Livre Livre Livre Quadra 2 Mariana Klein Pendente Livre Livre Andre Castro Pendente Livre Livre Livre Livre Livre Livre Livre Manuela Oliveira Pendente Livre Livre Livre Livre"
+      }
+    },
+    {
+      "id": "work-agenda-reservas",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-agenda-reservas.png",
+      "detailScreenshot": "artifacts/saas-web-audit-2026-05-23/work-agenda-reservas-detail.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1269
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [
+          "Reservas"
+        ],
+        "navItems": [
+          "Dia",
+          "Semana",
+          "Lista",
+          "Remarcacoes",
+          "Canceladas",
+          "Conflitos",
+          "x",
+          "Pagar",
+          "Editar",
+          "WhatsApp troca",
+          "Cancelar reserva",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": {
+          "selector": ".saas-domain-header",
+          "x": 272,
+          "y": 128,
+          "w": 1308,
+          "h": 87,
+          "bottom": 215,
+          "right": 1580,
+          "text": "OPERACAO Reservas Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral. Nova reserva"
+        },
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1175,
+          "bottom": 1269,
+          "right": 1528,
+          "text": "OPERACAO Reservas Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Filtros Hora 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:"
+        },
+        "counts": {
+          "buttons": 128,
+          "inputs": 6,
+          "tables": 0,
+          "cards": 5,
+          "rows": 0,
+          "drawer": 1,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 74,
+          "inputs": 6,
+          "headings": [
+            "Reservas"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1133,
+            "w": 1232,
+            "text": "OPERACAO Reservas Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral. Nova reserva Dia Semana Lista Remarcacoes Canceladas"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1107,
+            "w": 1308,
+            "text": "OPERACAO Reservas Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral. Nova reserva Dia Semana Lista Remarcacoes Canceladas"
+          },
+          {
+            "className": "place-booking-panel",
+            "y": 128,
+            "h": 1107,
+            "w": 1308,
+            "text": "OPERACAO Reservas Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral. Nova reserva Dia Semana Lista Remarcacoes Canceladas"
+          },
+          {
+            "className": "court-calendar-panel court-calendar-panel--saas reservations-focus",
+            "y": 128,
+            "h": 985,
+            "w": 1308,
+            "text": "OPERACAO Reservas Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral. Nova reserva Dia Semana Lista Remarcacoes Canceladas"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho OPERACAO Reservas Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Filtros Hora 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 Quadra 1 Pedro Vieira Pendente Livre Livre Daniela Ishikawa Pendente Livre Livre Livre Livre Livre Livre Livre Rodrigo Araujo Pendente Livre Livre Livre Livre Livre Quadra 2 Mariana Klein Pendente Livre Livre Andre Castro Pendente Livre Livre Livre Livre Livre Livre Livre Manuela Oliveira Pendente Livre Livre Livre Livre Livre Quadra 3 Joao Farias Pendente Livre Livre Valentina Queiroz Pendente Livre Livre Livre Livre Livre Livre Livre Igor Duarte Pendente Livre Livre Livre Livre Livre Quadra 4 Gabriela Silva Pendente Livre Livre Rafael Ferreira Pendente Livre Livre Livre Livre Livre Livre Livre Fernanda Xavier Pendente Livre Livre Livre Livre Livre Quadra 5 Diego Henrique Pendente Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Caue Lopes Pendente Livre Livre Livre Livre Livre Quadra 6 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Yasmin Almeida Pendente Livre Livre Livre"
+      }
+    },
+    {
+      "id": "work-academia-hoje",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-academia-hoje.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1357
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Aviso previo",
+          "Aviso previo",
+          "Aviso previo",
+          "Aviso previo",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1263,
+          "bottom": 1357,
+          "right": 1528,
+          "text": "Hoje Agenda Turmas Alunos Pendencias ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas Nova turma AULAS HOJE 4 Ordenadas por horario ALUNOS 13 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 0 Ausencias avisadas antes da aula"
+        },
+        "counts": {
+          "buttons": 28,
+          "inputs": 2,
+          "tables": 1,
+          "cards": 5,
+          "rows": 5,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 22,
+          "inputs": 2,
+          "headings": [
+            "Aulas do dia"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1221,
+            "w": 1232,
+            "text": "Hoje Agenda Turmas Alunos Pendencias ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas N"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1195,
+            "w": 1280,
+            "text": "Hoje Agenda Turmas Alunos Pendencias ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas N"
+          },
+          {
+            "className": "place-booking-panel academy-panel",
+            "y": 136,
+            "h": 1187,
+            "w": 1280,
+            "text": "Hoje Agenda Turmas Alunos Pendencias ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas N"
+          },
+          {
+            "className": "academy-day-console",
+            "y": 236,
+            "h": 1053,
+            "w": 1212,
+            "text": "ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas Nova turma AULAS HOJE 4 Ordenadas por "
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Hoje Agenda Turmas Alunos Pendencias ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas Nova turma AULAS HOJE 4 Ordenadas por horario ALUNOS 13 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 0 Ausencias avisadas antes da aula REPOSICOES 2 Creditos abertos vinculados HORARIO TURMA PROFESSOR QUADRA ALUNOS STATUS ACOES 06:30 - 07:30 Duplas Competitivo 1 Renato Siqueira Quadra 6 4/4 Em agenda Detalhar 12:00 - 13:00 Adulto Iniciante 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 16:00 - 17:00 Intermediario Noite 3 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar 18:00 - 19:00 Primeira Classe 2 Renato Siqueira Quadra 6 3/4 Em agenda Detalhar DETALHE DA AULA Duplas Competitivo 1 06:30 - 07:30 | Quadra 6 4/4 alunos 0 avisos previos 0 reposicoes abertas Alunos da aula 4 ALUNOS ATIVOS Chamada desligada por padrao. Registre apenas aviso previo quando o aluno avisar antes da aula. Camila Uchida +55 65 990000411 | 0 reposicoes | 0 avisos previos Aviso previo Yasmin Klein +55 67 990003151 | 0 reposicoes | 0 avisos previos Aviso previo Tatiane Cardoso +55 65 990005343 | 0 reposicoes | 0 avisos previos Aviso previo Thiago Farias +55 65 990008220 | 0 reposicoes | 0 avisos previos Aviso previo Re"
+      }
+    },
+    {
+      "id": "work-academia-calendario",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-academia-calendario.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1511
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1417,
+          "bottom": 1511,
+          "right": 1528,
+          "text": "Agenda de aulas Grade visual por horario, quadra, turma e alunos. Hoje Agenda Turmas Alunos Pendencias AULAS HOJE 4 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos. PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas. ALUNOS ATIVOS 83 aluno"
+        },
+        "counts": {
+          "buttons": 26,
+          "inputs": 3,
+          "tables": 0,
+          "cards": 4,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 21,
+          "inputs": 3,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1375,
+            "w": 1232,
+            "text": "Agenda de aulas Grade visual por horario, quadra, turma e alunos. Hoje Agenda Turmas Alunos Pendencias AULAS HOJE 4 aulas Chamada opcional desligada; a rotina u"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1349,
+            "w": 1280,
+            "text": "Agenda de aulas Grade visual por horario, quadra, turma e alunos. Hoje Agenda Turmas Alunos Pendencias AULAS HOJE 4 aulas Chamada opcional desligada; a rotina u"
+          },
+          {
+            "className": "place-booking-panel academy-panel",
+            "y": 136,
+            "h": 1341,
+            "w": 1280,
+            "text": "Agenda de aulas Grade visual por horario, quadra, turma e alunos. Hoje Agenda Turmas Alunos Pendencias AULAS HOJE 4 aulas Chamada opcional desligada; a rotina u"
+          },
+          {
+            "className": "teacher-day-calendar academy-day-matrix",
+            "y": 372,
+            "h": 938,
+            "w": 1212,
+            "text": "AGENDA DA ACADEMIA Agenda diaria de aulas 4 aulas no dia distribuidas por horario e quadra. Hora 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Agenda de aulas Grade visual por horario, quadra, turma e alunos. Hoje Agenda Turmas Alunos Pendencias AULAS HOJE 4 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos. PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas. ALUNOS ATIVOS 83 alunos Base completa fica em Pessoas. TURMAS 27 turmas Horarios semanais e vagas ficam na aba Turmas. AGENDA DA ACADEMIA Agenda diaria de aulas 4 aulas no dia distribuidas por horario e quadra. Hora 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 Quadra 1 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 2 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 3 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 4 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 5 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 6 Duplas Competitivo 1 Renato Siqueira 4 alunos Livre Livre Livre Livre Livre Adulto Iniciante 2 Renato Siqueira 3 a"
+      }
+    },
+    {
+      "id": "work-academia-turmas",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-academia-turmas.png",
+      "detailScreenshot": "artifacts/saas-web-audit-2026-05-23/work-academia-turmas-detail.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1698
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [
+          "Criar turma"
+        ],
+        "navItems": [
+          "IdentidadeNome e professor",
+          "AgendaDias, quadra e horario",
+          "Perfil e precoVagas, nivel e mensalidade",
+          "x",
+          "Desativar turma",
+          "Salvar mensalidade",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Pagar",
+          "Lembrar",
+          "Cancelar",
+          "Criar contrato e matricular",
+          "Fechar",
+          "Salvar alteracoes",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1604,
+          "bottom": 1698,
+          "right": 1528,
+          "text": "Turmas Turmas, grade semanal, vagas, mensalidade e matricula manual. Hoje Agenda Turmas Alunos Pendencias Nova turma ou horario aberto Todos os dias Dom Seg Ter Qua Qui Sex Sab Todas Com vagas Lotadas Com pendencias Exibindo 20 de 27 TURMA HORARIO PROFESSOR / QUADRA OCUPACAO STATUS Kids Iniciante 1 "
+        },
+        "counts": {
+          "buttons": 74,
+          "inputs": 57,
+          "tables": 1,
+          "cards": 4,
+          "rows": 20,
+          "drawer": 6,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 28,
+          "inputs": 11,
+          "headings": [
+            "Criar turma"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1562,
+            "w": 1232,
+            "text": "Turmas Turmas, grade semanal, vagas, mensalidade e matricula manual. Hoje Agenda Turmas Alunos Pendencias Nova turma ou horario aberto Todos os dias Dom Seg Ter"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1536,
+            "w": 1280,
+            "text": "Turmas Turmas, grade semanal, vagas, mensalidade e matricula manual. Hoje Agenda Turmas Alunos Pendencias Nova turma ou horario aberto Todos os dias Dom Seg Ter"
+          },
+          {
+            "className": "place-booking-panel academy-panel",
+            "y": 136,
+            "h": 1528,
+            "w": 1280,
+            "text": "Turmas Turmas, grade semanal, vagas, mensalidade e matricula manual. Hoje Agenda Turmas Alunos Pendencias Nova turma ou horario aberto Todos os dias Dom Seg Ter"
+          },
+          {
+            "className": "academy-workspace-card",
+            "y": 286,
+            "h": 349,
+            "w": 1186,
+            "text": ""
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Turmas Turmas, grade semanal, vagas, mensalidade e matricula manual. Hoje Agenda Turmas Alunos Pendencias Nova turma ou horario aberto Todos os dias Dom Seg Ter Qua Qui Sex Sab Todas Com vagas Lotadas Com pendencias Exibindo 20 de 27 TURMA HORARIO PROFESSOR / QUADRA OCUPACAO STATUS Kids Iniciante 1 Iniciante Seg 06:00-07:00 Caio Ferraz Quadra 1 8/8 R$ 420,00 Lotada Avancado Ranking 1 Avancado Seg 07:00-08:00 Caio Ferraz Quadra 1 4/4 R$ 420,00 Lotada Intermediario Manha 2 Intermediario Seg 08:00-09:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas Profissional Treino 2 Profissional Seg 16:00-17:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas TESTE TURMA Intermediario Seg 20:00-21:00 Prof. Lais Monteiro Quadra 1 0/6 R$ 0,00 Com vagas Adulto Iniciante 1 Iniciante Ter 06:00-07:00 Lais Monteiro Quadra 2 4/4 R$ 420,00 Lotada Primeira Classe 1 Primeira Classe Ter 07:00-08:00 Lais Monteiro Quadra 2 3/4 R$ 420,00 Com vagas Intermediario Noite 2 Intermediario Ter 08:00-09:00 Lais Monteiro Quadra 2 3/4 R$ 420,00 Com vagas Kids Performance 2 Profissional Ter 16:00-17:00 Lais Monteiro Quadra 2 3/8 R$ 420,00 Com vagas Intermediario Manha 1 Intermediario Qua 06:00-07:00 Renato Siqueira Quadra 3 4/4 R$ 420,00 Lotada Profissional Treino 1 Profissional Qua 07:00-08:00 Renat"
+      }
+    },
+    {
+      "id": "work-academia-alunos",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-academia-alunos.png",
+      "detailScreenshot": "artifacts/saas-web-audit-2026-05-23/work-academia-alunos-detail.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 2139
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Fechar",
+          "Cancelar matricula",
+          "Pagar",
+          "Enviar lembrete",
+          "Registrar aviso previo",
+          "Registrar evolucao",
+          "Fechar",
+          "Salvar aluno",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": -13,
+          "w": 1280,
+          "h": 2045,
+          "bottom": 2032,
+          "right": 1528,
+          "text": "Alunos Aluno por aluno: status, pagamento, avisos, reposicao e evolucao. Hoje Agenda Turmas Alunos Pendencias Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Inte"
+        },
+        "counts": {
+          "buttons": 52,
+          "inputs": 17,
+          "tables": 1,
+          "cards": 6,
+          "rows": 24,
+          "drawer": 7,
+          "modal": 1
+        },
+        "aboveFold": {
+          "buttons": 26,
+          "inputs": 12,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 5,
+            "h": 2003,
+            "w": 1232,
+            "text": "Alunos Aluno por aluno: status, pagamento, avisos, reposicao e evolucao. Hoje Agenda Turmas Alunos Pendencias Todas as turmas Kids Iniciante 1 Avancado Ranking "
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 21,
+            "h": 1977,
+            "w": 1280,
+            "text": "Alunos Aluno por aluno: status, pagamento, avisos, reposicao e evolucao. Hoje Agenda Turmas Alunos Pendencias Todas as turmas Kids Iniciante 1 Avancado Ranking "
+          },
+          {
+            "className": "place-booking-panel academy-panel",
+            "y": 29,
+            "h": 1969,
+            "w": 1280,
+            "text": "Alunos Aluno por aluno: status, pagamento, avisos, reposicao e evolucao. Hoje Agenda Turmas Alunos Pendencias Todas as turmas Kids Iniciante 1 Avancado Ranking "
+          },
+          {
+            "className": "",
+            "y": 149,
+            "h": 448,
+            "w": 1078,
+            "text": "Dados e matricula ATIVO NOME DO ALUNO TELEFONE TURMA Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciant"
+          },
+          {
+            "className": "",
+            "y": 612,
+            "h": 319,
+            "w": 531,
+            "text": "Avisos e reposicoes SEM CHAMADA OBRIGATORIA 0 avisos previos Esta academia nao exige chamada. Reposicao so nasce de aviso previo registrado dentro da regra. DAT"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Alunos Aluno por aluno: status, pagamento, avisos, reposicao e evolucao. Hoje Agenda Turmas Alunos Pendencias Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Intermediario Noite 2 Kids Performance 2 Intermediario Manha 1 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 TESTE TURMA Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2 Todos os status Ativos Pendentes Cancelados Pagamento Mensalidade pendente Mensalidade paga Avisos/reposicao Com aviso previo Com reposicao aberta Exibindo 24 de 59 Nova matricula ALUNO STATUS TURMA / PLANO CONTATO PROXIMO PASSO Livia Jogadora Pura 1 horario semanal | Competencia 2026-05 Ativo Kids Iniciante 1 Mensalidade pendente +55 67 99940-0046 Cobrar 0 avisos previos | 0 reposicoes abertas Ana Gomes 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana R$ 310,00 / mes pendente +55 67 990000137 Cobrar 0 avisos previos | 0 reposicoes abertas Bruno Nascimento 2 horarios semanais | Competencia 2026-05 Ativo Pl"
+      }
+    },
+    {
+      "id": "work-academia-pendencias",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-academia-pendencias.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 2152
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 2058,
+          "bottom": 2152,
+          "right": 1528,
+          "text": "Pendencias de aulas Fila para resolver matriculas, avulsas, reposicoes e pagamentos. Hoje Agenda Turmas Alunos Pendencias Todos os tipos Matriculas Aula avulsa/reposicao Reposicoes abertas Todos os status Aguardando decisao Aprovado sem pagamento Credito aberto Buscar encaixe Exibindo 20 de 100 0 ma"
+        },
+        "counts": {
+          "buttons": 80,
+          "inputs": 5,
+          "tables": 0,
+          "cards": 4,
+          "rows": 20,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 30,
+          "inputs": 5,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 2016,
+            "w": 1232,
+            "text": "Pendencias de aulas Fila para resolver matriculas, avulsas, reposicoes e pagamentos. Hoje Agenda Turmas Alunos Pendencias Todos os tipos Matriculas Aula avulsa/"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1990,
+            "w": 1280,
+            "text": "Pendencias de aulas Fila para resolver matriculas, avulsas, reposicoes e pagamentos. Hoje Agenda Turmas Alunos Pendencias Todos os tipos Matriculas Aula avulsa/"
+          },
+          {
+            "className": "place-booking-panel academy-panel",
+            "y": 136,
+            "h": 1982,
+            "w": 1280,
+            "text": "Pendencias de aulas Fila para resolver matriculas, avulsas, reposicoes e pagamentos. Hoje Agenda Turmas Alunos Pendencias Todos os tipos Matriculas Aula avulsa/"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Pendencias de aulas Fila para resolver matriculas, avulsas, reposicoes e pagamentos. Hoje Agenda Turmas Alunos Pendencias Todos os tipos Matriculas Aula avulsa/reposicao Reposicoes abertas Todos os status Aguardando decisao Aprovado sem pagamento Credito aberto Buscar encaixe Exibindo 20 de 100 0 matriculas pendentes 72 pedidos de aula 28 reposicoes abertas Igor Yamamoto Aguardando decisao Aula avulsa Primeira Classe 2 | 2026-05-16 | +55 65 990026304 Aprovar Mais Olivia Esteves Aguardando decisao Aula avulsa Profissional Treino 2 | 2026-05-16 | +55 67 990029455 Aprovar Mais Joao Farias Aguardando decisao Aula avulsa Intermediario Noite 3 | 2026-05-16 | +55 65 990012330 Aprovar Mais Daniela Silva Aguardando decisao Aula avulsa Intermediario Manha 3 | 2026-05-16 | +55 67 990009179 Aprovar Mais Diego Henrique Aguardando decisao Aula avulsa Adulto Iniciante 3 | 2026-05-16 | +55 67 990006028 Aprovar Mais Valentina Borges Aguardando decisao Aula avulsa Kids Iniciante 3 | 2026-05-16 | +55 65 990002877 Aprovar Mais Rodrigo Pereira Aguardando decisao Aula avulsa Kids Performance 2 | 2026-05-16 | +55 67 990032606 Aprovar Mais Ana Queiroz Aguardando decisao Aula avulsa Kids Iniciante 1 | 2026-05-16 | +55 67 990005617 Aprovar Mais Andre Castro Aguardando decisao Aul"
+      }
+    },
+    {
+      "id": "work-clientes-ativos",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-clientes-ativos.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 4084
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [
+          "Clientes"
+        ],
+        "navItems": [
+          "Nova reserva",
+          "Cobrar",
+          "WhatsApp",
+          "Abrir aulas",
+          "Abrir agenda",
+          "Abrir receita",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 3990,
+          "bottom": 4084,
+          "right": 1528,
+          "text": "Clientes ativos Leads Atendimento GERENCIAMENTO Clientes Leads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista. Novo cliente Todos os tipos Alunos Socios CRM Ativos Todos 145 clientes ativos NOME STATUS CATEGORIA CONTATO PROXIMO PASSO AG Ana Gomes Ativo Aluno +55 67 990"
+        },
+        "counts": {
+          "buttons": 103,
+          "inputs": 5,
+          "tables": 1,
+          "cards": 2,
+          "rows": 81,
+          "drawer": 1,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 21,
+          "inputs": 5,
+          "headings": [
+            "Clientes",
+            "Ana Gomes"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 3948,
+            "w": 1232,
+            "text": "Clientes ativos Leads Atendimento GERENCIAMENTO Clientes Leads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista. Novo cliente Todos"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 3922,
+            "w": 1280,
+            "text": "Clientes ativos Leads Atendimento GERENCIAMENTO Clientes Leads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista. Novo cliente Todos"
+          },
+          {
+            "className": "place-booking-panel",
+            "y": 128,
+            "h": 3922,
+            "w": 1280,
+            "text": "Clientes ativos Leads Atendimento GERENCIAMENTO Clientes Leads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista. Novo cliente Todos"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Clientes ativos Leads Atendimento GERENCIAMENTO Clientes Leads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista. Novo cliente Todos os tipos Alunos Socios CRM Ativos Todos 145 clientes ativos NOME STATUS CATEGORIA CONTATO PROXIMO PASSO AG Ana Gomes Ativo Aluno +55 67 990000137 Aulas AG Ana Gomes Ativo Aluno +55 67 990000137 Aulas AG Ana Gomes Ativo Socio Performance +55 67 990000137 Receita AQ Ana Queiroz Ativo Aluno +55 67 990005617 Aulas AQ Ana Queiroz Ativo Socio Performance +55 67 990005617 Receita AQ Ana Queiroz Ativo Reserva recorrente +55 67 990022057 Abrir 360 AR Andre Rocha Ativo Aluno +55 65 990003288 Aulas AR Andre Rocha Ativo Aluno +55 65 990003288 Aulas AR Andre Rocha Ativo Aluno +55 65 990003288 Aulas AR Andre Rocha Ativo Socio Essencial +55 65 990003288 Receita BZ Beatriz Zanetti Ativo Aluno +55 67 990003425 Aulas BZ Beatriz Zanetti Ativo Aluno +55 67 990003425 Aulas BZ Beatriz Zanetti Ativo Socio Performance +55 67 990003425 Receita BN Bruno Nascimento Ativo Aluno +55 67 990000274 Aulas BN Bruno Nascimento Ativo Aluno +55 67 990000274 Aulas BN Bruno Nascimento Ativo Socio Essencial +55 67 990000274 Receita BY Bruno Yamamoto Ativo Aluno +55 65 990005754 Aulas BY Bruno Yamamoto Ativo Socio Essencial +55 65 99000"
+      }
+    },
+    {
+      "id": "work-clientes-leads",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-clientes-leads.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 2903
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 2809,
+          "bottom": 2903,
+          "right": 1528,
+          "text": "Leads Interessados e contatos comerciais que ainda nao viraram cliente ativo. Clientes ativos Leads Atendimento Leads e oportunidades 28 leads | 15% conversao | 28 em rotina HOJE28 retornos para fazer28 contatos em rotina Ana Borges Retorno 2026-05-10 Ana Borges Retorno 2026-05-13 Ana Gomes Retorno "
+        },
+        "counts": {
+          "buttons": 82,
+          "inputs": 11,
+          "tables": 0,
+          "cards": 5,
+          "rows": 18,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 24,
+          "inputs": 3,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 2767,
+            "w": 1232,
+            "text": "Leads Interessados e contatos comerciais que ainda nao viraram cliente ativo. Clientes ativos Leads Atendimento Leads e oportunidades 28 leads | 15% conversao |"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 2741,
+            "w": 1280,
+            "text": "Leads Interessados e contatos comerciais que ainda nao viraram cliente ativo. Clientes ativos Leads Atendimento Leads e oportunidades 28 leads | 15% conversao |"
+          },
+          {
+            "className": "place-booking-panel",
+            "y": 128,
+            "h": 2741,
+            "w": 1280,
+            "text": "Leads Interessados e contatos comerciais que ainda nao viraram cliente ativo. Clientes ativos Leads Atendimento Leads e oportunidades 28 leads | 15% conversao |"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Leads Interessados e contatos comerciais que ainda nao viraram cliente ativo. Clientes ativos Leads Atendimento Leads e oportunidades 28 leads | 15% conversao | 28 em rotina HOJE28 retornos para fazer28 contatos em rotina Ana Borges Retorno 2026-05-10 Ana Borges Retorno 2026-05-13 Ana Gomes Retorno 2026-05-12 NOVO Cadastrar contato Lead, aluno interessado ou retorno da recepcao. Novo contato Prioridade Todos Leads Em contato Convertidos Arquivados Novo contato 18 leads 28 retornos hoje 10 em contato 0 convertidos Ana Borges Em contato Aula experimental | Instagram | Resp. Gestao +55 65 990027537 | jogador201@demo.atp.local | Proximo contato: 2026-05-10 | Fazer follow-up Contato demo criado para validar CRM e follow-up. Registrar retorno WhatsApp Historico (2) Caue Lopes Em contato Torneio | WhatsApp | Resp. Recepcao +55 65 990009042 | jogador066@demo.atp.local | Proximo contato: 2026-05-10 | Fazer follow-up Contato demo criado para validar CRM e follow-up. Registrar retorno WhatsApp Historico (2) Helena Borges Em contato Reserva recorrente | Pagina publica | Resp. Comercial +55 65 990015207 | jogador111@demo.atp.local | Proximo contato: 2026-05-10 | Fazer follow-up Contato demo criado para validar CRM e follow-up. Registrar retorno WhatsApp Historico (2)"
+      }
+    },
+    {
+      "id": "work-financeiro-recebiveis",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-financeiro-recebiveis.png",
+      "detailScreenshot": "artifacts/saas-web-audit-2026-05-23/work-financeiro-recebiveis-detail.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1161
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [
+          "Receber"
+        ],
+        "navItems": [
+          "Pagar",
+          "Enviar lembrete",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1067,
+          "bottom": 1161,
+          "right": 1528,
+          "text": "RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 25.566,00 118 recebivel(is) no filtro VENCIDOS R$ 25.566,00 118 cobranca(s) VENCE HOJE 0 acao recomendada hoje Todos 118 Vencidos 118 Hoje 0 Aulas 59 Planos 59 Cobrar"
+        },
+        "counts": {
+          "buttons": 141,
+          "inputs": 3,
+          "tables": 1,
+          "cards": 2,
+          "rows": 119,
+          "drawer": 1,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 23,
+          "inputs": 3,
+          "headings": [
+            "Receber",
+            "Ana Gomes"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1025,
+            "w": 1232,
+            "text": "RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 25.566,00 118 recebivel(is"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 999,
+            "w": 1280,
+            "text": "RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 25.566,00 118 recebivel(is"
+          },
+          {
+            "className": "place-booking-panel place-finance-panel",
+            "y": 128,
+            "h": 999,
+            "w": 1280,
+            "text": "RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 25.566,00 118 recebivel(is"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho RECEITA Receber Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara. Lembrar lista atual EM ABERTO R$ 25.566,00 118 recebivel(is) no filtro VENCIDOS R$ 25.566,00 118 cobranca(s) VENCE HOJE 0 acao recomendada hoje Todos 118 Vencidos 118 Hoje 0 Aulas 59 Planos 59 Cobrar planos Cobrar alunos CLIENTE ORIGEM VENCIMENTO STATUS VALOR Ana Gomes Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 259,00 Ana Queiroz Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 259,00 Andre Rocha Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 159,00 Beatriz Zanetti Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 259,00 Bruno Nascimento Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 159,00 Bruno Yamamoto Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 159,00 Camila Almeida Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 259,00 Camila Uchida Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 259,00 Caue Barbosa Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 159,00 Daniela Ishikawa Socio Performance Plano de sócio Vencido em 05/05 Vencido R$ 259,00 Diego Castro Socio Essencial Plano de sócio Vencido em 05/05 Vencido R$ 159,00 Diego Henrique Socio "
+      }
+    },
+    {
+      "id": "work-financeiro-pagos",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=pagos",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=pagos",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-financeiro-pagos.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=pagos",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 806,
+          "bottom": 900,
+          "right": 1528,
+          "text": "Pagos Pagamentos registrados no periodo e comprovacao operacional. Nenhum pagamento registrado neste recorte."
+        },
+        "counts": {
+          "buttons": 13,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 11,
+          "inputs": 2,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Pagos Pagamentos registrados no periodo e comprovacao operacional. Nenhum pagamento registrado neste recorte. ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-financeiro-despesas",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=despesas",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=despesas",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-financeiro-despesas.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=despesas",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1443
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1349,
+          "bottom": 1443,
+          "right": 1528,
+          "text": "Despesas Lancamentos, despesas recentes e cancelamentos. Registrar despesa Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-05-03 posted Cancelar Comissao e apoio operacional R$ 2.600,00 | Equipe | 2026-05-03 posted Cancelar Reposicao da cantina/pro shop R$ 950,00 | Produtos | 2026"
+        },
+        "counts": {
+          "buttons": 25,
+          "inputs": 6,
+          "tables": 0,
+          "cards": 2,
+          "rows": 10,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 16,
+          "inputs": 6,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1307,
+            "w": 1232,
+            "text": "Despesas Lancamentos, despesas recentes e cancelamentos. Registrar despesa Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-05-03 posted Cance"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1281,
+            "w": 1280,
+            "text": "Despesas Lancamentos, despesas recentes e cancelamentos. Registrar despesa Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-05-03 posted Cance"
+          },
+          {
+            "className": "place-booking-panel place-finance-panel",
+            "y": 128,
+            "h": 1281,
+            "w": 1280,
+            "text": "Despesas Lancamentos, despesas recentes e cancelamentos. Registrar despesa Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-05-03 posted Cance"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Despesas Lancamentos, despesas recentes e cancelamentos. Registrar despesa Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-05-03 posted Cancelar Comissao e apoio operacional R$ 2.600,00 | Equipe | 2026-05-03 posted Cancelar Reposicao da cantina/pro shop R$ 950,00 | Produtos | 2026-05-03 posted Cancelar Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-04-04 posted Cancelar Comissao e apoio operacional R$ 2.600,00 | Equipe | 2026-04-04 posted Cancelar Reposicao da cantina/pro shop R$ 950,00 | Produtos | 2026-04-04 posted Cancelar Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-03-05 posted Cancelar Comissao e apoio operacional R$ 2.600,00 | Equipe | 2026-03-05 posted Cancelar Reposicao da cantina/pro shop R$ 950,00 | Produtos | 2026-03-05 posted Cancelar Manutencao de quadras e iluminacao R$ 1.800,00 | Manutencao | 2026-02-06 posted Cancelar Ver 8 despesas restantes ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-financeiro-planos",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=planos",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=planos",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-financeiro-planos.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=planos",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 2785
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 2691,
+          "bottom": 2785,
+          "right": 1528,
+          "text": "Planos Planos, pacotes recorrentes e ofertas vendaveis. Planos de socio Recorrencia mensal com beneficios 2 Socio EssencialR$ 159,00 / mes | quadras 15% | aulas 5% Socio PerformanceR$ 259,00 / mes | quadras 30% | aulas 15% Turmas da academia Pacotes mensais por turma 27 Kids Iniciante 1R$ 420,00 / m"
+        },
+        "counts": {
+          "buttons": 54,
+          "inputs": 15,
+          "tables": 0,
+          "cards": 15,
+          "rows": 8,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 12,
+          "inputs": 7,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 2649,
+            "w": 1232,
+            "text": "Planos Planos, pacotes recorrentes e ofertas vendaveis. Planos de socio Recorrencia mensal com beneficios 2 Socio EssencialR$ 159,00 / mes | quadras 15% | aulas"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 2623,
+            "w": 1280,
+            "text": "Planos Planos, pacotes recorrentes e ofertas vendaveis. Planos de socio Recorrencia mensal com beneficios 2 Socio EssencialR$ 159,00 / mes | quadras 15% | aulas"
+          },
+          {
+            "className": "place-booking-panel place-finance-panel",
+            "y": 128,
+            "h": 2623,
+            "w": 1280,
+            "text": "Planos Planos, pacotes recorrentes e ofertas vendaveis. Planos de socio Recorrencia mensal com beneficios 2 Socio EssencialR$ 159,00 / mes | quadras 15% | aulas"
+          },
+          {
+            "className": "academy-workspace-card",
+            "y": 233,
+            "h": 262,
+            "w": 395,
+            "text": "Planos de socio Recorrencia mensal com beneficios 2 Socio EssencialR$ 159,00 / mes | quadras 15% | aulas 5% Socio PerformanceR$ 259,00 / mes | quadras 30% | aul"
+          },
+          {
+            "className": "academy-workspace-card",
+            "y": 233,
+            "h": 262,
+            "w": 395,
+            "text": "Turmas da academia Pacotes mensais por turma 27 Kids Iniciante 1R$ 420,00 / mes | 8 vagas Avancado Ranking 1R$ 420,00 / mes | 4 vagas Intermediario Manha 2R$ 42"
+          },
+          {
+            "className": "academy-workspace-card",
+            "y": 233,
+            "h": 262,
+            "w": 395,
+            "text": "Aulas avulsas Drop-in e reposicoes cobradas 84 R$ 0,00 ja pago 48 drop-ins Mariana AlmeidaReposicao | R$ 0,00 | waived Igor YamamotoAula avulsa | R$ 105,00 | pe"
+          },
+          {
+            "className": "academy-workspace-card",
+            "y": 509,
+            "h": 487,
+            "w": 395,
+            "text": "Mapa de ofertas Produtos que ja podem ser vendidos sem confundir operacao 81 Socio recorrente pronto Turmas mensais prontas Credito com saldo pronto Mensalidade"
+          },
+          {
+            "className": "academy-workspace-card",
+            "y": 509,
+            "h": 487,
+            "w": 395,
+            "text": "Saude dos creditos Vencimento, saldo e consumo 52% 6 vencendo 15 saldo baixo 7 vencidos Daniela SilvaAula avulsa particular | vence 2026-05-24 | 1 restantes Ana"
+          },
+          {
+            "className": "academy-workspace-card",
+            "y": 509,
+            "h": 487,
+            "w": 395,
+            "text": "Creditos e passes Venda com saldo, validade e consumo manual 4 146 saldo ativo R$ 30.060,00 vendido Credito de quadra Credito de aula Day pass Criar pacote Paco"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Planos Planos, pacotes recorrentes e ofertas vendaveis. Planos de socio Recorrencia mensal com beneficios 2 Socio EssencialR$ 159,00 / mes | quadras 15% | aulas 5% Socio PerformanceR$ 259,00 / mes | quadras 30% | aulas 15% Turmas da academia Pacotes mensais por turma 27 Kids Iniciante 1R$ 420,00 / mes | 8 vagas Avancado Ranking 1R$ 420,00 / mes | 4 vagas Intermediario Manha 2R$ 420,00 / mes | 4 vagas Profissional Treino 2R$ 420,00 / mes | 4 vagas TESTE TURMAR$ 0,00 / mes | 6 vagas Adulto Iniciante 1R$ 420,00 / mes | 4 vagas Aulas avulsas Drop-in e reposicoes cobradas 84 R$ 0,00 ja pago 48 drop-ins Mariana AlmeidaReposicao | R$ 0,00 | waived Igor YamamotoAula avulsa | R$ 105,00 | pending Olivia EstevesAula avulsa | R$ 105,00 | pending Joao FariasAula avulsa | R$ 105,00 | pending Daniela SilvaAula avulsa | R$ 105,00 | pending Mapa de ofertas Produtos que ja podem ser vendidos sem confundir operacao 81 Socio recorrente pronto Turmas mensais prontas Credito com saldo pronto Mensalidade recorrenteR$ 24.528,00 previstos entre socios e turmas. Aula avulsa48 solicitacoes registradas. Pacote com saldo4 pacotes ativos | 146 creditos disponiveis vendidos. Saude dos creditos Vencimento, saldo e consumo 52% 6 vencendo 15 saldo baixo 7 vencidos Daniela SilvaAula avuls"
+      }
+    },
+    {
+      "id": "work-loja-vender",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=vender",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=vender",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-loja-vender.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=vender",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 806,
+          "bottom": 900,
+          "right": 1528,
+          "text": "Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servico"
+        },
+        "counts": {
+          "buttons": 29,
+          "inputs": 7,
+          "tables": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 27,
+          "inputs": 7,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 608,
+            "w": 1232,
+            "text": "Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadas"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 582,
+            "w": 1280,
+            "text": "Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadas"
+          },
+          {
+            "className": "place-booking-panel",
+            "y": 128,
+            "h": 582,
+            "w": 1280,
+            "text": "Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadas"
+          },
+          {
+            "className": "progressive-form progressive-form-static canteen-sale-form",
+            "y": 233,
+            "h": 442,
+            "w": 909,
+            "text": "Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Alugue"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ 39,00 | 4 em estoque Overgrip Pro shop R$ 25,00 | 18 em estoque Sanduiche natural Lanches R$ 18,00 | 12 em estoque Suco natural Bebidas R$ 12,00 | 16 em estoque ITEM QTD VALOR UNITARIO CLIENTE Registrar venda Atencao de estoque Sem produtos em estoque baixo agora. ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-loja-estoque",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=estoque",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=estoque",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-loja-estoque.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=estoque",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1418
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1324,
+          "bottom": 1418,
+          "right": 1528,
+          "text": "Loja / POS Acompanhar itens baixos, disponibilidade e reposicao. Venda rapida Vendas do dia Estoque baixo Produtos 0 0 itens precisam de reposicao BUSCAR NO ESTOQUE Produtos Todos os produtos Agua sem gas Bebidas | R$ 5,00 40 em estoque Aluguel raquete Servicos | R$ 20,00 5 em estoque Barra de prote"
+        },
+        "counts": {
+          "buttons": 18,
+          "inputs": 3,
+          "tables": 0,
+          "cards": 3,
+          "rows": 10,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 16,
+          "inputs": 3,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1282,
+            "w": 1232,
+            "text": "Loja / POS Acompanhar itens baixos, disponibilidade e reposicao. Venda rapida Vendas do dia Estoque baixo Produtos 0 0 itens precisam de reposicao BUSCAR NO EST"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1256,
+            "w": 1280,
+            "text": "Loja / POS Acompanhar itens baixos, disponibilidade e reposicao. Venda rapida Vendas do dia Estoque baixo Produtos 0 0 itens precisam de reposicao BUSCAR NO EST"
+          },
+          {
+            "className": "place-booking-panel",
+            "y": 128,
+            "h": 1256,
+            "w": 1280,
+            "text": "Loja / POS Acompanhar itens baixos, disponibilidade e reposicao. Venda rapida Vendas do dia Estoque baixo Produtos 0 0 itens precisam de reposicao BUSCAR NO EST"
+          },
+          {
+            "className": "canteen-stock-section",
+            "y": 348,
+            "h": 1002,
+            "w": 1212,
+            "text": "Todos os produtos Agua sem gas Bebidas | R$ 5,00 40 em estoque Aluguel raquete Servicos | R$ 20,00 5 em estoque Barra de proteina Lanches | R$ 15,00 9 em estoqu"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Loja / POS Acompanhar itens baixos, disponibilidade e reposicao. Venda rapida Vendas do dia Estoque baixo Produtos 0 0 itens precisam de reposicao BUSCAR NO ESTOQUE Produtos Todos os produtos Agua sem gas Bebidas | R$ 5,00 40 em estoque Aluguel raquete Servicos | R$ 20,00 5 em estoque Barra de proteina Lanches | R$ 15,00 9 em estoque Bola tubo Pro shop | R$ 52,00 7 em estoque Cafe espresso Bebidas | R$ 7,00 60 em estoque Isotonico Bebidas | R$ 9,00 22 em estoque Munhequeira Pro shop | R$ 39,00 4 em estoque Overgrip Pro shop | R$ 25,00 18 em estoque Sanduiche natural Lanches | R$ 18,00 12 em estoque Suco natural Bebidas | R$ 12,00 16 em estoque ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-loja-produtos",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=produtos",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=produtos",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-loja-produtos.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=produtos",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1221
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1127,
+          "bottom": 1221,
+          "right": 1528,
+          "text": "Loja / POS Cadastrar produtos e manter a tabela de venda organizada. Venda rapida Vendas do dia Estoque baixo Produtos BUSCAR PRODUTO Todos Baixo Zerado Agua sem gas Disponivel Bebidas 40 em estoque R$ 5,00 Aluguel raquete Disponivel Servicos 5 em estoque R$ 20,00 Barra de proteina Disponivel Lanche"
+        },
+        "counts": {
+          "buttons": 21,
+          "inputs": 7,
+          "tables": 0,
+          "cards": 2,
+          "rows": 10,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 18,
+          "inputs": 3,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1085,
+            "w": 1232,
+            "text": "Loja / POS Cadastrar produtos e manter a tabela de venda organizada. Venda rapida Vendas do dia Estoque baixo Produtos BUSCAR PRODUTO Todos Baixo Zerado Agua se"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1059,
+            "w": 1280,
+            "text": "Loja / POS Cadastrar produtos e manter a tabela de venda organizada. Venda rapida Vendas do dia Estoque baixo Produtos BUSCAR PRODUTO Todos Baixo Zerado Agua se"
+          },
+          {
+            "className": "place-booking-panel",
+            "y": 128,
+            "h": 1059,
+            "w": 1280,
+            "text": "Loja / POS Cadastrar produtos e manter a tabela de venda organizada. Venda rapida Vendas do dia Estoque baixo Produtos BUSCAR PRODUTO Todos Baixo Zerado Agua se"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Loja / POS Cadastrar produtos e manter a tabela de venda organizada. Venda rapida Vendas do dia Estoque baixo Produtos BUSCAR PRODUTO Todos Baixo Zerado Agua sem gas Disponivel Bebidas 40 em estoque R$ 5,00 Aluguel raquete Disponivel Servicos 5 em estoque R$ 20,00 Barra de proteina Disponivel Lanches 9 em estoque R$ 15,00 Bola tubo Disponivel Pro shop 7 em estoque R$ 52,00 Cafe espresso Disponivel Bebidas 60 em estoque R$ 7,00 Isotonico Disponivel Bebidas 22 em estoque R$ 9,00 Munhequeira Disponivel Pro shop 4 em estoque R$ 39,00 Overgrip Disponivel Pro shop 18 em estoque R$ 25,00 Sanduiche natural Disponivel Lanches 12 em estoque R$ 18,00 Suco natural Disponivel Bebidas 16 em estoque R$ 12,00 Novo produto ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-competicoes",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/competicoes",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/competicoes",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-competicoes.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/eventos?modo=organizing&placeId=36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 992
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [
+          "Quais competicoes precisam de acao?"
+        ],
+        "navItems": [
+          "Criar torneio",
+          "Criar liga",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": {
+          "selector": "[class*=hero]",
+          "x": 272,
+          "y": 416,
+          "w": 1072,
+          "h": 211,
+          "bottom": 627,
+          "right": 1344,
+          "text": "COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga"
+        },
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 126,
+          "bottom": 126,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 126,
+          "w": 1120,
+          "h": 866,
+          "bottom": 992,
+          "right": 1368,
+          "text": "Carregando competicoes Separando competicoes para jogar, descobrir ou organizar conforme seu perfil. COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 0 Bloqueios precisam de acao"
+        },
+        "counts": {
+          "buttons": 22,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 1,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 13,
+          "inputs": 2,
+          "headings": [
+            "Quais competicoes precisam de acao?"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "competition-saas-console",
+            "y": 416,
+            "h": 552,
+            "w": 1072,
+            "text": "COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio "
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Dourados - MS Jogador Trabalho Carregando competicoes Separando competicoes para jogar, descobrir ou organizar conforme seu perfil. COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 0 Bloqueios precisam de acao 0 Em operacao torneios e ligas ativos 0 Torneios no seu workspace 0 Ligas temporadas e rodadas Todos Torneios Ligas Pendencias Historico Comece criando uma competicao Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro da competicao. DETALHE DA ACAO Selecione uma competicao A fila operacional abre aqui sem tirar voce do contexto. Criar torneio Criar liga ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-comunicacao",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-comunicacao.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 806,
+          "bottom": 900,
+          "right": 1528,
+          "text": "Carregando area de trabalho Preparando agenda, aulas, clientes, financeiro e operacao do local."
+        },
+        "counts": {
+          "buttons": 13,
+          "inputs": 2,
+          "tables": 0,
+          "cards": 0,
+          "rows": 0,
+          "drawer": 0,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 11,
+          "inputs": 2,
+          "headings": []
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Carregando area de trabalho Preparando agenda, aulas, clientes, financeiro e operacao do local. ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-relatorios",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-relatorios.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1323
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [
+          "Visao da operacao"
+        ],
+        "navItems": [
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": null,
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 1229,
+          "bottom": 1323,
+          "right": 1528,
+          "text": "RELATORIOS Visao da operacao Indicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva. Tudo Periodo Este mes Hoje Exportar CSV PLANO ATUAL Pro: completo Reservas, academia, sócios, CRM e financeiro. Clube: reservas Academia: turmas Pro: completo Multiunidade QUADRAS 6 "
+        },
+        "counts": {
+          "buttons": 19,
+          "inputs": 4,
+          "tables": 1,
+          "cards": 2,
+          "rows": 6,
+          "drawer": 1,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 17,
+          "inputs": 4,
+          "headings": [
+            "Visao da operacao",
+            "Agenda"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 1187,
+            "w": 1232,
+            "text": "RELATORIOS Visao da operacao Indicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva. Tudo Periodo Este mes Hoje Exportar CSV PL"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 1161,
+            "w": 1280,
+            "text": "RELATORIOS Visao da operacao Indicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva. Tudo Periodo Este mes Hoje Exportar CSV PL"
+          },
+          {
+            "className": "reports-console",
+            "y": 128,
+            "h": 1161,
+            "w": 1204,
+            "text": "RELATORIOS Visao da operacao Indicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva. Tudo Periodo Este mes Hoje Exportar CSV PL"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho RELATORIOS Visao da operacao Indicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva. Tudo Periodo Este mes Hoje Exportar CSV PLANO ATUAL Pro: completo Reservas, academia, sócios, CRM e financeiro. Clube: reservas Academia: turmas Pro: completo Multiunidade QUADRAS 6 RESERVAS NO PERIODO 181 OCUPACAO ESTIMADA 7% TAXA CONFIRMACAO GERAL 98% MODULO INDICADOR LEITURA Agenda 181 7% de ocupacao estimada, 178 confirmadas Academia 79 85% de presença, 83 alunos ativos Financeiro R$ 0,00 entradas R$ 2.304,00 menos despesas R$ 5.350,00 CRM 15% 18 leads, origem principal Evento Cantina R$ 2.304,00 Sanduiche natural lídera com 36 un. DETALHE Agenda 7% de ocupacao estimada, 178 confirmadas RESERVAS PENDENTES 0 RESERVAS CONFIRMADAS 491 ESPERA DE QUADRA 52 TURMAS 27 ALUNOS ATIVOS 83 REGISTROS DE PRESENCA 79 Picos e alertas 3 HORARIO MAIS FORTE 17:00 54 reservas no periodo DIA MAIS FORTE Dom 48 reservas no periodo RECEITA DESTAQUE Cantina R$ 2.304,00 ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/POS CLIENTES Clientes FINANCEIRO Financeiro COMPETICOES Competicoes COMUNICACAO Comunicacao RELATORIOS Relatorios ADMINISTRACAO Administracao"
+      }
+    },
+    {
+      "id": "work-administracao",
+      "route": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao",
+      "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao",
+      "mode": "work",
+      "ok": true,
+      "logs": [],
+      "pageErrors": [],
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/work-administracao.png",
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+        "viewport": {
+          "w": 1600,
+          "h": 900
+        },
+        "document": {
+          "w": 1600,
+          "h": 1027
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Central administrativa"
+        ],
+        "h2": [],
+        "navItems": [
+          "Abrir configuracao",
+          "Planos e pacotes",
+          "Abrir equipe",
+          "Inicio",
+          "Agenda",
+          "Academia",
+          "Loja/POS",
+          "Clientes",
+          "Financeiro",
+          "Competicoes",
+          "Comunicacao",
+          "Relatorios",
+          "Administracao"
+        ],
+        "tabs": [],
+        "primaryHero": {
+          "selector": "[class*=hero]",
+          "x": 289,
+          "y": 145,
+          "w": 1046,
+          "h": 121,
+          "bottom": 266,
+          "right": 1335,
+          "text": "ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica"
+        },
+        "topbar": {
+          "selector": "header",
+          "x": 248,
+          "y": 0,
+          "w": 1352,
+          "h": 94,
+          "bottom": 94,
+          "right": 1600,
+          "text": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime"
+        },
+        "firstMain": {
+          "selector": "main",
+          "x": 248,
+          "y": 94,
+          "w": 1280,
+          "h": 933,
+          "bottom": 1027,
+          "right": 1528,
+          "text": "ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica IMPLANTACAO 100% 7/7 itens prontos PLANO Pro: completo Agenda + Academia RECURSOS 6 quadras ativas EQUIPE 6 0 convite(s) pendente(s) Checklist estr"
+        },
+        "counts": {
+          "buttons": 33,
+          "inputs": 2,
+          "tables": 1,
+          "cards": 6,
+          "rows": 8,
+          "drawer": 4,
+          "modal": 0
+        },
+        "aboveFold": {
+          "buttons": 28,
+          "inputs": 2,
+          "headings": [
+            "Central administrativa"
+          ]
+        },
+        "overflowSamples": [],
+        "hugeAboveFold": [
+          {
+            "className": "management-shell-page management-shell-page--compact",
+            "y": 112,
+            "h": 891,
+            "w": 1232,
+            "text": "ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica IMPLANT"
+          },
+          {
+            "className": "place-card management-cockpit-card",
+            "y": 128,
+            "h": 865,
+            "w": 1280,
+            "text": "ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica IMPLANT"
+          },
+          {
+            "className": "place-booking-panel place-settings-panel",
+            "y": 128,
+            "h": 865,
+            "w": 1280,
+            "text": "ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica IMPLANT"
+          },
+          {
+            "className": "administration-console",
+            "y": 128,
+            "h": 865,
+            "w": 1080,
+            "text": "ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica IMPLANT"
+          }
+        ],
+        "bodyHead": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica IMPLANTACAO 100% 7/7 itens prontos PLANO Pro: completo Agenda + Academia RECURSOS 6 quadras ativas EQUIPE 6 0 convite(s) pendente(s) Checklist estrutural ADT Dourados · Dourados - MS Regras operacionais AREA STATUS DESCRICAO ACAO Dados do local Pronto Descricao preenchida Abrir Cadastrar quadra Pronto 6 quadras cadastradas Abrir Equipe Pronto 6 membros ou convites Abrir Cadastrar professor Pronto 3 professores cadastrados Abrir Criar turma Pronto 27 turmas ativas Abrir Configurar plano Pronto 2 planos ativos Abrir Produtos da cantina Pronto 10 produtos cadastrados Abrir ACADEMIA 27 turmas Aulas, turmas e alunos ficam no dominio Academia. FINANCEIRO 2 planos Planos, pacotes e cobrancas ficam em Financeiro. LOJA/POS 10 produtos Estoque e venda ficam no dominio Loja/POS. PROXIMO PASSO Dados do local Descricao preenchida Abrir configuracao PLANO E LIMITES Pro: completo Reservas, academia, sócios, CRM e financeiro. Planos e pacotes EQUIPE 6 ativo(s) Convites, papeis e acesso operacional ficam em Equipe, sem disputar espaco com a rotina. Abrir equipe ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia Loja/P"
+      }
+    }
+  ]
+}

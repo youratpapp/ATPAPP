@@ -50,6 +50,17 @@ const PERIOD_LABELS: Record<AnalyticsReportPeriod, string> = {
   today: "Hoje",
 };
 
+function reportActionFor(title?: string) {
+  const value = (title || "").toLowerCase();
+  if (value.includes("agenda")) return "Abrir Agenda para revisar horarios, bloqueios e ocupacao por quadra.";
+  if (value.includes("academia")) return "Abrir Academia para revisar turmas, alunos e reposicoes do periodo.";
+  if (value.includes("financeiro")) return "Abrir Financeiro para cobrar vencidos, marcar pagos ou registrar despesa.";
+  if (value.includes("crm") || value.includes("cliente")) return "Abrir Clientes para acompanhar relacionamento, plano e proximo contato.";
+  if (value.includes("compet")) return "Abrir Competicoes para resolver inscricoes, jogos e resultados pendentes.";
+  if (value.includes("cantina") || value.includes("pos")) return "Abrir Loja/POS para revisar vendas, estoque e produtos.";
+  return "Abrir a area relacionada para transformar o indicador em acao.";
+}
+
 export function PlaceAnalyticsPanel({
   busy,
   canManagePlan,
@@ -163,6 +174,11 @@ export function PlaceAnalyticsPanel({
             <h3>{selectedModule?.title || "Resumo"}</h3>
             <p>{selectedModule?.detail || "Selecione um modulo para acompanhar a leitura operacional."}</p>
           </header>
+          <section className="reports-console__next-action">
+            <span>Proxima acao sugerida</span>
+            <strong>{reportActionFor(selectedModule?.title)}</strong>
+            <small>Relatorio nao substitui a operacao diaria; ele aponta onde agir primeiro.</small>
+          </section>
           <div className="reports-console__secondary">
             {secondaryMetrics.slice(0, 6).map((metric) => (
               <article key={`report-secondary:${metric.label}`}>

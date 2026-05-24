@@ -55,6 +55,7 @@ const TABLE_POS_SALES = "place_pos_sales";
 const TABLE_EXPENSES = "place_expenses";
 const TABLE_BOOKINGS = "court_bookings";
 const TABLE_BOOKING_WAITLIST = "court_booking_waitlist";
+const TABLE_BOOKING_CHANGE_REQUESTS = "court_booking_change_requests";
 const TABLE_ACADEMY_CLASSES = "place_academy_classes";
 const TABLE_ACADEMY_COACHES = "place_coaches";
 const TABLE_ACADEMY_SLOTS = "place_academy_slots";
@@ -2515,7 +2516,38 @@ export async function createCourtBookingChangeRequest(input: {
     p_starts_at: input.startsAt || null,
     p_ends_at: input.endsAt || null,
   });
-  if (error) throw new Error(error.message);
+  if (error) {
+    if (!isMissingRpcFunctionError(new Error(error.message))) throw new Error(error.message);
+    const { data: bookingData, error: bookingError } = await supabase.from(TABLE_BOOKINGS).select("*").eq("id", input.bookingId).single();
+    if (bookingError || !bookingData) throw new Error(bookingError?.message || "Reserva nao localizada para remarcacao.");
+    const booking = bookingData as BookingRow;
+    const { data: requestData, error: requestError } = await supabase
+      .from(TABLE_BOOKING_CHANGE_REQUESTS)
+      .insert({
+        booking_id: input.bookingId,
+        place_id: booking.place_id,
+        proposed_court_id: input.courtId || null,
+        proposed_starts_at: input.startsAt || null,
+        proposed_ends_at: input.endsAt || null,
+      })
+      .select("id,booking_id,place_id,proposed_court_id,proposed_starts_at,proposed_ends_at,status,token,expires_at,created_at,confirmed_at")
+      .single();
+    if (requestError || !requestData) throw new Error(requestError?.message || "Link de alteracao nao criado.");
+    const courts = await listPlaceCourts(booking.place_id);
+    const { data: placeData } = await supabase.from(TABLE_PLACES).select("name").eq("id", booking.place_id).single();
+    const currentCourt = courts.find((court) => court.id === booking.court_id);
+    const proposedCourt = courts.find((court) => court.id === input.courtId);
+    return rowToBookingChangeRequest({
+      ...(requestData as BookingChangeRequestRow),
+      player_name: booking.player_name,
+      place_name: (placeData as { name?: string | null } | null)?.name || "",
+      current_court_id: booking.court_id,
+      current_court_name: currentCourt?.name || "",
+      current_starts_at: booking.starts_at,
+      current_ends_at: booking.ends_at,
+      proposed_court_name: proposedCourt?.name || "",
+    });
+  }
   const row = ((data ?? []) as BookingChangeRequestRow[])[0];
   if (!row) throw new Error("Link de alteracao nao criado.");
   return rowToBookingChangeRequest(row);

@@ -1,5 +1,16 @@
 import { useMemo, useState } from "react";
-import type { AcademyClass, AcademyEnrollment, AcademyStudentContract, AppPayment, CourtBooking, PlaceCrmContact, PlaceMembership, PlaceMembershipPlan } from "../../lib/types";
+import type {
+  AcademyClass,
+  AcademyEnrollment,
+  AcademyStudentContract,
+  AppPayment,
+  CourtBooking,
+  PlaceCreditPurchase,
+  PlaceCrmContact,
+  PlaceCrmInteraction,
+  PlaceMembership,
+  PlaceMembershipPlan,
+} from "../../lib/types";
 import { WorkspaceEmptyState } from "./PlaceWorkspaceUi";
 
 type PlaceActiveClientsModuleProps = {
@@ -11,6 +22,8 @@ type PlaceActiveClientsModuleProps = {
   bookings: CourtBooking[];
   busy: boolean;
   countLabel: (count: number, singular: string, plural: string) => string;
+  creditPurchases: PlaceCreditPurchase[];
+  crmInteractions: PlaceCrmInteraction[];
   membershipPlans: PlaceMembershipPlan[];
   payments: AppPayment[];
   onOpenAcademyStudents: () => void;
@@ -107,6 +120,8 @@ export function PlaceActiveClientsModule({
   bookings,
   busy,
   countLabel,
+  creditPurchases,
+  crmInteractions,
   membershipPlans,
   payments,
   onOpenAcademyStudents,
@@ -168,7 +183,35 @@ export function PlaceActiveClientsModule({
     return [...enrollmentRows, ...membershipRows, ...contactRows].sort((a, b) => a.name.localeCompare(b.name));
   }, [academyClasses, activeContacts, activeEnrollmentRows, activeMembershipRows, membershipPlans]);
 
-  const filteredRows = rows.filter((row) => {
+  const groupedRows = useMemo<ClientRow[]>(() => {
+    const priority: Record<ClientRow["kind"], number> = { student: 0, member: 1, contact: 2 };
+    const grouped = new Map<string, ClientRow>();
+    rows.forEach((row) => {
+      const key = normalizePhone(row.phone) || normalizeText(row.name);
+      const current = grouped.get(key);
+      if (!current) {
+        grouped.set(key, { ...row });
+        return;
+      }
+      const categories = Array.from(new Set([...current.category.split(" + "), row.category].filter(Boolean))).slice(0, 3);
+      const merged: ClientRow = {
+        ...current,
+        category: categories.join(" + "),
+        detail: [current.detail, row.detail].filter(Boolean).join(" | "),
+        email: current.email || row.email,
+        kind: priority[row.kind] < priority[current.kind] ? row.kind : current.kind,
+        owner: current.owner !== "Academia" ? current.owner : row.owner,
+        phone: current.phone || row.phone,
+        source: priority[row.kind] < priority[current.kind] ? row.source : current.source,
+        status: current.status === "Ativo" || row.status === "Ativo" ? "Ativo" : current.status,
+        updatedAt: new Date(row.updatedAt || 0).getTime() > new Date(current.updatedAt || 0).getTime() ? row.updatedAt : current.updatedAt,
+      };
+      grouped.set(key, merged);
+    });
+    return Array.from(grouped.values()).sort((a, b) => a.name.localeCompare(b.name));
+  }, [rows]);
+
+  const filteredRows = groupedRows.filter((row) => {
     const haystack = [row.name, row.category, row.phone, row.email, row.owner, row.detail].join(" ").toLowerCase();
     return haystack.includes(query.trim().toLowerCase());
   });
@@ -201,6 +244,35 @@ export function PlaceActiveClientsModule({
       .sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime())
       .slice(0, 4);
   }, [payments, selected, selectedBookings]);
+  const selectedCreditPurchases = useMemo(() => {
+    if (!selected) return [];
+    const phone = normalizePhone(selected.phone);
+    const name = normalizeText(selected.name);
+    return creditPurchases
+      .filter((purchase) => {
+        const purchasePhone = normalizePhone(purchase.phone);
+        return (phone && purchasePhone && purchasePhone.endsWith(phone.slice(-8))) || normalizeText(purchase.buyerName) === name;
+      })
+      .sort((a, b) => new Date(b.purchasedOn || b.createdAt).getTime() - new Date(a.purchasedOn || a.createdAt).getTime())
+      .slice(0, 4);
+  }, [creditPurchases, selected]);
+  const selectedCrmInteractions = useMemo(() => {
+    if (!selected) return [];
+    const selectedContactId = selected.kind === "contact" ? (selected.source as PlaceCrmContact).id : "";
+    const selectedPhone = normalizePhone(selected.phone);
+    const selectedName = normalizeText(selected.name);
+    const relatedContactIds = activeContacts
+      .filter((contact) => {
+        const contactPhone = normalizePhone(contact.phone);
+        return contact.id === selectedContactId || (selectedPhone && contactPhone && contactPhone.endsWith(selectedPhone.slice(-8))) || normalizeText(contact.name) === selectedName;
+      })
+      .map((contact) => contact.id);
+    const relatedIds = new Set(relatedContactIds);
+    return crmInteractions
+      .filter((interaction) => relatedIds.has(interaction.contactId))
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 5);
+  }, [activeContacts, crmInteractions, selected]);
   const selectedEnrollments = useMemo(() => {
     if (!selected) return [];
     const phone = normalizePhone(selected.phone);
@@ -415,6 +487,10 @@ export function PlaceActiveClientsModule({
                     <span>{selectedPayments.length ? `${selectedPayments.length} pagamento(s) encontrado(s).` : "Sem pagamento pessoal localizado."}</span>
                   </article>
                   <article>
+                    <strong>Pacotes e creditos</strong>
+                    <span>{selectedCreditPurchases.length ? `${selectedCreditPurchases.length} pacote(s) ativo(s) ou recente(s).` : "Sem pacote ou credito vinculado."}</span>
+                  </article>
+                  <article>
                     <strong>Ultima atividade</strong>
                     <span>{selected.updatedAt ? new Date(selected.updatedAt).toLocaleDateString("pt-BR") : "Sem historico recente"}</span>
                   </article>
@@ -466,6 +542,54 @@ export function PlaceActiveClientsModule({
                     <article className="clients-360-history-empty">
                       <strong>Sem pagamentos vinculados</strong>
                       <span>Quando houver mensalidade, pacote ou reserva paga, o historico aparece aqui.</span>
+                    </article>
+                  )}
+                </section>
+                <section className="clients-360-history-section">
+                  <div className="clients-360-section-title">
+                    <h4>Pacotes e creditos</h4>
+                    <button type="button" onClick={onOpenFinancePlans} disabled={busy}>
+                      Abrir produtos
+                    </button>
+                  </div>
+                  {selectedCreditPurchases.length ? (
+                    selectedCreditPurchases.map((purchase) => (
+                      <article key={purchase.id} className="clients-360-history-item">
+                        <strong>{purchase.packageName}</strong>
+                        <span>
+                          {formatMoneyFromCents(purchase.amountCents)} - {purchase.remainingQuantity}/{purchase.initialQuantity} restante(s)
+                        </span>
+                        <em className={`clients-360-status clients-360-status--${purchase.status}`}>{membershipStatusLabel(purchase.status === "active" ? "active" : purchase.status === "cancelled" ? "cancelled" : "pending")}</em>
+                      </article>
+                    ))
+                  ) : (
+                    <article className="clients-360-history-empty">
+                      <strong>Sem pacote comprado</strong>
+                      <span>Pacotes de credito, aula avulsa ou day pass aparecem aqui quando vinculados ao cliente.</span>
+                    </article>
+                  )}
+                </section>
+                <section className="clients-360-history-section">
+                  <div className="clients-360-section-title">
+                    <h4>Historico de relacionamento</h4>
+                    {selected.kind === "contact" ? (
+                      <button type="button" onClick={() => onOpenContact(selected.source as PlaceCrmContact)} disabled={busy}>
+                        Abrir atendimento
+                      </button>
+                    ) : null}
+                  </div>
+                  {selectedCrmInteractions.length ? (
+                    selectedCrmInteractions.map((interaction) => (
+                      <article key={interaction.id} className="clients-360-history-item">
+                        <strong>{interaction.interactionType}</strong>
+                        <span>{interaction.body || "Registro sem descricao"}</span>
+                        <em>{formatDate(interaction.createdAt)}</em>
+                      </article>
+                    ))
+                  ) : (
+                    <article className="clients-360-history-empty">
+                      <strong>Sem interacao registrada</strong>
+                      <span>Atendimentos, WhatsApp, ligacoes e observacoes ficam concentrados neste historico.</span>
                     </article>
                   )}
                 </section>

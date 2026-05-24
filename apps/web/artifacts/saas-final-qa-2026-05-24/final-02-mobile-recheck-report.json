@@ -1,0 +1,205 @@
+[
+  {
+    "name": "manager-home",
+    "width": 390,
+    "url": "http://127.0.0.1:5175/#/gestao",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-recheck-manager-home-390.png",
+    "errors": [],
+    "metrics": {
+      "path": "#/gestao",
+      "docW": 390,
+      "clientW": 390,
+      "title": "",
+      "bottomNav": [
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "biggest": []
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-clientes",
+    "width": 390,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-recheck-manager-clientes-390.png",
+    "errors": [],
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "docW": 390,
+      "clientW": 390,
+      "title": "",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "biggest": []
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-financeiro",
+    "width": 390,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-recheck-manager-financeiro-390.png",
+    "errors": [],
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+      "docW": 390,
+      "clientW": 390,
+      "title": "",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "biggest": []
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-home",
+    "width": 430,
+    "url": "http://127.0.0.1:5175/#/gestao",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-recheck-manager-home-430.png",
+    "errors": [],
+    "metrics": {
+      "path": "#/gestao",
+      "docW": 430,
+      "clientW": 430,
+      "title": "",
+      "bottomNav": [
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "biggest": []
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-clientes",
+    "width": 430,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-recheck-manager-clientes-430.png",
+    "errors": [],
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "docW": 430,
+      "clientW": 430,
+      "title": "",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "biggest": []
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-financeiro",
+    "width": 430,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-recheck-manager-financeiro-430.png",
+    "errors": [],
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+      "docW": 430,
+      "clientW": 430,
+      "title": "Receber",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "biggest": [
+        {
+          "tag": "DIV",
+          "cls": "place-workspace finance-workspace",
+          "w": 552.765625,
+          "left": 34,
+          "right": 586.765625
+        },
+        {
+          "tag": "DIV",
+          "cls": "finance-receivables-console",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "HEADER",
+          "cls": "finance-console-head",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "DIV",
+          "cls": "",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "H2",
+          "cls": "",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "P",
+          "cls": "",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "primary",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "DIV",
+          "cls": "finance-console-kpis",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "DIV",
+          "cls": "finance-console-tabs",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        },
+        {
+          "tag": "DIV",
+          "cls": "finance-console-toolbar",
+          "w": 526.765625,
+          "left": 47,
+          "right": 573.765625
+        }
+      ]
+    },
+    "overflow": false
+  }
+]

@@ -305,8 +305,8 @@ const PLACE_PRODUCT_PLAN_LABELS: Record<PlaceProductPlan, string> = {
 
 const PLACE_PRODUCT_PLAN_HINTS: Record<PlaceProductPlan, string> = {
   club_basic: "Reservas, quadras e lista de espera.",
-  academy: "Professores, turmas, presença e evolução.",
-  club_pro: "Reservas, academia, sócios, CRM e financeiro.",
+  academy: "Professores, turmas, presenca e evolucao.",
+  club_pro: "Reservas, academia, socios, CRM e financeiro.",
   multi_unit: "Pacote completo para rede com unidades.",
 };
 
@@ -5244,7 +5244,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           {
             title: "Academia",
             value: reportAttendance.length,
-            detail: `${reportAttendanceRate}% de presença, ${activeStudentCount} alunos ativos`,
+            detail: `${reportAttendanceRate}% de presenca, ${activeStudentCount} alunos ativos`,
           },
           {
             title: "Financeiro",
@@ -5256,12 +5256,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             value: `${crmConversionRate}%`,
             detail: `${crmStageCounts.lead} leads, origem principal ${crmSources[0]?.[0] || "sem origem"}`,
           },
+          {
+            title: "Competicoes",
+            value: operationalStats.openMatches,
+            detail: `${countLabel(placeOpenMatches.length, "partida aberta", "partidas abertas")} vinculada(s) ao local`,
+          },
           ...(canUseCanteenModule
             ? [
                 {
                   title: "Cantina",
                   value: formatMoneyFromCents(reportPosRevenueCents),
-                  detail: reportTopProduct ? `${reportTopProduct[0]} lídera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
+                  detail: reportTopProduct ? `${reportTopProduct[0]} lidera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
                 },
               ]
             : []),
@@ -5280,7 +5285,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           { label: "Presença no periodo", value: `${reportAttendanceRate}%` },
           { label: "Interesses em aula", value: operationalStats.pendingEnrollments },
           { label: "Sócios ativos", value: operationalStats.activeMembers },
-          { label: "Solicitacoes de sócio", value: operationalStats.pendingMemberships },
+          { label: "Solicitacoes de socio", value: operationalStats.pendingMemberships },
           { label: "Conversao CRM", value: `${crmConversionRate}%` },
           { label: "Leads no CRM", value: operationalStats.crmLeads },
           { label: "Reposicoes abertas", value: operationalStats.openMakeups },
@@ -6518,6 +6523,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       bookings={bookings}
                       busy={busy}
                       countLabel={countLabel}
+                      creditPurchases={creditPurchases}
+                      crmInteractions={crmInteractions}
                       membershipPlans={membershipPlans}
                       payments={Object.values(paymentsByTarget)}
                       onOpenAcademyStudents={() => selectAcademyView(p.id, "students")}
@@ -7663,26 +7670,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   ) : null}
                 </AcademyWorkspaceShell>
               ) : null}
-              {isManagementCockpit && academyView !== "today" ? (
-                <div className="place-module-summary">
-                  <div>
-                    <strong>{todayClasses.length}</strong>
-                    <span>{isCoachMode ? "Minhas aulas hoje" : "Aulas hoje"}</span>
-                  </div>
-                  <div>
-                    <strong>{isCoachMode ? visibleAcademyClasses.length : operationalStats.pendingEnrollments}</strong>
-                    <span>{isCoachMode ? "Minhas turmas" : "Matrículas pendentes"}</span>
-                  </div>
-                  <div>
-                    <strong>{isCoachMode ? visibleAcademyEnrollments.filter((enrollment) => enrollment.status === "active").length : operationalStats.pendingLessonRequests}</strong>
-                    <span>{isCoachMode ? "Meus alunos" : "Encaixes pendentes"}</span>
-                  </div>
-                  <div>
-                    <strong>{isCoachMode ? openAcademyMakeups.length : operationalStats.openMakeups}</strong>
-                    <span>Reposicoes abertas</span>
-                  </div>
-                </div>
-              ) : null}
+              {null}
               {!showAcademyWorkspace ? (
                 <div className="place-booking-head">
                   <strong>Academia e aulas</strong>

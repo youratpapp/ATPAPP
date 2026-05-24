@@ -1,0 +1,56 @@
+{
+  "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+  "logs": [],
+  "metrics": {
+    "rowCount": 20,
+    "rows": [
+      {
+        "y": 437.171875,
+        "h": 47,
+        "bottom": 484.171875
+      },
+      {
+        "y": 488.171875,
+        "h": 47,
+        "bottom": 535.171875
+      },
+      {
+        "y": 539.171875,
+        "h": 47,
+        "bottom": 586.171875
+      },
+      {
+        "y": 590.171875,
+        "h": 47,
+        "bottom": 637.171875
+      },
+      {
+        "y": 641.171875,
+        "h": 47,
+        "bottom": 688.171875
+      },
+      {
+        "y": 692.171875,
+        "h": 47,
+        "bottom": 739.171875
+      }
+    ],
+    "gaps": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "drawer": {
+      "x": 1158,
+      "y": 311.484375,
+      "w": 360,
+      "h": 792,
+      "right": 1518,
+      "bottom": 1103.484375
+    },
+    "hasOverlayBackdrop": false,
+    "text": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nTurmas\nTurmas, grade semanal, vagas, mensalidade e matricula manual.\nHoje\nAgenda\nTurmas\nAlunos\nPendencias\nNova turma ou horario aberto\nTodos os dias\nDom\nSeg\nTer\nQua\nQui\nSex\nSab\nTodas\nCom vagas\nLotadas\nCom pendencias\nExibindo 20 de 27\nTURMA\nHORARIO\nPROFESSOR / QUADRA\nOCUPACAO\nSTATUS\nKids Iniciante 1\nIniciante\nSeg 06:00-07:00\nCaio Ferraz\nQuadra 1\n8/8\nR$ 420,00\nLotada\nAva"
+  }
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "verify-player-inicio",
+    "hash": "#/inicio",
+    "errors": [],
+    "metrics": {
+      "overflow": false,
+      "sw": 1600,
+      "cw": 1600,
+      "fixed": [
+        "bottom-nav is-player",
+        "app-toast-stack"
+      ],
+      "backdropBg": "rgb(3, 9, 20)",
+      "bodyText": 1189
+    },
+    "screenshot": "artifacts\\saas-final-qa-2026-05-24\\verify-player-inicio-1600.png"
+  },
+  {
+    "name": "verify-work-academia-alunos-drawer",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+    "click": [
+      "button:has-text(\"Alunos\")",
+      "text=Ana Gomes"
+    ],
+    "errors": [],
+    "metrics": {
+      "overflow": false,
+      "sw": 1600,
+      "cw": 1600,
+      "fixed": [
+        "app-overlay-backdrop",
+        "bottom-nav is-management",
+        "app-toast-stack"
+      ],
+      "backdropBg": "rgba(0, 0, 0, 0)",
+      "bodyText": 6797
+    },
+    "screenshot": "artifacts\\saas-final-qa-2026-05-24\\verify-work-academia-alunos-drawer-1600.png"
+  },
+  {
+    "name": "verify-work-agenda",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+    "errors": [],
+    "metrics": {
+      "overflow": false,
+      "sw": 1600,
+      "cw": 1600,
+      "fixed": [
+        "bottom-nav is-management",
+        "app-toast-stack"
+      ],
+      "backdropBg": "rgb(243, 248, 245)",
+      "bodyText": 2825
+    },
+    "screenshot": "artifacts\\saas-final-qa-2026-05-24\\verify-work-agenda-1600.png"
+  }
+]

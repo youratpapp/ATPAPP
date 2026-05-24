@@ -1,0 +1,58 @@
+{
+  "results": [
+    {
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/bookings/calendar",
+      "data": {
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/bookings/calendar",
+        "title": "ATP — Amateur Tennis Platform",
+        "text": "Pagina nao encontrada\n\nNao encontramos essa rota. Voce pode voltar para os eventos.\n\nIr para eventos\nIr para inicio",
+        "boardCount": 0,
+        "loading": false
+      }
+    },
+    {
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/bookings/calendario",
+      "data": {
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/bookings/calendario",
+        "title": "ATP — Amateur Tennis Platform",
+        "text": "Pagina nao encontrada\n\nNao encontramos essa rota. Voce pode voltar para os eventos.\n\nIr para eventos\nIr para inicio",
+        "boardCount": 0,
+        "loading": false
+      }
+    },
+    {
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/bookings/reservas",
+      "data": {
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/bookings/reservas",
+        "title": "ATP — Amateur Tennis Platform",
+        "text": "Pagina nao encontrada\n\nNao encontramos essa rota. Voce pode voltar para os eventos.\n\nIr para eventos\nIr para inicio",
+        "boardCount": 0,
+        "loading": false
+      }
+    },
+    {
+      "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/bookings",
+      "data": {
+        "href": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+        "title": "ATP — Amateur Tennis Platform",
+        "text": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao",
+        "boardCount": 0,
+        "loading": true
+      }
+    }
+  ],
+  "logs": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ]
+}

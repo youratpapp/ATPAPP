@@ -1,0 +1,354 @@
+[
+  {
+    "vpName": "desktop-1366",
+    "name": "player-inicio",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/inicio",
+      "overflowX": true,
+      "scrollW": 1614,
+      "innerW": 1366,
+      "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\n\nHOJE PARA VOCE\n\nEncontre seu proximo jogo\n\nPartidas, torneios e aulas perto de voce.\n\nExplorar perto\n0\nPendencias\nsem urgencias\n0\nAgenda\nLivre agora\n2\nRotina\nitens no seu painel\nRESERVAR\nQuadra\nJOGAR\nEncontrar jogo\nCOMPETIR\nTorneios\nTREINAR\nAulas\nEVOLUIR\nLigas\n\nAGORA NO APP\n\nProximos passos\nVer agenda\nSem compromissos imediatos.\nEncontrar jogo\n\nDESTAQUE\n\nSeu proximo movimento\nRECOMENDADO\nEncontre seu proximo jogo\nPartidas, torneios e aulas perto de voce.\nExplorar perto\n\nROTINA\n\nAreas ativas\nPerfil\nCONVITES\nOportunidades\n2 item(ns)\n\nPAINEL COMPLETO\n\nPara voce\nCONVITES\nOportunidades\nConvites, espera e eventos públicos relevantes.\n2\nPrime Cup Noturna\nCuiaba - MT\n12 de mai. de 2026\nPrime Open Inscricoes Encerradas\nCuiaba - MT\n23 de mai. de 2026\nVer oportunidades\n\nTRABALHO\n\nAcesso profissional\nAbrir\n\n8 pendencia(s) operacional(is) aguardam no modo Trabalho.\n\nDESCOBERTA\n\nPerto de voce\nVer todos\nEventos na sua região\nDourados\nOpen ADT Dourados - Maio\nDourados - MS\n11 de jun. de 2026\nEm andamento\nFestival Feminino Pantanal\nCampo Grande - MS\n28 de jun. de 2026\nInscrições abertas\nATP\nJogador\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Inicio"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Explorar perto",
+        "0Pendenciassem urgencias",
+        "0AgendaLivre agora",
+        "2Rotinaitens no seu painel",
+        "ReservarQuadra",
+        "JogarEncontrar jogo",
+        "CompetirTorneios",
+        "TreinarAulas",
+        "EvoluirLigas",
+        "Ver agenda",
+        "Encontrar jogo",
+        "RecomendadoEncontre seu proximo jogoPartidas, torneios e aulas perto de voce.Explorar perto",
+        "Perfil",
+        "ConvitesOportunidades2 item(ns)",
+        "Prime Cup NoturnaCuiaba - MT12 de mai. de 2026",
+        "Prime Open Inscricoes EncerradasCuiaba - MT23 de mai. de 2026",
+        "Ver oportunidades",
+        "Abrir",
+        "Ver todos",
+        "Open ADT Dourados - MaioDourados - MS11 de jun. de 2026Em andamento",
+        "Festival Feminino PantanalCampo Grande - MS28 de jun. de 2026Inscrições abertas",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": true,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "desktop-1366",
+    "name": "player-jogar",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/locais",
+      "overflowX": false,
+      "scrollW": 1366,
+      "innerW": 1366,
+      "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\nJogar\nJOGAR PERTO DE VOCÊ\nEscolha seu próximo jogo\n\nReserve quadra, encontre parceiros ou entre em aulas perto de você.\n\nEncontrar jogo\nPartidas abertas\nReservar quadra\nHorários disponíveis\nEntrar em aula\nTurmas com vaga\nVer locais\nClubes e academias\nBuscando locais\n\nCarregando quadras, aulas e jogos disponíveis para o seu contexto.\n\nATP\nJogador\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Jogar"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Encontrar jogoPartidas abertas",
+        "Reservar quadraHorários disponíveis",
+        "Entrar em aulaTurmas com vaga",
+        "Ver locaisClubes e academias",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": true,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "desktop-1366",
+    "name": "player-competir",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/eventos",
+      "overflowX": false,
+      "scrollW": 1366,
+      "innerW": 1366,
+      "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\nMinhas competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando competicoes\n\nSeparando competicoes para jogar, descobrir ou organizar conforme seu perfil.\n\nJogando\n\nAcompanhe jogos, classificação, mensagens e inscrições em que você participa.\n\nTorneios que jogo\nLigas que jogo\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que você participar.\nMeus torneios\nMinhas ligas\nATP\nCompetições\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Competir"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Torneios que jogo",
+        "Ligas que jogo",
+        "Meus torneios",
+        "Minhas ligas",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": true,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "desktop-1366",
+    "name": "player-agenda",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/agenda",
+      "overflowX": false,
+      "scrollW": 1366,
+      "innerW": 1366,
+      "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\nCENTRAL PESSOAL\nMinha rotina\n\nReservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica.\n\nPROXIMOS\n0\ncompromissos e pendencias\nVENCIDOS\n0\npagamentos pessoais\nRESULTADOS\n0\npartidas pendentes\nTudo\nReservas\nPartidas\nAulas\nPagamentos\nHistorico\nCarregando agenda...\nATP\nJogador\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Tudo",
+        "Rotina"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Tudo",
+        "Reservas",
+        "Partidas",
+        "Aulas",
+        "Pagamentos",
+        "Historico",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": true,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "desktop-1366",
+    "name": "player-perfil",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/perfil",
+      "overflowX": false,
+      "scrollW": 1366,
+      "innerW": 1366,
+      "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\nPerfil\nEA\n\nEscalao Admin\n\nDourados - MS\n\nPerfil completo\nPerfil publico\nSem competicao ativa\nLembretes ativos\n1\nNivel\n0\nPartidas recentes\n0%\nAproveitamento\n0\nCompetições ativas\nPerfil\nHistórico\nPreferências\nConta\n\nTelefone\n\n+55 67 99900-0001\n\nE-mail\n\nescalao@gmail.com\n\nData de Nascimento\n\n12/04/1984\n\nATP\nJogador\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Perfil",
+        "Perfil"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Perfil",
+        "Histórico",
+        "Preferências",
+        "Conta",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": true,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "mobile-390",
+    "name": "player-inicio",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/inicio",
+      "overflowX": false,
+      "scrollW": 390,
+      "innerW": 390,
+      "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\n\nHOJE PARA VOCE\n\nEncontre seu proximo jogo\n\nPartidas, torneios e aulas perto de voce.\n\nExplorar perto\n0\nPendencias\nsem urgencias\n0\nAgenda\nLivre agora\n2\nRotina\nitens no seu painel\nRESERVAR\nQuadra\nJOGAR\nEncontrar jogo\nCOMPETIR\nTorneios\nTREINAR\nAulas\nEVOLUIR\nLigas\n\nAGORA NO APP\n\nProximos passos\nVer agenda\nSem compromissos imediatos.\nEncontrar jogo\n\nDESTAQUE\n\nSeu proximo movimento\nRECOMENDADO\nEncontre seu proximo jogo\nPartidas, torneios e aulas perto de voce.\nExplorar perto\n\nROTINA\n\nAreas ativas\nPerfil\nCONVITES\nOportunidades\n2 item(ns)\n\nPAINEL COMPLETO\n\nPara voce\nCONVITES\nOportunidades\nConvites, espera e eventos públicos relevantes.\n2\nPrime Cup Noturna\nCuiaba - MT\n12 de mai. de 2026\nPrime Open Inscricoes Encerradas\nCuiaba - MT\n23 de mai. de 2026\nVer oportunidades\n\nTRABALHO\n\nAcesso profissional\nAbrir\n\n8 pendencia(s) operacional(is) aguardam no modo Trabalho.\n\nDESCOBERTA\n\nPerto de voce\nVer todos\nEventos na sua região\nDourados\nOpen ADT Dourados - Maio\nDourados - MS\n11 de jun. de 2026\nEm andamento\nFestival Feminino Pantanal\nCampo Grande - MS\n28 de jun. de 2026\nInscrições abertas\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Inicio"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Explorar perto",
+        "0Pendenciassem urgencias",
+        "0AgendaLivre agora",
+        "2Rotinaitens no seu painel",
+        "ReservarQuadra",
+        "JogarEncontrar jogo",
+        "CompetirTorneios",
+        "TreinarAulas",
+        "EvoluirLigas",
+        "Ver agenda",
+        "Encontrar jogo",
+        "RecomendadoEncontre seu proximo jogoPartidas, torneios e aulas perto de voce.Explorar perto",
+        "Perfil",
+        "ConvitesOportunidades2 item(ns)",
+        "Prime Cup NoturnaCuiaba - MT12 de mai. de 2026",
+        "Prime Open Inscricoes EncerradasCuiaba - MT23 de mai. de 2026",
+        "Ver oportunidades",
+        "Abrir",
+        "Ver todos",
+        "Open ADT Dourados - MaioDourados - MS11 de jun. de 2026Em andamento",
+        "Festival Feminino PantanalCampo Grande - MS28 de jun. de 2026Inscrições abertas",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": true,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "mobile-390",
+    "name": "player-jogar",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/locais",
+      "overflowX": false,
+      "scrollW": 390,
+      "innerW": 390,
+      "text": "Jogar\nJOGAR PERTO DE VOCÊ\nEscolha seu próximo jogo\n\nReserve quadra, encontre parceiros ou entre em aulas perto de você.\n\nEncontrar jogo\nPartidas abertas\nReservar quadra\nHorários disponíveis\nEntrar em aula\nTurmas com vaga\nVer locais\nClubes e academias\nBuscando locais\n\nCarregando quadras, aulas e jogos disponíveis para o seu contexto.\n\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Jogar"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Encontrar jogoPartidas abertas",
+        "Reservar quadraHorários disponíveis",
+        "Entrar em aulaTurmas com vaga",
+        "Ver locaisClubes e academias",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": false,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "mobile-390",
+    "name": "player-competir",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/eventos",
+      "overflowX": false,
+      "scrollW": 390,
+      "innerW": 390,
+      "text": "Minhas competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando competicoes\n\nSeparando competicoes para jogar, descobrir ou organizar conforme seu perfil.\n\nJogando\n\nAcompanhe jogos, classificação, mensagens e inscrições em que você participa.\n\nTorneios que jogo\nLigas que jogo\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que você participar.\nMeus torneios\nMinhas ligas\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Competir"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Torneios que jogo",
+        "Ligas que jogo",
+        "Meus torneios",
+        "Minhas ligas",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": false,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "mobile-390",
+    "name": "player-agenda",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/agenda",
+      "overflowX": false,
+      "scrollW": 390,
+      "innerW": 390,
+      "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\nCENTRAL PESSOAL\nMinha rotina\n\nReservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica.\n\nPROXIMOS\n0\ncompromissos e pendencias\nVENCIDOS\n0\npagamentos pessoais\nRESULTADOS\n0\npartidas pendentes\nTudo\nReservas\nPartidas\nAulas\nPagamentos\nHistorico\nCarregando agenda...\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Tudo",
+        "Rotina"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Tudo",
+        "Reservas",
+        "Partidas",
+        "Aulas",
+        "Pagamentos",
+        "Historico",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": true,
+      "containsOrganizador": false
+    }
+  },
+  {
+    "vpName": "mobile-390",
+    "name": "player-perfil",
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/perfil",
+      "overflowX": false,
+      "scrollW": 390,
+      "innerW": 390,
+      "text": "Perfil\nEA\n\nEscalao Admin\n\nDourados - MS\n\nPerfil completo\nPerfil publico\nSem competicao ativa\nLembretes ativos\n1\nNivel\n0\nPartidas recentes\n0%\nAproveitamento\n0\nCompetições ativas\nPerfil\nHistórico\nPreferências\nConta\n\nTelefone\n\n+55 67 99900-0001\n\nE-mail\n\nescalao@gmail.com\n\nData de Nascimento\n\n12/04/1984\n\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+      "activeNav": [
+        "Jogador",
+        "Perfil",
+        "Perfil"
+      ],
+      "buttons": [
+        "Jogador",
+        "Trabalho",
+        "Perfil",
+        "Histórico",
+        "Preferências",
+        "Conta",
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "containsTrabalho": false,
+      "containsOrganizador": false
+    }
+  }
+]

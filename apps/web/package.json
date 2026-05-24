@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "qa:roles": "node scripts/role-smoke-audit.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.3",

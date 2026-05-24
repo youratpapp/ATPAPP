@@ -1,0 +1,33 @@
+{
+  "errors": [],
+  "pages": {
+    "player-competir": {
+      "url": "http://127.0.0.1:5175/#/eventos",
+      "titleSnippet": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\nMinhas competicoes\n\nTorneios e ligas em um unico lugar, separados pelo seu papel em cada uma.\n\nCarregando competicoes\n\nSeparando competicoes para jogar, descobrir ou organizar conforme seu perfil.\n\nJogando\n\nAcompanhe jogos, classificação, mensagens e inscrições em que você participa.\n\nTorneios que jogo\nLigas que jogo\nNada ativo como jogador\nEntre em um torneio por convite ou acompanhe ligas em que você participar.\nMeus torneios\nMinhas ligas\nATP\nCompetições\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+      "hasWorkText": true,
+      "hasPlayerDiscovery": true,
+      "hasAdminLeakInPlayer": true
+    },
+    "work-competicoes": {
+      "url": "http://127.0.0.1:5175/#/eventos?modo=organizing",
+      "titleSnippet": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCOMPETITION OS\nQuais competicoes precisam de acao?\n\nTorneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho.\n\nCriar torneio\nCriar liga\n22\nBloqueios\nprecisam de acao\n22\nEm operacao\ntorneios e ligas ativos\n19\nTorneios\nno seu workspace\n15\nLigas\ntemporadas e rodadas\nTodos\nTorneios\nLigas\nPendencias\nHistorico\nCOMPETICAO\nFASE\nPROXIMA ACAO\nATUALIZACAO\nRascunhos e setup\n1\nDesafio Interno Prime Kids\nTorneio · Cuiaba - MT\nRascunho\nResolver proximo bloqueio\natualizado em 14 de mai.\nInscricoes abertas\n3\nATP Open Dourados 021510\nTorneio · Dourados - MS\nInscricoes abertas\nAbrir cockpit da fase\natualizado em 21 de mai.\nATP Open",
+      "hasWorkText": true,
+      "hasPlayerDiscovery": false,
+      "hasAdminLeakInPlayer": false
+    },
+    "work-torneios": {
+      "url": "http://127.0.0.1:5175/#/eventos/torneios?view=organizing",
+      "titleSnippet": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nTorneios que organizo\n\nCrie torneios, acompanhe inscrições e ajuste a organização.\n\nVoltar\n+\nCriar\n\nOrganizando\n\n19\n\nInscrições abertas\n\n3\n\nEm andamento\n\n3\n\nPROXIMAS ACOES\nOrganização de torneios\n\nAbra o torneio pelo que precisa ser feito agora. Filtros e histórico ficam como suporte.\n\nCriar torneio\n1\nRascunhos\n3\nInscrições abertas\n3\nEm andamento\nINSCRIÇÕES ABERTAS\nATP Open Dourados 021510\n11 de jun. - 2026 | Dourados - MS | Privado\nAcompanhe inscritos, pagamentos e lista de espera.\nInscrições abertas\nAtualizado em 21/05/2026 07:02\nGerir inscritos\nINSCRIÇÕES ABERTAS\nATP Open Dourados 010650\n11 de jun. - 2026 | Dourados - MS | Privado\nAcompanhe inscr",
+      "hasWorkText": true,
+      "hasPlayerDiscovery": false,
+      "hasAdminLeakInPlayer": false
+    },
+    "work-ligas": {
+      "url": "http://127.0.0.1:5175/#/eventos/ligas?view=organizing",
+      "titleSnippet": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nLigas que organizo\n\nCrie ligas, aprove jogadores, gere rodadas e acompanhe temporadas.\n\nVoltar\n+\nCriar\n\nOrganizando\n\n15\n\nAtivas\n\n15\n\nLiga ATP Dourados 115148\n\nAtiva\nOrganizador\nSimples\nPublica\nAtualizado em 22/05/2026, 07:52:17\n\nLiga ATP Dourados 031501\n\nAtiva\nOrganizador\nSimples\nPublica\nAtualizado em 21/05/2026, 23:15:28\n\nLiga ATP Dourados 044652\n\nAtiva\nOrganizador\nSimples\nPublica\nAtualizado em 21/05/2026, 07:03:00\n\nLiga ATP Dourados 043316\n\nAtiva\nOrganizador\nSimples\nPublica\nAtualizado em 21/05/2026, 07:02:59\n\nLiga ATP Dourados 042846\n\nAtiva\nOrganizador\nSimples\nPublica\nAtualizado em 21/05/2026, 07:02:59\n\nLiga ATP Dourados 042129\n\nAtiva\nOrganizador\n",
+      "hasWorkText": true,
+      "hasPlayerDiscovery": false,
+      "hasAdminLeakInPlayer": false
+    }
+  }
+}

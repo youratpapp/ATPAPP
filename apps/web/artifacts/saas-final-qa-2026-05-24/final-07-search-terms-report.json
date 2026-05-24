@@ -1,0 +1,26 @@
+{
+  "rafael": {
+    "text": "Buscando dados da unidade...\nNenhuma area encontrada para esta busca.",
+    "count": 0
+  },
+  "reserva": {
+    "text": "Buscando dados da unidade...\nAgenda\nReservas, aulas, bloqueios e remarcacoes\nReservas\nCalendario clicavel e detalhe lateral",
+    "count": 2
+  },
+  "turma": {
+    "text": "Buscando dados da unidade...\nAulas\nTurmas, matriculas e reposicoes",
+    "count": 1
+  },
+  "aula": {
+    "text": "Buscando dados da unidade...\nAgenda\nReservas, aulas, bloqueios e remarcacoes\nAulas\nTurmas, matriculas e reposicoes",
+    "count": 2
+  },
+  "pagamento": {
+    "text": "Buscando dados da unidade...\nNenhuma area encontrada para esta busca.",
+    "count": 0
+  },
+  "quadra": {
+    "text": "Buscando dados da unidade...\nNenhuma area encontrada para esta busca.",
+    "count": 0
+  }
+}

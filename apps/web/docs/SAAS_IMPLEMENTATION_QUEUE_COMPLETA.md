@@ -1,11 +1,24 @@
 # SaaS Implementation Queue Completa
 
-Status: queue executiva completa
+Status: queue executiva completa - encerrada como historico
 Data: 2026-05-22
 Fonte primaria: `SAAS_MASTER_BLUEPRINT_COMPLETO.md`
 Mapa alvo: `SAAS_TARGET_ARCHITECTURE_IMPLEMENTATION_MAP.md`
 Guardrails: `SAAS_EXECUTION_GUARDRAILS_ANTI_PATTERNS.md`
 Screen contracts: `SAAS_SCREEN_CONTRACTS_DETAILED.md`
+
+## Encerramento em 2026-05-24
+
+Esta queue foi executada e depois consolidada pela fila final `SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md`.
+
+Os status internos com texto "Em execucao avancada" devem ser lidos como historico do momento em que cada sprint foi aplicado, nao como pendencia aberta. A fonte operacional atual e:
+
+1. `EXECUTION_QUEUE.md`;
+2. `SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md`;
+3. `SAAS_FINAL_STATE_SUMMARY_2026_05_24.md`;
+4. codigo real e screenshots atuais.
+
+Nao iniciar nova implementacao a partir de um item antigo deste arquivo sem antes conferir se ele ja foi fechado ou substituido pela fila final.
 
 ## 0. Regra de execucao autonoma
 
@@ -1004,6 +1017,43 @@ Atualizacao 2026-05-23: aplicado endurecimento visual compacto `WORK-SAAS-COMPAC
 Atualizacao 2026-05-23: as abas da Agenda deixaram de ser botoes apenas visuais. `Semana` agora abre visao semanal com uma quadra por vez, `Lista` abre lista operacional, `Remarcacoes`, `Canceladas` e `Conflitos` abrem listas/estados filtrados. QA Playwright clicou em `Semana`, `Lista`, `Remarcacoes`, `Canceladas`, `Conflitos` e voltou para `Dia` sem erro de console. Evidencias: `sprint-80-agenda-tabs-semana.png`, `sprint-80-agenda-tabs-lista.png`, `sprint-80-agenda-tabs-remarcacoes.png`, `sprint-80-agenda-tabs-canceladas.png`, `sprint-80-agenda-tabs-conflitos.png`, `sprint-80-agenda-tabs-dia.png`.
 
 Atualizacao 2026-05-23: refinamento posterior da Agenda corrigiu selecao stale ao trocar para `Semana`/`Lista`. A visao semanal limpa o drawer antigo, mostra uma quadra por vez com seletor e instrucao de legibilidade, e a lista permanece operacional. Build aprovado e QA Playwright sem erro de console. Evidencia: `sprint-86-agenda-week-clears-stale-detail-final-1600.png` e `.json`.
+
+Atualizacao 2026-05-23: corrigido desalinhamento da grade diaria da Agenda quando o local possui muitas quadras. A grade agora usa largura minima por quadra, trilho de horario sem sobreposicao, altura fixa por slot, drawer lateral preservado e condensacao de multiplas ocupacoes no mesmo horario para impedir que uma coluna empurre as demais. Validado em 1892px com 8 quadras: `timeOverlapPx: 0`, `lastColumnCutPx: 0`, `eventOverflowCount: 0`, sem erros de console. Evidencias: `sprint-101-agenda-8courts-layout-fixed-1892.png` e `sprint-101-agenda-8courts-layout-fixed.json`.
+
+Atualizacao 2026-05-23: Turmas da Academia passou do antigo overlay central para workbench SaaS com lista compacta + detalhe lateral persistente. As linhas foram reduzidas para leitura densa (`gap` de 4px entre turmas) e o formulario do detalhe lateral foi travado em coluna unica para nao cortar campos. Validado sem backdrop/modal, sem overflow horizontal e sem erros de console. Evidencias: `sprint-102-academy-classes-side-drawer-fixed-1600.png` e `sprint-102-academy-classes-side-drawer-fixed.json`.
+
+Atualizacao 2026-05-23: executada auditoria visual web ampla com screenshots e metricas de 32 rotas de Trabalho/Player e recaptura de 10 rotas Player com estado admin autenticado. Criado o documento `docs/SAAS_WEB_VISUAL_AUDIT_COMPACTACAO_2026_05_23.md` com diagnostico por area, prints, problemas de compactacao, padrao obrigatorio de pagina SaaS e nova fila `AUDIT-01` a `AUDIT-09`. Artefatos em `artifacts/saas-web-audit-2026-05-23/`. Achados principais: algumas paginas ainda estao vazias/incompletas (`Local Inicio`, `Comunicacao`, parte de `Financeiro Pagos`), algumas listas alongam a pagina inteira (`Clientes ativos`, `Trabalho Hoje`, `Academia Alunos/Pendencias`), detalhes operacionais ainda aparecem como modal em pontos de Academia/Alunos, Player Inicio tem overflow horizontal e algumas areas ainda nao compartilham o mesmo contrato compacto de SaaS.
+
+### SPRINT-24 - Auditoria de compactacao e padronizacao SaaS
+
+Status em 2026-05-23:
+Executado a partir da auditoria `SAAS_WEB_VISUAL_AUDIT_COMPACTACAO_2026_05_23.md`.
+
+Atualizacao 2026-05-23:
+Aplicado contrato visual compacto `WORK-SAAS-COMPACT-V3/V3B` na area Trabalho. A topbar, sidebar, botoes, filtros, cards, tabelas e drawers foram endurecidos para o padrao SaaS mais reto e denso. Agenda passou a ser a principal referencia de workbench: filtros em linha, calendario compacto, status por cor, detalhe lateral persistente, sem popup interno e sem metricas duplicadas abaixo. Clientes foi consolidado visualmente como tabela compacta com Cliente 360 lateral e agregacao de registros repetidos por pessoa/telefone. Financeiro passou a manter as abas principais na mesma superficie. Turmas da Academia usa lista compacta + detalhe lateral; Alunos foi limpo para tabela densa, botoes escuros e pendencias menos agressivas visualmente. Tambem foi adicionado fallback para solicitacao de troca de reserva quando o RPC ainda nao existe no cache.
+
+Evidencias:
+
+- Rotas Trabalho 1600px: `artifacts/saas-sprint-screens/sprint-103-route-audit.json` e `sprint-103-*-1600.png`.
+- Abas internas: `sprint-104-inner-tabs.json`, `sprint-104-agenda-semana-1600.png`, `sprint-104-agenda-lista-1600.png`, `sprint-104-academia-turmas-detail-1600.png`.
+- Revalidacao pos-ajuste: `sprint-105-v3b-report.json`, `sprint-106-clean-report.json`, `sprint-106-agenda-detail-clean-1600.png`, `sprint-106-academia-alunos-clean-1600.png`.
+- Player App: `sprint-107-player-audit.json` e correcao de overflow em `sprint-109-player-inicio-overflow-fixed-1366.png` / `sprint-109-player-inicio-overflow-fixed.json`.
+- Resultado QA: sem erros de console, sem overflow horizontal nos pontos revalidados e sem botoes brancos residuais detectados nos fluxos testados.
+
+Ordem:
+
+1. `AUDIT-01` - Padronizar shell compacto: topbar, sidebar, botoes e seletor.
+2. `AUDIT-02` - Criar contrato unico de pagina SaaS: header, filter bar, workbench e side panel.
+3. `AUDIT-03` - Consolidar Agenda como referencia de workbench compacto.
+4. `AUDIT-04` - Reestruturar Academia por dominio real: Hoje, Calendario, Turmas, Alunos e Pendencias.
+5. `AUDIT-05` - Consolidar Clientes como Pessoa 360 e eliminar documento infinito.
+6. `AUDIT-06` - Financeiro compacto e persistente.
+7. `AUDIT-07` - Completar rotas vazias/incompletas.
+8. `AUDIT-08` - Corrigir Player App: overflow, duplicidades e vazamento de Trabalho.
+9. `AUDIT-09` - QA visual por rota com screenshots, console e overflow.
+
+Regra:
+Nao fazer nova adaptacao local sem aplicar o contrato de pagina. A correcao deve aproximar cada area do padrao SaaS compacto definido na auditoria: lista/tabela/calendario com painel lateral, filtros em uma linha, sem cards soltos, sem hero grande em pagina operacional, sem scroll infinito de documento quando o conteudo principal e lista.
 
 Objetivo:
 Corrigir tudo que o QA transversal encontrou.

@@ -12,7 +12,9 @@ type CommunicationQueueItem = {
 type CommunicationTemplate = {
   body: string;
   category: string;
+  channel: string;
   id: string;
+  nextStep: string;
   title: string;
   trigger: string;
 };
@@ -97,72 +99,137 @@ export function PlaceCommunicationPanel({
     {
       body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Sua reserva esta confirmada para {data}, das {inicio} as {fim}, na {quadra}. Se precisar de apoio, fale com a recepcao.`,
       category: "Reserva",
+      channel: "WhatsApp individual",
       id: "booking-confirmed",
+      nextStep: "Abrir reserva no detalhe lateral e confirmar se o pagamento ja esta vinculado.",
       title: "Reserva confirmada",
       trigger: "Reserva criada ou pagamento confirmado",
     },
     {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Confirmamos o pagamento da sua reserva de {data}, das {inicio} as {fim}, na {quadra}. Sua quadra esta garantida. Obrigado e bom jogo!`,
+      category: "Reserva",
+      channel: "WhatsApp individual",
+      id: "booking-paid",
+      nextStep: "Enviar apos marcar como pago para evitar nova cobranca manual.",
+      title: "Pagamento da reserva confirmado",
+      trigger: "Pagamento de reserva marcado como pago",
+    },
+    {
       body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Precisamos cancelar sua reserva de {data}, {inicio}-{fim}, na {quadra}. Se desejar, podemos encontrar o proximo horario disponivel.`,
       category: "Reserva",
+      channel: "WhatsApp individual",
       id: "booking-cancelled",
+      nextStep: "Cancelar no sistema, enviar aviso e registrar alternativa se houver remarcacao.",
       title: "Cancelamento de reserva",
       trigger: "Reserva cancelada pela unidade",
     },
     {
       body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Para alterar sua reserva, acesse o link seguro abaixo, escolha uma quadra/horario livre e confirme a troca. Pagamento ja vinculado a reserva original: {link_remarcacao}`,
       category: "Reserva",
+      channel: "WhatsApp com link",
       id: "booking-change",
+      nextStep: "Gerar link de remarcacao e acompanhar a troca pela Agenda.",
       title: "Remarcacao de reserva",
       trigger: "Reserva alterada, cancelada ou reagendada",
     },
     {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Para remarcar sua reserva ja paga, use este link seguro: {link_remarcacao}. Voce vera a agenda atual, escolhera um horario livre e confirmara a troca.`,
+      category: "Reserva",
+      channel: "WhatsApp com link",
+      id: "booking-change-link",
+      nextStep: "Usar quando o cliente deve escolher novo horario sem a recepcao editar manualmente.",
+      title: "Link de remarcacao",
+      trigger: "Cliente precisa escolher novo horario na agenda",
+    },
+    {
       body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. O horario solicitado ainda esta ocupado. Encontramos estas opcoes proximas: {opcoes}. Se uma delas funcionar, responda esta mensagem ou acesse {link_agenda}.`,
       category: "Reserva",
+      channel: "WhatsApp individual",
       id: "waitlist-alternatives",
+      nextStep: "Consultar agenda antes de enviar para nao sugerir horario indisponivel.",
       title: "Lista de espera com alternativas",
       trigger: "Cliente em espera sem horario livre exato",
     },
     {
       body: `Ola, {nome}. Identificamos uma pendencia de pagamento em ${placeName}. Quando puder, acesse o app ou fale com a recepcao para regularizar.`,
       category: "Financeiro",
+      channel: "WhatsApp individual",
       id: "payment",
+      nextStep: "Abrir Financeiro, conferir origem da cobranca e enviar lembrete pelo cliente correto.",
       title: "Lembrete de pagamento",
       trigger: "Mensalidade, plano, reserva ou inscricao em aberto",
     },
     {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Sua mensalidade do plano {plano} esta vencida desde {vencimento}, no valor de {valor}. Para regularizar, acesse o app ou fale com a nossa equipe.`,
+      category: "Financeiro",
+      channel: "WhatsApp individual",
+      id: "membership-overdue",
+      nextStep: "Usar apenas apos validar que o pagamento ainda nao foi baixado.",
+      title: "Mensalidade vencida",
+      trigger: "Mensalidade pessoal vencida",
+    },
+    {
       body: `Ola, {nome}. Sua aula em ${placeName} esta marcada para {data}, {inicio}-{fim}, com {professor}, na {quadra}. Turma: {turma}.`,
       category: "Academia",
+      channel: "WhatsApp individual ou turma",
       id: "lesson",
+      nextStep: "Enviar para aviso pontual de turma, troca de quadra ou lembrete de aula.",
       title: "Aviso de aula",
       trigger: "Aula do dia, encaixe ou troca de turma",
     },
     {
       body: `Ola, {nome}. Recebemos seu aviso de ausencia em ${placeName}. A reposicao ficara disponivel conforme as regras do seu plano. Acompanhe as opcoes pelo app ou fale com a recepcao.`,
       category: "Academia",
+      channel: "WhatsApp individual",
       id: "lesson-makeup",
+      nextStep: "Registrar o aviso antes para liberar credito e evitar reposicao indevida.",
       title: "Ausencia e reposicao",
       trigger: "Aluno avisou ausencia antes do prazo",
     },
     {
       body: `Ola, {nome}. Sua inscricao em {competicao} foi registrada em ${placeName}. Proximo passo: acompanhe pagamentos, tabela e comunicados pelo app.`,
       category: "Competicoes",
+      channel: "WhatsApp individual",
       id: "competition-registration",
+      nextStep: "Enviar depois de aprovar inscricao ou confirmar pagamento.",
       title: "Inscricao em competicao",
       trigger: "Inscricao/pedido aprovado em torneio ou liga",
     },
     {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Seu resultado em {competicao} esta pendente. Informe o placar pelo app ou responda esta mensagem com o resultado da partida {partida}.`,
+      category: "Competicoes",
+      channel: "WhatsApp individual",
+      id: "competition-result-pending",
+      nextStep: "Abrir cockpit da competicao e conferir se o jogo ainda aceita resultado.",
+      title: "Resultado pendente",
+      trigger: "Partida sem resultado lancado",
+    },
+    {
       body: `Ola, {nome}. Ha uma atualizacao em {competicao}: {resumo}. Confira jogos, horario, resultado ou classificacao pelo app.`,
       category: "Competicoes",
+      channel: "WhatsApp individual ou grupo",
       id: "competition-update",
+      nextStep: "Usar apos publicar tabela, rodada, alteracao de horario ou resultado oficial.",
       title: "Comunicado de rodada",
       trigger: "Tabela publicada, rodada gerada ou resultado pendente",
     },
     {
       body: `Ola! A pagina publica de ${placeName} esta atualizada com reservas, aulas, planos e eventos. Acesse: {link_publico}`,
       category: "Publicacao",
+      channel: "WhatsApp grupo ou campanha",
       id: "public-page",
+      nextStep: "Enviar somente depois de validar dados publicos, horarios e ofertas.",
       title: "Divulgacao da pagina publica",
       trigger: "Pagina pronta para campanha ou envio manual",
+    },
+    {
+      body: `Ola, {nome}. Aqui e {remetente}, da ${placeName}. Aviso importante: {mensagem}. Em caso de duvida, fale com a nossa equipe pelo WhatsApp.`,
+      category: "Geral",
+      channel: "WhatsApp individual ou grupo",
+      id: "general-notice",
+      nextStep: "Usar para comunicados operacionais que nao pertencem a reserva, aula, financeiro ou competicao.",
+      title: "Aviso geral",
+      trigger: "Comunicado operacional para clientes, alunos ou participantes",
     },
   ];
 
@@ -257,9 +324,11 @@ export function PlaceCommunicationPanel({
               {templates.map((template) => (
                 <article key={template.id}>
                   <em>{template.category}</em>
-                  <span>{template.trigger}</span>
+                  <span>{template.channel}</span>
                   <strong>{template.title}</strong>
+                  <span>{template.trigger}</span>
                   <small>{template.body}</small>
+                  <small>{template.nextStep}</small>
                 </article>
               ))}
             </div>

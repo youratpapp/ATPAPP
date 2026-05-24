@@ -14,6 +14,7 @@ type Props = {
 };
 
 type HubMode = "playing" | "organizing" | "discover";
+type WorkQueueView = "all" | "tournaments" | "leagues" | "pending" | "history";
 type WorkCompetitionKind = "Torneio" | "Liga";
 type WorkCompetitionTone = "urgent" | "neutral" | "done";
 type WorkCompetitionPhase =
@@ -406,6 +407,7 @@ export function EventsHubPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeMode, setActiveMode] = useState<HubMode>(() => modeFromSearch(location.search));
+  const [workQueueView, setWorkQueueView] = useState<WorkQueueView>("all");
   const [participatingTournaments, setParticipatingTournaments] = useState<TournamentSummary[]>([]);
   const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
   const [publicTournaments, setPublicTournaments] = useState<TournamentSummary[]>([]);
@@ -480,18 +482,25 @@ export function EventsHubPage({ user, profile }: Props) {
       ].sort(sortWorkItems),
     [organizingLeagues, organizingTournaments]
   );
-  const workCompetitionGroups = useMemo(() => buildWorkCompetitionGroups(workCompetitionItems), [workCompetitionItems]);
   const activeWorkCompetitionItems = useMemo(
     () => workCompetitionItems.filter((item) => item.phase !== "finished"),
     [workCompetitionItems]
   );
+  const visibleWorkCompetitionItems = useMemo(() => {
+    if (workQueueView === "history") return workCompetitionItems.filter((item) => item.phase === "finished");
+    if (workQueueView === "tournaments") return activeWorkCompetitionItems.filter((item) => item.kind === "Torneio");
+    if (workQueueView === "leagues") return activeWorkCompetitionItems.filter((item) => item.kind === "Liga");
+    if (workQueueView === "pending") return activeWorkCompetitionItems.filter((item) => item.tone === "urgent");
+    return activeWorkCompetitionItems;
+  }, [activeWorkCompetitionItems, workCompetitionItems, workQueueView]);
+  const workCompetitionGroups = useMemo(() => buildWorkCompetitionGroups(visibleWorkCompetitionItems), [visibleWorkCompetitionItems]);
   const workPhaseGroups = useMemo(
-    () => workCompetitionGroups.filter((group) => group.key !== "finished" && group.items.length > 0),
+    () => workCompetitionGroups.filter((group) => group.items.length > 0),
     [workCompetitionGroups]
   );
-  const finishedWorkGroup = workCompetitionGroups.find((group) => group.key === "finished");
+  const finishedWorkCount = workCompetitionItems.filter((item) => item.phase === "finished").length;
   const urgentWorkCount = activeWorkCompetitionItems.filter((item) => item.tone === "urgent").length;
-  const selectedWorkItem = activeWorkCompetitionItems[0] ?? workCompetitionItems[0] ?? null;
+  const selectedWorkItem = visibleWorkCompetitionItems[0] ?? activeWorkCompetitionItems[0] ?? workCompetitionItems[0] ?? null;
   const openRegistrationCount = publicTournaments.filter((tournament) => tournament.status === "registration_open").length;
   const activeLeagueCount = leagues.filter((league) => league.status === "active").length;
   const featuredLeague = [...playingLeagues, ...organizingLeagues].find((league) => league.status === "active") || leagues[0] || null;
@@ -524,6 +533,14 @@ export function EventsHubPage({ user, profile }: Props) {
     navigate(`/eventos?modo=${mode}`, { replace: true });
   };
 
+  const workQueueTabs: { id: WorkQueueView; label: string; count: number }[] = [
+    { id: "all", label: "Todos", count: activeWorkCompetitionItems.length },
+    { id: "tournaments", label: "Torneios", count: organizingTournaments.filter((item) => item.status !== "finished").length },
+    { id: "leagues", label: "Ligas", count: organizingLeagues.filter((item) => item.status !== "finished").length },
+    { id: "pending", label: "Pendencias", count: urgentWorkCount },
+    { id: "history", label: "Historico", count: finishedWorkCount },
+  ];
+
   return (
     <AppShell user={user} profile={profile} showHeader={false}>
       {activeMode !== "organizing" ? (
@@ -539,7 +556,7 @@ export function EventsHubPage({ user, profile }: Props) {
         <ScreenState
           kind="loading"
           title="Carregando competicoes"
-          detail="Separando competicoes para jogar, descobrir ou organizar conforme seu perfil."
+          detail="Separando competicoes para participar, descobrir novos desafios ou operar no modo Trabalho."
         />
       ) : null}
       {error ? <p className="feedback error">{error}</p> : null}
@@ -699,11 +716,17 @@ export function EventsHubPage({ user, profile }: Props) {
           <div className="competition-saas-layout">
             <div className="competition-saas-main">
               <div className="competition-saas-tabs" role="tablist" aria-label="Filas de competicoes">
-                <button className="active" type="button">Todos</button>
-                <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>Torneios</button>
-                <button type="button" onClick={() => navigate("/eventos/ligas?view=organizing")}>Ligas</button>
-                <button type="button">Pendencias</button>
-                <button type="button">Historico</button>
+                {workQueueTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    className={workQueueView === tab.id ? "active" : ""}
+                    type="button"
+                    onClick={() => setWorkQueueView(tab.id)}
+                  >
+                    <span>{tab.label}</span>
+                    <small>{tab.count}</small>
+                  </button>
+                ))}
               </div>
 
               {hasOrganizerContext && workPhaseGroups.length ? (
@@ -729,7 +752,7 @@ export function EventsHubPage({ user, profile }: Props) {
                         >
                           <span>
                             <strong>{item.title}</strong>
-                            <small>{item.kind} · {item.meta}</small>
+                            <small>{item.kind} - {item.meta}</small>
                           </span>
                           <span>{item.status}</span>
                           <span>{item.action}</span>
@@ -741,10 +764,18 @@ export function EventsHubPage({ user, profile }: Props) {
                 </div>
               ) : (
                 <div className="home-empty-panel competition-saas-empty">
-                  <strong>{hasOrganizerContext ? "Nenhum bloqueio operacional agora" : "Comece criando uma competicao"}</strong>
+                  <strong>
+                    {hasOrganizerContext
+                      ? workQueueView === "pending"
+                        ? "Sem pendencia critica nesta fila"
+                        : workQueueView === "history"
+                        ? "Sem competicoes finalizadas nesta fila"
+                        : "Nenhum bloqueio operacional agora"
+                      : "Comece criando uma competicao"}
+                  </strong>
                   <span>
                     {hasOrganizerContext
-                      ? "Suas competicoes estao sem acoes visiveis. Use Torneios ou Ligas para revisar detalhes e historico."
+                      ? "Use os filtros acima para alternar entre operacao atual, pendencias e historico sem sair do Competition OS."
                       : "Crie torneio para evento pontual ou liga para temporada recorrente. O setup detalhado fica dentro da competicao."}
                   </span>
                 </div>
@@ -755,7 +786,7 @@ export function EventsHubPage({ user, profile }: Props) {
               <header>
                 <span>Detalhe da acao</span>
                 <strong>{selectedWorkItem?.title ?? "Selecione uma competicao"}</strong>
-                <small>{selectedWorkItem ? `${selectedWorkItem.kind} · ${selectedWorkItem.status}` : "A fila operacional abre aqui sem tirar voce do contexto."}</small>
+                <small>{selectedWorkItem ? `${selectedWorkItem.kind} - ${selectedWorkItem.status}` : "A fila operacional abre aqui sem tirar voce do contexto."}</small>
               </header>
               {selectedWorkItem ? (
                 <>
@@ -791,11 +822,11 @@ export function EventsHubPage({ user, profile }: Props) {
                   </button>
                 </ActionBar>
               )}
-              {finishedWorkGroup?.items.length ? (
+              {finishedWorkCount ? (
                 <div className="competition-saas-history">
                   <span>Historico</span>
-                  <strong>{finishedWorkGroup.items.length} finalizada(s)</strong>
-                  <button type="button" onClick={() => navigate("/eventos/torneios?view=organizing")}>Ver arquivo</button>
+                  <strong>{finishedWorkCount} finalizada(s)</strong>
+                  <button type="button" onClick={() => setWorkQueueView("history")}>Ver arquivo</button>
                 </div>
               ) : null}
             </aside>

@@ -1,0 +1,64 @@
+{
+  "errors": [],
+  "base": "http://127.0.0.1:5180",
+  "placeId": "36b29d6c-fabb-475a-a059-47d5ece74a09",
+  "competition": {
+    "url": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+    "tabCount": 5,
+    "tabsBefore": [
+      {
+        "text": "Todos22",
+        "active": true
+      },
+      {
+        "text": "Torneios7",
+        "active": false
+      },
+      {
+        "text": "Ligas15",
+        "active": false
+      },
+      {
+        "text": "Pendencias22",
+        "active": false
+      },
+      {
+        "text": "Historico12",
+        "active": false
+      }
+    ],
+    "tabsAfter": [
+      {
+        "text": "Todos22",
+        "active": false
+      },
+      {
+        "text": "Torneios7",
+        "active": false
+      },
+      {
+        "text": "Ligas15",
+        "active": false
+      },
+      {
+        "text": "Pendencias22",
+        "active": false
+      },
+      {
+        "text": "Historico12",
+        "active": true
+      }
+    ],
+    "text": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCOMPETITION OS\nQuais competicoes precisam de acao?\n\nTorneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho.\n\nCriar torneio\nCriar liga\n22\nBloqueios\nprecisam de acao\n22\nEm operacao\ntorneios e ligas ativos\n19\nTorneios\nno seu workspace\n15\nLigas\ntemporadas e rodadas\nTodos\n22\nTorneios\n7\nLigas\n15\nPendencias\n22\nHistorico\n12\nCOMPETICAO\nFASE\nPROXIMA ACAO\nATUALIZACAO\nFinalizadas\n12\nATP Open Dourados 024336\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 23 de mai.\nATP Open Dourados 114805\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 22 de mai.\nATP Open Dourados 031141\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 025536\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 024629\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 032025\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 023830\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 021743\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 031559\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 010927\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 030841\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nTorneio Ranking Outono\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 14 de mai.\nDETALHE DA ACAO\nATP Open Dourados 024336\nTorneio · Finalizada\nFase\nFinalizada\nContexto\nDourados - MS\nProxima acao\nVer resumo\nOrientacao\nCompeticao encerrada. Consulte classificacao, historico e mensagens.\nAbrir cockpit da fase\nHISTORICO\n12 finalizada(s)\nVer arquivo\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao"
+  },
+  "communication": {
+    "url": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "hasTemplates": true,
+    "text": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nCOMUNICACAO\nCentral de mensagens\n\nWhatsApp, publicacao e avisos conectados aos pontos reais da operacao.\n\nEditar dados publicos\nVer pagina publica\nQUADRAS\n6\nUso publico e agenda\nAULAS\n27\nTurmas visiveis\nPLANOS\n2\nOfertas recorrentes\nPAGINA PUBLICA\nOK\nPronta para divulgar\nPONTO\nSTATUS\nMENSAGEM\nACAO\nReservas\n1 pendente(s)\nReservas aguardando acao exigem WhatsApp, remarcacao ou cobranca.\nAbrir agenda\nLista de espera\n52 pessoa(s)\nClientes em espera precisam de retorno quando liberar horario.\nAvisar espera\nAulas\n72 pedido(s)\nPedidos de aula e reposicao precisam de resposta clara.\nAbrir clientes\nFinanceiro\n118 em aberto\nRecebiveis em aberto pedem lembrete profissional.\nCobrar\nPublicacao\nPronta\nPagina publica pronta para compartilhar.\nVer pagina\nPROXIMA ACAO\nReservas\n\nReservas aguardando acao exigem WhatsApp, remarcacao ou cobranca.\n\nAbrir agenda\nMatriz de modelos\n15\nRESERVARESERVA CRIADA OU PAGAMENTO CONFIRMADO\nReserva confirmada\nOla, {nome}. Aqui e {remetente}, da ADT Dourados. Sua reserva esta confirmada para {data}, das {inicio} as {fim}, na {quadra}. Se precisar de apoio, fale com a recepcao.\nRESERVAPAGAMENTO DE RESERVA MARCADO COMO PAGO\nPagamento da reserva confirmado\nOla, {nome}. Aqui e {remetente}, da ADT Dourados. Confirmamos o pagamento da sua reserva de {data}, das {inicio} as {fim}, na {quadra}. Sua quadra esta garantida. Obrigado e bom jogo!\nRESERVARESERVA CANCELADA PELA UNIDADE\nCancelamento de reserva\nOla, {nome}. Aqui e {remetente}, da ADT Dourados. Precisamos cancelar sua reserva de {data}, {inicio}-{fim}, na {quadra}. Se desejar, podemos encontrar o proximo horario disponivel.\nRESERVARESERVA ALTERADA, CANCELADA OU REAGENDADA\nRemarcacao de reserva\nOla, {nome}. Aqui e {remetente}, da ADT Dourados. Para alterar sua reserva, acesse o link seguro abaixo, escolha uma quadra/horario livre e confirme a troca. Pagamento ja vinculado a reserva original: {link_remarcacao}\nRESERVACLIENTE PRECISA ESCOLHER NOVO HORARIO NA AGENDA\nLink de remarcacao\nOla, {nome}. Aqui e {remetente}, da ADT Dourados. Para remarcar sua reserva ja paga, use este link seguro: {link_remarcacao}. Voce vera a agenda atual, escolhera um horario livre e confirmara a troca.\nRESERVACLIENTE EM ESPERA SEM HORARIO LIVRE EXATO\nLista de espera com alternativas\nOla, {nome}. Aqui e {remetente}, da ADT Dourados. O horario solicitado ainda esta ocupado. Encontramos estas opcoes proximas: {opcoes}. Se uma delas funcionar, responda esta mensagem ou acesse {link_agenda}.\nFINANCEIROMENSALIDADE, PLANO, RESERVA OU INSCRICAO EM ABERTO\nLembrete de pagamento\nOla, {nome}. Identificamos uma pendencia de pagamento em ADT Dourados. Quando puder, acesse o app ou fale com a recepcao para regularizar.\nFINANCEIROMENSALIDADE PESSOAL VENCIDA\nMensalidade vencida\nOla, {nome}. Aqui e {remetente}, da ADT Dourados. Sua mensalidade do plano {plano} esta vencida desde {vencimento}, no valo"
+  },
+  "reports": {
+    "url": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "hasMvpReports": true,
+    "text": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nRELATORIOS\nVisao da operacao\n\nIndicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva.\n\nTudo\nPeriodo\nEste mes\nHoje\nExportar CSV\nPLANO ATUAL\nPro: completo\nReservas, academia, sócios, CRM e financeiro.\nClube: reservas\nAcademia: turmas\nPro: completo\nMultiunidade\nQUADRAS\n6\nRESERVAS NO PERIODO\n171\nOCUPACAO ESTIMADA\n7%\nTAXA CONFIRMACAO GERAL\n98%\nMODULO\nINDICADOR\nLEITURA\nAgenda\n171\n7% de ocupacao estimada, 168 confirmadas\nAcademia\n79\n85% de presença, 83 alunos ativos\nFinanceiro\nR$ 0,00\nentradas R$ 2.304,00 menos despesas R$ 5.350,00\nCRM\n15%\n18 leads, origem principal Evento\nCompeticoes\n9\n9 partidas abertas vinculada(s) ao local\nCantina\nR$ 2.304,00\nSanduiche natural lídera com 36 un.\nDETALHE\nAgenda\n\n7% de ocupacao estimada, 168 confirmadas\n\nRESERVAS PENDENTES\n1\nRESERVAS CONFIRMADAS\n491\nESPERA DE QUADRA\n52\nTURMAS\n27\nALUNOS ATIVOS\n83\nREGISTROS DE PRESENCA\n79\nPicos e alertas\n3\nHORARIO MAIS FORTE\n17:00\n54 reservas no periodo\nDIA MAIS FORTE\nDom\n48 reservas no periodo\nRECEITA DESTAQUE\nCantina\nR$ 2.304,00\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao"
+  }
+}

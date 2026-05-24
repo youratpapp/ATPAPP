@@ -193,8 +193,36 @@ export function mergePlaceAdminResourceEntry<T>(previous: Record<string, T>, pla
 
 type PaymentTargetMap = Partial<Record<"court_booking" | "academy_enrollment" | "academy_student_contract" | "academy_lesson_request" | "place_membership", string[]>>;
 
+function paymentSortScore(payment: AppPayment): number {
+  if (payment.status === "paid") return 4;
+  if (payment.status === "pending") return 3;
+  if (payment.status === "failed") return 2;
+  if (payment.status === "refunded") return 1;
+  return 0;
+}
+
+function paymentUpdatedAt(payment: AppPayment): number {
+  const value = Date.parse(payment.updatedAt || payment.createdAt || payment.paidAt || "");
+  return Number.isFinite(value) ? value : 0;
+}
+
 function mergePaymentRows(rows: AppPayment[]): Record<string, AppPayment> {
-  return Object.fromEntries(rows.map((payment) => [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod), payment]));
+  const merged: Record<string, AppPayment> = {};
+  for (const payment of rows) {
+    const key = paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod);
+    const current = merged[key];
+    if (!current) {
+      merged[key] = payment;
+      continue;
+    }
+
+    const currentScore = paymentSortScore(current);
+    const nextScore = paymentSortScore(payment);
+    if (nextScore > currentScore || (nextScore === currentScore && paymentUpdatedAt(payment) >= paymentUpdatedAt(current))) {
+      merged[key] = payment;
+    }
+  }
+  return merged;
 }
 
 function collectPaymentTargets(entries: PlaceAdminResourceEntry[]): PaymentTargetMap {

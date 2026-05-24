@@ -1,0 +1,448 @@
+{
+  "createdAt": "2026-05-24T00:15:00.875Z",
+  "base": "http://127.0.0.1:5175/",
+  "results": [
+    {
+      "id": "admin-player-inicio",
+      "route": "#/inicio",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-inicio.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/inicio",
+        "doc": {
+          "w": 1848,
+          "h": 1809
+        },
+        "horizontalOverflow": true,
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "h2": [
+          "Proximos passos",
+          "Seu proximo movimento",
+          "Areas ativas",
+          "Para voce",
+          "Acesso profissional",
+          "Perto de voce"
+        ],
+        "h3": [],
+        "navItems": [
+          "RESERVAR Quadra",
+          "JOGAR Encontrar jogo",
+          "COMPETIR Torneios",
+          "TREINAR Aulas",
+          "EVOLUIR Ligas",
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": {
+          "selector": "[class*=hero]",
+          "x": 272,
+          "y": 89,
+          "w": 1220,
+          "h": 350,
+          "text": "HOJE PARA VOCE Encontre seu proximo jogo Partidas, torneios e aulas perto de voce. Explorar perto 0 Pendencias sem urgencias 0 Agenda Livre agora 2 Rotina itens no seu painel"
+        },
+        "counts": {
+          "buttons": 29,
+          "inputs": 0,
+          "cards": 6,
+          "rows": 8,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Partidas, torneios e aulas perto de voce. Explorar perto 0 Pendencias sem urgencias 0 Agenda Livre agora 2 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios TREINAR Aulas EVOLUIR Ligas AGORA NO APP Proximos passos Ver agenda Sem compromissos imediatos. Encontrar jogo DESTAQUE Seu proximo movimento RECOMENDADO Encontre seu proximo jogo Partidas, torneios e aulas perto de voce. Explorar perto ROTINA Areas ativas Perfil CONVITES Oportunidades 2 item(ns) PAINEL COMPLETO Para voce CONVITES Oportunidades Convites, espera e eventos públicos relevantes. 2 Prime Cup Noturna Cuiaba - MT 12 de mai. de 2026 Prime Open Inscricoes Encerradas Cuiaba - MT 23 de mai. de 2026 Ver oportunidades TRABALHO Acesso profissional Abrir 8 pendencia(s) operacional(is) aguardam no modo Trabalho. DESCOBERTA Perto de voce Ver todos Eventos na sua região Dourados Open ADT Dourados - Maio Dourados - MS 11 de jun. de 2026 Em andamento Festival Feminino Pantanal Campo Grande - MS 28 de jun. de 2026 Inscrições abertas ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-jogar",
+      "route": "#/jogar",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-jogar.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/locais",
+        "doc": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Jogar"
+        ],
+        "h2": [
+          "Escolha seu próximo jogo"
+        ],
+        "h3": [],
+        "navItems": [
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": null,
+        "counts": {
+          "buttons": 11,
+          "inputs": 0,
+          "cards": 5,
+          "rows": 0,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho Jogar JOGAR PERTO DE VOCÊ Escolha seu próximo jogo Reserve quadra, encontre parceiros ou entre em aulas perto de você. Encontrar jogo Partidas abertas 27 chamadas abertas Reservar quadra Horários disponíveis Entrar em aula Turmas com vaga Ver locais Clubes e academias 10 locais ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-competir",
+      "route": "#/eventos",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-competir.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/eventos",
+        "doc": {
+          "w": 1600,
+          "h": 1282
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Competir"
+        ],
+        "h2": [],
+        "h3": [
+          "Descobrir"
+        ],
+        "navItems": [
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": null,
+        "counts": {
+          "buttons": 24,
+          "inputs": 0,
+          "cards": 8,
+          "rows": 0,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho Competir Inscricoes abertas1 torneios publicos agora Ligas ativas15 temporadas em andamento Seu jogo0 torneios e ligas vinculados Torneios Ligas Rankings Jogando partidas e inscricoes Descobrir torneios e ligas PROXIMOS TORNEIOS Ver todos Festival Feminino Pantanal Campo Grande - MS LIGA EM DESTAQUE Ligas Liga ATP Dourados 115148 Simples - Ativa RESULTADOS RECENTES Ranking ATP Open Dourados 024336 Finalizada ATP Open Dourados 114805 Finalizada ATP Open Dourados 031141 Finalizada Descobrir Encontre eventos abertos e locais para competir perto de você. Torneios Veja torneios em que você joga ou entre por código. Ligas Acesse ligas em que você participa. Encontrar locais Veja clubes e academias publicas. DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. ATP Competições JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-torneios",
+      "route": "#/eventos/torneios",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-torneios.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/eventos/torneios",
+        "doc": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Torneios que jogo"
+        ],
+        "h2": [],
+        "h3": [],
+        "navItems": [
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": null,
+        "counts": {
+          "buttons": 10,
+          "inputs": 0,
+          "cards": 0,
+          "rows": 0,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho Torneios que jogo Acompanhe somente torneios em que você participa como jogador. Voltar Entrar ATP Você ainda não esta em nenhum torneio Entre por código ou acompanhe torneios públicos disponíveis. Entrar por código ATP Competições JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-ligas",
+      "route": "#/eventos/ligas",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-ligas.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/eventos/ligas",
+        "doc": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Ligas que jogo"
+        ],
+        "h2": [],
+        "h3": [],
+        "navItems": [
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": null,
+        "counts": {
+          "buttons": 9,
+          "inputs": 0,
+          "cards": 2,
+          "rows": 0,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho Ligas que jogo Acompanhe somente ligas em que você participa como jogador. Voltar Jogando 0 Ativas 15 ATP Você ainda não participa de ligas Volte ao hub de competições para encontrar torneios, ligas e convites. Voltar para competições ATP Competições JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-agenda",
+      "route": "#/agenda",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-agenda.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/agenda",
+        "doc": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Minha rotina"
+        ],
+        "h2": [],
+        "h3": [],
+        "navItems": [
+          "Tudo",
+          "Reservas",
+          "Partidas",
+          "Aulas",
+          "Pagamentos",
+          "Historico",
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": {
+          "selector": "[class*=hero]",
+          "x": 272,
+          "y": 89,
+          "w": 992,
+          "h": 209,
+          "text": "CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 0 compromissos e pendencias VENCIDOS 0 pagamentos pessoais RESULTADOS 0 partidas pendentes"
+        },
+        "counts": {
+          "buttons": 13,
+          "inputs": 0,
+          "cards": 0,
+          "rows": 0,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 0 compromissos e pendencias VENCIDOS 0 pagamentos pessoais RESULTADOS 0 partidas pendentes Tudo Reservas Partidas Aulas Pagamentos Historico Carregando agenda... ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-locais",
+      "route": "#/locais",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-locais.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/locais",
+        "doc": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Jogar"
+        ],
+        "h2": [
+          "Escolha seu próximo jogo"
+        ],
+        "h3": [],
+        "navItems": [
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": null,
+        "counts": {
+          "buttons": 11,
+          "inputs": 0,
+          "cards": 5,
+          "rows": 0,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho Jogar JOGAR PERTO DE VOCÊ Escolha seu próximo jogo Reserve quadra, encontre parceiros ou entre em aulas perto de você. Encontrar jogo Partidas abertas 27 chamadas abertas Reservar quadra Horários disponíveis Entrar em aula Turmas com vaga Ver locais Clubes e academias 10 locais ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-ranking",
+      "route": "#/ranking",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-ranking.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/ranking",
+        "doc": {
+          "w": 1600,
+          "h": 2093
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Ranking ATP"
+        ],
+        "h2": [
+          "Você ainda não aparece neste recorte",
+          "Top 3 do recorte",
+          "Top jogadores"
+        ],
+        "h3": [
+          "Ranking geral",
+          "Disputa pelo topo",
+          "Onde a liga esta viva"
+        ],
+        "navItems": [
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": {
+          "selector": "[class*=hero]",
+          "x": 272,
+          "y": 89,
+          "w": 992,
+          "h": 252,
+          "text": "RANKING Ranking ATP Acompanhe sua posicao, encontre recortes e veja quem esta em alta."
+        },
+        "counts": {
+          "buttons": 25,
+          "inputs": 2,
+          "cards": 14,
+          "rows": 14,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho RANKING Ranking ATP Acompanhe sua posicao, encontre recortes e veja quem esta em alta. - MINHA POSICAO Use filtros para encontrar rankings onde voce participa. MINHA POSIÇÃO - Você ainda não aparece neste recorte Use filtros de liga, cidade ou classe para encontrar rankings onde você participa. RECORTE ATUAL Ranking geral 200 jogadores encontrados Lider: Guilherme Teixeira (141 pts) Geral Minha cidade Liga / clube Todas as classes Adulto / Classe A Adulto / Classe B Adulto / Classe C Tenis / Classe A 200 de 200 jogadores neste recorte EM DESTAQUE Top 3 do recorte #1 GT Guilherme Teixeira Prime Duplas Fixas 141 pts #1 RA Rodrigo Araujo Liga ADT Simples 2026 141 pts #1 WN Wagner Nascimento Ranking Pantanal Intermediario 141 pts RANKING DO RECORTE Top jogadores Mostrando 12 de 200 # JOGADOR LIGA V-D PTS 1 GT Guilherme Teixeira Campo Grande - MS Prime Duplas Fixas Temporada 2026.1 - Adulto / Classe C 7-1 88% 141 Seguir 1 RA Rodrigo Araujo Campo Grande - MS Liga ADT Simples 2026 Temporada 2026.1 - Adulto / Classe C 7-1 88% 141 Seguir 1 WN Wagner Nascimento Campo Grande - MS Ranking Pantanal Intermediario Temporada 2026.1 - Adulto / Classe C 7-1 88% 141 Seguir 2 HB Helena Borges Cuiaba - MT Prime Duplas Fixas Temporada 2026.1 - Adulto / Classe C 6"
+      }
+    },
+    {
+      "id": "admin-player-perfil",
+      "route": "#/perfil",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-perfil.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/perfil",
+        "doc": {
+          "w": 1600,
+          "h": 900
+        },
+        "horizontalOverflow": false,
+        "h1": [
+          "Perfil"
+        ],
+        "h2": [],
+        "h3": [],
+        "navItems": [
+          "Perfil",
+          "Histórico",
+          "Preferências",
+          "Conta",
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": {
+          "selector": "[class*=hero]",
+          "x": 900,
+          "y": 188,
+          "w": 329,
+          "h": 230,
+          "text": "6 Nivel 0 Partidas recentes 0% Aproveitamento 0 Competições ativas"
+        },
+        "counts": {
+          "buttons": 12,
+          "inputs": 1,
+          "cards": 1,
+          "rows": 4,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho Perfil EA Escalao Admin Dourados - MS Perfil completo Perfil publico Sem competicao ativa Lembretes ativos 6 Nivel 0 Partidas recentes 0% Aproveitamento 0 Competições ativas Perfil Histórico Preferências Conta Telefone +55 67 99900-0001 E-mail escalao@gmail.com Data de Nascimento 12/04/1984 ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+      }
+    },
+    {
+      "id": "admin-player-local-publico",
+      "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "ok": true,
+      "screenshot": "artifacts/saas-web-audit-2026-05-23/admin-player-local-publico.png",
+      "logs": [],
+      "pageErrors": [],
+      "metrics": {
+        "href": "http://127.0.0.1:5175/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "doc": {
+          "w": 1600,
+          "h": 965
+        },
+        "horizontalOverflow": false,
+        "h1": [],
+        "h2": [],
+        "h3": [],
+        "navItems": [
+          "Inicio",
+          "Jogar",
+          "Competir",
+          "Rotina",
+          "Perfil"
+        ],
+        "tabs": [],
+        "hero": null,
+        "counts": {
+          "buttons": 8,
+          "inputs": 0,
+          "cards": 0,
+          "rows": 0,
+          "drawers": 0
+        },
+        "bodyHead": "EA Ola, Escalao Admin Jogador Trabalho Voltar LOCAL PÚBLICO Local Carregando local..."
+      }
+    }
+  ]
+}

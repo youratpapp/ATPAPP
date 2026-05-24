@@ -745,10 +745,11 @@ export function PlaceBookingCalendarModule({
                   return (
                     <div key={`slot:${court.id}:${slot}`} className={slotItems.length ? "court-calendar-slot occupied" : "court-calendar-slot"}>
                       {slotItems.length ? (
-                        slotItems.map((item) => {
+                        (() => {
+                          const item = slotItems[0];
                           const booking = item.booking;
                           const payment = booking ? getPaymentForBooking?.(booking.id) : undefined;
-                          const badgeLabel = agendaItemBadgeLabel(item, payment);
+                          const badgeLabel = slotItems.length > 1 ? countLabel(slotItems.length, "ocupacao", "ocupacoes") : agendaItemBadgeLabel(item, payment);
                           return (
                             <button
                               key={item.id}
@@ -763,7 +764,7 @@ export function PlaceBookingCalendarModule({
                               <small>{badgeLabel}</small>
                             </button>
                           );
-                        })
+                        })()
                       ) : (
                         <button
                           className="court-calendar-free-slot"
@@ -867,7 +868,15 @@ export function PlaceBookingCalendarModule({
                     </a>
                   ) : null}
                   {selectedBooking.status !== "cancelled" && onUpdateBooking ? (
-                    <button className="danger" type="button" onClick={() => onUpdateBooking(selectedBooking.id, "cancelled")}>
+                    <button
+                      className="danger"
+                      type="button"
+                      onClick={() => {
+                        setActiveView("cancelled");
+                        setEditingBookingId("");
+                        onUpdateBooking(selectedBooking.id, "cancelled");
+                      }}
+                    >
                       {selectedBooking.status === "blocked" ? "Liberar bloqueio" : "Cancelar reserva"}
                     </button>
                   ) : null}
@@ -1144,7 +1153,15 @@ export function PlaceBookingCalendarModule({
                             {canManageBookings && booking ? (
                               <div className="court-calendar-booking-actions">
                                 {booking.status !== "cancelled" && onUpdateBooking ? (
-                                  <button className="danger compact" type="button" onClick={() => onUpdateBooking(booking.id, "cancelled")}>
+                                  <button
+                                    className="danger compact"
+                                    type="button"
+                                    onClick={() => {
+                                      setActiveView("cancelled");
+                                      setEditingBookingId("");
+                                      onUpdateBooking(booking.id, "cancelled");
+                                    }}
+                                  >
                                     {booking.status === "blocked" ? "Liberar" : "Cancelar"}
                                   </button>
                                 ) : null}

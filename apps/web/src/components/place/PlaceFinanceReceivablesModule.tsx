@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import type { PlaceClientReceivable } from "./PlaceClientRelationshipModule";
 
 type PlaceFinanceReceivablesModuleProps = {
@@ -31,11 +32,21 @@ export function PlaceFinanceReceivablesModule({
   onCreatePaymentReminderBatch,
   onMarkReceivablePaid,
 }: PlaceFinanceReceivablesModuleProps) {
+  const { search } = useLocation();
   const [segment, setSegment] = useState<FinanceReceivableSegment>("all");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState("");
+  const requestedSegment = useMemo(() => {
+    const value = new URLSearchParams(search).get("filtro");
+    return value === "vencidos" ? "overdue" : value === "hoje" ? "today" : value === "aulas" ? "academy" : value === "planos" ? "membership" : "";
+  }, [search]);
   const overdueReceivables = useMemo(() => receivables.filter((receivable) => receivable.dueStatus === "overdue"), [receivables]);
   const todayReceivables = useMemo(() => receivables.filter((receivable) => receivable.dueStatus === "today"), [receivables]);
+
+  useEffect(() => {
+    if (requestedSegment) setSegment(requestedSegment);
+  }, [requestedSegment]);
+
   const segmentReceivables = useMemo(() => {
     if (segment === "overdue") return overdueReceivables;
     if (segment === "today") return todayReceivables;

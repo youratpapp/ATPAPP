@@ -1,0 +1,78 @@
+{
+  "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+  "logs": [],
+  "metrics": {
+    "logsCount": 0,
+    "rows": [
+      {
+        "y": 437.171875,
+        "h": 47,
+        "bottom": 484.171875
+      },
+      {
+        "y": 488.171875,
+        "h": 47,
+        "bottom": 535.171875
+      },
+      {
+        "y": 539.171875,
+        "h": 47,
+        "bottom": 586.171875
+      },
+      {
+        "y": 590.171875,
+        "h": 47,
+        "bottom": 637.171875
+      },
+      {
+        "y": 641.171875,
+        "h": 47,
+        "bottom": 688.171875
+      },
+      {
+        "y": 692.171875,
+        "h": 47,
+        "bottom": 739.171875
+      }
+    ],
+    "gaps": [
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "drawer": {
+      "x": 1158,
+      "y": 311.484375,
+      "w": 360,
+      "h": 792,
+      "right": 1518,
+      "bottom": 1103.484375,
+      "scrollWidth": 358,
+      "clientWidth": 358
+    },
+    "body": {
+      "x": 1159,
+      "y": 402.375,
+      "w": 358,
+      "h": 640.109375,
+      "right": 1517,
+      "bottom": 1042.484375,
+      "scrollWidth": 358,
+      "clientWidth": 358
+    },
+    "form": {
+      "x": 1182,
+      "y": 475.765625,
+      "w": 312,
+      "h": 1144.078125,
+      "right": 1494,
+      "bottom": 1619.84375,
+      "scrollWidth": 312,
+      "clientWidth": 312
+    },
+    "hasOverlayBackdrop": false,
+    "horizontalOverflow": false
+  }
+}

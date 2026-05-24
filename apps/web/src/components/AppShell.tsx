@@ -5,9 +5,18 @@ import type { Profile } from "../lib/types";
 import { BottomNav } from "./BottomNav";
 import { AppPopover } from "./AppOverlays";
 import logoSymbol from "../assets/logo-atp-symbol.svg";
+import { loadMyLeagues } from "../lib/leagues";
 import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
+import {
+  listPlaceAcademyClasses,
+  listPlaceAcademyEnrollments,
+  listPlaceBookings,
+  listPlaceCrmContacts,
+  listPlacePosProducts,
+} from "../lib/places";
 import { getRouteExperienceMode, getRouteSurfaceMode, type AppSurfaceMode } from "../lib/role-visibility";
 import { supabase } from "../lib/supabase";
+import { loadDashboardData } from "../lib/tournaments";
 import { useUserMode } from "../lib/user-mode-context";
 
 type Props = {
@@ -54,10 +63,27 @@ function activePlaceIdFromPath(pathname: string): string | null {
 type WorkSearchItem = {
   detail: string;
   id: string;
+  keywords?: string;
   label: string;
   path: string;
   source?: string;
 };
+
+function normalizeWorkSearchText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function workSearchMatches(item: Omit<WorkSearchItem, "path"> & { path?: string }, query: string): boolean {
+  const haystack = normalizeWorkSearchText([item.label, item.detail, item.source, item.keywords].filter(Boolean).join(" "));
+  const terms = normalizeWorkSearchText(query).split(" ").filter(Boolean);
+  if (!terms.length) return true;
+  return terms.every((term) => haystack.includes(term));
+}
 
 export function AppShell({
   user,
@@ -93,22 +119,30 @@ export function AppShell({
   const workSearchItems = useMemo<WorkSearchItem[]>(() => {
     if (!targetPlaceId) return [];
     return [
-      { id: "area-agenda", label: "Agenda", detail: "Reservas, aulas, bloqueios e remarcacoes", path: buildPlaceAdminPath(targetPlaceId, "bookings", "calendar") },
-      { id: "area-reservas", label: "Reservas", detail: "Calendario clicavel e detalhe lateral", path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas") },
-      { id: "area-clientes", label: "Clientes", detail: "Leads, ativos, alunos e socios", path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos") },
-      { id: "area-aulas", label: "Aulas", detail: "Turmas, matriculas e reposicoes", path: buildPlaceAdminPath(targetPlaceId, "academy", "hoje") },
-      { id: "area-financeiro", label: "Financeiro", detail: "Recebiveis, vencidos e pagos", path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis") },
-      { id: "area-pos", label: "Loja/POS", detail: "Venda rapida, estoque e produtos", path: buildPlaceAdminPath(targetPlaceId, "canteen", "vender") },
-      { id: "area-competicoes", label: "Competicoes", detail: "Torneios, ligas e resultados pendentes", path: "/eventos?modo=organizing" },
-      { id: "area-comunicacao", label: "Comunicacao", detail: "WhatsApp, avisos e publicacao", path: buildPlaceAdminPath(targetPlaceId, "communication") },
-      { id: "area-relatorios", label: "Relatorios", detail: "Ocupacao, receita e indicadores", path: buildPlaceAdminPath(targetPlaceId, "reports") },
-      { id: "area-administracao", label: "Administracao", detail: "Regras, equipe e ajustes estruturais", path: buildPlaceAdminPath(targetPlaceId, "settings") },
+      { id: "area-agenda", label: "Agenda", detail: "Reservas, aulas, bloqueios e remarcacoes", keywords: "calendario quadra horario conflito semana lista", path: buildPlaceAdminPath(targetPlaceId, "bookings", "calendar") },
+      { id: "area-reservas", label: "Reservas", detail: "Calendario clicavel e detalhe lateral", keywords: "quadra booking pagamento pendente pago cancelar remarcar whatsapp", path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas") },
+      { id: "area-clientes", label: "Clientes", detail: "Leads, ativos, alunos e socios", keywords: "pessoa contato crm cliente 360 aluno socio mensalista telefone", path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos") },
+      { id: "area-aulas", label: "Aulas e turmas", detail: "Turmas, matriculas e reposicoes", keywords: "academia aula turma aluno professor matricula contrato reposicao", path: buildPlaceAdminPath(targetPlaceId, "academy", "turmas") },
+      { id: "area-financeiro", label: "Financeiro", detail: "Recebiveis, vencidos e pagos", keywords: "pagamento pagar cobranca cobrar mensalidade inadimplente despesa receita receber pago pendente", path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis") },
+      { id: "area-pos", label: "Loja/POS", detail: "Venda rapida, estoque e produtos", keywords: "cantina produto venda caixa estoque vender", path: buildPlaceAdminPath(targetPlaceId, "canteen", "vender") },
+      { id: "area-competicoes", label: "Competicoes", detail: "Torneios, ligas e resultados pendentes", keywords: "torneio liga campeonato ranking resultado chave inscricao", path: "/eventos?modo=organizing" },
+      { id: "area-comunicacao", label: "Comunicacao", detail: "WhatsApp, avisos e publicacao", keywords: "mensagem contato aviso template whatsapp notificar", path: buildPlaceAdminPath(targetPlaceId, "communication") },
+      { id: "area-relatorios", label: "Relatorios", detail: "Ocupacao, receita e indicadores", keywords: "dashboard indicador resumo analise relatorio", path: buildPlaceAdminPath(targetPlaceId, "reports") },
+      { id: "area-administracao", label: "Administracao", detail: "Regras, equipe e ajustes estruturais", keywords: "configuracao ajustes permissao colaborador equipe unidade", path: buildPlaceAdminPath(targetPlaceId, "settings") },
     ];
   }, [targetPlaceId]);
   const filteredWorkSearchItems = useMemo(() => {
-    const query = workSearch.trim().toLowerCase();
-    const areaItems = !query ? workSearchItems.slice(0, 6) : workSearchItems.filter((item) => `${item.label} ${item.detail}`.toLowerCase().includes(query)).slice(0, 6);
-    return query.length >= 2 ? [...workEntityResults, ...areaItems].slice(0, 10) : areaItems;
+    const query = workSearch.trim();
+    const areaItems = !query ? workSearchItems.slice(0, 6) : workSearchItems.filter((item) => workSearchMatches(item, query)).slice(0, 6);
+    const merged = query.length >= 2 ? [...workEntityResults, ...areaItems] : areaItems;
+    const seen = new Set<string>();
+    return merged
+      .filter((item) => {
+        if (seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      })
+      .slice(0, 10);
   }, [workEntityResults, workSearch, workSearchItems]);
   const quickCreateItems = useMemo(() => {
     if (!targetPlaceId) return [];
@@ -130,8 +164,9 @@ export function AppShell({
 
   useEffect(() => {
     const query = workSearch.trim();
-    const client = supabase;
-    if (!client || routeExperienceMode !== "work" || !targetPlaceId || query.length < 2) {
+    const client = supabase!;
+    const legacyDirectTableSearchEnabled = false;
+    if (!legacyDirectTableSearchEnabled || !client || routeExperienceMode !== "work" || !targetPlaceId || query.length < 2) {
       setWorkEntityResults([]);
       setWorkEntitySearchLoading(false);
       return undefined;
@@ -192,7 +227,7 @@ export function AppShell({
               id: `contact:${contact.id}`,
               source: "Cliente",
               label: contact.name || "Cliente",
-              detail: [contact.status, contact.interest, contact.phone || contact.email].filter(Boolean).join(" · "),
+              detail: [contact.status, contact.interest, contact.phone || contact.email].filter(Boolean).join(" - "),
               path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos"),
             });
           }
@@ -204,7 +239,7 @@ export function AppShell({
               id: `booking:${booking.id}`,
               source: "Reserva",
               label: booking.player_name || "Reserva",
-              detail: [dateLabel, booking.status, booking.phone].filter(Boolean).join(" · "),
+              detail: [dateLabel, booking.status, booking.phone].filter(Boolean).join(" - "),
               path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas"),
             });
           }
@@ -215,7 +250,7 @@ export function AppShell({
               id: `class:${academyClass.id}`,
               source: "Turma",
               label: academyClass.title || "Turma",
-              detail: [academyClass.coach_name, academyClass.level, academyClass.starts_at?.slice(0, 5)].filter(Boolean).join(" · "),
+              detail: [academyClass.coach_name, academyClass.level, academyClass.starts_at?.slice(0, 5)].filter(Boolean).join(" - "),
               path: buildPlaceAdminPath(targetPlaceId, "academy", "turmas"),
             });
           }
@@ -226,7 +261,7 @@ export function AppShell({
               id: `enrollment:${enrollment.id}`,
               source: "Aluno",
               label: enrollment.player_name || "Aluno",
-              detail: [enrollment.status, enrollment.phone].filter(Boolean).join(" · "),
+              detail: [enrollment.status, enrollment.phone].filter(Boolean).join(" - "),
               path: buildPlaceAdminPath(targetPlaceId, "academy", "alunos"),
             });
           }
@@ -238,7 +273,7 @@ export function AppShell({
               id: `payment:${payment.id}`,
               source: "Pagamento",
               label: payment.description || payment.target_type || "Pagamento",
-              detail: [amount, payment.status, payment.billing_period].filter(Boolean).join(" · "),
+              detail: [amount, payment.status, payment.billing_period].filter(Boolean).join(" - "),
               path: buildPlaceAdminPath(targetPlaceId, "finance", "recebiveis"),
             });
           }
@@ -256,6 +291,145 @@ export function AppShell({
       window.clearTimeout(timer);
     };
   }, [routeExperienceMode, targetPlaceId, workSearch]);
+
+  useEffect(() => {
+    const query = workSearch.trim();
+    if (routeExperienceMode !== "work" || !targetPlaceId || query.length < 2) {
+      setWorkEntityResults([]);
+      setWorkEntitySearchLoading(false);
+      return undefined;
+    }
+
+    let cancelled = false;
+    const normalizedQuery = normalizeWorkSearchText(query);
+    setWorkEntitySearchLoading(true);
+
+    const timer = window.setTimeout(() => {
+      void Promise.allSettled([
+        listPlaceCrmContacts(targetPlaceId).catch(() => []),
+        listPlaceBookings(targetPlaceId).catch(() => []),
+        listPlaceAcademyClasses(targetPlaceId).catch(() => []),
+        listPlaceAcademyEnrollments(targetPlaceId).catch(() => []),
+        listPlacePosProducts(targetPlaceId).catch(() => []),
+        loadDashboardData(user).catch(() => ({ organizing: [], participating: [] })),
+        loadMyLeagues().catch(() => []),
+      ])
+        .then((results) => {
+          if (cancelled) return;
+          const [contacts, bookings, classes, enrollments, products, tournaments, leagues] = results;
+          const items: WorkSearchItem[] = [];
+
+          if (contacts.status === "fulfilled") {
+            for (const contact of contacts.value
+              .filter((item) => workSearchMatches({ id: item.id, label: item.name, detail: [item.status, item.interest, item.phone, item.email].join(" ") }, normalizedQuery))
+              .slice(0, 4)) {
+              items.push({
+                id: `contact:${contact.id}`,
+                source: "Cliente",
+                label: contact.name || "Cliente",
+                detail: [contact.status, contact.interest, contact.phone || contact.email].filter(Boolean).join(" - "),
+                path: buildPlaceAdminPath(targetPlaceId, "clients", "clientes-ativos"),
+              });
+            }
+          }
+
+          if (bookings.status === "fulfilled") {
+            for (const booking of bookings.value
+              .filter((item) => workSearchMatches({ id: item.id, label: item.playerName, detail: [item.phone, item.courtName, item.status, item.notes, item.startsAt].join(" ") }, normalizedQuery))
+              .slice(0, 4)) {
+              const dateLabel = booking.startsAt ? new Date(booking.startsAt).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "";
+              items.push({
+                id: `booking:${booking.id}`,
+                source: "Reserva",
+                label: booking.playerName || "Reserva",
+                detail: [dateLabel, booking.courtName, booking.status, booking.phone].filter(Boolean).join(" - "),
+                path: buildPlaceAdminPath(targetPlaceId, "bookings", "reservas"),
+              });
+            }
+          }
+
+          if (classes.status === "fulfilled") {
+            for (const academyClass of classes.value
+              .filter((item) => workSearchMatches({ id: item.id, label: item.title, detail: [item.coachName, item.level, item.startsAt].join(" ") }, normalizedQuery))
+              .slice(0, 4)) {
+              items.push({
+                id: `class:${academyClass.id}`,
+                source: "Turma",
+                label: academyClass.title || "Turma",
+                detail: [academyClass.coachName, academyClass.level, academyClass.startsAt?.slice(0, 5)].filter(Boolean).join(" - "),
+                path: buildPlaceAdminPath(targetPlaceId, "academy", "turmas"),
+              });
+            }
+          }
+
+          if (enrollments.status === "fulfilled") {
+            for (const enrollment of enrollments.value
+              .filter((item) => workSearchMatches({ id: item.id, label: item.playerName, detail: [item.phone, item.status, item.notes].join(" ") }, normalizedQuery))
+              .slice(0, 4)) {
+              items.push({
+                id: `enrollment:${enrollment.id}`,
+                source: "Aluno",
+                label: enrollment.playerName || "Aluno",
+                detail: [enrollment.status, enrollment.phone].filter(Boolean).join(" - "),
+                path: buildPlaceAdminPath(targetPlaceId, "academy", "alunos"),
+              });
+            }
+          }
+
+          if (products.status === "fulfilled") {
+            for (const product of products.value
+              .filter((item) => workSearchMatches({ id: item.id, label: item.name, detail: [item.category, String(item.stockQuantity)].join(" ") }, normalizedQuery))
+              .slice(0, 3)) {
+              items.push({
+                id: `product:${product.id}`,
+                source: "Produto",
+                label: product.name || "Produto",
+                detail: [product.category, `${product.stockQuantity} em estoque`].filter(Boolean).join(" - "),
+                path: buildPlaceAdminPath(targetPlaceId, "canteen", "produtos"),
+              });
+            }
+          }
+
+          if (tournaments.status === "fulfilled") {
+            for (const tournament of tournaments.value.organizing
+              .filter((item) => workSearchMatches({ id: item.id, label: item.name, detail: [item.status, item.city, item.state].join(" ") }, normalizedQuery))
+              .slice(0, 3)) {
+              items.push({
+                id: `tournament:${tournament.id}`,
+                source: "Torneio",
+                label: tournament.name || "Torneio",
+              detail: [tournament.status, tournament.city, tournament.state].filter(Boolean).join(" - "),
+                path: `/eventos/${tournament.id}/organizacao`,
+              });
+            }
+          }
+
+          if (leagues.status === "fulfilled") {
+            for (const league of leagues.value
+              .filter((item) => workSearchMatches({ id: item.id, label: item.name, detail: [item.role, item.status, item.leagueType].join(" ") }, normalizedQuery))
+              .slice(0, 3)) {
+              items.push({
+                id: `league:${league.id}`,
+                source: "Liga",
+                label: league.name || "Liga",
+              detail: [league.role, league.status, league.leagueType].filter(Boolean).join(" - "),
+                path: `/eventos/ligas/${league.id}`,
+              });
+            }
+          }
+
+          setWorkEntityResults(items.slice(0, 8));
+        })
+        .finally(() => {
+          if (!cancelled) setWorkEntitySearchLoading(false);
+        });
+    }, 260);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [routeExperienceMode, targetPlaceId, user, workSearch]);
 
   useEffect(() => {
     if (!workSearchOpen) return undefined;
@@ -339,7 +513,7 @@ export function AppShell({
                         filteredWorkSearchItems.map((item) => (
                           <button key={`work-search:${item.id}`} type="button" onMouseDown={(event) => event.preventDefault()} onClick={() => navigateAndClose(item.path)}>
                             <strong>{item.label}</strong>
-                            <span>{item.source ? `${item.source} · ${item.detail}` : item.detail}</span>
+                            <span>{item.source ? `${item.source} - ${item.detail}` : item.detail}</span>
                           </button>
                         ))
                       ) : (

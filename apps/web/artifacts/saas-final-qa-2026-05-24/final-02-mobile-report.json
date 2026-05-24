@@ -1,0 +1,180 @@
+[
+  {
+    "name": "manager-home",
+    "width": 390,
+    "url": "http://127.0.0.1:5175/#/gestao",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-home-390.png",
+    "errors": [],
+    "textSample": "Carregando...",
+    "metrics": {
+      "path": "#/gestao",
+      "docW": 390,
+      "clientW": 390,
+      "title": "Carregando...",
+      "bottomNav": [],
+      "hasDeepAdminWords": false
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-agenda",
+    "width": 390,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-agenda-390.png",
+    "errors": [],
+    "textSample": "EA\n\nEscalao Admin\n\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "docW": 390,
+      "clientW": 390,
+      "title": "",
+      "bottomNav": [
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "hasDeepAdminWords": false
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-clientes",
+    "width": 390,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-clientes-390.png",
+    "errors": [],
+    "textSample": "EA\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nAgenda\nClientes\nFinanceiro\nMais",
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "docW": 510,
+      "clientW": 390,
+      "title": "",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "hasDeepAdminWords": false
+    },
+    "overflow": true
+  },
+  {
+    "name": "manager-financeiro",
+    "width": 390,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-financeiro-390.png",
+    "errors": [],
+    "textSample": "EA\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 13.905,00\n91 recebivel(is) ",
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+      "docW": 510,
+      "clientW": 390,
+      "title": "Receber",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "hasDeepAdminWords": false
+    },
+    "overflow": true
+  },
+  {
+    "name": "manager-home",
+    "width": 430,
+    "url": "http://127.0.0.1:5175/#/gestao",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-home-430.png",
+    "errors": [],
+    "textSample": "EA\n\nEscalao Admin\n\nCarregando central de gestao...\n\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+    "metrics": {
+      "path": "#/gestao",
+      "docW": 430,
+      "clientW": 430,
+      "title": "",
+      "bottomNav": [
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "hasDeepAdminWords": false
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-agenda",
+    "width": 430,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-agenda-430.png",
+    "errors": [],
+    "textSample": "EA\n\nEscalao Admin\n\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "docW": 430,
+      "clientW": 430,
+      "title": "",
+      "bottomNav": [
+        "Inicio",
+        "Jogar",
+        "Competir",
+        "Rotina",
+        "Perfil"
+      ],
+      "hasDeepAdminWords": false
+    },
+    "overflow": false
+  },
+  {
+    "name": "manager-clientes",
+    "width": 430,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-clientes-430.png",
+    "errors": [],
+    "textSample": "EA\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCarregando area de trabalho\n\nPreparando agenda, aulas, clientes, financeiro e operacao do local.\n\nHoje\nAgenda\nClientes\nFinanceiro\nMais",
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "docW": 510,
+      "clientW": 430,
+      "title": "",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "hasDeepAdminWords": false
+    },
+    "overflow": true
+  },
+  {
+    "name": "manager-financeiro",
+    "width": 430,
+    "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+    "file": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-final-qa-2026-05-24\\final-02-manager-financeiro-430.png",
+    "errors": [],
+    "textSample": "EA\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nRECEITA\nReceber\n\nVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.\n\nLembrar lista atual\nEM ABERTO\nR$ 25.566,00\n118 recebivel(is)",
+    "metrics": {
+      "path": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis&filtro=vencidos",
+      "docW": 510,
+      "clientW": 430,
+      "title": "Receber",
+      "bottomNav": [
+        "Hoje",
+        "Agenda",
+        "Clientes",
+        "Financeiro",
+        "Mais"
+      ],
+      "hasDeepAdminWords": false
+    },
+    "overflow": true
+  }
+]

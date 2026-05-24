@@ -1,0 +1,42 @@
+{
+  "consoleErrors": [],
+  "report": [
+    {
+      "name": "clientes-v3b",
+      "metrics": {
+        "scrollW": 1600,
+        "innerW": 1600,
+        "overflowX": false,
+        "whiteButtons": [],
+        "h1": null,
+        "selectedDrawer": false
+      }
+    },
+    {
+      "name": "academia-alunos-v3b",
+      "metrics": {
+        "scrollW": 1600,
+        "innerW": 1600,
+        "overflowX": false,
+        "whiteButtons": [
+          "Ver mais alunos"
+        ],
+        "h1": null,
+        "selectedDrawer": false
+      }
+    },
+    {
+      "name": "agenda-v3b",
+      "metrics": {
+        "scrollW": 1600,
+        "innerW": 1600,
+        "overflowX": false,
+        "whiteButtons": [
+          "x"
+        ],
+        "h1": null,
+        "selectedDrawer": false
+      }
+    }
+  ]
+}

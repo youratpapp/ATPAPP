@@ -1,0 +1,16 @@
+{
+  "errors": [],
+  "firstLink": "",
+  "links": [],
+  "detailChecks": {
+    "hasPhase": false,
+    "hasPrimaryCta": false,
+    "snippet": ""
+  },
+  "leagueLinks": [],
+  "leagueChecks": {
+    "hasRound": false,
+    "hasOwner": false,
+    "snippet": ""
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "errors": [],
+  "base": "http://127.0.0.1:5180",
+  "placeId": "36b29d6c-fabb-475a-a059-47d5ece74a09",
+  "competition": {
+    "url": "http://127.0.0.1:5180/#/auth?next=%2Feventos%3Fmodo%3Dorganizing",
+    "tabCount": 0,
+    "tabsBefore": [],
+    "tabsAfter": [],
+    "text": "Sua jornada no tenis amador comeca aqui.\n\nTorneios, ligas, reservas e ranking em uma experiencia simples para jogar mais.\n\nTorneios\nEncontre disputas no seu nivel.\nLigas\nAcompanhe rodadas e resultados.\nRanking\nVeja sua evolucao em quadra.\nEntrar na ATP\n\nTorneios, ligas e ranking para tenistas amadores.\n\nEntre para continuar na area solicitada.\n\nContinuar com Google\nOU ENTRE COM E-MAIL\nE-MAIL\nSENHA\nEntrar\nCriar conta"
+  },
+  "communication": {
+    "url": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Fcomunicacao",
+    "hasTemplates": false,
+    "text": "Sua jornada no tenis amador comeca aqui.\n\nTorneios, ligas, reservas e ranking em uma experiencia simples para jogar mais.\n\nTorneios\nEncontre disputas no seu nivel.\nLigas\nAcompanhe rodadas e resultados.\nRanking\nVeja sua evolucao em quadra.\nEntrar na ATP\n\nTorneios, ligas e ranking para tenistas amadores.\n\nEntre para continuar na area de trabalho.\n\nContinuar com Google\nOU ENTRE COM E-MAIL\nE-MAIL\nSENHA\nEntrar\nCriar conta"
+  },
+  "reports": {
+    "url": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Frelatorios",
+    "hasMvpReports": false,
+    "text": "Sua jornada no tenis amador comeca aqui.\n\nTorneios, ligas, reservas e ranking em uma experiencia simples para jogar mais.\n\nTorneios\nEncontre disputas no seu nivel.\nLigas\nAcompanhe rodadas e resultados.\nRanking\nVeja sua evolucao em quadra.\nEntrar na ATP\n\nTorneios, ligas e ranking para tenistas amadores.\n\nEntre para continuar na area de trabalho.\n\nContinuar com Google\nOU ENTRE COM E-MAIL\nE-MAIL\nSENHA\nEntrar\nCriar conta"
+  }
+}

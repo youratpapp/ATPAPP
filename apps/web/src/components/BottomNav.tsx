@@ -189,6 +189,13 @@ function placePath(access: WorkspaceAccessSummary, module: Parameters<typeof bui
   return placeId ? buildPlaceAdminPath(placeId, module, view) : "/gestao";
 }
 
+function pathWithParam(path: string, key: string, value: string): string {
+  const [base, query = ""] = path.split("?");
+  const params = new URLSearchParams(query);
+  params.set(key, value);
+  return `${base}?${params.toString()}`;
+}
+
 function placeModulesForAccess(access: WorkspaceAccessSummary, activePlaceId?: string | null) {
   if (activePlaceId && access.placeModulesById[activePlaceId]) return access.placeModulesById[activePlaceId];
   return access.primaryPlaceModules;
@@ -264,18 +271,21 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
 
   if (access.primaryWorkRole === "frontdesk") {
     const frontdeskItems = [todayItem];
-    if (hasPlaceModule(access, "bookings", activePlaceId)) frontdeskItems.push(workItem(placePath(access, "bookings", "reservas", activePlaceId), "Reservas", CalendarIcon, undefined, false, "operation", "mobile"));
+    if (hasPlaceModule(access, "bookings", activePlaceId)) {
+      frontdeskItems.push(workItem(placePath(access, "bookings", "calendario", activePlaceId), "Agenda", CalendarIcon, undefined, false, "operation", "mobile"));
+      frontdeskItems.push(workItem(placePath(access, "bookings", "reservas", activePlaceId), "Reservas", CalendarIcon, undefined, false, "operation", "mobile"));
+    }
     if (hasPlaceModule(access, "clients", activePlaceId)) frontdeskItems.push(workItem(placePath(access, "clients", "clientes-ativos", activePlaceId), "Clientes", PersonIcon, undefined, false, "people", "mobile"));
-    if (hasPlaceModule(access, "academy", activePlaceId)) frontdeskItems.push(workItem(placePath(access, "academy", "pendencias", activePlaceId), "Aulas", TrophyIcon, undefined, false, "operation", "mobile"));
     return [...frontdeskItems.slice(0, 4), moreItem()];
   }
 
   if (access.primaryWorkRole === "finance") {
     if (!hasPlaceModule(access, "finance", activePlaceId)) return [todayItem, workProfileItem()];
+    const receivablesPath = placePath(access, "finance", "recebiveis", activePlaceId);
     return [
-      workItem(placePath(access, "finance", "recebiveis", activePlaceId), "Receber", ManagementIcon, undefined, false, "revenue", "mobile"),
+      workItem(receivablesPath, "Receber", ManagementIcon, undefined, false, "revenue", "mobile"),
+      workItem(pathWithParam(receivablesPath, "filtro", "vencidos"), "Vencidos", CalendarIcon, undefined, false, "revenue", "mobile"),
       workItem(placePath(access, "finance", "pagos", activePlaceId), "Pagos", CalendarIcon, undefined, false, "revenue", "mobile"),
-      workItem(placePath(access, "finance", "despesas", activePlaceId), "Despesas", TrophyIcon, undefined, false, "revenue", "mobile"),
       workItem(placePath(access, "finance", "resumo", activePlaceId), "Resumo", ManagementIcon, undefined, false, "revenue", "mobile"),
       workProfileItem(),
     ];
@@ -312,7 +322,7 @@ function buildMobileWorkItems(access: WorkspaceAccessSummary, workEntryPath: str
 
   const managerItems = [todayItem];
   if (hasPlaceModule(access, "bookings", activePlaceId)) managerItems.push(workItem(placePath(access, "bookings", "calendario", activePlaceId), "Agenda", CalendarIcon, undefined, false, "operation", "mobile"));
-  if (hasPlaceModule(access, "academy", activePlaceId)) managerItems.push(workItem(placePath(access, "academy", "hoje", activePlaceId), "Aulas", TrophyIcon, undefined, false, "operation", "mobile"));
+  if (hasPlaceModule(access, "clients", activePlaceId)) managerItems.push(workItem(placePath(access, "clients", "clientes-ativos", activePlaceId), "Clientes", PersonIcon, undefined, false, "people", "mobile"));
   if (hasPlaceModule(access, "finance", activePlaceId)) managerItems.push(workItem(placePath(access, "finance", "recebiveis", activePlaceId), "Financeiro", ManagementIcon, undefined, false, "revenue", "mobile"));
   return [...managerItems.slice(0, 4), { ...moreItem(), Icon: PersonIcon }];
 }

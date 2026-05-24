@@ -43,7 +43,7 @@ export function FinanceWorkspaceShell({ activeView, children, onViewChange }: Fi
       labels={FINANCE_VIEW_LABELS}
       onViewChange={onViewChange}
       title={FINANCE_VIEW_TITLES[activeView]}
-      views={[activeView]}
+      views={["receivables", "paid", "expenses", "packages", "overview"]}
     >
       {children}
     </PlaceWorkspaceShell>

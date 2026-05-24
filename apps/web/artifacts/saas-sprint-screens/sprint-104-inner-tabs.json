@@ -1,0 +1,182 @@
+[
+  {
+    "name": "agenda-semana",
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": [
+        "Agenda"
+      ],
+      "tabs": [
+        {
+          "text": "Dia",
+          "active": false
+        },
+        {
+          "text": "Semana",
+          "active": true
+        },
+        {
+          "text": "Lista",
+          "active": false
+        },
+        {
+          "text": "Remarcacoes",
+          "active": false
+        },
+        {
+          "text": "Canceladas",
+          "active": false
+        },
+        {
+          "text": "Conflitos",
+          "active": false
+        }
+      ],
+      "drawer": true,
+      "modal": false,
+      "overflow": false
+    }
+  },
+  {
+    "name": "agenda-lista",
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": [
+        "Agenda"
+      ],
+      "tabs": [
+        {
+          "text": "Dia",
+          "active": false
+        },
+        {
+          "text": "Semana",
+          "active": false
+        },
+        {
+          "text": "Lista",
+          "active": true
+        },
+        {
+          "text": "Remarcacoes",
+          "active": false
+        },
+        {
+          "text": "Canceladas",
+          "active": false
+        },
+        {
+          "text": "Conflitos",
+          "active": false
+        }
+      ],
+      "drawer": false,
+      "modal": false,
+      "overflow": false
+    }
+  },
+  {
+    "name": "academia-turmas",
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "title": [
+        "Turmas",
+        "Criar turma"
+      ],
+      "tabs": [
+        {
+          "text": "Hoje",
+          "active": false
+        },
+        {
+          "text": "Agenda",
+          "active": false
+        },
+        {
+          "text": "Turmas",
+          "active": true
+        },
+        {
+          "text": "Alunos",
+          "active": false
+        },
+        {
+          "text": "Pendencias",
+          "active": false
+        }
+      ],
+      "drawer": true,
+      "modal": false,
+      "overflow": false
+    }
+  },
+  {
+    "name": "academia-turmas-detail",
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "title": [
+        "Turmas",
+        "Criar turma"
+      ],
+      "tabs": [
+        {
+          "text": "Hoje",
+          "active": false
+        },
+        {
+          "text": "Agenda",
+          "active": false
+        },
+        {
+          "text": "Turmas",
+          "active": true
+        },
+        {
+          "text": "Alunos",
+          "active": false
+        },
+        {
+          "text": "Pendencias",
+          "active": false
+        }
+      ],
+      "drawer": true,
+      "modal": false,
+      "overflow": false
+    }
+  },
+  {
+    "name": "academia-alunos",
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "title": [
+        "Alunos"
+      ],
+      "tabs": [
+        {
+          "text": "Hoje",
+          "active": false
+        },
+        {
+          "text": "Agenda",
+          "active": false
+        },
+        {
+          "text": "Turmas",
+          "active": false
+        },
+        {
+          "text": "Alunos",
+          "active": true
+        },
+        {
+          "text": "Pendencias",
+          "active": false
+        }
+      ],
+      "drawer": false,
+      "modal": false,
+      "overflow": false
+    }
+  }
+]

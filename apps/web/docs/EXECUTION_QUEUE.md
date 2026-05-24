@@ -1,82 +1,67 @@
 # Execution Queue
 
-Status: queue de implementacao ativa definida
-Data: 2026-05-22
+Status: fila ativa consolidada - concluida
+Data: 2026-05-24
 
-## Situacao atual
+## Fonte Ativa
 
-A queue completa de implantacao esta definida em `SAAS_IMPLEMENTATION_QUEUE_COMPLETA.md`.
+A fila ativa agora e:
 
-Regra:
-Executar em ordem, sem pedir autorizacao entre sprints. Se houver bloqueio tecnico nao previsto, corrigir o menor necessario, validar e continuar.
+`SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md`
 
-## Queue ativa agora
-
-### DOC-00 - Validar base SaaS
-
-Objetivo:
-Revisar os documentos ativos e confirmar que a direcao de produto esta correta.
-
-Arquivos:
-- `SAAS_MASTER_BLUEPRINT_COMPLETO.md`
-- `SAAS_EMPRESARIAL_ORGANIZACAO_MANUAL.md`
-- `APP_FUNCOES_EXISTENTES_MAPA.md`
-- `PERSONAS_OPERACIONAIS_E_FUNCOES.md`
-- `MATRIZ_PERSONAS_FUNCOES.md`
-- `EXPANSAO_FUNCIONAL_SAAS.md`
-- `NOVA_ARQUITETURA_NAVEGACAO_SAAS.md`
-- `FLUXOS_TRABALHO_POR_PERSONA.md`
-- `DIAGNOSTICO_ATUAL_SAAS.md`
-- `PLANO_REORGANIZACAO_SAAS_FASES.md`
-
-Criterio de aceite:
-O produto alvo esta claro, separado entre SaaS web, mobile trabalho e Player App.
-
-### DOC-01 - Revisar decisoes fechadas do blueprint
-
-Objetivo:
-Revisar as decisoes ja fechadas no `SAAS_MASTER_BLUEPRINT_COMPLETO.md` antes da primeira sprint de implementacao.
-
-Decisoes fechadas:
-- Menu de relacionamento: `Clientes`.
-- Entidade conceitual interna: `Pessoa`.
-- Menu de calendario: `Agenda`.
-- Player App: menu `Rotina`, titulo `Minha rotina`.
-- Seletor de unidade/local entra na primeira fase web.
-- Implementar web SaaS antes do mobile trabalho.
-- Pagamento provisorio: modal padrao com botao `Pagar`/`Marcar como pago` que converte como pago via stub.
-- WhatsApp: abrir template profissional e registrar interacao simples quando houver estrutura.
-- Cliente 360: cadastro progressivo, apenas nome + telefone/e-mail + tipo inicial como minimo.
-- Relatorios MVP: cards e listas filtradas primeiro; dashboards avancados depois.
-
-Criterio de aceite:
-Nao restar duvida de nomenclatura, dominio e primeira fase pratica.
-
-### DOC-02 - Validar templates e Cliente 360
-
-Objetivo:
-Revisar a secao 16 do blueprint antes da implementacao para confirmar que os templates e o Cliente 360 estao no tom correto.
-
-Criterio de aceite:
-Cadastro nao fica pesado, WhatsApp cobre os pontos operacionais principais e relatorios nao roubam foco dos fluxos centrais.
-
-## Proxima queue candidata, apos validacao
-
-### FASE-01 - Shell SaaS web e navegacao por dominios
-
-Objetivo:
-Criar a estrutura web de Trabalho como SaaS profissional, com topbar, unidade ativa, sidebar por dominios e rotas antigas preservadas.
-
-Nao iniciar antes de:
-- validar Fase 0;
-- definir labels finais de dominio;
-- confirmar o tratamento de multiunidade/local ativo;
-- confirmar quais dados entram no `Cliente 360` da primeira entrega.
+Ela consolida apenas o que falta para fechar o SaaS apos as sprints de implementacao e compactacao visual.
 
 ## Regra
 
-Nao usar queues antigas em `Legado/`.
+Executar em ordem, sem pedir autorizacao entre itens.
 
-## Queue operacional
+Se houver bloqueio tecnico nao previsto:
 
-Ver `SAAS_IMPLEMENTATION_QUEUE_COMPLETA.md`.
+1. corrigir o menor necessario;
+2. validar;
+3. documentar;
+4. continuar para o proximo item.
+
+## Documentos De Apoio Permitidos
+
+- `SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md` como fila ativa;
+- `SAAS_IMPLEMENTATION_QUEUE_COMPLETA.md` como historico;
+- `SAAS_WEB_VISUAL_AUDIT_COMPACTACAO_2026_05_23.md` como contrato visual compacto;
+- codigo real;
+- screenshots atuais.
+
+## Documentos Que Nao Devem Guiar Decisao
+
+- arquivos em `docs/Legado/`;
+- queues antigas rejeitadas;
+- qualquer documento que contradiga a decisao atual: SaaS web compacto, operacional, com lista/tabela/calendario + detalhe lateral.
+
+## Resultado Atual
+
+Fila `SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md` executada ate `FINAL-12` em 2026-05-24.
+
+1. `FINAL-01` - concluido - QA de regressao visual web completo.
+2. `FINAL-02` - concluido - Mobile Trabalho por papel.
+3. `FINAL-03` - concluido - Reserva ponta a ponta.
+4. `FINAL-04` - concluido - Cliente 360 completo.
+5. `FINAL-05` - concluido - Academia sem repeticao e sem mini-dashboard em toda aba.
+6. `FINAL-06` - concluido - Financeiro fechado para MVP.
+7. `FINAL-07` - concluido - Busca global e criar rapido.
+8. `FINAL-08` - concluido - Competicoes Trabalho e Player.
+9. `FINAL-09` - concluido - Comunicacao e WhatsApp templates.
+10. `FINAL-10` - concluido - Relatorios MVP.
+11. `FINAL-11` - concluido - QA ponta a ponta com dados reais.
+12. `FINAL-12` - concluido - Limpeza de documentacao e estado final.
+
+## Evidencias Principais
+
+- Pasta de QA: `artifacts/saas-final-qa-2026-05-24/`.
+- Relatorio transversal final: `artifacts/saas-final-qa-2026-05-24/final-11-e2e-final-report.json`.
+- QA por papeis: `artifacts/saas-sprint-screens/sprint-90-role-audit-430.json` e `artifacts/saas-sprint-screens/sprint-91-role-audit-deep.json`.
+- Build final validado com `npm.cmd run build`.
+
+## Pendencias Residuais Nao Bloqueantes
+
+- Transformar o QA por papeis ja executado em rotina reaproveitavel de CI/smoke local.
+- Evoluir Relatorios e Comunicacao depois apenas para automacoes, historico profundo e graficos avancados.
+- Polimento textual global de strings antigas com acentos/mojibake fora das telas tocadas nesta fila.

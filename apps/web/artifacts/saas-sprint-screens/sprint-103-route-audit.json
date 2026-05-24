@@ -1,0 +1,1149 @@
+[
+  {
+    "name": "inicio",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/dashboard",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "title": [
+        "Trabalho Hoje"
+      ],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [],
+      "buttons": 36,
+      "inputs": 2,
+      "cards": 1,
+      "drawers": 0,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 918.96875,
+        "b": 1010.890625,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1010.890625,
+          "b": 1010.890625,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1010.890625,
+          "b": 1010.890625,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 882.96875,
+          "b": 986.890625,
+          "r": 1504,
+          "text": "Central operacionalTrabalho HojePendencias, agenda e acoes importantes da sua operacao.O que precisa de atencao agora?Resolva reservas, pagamentos, aulas e comp"
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 856.96875,
+          "b": 978.890625,
+          "r": 1552,
+          "text": "Central operacionalTrabalho HojePendencias, agenda e acoes importantes da sua operacao.O que precisa de atencao agora?Resolva reservas, pagamentos, aulas e comp"
+        },
+        {
+          "className": "work-home-console",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1180,
+          "h": 832.96875,
+          "b": 966.890625,
+          "r": 1464,
+          "text": "Central operacionalTrabalho HojePendencias, agenda e acoes importantes da sua operacao.O que precisa de atencao agora?Resolva reservas, pagamentos, aulas e comp"
+        },
+        {
+          "className": "work-home-grid",
+          "x": 284,
+          "y": 502.703125,
+          "w": 1180,
+          "h": 464.1875,
+          "b": 966.890625,
+          "r": 1464,
+          "text": "Agenda em andamentoAbrir agendaEncaixe pendenteIgor Yamamoto | 2026-05-16Abrir aulasEncaixe pendenteOlivia Esteves | 2026-05-16Abrir aulasEncaixe pendenteJoao F"
+        },
+        {
+          "className": "work-home-card work-home-card--agenda",
+          "x": 284,
+          "y": 502.703125,
+          "w": 469.109375,
+          "h": 464.1875,
+          "b": 966.890625,
+          "r": 753.109375,
+          "text": "Agenda em andamentoAbrir agendaEncaixe pendenteIgor Yamamoto | 2026-05-16Abrir aulasEncaixe pendenteOlivia Esteves | 2026-05-16Abrir aulasEncaixe pendenteJoao F"
+        },
+        {
+          "className": "work-home-card",
+          "x": 763.109375,
+          "y": 502.703125,
+          "w": 383.828125,
+          "h": 464.1875,
+          "b": 966.890625,
+          "r": 1146.9375,
+          "text": "Pendencias criticasEncaixe pendenteIgor Yamamoto | 2026-05-16Abrir aulasEncaixe pendenteOlivia Esteves | 2026-05-16Abrir aulasEncaixe pendenteJoao Farias | 2026"
+        }
+      ]
+    }
+  },
+  {
+    "name": "agenda",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/bookings",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": [
+        "Agenda"
+      ],
+      "nav": [
+        "Dia",
+        "Semana",
+        "Lista",
+        "Remarcacoes",
+        "Canceladas",
+        "Conflitos",
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [
+        "Dia",
+        "Semana",
+        "Lista",
+        "Remarcacoes",
+        "Canceladas",
+        "Conflitos"
+      ],
+      "buttons": 128,
+      "inputs": 9,
+      "cards": 3,
+      "drawers": 1,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 1122.609375,
+        "b": 1214.53125,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1214.53125,
+          "b": 1214.53125,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1214.53125,
+          "b": 1214.53125,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 1086.609375,
+          "b": 1190.53125,
+          "r": 1504,
+          "text": "OPERACAOAgendaReservas, aulas, bloqueios e uso das quadras em um calendario unico.Nova reservaDiaSemanaListaRemarcacoesCanceladasConflitosTudoReservasBloqueiosT"
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1308,
+          "h": 1060.609375,
+          "b": 1182.53125,
+          "r": 1580,
+          "text": "OPERACAOAgendaReservas, aulas, bloqueios e uso das quadras em um calendario unico.Nova reservaDiaSemanaListaRemarcacoesCanceladasConflitosTudoReservasBloqueiosT"
+        },
+        {
+          "className": "place-booking-panel",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1284,
+          "h": 1036.609375,
+          "b": 1170.53125,
+          "r": 1568,
+          "text": "OPERACAOAgendaReservas, aulas, bloqueios e uso das quadras em um calendario unico.Nova reservaDiaSemanaListaRemarcacoesCanceladasConflitosTudoReservasBloqueiosT"
+        },
+        {
+          "className": "court-calendar-panel court-calendar-panel--saas",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1284,
+          "h": 914.609375,
+          "b": 1048.53125,
+          "r": 1568,
+          "text": "OPERACAOAgendaReservas, aulas, bloqueios e uso das quadras em um calendario unico.Nova reservaDiaSemanaListaRemarcacoesCanceladasConflitosTudoReservasBloqueiosT"
+        },
+        {
+          "className": "court-calendar-workbench",
+          "x": 284,
+          "y": 366.53125,
+          "w": 1284,
+          "h": 682,
+          "b": 1048.53125,
+          "r": 1568,
+          "text": "Hora06:0007:0008:0009:0010:0011:0012:0013:0014:0015:0016:0017:0018:0019:0020:0021:0022:00Quadra 1Pedro VieiraPendenteLivreLivreDaniela IshikawaPendenteLivreLivr"
+        },
+        {
+          "className": "court-calendar-board",
+          "x": 284,
+          "y": 366.53125,
+          "w": 944,
+          "h": 682,
+          "b": 1048.53125,
+          "r": 1228,
+          "text": "Hora06:0007:0008:0009:0010:0011:0012:0013:0014:0015:0016:0017:0018:0019:0020:0021:0022:00Quadra 1Pedro VieiraPendenteLivreLivreDaniela IshikawaPendenteLivreLivr"
+        }
+      ]
+    }
+  },
+  {
+    "name": "clientes",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/clients",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "title": [
+        "Clientes"
+      ],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [
+        "Clientes ativos",
+        "Leads",
+        "Atendimento"
+      ],
+      "buttons": 88,
+      "inputs": 5,
+      "cards": 3,
+      "drawers": 1,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 1144.375,
+        "b": 1236.296875,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1236.296875,
+          "b": 1236.296875,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1236.296875,
+          "b": 1236.296875,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 1108.375,
+          "b": 1212.296875,
+          "r": 1504,
+          "text": "Clientes ativosAlunos, socios e contatos convertidos separados dos leads.Clientes ativosLeadsAtendimentoGerenciamentoClientesLeads e clientes ativos ficam separ"
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 1082.375,
+          "b": 1204.296875,
+          "r": 1552,
+          "text": "Clientes ativosAlunos, socios e contatos convertidos separados dos leads.Clientes ativosLeadsAtendimentoGerenciamentoClientesLeads e clientes ativos ficam separ"
+        },
+        {
+          "className": "place-booking-panel",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1256,
+          "h": 1058.375,
+          "b": 1192.296875,
+          "r": 1540,
+          "text": "Clientes ativosAlunos, socios e contatos convertidos separados dos leads.Clientes ativosLeadsAtendimentoGerenciamentoClientesLeads e clientes ativos ficam separ"
+        },
+        {
+          "className": "place-workspace clients-workspace",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1256,
+          "h": 1058.375,
+          "b": 1192.296875,
+          "r": 1540,
+          "text": "Clientes ativosAlunos, socios e contatos convertidos separados dos leads.Clientes ativosLeadsAtendimentoGerenciamentoClientesLeads e clientes ativos ficam separ"
+        },
+        {
+          "className": "clients-360-workspace",
+          "x": 297,
+          "y": 206.921875,
+          "w": 1230,
+          "h": 972.375,
+          "b": 1179.296875,
+          "r": 1527,
+          "text": "GerenciamentoClientesLeads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.Novo clienteTodos os tiposAlunosSociosCRMAtivosTodos65 "
+        },
+        {
+          "className": "clients-360-layout",
+          "x": 297,
+          "y": 391.296875,
+          "w": 1230,
+          "h": 788,
+          "b": 1179.296875,
+          "r": 1527,
+          "text": "NomeStatusCategoriaContatoProximo passoAGAna GomesAtivoAluno + Socio Performance+55 67 990000137AulasAQAna QueirozAtivoAluno + Socio Performance+55 67 990005617"
+        }
+      ]
+    }
+  },
+  {
+    "name": "academia",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/academy",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "title": [],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [
+        "Hoje",
+        "Agenda",
+        "Turmas",
+        "Alunos",
+        "Pendencias"
+      ],
+      "buttons": 28,
+      "inputs": 2,
+      "cards": 2,
+      "drawers": 0,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 1268.9375,
+        "b": 1360.859375,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1360.859375,
+          "b": 1360.859375,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1360.859375,
+          "b": 1360.859375,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 1232.9375,
+          "b": 1336.859375,
+          "r": 1504,
+          "text": "Aulas do diaAulas do dia, alunos, avisos previos e reposicoes imediatas.HojeAgendaTurmasAlunosPendenciasAcademiaAulas do diaRotina operacional com aulas, alunos"
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 1206.9375,
+          "b": 1328.859375,
+          "r": 1552,
+          "text": "Aulas do diaAulas do dia, alunos, avisos previos e reposicoes imediatas.HojeAgendaTurmasAlunosPendenciasAcademiaAulas do diaRotina operacional com aulas, alunos"
+        },
+        {
+          "className": "place-booking-panel academy-panel",
+          "x": 284,
+          "y": 141.921875,
+          "w": 1256,
+          "h": 1174.9375,
+          "b": 1316.859375,
+          "r": 1540,
+          "text": "Aulas do diaAulas do dia, alunos, avisos previos e reposicoes imediatas.HojeAgendaTurmasAlunosPendenciasAcademiaAulas do diaRotina operacional com aulas, alunos"
+        },
+        {
+          "className": "place-workspace academy-workspace",
+          "x": 297,
+          "y": 154.921875,
+          "w": 1230,
+          "h": 1148.9375,
+          "b": 1303.859375,
+          "r": 1527,
+          "text": "Aulas do diaAulas do dia, alunos, avisos previos e reposicoes imediatas.HojeAgendaTurmasAlunosPendenciasAcademiaAulas do diaRotina operacional com aulas, alunos"
+        },
+        {
+          "className": "academy-day-console",
+          "x": 310,
+          "y": 237.921875,
+          "w": 1204,
+          "h": 1052.9375,
+          "b": 1290.859375,
+          "r": 1514,
+          "text": "AcademiaAulas do diaRotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica.Grade e turmasNova turmaAulas hoje4Ordenadas por horario"
+        },
+        {
+          "className": "academy-day-console__body",
+          "x": 325,
+          "y": 485.859375,
+          "w": 1174,
+          "h": 790,
+          "b": 1275.859375,
+          "r": 1499,
+          "text": "HorarioTurmaProfessorQuadraAlunosStatusAcoes06:30 - 07:30Duplas Competitivo 1Renato SiqueiraQuadra 64/4Em agendaDetalhar12:00 - 13:00Adulto Iniciante 2Renato Si"
+        }
+      ]
+    }
+  },
+  {
+    "name": "financeiro",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/finance",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis",
+      "title": [
+        "Receber"
+      ],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [
+        "Recebiveis",
+        "Pagos",
+        "Despesas",
+        "Planos",
+        "Resumo",
+        "Todos118",
+        "Vencidos118",
+        "Hoje0",
+        "Aulas59",
+        "Planos59"
+      ],
+      "buttons": 146,
+      "inputs": 3,
+      "cards": 2,
+      "drawers": 1,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 1084.578125,
+        "b": 1176.5,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1176.5,
+          "b": 1176.5,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1176.5,
+          "b": 1176.5,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 1048.578125,
+          "b": 1152.5,
+          "r": 1504,
+          "text": "ReceberQuem cobrar agora, vencidos, lembretes e baixas manuais.RecebiveisPagosDespesasPlanosResumoReceitaReceberVencidos, recebiveis de hoje, lembretes e baixa "
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 1022.578125,
+          "b": 1144.5,
+          "r": 1552,
+          "text": "ReceberQuem cobrar agora, vencidos, lembretes e baixas manuais.RecebiveisPagosDespesasPlanosResumoReceitaReceberVencidos, recebiveis de hoje, lembretes e baixa "
+        },
+        {
+          "className": "place-booking-panel place-finance-panel",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1256,
+          "h": 998.578125,
+          "b": 1132.5,
+          "r": 1540,
+          "text": "ReceberQuem cobrar agora, vencidos, lembretes e baixas manuais.RecebiveisPagosDespesasPlanosResumoReceitaReceberVencidos, recebiveis de hoje, lembretes e baixa "
+        },
+        {
+          "className": "place-workspace finance-workspace",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1256,
+          "h": 998.578125,
+          "b": 1132.5,
+          "r": 1540,
+          "text": "ReceberQuem cobrar agora, vencidos, lembretes e baixas manuais.RecebiveisPagosDespesasPlanosResumoReceitaReceberVencidos, recebiveis de hoje, lembretes e baixa "
+        },
+        {
+          "className": "finance-receivables-console",
+          "x": 297,
+          "y": 146.921875,
+          "w": 1230,
+          "h": 972.578125,
+          "b": 1119.5,
+          "r": 1527,
+          "text": "ReceitaReceberVencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.Lembrar lista atualEm abertoR$ 25.566,00118 recebivel(is) no f"
+        },
+        {
+          "className": "finance-console-layout",
+          "x": 297,
+          "y": 511.5,
+          "w": 1230,
+          "h": 608,
+          "b": 1119.5,
+          "r": 1527,
+          "text": "ClienteOrigemVencimentoStatusValorAna GomesSocio PerformancePlano de sócioVencido em 05/05VencidoR$ 259,00Ana QueirozSocio PerformancePlano de sócioVencido em 0"
+        }
+      ]
+    }
+  },
+  {
+    "name": "loja-pos",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/canteen",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=vender",
+      "title": [],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [
+        "Venda rapida",
+        "Vendas do dia",
+        "Estoque baixo",
+        "Produtos"
+      ],
+      "buttons": 29,
+      "inputs": 7,
+      "cards": 2,
+      "drawers": 0,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 808.078125,
+        "b": 900,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 900,
+          "b": 900,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 900,
+          "b": 900,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 628.59375,
+          "b": 732.515625,
+          "r": 1504,
+          "text": "Loja / POSRegistrar venda rapida para aluno, jogador ou cliente avulso.Venda rapidaVendas do diaEstoque baixoProdutosVenda rapidaEscolha um produto cadastrado o"
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 602.59375,
+          "b": 724.515625,
+          "r": 1552,
+          "text": "Loja / POSRegistrar venda rapida para aluno, jogador ou cliente avulso.Venda rapidaVendas do diaEstoque baixoProdutosVenda rapidaEscolha um produto cadastrado o"
+        },
+        {
+          "className": "place-booking-panel",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1256,
+          "h": 578.59375,
+          "b": 712.515625,
+          "r": 1540,
+          "text": "Loja / POSRegistrar venda rapida para aluno, jogador ou cliente avulso.Venda rapidaVendas do diaEstoque baixoProdutosVenda rapidaEscolha um produto cadastrado o"
+        },
+        {
+          "className": "place-workspace canteen-workspace",
+          "x": 297,
+          "y": 146.921875,
+          "w": 1230,
+          "h": 552.59375,
+          "b": 699.515625,
+          "r": 1527,
+          "text": "Loja / POSRegistrar venda rapida para aluno, jogador ou cliente avulso.Venda rapidaVendas do diaEstoque baixoProdutosVenda rapidaEscolha um produto cadastrado o"
+        },
+        {
+          "className": "canteen-sale-workspace",
+          "x": 310,
+          "y": 244.15625,
+          "w": 1204,
+          "h": 442.359375,
+          "b": 686.515625,
+          "r": 1514,
+          "text": "Venda rapidaEscolha um produto cadastrado ou registre uma venda avulsa.R$ 0,00Buscar produtoVenda avulsaAgua sem gasBebidasR$ 5,00 | 40 em estoqueAluguel raquet"
+        },
+        {
+          "className": "progressive-form progressive-form-static canteen-sale-form",
+          "x": 310,
+          "y": 244.15625,
+          "w": 903.015625,
+          "h": 442.359375,
+          "b": 686.515625,
+          "r": 1213.015625,
+          "text": "Venda rapidaEscolha um produto cadastrado ou registre uma venda avulsa.R$ 0,00Buscar produtoVenda avulsaAgua sem gasBebidasR$ 5,00 | 40 em estoqueAluguel raquet"
+        }
+      ]
+    }
+  },
+  {
+    "name": "comunicacao",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/communication",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "title": [
+        "Central de mensagens"
+      ],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [],
+      "buttons": 21,
+      "inputs": 2,
+      "cards": 1,
+      "drawers": 0,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 1127.5,
+        "b": 1219.421875,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1219.421875,
+          "b": 1219.421875,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1219.421875,
+          "b": 1219.421875,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 1091.5,
+          "b": 1195.421875,
+          "r": 1504,
+          "text": "ComunicacaoCentral de mensagensWhatsApp, publicacao e avisos conectados aos pontos reais da operacao.Editar dados publicosVer pagina publicaQuadras6Uso publico "
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 1065.5,
+          "b": 1187.421875,
+          "r": 1552,
+          "text": "ComunicacaoCentral de mensagensWhatsApp, publicacao e avisos conectados aos pontos reais da operacao.Editar dados publicosVer pagina publicaQuadras6Uso publico "
+        },
+        {
+          "className": "communication-console",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1180,
+          "h": 1041.5,
+          "b": 1175.421875,
+          "r": 1464,
+          "text": "ComunicacaoCentral de mensagensWhatsApp, publicacao e avisos conectados aos pontos reais da operacao.Editar dados publicosVer pagina publicaQuadras6Uso publico "
+        },
+        {
+          "className": "communication-console__body",
+          "x": 299,
+          "y": 370.421875,
+          "w": 1150,
+          "h": 790,
+          "b": 1160.421875,
+          "r": 1449,
+          "text": "PontoStatusMensagemAcaoReservasEm diaAgenda sem reserva pendente agora.Revisar agendaLista de espera52 pessoa(s)Clientes em espera precisam de retorno quando li"
+        }
+      ]
+    }
+  },
+  {
+    "name": "relatorios",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/reports",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "title": [
+        "Visao da operacao"
+      ],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [],
+      "buttons": 19,
+      "inputs": 4,
+      "cards": 1,
+      "drawers": 0,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 1247.3125,
+        "b": 1339.234375,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1339.234375,
+          "b": 1339.234375,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1339.234375,
+          "b": 1339.234375,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 1211.3125,
+          "b": 1315.234375,
+          "r": 1504,
+          "text": "RelatoriosVisao da operacaoIndicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva.TudoPeriodoEste mesHojeExportar CSVPlano atua"
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 1185.3125,
+          "b": 1307.234375,
+          "r": 1552,
+          "text": "RelatoriosVisao da operacaoIndicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva.TudoPeriodoEste mesHojeExportar CSVPlano atua"
+        },
+        {
+          "className": "reports-console",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1180,
+          "h": 1161.3125,
+          "b": 1295.234375,
+          "r": 1464,
+          "text": "RelatoriosVisao da operacaoIndicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva.TudoPeriodoEste mesHojeExportar CSVPlano atua"
+        },
+        {
+          "className": "reports-console__body",
+          "x": 299,
+          "y": 490.234375,
+          "w": 1150,
+          "h": 790,
+          "b": 1280.234375,
+          "r": 1449,
+          "text": "ModuloIndicadorLeituraAgenda1817% de ocupacao estimada, 178 confirmadasAcademia7985% de presença, 83 alunos ativosFinanceiroR$ 0,00entradas R$ 2.304,00 menos de"
+        }
+      ]
+    }
+  },
+  {
+    "name": "equipe",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/team",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+      "title": [],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [
+        "Equipe",
+        "Professores",
+        "Convites",
+        "Papeis",
+        "Resumo"
+      ],
+      "buttons": 18,
+      "inputs": 2,
+      "cards": 4,
+      "drawers": 0,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 808.078125,
+        "b": 900,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 900,
+          "b": 900,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 900,
+          "b": 900,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        }
+      ]
+    }
+  },
+  {
+    "name": "administracao",
+    "route": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/admin/settings",
+    "logs": [],
+    "errors": [],
+    "metrics": {
+      "href": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "title": [
+        "Central administrativa"
+      ],
+      "nav": [
+        "Inicio",
+        "Agenda",
+        "Academia",
+        "Loja/POS",
+        "Clientes",
+        "Financeiro",
+        "Competicoes",
+        "Comunicacao",
+        "Relatorios",
+        "Administracao"
+      ],
+      "tabs": [
+        "Checklist",
+        "Dados publicos",
+        "Recursos",
+        "Regras",
+        "Planos",
+        "Permissoes",
+        "Publicacao"
+      ],
+      "buttons": 33,
+      "inputs": 2,
+      "cards": 2,
+      "drawers": 0,
+      "overflow": false,
+      "main": {
+        "x": 248,
+        "y": 91.921875,
+        "w": 1280,
+        "h": 999.25,
+        "b": 1091.171875,
+        "r": 1528
+      },
+      "largeAboveFold": [
+        {
+          "className": "",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1091.171875,
+          "b": 1091.171875,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "app-shell app-shell--management",
+          "x": 0,
+          "y": 0,
+          "w": 1600,
+          "h": 1091.171875,
+          "b": 1091.171875,
+          "r": 1600,
+          "text": "EAOla,Escalao AdminTrabalhoUnidadeADT DouradosArena Pantanal TennisATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP"
+        },
+        {
+          "className": "management-shell-page management-shell-page--compact",
+          "x": 272,
+          "y": 103.921875,
+          "w": 1232,
+          "h": 963.25,
+          "b": 1067.171875,
+          "r": 1504,
+          "text": "Central de configuracaoProntidao estrutural do local, sem misturar rotina diaria.ChecklistDados publicosRecursosRegrasPlanosPermissoesPublicacaoADMINISTRACAOCen"
+        },
+        {
+          "className": "place-card management-cockpit-card",
+          "x": 272,
+          "y": 121.921875,
+          "w": 1280,
+          "h": 937.25,
+          "b": 1059.171875,
+          "r": 1552,
+          "text": "Central de configuracaoProntidao estrutural do local, sem misturar rotina diaria.ChecklistDados publicosRecursosRegrasPlanosPermissoesPublicacaoADMINISTRACAOCen"
+        },
+        {
+          "className": "place-booking-panel place-settings-panel",
+          "x": 284,
+          "y": 133.921875,
+          "w": 1256,
+          "h": 913.25,
+          "b": 1047.171875,
+          "r": 1540,
+          "text": "Central de configuracaoProntidao estrutural do local, sem misturar rotina diaria.ChecklistDados publicosRecursosRegrasPlanosPermissoesPublicacaoADMINISTRACAOCen"
+        },
+        {
+          "className": "place-workspace settings-workspace",
+          "x": 296,
+          "y": 145.921875,
+          "w": 1232,
+          "h": 889.25,
+          "b": 1035.171875,
+          "r": 1528,
+          "text": "Central de configuracaoProntidao estrutural do local, sem misturar rotina diaria.ChecklistDados publicosRecursosRegrasPlanosPermissoesPublicacaoADMINISTRACAOCen"
+        },
+        {
+          "className": "administration-console",
+          "x": 308,
+          "y": 157.921875,
+          "w": 1080,
+          "h": 865.25,
+          "b": 1023.171875,
+          "r": 1388,
+          "text": "ADMINISTRACAOCentral administrativaEstrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria.Editar dados publicosVer pagina publicaIMPLANTACAO1"
+        },
+        {
+          "className": "administration-console__body",
+          "x": 325,
+          "y": 432.140625,
+          "w": 1046,
+          "h": 574.03125,
+          "b": 1006.171875,
+          "r": 1371,
+          "text": "Checklist estruturalADT Dourados · Dourados - MSRegras operacionaisAreaStatusDescricaoAcaoDados do localProntoDescricao preenchidaAbrirCadastrar quadraPronto6 q"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "candidateInfo": {
+    "strong": "Sofia Mendes",
+    "small": "Pago",
+    "text": "Sofia MendesPago"
+  },
+  "canPay": true,
+  "paidAfterRefresh": false,
+  "cancelState": {
+    "textHasCancelled": true,
+    "textHasName": true,
+    "activeTabs": [
+      "Trabalho",
+      "Canceladas",
+      "Agenda"
+    ],
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario"
+  },
+  "errors": []
+}

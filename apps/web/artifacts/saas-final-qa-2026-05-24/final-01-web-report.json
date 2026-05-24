@@ -1,0 +1,852 @@
+{
+  "generatedAt": "2026-05-24T09:30:48.910Z",
+  "viewport": "1600x900",
+  "results": [
+    {
+      "route": "work-inicio",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "status": "ok",
+      "elapsedMs": 14372,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-inicio-1600.png",
+      "errors": [],
+      "notes": [
+        "networkidle timeout"
+      ],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 1591,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Inicio"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio"
+      }
+    },
+    {
+      "route": "work-agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda",
+      "status": "ok",
+      "elapsedMs": 10366,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-agenda-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 2825,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Dia",
+          "Mariana UchidaPendente",
+          "Agenda"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario"
+      }
+    },
+    {
+      "route": "work-clientes",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes",
+      "status": "ok",
+      "elapsedMs": 11026,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-clientes-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 6556,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Clientes ativos",
+          "Clientes"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos"
+      }
+    },
+    {
+      "route": "work-academia-hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+      "status": "ok",
+      "elapsedMs": 11104,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-academia-hoje-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 1166,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Hoje",
+          "Academia"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje"
+      }
+    },
+    {
+      "route": "work-academia-turmas",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+      "status": "ok",
+      "elapsedMs": 10979,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-academia-turmas-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 5685,
+        "whiteButtons": [
+          {
+            "text": "Ver mais turmas",
+            "className": "secondary"
+          }
+        ],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Turmas",
+          "IdentidadeNome e professor"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas"
+      }
+    },
+    {
+      "route": "work-academia-alunos",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+      "status": "ok",
+      "elapsedMs": 10951,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-academia-alunos-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 6797,
+        "whiteButtons": [
+          {
+            "text": "Ver mais alunos",
+            "className": "secondary"
+          },
+          {
+            "text": "Fechar",
+            "className": "quiet"
+          },
+          {
+            "text": "Cancelar matricula",
+            "className": "danger"
+          },
+          {
+            "text": "Pagar",
+            "className": ""
+          },
+          {
+            "text": "Enviar lembrete",
+            "className": "secondary"
+          },
+          {
+            "text": "Registrar aviso previo",
+            "className": ""
+          },
+          {
+            "text": "Registrar evolucao",
+            "className": ""
+          },
+          {
+            "text": "Fechar",
+            "className": "secondary"
+          }
+        ],
+        "fixedModals": [
+          {
+            "cls": "app-overlay-backdrop",
+            "rect": {
+              "x": 272,
+              "y": 12.921875,
+              "width": 1280,
+              "height": 1811.234375,
+              "top": 12.921875,
+              "right": 1552,
+              "bottom": 1824.15625,
+              "left": 272
+            }
+          }
+        ],
+        "activeNav": [
+          "Trabalho",
+          "Alunos"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos"
+      }
+    },
+    {
+      "route": "work-academia-pendencias",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia",
+      "status": "ok",
+      "elapsedMs": 10180,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-academia-pendencias-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 3122,
+        "whiteButtons": [
+          {
+            "text": "Ver mais pendencias",
+            "className": "secondary"
+          }
+        ],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Pendencias"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias"
+      }
+    },
+    {
+      "route": "work-financeiro",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro",
+      "status": "ok",
+      "elapsedMs": 10142,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-financeiro-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 12591,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Recebiveis",
+          "Todos118",
+          "Financeiro"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis"
+      }
+    },
+    {
+      "route": "work-financeiro-pagos",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro",
+      "status": "ok",
+      "elapsedMs": 14571,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-financeiro-pagos-1600.png",
+      "errors": [],
+      "notes": [
+        "click failed button:has-text(\"Pagos\"): locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Pagos\")').first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"\" type=\"button\">Pagos</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n"
+      ],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 10775,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Recebiveis",
+          "Todos91",
+          "Financeiro"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis"
+      }
+    },
+    {
+      "route": "work-financeiro-despesas",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro",
+      "status": "ok",
+      "elapsedMs": 13949,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-financeiro-despesas-1600.png",
+      "errors": [],
+      "notes": [
+        "click failed button:has-text(\"Despesas\"): locator.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Despesas\")').first()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"\" type=\"button\">Despesas</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    8 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 500ms\u001b[22m\n"
+      ],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 10775,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Recebiveis",
+          "Todos91",
+          "Financeiro"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=recebiveis"
+      }
+    },
+    {
+      "route": "work-loja-pos",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja",
+      "status": "ok",
+      "elapsedMs": 9318,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-loja-pos-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 1325,
+        "whiteButtons": [
+          {
+            "text": "Agua sem gasBebidasR$ 5,00 | 40 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "Aluguel raqueteServicosR$ 20,00 | 5 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "Barra de proteinaLanchesR$ 15,00 | 9 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "Bola tuboPro shopR$ 52,00 | 7 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "Cafe espressoBebidasR$ 7,00 | 60 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "IsotonicoBebidasR$ 9,00 | 22 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "MunhequeiraPro shopR$ 39,00 | 4 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "OvergripPro shopR$ 25,00 | 18 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "Sanduiche naturalLanchesR$ 18,00 | 12 em estoque",
+            "className": "canteen-product-pick"
+          },
+          {
+            "text": "Suco naturalBebidasR$ 12,00 | 16 em estoque",
+            "className": "canteen-product-pick"
+          }
+        ],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Venda rapida",
+          "Venda avulsa",
+          "Loja/POS"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=vender"
+      }
+    },
+    {
+      "route": "work-competicoes",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/competicoes",
+      "status": "ok",
+      "elapsedMs": 4627,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-competicoes-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 3542,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Todos",
+          "Competicoes"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 126.25,
+          "top": 0,
+          "right": 1600,
+          "bottom": 126.25,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/eventos?modo=organizing&placeId=36b29d6c-fabb-475a-a059-47d5ece74a09"
+      }
+    },
+    {
+      "route": "work-comunicacao",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "status": "ok",
+      "elapsedMs": 9175,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-comunicacao-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 3710,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Lista de espera52 pessoa(s)Clientes em espera precisam de retorno quando liberar",
+          "Comunicacao"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao"
+      }
+    },
+    {
+      "route": "work-relatorios",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "status": "ok",
+      "elapsedMs": 9349,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-relatorios-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 1512,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Agenda1767% de ocupacao estimada, 174 confirmadas",
+          "Relatorios"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios"
+      }
+    },
+    {
+      "route": "work-administracao",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao",
+      "status": "ok",
+      "elapsedMs": 10419,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-work-administracao-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "Central administrativa",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 1751,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Trabalho",
+          "Checklist",
+          "Administracao"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 91.921875,
+          "top": 0,
+          "right": 1600,
+          "bottom": 91.921875,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist"
+      }
+    },
+    {
+      "route": "player-inicio",
+      "hash": "#/inicio",
+      "status": "ok",
+      "elapsedMs": 9218,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-player-inicio-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "Encontre seu proximo jogo",
+        "scrollWidth": 1848,
+        "clientWidth": 1600,
+        "horizontalOverflow": true,
+        "bodyTextLength": 1189,
+        "whiteButtons": [
+          {
+            "text": "",
+            "className": "icon-btn app-bell-btn"
+          },
+          {
+            "text": "ReservarQuadra",
+            "className": ""
+          },
+          {
+            "text": "JogarEncontrar jogo",
+            "className": ""
+          },
+          {
+            "text": "CompetirTorneios",
+            "className": ""
+          },
+          {
+            "text": "TreinarAulas",
+            "className": ""
+          },
+          {
+            "text": "EvoluirLigas",
+            "className": ""
+          },
+          {
+            "text": "Prime Cup NoturnaCuiaba - MT12 de mai. de 2026",
+            "className": ""
+          },
+          {
+            "text": "Prime Open Inscricoes EncerradasCuiaba - MT23 de mai. de 2026",
+            "className": ""
+          },
+          {
+            "text": "Ver oportunidades",
+            "className": "player-hub-section-action"
+          }
+        ],
+        "fixedModals": [],
+        "activeNav": [
+          "Jogador",
+          "Inicio"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 65,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/inicio"
+      }
+    },
+    {
+      "route": "player-jogar",
+      "hash": "#/locais",
+      "status": "ok",
+      "elapsedMs": 5483,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-player-jogar-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "Jogar",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 382,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Jogador",
+          "Jogar"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 65,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/locais"
+      }
+    },
+    {
+      "route": "player-competir",
+      "hash": "#/eventos",
+      "status": "ok",
+      "elapsedMs": 5001,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-player-competir-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "Competir",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 1002,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Jogador",
+          "Descobrirtorneios e ligas",
+          "Competir"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 65,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/eventos"
+      }
+    },
+    {
+      "route": "player-rotina",
+      "hash": "#/agenda",
+      "status": "ok",
+      "elapsedMs": 6855,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-player-rotina-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "Minha rotina",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 776,
+        "whiteButtons": [],
+        "fixedModals": [],
+        "activeNav": [
+          "Jogador",
+          "Tudo",
+          "Rotina"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 65,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/agenda"
+      }
+    },
+    {
+      "route": "player-perfil",
+      "hash": "#/perfil",
+      "status": "ok",
+      "elapsedMs": 5011,
+      "screenshot": "artifacts\\saas-final-qa-2026-05-24\\final-01-player-perfil-1600.png",
+      "errors": [],
+      "notes": [],
+      "metrics": {
+        "title": "ATP — Amateur Tennis Platform",
+        "h1": "Perfil",
+        "scrollWidth": 1600,
+        "clientWidth": 1600,
+        "horizontalOverflow": false,
+        "bodyTextLength": 403,
+        "whiteButtons": [
+          {
+            "text": "",
+            "className": "ph-icon-btn"
+          }
+        ],
+        "fixedModals": [],
+        "activeNav": [
+          "Jogador",
+          "Perfil",
+          "Perfil"
+        ],
+        "topbarRect": {
+          "x": 248,
+          "y": 0,
+          "width": 1352,
+          "height": 65,
+          "top": 0,
+          "right": 1600,
+          "bottom": 65,
+          "left": 248
+        },
+        "url": "http://127.0.0.1:5175/#/perfil"
+      }
+    }
+  ]
+}

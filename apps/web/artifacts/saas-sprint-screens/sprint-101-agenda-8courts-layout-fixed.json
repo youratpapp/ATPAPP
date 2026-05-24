@@ -1,0 +1,63 @@
+{
+  "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+  "logs": [],
+  "metrics": {
+    "board": {
+      "clientWidth": 1188,
+      "scrollWidth": 1196,
+      "scrollLeft": 0
+    },
+    "rail": {
+      "x": 288,
+      "y": 361.53125,
+      "w": 60,
+      "h": 680,
+      "right": 348,
+      "bottom": 1041.53125
+    },
+    "firstCol": {
+      "x": 348,
+      "y": 361.53125,
+      "w": 142,
+      "h": 680,
+      "right": 490,
+      "bottom": 1041.53125
+    },
+    "lastCol": {
+      "x": 1342,
+      "y": 361.53125,
+      "w": 142,
+      "h": 680,
+      "right": 1484,
+      "bottom": 1041.53125
+    },
+    "firstSlot": {
+      "x": 348,
+      "y": 395.53125,
+      "w": 142,
+      "h": 38,
+      "right": 490,
+      "bottom": 433.53125
+    },
+    "firstTimeLabel": {
+      "x": 307.390625,
+      "y": 395.53125,
+      "w": 40.609375,
+      "h": 38,
+      "right": 348,
+      "bottom": 433.53125
+    },
+    "drawer": {
+      "x": 1502,
+      "y": 360.53125,
+      "w": 330,
+      "h": 604.640625,
+      "right": 1832,
+      "bottom": 965.171875
+    },
+    "columns": 8,
+    "timeOverlapPx": 0,
+    "lastColumnCutPx": 0,
+    "eventOverflowCount": 0
+  }
+}

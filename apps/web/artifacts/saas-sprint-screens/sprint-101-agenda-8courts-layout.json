@@ -1,0 +1,69 @@
+{
+  "url": "http://127.0.0.1:5175/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+  "logs": [],
+  "metricsBefore": {
+    "board": {
+      "clientWidth": 1188,
+      "scrollWidth": 1268,
+      "scrollLeft": 0
+    },
+    "rail": {
+      "x": 288,
+      "y": 361.53125,
+      "w": 56,
+      "h": 680,
+      "right": 344,
+      "bottom": 1041.53125
+    },
+    "firstCol": {
+      "x": 340,
+      "y": 361.53125,
+      "w": 152,
+      "h": 680,
+      "right": 492,
+      "bottom": 1041.53125
+    },
+    "lastCol": {
+      "x": 1404,
+      "y": 361.53125,
+      "w": 152,
+      "h": 680,
+      "right": 1556,
+      "bottom": 1041.53125
+    },
+    "firstSlot": {
+      "x": 340,
+      "y": 395.53125,
+      "w": 152,
+      "h": 38,
+      "right": 492,
+      "bottom": 433.53125
+    },
+    "firstTimeLabel": {
+      "x": 303.390625,
+      "y": 395.53125,
+      "w": 40.609375,
+      "h": 38,
+      "right": 344,
+      "bottom": 433.53125
+    },
+    "columns": 8,
+    "text": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nOPERACAO\nAgenda\n\nReservas, aulas, bloqueios e uso das quadras em um calendario unico.\n\nNova reserva\nDia\nSemana\nLista\nRemarcacoes\nCanceladas\nConflitos\nTudo\nReservas\nBloquei"
+  },
+  "metricsAfter": {
+    "board": {
+      "clientWidth": 1188,
+      "scrollWidth": 1268,
+      "scrollLeft": 50
+    },
+    "lastCol": {
+      "x": 1354,
+      "y": 361.53125,
+      "w": 152,
+      "h": 680,
+      "right": 1506,
+      "bottom": 1041.53125
+    },
+    "viewportWidth": 1892
+  }
+}

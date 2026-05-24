@@ -1,0 +1,30 @@
+[
+  {
+    "name": "desktop-1366",
+    "errors": [],
+    "metrics": {
+      "scrollW": 1366,
+      "innerW": 1366,
+      "overflowX": false,
+      "main": {
+        "x": 248,
+        "w": 1118,
+        "right": 1366
+      }
+    }
+  },
+  {
+    "name": "mobile-390",
+    "errors": [],
+    "metrics": {
+      "scrollW": 390,
+      "innerW": 390,
+      "overflowX": false,
+      "main": {
+        "x": 0,
+        "w": 390,
+        "right": 390
+      }
+    }
+  }
+]

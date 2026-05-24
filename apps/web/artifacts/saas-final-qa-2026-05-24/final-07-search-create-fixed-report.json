@@ -1,0 +1,29 @@
+{
+  "errors": [],
+  "rafael": {
+    "text": "Rafael Ferreira\nReserva · 23/05/2026, 09:00 · Quadra 4 · confirmed · +55 65 990018906\nRafael Pereira\nReserva · 24/05/2026, 09:00 · Quadra 5 · confirmed · +55 67 990024386\nRafael Araujo\nReserva · 25/05/2026, 09:00 · Quadra 6 · confirmed · +55 67 990029866\nRafael Araujo\nReserva · 30/05/2026, 04:00 · Quadra 5 · confirmed · +55 67 990029866\nRafael Ferreira\nAluno · active · +55 65 990002466",
+    "count": 5
+  },
+  "reserva": {
+    "text": "Helena Borges\nCliente · contacted · Reserva recorrente · +55 65 990015207\nOtavio Lopes\nCliente · contacted · Reserva recorrente · +55 65 990004932\nValentina Gomes\nCliente · lead · Reserva recorrente · +55 67 990008357\nAna Queiroz\nCliente · converted · Reserva recorrente · +55 67 990022057\nRafael Ferreira\nReserva · 23/05/2026, 09:00 · Quadra 4 · confirmed · +55 65 990018906\nValentina Queiroz\nReserva · 23/05/2026, 09:00 · Quadra 3 · confirmed · +55 67 990013837\nAndre Castro\nReserva · 23/05/2026, 09:00 · Quadra 2 · confirmed · +55 67 990008768\nDaniela Ishikawa\nReserva · 23/05/2026, 09:00 · Quadra 1 · confirmed · +55 65 990003699\nAgenda\nReservas, aulas, bloqueios e remarcacoes\nReservas\nCalendario clicavel e detalhe lateral",
+    "count": 10
+  },
+  "turma": {
+    "text": "TESTE TURMA\nTurma · Prof. Lais Monteiro · Intermediario · 20:00\nTESTE TURMA\nTurma · Prof. Lais Monteiro · Intermediario · 20:00\nTESTE TURMA\nTurma · Prof. Lais Monteiro · Intermediario · 20:00\nAulas e turmas\nTurmas, matriculas e reposicoes",
+    "count": 4
+  },
+  "pagamento": {
+    "text": "Cliente QA Pagamento\nReserva · 24/05/2026, 22:00 · Quadra 1 · cancelled · +55 67 990000092\nReservas\nCalendario clicavel e detalhe lateral\nFinanceiro\nRecebiveis, vencidos e pagos",
+    "count": 3
+  },
+  "quadra": {
+    "text": "Rafael Ferreira\nReserva · 23/05/2026, 09:00 · Quadra 4 · confirmed · +55 65 990018906\nValentina Queiroz\nReserva · 23/05/2026, 09:00 · Quadra 3 · confirmed · +55 67 990013837\nAndre Castro\nReserva · 23/05/2026, 09:00 · Quadra 2 · confirmed · +55 67 990008768\nDaniela Ishikawa\nReserva · 23/05/2026, 09:00 · Quadra 1 · confirmed · +55 65 990003699\nAgenda\nReservas, aulas, bloqueios e remarcacoes\nReservas\nCalendario clicavel e detalhe lateral",
+    "count": 6
+  },
+  "open": {
+    "text": "ATP Open Dourados 024336\nTorneio · finished · Dourados · MS\nATP Open Dourados 114805\nTorneio · finished · Dourados · MS\nATP Open Dourados 031141\nTorneio · finished · Dourados · MS",
+    "count": 3
+  },
+  "createText": "Nova reserva\nAbrir calendario no fluxo de reserva\nNovo cliente\nCadastro progressivo de atendimento\nRegistrar pagamento\nRecebivel ou pagamento manual\nCriar aula/turma\nConfigurar turma ou aula recorrente\nCriar torneio\nAbrir Competition OS\nVender produto\nAbrir POS",
+  "createCount": 6
+}

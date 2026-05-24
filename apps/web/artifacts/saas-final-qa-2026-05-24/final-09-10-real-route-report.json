@@ -1,0 +1,11 @@
+{
+  "errors": [],
+  "entryUrl": "http://127.0.0.1:5175/#/gestao",
+  "entrySnippet": "EA\n\nOla,\n\nEscalao Admin\n\nCarregando central de gestao...\n\nATP\nJogador\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+  "communication": {
+    "missing": true
+  },
+  "reports": {
+    "missing": true
+  }
+}

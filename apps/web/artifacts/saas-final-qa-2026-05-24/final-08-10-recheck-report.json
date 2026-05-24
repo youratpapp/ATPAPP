@@ -1,0 +1,51 @@
+{
+  "errors": [
+    "Failed to load resource: the server responded with a status of 400 ()",
+    "Failed to load resource: the server responded with a status of 400 ()"
+  ],
+  "player": {
+    "hasOperationalCreateTournament": false,
+    "hasPlayerSurface": true
+  },
+  "work": {
+    "hasCompetitionOS": true,
+    "hasFunctionalTabLabels": [
+      {
+        "text": "Todos22",
+        "className": "active"
+      },
+      {
+        "text": "Torneios7",
+        "className": ""
+      },
+      {
+        "text": "Ligas15",
+        "className": ""
+      },
+      {
+        "text": "Pendencias22",
+        "className": ""
+      },
+      {
+        "text": "Historico12",
+        "className": ""
+      }
+    ],
+    "afterTabsSnippet": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nDourados - MS\nJogador\nTrabalho\nCOMPETITION OS\nQuais competicoes precisam de acao?\n\nTorneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho.\n\nCriar torneio\nCriar liga\n22\nBloqueios\nprecisam de acao\n22\nEm operacao\ntorneios e ligas ativos\n19\nTorneios\nno seu workspace\n15\nLigas\ntemporadas e rodadas\nTodos\n22\nTorneios\n7\nLigas\n15\nPendencias\n22\nHistorico\n12\nCOMPETICAO\nFASE\nPROXIMA ACAO\nATUALIZACAO\nFinalizadas\n12\nATP Open Dourados 024336\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 23 de mai.\nATP Open Dourados 114805\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 22 de mai.\nATP Open Dourados 031141\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 025536\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 024629\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 032025\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 023830\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 021743\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 031559\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 010927\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nATP Open Dourados 030841\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 21 de mai.\nTorneio Ranking Outono\nTorneio · Dourados - MS\nFinalizada\nVer resumo\natualizado em 14 de mai.\nDETALHE DA ACAO\nATP Open Dourados 024336\nTorneio · Finalizada\nFase\nFinalizada\nContexto\nDourados - MS\nProxima acao\nVer resumo\nOrientacao\nCompeticao encerrada. Consulte classificacao, historico e mensagens.\nAbrir cockpit da fase\nHISTORICO\n12 finalizada(s)\nVer arquivo\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao",
+    "hasOperationalCtas": true
+  },
+  "torneios": {
+    "hasOrganizerCopy": true
+  },
+  "ligas": {
+    "hasOwnerCopy": true
+  },
+  "communication": {
+    "hasTemplates": false,
+    "snippet": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nTRABALHO\nLOCAL\nACESSO PROFISSIONAL\nGestao indisponivel\n\nEste local nao esta liberado para o seu perfil atual.\n\nVoltar para central\nExplorar locais\nACESSO RESTRITO\nEntre com um perfil de gestao ou aceite um convite da equipe.\n\nA rotina operacional, alunos, reservas, financeiro e configuracoes do local ficam visiveis apenas para donos, gerentes ou equipe com permissao ativa.\n\nVoltar ao inicio\nExplorar locais\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao"
+  },
+  "reports": {
+    "hasMvpReports": true,
+    "snippet": "EA\n\nOla,\n\nEscalao Admin\n\nUNIDADE\nADT Dourados\nArena Pantanal Tennis\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nClube Racket Prime\n+ Criar\nJogador\nTrabalho\nTRABALHO\nLOCAL\nACESSO PROFISSIONAL\nGestao indisponivel\n\nEste local nao esta liberado para o seu perfil atual.\n\nVoltar para central\nExplorar locais\nACESSO RESTRITO\nEntre com um perfil de gestao ou aceite um convite da equipe.\n\nA rotina operacional, alunos, reservas, financeiro e configuracoes do local ficam visiveis apenas para donos, gerentes ou equipe com permissao ativa.\n\nVoltar ao inicio\nExplorar locais\nATP\nTrabalho\nTRABALHO\nInicio\nOPERACAO\nAgenda\nAcademia\nLoja/POS\nCLIENTES\nClientes\nFINANCEIRO\nFinanceiro\nCOMPETICOES\nCompeticoes\nCOMUNICACAO\nComunicacao\nRELATORIOS\nRelatorios\nADMINISTRACAO\nAdministracao"
+  }
+}
