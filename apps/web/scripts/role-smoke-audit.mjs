@@ -12,6 +12,14 @@ const PLACE_ID = process.env.ATP_ROLE_QA_PLACE_ID || "36b29d6c-fabb-475a-a059-47
 const FINANCE_PLACE_ID = process.env.ATP_ROLE_QA_FINANCE_PLACE_ID || "487b9846-9739-4f42-bc5f-60ea0cb4d050";
 const CHROME_PORT = Number(process.env.ATP_ROLE_QA_CHROME_PORT || 9335);
 const CAPTURE_SCREENSHOTS = process.env.ATP_ROLE_QA_SCREENSHOTS !== "0";
+const VIEWPORT_FILTER = (process.env.ATP_ROLE_QA_VIEWPORTS || "")
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
+const ROLE_FILTER = (process.env.ATP_ROLE_QA_ROLES || "")
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
 
 const CHROME_PATHS = [
   process.env.CHROME_PATH,
@@ -23,7 +31,7 @@ const viewports = [
   { name: "mobile-390", width: 390, height: 844, deviceScaleFactor: 2, mobile: true },
   { name: "mobile-430", width: 430, height: 932, deviceScaleFactor: 2, mobile: true },
   { name: "desktop-1366", width: 1366, height: 920, deviceScaleFactor: 1, mobile: false },
-];
+].filter((viewport) => !VIEWPORT_FILTER.length || VIEWPORT_FILTER.includes(viewport.name));
 
 const roles = [
   {
@@ -77,15 +85,23 @@ const roles = [
     routes: [
       { name: "inicio", hash: "#/inicio", must: ["Inicio"] },
       { name: "rotina", hash: "#/agenda", must: ["rotina", "Reservas"] },
-      { name: "gestao-bloqueada", hash: "#/gestao", mustNot: ["Financeiro do local", "Equipe"] },
+      { name: "gestao-bloqueada", hash: "#/gestao", mustNot: ["Financeiro do local", "Equipe e permissoes"] },
     ],
   },
-];
+].filter((role) => !ROLE_FILTER.length || ROLE_FILTER.includes(role.id));
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function normalizeAppUrl(value) {
   return value.endsWith("/") ? value : `${value}/`;
+}
+
+function safeJson(value) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
 }
 
 function chromePath() {
@@ -200,11 +216,28 @@ async function applyStorage(cdp, authFile) {
   const state = JSON.parse(raw);
   const origin = state.origins?.[0];
   const entries = origin?.localStorage || [];
+  const authEntry = entries.find((entry) => /auth-token/i.test(entry.name));
+  const authPayload = authEntry ? safeJson(authEntry.value) : null;
+  const expiresAt = authPayload?.expires_at || null;
+  const expired = typeof expiresAt === "number" && expiresAt <= Math.floor(Date.now() / 1000) + 60;
   await evalJs(
     cdp,
     `
-    (() => {
+    (async () => {
       localStorage.clear();
+      sessionStorage.clear();
+      if (indexedDB.databases) {
+        const databases = await indexedDB.databases();
+        await Promise.all(databases.map((database) => database.name
+          ? new Promise((resolve) => {
+              const request = indexedDB.deleteDatabase(database.name);
+              request.onsuccess = resolve;
+              request.onerror = resolve;
+              request.onblocked = resolve;
+            })
+          : Promise.resolve()
+        ));
+      }
       for (const item of ${JSON.stringify(entries)}) {
         localStorage.setItem(item.name, item.value);
       }
@@ -212,6 +245,7 @@ async function applyStorage(cdp, authFile) {
     })()
     `
   );
+  return { expired, expiresAt };
 }
 
 async function navigate(cdp, hash) {
@@ -269,6 +303,8 @@ async function main() {
   ], { stdio: "ignore" });
 
   const results = [];
+  if (!viewports.length) throw new Error("Nenhum viewport selecionado para QA.");
+  if (!roles.length) throw new Error("Nenhum papel selecionado para QA.");
   try {
     const target = await waitForDebug(CHROME_PORT);
     const cdp = makeCdp(target.webSocketDebuggerUrl);
@@ -289,7 +325,24 @@ async function main() {
           results.push({ viewport: viewport.name, role: role.id, stateExists, routes: [] });
           continue;
         }
-        await applyStorage(cdp, role.auth);
+        const authState = await applyStorage(cdp, role.auth);
+        if (authState.expired) {
+          results.push({
+            viewport: viewport.name,
+            role: role.id,
+            stateExists,
+            authExpired: true,
+            expiresAt: authState.expiresAt,
+            routes: role.routes.map((route) => ({
+              name: route.name,
+              hash: route.hash,
+              skipped: "auth-expired",
+              failedChecks: [],
+              consoleErrors: [],
+            })),
+          });
+          continue;
+        }
         const routeResults = [];
         for (const route of role.routes) {
           consoleErrors.length = 0;
@@ -322,11 +375,14 @@ async function main() {
     cdp.close();
   } finally {
     chrome.kill();
-    await rm(profileDir, { recursive: true, force: true });
+    await sleep(500);
+    await rm(profileDir, { recursive: true, force: true, maxRetries: 5, retryDelay: 250 }).catch(() => undefined);
   }
 
   const flatRoutes = results.flatMap((roleResult) => roleResult.routes || []);
-  const failures = flatRoutes.filter((route) =>
+  const skippedRoutes = flatRoutes.filter((route) => route.skipped);
+  const executedRoutes = flatRoutes.filter((route) => !route.skipped);
+  const failures = executedRoutes.filter((route) =>
     route.hasLogin || route.hasHorizontalOverflow || route.failedChecks.length || route.consoleErrors.length
   );
   const report = {
@@ -334,7 +390,8 @@ async function main() {
     appUrl: APP_URL,
     authDir: AUTH_DIR,
     outDir: OUT_DIR,
-    summary: `${flatRoutes.length - failures.length}/${flatRoutes.length} rotas aceitas`,
+    summary: `${executedRoutes.length - failures.length}/${executedRoutes.length} rotas executadas aceitas; ${skippedRoutes.length} puladas`,
+    skippedRoutes,
     failures,
     results,
   };

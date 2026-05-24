@@ -1,0 +1,1934 @@
+{
+  "generatedAt": "2026-05-24T22:03:53.571Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-followup-work-admin",
+  "routeCount": 14,
+  "viewportCount": 1,
+  "pageRuns": 14,
+  "issueCount": 14,
+  "issueSummary": {
+    "alvo-click-pequeno": 10,
+    "labels-duplicados": 2,
+    "texto-cortado-em-controle": 2
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-pagos.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-despesas.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-despesas.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-resumo.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-pos-vender.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-pos-estoque.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-pos-produtos.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-admin-publico.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-admin-publico.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-admin-recursos.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-admin-regras.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Lembrar lista atual",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Todos 181",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Planos 69",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Cobrar planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Cobrar alunos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Agenda",
+      "clicked": false,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Clientes",
+      "clicked": false,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Vendas do dia",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=hoje",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Estoque baixo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Agua sem gas Bebidas R$ 5,00 | 40 em estoque",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Aluguel raquete Servicos R$ 20,00 | 5 em estoque",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Barra de proteina Lanches R$ 15,00 | 9 em estoque",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Bola tubo Pro shop R$ 52,00 | 7 em estoque",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Cafe espresso Bebidas R$ 7,00 | 60 em estoque",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Vendas do dia",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=hoje",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Estoque baixo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Vendas do dia",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=hoje",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Estoque baixo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Todos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Ver pagina publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Lista de espera 52 pessoa(s) Clientes em espera precisam de retorno quando liberar horario. Avisar espera",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Aulas 72 pedido(s) Pedidos de aula e reposicao precisam de resposta clara. Abrir clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Financeiro 118 em aberto Recebiveis em aberto pedem lembrete profissional. Cobrar",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Publicacao Pronta Pagina publica pronta para compartilhar. Ver pagina",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Ver pagina",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Agenda 167 7% de ocupacao estimada, 164 confirmadas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Academia 79 85% de presenca, 82 alunos ativos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Financeiro R$ 0,00 entradas R$ 2.304,00 menos despesas R$ 5.350,00",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "CRM 15% 18 leads, origem principal Evento",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Ver pagina publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Dados do local Pronto Descricao preenchida Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Cadastrar quadra Pronto 6 quadras cadastradas Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Equipe Pronto 6 membros ou convites Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Cadastrar professor Pronto 3 professores cadastrados Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=professores",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Configurar plano Pronto 2 planos ativos Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Produtos da cantina Pronto 10 produtos cadastrados Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=produtos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Abrir configuracao",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=planos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Ver página publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=planos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Abrir ajustes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Abrir equipe",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=professores",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Abrir turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Abrir produtos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/loja-pos?visao=produtos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=planos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Ver reservas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "work-financeiro-recebiveis",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-recebiveis.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 143,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-pagos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-pagos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 20,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-despesas",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-despesas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 30,
+        "controlCount": 6,
+        "duplicateLabels": [
+          {
+            "label": "cancelar",
+            "count": 10,
+            "samples": [
+              {
+                "x": 1191,
+                "y": 357,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 441,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 526,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 610,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 694,
+                "w": 78,
+                "h": 31
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-planos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 59,
+        "controlCount": 15,
+        "duplicateLabels": [
+          {
+            "label": "0",
+            "count": 4,
+            "samples": [
+              {
+                "x": 973,
+                "y": 706,
+                "w": 93,
+                "h": 41
+              },
+              {
+                "x": 852,
+                "y": 1945,
+                "w": 312,
+                "h": 41
+              },
+              {
+                "x": 1172,
+                "y": 1945,
+                "w": 95,
+                "h": 41
+              },
+              {
+                "x": 323,
+                "y": 1994,
+                "w": 521,
+                "h": 41
+              }
+            ]
+          },
+          {
+            "label": "consumir 1",
+            "count": 10,
+            "samples": [
+              {
+                "x": 664,
+                "y": 834,
+                "w": 106,
+                "h": 39
+              },
+              {
+                "x": 705,
+                "y": 907,
+                "w": 106,
+                "h": 39
+              },
+              {
+                "x": 705,
+                "y": 980,
+                "w": 106,
+                "h": 39
+              },
+              {
+                "x": 471,
+                "y": 1271,
+                "w": 106,
+                "h": 39
+              },
+              {
+                "x": 321,
+                "y": 1358,
+                "w": 106,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "pausar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1093,
+                "y": 775,
+                "w": 77,
+                "h": 39
+              },
+              {
+                "x": 1142,
+                "y": 844,
+                "w": 77,
+                "h": 39
+              },
+              {
+                "x": 1077,
+                "y": 914,
+                "w": 77,
+                "h": 39
+              },
+              {
+                "x": 1007,
+                "y": 983,
+                "w": 77,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "pagar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 996,
+                "y": 2138,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 2226,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 2314,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 2402,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 2490,
+                "w": 70,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "lembrar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 1074,
+                "y": 2138,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 2226,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 2314,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 2402,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 2490,
+                "w": 88,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "cancelar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 1170,
+                "y": 2138,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 2226,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 2314,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 2402,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 2490,
+                "w": 88,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-resumo",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-resumo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 18,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-pos-vender",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-pos-vender.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 29,
+        "controlCount": 7,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-pos-estoque",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-pos-estoque.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 18,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-pos-produtos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-pos-produtos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 21,
+        "controlCount": 7,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-comunicacao",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-comunicacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-relatorios",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-relatorios.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 4,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-checklist",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-checklist.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+        "h1": [
+          "ADT Dourados",
+          "Central administrativa"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-publico",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 22,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-recursos",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-recursos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 24,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-regras",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-regras.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 23,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

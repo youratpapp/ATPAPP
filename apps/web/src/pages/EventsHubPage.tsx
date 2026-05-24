@@ -677,7 +677,7 @@ export function EventsHubPage({ user, profile }: Props) {
           <header className="competition-saas-hero">
             <div>
               <span>Competition OS</span>
-              <h2>Quais competicoes precisam de acao?</h2>
+              <h1>Quais competicoes precisam de acao?</h1>
               <p>Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho.</p>
             </div>
             <ActionBar className="competition-saas-actions" label="Acoes principais de competicoes">

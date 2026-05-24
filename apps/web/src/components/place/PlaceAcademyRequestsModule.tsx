@@ -193,7 +193,7 @@ export function PlaceAcademyRequestsModule({
             <option value="approved_unpaid">Aprovado sem pagamento</option>
             <option value="open_credit">Credito aberto</option>
           </select>
-          <button type="button" onClick={() => openFitDrawer()}>
+          <button type="button" onClick={() => openFitDrawer()} aria-label="Buscar encaixe para pendencias da academia">
             Buscar encaixe
           </button>
           <span>
@@ -218,7 +218,7 @@ export function PlaceAcademyRequestsModule({
                 context={kindLabel(row.kind)}
                 detail={`${row.academyClass?.title || "Turma"} aguardando aprovacao${enrollment.phone ? ` | ${enrollment.phone}` : ""}`}
                 primaryAction={
-                  <button type="button" onClick={() => onUpdateEnrollment(enrollment.id, "active")} disabled={busy}>
+                  <button type="button" onClick={() => onUpdateEnrollment(enrollment.id, "active")} disabled={busy} aria-label={`Ativar matricula de ${enrollment.playerName}`}>
                     Ativar
                   </button>
                 }
@@ -226,10 +226,11 @@ export function PlaceAcademyRequestsModule({
                 title={enrollment.playerName}
                 actions={
                   <details className="academy-pending-actions">
-                    <summary>Mais</summary>
+                    <summary aria-label={`Mais acoes para matricula de ${enrollment.playerName}`}>Mais</summary>
                     {enrollment.phone ? (
                       <button
                         type="button"
+                        aria-label={`Enviar WhatsApp para ${enrollment.playerName}`}
                         onClick={() =>
                           onShareContact(`Ola ${enrollment.playerName}, recebemos seu interesse na turma ${row.academyClass?.title || "da academia"}. Podemos confirmar sua matricula?`)
                         }
@@ -237,7 +238,7 @@ export function PlaceAcademyRequestsModule({
                         WhatsApp
                       </button>
                     ) : null}
-                    <button type="button" className="danger" onClick={() => onUpdateEnrollment(enrollment.id, "cancelled")} disabled={busy}>
+                    <button type="button" className="danger" onClick={() => onUpdateEnrollment(enrollment.id, "cancelled")} disabled={busy} aria-label={`Cancelar matricula de ${enrollment.playerName}`}>
                       Cancelar
                     </button>
                   </details>
@@ -257,11 +258,11 @@ export function PlaceAcademyRequestsModule({
                 detail={`${row.academyClass?.title || "Turma"} | ${request.requestedOn}${request.phone ? ` | ${request.phone}` : ""}`}
                 primaryAction={
                   pending ? (
-                    <button type="button" onClick={() => onUpdateLessonRequest(request, "approved")} disabled={busy}>
+                    <button type="button" onClick={() => onUpdateLessonRequest(request, "approved")} disabled={busy} aria-label={`Aprovar pedido de ${request.playerName}`}>
                       Aprovar
                     </button>
                   ) : unpaid ? (
-                    <button type="button" onClick={() => onMarkLessonRequestPaid(request)} disabled={busy}>
+                    <button type="button" onClick={() => onMarkLessonRequestPaid(request)} disabled={busy} aria-label={`Marcar pedido de ${request.playerName} como pago`}>
                       Pagar
                     </button>
                   ) : (
@@ -272,10 +273,11 @@ export function PlaceAcademyRequestsModule({
                 title={request.playerName}
                 actions={
                   <details className="academy-pending-actions">
-                    <summary>Mais</summary>
+                    <summary aria-label={`Mais acoes para pedido de ${request.playerName}`}>Mais</summary>
                     {request.phone ? (
                       <button
                         type="button"
+                        aria-label={`Enviar WhatsApp para ${request.playerName}`}
                         onClick={() =>
                           onShareContact(
                             `Ola ${request.playerName}, vimos seu pedido de ${request.requestType === "makeup" ? "reposicao" : "aula avulsa"} na turma ${
@@ -288,7 +290,7 @@ export function PlaceAcademyRequestsModule({
                       </button>
                     ) : null}
                     {pending ? (
-                      <button type="button" className="danger" onClick={() => onUpdateLessonRequest(request, "rejected")} disabled={busy}>
+                      <button type="button" className="danger" onClick={() => onUpdateLessonRequest(request, "rejected")} disabled={busy} aria-label={`Recusar pedido de ${request.playerName}`}>
                         Recusar
                       </button>
                     ) : null}
@@ -305,7 +307,7 @@ export function PlaceAcademyRequestsModule({
               context={makeupCreditContext(row.credit)}
               detail={`${row.academyClass?.title || "Turma"} | gerada em ${dateInputValue(row.credit.createdAt)}${enrollment?.phone ? ` | ${enrollment.phone}` : ""}`}
               primaryAction={
-                <button type="button" onClick={() => openFitDrawer(row.credit.id)}>
+                <button type="button" onClick={() => openFitDrawer(row.credit.id)} aria-label={`Agendar reposicao de ${enrollment?.playerName || "aluno"}`}>
                   Agendar reposicao
                 </button>
               }
@@ -313,13 +315,13 @@ export function PlaceAcademyRequestsModule({
               title={enrollment?.playerName || "Aluno"}
               actions={
                 <details className="academy-pending-actions">
-                  <summary>Mais</summary>
+                  <summary aria-label={`Mais acoes para reposicao de ${enrollment?.playerName || "aluno"}`}>Mais</summary>
                   {enrollment?.phone ? (
-                    <button type="button" onClick={() => onShareContact(`Ola ${enrollment.playerName}, voce tem uma reposicao aberta na turma ${row.academyClass?.title || "da academia"}. Vamos agendar?`)}>
+                    <button type="button" aria-label={`Enviar WhatsApp para ${enrollment.playerName}`} onClick={() => onShareContact(`Ola ${enrollment.playerName}, voce tem uma reposicao aberta na turma ${row.academyClass?.title || "da academia"}. Vamos agendar?`)}>
                       WhatsApp
                     </button>
                   ) : null}
-                  <button type="button" onClick={() => onUseMakeup(row.credit.id)} disabled={busy}>
+                  <button type="button" onClick={() => onUseMakeup(row.credit.id)} disabled={busy} aria-label={`Marcar reposicao de ${enrollment?.playerName || "aluno"} como usada`}>
                     Marcar como usada
                   </button>
                 </details>

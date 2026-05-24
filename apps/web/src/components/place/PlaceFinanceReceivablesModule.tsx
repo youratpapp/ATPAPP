@@ -15,6 +15,12 @@ type PlaceFinanceReceivablesModuleProps = {
 
 type FinanceReceivableSegment = "all" | "overdue" | "today" | "academy" | "membership";
 
+const PAYMENT_REMINDER_SUPPORTED_TARGETS = new Set(["academy_enrollment", "academy_student_contract", "court_booking", "place_membership"]);
+
+function canCreatePaymentReminderForTarget(targetType: string): boolean {
+  return PAYMENT_REMINDER_SUPPORTED_TARGETS.has(targetType);
+}
+
 function receivableStatusLabel(receivable: PlaceClientReceivable): string {
   if (receivable.status === "pending_approval") return "Aguardando aprovacao";
   if (receivable.dueStatus === "overdue") return "Vencido";
@@ -61,6 +67,10 @@ export function PlaceFinanceReceivablesModule({
   const selectedReceivable = filteredReceivables.find((receivable) => receivable.id === selectedId) || filteredReceivables[0] || null;
   const totalOpenCents = filteredReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
   const totalOverdueCents = overdueReceivables.reduce((sum, receivable) => sum + receivable.amountCents, 0);
+  const supportedFilteredReceivables = filteredReceivables.filter((receivable) => canCreatePaymentReminderForTarget(receivable.targetType));
+  const supportedMembershipReceivables = membershipReceivables.filter((receivable) => canCreatePaymentReminderForTarget(receivable.targetType));
+  const supportedAcademyReceivables = academyReceivables.filter((receivable) => canCreatePaymentReminderForTarget(receivable.targetType));
+  const selectedCanCreateReminder = selectedReceivable ? canCreatePaymentReminderForTarget(selectedReceivable.targetType) : false;
 
   const tabs: Array<{ id: FinanceReceivableSegment; label: string; count: number }> = [
     { id: "all", label: "Todos", count: receivables.length },
@@ -78,7 +88,7 @@ export function PlaceFinanceReceivablesModule({
           <h2>Receber</h2>
           <p>Vencidos, recebiveis de hoje, lembretes e baixa manual em uma fila financeira clara.</p>
         </div>
-        <button type="button" className="primary" onClick={() => onCreatePaymentReminderBatch(filteredReceivables)} disabled={busy || !filteredReceivables.length}>
+        <button type="button" className="primary" onClick={() => onCreatePaymentReminderBatch(supportedFilteredReceivables)} disabled={busy || !supportedFilteredReceivables.length}>
           Lembrar lista atual
         </button>
       </header>
@@ -112,10 +122,10 @@ export function PlaceFinanceReceivablesModule({
 
       <div className="finance-console-toolbar">
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar cliente, origem, periodo..." />
-        <button type="button" onClick={() => onCreatePaymentReminderBatch(membershipReceivables)} disabled={busy || !membershipReceivables.length}>
+        <button type="button" onClick={() => onCreatePaymentReminderBatch(supportedMembershipReceivables)} disabled={busy || !supportedMembershipReceivables.length}>
           Cobrar planos
         </button>
-        <button type="button" onClick={() => onCreatePaymentReminderBatch(academyReceivables)} disabled={busy || !academyReceivables.length}>
+        <button type="button" onClick={() => onCreatePaymentReminderBatch(supportedAcademyReceivables)} disabled={busy || !supportedAcademyReceivables.length}>
           Cobrar alunos
         </button>
       </div>
@@ -177,11 +187,12 @@ export function PlaceFinanceReceivablesModule({
                   type="button"
                   className="secondary"
                   onClick={() => onCreatePaymentReminder(selectedReceivable.targetType, selectedReceivable.targetId, selectedReceivable.billingPeriod, selectedReceivable.reminder)}
-                  disabled={busy}
+                  disabled={busy || !selectedCanCreateReminder}
                 >
                   Enviar lembrete
                 </button>
               </div>
+              {!selectedCanCreateReminder ? <p className="subtle">Lembrete automatico ainda nao cobre este tipo. Use WhatsApp/Cliente 360 e registre a baixa manual quando receber.</p> : null}
               <section>
                 <h4>Proximo passo</h4>
                 <p>{selectedReceivable.dueStatus === "overdue" ? "Cobrar agora ou marcar como pago se o pagamento ja foi recebido." : "Acompanhar vencimento e enviar lembrete quando necessario."}</p>

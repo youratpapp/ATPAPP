@@ -1,0 +1,1689 @@
+{
+  "route": {
+    "slug": "league-detail",
+    "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "surface": "Competition OS"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-league-detail.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ],
+    "possibleIssues": [
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 35,
+    "controlCount": 0,
+    "duplicateLabels": [
+      {
+        "label": "detalhes",
+        "count": 6,
+        "samples": [
+          {
+            "x": 221,
+            "y": 1230,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 1437,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 1643,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 1849,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 2055,
+            "w": 159,
+            "h": 40
+          }
+        ]
+      },
+      {
+        "label": "abrir sala",
+        "count": 5,
+        "samples": [
+          {
+            "x": 54,
+            "y": 1437,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 1643,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 1849,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 2055,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 2261,
+            "w": 159,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Liga ADT Simples 2026"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Liga ADT Simples 2026",
+        "rect": {
+          "x": 28,
+          "y": 28,
+          "w": 223,
+          "h": 63
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Resolva pendencias da rodada atual",
+        "rect": {
+          "x": 25,
+          "y": 240,
+          "w": 219,
+          "h": 86
+        }
+      }
+    ],
+    "textStart": "Liga ADT Simples 2026 Simples | Publica Ativa RODADA ATIVA OWNER Resolva pendencias da rodada atual Partidas, horarios, resultados enviados e analises precisam aparecer antes de configuracoes raras. 56 participantes 0 inscricoes pendentes 69 partidas pendentes 8 rodadas RODADA Rodada 10 Temporada 2026.1 PENDENCIAS 70 Todas as classes PROXIMA ACAO Resolver Organizar partidas ainda sem agenda. Resolver proxima pendencia O QUE PRECISA DE ACAO AGORA Financeiro: Registrar pagamento de Igor Nascimento Rodada 10: Caue Barbosa x Daniela Ishikawa Rodada 10: Henrique Ferreira x Isabela Mendes Rodada 10: Wagner Duarte x Yasmin Klein Rodada 10: Andre Rocha x Beatriz Zanetti RODADA ATUAL 70 tarefas para resolver Mostrando 6 primeiras. Abra a lista completa para ver tudo. Abrir lista completa FINANCEIRO Registrar pagamento de Igor Nascimento R$ 60,00 | Adulto / Classe B Inscricao aprovada sem pagamento registrado. Evita jogador confirmado com cobranca solta. Pagar Detalhes RODADA 10 Caue Barbosa x Daniela Ishikawa Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes RODADA 10 Henrique Ferreira x Isabela Mendes Adulto / Classe C | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes RODADA 10 Wagner Duarte x Yasmin Klein Adulto / Class",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 3012,
+    "firstFoldTextLength": 733,
+    "elements": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 70,
+          "y": 125,
+          "w": 44,
+          "h": 42
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resolver proxima pendencia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 380,
+          "w": 380,
+          "h": 48
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir lista completa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1033,
+          "w": 354,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 5,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "FINANCEIRO Registrar pagamento de Igor Nascimento R$ 60,00 | Adulto / Classe B Inscricao aprovada sem pagamento registrado. Evita jogador confirmado com cobranca solta. Pagar Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1081,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1231,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1230,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 8,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Caue Barbosa x Daniela Ishikawa Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1287,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1437,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1437,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Henrique Ferreira x Isabela Mendes Adulto / Classe C | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1494,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1643,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1643,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Wagner Duarte x Yasmin Klein Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1700,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1849,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1849,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Andre Rocha x Beatriz Zanetti Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1906,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 2055,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 2055,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Leonardo Castro x Manuela Esteves Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 2112,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 2261,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 2261,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Rodada 70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 2359,
+          "w": 190,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogos 69",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2359,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pessoas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 2409,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Tabela",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2409,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 2459,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ajustes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2459,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Copiar link",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 2738,
+          "w": 169,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Link de inscricao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2738,
+          "w": 169,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 2792,
+          "w": 346,
+          "h": 46
+        },
+        "className": "brand-icon-btn",
+        "contrast": 11.91,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "active",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "detalhes",
+        "count": 6,
+        "samples": [
+          {
+            "x": 221,
+            "y": 1230,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 1437,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 1643,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 1849,
+            "w": 159,
+            "h": 40
+          },
+          {
+            "x": 221,
+            "y": 2055,
+            "w": 159,
+            "h": 40
+          }
+        ]
+      },
+      {
+        "label": "abrir sala",
+        "count": 5,
+        "samples": [
+          {
+            "x": 54,
+            "y": 1437,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 1643,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 1849,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 2055,
+            "w": 159,
+            "h": 39
+          },
+          {
+            "x": 54,
+            "y": 2261,
+            "w": 159,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 70,
+          "y": 125,
+          "w": 44,
+          "h": 42
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resolver proxima pendencia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 380,
+          "w": 380,
+          "h": 48
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir lista completa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1033,
+          "w": 354,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 5,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "FINANCEIRO Registrar pagamento de Igor Nascimento R$ 60,00 | Adulto / Classe B Inscricao aprovada sem pagamento registrado. Evita jogador confirmado com cobranca solta. Pagar Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1081,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1231,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1230,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 8,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Caue Barbosa x Daniela Ishikawa Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1287,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1437,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1437,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Henrique Ferreira x Isabela Mendes Adulto / Classe C | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1494,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1643,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1643,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Wagner Duarte x Yasmin Klein Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1700,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 1849,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 1849,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Andre Rocha x Beatriz Zanetti Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1906,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 2055,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 2055,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "div",
+        "type": "",
+        "role": "button",
+        "text": "RODADA 10 Leonardo Castro x Manuela Esteves Adulto / Classe B | Aguardando organização 2 participante(s) ainda sem disponibilidade. 2 jogadores | sem horario definido Abrir sala Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 2112,
+          "w": 354,
+          "h": 198
+        },
+        "className": "tournament-organizer-task-row attention",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir sala",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 54,
+          "y": 2261,
+          "w": 159,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Detalhes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 221,
+          "y": 2261,
+          "w": 159,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Rodada 70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 2359,
+          "w": 190,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogos 69",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2359,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pessoas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 2409,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Tabela",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2409,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 2459,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ajustes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2459,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Copiar link",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 2738,
+          "w": 169,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Link de inscricao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 2738,
+          "w": 169,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 2792,
+          "w": 346,
+          "h": 46
+        },
+        "className": "brand-icon-btn",
+        "contrast": 11.91,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "active",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "labels-duplicados"
+    ]
+  },
+  "interactions": []
+}

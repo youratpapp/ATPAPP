@@ -5,11 +5,21 @@ Data: 2026-05-24
 
 ## Fonte Ativa
 
-A fila ativa agora e:
+A fila ativa consolidada ate o fechamento anterior foi:
 
 `SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md`
 
 Ela consolida apenas o que falta para fechar o SaaS apos as sprints de implementacao e compactacao visual.
+
+Nova varredura global criada apos esse fechamento:
+
+`DEEP_PRODUCT_SWEEP_2026_05_24.md`
+
+Queue executavel derivada da varredura:
+
+`DEEP_PRODUCT_SWEEP_FIX_QUEUE_2026_05_24.md`
+
+Esse documento passa a ser a fonte operacional imediata para a rodada atual de correcoes detectadas por auditoria de paginas, funcoes e botoes.
 
 ## Regra
 
@@ -58,10 +68,14 @@ Fila `SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md` executada ate `FINAL-12` em 2026-
 - Pasta de QA: `artifacts/saas-final-qa-2026-05-24/`.
 - Relatorio transversal final: `artifacts/saas-final-qa-2026-05-24/final-11-e2e-final-report.json`.
 - QA por papeis: `artifacts/saas-sprint-screens/sprint-90-role-audit-430.json` e `artifacts/saas-sprint-screens/sprint-91-role-audit-deep.json`.
+- QA por papeis reaproveitavel: `npm run qa:roles`, com smoke em `artifacts/role-smoke-audit-2026-05-24-smoke/role-smoke-report.json`.
+- Varredura profunda atual: `DEEP_PRODUCT_SWEEP_2026_05_24.md`, com artefatos em `artifacts/deep-product-sweep-2026-05-24-web-pass/`, `artifacts/deep-product-sweep-2026-05-24-mobile/` e `artifacts/deep-product-sweep-2026-05-24-critical-clicks/`.
+- Queue executavel atual: `DEEP_PRODUCT_SWEEP_FIX_QUEUE_2026_05_24.md`.
+- Follow-up rigoroso executado ate `SWEEP-FIX-09`, com evidencias em `artifacts/deep-product-sweep-2026-05-24-followup-agenda-compact/`, `artifacts/deep-product-sweep-2026-05-24-followup-finance-packages-2/` e `artifacts/deep-product-sweep-2026-05-24-followup-competition-fixes/`.
 - Build final validado com `npm.cmd run build`.
 
-## Pendencias Residuais Nao Bloqueantes
+## Pendencias Futuras Nao Bloqueantes
 
-- Transformar o QA por papeis ja executado em rotina reaproveitavel de CI/smoke local.
+- Manter storage states frescos fora de artefatos temporarios para a rodada completa do `qa:roles` executar todos os papeis sem pulos por expiracao de sessao.
 - Evoluir Relatorios e Comunicacao depois apenas para automacoes, historico profundo e graficos avancados.
 - Polimento textual global de strings antigas com acentos/mojibake fora das telas tocadas nesta fila.

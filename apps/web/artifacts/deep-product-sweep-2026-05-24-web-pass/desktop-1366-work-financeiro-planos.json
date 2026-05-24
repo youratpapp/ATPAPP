@@ -1,0 +1,2934 @@
+{
+  "route": {
+    "slug": "work-financeiro-planos",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+    "surface": "Work"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-work-financeiro-planos.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+    "h1": [],
+    "possibleIssues": [
+      {
+        "type": "sem-h1",
+        "severity": "media"
+      },
+      {
+        "type": "texto-cortado-em-controle",
+        "severity": "media"
+      },
+      {
+        "type": "alvo-click-pequeno",
+        "severity": "media"
+      },
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 47,
+    "controlCount": 15,
+    "duplicateLabels": [
+      {
+        "label": "0",
+        "count": 4,
+        "samples": [
+          {
+            "x": 973,
+            "y": 706,
+            "w": 93,
+            "h": 41
+          },
+          {
+            "x": 852,
+            "y": 1945,
+            "w": 312,
+            "h": 41
+          },
+          {
+            "x": 1172,
+            "y": 1945,
+            "w": 95,
+            "h": 41
+          },
+          {
+            "x": 323,
+            "y": 1994,
+            "w": 521,
+            "h": 41
+          }
+        ]
+      },
+      {
+        "label": "consumir 1",
+        "count": 10,
+        "samples": [
+          {
+            "x": 664,
+            "y": 834,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 705,
+            "y": 907,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 705,
+            "y": 980,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 471,
+            "y": 1271,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 321,
+            "y": 1358,
+            "w": 106,
+            "h": 39
+          }
+        ]
+      },
+      {
+        "label": "pausar",
+        "count": 4,
+        "samples": [
+          {
+            "x": 1093,
+            "y": 775,
+            "w": 77,
+            "h": 39
+          },
+          {
+            "x": 1142,
+            "y": 844,
+            "w": 77,
+            "h": 39
+          },
+          {
+            "x": 1077,
+            "y": 914,
+            "w": 77,
+            "h": 39
+          },
+          {
+            "x": 1007,
+            "y": 983,
+            "w": 77,
+            "h": 39
+          }
+        ]
+      },
+      {
+        "label": "cancelar",
+        "count": 8,
+        "samples": [
+          {
+            "x": 1170,
+            "y": 2138,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2226,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2314,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2402,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2490,
+            "w": 88,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [],
+    "headings": [],
+    "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Planos Planos, pacotes recorrentes e ofertas vendaveis. Recebiveis Pagos Despesas Planos Resumo Planos de socio Recorrencia mensal com beneficios 2 Socio EssencialR$ 219,00 / mes | quadras 15% | aulas 5% Socio PerformanceR$ 349,00 / mes | quadras 30% | aulas 15% Turmas da academia Pacotes mensais por turma 42 Kids Iniciante 1R$ 520,00 / mes | 8 vagas Avancado Ranking 1R$ 520,00 / mes | 4 vagas Intermediario Manha 2R$ 520,00 / mes | 4 vagas Profissional Treino 2R$ 520,00 / mes | 4 vagas Feminino Performance 3R$ 520,00 / mes | 4 vagas Kids Iniciante 4R$ 520,00 / mes | 8 vagas Aulas avulsas Drop-in e reposicoes cobradas 154 R$ 0,00 ja pago 84 drop-ins Ana GomesReposicao | R$ 0,00 | waived Patricia DiasReposicao | R$ 0,00 | waived Rafael AraujoReposicao | R$ 0,00 | waived Caue BarbosaReposicao | R$ 0,00 | waived Pedro LopesReposicao | R$ 0,00 | waived Mapa de ofertas Produtos que ja podem ser vendidos sem confundir operacao 132 Socio recorrente pronto Turmas mensais prontas Credito com saldo pronto Mensalidade recorrenteR$ 46.549,00 previstos entre socios e turm",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1351,
+    "viewportWidth": 1366,
+    "bodyHeight": 2896,
+    "firstFoldTextLength": 21056,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 500,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 25,
+          "w": 243,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1037,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebiveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 908,
+          "y": 182,
+          "w": 83,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 995,
+          "y": 182,
+          "w": 57,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Despesas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1055,
+          "y": 182,
+          "w": 76,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Planos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1134,
+          "y": 182,
+          "w": 61,
+          "h": 28
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resumo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1197,
+          "y": 182,
+          "w": 69,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 664,
+          "y": 834,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 705,
+          "y": 907,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 705,
+          "y": 980,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do pacote",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 973,
+          "y": 640,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Credito de quadra Credito de aula Day pass",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 638,
+          "w": 93,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "5",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1176,
+          "y": 640,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 973,
+          "y": 706,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 706,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar pacote",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 1176,
+          "y": 689,
+          "w": 93,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1093,
+          "y": 775,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1142,
+          "y": 844,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1077,
+          "y": 914,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1007,
+          "y": 983,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Selecione o pacote Pacote 10 reservas Pacote 5 reservas off-peak Aula avulsa particular Day pass visitante",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1134,
+          "w": 93,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Comprador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 422,
+          "y": 1136,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Telefone",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 524,
+          "y": 1136,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Notas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1202,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar venda",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 422,
+          "y": 1185,
+          "w": 93,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 471,
+          "y": 1271,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1358,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1445,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1532,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1618,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1705,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1839,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Plano",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 323,
+          "y": 1945,
+          "w": 521,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 852,
+          "y": 1945,
+          "w": 312,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1172,
+          "y": 1945,
+          "w": 95,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 323,
+          "y": 1994,
+          "w": 521,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar plano",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 852,
+          "y": 1994,
+          "w": 312,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2138,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 996,
+          "y": 2226,
+          "w": 70,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 2226,
+          "w": 88,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2226,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 996,
+          "y": 2314,
+          "w": 70,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 2314,
+          "w": 88,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2314,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2402,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2490,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2578,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2666,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2754,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "0",
+        "count": 4,
+        "samples": [
+          {
+            "x": 973,
+            "y": 706,
+            "w": 93,
+            "h": 41
+          },
+          {
+            "x": 852,
+            "y": 1945,
+            "w": 312,
+            "h": 41
+          },
+          {
+            "x": 1172,
+            "y": 1945,
+            "w": 95,
+            "h": 41
+          },
+          {
+            "x": 323,
+            "y": 1994,
+            "w": 521,
+            "h": 41
+          }
+        ]
+      },
+      {
+        "label": "consumir 1",
+        "count": 10,
+        "samples": [
+          {
+            "x": 664,
+            "y": 834,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 705,
+            "y": 907,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 705,
+            "y": 980,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 471,
+            "y": 1271,
+            "w": 106,
+            "h": 39
+          },
+          {
+            "x": 321,
+            "y": 1358,
+            "w": 106,
+            "h": 39
+          }
+        ]
+      },
+      {
+        "label": "pausar",
+        "count": 4,
+        "samples": [
+          {
+            "x": 1093,
+            "y": 775,
+            "w": 77,
+            "h": 39
+          },
+          {
+            "x": 1142,
+            "y": 844,
+            "w": 77,
+            "h": 39
+          },
+          {
+            "x": 1077,
+            "y": 914,
+            "w": 77,
+            "h": 39
+          },
+          {
+            "x": 1007,
+            "y": 983,
+            "w": 77,
+            "h": 39
+          }
+        ]
+      },
+      {
+        "label": "cancelar",
+        "count": 8,
+        "samples": [
+          {
+            "x": 1170,
+            "y": 2138,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2226,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2314,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2402,
+            "w": 88,
+            "h": 39
+          },
+          {
+            "x": 1170,
+            "y": 2490,
+            "w": 88,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 500,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 25,
+          "w": 243,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do pacote",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 973,
+          "y": 640,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Credito de quadra Credito de aula Day pass",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 638,
+          "w": 93,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "5",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1176,
+          "y": 640,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 973,
+          "y": 706,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 706,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Selecione o pacote Pacote 10 reservas Pacote 5 reservas off-peak Aula avulsa particular Day pass visitante",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1134,
+          "w": 93,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Comprador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 422,
+          "y": 1136,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Telefone",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 524,
+          "y": 1136,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Notas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1202,
+          "w": 93,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Plano",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 323,
+          "y": 1945,
+          "w": 521,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 852,
+          "y": 1945,
+          "w": 312,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1172,
+          "y": 1945,
+          "w": 95,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 323,
+          "y": 1994,
+          "w": 521,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1037,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebiveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 908,
+          "y": 182,
+          "w": 83,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 995,
+          "y": 182,
+          "w": 57,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Despesas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1055,
+          "y": 182,
+          "w": 76,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Planos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1134,
+          "y": 182,
+          "w": 61,
+          "h": 28
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resumo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1197,
+          "y": 182,
+          "w": 69,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 664,
+          "y": 834,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 705,
+          "y": 907,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 705,
+          "y": 980,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar pacote",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 1176,
+          "y": 689,
+          "w": 93,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1093,
+          "y": 775,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1142,
+          "y": 844,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1077,
+          "y": 914,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1007,
+          "y": 983,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar venda",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 422,
+          "y": 1185,
+          "w": 93,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 471,
+          "y": 1271,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1358,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1445,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1532,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1618,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1705,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Consumir 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 1839,
+          "w": 106,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar plano",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 852,
+          "y": 1994,
+          "w": 312,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2138,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 996,
+          "y": 2226,
+          "w": 70,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 2226,
+          "w": 88,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2226,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 996,
+          "y": 2314,
+          "w": 70,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1074,
+          "y": 2314,
+          "w": 88,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2314,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2402,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2490,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2578,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2666,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1170,
+          "y": 2754,
+          "w": 88,
+          "h": 39
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "sem-h1",
+      "texto-cortado-em-controle",
+      "alvo-click-pequeno",
+      "labels-duplicados"
+    ]
+  },
+  "interactions": []
+}

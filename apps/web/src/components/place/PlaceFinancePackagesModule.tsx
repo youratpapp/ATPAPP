@@ -1,5 +1,5 @@
 import type { AcademyClass, AcademyLessonRequest, PlaceCreditPackage, PlaceCreditPurchase, PlaceMembershipPlan } from "../../lib/types";
-import { WorkspaceCard, WorkspaceGrid, WorkspaceList } from "./PlaceWorkspaceUi";
+import { useMemo, useState } from "react";
 
 export type PlaceCreditPackageDraft = {
   name: string;
@@ -79,168 +79,225 @@ export function PlaceFinancePackagesModule({
 }: PlaceFinancePackagesModuleProps) {
   const dropInRequests = academyLessonRequests.filter((request) => request.requestType === "drop_in");
   const activeCreditPurchases = creditPurchases.filter((purchase) => purchase.status === "active");
+  const [selectedCreditPurchaseId, setSelectedCreditPurchaseId] = useState("");
+  const selectedCreditPurchase = useMemo(
+    () => creditPurchases.find((purchase) => purchase.id === selectedCreditPurchaseId) || activeCreditPurchases[0] || creditPurchases[0],
+    [activeCreditPurchases, creditPurchases, selectedCreditPurchaseId]
+  );
+  const offerRows = [
+    ...membershipPlans.map((plan) => ({
+      id: `plan:${plan.id}`,
+      name: plan.name,
+      type: "Plano de socio",
+      value: formatMoneyFromCents(plan.monthlyFeeCents),
+      detail: `Quadras ${plan.courtDiscountPercent}% | aulas ${plan.academyDiscountPercent}%`,
+      status: plan.isActive ? "Ativo" : "Pausado",
+    })),
+    ...academyClasses.map((academyClass) => ({
+      id: `class:${academyClass.id}`,
+      name: academyClass.title,
+      type: "Turma mensal",
+      value: formatMoneyFromCents(academyClass.monthlyFeeCents),
+      detail: `${academyClass.capacity} vagas | ${academyClass.coachName || "Sem professor"}`,
+      status: "Ativa",
+    })),
+    ...activeCreditPackages.map((item) => ({
+      id: `package:${item.id}`,
+      name: item.name,
+      type: CREDIT_PACKAGE_TYPE_LABELS[item.packageType],
+      value: formatMoneyFromCents(item.priceCents),
+      detail: `${item.quantity} usos | ${item.validityDays} dias`,
+      status: "Ativo",
+    })),
+    ...dropInRequests.map((request) => ({
+      id: `dropin:${request.id}`,
+      name: request.playerName,
+      type: request.requestType === "drop_in" ? "Aula avulsa" : "Reposicao",
+      value: formatMoneyFromCents(request.amountCents),
+      detail: request.notes || "Solicitacao avulsa",
+      status: request.paymentStatus,
+    })),
+  ];
 
   return (
-    <WorkspaceGrid>
-      <WorkspaceCard title="Planos de socio" subtitle="Recorrencia mensal com beneficios" value={membershipPlans.length}>
-        <WorkspaceList>
-          {membershipPlans.slice(0, 6).map((plan) => (
-            <span key={`finance-package-plan:${plan.id}`}>
-              <strong>{plan.name}</strong>
-              <small>{formatMoneyFromCents(plan.monthlyFeeCents)} / mes | quadras {plan.courtDiscountPercent}% | aulas {plan.academyDiscountPercent}%</small>
-            </span>
-          ))}
-          {!membershipPlans.length ? <span>Crie planos de socio em Financeiro &gt; Planos.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard title="Turmas da academia" subtitle="Pacotes mensais por turma" value={academyClasses.length}>
-        <WorkspaceList>
-          {academyClasses.slice(0, 6).map((academyClass) => (
-            <span key={`finance-package-class:${academyClass.id}`}>
-              <strong>{academyClass.title}</strong>
-              <small>{formatMoneyFromCents(academyClass.monthlyFeeCents)} / mes | {academyClass.capacity} vagas</small>
-            </span>
-          ))}
-          {!academyClasses.length ? <span>Cadastre turmas para vender mensalidades.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard
-        title="Aulas avulsas"
-        subtitle="Drop-in e reposicoes cobradas"
-        value={academyLessonRequests.length}
-        metrics={[`${formatMoneyFromCents(lessonPackageRevenueCents)} ja pago`, countLabel(dropInRequests.length, "drop-in", "drop-ins")]}
-      >
-        <WorkspaceList>
-          {academyLessonRequests.slice(0, 5).map((request) => (
-            <span key={`finance-package-request:${request.id}`}>
-              <strong>{request.playerName}</strong>
-              <small>{request.requestType === "drop_in" ? "Aula avulsa" : "Reposicao"} | {formatMoneyFromCents(request.amountCents)} | {request.paymentStatus}</small>
-            </span>
-          ))}
-          {!academyLessonRequests.length ? <span>Sem aulas avulsas ou reposicoes solicitadas.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard
-        title="Mapa de ofertas"
-        subtitle="Produtos que ja podem ser vendidos sem confundir operacao"
-        value={membershipPlans.length + academyClasses.length + activeCreditPackages.length + dropInRequests.length}
-        metrics={[
-          membershipPlans.length ? "Socio recorrente pronto" : "Criar plano de socio",
-          academyClasses.length ? "Turmas mensais prontas" : "Criar turmas mensais",
-          activeCreditPackages.length ? "Credito com saldo pronto" : "Criar pacote de credito",
-        ]}
-      >
-        <WorkspaceList>
-          <span>
-            <strong>Mensalidade recorrente</strong>
-            <small>{formatMoneyFromCents(recurringRevenueCents)} previstos entre socios e turmas.</small>
-          </span>
-          <span>
-            <strong>Aula avulsa</strong>
-            <small>{countLabel(dropInRequests.length, "solicitacao", "solicitacoes")} registradas.</small>
-          </span>
-          <span>
-            <strong>Pacote com saldo</strong>
-            <small>{countLabel(activeCreditPackages.length, "pacote ativo", "pacotes ativos")} | {creditBalanceUnits} creditos disponiveis vendidos.</small>
-          </span>
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard
-        title="Saude dos creditos"
-        subtitle="Vencimento, saldo e consumo"
-        value={`${creditUsagePct}%`}
-        metrics={[`${creditPurchasesExpiringSoon.length} vencendo`, `${creditPurchasesLowBalance.length} saldo baixo`, `${creditPurchasesExpired.length} vencidos`]}
-      >
-        <WorkspaceList>
-          {creditPurchasesExpiringSoon.slice(0, 3).map((purchase) => (
-            <span key={`credit-expiring:${purchase.id}`}>
-              <strong>{purchase.buyerName}</strong>
-              <small>{purchase.packageName} | vence {purchase.expiresOn} | {purchase.remainingQuantity} restantes</small>
-            </span>
-          ))}
-          {!creditPurchasesExpiringSoon.length ? <span>Nenhum credito vencendo nos proximos 7 dias.</span> : null}
-          {creditPurchasesLowBalance.slice(0, 3).map((purchase) => (
-            <span key={`credit-low:${purchase.id}`}>
-              <strong>{purchase.buyerName}</strong>
-              <small>{purchase.packageName} | saldo baixo: {purchase.remainingQuantity}/{purchase.initialQuantity}</small>
-              <button type="button" onClick={() => onConsumeCreditPurchase(purchase)} disabled={busy}>
-                Consumir 1
+    <section className="finance-packages-console">
+      <div className="finance-package-summary" aria-label="Resumo de planos e creditos">
+        <span>
+          <strong>{membershipPlans.length}</strong>
+          planos de socio
+        </span>
+        <span>
+          <strong>{academyClasses.length}</strong>
+          turmas mensais
+        </span>
+        <span>
+          <strong>{creditBalanceUnits}</strong>
+          creditos ativos
+        </span>
+        <span>
+          <strong>{formatMoneyFromCents(recurringRevenueCents + creditPackageRevenueCents + lessonPackageRevenueCents)}</strong>
+          receita vinculada
+        </span>
+        <span>
+          <strong>{creditUsagePct}%</strong>
+          uso dos creditos
+        </span>
+        <span>
+          <strong>{creditPurchasesExpiringSoon.length + creditPurchasesLowBalance.length + creditPurchasesExpired.length}</strong>
+          alertas de credito
+        </span>
+      </div>
+
+      <div className="finance-packages-layout">
+        <div className="finance-packages-main">
+          <section className="finance-package-panel">
+            <header>
+              <div>
+                <strong>Catalogo vendavel</strong>
+                <span>Planos, turmas, creditos e aulas avulsas em uma lista unica.</span>
+              </div>
+            </header>
+            <div className="finance-package-table" role="table" aria-label="Catalogo de planos e pacotes">
+              <div className="finance-package-row finance-package-row--head" role="row">
+                <span>Oferta</span>
+                <span>Tipo</span>
+                <span>Valor</span>
+                <span>Status</span>
+              </div>
+              {offerRows.slice(0, 16).map((row) => (
+                <div className="finance-package-row" role="row" key={row.id}>
+                  <span>
+                    <strong>{row.name}</strong>
+                    <small>{row.detail}</small>
+                  </span>
+                  <span>{row.type}</span>
+                  <span>{row.value}</span>
+                  <span className="status-pill">{row.status}</span>
+                </div>
+              ))}
+              {!offerRows.length ? <p className="empty-hint">Nenhuma oferta cadastrada ainda.</p> : null}
+            </div>
+          </section>
+
+          <section className="finance-package-panel">
+            <header>
+              <div>
+                <strong>Vendas de credito</strong>
+                <span>Selecione uma venda para consumir saldo ou acompanhar vencimento.</span>
+              </div>
+              <span className="status-pill">{countLabel(activeCreditPurchases.length, "ativo", "ativos")}</span>
+            </header>
+            <div className="credit-package-form finance-package-sale-form">
+              <select value={creditPurchaseDraft.packageId} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, packageId: event.target.value })}>
+                <option value="">Pacote</option>
+                {activeCreditPackages.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              <input value={creditPurchaseDraft.buyerName} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, buyerName: event.target.value })} placeholder="Comprador" />
+              <input value={creditPurchaseDraft.phone} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, phone: event.target.value })} placeholder="Telefone" />
+              <input value={creditPurchaseDraft.notes} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, notes: event.target.value })} placeholder="Notas" />
+              <button type="button" onClick={onRecordCreditPurchase} disabled={busy || !creditPurchaseDraft.packageId || !creditPurchaseDraft.buyerName.trim()}>
+                Registrar venda
               </button>
-            </span>
-          ))}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard
-        title="Creditos e passes"
-        subtitle="Venda com saldo, validade e consumo manual"
-        value={activeCreditPackages.length}
-        metrics={[`${creditBalanceUnits} saldo ativo`, `${formatMoneyFromCents(creditPackageRevenueCents)} vendido`]}
-      >
-        <div className="credit-package-form">
-          <input value={creditPackageDraft.name} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, name: event.target.value })} placeholder="Nome do pacote" />
-          <select value={creditPackageDraft.packageType} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, packageType: event.target.value as PlaceCreditPackage["packageType"] })}>
-            <option value="court_credit">Credito de quadra</option>
-            <option value="lesson_credit">Credito de aula</option>
-            <option value="day_pass">Day pass</option>
-          </select>
-          <input type="number" min="1" value={creditPackageDraft.quantity} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, quantity: event.target.value })} placeholder="Qtd." />
-          <input type="number" min="0" value={creditPackageDraft.price} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, price: event.target.value })} placeholder="Valor R$" />
-          <input
-            type="number"
-            min="1"
-            value={creditPackageDraft.validityDays}
-            onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, validityDays: event.target.value })}
-            placeholder="Validade"
-          />
-          <button type="button" onClick={onCreateCreditPackage} disabled={busy || !creditPackageDraft.name.trim()}>
-            Criar pacote
-          </button>
-        </div>
-        <WorkspaceList>
-          {creditPackages.slice(0, 6).map((item) => (
-            <span key={`credit-package:${item.id}`}>
-              <strong>{item.name}</strong>
-              <small>{CREDIT_PACKAGE_TYPE_LABELS[item.packageType]} | {item.quantity} usos | {formatMoneyFromCents(item.priceCents)} | {item.validityDays} dias</small>
-              <button type="button" onClick={() => onToggleCreditPackage(item)} disabled={busy}>
-                {item.isActive ? "Pausar" : "Reativar"}
-              </button>
-            </span>
-          ))}
-          {!creditPackages.length ? <span>Crie o primeiro pacote com saldo para vender credito real.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-      <WorkspaceCard title="Vendas de credito" subtitle="Controle de saldo por comprador" value={activeCreditPurchases.length} metrics={[countLabel(creditPurchases.length, "venda", "vendas"), `${creditBalanceUnits} usos restantes`]}>
-        <div className="credit-package-form">
-          <select value={creditPurchaseDraft.packageId} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, packageId: event.target.value })}>
-            <option value="">Selecione o pacote</option>
-            {activeCreditPackages.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.name}
-              </option>
-            ))}
-          </select>
-          <input value={creditPurchaseDraft.buyerName} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, buyerName: event.target.value })} placeholder="Comprador" />
-          <input value={creditPurchaseDraft.phone} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, phone: event.target.value })} placeholder="Telefone" />
-          <input value={creditPurchaseDraft.notes} onChange={(event) => onCreditPurchaseDraftChange({ ...creditPurchaseDraft, notes: event.target.value })} placeholder="Notas" />
-          <button type="button" onClick={onRecordCreditPurchase} disabled={busy || !creditPurchaseDraft.packageId || !creditPurchaseDraft.buyerName.trim()}>
-            Registrar venda
-          </button>
-        </div>
-        <WorkspaceList>
-          {creditPurchases.slice(0, 8).map((purchase) => (
-            <span key={`credit-purchase:${purchase.id}`}>
-              <strong>{purchase.buyerName}</strong>
-              <small>{purchase.packageName} | {purchase.remainingQuantity}/{purchase.initialQuantity} restantes | vence {purchase.expiresOn || "sem data"} | {purchase.status}</small>
-              {purchase.status === "active" ? (
-                <button type="button" onClick={() => onConsumeCreditPurchase(purchase)} disabled={busy}>
-                  Consumir 1
+            </div>
+            <div className="finance-package-table finance-package-table--credits" role="table" aria-label="Vendas de credito">
+              <div className="finance-package-row finance-package-row--head" role="row">
+                <span>Cliente</span>
+                <span>Pacote</span>
+                <span>Saldo</span>
+                <span>Vence</span>
+              </div>
+              {creditPurchases.slice(0, 18).map((purchase) => (
+                <button
+                  type="button"
+                  className={`finance-package-row finance-package-row--button${selectedCreditPurchase?.id === purchase.id ? " active" : ""}`}
+                  key={`credit-purchase:${purchase.id}`}
+                  onClick={() => setSelectedCreditPurchaseId(purchase.id)}
+                >
+                  <span>{purchase.buyerName}</span>
+                  <span>{purchase.packageName}</span>
+                  <span>{purchase.remainingQuantity}/{purchase.initialQuantity}</span>
+                  <span>{purchase.expiresOn || "Sem data"}</span>
                 </button>
-              ) : null}
-            </span>
-          ))}
-          {!creditPurchases.length ? <span>Sem vendas de credito registradas.</span> : null}
-        </WorkspaceList>
-      </WorkspaceCard>
-    </WorkspaceGrid>
+              ))}
+              {!creditPurchases.length ? <p className="empty-hint">Sem vendas de credito registradas.</p> : null}
+            </div>
+          </section>
+        </div>
+
+        <aside className="finance-package-side-drawer" aria-label="Detalhe de planos e creditos">
+          <section>
+            <span className="eyebrow">Credito selecionado</span>
+            {selectedCreditPurchase ? (
+              <>
+                <strong>{selectedCreditPurchase.buyerName}</strong>
+                <dl>
+                  <div>
+                    <dt>Pacote</dt>
+                    <dd>{selectedCreditPurchase.packageName}</dd>
+                  </div>
+                  <div>
+                    <dt>Saldo</dt>
+                    <dd>{selectedCreditPurchase.remainingQuantity}/{selectedCreditPurchase.initialQuantity}</dd>
+                  </div>
+                  <div>
+                    <dt>Vencimento</dt>
+                    <dd>{selectedCreditPurchase.expiresOn || "Sem data"}</dd>
+                  </div>
+                  <div>
+                    <dt>Status</dt>
+                    <dd>{selectedCreditPurchase.status}</dd>
+                  </div>
+                </dl>
+                {selectedCreditPurchase.status === "active" ? (
+                  <button type="button" onClick={() => onConsumeCreditPurchase(selectedCreditPurchase)} disabled={busy}>
+                    Consumir 1 credito
+                  </button>
+                ) : null}
+              </>
+            ) : (
+              <p className="empty-hint">Selecione uma venda para ver o saldo e as acoes.</p>
+            )}
+          </section>
+
+          <section>
+            <span className="eyebrow">Novo pacote</span>
+            <div className="credit-package-form finance-package-drawer-form">
+              <input value={creditPackageDraft.name} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, name: event.target.value })} placeholder="Nome do pacote" />
+              <select value={creditPackageDraft.packageType} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, packageType: event.target.value as PlaceCreditPackage["packageType"] })}>
+                <option value="court_credit">Credito de quadra</option>
+                <option value="lesson_credit">Credito de aula</option>
+                <option value="day_pass">Day pass</option>
+              </select>
+              <input type="number" min="1" value={creditPackageDraft.quantity} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, quantity: event.target.value })} placeholder="Qtd." />
+              <input type="number" min="0" value={creditPackageDraft.price} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, price: event.target.value })} placeholder="Valor R$" />
+              <input type="number" min="1" value={creditPackageDraft.validityDays} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, validityDays: event.target.value })} placeholder="Validade" />
+              <button type="button" onClick={onCreateCreditPackage} disabled={busy || !creditPackageDraft.name.trim()}>
+                Criar pacote
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <span className="eyebrow">Pacotes cadastrados</span>
+            <div className="finance-package-mini-list">
+              {creditPackages.slice(0, 8).map((item) => (
+                <button type="button" key={`credit-package:${item.id}`} onClick={() => onToggleCreditPackage(item)} disabled={busy}>
+                  <span>
+                    <strong>{item.name}</strong>
+                    <small>{CREDIT_PACKAGE_TYPE_LABELS[item.packageType]} | {item.quantity} usos</small>
+                  </span>
+                  <em>{item.isActive ? "Pausar" : "Reativar"}</em>
+                </button>
+              ))}
+              {!creditPackages.length ? <p className="empty-hint">Crie o primeiro pacote para vender creditos.</p> : null}
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
   );
 }

@@ -1,0 +1,263 @@
+{
+  "generatedAt": "2026-05-24T22:29:40.819Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-followup-finance-packages-2",
+  "routeCount": 2,
+  "viewportCount": 1,
+  "pageRuns": 2,
+  "issueCount": 2,
+  "issueSummary": {
+    "texto-cortado-em-controle": 1,
+    "labels-duplicados": 1
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=planos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Ver página publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "work-financeiro-planos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 56,
+        "controlCount": 15,
+        "duplicateLabels": [
+          {
+            "label": "0",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1118,
+                "y": 772,
+                "w": 135,
+                "h": 41
+              },
+              {
+                "x": 852,
+                "y": 1397,
+                "w": 312,
+                "h": 41
+              },
+              {
+                "x": 1172,
+                "y": 1397,
+                "w": 95,
+                "h": 41
+              },
+              {
+                "x": 323,
+                "y": 1446,
+                "w": 521,
+                "h": 41
+              }
+            ]
+          },
+          {
+            "label": "cancelar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 1170,
+                "y": 1590,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1678,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1766,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1854,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1942,
+                "w": 88,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-publico",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

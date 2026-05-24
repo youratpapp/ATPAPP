@@ -1,0 +1,770 @@
+{
+  "route": {
+    "slug": "player-inicio",
+    "hash": "#/inicio",
+    "surface": "Player"
+  },
+  "viewport": "desktop-wide",
+  "screenshot": "desktop-wide-player-inicio.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/inicio",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 17,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/inicio",
+    "hash": "#/inicio",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Encontre seu proximo jogo",
+        "rect": {
+          "x": 313,
+          "y": 167,
+          "w": 453,
+          "h": 134
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, entre em aula ou descubra competicoes abertas. Explorar 0 Pendencias sem urgencias 0 Agenda Livre agora 0 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios TREINAR Aulas EVOLUIR Ligas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1600,
+    "viewportWidth": 1600,
+    "bodyHeight": 1000,
+    "firstFoldTextLength": 507,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1316,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1397,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Notificacoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1540,
+          "y": 10,
+          "w": 40,
+          "h": 44
+        },
+        "className": "icon-btn app-bell-btn",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Explorar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 313,
+          "y": 376,
+          "w": 89,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Pendencias sem urgencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1025,
+          "y": 290,
+          "w": 162,
+          "h": 130
+        },
+        "className": "home-command-stat home-command-stat--priority",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Agenda Livre agora",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 290,
+          "w": 162,
+          "h": 130
+        },
+        "className": "home-command-stat home-command-stat--agenda",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Rotina itens no seu painel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 290,
+          "w": 162,
+          "h": 130
+        },
+        "className": "home-command-stat home-command-stat--routine",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVAR Quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 283,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "JOGAR Encontrar jogo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 541,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "COMPETIR Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TREINAR Aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1057,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "EVOLUIR Ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1315,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1316,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1397,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Notificacoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1540,
+          "y": 10,
+          "w": 40,
+          "h": 44
+        },
+        "className": "icon-btn app-bell-btn",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Explorar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 313,
+          "y": 376,
+          "w": 89,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Pendencias sem urgencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1025,
+          "y": 290,
+          "w": 162,
+          "h": 130
+        },
+        "className": "home-command-stat home-command-stat--priority",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Agenda Livre agora",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 290,
+          "w": 162,
+          "h": 130
+        },
+        "className": "home-command-stat home-command-stat--agenda",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Rotina itens no seu painel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 290,
+          "w": 162,
+          "h": 130
+        },
+        "className": "home-command-stat home-command-stat--routine",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVAR Quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 283,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "JOGAR Encontrar jogo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 541,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "COMPETIR Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TREINAR Aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1057,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "EVOLUIR Ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1315,
+          "y": 486,
+          "w": 250,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": []
+}

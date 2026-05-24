@@ -283,6 +283,12 @@ const EMPTY_CRM_DRAFT: PlaceCrmContactDraft = { name: "", phone: "", email: "", 
 const DEFAULT_CRM_INTERACTION_DRAFT: CrmInteractionDraft = { interactionType: "whatsapp", body: "", nextContactOn: "" };
 const DEFAULT_CREDIT_PACKAGE_DRAFT: PlaceCreditPackageDraft = { name: "", packageType: "court_credit", quantity: "5", price: "0", validityDays: "30" };
 const DEFAULT_CREDIT_PURCHASE_DRAFT: PlaceCreditPurchaseDraft = { packageId: "", buyerName: "", phone: "", notes: "" };
+const PAYMENT_REMINDER_SUPPORTED_TARGETS = new Set(["academy_enrollment", "academy_student_contract", "court_booking", "place_membership"]);
+
+function canCreatePaymentReminderForTarget(targetType: string): boolean {
+  return PAYMENT_REMINDER_SUPPORTED_TARGETS.has(targetType);
+}
+
 const DEFAULT_BOOKING_RULE_DRAFT: BookingRuleDraft = {
   name: "Horario padrao",
   profileScope: "all",
@@ -1498,6 +1504,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   };
 
   const onCreatePaymentReminder = async (targetType: string, targetId: string, billingPeriod: string, message: string) => {
+    if (!canCreatePaymentReminderForTarget(targetType)) {
+      setFeedback({
+        kind: "info",
+        text: "Este recebivel ainda nao possui lembrete automatico. Use o Cliente 360/WhatsApp e mantenha a baixa manual por aqui.",
+      });
+      return;
+    }
     setBusy(true);
     setFeedback(null);
     try {
@@ -1540,8 +1553,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const onCreatePaymentReminderBatch = async (
     targets: Array<{ targetType: string; targetId: string; billingPeriod: string; reminder: string }>
   ) => {
-    const rows = targets.filter((target) => target.targetId && target.reminder);
-    if (!rows.length) return;
+    const rows = targets.filter((target) => target.targetId && target.reminder && canCreatePaymentReminderForTarget(target.targetType));
+    if (!rows.length) {
+      setFeedback({
+        kind: "info",
+        text: "Nenhum item desta lista possui lembrete automatico compativel. Use WhatsApp/Cliente 360 para contato manual.",
+      });
+      return;
+    }
     setBusy(true);
     setFeedback(null);
     try {

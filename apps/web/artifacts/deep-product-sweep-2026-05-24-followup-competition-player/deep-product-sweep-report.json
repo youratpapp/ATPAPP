@@ -1,0 +1,1210 @@
+{
+  "generatedAt": "2026-05-24T22:36:36.825Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-followup-competition-player",
+  "routeCount": 12,
+  "viewportCount": 1,
+  "pageRuns": 12,
+  "issueCount": 6,
+  "issueSummary": {
+    "sem-h1": 1,
+    "labels-duplicados": 4,
+    "alvo-click-pequeno": 1
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-competition-os.png",
+      "type": "sem-h1",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-competition-torneios-work.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-tournament-jogos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-tournament-organizacao.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-tournament-organizacao.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-league-detail.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "EVOLUIR Ligas",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/ligas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "Ver agenda",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "RECOMENDADO Encontre seu proximo jogo Partidas, torneios e aulas perto de voce. Explorar perto",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Descobrir torneios e ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos?modo=discover",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Ver todos",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=pagamentos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "HISTORICO 5 reservas, jogos e pagamentos passados",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Editar perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Conta",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Todos 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Torneios 7",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Ligas 15",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Pendencias 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Historico 12",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Desafio Interno Prime Kids Torneio - Cuiaba - MT Rascunho Resolver proximo bloqueio atualizado em 14 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/1aca8ad2-b2e4-4fe6-8edf-2442c9d5060b/jogos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "ATP Open Dourados 021510 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/7909eee5-1d26-414b-98a2-edaa37ae1030/organizacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "ATP Open Dourados 010650 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/7ed76af1-3e18-41e5-8256-e14d6b3a60ae/organizacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-ligas-work",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas?view=organizing",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-ligas-work",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/ligas?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-ligas-work",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/ligas?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Resolver proxima pendencia",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Abrir lista completa",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=jogadores",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 11,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 24,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-perfil",
+        "hash": "#/perfil",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-perfil.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/perfil",
+        "h1": [
+          "Perfil"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 12,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "competition-os",
+        "hash": "#/eventos?modo=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-competition-os.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+        "h1": [],
+        "possibleIssues": [
+          {
+            "type": "sem-h1",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 44,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "competition-torneios-work",
+        "hash": "#/eventos/torneios?view=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-competition-torneios-work.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+        "h1": [
+          "Torneios que organizo"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 45,
+        "controlCount": 8,
+        "duplicateLabels": [
+          {
+            "label": "gerir inscritos",
+            "count": 3,
+            "samples": [
+              {
+                "x": 1165,
+                "y": 599,
+                "w": 127,
+                "h": 39
+              },
+              {
+                "x": 1165,
+                "y": 715,
+                "w": 127,
+                "h": 39
+              },
+              {
+                "x": 1068,
+                "y": 830,
+                "w": 127,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "competition-ligas-work",
+        "hash": "#/eventos/ligas?view=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-competition-ligas-work.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing",
+        "h1": [
+          "Ligas que organizo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogos",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-jogos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 138,
+        "controlCount": 125,
+        "duplicateLabels": [
+          {
+            "label": "set 1 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1088,
+                "y": 1226,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1382,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1537,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1693,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1849,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 1 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1192,
+                "y": 1226,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1382,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1537,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1693,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1849,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1088,
+                "y": 1270,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1426,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1581,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1737,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1893,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1192,
+                "y": 1270,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1426,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1581,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1737,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1893,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-classificacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-classificacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-organizacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-organizacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 55,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "whatsapp",
+            "count": 3,
+            "samples": [
+              {
+                "x": 589,
+                "y": 1273,
+                "w": 126,
+                "h": 40
+              },
+              {
+                "x": 776,
+                "y": 1729,
+                "w": 126,
+                "h": 39
+              },
+              {
+                "x": 1101,
+                "y": 1883,
+                "w": 156,
+                "h": 38
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-detail",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-league-detail.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 37,
+        "controlCount": 0,
+        "duplicateLabels": [
+          {
+            "label": "detalhes",
+            "count": 6,
+            "samples": [
+              {
+                "x": 1189,
+                "y": 974,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1058,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1143,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1228,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1312,
+                "w": 82,
+                "h": 37
+              }
+            ]
+          },
+          {
+            "label": "abrir sala",
+            "count": 5,
+            "samples": [
+              {
+                "x": 1085,
+                "y": 1057,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1142,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1227,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1311,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1396,
+                "w": 97,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

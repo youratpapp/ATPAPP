@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { AcademyClass, AcademyEnrollment, AcademyLessonRequest, AcademyPlannedAbsence, AppPayment, CourtBooking, PlaceCourt } from "../../lib/types";
 import { countLabel } from "../../lib/place-management";
 
@@ -66,6 +67,31 @@ const CALENDAR_VIEWS: Array<{ label: string; value: CalendarView }> = [
   { label: "Canceladas", value: "cancelled" },
   { label: "Conflitos", value: "conflicts" },
 ];
+
+const CALENDAR_VIEW_QUERY: Record<CalendarView, string> = {
+  day: "dia",
+  week: "semana",
+  list: "lista",
+  reschedules: "remarcacoes",
+  cancelled: "canceladas",
+  conflicts: "conflitos",
+};
+
+const CALENDAR_VIEW_FROM_QUERY: Record<string, CalendarView> = {
+  dia: "day",
+  day: "day",
+  semana: "week",
+  week: "week",
+  lista: "list",
+  list: "list",
+  remarcacoes: "reschedules",
+  remarcações: "reschedules",
+  reschedules: "reschedules",
+  canceladas: "cancelled",
+  cancelled: "cancelled",
+  conflitos: "conflicts",
+  conflicts: "conflicts",
+};
 
 const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
@@ -250,6 +276,8 @@ export function PlaceBookingCalendarModule({
   reservedMinutes,
   variant = "all",
 }: Props) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeView, setActiveView] = useState<CalendarView>("day");
   const [typeFilter, setTypeFilter] = useState<AgendaItemType | "all">("all");
   const [courtFilter, setCourtFilter] = useState("");
@@ -263,6 +291,23 @@ export function PlaceBookingCalendarModule({
   const [editDraft, setEditDraft] = useState<EditDraft>({ courtId: "", endDate: "", endTime: "", notes: "", startDate: "", startTime: "" });
   const selectedWeekday = weekdayFromDate(day);
   const sourceBookings = allBookings || bookings;
+  const requestedView = useMemo(() => {
+    const raw = new URLSearchParams(location.search).get("modo") || "";
+    return CALENDAR_VIEW_FROM_QUERY[raw.trim().toLowerCase()] || null;
+  }, [location.search]);
+
+  const selectView = (view: CalendarView) => {
+    setActiveView(view);
+    const params = new URLSearchParams(location.search);
+    params.set("modo", CALENDAR_VIEW_QUERY[view]);
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  };
+
+  useEffect(() => {
+    if (requestedView && requestedView !== activeView) {
+      setActiveView(requestedView);
+    }
+  }, [activeView, requestedView]);
 
   useEffect(() => {
     if (variant === "reservations") {
@@ -529,7 +574,7 @@ export function PlaceBookingCalendarModule({
       <header className="saas-domain-header">
         <div>
           <span>OPERACAO</span>
-          <h2>{isReservationsView ? "Reservas" : "Agenda"}</h2>
+          <h1>{isReservationsView ? "Reservas" : "Agenda"}</h1>
           <p>
             {isReservationsView
               ? "Calendario de reservas com edicao, pagamento, cancelamento e WhatsApp no detalhe lateral."
@@ -555,7 +600,7 @@ export function PlaceBookingCalendarModule({
 
       <nav className="court-calendar-view-tabs" aria-label="Visoes da agenda">
         {CALENDAR_VIEWS.map(({ label, value }) => (
-          <button key={value} className={activeView === value ? "active" : ""} type="button" onClick={() => setActiveView(value)}>
+          <button key={value} className={activeView === value ? "active" : ""} type="button" onClick={() => selectView(value)}>
             {label}
           </button>
         ))}
@@ -755,6 +800,7 @@ export function PlaceBookingCalendarModule({
                               key={item.id}
                               className={`court-agenda-event-button ${item.type} status-${item.booking?.status || item.type} payment-${payment?.status || "none"}${selectedItemId === item.id ? " active" : ""}`}
                               type="button"
+                              aria-label={`${item.title}. ${activeCourts.find((courtOption) => courtOption.id === item.courtId)?.name || "Quadra"}. ${slot}. ${badgeLabel}.`}
                               onClick={() => {
                                 setSelectedItemId(item.id);
                                 setEditingBookingId("");
@@ -769,6 +815,7 @@ export function PlaceBookingCalendarModule({
                         <button
                           className="court-calendar-free-slot"
                           type="button"
+                          aria-label={`Horario livre em ${court.name} as ${slot}`}
                           onClick={() =>
                             canManageBookings && onCreateFromSlot
                               ? onCreateFromSlot({

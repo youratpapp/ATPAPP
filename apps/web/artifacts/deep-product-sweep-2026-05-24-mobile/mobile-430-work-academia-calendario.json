@@ -1,0 +1,553 @@
+{
+  "route": {
+    "slug": "work-academia-calendario",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-academia-calendario.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "h1": [],
+    "possibleIssues": [
+      {
+        "type": "sem-h1",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 11,
+    "controlCount": 1,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [],
+    "headings": [],
+    "textStart": "EA Escalao Admin Jogador Trabalho Agenda de aulas Grade visual por horario, quadra, turma e alunos. AULAS HOJE 0 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos. PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas. ALUNOS ATIVOS 82 alunos Base completa fica em Pessoas. TURMAS 27 turmas Horarios semanais e vagas ficam na aba Turmas. AGENDA DA ACADEMIA Agenda diaria de aulas Nenhuma aula vinculada para este dia. Hora 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 Quadra 1 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 2 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 3 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 4 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 5 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 6 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Hoje Agenda Clientes Financeiro Mais",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1538,
+    "firstFoldTextLength": 6847,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "AULAS HOJE 0 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": 247,
+          "w": 142,
+          "h": 135
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 247,
+          "w": 142,
+          "h": 135
+        },
+        "className": "urgent",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ALUNOS ATIVOS 82 alunos Base completa fica em Pessoas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": 390,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TURMAS 27 turmas Horarios semanais e vagas ficam na aba Turmas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 390,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "2026-05-24",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 631,
+          "w": 253,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "2026-05-24",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 631,
+          "w": 253,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "AULAS HOJE 0 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": 247,
+          "w": 142,
+          "h": 135
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 247,
+          "w": 142,
+          "h": 135
+        },
+        "className": "urgent",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ALUNOS ATIVOS 82 alunos Base completa fica em Pessoas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": 390,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TURMAS 27 turmas Horarios semanais e vagas ficam na aba Turmas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 390,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "sem-h1"
+    ]
+  },
+  "interactions": []
+}

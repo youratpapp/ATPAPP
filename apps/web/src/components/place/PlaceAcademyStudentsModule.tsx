@@ -235,6 +235,8 @@ export function PlaceAcademyStudentsModule({
 
   return (
     <>
+      <div className="academy-students-workbench">
+        <div className="academy-students-directory">
       <WorkspaceList>
         <div className="academy-student-toolbar">
           <input
@@ -390,6 +392,170 @@ export function PlaceAcademyStudentsModule({
           />
         ) : null}
       </WorkspaceList>
+        </div>
+
+        <aside className="academy-student-side-drawer" aria-label="Detalhe do aluno">
+          {selectedEnrollment && editDraft ? (
+            <>
+              <header>
+                <div>
+                  <span>Aluno 360</span>
+                  <strong>{selectedEnrollment.playerName}</strong>
+                  <small>{[selectedClass?.title || "Turma", statusLabel(selectedEnrollment.status), selectedPaid ? "mensalidade paga" : "pagamento pendente"].join(" | ")}</small>
+                </div>
+                <button type="button" className="quiet" onClick={() => setSelectedEnrollmentId(null)} aria-label="Fechar detalhe do aluno">
+                  x
+                </button>
+              </header>
+              <div className="academy-student-side-body">
+                <section>
+                  <h3>Resumo</h3>
+                  <dl className="academy-student-detail-list">
+                    <div>
+                      <dt>Telefone</dt>
+                      <dd>{selectedEnrollment.phone || "Sem telefone"}</dd>
+                    </div>
+                    <div>
+                      <dt>Turma</dt>
+                      <dd>{selectedClass?.title || "Turma nao encontrada"}</dd>
+                    </div>
+                    <div>
+                      <dt>Plano</dt>
+                      <dd>{selectedContract ? `Plano ${selectedContract.weeklyLessonsCount}x/semana` : "Matricula avulsa"}</dd>
+                    </div>
+                    <div>
+                      <dt>Pagamento</dt>
+                      <dd>{selectedPaid ? "Pago" : "Pendente"}</dd>
+                    </div>
+                  </dl>
+                  <WorkspaceMetrics
+                    items={[
+                      countLabel(selectedContractEnrollments.length, "horario semanal", "horarios semanais"),
+                      countLabel(selectedMakeups.length, "reposicao", "reposicoes"),
+                      countLabel(selectedAbsences.length, "aviso previo", "avisos previos"),
+                      countLabel(selectedProgress.length, "evolucao", "evolucoes"),
+                    ]}
+                  />
+                  <div className="academy-student-side-actions">
+                    {selectedClass && canManageFinance && !selectedPaid ? (
+                      <>
+                        <button type="button" onClick={() => onMarkPaid(selectedClass, selectedEnrollment)} disabled={busy}>
+                          Pagar
+                        </button>
+                        <button type="button" className="secondary" onClick={() => onCreatePaymentReminder(selectedEnrollment, selectedClass)} disabled={busy}>
+                          Lembrar
+                        </button>
+                      </>
+                    ) : null}
+                    <button type="button" className="secondary" onClick={() => onReportAbsence(selectedEnrollment.id)} disabled={busy}>
+                      Aviso previo
+                    </button>
+                    {selectedEnrollment.status !== "cancelled" ? (
+                      <button type="button" className="danger" onClick={() => onUpdateEnrollment(selectedEnrollment.id, "cancelled")} disabled={busy || !canManagePlace}>
+                        Cancelar
+                      </button>
+                    ) : (
+                      <button type="button" onClick={() => onUpdateEnrollment(selectedEnrollment.id, "active")} disabled={busy || !canManagePlace}>
+                        Reativar
+                      </button>
+                    )}
+                  </div>
+                </section>
+
+                <section>
+                  <h3>Cadastro</h3>
+                  <div className="academy-drawer-form compact">
+                    <label>
+                      <span>Nome</span>
+                      <input value={editDraft.playerName} onChange={(event) => setEditDraft({ ...editDraft, playerName: event.target.value })} disabled={!canManagePlace} />
+                    </label>
+                    <label>
+                      <span>Telefone</span>
+                      <input value={editDraft.phone} onChange={(event) => setEditDraft({ ...editDraft, phone: event.target.value })} disabled={!canManagePlace} />
+                    </label>
+                    <label>
+                      <span>Turma</span>
+                      <select value={editDraft.classId} onChange={(event) => setEditDraft({ ...editDraft, classId: event.target.value })} disabled={!canManagePlace}>
+                        {classes.map((academyClass) => (
+                          <option key={`student-side-class:${academyClass.id}`} value={academyClass.id}>
+                            {academyClass.title}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Status</span>
+                      <select value={editDraft.status} onChange={(event) => setEditDraft({ ...editDraft, status: event.target.value as AcademyEnrollment["status"] })} disabled={!canManagePlace}>
+                        <option value="active">Ativo</option>
+                        <option value="pending">Pendente</option>
+                        <option value="cancelled">Cancelado</option>
+                      </select>
+                    </label>
+                    <label className="wide">
+                      <span>Observacoes</span>
+                      <textarea value={editDraft.notes} onChange={(event) => setEditDraft({ ...editDraft, notes: event.target.value })} disabled={!canManagePlace} rows={3} />
+                    </label>
+                    {canManagePlace ? (
+                      <button type="button" onClick={() => onUpdateEnrollmentDetails(selectedEnrollment.id, editDraft)} disabled={busy || !editDraft.playerName.trim() || !editDraft.classId}>
+                        Salvar aluno
+                      </button>
+                    ) : null}
+                  </div>
+                </section>
+
+                {selectedContractEnrollments.length ? (
+                  <section>
+                    <h3>Horarios vinculados</h3>
+                    <div className="academy-contract-linked-classes">
+                      {selectedContractEnrollments.map((contractEnrollment) => {
+                        const contractClass = classes.find((item) => item.id === contractEnrollment.classId);
+                        return (
+                          <small key={`student-side-contract:${contractEnrollment.id}`}>
+                            {contractClass?.title || "Turma"} | {contractClass?.startsAt.slice(0, 5) || "--:--"} | {statusLabel(contractEnrollment.status)}
+                          </small>
+                        );
+                      })}
+                    </div>
+                  </section>
+                ) : null}
+
+                <section>
+                  <h3>Evolucao</h3>
+                  <div className="academy-drawer-form compact">
+                    <label>
+                      <span>Nivel</span>
+                      <select value={selectedProgressDraft.level} onChange={(event) => onChangeProgressDraft(selectedEnrollment.id, { ...selectedProgressDraft, level: event.target.value })}>
+                        <option value="">Nivel livre</option>
+                        {ACADEMY_LEVEL_OPTIONS.map((level) => (
+                          <option key={`student-side-progress-level:${level.value}`} value={level.value}>
+                            {level.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Foco</span>
+                      <input value={selectedProgressDraft.focus} onChange={(event) => onChangeProgressDraft(selectedEnrollment.id, { ...selectedProgressDraft, focus: event.target.value })} placeholder="Saque, voleio, movimentacao..." />
+                    </label>
+                    <label className="wide">
+                      <span>Nota</span>
+                      <textarea value={selectedProgressDraft.notes} onChange={(event) => onChangeProgressDraft(selectedEnrollment.id, { ...selectedProgressDraft, notes: event.target.value })} rows={3} />
+                    </label>
+                    <button type="button" onClick={() => onCreateProgressNote(selectedEnrollment.id)} disabled={busy || !selectedProgressDraft.notes.trim()}>
+                      Registrar evolucao
+                    </button>
+                  </div>
+                </section>
+              </div>
+            </>
+          ) : (
+            <div className="academy-student-side-empty">
+              <strong>Selecione um aluno</strong>
+              <span>Plano, turmas, pagamentos, avisos e evolucao aparecem aqui sem abrir modal.</span>
+            </div>
+          )}
+        </aside>
+      </div>
 
       <EntityDrawer
         open={Boolean(selectedNewStudentClass && newStudentDraft)}
@@ -545,7 +711,7 @@ export function PlaceAcademyStudentsModule({
       </EntityDrawer>
 
       <EntityDrawer
-        open={Boolean(selectedEnrollment && editDraft)}
+        open={false}
         className="academy-student-entity-drawer"
         eyebrow="Aluno da academia"
         title={selectedEnrollment?.playerName || "Aluno"}

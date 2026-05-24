@@ -1,0 +1,2340 @@
+{
+  "route": {
+    "slug": "work-academia-alunos",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+    "surface": "Work"
+  },
+  "viewport": "desktop-wide",
+  "screenshot": "desktop-wide-work-academia-alunos.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [
+      {
+        "type": "alvo-click-pequeno",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 44,
+    "controlCount": 7,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 271,
+          "y": 91,
+          "w": 1,
+          "h": 1
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho ADT Dourados Alunos Aluno por aluno: status, pagamento, avisos, reposicao e evolucao. Hoje Agenda Turmas Alunos Pendencias Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Kids Performance 2 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2 Todos os status Ativos Pendentes Cancelados Pagamento Mensalidade pendente Mensalidade paga Avisos/reposicao Com aviso previo Com reposicao aberta Exibindo 24 de 59 Nova matricula ALUNO STATUS TURMA / PLANO PROXIMO PASSO Livia Jogadora Pura 1 horario semanal | Competencia 2026-05 Ativo Kids Iniciante 1 Mensalidade pendente Cobrar 0 avisos previos | 0 reposicoes abertas Ana Gomes 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato p",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1585,
+    "viewportWidth": 1600,
+    "bodyHeight": 1030,
+    "firstFoldTextLength": 25310,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 609,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 881,
+          "y": 25,
+          "w": 368,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1271,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1446,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1156,
+          "y": 160,
+          "w": 49,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1209,
+          "y": 160,
+          "w": 67,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1278,
+          "y": 160,
+          "w": 66,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1347,
+          "y": 160,
+          "w": 63,
+          "h": 28
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1413,
+          "y": 160,
+          "w": 87,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 234,
+          "w": 220,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Kids Performance 2 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 549,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os status Ativos Pendentes Cancelados",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 689,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Pagamento Mensalidade pendente Mensalidade paga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 829,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Avisos/reposicao Com aviso previo Com reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 969,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova matricula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 284,
+          "w": 220,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Livia Jogadora Pura 1 horario semanal | Competencia 2026-05 Ativo Kids Iniciante 1 Mensalidade pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 386,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Gomes 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 446,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Bruno Nascimento 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aviso 1 aviso previo | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 506,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Camila Uchida 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana R$ 310,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 566,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Diego Castro 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 626,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Eduarda Esteves 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 1 aviso previo | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 686,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Felipe Lopes Evolucao: Profissional Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 746,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gabriela Silva 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 1 aviso previo | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 806,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Henrique Araujo 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 866,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Isabela Cardoso Evolucao: Iniciante Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 926,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Joao Jardim 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 986,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Karina Queiroz 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1046,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lucas Yamamoto Evolucao: Intermediario Ativo Plano 3x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 2 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1106,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Mariana Almeida 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1166,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nicolas Henrique 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1226,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Olivia Oliveira 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Reposicao 1 aviso previo | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1286,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pedro Vieira 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1346,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Quiteria Dias 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1406,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Rafael Ferreira Evolucao: Iniciante Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 1 aviso previo | 2 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1466,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Sofia Mendes 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1526,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Thiago Teixeira 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1586,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Valentina Borges 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1646,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Wagner Duarte Evolucao: Avancado Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1706,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Yasmin Klein Evolucao: Intermediario Ativo Plano 1x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1766,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1826,
+          "w": 862,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 609,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 881,
+          "y": 25,
+          "w": 368,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 234,
+          "w": 220,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas as turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Kids Performance 2 Profissional Treino 1 Feminino Performance 2 Kids Iniciante 3 Intermediario Noite 1 Kids Performance 1 Duplas Competitivo 2 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 549,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os status Ativos Pendentes Cancelados",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 689,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Pagamento Mensalidade pendente Mensalidade paga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 829,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Avisos/reposicao Com aviso previo Com reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 969,
+          "y": 233,
+          "w": 132,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1271,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1446,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1156,
+          "y": 160,
+          "w": 49,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1209,
+          "y": 160,
+          "w": 67,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1278,
+          "y": 160,
+          "w": 66,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1347,
+          "y": 160,
+          "w": 63,
+          "h": 28
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1413,
+          "y": 160,
+          "w": 87,
+          "h": 28
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova matricula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 284,
+          "w": 220,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Livia Jogadora Pura 1 horario semanal | Competencia 2026-05 Ativo Kids Iniciante 1 Mensalidade pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 386,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Gomes 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 446,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Bruno Nascimento 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aviso 1 aviso previo | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 506,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Camila Uchida 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana R$ 310,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 566,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Diego Castro 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 626,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Eduarda Esteves 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 1 aviso previo | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 686,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Felipe Lopes Evolucao: Profissional Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 746,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gabriela Silva 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 1 aviso previo | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 806,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Henrique Araujo 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 866,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Isabela Cardoso Evolucao: Iniciante Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 926,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Joao Jardim 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 986,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Karina Queiroz 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1046,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lucas Yamamoto Evolucao: Intermediario Ativo Plano 3x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 2 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1106,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Mariana Almeida 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1166,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nicolas Henrique 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1226,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Olivia Oliveira 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Reposicao 1 aviso previo | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1286,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pedro Vieira 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1346,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Quiteria Dias 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1406,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Rafael Ferreira Evolucao: Iniciante Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 1 aviso previo | 2 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1466,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Sofia Mendes 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Reposicao 0 avisos previos | 1 reposicao aberta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1526,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Thiago Teixeira 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1586,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Valentina Borges 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1646,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Wagner Duarte Evolucao: Avancado Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1706,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row due",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Yasmin Klein Evolucao: Intermediario Ativo Plano 1x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1766,
+          "w": 862,
+          "h": 50
+        },
+        "className": "academy-student-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1826,
+          "w": 862,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "alvo-click-pequeno"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Alunos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Livia Jogadora Pura 1 horario semanal | Competencia 2026-05 Ativo Kids Iniciante 1 Mensalidade pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Ana Gomes 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aulas 0 avisos previos | 0 reposicoes abertas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Bruno Nascimento 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana Mensalidade do contrato paga Aviso 1 aviso previo | 0 reposicoes abertas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Camila Uchida 2 horarios semanais | Competencia 2026-05 Ativo Plano 2x/semana R$ 310,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Diego Castro 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 0 avisos previos | 0 reposicoes abertas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-academia-alunos",
+      "label": "Eduarda Esteves 1 horario semanal | Competencia 2026-05 Ativo Plano 1x/semana R$ 155,00 / mes pendente Cobrar 1 aviso previo | 1 reposicao aberta",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

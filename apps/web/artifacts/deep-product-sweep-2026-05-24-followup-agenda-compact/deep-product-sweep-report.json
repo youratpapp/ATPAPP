@@ -1,0 +1,169 @@
+{
+  "generatedAt": "2026-05-24T21:55:37.769Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-followup-agenda-compact",
+  "routeCount": 1,
+  "viewportCount": 1,
+  "pageRuns": 1,
+  "issueCount": 3,
+  "issueSummary": {
+    "texto-cortado-em-controle": 1,
+    "alvo-click-pequeno": 1,
+    "labels-duplicados": 1
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Dia",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=dia",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Semana",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=semana",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Lista",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=lista",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Remarcacoes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=remarcacoes",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "work-agenda-dia",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "h1": [
+          "ADT Dourados",
+          "Agenda"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 127,
+        "controlCount": 8,
+        "duplicateLabels": [
+          {
+            "label": "livre",
+            "count": 84,
+            "samples": [
+              {
+                "x": 347,
+                "y": 430,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 466,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 538,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 574,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 610,
+                "w": 107,
+                "h": 31
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

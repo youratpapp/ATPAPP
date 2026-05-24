@@ -37,6 +37,7 @@ Concluido:
 Fechado nesta fila:
 
 - Validacao mobile Trabalho por matriz de papel, screenshots com o auth-state disponivel e evidencias dedicadas por papel em `artifacts/saas-sprint-screens/sprint-90-role-audit-430.json` e `sprint-91-role-audit-deep.json`.
+- QA por papeis transformado em rotina reaproveitavel: `npm run qa:roles`, com script `scripts/role-smoke-audit.mjs`, filtros por viewport/papel, relatorio JSON e tratamento explicito de auth-state expirado como rota pulada/diagnostico, nao como falha de UX.
 - Busca global e criar rapido com dados reais e atalhos principais.
 - Fluxos ponta a ponta de reserva, cliente, financeiro, academia, competicoes, comunicacao, relatorios e POS em QA transversal.
 - Cliente 360 consolidando dados pessoais, vinculos, turmas, reservas, pagamentos, pacotes/creditos e historico.
@@ -44,9 +45,9 @@ Fechado nesta fila:
 - Academia sem mini-dashboard repetido em todas as abas principais.
 - Financeiro com pagamento stub persistindo apos refresh nos fluxos auditados.
 
-Pendencias residuais nao bloqueantes:
+Pendencias residuais futuras nao bloqueantes:
 
-- Transformar o QA por papeis ja executado (`sprint-90`/`sprint-91`) em rotina reaproveitavel de CI ou smoke local final, com storage states versionados fora de artefatos temporarios.
+- Versionar storage states frescos fora de artefatos temporarios para permitir rodada completa do `qa:roles` sem pulos por expiracao de sessao.
 - Evoluir Relatorios e Comunicacao em fase futura apenas para automacoes, historico profundo e graficos avancados; a camada operacional compacta ja foi aplicada.
 - Revisar strings antigas com acento em telas nao alteradas quando houver janela de polimento textual global.
 
@@ -687,3 +688,28 @@ Fazer:
 
 Aceite:
 Qualquer IA/coder que entrar no projeto sabe qual fila foi executada, o que falta e qual documento manda.
+
+---
+
+## FINAL-13 - QA Por Papeis Reaproveitavel
+
+Status: concluido em 2026-05-24.
+
+Evidencias:
+
+- Script: `scripts/role-smoke-audit.mjs`.
+- Comando: `npm run qa:roles`.
+- Smoke executado: `ATP_ROLE_QA_VIEWPORTS=desktop-1366`, `ATP_ROLE_QA_SCREENSHOTS=0`, `ATP_ROLE_QA_ROLES=coach,frontdesk,finance,cashier,organizer,player-pure`.
+- Relatorio: `artifacts/role-smoke-audit-2026-05-24-smoke/role-smoke-report.json`.
+- Resultado do smoke possivel com auth-states atuais: `3/3 rotas executadas aceitas; 15 puladas`.
+
+Correcoes aplicadas:
+
+- O auditor limpa `localStorage`, `sessionStorage` e `IndexedDB` entre papeis para evitar contaminacao de sessao.
+- Auth-state expirado e classificado como `skipped: auth-expired`, preservando o diagnostico sem transformar sessao antiga em falsa falha de UX.
+- Filtros de ambiente permitem rodar subconjuntos sem editar codigo: `ATP_ROLE_QA_VIEWPORTS`, `ATP_ROLE_QA_ROLES`, `ATP_ROLE_QA_SCREENSHOTS`, `ATP_ROLE_QA_OUT_DIR` e `ATP_ROLE_QA_AUTH_DIR`.
+
+Aceite:
+
+- A rotina existe, gera JSON, pode capturar screenshots e falha apenas quando uma rota executada viola checks reais.
+- A pendencia restante e operacional: manter auth-states frescos para cobrir todos os papeis em rodada completa.

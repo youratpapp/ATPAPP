@@ -4631,10 +4631,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                   className="brand-icon-btn secondary-action"
                   onClick={() => sharePlayerMatchResultWhatsApp(match, matchClassRef.data.config)}
                   title="Enviar pelo WhatsApp"
-                  aria-label="Enviar pelo WhatsApp"
+                  aria-label={`Enviar placar de ${match.title} pelo WhatsApp`}
                 >
                   <WhatsAppAppIcon />
-                  <span>WhatsApp</span>
+                  <span>Enviar placar</span>
                 </button>
               </div>
             </>
@@ -6235,10 +6235,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     onClick={sendWhatsAppSummary}
                     disabled={saving}
                     title="Enviar resumo pelo WhatsApp"
-                    aria-label="Enviar resumo pelo WhatsApp"
+                    aria-label="Enviar resumo operacional pelo WhatsApp"
                   >
                     <WhatsAppAppIcon />
-                    <span>WhatsApp</span>
+                    <span>Resumo</span>
                   </button>
                 </div>
                 <p className="subtle" style={{ marginTop: 8, marginBottom: 0 }}>
@@ -6356,10 +6356,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     onClick={shareTournamentInviteWhatsApp}
                     disabled={saving}
                     title="Compartilhar pelo WhatsApp"
-                    aria-label="Compartilhar pelo WhatsApp"
+                    aria-label="Compartilhar convite do torneio pelo WhatsApp"
                   >
                     <WhatsAppAppIcon />
-                    <span>WhatsApp</span>
+                    <span>Convite</span>
                   </button>
                 </>
               }
@@ -6376,10 +6376,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                     onClick={shareTournamentPublicationWhatsApp}
                     disabled={saving}
                     title="Enviar publicacao pelo WhatsApp"
-                    aria-label="Enviar publicacao pelo WhatsApp"
+                    aria-label="Enviar publicacao do torneio pelo WhatsApp"
                   >
                     <WhatsAppAppIcon />
-                    <span>WhatsApp</span>
+                    <span>Publicacao</span>
                   </button>
                 </>
               }
@@ -6605,10 +6605,10 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
                               className="brand-icon-btn secondary-action"
                               onClick={() => sharePlayerMatchResultWhatsApp(match, matchClassRef.data.config)}
                               title="Enviar pelo WhatsApp"
-                              aria-label="Enviar pelo WhatsApp"
+                              aria-label={`Enviar placar de ${match.title} pelo WhatsApp`}
                             >
                               <WhatsAppAppIcon />
-                              <span>WhatsApp</span>
+                              <span>Enviar placar</span>
                             </button>
                           </div>
                         ) : null}

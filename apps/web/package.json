@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "qa:roles": "node scripts/role-smoke-audit.mjs"
+    "qa:roles": "node scripts/role-smoke-audit.mjs",
+    "qa:deep-sweep": "node scripts/deep-product-sweep.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.3",

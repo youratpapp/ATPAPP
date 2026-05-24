@@ -30,11 +30,12 @@ O produto ficou organizado em torno de:
 - Build final: `npm.cmd run build`.
 - QA transversal: `artifacts/saas-final-qa-2026-05-24/final-11-e2e-final-report.json`.
 - QA por papeis: `artifacts/saas-sprint-screens/sprint-90-role-audit-430.json` e `artifacts/saas-sprint-screens/sprint-91-role-audit-deep.json`.
+- QA por papeis reaproveitavel: `npm run qa:roles`, gerando `artifacts/role-smoke-audit-2026-05-24-smoke/role-smoke-report.json`.
 - Evidencias por item: `artifacts/saas-final-qa-2026-05-24/final-01-*` ate `final-11-*`.
 
-## Pendencias Nao Bloqueantes
+## Pendencias Futuras Nao Bloqueantes
 
-- Transformar o QA por papeis ja executado em rotina reaproveitavel de CI/smoke local.
+- Manter storage states frescos fora de artefatos temporarios para a rodada completa do `qa:roles` executar todos os papeis sem pulos por expiracao de sessao.
 - Ampliar Relatorios e Comunicacao depois apenas para automacoes, historico profundo e graficos avancados.
 - Fazer polimento textual global em strings antigas com acentos/mojibake fora das telas alteradas.
 

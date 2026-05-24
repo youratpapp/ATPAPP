@@ -1,0 +1,3503 @@
+{
+  "route": {
+    "slug": "work-clientes-rotina",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-clientes-rotina.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+    "h1": [],
+    "possibleIssues": [
+      {
+        "type": "sem-h1",
+        "severity": "media"
+      },
+      {
+        "type": "texto-cortado-em-controle",
+        "severity": "media"
+      },
+      {
+        "type": "alvo-click-pequeno",
+        "severity": "media"
+      },
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 75,
+    "controlCount": 0,
+    "duplicateLabels": [
+      {
+        "label": "registrar retorno",
+        "count": 12,
+        "samples": [
+          {
+            "x": 84,
+            "y": 717,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 879,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1042,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1205,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1384,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "whatsapp",
+        "count": 12,
+        "samples": [
+          {
+            "x": 84,
+            "y": 756,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 918,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1081,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1244,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1423,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "contatado",
+        "count": 18,
+        "samples": [
+          {
+            "x": 81,
+            "y": 3375,
+            "w": 18,
+            "h": 65
+          },
+          {
+            "x": 228,
+            "y": 3384,
+            "w": 18,
+            "h": 56
+          },
+          {
+            "x": 81,
+            "y": 3651,
+            "w": 18,
+            "h": 91
+          },
+          {
+            "x": 228,
+            "y": 3686,
+            "w": 18,
+            "h": 56
+          },
+          {
+            "x": 81,
+            "y": 4014,
+            "w": 18,
+            "h": 65
+          }
+        ]
+      },
+      {
+        "label": "convertido",
+        "count": 18,
+        "samples": [
+          {
+            "x": 91,
+            "y": 3375,
+            "w": 105,
+            "h": 65
+          },
+          {
+            "x": 238,
+            "y": 3384,
+            "w": 105,
+            "h": 56
+          },
+          {
+            "x": 102,
+            "y": 3651,
+            "w": 94,
+            "h": 91
+          },
+          {
+            "x": 238,
+            "y": 3686,
+            "w": 105,
+            "h": 56
+          },
+          {
+            "x": 91,
+            "y": 4014,
+            "w": 105,
+            "h": 65
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [],
+    "headings": [],
+    "textStart": "EA Escalao Admin Jogador Trabalho Atendimento Follow-ups, retornos e pendencias de relacionamento. Fila de relacionamento 28 acoes abertas 28 follow-ups hoje 18 leads novos 0 contatos parados 20 solicitacoes Todos Follow-ups Parados Ana Borges Follow-up Aula experimental | Retorno 2026-05-10 | Gestao +55 65 990027537 Registrar retorno WhatsApp Ana Borges Follow-up Plano mensal | Retorno 2026-05-13 | Gestao +55 65 990011097 Registrar retorno WhatsApp Ana Gomes Follow-up Kids | Retorno 2026-05-12 | Gestao +55 67 990016577 Registrar retorno WhatsApp Ana Queiroz Follow-up Torneio | Retorno 2026-05-14 | Gestao +55 67 990005617 Registrar retorno WhatsApp Caue Barbosa Follow-up Aula experimental | Retorno 2026-05-11 | Recepcao +55 67 990003562 Registrar retorno WhatsApp Caue Barbosa Follow-up Kids | Retorno 2026-05-17 | Recepcao +55 67 990020002 Registrar retorno WhatsApp Caue Lopes Follow-up Torneio | Retorno 2026-05-10 | Recepcao +55 65 990009042 Registrar retorno WhatsApp Caue Vieira Follow-up Plano mensal | Retorno 2026-05-18 | Recepcao +55 67 990014522 Registrar retorno WhatsApp Felipe Barbosa Follow-up Reserva recorrente | Retorno 2026-05-14 | Recepcao +55 67 990011782 Registrar retorno WhatsApp Felipe Vieira Follow-up Torneio | Retorno 2026-05-12 | Recepcao +55 67 990022742 Registrar retorno WhatsApp Felipe Vieira Follow-up Kids | Retorno 2026-05-15 | Recepcao +55 67 990006302 ",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 6070,
+    "firstFoldTextLength": 13994,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 471,
+          "w": 262,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Follow-ups",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 518,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Parados",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 565,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 717,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 756,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 879,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 918,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1042,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1081,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1205,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1244,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1384,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1423,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1547,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1586,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1710,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1749,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1889,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1928,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2068,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2107,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2231,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2270,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2393,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2432,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2572,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2611,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver 16 acoes restantes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 71,
+          "y": 2659,
+          "w": 288,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ativar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 3039,
+          "w": 18,
+          "h": 82
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 3039,
+          "w": 105,
+          "h": 82
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ativar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 3065,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 3065,
+          "w": 105,
+          "h": 56
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 3375,
+          "w": 18,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 3375,
+          "w": 105,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 3384,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 3384,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 3651,
+          "w": 18,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 3651,
+          "w": 94,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 3686,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 3686,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4014,
+          "w": 18,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4014,
+          "w": 105,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4022,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4022,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4307,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4307,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4307,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4307,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4643,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4643,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4608,
+          "w": 18,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4608,
+          "w": 105,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4927,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4927,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4919,
+          "w": 18,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4919,
+          "w": 105,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 5212,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 5212,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 5194,
+          "w": 18,
+          "h": 73
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 249,
+          "y": 5194,
+          "w": 94,
+          "h": 73
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 5496,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 5496,
+          "w": 94,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 5496,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 249,
+          "y": 5496,
+          "w": 94,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 5841,
+          "w": 18,
+          "h": 82
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 5841,
+          "w": 105,
+          "h": 82
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 5867,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 5867,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "registrar retorno",
+        "count": 12,
+        "samples": [
+          {
+            "x": 84,
+            "y": 717,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 879,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1042,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1205,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1384,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "whatsapp",
+        "count": 12,
+        "samples": [
+          {
+            "x": 84,
+            "y": 756,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 918,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1081,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1244,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1423,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "contatado",
+        "count": 18,
+        "samples": [
+          {
+            "x": 81,
+            "y": 3375,
+            "w": 18,
+            "h": 65
+          },
+          {
+            "x": 228,
+            "y": 3384,
+            "w": 18,
+            "h": 56
+          },
+          {
+            "x": 81,
+            "y": 3651,
+            "w": 18,
+            "h": 91
+          },
+          {
+            "x": 228,
+            "y": 3686,
+            "w": 18,
+            "h": 56
+          },
+          {
+            "x": 81,
+            "y": 4014,
+            "w": 18,
+            "h": 65
+          }
+        ]
+      },
+      {
+        "label": "convertido",
+        "count": 18,
+        "samples": [
+          {
+            "x": 91,
+            "y": 3375,
+            "w": 105,
+            "h": 65
+          },
+          {
+            "x": 238,
+            "y": 3384,
+            "w": 105,
+            "h": 56
+          },
+          {
+            "x": 102,
+            "y": 3651,
+            "w": 94,
+            "h": 91
+          },
+          {
+            "x": 238,
+            "y": 3686,
+            "w": 105,
+            "h": 56
+          },
+          {
+            "x": 91,
+            "y": 4014,
+            "w": 105,
+            "h": 65
+          }
+        ]
+      }
+    ],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 471,
+          "w": 262,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Follow-ups",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 518,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Parados",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 565,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 717,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 756,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 879,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 918,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1042,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1081,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1205,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1244,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1384,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1423,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1547,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1586,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1710,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1749,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1889,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1928,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2068,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2107,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2231,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2270,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2393,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2432,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2572,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2611,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver 16 acoes restantes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 71,
+          "y": 2659,
+          "w": 288,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ativar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 3039,
+          "w": 18,
+          "h": 82
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 3039,
+          "w": 105,
+          "h": 82
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ativar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 3065,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 3065,
+          "w": 105,
+          "h": 56
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 3375,
+          "w": 18,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 3375,
+          "w": 105,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 3384,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 3384,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 3651,
+          "w": 18,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 3651,
+          "w": 94,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 3686,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 3686,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4014,
+          "w": 18,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4014,
+          "w": 105,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4022,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4022,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4307,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4307,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4307,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4307,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4643,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4643,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4608,
+          "w": 18,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4608,
+          "w": 105,
+          "h": 91
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 4927,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 4927,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 4919,
+          "w": 18,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 4919,
+          "w": 105,
+          "h": 65
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 5212,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 5212,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 5194,
+          "w": 18,
+          "h": 73
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 249,
+          "y": 5194,
+          "w": 94,
+          "h": 73
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 5496,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 5496,
+          "w": 94,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 5496,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 249,
+          "y": 5496,
+          "w": 94,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 81,
+          "y": 5841,
+          "w": 18,
+          "h": 82
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 91,
+          "y": 5841,
+          "w": 105,
+          "h": 82
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contatado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 228,
+          "y": 5867,
+          "w": 18,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertido",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 238,
+          "y": 5867,
+          "w": 105,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "sem-h1",
+      "texto-cortado-em-controle",
+      "alvo-click-pequeno",
+      "labels-duplicados"
+    ]
+  },
+  "interactions": []
+}

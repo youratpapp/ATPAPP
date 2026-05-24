@@ -57,7 +57,13 @@ export function PlaceFinanceExpensesModule({
             detail={`${formatMoneyFromCents(expense.amountCents)} | ${expense.category || "Despesa"} | ${expense.spentOn}`}
             actions={
               expense.status === "posted" ? (
-                <button type="button" className="danger" onClick={() => onCancelExpense(expense)} disabled={busy}>
+                <button
+                  type="button"
+                  className="danger"
+                  onClick={() => onCancelExpense(expense)}
+                  disabled={busy}
+                  aria-label={`Cancelar despesa ${expense.description}`}
+                >
                   Cancelar
                 </button>
               ) : null

@@ -1,0 +1,282 @@
+{
+  "generatedAt": "2026-05-24T22:17:11.493Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-followup-finance-packages",
+  "routeCount": 1,
+  "viewportCount": 1,
+  "pageRuns": 1,
+  "issueCount": 3,
+  "issueSummary": {
+    "texto-cortado-em-controle": 1,
+    "alvo-click-pequeno": 1,
+    "labels-duplicados": 1
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "work-financeiro-planos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 68,
+        "controlCount": 15,
+        "duplicateLabels": [
+          {
+            "label": "0",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1118,
+                "y": 772,
+                "w": 135,
+                "h": 41
+              },
+              {
+                "x": 852,
+                "y": 1397,
+                "w": 312,
+                "h": 41
+              },
+              {
+                "x": 1172,
+                "y": 1397,
+                "w": 95,
+                "h": 41
+              },
+              {
+                "x": 323,
+                "y": 1446,
+                "w": 521,
+                "h": 41
+              }
+            ]
+          },
+          {
+            "label": "pagar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 996,
+                "y": 1590,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 1678,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 1766,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 1854,
+                "w": 70,
+                "h": 39
+              },
+              {
+                "x": 996,
+                "y": 1942,
+                "w": 70,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "lembrar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 1074,
+                "y": 1590,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 1678,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 1766,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 1854,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1074,
+                "y": 1942,
+                "w": 88,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "cancelar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 1170,
+                "y": 1590,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1678,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1766,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1854,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1942,
+                "w": 88,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,3716 @@
+{
+  "route": {
+    "slug": "work-clientes-leads",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-clientes-leads.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+    "h1": [],
+    "possibleIssues": [
+      {
+        "type": "sem-h1",
+        "severity": "media"
+      },
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 73,
+    "controlCount": 9,
+    "duplicateLabels": [
+      {
+        "label": "whatsapp",
+        "count": 19,
+        "samples": [
+          {
+            "x": 84,
+            "y": 1236,
+            "w": 262,
+            "h": 44
+          },
+          {
+            "x": 84,
+            "y": 1411,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1683,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1971,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2243,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "registrar retorno",
+        "count": 18,
+        "samples": [
+          {
+            "x": 84,
+            "y": 1372,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1644,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1932,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2204,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2492,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "historico (2)",
+        "count": 18,
+        "samples": [
+          {
+            "x": 84,
+            "y": 1450,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1722,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2010,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2282,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2570,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [],
+    "headings": [],
+    "textStart": "EA Escalao Admin Jogador Trabalho Leads Interessados e contatos comerciais que ainda nao viraram cliente ativo. Leads e oportunidades 28 leads | 15% conversao | 28 em rotina HOJE28 retornos para fazer28 contatos em rotina Ana Borges Retorno 2026-05-10 Ana Borges Retorno 2026-05-13 Ana Gomes Retorno 2026-05-12 NOVO Cadastrar contato Lead, aluno interessado ou retorno da recepcao. Novo contato Prioridade Todos Leads Em contato Convertidos Arquivados Novo contato 18 leads 28 retornos hoje 10 em contato 0 convertidos Ana Borges Em contato Aula experimental | Instagram | Resp. Gestao +55 65 990027537 | jogador201@demo.atp.local | Proximo contato: 2026-05-10 | Fazer follow-up Contato demo criado para validar CRM e follow-up. Registrar retorno WhatsApp Historico (2) Caue Lopes Em contato Torneio | WhatsApp | Resp. Recepcao +55 65 990009042 | jogador066@demo.atp.local | Proximo contato: 2026-05-10 | Fazer follow-up Contato demo criado para validar CRM e follow-up. Registrar retorno WhatsApp Historico (2) Helena Borges Em contato Reserva recorrente | Pagina publica | Resp. Comercial +55 65 990015207 | jogador111@demo.atp.local | Proximo contato: 2026-05-10 | Fazer follow-up Contato demo criado para validar CRM e follow-up. Registrar retorno WhatsApp Historico (2) Otavio Lopes Em contato Plano mensal | Indicacao | Resp. Professor +55 65 990021372 | jogador156@demo.atp.local | Proximo con",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 6395,
+    "firstFoldTextLength": 25408,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Borges Retorno 2026-05-10",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 369,
+          "w": 240,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Borges Retorno 2026-05-13",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 415,
+          "w": 240,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Gomes Retorno 2026-05-12",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 461,
+          "w": 240,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Novo contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 636,
+          "w": 240,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar contatos do CRM",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 71,
+          "y": 712,
+          "w": 288,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prioridade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 777,
+          "w": 262,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 824,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Leads",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 871,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Em contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 918,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertidos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 965,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Arquivados",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1012,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do lead ou aluno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1147,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1236,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Turma, plano ou aula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1325,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1381,
+          "w": 262,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Email",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1476,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Instagram, indicacao, recepcao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1565,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "Proximo contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1655,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Responsavel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1744,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Contexto adicional",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1833,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1372,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1411,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1450,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1644,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1683,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1722,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1932,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1971,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2010,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2204,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2243,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2282,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2492,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2531,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2570,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2763,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2802,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2841,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3035,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3074,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3113,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3307,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3346,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3385,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3578,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3617,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3656,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3850,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3889,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3928,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4122,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4161,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4200,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4393,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4432,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4471,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4681,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4720,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4759,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4953,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4992,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5031,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5241,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5280,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5319,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5528,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5567,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5606,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5800,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5839,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5878,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 6088,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 6127,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 81,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 6166,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 82,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver 10 contatos restantes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 71,
+          "y": 6214,
+          "w": 288,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 83,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 84,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 85,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 86,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 87,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "whatsapp",
+        "count": 19,
+        "samples": [
+          {
+            "x": 84,
+            "y": 1236,
+            "w": 262,
+            "h": 44
+          },
+          {
+            "x": 84,
+            "y": 1411,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1683,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1971,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2243,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "registrar retorno",
+        "count": 18,
+        "samples": [
+          {
+            "x": 84,
+            "y": 1372,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1644,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1932,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2204,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2492,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      },
+      {
+        "label": "historico (2)",
+        "count": 18,
+        "samples": [
+          {
+            "x": 84,
+            "y": 1450,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 1722,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2010,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2282,
+            "w": 264,
+            "h": 31
+          },
+          {
+            "x": 84,
+            "y": 2570,
+            "w": 264,
+            "h": 31
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar contatos do CRM",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 71,
+          "y": 712,
+          "w": 288,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do lead ou aluno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1147,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1236,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Turma, plano ou aula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1325,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Email",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1476,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Instagram, indicacao, recepcao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1565,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "Proximo contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1655,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Responsavel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1744,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Contexto adicional",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1833,
+          "w": 262,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Borges Retorno 2026-05-10",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 369,
+          "w": 240,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Borges Retorno 2026-05-13",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 415,
+          "w": 240,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Gomes Retorno 2026-05-12",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 461,
+          "w": 240,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Novo contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 95,
+          "y": 636,
+          "w": 240,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prioridade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 777,
+          "w": 262,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 824,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Leads",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 871,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Em contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 918,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Convertidos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 965,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Arquivados",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1012,
+          "w": 262,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1381,
+          "w": 262,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1372,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1411,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1450,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1644,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1683,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1722,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1932,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1971,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2010,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2204,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2243,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2282,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2492,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2531,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2570,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2763,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2802,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 2841,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3035,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3074,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3113,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3307,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3346,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3385,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3578,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3617,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3656,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3850,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3889,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 3928,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4122,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4161,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4200,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4393,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4432,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4471,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4681,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4720,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4759,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4953,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 4992,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5031,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5241,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5280,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5319,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5528,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5567,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5606,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5800,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5839,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 5878,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar retorno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 6088,
+          "w": 264,
+          "h": 31
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "WhatsApp",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 6127,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 81,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico (2)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 6166,
+          "w": 264,
+          "h": 31
+        },
+        "className": "secondary",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 82,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver 10 contatos restantes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 71,
+          "y": 6214,
+          "w": 288,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 83,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 84,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 85,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 86,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 87,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "sem-h1",
+      "labels-duplicados"
+    ]
+  },
+  "interactions": []
+}

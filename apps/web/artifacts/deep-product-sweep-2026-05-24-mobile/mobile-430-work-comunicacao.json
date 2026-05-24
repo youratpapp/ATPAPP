@@ -1,0 +1,709 @@
+{
+  "route": {
+    "slug": "work-comunicacao",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-comunicacao.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "h1": [],
+    "possibleIssues": [
+      {
+        "type": "sem-h1",
+        "severity": "media"
+      },
+      {
+        "type": "texto-cortado-em-controle",
+        "severity": "media"
+      },
+      {
+        "type": "alvo-click-pequeno",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 15,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [],
+    "headings": [
+      {
+        "tag": "h2",
+        "text": "Central de mensagens",
+        "rect": {
+          "x": 51,
+          "y": 147,
+          "w": 144,
+          "h": 48
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Publicacao",
+        "rect": {
+          "x": 74,
+          "y": 544,
+          "w": 270,
+          "h": 19
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho COMUNICACAO Central de mensagens WhatsApp, publicacao e avisos conectados aos pontos reais da operacao. Editar dados publicos Ver pagina publica QUADRAS 6 Uso publico e agenda AULAS 27 Turmas visiveis PLANOS 2 Ofertas recorrentes PAGINA PUBLICA OK Pronta para divulgar PONTO STATUS MENSAGEM ACAO Reservas 1 pendente(s) Reservas aguardando acao exigem WhatsApp, remarcacao ou cobranca. Abrir agenda Lista de espera 52 pessoa(s) Clientes em espera precisam de retorno quando liberar horario. Avisar espera Aulas 72 pedido(s) Pedidos de aula e reposicao precisam de resposta clara. Abrir clientes Financeiro 118 em aberto Recebiveis em aberto pedem lembrete profissional. Cobrar Publicacao Pronta Pagina publica pronta para compartilhar. Ver pagina PROXIMA ACAO Publicacao Pagina publica pronta para compartilhar. Ver pagina Matriz de modelos 15 RESERVAWHATSAPP INDIVIDUAL Reserva confirmada RESERVA CRIADA OU PAGAMENTO CONFIRMADO Ola, {nome}. Aqui e {remetente}, da ADT Dourados. Sua reserva esta confirmada para {data}, das {inicio} as {fim}, na {quadra}. Se precisar de apoio, fale com a recepcao. Abrir reserva no detalhe lateral e confirmar se o pagamento ja esta vinculado. RESERVAWHATSAPP INDIVIDUAL Pagamento da reserva confirmado PAGAMENTO DE RESERVA MARCADO COMO PAGO Ola, {nome}. Aqui e {remetente}, da ADT Dourados. Confirmamos o pagamento da sua reserva de",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1438,
+    "firstFoldTextLength": 24595,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Editar dados publicos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 209,
+          "y": 156,
+          "w": 102,
+          "h": 59
+        },
+        "className": "",
+        "contrast": 18.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 209,
+          "y": 223,
+          "w": 102,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Reservas 1 pendente(s) Reservas aguardando acao exigem WhatsApp, remarcacao ou cobranca. Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 544,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Lista de espera 52 pessoa(s) Clientes em espera precisam de retorno quando liberar horario. Avisar espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 582,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Aulas 72 pedido(s) Pedidos de aula e reposicao precisam de resposta clara. Abrir clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 620,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Financeiro 118 em aberto Recebiveis em aberto pedem lembrete profissional. Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 658,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Publicacao Pronta Pagina publica pronta para compartilhar. Ver pagina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 696,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row ready active",
+        "contrast": 20.2,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pagina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 618,
+          "w": 266,
+          "h": 38
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Editar dados publicos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 209,
+          "y": 156,
+          "w": 102,
+          "h": 59
+        },
+        "className": "",
+        "contrast": 18.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 209,
+          "y": 223,
+          "w": 102,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Reservas 1 pendente(s) Reservas aguardando acao exigem WhatsApp, remarcacao ou cobranca. Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 544,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Lista de espera 52 pessoa(s) Clientes em espera precisam de retorno quando liberar horario. Avisar espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 582,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Aulas 72 pedido(s) Pedidos de aula e reposicao precisam de resposta clara. Abrir clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 620,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Financeiro 118 em aberto Recebiveis em aberto pedem lembrete profissional. Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 658,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row attention",
+        "contrast": 16.26,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Publicacao Pronta Pagina publica pronta para compartilhar. Ver pagina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 696,
+          "w": 24,
+          "h": 38
+        },
+        "className": "communication-console__row ready active",
+        "contrast": 20.2,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pagina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 618,
+          "w": 266,
+          "h": 38
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "sem-h1",
+      "texto-cortado-em-controle",
+      "alvo-click-pequeno"
+    ]
+  },
+  "interactions": []
+}

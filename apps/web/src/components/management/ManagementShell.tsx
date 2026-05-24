@@ -47,6 +47,7 @@ export function ManagementShell({
   return (
     <AppShell user={user} profile={profile} showHeader mode={mode}>
       <div className={`management-shell-page${compact ? " management-shell-page--compact" : ""}`}>
+        {compact ? <h1 className="management-shell-sr-title">{title}</h1> : null}
         {compact ? null : (
         <header className="management-shell-header">
           <div className="management-shell-title">
