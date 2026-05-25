@@ -1,0 +1,971 @@
+{
+  "route": {
+    "slug": "work-admin-checklist",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-admin-checklist.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+    "h1": [
+      "ADT Dourados",
+      "Central administrativa"
+    ],
+    "possibleIssues": [
+      {
+        "type": "texto-cortado-em-controle",
+        "severity": "media"
+      },
+      {
+        "type": "alvo-click-pequeno",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 20,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados",
+      "Central administrativa"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 11,
+          "y": 87,
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "tag": "h1",
+        "text": "Central administrativa",
+        "rect": {
+          "x": 75,
+          "y": 168,
+          "w": 0,
+          "h": 61
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho ADT Dourados ADMINISTRACAO Central administrativa Estrutura, publicacao, equipe, plano e regras ficam fora da rotina diaria. Editar dados publicos Ver pagina publica IMPLANTACAO 100% 7/7 itens prontos PLANO Pro: completo Agenda + Academia RECURSOS 6 quadras ativas EQUIPE 6 0 convite(s) pendente(s) Checklist estrutural ADT Dourados · Dourados - MS Regras operacionais AREA STATUS DESCRICAO ACAO Dados do local Pronto Descricao preenchida Abrir Cadastrar quadra Pronto 6 quadras cadastradas Abrir Equipe Pronto 6 membros ou convites Abrir Cadastrar professor Pronto 3 professores cadastrados Abrir Criar turma Pronto 22 turmas ativas Abrir Configurar plano Pronto 2 planos ativos Abrir Produtos da cantina Pronto 10 produtos cadastrados Abrir ACADEMIA 22 turmas Aulas, turmas e alunos ficam no dominio Academia. FINANCEIRO 2 planos Planos, pacotes e cobrancas ficam em Financeiro. LOJA/POS 10 produtos Estoque e venda ficam no dominio Loja/POS. PROXIMO PASSO Dados do local Descricao preenchida Abrir configuracao PLANO E LIMITES Pro: completo Reservas, academia, socios, CRM e financeiro. Planos e pacotes EQUIPE 6 ativo(s) Convites, papeis e acesso operacional ficam em Equipe, sem disputar espaco com a rotina. Abrir equipe Hoje Agenda Clientes Financeiro Mais",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1804,
+    "firstFoldTextLength": 5856,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Editar dados publicos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 87,
+          "y": 448,
+          "w": 164,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 261,
+          "y": 448,
+          "w": 146,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Regras operacionais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 87,
+          "y": 783,
+          "w": 117,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Dados do local Pronto Descricao preenchida Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 945,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Cadastrar quadra Pronto 6 quadras cadastradas Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1004,
+          "w": 30,
+          "h": 40
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Equipe Pronto 6 membros ou convites Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1044,
+          "w": 30,
+          "h": 78
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Cadastrar professor Pronto 3 professores cadastrados Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1122,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Criar turma Pronto 22 turmas ativas Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1181,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Configurar plano Pronto 2 planos ativos Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1240,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Produtos da cantina Pronto 10 produtos cadastrados Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1299,
+          "w": 30,
+          "h": 58
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir configuracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 818,
+          "w": 290,
+          "h": 38
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Planos e pacotes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 1013,
+          "w": 290,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir equipe",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 1231,
+          "w": 290,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Editar dados publicos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 87,
+          "y": 448,
+          "w": 164,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 261,
+          "y": 448,
+          "w": 146,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Regras operacionais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 87,
+          "y": 783,
+          "w": 117,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Dados do local Pronto Descricao preenchida Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 945,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Cadastrar quadra Pronto 6 quadras cadastradas Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1004,
+          "w": 30,
+          "h": 40
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Equipe Pronto 6 membros ou convites Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1044,
+          "w": 30,
+          "h": 78
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Cadastrar professor Pronto 3 professores cadastrados Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1122,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Criar turma Pronto 22 turmas ativas Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1181,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Configurar plano Pronto 2 planos ativos Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1240,
+          "w": 30,
+          "h": 59
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Produtos da cantina Pronto 10 produtos cadastrados Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 76,
+          "y": 1299,
+          "w": 30,
+          "h": 58
+        },
+        "className": "administration-console__row is-done",
+        "contrast": 17.06,
+        "textOverflow": true,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir configuracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 818,
+          "w": 290,
+          "h": 38
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Planos e pacotes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 1013,
+          "w": 290,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir equipe",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 102,
+          "y": 1231,
+          "w": 290,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "texto-cortado-em-controle",
+      "alvo-click-pequeno"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-admin-checklist",
+      "label": "Ver pagina publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1",
+        "primeira-dobra-pobre"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-admin-checklist",
+      "label": "Abrir configuracao",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-admin-checklist",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-admin-checklist",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

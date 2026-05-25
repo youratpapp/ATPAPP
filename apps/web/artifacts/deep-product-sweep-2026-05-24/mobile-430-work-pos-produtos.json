@@ -1,0 +1,763 @@
+{
+  "route": {
+    "slug": "work-pos-produtos",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-pos-produtos.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+    "h1": [
+      "Clube Racket Prime"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 11,
+    "controlCount": 5,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+    "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Clube Racket Prime"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Clube Racket Prime",
+        "rect": {
+          "x": 11,
+          "y": -188,
+          "w": 1,
+          "h": 1
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho Clube Racket Prime Loja / POS Cadastrar produtos e manter a tabela de venda organizada. BUSCAR PRODUTO Todos Baixo Zerado Agua sem gas Disponivel Bebidas 40 em estoque R$ 5,00 Aluguel raquete Disponivel Servicos 5 em estoque R$ 20,00 Barra de proteina Disponivel Lanches 9 em estoque R$ 15,00 Bola tubo Disponivel Pro shop 7 em estoque R$ 52,00 Cafe espresso Disponivel Bebidas 60 em estoque R$ 7,00 Isotonico Disponivel Bebidas 22 em estoque R$ 9,00 Munhequeira Disponivel Pro shop 4 em estoque R$ 39,00 Overgrip Disponivel Pro shop 18 em estoque R$ 25,00 Sanduiche natural Disponivel Lanches 12 em estoque R$ 18,00 Suco natural Disponivel Bebidas 16 em estoque R$ 12,00 Novo produto Hoje Agenda Clientes Financeiro Mais",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1207,
+    "firstFoldTextLength": 935,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome ou categoria",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 60,
+          "y": -12,
+          "w": 310,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 65,
+          "y": 49,
+          "w": 64,
+          "h": 39
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Baixo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 133,
+          "y": 49,
+          "w": 61,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Zerado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 199,
+          "y": 49,
+          "w": 71,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Agua, bola, grip",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 835,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 924,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 1013,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 1069,
+          "w": 284,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Bebida, acessorio, alimentacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 1164,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome ou categoria",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 60,
+          "y": -12,
+          "w": 310,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Agua, bola, grip",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 835,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 924,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "0",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 1013,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Bebida, acessorio, alimentacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 1164,
+          "w": 284,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 65,
+          "y": 49,
+          "w": 64,
+          "h": 39
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Baixo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 133,
+          "y": 49,
+          "w": 61,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Zerado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 199,
+          "y": 49,
+          "w": 71,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 1069,
+          "w": 284,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-pos-produtos",
+      "label": "Todos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-pos-produtos",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-pos-produtos",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

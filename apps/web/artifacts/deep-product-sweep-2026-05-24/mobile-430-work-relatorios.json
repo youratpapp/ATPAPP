@@ -1,0 +1,805 @@
+{
+  "route": {
+    "slug": "work-relatorios",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-relatorios.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 14,
+    "controlCount": 2,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 11,
+          "y": 87,
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Visao da operacao",
+        "rect": {
+          "x": 51,
+          "y": 147,
+          "w": 260,
+          "h": 24
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Agenda",
+        "rect": {
+          "x": 64,
+          "y": 1101,
+          "w": 234,
+          "h": 22
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho ADT Dourados RELATORIOS Visao da operacao Indicadores de agenda, aulas, clientes, receita e uso do local em uma leitura executiva. Tudo Periodo Este mes Hoje Exportar CSV PLANO ATUAL Pro: completo Reservas, academia, socios, CRM e financeiro. Clube: reservas Academia: turmas Pro: completo Multiunidade QUADRAS 6 RESERVAS NO PERIODO 143 OCUPACAO ESTIMADA 6% TAXA CONFIRMACAO GERAL 99% MODULO INDICADOR LEITURA Agenda 143 6% de ocupacao estimada, 142 confirmadas Academia 79 85% de presenca, 81 alunos ativos Financeiro R$ 0,00 entradas R$ 2.304,00 menos despesas R$ 5.350,00 CRM 21% 17 leads, origem principal Evento Competicoes 9 9 partidas abertas vinculada(s) ao local Cantina R$ 2.304,00 Sanduiche natural lidera com 36 un. DETALHE Agenda 6% de ocupacao estimada, 142 confirmadas Proxima acao sugerida Abrir Agenda para revisar horarios, bloqueios e ocupacao por quadra. Relatorio nao substitui a operacao diaria; ele aponta onde agir primeiro. RESERVAS PENDENTES 0 RESERVAS CONFIRMADAS 496 ESPERA DE QUADRA 52 TURMAS 22 ALUNOS ATIVOS 81 REGISTROS DE PRESENCA 79 Picos e alertas 3 HORARIO MAIS FORTE 17:00 48 reservas no periodo DIA MAIS FORTE Dom 30 reservas no periodo RECEITA DESTAQUE Cantina R$ 2.304,00 Hoje Agenda Clientes Financeiro Mais",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 2195,
+    "firstFoldTextLength": 4282,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Tudo Periodo Este mes Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 51,
+          "y": 249,
+          "w": 260,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 18.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Exportar CSV",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 51,
+          "y": 295,
+          "w": 260,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Clube: reservas Academia: turmas Pro: completo Multiunidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 62,
+          "y": 480,
+          "w": 238,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 18.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Agenda 143 6% de ocupacao estimada, 142 confirmadas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 819,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row active",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Academia 79 85% de presenca, 81 alunos ativos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 857,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Financeiro R$ 0,00 entradas R$ 2.304,00 menos despesas R$ 5.350,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 895,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "CRM 21% 17 leads, origem principal Evento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 933,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Competicoes 9 9 partidas abertas vinculada(s) ao local",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 971,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Cantina R$ 2.304,00 Sanduiche natural lidera com 36 un.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 1009,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 5,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Tudo Periodo Este mes Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 51,
+          "y": 249,
+          "w": 260,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 18.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Clube: reservas Academia: turmas Pro: completo Multiunidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 62,
+          "y": 480,
+          "w": 238,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 18.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Exportar CSV",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 51,
+          "y": 295,
+          "w": 260,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Agenda 143 6% de ocupacao estimada, 142 confirmadas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 819,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row active",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Academia 79 85% de presenca, 81 alunos ativos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 857,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Financeiro R$ 0,00 entradas R$ 2.304,00 menos despesas R$ 5.350,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 895,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "CRM 21% 17 leads, origem principal Evento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 933,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Competicoes 9 9 partidas abertas vinculada(s) ao local",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 971,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "Cantina R$ 2.304,00 Sanduiche natural lidera com 36 un.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 50,
+          "y": 1009,
+          "w": 720,
+          "h": 38
+        },
+        "className": "reports-console__table-row",
+        "contrast": 17.67,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-relatorios",
+      "label": "Agenda 143 6% de ocupacao estimada, 142 confirmadas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-relatorios",
+      "label": "Academia 79 85% de presenca, 81 alunos ativos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-relatorios",
+      "label": "Financeiro R$ 0,00 entradas R$ 2.304,00 menos despesas R$ 5.350,00",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-relatorios",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-relatorios",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

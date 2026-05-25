@@ -1,0 +1,1703 @@
+{
+  "route": {
+    "slug": "competition-os",
+    "hash": "#/eventos?modo=organizing",
+    "surface": "Competition OS"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-competition-os.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+    "h1": [
+      "Quais competicoes precisam de acao?"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 36,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+    "hash": "#/eventos?modo=organizing",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Quais competicoes precisam de acao?"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Quais competicoes precisam de acao?",
+        "rect": {
+          "x": 29,
+          "y": 74,
+          "w": 549,
+          "h": 93
+        }
+      }
+    ],
+    "textStart": "COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 22 Bloqueios precisam de acao 22 Em operacao torneios e ligas ativos 19 Torneios no seu workspace 15 Ligas temporadas e rodadas Todos 22 Torneios 7 Ligas 15 Pendencias 22 Historico 12 Rascunhos e setup 1 Desafio Interno Prime Kids Torneio - Cuiaba - MT Rascunho Resolver proximo bloqueio atualizado em 14 de mai. Inscricoes abertas 3 ATP Open Dourados 021510 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai. ATP Open Dourados 010650 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai. Festival Feminino Pantanal Torneio - Campo Grande - MS Inscricoes abertas Abrir cockpit da fase atualizado em 14 de mai. Jogos em andamento / resultados pendentes 3 Prime Open Inscricoes Encerradas Torneio - Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 20 de mai. Open ADT Dourados - Maio Torneio - Dourados - MS Em andamento Abrir cockpit da fase atualizado em 15 de mai. Prime Cup Noturna Torneio - Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 14 de mai. Ligas com rodada ativa 15 Liga ATP Dourados 115148 Liga - Simples Ativa Abrir cockpit da fase atualizado em 22 de mai. Liga ATP Dourados 031501 Liga - Simples Ativa Abrir cockp",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 607,
+    "viewportWidth": 607,
+    "bodyHeight": 4396,
+    "firstFoldTextLength": 3719,
+    "elements": [
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 29,
+          "y": 244,
+          "w": 269,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar liga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 244,
+          "w": 271,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.71,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 32,
+          "y": 561,
+          "w": 92,
+          "h": 36
+        },
+        "className": "active",
+        "contrast": 2.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Torneios 7",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 132,
+          "y": 561,
+          "w": 102,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ligas 15",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 242,
+          "y": 561,
+          "w": 85,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pendencias 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 335,
+          "y": 561,
+          "w": 122,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico 12",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 466,
+          "y": 561,
+          "w": 109,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Desafio Interno Prime Kids Torneio - Cuiaba - MT Rascunho Resolver proximo bloqueio atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 657,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 021510 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 834,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 010650 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 966,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Festival Feminino Pantanal Torneio - Campo Grande - MS Inscricoes abertas Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1098,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prime Open Inscricoes Encerradas Torneio - Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 20 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1275,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Open ADT Dourados - Maio Torneio - Dourados - MS Em andamento Abrir cockpit da fase atualizado em 15 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1407,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prime Cup Noturna Torneio - Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1539,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 115148 Liga - Simples Ativa Abrir cockpit da fase atualizado em 22 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1716,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 031501 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1848,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 044652 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1980,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 043316 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2111,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 042846 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2243,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 042129 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2375,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 041221 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2507,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 035853 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2639,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 035033 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2770,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 034536 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2902,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 034121 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3034,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 033946 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3166,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prime Duplas Fixas Liga - Duplas fixas / Adulto / Classes A/B/C Ativa Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3298,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ranking Pantanal Intermediario Liga - Simples / Adulto / Classes A/B/C Ativa Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3429,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ADT Simples 2026 Liga - Simples / Adulto / Classes A/B/C Ativa Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3561,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir cockpit da fase",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 4081,
+          "w": 557,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver arquivo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 4199,
+          "w": 111,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 127,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 246,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 365,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 484,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 29,
+          "y": 244,
+          "w": 269,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar liga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 244,
+          "w": 271,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 17.71,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Todos 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 32,
+          "y": 561,
+          "w": 92,
+          "h": 36
+        },
+        "className": "active",
+        "contrast": 2.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Torneios 7",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 132,
+          "y": 561,
+          "w": 102,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ligas 15",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 242,
+          "y": 561,
+          "w": 85,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pendencias 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 335,
+          "y": 561,
+          "w": 122,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico 12",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 466,
+          "y": 561,
+          "w": 109,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 10.82,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Desafio Interno Prime Kids Torneio - Cuiaba - MT Rascunho Resolver proximo bloqueio atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 657,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 021510 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 834,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 010650 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 966,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Festival Feminino Pantanal Torneio - Campo Grande - MS Inscricoes abertas Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1098,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prime Open Inscricoes Encerradas Torneio - Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 20 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1275,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Open ADT Dourados - Maio Torneio - Dourados - MS Em andamento Abrir cockpit da fase atualizado em 15 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1407,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prime Cup Noturna Torneio - Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1539,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 115148 Liga - Simples Ativa Abrir cockpit da fase atualizado em 22 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1716,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 031501 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1848,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 044652 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1980,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 043316 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2111,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 042846 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2243,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 042129 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2375,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 041221 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2507,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 035853 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2639,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 035033 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2770,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 034536 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 2902,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 034121 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3034,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 033946 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3166,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Prime Duplas Fixas Liga - Duplas fixas / Adulto / Classes A/B/C Ativa Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3298,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ranking Pantanal Intermediario Liga - Simples / Adulto / Classes A/B/C Ativa Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3429,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ADT Simples 2026 Liga - Simples / Adulto / Classes A/B/C Ativa Abrir cockpit da fase atualizado em 14 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 3561,
+          "w": 557,
+          "h": 126
+        },
+        "className": "competition-saas-row urgent",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir cockpit da fase",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 4081,
+          "w": 557,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver arquivo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 4199,
+          "w": 111,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 127,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 246,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 365,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 484,
+          "y": 1258,
+          "w": 115,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Todos 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Torneios 7",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Ligas 15",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Pendencias 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Historico 12",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Desafio Interno Prime Kids Torneio - Cuiaba - MT Rascunho Resolver proximo bloqueio atualizado em 14 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/1aca8ad2-b2e4-4fe6-8edf-2442c9d5060b/jogos",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "ATP Open Dourados 021510 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/7909eee5-1d26-414b-98a2-edaa37ae1030/organizacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "ATP Open Dourados 010650 Torneio - Dourados - MS Inscricoes abertas Abrir cockpit da fase atualizado em 21 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/7ed76af1-3e18-41e5-8256-e14d6b3a60ae/organizacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Festival Feminino Pantanal Torneio - Campo Grande - MS Inscricoes abertas Abrir cockpit da fase atualizado em 14 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/58fe4678-656b-49c1-b74a-d82a43cb8301/organizacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Prime Open Inscricoes Encerradas Torneio - Cuiaba - MT Em andamento Abrir cockpit da fase atualizado em 20 de mai.",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos/eee62a99-6929-49c6-b4b9-533e82a6c9da/organizacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

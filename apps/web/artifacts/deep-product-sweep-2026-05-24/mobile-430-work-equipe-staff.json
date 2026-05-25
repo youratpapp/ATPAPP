@@ -1,0 +1,875 @@
+{
+  "route": {
+    "slug": "work-equipe-staff",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-equipe-staff.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 15,
+    "controlCount": 2,
+    "duplicateLabels": [
+      {
+        "label": "remover",
+        "count": 6,
+        "samples": [
+          {
+            "x": 219,
+            "y": 797,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 235,
+            "y": 861,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 247,
+            "y": 925,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 243,
+            "y": 989,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 267,
+            "y": 1053,
+            "w": 92,
+            "h": 44
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 11,
+          "y": 87,
+          "w": 1,
+          "h": 1
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho ADT Dourados Central da equipe Busca de usuario, convite e acompanhamento da equipe ativa. Gestao de acesso Adicione pessoas pelo email e acompanhe a equipe abaixo. 6 Boa pratica Use o menor papel suficiente para cada rotina operacional. 0 Equipe do local 6 membros Buscar Gerente Professor Recepcao Financeiro Caixa/POS Criar convite Convites pendentes não liberam acesso. A pessoa recebe o convite na Home e so entra na gestao depois de aceitar. Caio Ferraz Professor - ativo Remover Lais Monteiro Professor - ativo Remover Renato Siqueira Professor - ativo Remover Paula Nogueira Recepcao - ativo Remover Marina Albuquerque Gerente - ativo Remover Escalao Admin Gerente - ativo Remover Gerente administra operacao, pessoas, agenda e financeiro. Recepcao cuida de reservas, check-in e rotina de atendimento. Professor acessa agenda, turmas, avisos previos e evolução de alunos. Financeiro acessa recebiveis, lembretes, baixas e despesas sem virar gerente. Caixa/POS acessa venda rapida, vendas do dia e estoque da cantina. Hoje Agenda Clientes Financeiro Mais",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1624,
+    "firstFoldTextLength": 3283,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar por nome ou email",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 490,
+          "w": 336,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Buscar",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 542,
+          "w": 336,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Gerente Professor Recepcao Financeiro Caixa/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 594,
+          "w": 336,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Criar convite",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 646,
+          "w": 336,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 797,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 235,
+          "y": 861,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 247,
+          "y": 925,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 243,
+          "y": 989,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 267,
+          "y": 1053,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 230,
+          "y": 1117,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "remover",
+        "count": 6,
+        "samples": [
+          {
+            "x": 219,
+            "y": 797,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 235,
+            "y": 861,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 247,
+            "y": 925,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 243,
+            "y": 989,
+            "w": 92,
+            "h": 44
+          },
+          {
+            "x": 267,
+            "y": 1053,
+            "w": 92,
+            "h": 44
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 10,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar por nome ou email",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 490,
+          "w": 336,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Gerente Professor Recepcao Financeiro Caixa/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 594,
+          "w": 336,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Buscar",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 542,
+          "w": 336,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Criar convite",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 646,
+          "w": 336,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 797,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 235,
+          "y": 861,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 247,
+          "y": 925,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 243,
+          "y": 989,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 267,
+          "y": 1053,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Remover",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 230,
+          "y": 1117,
+          "w": 92,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-equipe-staff",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-equipe-staff",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}
