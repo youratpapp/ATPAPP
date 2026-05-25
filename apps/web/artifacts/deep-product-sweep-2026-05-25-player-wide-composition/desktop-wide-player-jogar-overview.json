@@ -1,0 +1,696 @@
+{
+  "route": {
+    "slug": "player-jogar-overview",
+    "hash": "#/locais",
+    "surface": "Player"
+  },
+  "viewport": "desktop-wide",
+  "screenshot": "desktop-wide-player-jogar-overview.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/locais",
+    "h1": [
+      "Jogar"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 15,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/locais",
+    "hash": "#/locais",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Jogar"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Jogar",
+        "rect": {
+          "x": 272,
+          "y": 87,
+          "w": 78,
+          "h": 30
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Escolha seu próximo jogo",
+        "rect": {
+          "x": 301,
+          "y": 200,
+          "w": 364,
+          "h": 166
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Jogar JOGAR PERTO DE VOCÊ Escolha seu próximo jogo Reserve quadra, encontre parceiros ou entre em aulas perto de você. Encontrar jogo Partidas abertas 27 chamadas abertas Reservar quadra Horários disponíveis Entrar em aula Turmas com vaga Ver locais Clubes e academias 10 locais CHAMADAS ABERTAS 27 Jogadores procurando partida agora. Ver chamadas QUADRAS ATIVAS 0 Locais com quadras para consulta de horário. Reservar AULAS DISPONÍVEIS 0 Turmas e professores para entrar em aula. Ver aulas LOCAIS 10 Clubes e academias perto de você. Explorar ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1600,
+    "viewportWidth": 1600,
+    "bodyHeight": 1000,
+    "firstFoldTextLength": 1199,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Encontrar jogo Partidas abertas 27 chamadas abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 188,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra Horários disponíveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1065,
+          "y": 188,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Entrar em aula Turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 304,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver locais Clubes e academias 10 locais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1065,
+          "y": 304,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver chamadas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 286,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Reservar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 609,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 931,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Explorar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1254,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Encontrar jogo Partidas abertas 27 chamadas abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 188,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra Horários disponíveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1065,
+          "y": 188,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Entrar em aula Turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 304,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver locais Clubes e academias 10 locais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1065,
+          "y": 304,
+          "w": 254,
+          "h": 104
+        },
+        "className": "places-intent-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver chamadas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 286,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Reservar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 609,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 931,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Explorar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1254,
+          "y": 556,
+          "w": 285,
+          "h": 35
+        },
+        "className": "",
+        "contrast": 1.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": []
+}

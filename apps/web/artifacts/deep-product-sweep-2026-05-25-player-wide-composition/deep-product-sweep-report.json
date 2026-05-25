@@ -1,0 +1,494 @@
+{
+  "generatedAt": "2026-05-25T11:10:31.548Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-25-player-wide-composition",
+  "routeCount": 8,
+  "viewportCount": 3,
+  "pageRuns": 24,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 6,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 6,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 11,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 27,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

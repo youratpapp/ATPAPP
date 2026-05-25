@@ -1,0 +1,1191 @@
+{
+  "route": {
+    "slug": "player-jogar-aulas",
+    "hash": "#/locais?intent=classes",
+    "surface": "Player"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-player-jogar-aulas.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+    "h1": [
+      "Jogar"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 21,
+    "controlCount": 6,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+    "hash": "#/locais?intent=classes",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Jogar"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Jogar",
+        "rect": {
+          "x": 272,
+          "y": 87,
+          "w": 78,
+          "h": 30
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Jogar Encontrar jogo Partidas abertas Reservar quadra Horários disponíveis Entrar em aula Turmas com vaga Ver locais Clubes e academias ENTRAR EM AULA Escolha o perfil da aula Procure por local, dia, periodo e nivel para ver turmas com vaga. Busca por perfil UF Todos CIDADE Todas ACADEMIA OU PROFESSOR Dias Qualquer dia Dom Seg Ter Qua Qui Sex Sab PERIODO Qualquer horario Manha Tarde Noite NIVEL Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional PERFIL Adulto ou kids Adulto Kids Buscar turmas com vaga FILTRO DE AULA Defina cidade, dia, periodo ou nivel para ver turmas com vaga. Não mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher. Buscar turmas ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1366,
+    "viewportWidth": 1366,
+    "bodyHeight": 920,
+    "firstFoldTextLength": 1414,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Encontrar jogo Partidas abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 283,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra Horários disponíveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 542,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Entrar em aula Turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 800,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver locais Clubes e academias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1059,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 562,
+          "w": 155,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 471,
+          "y": 562,
+          "w": 237,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome, professor ou nivel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 718,
+          "y": 562,
+          "w": 319,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Qualquer dia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 632,
+          "w": 98,
+          "h": 44
+        },
+        "className": "selected",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Dom",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 410,
+          "y": 632,
+          "w": 50,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Seg",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 466,
+          "y": 632,
+          "w": 43,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ter",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 515,
+          "y": 632,
+          "w": 42,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Qua",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 563,
+          "y": 632,
+          "w": 45,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Qui",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 614,
+          "y": 632,
+          "w": 42,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Sex",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 663,
+          "y": 632,
+          "w": 43,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Sab",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 682,
+          "w": 43,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Qualquer horario Manha Tarde Noite",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1047,
+          "y": 562,
+          "w": 237,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 718,
+          "y": 678,
+          "w": 237,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Adulto ou kids Adulto Kids",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 965,
+          "y": 678,
+          "w": 155,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1129,
+          "y": 676,
+          "w": 155,
+          "h": 51
+        },
+        "className": "primary class-filter-submit",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1188,
+          "y": 798,
+          "w": 117,
+          "h": 38
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 7,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 562,
+          "w": 155,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 471,
+          "y": 562,
+          "w": 237,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome, professor ou nivel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 718,
+          "y": 562,
+          "w": 319,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Qualquer horario Manha Tarde Noite",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1047,
+          "y": 562,
+          "w": 237,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 718,
+          "y": 678,
+          "w": 237,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Adulto ou kids Adulto Kids",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 965,
+          "y": 678,
+          "w": 155,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Encontrar jogo Partidas abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 283,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra Horários disponíveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 542,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Entrar em aula Turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 800,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver locais Clubes e academias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1059,
+          "y": 144,
+          "w": 249,
+          "h": 76
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Qualquer dia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 632,
+          "w": 98,
+          "h": 44
+        },
+        "className": "selected",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Dom",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 410,
+          "y": 632,
+          "w": 50,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Seg",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 466,
+          "y": 632,
+          "w": 43,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ter",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 515,
+          "y": 632,
+          "w": 42,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Qua",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 563,
+          "y": 632,
+          "w": 45,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Qui",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 614,
+          "y": 632,
+          "w": 42,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Sex",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 663,
+          "y": 632,
+          "w": 43,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Sab",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 306,
+          "y": 682,
+          "w": 43,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1129,
+          "y": 676,
+          "w": 155,
+          "h": 51
+        },
+        "className": "primary class-filter-submit",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1188,
+          "y": 798,
+          "w": 117,
+          "h": 38
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": []
+}

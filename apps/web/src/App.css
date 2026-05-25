@@ -42879,3 +42879,150 @@ body:has(.app-shell--competition),
     grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1fr) minmax(260px, 0.75fr);
   }
 }
+
+/* PLAYER-WIDE-COMPOSITION: Rotina/Jogar must use desktop width as a composed workspace, not a stretched mobile page. */
+@media (min-width: 960px) {
+  .app-shell--player:not(:has(.home-player-os--visual)) .app-content > *,
+  .app-shell--competition .app-content > *,
+  .app-shell--player .personal-area-page,
+  .app-shell--player .personal-agenda-page,
+  .app-shell--player:has(.places-page) .page.places-page,
+  .app-shell--player:has(.places-page) .places-page {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .app-shell--player .personal-agenda-hero {
+    align-items: center;
+    gap: 18px;
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 0.72fr);
+    min-height: 190px;
+    padding: 24px 26px;
+  }
+
+  .app-shell--player .personal-agenda-hero h1 {
+    font-size: clamp(2.5rem, 3.8vw, 4.25rem);
+    max-width: 12ch;
+  }
+
+  .app-shell--player .personal-agenda-hero p {
+    max-width: 56ch;
+  }
+
+  .app-shell--player .personal-agenda-kpis {
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .app-shell--player .personal-agenda-layout {
+    align-items: start;
+    gap: 14px;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 430px);
+  }
+
+  .app-shell--player .personal-agenda-main {
+    align-items: start;
+    display: grid;
+    gap: 14px;
+    grid-template-columns: minmax(230px, 0.28fr) minmax(0, 0.72fr);
+  }
+
+  .app-shell--player .personal-agenda-state-grid {
+    align-content: start;
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell--player .personal-agenda-summary-card {
+    min-height: 82px;
+  }
+
+  .app-shell--player .personal-agenda-list {
+    align-content: start;
+  }
+
+  .app-shell--player .personal-agenda-item {
+    grid-template-columns: 88px minmax(0, 1fr) minmax(130px, auto) auto;
+  }
+
+  .app-shell--player .personal-agenda-detail-panel {
+    top: 16px;
+  }
+
+  .app-shell--player:has(.places-page) .places-page {
+    gap: 14px;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    align-items: center;
+    gap: 20px;
+    grid-template-columns: minmax(320px, 0.66fr) minmax(520px, 1fr);
+    min-height: clamp(240px, 22vw, 330px);
+    padding: 26px 28px;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel::after {
+    opacity: 0.78;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-copy h2 {
+    font-size: clamp(2.4rem, 3.6vw, 4rem);
+    max-width: 11ch;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-copy p {
+    max-width: 48ch;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-actions {
+    align-content: center;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-self: stretch;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-card {
+    min-height: 104px;
+    padding: 16px;
+  }
+
+  .app-shell--player:has(.places-page) .places-overview-panel {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .app-shell--player:has(.places-page) .open-matches-panel,
+  .app-shell--player:has(.places-page) .court-discovery-results {
+    padding: 18px;
+  }
+
+  .app-shell--player:has(.places-page) .court-discovery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .app-shell--player .personal-agenda-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player .personal-agenda-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-shell--player .personal-agenda-main {
+    display: grid;
+    gap: 12px;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

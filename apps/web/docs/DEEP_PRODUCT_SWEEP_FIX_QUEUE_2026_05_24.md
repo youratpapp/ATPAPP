@@ -552,3 +552,22 @@ Validacao:
 - Varredura de Home/Jogar/Competir/Agenda/Ranking/Perfil em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-width-parity-1/`.
 - Varredura de local publico/inscricao em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-width-parity-2a/`.
 - Varredura de torneio/liga em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-width-parity-2b/`.
+
+### PLAYER-FIX-05 - Composicao wide real para Rotina e Jogar
+
+Status: concluido em 2026-05-25.
+
+Problema corrigido:
+- `Jogar` e `Minha rotina` ainda eram impactadas por regras antigas que limitavam paginas nao-home do jogador a `1220px`.
+- Em desktop amplo, as paginas nao podiam apenas esticar: precisavam reorganizar informacoes para usar a largura como workspace.
+
+Mudancas aplicadas:
+- `src/App.css`
+  - Override final para remover o teto antigo de `1220px` em paginas do Player que nao sao home.
+  - `Jogar`: hero/intent panel virou composicao wide com copy compacta, cards de acao em grid 2x2 e resumo em quatro blocos.
+  - `Minha rotina`: hero com KPIs laterais, tabs em linha e corpo em tres zonas: resumos, timeline/estado e painel de detalhe.
+  - Mantido comportamento mobile sem forcar a composicao desktop.
+
+Validacao:
+- `npm.cmd run build`
+- Varredura focada de `Jogar` e `Rotina` em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-wide-composition/`.
