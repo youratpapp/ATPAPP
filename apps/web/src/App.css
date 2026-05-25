@@ -43065,3 +43065,37 @@ body:has(.app-shell--competition),
     width: 100% !important;
   }
 }
+
+/* WORK-AGENDA-RAIL-FIX: reserve a real fixed time column so courts never slide under "Hora". */
+.app-shell--management .court-calendar-panel--saas {
+  --court-rail-width: 68px;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-board {
+  grid-template-columns: var(--court-rail-width) repeat(var(--court-count, 1), minmax(var(--court-column-width), var(--court-column-width))) !important;
+  min-width: calc(var(--court-rail-width) + (var(--court-count, 1) * 108px)) !important;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-time-rail {
+  border-right: 1px solid rgba(166, 198, 229, 0.16);
+  box-sizing: border-box;
+  min-width: var(--court-rail-width);
+  overflow: hidden;
+  width: var(--court-rail-width);
+  z-index: 8;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-time-rail > span,
+.app-shell--management .court-calendar-panel--saas .court-calendar-time-rail strong {
+  justify-content: flex-end;
+  padding-left: 6px;
+  padding-right: 8px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.app-shell--management .court-calendar-panel--saas .court-calendar-column {
+  min-width: var(--court-column-width);
+  overflow: hidden;
+  width: var(--court-column-width);
+}

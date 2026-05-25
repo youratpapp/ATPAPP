@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-05-25T19:50:23.329Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-agenda-rail-fix",
+  "routeCount": 1,
+  "viewportCount": 1,
+  "pageRuns": 1,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "work-agenda-dia",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-agenda-dia.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "h1": [
+          "ADT Dourados",
+          "Agenda"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 127,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}
