@@ -1,0 +1,832 @@
+{
+  "generatedAt": "2026-05-25T10:20:35.574Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-25-player-width-parity-2",
+  "routeCount": 7,
+  "viewportCount": 3,
+  "pageRuns": 21,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-local-publico",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-local-publico",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "tournament-jogos",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "tournament-jogos",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "tournament-classificacao",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "league-detail",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "league-chat",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "league-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-jogos",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-jogos",
+      "label": "Ver jogos",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-detail",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-chat",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico-reservas",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inscricao-torneio",
+        "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inscricao-torneio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "h1": [
+          "Inscricao"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 8,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogos",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-jogos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-classificacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-classificacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-detail",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-league-detail.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-chat",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-league-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico-reservas",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-local-publico-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inscricao-torneio",
+        "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-inscricao-torneio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "h1": [
+          "Inscricao"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 8,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogos",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-tournament-jogos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-classificacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-tournament-classificacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-detail",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-league-detail.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-chat",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-league-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico-reservas",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-local-publico-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inscricao-torneio",
+        "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inscricao-torneio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "h1": [
+          "Inscricao"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 6,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogos",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-tournament-jogos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-classificacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-tournament-classificacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-detail",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-league-detail.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-chat",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-league-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,1013 @@
+{
+  "route": {
+    "slug": "player-competir",
+    "hash": "#/eventos",
+    "surface": "Player"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-player-competir.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos",
+    "h1": [
+      "Competir"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 22,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos",
+    "hash": "#/eventos",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Competir"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Competir",
+        "rect": {
+          "x": 31,
+          "y": 1,
+          "w": 0,
+          "h": 38
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Descobrir",
+        "rect": {
+          "x": 27,
+          "y": 1015,
+          "w": 359,
+          "h": 23
+        }
+      }
+    ],
+    "textStart": "Competir Inscricoes abertas1 torneios publicos agora Ligas ativas15 temporadas em andamento Seu jogo0 torneios e ligas vinculados Torneios Minhas ligas Rankings Jogando Descobrir PROXIMOS TORNEIOS Ver todos Festival Feminino Pantanal Campo Grande - MS LIGA EM DESTAQUE Ver ligas Liga ATP Dourados 115148 Simples - Ativa RESULTADOS RECENTES Ranking ATP Open Dourados 024336 Finalizada ATP Open Dourados 114805 Finalizada ATP Open Dourados 031141 Finalizada Descobrir Encontre eventos abertos e locais para competir perto de você. Torneios Minhas ligas Encontrar locais DESCOBERTA Eventos perto de voce Ver todos Nenhum evento publico proximo agora Use torneios ou ligas para consultar listas completas, ou veja locais para encontrar atividades abertas. Inicio Jogar Competir Rotina Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1785,
+    "firstFoldTextLength": 529,
+    "elements": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 33,
+          "y": 303,
+          "w": 116,
+          "h": 68
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Minhas ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 157,
+          "y": 303,
+          "w": 116,
+          "h": 68
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Rankings",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 303,
+          "w": 116,
+          "h": 68
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogando",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 12,
+          "y": 406,
+          "w": 150,
+          "h": 42
+        },
+        "className": "competition-intent-pill ",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Descobrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 170,
+          "y": 406,
+          "w": 150,
+          "h": 42
+        },
+        "className": "competition-intent-pill active",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 316,
+          "y": 471,
+          "w": 89,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Festival Feminino Pantanal Campo Grande - MS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 509,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 323,
+          "y": 605,
+          "w": 82,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 115148 Simples - Ativa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 643,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ranking",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 326,
+          "y": 739,
+          "w": 79,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 024336 Finalizada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 777,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 114805 Finalizada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 845,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 031141 Finalizada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 913,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 27,
+          "y": 1073,
+          "w": 376,
+          "h": 92
+        },
+        "className": "competition-discovery-action",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Minhas ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 27,
+          "y": 1173,
+          "w": 376,
+          "h": 92
+        },
+        "className": "competition-discovery-action",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encontrar locais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 27,
+          "y": 1273,
+          "w": 376,
+          "h": 92
+        },
+        "className": "competition-discovery-action",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1390,
+          "w": 93,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "active",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 33,
+          "y": 303,
+          "w": 116,
+          "h": 68
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Minhas ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 157,
+          "y": 303,
+          "w": 116,
+          "h": 68
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Rankings",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 303,
+          "w": 116,
+          "h": 68
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogando",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 12,
+          "y": 406,
+          "w": 150,
+          "h": 42
+        },
+        "className": "competition-intent-pill ",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Descobrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 170,
+          "y": 406,
+          "w": 150,
+          "h": 42
+        },
+        "className": "competition-intent-pill active",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 316,
+          "y": 471,
+          "w": 89,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Festival Feminino Pantanal Campo Grande - MS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 509,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 323,
+          "y": 605,
+          "w": 82,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Liga ATP Dourados 115148 Simples - Ativa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 643,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ranking",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 326,
+          "y": 739,
+          "w": 79,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 024336 Finalizada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 777,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 114805 Finalizada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 845,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 031141 Finalizada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 913,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 27,
+          "y": 1073,
+          "w": 376,
+          "h": 92
+        },
+        "className": "competition-discovery-action",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Minhas ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 27,
+          "y": 1173,
+          "w": 376,
+          "h": 92
+        },
+        "className": "competition-discovery-action",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encontrar locais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 27,
+          "y": 1273,
+          "w": 376,
+          "h": 92
+        },
+        "className": "competition-discovery-action",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1390,
+          "w": 93,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "active",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

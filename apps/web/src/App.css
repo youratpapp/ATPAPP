@@ -42812,3 +42812,70 @@ body:has(.app-shell--competition),
     padding: 11px;
   }
 }
+
+/* PLAYER-WIDTH-PARITY: all player/competition web pages use the same useful width as Home. */
+@media (min-width: 960px) {
+  .app-shell--player .app-content,
+  .app-shell--competition .app-content {
+    max-width: min(1560px, calc(100vw - var(--desktop-nav-width) - 24px)) !important;
+    width: min(1560px, calc(100vw - var(--desktop-nav-width) - 24px)) !important;
+  }
+
+  .app-shell--player .app-header-inner,
+  .app-shell--competition .app-header-inner {
+    max-width: min(1560px, calc(100vw - var(--desktop-nav-width) - 24px)) !important;
+  }
+
+  .app-shell--player .home-player-os--visual,
+  .app-shell--player .home-command-hero,
+  .app-shell--player .home-command-strip,
+  .app-shell--player .home-command-grid,
+  .app-shell--player .player-hub-panel,
+  .app-shell--player .home-discovery-section,
+  .app-shell--player .personal-agenda-hero,
+  .app-shell--player .personal-agenda-tabs,
+  .app-shell--player .personal-agenda-layout,
+  .app-shell--player .personal-agenda-state-grid,
+  .app-shell--player .profile-photo-block,
+  .app-shell--player .profile-purpose-tabs,
+  .app-shell--player .ranking-visual-hero,
+  .app-shell--player .ranking-player-overview,
+  .app-shell--player .ranking-control-panel,
+  .app-shell--player .ranking-list,
+  .app-shell--player .ranking-table,
+  .app-shell--player .place-public-shell,
+  .app-shell--player .place-public-hero,
+  .app-shell--player .place-public-action-rail,
+  .app-shell--player .place-public-main-flow,
+  .app-shell--player .place-public-grid,
+  .app-shell--player:has(.places-page) .places-intent-panel,
+  .app-shell--player:has(.places-page) .places-overview-panel,
+  .app-shell--player:has(.places-page) .open-matches-panel,
+  .app-shell--player:has(.places-page) .court-discovery-results,
+  .app-shell--competition .events-page-header,
+  .app-shell--competition .competition-command-center,
+  .app-shell--competition .competition-intent-strip,
+  .app-shell--competition .competition-feature-grid,
+  .app-shell--competition .competition-discovery,
+  .app-shell--competition .events-grid,
+  .app-shell--competition .events-list,
+  .app-shell--competition .league-public-page,
+  .app-shell--competition .league-public-event,
+  .app-shell--competition .tournament-page,
+  .app-shell--competition .tournament-content {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .app-shell--player .personal-agenda-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  }
+
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    grid-template-columns: minmax(0, 0.95fr) minmax(460px, 1.05fr);
+  }
+
+  .app-shell--player .ranking-player-overview {
+    grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1fr) minmax(260px, 0.75fr);
+  }
+}

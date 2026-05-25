@@ -524,3 +524,31 @@ Validacao:
   - `artifacts/deep-product-sweep-2026-05-24-player-final-core-b/`
   - `artifacts/deep-product-sweep-2026-05-24-player-final-core-c1/`
   - `artifacts/deep-product-sweep-2026-05-24-player-final-core-c2/`
+
+## PLAYER-FIX-04 - Paridade de largura web entre Home e demais paginas do jogador
+
+Status: concluido em 2026-05-25.
+
+Problema:
+
+- A Home do jogador ocupava corretamente a area util do desktop, mas `Jogar`, `Competir`, `Minha rotina`, `Perfil`, `Ranking`, local publico e detalhes de competicao ainda herdavam containers antigos mais estreitos.
+- A diferenca vinha do contrato global `--player-content-max-width: 1040px` e `--competition-content-max-width: 1120px`, enquanto a Home tinha excecoes especificas de largura.
+
+Comportamento alvo:
+
+- Player App e Competition Player usam o mesmo contrato de largura util no desktop: ate `1560px`, respeitando sidebar e viewport.
+- Header, conteudo e blocos principais ocupam a mesma largura visual da Home.
+- Mobile nao recebe alargamento artificial.
+- Wrappers internos antigos nao podem limitar a pagina a 760/1040/1120px quando a superficie pede largura total.
+
+Arquivos alterados:
+
+- `src/styles/theme.css`
+- `src/App.css`
+
+Validacao:
+
+- `npm.cmd run build` passou.
+- Varredura de Home/Jogar/Competir/Agenda/Ranking/Perfil em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-width-parity-1/`.
+- Varredura de local publico/inscricao em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-width-parity-2a/`.
+- Varredura de torneio/liga em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-width-parity-2b/`.

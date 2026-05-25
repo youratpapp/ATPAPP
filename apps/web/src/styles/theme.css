@@ -115,7 +115,7 @@
   --content-max-width: 1180px;
 
   /* Density by surface mode */
-  --player-content-max-width: 1040px;
+  --player-content-max-width: 1560px;
   --player-page-padding: var(--space-6);
   --player-page-padding-mobile: var(--space-3);
   --player-section-gap: var(--space-5);
@@ -131,7 +131,7 @@
   --player-surface-shadow: var(--shadow-sm);
   --player-row-shadow: var(--shadow-xs);
 
-  --competition-content-max-width: 1120px;
+  --competition-content-max-width: 1560px;
   --competition-page-padding: var(--space-5);
   --competition-page-padding-mobile: var(--space-3);
   --competition-section-gap: var(--space-4);
