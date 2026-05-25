@@ -1,0 +1,231 @@
+{
+  "generatedAt": "2026-05-25T03:58:46.199Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-internals-work-guard",
+  "routeCount": 2,
+  "viewportCount": 2,
+  "pageRuns": 4,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Todos 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Torneios 7",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Ligas 15",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Todos 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Torneios 7",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "competition-os",
+      "label": "Ligas 15",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-organizacao",
+      "label": "Voltar para torneios",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-organizacao",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-organizacao",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "competition-os",
+        "hash": "#/eventos?modo=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-competition-os.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+        "h1": [
+          "Quais competicoes precisam de acao?"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 44,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-organizacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-organizacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 54,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "competition-os",
+        "hash": "#/eventos?modo=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-competition-os.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+        "h1": [
+          "Quais competicoes precisam de acao?"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 36,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-organizacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-tournament-organizacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 46,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

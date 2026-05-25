@@ -3757,6 +3757,43 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
+      {isDiscoveryHub ? (
+        <section className="places-overview-panel" aria-label="Resumo para jogar">
+          <article>
+            <span>Chamadas abertas</span>
+            <strong>{openMatchOpenCount}</strong>
+            <small>Jogadores procurando partida agora.</small>
+            <button type="button" onClick={() => selectDiscoveryIntent("matches")}>
+              Ver chamadas
+            </button>
+          </article>
+          <article>
+            <span>Quadras ativas</span>
+            <strong>{activeCourtsCount}</strong>
+            <small>Locais com quadras para consulta de horário.</small>
+            <button type="button" onClick={() => selectDiscoveryIntent("places")}>
+              Reservar
+            </button>
+          </article>
+          <article>
+            <span>Aulas disponíveis</span>
+            <strong>{activeAcademyClassesCount}</strong>
+            <small>Turmas e professores para entrar em aula.</small>
+            <button type="button" onClick={() => selectDiscoveryIntent("classes")}>
+              Ver aulas
+            </button>
+          </article>
+          <article>
+            <span>Locais</span>
+            <strong>{visiblePlaces.length}</strong>
+            <small>Clubes e academias perto de você.</small>
+            <button type="button" onClick={() => selectDiscoveryIntent("directory")}>
+              Explorar
+            </button>
+          </article>
+        </section>
+      ) : null}
+
       {showDiscoverySwitcher ? (
         <nav className="places-intent-strip" aria-label="Trocar busca em locais">
           {discoveryIntentOptions.map((option) => (

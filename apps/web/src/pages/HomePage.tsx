@@ -153,15 +153,6 @@ type HomeNotice = {
   tone: "urgent" | "neutral";
 };
 
-type PlayerHubItem = {
-  id: string;
-  targetPath?: string;
-  title: string;
-  detail: string;
-  meta: string;
-  tone?: "urgent" | "neutral";
-};
-
 type HomeAgendaItem = {
   id: string;
   targetPath: string;
@@ -1003,60 +994,6 @@ function DiscoveryEventCard({ t, onOpen }: { t: TournamentSummary; onOpen: () =>
     </button>
   );
 }
-function PlayerHubSection({
-  label,
-  title,
-  detail,
-  count,
-  action,
-  items,
-  onOpen,
-  onOpenItem,
-}: {
-  label: string;
-  title: string;
-  detail: string;
-  count: number;
-  action: string;
-  items: PlayerHubItem[];
-  onOpen: () => void;
-  onOpenItem?: (item: PlayerHubItem) => void;
-}) {
-  return (
-    <article className="player-hub-section">
-      <header>
-        <div>
-          <span>{label}</span>
-          <strong>{title}</strong>
-          <small>{detail}</small>
-        </div>
-        <em>{count}</em>
-      </header>
-      {items.length > 0 ? (
-        <div className="player-hub-section-list">
-          {items.slice(0, 3).map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={item.tone === "urgent" ? "urgent" : ""}
-              onClick={() => (onOpenItem ? onOpenItem(item) : onOpen())}
-            >
-              <strong>{item.title}</strong>
-              <span>{item.detail}</span>
-              <small>{item.meta}</small>
-            </button>
-          ))}
-        </div>
-      ) : (
-        <p>{detail}</p>
-      )}
-      <button type="button" className="player-hub-section-action" onClick={onOpen}>
-        {action}
-      </button>
-    </article>
-  );
-}
-
 function PriorityCard({ item, onOpen }: { item: HomePriorityItem; onOpen: () => void }) {
   return (
     <article className={`home-action-card ${item.tone}`} onClick={onOpen}>
@@ -1993,32 +1930,6 @@ export function HomePage({ user, profile }: Props) {
               </div>
             </section>
           </section>
-
-          {playerHubSections.length > 0 ? (
-          <section className="player-hub-panel">
-            <div className="section-title">
-              <div>
-                <p className="home-context-eyebrow">Painel completo</p>
-                <h2>Para voce</h2>
-              </div>
-            </div>
-            <div className="player-hub-workspace">
-              {playerHubSections.map((section) => (
-                <PlayerHubSection
-                  key={section.key}
-                  label={section.label}
-                  title={section.title}
-                  detail={section.detail}
-                  count={section.items.length}
-                  action={section.action}
-                  items={section.items}
-                  onOpen={section.onOpen}
-                  onOpenItem={(item) => navigate(item.targetPath || "/inicio")}
-                />
-              ))}
-            </div>
-          </section>
-          ) : null}
 
           {userMode.isProfessional && (staffInviteCount > 0 || urgentOperationalPriorityItems.length > 0 || activeOrganizingCount > 0) ? (
             <section className="home-section home-pro-workspace home-pro-workspace--compact">

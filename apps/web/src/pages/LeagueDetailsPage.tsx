@@ -915,7 +915,11 @@ export function LeagueDetailsPage({ user, profile }: Props) {
   const [selectedLeagueTaskId, setSelectedLeagueTaskId] = useState("");
   const [publicPlayerSearch, setPublicPlayerSearch] = useState("");
 
-  const isOwner = Boolean(league && league.ownerId === user.id);
+  const isExplicitLeagueWorkMode =
+    searchParams.get("mode") === "work" ||
+    searchParams.get("modo") === "organizing" ||
+    searchParams.get("view") === "organizing";
+  const isOwner = Boolean(league && league.ownerId === user.id && isExplicitLeagueWorkMode);
   const showOwnerLeagueScope =
     isOwner && (activeTab === "jogadores" || activeTab === "classificacao" || activeTab === "partidas");
   const showOwnerLeagueFocus = isOwner && activeTab === "visao";

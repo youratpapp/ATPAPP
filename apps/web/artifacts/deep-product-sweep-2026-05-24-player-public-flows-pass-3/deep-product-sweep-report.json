@@ -1,0 +1,386 @@
+{
+  "generatedAt": "2026-05-25T04:26:46.212Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-public-flows-pass-3",
+  "routeCount": 3,
+  "viewportCount": 2,
+  "pageRuns": 6,
+  "issueCount": 4,
+  "issueSummary": {
+    "texto-cortado-em-controle": 4
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "surface": "Player",
+      "screenshot": "desktop-1366-player-local-publico.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "surface": "Player",
+      "screenshot": "desktop-1366-player-local-publico-reservas.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "surface": "Player",
+      "screenshot": "mobile-430-player-local-publico.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "surface": "Player",
+      "screenshot": "mobile-430-player-local-publico-reservas.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "PLANOS Beneficios 2 planos",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/planos",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "SOBRE Contato Informacoes do local",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "PLANOS Beneficios 2 planos",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/planos",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "SOBRE Contato Informacoes do local",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "PLANOS Beneficios 2 planos",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/planos",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "PLANOS Beneficios 2 planos",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/planos",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico-reservas",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inscricao-torneio",
+        "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inscricao-torneio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "h1": [
+          "Inscricao"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 8,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico-reservas",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-local-publico-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inscricao-torneio",
+        "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inscricao-torneio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "h1": [
+          "Inscricao"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 6,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

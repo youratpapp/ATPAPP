@@ -452,3 +452,75 @@ Validacao:
 - Varredura ampliada de Home/Jogar/Competir/Torneios/Ligas passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-evolution-pass-3a/`.
 - Varredura ampliada de Agenda/Ranking/Perfil passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-evolution-pass-3b/`.
 - Rechecagem especifica do Ranking apos ajuste visual da coluna passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-evolution-pass-4-ranking/`.
+
+## PLAYER-FIX-02 - Compactacao estrutural e DNA SaaS na area Jogador
+
+Status: concluido em 2026-05-24.
+
+Problema:
+
+- A area Jogador ainda herdava parte do padrao antigo: heroes grandes demais, paineis de resumo duplicados, cards secundarios ocupando a primeira dobra e paginas de entrada com sensacao de vazio.
+- Home mobile sobrepunha estatisticas e texto do hero.
+- `Jogar` no desktop abria com hero e muito espaco vazio abaixo, sem uma segunda linha operacional para orientar a proxima acao.
+- `Minha rotina` mobile tinha hero e KPIs grandes demais para uma superficie de consulta pessoal.
+
+Comportamento alvo:
+
+- Player App absorve o DNA compacto do SaaS Trabalho: raios menores, blocos mais lineares, menos margem gratuita e primeira dobra orientada por acao.
+- Home do jogador remove o painel completo duplicado; rotina detalhada fica na propria `Minha rotina`.
+- Hero mobile da Home empilha corretamente texto, CTA e KPIs, sem sobreposicao.
+- `Jogar` ganha uma linha operacional compacta abaixo do hero com contadores e CTAs para chamadas abertas, quadras, aulas e locais.
+- `Minha rotina` mobile reduz hero/KPIs e deixa abas e resumos aparecerem mais cedo.
+
+Arquivos alterados:
+
+- `src/pages/HomePage.tsx`
+- `src/pages/PlacesPage.tsx`
+- `src/App.css`
+
+Validacao:
+
+- `npm.cmd run build` passou.
+- Varredura focada Home/Competir/Agenda/Jogar/Perfil passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-ux-compact-pass-3/`.
+- Varredura focada Home/Agenda apos compactacao da rotina passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-ux-compact-pass-5/`.
+- Varredura focada de `Jogar` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-ux-jogar-pass-1/`.
+- Varredura ampla final foi dividida por timeout da rodada unica e passou com `0 achados` em:
+  - `artifacts/deep-product-sweep-2026-05-24-player-ux-final-a/`
+  - `artifacts/deep-product-sweep-2026-05-24-player-ux-final-b/`
+
+## PLAYER-FIX-03 - Separacao rigida Player/Trabalho em competicoes e local publico
+
+Status: concluido em 2026-05-24.
+
+Problema:
+
+- A auditoria de fluxos internos do jogador encontrou vazamento de cockpit operacional quando um usuario admin abria `#/eventos/:id/jogos` ou liga pelo caminho do Player App.
+- A pagina publica do local ainda carregava ferramentas de gestao/publicacao (`Gestao`, widget/publicacao) dentro da experiencia do jogador.
+- A regua de intencoes do local publico era visualmente parecida com cards e gerava `texto-cortado-em-controle`, alem de ocupar espaco demais para uma navegacao secundaria.
+
+Comportamento alvo:
+
+- Player App nunca mostra operacao de owner/staff por inferencia de usuario logado; a operacao so aparece em rota/parametro explicitamente de Trabalho (`organizacao`, `mode=work` ou equivalente).
+- A pagina publica do local e 100% orientada ao jogador: reservar, aulas, jogos, planos e contato.
+- A regua de intencoes do local publico vira navegacao compacta de uma linha, sem card alto, sem pseudo-elemento que gere overflow e sem labels administrativos.
+- O cockpit operacional continua acessivel e validado no modo Trabalho.
+
+Arquivos alterados:
+
+- `src/pages/TournamentPage.tsx`
+- `src/pages/LeagueDetailsPage.tsx`
+- `src/pages/PlacePublicPage.tsx`
+- `src/App.css`
+- `scripts/deep-product-sweep.mjs`
+
+Validacao:
+
+- `npm.cmd run build` passou.
+- Varredura de competicoes internas do jogador passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-internals-pass-2/`.
+- Guarda de cockpit em Trabalho passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-internals-work-guard/`.
+- Varredura de fluxos publicos do local e inscricao passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-public-flows-pass-8/`.
+- Rechecagem final Player foi dividida por tempo e passou com `0 achados` em:
+  - `artifacts/deep-product-sweep-2026-05-24-player-final-core-a/`
+  - `artifacts/deep-product-sweep-2026-05-24-player-final-core-b/`
+  - `artifacts/deep-product-sweep-2026-05-24-player-final-core-c1/`
+  - `artifacts/deep-product-sweep-2026-05-24-player-final-core-c2/`

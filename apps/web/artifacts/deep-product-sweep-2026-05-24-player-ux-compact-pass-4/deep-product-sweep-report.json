@@ -1,0 +1,545 @@
+{
+  "generatedAt": "2026-05-25T02:53:47.957Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-ux-compact-pass-4",
+  "routeCount": 5,
+  "viewportCount": 2,
+  "pageRuns": 10,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-reservas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-reservas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-reservas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-aulas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-aulas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-aulas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-pagamentos",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-pagamentos",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-pagamentos",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

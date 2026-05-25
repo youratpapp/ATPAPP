@@ -1,0 +1,549 @@
+{
+  "generatedAt": "2026-05-25T02:45:53.931Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-ux-compact-pass-3",
+  "routeCount": 5,
+  "viewportCount": 2,
+  "pageRuns": 10,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Editar perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Conta",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-perfil",
+      "label": "Editar perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-perfil",
+      "label": "Conta",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 11,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 24,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-perfil",
+        "hash": "#/perfil",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-perfil.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/perfil",
+        "h1": [
+          "Perfil"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 12,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 9,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-perfil",
+        "hash": "#/perfil",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-perfil.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/perfil",
+        "h1": [
+          "Perfil"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 10,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

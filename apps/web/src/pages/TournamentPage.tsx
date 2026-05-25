@@ -1579,7 +1579,15 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
     });
     return map;
   }, [agenda.assignments]);
-  const roleCaps = tournamentRoleCapabilities(tournament?.role ?? "viewer");
+  const isExplicitTournamentWorkMode =
+    searchParams.get("mode") === "work" ||
+    searchParams.get("modo") === "organizing" ||
+    forcedTab === "organizacao";
+  const tournamentExperienceRole =
+    isExplicitTournamentWorkMode || tournament?.role === "participant"
+      ? tournament?.role ?? "viewer"
+      : "viewer";
+  const roleCaps = tournamentRoleCapabilities(tournamentExperienceRole);
   const {
     isOwner,
     isStaff: isTournamentStaff,

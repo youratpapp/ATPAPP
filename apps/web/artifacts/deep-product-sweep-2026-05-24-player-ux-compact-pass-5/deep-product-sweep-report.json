@@ -1,0 +1,333 @@
+{
+  "generatedAt": "2026-05-25T02:59:23.571Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-ux-compact-pass-5",
+  "routeCount": 3,
+  "viewportCount": 2,
+  "pageRuns": 6,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 24,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

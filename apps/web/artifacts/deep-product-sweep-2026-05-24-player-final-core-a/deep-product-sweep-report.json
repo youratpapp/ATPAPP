@@ -1,0 +1,537 @@
+{
+  "generatedAt": "2026-05-25T05:15:04.717Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-final-core-a",
+  "routeCount": 5,
+  "viewportCount": 2,
+  "pageRuns": 10,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Qualquer dia",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Limpar filtros",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Ajustar filtros MS · Dourados · Qualquer dia",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 6,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 17,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 11,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 27,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

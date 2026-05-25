@@ -1,0 +1,554 @@
+{
+  "route": {
+    "slug": "player-jogar-aulas",
+    "hash": "#/locais?intent=classes",
+    "surface": "Player"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-player-jogar-aulas.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+    "h1": [
+      "Jogar"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 11,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+    "hash": "#/locais?intent=classes",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Jogar"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Jogar",
+        "rect": {
+          "x": 22,
+          "y": -41,
+          "w": 120,
+          "h": 44
+        }
+      }
+    ],
+    "textStart": "Jogar Encontrar jogo Partidas abertas Reservar quadra Horários disponíveis Entrar em aula Turmas com vaga Ver locais Clubes e academias ENTRAR EM AULA Escolha o perfil da aula Procure por local, dia, periodo e nivel para ver turmas com vaga. Busca por perfil Ajustar filtros MS · Dourados · Qualquer dia FILTRO DE AULA Defina cidade, dia, periodo ou nivel para ver turmas com vaga. Não mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher. Buscar turmas Inicio Jogar Competir Rotina Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1007,
+    "firstFoldTextLength": 536,
+    "elements": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Encontrar jogo Partidas abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 31,
+          "y": 40,
+          "w": 180,
+          "h": 78
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra Horários disponíveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 220,
+          "y": 40,
+          "w": 180,
+          "h": 78
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Entrar em aula Turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 31,
+          "y": 127,
+          "w": 180,
+          "h": 78
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver locais Clubes e academias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 220,
+          "y": 127,
+          "w": 180,
+          "h": 78
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ajustar filtros MS · Dourados · Qualquer dia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 35,
+          "y": 507,
+          "w": 360,
+          "h": 64
+        },
+        "className": "places-filter-mobile-toggle",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 35,
+          "y": 753,
+          "w": 360,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Encontrar jogo Partidas abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 31,
+          "y": 40,
+          "w": 180,
+          "h": 78
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra Horários disponíveis",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 220,
+          "y": 40,
+          "w": 180,
+          "h": 78
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Entrar em aula Turmas com vaga",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 31,
+          "y": 127,
+          "w": 180,
+          "h": 78
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver locais Clubes e academias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 220,
+          "y": 127,
+          "w": 180,
+          "h": 78
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ajustar filtros MS · Dourados · Qualquer dia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 35,
+          "y": 507,
+          "w": 360,
+          "h": 64
+        },
+        "className": "places-filter-mobile-toggle",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 35,
+          "y": 753,
+          "w": 360,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 875,
+          "w": 80,
+          "h": 49
+        },
+        "className": "",
+        "contrast": 16.84,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Ajustar filtros MS · Dourados · Qualquer dia",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

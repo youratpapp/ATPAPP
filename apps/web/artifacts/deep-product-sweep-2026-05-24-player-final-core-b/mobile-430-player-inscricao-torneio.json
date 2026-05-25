@@ -1,0 +1,425 @@
+{
+  "route": {
+    "slug": "player-inscricao-torneio",
+    "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+    "surface": "Player"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-player-inscricao-torneio.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+    "h1": [
+      "Inscricao"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 6,
+    "controlCount": 2,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+    "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Inscricao"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Inscricao",
+        "rect": {
+          "x": 31,
+          "y": 31,
+          "w": 189,
+          "h": 44
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Open ADT Dourados - Maio",
+        "rect": {
+          "x": 35,
+          "y": 262,
+          "w": 360,
+          "h": 72
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Solicitar inscricao",
+        "rect": {
+          "x": 29,
+          "y": 502,
+          "w": 139,
+          "h": 19
+        }
+      }
+    ],
+    "textStart": "Inscricao Voltar Em andamento Evento público Open ADT Dourados - Maio Dourados - MS Inicio: 11 de jun. de 2026 Inscrições ate: 03/06/2026, 15:00 Taxa: R$ 90,00 Solicitar inscricao Masculino / Classe A As inscrições deste torneio não estao abertas no momento. 1 Categorias 2 Classes abertas R$ 90,00 Inscricao 1 Escolha a categoria Selecione onde você quer entrar. A organização pode revisar antes de aprovar. Classe A Masculino Mata-mata - 2 sets + super tie-break 23 INSCRITOS Classe B Masculino Grupos + mata-mata - 2 sets + super tie-break 21 INSCRITOS 2 Confirme seus dados Esses dados ajudam a organização a validar comunicados, pagamento e chamada. NOME DO ATLETA TELEFONE 3 Revise antes de enviar Confira valor, prazo e a categoria selecionada. CATEGORIA Masculino / Classe A VALOR R$ 90,00 PRAZO 03/06/2026, 15:00 RESTRICAO DE HORARIO Avise a organização se precisar combinar horario. Inscrições fechadas Abrir torneio Compartilhar COMO FUNCIONA Inscrições indisponíveis Depois de solicitar, o organizador confere categoria, pagamento e libera sua entrada na chave. STATUS Ainda não enviado Ao confirmar, você vera aqui se a solicitacao ficou em analise ou foi aprovada. CONTATO Restricoes e duvidas Restricoes de horario ainda devem ser combinadas com a organização do torneio.",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 2265,
+    "firstFoldTextLength": 495,
+    "elements": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 31,
+          "y": 106,
+          "w": 189,
+          "h": 38
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classe A Masculino Mata-mata - 2 sets + super tie-break 23 INSCRITOS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 29,
+          "y": 830,
+          "w": 372,
+          "h": 105
+        },
+        "className": "registration-option active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classe B Masculino Grupos + mata-mata - 2 sets + super tie-break 21 INSCRITOS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 29,
+          "y": 947,
+          "w": 372,
+          "h": 105
+        },
+        "className": "registration-option ",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 5,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Escalao Admin",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 30,
+          "y": 1176,
+          "w": 370,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 6,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "+55 67 99900-0001",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 30,
+          "y": 1270,
+          "w": 370,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inscrições fechadas",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1679,
+          "w": 346,
+          "h": 46
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1733,
+          "w": 346,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1787,
+          "w": 346,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 5,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Escalao Admin",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 30,
+          "y": 1176,
+          "w": 370,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 6,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "+55 67 99900-0001",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 30,
+          "y": 1270,
+          "w": 370,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 31,
+          "y": 106,
+          "w": 189,
+          "h": 38
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classe A Masculino Mata-mata - 2 sets + super tie-break 23 INSCRITOS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 29,
+          "y": 830,
+          "w": 372,
+          "h": 105
+        },
+        "className": "registration-option active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classe B Masculino Grupos + mata-mata - 2 sets + super tie-break 21 INSCRITOS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 29,
+          "y": 947,
+          "w": 372,
+          "h": 105
+        },
+        "className": "registration-option ",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inscrições fechadas",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1679,
+          "w": 346,
+          "h": 46
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1733,
+          "w": 346,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1787,
+          "w": 346,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

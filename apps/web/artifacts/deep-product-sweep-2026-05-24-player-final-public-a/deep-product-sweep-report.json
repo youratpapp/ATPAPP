@@ -1,0 +1,1123 @@
+{
+  "generatedAt": "2026-05-25T05:12:51.865Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-final-public-a",
+  "routeCount": 11,
+  "viewportCount": 2,
+  "pageRuns": 22,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Qualquer dia",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Limpar filtros",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico",
+      "label": "Contato",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Contato",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-torneios",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-torneios",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-overview",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-aulas",
+      "label": "Ajustar filtros MS · Dourados · Qualquer dia",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico",
+      "label": "Contato",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-local-publico-reservas",
+      "label": "Contato",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-torneios",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-torneios",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ligas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ligas",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ligas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-inscricao-torneio",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 6,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico-reservas",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 24,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-torneios",
+        "hash": "#/eventos/torneios",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-torneios.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/torneios",
+        "h1": [
+          "Torneios que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 10,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ligas",
+        "hash": "#/eventos/ligas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-ligas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas",
+        "h1": [
+          "Ligas que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 9,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inscricao-torneio",
+        "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inscricao-torneio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "h1": [
+          "Inscricao"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 8,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 13,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 11,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 27,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico-reservas",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-local-publico-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-torneios",
+        "hash": "#/eventos/torneios",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-torneios.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/torneios",
+        "h1": [
+          "Torneios que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 8,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ligas",
+        "hash": "#/eventos/ligas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-ligas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas",
+        "h1": [
+          "Ligas que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 7,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-inscricao-torneio",
+        "hash": "#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-inscricao-torneio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inscricao/1a2c0053-d9f8-4458-8868-2f66886f3e52",
+        "h1": [
+          "Inscricao"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 6,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

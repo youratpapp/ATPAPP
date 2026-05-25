@@ -4,9 +4,7 @@ import type { CSSProperties } from "react";
 import type { User } from "@supabase/supabase-js";
 import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
-import { PublishingKit } from "../components/PublishingKit";
 import { friendlyToastMessage, useToast } from "../components/toast";
-import { buildPlaceAdminPath } from "../lib/place-admin-navigation";
 import {
   createAcademyEnrollment,
   createOpenMatch,
@@ -288,7 +286,6 @@ export function PlacePublicPage({ user, profile }: Props) {
   const [matchCreateBusy, setMatchCreateBusy] = useState(false);
   const [matchCreateDraft, setMatchCreateDraft] = useState({ startsAt: "", level: "", notes: "" });
   const [selectedPlanContext, setSelectedPlanContext] = useState<PlaceMembershipPlan | null>(null);
-  const [channelFeedback, setChannelFeedback] = useState("");
   const [bookingDraft, setBookingDraft] = useState(() => {
     const startsAt = defaultBookingStart();
     return {
@@ -455,7 +452,6 @@ export function PlacePublicPage({ user, profile }: Props) {
   const filteredAcademyClassGroups = groupAcademyClasses(filteredAcademyClasses, academySpotsByClass);
   const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(String(placeId || ""))}`;
   const location = [place?.city, place?.state].filter(Boolean).join(" - ");
-  const canOpenAdmin = Boolean(place && place.ownerId === user.id);
   const cheapestCourt = useMemo(
     () => activeCourts.filter((court) => court.bookingFeeCents > 0).sort((a, b) => a.bookingFeeCents - b.bookingFeeCents)[0],
     [activeCourts]
@@ -741,18 +737,6 @@ export function PlacePublicPage({ user, profile }: Props) {
       .filter(Boolean)
       .join("\n");
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
-  };
-
-  const copyLink = async () => {
-    await navigator.clipboard.writeText(publicLink);
-    setChannelFeedback("Link público copiado.");
-  };
-
-  const copyWidget = async () => {
-    if (!place) return;
-    const snippet = `<iframe src="${publicLink}" title="${place.name}" style="width:100%;height:720px;border:0;border-radius:12px;overflow:hidden" loading="lazy"></iframe>`;
-    await navigator.clipboard.writeText(snippet);
-    setChannelFeedback("Codigo do widget copiado.");
   };
 
   const loadDayAvailability = async (
@@ -1063,11 +1047,6 @@ export function PlacePublicPage({ user, profile }: Props) {
                   {hasAcademyOffer && primaryCta.intent !== "academy" ? (
                     <button className="secondary" onClick={() => goToPublicIntent("academy")}>Ver aulas</button>
                   ) : null}
-                  {canOpenAdmin ? (
-                    <button className="quiet" onClick={() => navigate(buildPlaceAdminPath(place.id, "dashboard"))}>
-                      Gestao
-                    </button>
-                  ) : null}
                 </ActionBar>
               </div>
               <div className="place-public-cover" aria-hidden>
@@ -1077,43 +1056,31 @@ export function PlacePublicPage({ user, profile }: Props) {
 
             <section className="place-public-action-rail" aria-label="O que fazer neste local">
               {hasBookableOffer ? (
-                <button className={pageIntent === "booking" ? "active" : undefined} onClick={() => goToPublicIntent("booking")}>
-                  <span>Reservar</span>
-                  <strong>Quadra</strong>
-                  <small>{cheapestCourt ? `A partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}` : countLabel(activeCourts.length, "quadra", "quadras")}</small>
+                <button className={pageIntent === "booking" ? "active" : undefined} onClick={() => goToPublicIntent("booking")} aria-label={`Reservar quadra, ${countLabel(activeCourts.length, "quadra", "quadras")}`}>
+                  <strong>Quadras</strong>
                 </button>
               ) : null}
               {hasAcademyOffer ? (
-                <button className={pageIntent === "academy" ? "active" : undefined} onClick={() => goToPublicIntent("academy")}>
-                  <span>Aulas</span>
-                  <strong>Entrar em turma</strong>
-                  <small>{cheapestClass ? `A partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}` : countLabel(activeClasses.length, "turma", "turmas")}</small>
+                <button className={pageIntent === "academy" ? "active" : undefined} onClick={() => goToPublicIntent("academy")} aria-label={`Ver aulas, ${countLabel(activeClasses.length, "turma", "turmas")}`}>
+                  <strong>Aulas</strong>
                 </button>
               ) : null}
               {hasOpenMatches ? (
-                <button className={pageIntent === "matches" ? "active" : undefined} onClick={() => goToPublicIntent("matches")}>
-                  <span>Jogos</span>
-                  <strong>Jogo aberto</strong>
-                  <small>{countLabel(openMatches.length, "opcao", "opcoes")}</small>
+                <button className={pageIntent === "matches" ? "active" : undefined} onClick={() => goToPublicIntent("matches")} aria-label={`Encontrar jogo, ${countLabel(openMatches.length, "jogo", "jogos")}`}>
+                  <strong>Jogos</strong>
                 </button>
               ) : (
-                <button className={pageIntent === "matches" ? "active" : undefined} onClick={() => goToPublicIntent("matches")}>
-                  <span>Jogos</span>
-                  <strong>Criar chamada</strong>
-                  <small>Neste local</small>
+                <button className={pageIntent === "matches" ? "active" : undefined} onClick={() => goToPublicIntent("matches")} aria-label="Criar chamada de jogo">
+                  <strong>Jogos</strong>
                 </button>
               )}
               {hasMembershipOffer ? (
-                <button className={pageIntent === "plans" ? "active" : undefined} onClick={() => goToPublicIntent("plans")}>
-                  <span>Planos</span>
+                <button className={pageIntent === "plans" ? "active" : undefined} onClick={() => goToPublicIntent("plans")} aria-label={`Ver planos, ${countLabel(activePlans.length, "plano", "planos")}`}>
                   <strong>Beneficios</strong>
-                  <small>{countLabel(activePlans.length, "plano", "planos")}</small>
                 </button>
               ) : null}
-              <button className={pageIntent === "about" ? "active" : undefined} onClick={() => goToPublicIntent("about")}>
-                <span>Sobre</span>
+              <button className={pageIntent === "about" ? "active" : undefined} onClick={() => goToPublicIntent("about")} aria-label="Ver contato e informacoes do local">
                 <strong>Contato</strong>
-                <small>Informacoes do local</small>
               </button>
             </section>
 
@@ -1879,24 +1846,6 @@ export function PlacePublicPage({ user, profile }: Props) {
                 </details>
               ) : null}
 
-              {canOpenAdmin ? (
-              <article className="place-public-channel-card" id="place-public-share">
-                <PublishingKit
-                  eyebrow="Compartilhar"
-                  title="Levar para WhatsApp ou site"
-                  hint="Use o link na bio, envie no WhatsApp ou incorpore no site do clube."
-                  actions={
-                    <>
-                      <button className="secondary" onClick={() => void copyLink()}>Copiar link</button>
-                      <button className="quiet" onClick={() => void copyWidget()}>Copiar widget</button>
-                      <button className="quiet" onClick={sharePlace}>WhatsApp</button>
-                    </>
-                  }
-                />
-                <code>{publicLink}</code>
-                {channelFeedback ? <p className="subtle">{channelFeedback}</p> : null}
-              </article>
-              ) : null}
             </section>
 
             <div className="place-public-sticky-cta" aria-label="Acao rapida de reserva">

@@ -15580,6 +15580,15 @@ button:disabled {
   text-align: left;
 }
 
+.place-public-action-rail button span,
+.place-public-action-rail button strong,
+.place-public-action-rail button small {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
 .booking-change-availability button.active {
   background: rgba(34, 197, 94, 0.2);
   border-color: rgba(74, 222, 128, 0.74);
@@ -37682,6 +37691,28 @@ body:has(.app-shell--competition),
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
+.app-shell--player .place-public-action-rail button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 14px;
+  text-align: center;
+}
+
+.app-shell--player .place-public-action-rail button span,
+.app-shell--player .place-public-action-rail button small {
+  display: none;
+}
+
+.app-shell--player .place-public-action-rail button strong,
+.app-shell--player .place-public-action-rail button:not(.active) strong {
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .app-shell--management .place-admin-shell-status span b,
 .app-shell--management .place-module-context > small b {
   color: #4ade80 !important;
@@ -38055,6 +38086,49 @@ body:has(.app-shell--competition),
 @media (max-width: 360px) {
   .app-shell--player .place-public-action-rail {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Sprint PLAYER-FIX-03: public local intent rail is navigation, not a card grid. */
+.app-shell--player .place-public-action-rail button {
+  align-content: initial !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  height: 56px !important;
+  justify-content: center !important;
+  min-height: 56px !important;
+  overflow: hidden !important;
+  padding: 0 14px !important;
+  text-align: center !important;
+}
+
+.app-shell--player .place-public-action-rail button::after {
+  content: none !important;
+  display: none !important;
+}
+
+.app-shell--player .place-public-action-rail button span,
+.app-shell--player .place-public-action-rail button small {
+  display: none !important;
+}
+
+.app-shell--player .place-public-action-rail button strong,
+.app-shell--player .place-public-action-rail button:not(.active) strong {
+  display: block !important;
+  font-size: 0.94rem !important;
+  line-height: 1 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 720px) {
+  .app-shell--player .place-public-action-rail button {
+    border-radius: 14px !important;
+    height: 50px !important;
+    min-height: 50px !important;
   }
 }
 
@@ -41948,5 +42022,793 @@ body:has(.app-shell--competition),
     max-width: 164px;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+/* PLAYER-UX-02: player area adopts the denser SaaS rhythm used in Work.
+   The first fold must show the next action, not stacked summaries. */
+.app-shell--player {
+  --player-radius: 8px;
+  --player-gap: 12px;
+}
+
+.app-shell--player .app-content,
+.app-shell--competition .app-content {
+  padding-top: 18px;
+}
+
+.app-shell--player .home-player-os--visual,
+.app-shell--player .home-command-hero,
+.app-shell--player .home-command-strip,
+.app-shell--player .home-command-grid,
+.app-shell--player .player-hub-panel,
+.app-shell--player .home-discovery-section,
+.app-shell--player .personal-agenda-hero,
+.app-shell--player .personal-agenda-tabs,
+.app-shell--player .personal-agenda-layout,
+.app-shell--player .profile-photo-block,
+.app-shell--player .profile-purpose-tabs,
+.app-shell--player .ranking-visual-hero,
+.app-shell--player .ranking-player-overview,
+.app-shell--player .ranking-control-panel,
+.app-shell--competition .events-page-header,
+.app-shell--competition .competition-command-center,
+.app-shell--competition .competition-intent-strip,
+.app-shell--competition .competition-feature-grid,
+.app-shell--competition .competition-discovery,
+.app-shell--player:has(.places-page) .places-intent-panel,
+.app-shell--player:has(.places-page) .open-matches-panel,
+.app-shell--player:has(.places-page) .court-discovery-results {
+  border-radius: var(--player-radius) !important;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-hero {
+  align-items: center;
+  min-height: 210px;
+  padding: 24px 28px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-copy {
+  max-width: 620px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-copy h1 {
+  font-size: clamp(2.25rem, 4vw, 4.35rem);
+  line-height: 0.98;
+  margin: 8px 0;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-copy p:not(.home-context-eyebrow) {
+  max-width: 480px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-stats {
+  align-self: stretch;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(92px, 1fr));
+  max-width: 370px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-stat {
+  align-content: end;
+  min-height: 96px;
+  padding: 12px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-stat strong {
+  font-size: 1.45rem;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-stat small,
+.app-shell--player:has(.home-player-os--visual) .home-command-stat em {
+  font-size: 0.74rem;
+  line-height: 1.15;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-strip {
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-strip button {
+  min-height: 56px;
+  padding: 10px 14px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-strip button span {
+  font-size: 0.68rem;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-strip button strong {
+  font-size: 0.92rem;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-grid {
+  gap: var(--player-gap);
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr) minmax(240px, 0.55fr);
+  margin-top: 14px;
+}
+
+.app-shell--player .home-section,
+.app-shell--player .player-hub-panel,
+.app-shell--player .home-empty-inline,
+.app-shell--player .home-agenda-preview-card,
+.app-shell--player .home-spotlight-card,
+.app-shell--player .home-routine-row,
+.app-shell--player .home-discovery-card,
+.app-shell--player .personal-agenda-summary-card,
+.app-shell--player .personal-agenda-item,
+.app-shell--player .personal-agenda-detail,
+.app-shell--player .personal-agenda-empty-detail,
+.app-shell--competition .events-kpi-card,
+.app-shell--competition .competition-feature-panel,
+.app-shell--competition .competition-discovery-action,
+.app-shell--competition .competition-discovery-card,
+.app-shell--competition .home-empty-panel {
+  border-radius: var(--player-radius) !important;
+}
+
+.app-shell--player .home-section,
+.app-shell--player .player-hub-panel,
+.app-shell--player .home-discovery-section {
+  padding: 14px;
+}
+
+.app-shell--player .section-title {
+  margin-bottom: 10px;
+}
+
+.app-shell--player .section-title h2 {
+  font-size: 1rem;
+}
+
+.app-shell--player .home-agenda-preview-grid,
+.app-shell--player .home-routine-list {
+  gap: 8px;
+}
+
+.app-shell--player .home-agenda-preview-card,
+.app-shell--player .home-routine-row {
+  min-height: 70px;
+  padding: 12px;
+}
+
+.app-shell--player .home-spotlight-card {
+  min-height: 150px;
+  padding: 16px;
+}
+
+.app-shell--player .player-hub-panel {
+  margin-top: 14px;
+}
+
+.app-shell--player .player-hub-workspace {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.app-shell--player .home-pro-workspace--compact {
+  margin-top: 14px;
+  min-height: auto;
+}
+
+.app-shell--player .home-discovery-section {
+  margin-top: 14px;
+}
+
+.app-shell--player .home-discovery-carousel {
+  gap: 10px;
+}
+
+.app-shell--player .home-discovery-card {
+  min-height: 220px;
+  width: min(260px, 78vw);
+}
+
+.app-shell--player .home-discovery-card img,
+.app-shell--player .home-discovery-poster {
+  height: 120px;
+}
+
+.app-shell--player .personal-agenda-hero {
+  align-items: end;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: auto;
+  padding: 22px;
+}
+
+.app-shell--player .personal-agenda-hero h1 {
+  font-size: clamp(2.1rem, 4vw, 4rem);
+  line-height: 0.98;
+  margin: 8px 0;
+}
+
+.app-shell--player .personal-agenda-hero p {
+  max-width: 620px;
+}
+
+.app-shell--player .personal-agenda-kpis {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(108px, 1fr));
+}
+
+.app-shell--player .personal-agenda-kpis article {
+  min-height: 88px;
+  padding: 12px;
+}
+
+.app-shell--player .personal-agenda-tabs {
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px;
+}
+
+.app-shell--player .personal-agenda-tabs button {
+  min-height: 40px;
+  padding: 8px 16px;
+}
+
+.app-shell--player .personal-agenda-layout {
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  margin-top: 12px;
+}
+
+.app-shell--player .personal-agenda-state-grid {
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.app-shell--player .personal-agenda-summary-card {
+  min-height: 86px;
+  padding: 12px;
+}
+
+.app-shell--player .personal-agenda-list {
+  gap: 8px;
+}
+
+.app-shell--player .personal-agenda-item {
+  grid-template-columns: 92px minmax(0, 1fr) minmax(130px, auto) auto;
+  min-height: 58px;
+  padding: 10px 12px;
+}
+
+.app-shell--player .personal-agenda-item small {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-shell--competition .events-page-header.mode-discover,
+.app-shell--competition .events-page-header.mode-playing {
+  min-height: 160px;
+  padding: 26px 30px;
+}
+
+.app-shell--competition .events-page-header h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.98;
+}
+
+.app-shell--competition .competition-command-center {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.62fr);
+  margin-top: 12px;
+  padding: 10px;
+}
+
+.app-shell--competition .events-kpi-grid {
+  gap: 8px;
+}
+
+.app-shell--competition .events-kpi-card {
+  min-height: 74px;
+  padding: 10px 12px;
+}
+
+.app-shell--competition .events-kpi-value {
+  font-size: 1.35rem;
+}
+
+.app-shell--competition .competition-hub-tabs {
+  align-self: stretch;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.app-shell--competition .competition-hub-tabs button {
+  min-height: 74px;
+  padding: 10px;
+}
+
+.app-shell--competition .competition-intent-strip {
+  background: transparent;
+  border: 0;
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.app-shell--competition .competition-intent-pill {
+  flex: 0 0 auto;
+  min-height: 42px;
+  min-width: 150px;
+  padding: 8px 12px;
+}
+
+.app-shell--competition .competition-intent-pill strong {
+  font-size: 0.86rem;
+}
+
+.app-shell--competition .competition-intent-pill small {
+  display: none;
+}
+
+.app-shell--competition .competition-feature-grid {
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 10px;
+}
+
+.app-shell--competition .competition-feature-panel {
+  min-height: 190px;
+  padding: 12px;
+}
+
+.app-shell--competition .competition-feature-panel > button {
+  min-height: 58px;
+  padding: 10px 12px;
+}
+
+.app-shell--competition .competition-discovery {
+  margin-top: 12px;
+  padding: 14px;
+}
+
+.app-shell--competition .competition-discovery-grid {
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.app-shell--competition .competition-discovery-action {
+  min-height: 92px;
+  padding: 12px;
+}
+
+.app-shell--competition .competition-discovery-action small {
+  display: none;
+}
+
+.app-shell--player:has(.places-page) .places-intent-panel {
+  min-height: 168px;
+  padding: 22px;
+}
+
+.app-shell--player:has(.places-page) .places-intent-copy h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 0.96;
+}
+
+.app-shell--player:has(.places-page) .places-intent-card {
+  min-height: 80px;
+  padding: 14px;
+}
+
+.app-shell--player:has(.places-page) .open-matches-panel,
+.app-shell--player:has(.places-page) .court-discovery-results {
+  padding: 14px;
+}
+
+.app-shell--player:has(.places-page) .open-match-row {
+  padding: 10px;
+}
+
+.app-shell--player .ranking-visual-hero {
+  min-height: 170px;
+  padding: 26px 30px;
+}
+
+.app-shell--player .ranking-player-overview {
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.app-shell--player .ranking-player-position,
+.app-shell--player .ranking-player-context,
+.app-shell--player .ranking-player-overview .app-metric-card {
+  min-height: 130px;
+  padding: 14px;
+}
+
+.app-shell--player .profile-photo-block {
+  min-height: 230px;
+  padding: 22px 28px;
+}
+
+.app-shell--player .profile-purpose-tabs {
+  margin-top: 12px;
+  padding: 8px;
+}
+
+@media (max-width: 980px) {
+  .app-shell--player .app-content,
+  .app-shell--competition .app-content {
+    padding-top: 12px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-hero {
+    gap: 14px;
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-copy h1,
+  .app-shell--player .personal-agenda-hero h1,
+  .app-shell--competition .events-page-header h1,
+  .app-shell--player:has(.places-page) .places-intent-copy h2,
+  .app-shell--player .ranking-visual-hero h1 {
+    font-size: clamp(2rem, 12vw, 3rem);
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+    width: 100%;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-stat {
+    min-height: 78px;
+    padding: 10px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip {
+    grid-auto-columns: minmax(118px, 1fr);
+    overflow-x: auto;
+    padding: 8px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip button {
+    min-height: 52px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-grid,
+  .app-shell--player .personal-agenda-layout,
+  .app-shell--competition .competition-command-center,
+  .app-shell--competition .competition-feature-grid,
+  .app-shell--competition .competition-discovery-grid,
+  .app-shell--player .ranking-player-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .app-shell--player .home-section,
+  .app-shell--player .player-hub-panel,
+  .app-shell--player .home-discovery-section {
+    padding: 12px;
+  }
+
+  .app-shell--player .personal-agenda-hero {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .app-shell--player .personal-agenda-kpis,
+  .app-shell--player .personal-agenda-state-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--player .personal-agenda-kpis article,
+  .app-shell--player .personal-agenda-summary-card {
+    min-height: 78px;
+  }
+
+  .app-shell--player .personal-agenda-tabs {
+    overflow-x: auto;
+    padding: 7px;
+  }
+
+  .app-shell--player .personal-agenda-tabs button {
+    flex: 0 0 auto;
+    min-width: 104px;
+  }
+
+  .app-shell--player .personal-agenda-item {
+    display: grid;
+    gap: 4px;
+    grid-template-columns: 1fr auto;
+    min-height: 74px;
+  }
+
+  .app-shell--player .personal-agenda-item .personal-agenda-kind,
+  .app-shell--player .personal-agenda-item strong,
+  .app-shell--player .personal-agenda-item small,
+  .app-shell--player .personal-agenda-item em {
+    grid-column: 1;
+  }
+
+  .app-shell--player .personal-agenda-item .status-pill {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .app-shell--competition .events-page-header.mode-discover,
+  .app-shell--competition .events-page-header.mode-playing,
+  .app-shell--player .ranking-visual-hero,
+  .app-shell--player:has(.places-page) .places-intent-panel {
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .app-shell--competition .events-kpi-grid,
+  .app-shell--competition .competition-hub-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .app-shell--competition .events-kpi-card,
+  .app-shell--competition .competition-hub-tabs button {
+    min-height: 68px;
+  }
+
+  .app-shell--competition .competition-intent-strip {
+    overflow-x: auto;
+  }
+
+  .app-shell--competition .competition-feature-panel {
+    min-height: auto;
+  }
+
+  .app-shell--player .profile-photo-block {
+    min-height: auto;
+    padding: 18px;
+  }
+}
+
+/* PLAYER-UX-03: hardening pass after screenshot review.
+   Player Home should not spend the first screen on duplicate summaries. */
+.app-shell--player:has(.home-player-os--visual) .home-command-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  min-height: 186px;
+  padding: 22px 24px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-copy h1 {
+  font-size: clamp(2rem, 3.6vw, 3.35rem);
+  max-width: 13ch;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-copy {
+  gap: 10px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-stat {
+  border-radius: 8px;
+  min-height: 82px;
+  padding: 10px;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-strip,
+.app-shell--competition .competition-hub-tabs,
+.app-shell--competition .competition-intent-strip,
+.app-shell--player .personal-agenda-tabs,
+.app-shell--player .profile-purpose-tabs {
+  border-radius: 8px !important;
+}
+
+.app-shell--player:has(.home-player-os--visual) .home-command-grid {
+  align-items: stretch;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.75fr) minmax(220px, 0.55fr);
+}
+
+.app-shell--player .home-pro-workspace--compact {
+  padding: 12px 14px;
+}
+
+@media (max-width: 980px) {
+  .app-shell--player:has(.home-player-os--visual) .home-command-hero {
+    background:
+      linear-gradient(180deg, rgba(3, 9, 20, 0.88), rgba(3, 9, 20, 0.68)),
+      url("./assets/pdark-home-player-mobile-hero.png") center / cover no-repeat;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr !important;
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-copy h1 {
+    font-size: clamp(2rem, 11vw, 2.8rem);
+    max-width: 10ch;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-copy p:not(.home-context-eyebrow) {
+    max-width: 28ch;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-stats {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-stat {
+    min-height: 66px;
+    padding: 8px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-stat span {
+    height: 18px;
+    width: 18px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-stat strong {
+    font-size: 1.05rem;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-stat small,
+  .app-shell--player:has(.home-player-os--visual) .home-command-stat em {
+    font-size: 0.62rem;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-grid {
+    display: grid !important;
+    gap: 10px;
+    grid-template-columns: 1fr !important;
+    margin-top: 10px;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-grid > .home-section {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip {
+    grid-auto-columns: initial !important;
+    grid-auto-flow: row !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    overflow-x: visible !important;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip button {
+    min-width: 0;
+  }
+
+  .app-shell--player:has(.home-player-os--visual) .home-command-strip button:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .app-shell--player .home-discovery-card {
+    width: min(214px, 70vw);
+  }
+
+  .app-shell--player .personal-agenda-hero {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .app-shell--player .personal-agenda-hero h1 {
+    font-size: clamp(1.95rem, 8vw, 2.3rem);
+    line-height: 0.96;
+    margin: 4px 0;
+  }
+
+  .app-shell--player .personal-agenda-hero p {
+    font-size: 0.78rem;
+    line-height: 1.22;
+    max-width: 34ch;
+  }
+
+  .app-shell--player .personal-agenda-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .app-shell--player .personal-agenda-kpis article {
+    min-height: 56px;
+    padding: 7px;
+  }
+
+  .app-shell--player .personal-agenda-kpis strong {
+    font-size: 1.08rem;
+    line-height: 1;
+  }
+
+  .app-shell--player .personal-agenda-kpis span,
+  .app-shell--player .personal-agenda-kpis small {
+    font-size: 0.56rem;
+    line-height: 1.05;
+  }
+
+  .app-shell--player .personal-agenda-tabs button {
+    min-height: 38px;
+    min-width: 92px;
+    padding: 7px 12px;
+  }
+
+  .app-shell--player .personal-agenda-state-grid {
+    gap: 8px;
+  }
+
+  .app-shell--player .personal-agenda-summary-card {
+    min-height: 72px;
+    padding: 10px;
+  }
+
+  .app-shell--player .personal-agenda-summary-card strong {
+    font-size: 1.45rem;
+  }
+
+  .app-shell--player .personal-agenda-summary-card span,
+  .app-shell--player .personal-agenda-summary-card small {
+    font-size: 0.66rem;
+    line-height: 1.12;
+  }
+}
+
+.app-shell--player:has(.places-page) .places-overview-panel {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.app-shell--player:has(.places-page) .places-overview-panel article {
+  background:
+    linear-gradient(180deg, rgba(8, 20, 36, 0.92), rgba(5, 14, 28, 0.82)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  min-height: 116px;
+  padding: 13px;
+}
+
+.app-shell--player:has(.places-page) .places-overview-panel span {
+  color: #4ade80;
+  font-size: 0.68rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.app-shell--player:has(.places-page) .places-overview-panel strong {
+  color: #ffffff;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.app-shell--player:has(.places-page) .places-overview-panel small {
+  color: rgba(226, 232, 240, 0.72);
+  font-size: 0.72rem;
+  line-height: 1.22;
+}
+
+.app-shell--player:has(.places-page) .places-overview-panel button {
+  align-self: end;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.26);
+  border-radius: 8px;
+  color: #bbf7d0;
+  font-size: 0.72rem;
+  font-weight: 950;
+  min-height: 32px;
+}
+
+@media (max-width: 980px) {
+  .app-shell--player:has(.places-page) .places-overview-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-shell--player:has(.places-page) .places-overview-panel article {
+    min-height: 104px;
+    padding: 11px;
   }
 }

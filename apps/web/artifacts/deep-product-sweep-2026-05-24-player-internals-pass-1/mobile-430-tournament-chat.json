@@ -1,0 +1,1026 @@
+{
+  "route": {
+    "slug": "tournament-chat",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+    "surface": "Competition OS"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-tournament-chat.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 19,
+    "controlCount": 3,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Open ADT Dourados - Maio",
+        "rect": {
+          "x": 28,
+          "y": 28,
+          "w": 223,
+          "h": 95
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Resolva resultados, atrasos e WO",
+        "rect": {
+          "x": 25,
+          "y": 265,
+          "w": 380,
+          "h": 58
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Chat do torneio",
+        "rect": {
+          "x": 25,
+          "y": 933,
+          "w": 138,
+          "h": 52
+        }
+      }
+    ],
+    "textStart": "Open ADT Dourados - Maio Dourados - MS Em andamento EM ANDAMENTO Resolva resultados, atrasos e WO A operacao deve priorizar jogos pendentes, resultados enviados, indisponibilidades e comunicacao. OWNER 2 classes 0 inscritos pendentes 11 jogos pendentes 0 resultados para revisar Lancar resultado O que falta resolver agora Finalizar jogos pendentes. Resultado 22 Tabela Chat Inscritos Ajustes COMUNICACAO Chat do torneio Atualizar Desfixar topo MENSAGEM FIXADA Comunicado demo: confira horarios, chave e regras antes da proxima rodada. Aviso de Escalao Admin em 13/05/2026, 15:00:09 Aviso do admin FIXAR ESTE AVISO NO TOPO Publicar aviso AVISO - Escalao Admin 13/05/2026, 15:00:09 Comunicado demo: confira horarios, chave e regras antes da proxima rodada. Fixada Excluir NOVA MENSAGEM Enviar Inicio Jogar Competir Rotina Perfil Complete um placar valido antes de salvar como resultado oficial. X",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1904,
+    "firstFoldTextLength": 708,
+    "elements": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 157,
+          "y": 157,
+          "w": 44,
+          "h": 42
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lancar resultado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 380,
+          "w": 380,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resultado 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 711,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Tabela",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 711,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 761,
+          "w": 190,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 761,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ajustes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 811,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Atualizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 180,
+          "y": 889,
+          "w": 225,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Desfixar topo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 180,
+          "y": 941,
+          "w": 225,
+          "h": 44
+        },
+        "className": "ghost",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Escreva um aviso para todos os participantes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1179,
+          "w": 354,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1271,
+          "w": 218,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Publicar aviso",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1326,
+          "w": 126,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Fixada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 43,
+          "y": 1520,
+          "w": 168,
+          "h": 38
+        },
+        "className": "ghost",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Excluir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 1520,
+          "w": 168,
+          "h": 38
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Escreva no chat do torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1614,
+          "w": 380,
+          "h": 88
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Enviar",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1715,
+          "w": 380,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "active",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "X",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 801,
+          "w": 36,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 7.52,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 11,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Escreva um aviso para todos os participantes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1179,
+          "w": 354,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 42,
+          "y": 1271,
+          "w": 218,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Escreva no chat do torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1614,
+          "w": 380,
+          "h": 88
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 157,
+          "y": 157,
+          "w": 44,
+          "h": 42
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lancar resultado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 380,
+          "w": 380,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resultado 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 711,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Tabela",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 711,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 761,
+          "w": 190,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 761,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ajustes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 21,
+          "y": 811,
+          "w": 190,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Atualizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 180,
+          "y": 889,
+          "w": 225,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Desfixar topo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 180,
+          "y": 941,
+          "w": 225,
+          "h": 44
+        },
+        "className": "ghost",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Publicar aviso",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 38,
+          "y": 1326,
+          "w": 126,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Fixada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 43,
+          "y": 1520,
+          "w": 168,
+          "h": 38
+        },
+        "className": "ghost",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Excluir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 1520,
+          "w": 168,
+          "h": 38
+        },
+        "className": "danger",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Enviar",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 25,
+          "y": 1715,
+          "w": 380,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "active",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "X",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 801,
+          "w": 36,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 7.52,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-chat",
+      "label": "Voltar para torneios",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

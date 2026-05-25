@@ -1,0 +1,1303 @@
+{
+  "generatedAt": "2026-05-25T03:46:35.726Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-internals-pass-1",
+  "routeCount": 7,
+  "viewportCount": 2,
+  "pageRuns": 14,
+  "issueCount": 6,
+  "issueSummary": {
+    "labels-duplicados": 6
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-tournament-jogos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-league-detail.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-league-chat.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-jogos",
+      "surface": "Competition OS",
+      "screenshot": "mobile-430-tournament-jogos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-detail",
+      "surface": "Competition OS",
+      "screenshot": "mobile-430-league-detail.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-chat",
+      "surface": "Competition OS",
+      "screenshot": "mobile-430-league-chat.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-torneios",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-torneios",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-chat",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Resolver proxima pendencia",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Abrir lista completa",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=jogadores",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/eventos/ligas?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-torneios",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-torneios",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ligas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ligas",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ligas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-jogos",
+      "label": "Voltar para torneios",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-jogos",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-classificacao",
+      "label": "Voltar para torneios",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-chat",
+      "label": "Voltar para torneios",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "tournament-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-detail",
+      "label": "Voltar para ligas",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-detail",
+      "label": "Resolver proxima pendencia",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-detail",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-chat",
+      "label": "Voltar para ligas",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/eventos/ligas?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "league-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-torneios",
+        "hash": "#/eventos/torneios",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-torneios.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/torneios",
+        "h1": [
+          "Torneios que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 10,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ligas",
+        "hash": "#/eventos/ligas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-ligas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas",
+        "h1": [
+          "Ligas que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 9,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogos",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-jogos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 138,
+        "controlCount": 125,
+        "duplicateLabels": [
+          {
+            "label": "set 1 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1088,
+                "y": 1220,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1376,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1531,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1687,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1843,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 1 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1192,
+                "y": 1220,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1376,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1531,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1687,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1843,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1088,
+                "y": 1264,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1420,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1575,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1731,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1887,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1192,
+                "y": 1264,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1420,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1575,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1731,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1887,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-classificacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-classificacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-chat",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-detail",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-league-detail.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 37,
+        "controlCount": 0,
+        "duplicateLabels": [
+          {
+            "label": "detalhes",
+            "count": 6,
+            "samples": [
+              {
+                "x": 1189,
+                "y": 968,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1052,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1137,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1222,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1306,
+                "w": 82,
+                "h": 37
+              }
+            ]
+          },
+          {
+            "label": "abrir sala",
+            "count": 5,
+            "samples": [
+              {
+                "x": 1085,
+                "y": 1051,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1136,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1221,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1305,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1390,
+                "w": 97,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-chat",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-league-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 24,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "remover",
+            "count": 4,
+            "samples": [
+              {
+                "x": 397,
+                "y": 880,
+                "w": 84,
+                "h": 30
+              },
+              {
+                "x": 374,
+                "y": 981,
+                "w": 84,
+                "h": 30
+              },
+              {
+                "x": 374,
+                "y": 1082,
+                "w": 84,
+                "h": 30
+              },
+              {
+                "x": 374,
+                "y": 1183,
+                "w": 84,
+                "h": 30
+              }
+            ]
+          },
+          {
+            "label": "fixar",
+            "count": 3,
+            "samples": [
+              {
+                "x": 317,
+                "y": 981,
+                "w": 57,
+                "h": 30
+              },
+              {
+                "x": 317,
+                "y": 1082,
+                "w": 57,
+                "h": 30
+              },
+              {
+                "x": 317,
+                "y": 1183,
+                "w": 57,
+                "h": 30
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-torneios",
+        "hash": "#/eventos/torneios",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-torneios.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/torneios",
+        "h1": [
+          "Torneios que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 8,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ligas",
+        "hash": "#/eventos/ligas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-ligas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas",
+        "h1": [
+          "Ligas que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 7,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogos",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-tournament-jogos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 136,
+        "controlCount": 125,
+        "duplicateLabels": [
+          {
+            "label": "set 1 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 201,
+                "y": 1862,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 2175,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 2487,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 2800,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 3113,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 1 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 293,
+                "y": 1862,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 2175,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 2487,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 2800,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 3113,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 201,
+                "y": 1906,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 2219,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 2531,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 2844,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 201,
+                "y": 3157,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 293,
+                "y": 1906,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 2219,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 2531,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 2844,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 293,
+                "y": 3157,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-classificacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-tournament-classificacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 12,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-chat",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-tournament-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-detail",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-league-detail.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 35,
+        "controlCount": 0,
+        "duplicateLabels": [
+          {
+            "label": "detalhes",
+            "count": 6,
+            "samples": [
+              {
+                "x": 221,
+                "y": 1230,
+                "w": 159,
+                "h": 40
+              },
+              {
+                "x": 221,
+                "y": 1437,
+                "w": 159,
+                "h": 40
+              },
+              {
+                "x": 221,
+                "y": 1643,
+                "w": 159,
+                "h": 40
+              },
+              {
+                "x": 221,
+                "y": 1849,
+                "w": 159,
+                "h": 40
+              },
+              {
+                "x": 221,
+                "y": 2055,
+                "w": 159,
+                "h": 40
+              }
+            ]
+          },
+          {
+            "label": "abrir sala",
+            "count": 5,
+            "samples": [
+              {
+                "x": 54,
+                "y": 1437,
+                "w": 159,
+                "h": 39
+              },
+              {
+                "x": 54,
+                "y": 1643,
+                "w": 159,
+                "h": 39
+              },
+              {
+                "x": 54,
+                "y": 1849,
+                "w": 159,
+                "h": 39
+              },
+              {
+                "x": 54,
+                "y": 2055,
+                "w": 159,
+                "h": 39
+              },
+              {
+                "x": 54,
+                "y": 2261,
+                "w": 159,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-chat",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-league-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 22,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "remover",
+            "count": 4,
+            "samples": [
+              {
+                "x": 53,
+                "y": 1105,
+                "w": 324,
+                "h": 38
+              },
+              {
+                "x": 53,
+                "y": 1317,
+                "w": 324,
+                "h": 38
+              },
+              {
+                "x": 53,
+                "y": 1528,
+                "w": 324,
+                "h": 38
+              },
+              {
+                "x": 53,
+                "y": 1740,
+                "w": 324,
+                "h": 38
+              }
+            ]
+          },
+          {
+            "label": "fixar",
+            "count": 3,
+            "samples": [
+              {
+                "x": 53,
+                "y": 1279,
+                "w": 324,
+                "h": 38
+              },
+              {
+                "x": 53,
+                "y": 1490,
+                "w": 324,
+                "h": 38
+              },
+              {
+                "x": 53,
+                "y": 1702,
+                "w": 324,
+                "h": 38
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,944 @@
+{
+  "route": {
+    "slug": "player-local-publico-reservas",
+    "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+    "surface": "Player"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-player-local-publico-reservas.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 20,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+    "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 453,
+          "y": 229,
+          "w": 443,
+          "h": 52
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Escolha uma acao neste local",
+        "rect": {
+          "x": 289,
+          "y": 621,
+          "w": 746,
+          "h": 26
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Voltar LOCAL PÚBLICO ADT Dourados Compartilhar AD Dourados - MS ADT Dourados Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. Quadras a partir de R$ 70,00 6 quadras | 24 turmas | 12 jogos abertos | 2 planos Reservar quadra Ver aulas Quadras Aulas Jogos Beneficios Contato VISAO GERAL Escolha uma acao neste local Aqui voce ve o resumo. Reserva, aulas, jogos e planos ficam em paginas focadas para evitar mistura de contextos. Compartilhar RESERVAR 6 quadras ativas A partir de R$ 70,00 AULAS 3 turmas A partir de R$ 420,00 JOGOS 12 jogos abertos 15 de mai. PLANOS 2 planos Beneficios e recorrencia Quadra 1 hard | R$ 70,00 Quadra 2 sintetica | R$ 70,00 Kids Iniciante 1 Seg 06:00-07:00 | Caio Ferraz Avancado Ranking 1 Seg 07:00-08:00 | Caio Ferraz",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1351,
+    "viewportWidth": 1366,
+    "bodyHeight": 1032,
+    "firstFoldTextLength": 2116,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1115,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1196,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 287,
+          "y": 96,
+          "w": 61,
+          "h": 38
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1140,
+          "y": 96,
+          "w": 109,
+          "h": 38
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 453,
+          "y": 416,
+          "w": 143,
+          "h": 46
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 604,
+          "y": 416,
+          "w": 93,
+          "h": 46
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Quadras",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 273,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 474,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 675,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Beneficios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 875,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1076,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1126,
+          "y": 594,
+          "w": 121,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVAR 6 quadras ativas A partir de R$ 70,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "AULAS 3 turmas A partir de R$ 420,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 531,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "JOGOS 12 jogos abertos 15 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "PLANOS 2 planos Beneficios e recorrencia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1014,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Quadra 1 hard | R$ 70,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 816,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Quadra 2 sintetica | R$ 70,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 816,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 1 Seg 06:00-07:00 | Caio Ferraz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 881,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 1 Seg 07:00-08:00 | Caio Ferraz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 881,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1115,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1196,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 287,
+          "y": 96,
+          "w": 61,
+          "h": 38
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1140,
+          "y": 96,
+          "w": 109,
+          "h": 38
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Reservar quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 453,
+          "y": 416,
+          "w": 143,
+          "h": 46
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 604,
+          "y": 416,
+          "w": 93,
+          "h": 46
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Quadras",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 273,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 474,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 675,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Beneficios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 875,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1076,
+          "y": 508,
+          "w": 187,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1126,
+          "y": 594,
+          "w": 121,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVAR 6 quadras ativas A partir de R$ 70,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "AULAS 3 turmas A partir de R$ 420,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 531,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "JOGOS 12 jogos abertos 15 de mai.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "PLANOS 2 planos Beneficios e recorrencia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1014,
+          "y": 708,
+          "w": 234,
+          "h": 83
+        },
+        "className": "place-public-overview-tile",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Quadra 1 hard | R$ 70,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 816,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Quadra 2 sintetica | R$ 70,00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 816,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 1 Seg 06:00-07:00 | Caio Ferraz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 881,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 1 Seg 07:00-08:00 | Caio Ferraz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 881,
+          "w": 475,
+          "h": 57
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Ver aulas",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/aulas",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-local-publico-reservas",
+      "label": "Contato",
+      "clicked": true,
+      "from": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/reservas",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09/sobre",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}
