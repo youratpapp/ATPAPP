@@ -1,0 +1,607 @@
+{
+  "generatedAt": "2026-05-25T01:23:30.741Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-evolution-pass-3b",
+  "routeCount": 6,
+  "viewportCount": 2,
+  "pageRuns": 12,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Editar perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Conta",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-reservas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-reservas",
+      "label": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=pagamentos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-reservas",
+      "label": "HISTORICO 5 reservas, jogos e pagamentos passados",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-aulas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-aulas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-aulas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-pagamentos",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-pagamentos",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-agenda-pagamentos",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-perfil",
+      "label": "Editar perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-perfil",
+      "label": "Conta",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ranking",
+        "hash": "#/ranking",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-ranking.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/ranking",
+        "h1": [
+          "Ranking ATP"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 40,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-perfil",
+        "hash": "#/perfil",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-perfil.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/perfil",
+        "h1": [
+          "Perfil"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 12,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ranking",
+        "hash": "#/ranking",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-ranking.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/ranking",
+        "h1": [
+          "Ranking ATP"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 38,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-perfil",
+        "hash": "#/perfil",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-perfil.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/perfil",
+        "h1": [
+          "Perfil"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 10,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

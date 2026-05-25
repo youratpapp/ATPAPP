@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-05-25T01:31:59.062Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-evolution-pass-4-ranking",
+  "routeCount": 1,
+  "viewportCount": 2,
+  "pageRuns": 2,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-ranking",
+        "hash": "#/ranking",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-ranking.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/ranking",
+        "h1": [
+          "Ranking ATP"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 40,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ranking",
+        "hash": "#/ranking",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-ranking.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/ranking",
+        "h1": [
+          "Ranking ATP"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 38,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

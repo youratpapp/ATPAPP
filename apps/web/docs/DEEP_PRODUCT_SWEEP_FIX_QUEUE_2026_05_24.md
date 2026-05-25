@@ -420,3 +420,35 @@ Validacao:
 - `npm.cmd run build` passou.
 - Varredura focada de `work-agenda-dia`, `work-academia-turmas` e `work-clientes-ativos` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-followup-work-core-4/`.
 - Varredura ampliada de 12 rotas principais do SaaS web passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-followup-work-core-6/`.
+
+## PLAYER-FIX-01 - Evolucao area jogador web/mobile
+
+Status: concluido em 2026-05-24.
+
+Problema:
+
+- Varredura dedicada da area Jogador encontrou duplicidade de CTAs visuais em `Jogar > Encontrar jogo`, `Competir` mobile e `Ranking`.
+- Ranking tinha links de jogador com alvo clicavel pequeno e, apos contextualizar os botoes, a coluna de acao podia cortar o texto no desktop.
+- Os problemas nao eram de console/backend: eram de clareza, leitura e contexto de acao.
+
+Comportamento alvo:
+
+- Cada chamada aberta em `Jogar` usa CTA contextual por data/horario: `Entrar dd/mm hh:mm` ou `Confirmado dd/mm hh:mm`.
+- `Competir` separa rótulos genericos de ligas: atalhos e discovery usam `Minhas ligas` / `Ver ligas`.
+- Ranking usa botoes contextuais por jogador (`Seguir Nome`) e a tabela reserva coluna suficiente para a acao.
+- Links de perfil de jogador ganham area clicavel minima confortavel sem alterar o fluxo.
+
+Arquivos alterados:
+
+- `src/pages/PlacesPage.tsx`
+- `src/pages/EventsHubPage.tsx`
+- `src/pages/RankingPage.tsx`
+- `src/App.css`
+
+Validacao:
+
+- `npm.cmd run build` passou.
+- Varredura focada de `player-jogar-partidas`, `player-competir` e `player-ranking` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-evolution-pass-2/`.
+- Varredura ampliada de Home/Jogar/Competir/Torneios/Ligas passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-evolution-pass-3a/`.
+- Varredura ampliada de Agenda/Ranking/Perfil passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-evolution-pass-3b/`.
+- Rechecagem especifica do Ranking apos ajuste visual da coluna passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-player-evolution-pass-4-ranking/`.

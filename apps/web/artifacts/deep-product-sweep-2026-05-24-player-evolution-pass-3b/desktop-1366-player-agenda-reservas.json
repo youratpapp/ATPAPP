@@ -1,0 +1,1014 @@
+{
+  "route": {
+    "slug": "player-agenda-reservas",
+    "hash": "#/agenda?tipo=reservas",
+    "surface": "Player"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-player-agenda-reservas.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+    "h1": [
+      "Minha rotina"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 22,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+    "hash": "#/agenda?tipo=reservas",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Minha rotina"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Minha rotina",
+        "rect": {
+          "x": 297,
+          "y": 145,
+          "w": 547,
+          "h": 75
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 0 compromissos e pendencias VENCIDOS 0 pagamentos pessoais RESULTADOS 0 partidas pendentes Tudo Reservas Partidas Aulas Pagamentos Historico RESERVAS 0 sem reservas ativas AULAS 0 sem aulas vinculadas PAGAMENTOS 2 mensalidades, pacotes e inscricoes HISTORICO 5 reservas, jogos e pagamentos passados RESERVA Quadra 1 ADT Dourados - Quadra 1 24 de mai., 22:00 ate 24 de mai., 23:00 Cancelada RESERVA Quadra 1 ADT Dourados - Quadra 1 24 de mai., 06:00 ate 24 de mai., 07:00 Reserva passada RESERVA Quadra 1 ADT Dourados - Quadra 1 17 de mai., 10:00 ate 17 de mai., 12:00 Reserva passada Cancelada ADT Dourados 24 de mai., 22:00 ate 24 de mai., 23:00 LOCAL ADT Dourados QUADRA Quadra 1 INICIO 24 de mai., 22:00 FIM 24 de mai., 23:00 CONTATO +55 67 990000092 OBSERVACAO QA sprint-92 pagamento/cancelamento Abrir reservaFechar ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1366,
+    "viewportWidth": 1366,
+    "bodyHeight": 920,
+    "firstFoldTextLength": 2197,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Tudo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 279,
+          "y": 321,
+          "w": 66,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Reservas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 353,
+          "y": 321,
+          "w": 91,
+          "h": 40
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Partidas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 452,
+          "y": 321,
+          "w": 87,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 546,
+          "y": 321,
+          "w": 68,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagamentos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 623,
+          "y": 321,
+          "w": 115,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 746,
+          "y": 321,
+          "w": 93,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "RESERVAS 0 sem reservas ativas",
+        "href": "#/agenda?tipo=reservas",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "AULAS 0 sem aulas vinculadas",
+        "href": "#/agenda?tipo=aulas",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 439,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+        "href": "#/agenda?tipo=pagamentos",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "HISTORICO 5 reservas, jogos e pagamentos passados",
+        "href": "#/agenda?tipo=historico",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 773,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVA Quadra 1 ADT Dourados - Quadra 1 24 de mai., 22:00 ate 24 de mai., 23:00 Cancelada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 512,
+          "w": 660,
+          "h": 113
+        },
+        "className": "personal-agenda-item tone-danger active",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVA Quadra 1 ADT Dourados - Quadra 1 24 de mai., 06:00 ate 24 de mai., 07:00 Reserva passada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 634,
+          "w": 660,
+          "h": 113
+        },
+        "className": "personal-agenda-item tone-muted",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVA Quadra 1 ADT Dourados - Quadra 1 17 de mai., 10:00 ate 17 de mai., 12:00 Reserva passada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 755,
+          "w": 660,
+          "h": 113
+        },
+        "className": "personal-agenda-item tone-muted",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir reserva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 957,
+          "y": 697,
+          "w": 121,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1078,
+          "y": 697,
+          "w": 75,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Tudo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 279,
+          "y": 321,
+          "w": 66,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Reservas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 353,
+          "y": 321,
+          "w": 91,
+          "h": 40
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Partidas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 452,
+          "y": 321,
+          "w": 87,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 546,
+          "y": 321,
+          "w": 68,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagamentos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 623,
+          "y": 321,
+          "w": 115,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Historico",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 746,
+          "y": 321,
+          "w": 93,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 1.26,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "RESERVAS 0 sem reservas ativas",
+        "href": "#/agenda?tipo=reservas",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "AULAS 0 sem aulas vinculadas",
+        "href": "#/agenda?tipo=aulas",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 439,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+        "href": "#/agenda?tipo=pagamentos",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "HISTORICO 5 reservas, jogos e pagamentos passados",
+        "href": "#/agenda?tipo=historico",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 773,
+          "y": 384,
+          "w": 159,
+          "h": 121
+        },
+        "className": "personal-agenda-summary-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVA Quadra 1 ADT Dourados - Quadra 1 24 de mai., 22:00 ate 24 de mai., 23:00 Cancelada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 512,
+          "w": 660,
+          "h": 113
+        },
+        "className": "personal-agenda-item tone-danger active",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVA Quadra 1 ADT Dourados - Quadra 1 24 de mai., 06:00 ate 24 de mai., 07:00 Reserva passada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 634,
+          "w": 660,
+          "h": 113
+        },
+        "className": "personal-agenda-item tone-muted",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVA Quadra 1 ADT Dourados - Quadra 1 17 de mai., 10:00 ate 17 de mai., 12:00 Reserva passada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 755,
+          "w": 660,
+          "h": 113
+        },
+        "className": "personal-agenda-item tone-muted",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir reserva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 957,
+          "y": 697,
+          "w": 121,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1078,
+          "y": 697,
+          "w": 75,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

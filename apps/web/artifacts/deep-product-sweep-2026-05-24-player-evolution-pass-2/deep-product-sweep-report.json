@@ -1,0 +1,337 @@
+{
+  "generatedAt": "2026-05-25T01:17:15.419Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-player-evolution-pass-2",
+  "routeCount": 3,
+  "viewportCount": 2,
+  "pageRuns": 6,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Limpar filtros",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Descobrir torneios e ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos?modo=discover",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Ajustar filtros MS | Dourados | Todos locais | Qualquer dia | Qualquer horario",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Minhas ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-competir",
+      "label": "Ver todos",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 24,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ranking",
+        "hash": "#/ranking",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-ranking.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/ranking",
+        "h1": [
+          "Ranking ATP"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 40,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 27,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ranking",
+        "hash": "#/ranking",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-ranking.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/ranking",
+        "h1": [
+          "Ranking ATP"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 38,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}
