@@ -1,0 +1,443 @@
+{
+  "generatedAt": "2026-05-25T19:01:33.303Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-work-width-parity",
+  "routeCount": 5,
+  "viewportCount": 2,
+  "pageRuns": 10,
+  "issueCount": 3,
+  "issueSummary": {
+    "labels-duplicados": 2,
+    "texto-cortado-em-controle": 1
+  },
+  "issues": [
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "surface": "Work",
+      "screenshot": "desktop-wide-work-central.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-central",
+      "surface": "Work",
+      "screenshot": "mobile-430-work-central.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-turmas",
+      "surface": "Work",
+      "screenshot": "mobile-430-work-academia-turmas.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    }
+  ],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 78,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "organizar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 290,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 613,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 935,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 1258,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "abrir operacao",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1384,
+                "y": 1592,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 1920,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2249,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2555,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          },
+          {
+            "label": "pagina publica",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1384,
+                "y": 1632,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 1960,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2289,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2595,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-agenda-dia",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-agenda-dia.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "h1": [
+          "ADT Dourados",
+          "Agenda"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 127,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-turmas",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-academia-turmas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 44,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-clientes-ativos",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-clientes-ativos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 90,
+        "controlCount": 5,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-recebiveis",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-financeiro-recebiveis.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 143,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 72,
+        "controlCount": 1,
+        "duplicateLabels": [
+          {
+            "label": "organizar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 28,
+                "y": 2811,
+                "w": 374,
+                "h": 42
+              },
+              {
+                "x": 28,
+                "y": 2975,
+                "w": 374,
+                "h": 42
+              },
+              {
+                "x": 28,
+                "y": 3140,
+                "w": 374,
+                "h": 42
+              },
+              {
+                "x": 28,
+                "y": 3305,
+                "w": 374,
+                "h": 42
+              }
+            ]
+          },
+          {
+            "label": "abrir operacao",
+            "count": 4,
+            "samples": [
+              {
+                "x": 30,
+                "y": 4016,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 30,
+                "y": 4615,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 30,
+                "y": 5214,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 30,
+                "y": 5735,
+                "w": 181,
+                "h": 34
+              }
+            ]
+          },
+          {
+            "label": "pagina publica",
+            "count": 4,
+            "samples": [
+              {
+                "x": 219,
+                "y": 4016,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 219,
+                "y": 4615,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 219,
+                "y": 5214,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 219,
+                "y": 5735,
+                "w": 181,
+                "h": 34
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-agenda-dia",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "surface": "Work"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-work-agenda-dia.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "h1": [
+          "ADT Dourados",
+          "Agenda"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 117,
+        "controlCount": 7,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-turmas",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "surface": "Work"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-work-academia-turmas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 33,
+        "controlCount": 6,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-clientes-ativos",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "surface": "Work"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-work-clientes-ativos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 81,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-recebiveis",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "surface": "Work"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-work-financeiro-recebiveis.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 137,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}
