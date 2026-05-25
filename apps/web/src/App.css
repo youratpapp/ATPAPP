@@ -43026,3 +43026,42 @@ body:has(.app-shell--competition),
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* WORK-WIDTH-PARITY: Work/SaaS pages use the same useful desktop width as Player. */
+@media (min-width: 960px) {
+  .app-shell--management .app-content {
+    max-width: min(1560px, calc(100vw - var(--desktop-nav-width) - 24px)) !important;
+    width: min(1560px, calc(100vw - var(--desktop-nav-width) - 24px)) !important;
+  }
+
+  .app-shell--management .app-header-inner {
+    max-width: min(1560px, calc(100vw - var(--desktop-nav-width) - 24px)) !important;
+  }
+
+  .app-shell--management .app-content > *,
+  .app-shell--management .page,
+  .app-shell--management .page.places-page,
+  .app-shell--management .places-page,
+  .app-shell--management .management-shell-page,
+  .app-shell--management .management-hub-page,
+  .app-shell--management .management-cockpit-card,
+  .app-shell--management .place-management-cockpit,
+  .app-shell--management .place-booking-panel,
+  .app-shell--management .place-workspace,
+  .app-shell--management .court-calendar-panel--saas,
+  .app-shell--management .booking-workspace-shell,
+  .app-shell--management .clients-workspace,
+  .app-shell--management .clients-360-workspace,
+  .app-shell--management .finance-workspace,
+  .app-shell--management .finance-console,
+  .app-shell--management .academy-workspace,
+  .app-shell--management .academy-classes-workbench,
+  .app-shell--management .academy-students-workbench,
+  .app-shell--management .reports-console,
+  .app-shell--management .communication-console,
+  .app-shell--management .admin-console {
+    max-width: 100% !important;
+    min-width: 0;
+    width: 100% !important;
+  }
+}
